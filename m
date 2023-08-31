@@ -1,75 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A7479F8
-	for <gfs2@lists.linux.dev>; Thu, 31 Aug 2023 09:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D243811C90
+	for <gfs2@lists.linux.dev>; Thu, 31 Aug 2023 14:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693475876;
+	s=mimecast20190719; t=1693491719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=viO3SJjbFB105P6FPaGzg3wrck1TKvHJHqSm+oj8dF4=;
-	b=CIa3F1gKsMPmGw8+UaqG9XHGPQX08eMwSBg6ZvFIhP89KQFr034WrFURs5awvgZCmB9bKF
-	o8xpCyKxB9HBGwR6l4TsSgj5PQSeVYsM/30o97YABlv/L0KPXWzFWKoKROMxnMisLPIlMu
-	Gm2lbY7ynFR2hm4SCW226Fxb+TndNx4=
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=AM9HToOuwcJWUNXswHPalFrriqMxGeDNfwiMjtPtH0g=;
+	b=WBamE6rfiURS/L08RbepzcCIIfQz5/OpiWWCmJ/VRBwpAawXBFG5W2x9mxWaoIC+y8sJPn
+	dcGNQF6xHCulMVQyQJDF2InkZeJKfmz9oxieT5nOAiCdc1el9KoGnnHSx5Zlwy3yqCaCol
+	T4IPikUGA1bFkC3w5yCWprP8IpA/cRo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-211-D3VpdbI4ODq-x10jls7jKg-1; Thu, 31 Aug 2023 05:57:53 -0400
-X-MC-Unique: D3VpdbI4ODq-x10jls7jKg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+ us-mta-260-85sYEr0DNcGSBFKGfRDM8Q-1; Thu, 31 Aug 2023 10:21:56 -0400
+X-MC-Unique: 85sYEr0DNcGSBFKGfRDM8Q-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0EE980027F
-	for <gfs2@lists.linux.dev>; Thu, 31 Aug 2023 09:57:52 +0000 (UTC)
-Received: from b.redhat.com (unknown [10.42.28.73])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id EB7E8C15BAE;
-	Thu, 31 Aug 2023 09:57:51 +0000 (UTC)
-From: Andrew Price <anprice@redhat.com>
-To: agruenba@redhat.com,
-	rpeterso@redhat.com,
-	teigland@redhat.com,
-	ccaulfie@redhat.com
-Cc: cluster-devel@redhat.com,
-	gfs2@lists.linux.dev
-Subject: [PATCH 2/2] MAINTAINERS: Update dlm mailing list
-Date: Thu, 31 Aug 2023 10:57:49 +0100
-Message-ID: <20230831095749.9616-2-anprice@redhat.com>
-In-Reply-To: <20230831095749.9616-1-anprice@redhat.com>
-References: <20230831095749.9616-1-anprice@redhat.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9896857A84;
+	Thu, 31 Aug 2023 14:21:55 +0000 (UTC)
+Received: from redhat.com (null.msp.redhat.com [10.15.80.136])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 75D79140E950;
+	Thu, 31 Aug 2023 14:21:55 +0000 (UTC)
+Date: Thu, 31 Aug 2023 09:21:53 -0500
+From: David Teigland <teigland@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: [GIT PULL] dlm updates for 6.6
+Message-ID: <20230831142152.GA28483@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 
-The new gfs2@ list will also be used for dlm development.
+Hi Linus,
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please pull dlm updates from tag:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index caae31fb9741..946fcf6c8d77 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6093,7 +6093,7 @@ F:	include/video/udlfb.h
- DISTRIBUTED LOCK MANAGER (DLM)
- M:	Christine Caulfield <ccaulfie@redhat.com>
- M:	David Teigland <teigland@redhat.com>
--L:	cluster-devel@redhat.com
-+L:	gfs2@lists.linux.dev
- S:	Supported
- W:	http://sources.redhat.com/cluster/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git
--- 
-2.41.0
+git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.6
+
+Changes include:
+
+- Allow blocking posix lock requests to be interrupted while waiting.
+  This requires a cancel request to be sent to the userspace daemon
+  where posix lock requests are processed across the cluster.
+
+- Fix a posix lock patch from the previous cycle in which lock requests
+  from different file systems could be mixed up.
+
+- Fix some long standing problems with nfs posix lock cancelation.
+
+- Add a new debugfs file for printing queued callbacks.
+
+- Stop modifying buffers that have been used to receive a message.
+
+- Misc cleanups and some refactoring.
+
+Thanks,
+Dave
+
+
+Alexander Aring (17):
+      fs: dlm: remove twice newline
+      fs: dlm: allow to F_SETLKW getting interrupted
+      fs: dlm: fix F_CANCELLK to cancel pending request
+      fs: dlm: add missing spin_unlock
+      fs: dlm: remove unused processed_nodes
+      fs: dlm: debugfs for queued callbacks
+      fs: dlm: check on plock ops when exit dlm
+      fs: dlm: add plock dev tracepoints
+      fs: dlm: remove clear_members_cb
+      fs: dlm: cleanup lock order
+      fs: dlm: get recovery sequence number as parameter
+      fs: dlm: drop rxbuf manipulation in dlm_copy_master_names
+      fs: dlm: drop rxbuf manipulation in dlm_recover_master_copy
+      fs: dlm: constify receive buffer
+      fs: dlm: create midcomms nodes when configure
+      fs: dlm: don't use RCOM_NAMES for version detection
+      dlm: fix plock lookup when using multiple lockspaces
+
+
+ fs/dlm/config.c                |   2 +-
+ fs/dlm/debug_fs.c              | 101 +++++++++++++-
+ fs/dlm/dir.c                   |  14 +-
+ fs/dlm/dir.h                   |   6 +-
+ fs/dlm/dlm_internal.h          |   1 +
+ fs/dlm/lock.c                  | 120 ++++++++--------
+ fs/dlm/lock.h                  |  16 ++-
+ fs/dlm/lowcomms.c              |   1 -
+ fs/dlm/member.c                |  15 +-
+ fs/dlm/member.h                |   2 +-
+ fs/dlm/midcomms.c              | 304 ++++++++++++++++-------------------------
+ fs/dlm/midcomms.h              |   1 +
+ fs/dlm/plock.c                 | 176 +++++++++++++++++++-----
+ fs/dlm/rcom.c                  | 102 ++++++++------
+ fs/dlm/rcom.h                  |  15 +-
+ fs/dlm/recover.c               |  60 ++++----
+ fs/dlm/recover.h               |  14 +-
+ fs/dlm/recoverd.c              |  16 +--
+ fs/dlm/requestqueue.c          |   3 +-
+ fs/dlm/requestqueue.h          |   3 +-
+ fs/gfs2/file.c                 |   9 +-
+ fs/ocfs2/stack_user.c          |  13 +-
+ include/linux/dlm_plock.h      |   2 +
+ include/trace/events/dlm.h     |  51 +++++++
+ include/uapi/linux/dlm_plock.h |   1 +
+ 25 files changed, 628 insertions(+), 420 deletions(-)
 
