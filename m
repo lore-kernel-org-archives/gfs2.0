@@ -1,30 +1,30 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D416AC0
-	for <gfs2@lists.linux.dev>; Wed,  6 Sep 2023 14:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A7C6AD7
+	for <gfs2@lists.linux.dev>; Wed,  6 Sep 2023 14:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694010755;
+	s=mimecast20190719; t=1694010757;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmwIzFIXNpRLUeiK4lUVg/tlamLBDpFKni0CkmWHZaY=;
-	b=KdKSYinou+3TqDdIt7S3PFOQat2aTxlF5jopltyD0JyTJk4q6LWHtsW91z+0lRK/RRX27m
-	SGPQ31F4k1cD5dHjKhOyfoRn9r7AfpjlUudjWzEble8BZ+ReBL1iqxLdJZJCsJM/gxI+pB
-	vGDm9gYykz1+FPWV6lHle9q06mj3ZdA=
+	bh=LGn36CumLyZ/pWxBTXcgAiiU2VGOtj4pNjSFZ+aG8SI=;
+	b=G8wLwlMod/mSnyMiW59H0y7HKAZTBfmnllsAdnITF8zivuBwIYZ592rc7mEMtHhGRfQBWc
+	54CL3imMA0KmNyAHtpQNSv3iA03gdyJYOM+/HGbOcDNJqXUQn5+j256t6Wt+BqVL/OjObA
+	JIjybzMIwty+zZU8lUT59/SQdWnSzSk=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-655-4WJxtsWtNWuKXviFR_AzzQ-1; Wed, 06 Sep 2023 10:32:34 -0400
-X-MC-Unique: 4WJxtsWtNWuKXviFR_AzzQ-1
+ us-mta-260-MJkJf_qpPLKc1KUAPS3uqg-1; Wed, 06 Sep 2023 10:32:33 -0400
+X-MC-Unique: MJkJf_qpPLKc1KUAPS3uqg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C023E3C0FC99;
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C57C3811F40;
 	Wed,  6 Sep 2023 14:32:33 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 94AFE140E950;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 613A8140E950;
 	Wed,  6 Sep 2023 14:32:33 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
@@ -32,9 +32,9 @@ Cc: cluster-devel@redhat.com,
 	gfs2@lists.linux.dev,
 	aahringo@redhat.com,
 	stable@vger.kernel.org
-Subject: [PATCH dlm/next 6/6] dlm: slow down filling up processing queue
-Date: Wed,  6 Sep 2023 10:31:53 -0400
-Message-Id: <20230906143153.1353077-6-aahringo@redhat.com>
+Subject: [PATCH dlm/next 5/6] dlm: fix string may be truncated
+Date: Wed,  6 Sep 2023 10:31:52 -0400
+Message-Id: <20230906143153.1353077-5-aahringo@redhat.com>
 In-Reply-To: <20230906143153.1353077-1-aahringo@redhat.com>
 References: <20230906143153.1353077-1-aahringo@redhat.com>
 Precedence: bulk
@@ -46,95 +46,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 
-If there is a burst of message the receive worker will filling up the
-processing queue but where are too slow to process dlm messages. This
-patch will slow down the receiver worker to keep the buffer on the
-socket layer to tell the sender to backoff. This is done by a threshold
-to get the next buffers from the socket after all messages were
-processed done by a flush_workqueue(). This however only occurs when we
-have a burst like my dlm_bursttest [0] testcase to create 1 million locks
-on module init and unlock them on module exit. If we put more and more
-new messages to process in the processqueue we will soon run out of
-memory. The testcase to reproduce this issue can be found at:
+This patch is fixing the following compiler warning when compiling with
+-Wformat-truncation:
 
-https://gitlab.com/netcoder/linux-public/-/blob/dlm_test_burst/fs/dlm/dlm_bursttest.c
+fs/dlm/debug_fs.c:1031:50: warning: '_queued_asts' directive output may
+be truncated writing 12 bytes into a region of size between 8 and 72
+
+We simple increase the additional amount of bytes to 13 because
+_queued_asts does not fit into 8 bytes when the whole lockspace name
+length is being used.
+
+Fixes: 541adb0d4d10 ("fs: dlm: debugfs for queued callbacks")
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lowcomms.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/dlm/debug_fs.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index f7bc22e74db2..67f8dd8a05ef 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -63,6 +63,7 @@
- #include "config.h"
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 5aabcb6f0f15..698d6b7a20f8 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -20,6 +20,7 @@
+ #include "lock.h"
+ #include "ast.h"
  
- #define DLM_SHUTDOWN_WAIT_TIMEOUT msecs_to_jiffies(5000)
-+#define DLM_MAX_PROCESS_BUFFERS 24
- #define NEEDED_RMEM (4*1024*1024)
++#define DLM_DEBUG_NAME_LEN (DLM_LOCKSPACE_LEN + 13)
+ #define DLM_DEBUG_BUF_LEN 4096
+ static char debug_buf[DLM_DEBUG_BUF_LEN];
+ static struct mutex debug_buf_lock;
+@@ -973,7 +974,7 @@ void dlm_delete_debug_comms_file(void *ctx)
  
- struct connection {
-@@ -194,6 +195,7 @@ static const struct dlm_proto_ops *dlm_proto_ops;
- #define DLM_IO_END 1
- #define DLM_IO_EOF 2
- #define DLM_IO_RESCHED 3
-+#define DLM_IO_FLUSH 4
+ void dlm_create_debug_file(struct dlm_ls *ls)
+ {
+-	char name[DLM_LOCKSPACE_LEN + 8];
++	char name[DLM_DEBUG_NAME_LEN];
  
- static void process_recv_sockets(struct work_struct *work);
- static void process_send_sockets(struct work_struct *work);
-@@ -202,6 +204,7 @@ static void process_dlm_messages(struct work_struct *work);
- static DECLARE_WORK(process_work, process_dlm_messages);
- static DEFINE_SPINLOCK(processqueue_lock);
- static bool process_dlm_messages_pending;
-+static atomic_t processqueue_count;
- static LIST_HEAD(processqueue);
+ 	/* format 1 */
  
- bool dlm_lowcomms_is_running(void)
-@@ -874,6 +877,7 @@ static void process_dlm_messages(struct work_struct *work)
- 	}
+@@ -986,7 +987,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 2 */
  
- 	list_del(&pentry->list);
-+	atomic_dec(&processqueue_count);
- 	spin_unlock(&processqueue_lock);
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_locks", ls->ls_name);
++	snprintf(name, DLM_DEBUG_NAME_LEN, "%s_locks", ls->ls_name);
  
- 	for (;;) {
-@@ -891,6 +895,7 @@ static void process_dlm_messages(struct work_struct *work)
- 		}
+ 	ls->ls_debug_locks_dentry = debugfs_create_file(name,
+ 							0644,
+@@ -997,7 +998,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 3 */
  
- 		list_del(&pentry->list);
-+		atomic_dec(&processqueue_count);
- 		spin_unlock(&processqueue_lock);
- 	}
- }
-@@ -962,6 +967,7 @@ static int receive_from_sock(struct connection *con, int buflen)
- 		con->rx_leftover);
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_all", ls->ls_name);
++	snprintf(name, DLM_DEBUG_NAME_LEN, "%s_all", ls->ls_name);
  
- 	spin_lock(&processqueue_lock);
-+	ret = atomic_inc_return(&processqueue_count);
- 	list_add_tail(&pentry->list, &processqueue);
- 	if (!process_dlm_messages_pending) {
- 		process_dlm_messages_pending = true;
-@@ -969,6 +975,9 @@ static int receive_from_sock(struct connection *con, int buflen)
- 	}
- 	spin_unlock(&processqueue_lock);
+ 	ls->ls_debug_all_dentry = debugfs_create_file(name,
+ 						      S_IFREG | S_IRUGO,
+@@ -1008,7 +1009,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 4 */
  
-+	if (ret > DLM_MAX_PROCESS_BUFFERS)
-+		return DLM_IO_FLUSH;
-+
- 	return DLM_IO_SUCCESS;
- }
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_toss", ls->ls_name);
++	snprintf(name, DLM_DEBUG_NAME_LEN, "%s_toss", ls->ls_name);
  
-@@ -1503,6 +1512,9 @@ static void process_recv_sockets(struct work_struct *work)
- 		wake_up(&con->shutdown_wait);
- 		/* CF_RECV_PENDING cleared */
- 		break;
-+	case DLM_IO_FLUSH:
-+		flush_workqueue(process_workqueue);
-+		fallthrough;
- 	case DLM_IO_RESCHED:
- 		cond_resched();
- 		queue_work(io_workqueue, &con->rwork);
+ 	ls->ls_debug_toss_dentry = debugfs_create_file(name,
+ 						       S_IFREG | S_IRUGO,
+@@ -1017,7 +1018,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 						       &format4_fops);
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_waiters", ls->ls_name);
++	snprintf(name, DLM_DEBUG_NAME_LEN, "%s_waiters", ls->ls_name);
+ 
+ 	ls->ls_debug_waiters_dentry = debugfs_create_file(name,
+ 							  0644,
+@@ -1028,7 +1029,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 5 */
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_queued_asts", ls->ls_name);
++	snprintf(name, DLM_DEBUG_NAME_LEN, "%s_queued_asts", ls->ls_name);
+ 
+ 	ls->ls_debug_queued_asts_dentry = debugfs_create_file(name,
+ 							      0644,
 -- 
 2.31.1
 
