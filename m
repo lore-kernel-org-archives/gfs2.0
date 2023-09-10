@@ -1,39 +1,39 @@
 Received: from mail-pg1-f205.google.com (mail-pg1-f205.google.com [209.85.215.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59CE1FBC
-	for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 07:54:06 +0000 (UTC)
-Received: by mail-pg1-f205.google.com with SMTP id 41be03b00d2f7-573d44762e4so3883486a12.0
-        for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 00:54:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D4D257E
+	for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 14:51:57 +0000 (UTC)
+Received: by mail-pg1-f205.google.com with SMTP id 41be03b00d2f7-5709b5ba7c9so3915185a12.1
+        for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 07:51:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694332446; x=1694937246;
+        d=1e100.net; s=20230601; t=1694357517; x=1694962317;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hUcPFhyaiBWRlhiel+UlSDKyPCTkxLTqqHPSvju7blg=;
-        b=r3i9niJmYROmu59DYSMs1ojHWRJUQ+2dzgBktZBuiSuMkfsWnPAQmzgf77KzJqXHPd
-         X1zX2aEFizAuHcYQNggktMHnudpA4aVT2mLLvegubFvy0HcqsAsOB7IVqRTS9hVMddfb
-         EhMKDAuGepuuBxAtFEfWrnp7iSM0wEw5NdTRiExLbi8+U4wL47sGDwMK2Wjbkp92HjDl
-         e1RjpmD4n72jxfRrqeadjU0582DK9rjBODuQy0/erx4sn3wShynP/ZTSTDoQhPFkBH/C
-         Xtkkrxtry+qb5ULUQr4ahFpIWg2gEgp4sdXs+UIp7EiPvBr9dVtPJjXLNQAQc+XwX0s9
-         GwiA==
-X-Gm-Message-State: AOJu0YxuQjhD3gRBJdI/9jAie/egx10YXRyT5wcENmTRPVms+RODSMov
-	lYUzOyyL6b0XqrlEVS3wJlm/FJ5P6s+id07Hz0W87mtj/3dU
-X-Google-Smtp-Source: AGHT+IF02V/0dFKoCfCyKLAu+9E/7gMaCF0H5i/F48+I3vumijIcxHLWxE9kSQASj2wzfQT4HyK+XHJMhJudolxatVXFs8dihgq/
+        bh=E0Ojb7OTdTxEQDiHU7hYHayp+pPl3jVJoq88mfYTEN8=;
+        b=Nb+syR+0kpuuwS+77eGMyPRu2jR1+PuoDR9BcM9+azo7hAFoNwxrG89IVE1FaBTVty
+         dJdRyNNlx2H9IOS/nDJHgJt8y3TjEaHwcD4S3cBYTl6gAwv7LE2vXjIfGqrcGKrWwUZb
+         QFt4xgTYZhec+yPA6B5laP1U1UusP9Ss+3iBCarZ9W1hoz7iz1qpfOS0ybTja14Rxtth
+         N3rOKypgMTvWCMyjDfQ5iuuy6PQVr8wjFaWygYKNh7jRrmPHPQr1t4B3nNvKzopCCqds
+         J/MKvyT1oWB9omBF3zkWCDuChSVIeY6tnwfK8Nrjad7oN2oj427ylT9cFSwEQE5Kmw7w
+         srtA==
+X-Gm-Message-State: AOJu0YzRgYFHl3x/V6xzZW0licDdEUEvusyQ4E9SfOPrJyeaX1unsXnn
+	mFbA3lhWHsDwJWMATMtUJF7/KGIviIPg7zMPHakRvG9xTiAl
+X-Google-Smtp-Source: AGHT+IFh6a/vcy8cJxeKhskfFjYE4tPogtEHr8dc2FhFADHhUxC3+m2MDBYvv0OTG7lT4yeqaauzsu/kZMjiQFLLL2BJjscY8lSt
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a63:3542:0:b0:564:aeb6:c383 with SMTP id
- c63-20020a633542000000b00564aeb6c383mr1431423pga.1.1694332446146; Sun, 10 Sep
- 2023 00:54:06 -0700 (PDT)
-Date: Sun, 10 Sep 2023 00:54:06 -0700
+X-Received: by 2002:a17:903:18e:b0:1c3:8976:e816 with SMTP id
+ z14-20020a170903018e00b001c38976e816mr2601941plg.2.1694357517285; Sun, 10 Sep
+ 2023 07:51:57 -0700 (PDT)
+Date: Sun, 10 Sep 2023 07:51:57 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000095887a0604fc8301@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in qd_put
-From: syzbot <syzbot+ac749796740f1d4348bc@syzkaller.appspotmail.com>
+Message-ID: <000000000000f0bfe70605025941@google.com>
+Subject: [syzbot] [gfs2?] kernel BUG in gfs2_quota_cleanup
+From: syzbot <syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com>
 To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
 	syzkaller-bugs@googlegroups.com
@@ -45,47 +45,48 @@ syzbot found the following issue on:
 
 HEAD commit:    65d6e954e378 Merge tag 'gfs2-v6.5-rc5-fixes' of git://git...
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1294ea14680000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b273cdfbc13e9a4b
-dashboard link: https://syzkaller.appspot.com/bug?extid=ac749796740f1d4348bc
+console output: https://syzkaller.appspot.com/x/log.txt?x=150b1d58680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cbf8b29a87b8a830
+dashboard link: https://syzkaller.appspot.com/bug?extid=3b6e67ac2b646da57862
 compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: i386
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-65d6e954.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cdf5375ab649/vmlinux-65d6e954.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/302d058f1d48/bzImage-65d6e954.xz
+disk image: https://storage.googleapis.com/syzbot-assets/a239a86394dd/disk-65d6e954.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1d7af042d4c5/vmlinux-65d6e954.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/cdb5df52c1e3/bzImage-65d6e954.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ac749796740f1d4348bc@syzkaller.appspotmail.com
+Reported-by: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
 
-kernel BUG at fs/gfs2/quota.c:323!
+RBP: 00007ffd0d57a210 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffd0d57b2d0
+R13: 00007fbf640c73b9 R14: 00000000002ca96c R15: 0000000000000003
+ </TASK>
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/quota.c:1485!
 invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 5188 Comm: syz-executor.2 Not tainted 6.5.0-syzkaller-11938-g65d6e954e378 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:qd_put+0x132/0x190 fs/gfs2/quota.c:323
-Code: c7 43 70 00 00 00 00 48 8d 73 78 e8 48 7e 1e fe 4c 89 e7 e8 f0 24 9a 06 5b 5d 41 5c 41 5d 41 5e e9 c3 ef e0 fd e8 be ef e0 fd <0f> 0b e8 b7 ef e0 fd 4c 89 e7 e8 cf 07 7a 00 4c 89 e7 e8 c7 24 9a
-RSP: 0018:ffffc90004017c30 EFLAGS: 00010293
-
-RAX: 0000000000000000 RBX: ffff8880269c23f0 RCX: 0000000000000000
-RDX: ffff8880164fc800 RSI: ffffffff83a6b442 RDI: 0000000000000005
-RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff8880269c2420
-R13: ffff8880269c2460 R14: ffff8880276aca68 R15: ffff88802441f008
-FS:  0000000000000000(0000) GS:ffff88802c600000(0063) knlGS:000000005771d400
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 00000000f7268bb0 CR3: 0000000076871000 CR4: 0000000000352ef0
+CPU: 1 PID: 5074 Comm: syz-executor.4 Not tainted 6.5.0-syzkaller-11938-g65d6e954e378 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:gfs2_quota_cleanup+0x5cc/0x6e0 fs/gfs2/quota.c:1485
+Code: ff e8 e8 3b e1 fd e8 73 40 e1 fd 49 8d b7 70 12 00 00 89 ea 48 c7 c7 a0 16 da 8a e8 be 5b c4 fd e9 1b fe ff ff e8 54 40 e1 fd <0f> 0b 4c 89 e7 e8 2a 3d 36 fe e9 ef fd ff ff e8 40 3d 36 fe e9 14
+RSP: 0018:ffffc900038bfaf0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff888076948200 RSI: ffffffff83a5622c RDI: 0000000000000007
+RBP: dffffc0000000000 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000001 R11: 000000000008c8e8 R12: 0000000000000000
+R13: 0000000000000000 R14: ffffc900038bfb40 R15: ffff888036950000
+FS:  0000555556145480(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f68df122866 CR3: 000000003214a000 CR4: 00000000003506e0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- gfs2_quota_sync+0x44b/0x630 fs/gfs2/quota.c:1350
- gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:667
- sync_filesystem fs/sync.c:56 [inline]
- sync_filesystem+0x109/0x280 fs/sync.c:30
- generic_shutdown_super+0x7e/0x3c0 fs/super.c:666
+ gfs2_make_fs_ro+0x11e/0x350 fs/gfs2/super.c:574
+ gfs2_put_super+0x66a/0x760 fs/gfs2/super.c:606
+ generic_shutdown_super+0x161/0x3c0 fs/super.c:693
  kill_block_super+0x3b/0x70 fs/super.c:1646
  gfs2_kill_sb+0x361/0x410 fs/gfs2/ops_fstype.c:1811
  deactivate_locked_super+0x9a/0x170 fs/super.c:481
@@ -97,56 +98,32 @@ Call Trace:
  exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
  __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
  syscall_exit_to_user_mode+0x1d/0x60 kernel/entry/common.c:296
- __do_fast_syscall_32+0x6d/0xe0 arch/x86/entry/common.c:181
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:203
- entry_SYSENTER_compat_after_hwframe+0x70/0x82
-RIP: 0023:0xf7fe8579
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-RSP: 002b:00000000ffd6aa88 EFLAGS: 00000292 ORIG_RAX: 0000000000000034
-RAX: 0000000000000000 RBX: 00000000ffd6ab30 RCX: 000000000000000a
-RDX: 00000000f7353ff4 RSI: 00000000f72a53bd RDI: 00000000ffd6bbd4
-RBP: 00000000ffd6ab30 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fbf6407de17
+Code: b0 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 44 00 00 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 b0 ff ff ff f7 d8 64 89 02 b8
+RSP: 002b:00007ffd0d57a158 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 00007fbf6407de17
+RDX: 0000000000000000 RSI: 000000000000000a RDI: 00007ffd0d57a210
+RBP: 00007ffd0d57a210 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffd0d57b2d0
+R13: 00007fbf640c73b9 R14: 00000000002ca96c R15: 0000000000000003
  </TASK>
 Modules linked in:
 ---[ end trace 0000000000000000 ]---
-RIP: 0010:qd_put+0x132/0x190 fs/gfs2/quota.c:323
-Code: c7 43 70 00 00 00 00 48 8d 73 78 e8 48 7e 1e fe 4c 89 e7 e8 f0 24 9a 06 5b 5d 41 5c 41 5d 41 5e e9 c3 ef e0 fd e8 be ef e0 fd <0f> 0b e8 b7 ef e0 fd 4c 89 e7 e8 cf 07 7a 00 4c 89 e7 e8 c7 24 9a
-RSP: 0018:ffffc90004017c30 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8880269c23f0 RCX: 0000000000000000
-RDX: ffff8880164fc800 RSI: ffffffff83a6b442 RDI: 0000000000000005
-RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff8880269c2420
-R13: ffff8880269c2460 R14: ffff8880276aca68 R15: ffff88802441f008
-FS:  0000000000000000(0000) GS:ffff88802c600000(0063) knlGS:000000005771d400
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 00000000f7268bb0 CR3: 0000000076871000 CR4: 0000000000352ef0
+RIP: 0010:gfs2_quota_cleanup+0x5cc/0x6e0 fs/gfs2/quota.c:1485
+Code: ff e8 e8 3b e1 fd e8 73 40 e1 fd 49 8d b7 70 12 00 00 89 ea 48 c7 c7 a0 16 da 8a e8 be 5b c4 fd e9 1b fe ff ff e8 54 40 e1 fd <0f> 0b 4c 89 e7 e8 2a 3d 36 fe e9 ef fd ff ff e8 40 3d 36 fe e9 14
+RSP: 0018:ffffc900038bfaf0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff888076948200 RSI: ffffffff83a5622c RDI: 0000000000000007
+RBP: dffffc0000000000 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000001 R11: 000000000008c8e8 R12: 0000000000000000
+R13: 0000000000000000 R14: ffffc900038bfb40 R15: ffff888036950000
+FS:  0000555556145480(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f68df122866 CR3: 000000003214a000 CR4: 00000000003506e0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	10 06                	adc    %al,(%rsi)
-   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
-   6:	10 07                	adc    %al,(%rdi)
-   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
-   c:	10 08                	adc    %cl,(%rax)
-   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
-  1e:	00 51 52             	add    %dl,0x52(%rcx)
-  21:	55                   	push   %rbp
-  22:	89 e5                	mov    %esp,%ebp
-  24:	0f 34                	sysenter
-  26:	cd 80                	int    $0x80
-* 28:	5d                   	pop    %rbp <-- trapping instruction
-  29:	5a                   	pop    %rdx
-  2a:	59                   	pop    %rcx
-  2b:	c3                   	ret
-  2c:	90                   	nop
-  2d:	90                   	nop
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
-  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
 
 
 ---
