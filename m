@@ -1,40 +1,39 @@
-Received: from mail-pf1-f205.google.com (mail-pf1-f205.google.com [209.85.210.205])
+Received: from mail-pg1-f205.google.com (mail-pg1-f205.google.com [209.85.215.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E2BEBE
-	for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 04:45:58 +0000 (UTC)
-Received: by mail-pf1-f205.google.com with SMTP id d2e1a72fcca58-68fb5cea0a9so637686b3a.1
-        for <gfs2@lists.linux.dev>; Sat, 09 Sep 2023 21:45:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59CE1FBC
+	for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 07:54:06 +0000 (UTC)
+Received: by mail-pg1-f205.google.com with SMTP id 41be03b00d2f7-573d44762e4so3883486a12.0
+        for <gfs2@lists.linux.dev>; Sun, 10 Sep 2023 00:54:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694321158; x=1694925958;
+        d=1e100.net; s=20230601; t=1694332446; x=1694937246;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5rI+wW1D3pEQy6NkxGD/WZQotkC8/aBPOgOXgQXzWXw=;
-        b=ejLJAXcrXooo3sQmk4vPdJlq/dTK0dVUCZli4FfmyTZvXv+MeaPN8a/CVSF3fhUXV7
-         MmTJXW72xCJKyiCFtLW1UWdM6+vgmokVX/b8OFkDDshCR8GxSv4SPLZXTOQi55Yfg8kk
-         Ab68vGd9/Lqj/hs9yD3U1IfilzmsF0gBZ06tDshSn3QAf+55PCaojxjdQpceGMrMowCp
-         cJcHtIIURDHZwmqp4BDpYXJ5mAAapPv0q6+oWi5zhffP7R20NANn9XQZfHrl0ZEvd/3w
-         zu7DCOJuO0DCTyr7KUGto4y1Sp4l/KGLUCmu0LuWi6vlMqeC/pJ4EH6KUrP6iSoGj1IB
-         Oraw==
-X-Gm-Message-State: AOJu0YwlQg/ukQmrOxQvO0iDQNGmC8tWBQr0cC9RTNdcmDN6GBZRBqMw
-	pJfhSYg7FfCRu0kwdCddKPaAKmoknl7J2ztEkl9Y4e9B0VTY
-X-Google-Smtp-Source: AGHT+IFIGCO87tTTbKFAEIALMs+fleP1/EF6ONSFquTElCD4CFDiwQXu5MlmJh31nNspuerZpEVErDj8EUikbiWlfdwhz9/Plm0+
+        bh=hUcPFhyaiBWRlhiel+UlSDKyPCTkxLTqqHPSvju7blg=;
+        b=r3i9niJmYROmu59DYSMs1ojHWRJUQ+2dzgBktZBuiSuMkfsWnPAQmzgf77KzJqXHPd
+         X1zX2aEFizAuHcYQNggktMHnudpA4aVT2mLLvegubFvy0HcqsAsOB7IVqRTS9hVMddfb
+         EhMKDAuGepuuBxAtFEfWrnp7iSM0wEw5NdTRiExLbi8+U4wL47sGDwMK2Wjbkp92HjDl
+         e1RjpmD4n72jxfRrqeadjU0582DK9rjBODuQy0/erx4sn3wShynP/ZTSTDoQhPFkBH/C
+         Xtkkrxtry+qb5ULUQr4ahFpIWg2gEgp4sdXs+UIp7EiPvBr9dVtPJjXLNQAQc+XwX0s9
+         GwiA==
+X-Gm-Message-State: AOJu0YxuQjhD3gRBJdI/9jAie/egx10YXRyT5wcENmTRPVms+RODSMov
+	lYUzOyyL6b0XqrlEVS3wJlm/FJ5P6s+id07Hz0W87mtj/3dU
+X-Google-Smtp-Source: AGHT+IF02V/0dFKoCfCyKLAu+9E/7gMaCF0H5i/F48+I3vumijIcxHLWxE9kSQASj2wzfQT4HyK+XHJMhJudolxatVXFs8dihgq/
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6a00:b55:b0:68e:36bc:1925 with SMTP id
- p21-20020a056a000b5500b0068e36bc1925mr2639588pfo.1.1694321158463; Sat, 09 Sep
- 2023 21:45:58 -0700 (PDT)
-Date: Sat, 09 Sep 2023 21:45:58 -0700
+X-Received: by 2002:a63:3542:0:b0:564:aeb6:c383 with SMTP id
+ c63-20020a633542000000b00564aeb6c383mr1431423pga.1.1694332446146; Sun, 10 Sep
+ 2023 00:54:06 -0700 (PDT)
+Date: Sun, 10 Sep 2023 00:54:06 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c925dc0604f9e2ef@google.com>
-Subject: [syzbot] [gfs2?] BUG: sleeping function called from invalid context
- in gfs2_withdraw
-From: syzbot <syzbot+577d06779fa95206ba66@syzkaller.appspotmail.com>
+Message-ID: <00000000000095887a0604fc8301@google.com>
+Subject: [syzbot] [gfs2?] kernel BUG in qd_put
+From: syzbot <syzbot+ac749796740f1d4348bc@syzkaller.appspotmail.com>
 To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
 	syzkaller-bugs@googlegroups.com
@@ -46,86 +45,108 @@ syzbot found the following issue on:
 
 HEAD commit:    65d6e954e378 Merge tag 'gfs2-v6.5-rc5-fixes' of git://git...
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10994bcc680000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cbf8b29a87b8a830
-dashboard link: https://syzkaller.appspot.com/bug?extid=577d06779fa95206ba66
+console output: https://syzkaller.appspot.com/x/log.txt?x=1294ea14680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b273cdfbc13e9a4b
+dashboard link: https://syzkaller.appspot.com/bug?extid=ac749796740f1d4348bc
 compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10cd8e20680000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=115ddba8680000
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
 disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-65d6e954.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/040b1e85a692/vmlinux-65d6e954.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/984f55ac441b/bzImage-65d6e954.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/cd97a0244981/mount_0.gz
+vmlinux: https://storage.googleapis.com/syzbot-assets/cdf5375ab649/vmlinux-65d6e954.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/302d058f1d48/bzImage-65d6e954.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+577d06779fa95206ba66@syzkaller.appspotmail.com
+Reported-by: syzbot+ac749796740f1d4348bc@syzkaller.appspotmail.com
 
-loop0: rw=1, sector=3280942697285464, nr_sectors = 8 limit=32768
-gfs2: fsid=syz:syz.0: Error 10 writing to journal, jid=0
-gfs2: fsid=syz:syz.0: fatal: I/O error(s)
-gfs2: fsid=syz:syz.0: about to withdraw this file system
-BUG: sleeping function called from invalid context at fs/gfs2/util.c:157
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 5141, name: syz-executor200
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-Preemption disabled at:
-[<0000000000000000>] 0x0
-CPU: 1 PID: 5141 Comm: syz-executor200 Not tainted 6.5.0-syzkaller-11938-g65d6e954e378 #0
+kernel BUG at fs/gfs2/quota.c:323!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 5188 Comm: syz-executor.2 Not tainted 6.5.0-syzkaller-11938-g65d6e954e378 #0
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:qd_put+0x132/0x190 fs/gfs2/quota.c:323
+Code: c7 43 70 00 00 00 00 48 8d 73 78 e8 48 7e 1e fe 4c 89 e7 e8 f0 24 9a 06 5b 5d 41 5c 41 5d 41 5e e9 c3 ef e0 fd e8 be ef e0 fd <0f> 0b e8 b7 ef e0 fd 4c 89 e7 e8 cf 07 7a 00 4c 89 e7 e8 c7 24 9a
+RSP: 0018:ffffc90004017c30 EFLAGS: 00010293
+
+RAX: 0000000000000000 RBX: ffff8880269c23f0 RCX: 0000000000000000
+RDX: ffff8880164fc800 RSI: ffffffff83a6b442 RDI: 0000000000000005
+RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff8880269c2420
+R13: ffff8880269c2460 R14: ffff8880276aca68 R15: ffff88802441f008
+FS:  0000000000000000(0000) GS:ffff88802c600000(0063) knlGS:000000005771d400
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00000000f7268bb0 CR3: 0000000076871000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
- __might_resched+0x3c3/0x5e0 kernel/sched/core.c:10187
- signal_our_withdraw fs/gfs2/util.c:157 [inline]
- gfs2_withdraw+0xc7d/0x1280 fs/gfs2/util.c:342
- gfs2_ail1_empty+0x8cc/0xab0 fs/gfs2/log.c:377
- gfs2_flush_revokes+0x6b/0x90 fs/gfs2/log.c:815
- revoke_lo_before_commit+0x22/0x640 fs/gfs2/lops.c:867
- lops_before_commit fs/gfs2/lops.h:40 [inline]
- gfs2_log_flush+0x105e/0x27f0 fs/gfs2/log.c:1101
- gfs2_write_inode+0x24a/0x4b0 fs/gfs2/super.c:453
- write_inode fs/fs-writeback.c:1456 [inline]
- __writeback_single_inode+0xa81/0xe70 fs/fs-writeback.c:1668
- writeback_single_inode+0x2af/0x590 fs/fs-writeback.c:1724
- sync_inode_metadata+0xa5/0xe0 fs/fs-writeback.c:2786
- gfs2_fsync+0x218/0x380 fs/gfs2/file.c:761
- vfs_fsync_range+0x141/0x220 fs/sync.c:188
- generic_write_sync include/linux/fs.h:2625 [inline]
- gfs2_file_write_iter+0xd97/0x10c0 fs/gfs2/file.c:1150
- call_write_iter include/linux/fs.h:1985 [inline]
- do_iter_readv_writev+0x21e/0x3c0 fs/read_write.c:735
- do_iter_write+0x17f/0x830 fs/read_write.c:860
- vfs_iter_write+0x7a/0xb0 fs/read_write.c:901
- iter_file_splice_write+0x698/0xbf0 fs/splice.c:736
- do_splice_from fs/splice.c:933 [inline]
- direct_splice_actor+0x118/0x180 fs/splice.c:1142
- splice_direct_to_actor+0x347/0xa30 fs/splice.c:1088
- do_splice_direct+0x1af/0x280 fs/splice.c:1194
- do_sendfile+0xb88/0x1390 fs/read_write.c:1254
- __do_sys_sendfile64 fs/read_write.c:1322 [inline]
- __se_sys_sendfile64 fs/read_write.c:1308 [inline]
- __x64_sys_sendfile64+0x1d6/0x220 fs/read_write.c:1308
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f86c8957779
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 61 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffef8d7a208 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
-RAX: ffffffffffffffda RBX: 00007ffef8d7a3d8 RCX: 00007f86c8957779
-RDX: 0000000000000000 RSI: 0000000000000007 RDI: 0000000000000006
-RBP: 00007f86c89dc610 R08: 00007ffef8d7a3d8 R09: 00007ffef8d7a3d8
-R10: 0001000000201004 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffef8d7a3c8 R14: 0000000000000001 R15: 0000000000000001
+ gfs2_quota_sync+0x44b/0x630 fs/gfs2/quota.c:1350
+ gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:667
+ sync_filesystem fs/sync.c:56 [inline]
+ sync_filesystem+0x109/0x280 fs/sync.c:30
+ generic_shutdown_super+0x7e/0x3c0 fs/super.c:666
+ kill_block_super+0x3b/0x70 fs/super.c:1646
+ gfs2_kill_sb+0x361/0x410 fs/gfs2/ops_fstype.c:1811
+ deactivate_locked_super+0x9a/0x170 fs/super.c:481
+ deactivate_super+0xde/0x100 fs/super.c:514
+ cleanup_mnt+0x222/0x3d0 fs/namespace.c:1254
+ task_work_run+0x14d/0x240 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x1d/0x60 kernel/entry/common.c:296
+ __do_fast_syscall_32+0x6d/0xe0 arch/x86/entry/common.c:181
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:203
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+RIP: 0023:0xf7fe8579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000ffd6aa88 EFLAGS: 00000292 ORIG_RAX: 0000000000000034
+RAX: 0000000000000000 RBX: 00000000ffd6ab30 RCX: 000000000000000a
+RDX: 00000000f7353ff4 RSI: 00000000f72a53bd RDI: 00000000ffd6bbd4
+RBP: 00000000ffd6ab30 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
  </TASK>
-BUG: scheduling while atomic: syz-executor200/5141/0x00000002
-INFO: lockdep is turned off.
 Modules linked in:
-Preemption disabled at:
-[<0000000000000000>] 0x0
+---[ end trace 0000000000000000 ]---
+RIP: 0010:qd_put+0x132/0x190 fs/gfs2/quota.c:323
+Code: c7 43 70 00 00 00 00 48 8d 73 78 e8 48 7e 1e fe 4c 89 e7 e8 f0 24 9a 06 5b 5d 41 5c 41 5d 41 5e e9 c3 ef e0 fd e8 be ef e0 fd <0f> 0b e8 b7 ef e0 fd 4c 89 e7 e8 cf 07 7a 00 4c 89 e7 e8 c7 24 9a
+RSP: 0018:ffffc90004017c30 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff8880269c23f0 RCX: 0000000000000000
+RDX: ffff8880164fc800 RSI: ffffffff83a6b442 RDI: 0000000000000005
+RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff8880269c2420
+R13: ffff8880269c2460 R14: ffff8880276aca68 R15: ffff88802441f008
+FS:  0000000000000000(0000) GS:ffff88802c600000(0063) knlGS:000000005771d400
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00000000f7268bb0 CR3: 0000000076871000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	10 06                	adc    %al,(%rsi)
+   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
+   6:	10 07                	adc    %al,(%rdi)
+   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
+   c:	10 08                	adc    %cl,(%rax)
+   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
+  1e:	00 51 52             	add    %dl,0x52(%rcx)
+  21:	55                   	push   %rbp
+  22:	89 e5                	mov    %esp,%ebp
+  24:	0f 34                	sysenter
+  26:	cd 80                	int    $0x80
+* 28:	5d                   	pop    %rbp <-- trapping instruction
+  29:	5a                   	pop    %rdx
+  2a:	59                   	pop    %rcx
+  2b:	c3                   	ret
+  2c:	90                   	nop
+  2d:	90                   	nop
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
 
 
 ---
@@ -138,10 +159,6 @@ https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
 If the bug is already fixed, let syzbot know by replying with:
 #syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
 If you want to overwrite bug's subsystems, reply with:
 #syz set subsystems: new-subsystem
