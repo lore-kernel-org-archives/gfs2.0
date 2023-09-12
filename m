@@ -1,31 +1,31 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C372BA32
-	for <gfs2@lists.linux.dev>; Tue, 12 Sep 2023 21:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B61FBA37
+	for <gfs2@lists.linux.dev>; Tue, 12 Sep 2023 21:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694555633;
+	s=mimecast20190719; t=1694555634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WKKgxmIlfy876ZCkegSn2o5H5r0hmbOJQT9z4FozSm0=;
-	b=UdsqYamC5frdCssvBPjSpgSX8CRERxkfruvfqc/JUBGJh1U4oT8NJYOFh3oFtyloSF1vjF
-	Qb8f20CAXWw4OnTHKZUjUe/njCa31MPtKYmMrfNn7iDSjoGGtGrk5IvbQT2UlqxJBEIW4d
-	EsWG9/9Kw0mCex/AHqilAXX7GmnKmMg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-37-u60wuQfRNNGAfCVGSoidmw-1; Tue, 12 Sep 2023 17:53:49 -0400
-X-MC-Unique: u60wuQfRNNGAfCVGSoidmw-1
+	bh=qoUjRDOou+oTZqqwqurF1Ivsy3RlyYHW0xfYpau32qA=;
+	b=MfszGagK1TWZ/77bLua4nPJokYAgPG3DPAkPZgKF+KWribgJPmo4PP87zv6j+zIGtKd1VB
+	yGmLqFcKgvUhnDpmEosMbyOMrUx3C+qcAsbD3JLLEytxSn8umNPJi4AIA07ABU2PnirhUY
+	qwFDgbOuYT/RUi7ZYxpG48wkQoQ79MM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-85-dxXtEViPN5CgeWoEZd50fg-1; Tue, 12 Sep 2023 17:53:50 -0400
+X-MC-Unique: dxXtEViPN5CgeWoEZd50fg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2011D816529;
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72F2C2999B29;
 	Tue, 12 Sep 2023 21:53:49 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C71A940C2009;
-	Tue, 12 Sep 2023 21:53:48 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2643C40C2009;
+	Tue, 12 Sep 2023 21:53:49 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: linux-nfs@vger.kernel.org
 Cc: gfs2@lists.linux.dev,
@@ -39,9 +39,9 @@ Cc: gfs2@lists.linux.dev,
 	chuck.lever@oracle.com,
 	jlayton@kernel.org,
 	aahringo@redhat.com
-Subject: [PATCHv2 nfsd/master 6/7] dlm: use FL_SLEEP to determine blocking vs non-blocking
-Date: Tue, 12 Sep 2023 17:53:23 -0400
-Message-Id: <20230912215324.3310111-7-aahringo@redhat.com>
+Subject: [PATCHv2 nfsd/master 7/7] dlm: implement EXPORT_OP_ASYNC_LOCK
+Date: Tue, 12 Sep 2023 17:53:24 -0400
+Message-Id: <20230912215324.3310111-8-aahringo@redhat.com>
 In-Reply-To: <20230912215324.3310111-1-aahringo@redhat.com>
 References: <20230912215324.3310111-1-aahringo@redhat.com>
 Precedence: bulk
@@ -53,31 +53,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 
-This patch uses the FL_SLEEP flag in struct file_lock to determine if
-the lock request is a blocking or non-blocking request. Before dlm was
-using IS_SETLKW() was being used which is not usable for lock requests
-coming from lockd when EXPORT_OP_ASYNC_LOCK inside the export flags
-is set.
+This patch is activating the EXPORT_OP_ASYNC_LOCK export flag to
+signal lockd that both filesystems are able to handle async lock
+requests. The cluster filesystems gfs2 and ocfs2 will redirect their
+lock requests to DLMs plock implementation that can handle async lock
+requests.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/plock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/export.c  | 1 +
+ fs/ocfs2/export.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index ee6e0236d4f8..d814c5121367 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -140,7 +140,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 	op->info.optype		= DLM_PLOCK_OP_LOCK;
- 	op->info.pid		= fl->fl_pid;
- 	op->info.ex		= (fl->fl_type == F_WRLCK);
--	op->info.wait		= IS_SETLKW(cmd);
-+	op->info.wait		= !!(fl->fl_flags & FL_SLEEP);
- 	op->info.fsid		= ls->ls_global_id;
- 	op->info.number		= number;
- 	op->info.start		= fl->fl_start;
+diff --git a/fs/gfs2/export.c b/fs/gfs2/export.c
+index cf40895233f5..ef1013eff936 100644
+--- a/fs/gfs2/export.c
++++ b/fs/gfs2/export.c
+@@ -192,5 +192,6 @@ const struct export_operations gfs2_export_ops = {
+ 	.fh_to_parent = gfs2_fh_to_parent,
+ 	.get_name = gfs2_get_name,
+ 	.get_parent = gfs2_get_parent,
++	.flags = EXPORT_OP_ASYNC_LOCK,
+ };
+ 
+diff --git a/fs/ocfs2/export.c b/fs/ocfs2/export.c
+index eaa8c80ace3c..b8b6a191b5cb 100644
+--- a/fs/ocfs2/export.c
++++ b/fs/ocfs2/export.c
+@@ -280,4 +280,5 @@ const struct export_operations ocfs2_export_ops = {
+ 	.fh_to_dentry	= ocfs2_fh_to_dentry,
+ 	.fh_to_parent	= ocfs2_fh_to_parent,
+ 	.get_parent	= ocfs2_get_parent,
++	.flags		= EXPORT_OP_ASYNC_LOCK,
+ };
 -- 
 2.31.1
 
