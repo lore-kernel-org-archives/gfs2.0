@@ -1,53 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CB210FB
-	for <gfs2@lists.linux.dev>; Mon, 18 Sep 2023 20:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A445C433C7;
-	Mon, 18 Sep 2023 20:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695068428;
-	bh=Rh99Y745HS8tzJUeVNSTiL1/NQWpRhbaUTZcJgozihg=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=flUURrwn7KAPig+aDc7k+IjlMfkTnr3ebyeVa7ArcwU1hwo7cKdbZWq8MVgnC+G7f
-	 b57jXwvPQov1/1KzZQTnnSROOu8BPYuc8bpEpJl7RzLO7pWByOo7mSAMDGnurWt+tT
-	 1dfuB1uzXODALq9tfm5JrsVEi3RPXPvsQsp95XRwi5Y5Bgh8xU2ib5LQ8OZHjFz3zd
-	 rD5d19BOdgN4vRCuEHEm6qOCbUounZcP3OiZbQOyznGsII+ikzlhulbiOxgDFiNosd
-	 zbJu0jl7P9SvLF8ngfnAJ2sY7M6LNSrVIOCmKuCNXkMALoI/peWiA/R5ZnUPOSCt8Z
-	 UAcIXWjlyN97A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EC1B6E11F40;
-	Mon, 18 Sep 2023 20:20:27 +0000 (UTC)
-Subject: Re: [GIT PULL] gfs2 fixes
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20230918143438.2739942-1-agruenba@redhat.com>
-References: <20230918143438.2739942-1-agruenba@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230918143438.2739942-1-agruenba@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.6-rc1-fixes
-X-PR-Tracked-Commit-Id: fb95d536080e6c1db099f0023f59cd55adcc5d87
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a49d273e579615ed63d0347f94075dd22b9458a3
-Message-Id: <169506842795.7829.2519583286587165362.pr-tracker-bot@kernel.org>
-Date: Mon, 18 Sep 2023 20:20:27 +0000
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F08480
+	for <gfs2@lists.linux.dev>; Tue, 19 Sep 2023 03:24:43 +0000 (UTC)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1qiRLi-00Fmxi-TJ; Tue, 19 Sep 2023 11:24:31 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 19 Sep 2023 11:24:33 +0800
+Date: Tue, 19 Sep 2023 11:24:33 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Network Development <netdev@vger.kernel.org>, kadlec@netfilter.org,
+	fw@strlen.de, gfs2@lists.linux.dev,
+	David Teigland <teigland@redhat.com>, tgraf@suug.ch
+Subject: Re: nft_rhash_walk, rhashtable and resize event
+Message-ID: <ZQkUcXtwSLtC/OLV@gondor.apana.org.au>
+References: <CAK-6q+ghZRxrWQg3k0x1-SofoxfVfObJMg8wZ3UUMM4CU2oiWg@mail.gmail.com>
+ <ZQUjD0liUnH+ykKY@gondor.apana.org.au>
+ <ZQg7s8MtByk4kfzP@calendula>
+ <ZQhButkhI8K6cduD@gondor.apana.org.au>
+ <CAK-6q+jLe_WnsMrkASv_AB722YARP=f7j=Je2VZYOKjfYUKcuA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK-6q+jLe_WnsMrkASv_AB722YARP=f7j=Je2VZYOKjfYUKcuA@mail.gmail.com>
 
-The pull request you sent on Mon, 18 Sep 2023 16:34:38 +0200:
+On Mon, Sep 18, 2023 at 08:38:09AM -0400, Alexander Aring wrote:
+>
+> To confirm this, redo the whole walk means starting at
+> rhashtable_walk_start() again?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.6-rc1-fixes
+According to the documentation:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a49d273e579615ed63d0347f94075dd22b9458a3
+ * Returns -EAGAIN if resize event occurred.  Note that the iterator
+ * will rewind back to the beginning and you may use it immediately
+ * by calling rhashtable_walk_next.
 
-Thank you!
+So you shouldn't have to do anything other than keep on
+iterating (if you wish to).
 
+Cheers,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
