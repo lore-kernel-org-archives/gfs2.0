@@ -1,52 +1,128 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F08480
-	for <gfs2@lists.linux.dev>; Tue, 19 Sep 2023 03:24:43 +0000 (UTC)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1qiRLi-00Fmxi-TJ; Tue, 19 Sep 2023 11:24:31 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 19 Sep 2023 11:24:33 +0800
-Date: Tue, 19 Sep 2023 11:24:33 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Network Development <netdev@vger.kernel.org>, kadlec@netfilter.org,
-	fw@strlen.de, gfs2@lists.linux.dev,
-	David Teigland <teigland@redhat.com>, tgraf@suug.ch
-Subject: Re: nft_rhash_walk, rhashtable and resize event
-Message-ID: <ZQkUcXtwSLtC/OLV@gondor.apana.org.au>
-References: <CAK-6q+ghZRxrWQg3k0x1-SofoxfVfObJMg8wZ3UUMM4CU2oiWg@mail.gmail.com>
- <ZQUjD0liUnH+ykKY@gondor.apana.org.au>
- <ZQg7s8MtByk4kfzP@calendula>
- <ZQhButkhI8K6cduD@gondor.apana.org.au>
- <CAK-6q+jLe_WnsMrkASv_AB722YARP=f7j=Je2VZYOKjfYUKcuA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB5331A91;
+	Tue, 19 Sep 2023 04:51:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=3+ygHFl8VBE//i+jIFbzwz27nrHn7+CKZunR4nMah8o=; b=a0R1TMwjL7kTjAJn7QXnrOIurK
+	Jk/KsvVgMWmyNgxqWN5vSm+fsVeErc+p2SA6/+JKtl/gEKJ+0QYncbcX+TH5IXWFm1kSYWvPuG2ip
+	OajcUmwdb2Q1jdRy96OBqSI9A3X6nYI2Gne1jBNmqMZ6G5e8vDS82vesYeCBU0BKkKmDnaXSuLJHc
+	F7rpZc3aYOtL9zGBN5ZI0SUwLCUcCJ640FT9Vttt57wR7CXyJ/CsYUcOsChqRuHWhIJUulzwRwF2F
+	onoE1mEjpIOAFxCaBkVNUPExG2E40+aJJmfa3dlcBJgvTjZj82jejSKPCVarzwlrbvnhwKs75NSoo
+	nKz21X2g==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qiSi3-00FFkV-21; Tue, 19 Sep 2023 04:51:39 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-nilfs@vger.kernel.org,
+	linux-ntfs-dev@lists.sourceforge.net,
+	ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev,
+	reiserfs-devel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: [PATCH 08/26] gfs2: Convert gfs2_write_buf_to_page() to use a folio
+Date: Tue, 19 Sep 2023 05:51:17 +0100
+Message-Id: <20230919045135.3635437-9-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230919045135.3635437-1-willy@infradead.org>
+References: <20230919045135.3635437-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK-6q+jLe_WnsMrkASv_AB722YARP=f7j=Je2VZYOKjfYUKcuA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 18, 2023 at 08:38:09AM -0400, Alexander Aring wrote:
->
-> To confirm this, redo the whole walk means starting at
-> rhashtable_walk_start() again?
+Remove several folio->page->folio conversions.
 
-According to the documentation:
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/gfs2/quota.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
- * Returns -EAGAIN if resize event occurred.  Note that the iterator
- * will rewind back to the beginning and you may use it immediately
- * by calling rhashtable_walk_next.
-
-So you shouldn't have to do anything other than keep on
-iterating (if you wish to).
-
-Cheers,
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 171b2713d2e5..0ee4865ebdca 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -736,7 +736,7 @@ static int gfs2_write_buf_to_page(struct gfs2_sbd *sdp, unsigned long index,
+ 	struct gfs2_inode *ip = GFS2_I(sdp->sd_quota_inode);
+ 	struct inode *inode = &ip->i_inode;
+ 	struct address_space *mapping = inode->i_mapping;
+-	struct page *page;
++	struct folio *folio;
+ 	struct buffer_head *bh;
+ 	u64 blk;
+ 	unsigned bsize = sdp->sd_sb.sb_bsize, bnum = 0, boff = 0;
+@@ -745,15 +745,15 @@ static int gfs2_write_buf_to_page(struct gfs2_sbd *sdp, unsigned long index,
+ 	blk = index << (PAGE_SHIFT - sdp->sd_sb.sb_bsize_shift);
+ 	boff = off % bsize;
+ 
+-	page = grab_cache_page(mapping, index);
+-	if (!page)
+-		return -ENOMEM;
+-	if (!page_has_buffers(page))
+-		create_empty_buffers(page, bsize, 0);
++	folio = filemap_grab_folio(mapping, index);
++	if (IS_ERR(folio))
++		return PTR_ERR(folio);
++	bh = folio_buffers(folio);
++	if (!bh)
++		bh = folio_create_empty_buffers(folio, bsize, 0);
+ 
+-	bh = page_buffers(page);
+-	for(;;) {
+-		/* Find the beginning block within the page */
++	for (;;) {
++		/* Find the beginning block within the folio */
+ 		if (pg_off >= ((bnum * bsize) + bsize)) {
+ 			bh = bh->b_this_page;
+ 			bnum++;
+@@ -766,9 +766,10 @@ static int gfs2_write_buf_to_page(struct gfs2_sbd *sdp, unsigned long index,
+ 				goto unlock_out;
+ 			/* If it's a newly allocated disk block, zero it */
+ 			if (buffer_new(bh))
+-				zero_user(page, bnum * bsize, bh->b_size);
++				folio_zero_range(folio, bnum * bsize,
++						bh->b_size);
+ 		}
+-		if (PageUptodate(page))
++		if (folio_test_uptodate(folio))
+ 			set_buffer_uptodate(bh);
+ 		if (bh_read(bh, REQ_META | REQ_PRIO) < 0)
+ 			goto unlock_out;
+@@ -784,17 +785,17 @@ static int gfs2_write_buf_to_page(struct gfs2_sbd *sdp, unsigned long index,
+ 		break;
+ 	}
+ 
+-	/* Write to the page, now that we have setup the buffer(s) */
+-	memcpy_to_page(page, off, buf, bytes);
+-	flush_dcache_page(page);
+-	unlock_page(page);
+-	put_page(page);
++	/* Write to the folio, now that we have setup the buffer(s) */
++	memcpy_to_folio(folio, off, buf, bytes);
++	flush_dcache_folio(folio);
++	folio_unlock(folio);
++	folio_put(folio);
+ 
+ 	return 0;
+ 
+ unlock_out:
+-	unlock_page(page);
+-	put_page(page);
++	folio_unlock(folio);
++	folio_put(folio);
+ 	return -EIO;
+ }
+ 
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.40.1
+
