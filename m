@@ -1,91 +1,119 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A325CC8E0;
-	Wed, 20 Sep 2023 08:15:21 +0000 (UTC)
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-48d0edd8a81so2434265e0c.0;
-        Wed, 20 Sep 2023 01:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695197720; x=1695802520; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zJxfyTLNGZAN0qgRxWWT6/oteEKQT8o70eVgdNPEM/Q=;
-        b=fP1A37sbBLs/A/Kxwz29paSstGoH3VmMVk3NkI821s9UvZ9BVIf96/3U3E7NF889Fe
-         6vC3w62D+aIjLMmEQiZTIAZAjUMQQSK1OT1XXjD0HcbYf6FBwYlJzy11exqAXXX2DpsD
-         b2Ktxk0V8Cr/vaqBCt2KL6EiOQt1KUzBXeX3mccYmh7pYwo4W1RM7MAX2UPramg9tiXb
-         eAHWz+8P3bmIANDrCkWsJugGpRZ76gUcE/C5mf8IBk5iSxget1Ey34DN5SGztiT+Avfm
-         BhXHf1onZpCffZy36CYJv9aKlcIM3EABsEggcXbs0GmKTszPExGSVF+ICbri5kF/frnT
-         yKgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695197720; x=1695802520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zJxfyTLNGZAN0qgRxWWT6/oteEKQT8o70eVgdNPEM/Q=;
-        b=IRLxgGlugLDSznwrwBYtBdNnqyC5V8Y9NwqxPWu80piZiZNLbKI8YB6TXqX+88vzLm
-         ufAWsxmfrf+FlDQybMzNGUV4ULeBy0Ir//8D+atBagiSkgXy9p1egmL0/sDDBqbSgrBf
-         GwrtppE+mMxpxpLnogOAjcqIpeQnTknM5WgDjFkTIuEE0YRAJIrC7auQPmxNqQe8J1Ls
-         eVwOyRESGJ29jZSXcZTwWBXho1UIG9bxiRQZUQIWLMDzj4TL9aULLwus3Ub20XWZU4dP
-         FzzspZS8Cr6md2EaJuewG8mWx9XyUTeTyJoz9/0hS+lZpKodWxaN8txGIV3b43jvpthi
-         zLPQ==
-X-Gm-Message-State: AOJu0YyXAnQvFr9Qds+aUEh3FkY5Mtx/y02TMFcOgQLqx2XQrR2QRAxM
-	zy04aWU3Hq0YgQiJwc4N+qMhFDzudiuAk3x2yFI=
-X-Google-Smtp-Source: AGHT+IEsfO4EAx787RgGydCMUNs6b7OZCMZLpCKdedAcjUM4XsQ/CD9NHXWZexv599YssdpWeGgAwMzr8a3yyUbhRVE=
-X-Received: by 2002:a1f:6643:0:b0:48d:38fe:3133 with SMTP id
- a64-20020a1f6643000000b0048d38fe3133mr1913731vkc.16.1695197720435; Wed, 20
- Sep 2023 01:15:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7199E156CA
+	for <gfs2@lists.linux.dev>; Wed, 20 Sep 2023 09:45:48 +0000 (UTC)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230920093953euoutp013e73ded24a74dec5f535a74fb2e87dd3~GkfWOpF-Q1219712197euoutp017
+	for <gfs2@lists.linux.dev>; Wed, 20 Sep 2023 09:39:53 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230920093953euoutp013e73ded24a74dec5f535a74fb2e87dd3~GkfWOpF-Q1219712197euoutp017
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1695202793;
+	bh=8FReEKvP2/9isPLe8nU44iPC4r0J6E6Ai2YqflXjyCw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=uaT+CpPyHBwpdMTbYTG9qjqIoJ4UjIlkSvhYzSUimcVVo9AJql9kekFLgl5327hHh
+	 ygOlYrCF+RHeFYZ6AABShpEMUEqTaJanfheZ26NoUsEe7TmmlqriAXfYygmxVFdmXA
+	 HaefDCueGx1VstS842F9y1awIj3Ars2LP4C4JJyk=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20230920093953eucas1p2e4ddd2dff879f9e82eb8f372d4047ebe~GkfV6bAqd1033110331eucas1p29;
+	Wed, 20 Sep 2023 09:39:53 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id DE.F3.42423.9EDBA056; Wed, 20
+	Sep 2023 10:39:53 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20230920093952eucas1p1f37c688dc553d6a85882cae29861a870~GkfVfnlkC1425614256eucas1p1o;
+	Wed, 20 Sep 2023 09:39:52 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20230920093952eusmtrp19fb74615e090c3af0b84edd4126d7846~GkfVe4grm3119431194eusmtrp1F;
+	Wed, 20 Sep 2023 09:39:52 +0000 (GMT)
+X-AuditID: cbfec7f2-a3bff7000002a5b7-f9-650abde910e3
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 80.32.14344.8EDBA056; Wed, 20
+	Sep 2023 10:39:52 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20230920093952eusmtip20633d16fabb312d639378e5ebaaa4d6a~GkfVNjSlQ3193531935eusmtip2V;
+	Wed, 20 Sep 2023 09:39:52 +0000 (GMT)
+Received: from localhost (106.110.32.140) by CAMSVWEXC02.scsc.local
+	(106.1.227.72) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Sep
+	2023 10:39:51 +0100
+Date: Wed, 20 Sep 2023 11:39:50 +0200
+From: Pankaj Raghav <p.raghav@samsung.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+CC: Andrew Morton <akpm@linux-foundation.org>,
+	<linux-fsdevel@vger.kernel.org>, <gfs2@lists.linux.dev>,
+	<linux-nilfs@vger.kernel.org>, <linux-ntfs-dev@lists.sourceforge.net>,
+	<ntfs3@lists.linux.dev>, <ocfs2-devel@lists.linux.dev>,
+	<reiserfs-devel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
+	<p.raghav@samsung.com>
+Subject: Re: [PATCH 01/26] buffer: Make folio_create_empty_buffers() return
+ a buffer_head
+Message-ID: <20230920093950.b6lyvcs2tz22po3y@localhost>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230919045135.3635437-1-willy@infradead.org> <20230919045135.3635437-15-willy@infradead.org>
-In-Reply-To: <20230919045135.3635437-15-willy@infradead.org>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Wed, 20 Sep 2023 17:15:04 +0900
-Message-ID: <CAKFNMo=uGWNL5pe7JK7-GBKR1L6tsxmtRH5+p4mPrri=CeJXUw@mail.gmail.com>
-Subject: Re: [PATCH 14/26] nilfs2: Remove nilfs_page_get_nth_block
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-nilfs@vger.kernel.org, 
-	linux-ntfs-dev@lists.sourceforge.net, ntfs3@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, reiserfs-devel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, Pankaj Raghav <p.raghav@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230919045135.3635437-2-willy@infradead.org>
+X-Originating-IP: [106.110.32.140]
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (106.1.227.71) To
+	CAMSVWEXC02.scsc.local (106.1.227.72)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNKsWRmVeSWpSXmKPExsWy7djPc7ov93KlGkx5xG4xZ/0aNovd0/+x
+	Wsycd4fNYs/ekywWf6abWLR3zGG0WPl4K5PFoXtXWS1mb13BbPH7xxw2By6PzSu0PE7M+M3i
+	8WLzTEaP3Qs+M3l83iQXwBrFZZOSmpNZllqkb5fAlXHt72mWgp/MFQ8W3WFuYOxn7mLk4JAQ
+	MJGYuJKti5GLQ0hgBaPEi9mXGSGcL4wSu57dYIFwPjNKfF20hr2LkROso3dzOztEYjmjxKGL
+	V9jgqrbvf84Il9lzegorSAuLgKrE+3dXWUAWsgloSTR2gk0SETCWmLh8P1gzs8BxJom9136B
+	1QgLREss3xgDUsMrYC7Re7aFBcIWlDg58wmYzSygI7Fg9yc2kHJmAWmJ5f84QMKcAtYSuz4f
+	ZoQ4VEmiYfMZFgg7WaLlz18mkFUSAj84JHace8AG8b+LxPtrgRA1whKvjm+BelJG4vTkHqje
+	aomnN34zQ/S2MEr071wP1Wst0XcmB8J0lLj0rQ7C5JO48VYQ4kg+iUnbpkMDmleio00IYqCa
+	xOp7b1gmMCrPQvLWLCRvzUJ4awEj8ypG8dTS4tz01GLDvNRyveLE3OLSvHS95PzcTYzA9HP6
+	3/FPOxjnvvqod4iRiYPxEKMEB7OSCG+uGleqEG9KYmVValF+fFFpTmrxIUZpDhYlcV5t25PJ
+	QgLpiSWp2ampBalFMFkmDk6pBiZXq5Lv23ZMjZnY6O1/9jp//bvkwgtv440aVRkXL+1K2+au
+	tE8ywrJz4TwBlqqLfDKP3sQ07TiyYsNbUQZ3m4ATi+KLvcPkDtRn2oeo3Yv97XFSx2hnwqT7
+	qlaTxYuKpWdrTNl34dn0F5ss/i2beF2R/xfrZyWj9DNm5ZWvbtaL5+9+/OH3Mpa7jMY7Xk/5
+	Hvl307UQkWD3uXyZWqf5OK9r7buivHHOp8sTlLUyy+OrLY6Ysfg3HHBcZiykZOnOPudioVhM
+	U/arDQ/6lp5fHCLM+vidlMyk0v6vv3bX2ITd231D/f9+7T1HXiToX7n4/ObkLIMX2cXrI3a3
+	Jc/oZzrJsrWAd1spO7ev+3S718FKLMUZiYZazEXFiQAyel5drgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDIsWRmVeSWpSXmKPExsVy+t/xe7ov9nKlGry6oGExZ/0aNovd0/+x
+	Wsycd4fNYs/ekywWf6abWLR3zGG0WPl4K5PFoXtXWS1mb13BbPH7xxw2By6PzSu0PE7M+M3i
+	8WLzTEaP3Qs+M3l83iQXwBqlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRv
+	Z5OSmpNZllqkb5egl3Ht72mWgp/MFQ8W3WFuYOxn7mLk5JAQMJHo3dzO3sXIxSEksJRR4kHf
+	ciaIhIzExi9XWSFsYYk/17rYIIo+Mkqc2rQXylnOKLGyfQYbSBWLgKrE+3dXWboYOTjYBLQk
+	GjvZQcIiAsYSE5fvB6tnFjjOJLH32i8WkISwQLTE/5UbwIp4Bcwles+2gMWFBLIljh/bwgQR
+	F5Q4OfMJWJxZQEdiwe5PbCDzmQWkJZb/4wAJcwpYS+z6fJgR4lAliYbNZ1gg7GSJSXt+MU5g
+	FJ6FZNIsJJNmIUxawMi8ilEktbQ4Nz232EivODG3uDQvXS85P3cTIzAatx37uWUH48pXH/UO
+	MTJxMB5ilOBgVhLhzVXjShXiTUmsrEotyo8vKs1JLT7EaAoMiYnMUqLJ+cB0kFcSb2hmYGpo
+	YmZpYGppZqwkzutZ0JEoJJCeWJKanZpakFoE08fEwSnVwKTesrBXPXed+WtuKX7TQtsjacuN
+	g1KXLwvVaWD6pfg3883fGB2D7aoZx6f/q/SJDtvv8OmtosZyQ86vUfVO5wQ+55y68/U8C9+U
+	7Xff9eiVKEy8WcnYcra2w20ny4Za2ykKDxcWrr0TsOmdXegbXQ676sn9y0yyfnAvrD87x+SZ
+	sBB3SOajW1vNErT83//kW7OQ5VB8+/GWK4fWMq2S2Kdxekei2rpvSZbXpn1YuF6+KKSTye70
+	7ov8+t1F3eE3ZjyXOyvpyPzmdE/hmriit6/0/YV0JJKeafVc/nNgYfZZ650pLleWbG2V4Mj9
+	XyrlUHE5+H3jBxuFmzsWienF3DWZEu/oMn+9IE/5mdK2g0osxRmJhlrMRcWJAGnrtghPAwAA
+X-CMS-MailID: 20230920093952eucas1p1f37c688dc553d6a85882cae29861a870
+X-Msg-Generator: CA
+X-RootMTR: 20230920093952eucas1p1f37c688dc553d6a85882cae29861a870
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20230920093952eucas1p1f37c688dc553d6a85882cae29861a870
+References: <20230919045135.3635437-1-willy@infradead.org>
+	<20230919045135.3635437-2-willy@infradead.org>
+	<CGME20230920093952eucas1p1f37c688dc553d6a85882cae29861a870@eucas1p1.samsung.com>
 
-On Tue, Sep 19, 2023 at 3:47=E2=80=AFPM Matthew Wilcox (Oracle) wrote:
->
-> All users have now been converted to get_nth_block().
->
+On Tue, Sep 19, 2023 at 05:51:10AM +0100, Matthew Wilcox (Oracle) wrote:
+> Almost all callers want to know the first BH that was allocated
+> for this folio.  We already have that handy, so return it.
+> 
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > ---
->  fs/nilfs2/page.h | 6 ------
->  1 file changed, 6 deletions(-)
->
-> diff --git a/fs/nilfs2/page.h b/fs/nilfs2/page.h
-> index 344d71942d36..d249ea1cefff 100644
-> --- a/fs/nilfs2/page.h
-> +++ b/fs/nilfs2/page.h
-> @@ -52,10 +52,4 @@ unsigned long nilfs_find_uncommitted_extent(struct ino=
-de *inode,
->  #define NILFS_PAGE_BUG(page, m, a...) \
->         do { nilfs_page_bug(page); BUG(); } while (0)
->
-> -static inline struct buffer_head *
-> -nilfs_page_get_nth_block(struct page *page, unsigned int count)
-> -{
-> -       return get_nth_bh(page_buffers(page), count);
-> -}
-> -
->  #endif /* _NILFS_PAGE_H */
-> --
-> 2.40.1
->
-
-Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-
-Thanks,
-Ryusuke Konishi
+>  fs/buffer.c                 | 24 +++++++++++++-----------
+>  include/linux/buffer_head.h |  4 ++--
+>  2 files changed, 15 insertions(+), 13 deletions(-)
+> 
+Looks good,
+Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
