@@ -1,31 +1,31 @@
-Received: from mailo.com (msg-1.mailo.com [213.182.54.11])
+Received: from mailo.com (msg-4.mailo.com [213.182.54.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1E1399
-	for <gfs2@lists.linux.dev>; Fri, 29 Sep 2023 07:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0435C13D
+	for <gfs2@lists.linux.dev>; Fri, 29 Sep 2023 07:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
-	t=1695972824; bh=Mxk9l/U073uStCFV2UzL0Jvqq/Vo4Ln1BTaY+q264Og=;
+	t=1695973158; bh=jCXpnkD65gBL82o/dmwBwRzPh1cMJECkbSyB2ZedaOU=;
 	h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
 	 References:Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=h4UfrgMc/GsgctxJuapIvK1n7NV2LISZyjM4eagWufGdxYn3a8T9eGQXeex2tADbM
-	 RuSfnz0Aa2M1r9OmxMjaANzArsx8eleoOeYnBkl5bAn7kmPTMU47MmBq66hAGYQnXS
-	 ffsVjkZKidUECmxdEiX+EkZhCkxEgQWxHEYbKBkg=
-Received: by b221-6.in.mailobj.net [192.168.90.26] with ESMTP
+	b=jABpx6pjJbOoRCTDeUAFVzC32vkF7Vx+lrp3RpxHCCCs27wAfLOHe7CsRqNuCQsKU
+	 uigTJYElqBhY6h+BV/nPzkwRzA5PPkAcpejkvMA6T+SsAY+BBMW/9hPhiD7LCCsYPw
+	 b+as3MUdyGCG6iSJExvT9kThbGvGssJlG0Jem1Cc=
+Received: by b221-5.in.mailobj.net [192.168.90.25] with ESMTP
 	via ip-20.mailobj.net [213.182.54.20]
-	Fri, 29 Sep 2023 09:33:44 +0200 (CEST)
-X-EA-Auth: Kph+n6amj/OpMbnfaagrjIvIfM2f1llYlstIKcYMbu7B9oWx5SNQR1QBvj0B4fmVvei9+OhAtDxj3qPLNaYgUr/AVERwIYts
-Message-ID: <f8e478c86bb80f37fbedc4f17b782918bc1c3607.camel@mailo.com>
-Subject: Re: [PATCH] gfs2: Set error on error path
+	Fri, 29 Sep 2023 09:39:17 +0200 (CEST)
+X-EA-Auth: UlFkxK2sLNWRc9kMuK0MPizk6AYjvh9OiodH7TWZlBB6qMjIFdaikrp+ZyO5wfQccBmhJTUB1GHw/xXmuVpNPcUu6AVPBw/f
+Message-ID: <0c1ed836c5a306331e1b2a97217c3c9f7e1fb701.camel@mailo.com>
+Subject: Re: [PATCH] gfs2: fix 'passing zero to ERR_PTR()' warning
 From: drv <drv@mailo.com>
 To: Dan Carpenter <dan.carpenter@linaro.org>
 Cc: Bob Peterson <rpeterso@redhat.com>, Andreas Gruenbacher
  <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
  linux-kernel-mentees@lists.linuxfoundation.org, Dan Carpenter
  <error27@gmail.com>
-Date: Fri, 29 Sep 2023 13:02:51 +0530
-In-Reply-To: <72de9c2e-7c60-4930-acfb-556a1f0fa4c4@kadam.mountain>
-References: <ZRZrUMzweaJeEJuD@runicha.com>
-	 <72de9c2e-7c60-4930-acfb-556a1f0fa4c4@kadam.mountain>
+Date: Fri, 29 Sep 2023 13:09:11 +0530
+In-Reply-To: <a2d702b0-e819-47b0-a945-c2e38a162381@kadam.mountain>
+References: <ZRXA7n0wD83zhPxC@runicha.com>
+	 <a2d702b0-e819-47b0-a945-c2e38a162381@kadam.mountain>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -36,43 +36,75 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-On Fri, 2023-09-29 at 10:14 +0300, Dan Carpenter wrote:
-> On Fri, Sep 29, 2023 at 11:44:40AM +0530, Deepak R Varma wrote:
-> > Set the error variable inside the error path on failure. Saves
-> > unnecessary variable assignment during normal execution.
+On Fri, 2023-09-29 at 10:06 +0300, Dan Carpenter wrote:
+> On Thu, Sep 28, 2023 at 11:37:42PM +0530, Deepak R Varma wrote:
+> > Resolve the following Smatch static checker warning:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fs/gfs2/acl.c:54 __gfs2=
+_get_acl() warn: passing zero to
+> > 'ERR_PTR'
+> >=20
+> > by returning NULL when an extended attribute length is zero,
+> > instead of
+> > passing on zero to the ERR_PTR().
 > >=20
 > > Signed-off-by: Deepak R Varma <drv@mailo.com>
 > > ---
-> > =C2=A0fs/gfs2/bmap.c | 5 +++--
-> > =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-> > index ef7017fb6951..93bd8ea34444 100644
-> > --- a/fs/gfs2/bmap.c
-> > +++ b/fs/gfs2/bmap.c
-> > @@ -162,9 +162,10 @@ int gfs2_unstuff_dinode(struct gfs2_inode *ip)
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0down_write(&ip->i_rw_mu=
-tex);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0page =3D grab_cache_pag=
-e(inode->i_mapping, 0);
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error =3D -ENOMEM;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!page)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!page) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0error =3D -ENOMEM;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0goto out;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
 >=20
-> It used to be that the other way was faster?=C2=A0 I'm pretty sure the
-> compiler can figure it out these days.=C2=A0 Please don't randomly start
-> changing people's prefered style unless it's drivers/staging/ code.
+> Passing zero to ERR_PTR() is not a bug.
+>=20
+> You're patch doesn't change how the code works at all, right?=C2=A0 So
+> it's
+> like a cleanup patch.=C2=A0 But the code was nicer in the original.
+>=20
+> This is just a false positive.=C2=A0 Ignore static checker false
+> positives.
+> Fix the checker instead.=C2=A0 Although in this case, I can't think of an
+> easy way fix the checker.=C2=A0 Perhaps don't print a warning if the
+> callers
+> check for NULL?
+>=20
+> The passing zero to ERR_PTR() warning is actually a pretty good
+> heuristic.=C2=A0 90% of the time in new code this is a real bug.=C2=A0 Bu=
+t in
+> old
+> code then probably it's 0% real bugs because we've been reviewing
+> these
+> warnings for over a decade.
+>=20
+> I have a blog which might be useful.
+> https://staticthinking.wordpress.com/2022/08/01/mixing-error-pointers-and=
+-null/
+>=20
+> When I'm reviewing this patch I think:
+> 1) Does gfs2_xattr_acl_get() return zero?=C2=A0 And it does.
+> 2) Does that look intentional.=C2=A0 It's harder to tell because there
+> aren't
+> =C2=A0=C2=A0 comments and it looks like it might be a missing error code.=
+=C2=A0 But
+> =C2=A0=C2=A0 when you read it closely then actually it does look intentio=
+nal.
+> =C2=A0=C2=A0 In terms of Smatch, I consider it "intentional" if there is =
+an
+> =C2=A0=C2=A0 "error =3D 0;" within 5 lines for the goto.=C2=A0 (Other lan=
+guages like
+> Rust
+> =C2=A0=C2=A0 are better than C because they force everyone to follow the =
+rules.
+> =C2=A0=C2=A0 #trolling).
+> 3) Do the callers of __gfs2_get_acl() check for NULL and they do.
+>=20
+> So this code is fine.
+>=20
+> I hope this helps you in your review process.=C2=A0 1)=C2=A0 Ignore old
+> warnings.
+> 2)=C2=A0 Ignore false positives.=C2=A0 3)=C2=A0 If you think it is a bug,=
+ then try
+> to
+> figure out how it will cause a crash.=C2=A0 Look at the caller etc.
 >=20
 Hi Dan,
-Thank you for the feedback. I did not know about the compiler
-optimization resulting in original code being faster.
-I will let the maintainers comment on breaking the style.
+Thank you for the review, feedback and guidance. This is really
+helpful.
 
 regards,
 deepak.
