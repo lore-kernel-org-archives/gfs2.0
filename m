@@ -1,64 +1,199 @@
-Received: from mailo.com (msg-1.mailo.com [213.182.54.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDDC8C17
-	for <gfs2@lists.linux.dev>; Fri, 29 Sep 2023 06:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
-	t=1695968086; bh=sUtnhl+BN0pAXgvT1VA9dfcxtXJrnbj9wF0wciOqpdA=;
-	h=X-EA-Auth:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-	 Content-Type;
-	b=BT5FFlQpPpYYiLWCg0obrQwHB6L2jyl1IDQj4NY5PfCuvzM71FERDYaVd2NdJ48Pq
-	 Cchkcw4ji4i6zgQbnC7a3yMpUUgBsHN/bIIiBwonfYk/btOo0uizwSWjwhn7wzkPOl
-	 G7fnpFFwQLvucAEwRU5T1RZn/pRHsU9gHvLyAhiw=
-Received: by b221-3.in.mailobj.net [192.168.90.23] with ESMTP
-	via ip-20.mailobj.net [213.182.54.20]
-	Fri, 29 Sep 2023 08:14:46 +0200 (CEST)
-X-EA-Auth: mJrxcB5o/rp3CdNHoV+lGMylfQKBbaAvaC4JHT2Uwm3geFEykZ96si8l7FTXLh3ZxpTAt34dRlCrz8K4QFKtJ4AC9NHhu1Tb
-Date: Fri, 29 Sep 2023 11:44:40 +0530
-From: Deepak R Varma <drv@mailo.com>
-To: Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	Dan Carpenter <error27@gmail.com>, Deepak R Varma <drv@mailo.com>
-Subject: [PATCH] gfs2: Set error on error path
-Message-ID: <ZRZrUMzweaJeEJuD@runicha.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5ED10E3
+	for <gfs2@lists.linux.dev>; Fri, 29 Sep 2023 06:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1695969161;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6sGP1uczCLU0843N+bG6IAXvwld3ke34VDTuCS/8Xis=;
+	b=NiqiSSEMK+lA0bPR6zNrcsFV8ifNxk5IHZLzuJUsdhlbmuYQ/wAibY1EPF+Nn3JNzJHlea
+	JTneRh0DPFFCbcJ0Y+O869bGsWvpwMaNZir6PVjTALOt6FBaOXRpRkFUEpA3adz5xK9CGh
+	jXhQFx2q7vGMV+jenmevbwm60j7iSaI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-621-ZDrwgJ6cPKG_Kpsdvt5HQg-1; Fri, 29 Sep 2023 02:32:36 -0400
+X-MC-Unique: ZDrwgJ6cPKG_Kpsdvt5HQg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0AC838002B2;
+	Fri, 29 Sep 2023 06:32:34 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.226])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8C9AA401027;
+	Fri, 29 Sep 2023 06:32:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
+References: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org> <20230928110554.34758-1-jlayton@kernel.org> <20230928110554.34758-2-jlayton@kernel.org> <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com> <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org> <20230928171943.GK11439@frogsfrogsfrogs>
+To: Jeff Layton <jlayton@kernel.org>
+cc: "Darrick J. Wong" <djwong@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>,
+    Linus Torvalds <torvalds@linux-foundation.org>,
+    David Sterba <dsterba@suse.cz>, Amir Goldstein <amir73il@gmail.com>,
+    Theodore Ts'o <tytso@mit.edu>,
+    "Eric W.
+ Biederman" <ebiederm@xmission.com>,
+    Kees Cook <keescook@chromium.org>, Jeremy Kerr <jk@ozlabs.org>,
+    Michael Ellerman <mpe@ellerman.id.au>,
+    Nicholas Piggin <npiggin@gmail.com>,
+    Christophe Leroy <christophe.leroy@csgroup.eu>,
+    Heiko Carstens <hca@linux.ibm.com>,
+    Vasily Gorbik <gor@linux.ibm.com>,
+    Alexander Gordeev <agordeev@linux.ibm.com>,
+    Christian Borntraeger <borntraeger@linux.ibm.com>,
+    Sven Schnelle <svens@linux.ibm.com>,
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+    Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+    Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+    Joel Fernandes <joel@joelfernandes.org>,
+    Carlos Llamas <cmllamas@google.com>,
+    Suren Baghdasaryan <surenb@google.com>,
+    Mattia Dongili <malattia@linux.it>,
+    Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+    Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+    Brad Warrum <bwarrum@linux.ibm.com>,
+    Ritu Agarwal <rituagar@linux.ibm.com>,
+    Hans de Goede <hdegoede@redhat.com>,
+    Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+    Mark Gross <markgross@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    David Sterba <dsterba@suse.com>, David Howells <dhowells@redhat.com>,
+    Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
+    Luis de Bethencourt <luisbg@kernel.org>,
+    Salah Triki <salah.triki@gmail.com>,
+    "Tigran
+ A. Aivazian" <aivazian.tigran@gmail.com>,
+    Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+    Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+    Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+    Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>,
+    Nicolas Pitre <nico@fluxnic.net>,
+    "Rafael J . Wysocki" <rafael@kernel.org>,
+    Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
+    Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
+    Jeffle Xu <jefflexu@linux.alibaba.com>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Sungjong Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>,
+    Andreas Dilger <adilger.kernel@dilger.ca>,
+    Jaegeuk Kim <jaegeuk@kernel.org>,
+    OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+    Christoph Hellwig <hch@infradead.org>,
+    Miklos Szeredi <miklos@szeredi.hu>,
+    Bob Peterson <rpeterso@redhat.com>,
+    Andreas Gruenbacher <agruenba@redhat.com>,
+    Richard Weinberger <richard@nod.at>,
+    Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+    Johannes Berg <johannes@sipsolutions.net>,
+    Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+    Mike Kravetz <mike.kravetz@oracle.com>,
+    Muchun Song <muchun.song@linux.dev>, Jan Kara <jack@suse.cz>,
+    David Woodhouse <dwmw2@infradead.org>,
+    Dave Kleikamp <shaggy@kernel.org>, Tejun Heo <tj@kernel.org>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Anna Schumaker <anna@kernel.org>,
+    Chuck Lever <chuck.lever@oracle.com>, Neil Brown <neilb@suse.de>,
+    Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+    Tom Talpey <tom@talpey.com>,
+    Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+    Anton Altaparmakov <anton@tuxera.com>,
+    Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+    Mark Fasheh <mark@fasheh.com>,
+    Joseph Qi <joseph.qi@linux.alibaba.com>,
+    Bob Copeland <me@bobcopeland.com>,
+    Mike Marshall <hubcap@omnibond.com>,
+    Martin Brandenburg <martin@omnibond.com>,
+    Luis Chamberlain <mcgrof@kernel.org>,
+    Iurii Zaikin <yzaikin@google.com>, Tony Luck <tony.luck@intel.com>,
+    "Guilherme G.
+ Piccoli" <gpiccoli@igalia.com>,
+    Anders Larsen <al@alarsen.net>, Steve French <sfrench@samba.org>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Ronnie Sahlberg <lsahlber@redhat.com>,
+    Shyam Prasad N <sprasad@microsoft.com>,
+    Sergey Senozhatsky <senozhatsky@chromium.org>,
+    Phillip Lougher <phillip@squashfs.org.uk>,
+    Steven Rostedt <rostedt@goodmis.org>,
+    Masami Hiramatsu <mhiramat@kernel.org>,
+    Evgeniy Dushistov <dushistov@mail.ru>,
+    Chandan Babu R <chandan.babu@oracle.com>,
+    Damien Le Moal <dlemoal@kernel.org>,
+    Naohiro Aota <naohiro.aota@wdc.com>,
+    Johannes Thumshirn <jth@kernel.org>,
+    Alexei Starovoitov <ast@kernel.org>,
+    Daniel Borkmann <daniel@iogearbox.net>,
+    Andrii Nakryiko <andrii@kernel.org>,
+    Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+    Yonghong Song <yonghong.song@linux.dev>,
+    John Fastabend <john.fastabend@gmail.com>,
+    KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+    Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+    Hugh Dickins <hughd@google.com>,
+    Andrew Morton <akpm@linux-foundation.org>,
+    "David S .
+ Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>,
+    John Johansen <john.johansen@canonical.com>,
+    Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+    "Serge E. Hallyn" <serge@hallyn.com>,
+    Stephen Smalley <stephen.smalley.work@gmail.com>,
+    Eric Paris <eparis@parisplace.org>, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+    platform-driver-x86@vger.kernel.org, linux-rdma@vger.kernel.org,
+    linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    autofs@vger.kernel.org, linux-btrfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+    linux-efi@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+    linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+    gfs2@lists.linux.dev, linux-um@lists.infradead.org,
+    linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+    linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+    linux-ntfs-dev@lists.sourceforge.net, ntfs3@lists.linux.dev,
+    ocfs2-devel@lists.linux.dev, linux-karma-devel@lists.sourceforge.net,
+    devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+    linux-hardening@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+    linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+    linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+    bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+    apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+    selinux@vger.kernel.org
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Set the error variable inside the error path on failure. Saves
-unnecessary variable assignment during normal execution.
-
-Signed-off-by: Deepak R Varma <drv@mailo.com>
----
- fs/gfs2/bmap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index ef7017fb6951..93bd8ea34444 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -162,9 +162,10 @@ int gfs2_unstuff_dinode(struct gfs2_inode *ip)
- 
- 	down_write(&ip->i_rw_mutex);
- 	page = grab_cache_page(inode->i_mapping, 0);
--	error = -ENOMEM;
--	if (!page)
-+	if (!page) {
-+		error = -ENOMEM;
- 		goto out;
-+	}
- 	error = __gfs2_unstuff_inode(ip, page);
- 	unlock_page(page);
- 	put_page(page);
--- 
-2.39.2
+Content-Type: text/plain
+Date: Fri, 29 Sep 2023 07:32:09 +0100
+Message-ID: <636661.1695969129@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 
 
+Jeff Layton <jlayton@kernel.org> wrote:
+
+> Correct. We'd lose some fidelity in currently stored timestamps, but as
+> Linus and Ted pointed out, anything below ~100ns granularity is
+> effectively just noise, as that's the floor overhead for calling into
+> the kernel. It's hard to argue that any application needs that sort of
+> timestamp resolution, at least with contemporary hardware. 
+
+Albeit with the danger of making Steve French very happy;-), would it make
+sense to switch internally to Microsoft-style 64-bit timestamps with their
+100ns granularity?
+
+David
 
