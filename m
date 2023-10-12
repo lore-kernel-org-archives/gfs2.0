@@ -1,28 +1,51 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1136F35506
-	for <gfs2@lists.linux.dev>; Wed, 11 Oct 2023 06:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49CB21347
+	for <gfs2@lists.linux.dev>; Thu, 12 Oct 2023 09:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0H94P6G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E34AC433C7;
-	Wed, 11 Oct 2023 06:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1697005536;
-	bh=OLoihqIcIPqtoTLdpjp9mZwnCQ0ViV7zmpSst0C4UxQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H0H94P6GnYqmxDqxCpCCwjhVUpXOvSGX4bg3MGU8WHpARsJZX0QNTpBRBIfcEOIFV
-	 mxeX2i9QPw7Ak2gwYn1eayAww76psWhbZxyi/6FXaI04BzjXCc+3LeJ3CFVBY4T1sM
-	 Vl4sUeElyJPoAecBxz+Mivx/wR9SitQAR/2goljA=
-Date: Wed, 11 Oct 2023 08:25:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: teigland@redhat.com, cluster-devel@redhat.com, gfs2@lists.linux.dev,
-	christophe.jaillet@wanadoo.fr, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 8/8] dlm: slow down filling up processing queue
-Message-ID: <2023101129-stabilize-tree-5959@gregkh>
-References: <20231010220448.2978176-1-aahringo@redhat.com>
- <20231010220448.2978176-8-aahringo@redhat.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wb/VrKrV"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4065f29e933so8957515e9.1
+        for <gfs2@lists.linux.dev>; Thu, 12 Oct 2023 02:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697103818; x=1697708618; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EigzP/bSaw2t8LmqFIDBUK1ddTKdONqzknQbKXZeEHE=;
+        b=Wb/VrKrVM0ztbZc++LtM6sRHifVg4zoP0XsH6PkZJYsBOSJqiU/A0ratoXXmvpNE8W
+         fiI1+ruVKvffbf2PRNdjXxzJaBRMrxIYG6V33fGF9MLxow3DmZtdYmy3tvAqUYcNtZ1U
+         3gAEYKXjrqeXsWcGRmf0dL4M8m+FdTjTy2rtUd1N8zQxjZh5JsPtQK/fIrVxlok3NhbT
+         8lawkxq13+rmDdVQLsduDDeFLm4+xoMIX5qXT8MK8Q/N+ZvXdRg4X6UMuzLqGoo2G4EP
+         UsMfdSJtdmzKUv4vEo2RYfi9F2V2e9mQbcOzlTn7PnsSQDwQdVWHDwB4BKJa4q8EcIvV
+         8C8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697103818; x=1697708618;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EigzP/bSaw2t8LmqFIDBUK1ddTKdONqzknQbKXZeEHE=;
+        b=r/JJbnNPgcnT7ltaDD1fej/yxVIHLFt5lGX7wdUQH0f3GmRPuM6dLJpncUxccnYo35
+         1JK4NZIywd+PoYbcOFYE8XpCr+JksEzyx0wdgpzDTe0BTqd0cVCF3rDXv070HZnql7wN
+         LKIH8fgBIcswjv/0eV0E0YRk8EPwGSfMQQ8l6viy1yRows71EOsD5E5n7ELlhZdiu7gK
+         UcxwJRiTY8DJZGWhvJ9zZvro7M3ybztvJ9MhYTsZjGukVS/nV/F0j/TntrsnTYp71hdA
+         knGqY7Vdwz/xaWIgX3X/i+LCTlw1Mcr8mBGY5RHOqHDhiyXQ7BUOssikmtxyBdqEgsHN
+         h15w==
+X-Gm-Message-State: AOJu0YyB4mbco1I5uXoWflu4Y5r8xFMgh25jn4AAmJyvNKwz2Fw7jawa
+	X5EEXEob1CXBWuk3Opnu2k1slQ==
+X-Google-Smtp-Source: AGHT+IHSj1n6If2cK7OnvbRJNIGmj2jL83PjcQSHHNdBQZuYA+LsexyJ6VH6paQlt2x5wj0CJ6vIrw==
+X-Received: by 2002:adf:f092:0:b0:321:6429:c977 with SMTP id n18-20020adff092000000b003216429c977mr19539201wro.62.1697103817851;
+        Thu, 12 Oct 2023 02:43:37 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id dj16-20020a0560000b1000b003198a9d758dsm855717wrb.78.2023.10.12.02.43.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 02:43:37 -0700 (PDT)
+Date: Thu, 12 Oct 2023 12:43:34 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: willy@infradead.org
+Cc: gfs2@lists.linux.dev
+Subject: [bug report] gfs2: Convert gfs2_jhead_process_page() to use a folio
+Message-ID: <fb027038-46ee-49fa-be1f-28926e7e2387@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -31,105 +54,38 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231010220448.2978176-8-aahringo@redhat.com>
 
-On Tue, Oct 10, 2023 at 06:04:48PM -0400, Alexander Aring wrote:
-> If there is a burst of message the receive worker will filling up the
-> processing queue but where are too slow to process dlm messages. This
-> patch will slow down the receiver worker to keep the buffer on the
-> socket layer to tell the sender to backoff. This is done by a threshold
-> to get the next buffers from the socket after all messages were
-> processed done by a flush_workqueue(). This however only occurs when we
-> have a message burst when we e.g. create 1 million locks. If we put more
-> and more new messages to process in the processqueue we will soon run out
-> of memory.
-> 
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/dlm/lowcomms.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index f7bc22e74db2..67f8dd8a05ef 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-> @@ -63,6 +63,7 @@
->  #include "config.h"
->  
->  #define DLM_SHUTDOWN_WAIT_TIMEOUT msecs_to_jiffies(5000)
-> +#define DLM_MAX_PROCESS_BUFFERS 24
->  #define NEEDED_RMEM (4*1024*1024)
->  
->  struct connection {
-> @@ -194,6 +195,7 @@ static const struct dlm_proto_ops *dlm_proto_ops;
->  #define DLM_IO_END 1
->  #define DLM_IO_EOF 2
->  #define DLM_IO_RESCHED 3
-> +#define DLM_IO_FLUSH 4
->  
->  static void process_recv_sockets(struct work_struct *work);
->  static void process_send_sockets(struct work_struct *work);
-> @@ -202,6 +204,7 @@ static void process_dlm_messages(struct work_struct *work);
->  static DECLARE_WORK(process_work, process_dlm_messages);
->  static DEFINE_SPINLOCK(processqueue_lock);
->  static bool process_dlm_messages_pending;
-> +static atomic_t processqueue_count;
->  static LIST_HEAD(processqueue);
->  
->  bool dlm_lowcomms_is_running(void)
-> @@ -874,6 +877,7 @@ static void process_dlm_messages(struct work_struct *work)
->  	}
->  
->  	list_del(&pentry->list);
-> +	atomic_dec(&processqueue_count);
->  	spin_unlock(&processqueue_lock);
->  
->  	for (;;) {
-> @@ -891,6 +895,7 @@ static void process_dlm_messages(struct work_struct *work)
->  		}
->  
->  		list_del(&pentry->list);
-> +		atomic_dec(&processqueue_count);
->  		spin_unlock(&processqueue_lock);
->  	}
->  }
-> @@ -962,6 +967,7 @@ static int receive_from_sock(struct connection *con, int buflen)
->  		con->rx_leftover);
->  
->  	spin_lock(&processqueue_lock);
-> +	ret = atomic_inc_return(&processqueue_count);
->  	list_add_tail(&pentry->list, &processqueue);
->  	if (!process_dlm_messages_pending) {
->  		process_dlm_messages_pending = true;
-> @@ -969,6 +975,9 @@ static int receive_from_sock(struct connection *con, int buflen)
->  	}
->  	spin_unlock(&processqueue_lock);
->  
-> +	if (ret > DLM_MAX_PROCESS_BUFFERS)
-> +		return DLM_IO_FLUSH;
-> +
->  	return DLM_IO_SUCCESS;
->  }
->  
-> @@ -1503,6 +1512,9 @@ static void process_recv_sockets(struct work_struct *work)
->  		wake_up(&con->shutdown_wait);
->  		/* CF_RECV_PENDING cleared */
->  		break;
-> +	case DLM_IO_FLUSH:
-> +		flush_workqueue(process_workqueue);
-> +		fallthrough;
->  	case DLM_IO_RESCHED:
->  		cond_resched();
->  		queue_work(io_workqueue, &con->rwork);
-> -- 
-> 2.39.3
-> 
+Hello Matthew Wilcox (Oracle),
 
-<formletter>
+The patch 240159077d00: "gfs2: Convert gfs2_jhead_process_page() to
+use a folio" from May 13, 2022 (linux-next), leads to the following
+Smatch static checker warning:
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+	fs/gfs2/lops.c:485 gfs2_jhead_process_page()
+	error: 'folio' dereferencing possible ERR_PTR()
 
-</formletter>
+fs/gfs2/lops.c
+    469 static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
+    470                                     struct gfs2_log_header_host *head,
+    471                                     bool *done)
+    472 {
+    473         struct folio *folio;
+    474 
+    475         folio = filemap_get_folio(jd->jd_inode->i_mapping, index);
+
+Does filemap_get_folio() need to be checked for errors?
+
+    476 
+    477         folio_wait_locked(folio);
+    478         if (folio_test_error(folio))
+    479                 *done = true;
+    480 
+    481         if (!*done)
+    482                 *done = gfs2_jhead_pg_srch(jd, head, &folio->page);
+    483 
+    484         /* filemap_get_folio() and the earlier grab_cache_page() */
+--> 485         folio_put_refs(folio, 2);
+    486 }
+
+regards,
+dan carpenter
