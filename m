@@ -1,24 +1,24 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB936B1B;
-	Mon, 16 Oct 2023 20:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1A1347A5;
+	Mon, 16 Oct 2023 20:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ldsGSnfH"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="quxX8YME"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=fHCsSWRUgDBNiwaJwQche5AKchlaxIaHTN5XktltH8A=; b=ldsGSnfH8krk8MAnKmgCzBDhIt
-	xlw0zw05IgJ1MjU0N/FlXSalhrKzPcCDZ2IM1mjF9rwPS47kR+Pl2dCNRPiPh6/+k49SBFoyG5S/g
-	ssrZr4uqgQLTP/0Xqf13vulo7Y3R5z4HBEySLjbJMTHghtc3gsSBDtaWah79sdtXqJ3ItCMwOMkK/
-	QMDo/UVx4shqGWFSTOa3W9ZglknNXgUL9Pp8MwP68136sgksh8HJMvZhc2KFUKTKmu3uwl+MJEj0q
-	jtGCG0Xk7LBRYg60wInVzNmFmGbrckEyydxXHXsykZq8UTWZf2Ds9hQHNFwQ5Rh+nCev+V6UMzl7J
-	vqvy7rVQ==;
+	bh=pZNvvzzb8w2vdFH9XpjAcLrT4q6laln9GH3DKBbL5lk=; b=quxX8YMEDJp6HebYDp697r3l5h
+	nuevpsll6VIIRlBopRKJIJhtuSWkYtDO3CUcwiCuivSm4kd3/ge0zLM30bKGaBPKCqB8TEX2UahE6
+	qwJnbCWJ4Qbhf1blnOL/XbDb6qxWR/IelPH6HuFeZLNAhJkj/X982ZP7NsGuN9AHVUWi64oPy+XRF
+	ZFe1U4TJDy413thxTnH/iFGiAor/QGoIq/hvOHcIrM5ab/6XjrOfbwoZayiIVK/McfAkdH/JBLUxm
+	7Lm2j5fRmRlle50bKv+ZY/Rebb2Za+Y1ZztiwC4+i7b5AdJxPGO2DhJ1Q2yVJOLO7x3UYBmFI5VOf
+	cfzURIyg==;
 Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qsTvp-0085bG-U8; Mon, 16 Oct 2023 20:11:17 +0000
+	id 1qsTvr-0085ci-Dg; Mon, 16 Oct 2023 20:11:19 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
@@ -30,11 +30,10 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	ocfs2-devel@lists.linux.dev,
 	reiserfs-devel@vger.kernel.org,
 	linux-ext4@vger.kernel.org,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: [PATCH v2 12/27] nilfs2: Convert nilfs_copy_page() to nilfs_copy_folio()
-Date: Mon, 16 Oct 2023 21:10:59 +0100
-Message-Id: <20231016201114.1928083-13-willy@infradead.org>
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: [PATCH v2 23/27] ufs: Add ufs_get_locked_folio and ufs_put_locked_folio
+Date: Mon, 16 Oct 2023 21:11:10 +0100
+Message-Id: <20231016201114.1928083-24-willy@infradead.org>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20231016201114.1928083-1-willy@infradead.org>
 References: <20231016201114.1928083-1-willy@infradead.org>
@@ -46,122 +45,114 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Both callers already have a folio, so pass it in and use it directly.
-Removes a lot of hidden calls to compound_head().
+Convert the _page variants to call them.  Saves a few hidden calls to
+compound_head().
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 ---
- fs/nilfs2/page.c | 50 +++++++++++++++++++++++++-----------------------
- mm/util.c        |  1 +
- 2 files changed, 27 insertions(+), 24 deletions(-)
+ fs/ufs/util.c | 43 +++++++++++++++++++++++++------------------
+ fs/ufs/util.h | 13 +++++++++----
+ 2 files changed, 34 insertions(+), 22 deletions(-)
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 1c075bd906c9..696215d899bf 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -184,30 +184,32 @@ void nilfs_page_bug(struct page *page)
+diff --git a/fs/ufs/util.c b/fs/ufs/util.c
+index 08ddf41eaaad..151b400cb3b6 100644
+--- a/fs/ufs/util.c
++++ b/fs/ufs/util.c
+@@ -229,43 +229,50 @@ ufs_set_inode_dev(struct super_block *sb, struct ufs_inode_info *ufsi, dev_t dev
+ 		ufsi->i_u1.i_data[0] = cpu_to_fs32(sb, fs32);
  }
  
++struct page *ufs_get_locked_page(struct address_space *mapping, pgoff_t index)
++{
++	struct folio *folio = ufs_get_locked_folio(mapping, index);
++
++	if (folio)
++		return folio_file_page(folio, index);
++	return NULL;
++}
++
  /**
-- * nilfs_copy_page -- copy the page with buffers
-- * @dst: destination page
-- * @src: source page
-- * @copy_dirty: flag whether to copy dirty states on the page's buffer heads.
-+ * nilfs_copy_folio -- copy the folio with buffers
-+ * @dst: destination folio
-+ * @src: source folio
-+ * @copy_dirty: flag whether to copy dirty states on the folio's buffer heads.
+- * ufs_get_locked_page() - locate, pin and lock a pagecache page, if not exist
++ * ufs_get_locked_folio() - locate, pin and lock a pagecache folio, if not exist
+  * read it from disk.
+  * @mapping: the address_space to search
+  * @index: the page index
   *
-- * This function is for both data pages and btnode pages.  The dirty flag
-- * should be treated by caller.  The page must not be under i/o.
-- * Both src and dst page must be locked
-+ * This function is for both data folios and btnode folios.  The dirty flag
-+ * should be treated by caller.  The folio must not be under i/o.
-+ * Both src and dst folio must be locked
+- * Locates the desired pagecache page, if not exist we'll read it,
++ * Locates the desired pagecache folio, if not exist we'll read it,
+  * locks it, increments its reference
+  * count and returns its address.
+  *
   */
--static void nilfs_copy_page(struct page *dst, struct page *src, int copy_dirty)
-+static void nilfs_copy_folio(struct folio *dst, struct folio *src,
-+		bool copy_dirty)
+-
+-struct page *ufs_get_locked_page(struct address_space *mapping,
++struct folio *ufs_get_locked_folio(struct address_space *mapping,
+ 				 pgoff_t index)
  {
- 	struct buffer_head *dbh, *dbufs, *sbh;
- 	unsigned long mask = NILFS_BUFFER_INHERENT_BITS;
+ 	struct inode *inode = mapping->host;
+-	struct page *page = find_lock_page(mapping, index);
+-	if (!page) {
+-		page = read_mapping_page(mapping, index, NULL);
++	struct folio *folio = filemap_lock_folio(mapping, index);
++	if (!folio) {
++		folio = read_mapping_folio(mapping, index, NULL);
  
--	BUG_ON(PageWriteback(dst));
-+	BUG_ON(folio_test_writeback(dst));
+-		if (IS_ERR(page)) {
+-			printk(KERN_ERR "ufs_change_blocknr: "
+-			       "read_mapping_page error: ino %lu, index: %lu\n",
++		if (IS_ERR(folio)) {
++			printk(KERN_ERR "ufs_change_blocknr: read_mapping_folio error: ino %lu, index: %lu\n",
+ 			       mapping->host->i_ino, index);
+-			return page;
++			return folio;
+ 		}
  
--	sbh = page_buffers(src);
--	if (!page_has_buffers(dst))
--		create_empty_buffers(dst, sbh->b_size, 0);
-+	sbh = folio_buffers(src);
-+	dbh = folio_buffers(dst);
-+	if (!dbh)
-+		dbh = folio_create_empty_buffers(dst, sbh->b_size, 0);
+-		lock_page(page);
++		folio_lock(folio);
  
- 	if (copy_dirty)
- 		mask |= BIT(BH_Dirty);
- 
--	dbh = dbufs = page_buffers(dst);
-+	dbufs = dbh;
- 	do {
- 		lock_buffer(sbh);
- 		lock_buffer(dbh);
-@@ -218,16 +220,16 @@ static void nilfs_copy_page(struct page *dst, struct page *src, int copy_dirty)
- 		dbh = dbh->b_this_page;
- 	} while (dbh != dbufs);
- 
--	copy_highpage(dst, src);
-+	folio_copy(dst, src);
- 
--	if (PageUptodate(src) && !PageUptodate(dst))
--		SetPageUptodate(dst);
--	else if (!PageUptodate(src) && PageUptodate(dst))
--		ClearPageUptodate(dst);
--	if (PageMappedToDisk(src) && !PageMappedToDisk(dst))
--		SetPageMappedToDisk(dst);
--	else if (!PageMappedToDisk(src) && PageMappedToDisk(dst))
--		ClearPageMappedToDisk(dst);
-+	if (folio_test_uptodate(src) && !folio_test_uptodate(dst))
-+		folio_mark_uptodate(dst);
-+	else if (!folio_test_uptodate(src) && folio_test_uptodate(dst))
-+		folio_clear_uptodate(dst);
-+	if (folio_test_mappedtodisk(src) && !folio_test_mappedtodisk(dst))
-+		folio_set_mappedtodisk(dst);
-+	else if (!folio_test_mappedtodisk(src) && folio_test_mappedtodisk(dst))
-+		folio_clear_mappedtodisk(dst);
- 
- 	do {
- 		unlock_buffer(sbh);
-@@ -269,7 +271,7 @@ int nilfs_copy_dirty_pages(struct address_space *dmap,
- 			NILFS_PAGE_BUG(&folio->page,
- 				       "found empty page in dat page cache");
- 
--		nilfs_copy_page(&dfolio->page, &folio->page, 1);
-+		nilfs_copy_folio(dfolio, folio, true);
- 		filemap_dirty_folio(folio_mapping(dfolio), dfolio);
- 
- 		folio_unlock(dfolio);
-@@ -314,7 +316,7 @@ void nilfs_copy_back_pages(struct address_space *dmap,
- 		if (!IS_ERR(dfolio)) {
- 			/* overwrite existing folio in the destination cache */
- 			WARN_ON(folio_test_dirty(dfolio));
--			nilfs_copy_page(&dfolio->page, &folio->page, 0);
-+			nilfs_copy_folio(dfolio, folio, false);
- 			folio_unlock(dfolio);
- 			folio_put(dfolio);
- 			/* Do we not need to remove folio from smap here? */
-diff --git a/mm/util.c b/mm/util.c
-index 6eddd891198e..aa01f6ea5a75 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -799,6 +799,7 @@ void folio_copy(struct folio *dst, struct folio *src)
- 		cond_resched();
+-		if (unlikely(page->mapping == NULL)) {
++		if (unlikely(folio->mapping == NULL)) {
+ 			/* Truncate got there first */
+-			unlock_page(page);
+-			put_page(page);
++			folio_unlock(folio);
++			folio_put(folio);
+ 			return NULL;
+ 		}
  	}
+-	if (!page_has_buffers(page))
+-		create_empty_buffers(page, 1 << inode->i_blkbits, 0);
+-	return page;
++	if (!folio_buffers(folio))
++		folio_create_empty_buffers(folio, 1 << inode->i_blkbits, 0);
++	return folio;
  }
-+EXPORT_SYMBOL(folio_copy);
+diff --git a/fs/ufs/util.h b/fs/ufs/util.h
+index 89247193d96d..62542561d150 100644
+--- a/fs/ufs/util.h
++++ b/fs/ufs/util.h
+@@ -273,12 +273,17 @@ extern void _ubh_ubhcpymem_(struct ufs_sb_private_info *, unsigned char *, struc
+ extern void _ubh_memcpyubh_(struct ufs_sb_private_info *, struct ufs_buffer_head *, unsigned char *, unsigned);
  
- int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
- int sysctl_overcommit_ratio __read_mostly = 50;
+ /* This functions works with cache pages*/
+-extern struct page *ufs_get_locked_page(struct address_space *mapping,
+-					pgoff_t index);
++struct page *ufs_get_locked_page(struct address_space *mapping, pgoff_t index);
++struct folio *ufs_get_locked_folio(struct address_space *mapping, pgoff_t index);
++static inline void ufs_put_locked_folio(struct folio *folio)
++{
++       folio_unlock(folio);
++       folio_put(folio);
++}
++
+ static inline void ufs_put_locked_page(struct page *page)
+ {
+-       unlock_page(page);
+-       put_page(page);
++	ufs_put_locked_folio(page_folio(page));
+ }
+ 
+ 
 -- 
 2.40.1
 
