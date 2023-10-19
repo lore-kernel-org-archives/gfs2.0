@@ -1,117 +1,134 @@
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620E6358BD
-	for <gfs2@lists.linux.dev>; Wed, 18 Oct 2023 14:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-3b2b1b0d930so8407048b6e.1
-        for <gfs2@lists.linux.dev>; Wed, 18 Oct 2023 07:28:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF91C1DFC3
+	for <gfs2@lists.linux.dev>; Thu, 19 Oct 2023 12:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FyVL85J4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1697718499;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XEW0SGr4MbR9CQVpzv4tkcFfYyLm9TH0drmlL9slatc=;
+	b=FyVL85J49cQ/BvI+S4I2SqpUBzu2qThPUGtRQXga9Isnv5Bc+hm6CJ2OzlfuLh/vXPCRUc
+	oyui4PXN52xd+agVBdwTh/fIHkaOq9YoM7RwXe8jBK/PSiVJsWBQWI0sx5JaGkTl1nfv2v
+	TVhbymZr4QVcjpPRyPpl7fMIqlltW5c=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-2nkWuPK3MJ6Ik1ViTpe80Q-1; Thu, 19 Oct 2023 08:28:18 -0400
+X-MC-Unique: 2nkWuPK3MJ6Ik1ViTpe80Q-1
+Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-d9cbe745e7eso457400276.3
+        for <gfs2@lists.linux.dev>; Thu, 19 Oct 2023 05:28:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697639280; x=1698244080;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
+        d=1e100.net; s=20230601; t=1697718497; x=1698323297;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CdMBNL3S2x6JknCQNvPePRN6XZ2zBEfRh1DVc58bPSA=;
-        b=uWXRNrE3stjvHaQuNKoK5IiHJJDN9PMLqMTZjpuS7r48/iQTfQ65F73lbmM98eand2
-         nFgSQo4D4I7TyFcJZ+Xms/FttplblGPqSRs6ApN2KGs/q0fXaTWeqochS2yyFKGUyjTj
-         gBX62CJM/CDZR3yuMFhzry9LxeqcNzDqsY/+72vEARCpop/JU9G15u4wafRzJy26erew
-         /UIQcPNaGjSBaWFwNKAA8RBbeBYQvNSem2ofnSmjA1f3vJMrAPbRUQWkGGQ3i66YqT7A
-         lCFj7MLLcAn+C0FvQIPwEg03JJ+2JCW7USUHCLk6O+G0PzbzMC6j5CP/OomKieV/alce
-         nWtQ==
-X-Gm-Message-State: AOJu0YyyxC9M21OgKk1dEPwB9q30BWeksEoUg2bHfzEOSsyRYVqJoy7G
-	CEigV5VfTf78XUuOOMR0LrUpfX66aXzg2/jei2ysw9e9Agzn
-X-Google-Smtp-Source: AGHT+IH5x77WTQFzLiRumx9QRmlIW1x9csdWG+C9yZ4XNpdGNpfb61NuTSsTMsCGzbBMsDzUBEgm2yxf0y4jfQacuqmDkoK4xRm/
+        bh=XEW0SGr4MbR9CQVpzv4tkcFfYyLm9TH0drmlL9slatc=;
+        b=s+PcpPb/GPbtBeBKAPYPuyKCC3SpjuQgxIdefJEH7cm/05oQZnSzt6cKjNLIKXpzov
+         d4c0yQV6ld4Dj8TNa+Zl4EBgchfYfKh6l7n6VsQaooryGgXFNnaOfe1SMigEHayD0O1s
+         CiVKgEJJ4rFGy6l21jO5DTyIvPKeCWOzNRiD32qId9t0dUjpz4LBeF89q1r66xOcaTGP
+         kvXTo+FJH3Uw7qPU8pAKSjXfUGARozHoKZdQ8/yA1ab/64rI6gV1HeKSwfuwJk6kk1Lm
+         MCuAfMgCTeZuP1Xicva1Us0Q3WtFCQMl/9XTTOEi9x+idH/XjW1xyIUn59IkfmvGDamb
+         rYsA==
+X-Gm-Message-State: AOJu0YwOE+9F4kfbL465J31xWBoisuQThW0yNwCUOsncYzADNn97adG4
+	/h7FRgsmJytUoyr9wiWc6Hfm2JGXgzA4cP172q80RyutK1LJkC4DH+VZJY0hNzDaBNwZHPpnzsh
+	oXIApuAGruN4rmQ==
+X-Received: by 2002:a25:9802:0:b0:d9a:4fa0:dca9 with SMTP id a2-20020a259802000000b00d9a4fa0dca9mr1959644ybo.25.1697718497664;
+        Thu, 19 Oct 2023 05:28:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsBhf8CkOk5LzOFaZntyg+KF/j0oUcdZXQZzrNvkHBmp4jM6uNdGp07fJUfPbFCGQ8CVNaTw==
+X-Received: by 2002:a25:9802:0:b0:d9a:4fa0:dca9 with SMTP id a2-20020a259802000000b00d9a4fa0dca9mr1959632ybo.25.1697718497403;
+        Thu, 19 Oct 2023 05:28:17 -0700 (PDT)
+Received: from [192.168.1.165] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id e13-20020ad450cd000000b0065cffe12ae9sm740160qvq.36.2023.10.19.05.28.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Oct 2023 05:28:16 -0700 (PDT)
+Message-ID: <be0ce0c5-5278-4d29-94d2-e5ce26e8e3b5@redhat.com>
+Date: Thu, 19 Oct 2023 13:28:13 +0100
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:219b:b0:3b2:f40e:9493 with SMTP id
- be27-20020a056808219b00b003b2f40e9493mr13347oib.6.1697639280434; Wed, 18 Oct
- 2023 07:28:00 -0700 (PDT)
-Date: Wed, 18 Oct 2023 07:28:00 -0700
-In-Reply-To: <0000000000000c44b0060760bd00@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004467c80607fe72f1@google.com>
-Subject: Re: [syzbot] [gfs2?] WARNING: suspicious RCU usage in gfs2_permission
-From: syzbot <syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, postmaster@duagon.onmicrosoft.com, 
-	rpeterso@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Cluster-devel] [gfs2:extents 14/14] fs/gfs2/extents.c:123:23-27:
+ WARNING use flexible-array member instead
+ (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
+ (fwd)
+To: Julia Lawall <julia.lawall@inria.fr>
+Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev,
+ Andreas Gruenbacher <agruenba@redhat.com>
+References: <a8791f89-ed7b-1649-3b53-72349899c5d@inria.fr>
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <a8791f89-ed7b-1649-3b53-72349899c5d@inria.fr>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-syzbot has found a reproducer for the following issue on:
+On 19/10/2023 06:27, Julia Lawall wrote:
+> 
+> 
+> ---------- Forwarded message ----------
+> Date: Thu, 19 Oct 2023 05:56:44 +0800
+> From: kernel test robot <lkp@intel.com>
+> To: oe-kbuild@lists.linux.dev
+> Cc: lkp@intel.com, Julia Lawall <julia.lawall@inria.fr>
+> Subject: [gfs2:extents 14/14] fs/gfs2/extents.c:123:23-27: WARNING use
+>      flexible-array member instead
+>      (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-
+>      and-one-element-arrays)
+> 
+> BCC: lkp@intel.com
+> CC: oe-kbuild-all@lists.linux.dev
+> CC: cluster-devel@redhat.com
 
-HEAD commit:    2dac75696c6d Add linux-next specific files for 20231018
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=13af5fe5680000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6f8545e1ef7a2b66
-dashboard link: https://syzkaller.appspot.com/bug?extid=3e5130844b0c0e2b4948
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=101c8d09680000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11a07475680000
+The lkp-tests contact info is out of date. I've opened a PR to fix it at 
+https://github.com/intel/lkp-tests/pull/319 but it should probably use 
+the latest MAINTAINERS file always. CCing the new gfs2 list.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2375f16ed327/disk-2dac7569.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c80aee6e2e6c/vmlinux-2dac7569.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/664dc23b738d/bzImage-2dac7569.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/5ce278ef6f36/mount_0.gz
+Thanks,
+Andy
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com
+> TO: Andreas Gruenbacher <agruenba@redhat.com>
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git extents
+> head:   86474c69cac46872bd311318c02fb8e9e25abd10
+> commit: 86474c69cac46872bd311318c02fb8e9e25abd10 [14/14] gfs2: Add some initial extents-based inode code
+> :::::: branch date: 9 days ago
+> :::::: commit date: 9 days ago
+> config: x86_64-randconfig-101-20231018 (https://download.01.org/0day-ci/archive/20231019/202310190541.0impmnL4-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce: (https://download.01.org/0day-ci/archive/20231019/202310190541.0impmnL4-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Julia Lawall <julia.lawall@inria.fr>
+> | Closes: https://lore.kernel.org/r/202310190541.0impmnL4-lkp@intel.com/
+> 
+> cocci warnings: (new ones prefixed by >>)
+>>> fs/gfs2/extents.c:123:23-27: WARNING use flexible-array member instead (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
+> 
+> vim +123 fs/gfs2/extents.c
+> 
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  115
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  116  /*
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  117   * The path components in struct gfs2_extent_path are stored in "reverse"
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  118   * order: the leaf is stored first, and when the tree grows at the root,
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  119   * this happens at the end of the array.
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  120   */
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  121  struct gfs2_extent_path {
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  122  	unsigned int p_height;
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25 @123  	struct gfs2_extent_pc p_pc[1];
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  124  };
+> 86474c69cac468 Andreas Gruenbacher 2021-03-25  125
+> 
 
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-=============================
-WARNING: suspicious RCU usage
-6.6.0-rc6-next-20231018-syzkaller #0 Not tainted
------------------------------
-fs/gfs2/inode.c:1877 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-no locks held by syz-executor120/5052.
-
-stack backtrace:
-CPU: 1 PID: 5052 Comm: syz-executor120 Not tainted 6.6.0-rc6-next-20231018-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
- lockdep_rcu_suspicious+0x20c/0x3b0 kernel/locking/lockdep.c:6711
- gfs2_permission+0x3f9/0x4c0 fs/gfs2/inode.c:1877
- do_inode_permission fs/namei.c:462 [inline]
- inode_permission fs/namei.c:529 [inline]
- inode_permission+0x384/0x5e0 fs/namei.c:504
- may_open+0x11c/0x400 fs/namei.c:3249
- do_open fs/namei.c:3619 [inline]
- path_openat+0x17aa/0x2ce0 fs/namei.c:3778
- do_filp_open+0x1de/0x430 fs/namei.c:3808
- do_sys_openat2+0x176/0x1e0 fs/open.c:1440
- do_sys_open fs/open.c:1455 [inline]
- __do_sys_openat fs/open.c:1471 [inline]
- __se_sys_openat fs/open.c:1466 [inline]
- __x64_sys_openat+0x175/0x210 fs/open.c:1466
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7f5b23a31a11
-Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d 7a 06 0b 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 93 00 00 00 48 8b 54 24 28 64 48 2b 14 25
-RSP: 002b:00007ffe9ecd33a0 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000010000 RCX: 00007f5b23a31a11
-RDX: 0000000000010000 RSI: 0000000020037f80 RDI: 00000000ffffff9c
-RBP: 0000000020037f80 R08: 00007ffe9ecd3470 R09: 0000000000037f13
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 00007ffe9ecd3470 R14: 0000000000000003 R15: 0000000001000000
- </TASK>
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
