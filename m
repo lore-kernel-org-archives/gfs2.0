@@ -1,68 +1,106 @@
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007B3CA6C
-	for <gfs2@lists.linux.dev>; Fri, 20 Oct 2023 07:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6ce27d056ceso734187a34.0
-        for <gfs2@lists.linux.dev>; Fri, 20 Oct 2023 00:10:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F0815484
+	for <gfs2@lists.linux.dev>; Tue, 24 Oct 2023 07:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OMp3SRcJ"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40859dee28cso22627395e9.0
+        for <gfs2@lists.linux.dev>; Tue, 24 Oct 2023 00:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698134141; x=1698738941; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y+18Cg9WmaAh8a3daasUHdD04vDnvoaOPywc9c9gIuw=;
+        b=OMp3SRcJ8GDaKCJtB6bTWLdrG2rjh5TjG3P+Hu8X9eQWI8TR2vV7E15STdmWAvWNth
+         eRdDg6hEgVe5bZvhX7zK04pTOIgpjO1KgIdsy49wGQGxHM1PRAvrO8bZAe/qmNXCKyRU
+         I7Fo0RN3TqQDD6ElPKKc6MGowsna4UoPYXTzpXRGYQm3W+XmHoBA7KnOJKZkzQ00okmc
+         vd5aCCUG4o7gc/zSouitqg0e5LXH9I+d6sKievtr60oyjnmGrCzgzlffxpUYiBmXMm+k
+         j9dlQPteG3Qb9CGhVvQ4mTt+vyNb5OKdd/w112VF78xo+PP7AC5GXq9IlHfO1QIxRFSM
+         pwYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697785838; x=1698390638;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lWL0rNLl5jF/ivasCRcew47fQzuvd0OIJz60/b6FZdY=;
-        b=fzKKTGQDGETGp6FO7ZohlGDqF9oEHzBH6F7RH0B9sARoDnbiDiNnqPr1lUqePQj6pr
-         cWmI1hFdwvjO791E1rCjsjo/F4KhTXOUZ2f7qwVeG66uLX5lf1cXT6NCj1ve7eCxAepN
-         EOxV/P10TSv4fLXVPvMgnAInJT2InohK8ktS2APn1+uWoVk1vUo0WLsxbql2dHIGGyIc
-         f/VuczSr/bCwNqIHLe80ZTJ5OxJ3wurph7T8QfLucq4yDBc0vwrfFWeFQW+2lQdnzLif
-         JSXKPcXclTx/kT/BKj8+4eJvaM2O3FmY5MgDpzRwGIihY1hpfuF3IU+mMzVdvdqiC81+
-         o68g==
-X-Gm-Message-State: AOJu0YzWq+FUINYODjq3RkF/7GAJN8T2WiC7LS5JVC/m/Bxi4qwl+fB1
-	pBuJmSldHMw2rrOhE2FzhcuTLbpfektCa9pAKq4MvYwf6fvW
-X-Google-Smtp-Source: AGHT+IGTxmGob7Dc/DPgC3p4zZRvObLuhFsv4iCL/svsCC2b2UrLxyCog5rpqjctEWdGkRbOPSHHWA/IV8941w7lnpeNC3TMVIqS
+        d=1e100.net; s=20230601; t=1698134141; x=1698738941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y+18Cg9WmaAh8a3daasUHdD04vDnvoaOPywc9c9gIuw=;
+        b=e9C0w0rCUf0sqJjSKc/W7/jgkN4/FpqAGsRGZq5A2fWpyGCC8k/z5DRI5Pa7tDI1h3
+         Kx4PdRJkIP0OXDc5sJUehk+5Z+QM5Vdg1k0m6IuvX2a9GoHs1Y8W0RXJV/fvnnfV6Qk7
+         dZL1+Q4VnASUKFWn+XY4r9hQhuE8dq0Ukka5YrUIGX5XeOOz3WL8V1pTC6CuFsE8mdrB
+         2z4XFr6CY5HIHpTYAlF139f51A8oXYVWhmUHC7c5wj1kW90MFYM5daBh4EKtHbEmS1qD
+         5dZjKHEeezPMiwHAHMY7br32rloCEsI3oixRAmfaLfTf2WE8ALy+tfcuUT5gHcfoPX1b
+         4adA==
+X-Gm-Message-State: AOJu0YwI7c9GtbyDiGzsjkU5dpQfYb8DbgGQvdLbK198V9nKL7SysX5H
+	Z1cItApPdHwOoE+TwqafWkE=
+X-Google-Smtp-Source: AGHT+IGHTmUr+pgzGDmBFz1x75w99MYvBGvhAeWEJxniTpOSArnqI1lUIZkOJfE6woIeL+zwVQwkKw==
+X-Received: by 2002:a1c:770a:0:b0:406:53e4:4d23 with SMTP id t10-20020a1c770a000000b0040653e44d23mr8604561wmi.23.1698134140800;
+        Tue, 24 Oct 2023 00:55:40 -0700 (PDT)
+Received: from amir-ThinkPad-T480.lan ([5.29.249.86])
+        by smtp.gmail.com with ESMTPSA id iv15-20020a05600c548f00b00405c7591b09sm11376199wmb.35.2023.10.24.00.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Oct 2023 00:55:40 -0700 (PDT)
+From: Amir Goldstein <amir73il@gmail.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	Bob Peterson <rpeterso@redhat.com>,
+	gfs2@lists.linux.dev
+Subject: [PATCH] gfs2: fs: derive f_fsid from s_uuid
+Date: Tue, 24 Oct 2023 10:55:35 +0300
+Message-Id: <20231024075535.2994553-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6870:c18c:b0:1e1:3367:1429 with SMTP id
- h12-20020a056870c18c00b001e133671429mr503641oad.10.1697785838117; Fri, 20 Oct
- 2023 00:10:38 -0700 (PDT)
-Date: Fri, 20 Oct 2023 00:10:38 -0700
-In-Reply-To: <0000000000000c44b0060760bd00@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c92c0d06082091ee@google.com>
-Subject: Re: [syzbot] [gfs2?] WARNING: suspicious RCU usage in gfs2_permission
-From: syzbot <syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, cluster-devel@redhat.com, gfs2@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	postmaster@duagon.onmicrosoft.com, rpeterso@redhat.com, 
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has bisected this issue to:
+gfs2 already has optional persistent uuid.
 
-commit 0abd1557e21c617bd13fc18f7725fc6363c05913
-Author: Al Viro <viro@zeniv.linux.org.uk>
-Date:   Mon Oct 2 02:33:44 2023 +0000
+Use that uuid to report f_fsid in statfs(2), same as ext2/ext4/zonefs.
 
-    gfs2: fix an oops in gfs2_permission
+This allows gfs2 to be monitored by fanotify filesystem watch.
+for example, with inotify-tools 4.23.8.0, the following command can be
+used to watch changes over entire filesystem:
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10b21c33680000
-start commit:   2dac75696c6d Add linux-next specific files for 20231018
-git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12b21c33680000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14b21c33680000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6f8545e1ef7a2b66
-dashboard link: https://syzkaller.appspot.com/bug?extid=3e5130844b0c0e2b4948
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=101c8d09680000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11a07475680000
+  fsnotifywatch --filesystem /mnt/gfs2
 
-Reported-by: syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com
-Fixes: 0abd1557e21c ("gfs2: fix an oops in gfs2_permission")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Andreas,
+
+I do not have a test setup for gfs2, but this change it quite trivial,
+so I am posting it only compile tested.
+
+There is no need to test fanotify. It enough to test statfs returns
+a non-zero f_fsid, e.g.:
+
+  strace -e fstatfs du /mnt/gfs2
+
+Thanks,
+Amir.
+
+ fs/gfs2/super.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 02d93da21b2b..ea769af6bb23 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1006,6 +1006,7 @@ static int gfs2_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	buf->f_files = sc.sc_dinodes + sc.sc_free;
+ 	buf->f_ffree = sc.sc_free;
+ 	buf->f_namelen = GFS2_FNAMESIZE;
++	buf->f_fsid = uuid_to_fsid(sb->s_uuid.b);
+ 
+ 	return 0;
+ }
+-- 
+2.34.1
+
