@@ -1,143 +1,79 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7675818E27
-	for <gfs2@lists.linux.dev>; Tue, 24 Oct 2023 09:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77817498
+	for <gfs2@lists.linux.dev>; Tue, 24 Oct 2023 11:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="r78bMzKu";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GBX3RKSx"
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CE9A91FD71;
-	Tue, 24 Oct 2023 09:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1698140557; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BFgALvxQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698146130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qrq9v2CVUSm3Qz+Q16nXPSzF1+xgg0aSX1N4sSAt7TI=;
-	b=r78bMzKulKUpUdRWjDk2iaU24ZL/FN4SIn1gKZbHZBQvVe4uDN3qT43GjqLLlFUfG9JUz5
-	RDEspZzmPbC4SqY8EAEHNzHaQiI5haKsNCIL9QIwyAtgLk1ceVrKXuSRZBWp3dYT6tyPZr
-	IhARFK37VhoeW8L/7nf1O9Swy6XLRtA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1698140557;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qrq9v2CVUSm3Qz+Q16nXPSzF1+xgg0aSX1N4sSAt7TI=;
-	b=GBX3RKSxpfo2qdBLUtFgADNti6YQPIWCpaRklj0Nsvi1oq77ajOCM39m/2dXh+cbve5Ujd
-	a0/jPjTPQGN3/tCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B9E1C134F5;
-	Tue, 24 Oct 2023 09:42:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id MKpKLY2RN2WODQAAMHmgww
-	(envelope-from <jack@suse.cz>); Tue, 24 Oct 2023 09:42:37 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2FBC4A05BC; Tue, 24 Oct 2023 11:42:37 +0200 (CEST)
-Date: Tue, 24 Oct 2023 11:42:37 +0200
-From: Jan Kara <jack@suse.cz>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org, Bob Peterson <rpeterso@redhat.com>,
-	gfs2@lists.linux.dev
-Subject: Re: [PATCH] gfs2: fs: derive f_fsid from s_uuid
-Message-ID: <20231024094237.6yykkw6hhoynofzv@quack3>
-References: <20231024075535.2994553-1-amir73il@gmail.com>
+	bh=vSJSEpKk86+44DHG1a6QAaN6xAMr6qX2sKIRljqSTyE=;
+	b=BFgALvxQtTOlkPF+D70tHOvN/UIW9SrarUGlN2hNLH09vUbjRlnuDDYQxizRC4YptpHC4D
+	AeCWwUCa+hOVivIpoiDK4JvGgQkcVNYo7G6y8R0ngKnBcswELYb9BaM1FpJsfjM1IlzmVk
+	Y6kgpGiTV8Micsd13BrTcuMfdBpZwmE=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-uFMtUyw3NeS2W_Ef7nbQRw-1; Tue, 24 Oct 2023 07:15:27 -0400
+X-MC-Unique: uFMtUyw3NeS2W_Ef7nbQRw-1
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1c9cd87af72so47067805ad.1
+        for <gfs2@lists.linux.dev>; Tue, 24 Oct 2023 04:15:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698146127; x=1698750927;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vSJSEpKk86+44DHG1a6QAaN6xAMr6qX2sKIRljqSTyE=;
+        b=DSuSCyNToWKGzf0ThoB01TQdPThalEBqXcE1r33Yax787FU0OC6UoyjVxrSfh81MqD
+         gA69fH0y/mZ0dVSHIx6uNEJkkZmd6kXxWjOCjMoNpLJbLMGRopeQoEDCfV0Vstecfn84
+         rQ3UBQy0nd9287i5HxU7ZlWEi/9a53ASU2FYRgjytV/B+t5ghaCsudFO/VwMfhEJWlr4
+         ueqyUjz7e7TH/B38SLnlIs4ufYSyHFOyqETIonQMjzUzpVJADFgiuDPhcUcEkgmqxUHB
+         jZ2/v+01iJ+VtZLHxIW+e/LOo7iOtqXg2BD2St/Nh+aQmpZh3ze/sJ7V6/VHx8Ac2oG4
+         Etjw==
+X-Gm-Message-State: AOJu0YwgqLGMajN4NbHFJ5RGq/e7kjtXcxrYZ4ux/Iol/ENYori9vBT9
+	F4y0vOgvnh+TtciTh9lanEbcRWLGox4/oL/VGqixKlXt4LQgDJlGZTvkgtEkHzPmhTpRCHQbmji
+	Z0BywKp9Q3xkYRlty/uL+kkGVvOvJuw==
+X-Received: by 2002:a17:903:2286:b0:1bd:da96:dc70 with SMTP id b6-20020a170903228600b001bdda96dc70mr12737215plh.49.1698146126999;
+        Tue, 24 Oct 2023 04:15:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0L75G/Cj63Gt4JTm8S7BbzcPC+Dh8doYG/mYF2FW08Bb0r4vsCFa/ESAfWwBuQapL41pSj1XzYle4AshhNYw=
+X-Received: by 2002:a17:903:2286:b0:1bd:da96:dc70 with SMTP id
+ b6-20020a170903228600b001bdda96dc70mr12737199plh.49.1698146126743; Tue, 24
+ Oct 2023 04:15:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20231024075535.2994553-1-amir73il@gmail.com>
 In-Reply-To: <20231024075535.2994553-1-amir73il@gmail.com>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -6.60
-X-Spamd-Result: default: False [-6.60 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-3.00)[-1.000];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-1.00)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 FREEMAIL_TO(0.00)[gmail.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 RCVD_COUNT_TWO(0.00)[2];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Flag: NO
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 24 Oct 2023 13:15:14 +0200
+Message-ID: <CAHc6FU700V+54hU+JPFYNDLkqicG=UPjU81N3UGmgiTSYnz3-g@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: fs: derive f_fsid from s_uuid
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	Bob Peterson <rpeterso@redhat.com>, gfs2@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue 24-10-23 10:55:35, Amir Goldstein wrote:
+Amir,
+
+On Tue, Oct 24, 2023 at 9:56=E2=80=AFAM Amir Goldstein <amir73il@gmail.com>=
+ wrote:
 > gfs2 already has optional persistent uuid.
-> 
+>
 > Use that uuid to report f_fsid in statfs(2), same as ext2/ext4/zonefs.
-> 
-> This allows gfs2 to be monitored by fanotify filesystem watch.
-> for example, with inotify-tools 4.23.8.0, the following command can be
-> used to watch changes over entire filesystem:
-> 
->   fsnotifywatch --filesystem /mnt/gfs2
-> 
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 
-Looks good. Feel free to add:
+I've applied this patch, thank you.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Andreas
 
-								Honza
-
-> ---
-> 
-> Andreas,
-> 
-> I do not have a test setup for gfs2, but this change it quite trivial,
-> so I am posting it only compile tested.
-> 
-> There is no need to test fanotify. It enough to test statfs returns
-> a non-zero f_fsid, e.g.:
-> 
->   strace -e fstatfs du /mnt/gfs2
-> 
-> Thanks,
-> Amir.
-> 
->  fs/gfs2/super.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-> index 02d93da21b2b..ea769af6bb23 100644
-> --- a/fs/gfs2/super.c
-> +++ b/fs/gfs2/super.c
-> @@ -1006,6 +1006,7 @@ static int gfs2_statfs(struct dentry *dentry, struct kstatfs *buf)
->  	buf->f_files = sc.sc_dinodes + sc.sc_free;
->  	buf->f_ffree = sc.sc_free;
->  	buf->f_namelen = GFS2_FNAMESIZE;
-> +	buf->f_fsid = uuid_to_fsid(sb->s_uuid.b);
->  
->  	return 0;
->  }
-> -- 
-> 2.34.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
