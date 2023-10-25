@@ -1,45 +1,42 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDA21380
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39B21377
 	for <gfs2@lists.linux.dev>; Wed, 25 Oct 2023 00:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I+dpH5os"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gKvPfUla"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1698195240;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AdcRO3ymp/0WTO0PenXNdshS9aaYiahR/mgbT8R7pvQ=;
-	b=I+dpH5os9pqBq1DvpAzZ0ssfzyBEnEPkEY9sbAA/7v6prfFvLqWqBZS5NVFMHWEYDROuJA
-	nVS5D4LbfMXkZa7AinulWf6YAdazSpQjekh2FHrYkyMH+HkVtkyE69wxo0ijaYjVFKQ+FQ
-	cpAeXrEPUZ+irDZ8MpXdTUu2/oQNrDA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-acC6AsX8OSySlJH8vVtX3g-1; Tue, 24 Oct 2023 20:53:59 -0400
-X-MC-Unique: acC6AsX8OSySlJH8vVtX3g-1
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=13tvGcFK3YSJhIDBd8okgrvtoxnr32/l/Wj3RaLXtos=;
+	b=gKvPfUlaxxe09Zu0b6CnrjnqM2B7hHgS4HzMewYPN3CFVX0aoMIme0uRQPGKDpr4vPNEEN
+	lGTkxcxc9Oyvl3xpbc9az0cMHrKFdCU/bhZz+o4g35ZwkpZaZK6Z7AK3fCsBIJwx7UATFI
+	+GpdUciVmwewrBTm2PYe2QszusflkJo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-7IKt5RNHN1GIjdz8unjiyQ-1; Tue,
+ 24 Oct 2023 20:53:59 -0400
+X-MC-Unique: 7IKt5RNHN1GIjdz8unjiyQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C74D984B106
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B806C1C05192
 	for <gfs2@lists.linux.dev>; Wed, 25 Oct 2023 00:53:58 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BD1CC40C6F79;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id A655540C6F79;
 	Wed, 25 Oct 2023 00:53:58 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 03/10] dlm: move root_list to ls_recover() stack
-Date: Tue, 24 Oct 2023 20:53:46 -0400
-Message-Id: <20231025005353.855904-3-aahringo@redhat.com>
-In-Reply-To: <20231025005353.855904-1-aahringo@redhat.com>
-References: <20231025005353.855904-1-aahringo@redhat.com>
+Subject: [PATCH dlm/next 01/10] dlm: remove allocation parameter in msg allocation
+Date: Tue, 24 Oct 2023 20:53:44 -0400
+Message-Id: <20231025005353.855904-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -52,508 +49,394 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch moves the per lockspace ls_root_list list which is mainly
-used for snapshoting all dlm_rsb from a hash to a list to do recovery
-handling into the recovery function ls_recover() as stack variable.
-
-Doing that shows that there is no need for locking the ls_root_list
-which is created at the beginning of ls_recover() and destroyed at the
-ending of ls_recover(). In between only functionality is called doing
-read only access to the root_list stack variable.
-
-A special case is assigning the per lockspace ls_recover_dir_root_list
-variable to the stack variable. The ls_recover_dir_root_list get
-accessed by another concurrent process dlm_copy_master_names() during
-the time between ls_recover_dir_root_list is set and set to NULL again.
-This is done by a special distributed barrier functionality between
-dlm_recover_members_wait() and dlm_recover_directory_wait(). A comment
-was made to mention about this handling which might be changed to a
-better behaviour in future. However setting the ls_recover_dir_root_list
-to the stack variable and set it to NULL in this specific time will show
-us potential issues with the recovery handling if it's breaks.
+This patch removes the context parameter for message allocations and
+replace it by always do GFP_ATOMIC. We are preparing to process dlm
+message in softirq context therefore it's necessary to switch to
+GFP_ATOMIC allocation as we cannot sleep in this context. To simplify
+the code overall we just drop the allocation flag and have GFP_ATOMIC
+hardcoded when calling the allocation function.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dir.c          | 27 +++++++++-------------
- fs/dlm/dir.h          |  3 ++-
- fs/dlm/dlm_internal.h |  4 +---
- fs/dlm/lock.c         |  6 ++---
- fs/dlm/lock.h         |  2 +-
- fs/dlm/lockspace.c    |  2 --
- fs/dlm/recover.c      | 52 +++++++++++++------------------------------
- fs/dlm/recover.h      | 12 +++++-----
- fs/dlm/recoverd.c     | 25 ++++++++++++++-------
- 9 files changed, 55 insertions(+), 78 deletions(-)
+ fs/dlm/lock.c     | 31 ++++++++++++-------------------
+ fs/dlm/lowcomms.c | 16 +++++++---------
+ fs/dlm/lowcomms.h |  5 ++---
+ fs/dlm/memory.c   |  8 ++++----
+ fs/dlm/memory.h   |  4 ++--
+ fs/dlm/midcomms.c | 24 ++++++++++--------------
+ fs/dlm/midcomms.h |  3 +--
+ fs/dlm/rcom.c     |  7 +++----
+ 8 files changed, 41 insertions(+), 57 deletions(-)
 
-diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
-index f6acba4310a7..bed83ef6b8a5 100644
---- a/fs/dlm/dir.c
-+++ b/fs/dlm/dir.c
-@@ -47,15 +47,13 @@ int dlm_dir_nodeid(struct dlm_rsb *r)
- 	return r->res_dir_nodeid;
- }
- 
--void dlm_recover_dir_nodeid(struct dlm_ls *ls)
-+void dlm_recover_dir_nodeid(struct dlm_ls *ls, const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		r->res_dir_nodeid = dlm_hash2nodeid(ls, r->res_hash);
- 	}
--	up_read(&ls->ls_root_sem);
- }
- 
- int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq)
-@@ -216,16 +214,14 @@ static struct dlm_rsb *find_rsb_root(struct dlm_ls *ls, const char *name,
- 	if (!rv)
- 		return r;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, ls->ls_recover_dir_root_list, res_root_list) {
- 		if (len == r->res_length && !memcmp(name, r->res_name, len)) {
--			up_read(&ls->ls_root_sem);
- 			log_debug(ls, "find_rsb_root revert to root_list %s",
- 				  r->res_name);
- 			return r;
- 		}
- 	}
--	up_read(&ls->ls_root_sem);
-+
- 	return NULL;
- }
- 
-@@ -236,26 +232,25 @@ static struct dlm_rsb *find_rsb_root(struct dlm_ls *ls, const char *name,
- void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
-  			   char *outbuf, int outlen, int nodeid)
- {
-+	const struct list_head *root_list = READ_ONCE(ls->ls_recover_dir_root_list);
- 	struct list_head *list;
- 	struct dlm_rsb *r;
- 	int offset = 0, dir_nodeid;
- 	__be16 be_namelen;
- 
--	down_read(&ls->ls_root_sem);
--
- 	if (inlen > 1) {
- 		r = find_rsb_root(ls, inbuf, inlen);
- 		if (!r) {
- 			log_error(ls, "copy_master_names from %d start %d %.*s",
- 				  nodeid, inlen, inlen, inbuf);
--			goto out;
-+			return;
- 		}
- 		list = r->res_root_list.next;
- 	} else {
--		list = ls->ls_root_list.next;
-+		list = root_list->next;
- 	}
- 
--	for (offset = 0; list != &ls->ls_root_list; list = list->next) {
-+	for (offset = 0; list != root_list; list = list->next) {
- 		r = list_entry(list, struct dlm_rsb, res_root_list);
- 		if (r->res_nodeid)
- 			continue;
-@@ -278,7 +273,7 @@ void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 			memcpy(outbuf + offset, &be_namelen, sizeof(__be16));
- 			offset += sizeof(__be16);
- 			ls->ls_recover_dir_sent_msg++;
--			goto out;
-+			return;
- 		}
- 
- 		be_namelen = cpu_to_be16(r->res_length);
-@@ -294,14 +289,12 @@ void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 	 * terminating record.
- 	 */
- 
--	if ((list == &ls->ls_root_list) &&
-+	if ((list == root_list) &&
- 	    (offset + sizeof(uint16_t) <= outlen)) {
- 		be_namelen = cpu_to_be16(0xFFFF);
- 		memcpy(outbuf + offset, &be_namelen, sizeof(__be16));
- 		offset += sizeof(__be16);
- 		ls->ls_recover_dir_sent_msg++;
- 	}
-- out:
--	up_read(&ls->ls_root_sem);
- }
- 
-diff --git a/fs/dlm/dir.h b/fs/dlm/dir.h
-index 39ecb69d7ef3..5b2a7ee3762d 100644
---- a/fs/dlm/dir.h
-+++ b/fs/dlm/dir.h
-@@ -14,7 +14,8 @@
- 
- int dlm_dir_nodeid(struct dlm_rsb *rsb);
- int dlm_hash2nodeid(struct dlm_ls *ls, uint32_t hash);
--void dlm_recover_dir_nodeid(struct dlm_ls *ls);
-+void dlm_recover_dir_nodeid(struct dlm_ls *ls,
-+			    const struct list_head *root_list);
- int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq);
- void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 			   char *outbuf, int outlen, int nodeid);
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index dfc444dad329..66c67b17d273 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -629,6 +629,7 @@ struct dlm_ls {
- 	struct mutex		ls_requestqueue_mutex;
- 	struct dlm_rcom		*ls_recover_buf;
- 	int			ls_recover_nodeid; /* for debugging */
-+	const struct list_head	*ls_recover_dir_root_list; /* root resources */
- 	unsigned int		ls_recover_dir_sent_res; /* for log info */
- 	unsigned int		ls_recover_dir_sent_msg; /* for log info */
- 	unsigned int		ls_recover_locks_in; /* for log info */
-@@ -643,9 +644,6 @@ struct dlm_ls {
- 	wait_queue_head_t	ls_recover_lock_wait;
- 	spinlock_t		ls_clear_proc_locks;
- 
--	struct list_head	ls_root_list;	/* root resources */
--	struct rw_semaphore	ls_root_sem;	/* protect root_list */
--
- 	const struct dlm_lockspace_ops *ls_ops;
- 	void			*ls_ops_arg;
- 
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 970b8499b66f..0218645e2f90 100644
+index 652c51fbbf76..44ea65a73f3b 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -5185,7 +5185,7 @@ static void purge_dead_list(struct dlm_ls *ls, struct dlm_rsb *r,
- 
- /* Get rid of locks held by nodes that are gone. */
- 
--void dlm_recover_purge(struct dlm_ls *ls)
-+void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
+@@ -3329,8 +3329,7 @@ int dlm_unlock(dlm_lockspace_t *lockspace,
+ static int _create_message(struct dlm_ls *ls, int mb_len,
+ 			   int to_nodeid, int mstype,
+ 			   struct dlm_message **ms_ret,
+-			   struct dlm_mhandle **mh_ret,
+-			   gfp_t allocation)
++			   struct dlm_mhandle **mh_ret)
  {
- 	struct dlm_rsb *r;
- 	struct dlm_member *memb;
-@@ -5204,8 +5204,7 @@ void dlm_recover_purge(struct dlm_ls *ls)
- 	if (!nodes_count)
- 		return;
+ 	struct dlm_message *ms;
+ 	struct dlm_mhandle *mh;
+@@ -3340,7 +3339,7 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
+ 	   pass into midcomms_commit and a message buffer (mb) that we
+ 	   write our data into */
  
--	down_write(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		hold_rsb(r);
- 		lock_rsb(r);
- 		if (is_master(r)) {
-@@ -5220,7 +5219,6 @@ void dlm_recover_purge(struct dlm_ls *ls)
- 		unhold_rsb(r);
- 		cond_resched();
+-	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, allocation, &mb);
++	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, &mb);
+ 	if (!mh)
+ 		return -ENOBUFS;
+ 
+@@ -3362,8 +3361,7 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
+ static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
+ 			  int to_nodeid, int mstype,
+ 			  struct dlm_message **ms_ret,
+-			  struct dlm_mhandle **mh_ret,
+-			  gfp_t allocation)
++			  struct dlm_mhandle **mh_ret)
+ {
+ 	int mb_len = sizeof(struct dlm_message);
+ 
+@@ -3384,7 +3382,7 @@ static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
  	}
--	up_write(&ls->ls_root_sem);
  
- 	if (lkb_count)
- 		log_rinfo(ls, "dlm_recover_purge %u locks for %u nodes",
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index b54e2cbbe6e2..c8ff7780d3cc 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -31,7 +31,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- int dlm_search_rsb_tree(struct rb_root *tree, const void *name, int len,
- 			struct dlm_rsb **r_ret);
+ 	return _create_message(r->res_ls, mb_len, to_nodeid, mstype,
+-			       ms_ret, mh_ret, allocation);
++			       ms_ret, mh_ret);
+ }
  
--void dlm_recover_purge(struct dlm_ls *ls);
-+void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list);
- void dlm_purge_mstcpy_locks(struct dlm_rsb *r);
- void dlm_recover_grant(struct dlm_ls *ls);
- int dlm_recover_waiters_post(struct dlm_ls *ls);
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 0455dddb0797..cf7528144827 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -580,8 +580,6 @@ static int new_lockspace(const char *name, const char *cluster,
- 	ls->ls_recover_list_count = 0;
- 	ls->ls_local_handle = ls;
- 	init_waitqueue_head(&ls->ls_wait_general);
--	INIT_LIST_HEAD(&ls->ls_root_list);
--	init_rwsem(&ls->ls_root_sem);
+ /* further lowcomms enhancements or alternate implementations may make
+@@ -3453,7 +3451,7 @@ static int send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
+ 	if (error)
+ 		return error;
  
- 	spin_lock(&lslist_lock);
- 	ls->ls_create_count = 1;
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index ce6dc914cb86..4a4345455d7f 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -519,7 +519,8 @@ static int recover_master_static(struct dlm_rsb *r, unsigned int *count)
-  * the correct dir node.
+-	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh, GFP_NOFS);
++	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
+ 	if (error)
+ 		goto fail;
+ 
+@@ -3513,8 +3511,7 @@ static int send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 
+ 	to_nodeid = lkb->lkb_nodeid;
+ 
+-	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh,
+-			       GFP_NOFS);
++	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh);
+ 	if (error)
+ 		goto out;
+ 
+@@ -3535,8 +3532,7 @@ static int send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode)
+ 
+ 	to_nodeid = lkb->lkb_nodeid;
+ 
+-	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh,
+-			       GFP_NOFS);
++	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh);
+ 	if (error)
+ 		goto out;
+ 
+@@ -3561,8 +3557,7 @@ static int send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	if (error)
+ 		return error;
+ 
+-	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh,
+-			       GFP_NOFS);
++	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh);
+ 	if (error)
+ 		goto fail;
+ 
+@@ -3586,8 +3581,7 @@ static int send_remove(struct dlm_rsb *r)
+ 
+ 	to_nodeid = dlm_dir_nodeid(r);
+ 
+-	error = create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh,
+-			       GFP_ATOMIC);
++	error = create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh);
+ 	if (error)
+ 		goto out;
+ 
+@@ -3608,7 +3602,7 @@ static int send_common_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
+ 
+ 	to_nodeid = lkb->lkb_nodeid;
+ 
+-	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh, GFP_NOFS);
++	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
+ 	if (error)
+ 		goto out;
+ 
+@@ -3650,8 +3644,7 @@ static int send_lookup_reply(struct dlm_ls *ls,
+ 	struct dlm_mhandle *mh;
+ 	int error, nodeid = le32_to_cpu(ms_in->m_header.h_nodeid);
+ 
+-	error = create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh,
+-			       GFP_NOFS);
++	error = create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh);
+ 	if (error)
+ 		goto out;
+ 
+@@ -6063,7 +6056,7 @@ static int send_purge(struct dlm_ls *ls, int nodeid, int pid)
+ 	int error;
+ 
+ 	error = _create_message(ls, sizeof(struct dlm_message), nodeid,
+-				DLM_MSG_PURGE, &ms, &mh, GFP_NOFS);
++				DLM_MSG_PURGE, &ms, &mh);
+ 	if (error)
+ 		return error;
+ 	ms->m_nodeid = cpu_to_le32(nodeid);
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 67f8dd8a05ef..db71982d709d 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1229,14 +1229,13 @@ static struct writequeue_entry *new_wq_entry(struct connection *con, int len,
+ };
+ 
+ static struct dlm_msg *dlm_lowcomms_new_msg_con(struct connection *con, int len,
+-						gfp_t allocation, char **ppc,
+-						void (*cb)(void *data),
++						char **ppc, void (*cb)(void *data),
+ 						void *data)
+ {
+ 	struct writequeue_entry *e;
+ 	struct dlm_msg *msg;
+ 
+-	msg = dlm_allocate_msg(allocation);
++	msg = dlm_allocate_msg();
+ 	if (!msg)
+ 		return NULL;
+ 
+@@ -1261,9 +1260,8 @@ static struct dlm_msg *dlm_lowcomms_new_msg_con(struct connection *con, int len,
+  * dlm_lowcomms_commit_msg which is a must call if success
   */
- 
--int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
-+int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
-+			const struct list_head *root_list)
+ #ifndef __CHECKER__
+-struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
+-				     char **ppc, void (*cb)(void *data),
+-				     void *data)
++struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, char **ppc,
++				     void (*cb)(void *data), void *data)
  {
- 	struct dlm_rsb *r;
- 	unsigned int total = 0;
-@@ -529,10 +530,8 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
- 
- 	log_rinfo(ls, "dlm_recover_masters");
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		if (dlm_recovery_stopped(ls)) {
--			up_read(&ls->ls_root_sem);
- 			error = -EINTR;
- 			goto out;
- 		}
-@@ -546,12 +545,9 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
- 		cond_resched();
- 		total++;
- 
--		if (error) {
--			up_read(&ls->ls_root_sem);
-+		if (error)
- 			goto out;
--		}
+ 	struct connection *con;
+ 	struct dlm_msg *msg;
+@@ -1284,7 +1282,7 @@ struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
+ 		return NULL;
  	}
--	up_read(&ls->ls_root_sem);
  
- 	log_rinfo(ls, "dlm_recover_masters %u of %u", count, total);
+-	msg = dlm_lowcomms_new_msg_con(con, len, allocation, ppc, cb, data);
++	msg = dlm_lowcomms_new_msg_con(con, len, ppc, cb, data);
+ 	if (!msg) {
+ 		srcu_read_unlock(&connections_srcu, idx);
+ 		return NULL;
+@@ -1348,8 +1346,8 @@ int dlm_lowcomms_resend_msg(struct dlm_msg *msg)
+ 	if (msg->retransmit)
+ 		return 1;
  
-@@ -656,13 +652,13 @@ static int recover_locks(struct dlm_rsb *r, uint64_t seq)
- 	return error;
+-	msg_resend = dlm_lowcomms_new_msg_con(msg->entry->con, msg->len,
+-					      GFP_ATOMIC, &ppc, NULL, NULL);
++	msg_resend = dlm_lowcomms_new_msg_con(msg->entry->con, msg->len, &ppc,
++					      NULL, NULL);
+ 	if (!msg_resend)
+ 		return -ENOMEM;
+ 
+diff --git a/fs/dlm/lowcomms.h b/fs/dlm/lowcomms.h
+index 3e8dca66183b..8deb16f8f620 100644
+--- a/fs/dlm/lowcomms.h
++++ b/fs/dlm/lowcomms.h
+@@ -39,9 +39,8 @@ void dlm_lowcomms_stop(void);
+ void dlm_lowcomms_init(void);
+ void dlm_lowcomms_exit(void);
+ int dlm_lowcomms_close(int nodeid);
+-struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
+-				     char **ppc, void (*cb)(void *data),
+-				     void *data);
++struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, char **ppc,
++				     void (*cb)(void *data), void *data);
+ void dlm_lowcomms_commit_msg(struct dlm_msg *msg);
+ void dlm_lowcomms_put_msg(struct dlm_msg *msg);
+ int dlm_lowcomms_resend_msg(struct dlm_msg *msg);
+diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
+index 64f212a066cf..c0c1a83f6381 100644
+--- a/fs/dlm/memory.c
++++ b/fs/dlm/memory.c
+@@ -134,9 +134,9 @@ void dlm_free_lkb(struct dlm_lkb *lkb)
+ 	kmem_cache_free(lkb_cache, lkb);
  }
  
--int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
-+int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
-+		      const struct list_head *root_list)
+-struct dlm_mhandle *dlm_allocate_mhandle(gfp_t allocation)
++struct dlm_mhandle *dlm_allocate_mhandle(void)
  {
- 	struct dlm_rsb *r;
- 	int error, count = 0;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		if (is_master(r)) {
- 			rsb_clear_flag(r, RSB_NEW_MASTER);
- 			continue;
-@@ -673,19 +669,15 @@ int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
- 
- 		if (dlm_recovery_stopped(ls)) {
- 			error = -EINTR;
--			up_read(&ls->ls_root_sem);
- 			goto out;
- 		}
- 
- 		error = recover_locks(r, seq);
--		if (error) {
--			up_read(&ls->ls_root_sem);
-+		if (error)
- 			goto out;
--		}
- 
- 		count += r->res_recover_locks_count;
- 	}
--	up_read(&ls->ls_root_sem);
- 
- 	log_rinfo(ls, "dlm_recover_locks %d out", count);
- 
-@@ -854,13 +846,12 @@ static void recover_grant(struct dlm_rsb *r)
- 		rsb_set_flag(r, RSB_RECOVER_GRANT);
+-	return kmem_cache_alloc(mhandle_cache, allocation);
++	return kmem_cache_alloc(mhandle_cache, GFP_ATOMIC);
  }
  
--void dlm_recover_rsbs(struct dlm_ls *ls)
-+void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 	unsigned int count = 0;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		lock_rsb(r);
- 		if (is_master(r)) {
- 			if (rsb_flag(r, RSB_RECOVER_CONVERT))
-@@ -881,7 +872,6 @@ void dlm_recover_rsbs(struct dlm_ls *ls)
- 		rsb_clear_flag(r, RSB_NEW_MASTER2);
- 		unlock_rsb(r);
- 	}
--	up_read(&ls->ls_root_sem);
- 
- 	if (count)
- 		log_rinfo(ls, "dlm_recover_rsbs %d done", count);
-@@ -889,24 +879,17 @@ void dlm_recover_rsbs(struct dlm_ls *ls)
- 
- /* Create a single list of all root rsb's to be used during recovery */
- 
--int dlm_create_root_list(struct dlm_ls *ls)
-+void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
- {
- 	struct rb_node *n;
- 	struct dlm_rsb *r;
--	int i, error = 0;
--
--	down_write(&ls->ls_root_sem);
--	if (!list_empty(&ls->ls_root_list)) {
--		log_error(ls, "root list not empty");
--		error = -EINVAL;
--		goto out;
--	}
-+	int i;
- 
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
- 		spin_lock(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
- 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
--			list_add(&r->res_root_list, &ls->ls_root_list);
-+			list_add(&r->res_root_list, root_list);
- 			dlm_hold_rsb(r);
- 		}
- 
-@@ -914,21 +897,16 @@ int dlm_create_root_list(struct dlm_ls *ls)
- 			log_error(ls, "dlm_create_root_list toss not empty");
- 		spin_unlock(&ls->ls_rsbtbl[i].lock);
- 	}
-- out:
--	up_write(&ls->ls_root_sem);
--	return error;
+ void dlm_free_mhandle(struct dlm_mhandle *mhandle)
+@@ -154,9 +154,9 @@ void dlm_free_writequeue(struct writequeue_entry *writequeue)
+ 	kmem_cache_free(writequeue_cache, writequeue);
  }
  
--void dlm_release_root_list(struct dlm_ls *ls)
-+void dlm_release_root_list(struct list_head *root_list)
+-struct dlm_msg *dlm_allocate_msg(gfp_t allocation)
++struct dlm_msg *dlm_allocate_msg(void)
  {
- 	struct dlm_rsb *r, *safe;
- 
--	down_write(&ls->ls_root_sem);
--	list_for_each_entry_safe(r, safe, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry_safe(r, safe, root_list, res_root_list) {
- 		list_del_init(&r->res_root_list);
- 		dlm_put_rsb(r);
- 	}
--	up_write(&ls->ls_root_sem);
+-	return kmem_cache_alloc(msg_cache, allocation);
++	return kmem_cache_alloc(msg_cache, GFP_ATOMIC);
  }
  
- void dlm_clear_toss(struct dlm_ls *ls)
-diff --git a/fs/dlm/recover.h b/fs/dlm/recover.h
-index dbc51013ecad..9dffdd825fb6 100644
---- a/fs/dlm/recover.h
-+++ b/fs/dlm/recover.h
-@@ -19,14 +19,16 @@ int dlm_recover_members_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_directory_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_locks_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_done_wait(struct dlm_ls *ls, uint64_t seq);
--int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq);
-+int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
-+			const struct list_head *root_list);
- int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc);
--int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq);
-+int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
-+		      const struct list_head *root_list);
- void dlm_recovered_lock(struct dlm_rsb *r);
--int dlm_create_root_list(struct dlm_ls *ls);
--void dlm_release_root_list(struct dlm_ls *ls);
-+void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list);
-+void dlm_release_root_list(struct list_head *root_list);
- void dlm_clear_toss(struct dlm_ls *ls);
--void dlm_recover_rsbs(struct dlm_ls *ls);
-+void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list);
+ void dlm_free_msg(struct dlm_msg *msg)
+diff --git a/fs/dlm/memory.h b/fs/dlm/memory.h
+index 6b29563d24f7..15198d46b42a 100644
+--- a/fs/dlm/memory.h
++++ b/fs/dlm/memory.h
+@@ -20,11 +20,11 @@ struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls);
+ void dlm_free_lkb(struct dlm_lkb *l);
+ char *dlm_allocate_lvb(struct dlm_ls *ls);
+ void dlm_free_lvb(char *l);
+-struct dlm_mhandle *dlm_allocate_mhandle(gfp_t allocation);
++struct dlm_mhandle *dlm_allocate_mhandle(void);
+ void dlm_free_mhandle(struct dlm_mhandle *mhandle);
+ struct writequeue_entry *dlm_allocate_writequeue(void);
+ void dlm_free_writequeue(struct writequeue_entry *writequeue);
+-struct dlm_msg *dlm_allocate_msg(gfp_t allocation);
++struct dlm_msg *dlm_allocate_msg(void);
+ void dlm_free_msg(struct dlm_msg *msg);
+ struct dlm_callback *dlm_allocate_cb(void);
+ void dlm_free_cb(struct dlm_callback *cb);
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index 2247ebb61be1..ea0559e2a44d 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -380,8 +380,7 @@ static int dlm_send_ack(int nodeid, uint32_t seq)
+ 	struct dlm_msg *msg;
+ 	char *ppc;
  
- #endif				/* __RECOVER_DOT_H__ */
+-	msg = dlm_lowcomms_new_msg(nodeid, mb_len, GFP_ATOMIC, &ppc,
+-				   NULL, NULL);
++	msg = dlm_lowcomms_new_msg(nodeid, mb_len, &ppc, NULL, NULL);
+ 	if (!msg)
+ 		return -ENOMEM;
  
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index 4d17491dea2f..f0f26a6a322c 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -50,6 +50,7 @@ static int enable_locking(struct dlm_ls *ls, uint64_t seq)
+@@ -429,7 +428,7 @@ static int dlm_send_fin(struct midcomms_node *node,
+ 	struct dlm_mhandle *mh;
+ 	char *ppc;
  
- static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+-	mh = dlm_midcomms_get_mhandle(node->nodeid, mb_len, GFP_ATOMIC, &ppc);
++	mh = dlm_midcomms_get_mhandle(node->nodeid, mb_len, &ppc);
+ 	if (!mh)
+ 		return -ENOMEM;
+ 
+@@ -977,13 +976,13 @@ static void midcomms_new_msg_cb(void *data)
+ }
+ 
+ static struct dlm_msg *dlm_midcomms_get_msg_3_2(struct dlm_mhandle *mh, int nodeid,
+-						int len, gfp_t allocation, char **ppc)
++						int len, char **ppc)
  {
-+	LIST_HEAD(root_list);
- 	unsigned long start;
- 	int error, neg = 0;
+ 	struct dlm_opts *opts;
+ 	struct dlm_msg *msg;
  
-@@ -66,7 +67,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 	 * routines.
- 	 */
+ 	msg = dlm_lowcomms_new_msg(nodeid, len + DLM_MIDCOMMS_OPT_LEN,
+-				   allocation, ppc, midcomms_new_msg_cb, mh);
++				   ppc, midcomms_new_msg_cb, mh);
+ 	if (!msg)
+ 		return NULL;
  
--	dlm_create_root_list(ls);
-+	dlm_create_root_list(ls, &root_list);
+@@ -1002,8 +1001,7 @@ static struct dlm_msg *dlm_midcomms_get_msg_3_2(struct dlm_mhandle *mh, int node
+  * dlm_midcomms_commit_mhandle which is a must call if success
+  */
+ #ifndef __CHECKER__
+-struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
+-					     gfp_t allocation, char **ppc)
++struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len, char **ppc)
+ {
+ 	struct midcomms_node *node;
+ 	struct dlm_mhandle *mh;
+@@ -1018,7 +1016,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
+ 	/* this is a bug, however we going on and hope it will be resolved */
+ 	WARN_ON_ONCE(test_bit(DLM_NODE_FLAG_STOP_TX, &node->flags));
  
- 	/*
- 	 * Add or remove nodes from the lockspace's ls_nodes list.
-@@ -82,8 +83,15 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		goto fail;
- 	}
+-	mh = dlm_allocate_mhandle(allocation);
++	mh = dlm_allocate_mhandle();
+ 	if (!mh)
+ 		goto err;
  
--	dlm_recover_dir_nodeid(ls);
-+	dlm_recover_dir_nodeid(ls, &root_list);
+@@ -1029,8 +1027,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
  
-+	/* Those fields are set for dlm_copy_master_names() which only
-+	 * access these fields during between dlm_recover_members_wait()
-+	 * and dlm_recover_directory_wait(). If ls_recover_dir_root_list
-+	 * get accessed outside of ls_recover() or those functions it is
-+	 * a bug and a crash will signal we having problems here.
-+	 */
-+	WRITE_ONCE(ls->ls_recover_dir_root_list, &root_list);
- 	ls->ls_recover_dir_sent_res = 0;
- 	ls->ls_recover_dir_sent_msg = 0;
- 	ls->ls_recover_locks_in = 0;
-@@ -117,6 +125,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		goto fail;
- 	}
+ 	switch (node->version) {
+ 	case DLM_VERSION_3_1:
+-		msg = dlm_lowcomms_new_msg(nodeid, len, allocation, ppc,
+-					   NULL, NULL);
++		msg = dlm_lowcomms_new_msg(nodeid, len, ppc, NULL, NULL);
+ 		if (!msg) {
+ 			dlm_free_mhandle(mh);
+ 			goto err;
+@@ -1041,8 +1038,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
+ 		/* send ack back if necessary */
+ 		dlm_send_ack_threshold(node, DLM_SEND_ACK_BACK_MSG_THRESHOLD);
  
-+	WRITE_ONCE(ls->ls_recover_dir_root_list, NULL);
- 	log_rinfo(ls, "dlm_recover_directory %u out %u messages",
- 		  ls->ls_recover_dir_sent_res, ls->ls_recover_dir_sent_msg);
+-		msg = dlm_midcomms_get_msg_3_2(mh, nodeid, len, allocation,
+-					       ppc);
++		msg = dlm_midcomms_get_msg_3_2(mh, nodeid, len, ppc);
+ 		if (!msg) {
+ 			dlm_free_mhandle(mh);
+ 			goto err;
+@@ -1502,8 +1498,8 @@ int dlm_midcomms_rawmsg_send(struct midcomms_node *node, void *buf,
+ 	rd.node = node;
+ 	rd.buf = buf;
  
-@@ -138,14 +147,14 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * Clear lkb's for departed nodes.
- 		 */
+-	msg = dlm_lowcomms_new_msg(node->nodeid, buflen, GFP_NOFS,
+-				   &msgbuf, midcomms_new_rawmsg_cb, &rd);
++	msg = dlm_lowcomms_new_msg(node->nodeid, buflen, &msgbuf,
++				   midcomms_new_rawmsg_cb, &rd);
+ 	if (!msg)
+ 		return -ENOMEM;
  
--		dlm_recover_purge(ls);
-+		dlm_recover_purge(ls, &root_list);
+diff --git a/fs/dlm/midcomms.h b/fs/dlm/midcomms.h
+index e7246fb3ef57..278d26fdeb2c 100644
+--- a/fs/dlm/midcomms.h
++++ b/fs/dlm/midcomms.h
+@@ -16,8 +16,7 @@ struct midcomms_node;
  
- 		/*
- 		 * Get new master nodeid's for rsb's that were mastered on
- 		 * departed nodes.
- 		 */
+ int dlm_validate_incoming_buffer(int nodeid, unsigned char *buf, int len);
+ int dlm_process_incoming_buffer(int nodeid, unsigned char *buf, int buflen);
+-struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
+-					     gfp_t allocation, char **ppc);
++struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len, char **ppc);
+ void dlm_midcomms_commit_mhandle(struct dlm_mhandle *mh, const void *name,
+ 				 int namelen);
+ int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len);
+diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
+index 3b734aed26b5..2e3f529f3ff2 100644
+--- a/fs/dlm/rcom.c
++++ b/fs/dlm/rcom.c
+@@ -55,7 +55,7 @@ static int create_rcom(struct dlm_ls *ls, int to_nodeid, int type, int len,
+ 	struct dlm_mhandle *mh;
+ 	char *mb;
  
--		error = dlm_recover_masters(ls, rv->seq);
-+		error = dlm_recover_masters(ls, rv->seq, &root_list);
- 		if (error) {
- 			log_rinfo(ls, "dlm_recover_masters error %d", error);
- 			goto fail;
-@@ -155,7 +164,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * Send our locks on remastered rsb's to the new masters.
- 		 */
+-	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, GFP_NOFS, &mb);
++	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, &mb);
+ 	if (!mh) {
+ 		log_print("%s to %d type %d len %d ENOBUFS",
+ 			  __func__, to_nodeid, type, len);
+@@ -75,8 +75,7 @@ static int create_rcom_stateless(struct dlm_ls *ls, int to_nodeid, int type,
+ 	struct dlm_msg *msg;
+ 	char *mb;
  
--		error = dlm_recover_locks(ls, rv->seq);
-+		error = dlm_recover_locks(ls, rv->seq, &root_list);
- 		if (error) {
- 			log_rinfo(ls, "dlm_recover_locks error %d", error);
- 			goto fail;
-@@ -178,7 +187,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * settings.
- 		 */
+-	msg = dlm_lowcomms_new_msg(to_nodeid, mb_len, GFP_NOFS, &mb,
+-				   NULL, NULL);
++	msg = dlm_lowcomms_new_msg(to_nodeid, mb_len, &mb, NULL, NULL);
+ 	if (!msg) {
+ 		log_print("create_rcom to %d type %d len %d ENOBUFS",
+ 			  to_nodeid, type, len);
+@@ -510,7 +509,7 @@ int dlm_send_ls_not_ready(int nodeid, const struct dlm_rcom *rc_in)
+ 	char *mb;
+ 	int mb_len = sizeof(struct dlm_rcom) + sizeof(struct rcom_config);
  
--		dlm_recover_rsbs(ls);
-+		dlm_recover_rsbs(ls, &root_list);
- 	} else {
- 		/*
- 		 * Other lockspace members may be going through the "neg" steps
-@@ -194,7 +203,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		}
- 	}
+-	mh = dlm_midcomms_get_mhandle(nodeid, mb_len, GFP_NOFS, &mb);
++	mh = dlm_midcomms_get_mhandle(nodeid, mb_len, &mb);
+ 	if (!mh)
+ 		return -ENOBUFS;
  
--	dlm_release_root_list(ls);
-+	dlm_release_root_list(&root_list);
- 
- 	/*
- 	 * Purge directory-related requests that are saved in requestqueue.
-@@ -244,7 +253,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 	return 0;
- 
-  fail:
--	dlm_release_root_list(ls);
-+	dlm_release_root_list(&root_list);
- 	mutex_unlock(&ls->ls_recoverd_active);
- 
- 	return error;
 -- 
 2.39.3
 
