@@ -1,99 +1,82 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEA41DFD5
-	for <gfs2@lists.linux.dev>; Tue, 31 Oct 2023 14:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB70E23A2
+	for <gfs2@lists.linux.dev>; Tue, 31 Oct 2023 14:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vw+aFAK6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KzS+p5lh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698762834;
+	s=mimecast20190719; t=1698763752;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UmmvPt2JDYzVIPSiQSgfxPdm/menzvk+MCgpyLHR0mg=;
-	b=Vw+aFAK6lvIT9Od+kKhikdGyHa9jsm0PZjhdQWzm87FS3RLa5mjmhyehh/28KDOfGpeUQK
-	WArOs24emxG3lNDODqtuDaJVf2UePfAbXmRgslfMwvajRwx1D5N1IsfsSIJBhcHmiF4W59
-	hCszNQUr3W7b6sJhPO9jZ2FuegQli24=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-p3VfxgsnPcK7NZSFI6G0yQ-1; Tue,
- 31 Oct 2023 10:33:48 -0400
-X-MC-Unique: p3VfxgsnPcK7NZSFI6G0yQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=9aEtKXQ2ieWW0wRcFfdhj4dIV7XtnWe7cnMjHfz2sxY=;
+	b=KzS+p5lh0+Czb0sjZXBWhLLH63rA6hw3kQJpmUW2Pe9St7Hl1se4OEjIRaV05AROGEkpq/
+	1oq/ailD/rEjAesZY21zB/3hTpsIJmG/QLOS2FxwMfSyIkAvFDjDc90IVPOl6oXLq3Hnww
+	UFYn3pRCNAP1slR3yEE3Vl/w7yXxTa4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-aMrs5NGmPMaexpf5n0Fi8A-1; Tue, 31 Oct 2023 10:49:04 -0400
+X-MC-Unique: aMrs5NGmPMaexpf5n0Fi8A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 541F43811709
-	for <gfs2@lists.linux.dev>; Tue, 31 Oct 2023 14:33:33 +0000 (UTC)
-Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 4A966C1290F;
-	Tue, 31 Oct 2023 14:33:33 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: rpeterso@redhat.com
-Cc: agruenba@redhat.com,
-	gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH] gfs2: don't withdraw if init_threads() got interrupted
-Date: Tue, 31 Oct 2023 10:33:28 -0400
-Message-Id: <20231031143328.1364741-1-aahringo@redhat.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E633830966;
+	Tue, 31 Oct 2023 14:49:02 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.17.253])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id D4EA510F4C;
+	Tue, 31 Oct 2023 14:49:01 +0000 (UTC)
+Date: Tue, 31 Oct 2023 09:49:00 -0500
+From: David Teigland <teigland@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: [GIT PULL] dlm updates for 6.7
+Message-ID: <ZUET3DN7wTih6rKm@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-When interrupting a gfs2 mount process by e.g. SIGKILL it could be that
-kthread_create() returns -EINTR. If this happens we see on the kernel log:
+Hi Linus,
 
-[55942.843273] gfs2: fsid=gohan:gohan0.2: can't create logd thread: -4
-[56186.441647] gfs2: fsid=gohan:gohan0: Trying to join cluster
-"lock_dlm", "gohan:gohan0"
+Please pull dlm updates from tag:
 
-The issue is that we can never mount it again because gfs2 does not
-cleanup the lockspace and it returns -EEXIST without mounting anything:
+git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.7
 
-[56186.443041] gfs2: fsid=gohan:gohan0: dlm_new_lockspace error -17
+This set of patches has some minor fixes for message handling, some misc
+cleanups, and updates the maintainers entry.
 
-The issue is (so far I see on the code) that init_threads() can returns
--4 (-EINTR) what we see above and then calls gfs2_withdraw_delayed().
-This will set the SDF_WITHDRAWING and gfs2_lm_unmount() will then not
-call unmount and will never release the lockspace.
+Thanks,
+Dave
 
-This patch just don't call gfs2_withdraw_delayed() if init_threads()
-returns -EINTR.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/gfs2/ops_fstype.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Alexander Aring (5):
+      dlm: fix creating multiple node structures
+      dlm: fix remove member after close call
+      dlm: be sure we reset all nodes at forced shutdown
+      dlm: fix no ack after final message
+      dlm: slow down filling up processing queue
 
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 33ca04733e93..227e8b3c2abf 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1281,7 +1281,13 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	if (!sb_rdonly(sb)) {
- 		error = init_threads(sdp);
--		if (error) {
-+		if (error == -EINTR) {
-+			/* no setting of SDF_WITHDRAWING when
-+			 * kthread_create() returns -EINTR to
-+			 * allow lockspace getting released.
-+			 */
-+			goto fail_per_node;
-+		} else if (error) {
- 			gfs2_withdraw_delayed(sdp);
- 			goto fail_per_node;
- 		}
--- 
-2.39.3
+Christophe JAILLET (3):
+      fs: dlm: Simplify buffer size computation in dlm_create_debug_file()
+      fs: dlm: Fix the size of a buffer in dlm_create_debug_file()
+      fs: dlm: Remove some useless memset()
+
+David Teigland (1):
+      MAINTAINERS: Update dlm maintainer and web page
+
+
+ MAINTAINERS       |  4 ++--
+ fs/dlm/debug_fs.c | 18 +++++++-----------
+ fs/dlm/lowcomms.c | 12 ++++++++++++
+ fs/dlm/midcomms.c | 39 ++++++++++++++++++++++++++++++++-------
+ 4 files changed, 53 insertions(+), 20 deletions(-)
 
