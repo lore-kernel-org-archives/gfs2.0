@@ -1,42 +1,42 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BDD15E83
-	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E411C15E82
+	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 16:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dfQsUB52"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JsgZuwbj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698857190;
+	s=mimecast20190719; t=1698857192;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lJktxJItJfOm9mdfrV2yrIvR2cps9LUHekSaKXFCxSU=;
-	b=dfQsUB52aR1WJzeiAlKLVb1AjgKO5wxoExKPyAUlaznGGONUfM3o1uLSqWubgcsfCuGEvU
-	KZkW2egP2PU91GQqyuBM0OD/7m3Wp0pbFFxPCtEQ2a9zGVluctCHePFczrLjpm5+2K2jjQ
-	nGP6+3Jjk7r4ScD9M/H9c/OrFEj6XxM=
+	bh=UJfyOx7mdEPxQvimyFyE2uRMoy4CQvd39WyBMlJcjyo=;
+	b=JsgZuwbjY+yoJifsCgoWkqOgHtuE1Q9naE5Dcu+RXKOJafviV67F8FAO5WbvNzRed0H5dY
+	Yf491/6SBVLSB/2CQha80f0i3H3lVT6ibm2qQKUxLeROux5dJgGsyuad1X43QAr6RQOkkP
+	8HvCtJajhvnKsGUaIChQwgz4X2d4wsk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-wa7HP93nOpmC-sMInh5dEw-1; Wed, 01 Nov 2023 12:46:28 -0400
-X-MC-Unique: wa7HP93nOpmC-sMInh5dEw-1
+ us-mta-588-axMfjGRUO22eHIouvwpLew-1; Wed, 01 Nov 2023 12:46:30 -0400
+X-MC-Unique: axMfjGRUO22eHIouvwpLew-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58EAB811E8E
-	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 16:46:28 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A74C6185A787
+	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 16:46:30 +0000 (UTC)
 Received: from pasta.redhat.com (unknown [10.45.224.27])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id CCCF240C6EBF;
-	Wed,  1 Nov 2023 16:46:27 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2806940C6EBC;
+	Wed,  1 Nov 2023 16:46:30 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 14/25] gfs2: Initialize metapaths outside of __gfs2_iomap_get
-Date: Wed,  1 Nov 2023 17:46:04 +0100
-Message-ID: <20231101164615.1138692-15-agruenba@redhat.com>
+Subject: [PATCH 17/25] gfs2: Get rid of gfs2_alloc_blocks generation parameter
+Date: Wed,  1 Nov 2023 17:46:07 +0100
+Message-ID: <20231101164615.1138692-18-agruenba@redhat.com>
 In-Reply-To: <20231101164615.1138692-1-agruenba@redhat.com>
 References: <20231101164615.1138692-1-agruenba@redhat.com>
 Precedence: bulk
@@ -51,165 +51,148 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Initialize metapaths outside of __gfs2_iomap_get().  This saves us from
-having to release the metapath in gfs2_iomap_begin_write() before
-calling __gfs2_iomap_get() a second time.
-
-Also gets rid of instances where mp_aheight is set to 1 for stuffed
-inodes.  (In those cases, mp_aheight isn't used, though.)
+Get rid of the generation parameter of gfs2_alloc_blocks(): we only ever
+set the generation of the current inode while creating it, so do so
+directly.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/bmap.c | 57 +++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 15 deletions(-)
+ fs/gfs2/bmap.c  |  4 ++--
+ fs/gfs2/dir.c   |  2 +-
+ fs/gfs2/inode.c |  2 +-
+ fs/gfs2/rgrp.c  | 12 +++++++-----
+ fs/gfs2/rgrp.h  |  2 +-
+ fs/gfs2/xattr.c |  6 +++---
+ 6 files changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 240f73e402d0..f00223919b0b 100644
+index ec56a07213d4..9d4020bea94f 100644
 --- a/fs/gfs2/bmap.c
 +++ b/fs/gfs2/bmap.c
-@@ -317,6 +317,26 @@ static void gfs2_metapath_ra(struct gfs2_glock *gl, __be64 *start, __be64 *end)
- 	}
- }
+@@ -106,7 +106,7 @@ static int __gfs2_unstuff_inode(struct gfs2_inode *ip, struct page *page)
+ 		   and write it out to disk */
  
-+/*
-+ * init_metapath - initialize a metapath
-+ * @mp: The metapath
-+ * @inode: The inode
-+ */
-+static int
-+init_metapath(struct metapath *mp, struct inode *inode)
-+{
-+	struct gfs2_inode *ip = GFS2_I(inode);
-+	struct buffer_head *dibh;
-+	int ret;
-+
-+	memset(mp, 0, sizeof(*mp));
-+	ret = gfs2_meta_inode_buffer(ip, &dibh);
-+	if (!ret)
-+		mp->mp_bh[0] = dibh;
-+	mp->mp_aheight = gfs2_is_stuffed(ip) ? 0 : 1;
-+	return ret;
-+}
-+
- static inline struct buffer_head *
- metapath_dibh(struct metapath *mp)
- {
-@@ -849,10 +869,10 @@ static int __gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
- 	__be64 *ptr;
- 	sector_t lblock;
- 	sector_t lblock_stop;
--	int ret;
-+	int ret = 0;
- 	int eob;
- 	u64 len;
--	struct buffer_head *dibh = NULL, *bh;
-+	struct buffer_head *bh;
- 	u8 height;
+ 		unsigned int n = 1;
+-		error = gfs2_alloc_blocks(ip, &block, &n, 0, NULL);
++		error = gfs2_alloc_blocks(ip, &block, &n, 0);
+ 		if (error)
+ 			goto out_brelse;
+ 		if (isdir) {
+@@ -727,7 +727,7 @@ static int __gfs2_iomap_alloc(struct inode *inode, struct iomap *iomap,
+ 	i = mp->mp_aheight;
+ 	do {
+ 		n = blks - alloced;
+-		ret = gfs2_alloc_blocks(ip, &bn, &n, 0, NULL);
++		ret = gfs2_alloc_blocks(ip, &bn, &n, 0);
+ 		if (ret)
+ 			goto out;
+ 		alloced += n;
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 1a2afa88f8be..3a2a10d6d43d 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -868,7 +868,7 @@ static struct gfs2_leaf *new_leaf(struct inode *inode, struct buffer_head **pbh,
+ 	struct gfs2_dirent *dent;
+ 	struct timespec64 tv = current_time(inode);
  
- 	if (!length)
-@@ -860,12 +880,9 @@ static int __gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
+-	error = gfs2_alloc_blocks(ip, &bn, &n, 0, NULL);
++	error = gfs2_alloc_blocks(ip, &bn, &n, 0);
+ 	if (error)
+ 		return NULL;
+ 	bh = gfs2_meta_new(ip->i_gl, bn);
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index ee5b07d296f7..54b449cd6201 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -417,7 +417,7 @@ static int alloc_dinode(struct gfs2_inode *ip, u32 flags, unsigned *dblocks)
+ 	if (error)
+ 		goto out_ipreserv;
  
- 	down_read(&ip->i_rw_mutex);
+-	error = gfs2_alloc_blocks(ip, &ip->i_no_addr, dblocks, 1, &ip->i_generation);
++	error = gfs2_alloc_blocks(ip, &ip->i_no_addr, dblocks, 1);
+ 	if (error)
+ 		goto out_trans_end;
  
--	ret = gfs2_meta_inode_buffer(ip, &dibh);
--	if (ret)
--		goto unlock;
--	mp->mp_bh[0] = dibh;
--
- 	if (gfs2_is_stuffed(ip)) {
-+		struct buffer_head *dibh = metapath_dibh(mp);
-+
- 		if (flags & IOMAP_WRITE) {
- 			loff_t max_size = gfs2_max_stuffed_size(ip);
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 9308190895c8..c2060203b98a 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -2411,13 +2411,12 @@ static void gfs2_set_alloc_start(struct gfs2_rbm *rbm,
+  * @bn: Used to return the starting block number
+  * @nblocks: requested number of blocks/extent length (value/result)
+  * @dinode: 1 if we're allocating a dinode block, else 0
+- * @generation: the generation number of the inode
+  *
+  * Returns: 0 or error
+  */
  
-@@ -1055,7 +1072,7 @@ static int gfs2_iomap_begin_write(struct inode *inode, loff_t pos,
- 			ret = gfs2_unstuff_dinode(ip);
- 			if (ret)
- 				goto out_trans_end;
--			release_metapath(mp);
-+			mp->mp_aheight = 1;
- 			ret = __gfs2_iomap_get(inode, iomap->offset,
- 					       iomap->length, flags, iomap, mp);
- 			if (ret)
-@@ -1097,13 +1114,16 @@ static int gfs2_iomap_begin(struct inode *inode, loff_t pos, loff_t length,
- 			    struct iomap *srcmap)
- {
- 	struct gfs2_inode *ip = GFS2_I(inode);
--	struct metapath mp = { .mp_aheight = 1, };
-+	struct metapath mp;
- 	int ret;
- 
- 	if (gfs2_is_jdata(ip))
- 		iomap->flags |= IOMAP_F_BUFFER_HEAD;
- 
- 	trace_gfs2_iomap_start(ip, pos, length, flags);
-+	ret = init_metapath(&mp, inode);
-+	if (ret)
-+		goto out_unlock;
- 	ret = __gfs2_iomap_get(inode, pos, length, flags, iomap, &mp);
- 	if (ret)
- 		goto out_unlock;
-@@ -1409,9 +1429,12 @@ static int trunc_start(struct inode *inode, u64 newsize)
- int gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
- 		   struct iomap *iomap)
- {
--	struct metapath mp = { .mp_aheight = 1, };
-+	struct metapath mp;
- 	int ret;
- 
-+	ret = init_metapath(&mp, inode);
-+	if (ret)
-+		return ret;
- 	ret = __gfs2_iomap_get(inode, pos, length, 0, iomap, &mp);
- 	release_metapath(&mp);
- 	return ret;
-@@ -1420,9 +1443,12 @@ int gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
- int gfs2_iomap_alloc(struct inode *inode, loff_t pos, loff_t length,
- 		     struct iomap *iomap)
- {
--	struct metapath mp = { .mp_aheight = 1, };
-+	struct metapath mp;
- 	int ret;
- 
-+	ret = init_metapath(&mp, inode);
-+	if (ret)
-+		return ret;
- 	ret = __gfs2_iomap_get(inode, pos, length, IOMAP_WRITE, iomap, &mp);
- 	if (!ret && iomap->type == IOMAP_HOLE)
- 		ret = __gfs2_iomap_alloc(inode, iomap, &mp);
-@@ -1716,8 +1742,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ int gfs2_alloc_blocks(struct gfs2_inode *ip, u64 *bn, unsigned int *nblocks,
+-		      bool dinode, u64 *generation)
++		      bool dinode)
  {
  	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
- 	u64 maxsize = sdp->sd_heightsize[ip->i_height];
--	struct metapath mp = {};
--	struct buffer_head *dibh, *bh;
-+	struct metapath mp;
-+	struct buffer_head *bh;
- 	struct gfs2_holder rd_gh;
- 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
- 	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
-@@ -1787,11 +1813,10 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	}
- 	start_aligned = mp_h;
- 
--	ret = gfs2_meta_inode_buffer(ip, &dibh);
-+	ret = init_metapath(&mp, &ip->i_inode);
- 	if (ret)
- 		return ret;
- 
--	mp.mp_bh[0] = dibh;
- 	ret = lookup_metapath(ip, &mp);
- 	if (ret)
- 		goto out_metapath;
-@@ -1944,6 +1969,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	}
- 
- 	if (btotal) {
-+		struct buffer_head *dibh = metapath_dibh(&mp);
+ 	struct buffer_head *dibh;
+@@ -2477,10 +2476,13 @@ int gfs2_alloc_blocks(struct gfs2_inode *ip, u64 *bn, unsigned int *nblocks,
+ 	rbm.rgd->rd_free -= *nblocks;
+ 	spin_unlock(&rbm.rgd->rd_rsspin);
+ 	if (dinode) {
++		u64 generation;
 +
- 		if (current->journal_info == NULL) {
- 			ret = gfs2_trans_begin(sdp, RES_DINODE + RES_STATFS +
- 					       RES_QUOTA, 0);
+ 		rbm.rgd->rd_dinodes++;
+-		*generation = rbm.rgd->rd_igeneration++;
+-		if (*generation == 0)
+-			*generation = rbm.rgd->rd_igeneration++;
++		generation = rbm.rgd->rd_igeneration++;
++		if (generation == 0)
++			generation = rbm.rgd->rd_igeneration++;
++		ip->i_generation = generation;
+ 	}
+ 
+ 	gfs2_trans_add_meta(rbm.rgd->rd_gl, rbm.rgd->rd_bits[0].bi_bh);
+diff --git a/fs/gfs2/rgrp.h b/fs/gfs2/rgrp.h
+index 00b30cf893af..507c914f039b 100644
+--- a/fs/gfs2/rgrp.h
++++ b/fs/gfs2/rgrp.h
+@@ -42,7 +42,7 @@ extern int gfs2_inplace_reserve(struct gfs2_inode *ip,
+ extern void gfs2_inplace_release(struct gfs2_inode *ip);
+ 
+ extern int gfs2_alloc_blocks(struct gfs2_inode *ip, u64 *bn, unsigned int *n,
+-			     bool dinode, u64 *generation);
++			     bool dinode);
+ 
+ extern void gfs2_rs_deltree(struct gfs2_blkreserv *rs);
+ extern void gfs2_rs_delete(struct gfs2_inode *ip);
+diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
+index 4fea70c0fe3d..2117011c8c57 100644
+--- a/fs/gfs2/xattr.c
++++ b/fs/gfs2/xattr.c
+@@ -639,7 +639,7 @@ static int ea_alloc_blk(struct gfs2_inode *ip, struct buffer_head **bhp)
+ 	u64 block;
+ 	int error;
+ 
+-	error = gfs2_alloc_blocks(ip, &block, &n, 0, NULL);
++	error = gfs2_alloc_blocks(ip, &block, &n, 0);
+ 	if (error)
+ 		return error;
+ 	gfs2_trans_remove_revoke(sdp, block, 1);
+@@ -701,7 +701,7 @@ static int ea_write(struct gfs2_inode *ip, struct gfs2_ea_header *ea,
+ 			int mh_size = sizeof(struct gfs2_meta_header);
+ 			unsigned int n = 1;
+ 
+-			error = gfs2_alloc_blocks(ip, &block, &n, 0, NULL);
++			error = gfs2_alloc_blocks(ip, &block, &n, 0);
+ 			if (error)
+ 				return error;
+ 			gfs2_trans_remove_revoke(sdp, block, 1);
+@@ -1002,7 +1002,7 @@ static int ea_set_block(struct gfs2_inode *ip, struct gfs2_ea_request *er,
+ 	} else {
+ 		u64 blk;
+ 		unsigned int n = 1;
+-		error = gfs2_alloc_blocks(ip, &blk, &n, 0, NULL);
++		error = gfs2_alloc_blocks(ip, &blk, &n, 0);
+ 		if (error)
+ 			return error;
+ 		gfs2_trans_remove_revoke(sdp, blk, 1);
 -- 
 2.41.0
 
