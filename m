@@ -1,51 +1,55 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC2F18B0D
-	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 18:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC07A28
+	for <gfs2@lists.linux.dev>; Wed,  1 Nov 2023 18:19:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWqnDjis"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-1f03fdfcfacso77770fac.0
-        for <gfs2@lists.linux.dev>; Wed, 01 Nov 2023 11:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698862165; x=1699466965; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=GJzy8pHObqLNabFjvHQa3HjdGGWCC6wlzROR9dFBGQY=;
-        b=JWqnDjis09wn1HW8rHHxJl6uL6f804lPVyX7fviXkkNeer5JIJFoj9yAB/IdDmaiix
-         sRxLPiRywXJDjxVXepjUcfvOvtlBmCkZ30vOZp2oS5lQN1K6YouBd7kkmTWqRGkADrbE
-         QuwxX0UHyr049wHWfG6MZxneqS6GsKQaB0zX2/7ju96M5FSJK2qI0JKd9gBIIpoVPO7Q
-         /u8y5Bo8vsOtsMgKvcIjRfoCtatsOSIcR5qJgohY6RILZeYsKG2/pqwBC5Cxjkl0YPz0
-         YU3sJ/gFA87MwzdP41CVfkfFD3y02a1U1hlGcqWLaXuh7pcN1nyvL+QDrkqmp+sSaeyC
-         Eubw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cv2Q599I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698862785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lkvNV151PqWN3htVpy2wNeUnydx+DqZAT2Vz8/icMmE=;
+	b=cv2Q599I38xJKXEpdO7TUMuEt+1O8oEug4pH2L+Q6xxhI37lrQiKzlmnrIVS9lrfEzNxvh
+	9YLBK8Pvf1Esyfz/Z4SvajsDL5CdADHbd3zyD7GmEAaNt4UUKUkAPVUwlIZ9XD+l4gT2dT
+	LFi5XLkcNmaD04WgrtU+uBz0OyJICiY=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-yvEguT-sOdek8VsVeoNHrA-1; Wed, 01 Nov 2023 14:19:39 -0400
+X-MC-Unique: yvEguT-sOdek8VsVeoNHrA-1
+Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-457cbda3299so36078137.1
+        for <gfs2@lists.linux.dev>; Wed, 01 Nov 2023 11:19:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698862165; x=1699466965;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GJzy8pHObqLNabFjvHQa3HjdGGWCC6wlzROR9dFBGQY=;
-        b=tZTTmzBmPby/XaBYoWsJn6crVMQvgpgey1rw9Tzgwn/QDrxsNFrIlPSPkAsLMv3inC
-         Kj/trakh9GBWoxfJa2exdh4QDch1MuD+5j74f2gBXoYQEpHHh8xjZEPYWSNNpfnDPUm/
-         YqIjjMN9x/n+tBbq73DTLPoCud+Ys2erBEriW0XALv2aVCLfMNRtiq7913J16EM2AG6o
-         PzKlErAZt9bbf8j5nCAZqCPq/A+i5fSZdxvMn+FIvlJWmRL0hh/R2HcQ6LEcRJ/mFwT/
-         AADq1aRsD9RavDjbGRtzrLU0X1KdGz4BjpeC/10S83L1Oq/Zae0U9A2Z9r0ilp/fu+J2
-         2ZTg==
-X-Gm-Message-State: AOJu0YzhOpB6rlLFJKqeCo9TGyeQpwa2L+kj9iFnppQ76brPUzbsH8U0
-	7jQOT2iEcduw3HJFIbq7Cwo=
-X-Google-Smtp-Source: AGHT+IHF8b8qqdCkRA8NdXssoRq+q+DBI92t+9SYIN0hnVRnlpAve4kj7oE8Jfho030swS8qaR6t0Q==
-X-Received: by 2002:a05:6870:a9a1:b0:1e9:e605:279f with SMTP id ep33-20020a056870a9a100b001e9e605279fmr22508916oab.13.1698862164390;
-        Wed, 01 Nov 2023 11:09:24 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h40-20020a056870172800b001e9a253afa3sm303456oae.49.2023.11.01.11.09.23
+        d=1e100.net; s=20230601; t=1698862777; x=1699467577;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lkvNV151PqWN3htVpy2wNeUnydx+DqZAT2Vz8/icMmE=;
+        b=T4hNXkq8ywPZpbq5y8PfMShH04jd4LtcqsK1bSE77mh4xpIy7FGNsNf8dscoMDhwl8
+         2kNJd1QD4a182HkpxfFzpr2k46DL/c52BfAJ673qukMtmPSE73Dl4OwIW+PHjJFMEYna
+         WRjktP5CjFcHI/M6AHysaT/MoKktSaPvSfZrX4Lpy0Igj0eFuRbc+rQ1TrYVB1JIVZSC
+         DCerx329QukgS/2EjiyoghZl9OrwxN1CSbWj/z4sGQ5QZwm1otfSsFV6qUnGUv1b90qo
+         ZhwmlsRXvENZ/7+lfXFYkv5MUXIztD9rNJe2U30jG1HNQCAlPoj8DQmrzoO0iP2Nugnk
+         pk9g==
+X-Gm-Message-State: AOJu0YxtgHCYOnFQGPop6cXWw9prMU3d8LR6mhsQ69RW0CIEO8aVmzWf
+	nXM/POVjyWSRJtLrynE7i1sdq9ogK+rFt9p51jWVRsJHxwGLnea4JdxvzPtTmUQyAQ7kbm4iEq1
+	ZgpyKCdcbtLU9hMRAeCdA6w==
+X-Received: by 2002:a67:cf04:0:b0:457:a8fb:3251 with SMTP id y4-20020a67cf04000000b00457a8fb3251mr11799473vsl.0.1698862777032;
+        Wed, 01 Nov 2023 11:19:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT700hEZ4cQ0bpfXRy8HQoAx/z+ukl1O+IokWDHrxorE+LJCn0LyJ5VD6Y5S4+VY4CICJ7kQ==
+X-Received: by 2002:a67:cf04:0:b0:457:a8fb:3251 with SMTP id y4-20020a67cf04000000b00457a8fb3251mr11799460vsl.0.1698862776757;
+        Wed, 01 Nov 2023 11:19:36 -0700 (PDT)
+Received: from ?IPV6:2601:883:c200:210:6ae9:ce2:24c9:b87b? ([2601:883:c200:210:6ae9:ce2:24c9:b87b])
+        by smtp.gmail.com with ESMTPSA id bq11-20020a05622a1c0b00b0041950c7f6d8sm1594420qtb.60.2023.11.01.11.19.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Nov 2023 11:09:24 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1d91871c-773c-41de-ab7b-abf13e5e9773@roeck-us.net>
-Date: Wed, 1 Nov 2023 11:09:22 -0700
+        Wed, 01 Nov 2023 11:19:36 -0700 (PDT)
+Message-ID: <c512895f-5d97-4227-9885-6948f5bbbe9b@redhat.com>
+Date: Wed, 1 Nov 2023 13:19:35 -0500
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -53,77 +57,63 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gfs2: Initialize metapaths outside of __gfs2_iomap_get
+Subject: Re: [PATCH 10/25] gfs2: Two quota=account mode fixes
+To: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
+References: <20231101164615.1138692-1-agruenba@redhat.com>
+ <20231101164615.1138692-11-agruenba@redhat.com>
+From: Bob Peterson <rpeterso@redhat.com>
+In-Reply-To: <20231101164615.1138692-11-agruenba@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Bob Peterson <rpeterso@redhat.com>, gfs2@lists.linux.dev
-References: <fba6fc06-f274-4c05-9ace-b5bd6c36f08d@roeck-us.net>
- <CAHc6FU6PKutc1Ya+9Xqa0qXeJVVXMEcsX4HWwVnoZS-n9bmCgQ@mail.gmail.com>
- <7d405b46-7a22-414b-9ee6-99602ba309ea@roeck-us.net>
- <CAHc6FU6xYPCGK1MLpJ6JNsz6=Hej-ja7dgHUQLoVnis_vSKbAg@mail.gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <CAHc6FU6xYPCGK1MLpJ6JNsz6=Hej-ja7dgHUQLoVnis_vSKbAg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/1/23 09:39, Andreas Gruenbacher wrote:
-> Guenter,
+On 11/1/23 11:46 AM, Andreas Gruenbacher wrote:
+> Make sure we don't skip accounting for quota changes with the
+> quota=account mount option.
 > 
-> On Tue, Oct 31, 2023 at 1:59 AM Guenter Roeck <linux@roeck-us.net> wrote:
->> Unfortunately that does not help. With the above on top of next-20231030, I still get:
->>
->> [   15.531621] ------------[ cut here ]------------
->> [   15.531981] kernel BUG at fs/gfs2/bmap.c:695!
+> Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+> ---
+>   fs/gfs2/quota.c | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
 > 
-> Sorry for this. I've pushed a fixed version to for-next already, so
-> things should be fine again now.
-> 
+> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+> index 41d0232532a0..d0d01d485621 100644
+> --- a/fs/gfs2/quota.c
+> +++ b/fs/gfs2/quota.c
+> @@ -1083,8 +1083,7 @@ int gfs2_quota_lock(struct gfs2_inode *ip, kuid_t uid, kgid_t gid)
+>   	u32 x;
+>   	int error;
+>   
+> -	if (sdp->sd_args.ar_quota != GFS2_QUOTA_ON &&
+> -	    sdp->sd_args.ar_quota != GFS2_QUOTA_QUIET)
+> +	if (sdp->sd_args.ar_quota == GFS2_QUOTA_OFF)
+>   		return 0;
+>   
+>   	error = gfs2_quota_hold(ip, uid, gid);
+> @@ -1285,8 +1284,7 @@ void gfs2_quota_change(struct gfs2_inode *ip, s64 change,
+>   	u32 x;
+>   	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
+>   
+> -	if ((sdp->sd_args.ar_quota != GFS2_QUOTA_ON &&
+> -	    sdp->sd_args.ar_quota != GFS2_QUOTA_QUIET) ||
+> +	if (sdp->sd_args.ar_quota == GFS2_QUOTA_OFF ||
+>   	    gfs2_assert_warn(sdp, change))
+>   		return;
+>   	if (ip->i_diskflags & GFS2_DIF_SYSTEM)
+Hi Andreas,
 
-I still see the problem in next-20231101. Maybe the fix wasn't included in that
-release. I'll try again with the next version.
+This doesn't look right. I purposely avoided coding my patch as you did 
+in this patch because it breaks -o quota=account. I admit I don't know 
+much about "quota=account" but it's coded into gfs2 and this patch 
+changes its behavior.
 
-Guenter
+The way I coded it says to return if not "on" or "quiet".
+With this patch it returns with "off", which means it proceeds with 
+"on," "quiet," or "account."
+
+Regards,
+
+Bob Peterson
 
