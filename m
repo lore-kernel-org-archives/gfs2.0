@@ -1,104 +1,132 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5771548B
-	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 11:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F741429E
+	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 13:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bl/HQ88h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="APT6DI/C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698925864;
+	s=mimecast20190719; t=1698930863;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BXvh0HaN7chqLYewNa2LL+UKTHm+C7BuJqCkmXwm+hI=;
-	b=Bl/HQ88hIG2ml5dl5zOH0bvAK4ookf/HlNsmk/TGXsQGhvrIp35zZDvE3ehryjcW3LVHuC
-	D4MVgSSbtDA32wNBvVKgk8zGTuoRGFu+Rj7MlN0ftDx7CnRRm5l/3DHhMTJ9F9qdr2tD3p
-	aCQug/DoSw4f+xrFP8ldGHbF2+2Qq5Y=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4VLgJL0v6YOBTvlgSs90Y42whRmngJggDBoFYPWtLC4=;
+	b=APT6DI/CaVHVDTKIW0FpdNzc54zjvhisBDZnLnQCXnpuXg53EAlKOBBEY194PrPnDgQXWP
+	lBIOJsJgyrsaFBhX1dLAKGjGKu4QKeJmTuQpg9yBp/GHuN41I09bba1hUAM5GyvxeUmTaP
+	8tgXKLg4AxwPsCBp0BxtR3l7JuNrFHY=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-sI9aEhCnO2Kjm4gFKtFKLQ-1; Thu, 02 Nov 2023 07:51:00 -0400
-X-MC-Unique: sI9aEhCnO2Kjm4gFKtFKLQ-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1cc281f1214so7048125ad.2
-        for <gfs2@lists.linux.dev>; Thu, 02 Nov 2023 04:51:00 -0700 (PDT)
+ us-mta-475-hpHpxtLvNAuhksrhJMS6mA-1; Thu, 02 Nov 2023 09:14:21 -0400
+X-MC-Unique: hpHpxtLvNAuhksrhJMS6mA-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-66d03dcdc6bso10296546d6.1
+        for <gfs2@lists.linux.dev>; Thu, 02 Nov 2023 06:14:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698925860; x=1699530660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BXvh0HaN7chqLYewNa2LL+UKTHm+C7BuJqCkmXwm+hI=;
-        b=ZvXJAl9B4lCrykrxmwIPVRmlvF4dHxDWhH0EJ5L43RcmwAQ3HBI8QpT1oY6OC4JoHQ
-         UTir292rSe3mv+0rYBhpqxCoEC49x9XeNDUAwvowJO+vVfDNkFcyRmV/2rMZ0eAOc/I0
-         LdB84fHqdHQolMDKTzSNFsxjOUlvIspXeA44jZDsxmp6lwVtxOzDsGPuG0Pz3qmJ0/qk
-         A1ksUniUNd1Zsn7F0ElezoZj9p3H08v9O9gH6bGzwBCgIzkgSluOpELOgKDjF/D/2fhV
-         /hrUkj0iGDX7Y5rzJzulgFQ0OZlM4RAV7Gi3pFwxqom/qWjTzp+wYQCCa3F9JBwQ73WX
-         UJlQ==
-X-Gm-Message-State: AOJu0YytujJogGNeG9CLlOXRLMBUILd26w+CDXGBWUXkXLgzfAgREbAx
-	xcsSECOyIVqMO2u3U7PbFC/3iCW6T0AXb4fLqonYAfQ4udQnyjZGODPxWVak9Ah/8T7n8eLFkEw
-	JeitxB0mUise5pxTaJNkdO0iA5O18/g==
-X-Received: by 2002:a17:902:ec91:b0:1cc:54fb:60f9 with SMTP id x17-20020a170902ec9100b001cc54fb60f9mr10689017plg.37.1698925859914;
-        Thu, 02 Nov 2023 04:50:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFeDlGc9ZGH6KLUUs2Oy1+WEmNgkUJb5lFfrVvtguyJjyCi7rE9YZlkZPXYJTVtaydPfwGnkT4uiclyiO5PhFc=
-X-Received: by 2002:a17:902:ec91:b0:1cc:54fb:60f9 with SMTP id
- x17-20020a170902ec9100b001cc54fb60f9mr10689005plg.37.1698925859679; Thu, 02
- Nov 2023 04:50:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698930860; x=1699535660;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4VLgJL0v6YOBTvlgSs90Y42whRmngJggDBoFYPWtLC4=;
+        b=pdHkpDOaHz31DU7fe7UieD5eRJdBpGdlU+l3rQaD1Lh5OKv0IydPGIrPaicZHt9Gki
+         3bsfMMjjcImLs0Oz3ihMHS5z3tYGR9dwSN/NKSD2VbVibYUn2IBalV7Fw8BjdlR/9iVS
+         2mjx3pWyWF0iycdvkzbBrKKVd2uggaP7uIACovQIXLHoTrG0usmrM61V6A6Xw4UnIAUl
+         htcEPoywARRDZmIXDHUa43ZlCcvoKwPFmMC2RFC5qVA45Ee+kuwGH1w745mrPgPVe1tX
+         x2OFBvHpQpgk32i+z7NP0wQS0yZDgVhO/tA0QXqrwzOopS3iKH696J8rOyAYv/xx/PUD
+         aTGg==
+X-Gm-Message-State: AOJu0YyBdCKs/1hDJfQqO6yEttFJ7KEdr9pIIchgvp7JU0/sVYOM0pRW
+	6Dfb6v0kO94FuxYsNRHfM+q5gE+u8YQ23wPRmsCE+p1WU1tYnZUooXVF1AFerk1PA7YIP67AAoE
+	iwC83ooj6KDskFHkWdC6rEg==
+X-Received: by 2002:a05:6214:2464:b0:65b:a66:3109 with SMTP id im4-20020a056214246400b0065b0a663109mr24065285qvb.8.1698930860410;
+        Thu, 02 Nov 2023 06:14:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFe64pBsFJa8i0IOR88XHTY1HN653StlxTTPqLZEaJrkd8ebqXzqwh9w4KaAdqBse/uXQYL6w==
+X-Received: by 2002:a05:6214:2464:b0:65b:a66:3109 with SMTP id im4-20020a056214246400b0065b0a663109mr24065274qvb.8.1698930860159;
+        Thu, 02 Nov 2023 06:14:20 -0700 (PDT)
+Received: from ?IPV6:2601:883:c200:210:6ae9:ce2:24c9:b87b? ([2601:883:c200:210:6ae9:ce2:24c9:b87b])
+        by smtp.gmail.com with ESMTPSA id s4-20020ad45244000000b0066cf4fa7b47sm2389277qvq.4.2023.11.02.06.14.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Nov 2023 06:14:19 -0700 (PDT)
+Message-ID: <9831e5bf-ee77-480e-98a6-68a852911ab2@redhat.com>
+Date: Thu, 2 Nov 2023 08:14:18 -0500
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231102015141.1355762-1-suhui@nfschina.com>
-In-Reply-To: <20231102015141.1355762-1-suhui@nfschina.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 2 Nov 2023 12:50:47 +0100
-Message-ID: <CAHc6FU5H-Ju9129Xr3RGA6DePDL58tQ7nOkSJXdig4gJc1w+WA@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: remove dead code in __acquires
-To: Su Hui <suhui@nfschina.com>
-Cc: rpeterso@redhat.com, nathan@kernel.org, ndesaulniers@google.com, 
-	trix@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/25] gfs2: Two quota=account mode fixes
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev
+References: <20231101164615.1138692-1-agruenba@redhat.com>
+ <20231101164615.1138692-11-agruenba@redhat.com>
+ <c512895f-5d97-4227-9885-6948f5bbbe9b@redhat.com>
+ <CAHc6FU4Tz-M7uYaKy3vw9ycrqOiS6B_cHys0=txNvTHc3P+JZg@mail.gmail.com>
+From: Bob Peterson <rpeterso@redhat.com>
+In-Reply-To: <CAHc6FU4Tz-M7uYaKy3vw9ycrqOiS6B_cHys0=txNvTHc3P+JZg@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 2, 2023 at 2:54=E2=80=AFAM Su Hui <suhui@nfschina.com> wrote:
->
-> clang static analyzer complains that value stored to 'gh' is never read.
-> The code of this line is useless after commit 0b93bac2271e
-> ("gfs2: Remove LM_FLAG_PRIORITY flag"). Remove this code to save space.
->
-> Signed-off-by: Su Hui <suhui@nfschina.com>
-> ---
->  fs/gfs2/glock.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-> index 3772a5d9e85c..347f8a020c82 100644
-> --- a/fs/gfs2/glock.c
-> +++ b/fs/gfs2/glock.c
-> @@ -1524,7 +1524,6 @@ __acquires(&gl->gl_lockref.lock)
->                 return;
->         }
->         list_add_tail(&gh->gh_list, insert_pt);
-> -       gh =3D list_first_entry(&gl->gl_holders, struct gfs2_holder, gh_l=
-ist);
->         spin_unlock(&gl->gl_lockref.lock);
->         if (sdp->sd_lockstruct.ls_ops->lm_cancel)
->                 sdp->sd_lockstruct.ls_ops->lm_cancel(gl);
-> --
-> 2.30.2
->
+On 11/1/23 5:06 PM, Andreas Gruenbacher wrote:
+> Hi Bob,
+> 
+> On Wed, Nov 1, 2023 at 7:19 PM Bob Peterson <rpeterso@redhat.com> wrote:
+>> This doesn't look right. I purposely avoided coding my patch as you did
+>> in this patch because it breaks -o quota=account. I admit I don't know
+>> much about "quota=account" but it's coded into gfs2 and this patch
+>> changes its behavior.
+>>
+>> The way I coded it says to return if not "on" or "quiet".
+>> With this patch it returns with "off", which means it proceeds with
+>> "on," "quiet," or "account."
+> 
+> you've said exactly this in a related conversation, and my response was:
+> 
+>> According to the documentation, the "quota=account" mode is supposed
+>> to do the quota accounting while skipping the warning and enforcement
+>> logic. How is it supposed to do that when it bails out of gfs2_quota_change()
+>> immediately? And gfs2_quota_change() depends on gfs2_quota_hold()
+>> being called first, often through gfs2_quota_lock_check() gfs2_quota_lock(), no?
+>> So at best, the way you've coded this leaves "quota=account" mode broken,
+>> but the code actually makes no sense.
+> 
+> So how do you think this breaks quota=account mode?
+> 
+> Thanks,
+> Andreas
+> 
+Hi Andreas,
 
-Thanks, I'll add this.
+I did not see your earlier response, (which is odd) so thanks for 
+including it. The important thing is:
 
-(The subject "gfs2: remove dead code in __acquires" is misleading
-because the function this is in is called add_to_queue(); __acquires
-is just an annotation.)
+Your patch changes the behavior of quota=account from today's gfs2 code 
+and should therefore be treated as separate.
 
-Andreas
+My recent gfs2 quota patches were all bug fixes or cleanups, plus adding 
+the new quota=quiet option. None intentionally affected behavior.
+
+If it's true that quota=account is broken today, we should probably do a 
+thorough investigation of how it's supposed to work, because I suspect 
+it may very well be broken elsewhere as well.
+
+The gfs2 quota code is really ugly and hard to understand, so changes in 
+current behavior are scary at best. It sounds like your patch will at 
+least improve it, but I have not looked into it. I'm just wary about 
+adding patches that change behavior without "my" fully understanding the 
+consequences. And I don't have time to investigate it thoroughly.
+
+As I said, I don't know much about quota=account. I've never used it, 
+nor do any of my tests use it. Maybe the patch should be included in a 
+group of patches designed explicitly to fix quota=account?
+And maybe we should add new testing for it.
+
+Regards,
+
+Bob Peterson
 
