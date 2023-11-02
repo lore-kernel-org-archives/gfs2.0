@@ -1,95 +1,79 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E9E2135D
-	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 19:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C992135D
+	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 19:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KTNDUww5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RCp7gbBI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698955087;
+	s=mimecast20190719; t=1698955095;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7taLW3F+D0vnaaLV96D0NG1JKRdHcM2rSP9NtaFn0kc=;
-	b=KTNDUww5YDpqinRLH9xLDO5Ov/WaOrg22lfQXBYepdOhdLW3bUXVtaAYpCMVkQ860XzMqS
-	M3mSRUm7+8+GSN9fbiVc1IHwd8LIclgWCTHsENiQk9YU8WCL/xSIkWM8ESWWCXeW19OPow
-	az17qzQUnEYk7ZPGv9eEbqj3aYt/jJ8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ak1p6YSj3xPThwJvo/ekOh1XL+UpwNUYzPWPQrlUBg0=;
+	b=RCp7gbBIBADmCHVZRT0xzHiPAff+aShG5M06g5jC8UkD/U0kMVF0QWcmIXRlQ3JQ3QNh2m
+	CaVr6C29TnnR5ken+717WmORABQosjfRborGnqs+IEglbFhigSHSUoJDl7+XjPxGqrJXYK
+	pwO6ELfQiW1stn6jn84atUnhu8oLT9g=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-Uf7auSaRN7Cx69BBr81adw-1; Thu, 02 Nov 2023 15:58:05 -0400
-X-MC-Unique: Uf7auSaRN7Cx69BBr81adw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D709380C348
-	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 19:58:04 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.45.224.27])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3D9B92166B27;
-	Thu,  2 Nov 2023 19:58:04 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Alexander Aring <aahringo@redhat.com>
-Subject: [PATCH] gfs2: don't withdraw if init_threads() got interrupted
-Date: Thu,  2 Nov 2023 20:58:03 +0100
-Message-ID: <20231102195803.1212539-1-agruenba@redhat.com>
+ us-mta-45-Y6Kny53jP4CRsmQhFCR7ow-1; Thu, 02 Nov 2023 15:58:13 -0400
+X-MC-Unique: Y6Kny53jP4CRsmQhFCR7ow-1
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-5b62a669d61so1072435a12.1
+        for <gfs2@lists.linux.dev>; Thu, 02 Nov 2023 12:58:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698955092; x=1699559892;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ak1p6YSj3xPThwJvo/ekOh1XL+UpwNUYzPWPQrlUBg0=;
+        b=e76+YMRzqC3Gkcv4PX9ve0dGSewEkwlxMymarHsRwdqw2q8vzAK8LrgivpbdpdkCv1
+         MPdE6BkiVcojotqyQMxJ/wO7hAZ4jABl2Z5cEN926TrmG5haFespW/y2HjL2cN1U80SA
+         9lBZeXk9NtkGasvmUtzYjPn3qfd2AxmeZPvTKeDdKoF8JX/XXOvJgtB2mmy7myZx8Qis
+         1mWmo96SeFZ+euNk5Uq6WDUjjqzMo8zJ+2HGQWxXWnCCRCq28WnTUaka20kasxjhcc4Q
+         PpL47EbiMnNuu1f+fI9tmKUhs8sYLkdG5mKvqtioEEOHWPNDkIKn2eoffJkE3uYIz8wt
+         Da0A==
+X-Gm-Message-State: AOJu0YyxeIjm6Z3W0NEWzZdF1aeiEiQ3UQFpjPZ0MisjBjMhGys+bupB
+	Z5czRd8jBHf5wM+vZWXnr/mYBJoiP7xmqpwvuH2hjy3I5rX87p41Th210BXohacxbdgJWOdR6Og
+	YP6ylgdBSeDnV6g0kpAyG7RS7tszFtw==
+X-Received: by 2002:a17:903:30d4:b0:1ca:86b:7ed9 with SMTP id s20-20020a17090330d400b001ca086b7ed9mr14508200plc.40.1698955092663;
+        Thu, 02 Nov 2023 12:58:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvPGYoSqhpPBcQTxQ/Vi2CHTGBtTkNtBVDCNxM0DSF3hNeGPEkfp6ntnsHa0FJP9ef1ZsBXlhE9Wpw7UIc7HY=
+X-Received: by 2002:a17:903:30d4:b0:1ca:86b:7ed9 with SMTP id
+ s20-20020a17090330d400b001ca086b7ed9mr14508189plc.40.1698955092363; Thu, 02
+ Nov 2023 12:58:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+References: <20231031143328.1364741-1-aahringo@redhat.com>
+In-Reply-To: <20231031143328.1364741-1-aahringo@redhat.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Thu, 2 Nov 2023 20:58:00 +0100
+Message-ID: <CAHc6FU4kzYQCmtX+hDBNwufvgZio-zxhO5kGtxJjWfWJMjNZjA@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: don't withdraw if init_threads() got interrupted
+To: Alexander Aring <aahringo@redhat.com>
+Cc: rpeterso@redhat.com, gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In gfs2_fill_super(), when mounting a gfs2 filesystem is interrupted,
-kthread_create() can return -EINTR.  When that happens, we roll back
-what has already been done and abort the mount.
+Alex,
 
-Since commit a28dc123fa66, we also call gfs2_withdraw_delayed() in
-gfs2_fill_super(), but that only marks the filesystem as withdrawing and
-relies on a caller further up the stack to do the actual withdraw --
-which doesn't exist in the gfs2_fill_super() case.  Because the
-filesystem is marked as withdrawing / withdrawn, function
-gfs2_lm_unmount() doesn't release the dlm lockspace, so when we try to
-mount that filesystem again, we get:
+On Tue, Oct 31, 2023 at 3:33=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+> This patch just don't call gfs2_withdraw_delayed() if init_threads()
+> returns -EINTR.
 
-    gfs2: fsid=gohan:gohan0: Trying to join cluster "lock_dlm", "gohan:gohan0"
-    gfs2: fsid=gohan:gohan0: dlm_new_lockspace error -17
+that's close, but calling gfs2_withdraw_delayed() actually never makes
+sense in this context. I'll follow up with a patch that describes why.
 
-Fix this by getting rid of the ill-conceived gfs2_withdraw_delayed() in
-gfs2_fill_super().
-
-Reported-by: Alexander Aring <aahringo@redhat.com>
-Fixes: a28dc123fa66 ("gfs2: init system threads before freeze lock")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/ops_fstype.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 2fa9baf61c3f..73ae5fcea0de 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1279,10 +1279,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	if (!sb_rdonly(sb)) {
- 		error = init_threads(sdp);
--		if (error) {
--			gfs2_withdraw_delayed(sdp);
-+		if (error)
- 			goto fail_per_node;
--		}
- 	}
- 
- 	error = gfs2_freeze_lock_shared(sdp);
--- 
-2.41.0
+Thanks,
+Andreas
 
