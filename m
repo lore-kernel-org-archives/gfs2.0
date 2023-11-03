@@ -1,119 +1,119 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861F122303
-	for <gfs2@lists.linux.dev>; Thu,  2 Nov 2023 22:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B2818622
+	for <gfs2@lists.linux.dev>; Fri,  3 Nov 2023 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I4263HfH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V5LNI4uS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698963089;
+	s=mimecast20190719; t=1699027619;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pwQQL/PKP43Gvvb08OW0KEGorvc7QsnJMcAGv+KBQwU=;
-	b=I4263HfHRs50w5uMIcZyoelOXL5vfaiJAIUinmzgOGj/X1HYcOL0/Wyc6sVkS3COIe3quZ
-	xAhnOEyHD+Lvgz88Af8lED8jLhg1vr6IsMF22AObsGBAVjYeds7ochqOUmyFk19B384M8k
-	Sbk98VGvskfK57HfMnJy3d0qErFQMLM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mqHyY1ODzJHu1kaplP/oYmep2UPhoo56QH6u+o1w3ak=;
+	b=V5LNI4uShDoseMknCkzTLkeejrDHnoAybXjUlt49TwlJa1Amcayuh3AQo0OdQvUZc876o8
+	zU/S0azHR0teDnyvqxfLrM0RPZMS4iWBmXrBAX4BKVyBJa1bcr6YZ8ac2NyVccYsLHu1px
+	6SuP1dXJ/h7EhXBKKi6WT0Xvvnv/vLE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-55yAzG21NsKyGTDq-GTbCA-1; Thu, 02 Nov 2023 18:11:28 -0400
-X-MC-Unique: 55yAzG21NsKyGTDq-GTbCA-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9b2cf504e3aso112617466b.2
-        for <gfs2@lists.linux.dev>; Thu, 02 Nov 2023 15:11:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698963086; x=1699567886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pwQQL/PKP43Gvvb08OW0KEGorvc7QsnJMcAGv+KBQwU=;
-        b=XG81J7l80ZPVrqsxzUO6Mxr/z1yoXJqOKQ++/+2a//h5JNF6gKKSC1UrHPiJYKjJ0w
-         6S8LqVOxNFZ8YiOuNrIXp8XCKYgEL4X/CAQ5/xvCkXFmpkoDFFEm5MeTI23AxFNluStk
-         ZRuVZNLNb9OQqGLbZEhSysvPqAFPRQkLKcy2toPDZ/BeWCzErarfrwRcMQGzyNx1zYFQ
-         HByBTvFmcIZlFj98JOMcqADkoxFzAaE7uqD4sf+r1uVbojgfDStZiKMLk75MrQ4YGOQM
-         c9ZNTtRFhMVwZ7q2DDpXGPyzJtx0sUWENZkPIq0Z4+24WpcbTSceWdGYx/yQu+L2ikjU
-         G4pQ==
-X-Gm-Message-State: AOJu0YyAcXdMBtA1xL5XiVLZg8VN0Boq4AC1vCHP+bPTn4OxiYltE4+v
-	dyc5ox+e8c1HptMF+fZR97MeRjTA3SMN0xC1Jiwwvoq8pwYj95L43cgiqJIlXs4/Kof142eO/KD
-	pCwQlMJLGXZIcNzx4wpKCBL7a2aViu//RzNQt3A==
-X-Received: by 2002:a17:907:a4d:b0:9d4:2042:7751 with SMTP id be13-20020a1709070a4d00b009d420427751mr5987039ejc.35.1698963086207;
-        Thu, 02 Nov 2023 15:11:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+c8YeDwCBgAWwQG36cA61ZM7maAoP3ks/4hh8hVmST3D3ktQ4xzTAlCcOSNGHwpPRyxzmKEHAYlcZxDmQoKw=
-X-Received: by 2002:a17:907:a4d:b0:9d4:2042:7751 with SMTP id
- be13-20020a1709070a4d00b009d420427751mr5987026ejc.35.1698963085928; Thu, 02
- Nov 2023 15:11:25 -0700 (PDT)
+ us-mta-531-ly0nFnPFMxKFEppht4slag-1; Fri, 03 Nov 2023 12:06:58 -0400
+X-MC-Unique: ly0nFnPFMxKFEppht4slag-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E6CC8101A52D;
+	Fri,  3 Nov 2023 16:06:57 +0000 (UTC)
+Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DB717492BE9;
+	Fri,  3 Nov 2023 16:06:57 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: will@kernel.org
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com,
+	peterz@infradead.org,
+	boqun.feng@gmail.com,
+	mark.rutland@arm.com
+Subject: [RFC 2/2] kref: introduce kref_put_lockptr() and use lockptr
+Date: Fri,  3 Nov 2023 12:06:51 -0400
+Message-Id: <20231103160651.1902460-2-aahringo@redhat.com>
+In-Reply-To: <20231103160651.1902460-1-aahringo@redhat.com>
+References: <20231103160651.1902460-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231102195803.1212539-1-agruenba@redhat.com> <CAK-6q+h7zaCy7DZjYsmc0Z+w6iVhrWvLL2icrhXpWH5Z=aYEog@mail.gmail.com>
- <CAHc6FU4Ym_nzTvvS6=1AjZm=de3X_kjd0Dn1x329L==WiDeqig@mail.gmail.com>
-In-Reply-To: <CAHc6FU4Ym_nzTvvS6=1AjZm=de3X_kjd0Dn1x329L==WiDeqig@mail.gmail.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 2 Nov 2023 18:11:14 -0400
-Message-ID: <CAK-6q+iTBiN+RYgMYpPn1-0PxTYe+-kei1-t8-B_a1zm2J5MVg@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: don't withdraw if init_threads() got interrupted
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi,
+This patch switches to make kref_put_lock() more locktype independend by
+introducing kref_put_lockptr() and using refcount_dec_and_lockptr(). The
+user can now pass a lockptr and do the specific locktype operation by
+parameters. The current kref_put_mutex() and kref_put_lock() has been
+adapted to use the new kref_put_lockptr() implementation for existing
+users.
 
-On Thu, Nov 2, 2023 at 6:09=E2=80=AFPM Andreas Gruenbacher <agruenba@redhat=
-.com> wrote:
->
-> On Thu, Nov 2, 2023 at 9:50=E2=80=AFPM Alexander Aring <aahringo@redhat.c=
-om> wrote:
-> >
-> > Hi,
-> >
-> > On Thu, Nov 2, 2023 at 3:58=E2=80=AFPM Andreas Gruenbacher <agruenba@re=
-dhat.com> wrote:
-> > >
-> > > In gfs2_fill_super(), when mounting a gfs2 filesystem is interrupted,
-> > > kthread_create() can return -EINTR.  When that happens, we roll back
-> > > what has already been done and abort the mount.
-> > >
-> > > Since commit a28dc123fa66, we also call gfs2_withdraw_delayed() in
-> > > gfs2_fill_super(), but that only marks the filesystem as withdrawing =
-and
-> > > relies on a caller further up the stack to do the actual withdraw --
-> > > which doesn't exist in the gfs2_fill_super() case.  Because the
-> > > filesystem is marked as withdrawing / withdrawn, function
-> > > gfs2_lm_unmount() doesn't release the dlm lockspace, so when we try t=
-o
-> > > mount that filesystem again, we get:
-> > >
-> > >     gfs2: fsid=3Dgohan:gohan0: Trying to join cluster "lock_dlm", "go=
-han:gohan0"
-> > >     gfs2: fsid=3Dgohan:gohan0: dlm_new_lockspace error -17
-> > >
-> > > Fix this by getting rid of the ill-conceived gfs2_withdraw_delayed() =
-in
-> > > gfs2_fill_super().
-> > >
-> > > Reported-by: Alexander Aring <aahringo@redhat.com>
-> > > Fixes: a28dc123fa66 ("gfs2: init system threads before freeze lock")
-> >
-> > nitpik, this is not the right commit, calling gfs2_withdraw_delayed()
-> > was already been there before if init_threads() fails just in super.c
->
-> Ah, so this problem was already introduced in commit 62dd0f98a0e5
-> ("gfs2: Flag a withdraw if init_threads() fails"). Thanks for pointing
-> this out; I've looked up what that was supposed to fix and I've
-> updated the description.
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ include/linux/kref.h | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-I looked into that commit, but this also fixes some ctrl-c issues
-pointed out by me... I am not sure if we are going back and forward
-here with ctrl-c issues.
-
-- Alex
+diff --git a/include/linux/kref.h b/include/linux/kref.h
+index d32e21a2538c..09bc79435dbb 100644
+--- a/include/linux/kref.h
++++ b/include/linux/kref.h
+@@ -68,26 +68,33 @@ static inline int kref_put(struct kref *kref, void (*release)(struct kref *kref)
+ 	return 0;
+ }
+ 
+-static inline int kref_put_mutex(struct kref *kref,
+-				 void (*release)(struct kref *kref),
+-				 struct mutex *lock)
++static inline int kref_put_lockptr(struct kref *kref,
++				   void (*release)(struct kref *kref),
++				   void (*lock)(void *lockptr),
++				   void (*unlock)(void *lockptr),
++				   void *lockptr)
+ {
+-	if (refcount_dec_and_mutex_lock(&kref->refcount, lock)) {
++	if (refcount_dec_and_lockptr(&kref->refcount, lock, unlock, lockptr)) {
+ 		release(kref);
+ 		return 1;
+ 	}
+ 	return 0;
+ }
+ 
++static inline int kref_put_mutex(struct kref *kref,
++				 void (*release)(struct kref *kref),
++				 struct mutex *lock)
++{
++	return kref_put_lockptr(kref, release, lockptr_mutex_lock,
++				lockptr_mutex_unlock, lock);
++}
++
+ static inline int kref_put_lock(struct kref *kref,
+ 				void (*release)(struct kref *kref),
+ 				spinlock_t *lock)
+ {
+-	if (refcount_dec_and_lock(&kref->refcount, lock)) {
+-		release(kref);
+-		return 1;
+-	}
+-	return 0;
++	return kref_put_lockptr(kref, release, lockptr_spin_lock,
++				lockptr_spin_unlock, lock);
+ }
+ 
+ /**
+-- 
+2.39.3
 
