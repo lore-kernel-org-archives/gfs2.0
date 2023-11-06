@@ -1,125 +1,84 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4F52E64F
-	for <gfs2@lists.linux.dev>; Mon,  6 Nov 2023 21:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrife.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MxOF+UjY"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5afe220cadeso67015147b3.3
-        for <gfs2@lists.linux.dev>; Mon, 06 Nov 2023 13:24:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699305880; x=1699910680; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RdEIUnfrd16mPMex7MqqZYwlL2xFlg4/43Dphzmx9M8=;
-        b=MxOF+UjYq0cax+Wmfvl/3eg0ybCFW+esYM5M26kMc1hAXZ1xjlpj0glofk17XP16kE
-         O3nwZqi2GjuN+jdbFkDyq/sS+pVnDFw8Xpzmt6X1A3Y0WUNWdFQ3pip+HJkEvMMzuHDx
-         DWjhxVgfwFoU9QDlzc1+d1onSniyNzqUrug8GCuCygCUmGw1kbHztwgP9NmRMfdN8IiS
-         2w0FZ+mZ63uyzgbHJC+XMy1PcuvDF10x1EJruUuEmdYgIa+UIW+USJordDBHUWsrNw+k
-         vHilYbFWdNy3i6x8r06eb8oDoGwhCqZXGqb2RproZX3FEK3LkbAsBXUU97k6d/goNSma
-         X8Pg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDE329428
+	for <gfs2@lists.linux.dev>; Mon,  6 Nov 2023 23:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-1f057511202so6427587fac.0
+        for <gfs2@lists.linux.dev>; Mon, 06 Nov 2023 15:07:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699305880; x=1699910680;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=1e100.net; s=20230601; t=1699312047; x=1699916847;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RdEIUnfrd16mPMex7MqqZYwlL2xFlg4/43Dphzmx9M8=;
-        b=oFdx72k3pz4y7u8cJV1Ks1UMucUs9/s/barvYCYRit0EDcS9q5jakXgwEQU376Fr39
-         DAWHn/WnXTgNOQwSeuN68HVfuDVOjXSaUihZFKoZOUi0gTzSpnTNCMupATpPEzaUBNSV
-         Sys+ya1dPRbYsQkwp4rwb3K0W8RWdVIJD2O/mjW2BubvoKFO4X7AlxrYVagkpyiF9E8+
-         lgChVcHh7QNaOuw/CgWvSZdtNozgML66G1DNpdO58p93i04SPaWWYjd+sZ7ZVaT4H0xs
-         gxukUXA6fuZJnDWzzbwQL3A+sQTUGLACqERd6oAWecBdjNRUu3h7qDIO8HofU2GP+WKL
-         WLfA==
-X-Gm-Message-State: AOJu0Yz+VM6ICQeIwgIWYt7WVVu3Uwo2EHxX/k3tcwbDyG1vHECJsiaO
-	egWpWNC5EtHBGau8Nzb0hz0bL0eaxkMn30JHM8QEKrAYHkuY7MfkXGyH90X04HntU1pvj4QBweS
-	kxlRfhIyQfkbA13Rc/orCWcZUvg3cPqH2obZBbfLjxgSwsjhBauLbUeUs
-X-Google-Smtp-Source: AGHT+IHAFKt4u4FlY2yLPoT34HEnwSfhJPmytVKYXvvDochEsMQmonstUOFiNOSSTQqVCJ8ycRoLPM1nAQ==
-X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
- (user=jrife job=sendgmr) by 2002:a25:109:0:b0:da0:c6d7:8231 with SMTP id
- 9-20020a250109000000b00da0c6d78231mr577424ybb.0.1699305880527; Mon, 06 Nov
- 2023 13:24:40 -0800 (PST)
-Date: Mon,  6 Nov 2023 15:24:38 -0600
+        bh=qhZVLAZQhksSFJIL9PHRdF8MAL1sGNKTWA4vRt0GjIQ=;
+        b=PD44kdCCcvR8LDltCadz/GnNM26T0NH4IxBKR7N9Qms/NZ1+SVAvDjpEIc+201k9aC
+         SsxmMm4bpnUeUZPRe7a92IYDE5f54wzgw27mopJN4ORDmD4V4lxb8EYdg/i2QIVqSgHq
+         i/ST3u7z8wZ4lP6kKCfVIiPcmVvFhRnqqSgNxfcesbI0drZVB4OoMyCjP1qRHlsvI+ZM
+         dkNnJl4Otrtgn31j5lsPQbMCoF0JGDrwof5pAJsFNaOtOrFrGi0Sf1RNh7syRCbJS2UZ
+         WBKJqvVWsqe32A9p64sNRtRw+6bQazV850K/n7KIT7PR2txHFjs0+rm1orgzUdfdKka/
+         anbQ==
+X-Gm-Message-State: AOJu0Yzw50kUeKNozUsbppRpVDRQwubpCLbKMVKKPs5fY2PhzddO5ItP
+	9QLY15I5X+/oOexoh8GP22yvg6Z74NUNQvqFYzr4Kt6UUdnFXf4=
+X-Google-Smtp-Source: AGHT+IF+vSjl2lp1OxO8cWmpq6xJgr8wwMsMl1ow/EMZO0cwgdvqyHWHzdFS8t6EZSjkdEm5wxYNOMZ08hErFYW6YsyS1DzGVKmQ
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.869.gea05f2083d-goog
-Message-ID: <20231106212438.663455-1-jrife@google.com>
-Subject: [PATCH] dlm: use kernel_connect() and kernel_bind()
-From: Jordan Rife <jrife@google.com>
-To: gfs2@lists.linux.dev
-Cc: aahringo@redhat.com, teigland@redhat.com, Jordan Rife <jrife@google.com>, 
-	stable@vger.kernel.org
+MIME-Version: 1.0
+X-Received: by 2002:a05:6871:7a0:b0:1e9:9202:20c6 with SMTP id
+ o32-20020a05687107a000b001e9920220c6mr506069oap.0.1699312047195; Mon, 06 Nov
+ 2023 15:07:27 -0800 (PST)
+Date: Mon, 06 Nov 2023 15:07:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ef8d3b060983eae7@google.com>
+Subject: [syzbot] Monthly gfs2 report (Nov 2023)
+From: syzbot <syzbot+list255c96014713c46a953c@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Recent changes to kernel_connect() and kernel_bind() ensure that
-callers are insulated from changes to the address parameter made by BPF
-SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-ops->bind() with kernel_connect() and kernel_bind() to protect callers
-in such cases.
+Hello gfs2 maintainers/developers,
 
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jordan Rife <jrife@google.com>
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
+
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 21 issues are still open and 22 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 4449    Yes   WARNING in __folio_mark_dirty (2)
+                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
+<2> 3678    Yes   WARNING in folio_account_dirtied
+                  https://syzkaller.appspot.com/bug?extid=8d1d62bfb63d6a480be1
+<3> 662     Yes   kernel BUG in gfs2_glock_nq (2)
+                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<4> 79      Yes   INFO: task hung in gfs2_gl_hash_clear (3)
+                  https://syzkaller.appspot.com/bug?extid=ed7d0f71a89e28557a77
+<5> 54      Yes   WARNING in gfs2_check_blk_type
+                  https://syzkaller.appspot.com/bug?extid=092b28923eb79e0f3c41
+<6> 35      Yes   general protection fault in gfs2_dump_glock (2)
+                  https://syzkaller.appspot.com/bug?extid=427fed3295e9a7e887f2
+<7> 9       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rgrp_dump
+                  https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+<8> 4       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rindex_update
+                  https://syzkaller.appspot.com/bug?extid=2b32df23ff6b5b307565
+
 ---
- fs/dlm/lowcomms.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 67f8dd8a05ef2..6296c62c10fa9 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1817,8 +1817,8 @@ static int dlm_tcp_bind(struct socket *sock)
- 	memcpy(&src_addr, &dlm_local_addr[0], sizeof(src_addr));
- 	make_sockaddr(&src_addr, 0, &addr_len);
- 
--	result = sock->ops->bind(sock, (struct sockaddr *)&src_addr,
--				 addr_len);
-+	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
-+			     addr_len);
- 	if (result < 0) {
- 		/* This *may* not indicate a critical error */
- 		log_print("could not bind for connect: %d", result);
-@@ -1830,7 +1830,7 @@ static int dlm_tcp_bind(struct socket *sock)
- static int dlm_tcp_connect(struct connection *con, struct socket *sock,
- 			   struct sockaddr *addr, int addr_len)
- {
--	return sock->ops->connect(sock, addr, addr_len, O_NONBLOCK);
-+	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
- }
- 
- static int dlm_tcp_listen_validate(void)
-@@ -1862,8 +1862,8 @@ static int dlm_tcp_listen_bind(struct socket *sock)
- 
- 	/* Bind to our port */
- 	make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
--	return sock->ops->bind(sock, (struct sockaddr *)&dlm_local_addr[0],
--			       addr_len);
-+	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-+			   addr_len);
- }
- 
- static const struct dlm_proto_ops dlm_tcp_ops = {
-@@ -1888,12 +1888,12 @@ static int dlm_sctp_connect(struct connection *con, struct socket *sock,
- 	int ret;
- 
- 	/*
--	 * Make sock->ops->connect() function return in specified time,
-+	 * Make kernel_connect() function return in specified time,
- 	 * since O_NONBLOCK argument in connect() function does not work here,
- 	 * then, we should restore the default value of this attribute.
- 	 */
- 	sock_set_sndtimeo(sock->sk, 5);
--	ret = sock->ops->connect(sock, addr, addr_len, 0);
-+	ret = kernel_connect(sock, addr, addr_len, 0);
- 	sock_set_sndtimeo(sock->sk, 0);
- 	return ret;
- }
--- 
-2.42.0.869.gea05f2083d-goog
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
