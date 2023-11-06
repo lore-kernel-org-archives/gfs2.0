@@ -1,152 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ABF28DC9
-	for <gfs2@lists.linux.dev>; Mon,  6 Nov 2023 15:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B2A28E13
+	for <gfs2@lists.linux.dev>; Mon,  6 Nov 2023 16:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRiNeR/k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699283574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eyNTZV5EWEbVcsjEEcix1QYAz8PWV6uUt3nEay8zko8=;
-	b=ZRiNeR/kEZw2ZrfvY/JkOcCu/jISuu38JHt2SeSwYbjkYB41E+P85/D/G+2Qz8amkCkHOU
-	MTFXp/4sJBxDuVxMt+29w4v0BD73qTMmc0PRGBygGagns/HQg97adoL4qJPj+nhzXwY46v
-	+uv+/xlu0ge5nkd21spWnyJOGcakaXI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-POqN9vepOhK3KHD13CaIkg-1; Mon, 06 Nov 2023 10:12:52 -0500
-X-MC-Unique: POqN9vepOhK3KHD13CaIkg-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9d216597f5fso326847566b.1
-        for <gfs2@lists.linux.dev>; Mon, 06 Nov 2023 07:12:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQdTHdl4"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6711dd6595fso26118856d6.3
+        for <gfs2@lists.linux.dev>; Mon, 06 Nov 2023 08:57:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699289869; x=1699894669; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v0ZAwfM3+mJiakXzyhK+JHHtWlUzZmmuE1mXPkDLU8Q=;
+        b=mQdTHdl4tc1LJx1zMDa5B34gzrqxC1qq3tgH14C8eFK4TCqgVl80aPENQxguNcDZ32
+         wrYkp+iLqKROYLCLf5w2CvmCfY3cT7bvTdDP95en1nF+cY8MHpNz1BSOqt6z3hhfBQNW
+         HzMGfcZVTSMtEp8AsIucvHTKlPeAL7tmrXyr9zhMyeu6JSM2yMHwNJ7NWs1DgRLrQsG5
+         yV+DnQ4jg1Lto++7ZK8nr5wuzfJp0rk55BvN77Yf0CAf9KPGIieY5kTTteMIm+EV9fEV
+         hBoewWmESAP6PR3MWQkdON5Qk0t/C1kuRaOj8rLTwV5R3MUf/d/SMbI3PNRO1KiAmjfQ
+         wJXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699283571; x=1699888371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eyNTZV5EWEbVcsjEEcix1QYAz8PWV6uUt3nEay8zko8=;
-        b=EywfdRChO0W3J7LYKzepaaCOBJsVVvufvnwhs0mVP0Yr3fr5B9gySibMeH5Fmh6AAl
-         T13KZPL/GwZqcsn/l8JhPiYsXO2DS4sRC8Sg+YAikTaNiogWi0MXd9XGSgmhj6wi5uOM
-         ObfJOqdR1ltm0/0Rdzpoyh1oD4tEFRJgnZacyY2iJym8y6J53oVHh/SP5iBW9nGYfFzu
-         YSl4gG92YbsYrGrlJcCJk/wHdPvkSw0m/sVjaLe+DfHp5okdAESKEJgP0Eg+aCw/i7t0
-         o33hIflzH1Uc+8QiK17h7mGG4emOg8XH1aQ9UtvbLkMcwSR8LGthX0f6+ApHGdFutJqg
-         E6CQ==
-X-Gm-Message-State: AOJu0YyXHs67Rcwr9mcTUK4rcA15mqwJDgOgIvGCYileYcX/o8hBb5mW
-	VuC0+RG71RqA1yIZekhFOgaFUGlEwQbu0jLEsJaTIyttqy59ikE2PN1LKrIjptuFI+ZXUFY27ih
-	FG8ehL3VmzWGo9u7ND4M50umsR4zxfVsqRWOWJSVh
-X-Received: by 2002:a17:907:9811:b0:9dd:7ccf:77f8 with SMTP id ji17-20020a170907981100b009dd7ccf77f8mr7562495ejc.20.1699283571260;
-        Mon, 06 Nov 2023 07:12:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG2YEM5ISvIiyX5pdjuegtQ5SrrbIrBKyeYx0DojFwg+/s7On1aAWyRlcVDxxj3a+zujzRpSSTVBh3dtBe/Xmo=
-X-Received: by 2002:a17:907:9811:b0:9dd:7ccf:77f8 with SMTP id
- ji17-20020a170907981100b009dd7ccf77f8mr7562474ejc.20.1699283570957; Mon, 06
- Nov 2023 07:12:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699289869; x=1699894669;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v0ZAwfM3+mJiakXzyhK+JHHtWlUzZmmuE1mXPkDLU8Q=;
+        b=VUrTVSFZBzVcoYAiqb8khQkYMpZvkf32tNcsNLF9uhMbhvz9hxtuJ/sBL549hjraXG
+         NKc3w+JzMhynKGi9gZjm3tZ43sgJzioxhFyYrS4TlwCTVS8RMLjzSEg/swbdpsSPTBEF
+         yNRVCrV+Z26F4WxT19eNuK89Y0q1U4R0Y0/+YzIlkefjLGVIbS1cpk8Atid3yn0NKxsE
+         1rcE6b72JPU6w4pMVqV5UBsMuM/i14J6/elTOGOPG8ClmZBNgzKw/0hqIH5wKJIXRfsE
+         gVmfOrHWEitUK0T4zx0beEbXqZgi7bQOlYYy+Jql+ASIJPQ054LuA8oX9DovW/+uk3Bl
+         B5cw==
+X-Gm-Message-State: AOJu0YzumJBMkXcCh/+rehEY+tKkXmXpwlnqU4g1d7pYlFE8L+6MTdCl
+	ocv+V9lL1D0FAcFqWW6SNFUFsk2dp4+Xo4CMHj1HPofMsos=
+X-Google-Smtp-Source: AGHT+IEmVSFUYHTBDOLX+I5/fO6wp1TJR0LP2w28shnC55m7YE8bhpwQBJ6kHxxiPu3Ejn0GFnNDRy8kIt4ZXdoXk/8=
+X-Received: by 2002:a05:6214:1cc2:b0:675:7b22:4f74 with SMTP id
+ g2-20020a0562141cc200b006757b224f74mr7924714qvd.18.1699289868913; Mon, 06 Nov
+ 2023 08:57:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231103161635.1902667-1-aahringo@redhat.com> <20231103185414.GD8262@noisy.programming.kicks-ass.net>
- <CAK-6q+hQnTgmO_2qfNDzyYW36T1aH+a5q285G+Rfo+sN4dfEfA@mail.gmail.com> <20231106111104.GK8262@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231106111104.GK8262@noisy.programming.kicks-ass.net>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 6 Nov 2023 10:12:39 -0500
-Message-ID: <CAK-6q+iwqjkuxVqt6hMw3uoq0UsZxvx_x2rdLDtsBSdURpjv-g@mail.gmail.com>
-Subject: Re: [RFC 1/2] refcount: introduce generic lockptr funcs
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: will@kernel.org, gfs2@lists.linux.dev, boqun.feng@gmail.com, 
-	mark.rutland@arm.com, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20231106162129.10556-1-osmtendev@gmail.com>
+In-Reply-To: <20231106162129.10556-1-osmtendev@gmail.com>
+From: Osama Muhammad <osmtendev@gmail.com>
+Date: Mon, 6 Nov 2023 21:57:37 +0500
+Message-ID: <CAK6rUAOHJVCT=X_rHXa3bmsZrGmUOC5CHu5SjxcaOph5CwBabg@mail.gmail.com>
+Subject: Fwd: [PATCH] fs:gfs2:rgrp.c: Fix kernel NULL pointer dereference
+To: gfs2@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+---------- Forwarded message ---------
+From: Osama Muhammad <osmtendev@gmail.com>
+Date: Mon, 6 Nov 2023 at 21:22
+Subject: [PATCH] fs:gfs2:rgrp.c: Fix kernel NULL pointer dereference
+To: <rpeterso@redhat.com>, <agruenba@redhat.com>
+Cc: <linux-kernel@vger.kernel.org>, Osama Muhammad
+<osmtendev@gmail.com>,
+<syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com>
 
-On Mon, Nov 6, 2023 at 6:11=E2=80=AFAM Peter Zijlstra <peterz@infradead.org=
-> wrote:
->
-> On Fri, Nov 03, 2023 at 03:20:08PM -0400, Alexander Aring wrote:
-> > Hi,
-> >
-> > On Fri, Nov 3, 2023 at 2:54=E2=80=AFPM Peter Zijlstra <peterz@infradead=
-.org> wrote:
-> > >
-> > > On Fri, Nov 03, 2023 at 12:16:34PM -0400, Alexander Aring wrote:
-> > >
-> > > > diff --git a/lib/refcount.c b/lib/refcount.c
-> > > > index a207a8f22b3c..e28678f0f473 100644
-> > > > --- a/lib/refcount.c
-> > > > +++ b/lib/refcount.c
-> > > > @@ -94,6 +94,34 @@ bool refcount_dec_not_one(refcount_t *r)
-> > > >  }
-> > > >  EXPORT_SYMBOL(refcount_dec_not_one);
-> > > >
-> > > > +bool refcount_dec_and_lockptr(refcount_t *r, void (*lock)(void *lo=
-ckptr),
-> > > > +                           void (*unlock)(void *lockptr),  void *l=
-ockptr)
-> > > > +{
-> > > > +     if (refcount_dec_not_one(r))
-> > > > +             return false;
-> > > > +
-> > > > +     lock(lockptr);
-> > > > +     if (!refcount_dec_and_test(r)) {
-> > > > +             unlock(lockptr);
-> > > > +             return false;
-> > > > +     }
-> > > > +
-> > > > +     return true;
-> > > > +}
-> > > > +EXPORT_SYMBOL(refcount_dec_and_lockptr);
-> > >
-> > > This is terrible, you're forcing indirect calls on everything.
-> > >
-> >
-> > Okay, I see. How about introducing a macro producing all the code at
-> > preprocessor time?
->
-> __always_inline should work, then you get constant propagation for the
-> function pointer.
->
 
-Thanks, it is always good to learn something new.
+Syzkaller reported the following issue:
 
-> But indeed, perhaps a macro is more convenient vs the irq flags
-> argument. You'll then end up with something like:
->
-> #define __refcount_dec_and_lock(_ref, _lock, _unlock) \
-> ({      bool _ret =3D false; \
->         if (!refcount_dec_not_one(_ref)) { \
->                 _lock; \
->                 if (!refcount_dec_and_test(_ref)) { \
->                         _unlock; \
->                 } else { \
->                         _ret =3D true; \
->                 } \
->         } \
->         _ret; \
-> })
->
->
-> bool refcount_dec_and_spinlock_irqsave(refcount_t *r, spinlock_t *lock,
->                                        unsigned long *flags)
-> {
->         return __refcount_dec_and_lock(r, spin_lock_irqsave(*lock, *flags=
-),
->                                           spin_unlock_irqrestore(*lock, *=
-flags));
-> }
+i_length = 1
+ri_data0 = 19
+ri_data = 2060
+ri_bitbytes = 514
+start=0 len=514 offset=128
+gfs2: fsid=syz:syz.s:  R: n:18 f:00 b:0/0 i:0 q:0 r:0 e:0
+Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000004
+Mem abort info:
+  ESR = 0x0000000096000006
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x06: level 2 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000006
+  CM = 0, WnR = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010e23f000
+[0000000000000004] pgd=080000010b804003, p4d=080000010b804003,
+pud=080000010a4e8003, pmd=0000000000000000
+Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 3072 Comm: syz-executor147 Not tainted
+6.1.0-rc8-syzkaller-33330-ga5541c0811a0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 10/26/2022
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : gfs2_rgrp_dump+0xa0/0x138 fs/gfs2/rgrp.c:2313
+lr : gfs2_rgrp_dump+0x90/0x138
+sp : ffff80000fb93780
+x29: ffff80000fb937a0 x28: ffff0000cb82a000 x27: ffff0000cb82a000
+x26: ffff0000ca4de000 x25: 0000000000000808 x24: 000000000000080c
+x23: 000000000001c103 x22: ffff0000ca4de000 x21: 0000000000000000
+x20: ffff80000fb937e0 x19: ffff0000ca4de080 x18: 00000000000000c0
+x17: ffff80000dda8198 x16: ffff80000dbe6158 x15: ffff0000c6800000
+x14: 0000000000000000 x13: 00000000ffffffff x12: ffff0000c6800000
+x11: ff808000092a5154 x10: 0000000000000000 x9 : ffff8000092a5154
+x8 : 0000000000000000 x7 : ffff80000c091ebc x6 : 0000000000000000
+x5 : 0000000000000080 x4 : 0000000000000001 x3 : 0000000000000000
+x2 : ffff0001fefbecd0 x1 : ffff80000cc9c685 x0 : 0000000000000000
+Call trace:
+ gfs2_rgrp_dump+0xa0/0x138 fs/gfs2/rgrp.c:2312
+ gfs2_consist_rgrpd_i+0x78/0xe4 fs/gfs2/util.c:480
+ read_rindex_entry fs/gfs2/rgrp.c:931 [inline]
+ gfs2_ri_update+0x398/0x7e4 fs/gfs2/rgrp.c:1001
+ gfs2_rindex_update+0x1b0/0x21c fs/gfs2/rgrp.c:1051
+ init_inodes+0x11c/0x184 fs/gfs2/ops_fstype.c:917
+ gfs2_fill_super+0x630/0x874 fs/gfs2/ops_fstype.c:1247
+ get_tree_bdev+0x1e8/0x2a0 fs/super.c:1324
+ gfs2_get_tree+0x30/0xc0 fs/gfs2/ops_fstype.c:1330
+ vfs_get_tree+0x40/0x140 fs/super.c:1531
+ do_new_mount+0x1dc/0x4e4 fs/namespace.c:3040
+ path_mount+0x358/0x890 fs/namespace.c:3370
+ do_mount fs/namespace.c:3383 [inline]
+ __do_sys_mount fs/namespace.c:3591 [inline]
+ __se_sys_mount fs/namespace.c:3568 [inline]
+ __arm64_sys_mount+0x2c4/0x3c4 fs/namespace.c:3568
+ __invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
+ invoke_syscall arch/arm64/kernel/syscall.c:52 [inline]
+ el0_svc_common+0x138/0x220 arch/arm64/kernel/syscall.c:142
+ do_el0_svc+0x48/0x140 arch/arm64/kernel/syscall.c:197
+ el0_svc+0x58/0x150 arch/arm64/kernel/entry-common.c:637
+ el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:655
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:584
+Code: f94036c8 f001cfa1 911a1421 aa1503e0 (2940a909)
+---[ end trace 0000000000000000 ]---
 
-I was thinking of solving the additional flags parameter with
-prototype and argos macros e.g. TRACE_EVENT() is doing it, but this
-version looks much better.
-I will send a patch and do similar things with _kref_put_lock().
+The issue is caused during prinitng debug information when
+accessing the pointer rgd->rd_rgl. So adding condition to
+check the pointer is not NULL fixes the bug.
 
-- Alex
+The patch is tested via syzbot.
 
+Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+---
+ fs/gfs2/rgrp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 9308190895c8..307b952a41f8 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -2306,7 +2306,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct
+gfs2_rgrpd *rgd,
+                       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
+                       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
+                       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
+-       if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
++       if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
+                struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
+
+                gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
+--
+2.34.1
