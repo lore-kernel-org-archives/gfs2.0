@@ -1,84 +1,148 @@
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDE329428
-	for <gfs2@lists.linux.dev>; Mon,  6 Nov 2023 23:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-1f057511202so6427587fac.0
-        for <gfs2@lists.linux.dev>; Mon, 06 Nov 2023 15:07:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699312047; x=1699916847;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qhZVLAZQhksSFJIL9PHRdF8MAL1sGNKTWA4vRt0GjIQ=;
-        b=PD44kdCCcvR8LDltCadz/GnNM26T0NH4IxBKR7N9Qms/NZ1+SVAvDjpEIc+201k9aC
-         SsxmMm4bpnUeUZPRe7a92IYDE5f54wzgw27mopJN4ORDmD4V4lxb8EYdg/i2QIVqSgHq
-         i/ST3u7z8wZ4lP6kKCfVIiPcmVvFhRnqqSgNxfcesbI0drZVB4OoMyCjP1qRHlsvI+ZM
-         dkNnJl4Otrtgn31j5lsPQbMCoF0JGDrwof5pAJsFNaOtOrFrGi0Sf1RNh7syRCbJS2UZ
-         WBKJqvVWsqe32A9p64sNRtRw+6bQazV850K/n7KIT7PR2txHFjs0+rm1orgzUdfdKka/
-         anbQ==
-X-Gm-Message-State: AOJu0Yzw50kUeKNozUsbppRpVDRQwubpCLbKMVKKPs5fY2PhzddO5ItP
-	9QLY15I5X+/oOexoh8GP22yvg6Z74NUNQvqFYzr4Kt6UUdnFXf4=
-X-Google-Smtp-Source: AGHT+IF+vSjl2lp1OxO8cWmpq6xJgr8wwMsMl1ow/EMZO0cwgdvqyHWHzdFS8t6EZSjkdEm5wxYNOMZ08hErFYW6YsyS1DzGVKmQ
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645BC8F5B
+	for <gfs2@lists.linux.dev>; Tue,  7 Nov 2023 14:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ck3O4Cwu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1699366918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Z7U0IjTbm9Q4t163uqbaeBeeKjVAKxsMyeV8QNr3RKI=;
+	b=ck3O4CwuSfhftPI8lrB6pmnhUUkKnY4WarN3gj0FJk/qjSs0xX2Hqy/X9BiY7F64FXgsFi
+	xhbNYGtTf652uz9d2GhWsGHeYdr83L3aj/GmZB7G3yLgSm8oMBWu1m63YugnSpT/adGDvb
+	W12GHH43x7F60JGNMOy+OtT+HTgbNZo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-OIMR5y2kPQ-aYJU9eRd9Hg-1; Tue, 07 Nov 2023 09:21:56 -0500
+X-MC-Unique: OIMR5y2kPQ-aYJU9eRd9Hg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C218821BCF;
+	Tue,  7 Nov 2023 14:21:56 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.45.226.102])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9AA881C060B0;
+	Tue,  7 Nov 2023 14:21:55 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 fixes
+Date: Tue,  7 Nov 2023 15:21:53 +0100
+Message-ID: <20231107142154.613991-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6871:7a0:b0:1e9:9202:20c6 with SMTP id
- o32-20020a05687107a000b001e9920220c6mr506069oap.0.1699312047195; Mon, 06 Nov
- 2023 15:07:27 -0800 (PST)
-Date: Mon, 06 Nov 2023 15:07:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ef8d3b060983eae7@google.com>
-Subject: [syzbot] Monthly gfs2 report (Nov 2023)
-From: syzbot <syzbot+list255c96014713c46a953c@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-Hello gfs2 maintainers/developers,
+Hi Linus,
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+please consider pulling the following gfs2 fixes.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 21 issues are still open and 22 have been fixed so far.
+Thank you very much,
+Andreas
 
-Some of the still happening issues:
+The following changes since commit a49d273e579615ed63d0347f94075dd22b9458a3:
 
-Ref Crashes Repro Title
-<1> 4449    Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 3678    Yes   WARNING in folio_account_dirtied
-                  https://syzkaller.appspot.com/bug?extid=8d1d62bfb63d6a480be1
-<3> 662     Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<4> 79      Yes   INFO: task hung in gfs2_gl_hash_clear (3)
-                  https://syzkaller.appspot.com/bug?extid=ed7d0f71a89e28557a77
-<5> 54      Yes   WARNING in gfs2_check_blk_type
-                  https://syzkaller.appspot.com/bug?extid=092b28923eb79e0f3c41
-<6> 35      Yes   general protection fault in gfs2_dump_glock (2)
-                  https://syzkaller.appspot.com/bug?extid=427fed3295e9a7e887f2
-<7> 9       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rgrp_dump
-                  https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-<8> 4       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rindex_update
-                  https://syzkaller.appspot.com/bug?extid=2b32df23ff6b5b307565
+  Merge tag 'gfs2-v6.6-rc1-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2023-09-18 11:59:38 -0700)
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+are available in the Git repository at:
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.6-rc2-fixes
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+for you to fetch changes up to 0cdc6f44e9fdc2d20d720145bf99a39f611f6d61:
 
-You may send multiple commands in a single email message.
+  gfs2: don't withdraw if init_threads() got interrupted (2023-11-06 01:51:26 +0100)
+
+----------------------------------------------------------------
+gfs2 fixes
+
+- Don't update inode timestamps for direct writes (performance regression fix).
+
+- Skip no-op quota records instead of panicing.
+
+- Fix a RCU race in gfs2_permission().
+
+- Various other smaller fixes and cleanups all over the place.
+
+----------------------------------------------------------------
+Al Viro (1):
+      gfs2: fix an oops in gfs2_permission
+
+Amir Goldstein (1):
+      gfs2: fs: derive f_fsid from s_uuid
+
+Andreas Gruenbacher (19):
+      gfs2: Simplify function gfs2_upgrade_iopen_glock
+      gfs2: Remove freeze_go_demote_ok
+      gfs2: Remove unused gfs2_extent_length argument
+      gfs2: Get rid of the gfs2_glock_is_held_* helpers
+      gfs2: Don't update inode timestamps for direct writes
+      gfs2: setattr_chown: Add missing initialization
+      gfs2: Stop using GFS2_BASIC_BLOCK and GFS2_BASIC_BLOCK_SHIFT
+      gfs2: Two quota=account mode fixes
+      gfs2: Clean up gfs2_alloc_parms initializers
+      gfs2: Clean up quota.c:print_message
+      gfs2: Add metapath_dibh helper
+      gfs2: Get rid of gfs2_alloc_blocks generation parameter
+      gfs2: Minor gfs2_write_jdata_batch PAGE_SIZE cleanup
+      gfs2: Convert stuffed_readpage to folios
+      gfs2: Convert gfs2_internal_read to folios
+      gfs2: Rename gfs2_lookup_{ simple => meta }
+      gfs2: No longer use 'extern' in function declarations
+      gfs2: Silence "suspicious RCU usage in gfs2_permission" warning
+      gfs2: don't withdraw if init_threads() got interrupted
+
+Bob Peterson (1):
+      gfs2: ignore negated quota changes
+
+Juntong Deng (1):
+      gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+
+Su Hui (1):
+      gfs2: remove dead code in add_to_queue
+
+ fs/gfs2/acl.h        |   8 ++--
+ fs/gfs2/aops.c       |  72 ++++++++++++++++----------------
+ fs/gfs2/aops.h       |   6 +--
+ fs/gfs2/bmap.c       |  17 +++++---
+ fs/gfs2/bmap.h       |  38 ++++++++---------
+ fs/gfs2/dir.c        |   2 +-
+ fs/gfs2/dir.h        |  38 ++++++++---------
+ fs/gfs2/file.c       |  18 +++++---
+ fs/gfs2/glock.c      |   1 -
+ fs/gfs2/glock.h      | 113 ++++++++++++++++++++++-----------------------------
+ fs/gfs2/glops.c      |  13 ------
+ fs/gfs2/glops.h      |   4 +-
+ fs/gfs2/incore.h     |   2 +-
+ fs/gfs2/inode.c      |  33 +++++++++------
+ fs/gfs2/inode.h      |  60 +++++++++++++--------------
+ fs/gfs2/log.h        |  46 ++++++++++-----------
+ fs/gfs2/lops.h       |  22 +++++-----
+ fs/gfs2/meta_io.h    |  20 ++++-----
+ fs/gfs2/ops_fstype.c |  28 ++++++-------
+ fs/gfs2/quota.c      |  31 +++++++++-----
+ fs/gfs2/quota.h      |  38 ++++++++---------
+ fs/gfs2/recovery.h   |  18 ++++----
+ fs/gfs2/rgrp.c       |  12 +++---
+ fs/gfs2/rgrp.h       |  85 +++++++++++++++++++-------------------
+ fs/gfs2/super.c      |  29 +++++--------
+ fs/gfs2/super.h      |  50 +++++++++++------------
+ fs/gfs2/trans.h      |  24 +++++------
+ fs/gfs2/util.h       |   8 ++--
+ fs/gfs2/xattr.c      |   6 +--
+ fs/gfs2/xattr.h      |  12 +++---
+ 30 files changed, 421 insertions(+), 433 deletions(-)
+
