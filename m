@@ -1,43 +1,50 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521F2A1A4
-	for <gfs2@lists.linux.dev>; Tue,  7 Nov 2023 22:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E7D361
+	for <gfs2@lists.linux.dev>; Wed,  8 Nov 2023 00:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdC49szO"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-59e88a28b98so1787157b3.1
-        for <gfs2@lists.linux.dev>; Tue, 07 Nov 2023 14:18:47 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TKalxMOt"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-543456dbd7bso454190a12.1
+        for <gfs2@lists.linux.dev>; Tue, 07 Nov 2023 16:04:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699395526; x=1700000326; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QctA7Bq+rxWAwGydWIjR1fSKNRz9s8P13IzaEYf+J9E=;
-        b=RdC49szOfLtneeDxA8sEBDwDPZn5bfGUDPuV48bgLybqk4yusWbS8YYR+GMjdum/BG
-         lyf2FWJJ6V471nlPYpg/K2295InsBf4M0YHapf2Bqsa4+6zNy+9E2NmMXWEdOulZ+eNo
-         pf/Yw2bbUOiNmoDVm5S/jUlzsQ7BYDe4y8BtBsc7ch9CcuWD4KaU/2krRXZDY9ttmQCo
-         XPD6AN1Zk5reMR5LtcF+UjXf3JqmP5uFsyPjs7Oy2O823pfSWmbwK0D5Bgo0qbzNW+Ob
-         s8TF8V73w1z+MBxqzWneIut64heFcOD8vc9WtG08bDZxXV0/WU1+WfXLygctMCf2EKH1
-         Ur7g==
+        d=linux-foundation.org; s=google; t=1699401878; x=1700006678; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M1gFsj3ZQRKq2XSC6mkK8HfxUGZGy5exG2oL8DwFzoo=;
+        b=TKalxMOtHKDFBXyLvTcm4JYD9/FGbrR/ULsCFljznZ+3IrLRn6i0b8XuqhdOUfm8tp
+         OQlTMf6w627TvyKhfRt0WhU8+9rJ1IXAjvTiJyyzJlGI6+QCI2m/+dKT415wI4cnl1tA
+         Xa7X7oMYzrsbpg8O34bgPf1rWv1327HG2ZuTo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699395526; x=1700000326;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QctA7Bq+rxWAwGydWIjR1fSKNRz9s8P13IzaEYf+J9E=;
-        b=eVkJuekPa8z13zzrUcxz8W0y3FxBeGLx1ItPSK2JJOhOoAcyE8hQwibLWeKkUqqkUt
-         OXPC+K+eFsbHB1UaRGSJ/tT3HT3QdYPmZxlJqm/K9S/7LA5Ls6v1go30Ko1h6rAfc85X
-         wdOyBnqYza/bTju5/WsJe2Nt9tMx/5jJV6TQSOBApmRdsOq8gFEDQQfmfTMzMJlZfk01
-         IFqIl+01d6Yvx+o/P94CxMXLAq6IyzBJbwlpuIM2vB9c7x3kWGAULPf8ze/PI1l73l0v
-         65zppfCR6I8DjU6JqdNVrIuiXLLZ8lJ8MDc9bJTjYMb6qw/R1cyxaqP+r/YMkRX5auEE
-         P8nQ==
-X-Gm-Message-State: AOJu0YwQ8TkeJAcfRs3+oXBSCvJ57Ywd74ey6Q0kWB2fwjkxGIgrO8e1
-	O6rX8XRdsRIPk/rplQYT12YUdp/80t+sXUzENd8=
-X-Google-Smtp-Source: AGHT+IHxqhdp2l6CSzq5JgZwwhFfA23JVB1iFBQyZytpmw4JO1z6E5AAwYnmRirD6Ryy0xiKGvJOfevQySew15int/s=
-X-Received: by 2002:a0d:d4d7:0:b0:5a7:dad3:cd21 with SMTP id
- w206-20020a0dd4d7000000b005a7dad3cd21mr88953ywd.10.1699395526548; Tue, 07 Nov
- 2023 14:18:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699401878; x=1700006678;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M1gFsj3ZQRKq2XSC6mkK8HfxUGZGy5exG2oL8DwFzoo=;
+        b=VAY9QWREaX5AbhATwMxplN+aiMY2fj0YCmc+FZcwguSlrop5Wj+g+byVk2493B5zrB
+         b8Mh6Dlyv4mNhx/xSWSE13lD9KBDMATgZ+cu/wQtPmMuwYZ/aQCIrkfLWctsr20ccQB/
+         p0v38nNsUI2WT2oN4G1cgxAqIJJOMR2qsz5nBRKR1WPW86ikq5eiILF04ys6nErE5VGK
+         Y7btJz7aP5PiPhaTV0UDdqJTLICkr/uGGVjzUgIhd6ZA6R7GS3I29cBSGkIXeBqKuUdv
+         pfDgQDFLIFcWVIiunF6z7x4I9KO5/0SXwzF2QzwAzrbep4I3t65+LY3Bjl+cRKpI9f2a
+         EQLA==
+X-Gm-Message-State: AOJu0Yx7fo0qLeUg8WrLf4jObTktGcVKInWhXs9RBlW5nI2M1FQOGNQc
+	sk8NSCMAQ6oGbiU37RlKiJNwOFw4qLHiXJlQmwBRjg==
+X-Google-Smtp-Source: AGHT+IEEOC1BpXyWmxuJ9F4E/oh8DbSDIIEtbbIOyV64U8KtKLwmTPuu5sPvrNrk8J4QMuOnElVhLA==
+X-Received: by 2002:a50:d74e:0:b0:542:fe59:2234 with SMTP id i14-20020a50d74e000000b00542fe592234mr337503edj.6.1699401878515;
+        Tue, 07 Nov 2023 16:04:38 -0800 (PST)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id j28-20020a508a9c000000b0053e3839fc79sm6094405edj.96.2023.11.07.16.04.37
+        for <gfs2@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Nov 2023 16:04:38 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-9c3aec5f326so45972466b.1
+        for <gfs2@lists.linux.dev>; Tue, 07 Nov 2023 16:04:37 -0800 (PST)
+X-Received: by 2002:a17:907:7784:b0:9bd:81c3:2a85 with SMTP id
+ ky4-20020a170907778400b009bd81c32a85mr3252018ejc.32.1699401877597; Tue, 07
+ Nov 2023 16:04:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -45,54 +52,36 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20231107142154.613991-1-agruenba@redhat.com> <CAHk-=wie7WsYHkEChV0hpcf7CRRJQw9-E8O8RxrFGKF6mEJ73g@mail.gmail.com>
-In-Reply-To: <CAHk-=wie7WsYHkEChV0hpcf7CRRJQw9-E8O8RxrFGKF6mEJ73g@mail.gmail.com>
-From: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
-Date: Tue, 7 Nov 2023 23:18:33 +0100
-Message-ID: <CAHpGcM+u=77p_k8dZ6gKu84wnkdvGYA4E6=MXqNw=ZY+ejjiaw@mail.gmail.com>
+ <CAHpGcM+u=77p_k8dZ6gKu84wnkdvGYA4E6=MXqNw=ZY+ejjiaw@mail.gmail.com>
+In-Reply-To: <CAHpGcM+u=77p_k8dZ6gKu84wnkdvGYA4E6=MXqNw=ZY+ejjiaw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 7 Nov 2023 16:04:19 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wiN4e_C+tONr6p+f51ae8QoXB8tvoN8zQFdyiRi1DzO1A@mail.gmail.com>
+Message-ID: <CAHk-=wiN4e_C+tONr6p+f51ae8QoXB8tvoN8zQFdyiRi1DzO1A@mail.gmail.com>
 Subject: Re: [GIT PULL] gfs2 fixes
-To: Linus Torvalds <torvalds@linux-foundation.org>
+To: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
 Cc: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am Di., 7. Nov. 2023 um 21:31 Uhr schrieb Linus Torvalds
-<torvalds@linux-foundation.org>:
-> On Tue, 7 Nov 2023 at 06:22, Andreas Gruenbacher <agruenba@redhat.com> wrote:
-> >
-> > please consider pulling the following gfs2 fixes.
+On Tue, 7 Nov 2023 at 14:18, Andreas Gr=C3=BCnbacher
+<andreas.gruenbacher@gmail.com> wrote:
 >
-> You are officially on my shit-list for
->
->  (a) claiming it's fixes
->
->  (b) apparently lying about that fact to make it appear that it's ok
-> that this wasn't in linux-next and was committed within the last few
-> days
->
-> about half of the commits in that pull request are very recent,
-> weren't in linux-next when the merge window started, and while a
-> couple of of them are fixes, most of them are just minor cleanups.
->
-> DON'T LIE ABOUT THINGS. It only annoys the hell out of me when I
-> notice that somebody was trying to pull wool over my eyes.
+> I apologize for referring to the entire set of commits as fixes when
+> it's really fixes and various other things. I've said so in the tag
+> description, but I realize now that that's not good enough. Lying
+> about what those commits are wasn't my intention though.
 
-I apologize for referring to the entire set of commits as fixes when
-it's really fixes and various other things. I've said so in the tag
-description, but I realize now that that's not good enough. Lying
-about what those commits are wasn't my intention though.
+.. and hey, sorry about my outburst.
 
-And I apologize for the last -minute changes. There is one commit that
-removes a single line of dead code which could easily have waited. The
-rest are fixes, but they should have been completed much sooner.
-That's entirely my fault.
+Your pull request was the first one this merge window where I reacted
+to how many of the commits weren't in my copy of the linux-next tree,
+and there wasn't any reason why in the description. So I reacted very
+strongly.
 
-> I've pulled this and I'll let it be (because I already merged other
-> stuff on top), but dammit, just be honest about what happened, don't
-> try to claim this is somehow "fixes" and thus ok to not have gone
-> through linux-next.
->
-> Or, better yet, get your ducks actually lined up before the merge window.
->
->                         Linus
+It didn't help that I had a headache. Rather than look at how many
+other of the pending pull requests I have that ended up coming in in
+the last 24 hours have the same issue, I decided to lie down in a dark
+room for a few hours.
 
-Thanks,
-Andreas
+                  Linus
