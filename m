@@ -1,98 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D506E22329;
-	Thu,  9 Nov 2023 17:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5F220B34
+	for <gfs2@lists.linux.dev>; Thu,  9 Nov 2023 17:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="P113lzxw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329DBC433BA;
-	Thu,  9 Nov 2023 17:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1699550832;
-	bh=/iXik9FGY/j8fU7q/WT2BYxZ4459aBKtixWI7gW0Gy8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=P113lzxwo814DeFndWkAaSyJ+DLb8VNTEP7P6j/vCWGSSKY2QDBBCpyUJtXKsvZt8
-	 yVSynsnJ8XhLaIqnbxNEa9vIPier0gLp7yXoMzqsfeZ25GvHh45wYNq+pLR/4wNIBl
-	 YqtZ8j7nGGcDw1o6QRhQLfQDovsx9kZS0r7BiWJc=
-Date: Thu, 9 Nov 2023 09:27:11 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Andreas =?ISO-8859-1?Q?Gr=FCnbacher?= <andreas.gruenbacher@gmail.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-ext4
- <linux-ext4@vger.kernel.org>, gfs2@lists.linux.dev, Linux FS-devel Mailing
- List <linux-fsdevel@vger.kernel.org>, linux-xfs
- <linux-xfs@vger.kernel.org>, "Darrick J . Wong" <djwong@kernel.org>,
- linux-erofs@lists.ozlabs.org, "Theodore Ts'o" <tytso@mit.edu>, Andreas
- Dilger <adilger.kernel@dilger.ca>, Andreas Gruenbacher
- <agruenba@redhat.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LTik8qcE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/zf0lTxBuvebjd5FmP2bSMJ+hk6qswmHlp1nwkj6kdY=; b=LTik8qcEySCdMDCuz34d3k9ufZ
+	tIgcA/qhbd4WYY5aZm5G/BJ2NEhNKKXaDkYnnyUJAuigl/iM5tH7dRWI1ba0FvgpOqW7c+UKRpfQO
+	RAvQnxfo8z2qPObIHJq1IJUTFhywlpF+wEQWWVRfnLbA9X5PZ5R4vGG5iuNEzgl7f+vo12OLuGXhO
+	pe5VQDHRK0lqSD/ljuVimzlylfGVsSxVegB1RP+IXwbzxtIF3T+hEZfu9w1iPpvBgX/zKeVbg2U0w
+	3vP9mNvXcffxVjBoGzc7OKfxYwn6qUASlkThQRGRrWJ66Pbuyc7n5VoIx/fr++kivBB8bQPN2Cpqp
+	mkWfeIrA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1r18y9-008YXP-0x; Thu, 09 Nov 2023 17:37:29 +0000
+Date: Thu, 9 Nov 2023 17:37:28 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-ext4@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	linux-erofs@lists.ozlabs.org, Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andreas Gruenbacher <agruenba@redhat.com>
 Subject: Re: [PATCH 1/3] mm: Add folio_zero_tail() and use it in ext4
-Message-Id: <20231109092711.cf73f30a2fa84d4400377839@linux-foundation.org>
-In-Reply-To: <CAHpGcMLU9CeX=P=718Gp=oYNnfbft_Mh1Nhdx45qWXY0DAf6Mg@mail.gmail.com>
+Message-ID: <ZU0Y2NEMMlkHYcr6@casper.infradead.org>
 References: <20231107212643.3490372-1-willy@infradead.org>
-	<20231107212643.3490372-2-willy@infradead.org>
-	<20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
-	<CAHpGcMLU9CeX=P=718Gp=oYNnfbft_Mh1Nhdx45qWXY0DAf6Mg@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20231107212643.3490372-2-willy@infradead.org>
+ <20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
 
-On Thu, 9 Nov 2023 01:12:15 +0100 Andreas Gr=FCnbacher <andreas.gruenbacher=
-@gmail.com> wrote:
+On Wed, Nov 08, 2023 at 03:06:06PM -0800, Andrew Morton wrote:
+> >  
+> > +/**
+> > + * folio_zero_tail - Zero the tail of a folio.
+> > + * @folio: The folio to zero.
+> > + * @kaddr: The address the folio is currently mapped to.
+> > + * @offset: The byte offset in the folio to start zeroing at.
+> 
+> That's the argument ordering I would expect.
+> 
+> > + * If you have already used kmap_local_folio() to map a folio, written
+> > + * some data to it and now need to zero the end of the folio (and flush
+> > + * the dcache), you can use this function.  If you do not have the
+> > + * folio kmapped (eg the folio has been partially populated by DMA),
+> > + * use folio_zero_range() or folio_zero_segment() instead.
+> > + *
+> > + * Return: An address which can be passed to kunmap_local().
+> > + */
+> > +static inline __must_check void *folio_zero_tail(struct folio *folio,
+> > +		size_t offset, void *kaddr)
+> 
+> While that is not.  addr,len is far more common that len,addr?
 
-> Andrew,
->=20
-> Andrew Morton <akpm@linux-foundation.org> schrieb am Do., 9. Nov. 2023, 0=
-0:06:
-> > > +
-> > > +     if (folio_test_highmem(folio)) {
-> > > +             size_t max =3D PAGE_SIZE - offset_in_page(offset);
-> > > +
-> > > +             while (len > max) {
-> >
-> > Shouldn't this be `while (len)'?  AFAICT this code can fail to clear
-> > the final page.
->=20
-> not sure what you're seeing there, but this looks fine to me.
+But that's not len!  That's offset-in-the-folio.  ie we're doing:
 
-I was right!  This code does fail to handle the final page.
+memset(folio_address(folio) + offset, 0, folio_size(folio) - offset);
 
-: static inline void folio_fill_tail(struct folio *folio, size_t offset,
-: 		const char *from, size_t len)
-: {
-: 	char *to =3D kmap_local_folio(folio, offset);
-:=20
-: 	VM_BUG_ON(offset + len > folio_size(folio));
-:=20
-: 	if (folio_test_highmem(folio)) {
-: 		size_t max =3D PAGE_SIZE - offset_in_page(offset);
-:=20
-: 		while (len > max) {
-: 			memcpy(to, from, max);
-: 			kunmap_local(to);
-: 			len -=3D max;
-: 			from +=3D max;
-: 			offset +=3D max;
-: 			max =3D PAGE_SIZE;
-: 			to =3D kmap_local_folio(folio, offset);
-: 		}
-: 	}
-:=20
-: 	memcpy(to, from, len);
+If we were doing:
 
-This code down here handles it, doh.
+memset(folio_address(folio), 0, len);
 
-: 	to =3D folio_zero_tail(folio, offset, to);
-: 	kunmap_local(to);
-: }
+then yes, your suggestion is the right order.
 
-Implementation seems less straightforward than it might be?  Oh well.
-
-Has it been runtime tested?
-
-Anyway, let's please change the function argument ordering and remember
-to cc linux-mm on v2?
+Indeed, having the arguments in the current order would hopefully make
+filesystem authors realise that this _isn't_ "len".
