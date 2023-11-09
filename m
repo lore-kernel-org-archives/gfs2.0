@@ -1,104 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92743714F;
-	Wed,  8 Nov 2023 23:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5BC362
+	for <gfs2@lists.linux.dev>; Thu,  9 Nov 2023 00:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Kb4LDRBs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE81C433C8;
-	Wed,  8 Nov 2023 23:06:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1699484767;
-	bh=t8pBQSNPVR9LioM+HcvTKgJwQbCrujWjNwfm0VTaR5A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Kb4LDRBsnf32K7Vz06ikeb1CPOiJ1H15eXMnH9kxTJtY+bF3pXhcR2BSF6zYwQ9fK
-	 mgsr+P98qJyhfHSMhotMocwnZnya8dqNepcltfzM8d5SSPm+BeIy3OSTsEhS64I852
-	 xWfR27VQoZFdkB/pFGkyj8cEyQwskDqZcuVcGtAc=
-Date: Wed, 8 Nov 2023 15:06:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-ext4@vger.kernel.org, gfs2@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
- "Darrick J . Wong" <djwong@kernel.org>, linux-erofs@lists.ozlabs.org,
- "Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
- Andreas Gruenbacher <agruenba@redhat.com>
-Subject: Re: [PATCH 1/3] mm: Add folio_zero_tail() and use it in ext4
-Message-Id: <20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
-In-Reply-To: <20231107212643.3490372-2-willy@infradead.org>
-References: <20231107212643.3490372-1-willy@infradead.org>
-	<20231107212643.3490372-2-willy@infradead.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UesyMaa7"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-507bd644a96so377696e87.3
+        for <gfs2@lists.linux.dev>; Wed, 08 Nov 2023 16:12:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699488747; x=1700093547; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oxRjndTtkJZetvfezkXF/2987ikg4wY/3660b2uWMtk=;
+        b=UesyMaa7VF4S5nF0wOeB6gVAnqT8I8A29ip0sjP7zu54kNyCkxi3g7OVAicgVQwIak
+         +1Sv/Edq7kC9EmGy+p3yuJ2uUqUaSeKYtQeSEW8bvnaqWwD1uaxKdTIOD5XUY0tUICwL
+         epmdm4wGr8FfGFWpjoUic+3GxHnnN23kzTEjESgsxMqwqbM1X1KMN+WsS8xm6JzMvvjb
+         n6leV/UW0urJ+HDcGn0jR8X9mGH4nl7SOyApp5t/ktps2PoncFPO/Ah1UIrSB8wDDJ8d
+         JNvlYzT8M3SL/R7qOKtapqQ/62sfmSFc9lmshSuEC/ugJ0ruezHRvBv6iibs3ori1AFC
+         t5Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699488747; x=1700093547;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oxRjndTtkJZetvfezkXF/2987ikg4wY/3660b2uWMtk=;
+        b=ijfNDW/XoKqsVjlmodZ84ys3nsoqxa+4EwSCUmqS/DOI7CwXLG+5Xbkgh4vHs9g4cl
+         YKa6mBDj8yLnhpqR2fR9dccPomvzgUokvIVKtdaoxjr6S1R7/fH9FPHIGcHcQb52CjbV
+         EDdnMZE3WVK0dYE7WfbArCIL1cpqISiQ4vX8w3AQDEpa0jwWbzGLkZtccLOnN5AukLhf
+         adv4ts1cjPjhtJGCOsYDydIoTSWiCvNu2Gsdndx0hZQIsC1XM3BEvaXlq/NiF+MkLsAw
+         f7+24wBKUDMj3vP3UVvwfjoS+7A7HnIf0A5zHrLpW0rx6VFkdQ1//XUkcxo7dXtw1VPk
+         ZP4g==
+X-Gm-Message-State: AOJu0YzQhczywM9J/ObIsuYGGf6x5Sc6gohmzkpmIdSbbt6hFjT8wsC1
+	OXmC99Ba4Tgb1vv4Q/vbZuClrcvPvwHPVhGqqsI=
+X-Google-Smtp-Source: AGHT+IGMym6s82sHBjvRZ1gVgP42jaL1JmjVcnC8voSpb7JFI9R5aRcHobWV5Dojv1Zry9WdFGNjuVaBWNGJSNkxkfg=
+X-Received: by 2002:a19:6713:0:b0:508:269d:1342 with SMTP id
+ b19-20020a196713000000b00508269d1342mr109419lfc.35.1699488746448; Wed, 08 Nov
+ 2023 16:12:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20231107212643.3490372-1-willy@infradead.org> <20231107212643.3490372-2-willy@infradead.org>
+ <20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
+In-Reply-To: <20231108150606.2ec3cafb290f757f0e4c92d8@linux-foundation.org>
+From: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
+Date: Thu, 9 Nov 2023 01:12:15 +0100
+Message-ID: <CAHpGcMLU9CeX=P=718Gp=oYNnfbft_Mh1Nhdx45qWXY0DAf6Mg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mm: Add folio_zero_tail() and use it in ext4
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-ext4 <linux-ext4@vger.kernel.org>, 
+	gfs2@lists.linux.dev, 
+	Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, 
+	"Darrick J . Wong" <djwong@kernel.org>, linux-erofs@lists.ozlabs.org, 
+	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Andreas Gruenbacher <agruenba@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue,  7 Nov 2023 21:26:40 +0000 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
+Andrew,
 
-> Instead of unmapping the folio after copying the data to it, then mapping
-> it again to zero the tail, provide folio_zero_tail() to zero the tail
-> of an already-mapped folio.
-> 
-> ...
+Andrew Morton <akpm@linux-foundation.org> schrieb am Do., 9. Nov. 2023, 00:06:
+> > +
+> > +     if (folio_test_highmem(folio)) {
+> > +             size_t max = PAGE_SIZE - offset_in_page(offset);
+> > +
+> > +             while (len > max) {
 >
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -483,6 +483,44 @@ static inline void memcpy_to_folio(struct folio *folio, size_t offset,
->  	flush_dcache_folio(folio);
->  }
->  
-> +/**
-> + * folio_zero_tail - Zero the tail of a folio.
-> + * @folio: The folio to zero.
-> + * @kaddr: The address the folio is currently mapped to.
-> + * @offset: The byte offset in the folio to start zeroing at.
+> Shouldn't this be `while (len)'?  AFAICT this code can fail to clear
+> the final page.
 
-That's the argument ordering I would expect.
+not sure what you're seeing there, but this looks fine to me.
 
-> + * If you have already used kmap_local_folio() to map a folio, written
-> + * some data to it and now need to zero the end of the folio (and flush
-> + * the dcache), you can use this function.  If you do not have the
-> + * folio kmapped (eg the folio has been partially populated by DMA),
-> + * use folio_zero_range() or folio_zero_segment() instead.
-> + *
-> + * Return: An address which can be passed to kunmap_local().
-> + */
-> +static inline __must_check void *folio_zero_tail(struct folio *folio,
-> +		size_t offset, void *kaddr)
-
-While that is not.  addr,len is far more common that len,addr?
-
-> +{
-> +	size_t len = folio_size(folio) - offset;
-
-Calling it `remaining' would be more clear.
-
-> +
-> +	if (folio_test_highmem(folio)) {
-> +		size_t max = PAGE_SIZE - offset_in_page(offset);
-> +
-> +		while (len > max) {
-
-Shouldn't this be `while (len)'?  AFAICT this code can fail to clear
-the final page.
-
-> +			memset(kaddr, 0, max);
-> +			kunmap_local(kaddr);
-> +			len -= max;
-> +			offset += max;
-> +			max = PAGE_SIZE;
-> +			kaddr = kmap_local_folio(folio, offset);
-> +		}
-> +	}
-> +
-> +	memset(kaddr, 0, len);
-> +	flush_dcache_folio(folio);
-> +
-> +	return kaddr;
-> +}
-> +
-
+Thanks,
+Andreas
