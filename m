@@ -1,67 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7302511D
-	for <gfs2@lists.linux.dev>; Mon, 13 Nov 2023 21:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEE911181
+	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVDPstfr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A1C433C7;
-	Mon, 13 Nov 2023 21:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699910821;
-	bh=zhRlX6fbqb46HzJoDlywuWbd5ARstyFmls/0maFAwlU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=UVDPstfrsG5h4B1sqaxhATVpQi8M4NjLYQSgJ8ajJoPKs+s8FN+UOUtjjXznJo9Lq
-	 w6oztGI5GXAV4n5psIixMxiozOvajn4IfwCP/Dn9PFtfFcz5YeEdfM6CWiCRc1FKu8
-	 ES6xNlqMbt24nlYjdITNn9uiJC4dghvKuQq7v1qEIIKQr9wjM6cBxoPB9uPezxXmES
-	 PQ+w1gUjB7Bn864XMHr+MWGfMGdxwf4ses0+CAISX8XMI+qCbyMfehVDEYKf8YqM80
-	 JEV2k5bOh/oBHIsr3OTlni66BusmgmxHsS1W/4so1AY1qZJGHo6acJ8Err2ompazdX
-	 BOLi0Bw5H3vNA==
-Message-ID: <7d0d278ee30c09c868c59c80ef6a4cf9dee5683c.camel@kernel.org>
-Subject: Re: [PATCH v6.7-rc1 2/3] dlm: use FL_SLEEP to determine blocking vs
- non-blocking
-From: Jeff Layton <jlayton@kernel.org>
-To: Alexander Aring <aahringo@redhat.com>, teigland@redhat.com
-Cc: gfs2@lists.linux.dev
-Date: Mon, 13 Nov 2023 16:27:00 -0500
-In-Reply-To: <20231113212411.4187690-2-aahringo@redhat.com>
-References: <20231113212411.4187690-1-aahringo@redhat.com>
-	 <20231113212411.4187690-2-aahringo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L0v4LSUw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700411905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nj2YVqkOzOzJWdJ1wukHCxNoKOJ1CnXGBdIjCJw05mc=;
+	b=L0v4LSUwDkTvRIGD2Ix3AMa2FAgFBYzIuihniHxqGIoDUtFluVAXpGfKnayLXmacWGQ36b
+	bPZhcNqHwOK0LLgThA3bfd/t+xQqVib1YXuYnidABNd3iQUvxja9Wgi6hswssZdxbPYEX0
+	OWc9bxjtHCZKFAImDCxX1RA9EsDf+Ro=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-680-wLyCiaSPNpuNMYujmAKXLA-1; Sun, 19 Nov 2023 11:38:23 -0500
+X-MC-Unique: wLyCiaSPNpuNMYujmAKXLA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BFC5185A780
+	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
+Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 818C040C6EB9;
+	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCHv2 dlm/next 02/13] dlm: switch to GFP_ATOMIC in dlm allocations
+Date: Sun, 19 Nov 2023 11:38:06 -0500
+Message-Id: <20231119163817.751872-3-aahringo@redhat.com>
+In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
+References: <20231119163817.751872-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, 2023-11-13 at 16:24 -0500, Alexander Aring wrote:
-> This patch uses the FL_SLEEP flag in struct file_lock to determine if
-> the lock request is a blocking or non-blocking request. Before dlm was
-> using IS_SETLKW() was being used which is not usable for lock requests
-> coming from lockd when EXPORT_OP_SAFE_ASYNC_LOCK inside the export flags
-> is set.
->=20
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/dlm/plock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-> index ee6e0236d4f8..d814c5121367 100644
-> --- a/fs/dlm/plock.c
-> +++ b/fs/dlm/plock.c
-> @@ -140,7 +140,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 nu=
-mber, struct file *file,
->  	op->info.optype		=3D DLM_PLOCK_OP_LOCK;
->  	op->info.pid		=3D fl->fl_pid;
->  	op->info.ex		=3D (fl->fl_type =3D=3D F_WRLCK);
-> -	op->info.wait		=3D IS_SETLKW(cmd);
-> +	op->info.wait		=3D !!(fl->fl_flags & FL_SLEEP);
->  	op->info.fsid		=3D ls->ls_global_id;
->  	op->info.number		=3D number;
->  	op->info.start		=3D fl->fl_start;
+This patch prepares to process dlm messages in softirq context. To
+switch dlm to parse messages in softirq context some code parts either
+runs inside the softirq context or need to switch to run while a spinlock
+is held. This patch prepares to switch the allocation context to
+GFP_ATOMIC for those places. It's not possible anymore to preload idr
+allocations. However this is only a performance speedup and we might
+switch to xarray implementation with more lockless readers paradigms.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/lock.c         | 2 --
+ fs/dlm/memory.c       | 6 +++---
+ fs/dlm/recover.c      | 2 --
+ fs/dlm/requestqueue.c | 2 +-
+ 4 files changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 44ea65a73f3b..970b8499b66f 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -1208,13 +1208,11 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+ 	spin_lock_init(&lkb->lkb_cb_lock);
+ 	INIT_WORK(&lkb->lkb_cb_work, dlm_callback_work);
+ 
+-	idr_preload(GFP_NOFS);
+ 	spin_lock(&ls->ls_lkbidr_spin);
+ 	rv = idr_alloc(&ls->ls_lkbidr, lkb, start, end, GFP_NOWAIT);
+ 	if (rv >= 0)
+ 		lkb->lkb_id = rv;
+ 	spin_unlock(&ls->ls_lkbidr_spin);
+-	idr_preload_end();
+ 
+ 	if (rv < 0) {
+ 		log_error(ls, "create_lkb idr error %d", rv);
+diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
+index c0c1a83f6381..f44532d9f5c8 100644
+--- a/fs/dlm/memory.c
++++ b/fs/dlm/memory.c
+@@ -84,7 +84,7 @@ char *dlm_allocate_lvb(struct dlm_ls *ls)
+ {
+ 	char *p;
+ 
+-	p = kzalloc(ls->ls_lvblen, GFP_NOFS);
++	p = kzalloc(ls->ls_lvblen, GFP_ATOMIC);
+ 	return p;
+ }
+ 
+@@ -97,7 +97,7 @@ struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls)
+ {
+ 	struct dlm_rsb *r;
+ 
+-	r = kmem_cache_zalloc(rsb_cache, GFP_NOFS);
++	r = kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
+ 	return r;
+ }
+ 
+@@ -112,7 +112,7 @@ struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
+ {
+ 	struct dlm_lkb *lkb;
+ 
+-	lkb = kmem_cache_zalloc(lkb_cache, GFP_NOFS);
++	lkb = kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
+ 	return lkb;
+ }
+ 
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index 53917c0aa3c0..ce6dc914cb86 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -310,7 +310,6 @@ static int recover_idr_add(struct dlm_rsb *r)
+ 	struct dlm_ls *ls = r->res_ls;
+ 	int rv;
+ 
+-	idr_preload(GFP_NOFS);
+ 	spin_lock(&ls->ls_recover_idr_lock);
+ 	if (r->res_id) {
+ 		rv = -1;
+@@ -326,7 +325,6 @@ static int recover_idr_add(struct dlm_rsb *r)
+ 	rv = 0;
+ out_unlock:
+ 	spin_unlock(&ls->ls_recover_idr_lock);
+-	idr_preload_end();
+ 	return rv;
+ }
+ 
+diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
+index 892d6ca21e74..c05940afd063 100644
+--- a/fs/dlm/requestqueue.c
++++ b/fs/dlm/requestqueue.c
+@@ -37,7 +37,7 @@ void dlm_add_requestqueue(struct dlm_ls *ls, int nodeid,
+ 	int length = le16_to_cpu(ms->m_header.h_length) -
+ 		sizeof(struct dlm_message);
+ 
+-	e = kmalloc(sizeof(struct rq_entry) + length, GFP_NOFS);
++	e = kmalloc(sizeof(struct rq_entry) + length, GFP_ATOMIC);
+ 	if (!e) {
+ 		log_print("dlm_add_requestqueue: out of memory len %d", length);
+ 		return;
+-- 
+2.39.3
+
