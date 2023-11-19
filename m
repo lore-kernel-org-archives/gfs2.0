@@ -1,43 +1,43 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A412713AED
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210581400A
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KsUVwpyH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sho/T343"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1700411905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MnzWiGGPNVDLKbfxnTF16kQYaPzCyHLUIkpfaEjayzc=;
-	b=KsUVwpyHe9jYhHrEZz5kxC73hOx2O6Ulf4vUPyuRAAv48ExXydsukxZ0PpqG+lT4iG9s2E
-	KPDa3nozpNdrOqLMklETqK2OzSr+TTXYbywfGm1FvYRMNh5JZxbG0WQqAvTNa46E8ar+8D
-	nDz+cqXi77QGJ55HkodviisfCiONHLM=
+	bh=tg5hFP9QXIUSPFfiYNBsI0baLFK4dmGqBn+poj7NQzk=;
+	b=Sho/T3436wqfyYnyE9pZGZtWwtzf714RZmPR1HLMD2Eou/l8NFza85lF1TyG7/LQky2o/z
+	7D684jEaD8sDq3a3iQPz8qoWQzZfHPKKvBARw3cJdbftryJMNhS7tj9Zqo2SrXEsQwPG8V
+	bZKLDrmENCShSxI6rLnR2B4397Qww2o=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-Am20tBZJPsOUTsKdFYXu6w-1; Sun, 19 Nov 2023 11:38:23 -0500
-X-MC-Unique: Am20tBZJPsOUTsKdFYXu6w-1
+ us-mta-564-a-U-2S6DO36rXnGnrBmhgg-1; Sun, 19 Nov 2023 11:38:23 -0500
+X-MC-Unique: a-U-2S6DO36rXnGnrBmhgg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0F13811E7D
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1635828B21
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A8B0540C6EBB;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 97A6D40C6EBB;
 	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 07/13] dlm: drop holding waiters mutex in waiters recovery
-Date: Sun, 19 Nov 2023 11:38:11 -0500
-Message-Id: <20231119163817.751872-8-aahringo@redhat.com>
+Subject: [PATCHv2 dlm/next 05/13] dlm: move root_list to ls_recover() stack
+Date: Sun, 19 Nov 2023 11:38:09 -0500
+Message-Id: <20231119163817.751872-6-aahringo@redhat.com>
 In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
 References: <20231119163817.751872-1-aahringo@redhat.com>
 Precedence: bulk
@@ -52,148 +52,405 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch drops to hold the ls_waiters_mutex in
-dlm_recover_waiters_pre(). The dlm_recover_waiters_pre() function is
-only being called when recovery handling is being done for the specific
-lockspace. During this time there can't be new lock requests initiated
-or dlm messages being processed that manipulates the lockspace waiters
-list.
+This patch moves the per lockspace ls_root_list list which is mainly
+used for snapshoting all dlm_rsb from a hash to a list to do recovery
+handling into the recovery function ls_recover() as stack variable.
 
-Only debugfs can access the lockspace waiters list when
-dlm_recover_waiters_pre() may manipulates it. This is not possible
-anymore because debugfs will hold the recovery lock when it's acccessing
-the waiters list.
+Doing that shows that there is no need for locking the ls_root_list
+which is created at the beginning of ls_recover() and destroyed at the
+ending of ls_recover(). In between only functionality is called doing
+read only access to the root_list stack variable.
 
-A check was introduced in remove_from_waiters_ms() for local dlm
-messaging to check if really the lockspace is stopped and no new lock
-requests can be initiated.
+A special case is assigning the per lockspace ls_recover_dir_root_list
+variable to the stack variable. The ls_recover_dir_root_list get
+accessed by another concurrent process dlm_copy_master_names() during
+the time between ls_recover_dir_root_list is set and set to NULL again.
+This is done by a special distributed barrier functionality between
+dlm_recover_members_wait() and dlm_recover_directory_wait(). A comment
+was made to mention about this handling which might be changed to a
+better behaviour in future. However setting the ls_recover_dir_root_list
+to the stack variable and set it to NULL in this specific time will show
+us potential issues with the recovery handling if it's breaks.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/debug_fs.c |  4 ++++
- fs/dlm/lock.c     | 17 +++++++++--------
- fs/dlm/lock.h     |  1 +
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ fs/dlm/dir.c          |  6 ++----
+ fs/dlm/dir.h          |  3 ++-
+ fs/dlm/dlm_internal.h |  6 ++----
+ fs/dlm/lock.c         |  6 ++----
+ fs/dlm/lock.h         |  2 +-
+ fs/dlm/lockspace.c    |  2 --
+ fs/dlm/recover.c      | 30 ++++++++++--------------------
+ fs/dlm/recover.h      |  8 +++++---
+ fs/dlm/recoverd.c     | 35 +++++++++++++----------------------
+ 9 files changed, 37 insertions(+), 61 deletions(-)
 
-diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index 42f332f46359..1ef59f7223a6 100644
---- a/fs/dlm/debug_fs.c
-+++ b/fs/dlm/debug_fs.c
-@@ -823,6 +823,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
- 	size_t len = DLM_DEBUG_BUF_LEN, pos = 0, ret, rv;
+diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
+index 10753486049a..3da00c46cbb3 100644
+--- a/fs/dlm/dir.c
++++ b/fs/dlm/dir.c
+@@ -47,15 +47,13 @@ int dlm_dir_nodeid(struct dlm_rsb *r)
+ 	return r->res_dir_nodeid;
+ }
  
- 	mutex_lock(&debug_buf_lock);
-+	dlm_lock_recovery(ls);
- 	mutex_lock(&ls->ls_waiters_mutex);
- 	memset(debug_buf, 0, sizeof(debug_buf));
+-void dlm_recover_dir_nodeid(struct dlm_ls *ls)
++void dlm_recover_dir_nodeid(struct dlm_ls *ls, const struct list_head *root_list)
+ {
+ 	struct dlm_rsb *r;
  
-@@ -835,6 +836,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
- 		pos += ret;
+-	down_read(&ls->ls_root_sem);
+-	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry(r, root_list, res_root_list) {
+ 		r->res_dir_nodeid = dlm_hash2nodeid(ls, r->res_hash);
  	}
- 	mutex_unlock(&ls->ls_waiters_mutex);
-+	dlm_unlock_recovery(ls);
+-	up_read(&ls->ls_root_sem);
+ }
  
- 	rv = simple_read_from_buffer(userbuf, count, ppos, debug_buf, pos);
- 	mutex_unlock(&debug_buf_lock);
-@@ -858,7 +860,9 @@ static ssize_t waiters_write(struct file *file, const char __user *user_buf,
- 	if (n != 3)
- 		return -EINVAL;
+ int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq)
+diff --git a/fs/dlm/dir.h b/fs/dlm/dir.h
+index 39ecb69d7ef3..5b2a7ee3762d 100644
+--- a/fs/dlm/dir.h
++++ b/fs/dlm/dir.h
+@@ -14,7 +14,8 @@
  
-+	dlm_lock_recovery(ls);
- 	error = dlm_debug_add_lkb_to_waiters(ls, lkb_id, mstype, to_nodeid);
-+	dlm_unlock_recovery(ls);
- 	if (error)
- 		return error;
+ int dlm_dir_nodeid(struct dlm_rsb *rsb);
+ int dlm_hash2nodeid(struct dlm_ls *ls, uint32_t hash);
+-void dlm_recover_dir_nodeid(struct dlm_ls *ls);
++void dlm_recover_dir_nodeid(struct dlm_ls *ls,
++			    const struct list_head *root_list);
+ int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq);
+ void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
+ 			   char *outbuf, int outlen, int nodeid);
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index cb18f383acff..959f69fb2a52 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -644,10 +644,8 @@ struct dlm_ls {
+ 	wait_queue_head_t	ls_recover_lock_wait;
+ 	spinlock_t		ls_clear_proc_locks;
  
+-	struct list_head	ls_root_list;	/* root resources */
+-	struct rw_semaphore	ls_root_sem;	/* protect root_list */
+-	struct list_head	ls_masters_list;	/* root resources */
+-	rwlock_t		ls_masters_lock;	/* protect root_list */
++	struct list_head	ls_masters_list; /* root resources */
++	rwlock_t		ls_masters_lock; /* protect root_list */
+ 
+ 	const struct dlm_lockspace_ops *ls_ops;
+ 	void			*ls_ops_arg;
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 0218645e2f90..79f1f741af13 100644
+index 970b8499b66f..0218645e2f90 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -201,7 +201,7 @@ void dlm_dump_rsb(struct dlm_rsb *r)
+@@ -5185,7 +5185,7 @@ static void purge_dead_list(struct dlm_ls *ls, struct dlm_rsb *r,
  
- /* Threads cannot use the lockspace while it's being recovered */
+ /* Get rid of locks held by nodes that are gone. */
  
--static inline void dlm_lock_recovery(struct dlm_ls *ls)
-+void dlm_lock_recovery(struct dlm_ls *ls)
+-void dlm_recover_purge(struct dlm_ls *ls)
++void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
  {
- 	down_read(&ls->ls_in_recovery);
- }
-@@ -1553,7 +1553,11 @@ static int remove_from_waiters(struct dlm_lkb *lkb, int mstype)
- }
- 
- /* Handles situations where we might be processing a "fake" or "local" reply in
--   which we can't try to take waiters_mutex again. */
-+ * the recovery context which stops any locking activity. Only debugfs might
-+ * change the lockspace waiters but they will held the recovery lock to ensure
-+ * remove_from_waiters_ms() in local case will be the only user manipulating the
-+ * lockspace waiters in recovery context.
-+ */
- 
- static int remove_from_waiters_ms(struct dlm_lkb *lkb,
- 				  const struct dlm_message *ms, bool local)
-@@ -1563,6 +1567,9 @@ static int remove_from_waiters_ms(struct dlm_lkb *lkb,
- 
- 	if (!local)
- 		mutex_lock(&ls->ls_waiters_mutex);
-+	else
-+		WARN_ON_ONCE(!rwsem_is_locked(&ls->ls_in_recovery) ||
-+			     !dlm_locking_stopped(ls));
- 	error = _remove_from_waiters(lkb, le32_to_cpu(ms->m_type), ms);
- 	if (!local)
- 		mutex_unlock(&ls->ls_waiters_mutex);
-@@ -4395,7 +4402,6 @@ static void _receive_convert_reply(struct dlm_lkb *lkb,
- 	if (error)
- 		goto out;
- 
--	/* local reply can happen with waiters_mutex held */
- 	error = remove_from_waiters_ms(lkb, ms, local);
- 	if (error)
- 		goto out;
-@@ -4434,7 +4440,6 @@ static void _receive_unlock_reply(struct dlm_lkb *lkb,
- 	if (error)
- 		goto out;
- 
--	/* local reply can happen with waiters_mutex held */
- 	error = remove_from_waiters_ms(lkb, ms, local);
- 	if (error)
- 		goto out;
-@@ -4486,7 +4491,6 @@ static void _receive_cancel_reply(struct dlm_lkb *lkb,
- 	if (error)
- 		goto out;
- 
--	/* local reply can happen with waiters_mutex held */
- 	error = remove_from_waiters_ms(lkb, ms, local);
- 	if (error)
- 		goto out;
-@@ -4887,8 +4891,6 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
- 	if (!ms_local)
+ 	struct dlm_rsb *r;
+ 	struct dlm_member *memb;
+@@ -5204,8 +5204,7 @@ void dlm_recover_purge(struct dlm_ls *ls)
+ 	if (!nodes_count)
  		return;
  
--	mutex_lock(&ls->ls_waiters_mutex);
--
- 	list_for_each_entry_safe(lkb, safe, &ls->ls_waiters, lkb_wait_reply) {
- 
- 		dir_nodeid = dlm_dir_nodeid(lkb->lkb_resource);
-@@ -4981,7 +4983,6 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
- 		}
- 		schedule();
+-	down_write(&ls->ls_root_sem);
+-	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry(r, root_list, res_root_list) {
+ 		hold_rsb(r);
+ 		lock_rsb(r);
+ 		if (is_master(r)) {
+@@ -5220,7 +5219,6 @@ void dlm_recover_purge(struct dlm_ls *ls)
+ 		unhold_rsb(r);
+ 		cond_resched();
  	}
--	mutex_unlock(&ls->ls_waiters_mutex);
- 	kfree(ms_local);
- }
+-	up_write(&ls->ls_root_sem);
  
+ 	if (lkb_count)
+ 		log_rinfo(ls, "dlm_recover_purge %u locks for %u nodes",
 diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index c8ff7780d3cc..b2fd74a2f8eb 100644
+index b54e2cbbe6e2..c8ff7780d3cc 100644
 --- a/fs/dlm/lock.h
 +++ b/fs/dlm/lock.h
-@@ -23,6 +23,7 @@ void dlm_hold_rsb(struct dlm_rsb *r);
- int dlm_put_lkb(struct dlm_lkb *lkb);
- void dlm_scan_rsbs(struct dlm_ls *ls);
- int dlm_lock_recovery_try(struct dlm_ls *ls);
-+void dlm_lock_recovery(struct dlm_ls *ls);
- void dlm_unlock_recovery(struct dlm_ls *ls);
+@@ -31,7 +31,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ int dlm_search_rsb_tree(struct rb_root *tree, const void *name, int len,
+ 			struct dlm_rsb **r_ret);
  
- int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+-void dlm_recover_purge(struct dlm_ls *ls);
++void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list);
+ void dlm_purge_mstcpy_locks(struct dlm_rsb *r);
+ void dlm_recover_grant(struct dlm_ls *ls);
+ int dlm_recover_waiters_post(struct dlm_ls *ls);
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index c427c76b5f07..da756e5c0f6c 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -580,8 +580,6 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	ls->ls_recover_list_count = 0;
+ 	ls->ls_local_handle = ls;
+ 	init_waitqueue_head(&ls->ls_wait_general);
+-	INIT_LIST_HEAD(&ls->ls_root_list);
+-	init_rwsem(&ls->ls_root_sem);
+ 	INIT_LIST_HEAD(&ls->ls_masters_list);
+ 	rwlock_init(&ls->ls_masters_lock);
+ 
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index 6abc283f8f36..172c6b73f37a 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -519,7 +519,8 @@ static int recover_master_static(struct dlm_rsb *r, unsigned int *count)
+  * the correct dir node.
+  */
+ 
+-int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
++int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
++			const struct list_head *root_list)
+ {
+ 	struct dlm_rsb *r;
+ 	unsigned int total = 0;
+@@ -529,10 +530,8 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
+ 
+ 	log_rinfo(ls, "dlm_recover_masters");
+ 
+-	down_read(&ls->ls_root_sem);
+-	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry(r, root_list, res_root_list) {
+ 		if (dlm_recovery_stopped(ls)) {
+-			up_read(&ls->ls_root_sem);
+ 			error = -EINTR;
+ 			goto out;
+ 		}
+@@ -546,12 +545,9 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
+ 		cond_resched();
+ 		total++;
+ 
+-		if (error) {
+-			up_read(&ls->ls_root_sem);
++		if (error)
+ 			goto out;
+-		}
+ 	}
+-	up_read(&ls->ls_root_sem);
+ 
+ 	log_rinfo(ls, "dlm_recover_masters %u of %u", count, total);
+ 
+@@ -656,13 +652,13 @@ static int recover_locks(struct dlm_rsb *r, uint64_t seq)
+ 	return error;
+ }
+ 
+-int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
++int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
++		      const struct list_head *root_list)
+ {
+ 	struct dlm_rsb *r;
+ 	int error, count = 0;
+ 
+-	down_read(&ls->ls_root_sem);
+-	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry(r, root_list, res_root_list) {
+ 		if (is_master(r)) {
+ 			rsb_clear_flag(r, RSB_NEW_MASTER);
+ 			continue;
+@@ -673,19 +669,15 @@ int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
+ 
+ 		if (dlm_recovery_stopped(ls)) {
+ 			error = -EINTR;
+-			up_read(&ls->ls_root_sem);
+ 			goto out;
+ 		}
+ 
+ 		error = recover_locks(r, seq);
+-		if (error) {
+-			up_read(&ls->ls_root_sem);
++		if (error)
+ 			goto out;
+-		}
+ 
+ 		count += r->res_recover_locks_count;
+ 	}
+-	up_read(&ls->ls_root_sem);
+ 
+ 	log_rinfo(ls, "dlm_recover_locks %d out", count);
+ 
+@@ -854,13 +846,12 @@ static void recover_grant(struct dlm_rsb *r)
+ 		rsb_set_flag(r, RSB_RECOVER_GRANT);
+ }
+ 
+-void dlm_recover_rsbs(struct dlm_ls *ls)
++void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list)
+ {
+ 	struct dlm_rsb *r;
+ 	unsigned int count = 0;
+ 
+-	down_read(&ls->ls_root_sem);
+-	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry(r, root_list, res_root_list) {
+ 		lock_rsb(r);
+ 		if (is_master(r)) {
+ 			if (rsb_flag(r, RSB_RECOVER_CONVERT))
+@@ -881,7 +872,6 @@ void dlm_recover_rsbs(struct dlm_ls *ls)
+ 		rsb_clear_flag(r, RSB_NEW_MASTER2);
+ 		unlock_rsb(r);
+ 	}
+-	up_read(&ls->ls_root_sem);
+ 
+ 	if (count)
+ 		log_rinfo(ls, "dlm_recover_rsbs %d done", count);
+diff --git a/fs/dlm/recover.h b/fs/dlm/recover.h
+index 0b54550ee055..efc79a6e577d 100644
+--- a/fs/dlm/recover.h
++++ b/fs/dlm/recover.h
+@@ -19,12 +19,14 @@ int dlm_recover_members_wait(struct dlm_ls *ls, uint64_t seq);
+ int dlm_recover_directory_wait(struct dlm_ls *ls, uint64_t seq);
+ int dlm_recover_locks_wait(struct dlm_ls *ls, uint64_t seq);
+ int dlm_recover_done_wait(struct dlm_ls *ls, uint64_t seq);
+-int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq);
++int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
++			const struct list_head *root_list);
+ int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc);
+-int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq);
++int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
++		      const struct list_head *root_list);
+ void dlm_recovered_lock(struct dlm_rsb *r);
+ void dlm_clear_toss(struct dlm_ls *ls);
+-void dlm_recover_rsbs(struct dlm_ls *ls);
++void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list);
+ 
+ #endif				/* __RECOVER_DOT_H__ */
+ 
+diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
+index dfce8fc6a783..e5649201ba23 100644
+--- a/fs/dlm/recoverd.c
++++ b/fs/dlm/recoverd.c
+@@ -62,23 +62,17 @@ static void dlm_release_masters_list(struct dlm_ls *ls)
+ 	write_unlock(&ls->ls_masters_lock);
+ }
+ 
+-static void dlm_create_root_list(struct dlm_ls *ls)
++static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
+ {
+ 	struct rb_node *n;
+ 	struct dlm_rsb *r;
+ 	int i;
+ 
+-	down_write(&ls->ls_root_sem);
+-	if (!list_empty(&ls->ls_root_list)) {
+-		log_error(ls, "root list not empty");
+-		goto out;
+-	}
+-
+ 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
+ 		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
+ 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
+ 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
+-			list_add(&r->res_root_list, &ls->ls_root_list);
++			list_add(&r->res_root_list, root_list);
+ 			dlm_hold_rsb(r);
+ 		}
+ 
+@@ -86,20 +80,16 @@ static void dlm_create_root_list(struct dlm_ls *ls)
+ 			log_error(ls, "%s toss not empty", __func__);
+ 		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
+ 	}
+- out:
+-	up_write(&ls->ls_root_sem);
+ }
+ 
+-static void dlm_release_root_list(struct dlm_ls *ls)
++static void dlm_release_root_list(struct list_head *root_list)
+ {
+ 	struct dlm_rsb *r, *safe;
+ 
+-	down_write(&ls->ls_root_sem);
+-	list_for_each_entry_safe(r, safe, &ls->ls_root_list, res_root_list) {
++	list_for_each_entry_safe(r, safe, root_list, res_root_list) {
+ 		list_del_init(&r->res_root_list);
+ 		dlm_put_rsb(r);
+ 	}
+-	up_write(&ls->ls_root_sem);
+ }
+ 
+ /* If the start for which we're re-enabling locking (seq) has been superseded
+@@ -131,6 +121,7 @@ static int enable_locking(struct dlm_ls *ls, uint64_t seq)
+ 
+ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ {
++	LIST_HEAD(root_list);
+ 	unsigned long start;
+ 	int error, neg = 0;
+ 
+@@ -147,7 +138,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 	 * routines.
+ 	 */
+ 
+-	dlm_create_root_list(ls);
++	dlm_create_root_list(ls, &root_list);
+ 
+ 	/*
+ 	 * Add or remove nodes from the lockspace's ls_nodes list.
+@@ -163,7 +154,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		goto fail;
+ 	}
+ 
+-	dlm_recover_dir_nodeid(ls);
++	dlm_recover_dir_nodeid(ls, &root_list);
+ 
+ 	/* Create a snapshot of all active rsbs were we are the master of.
+ 	 * During the barrier between dlm_recover_members_wait() and
+@@ -241,14 +232,14 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		 * Clear lkb's for departed nodes.
+ 		 */
+ 
+-		dlm_recover_purge(ls);
++		dlm_recover_purge(ls, &root_list);
+ 
+ 		/*
+ 		 * Get new master nodeid's for rsb's that were mastered on
+ 		 * departed nodes.
+ 		 */
+ 
+-		error = dlm_recover_masters(ls, rv->seq);
++		error = dlm_recover_masters(ls, rv->seq, &root_list);
+ 		if (error) {
+ 			log_rinfo(ls, "dlm_recover_masters error %d", error);
+ 			goto fail;
+@@ -258,7 +249,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		 * Send our locks on remastered rsb's to the new masters.
+ 		 */
+ 
+-		error = dlm_recover_locks(ls, rv->seq);
++		error = dlm_recover_locks(ls, rv->seq, &root_list);
+ 		if (error) {
+ 			log_rinfo(ls, "dlm_recover_locks error %d", error);
+ 			goto fail;
+@@ -281,7 +272,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		 * settings.
+ 		 */
+ 
+-		dlm_recover_rsbs(ls);
++		dlm_recover_rsbs(ls, &root_list);
+ 	} else {
+ 		/*
+ 		 * Other lockspace members may be going through the "neg" steps
+@@ -297,7 +288,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		}
+ 	}
+ 
+-	dlm_release_root_list(ls);
++	dlm_release_root_list(&root_list);
+ 
+ 	/*
+ 	 * Purge directory-related requests that are saved in requestqueue.
+@@ -347,7 +338,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 	return 0;
+ 
+  fail:
+-	dlm_release_root_list(ls);
++	dlm_release_root_list(&root_list);
+ 	mutex_unlock(&ls->ls_recoverd_active);
+ 
+ 	return error;
 -- 
 2.39.3
 
