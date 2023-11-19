@@ -1,42 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0D31427B
-	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F20C14287
+	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cTtuIjkR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XpNaxa31"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1700411906;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sAV8v8bTl0g7zZUxg8DeADm5hYJj4oDMQQj61yhkU4A=;
-	b=cTtuIjkRv2wbRr7FgwessKtCprlbg36M7qNNZP/o7WL8SXaz0Ojbz0xLfpUeT/KI/KB2Ve
-	QrlmAW4GQSC/W6ToypOTNk2weB9TnMxgQMksceihTXzwCd9wr/xQwUGewk51rluYZzEPwn
-	26epGaQF7viX50+CPvFS9VRqXTMV0HY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xfs/ZB8mUl8B2/mIc6X+0Om0e4Dhh6Ds+dNC/NesOp0=;
+	b=XpNaxa31hpQpqXYNn4Blzl1utikCIwLB7VzEfSftULVnjPL5sQhiMSmfgtz9or5SOhrT5f
+	7Yp8NCoNv+lI4qKBw7Nv8SFOiZL0wG/u2rmOAI0/llTwrnzjDMeeuXol+Pm7RdQ5nz/f1G
+	PuyRIKUKUgKoxsSrhwb4kSImNH2f2dU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-FY8ekXA1MeOUoPW7SuuVgQ-1; Sun, 19 Nov 2023 11:38:23 -0500
-X-MC-Unique: FY8ekXA1MeOUoPW7SuuVgQ-1
+ us-mta-367-Kw4UsmoPNd6VWoD619208g-1; Sun, 19 Nov 2023 11:38:24 -0500
+X-MC-Unique: Kw4UsmoPNd6VWoD619208g-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 784F88007B3
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B83EA85A58B
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6FCD540C6EB9;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AFF1340C6EBC;
 	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 00/13] dlm: bring message parsing to softirq context
-Date: Sun, 19 Nov 2023 11:38:04 -0500
-Message-Id: <20231119163817.751872-1-aahringo@redhat.com>
+Subject: [PATCHv2 dlm/next 08/13] dlm: convert ls_waiters_mutex to spinlock
+Date: Sun, 19 Nov 2023 11:38:12 -0500
+Message-Id: <20231119163817.751872-9-aahringo@redhat.com>
+In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
+References: <20231119163817.751872-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -49,68 +52,145 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi,
+This patch converts the per dlm lockspace waiters lock from a mutex to a
+spinlock.
 
-this is version 2 of my attempt to bring dlm message parsing to softirq
-context. This will "minimal" improve the dlm message parsing that is
-still message after message parsing. This patch will move the dlm
-message parsing into a softirq context where we probably can easily
-trigger parallel message processing and take advantage that the message
-processing runs on a per cpu basis.
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/debug_fs.c     |  4 ++--
+ fs/dlm/dlm_internal.h |  2 +-
+ fs/dlm/lock.c         | 20 ++++++++++----------
+ fs/dlm/lockspace.c    |  2 +-
+ 4 files changed, 14 insertions(+), 14 deletions(-)
 
-I changed in v2 that we split the root_list to root_list and a per
-lockspace masters list. The root_list can be used as a stack list
-variable in ls_recover() as it's only used for recovery handling. The
-masters list is somehow special because it is being used for other dlm
-nodes to dump the nodes master rsbs. The current implementation
-guarantees that this happens in a very special part of the recovery
-handling by using a kind of distributed cluster barriers. I added more
-sanity checks for this handling and a more per node based recovery log
-mechanism. There is also a TODO that describes we should keep track of
-all masters rsb while lockspace locking handling and not create them
-while recovery handling which I think should improve the handling to
-maybe get rid of those barriers.
-
-- Alex
-
-Alexander Aring (13):
-  dlm: remove allocation parameter in msg allocation
-  dlm: switch to GFP_ATOMIC in dlm allocations
-  dlm: move root_list functionality to recover.c
-  dlm: move master dir dump to own list
-  dlm: move root_list to ls_recover() stack
-  dlm: implement directory dump context
-  dlm: drop holding waiters mutex in waiters recovery
-  dlm: convert ls_waiters_mutex to spinlock
-  dlm: convert res_lock to spinlock
-  dlm: make requestqueue handling non sleepable
-  dlm: ls_recv_active semaphore to rwlock
-  dlm: convert message parsing locks to disable bh
-  dlm: do dlm message processing in softirq context
-
- fs/dlm/ast.c          |  28 ++---
- fs/dlm/debug_fs.c     |  36 ++++---
- fs/dlm/dir.c          | 147 ++++++++++++++++++++++----
- fs/dlm/dir.h          |   3 +-
- fs/dlm/dlm_internal.h |  20 ++--
- fs/dlm/lock.c         | 236 ++++++++++++++++++++++--------------------
- fs/dlm/lock.h         |   7 +-
- fs/dlm/lockspace.c    |  65 ++++++------
- fs/dlm/lowcomms.c     |  66 +++++-------
- fs/dlm/lowcomms.h     |   5 +-
- fs/dlm/member.c       |  23 ++--
- fs/dlm/memory.c       |  14 +--
- fs/dlm/memory.h       |   4 +-
- fs/dlm/midcomms.c     |  64 ++++++------
- fs/dlm/midcomms.h     |   3 +-
- fs/dlm/rcom.c         |  33 +++---
- fs/dlm/recover.c      | 126 +++++++---------------
- fs/dlm/recover.h      |  10 +-
- fs/dlm/recoverd.c     | 125 ++++++++++++++++++----
- fs/dlm/requestqueue.c |  43 ++------
- fs/dlm/user.c         |  34 +++---
- 21 files changed, 603 insertions(+), 489 deletions(-)
-
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 1ef59f7223a6..26abeff5b602 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -824,7 +824,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ 
+ 	mutex_lock(&debug_buf_lock);
+ 	dlm_lock_recovery(ls);
+-	mutex_lock(&ls->ls_waiters_mutex);
++	spin_lock(&ls->ls_waiters_lock);
+ 	memset(debug_buf, 0, sizeof(debug_buf));
+ 
+ 	list_for_each_entry(lkb, &ls->ls_waiters, lkb_wait_reply) {
+@@ -835,7 +835,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ 			break;
+ 		pos += ret;
+ 	}
+-	mutex_unlock(&ls->ls_waiters_mutex);
++	spin_unlock(&ls->ls_waiters_lock);
+ 	dlm_unlock_recovery(ls);
+ 
+ 	rv = simple_read_from_buffer(userbuf, count, ppos, debug_buf, pos);
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index 9aa1e3a09e02..5975d52f4061 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -565,7 +565,7 @@ struct dlm_ls {
+ 	struct dlm_rsbtable	*ls_rsbtbl;
+ 	uint32_t		ls_rsbtbl_size;
+ 
+-	struct mutex		ls_waiters_mutex;
++	spinlock_t		ls_waiters_lock;
+ 	struct list_head	ls_waiters;	/* lkbs needing a reply */
+ 
+ 	struct mutex		ls_orphans_mutex;
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 79f1f741af13..005e2d167cbd 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -1407,7 +1407,7 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
+ 	int error = 0;
+ 	int wc;
+ 
+-	mutex_lock(&ls->ls_waiters_mutex);
++	spin_lock(&ls->ls_waiters_lock);
+ 
+ 	if (is_overlap_unlock(lkb) ||
+ 	    (is_overlap_cancel(lkb) && (mstype == DLM_MSG_CANCEL))) {
+@@ -1447,7 +1447,7 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
+ 		log_error(ls, "addwait error %x %d flags %x %d %d %s",
+ 			  lkb->lkb_id, error, dlm_iflags_val(lkb), mstype,
+ 			  lkb->lkb_wait_type, lkb->lkb_resource->res_name);
+-	mutex_unlock(&ls->ls_waiters_mutex);
++	spin_unlock(&ls->ls_waiters_lock);
+ 	return error;
+ }
+ 
+@@ -1546,9 +1546,9 @@ static int remove_from_waiters(struct dlm_lkb *lkb, int mstype)
+ 	struct dlm_ls *ls = lkb->lkb_resource->res_ls;
+ 	int error;
+ 
+-	mutex_lock(&ls->ls_waiters_mutex);
++	spin_lock(&ls->ls_waiters_lock);
+ 	error = _remove_from_waiters(lkb, mstype, NULL);
+-	mutex_unlock(&ls->ls_waiters_mutex);
++	spin_unlock(&ls->ls_waiters_lock);
+ 	return error;
+ }
+ 
+@@ -1566,13 +1566,13 @@ static int remove_from_waiters_ms(struct dlm_lkb *lkb,
+ 	int error;
+ 
+ 	if (!local)
+-		mutex_lock(&ls->ls_waiters_mutex);
++		spin_lock(&ls->ls_waiters_lock);
+ 	else
+ 		WARN_ON_ONCE(!rwsem_is_locked(&ls->ls_in_recovery) ||
+ 			     !dlm_locking_stopped(ls));
+ 	error = _remove_from_waiters(lkb, le32_to_cpu(ms->m_type), ms);
+ 	if (!local)
+-		mutex_unlock(&ls->ls_waiters_mutex);
++		spin_unlock(&ls->ls_waiters_lock);
+ 	return error;
+ }
+ 
+@@ -4990,7 +4990,7 @@ static struct dlm_lkb *find_resend_waiter(struct dlm_ls *ls)
+ {
+ 	struct dlm_lkb *lkb = NULL, *iter;
+ 
+-	mutex_lock(&ls->ls_waiters_mutex);
++	spin_lock(&ls->ls_waiters_lock);
+ 	list_for_each_entry(iter, &ls->ls_waiters, lkb_wait_reply) {
+ 		if (test_bit(DLM_IFL_RESEND_BIT, &iter->lkb_iflags)) {
+ 			hold_lkb(iter);
+@@ -4998,7 +4998,7 @@ static struct dlm_lkb *find_resend_waiter(struct dlm_ls *ls)
+ 			break;
+ 		}
+ 	}
+-	mutex_unlock(&ls->ls_waiters_mutex);
++	spin_unlock(&ls->ls_waiters_lock);
+ 
+ 	return lkb;
+ }
+@@ -5065,9 +5065,9 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
+ 		while (!atomic_dec_and_test(&lkb->lkb_wait_count))
+ 			unhold_lkb(lkb);
+ 
+-		mutex_lock(&ls->ls_waiters_mutex);
++		spin_lock(&ls->ls_waiters_lock);
+ 		list_del_init(&lkb->lkb_wait_reply);
+-		mutex_unlock(&ls->ls_waiters_mutex);
++		spin_unlock(&ls->ls_waiters_lock);
+ 
+ 		if (oc || ou) {
+ 			/* do an unlock or cancel instead of resending */
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index af7769f8e38c..945139805605 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -515,7 +515,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	spin_lock_init(&ls->ls_lkbidr_spin);
+ 
+ 	INIT_LIST_HEAD(&ls->ls_waiters);
+-	mutex_init(&ls->ls_waiters_mutex);
++	spin_lock_init(&ls->ls_waiters_lock);
+ 	INIT_LIST_HEAD(&ls->ls_orphans);
+ 	mutex_init(&ls->ls_orphans_mutex);
+ 
 -- 
 2.39.3
 
