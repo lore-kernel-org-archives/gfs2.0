@@ -1,43 +1,43 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210581400A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40A613AC2
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sho/T343"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Is3DJsUG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1700411905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tg5hFP9QXIUSPFfiYNBsI0baLFK4dmGqBn+poj7NQzk=;
-	b=Sho/T3436wqfyYnyE9pZGZtWwtzf714RZmPR1HLMD2Eou/l8NFza85lF1TyG7/LQky2o/z
-	7D684jEaD8sDq3a3iQPz8qoWQzZfHPKKvBARw3cJdbftryJMNhS7tj9Zqo2SrXEsQwPG8V
-	bZKLDrmENCShSxI6rLnR2B4397Qww2o=
+	bh=dQ9RKwl5AvmwOyKYcXhXa86VYOHEH7TpBAEBd1kB4Ig=;
+	b=Is3DJsUGZaLtVBq1q6L6qmtMaIKimVysNV1PpMxjFBKDFnr6DdsgNB4ruSKmdV4yIDWb2c
+	Xfron97WEN/3JzoCyQHmCGS9TQyS9y0SiJDshPDa4cbr4HkzLyeghkliHwnaxwzohLPaz7
+	5+2rPgRKCjryNY1S81E6ECTfwJeEqxs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-a-U-2S6DO36rXnGnrBmhgg-1; Sun, 19 Nov 2023 11:38:23 -0500
-X-MC-Unique: a-U-2S6DO36rXnGnrBmhgg-1
+ us-mta-576-wwvZCQJ7ODa8fbq20PmEGw-1; Sun, 19 Nov 2023 11:38:24 -0500
+X-MC-Unique: wwvZCQJ7ODa8fbq20PmEGw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1635828B21
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6BC2185A782
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 97A6D40C6EBB;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BDA0640C6EBC;
 	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 05/13] dlm: move root_list to ls_recover() stack
-Date: Sun, 19 Nov 2023 11:38:09 -0500
-Message-Id: <20231119163817.751872-6-aahringo@redhat.com>
+Subject: [PATCHv2 dlm/next 10/13] dlm: make requestqueue handling non sleepable
+Date: Sun, 19 Nov 2023 11:38:14 -0500
+Message-Id: <20231119163817.751872-11-aahringo@redhat.com>
 In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
 References: <20231119163817.751872-1-aahringo@redhat.com>
 Precedence: bulk
@@ -52,405 +52,216 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch moves the per lockspace ls_root_list list which is mainly
-used for snapshoting all dlm_rsb from a hash to a list to do recovery
-handling into the recovery function ls_recover() as stack variable.
-
-Doing that shows that there is no need for locking the ls_root_list
-which is created at the beginning of ls_recover() and destroyed at the
-ending of ls_recover(). In between only functionality is called doing
-read only access to the root_list stack variable.
-
-A special case is assigning the per lockspace ls_recover_dir_root_list
-variable to the stack variable. The ls_recover_dir_root_list get
-accessed by another concurrent process dlm_copy_master_names() during
-the time between ls_recover_dir_root_list is set and set to NULL again.
-This is done by a special distributed barrier functionality between
-dlm_recover_members_wait() and dlm_recover_directory_wait(). A comment
-was made to mention about this handling which might be changed to a
-better behaviour in future. However setting the ls_recover_dir_root_list
-to the stack variable and set it to NULL in this specific time will show
-us potential issues with the recovery handling if it's breaks.
+This patch removes the ls_requestqueue_wait and convert the
+ls_requestqueue_mutex to a rw lock. Instead of calling wait_event() in
+dlm processing which waits until all messages are processed and allow
+new message processing after recovering is done, this patch is using a
+bitflag to signal when a message should be saved for future or not. When
+recovery processes all saved messages we will clear this bit again and
+allow new messages to processed directly.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dir.c          |  6 ++----
- fs/dlm/dir.h          |  3 ++-
- fs/dlm/dlm_internal.h |  6 ++----
- fs/dlm/lock.c         |  6 ++----
- fs/dlm/lock.h         |  2 +-
- fs/dlm/lockspace.c    |  2 --
- fs/dlm/recover.c      | 30 ++++++++++--------------------
- fs/dlm/recover.h      |  8 +++++---
- fs/dlm/recoverd.c     | 35 +++++++++++++----------------------
- 9 files changed, 37 insertions(+), 61 deletions(-)
+ fs/dlm/dlm_internal.h |  5 ++---
+ fs/dlm/lock.c         | 16 ++++++++++++++--
+ fs/dlm/lockspace.c    |  4 +---
+ fs/dlm/member.c       |  5 +++++
+ fs/dlm/requestqueue.c | 41 ++++++++---------------------------------
+ 5 files changed, 30 insertions(+), 41 deletions(-)
 
-diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
-index 10753486049a..3da00c46cbb3 100644
---- a/fs/dlm/dir.c
-+++ b/fs/dlm/dir.c
-@@ -47,15 +47,13 @@ int dlm_dir_nodeid(struct dlm_rsb *r)
- 	return r->res_dir_nodeid;
- }
- 
--void dlm_recover_dir_nodeid(struct dlm_ls *ls)
-+void dlm_recover_dir_nodeid(struct dlm_ls *ls, const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		r->res_dir_nodeid = dlm_hash2nodeid(ls, r->res_hash);
- 	}
--	up_read(&ls->ls_root_sem);
- }
- 
- int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq)
-diff --git a/fs/dlm/dir.h b/fs/dlm/dir.h
-index 39ecb69d7ef3..5b2a7ee3762d 100644
---- a/fs/dlm/dir.h
-+++ b/fs/dlm/dir.h
-@@ -14,7 +14,8 @@
- 
- int dlm_dir_nodeid(struct dlm_rsb *rsb);
- int dlm_hash2nodeid(struct dlm_ls *ls, uint32_t hash);
--void dlm_recover_dir_nodeid(struct dlm_ls *ls);
-+void dlm_recover_dir_nodeid(struct dlm_ls *ls,
-+			    const struct list_head *root_list);
- int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq);
- void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 			   char *outbuf, int outlen, int nodeid);
 diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index cb18f383acff..959f69fb2a52 100644
+index 13225b28fa98..4cb1f38067d3 100644
 --- a/fs/dlm/dlm_internal.h
 +++ b/fs/dlm/dlm_internal.h
-@@ -644,10 +644,8 @@ struct dlm_ls {
- 	wait_queue_head_t	ls_recover_lock_wait;
- 	spinlock_t		ls_clear_proc_locks;
+@@ -625,9 +625,7 @@ struct dlm_ls {
+ 	struct rw_semaphore	ls_in_recovery;	/* block local requests */
+ 	struct rw_semaphore	ls_recv_active;	/* block dlm_recv */
+ 	struct list_head	ls_requestqueue;/* queue remote requests */
+-	atomic_t		ls_requestqueue_cnt;
+-	wait_queue_head_t	ls_requestqueue_wait;
+-	struct mutex		ls_requestqueue_mutex;
++	rwlock_t		ls_requestqueue_lock;
+ 	struct dlm_rcom		*ls_recover_buf;
+ 	int			ls_recover_nodeid; /* for debugging */
+ 	unsigned int		ls_recover_locks_in; /* for log info */
+@@ -687,6 +685,7 @@ struct dlm_ls {
+ #define LSFL_UEVENT_WAIT	7
+ #define LSFL_CB_DELAY		9
+ #define LSFL_NODIR		10
++#define LSFL_RECV_MSG_BLOCKED	11
  
--	struct list_head	ls_root_list;	/* root resources */
--	struct rw_semaphore	ls_root_sem;	/* protect root_list */
--	struct list_head	ls_masters_list;	/* root resources */
--	rwlock_t		ls_masters_lock;	/* protect root_list */
-+	struct list_head	ls_masters_list; /* root resources */
-+	rwlock_t		ls_masters_lock; /* protect root_list */
- 
- 	const struct dlm_lockspace_ops *ls_ops;
- 	void			*ls_ops_arg;
+ /* much of this is just saving user space pointers associated with the
+    lock that we pass back to the user lib with an ast */
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 970b8499b66f..0218645e2f90 100644
+index 4fc6bc3690a6..e2e98811eafa 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -5185,7 +5185,7 @@ static void purge_dead_list(struct dlm_ls *ls, struct dlm_rsb *r,
- 
- /* Get rid of locks held by nodes that are gone. */
- 
--void dlm_recover_purge(struct dlm_ls *ls)
-+void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
+@@ -4749,20 +4749,32 @@ static void _receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
+ static void dlm_receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
+ 				int nodeid)
  {
- 	struct dlm_rsb *r;
- 	struct dlm_member *memb;
-@@ -5204,8 +5204,7 @@ void dlm_recover_purge(struct dlm_ls *ls)
- 	if (!nodes_count)
- 		return;
+-	if (dlm_locking_stopped(ls)) {
++try_again:
++	read_lock(&ls->ls_requestqueue_lock);
++	if (test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
+ 		/* If we were a member of this lockspace, left, and rejoined,
+ 		   other nodes may still be sending us messages from the
+ 		   lockspace generation before we left. */
+ 		if (WARN_ON_ONCE(!ls->ls_generation)) {
++			read_unlock(&ls->ls_requestqueue_lock);
+ 			log_limit(ls, "receive %d from %d ignore old gen",
+ 				  le32_to_cpu(ms->m_type), nodeid);
+ 			return;
+ 		}
  
--	down_write(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		hold_rsb(r);
- 		lock_rsb(r);
- 		if (is_master(r)) {
-@@ -5220,7 +5219,6 @@ void dlm_recover_purge(struct dlm_ls *ls)
- 		unhold_rsb(r);
- 		cond_resched();
++		read_unlock(&ls->ls_requestqueue_lock);
++		write_lock(&ls->ls_requestqueue_lock);
++		/* recheck because we hold writelock now */
++		if (!test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
++			write_unlock_bh(&ls->ls_requestqueue_lock);
++			goto try_again;
++		}
++
+ 		dlm_add_requestqueue(ls, nodeid, ms);
++		write_unlock(&ls->ls_requestqueue_lock);
+ 	} else {
+-		dlm_wait_requestqueue(ls);
+ 		_receive_message(ls, ms, 0);
++		read_unlock(&ls->ls_requestqueue_lock);
  	}
--	up_write(&ls->ls_root_sem);
+ }
  
- 	if (lkb_count)
- 		log_rinfo(ls, "dlm_recover_purge %u locks for %u nodes",
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index b54e2cbbe6e2..c8ff7780d3cc 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -31,7 +31,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- int dlm_search_rsb_tree(struct rb_root *tree, const void *name, int len,
- 			struct dlm_rsb **r_ret);
- 
--void dlm_recover_purge(struct dlm_ls *ls);
-+void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list);
- void dlm_purge_mstcpy_locks(struct dlm_rsb *r);
- void dlm_recover_grant(struct dlm_ls *ls);
- int dlm_recover_waiters_post(struct dlm_ls *ls);
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index c427c76b5f07..da756e5c0f6c 100644
+index 945139805605..757e473bc619 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -580,8 +580,6 @@ static int new_lockspace(const char *name, const char *cluster,
- 	ls->ls_recover_list_count = 0;
- 	ls->ls_local_handle = ls;
- 	init_waitqueue_head(&ls->ls_wait_general);
--	INIT_LIST_HEAD(&ls->ls_root_list);
--	init_rwsem(&ls->ls_root_sem);
- 	INIT_LIST_HEAD(&ls->ls_masters_list);
- 	rwlock_init(&ls->ls_masters_lock);
+@@ -554,9 +554,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	init_rwsem(&ls->ls_in_recovery);
+ 	init_rwsem(&ls->ls_recv_active);
+ 	INIT_LIST_HEAD(&ls->ls_requestqueue);
+-	atomic_set(&ls->ls_requestqueue_cnt, 0);
+-	init_waitqueue_head(&ls->ls_requestqueue_wait);
+-	mutex_init(&ls->ls_requestqueue_mutex);
++	rwlock_init(&ls->ls_requestqueue_lock);
+ 	spin_lock_init(&ls->ls_clear_proc_locks);
  
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index 6abc283f8f36..172c6b73f37a 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -519,7 +519,8 @@ static int recover_master_static(struct dlm_rsb *r, unsigned int *count)
-  * the correct dir node.
-  */
+ 	/* Due backwards compatibility with 3.1 we need to use maximum
+diff --git a/fs/dlm/member.c b/fs/dlm/member.c
+index be7909ead71b..707cebcdc533 100644
+--- a/fs/dlm/member.c
++++ b/fs/dlm/member.c
+@@ -642,6 +642,11 @@ int dlm_ls_stop(struct dlm_ls *ls)
+ 	set_bit(LSFL_RECOVER_STOP, &ls->ls_flags);
+ 	new = test_and_clear_bit(LSFL_RUNNING, &ls->ls_flags);
+ 	ls->ls_recover_seq++;
++
++	/* activate requestqueue and stop processing */
++	write_lock(&ls->ls_requestqueue_lock);
++	set_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
++	write_unlock(&ls->ls_requestqueue_lock);
+ 	spin_unlock(&ls->ls_recover_lock);
  
--int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
-+int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
-+			const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 	unsigned int total = 0;
-@@ -529,10 +530,8 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
+ 	/*
+diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
+index c05940afd063..9b646026df46 100644
+--- a/fs/dlm/requestqueue.c
++++ b/fs/dlm/requestqueue.c
+@@ -48,10 +48,7 @@ void dlm_add_requestqueue(struct dlm_ls *ls, int nodeid,
+ 	memcpy(&e->request, ms, sizeof(*ms));
+ 	memcpy(&e->request.m_extra, ms->m_extra, length);
  
- 	log_rinfo(ls, "dlm_recover_masters");
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		if (dlm_recovery_stopped(ls)) {
--			up_read(&ls->ls_root_sem);
- 			error = -EINTR;
- 			goto out;
- 		}
-@@ -546,12 +545,9 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq)
- 		cond_resched();
- 		total++;
- 
--		if (error) {
--			up_read(&ls->ls_root_sem);
-+		if (error)
- 			goto out;
--		}
- 	}
--	up_read(&ls->ls_root_sem);
- 
- 	log_rinfo(ls, "dlm_recover_masters %u of %u", count, total);
- 
-@@ -656,13 +652,13 @@ static int recover_locks(struct dlm_rsb *r, uint64_t seq)
- 	return error;
+-	atomic_inc(&ls->ls_requestqueue_cnt);
+-	mutex_lock(&ls->ls_requestqueue_mutex);
+ 	list_add_tail(&e->list, &ls->ls_requestqueue);
+-	mutex_unlock(&ls->ls_requestqueue_mutex);
  }
  
--int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
-+int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
-+		      const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 	int error, count = 0;
+ /*
+@@ -71,16 +68,14 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
+ 	struct dlm_message *ms;
+ 	int error = 0;
  
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		if (is_master(r)) {
- 			rsb_clear_flag(r, RSB_NEW_MASTER);
- 			continue;
-@@ -673,19 +669,15 @@ int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq)
- 
- 		if (dlm_recovery_stopped(ls)) {
- 			error = -EINTR;
--			up_read(&ls->ls_root_sem);
- 			goto out;
- 		}
- 
- 		error = recover_locks(r, seq);
--		if (error) {
--			up_read(&ls->ls_root_sem);
-+		if (error)
- 			goto out;
--		}
- 
- 		count += r->res_recover_locks_count;
- 	}
--	up_read(&ls->ls_root_sem);
- 
- 	log_rinfo(ls, "dlm_recover_locks %d out", count);
- 
-@@ -854,13 +846,12 @@ static void recover_grant(struct dlm_rsb *r)
- 		rsb_set_flag(r, RSB_RECOVER_GRANT);
- }
- 
--void dlm_recover_rsbs(struct dlm_ls *ls)
-+void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list)
- {
- 	struct dlm_rsb *r;
- 	unsigned int count = 0;
- 
--	down_read(&ls->ls_root_sem);
--	list_for_each_entry(r, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry(r, root_list, res_root_list) {
- 		lock_rsb(r);
- 		if (is_master(r)) {
- 			if (rsb_flag(r, RSB_RECOVER_CONVERT))
-@@ -881,7 +872,6 @@ void dlm_recover_rsbs(struct dlm_ls *ls)
- 		rsb_clear_flag(r, RSB_NEW_MASTER2);
- 		unlock_rsb(r);
- 	}
--	up_read(&ls->ls_root_sem);
- 
- 	if (count)
- 		log_rinfo(ls, "dlm_recover_rsbs %d done", count);
-diff --git a/fs/dlm/recover.h b/fs/dlm/recover.h
-index 0b54550ee055..efc79a6e577d 100644
---- a/fs/dlm/recover.h
-+++ b/fs/dlm/recover.h
-@@ -19,12 +19,14 @@ int dlm_recover_members_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_directory_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_locks_wait(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_done_wait(struct dlm_ls *ls, uint64_t seq);
--int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq);
-+int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
-+			const struct list_head *root_list);
- int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc);
--int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq);
-+int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
-+		      const struct list_head *root_list);
- void dlm_recovered_lock(struct dlm_rsb *r);
- void dlm_clear_toss(struct dlm_ls *ls);
--void dlm_recover_rsbs(struct dlm_ls *ls);
-+void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list);
- 
- #endif				/* __RECOVER_DOT_H__ */
- 
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index dfce8fc6a783..e5649201ba23 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -62,23 +62,17 @@ static void dlm_release_masters_list(struct dlm_ls *ls)
- 	write_unlock(&ls->ls_masters_lock);
- }
- 
--static void dlm_create_root_list(struct dlm_ls *ls)
-+static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
- {
- 	struct rb_node *n;
- 	struct dlm_rsb *r;
- 	int i;
- 
--	down_write(&ls->ls_root_sem);
--	if (!list_empty(&ls->ls_root_list)) {
--		log_error(ls, "root list not empty");
--		goto out;
--	}
+-	mutex_lock(&ls->ls_requestqueue_mutex);
 -
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
- 		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
- 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
--			list_add(&r->res_root_list, &ls->ls_root_list);
-+			list_add(&r->res_root_list, root_list);
- 			dlm_hold_rsb(r);
++	write_lock(&ls->ls_requestqueue_lock);
+ 	for (;;) {
+ 		if (list_empty(&ls->ls_requestqueue)) {
+-			mutex_unlock(&ls->ls_requestqueue_mutex);
++			clear_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
+ 			error = 0;
+ 			break;
  		}
+-		e = list_entry(ls->ls_requestqueue.next, struct rq_entry, list);
+-		mutex_unlock(&ls->ls_requestqueue_mutex);
++		e = list_first_entry(&ls->ls_requestqueue, struct rq_entry, list);
  
-@@ -86,20 +80,16 @@ static void dlm_create_root_list(struct dlm_ls *ls)
- 			log_error(ls, "%s toss not empty", __func__);
- 		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
-- out:
--	up_write(&ls->ls_root_sem);
- }
+ 		ms = &e->request;
  
--static void dlm_release_root_list(struct dlm_ls *ls)
-+static void dlm_release_root_list(struct list_head *root_list)
- {
- 	struct dlm_rsb *r, *safe;
+@@ -93,41 +88,23 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
+ 			  e->recover_seq);
  
--	down_write(&ls->ls_root_sem);
--	list_for_each_entry_safe(r, safe, &ls->ls_root_list, res_root_list) {
-+	list_for_each_entry_safe(r, safe, root_list, res_root_list) {
- 		list_del_init(&r->res_root_list);
- 		dlm_put_rsb(r);
- 	}
--	up_write(&ls->ls_root_sem);
- }
+ 		dlm_receive_message_saved(ls, &e->request, e->recover_seq);
+-
+-		mutex_lock(&ls->ls_requestqueue_mutex);
+ 		list_del(&e->list);
+-		if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
+-			wake_up(&ls->ls_requestqueue_wait);
+ 		kfree(e);
  
- /* If the start for which we're re-enabling locking (seq) has been superseded
-@@ -131,6 +121,7 @@ static int enable_locking(struct dlm_ls *ls, uint64_t seq)
- 
- static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- {
-+	LIST_HEAD(root_list);
- 	unsigned long start;
- 	int error, neg = 0;
- 
-@@ -147,7 +138,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 	 * routines.
- 	 */
- 
--	dlm_create_root_list(ls);
-+	dlm_create_root_list(ls, &root_list);
- 
- 	/*
- 	 * Add or remove nodes from the lockspace's ls_nodes list.
-@@ -163,7 +154,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		goto fail;
- 	}
- 
--	dlm_recover_dir_nodeid(ls);
-+	dlm_recover_dir_nodeid(ls, &root_list);
- 
- 	/* Create a snapshot of all active rsbs were we are the master of.
- 	 * During the barrier between dlm_recover_members_wait() and
-@@ -241,14 +232,14 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * Clear lkb's for departed nodes.
- 		 */
- 
--		dlm_recover_purge(ls);
-+		dlm_recover_purge(ls, &root_list);
- 
- 		/*
- 		 * Get new master nodeid's for rsb's that were mastered on
- 		 * departed nodes.
- 		 */
- 
--		error = dlm_recover_masters(ls, rv->seq);
-+		error = dlm_recover_masters(ls, rv->seq, &root_list);
- 		if (error) {
- 			log_rinfo(ls, "dlm_recover_masters error %d", error);
- 			goto fail;
-@@ -258,7 +249,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * Send our locks on remastered rsb's to the new masters.
- 		 */
- 
--		error = dlm_recover_locks(ls, rv->seq);
-+		error = dlm_recover_locks(ls, rv->seq, &root_list);
- 		if (error) {
- 			log_rinfo(ls, "dlm_recover_locks error %d", error);
- 			goto fail;
-@@ -281,7 +272,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 		 * settings.
- 		 */
- 
--		dlm_recover_rsbs(ls);
-+		dlm_recover_rsbs(ls, &root_list);
- 	} else {
- 		/*
- 		 * Other lockspace members may be going through the "neg" steps
-@@ -297,7 +288,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 		if (dlm_locking_stopped(ls)) {
+ 			log_debug(ls, "process_requestqueue abort running");
+-			mutex_unlock(&ls->ls_requestqueue_mutex);
+ 			error = -EINTR;
+ 			break;
  		}
++		write_unlock(&ls->ls_requestqueue_lock);
+ 		schedule();
++		write_lock(&ls->ls_requestqueue_lock);
  	}
- 
--	dlm_release_root_list(ls);
-+	dlm_release_root_list(&root_list);
- 
- 	/*
- 	 * Purge directory-related requests that are saved in requestqueue.
-@@ -347,7 +338,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 	return 0;
- 
-  fail:
--	dlm_release_root_list(ls);
-+	dlm_release_root_list(&root_list);
- 	mutex_unlock(&ls->ls_recoverd_active);
++	write_unlock(&ls->ls_requestqueue_lock);
  
  	return error;
+ }
+ 
+-/*
+- * After recovery is done, locking is resumed and dlm_recoverd takes all the
+- * saved requests and processes them as they would have been by dlm_recv.  At
+- * the same time, dlm_recv will start receiving new requests from remote nodes.
+- * We want to delay dlm_recv processing new requests until dlm_recoverd has
+- * finished processing the old saved requests.  We don't check for locking
+- * stopped here because dlm_ls_stop won't stop locking until it's suspended us
+- * (dlm_recv).
+- */
+-
+-void dlm_wait_requestqueue(struct dlm_ls *ls)
+-{
+-	wait_event(ls->ls_requestqueue_wait,
+-		   atomic_read(&ls->ls_requestqueue_cnt) == 0);
+-}
+-
+ static int purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
+ {
+ 	__le32 type = ms->m_type;
+@@ -158,17 +135,15 @@ void dlm_purge_requestqueue(struct dlm_ls *ls)
+ 	struct dlm_message *ms;
+ 	struct rq_entry *e, *safe;
+ 
+-	mutex_lock(&ls->ls_requestqueue_mutex);
++	write_lock(&ls->ls_requestqueue_lock);
+ 	list_for_each_entry_safe(e, safe, &ls->ls_requestqueue, list) {
+ 		ms =  &e->request;
+ 
+ 		if (purge_request(ls, ms, e->nodeid)) {
+ 			list_del(&e->list);
+-			if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
+-				wake_up(&ls->ls_requestqueue_wait);
+ 			kfree(e);
+ 		}
+ 	}
+-	mutex_unlock(&ls->ls_requestqueue_mutex);
++	write_unlock(&ls->ls_requestqueue_lock);
+ }
+ 
 -- 
 2.39.3
 
