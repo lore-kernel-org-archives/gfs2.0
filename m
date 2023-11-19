@@ -1,45 +1,42 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40A613AC2
-	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0D31427B
+	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Is3DJsUG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cTtuIjkR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700411905;
+	s=mimecast20190719; t=1700411906;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dQ9RKwl5AvmwOyKYcXhXa86VYOHEH7TpBAEBd1kB4Ig=;
-	b=Is3DJsUGZaLtVBq1q6L6qmtMaIKimVysNV1PpMxjFBKDFnr6DdsgNB4ruSKmdV4yIDWb2c
-	Xfron97WEN/3JzoCyQHmCGS9TQyS9y0SiJDshPDa4cbr4HkzLyeghkliHwnaxwzohLPaz7
-	5+2rPgRKCjryNY1S81E6ECTfwJeEqxs=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sAV8v8bTl0g7zZUxg8DeADm5hYJj4oDMQQj61yhkU4A=;
+	b=cTtuIjkRv2wbRr7FgwessKtCprlbg36M7qNNZP/o7WL8SXaz0Ojbz0xLfpUeT/KI/KB2Ve
+	QrlmAW4GQSC/W6ToypOTNk2weB9TnMxgQMksceihTXzwCd9wr/xQwUGewk51rluYZzEPwn
+	26epGaQF7viX50+CPvFS9VRqXTMV0HY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-wwvZCQJ7ODa8fbq20PmEGw-1; Sun, 19 Nov 2023 11:38:24 -0500
-X-MC-Unique: wwvZCQJ7ODa8fbq20PmEGw-1
+ us-mta-383-FY8ekXA1MeOUoPW7SuuVgQ-1; Sun, 19 Nov 2023 11:38:23 -0500
+X-MC-Unique: FY8ekXA1MeOUoPW7SuuVgQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6BC2185A782
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 784F88007B3
 	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BDA0640C6EBC;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6FCD540C6EB9;
 	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 10/13] dlm: make requestqueue handling non sleepable
-Date: Sun, 19 Nov 2023 11:38:14 -0500
-Message-Id: <20231119163817.751872-11-aahringo@redhat.com>
-In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
-References: <20231119163817.751872-1-aahringo@redhat.com>
+Subject: [PATCHv2 dlm/next 00/13] dlm: bring message parsing to softirq context
+Date: Sun, 19 Nov 2023 11:38:04 -0500
+Message-Id: <20231119163817.751872-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -52,216 +49,68 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch removes the ls_requestqueue_wait and convert the
-ls_requestqueue_mutex to a rw lock. Instead of calling wait_event() in
-dlm processing which waits until all messages are processed and allow
-new message processing after recovering is done, this patch is using a
-bitflag to signal when a message should be saved for future or not. When
-recovery processes all saved messages we will clear this bit again and
-allow new messages to processed directly.
+Hi,
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/dlm_internal.h |  5 ++---
- fs/dlm/lock.c         | 16 ++++++++++++++--
- fs/dlm/lockspace.c    |  4 +---
- fs/dlm/member.c       |  5 +++++
- fs/dlm/requestqueue.c | 41 ++++++++---------------------------------
- 5 files changed, 30 insertions(+), 41 deletions(-)
+this is version 2 of my attempt to bring dlm message parsing to softirq
+context. This will "minimal" improve the dlm message parsing that is
+still message after message parsing. This patch will move the dlm
+message parsing into a softirq context where we probably can easily
+trigger parallel message processing and take advantage that the message
+processing runs on a per cpu basis.
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 13225b28fa98..4cb1f38067d3 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -625,9 +625,7 @@ struct dlm_ls {
- 	struct rw_semaphore	ls_in_recovery;	/* block local requests */
- 	struct rw_semaphore	ls_recv_active;	/* block dlm_recv */
- 	struct list_head	ls_requestqueue;/* queue remote requests */
--	atomic_t		ls_requestqueue_cnt;
--	wait_queue_head_t	ls_requestqueue_wait;
--	struct mutex		ls_requestqueue_mutex;
-+	rwlock_t		ls_requestqueue_lock;
- 	struct dlm_rcom		*ls_recover_buf;
- 	int			ls_recover_nodeid; /* for debugging */
- 	unsigned int		ls_recover_locks_in; /* for log info */
-@@ -687,6 +685,7 @@ struct dlm_ls {
- #define LSFL_UEVENT_WAIT	7
- #define LSFL_CB_DELAY		9
- #define LSFL_NODIR		10
-+#define LSFL_RECV_MSG_BLOCKED	11
- 
- /* much of this is just saving user space pointers associated with the
-    lock that we pass back to the user lib with an ast */
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 4fc6bc3690a6..e2e98811eafa 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -4749,20 +4749,32 @@ static void _receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- static void dlm_receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- 				int nodeid)
- {
--	if (dlm_locking_stopped(ls)) {
-+try_again:
-+	read_lock(&ls->ls_requestqueue_lock);
-+	if (test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
- 		/* If we were a member of this lockspace, left, and rejoined,
- 		   other nodes may still be sending us messages from the
- 		   lockspace generation before we left. */
- 		if (WARN_ON_ONCE(!ls->ls_generation)) {
-+			read_unlock(&ls->ls_requestqueue_lock);
- 			log_limit(ls, "receive %d from %d ignore old gen",
- 				  le32_to_cpu(ms->m_type), nodeid);
- 			return;
- 		}
- 
-+		read_unlock(&ls->ls_requestqueue_lock);
-+		write_lock(&ls->ls_requestqueue_lock);
-+		/* recheck because we hold writelock now */
-+		if (!test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
-+			write_unlock_bh(&ls->ls_requestqueue_lock);
-+			goto try_again;
-+		}
-+
- 		dlm_add_requestqueue(ls, nodeid, ms);
-+		write_unlock(&ls->ls_requestqueue_lock);
- 	} else {
--		dlm_wait_requestqueue(ls);
- 		_receive_message(ls, ms, 0);
-+		read_unlock(&ls->ls_requestqueue_lock);
- 	}
- }
- 
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 945139805605..757e473bc619 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -554,9 +554,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	init_rwsem(&ls->ls_in_recovery);
- 	init_rwsem(&ls->ls_recv_active);
- 	INIT_LIST_HEAD(&ls->ls_requestqueue);
--	atomic_set(&ls->ls_requestqueue_cnt, 0);
--	init_waitqueue_head(&ls->ls_requestqueue_wait);
--	mutex_init(&ls->ls_requestqueue_mutex);
-+	rwlock_init(&ls->ls_requestqueue_lock);
- 	spin_lock_init(&ls->ls_clear_proc_locks);
- 
- 	/* Due backwards compatibility with 3.1 we need to use maximum
-diff --git a/fs/dlm/member.c b/fs/dlm/member.c
-index be7909ead71b..707cebcdc533 100644
---- a/fs/dlm/member.c
-+++ b/fs/dlm/member.c
-@@ -642,6 +642,11 @@ int dlm_ls_stop(struct dlm_ls *ls)
- 	set_bit(LSFL_RECOVER_STOP, &ls->ls_flags);
- 	new = test_and_clear_bit(LSFL_RUNNING, &ls->ls_flags);
- 	ls->ls_recover_seq++;
-+
-+	/* activate requestqueue and stop processing */
-+	write_lock(&ls->ls_requestqueue_lock);
-+	set_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
-+	write_unlock(&ls->ls_requestqueue_lock);
- 	spin_unlock(&ls->ls_recover_lock);
- 
- 	/*
-diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
-index c05940afd063..9b646026df46 100644
---- a/fs/dlm/requestqueue.c
-+++ b/fs/dlm/requestqueue.c
-@@ -48,10 +48,7 @@ void dlm_add_requestqueue(struct dlm_ls *ls, int nodeid,
- 	memcpy(&e->request, ms, sizeof(*ms));
- 	memcpy(&e->request.m_extra, ms->m_extra, length);
- 
--	atomic_inc(&ls->ls_requestqueue_cnt);
--	mutex_lock(&ls->ls_requestqueue_mutex);
- 	list_add_tail(&e->list, &ls->ls_requestqueue);
--	mutex_unlock(&ls->ls_requestqueue_mutex);
- }
- 
- /*
-@@ -71,16 +68,14 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	int error = 0;
- 
--	mutex_lock(&ls->ls_requestqueue_mutex);
--
-+	write_lock(&ls->ls_requestqueue_lock);
- 	for (;;) {
- 		if (list_empty(&ls->ls_requestqueue)) {
--			mutex_unlock(&ls->ls_requestqueue_mutex);
-+			clear_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
- 			error = 0;
- 			break;
- 		}
--		e = list_entry(ls->ls_requestqueue.next, struct rq_entry, list);
--		mutex_unlock(&ls->ls_requestqueue_mutex);
-+		e = list_first_entry(&ls->ls_requestqueue, struct rq_entry, list);
- 
- 		ms = &e->request;
- 
-@@ -93,41 +88,23 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 			  e->recover_seq);
- 
- 		dlm_receive_message_saved(ls, &e->request, e->recover_seq);
--
--		mutex_lock(&ls->ls_requestqueue_mutex);
- 		list_del(&e->list);
--		if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
--			wake_up(&ls->ls_requestqueue_wait);
- 		kfree(e);
- 
- 		if (dlm_locking_stopped(ls)) {
- 			log_debug(ls, "process_requestqueue abort running");
--			mutex_unlock(&ls->ls_requestqueue_mutex);
- 			error = -EINTR;
- 			break;
- 		}
-+		write_unlock(&ls->ls_requestqueue_lock);
- 		schedule();
-+		write_lock(&ls->ls_requestqueue_lock);
- 	}
-+	write_unlock(&ls->ls_requestqueue_lock);
- 
- 	return error;
- }
- 
--/*
-- * After recovery is done, locking is resumed and dlm_recoverd takes all the
-- * saved requests and processes them as they would have been by dlm_recv.  At
-- * the same time, dlm_recv will start receiving new requests from remote nodes.
-- * We want to delay dlm_recv processing new requests until dlm_recoverd has
-- * finished processing the old saved requests.  We don't check for locking
-- * stopped here because dlm_ls_stop won't stop locking until it's suspended us
-- * (dlm_recv).
-- */
--
--void dlm_wait_requestqueue(struct dlm_ls *ls)
--{
--	wait_event(ls->ls_requestqueue_wait,
--		   atomic_read(&ls->ls_requestqueue_cnt) == 0);
--}
--
- static int purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
- {
- 	__le32 type = ms->m_type;
-@@ -158,17 +135,15 @@ void dlm_purge_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	struct rq_entry *e, *safe;
- 
--	mutex_lock(&ls->ls_requestqueue_mutex);
-+	write_lock(&ls->ls_requestqueue_lock);
- 	list_for_each_entry_safe(e, safe, &ls->ls_requestqueue, list) {
- 		ms =  &e->request;
- 
- 		if (purge_request(ls, ms, e->nodeid)) {
- 			list_del(&e->list);
--			if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
--				wake_up(&ls->ls_requestqueue_wait);
- 			kfree(e);
- 		}
- 	}
--	mutex_unlock(&ls->ls_requestqueue_mutex);
-+	write_unlock(&ls->ls_requestqueue_lock);
- }
- 
+I changed in v2 that we split the root_list to root_list and a per
+lockspace masters list. The root_list can be used as a stack list
+variable in ls_recover() as it's only used for recovery handling. The
+masters list is somehow special because it is being used for other dlm
+nodes to dump the nodes master rsbs. The current implementation
+guarantees that this happens in a very special part of the recovery
+handling by using a kind of distributed cluster barriers. I added more
+sanity checks for this handling and a more per node based recovery log
+mechanism. There is also a TODO that describes we should keep track of
+all masters rsb while lockspace locking handling and not create them
+while recovery handling which I think should improve the handling to
+maybe get rid of those barriers.
+
+- Alex
+
+Alexander Aring (13):
+  dlm: remove allocation parameter in msg allocation
+  dlm: switch to GFP_ATOMIC in dlm allocations
+  dlm: move root_list functionality to recover.c
+  dlm: move master dir dump to own list
+  dlm: move root_list to ls_recover() stack
+  dlm: implement directory dump context
+  dlm: drop holding waiters mutex in waiters recovery
+  dlm: convert ls_waiters_mutex to spinlock
+  dlm: convert res_lock to spinlock
+  dlm: make requestqueue handling non sleepable
+  dlm: ls_recv_active semaphore to rwlock
+  dlm: convert message parsing locks to disable bh
+  dlm: do dlm message processing in softirq context
+
+ fs/dlm/ast.c          |  28 ++---
+ fs/dlm/debug_fs.c     |  36 ++++---
+ fs/dlm/dir.c          | 147 ++++++++++++++++++++++----
+ fs/dlm/dir.h          |   3 +-
+ fs/dlm/dlm_internal.h |  20 ++--
+ fs/dlm/lock.c         | 236 ++++++++++++++++++++++--------------------
+ fs/dlm/lock.h         |   7 +-
+ fs/dlm/lockspace.c    |  65 ++++++------
+ fs/dlm/lowcomms.c     |  66 +++++-------
+ fs/dlm/lowcomms.h     |   5 +-
+ fs/dlm/member.c       |  23 ++--
+ fs/dlm/memory.c       |  14 +--
+ fs/dlm/memory.h       |   4 +-
+ fs/dlm/midcomms.c     |  64 ++++++------
+ fs/dlm/midcomms.h     |   3 +-
+ fs/dlm/rcom.c         |  33 +++---
+ fs/dlm/recover.c      | 126 +++++++---------------
+ fs/dlm/recover.h      |  10 +-
+ fs/dlm/recoverd.c     | 125 ++++++++++++++++++----
+ fs/dlm/requestqueue.c |  43 ++------
+ fs/dlm/user.c         |  34 +++---
+ 21 files changed, 603 insertions(+), 489 deletions(-)
+
 -- 
 2.39.3
 
