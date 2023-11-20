@@ -1,2125 +1,243 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F6914A8A
-	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218B146BF;
+	Mon, 20 Nov 2023 07:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H8t2rSng"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700411910;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=meAwpx0YBmyfSec8jBwhvN9DhoAJXoZSLKPwmF/Cgjo=;
-	b=H8t2rSngj0MSsNDsqTk4j5tOkYIlwmfAyjuYzCAmF2VBUg+2C/vPN8fJ6YycJs+jA5FtCn
-	eQD95Kl1Z2CPRH3XW8o2AEmb3zPX66uyPp8g5xbuJ888vnZa0IpPKsTnHxhBSnBfhDlH4R
-	yWdIW4tkLaEut+aiHmZTYHm4qwqOyqM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-367-WJqEm026NGCt4p332eLRsw-1; Sun,
- 19 Nov 2023 11:38:24 -0500
-X-MC-Unique: WJqEm026NGCt4p332eLRsw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFBDF3827976
-	for <gfs2@lists.linux.dev>; Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
-Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fast.rdu2.eng.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D09D940C6EBE;
-	Sun, 19 Nov 2023 16:38:23 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 12/13] dlm: convert message parsing locks to disable bh
-Date: Sun, 19 Nov 2023 11:38:16 -0500
-Message-Id: <20231119163817.751872-13-aahringo@redhat.com>
-In-Reply-To: <20231119163817.751872-1-aahringo@redhat.com>
-References: <20231119163817.751872-1-aahringo@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kt/OC0mN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700464306; x=1732000306;
+  h=date:from:to:cc:subject:message-id:
+   content-transfer-encoding:mime-version;
+  bh=8MfPpg6EnfveR7hre4clJNQSoI7fbs5iLJQbPTbleOw=;
+  b=Kt/OC0mNrPOEbcpYfjhgGgQPfIC95ZF2uwpFiuuMKM1wzGu6WVPjW6fy
+   Qzv2Tk9pUUU/Vh8iNg6tpjP4pApalqodI0ZC5qnMMWp5eALNfhKuxoNc0
+   JHhS7oVkqM9ciTl2F/lg3lmGJnY1Vveko5B83OiGAiTMXYM3doqvkj7IO
+   CTGTQ3RDsRLk4Luu/+hs0o4HG1Poa1vhEFhJCyyQ/0M8jfNv1ZV72YM/k
+   mKRg/CppsMr0IyYB1NEweSi0CoAJBi+HpEXc3XDhzAZbEhfNjYVGDmN1K
+   Azg1iGvNOo19jaRfuon1+muVjQfYQnfm0sQhxbRRROPVaVz5BXuyXUTIO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="391348739"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="391348739"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2023 23:11:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="883770861"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="883770861"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Nov 2023 23:11:44 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Sun, 19 Nov 2023 23:11:44 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Sun, 19 Nov 2023 23:11:44 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Sun, 19 Nov 2023 23:11:44 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dT7GWvzqAaYujmAgsK0MmhJkUorfOnHmH9rsO0JsZ7ODlzK/5KaKoEYeYaSEB6UPrX5YkiA9TjsFi9V3qBhwnclmYlYgsFTLpT9TWIHwgWjaa/O2FeyHW0nUqazEIhdWHvG0gKHILDHLM+8sA1Li2mQO8/Se8s/jqGYRe1EtZu/W3vyXQobuO5WR6ZTTLKlPL+APUMjeMa7KpUU6WbfaVu/9bTejMhIbBssADPrUcft9CR9bH1VkemYQoP7jpf9vOTG6jsp/BejhDkNJlkbUL5Ov/dt96SgTx2V9W0JmiGc+SifqogeFv7zkNeUF2ZmYH6Al8xZkJv2mQ9g+DjFkHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=azFQSXFTkkVoT7Zb0XkdG5vNFg9g/leUdm1uo+UmPmU=;
+ b=FAJH0gxPCmOMeLygcqwJ0TGj/yZ4Uui6s/4tZ2qLNAhROuhbALSRNf6mbXHhFHVWnTmCzHAnne8Uxyd3R/sw1atDuFF0WqjnfoPbUasKyIELDc0X8ie3Ae0cHp47S9+S/cHyPzqe4li53bQ57UYJ5PidLO9lkajWN31Z8m8Q9E6KR33acrnKduXTVA0041mg4cUp3AhExjL+k/W/QfHWyNzROio8+dSLUMNY3qmlNN0g8F/lf/nDexDCIC+hiJSuBEdtoEiq04N3K3BIV4fll400ejmzMixX9eNWm4gzT0/gTFeyLbKfakzmdF58mONdoCvWAhGiJKKqEvqIF2/QKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by SJ0PR11MB4992.namprd11.prod.outlook.com (2603:10b6:a03:2d4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.26; Mon, 20 Nov
+ 2023 07:11:42 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f%3]) with mapi id 15.20.7002.027; Mon, 20 Nov 2023
+ 07:11:42 +0000
+Date: Mon, 20 Nov 2023 15:11:31 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Christian Brauner <brauner@kernel.org>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	Jann Horn <jannh@google.com>, Linus Torvalds <torvalds@linux-foundation.org>,
+	<linux-doc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<intel-gfx@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+	<gfs2@lists.linux.dev>, <bpf@vger.kernel.org>, <ying.huang@intel.com>,
+	<feng.tang@intel.com>, <fengwei.yin@intel.com>, <oliver.sang@intel.com>
+Subject: [linus:master] [file]  0ede61d858:  will-it-scale.per_thread_ops
+ -2.9% regression
+Message-ID: <202311201406.2022ca3f-oliver.sang@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG3P274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::15)
+ To LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SJ0PR11MB4992:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42f7e93c-0af9-4224-4cc4-08dbe997f229
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: S+/FGfnjrWeIbuVQcjRB6aSBcGzGMmx/aNRm7R5iRLwDjtQ8r/oW7DJKIZwanREWUTV18pJiszG+q45XeMoRYrgaa6NypVErpkNCb0tmJO+6/FpR/rayCsfAuvuFlrWiji1LZo2xh1avzHpZzIEbiulZAEydL99J6Fb/ZV6NOOw9SSVyOBMIay0S6LMegAd/yK81ncdl505v8oEHPJjMNZq5eIUgRINGAsUtzWynQu9agJOnPMjclF0n2pMiR2xi5UzRoTlJbq+34QVLudDmBLDxo1KjKqnFmJ/6Vq2c+Y6fWGWUxKyjbHQryFS4njKcgql+4gNRL64Sd35Mvm8XSD1mSW0Jucp8EDTdmKmnUdaumvB8IbRCo/MFZih48rd5DzsN+b+xfCRPO3RaItY8grxlmVDpUTLgsTmyVibqZothtb4q8Tg2r038HMmQRFH/PEF2c4+wQSTpnf6HzkAb10wRScAZCCxbK7hMVYFeo1Yx9T5d5In2BbUnrF+eRNjOjyKNGyAAG02JbibH1tkT4H5ZOC1zYVhO5qBc6NC6LI1+240CEU3iuF5rH2Fnt19J1uJBaMwQqYQ3z+4BzWHXls26cv3w/mh1PVMIsMvoKYe6C2dAqe0nOSPS+A4VPAV/9gfTUpaTZso9GtP7czlmoA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(346002)(136003)(376002)(230922051799003)(230473577357003)(230373577357003)(186009)(64100799003)(1800799012)(451199024)(54906003)(66556008)(66476007)(66946007)(38100700002)(36756003)(86362001)(82960400001)(6512007)(6506007)(83380400001)(26005)(1076003)(2616005)(107886003)(6666004)(966005)(6486002)(2906002)(6916009)(316002)(478600001)(8676002)(5660300002)(7416002)(4326008)(41300700001)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?zdP7vedzQPZboc5zyQ94hR7zNiruH0FmXJwF+aQ1igacheFcZ7utLrUzyu?=
+ =?iso-8859-1?Q?6so06iYfOETr7L7sM2r9ngASJUpuudFDgxGExffJzre89OLmn6MDCfSP14?=
+ =?iso-8859-1?Q?EEmV9KXbTHJqG1xZqmLJ53HQrM+JMZmjPyKt5lU8nnhpiXqbPAth6YrMrD?=
+ =?iso-8859-1?Q?mlKVWr+iBf2HnT4TuUhr8t+fBWlNTBmrQ4vXk70jVFIzcgW8RTksPhFSdY?=
+ =?iso-8859-1?Q?9QpiBGM8klgD7vJjrmG+JIdjmuPwPddCQTPJ7F1ACCYqZF5on2H+Taw5Xm?=
+ =?iso-8859-1?Q?4O9GqxQR9dLRqAQnNTXnl//z6gRNR/AB+YMc41NSguu1B/AECSz0qN0mZs?=
+ =?iso-8859-1?Q?kaXtCq57z5uZxQexGs58rIvodjSrmL4srFT6wy5qrJiSwX2Hm/h8rJcwJj?=
+ =?iso-8859-1?Q?8jp2mB12LbA6CuWWyjRG+TeYm9IxH+VIQmJ/NgtWdNqmfzNb+zEXZn487V?=
+ =?iso-8859-1?Q?FDjHbGeOrOMsvB62Qz90pkvk8ZBG5vut3zzt4yjc9GfYd0OZQN6P+/pgfq?=
+ =?iso-8859-1?Q?icmWpep2EGX0Sb4/XvhNDexAcjKaFj1yRmD0cFObnAz2zlaKyNFWW0XgX/?=
+ =?iso-8859-1?Q?ICykdL6wtEanP6o6/X+aEvKHehL3TLoBVyM+an/EkMLhwnsP8eyByAJhKK?=
+ =?iso-8859-1?Q?NDSFcKx5cxvpSi6ySAudgW7/bLXN4Gz2bAu41DfPfLAuH0HLvnj1npaU58?=
+ =?iso-8859-1?Q?VFol9mHWhtNo9v2SSMCKAXzRZTgC18UXv9LurPORAiO4s3HjU8NzDLwCa1?=
+ =?iso-8859-1?Q?lupEvfXWTUFpwdjPXuLxFLLDqquZVv6UZJ76eBmZNTdbtOH80hXNT/TtgH?=
+ =?iso-8859-1?Q?uxvuA+huBrWIPGVExcG0ge0XGcJbhwG8k2nFSsw4cXoXRu6u288SyilFFB?=
+ =?iso-8859-1?Q?maqDrWm9no9bQLeHtb642YjpOaUTnLdiFZTLQ78hkjp40samAJbHCvq1Zh?=
+ =?iso-8859-1?Q?qRk60C+6hLGXhLl5bf8Lg4oRjGHFt4N0rf7g+QToeLBQNJp47UdSCxpqzP?=
+ =?iso-8859-1?Q?CS2Bl5sxh3lhKYcBy2BZDgRgbq06KkxbTnAQtrxGWPGZVq22LuIAKp1/bK?=
+ =?iso-8859-1?Q?wUuaaeuO+4uzlp2yweAkCe98RDq6lsTuAGWkIMcBCmPL7kOtxAiMBFtzrV?=
+ =?iso-8859-1?Q?D4jIXgWZ0O/6HFU11RwPS1ks6DByY0dcF2ZHeJqH4m9xGiHNYKTCJ48koP?=
+ =?iso-8859-1?Q?R0ADP1Qu795p3yOkBWq5mtvZ5B0G0YJkwq7ob7kjywwy/Fo9eQzCZB0G5N?=
+ =?iso-8859-1?Q?OoxjBE4oJukBDEkXRVMB6WrWjcrbZGGIttBEKcYQ4nQPTKmr1zr4v3WaIW?=
+ =?iso-8859-1?Q?CHtYI0WUhYY50z0p9+qXfWexvNAT7mNu/ep5DFTjqtpu0X+7+03wsbZ6lU?=
+ =?iso-8859-1?Q?U2U8ZXEoIRX0sAfKJ8ejMrb2ZvJlyVmHykorGkR9DRw8gRiMuWXR/hBlLv?=
+ =?iso-8859-1?Q?zwoqFvAIngO6iPAYMSh3Bo1QvUwBE/zw2vNOubClmnZ64ROjfRs8Hxb/JH?=
+ =?iso-8859-1?Q?9C6d4lJ4DSbL/P1L1jubooitSKKW0uKGb1PaMvsPOmjeF+lmJSpMc2a4Mk?=
+ =?iso-8859-1?Q?LLER+Mnm5ME+cwjc0B60kKYiMPtFiyaNAUaV05xonXki/X7Mt2ydN+nkGr?=
+ =?iso-8859-1?Q?jmtbTDdPQeL60s+iC43PQ/mu173YtpfiA0k5DIBRyy8+2dG7VcEXhf7A?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42f7e93c-0af9-4224-4cc4-08dbe997f229
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2023 07:11:41.9025
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BoQe5vsYPaBla6nEHJN7mSe/FD1QmAnvQu6V7aOFTdAaScvKbeyzRVnl0tJa8EyKE5TYVxEQxpNHPd28HLpthw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4992
+X-OriginatorOrg: intel.com
 
-This patch converts all spinlocks involved in message parsing to it's
-_bh version. The reason to do that is to convert the message parsing
-into softirq context and we need to prevent that those locks can be
-interrupted by a softirq if those are held.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/ast.c          |  28 +++----
- fs/dlm/debug_fs.c     |  32 ++++----
- fs/dlm/dir.c          |  24 +++---
- fs/dlm/lock.c         | 174 ++++++++++++++++++++++--------------------
- fs/dlm/lock.h         |   4 +-
- fs/dlm/lockspace.c    |  51 ++++++-------
- fs/dlm/lowcomms.c     |  16 ++--
- fs/dlm/member.c       |  22 +++---
- fs/dlm/midcomms.c     |  40 +++++-----
- fs/dlm/rcom.c         |  26 +++----
- fs/dlm/recover.c      |  52 ++++++-------
- fs/dlm/recoverd.c     |  20 ++---
- fs/dlm/requestqueue.c |  12 +--
- fs/dlm/user.c         |  34 ++++-----
- 14 files changed, 272 insertions(+), 263 deletions(-)
 
-diff --git a/fs/dlm/ast.c b/fs/dlm/ast.c
-index 1f2f70a1b824..e3c0903aaa6f 100644
---- a/fs/dlm/ast.c
-+++ b/fs/dlm/ast.c
-@@ -127,19 +127,19 @@ void dlm_add_cb(struct dlm_lkb *lkb, uint32_t flags, int mode, int status,
- 		return;
- 	}
- 
--	spin_lock(&lkb->lkb_cb_lock);
-+	spin_lock_bh(&lkb->lkb_cb_lock);
- 	rv = dlm_enqueue_lkb_callback(lkb, flags, mode, status, sbflags);
- 	switch (rv) {
- 	case DLM_ENQUEUE_CALLBACK_NEED_SCHED:
- 		kref_get(&lkb->lkb_ref);
- 
--		spin_lock(&ls->ls_cb_lock);
-+		spin_lock_bh(&ls->ls_cb_lock);
- 		if (test_bit(LSFL_CB_DELAY, &ls->ls_flags)) {
- 			list_add(&lkb->lkb_cb_list, &ls->ls_cb_delay);
- 		} else {
- 			queue_work(ls->ls_callback_wq, &lkb->lkb_cb_work);
- 		}
--		spin_unlock(&ls->ls_cb_lock);
-+		spin_unlock_bh(&ls->ls_cb_lock);
- 		break;
- 	case DLM_ENQUEUE_CALLBACK_FAILURE:
- 		WARN_ON_ONCE(1);
-@@ -150,7 +150,7 @@ void dlm_add_cb(struct dlm_lkb *lkb, uint32_t flags, int mode, int status,
- 		WARN_ON_ONCE(1);
- 		break;
- 	}
--	spin_unlock(&lkb->lkb_cb_lock);
-+	spin_unlock_bh(&lkb->lkb_cb_lock);
- }
- 
- void dlm_callback_work(struct work_struct *work)
-@@ -162,14 +162,14 @@ void dlm_callback_work(struct work_struct *work)
- 	struct dlm_callback *cb;
- 	int rv;
- 
--	spin_lock(&lkb->lkb_cb_lock);
-+	spin_lock_bh(&lkb->lkb_cb_lock);
- 	rv = dlm_dequeue_lkb_callback(lkb, &cb);
- 	if (WARN_ON_ONCE(rv == DLM_DEQUEUE_CALLBACK_EMPTY)) {
- 		clear_bit(DLM_IFL_CB_PENDING_BIT, &lkb->lkb_iflags);
--		spin_unlock(&lkb->lkb_cb_lock);
-+		spin_unlock_bh(&lkb->lkb_cb_lock);
- 		goto out;
- 	}
--	spin_unlock(&lkb->lkb_cb_lock);
-+	spin_unlock_bh(&lkb->lkb_cb_lock);
- 
- 	for (;;) {
- 		castfn = lkb->lkb_astfn;
-@@ -190,14 +190,14 @@ void dlm_callback_work(struct work_struct *work)
- 
- 		kref_put(&cb->ref, dlm_release_callback);
- 
--		spin_lock(&lkb->lkb_cb_lock);
-+		spin_lock_bh(&lkb->lkb_cb_lock);
- 		rv = dlm_dequeue_lkb_callback(lkb, &cb);
- 		if (rv == DLM_DEQUEUE_CALLBACK_EMPTY) {
- 			clear_bit(DLM_IFL_CB_PENDING_BIT, &lkb->lkb_iflags);
--			spin_unlock(&lkb->lkb_cb_lock);
-+			spin_unlock_bh(&lkb->lkb_cb_lock);
- 			break;
- 		}
--		spin_unlock(&lkb->lkb_cb_lock);
-+		spin_unlock_bh(&lkb->lkb_cb_lock);
- 	}
- 
- out:
-@@ -225,9 +225,9 @@ void dlm_callback_stop(struct dlm_ls *ls)
- void dlm_callback_suspend(struct dlm_ls *ls)
- {
- 	if (ls->ls_callback_wq) {
--		spin_lock(&ls->ls_cb_lock);
-+		spin_lock_bh(&ls->ls_cb_lock);
- 		set_bit(LSFL_CB_DELAY, &ls->ls_flags);
--		spin_unlock(&ls->ls_cb_lock);
-+		spin_unlock_bh(&ls->ls_cb_lock);
- 
- 		flush_workqueue(ls->ls_callback_wq);
- 	}
-@@ -245,7 +245,7 @@ void dlm_callback_resume(struct dlm_ls *ls)
- 		return;
- 
- more:
--	spin_lock(&ls->ls_cb_lock);
-+	spin_lock_bh(&ls->ls_cb_lock);
- 	list_for_each_entry_safe(lkb, safe, &ls->ls_cb_delay, lkb_cb_list) {
- 		list_del_init(&lkb->lkb_cb_list);
- 		queue_work(ls->ls_callback_wq, &lkb->lkb_cb_work);
-@@ -256,7 +256,7 @@ void dlm_callback_resume(struct dlm_ls *ls)
- 	empty = list_empty(&ls->ls_cb_delay);
- 	if (empty)
- 		clear_bit(LSFL_CB_DELAY, &ls->ls_flags);
--	spin_unlock(&ls->ls_cb_lock);
-+	spin_unlock_bh(&ls->ls_cb_lock);
- 
- 	sum += count;
- 	if (!empty) {
-diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index 26abeff5b602..ca65481df70d 100644
---- a/fs/dlm/debug_fs.c
-+++ b/fs/dlm/debug_fs.c
-@@ -372,7 +372,7 @@ static void print_format5_lock(struct seq_file *s, struct dlm_lkb *lkb)
- 
- 	/* lkb_id lkb_flags mode flags sb_status sb_flags */
- 
--	spin_lock(&lkb->lkb_cb_lock);
-+	spin_lock_bh(&lkb->lkb_cb_lock);
- 	list_for_each_entry(cb, &lkb->lkb_callbacks, list) {
- 		seq_printf(s, "%x %x %d %x %d %x\n",
- 			   lkb->lkb_id,
-@@ -382,7 +382,7 @@ static void print_format5_lock(struct seq_file *s, struct dlm_lkb *lkb)
- 			   cb->sb_status,
- 			   cb->sb_flags);
- 	}
--	spin_unlock(&lkb->lkb_cb_lock);
-+	spin_unlock_bh(&lkb->lkb_cb_lock);
- }
- 
- static void print_format5(struct dlm_rsb *r, struct seq_file *s)
-@@ -508,7 +508,7 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
- 
- 	tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
- 
--	spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	if (!RB_EMPTY_ROOT(tree)) {
- 		for (node = rb_first(tree); node; node = rb_next(node)) {
- 			r = rb_entry(node, struct dlm_rsb, res_hashnode);
-@@ -516,12 +516,12 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
- 				dlm_hold_rsb(r);
- 				ri->rsb = r;
- 				ri->bucket = bucket;
--				spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+				spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 				return ri;
- 			}
- 		}
- 	}
--	spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 
- 	/*
- 	 * move to the first rsb in the next non-empty bucket
-@@ -540,18 +540,18 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
- 		}
- 		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
- 
--		spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 		if (!RB_EMPTY_ROOT(tree)) {
- 			node = rb_first(tree);
- 			r = rb_entry(node, struct dlm_rsb, res_hashnode);
- 			dlm_hold_rsb(r);
- 			ri->rsb = r;
- 			ri->bucket = bucket;
--			spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 			*pos = n;
- 			return ri;
- 		}
--		spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	}
- }
- 
-@@ -572,7 +572,7 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 	 * move to the next rsb in the same bucket
- 	 */
- 
--	spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	rp = ri->rsb;
- 	next = rb_next(&rp->res_hashnode);
- 
-@@ -580,12 +580,12 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 		r = rb_entry(next, struct dlm_rsb, res_hashnode);
- 		dlm_hold_rsb(r);
- 		ri->rsb = r;
--		spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 		dlm_put_rsb(rp);
- 		++*pos;
- 		return ri;
- 	}
--	spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	dlm_put_rsb(rp);
- 
- 	/*
-@@ -606,18 +606,18 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 		}
- 		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
- 
--		spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 		if (!RB_EMPTY_ROOT(tree)) {
- 			next = rb_first(tree);
- 			r = rb_entry(next, struct dlm_rsb, res_hashnode);
- 			dlm_hold_rsb(r);
- 			ri->rsb = r;
- 			ri->bucket = bucket;
--			spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 			*pos = n;
- 			return ri;
- 		}
--		spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	}
- }
- 
-@@ -824,7 +824,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
- 
- 	mutex_lock(&debug_buf_lock);
- 	dlm_lock_recovery(ls);
--	spin_lock(&ls->ls_waiters_lock);
-+	spin_lock_bh(&ls->ls_waiters_lock);
- 	memset(debug_buf, 0, sizeof(debug_buf));
- 
- 	list_for_each_entry(lkb, &ls->ls_waiters, lkb_wait_reply) {
-@@ -835,7 +835,7 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
- 			break;
- 		pos += ret;
- 	}
--	spin_unlock(&ls->ls_waiters_lock);
-+	spin_unlock_bh(&ls->ls_waiters_lock);
- 	dlm_unlock_recovery(ls);
- 
- 	rv = simple_read_from_buffer(userbuf, count, ppos, debug_buf, pos);
-diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
-index 0dc8a1d9e411..ff3a51c759b5 100644
---- a/fs/dlm/dir.c
-+++ b/fs/dlm/dir.c
-@@ -204,12 +204,12 @@ static struct dlm_rsb *find_rsb_root(struct dlm_ls *ls, const char *name,
- 	hash = jhash(name, len, 0);
- 	bucket = hash & (ls->ls_rsbtbl_size - 1);
- 
--	spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].keep, name, len, &r);
- 	if (rv)
- 		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].toss,
- 					 name, len, &r);
--	spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 
- 	if (!rv)
- 		return r;
-@@ -245,7 +245,7 @@ static void drop_dir_ctx(struct dlm_ls *ls, int nodeid)
- {
- 	struct dlm_dir_dump *dd, *safe;
- 
--	write_lock(&ls->ls_dir_dump_lock);
-+	write_lock_bh(&ls->ls_dir_dump_lock);
- 	list_for_each_entry_safe(dd, safe, &ls->ls_dir_dump_list, list) {
- 		if (dd->nodeid_init == nodeid) {
- 			log_error(ls, "drop dump seq %llu",
-@@ -254,21 +254,21 @@ static void drop_dir_ctx(struct dlm_ls *ls, int nodeid)
- 			kfree(dd);
- 		}
- 	}
--	write_unlock(&ls->ls_dir_dump_lock);
-+	write_unlock_bh(&ls->ls_dir_dump_lock);
- }
- 
- static struct dlm_dir_dump *lookup_dir_dump(struct dlm_ls *ls, int nodeid)
- {
- 	struct dlm_dir_dump *iter, *dd = NULL;
- 
--	read_lock(&ls->ls_dir_dump_lock);
-+	read_lock_bh(&ls->ls_dir_dump_lock);
- 	list_for_each_entry(iter, &ls->ls_dir_dump_list, list) {
- 		if (iter->nodeid_init == nodeid) {
- 			dd = iter;
- 			break;
- 		}
- 	}
--	read_unlock(&ls->ls_dir_dump_lock);
-+	read_unlock_bh(&ls->ls_dir_dump_lock);
- 
- 	return dd;
- }
-@@ -291,9 +291,9 @@ static struct dlm_dir_dump *init_dir_dump(struct dlm_ls *ls, int nodeid)
- 	dd->seq_init = ls->ls_recover_seq;
- 	dd->nodeid_init = nodeid;
- 
--	write_lock(&ls->ls_dir_dump_lock);
-+	write_lock_bh(&ls->ls_dir_dump_lock);
- 	list_add(&dd->list, &ls->ls_dir_dump_list);
--	write_unlock(&ls->ls_dir_dump_lock);
-+	write_unlock_bh(&ls->ls_dir_dump_lock);
- 
- 	return dd;
- }
-@@ -311,7 +311,7 @@ void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 	struct dlm_dir_dump *dd;
- 	__be16 be_namelen;
- 
--	read_lock(&ls->ls_masters_lock);
-+	read_lock_bh(&ls->ls_masters_lock);
- 
- 	if (inlen > 1) {
- 		dd = lookup_dir_dump(ls, nodeid);
-@@ -397,12 +397,12 @@ void dlm_copy_master_names(struct dlm_ls *ls, const char *inbuf, int inlen,
- 		log_rinfo(ls, "dlm_recover_directory nodeid %d sent %u res out %u messages",
- 			  nodeid, dd->sent_res, dd->sent_msg);
- 
--		write_lock(&ls->ls_dir_dump_lock);
-+		write_lock_bh(&ls->ls_dir_dump_lock);
- 		list_del_init(&dd->list);
--		write_unlock(&ls->ls_dir_dump_lock);
-+		write_unlock_bh(&ls->ls_dir_dump_lock);
- 		kfree(dd);
- 	}
-  out:
--	read_unlock(&ls->ls_masters_lock);
-+	read_unlock_bh(&ls->ls_masters_lock);
- }
- 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 091a8e58c06c..4d8d6caeeb2b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -342,10 +342,15 @@ static void put_rsb(struct dlm_rsb *r)
- 	uint32_t bucket = r->res_bucket;
- 	int rv;
- 
-+	/* TODO we need a kref_put_lock_bh(), however this
-+	 * is only an optimization.
-+	 */
-+	local_bh_disable();
- 	rv = kref_put_lock(&r->res_ref, toss_rsb,
- 			   &ls->ls_rsbtbl[bucket].lock);
- 	if (rv)
- 		spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+	local_bh_enable();
- }
- 
- void dlm_put_rsb(struct dlm_rsb *r)
-@@ -358,17 +363,17 @@ static int pre_rsb_struct(struct dlm_ls *ls)
- 	struct dlm_rsb *r1, *r2;
- 	int count = 0;
- 
--	spin_lock(&ls->ls_new_rsb_spin);
-+	spin_lock_bh(&ls->ls_new_rsb_spin);
- 	if (ls->ls_new_rsb_count > dlm_config.ci_new_rsb_count / 2) {
--		spin_unlock(&ls->ls_new_rsb_spin);
-+		spin_unlock_bh(&ls->ls_new_rsb_spin);
- 		return 0;
- 	}
--	spin_unlock(&ls->ls_new_rsb_spin);
-+	spin_unlock_bh(&ls->ls_new_rsb_spin);
- 
- 	r1 = dlm_allocate_rsb(ls);
- 	r2 = dlm_allocate_rsb(ls);
- 
--	spin_lock(&ls->ls_new_rsb_spin);
-+	spin_lock_bh(&ls->ls_new_rsb_spin);
- 	if (r1) {
- 		list_add(&r1->res_hashchain, &ls->ls_new_rsb);
- 		ls->ls_new_rsb_count++;
-@@ -378,7 +383,7 @@ static int pre_rsb_struct(struct dlm_ls *ls)
- 		ls->ls_new_rsb_count++;
- 	}
- 	count = ls->ls_new_rsb_count;
--	spin_unlock(&ls->ls_new_rsb_spin);
-+	spin_unlock_bh(&ls->ls_new_rsb_spin);
- 
- 	if (!count)
- 		return -ENOMEM;
-@@ -395,10 +400,10 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
- 	struct dlm_rsb *r;
- 	int count;
- 
--	spin_lock(&ls->ls_new_rsb_spin);
-+	spin_lock_bh(&ls->ls_new_rsb_spin);
- 	if (list_empty(&ls->ls_new_rsb)) {
- 		count = ls->ls_new_rsb_count;
--		spin_unlock(&ls->ls_new_rsb_spin);
-+		spin_unlock_bh(&ls->ls_new_rsb_spin);
- 		log_debug(ls, "find_rsb retry %d %d %s",
- 			  count, dlm_config.ci_new_rsb_count,
- 			  (const char *)name);
-@@ -410,7 +415,7 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
- 	/* Convert the empty list_head to a NULL rb_node for tree usage: */
- 	memset(&r->res_hashnode, 0, sizeof(struct rb_node));
- 	ls->ls_new_rsb_count--;
--	spin_unlock(&ls->ls_new_rsb_spin);
-+	spin_unlock_bh(&ls->ls_new_rsb_spin);
- 
- 	r->res_ls = ls;
- 	r->res_length = len;
-@@ -584,7 +589,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 			goto out;
- 	}
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
- 	if (error)
-@@ -654,7 +659,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		goto retry;
- 	}
- 	if (error)
-@@ -703,7 +708,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
-  out_add:
- 	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
-  out_unlock:
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-  out:
- 	*r_ret = r;
- 	return error;
-@@ -728,7 +733,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 	if (error < 0)
- 		goto out;
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
- 	if (error)
-@@ -786,7 +791,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		goto retry;
- 	}
- 	if (error)
-@@ -801,7 +806,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 
- 	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
-  out_unlock:
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-  out:
- 	*r_ret = r;
- 	return error;
-@@ -1018,7 +1023,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 	if (error < 0)
- 		return error;
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
- 	if (!error) {
- 		/* because the rsb is active, we need to lock_rsb before
-@@ -1026,7 +1031,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 		 */
- 
- 		hold_rsb(r);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		lock_rsb(r);
- 
- 		__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, false,
-@@ -1052,14 +1057,14 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 
- 	r->res_toss_time = jiffies;
- 	/* the rsb was inactive (on toss list) */
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	return 0;
- 
-  not_found:
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		goto retry;
- 	}
- 	if (error)
-@@ -1077,7 +1082,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 	if (error) {
- 		/* should never happen */
- 		dlm_free_rsb(r);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		goto retry;
- 	}
- 
-@@ -1085,7 +1090,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 		*result = DLM_LU_ADD;
- 	*r_nodeid = from_nodeid;
-  out_unlock:
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 	return error;
- }
- 
-@@ -1096,13 +1101,13 @@ static void dlm_dump_rsb_hash(struct dlm_ls *ls, uint32_t hash)
- 	int i;
- 
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock(&ls->ls_rsbtbl[i].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
- 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
- 			if (r->res_hash == hash)
- 				dlm_dump_rsb(r);
- 		}
--		spin_unlock(&ls->ls_rsbtbl[i].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
- }
- 
-@@ -1115,7 +1120,7 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
- 	hash = jhash(name, len, 0);
- 	b = hash & (ls->ls_rsbtbl_size - 1);
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
- 	if (!error)
- 		goto out_dump;
-@@ -1126,7 +1131,7 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
-  out_dump:
- 	dlm_dump_rsb(r);
-  out:
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- }
- 
- static void toss_rsb(struct kref *kref)
-@@ -1208,11 +1213,11 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
- 	spin_lock_init(&lkb->lkb_cb_lock);
- 	INIT_WORK(&lkb->lkb_cb_work, dlm_callback_work);
- 
--	spin_lock(&ls->ls_lkbidr_spin);
-+	spin_lock_bh(&ls->ls_lkbidr_spin);
- 	rv = idr_alloc(&ls->ls_lkbidr, lkb, start, end, GFP_NOWAIT);
- 	if (rv >= 0)
- 		lkb->lkb_id = rv;
--	spin_unlock(&ls->ls_lkbidr_spin);
-+	spin_unlock_bh(&ls->ls_lkbidr_spin);
- 
- 	if (rv < 0) {
- 		log_error(ls, "create_lkb idr error %d", rv);
-@@ -1233,11 +1238,11 @@ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
- {
- 	struct dlm_lkb *lkb;
- 
--	spin_lock(&ls->ls_lkbidr_spin);
-+	spin_lock_bh(&ls->ls_lkbidr_spin);
- 	lkb = idr_find(&ls->ls_lkbidr, lkid);
- 	if (lkb)
- 		kref_get(&lkb->lkb_ref);
--	spin_unlock(&ls->ls_lkbidr_spin);
-+	spin_unlock_bh(&ls->ls_lkbidr_spin);
- 
- 	*lkb_ret = lkb;
- 	return lkb ? 0 : -ENOENT;
-@@ -1261,6 +1266,10 @@ static int __put_lkb(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 	uint32_t lkid = lkb->lkb_id;
- 	int rv;
- 
-+	/* TODO we need a kref_put_lock_bh(), however this
-+	 * is only an optimization.
-+	 */
-+	local_bh_disable();
- 	rv = kref_put_lock(&lkb->lkb_ref, kill_lkb,
- 			   &ls->ls_lkbidr_spin);
- 	if (rv) {
-@@ -1274,6 +1283,7 @@ static int __put_lkb(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 			dlm_free_lvb(lkb->lkb_lvbptr);
- 		dlm_free_lkb(lkb);
- 	}
-+	local_bh_enable();
- 
- 	return rv;
- }
-@@ -1407,7 +1417,7 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
- 	int error = 0;
- 	int wc;
- 
--	spin_lock(&ls->ls_waiters_lock);
-+	spin_lock_bh(&ls->ls_waiters_lock);
- 
- 	if (is_overlap_unlock(lkb) ||
- 	    (is_overlap_cancel(lkb) && (mstype == DLM_MSG_CANCEL))) {
-@@ -1447,7 +1457,7 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
- 		log_error(ls, "addwait error %x %d flags %x %d %d %s",
- 			  lkb->lkb_id, error, dlm_iflags_val(lkb), mstype,
- 			  lkb->lkb_wait_type, lkb->lkb_resource->res_name);
--	spin_unlock(&ls->ls_waiters_lock);
-+	spin_unlock_bh(&ls->ls_waiters_lock);
- 	return error;
- }
- 
-@@ -1546,9 +1556,9 @@ static int remove_from_waiters(struct dlm_lkb *lkb, int mstype)
- 	struct dlm_ls *ls = lkb->lkb_resource->res_ls;
- 	int error;
- 
--	spin_lock(&ls->ls_waiters_lock);
-+	spin_lock_bh(&ls->ls_waiters_lock);
- 	error = _remove_from_waiters(lkb, mstype, NULL);
--	spin_unlock(&ls->ls_waiters_lock);
-+	spin_unlock_bh(&ls->ls_waiters_lock);
- 	return error;
- }
- 
-@@ -1566,13 +1576,13 @@ static int remove_from_waiters_ms(struct dlm_lkb *lkb,
- 	int error;
- 
- 	if (!local)
--		spin_lock(&ls->ls_waiters_lock);
-+		spin_lock_bh(&ls->ls_waiters_lock);
- 	else
- 		WARN_ON_ONCE(!rwsem_is_locked(&ls->ls_in_recovery) ||
- 			     !dlm_locking_stopped(ls));
- 	error = _remove_from_waiters(lkb, le32_to_cpu(ms->m_type), ms);
- 	if (!local)
--		spin_unlock(&ls->ls_waiters_lock);
-+		spin_unlock_bh(&ls->ls_waiters_lock);
- 	return error;
- }
- 
-@@ -1588,10 +1598,10 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 	memset(&ls->ls_remove_lens, 0, sizeof(int) * DLM_REMOVE_NAMES_MAX);
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	if (!test_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags)) {
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		return;
- 	}
- 
-@@ -1648,7 +1658,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 		set_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags);
- 	else
- 		clear_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags);
--	spin_unlock(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	/*
- 	 * While searching for rsb's to free, we found some that require
-@@ -1663,16 +1673,16 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 		name = ls->ls_remove_names[i];
- 		len = ls->ls_remove_lens[i];
- 
--		spin_lock(&ls->ls_rsbtbl[b].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
- 		if (rv) {
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			log_debug(ls, "remove_name not toss %s", name);
- 			continue;
- 		}
- 
- 		if (r->res_master_nodeid != our_nodeid) {
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			log_debug(ls, "remove_name master %d dir %d our %d %s",
- 				  r->res_master_nodeid, r->res_dir_nodeid,
- 				  our_nodeid, name);
-@@ -1681,7 +1691,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 		if (r->res_dir_nodeid == our_nodeid) {
- 			/* should never happen */
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			log_error(ls, "remove_name dir %d master %d our %d %s",
- 				  r->res_dir_nodeid, r->res_master_nodeid,
- 				  our_nodeid, name);
-@@ -1690,21 +1700,21 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 		if (!time_after_eq(jiffies, r->res_toss_time +
- 				   dlm_config.ci_toss_secs * HZ)) {
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			log_debug(ls, "remove_name toss_time %lu now %lu %s",
- 				  r->res_toss_time, jiffies, name);
- 			continue;
- 		}
- 
- 		if (!kref_put(&r->res_ref, kill_rsb)) {
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			log_error(ls, "remove_name in use %s", name);
- 			continue;
- 		}
- 
- 		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
- 		send_remove(r);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 		dlm_free_rsb(r);
- 	}
-@@ -4169,7 +4179,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 	hash = jhash(name, len, 0);
- 	b = hash & (ls->ls_rsbtbl_size - 1);
- 
--	spin_lock(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
- 
- 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
- 	if (rv) {
-@@ -4179,7 +4189,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 			/* should not happen */
- 			log_error(ls, "receive_remove from %d not found %s",
- 				  from_nodeid, name);
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			return;
- 		}
- 		if (r->res_master_nodeid != from_nodeid) {
-@@ -4187,14 +4197,14 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 			log_error(ls, "receive_remove keep from %d master %d",
- 				  from_nodeid, r->res_master_nodeid);
- 			dlm_print_rsb(r);
--			spin_unlock(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 			return;
- 		}
- 
- 		log_debug(ls, "receive_remove from %d master %d first %x %s",
- 			  from_nodeid, r->res_master_nodeid, r->res_first_lkid,
- 			  name);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		return;
- 	}
- 
-@@ -4202,19 +4212,19 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 		log_error(ls, "receive_remove toss from %d master %d",
- 			  from_nodeid, r->res_master_nodeid);
- 		dlm_print_rsb(r);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		return;
- 	}
- 
- 	if (kref_put(&r->res_ref, kill_rsb)) {
- 		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 		dlm_free_rsb(r);
- 	} else {
- 		log_error(ls, "receive_remove from %d rsb ref error",
- 			  from_nodeid);
- 		dlm_print_rsb(r);
--		spin_unlock(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
- 	}
- }
- 
-@@ -4750,20 +4760,20 @@ static void dlm_receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- 				int nodeid)
- {
- try_again:
--	read_lock(&ls->ls_requestqueue_lock);
-+	read_lock_bh(&ls->ls_requestqueue_lock);
- 	if (test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
- 		/* If we were a member of this lockspace, left, and rejoined,
- 		   other nodes may still be sending us messages from the
- 		   lockspace generation before we left. */
- 		if (WARN_ON_ONCE(!ls->ls_generation)) {
--			read_unlock(&ls->ls_requestqueue_lock);
-+			read_unlock_bh(&ls->ls_requestqueue_lock);
- 			log_limit(ls, "receive %d from %d ignore old gen",
- 				  le32_to_cpu(ms->m_type), nodeid);
- 			return;
- 		}
- 
--		read_unlock(&ls->ls_requestqueue_lock);
--		write_lock(&ls->ls_requestqueue_lock);
-+		read_unlock_bh(&ls->ls_requestqueue_lock);
-+		write_lock_bh(&ls->ls_requestqueue_lock);
- 		/* recheck because we hold writelock now */
- 		if (!test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
- 			write_unlock_bh(&ls->ls_requestqueue_lock);
-@@ -4771,10 +4781,10 @@ static void dlm_receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- 		}
- 
- 		dlm_add_requestqueue(ls, nodeid, ms);
--		write_unlock(&ls->ls_requestqueue_lock);
-+		write_unlock_bh(&ls->ls_requestqueue_lock);
- 	} else {
- 		_receive_message(ls, ms, 0);
--		read_unlock(&ls->ls_requestqueue_lock);
-+		read_unlock_bh(&ls->ls_requestqueue_lock);
- 	}
- }
- 
-@@ -4834,7 +4844,7 @@ void dlm_receive_buffer(const union dlm_packet *p, int nodeid)
- 	/* this rwsem allows dlm_ls_stop() to wait for all dlm_recv threads to
- 	   be inactive (in this ls) before transitioning to recovery mode */
- 
--	read_lock(&ls->ls_recv_active);
-+	read_lock_bh(&ls->ls_recv_active);
- 	if (hd->h_cmd == DLM_MSG)
- 		dlm_receive_message(ls, &p->message, nodeid);
- 	else if (hd->h_cmd == DLM_RCOM)
-@@ -4842,7 +4852,7 @@ void dlm_receive_buffer(const union dlm_packet *p, int nodeid)
- 	else
- 		log_error(ls, "invalid h_cmd %d from %d lockspace %x",
- 			  hd->h_cmd, nodeid, le32_to_cpu(hd->u.h_lockspace));
--	read_unlock(&ls->ls_recv_active);
-+	read_unlock_bh(&ls->ls_recv_active);
- 
- 	dlm_put_lockspace(ls);
- }
-@@ -5002,7 +5012,7 @@ static struct dlm_lkb *find_resend_waiter(struct dlm_ls *ls)
- {
- 	struct dlm_lkb *lkb = NULL, *iter;
- 
--	spin_lock(&ls->ls_waiters_lock);
-+	spin_lock_bh(&ls->ls_waiters_lock);
- 	list_for_each_entry(iter, &ls->ls_waiters, lkb_wait_reply) {
- 		if (test_bit(DLM_IFL_RESEND_BIT, &iter->lkb_iflags)) {
- 			hold_lkb(iter);
-@@ -5010,7 +5020,7 @@ static struct dlm_lkb *find_resend_waiter(struct dlm_ls *ls)
- 			break;
- 		}
- 	}
--	spin_unlock(&ls->ls_waiters_lock);
-+	spin_unlock_bh(&ls->ls_waiters_lock);
- 
- 	return lkb;
- }
-@@ -5077,9 +5087,9 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
- 		while (!atomic_dec_and_test(&lkb->lkb_wait_count))
- 			unhold_lkb(lkb);
- 
--		spin_lock(&ls->ls_waiters_lock);
-+		spin_lock_bh(&ls->ls_waiters_lock);
- 		list_del_init(&lkb->lkb_wait_reply);
--		spin_unlock(&ls->ls_waiters_lock);
-+		spin_unlock_bh(&ls->ls_waiters_lock);
- 
- 		if (oc || ou) {
- 			/* do an unlock or cancel instead of resending */
-@@ -5243,7 +5253,7 @@ static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls, int bucket)
- 	struct rb_node *n;
- 	struct dlm_rsb *r;
- 
--	spin_lock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	for (n = rb_first(&ls->ls_rsbtbl[bucket].keep); n; n = rb_next(n)) {
- 		r = rb_entry(n, struct dlm_rsb, res_hashnode);
- 
-@@ -5254,10 +5264,10 @@ static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls, int bucket)
- 			continue;
- 		}
- 		hold_rsb(r);
--		spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 		return r;
- 	}
--	spin_unlock(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
- 	return NULL;
- }
- 
-@@ -5601,10 +5611,10 @@ int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
- 	}
- 
- 	/* add this new lkb to the per-process list of locks */
--	spin_lock(&ua->proc->locks_spin);
-+	spin_lock_bh(&ua->proc->locks_spin);
- 	hold_lkb(lkb);
- 	list_add_tail(&lkb->lkb_ownqueue, &ua->proc->locks);
--	spin_unlock(&ua->proc->locks_spin);
-+	spin_unlock_bh(&ua->proc->locks_spin);
- 	do_put = false;
-  out_put:
- 	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, false);
-@@ -5734,9 +5744,9 @@ int dlm_user_adopt_orphan(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 	 * for the proc locks list.
- 	 */
- 
--	spin_lock(&ua->proc->locks_spin);
-+	spin_lock_bh(&ua->proc->locks_spin);
- 	list_add_tail(&lkb->lkb_ownqueue, &ua->proc->locks);
--	spin_unlock(&ua->proc->locks_spin);
-+	spin_unlock_bh(&ua->proc->locks_spin);
-  out:
- 	kfree(ua_tmp);
- 	return rv;
-@@ -5780,11 +5790,11 @@ int dlm_user_unlock(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 	if (error)
- 		goto out_put;
- 
--	spin_lock(&ua->proc->locks_spin);
-+	spin_lock_bh(&ua->proc->locks_spin);
- 	/* dlm_user_add_cb() may have already taken lkb off the proc list */
- 	if (!list_empty(&lkb->lkb_ownqueue))
- 		list_move(&lkb->lkb_ownqueue, &ua->proc->unlocking);
--	spin_unlock(&ua->proc->locks_spin);
-+	spin_unlock_bh(&ua->proc->locks_spin);
-  out_put:
- 	trace_dlm_unlock_end(ls, lkb, flags, error);
- 	dlm_put_lkb(lkb);
-@@ -5935,7 +5945,7 @@ static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
- {
- 	struct dlm_lkb *lkb = NULL;
- 
--	spin_lock(&ls->ls_clear_proc_locks);
-+	spin_lock_bh(&ls->ls_clear_proc_locks);
- 	if (list_empty(&proc->locks))
- 		goto out;
- 
-@@ -5947,7 +5957,7 @@ static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
- 	else
- 		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
-  out:
--	spin_unlock(&ls->ls_clear_proc_locks);
-+	spin_unlock_bh(&ls->ls_clear_proc_locks);
- 	return lkb;
- }
- 
-@@ -5983,7 +5993,7 @@ void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- 		dlm_put_lkb(lkb);
- 	}
- 
--	spin_lock(&ls->ls_clear_proc_locks);
-+	spin_lock_bh(&ls->ls_clear_proc_locks);
- 
- 	/* in-progress unlocks */
- 	list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-@@ -5998,7 +6008,7 @@ void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- 		dlm_put_lkb(lkb);
- 	}
- 
--	spin_unlock(&ls->ls_clear_proc_locks);
-+	spin_unlock_bh(&ls->ls_clear_proc_locks);
- 	dlm_unlock_recovery(ls);
- }
- 
-@@ -6008,13 +6018,13 @@ static void purge_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- 
- 	while (1) {
- 		lkb = NULL;
--		spin_lock(&proc->locks_spin);
-+		spin_lock_bh(&proc->locks_spin);
- 		if (!list_empty(&proc->locks)) {
- 			lkb = list_entry(proc->locks.next, struct dlm_lkb,
- 					 lkb_ownqueue);
- 			list_del_init(&lkb->lkb_ownqueue);
- 		}
--		spin_unlock(&proc->locks_spin);
-+		spin_unlock_bh(&proc->locks_spin);
- 
- 		if (!lkb)
- 			break;
-@@ -6024,21 +6034,21 @@ static void purge_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- 		dlm_put_lkb(lkb); /* ref from proc->locks list */
- 	}
- 
--	spin_lock(&proc->locks_spin);
-+	spin_lock_bh(&proc->locks_spin);
- 	list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
- 		list_del_init(&lkb->lkb_ownqueue);
- 		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
- 		dlm_put_lkb(lkb);
- 	}
--	spin_unlock(&proc->locks_spin);
-+	spin_unlock_bh(&proc->locks_spin);
- 
--	spin_lock(&proc->asts_spin);
-+	spin_lock_bh(&proc->asts_spin);
- 	list_for_each_entry_safe(lkb, safe, &proc->asts, lkb_cb_list) {
- 		dlm_purge_lkb_callbacks(lkb);
- 		list_del_init(&lkb->lkb_cb_list);
- 		dlm_put_lkb(lkb);
- 	}
--	spin_unlock(&proc->asts_spin);
-+	spin_unlock_bh(&proc->asts_spin);
- }
- 
- /* pid of 0 means purge all orphans */
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index 0f6b2700c0da..45a74869810a 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -69,12 +69,12 @@ static inline int is_master(struct dlm_rsb *r)
- 
- static inline void lock_rsb(struct dlm_rsb *r)
- {
--	spin_lock(&r->res_lock);
-+	spin_lock_bh(&r->res_lock);
- }
- 
- static inline void unlock_rsb(struct dlm_rsb *r)
- {
--	spin_unlock(&r->res_lock);
-+	spin_unlock_bh(&r->res_lock);
- }
- 
- #endif
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index c021bf684fbc..c3681a50decb 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -251,15 +251,15 @@ static struct dlm_ls *find_ls_to_scan(void)
- {
- 	struct dlm_ls *ls;
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		if (time_after_eq(jiffies, ls->ls_scan_time +
- 					    dlm_config.ci_scan_secs * HZ)) {
--			spin_unlock(&lslist_lock);
-+			spin_unlock_bh(&lslist_lock);
- 			return ls;
- 		}
- 	}
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 	return NULL;
- }
- 
-@@ -306,7 +306,7 @@ struct dlm_ls *dlm_find_lockspace_global(uint32_t id)
- {
- 	struct dlm_ls *ls;
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		if (ls->ls_global_id == id) {
-@@ -316,7 +316,7 @@ struct dlm_ls *dlm_find_lockspace_global(uint32_t id)
- 	}
- 	ls = NULL;
-  out:
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 	return ls;
- }
- 
-@@ -324,7 +324,7 @@ struct dlm_ls *dlm_find_lockspace_local(dlm_lockspace_t *lockspace)
- {
- 	struct dlm_ls *ls;
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		if (ls->ls_local_handle == lockspace) {
- 			atomic_inc(&ls->ls_count);
-@@ -333,7 +333,7 @@ struct dlm_ls *dlm_find_lockspace_local(dlm_lockspace_t *lockspace)
- 	}
- 	ls = NULL;
-  out:
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 	return ls;
- }
- 
-@@ -341,7 +341,7 @@ struct dlm_ls *dlm_find_lockspace_device(int minor)
- {
- 	struct dlm_ls *ls;
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		if (ls->ls_device.minor == minor) {
- 			atomic_inc(&ls->ls_count);
-@@ -350,7 +350,7 @@ struct dlm_ls *dlm_find_lockspace_device(int minor)
- 	}
- 	ls = NULL;
-  out:
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 	return ls;
- }
- 
-@@ -365,15 +365,15 @@ static void remove_lockspace(struct dlm_ls *ls)
- retry:
- 	wait_event(ls->ls_count_wait, atomic_read(&ls->ls_count) == 0);
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	if (atomic_read(&ls->ls_count) != 0) {
--		spin_unlock(&lslist_lock);
-+		spin_unlock_bh(&lslist_lock);
- 		goto retry;
- 	}
- 
- 	WARN_ON(ls->ls_create_count != 0);
- 	list_del(&ls->ls_list);
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- }
- 
- static int threads_start(void)
-@@ -448,7 +448,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 
- 	error = 0;
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		WARN_ON(ls->ls_create_count <= 0);
- 		if (ls->ls_namelen != namelen)
-@@ -464,7 +464,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 		error = 1;
- 		break;
- 	}
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 
- 	if (error)
- 		goto out;
-@@ -583,10 +583,10 @@ static int new_lockspace(const char *name, const char *cluster,
- 	INIT_LIST_HEAD(&ls->ls_dir_dump_list);
- 	rwlock_init(&ls->ls_dir_dump_lock);
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	ls->ls_create_count = 1;
- 	list_add(&ls->ls_list, &lslist);
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 
- 	if (flags & DLM_LSFL_FS) {
- 		error = dlm_callback_start(ls);
-@@ -655,9 +655,9 @@ static int new_lockspace(const char *name, const char *cluster,
-  out_callback:
- 	dlm_callback_stop(ls);
-  out_delist:
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_del(&ls->ls_list);
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 	idr_destroy(&ls->ls_recover_idr);
- 	kfree(ls->ls_recover_buf);
-  out_lkbidr:
-@@ -756,7 +756,7 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
- {
- 	int rv;
- 
--	spin_lock(&ls->ls_lkbidr_spin);
-+	spin_lock_bh(&ls->ls_lkbidr_spin);
- 	if (force == 0) {
- 		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_any, ls);
- 	} else if (force == 1) {
-@@ -764,7 +764,7 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
- 	} else {
- 		rv = 0;
- 	}
--	spin_unlock(&ls->ls_lkbidr_spin);
-+	spin_unlock_bh(&ls->ls_lkbidr_spin);
- 	return rv;
- }
- 
-@@ -776,7 +776,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 
- 	busy = lockspace_busy(ls, force);
- 
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	if (ls->ls_create_count == 1) {
- 		if (busy) {
- 			rv = -EBUSY;
-@@ -790,7 +790,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 	} else {
- 		rv = -EINVAL;
- 	}
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 
- 	if (rv) {
- 		log_debug(ls, "release_lockspace no remove %d", rv);
-@@ -918,20 +918,19 @@ void dlm_stop_lockspaces(void)
- 
-  restart:
- 	count = 0;
--	spin_lock(&lslist_lock);
-+	spin_lock_bh(&lslist_lock);
- 	list_for_each_entry(ls, &lslist, ls_list) {
- 		if (!test_bit(LSFL_RUNNING, &ls->ls_flags)) {
- 			count++;
- 			continue;
- 		}
--		spin_unlock(&lslist_lock);
-+		spin_unlock_bh(&lslist_lock);
- 		log_error(ls, "no userland control daemon, stopping lockspace");
- 		dlm_ls_stop(ls);
- 		goto restart;
- 	}
--	spin_unlock(&lslist_lock);
-+	spin_unlock_bh(&lslist_lock);
- 
- 	if (count)
- 		log_print("dlm user daemon left %d lockspaces", count);
- }
--
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index cd53e2f87b37..b6fc18841826 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -867,36 +867,36 @@ static void process_dlm_messages(struct work_struct *work)
- {
- 	struct processqueue_entry *pentry;
- 
--	spin_lock(&processqueue_lock);
-+	spin_lock_bh(&processqueue_lock);
- 	pentry = list_first_entry_or_null(&processqueue,
- 					  struct processqueue_entry, list);
- 	if (WARN_ON_ONCE(!pentry)) {
- 		process_dlm_messages_pending = false;
--		spin_unlock(&processqueue_lock);
-+		spin_unlock_bh(&processqueue_lock);
- 		return;
- 	}
- 
- 	list_del(&pentry->list);
- 	atomic_dec(&processqueue_count);
--	spin_unlock(&processqueue_lock);
-+	spin_unlock_bh(&processqueue_lock);
- 
- 	for (;;) {
- 		dlm_process_incoming_buffer(pentry->nodeid, pentry->buf,
- 					    pentry->buflen);
- 		free_processqueue_entry(pentry);
- 
--		spin_lock(&processqueue_lock);
-+		spin_lock_bh(&processqueue_lock);
- 		pentry = list_first_entry_or_null(&processqueue,
- 						  struct processqueue_entry, list);
- 		if (!pentry) {
- 			process_dlm_messages_pending = false;
--			spin_unlock(&processqueue_lock);
-+			spin_unlock_bh(&processqueue_lock);
- 			break;
- 		}
- 
- 		list_del(&pentry->list);
- 		atomic_dec(&processqueue_count);
--		spin_unlock(&processqueue_lock);
-+		spin_unlock_bh(&processqueue_lock);
- 	}
- }
- 
-@@ -966,14 +966,14 @@ static int receive_from_sock(struct connection *con, int buflen)
- 	memmove(con->rx_leftover_buf, pentry->buf + ret,
- 		con->rx_leftover);
- 
--	spin_lock(&processqueue_lock);
-+	spin_lock_bh(&processqueue_lock);
- 	ret = atomic_inc_return(&processqueue_count);
- 	list_add_tail(&pentry->list, &processqueue);
- 	if (!process_dlm_messages_pending) {
- 		process_dlm_messages_pending = true;
- 		queue_work(process_workqueue, &process_work);
- 	}
--	spin_unlock(&processqueue_lock);
-+	spin_unlock_bh(&processqueue_lock);
- 
- 	if (ret > DLM_MAX_PROCESS_BUFFERS)
- 		return DLM_IO_FLUSH;
-diff --git a/fs/dlm/member.c b/fs/dlm/member.c
-index ac1b555af9d6..6401916a97ef 100644
---- a/fs/dlm/member.c
-+++ b/fs/dlm/member.c
-@@ -630,7 +630,7 @@ int dlm_ls_stop(struct dlm_ls *ls)
- 	 * message to the requestqueue without races.
- 	 */
- 
--	write_lock(&ls->ls_recv_active);
-+	write_lock_bh(&ls->ls_recv_active);
- 
- 	/*
- 	 * Abort any recovery that's in progress (see RECOVER_STOP,
-@@ -638,23 +638,23 @@ int dlm_ls_stop(struct dlm_ls *ls)
- 	 * dlm to quit any processing (see RUNNING, dlm_locking_stopped()).
- 	 */
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	set_bit(LSFL_RECOVER_STOP, &ls->ls_flags);
- 	new = test_and_clear_bit(LSFL_RUNNING, &ls->ls_flags);
- 	ls->ls_recover_seq++;
- 
- 	/* activate requestqueue and stop processing */
--	write_lock(&ls->ls_requestqueue_lock);
-+	write_lock_bh(&ls->ls_requestqueue_lock);
- 	set_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
--	write_unlock(&ls->ls_requestqueue_lock);
--	spin_unlock(&ls->ls_recover_lock);
-+	write_unlock_bh(&ls->ls_requestqueue_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
- 	/*
- 	 * Let dlm_recv run again, now any normal messages will be saved on the
- 	 * requestqueue for later.
- 	 */
- 
--	write_unlock(&ls->ls_recv_active);
-+	write_unlock_bh(&ls->ls_recv_active);
- 
- 	/*
- 	 * This in_recovery lock does two things:
-@@ -679,13 +679,13 @@ int dlm_ls_stop(struct dlm_ls *ls)
- 
- 	dlm_recoverd_suspend(ls);
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	kfree(ls->ls_slots);
- 	ls->ls_slots = NULL;
- 	ls->ls_num_slots = 0;
- 	ls->ls_slots_size = 0;
- 	ls->ls_recover_status = 0;
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
- 	dlm_recoverd_resume(ls);
- 
-@@ -719,12 +719,12 @@ int dlm_ls_start(struct dlm_ls *ls)
- 	if (error < 0)
- 		goto fail_rv;
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 
- 	/* the lockspace needs to be stopped before it can be started */
- 
- 	if (!dlm_locking_stopped(ls)) {
--		spin_unlock(&ls->ls_recover_lock);
-+		spin_unlock_bh(&ls->ls_recover_lock);
- 		log_error(ls, "start ignored: lockspace running");
- 		error = -EINVAL;
- 		goto fail;
-@@ -735,7 +735,7 @@ int dlm_ls_start(struct dlm_ls *ls)
- 	rv->seq = ++ls->ls_recover_seq;
- 	rv_old = ls->ls_recover_args;
- 	ls->ls_recover_args = rv;
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
- 	if (rv_old) {
- 		log_error(ls, "unused recovery %llx %d",
-diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
-index ea0559e2a44d..7d75f86450d6 100644
---- a/fs/dlm/midcomms.c
-+++ b/fs/dlm/midcomms.c
-@@ -365,9 +365,9 @@ int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len)
- 	node->users = 0;
- 	midcomms_node_reset(node);
- 
--	spin_lock(&nodes_lock);
-+	spin_lock_bh(&nodes_lock);
- 	hlist_add_head_rcu(&node->hlist, &node_hash[r]);
--	spin_unlock(&nodes_lock);
-+	spin_unlock_bh(&nodes_lock);
- 
- 	node->debugfs = dlm_create_debug_comms_file(nodeid, node);
- 	return 0;
-@@ -478,7 +478,7 @@ static void dlm_receive_ack(struct midcomms_node *node, uint32_t seq)
- 
- static void dlm_pas_fin_ack_rcv(struct midcomms_node *node)
- {
--	spin_lock(&node->state_lock);
-+	spin_lock_bh(&node->state_lock);
- 	pr_debug("receive passive fin ack from node %d with state %s\n",
- 		 node->nodeid, dlm_state_str(node->state));
- 
-@@ -492,13 +492,13 @@ static void dlm_pas_fin_ack_rcv(struct midcomms_node *node)
- 		wake_up(&node->shutdown_wait);
- 		break;
- 	default:
--		spin_unlock(&node->state_lock);
-+		spin_unlock_bh(&node->state_lock);
- 		log_print("%s: unexpected state: %d",
- 			  __func__, node->state);
- 		WARN_ON_ONCE(1);
- 		return;
- 	}
--	spin_unlock(&node->state_lock);
-+	spin_unlock_bh(&node->state_lock);
- }
- 
- static void dlm_receive_buffer_3_2_trace(uint32_t seq,
-@@ -535,7 +535,7 @@ static void dlm_midcomms_receive_buffer(const union dlm_packet *p,
- 	if (is_expected_seq) {
- 		switch (p->header.h_cmd) {
- 		case DLM_FIN:
--			spin_lock(&node->state_lock);
-+			spin_lock_bh(&node->state_lock);
- 			pr_debug("receive fin msg from node %d with state %s\n",
- 				 node->nodeid, dlm_state_str(node->state));
- 
-@@ -576,13 +576,13 @@ static void dlm_midcomms_receive_buffer(const union dlm_packet *p,
- 				/* probably remove_member caught it, do nothing */
- 				break;
- 			default:
--				spin_unlock(&node->state_lock);
-+				spin_unlock_bh(&node->state_lock);
- 				log_print("%s: unexpected state: %d",
- 					  __func__, node->state);
- 				WARN_ON_ONCE(1);
- 				return;
- 			}
--			spin_unlock(&node->state_lock);
-+			spin_unlock_bh(&node->state_lock);
- 			break;
- 		default:
- 			WARN_ON_ONCE(test_bit(DLM_NODE_FLAG_STOP_RX, &node->flags));
-@@ -1183,7 +1183,7 @@ void dlm_midcomms_exit(void)
- 
- static void dlm_act_fin_ack_rcv(struct midcomms_node *node)
- {
--	spin_lock(&node->state_lock);
-+	spin_lock_bh(&node->state_lock);
- 	pr_debug("receive active fin ack from node %d with state %s\n",
- 		 node->nodeid, dlm_state_str(node->state));
- 
-@@ -1203,13 +1203,13 @@ static void dlm_act_fin_ack_rcv(struct midcomms_node *node)
- 		wake_up(&node->shutdown_wait);
- 		break;
- 	default:
--		spin_unlock(&node->state_lock);
-+		spin_unlock_bh(&node->state_lock);
- 		log_print("%s: unexpected state: %d",
- 			  __func__, node->state);
- 		WARN_ON_ONCE(1);
- 		return;
- 	}
--	spin_unlock(&node->state_lock);
-+	spin_unlock_bh(&node->state_lock);
- }
- 
- void dlm_midcomms_add_member(int nodeid)
-@@ -1224,7 +1224,7 @@ void dlm_midcomms_add_member(int nodeid)
- 		return;
- 	}
- 
--	spin_lock(&node->state_lock);
-+	spin_lock_bh(&node->state_lock);
- 	if (!node->users) {
- 		pr_debug("receive add member from node %d with state %s\n",
- 			 node->nodeid, dlm_state_str(node->state));
-@@ -1252,7 +1252,7 @@ void dlm_midcomms_add_member(int nodeid)
- 
- 	node->users++;
- 	pr_debug("node %d users inc count %d\n", nodeid, node->users);
--	spin_unlock(&node->state_lock);
-+	spin_unlock_bh(&node->state_lock);
- 
- 	srcu_read_unlock(&nodes_srcu, idx);
- }
-@@ -1270,13 +1270,13 @@ void dlm_midcomms_remove_member(int nodeid)
- 		return;
- 	}
- 
--	spin_lock(&node->state_lock);
-+	spin_lock_bh(&node->state_lock);
- 	/* case of dlm_midcomms_addr() created node but
- 	 * was not added before because dlm_midcomms_close()
- 	 * removed the node
- 	 */
- 	if (!node->users) {
--		spin_unlock(&node->state_lock);
-+		spin_unlock_bh(&node->state_lock);
- 		srcu_read_unlock(&nodes_srcu, idx);
- 		return;
- 	}
-@@ -1314,7 +1314,7 @@ void dlm_midcomms_remove_member(int nodeid)
- 			break;
- 		}
- 	}
--	spin_unlock(&node->state_lock);
-+	spin_unlock_bh(&node->state_lock);
- 
- 	srcu_read_unlock(&nodes_srcu, idx);
- }
-@@ -1352,7 +1352,7 @@ static void midcomms_shutdown(struct midcomms_node *node)
- 		return;
- 	}
- 
--	spin_lock(&node->state_lock);
-+	spin_lock_bh(&node->state_lock);
- 	pr_debug("receive active shutdown for node %d with state %s\n",
- 		 node->nodeid, dlm_state_str(node->state));
- 	switch (node->state) {
-@@ -1371,7 +1371,7 @@ static void midcomms_shutdown(struct midcomms_node *node)
- 		 */
- 		break;
- 	}
--	spin_unlock(&node->state_lock);
-+	spin_unlock_bh(&node->state_lock);
- 
- 	if (DLM_DEBUG_FENCE_TERMINATION)
- 		msleep(5000);
-@@ -1442,9 +1442,9 @@ int dlm_midcomms_close(int nodeid)
- 	ret = dlm_lowcomms_close(nodeid);
- 	dlm_delete_debug_comms_file(node->debugfs);
- 
--	spin_lock(&nodes_lock);
-+	spin_lock_bh(&nodes_lock);
- 	hlist_del_rcu(&node->hlist);
--	spin_unlock(&nodes_lock);
-+	spin_unlock_bh(&nodes_lock);
- 	srcu_read_unlock(&nodes_srcu, idx);
- 
- 	/* wait that all readers left until flush send queue */
-diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
-index 2e3f529f3ff2..be1a71a6303a 100644
---- a/fs/dlm/rcom.c
-+++ b/fs/dlm/rcom.c
-@@ -143,18 +143,18 @@ static int check_rcom_config(struct dlm_ls *ls, struct dlm_rcom *rc, int nodeid)
- 
- static void allow_sync_reply(struct dlm_ls *ls, __le64 *new_seq)
- {
--	spin_lock(&ls->ls_rcom_spin);
-+	spin_lock_bh(&ls->ls_rcom_spin);
- 	*new_seq = cpu_to_le64(++ls->ls_rcom_seq);
- 	set_bit(LSFL_RCOM_WAIT, &ls->ls_flags);
--	spin_unlock(&ls->ls_rcom_spin);
-+	spin_unlock_bh(&ls->ls_rcom_spin);
- }
- 
- static void disallow_sync_reply(struct dlm_ls *ls)
- {
--	spin_lock(&ls->ls_rcom_spin);
-+	spin_lock_bh(&ls->ls_rcom_spin);
- 	clear_bit(LSFL_RCOM_WAIT, &ls->ls_flags);
- 	clear_bit(LSFL_RCOM_READY, &ls->ls_flags);
--	spin_unlock(&ls->ls_rcom_spin);
-+	spin_unlock_bh(&ls->ls_rcom_spin);
- }
- 
- /*
-@@ -245,10 +245,10 @@ static void receive_rcom_status(struct dlm_ls *ls,
- 		goto do_create;
- 	}
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	status = ls->ls_recover_status;
- 	num_slots = ls->ls_num_slots;
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 	len += num_slots * sizeof(struct rcom_slot);
- 
-  do_create:
-@@ -266,9 +266,9 @@ static void receive_rcom_status(struct dlm_ls *ls,
- 	if (!num_slots)
- 		goto do_send;
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	if (ls->ls_num_slots != num_slots) {
--		spin_unlock(&ls->ls_recover_lock);
-+		spin_unlock_bh(&ls->ls_recover_lock);
- 		log_debug(ls, "receive_rcom_status num_slots %d to %d",
- 			  num_slots, ls->ls_num_slots);
- 		rc->rc_result = 0;
-@@ -277,7 +277,7 @@ static void receive_rcom_status(struct dlm_ls *ls,
- 	}
- 
- 	dlm_slots_copy_out(ls, rc);
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
-  do_send:
- 	send_rcom_stateless(msg, rc);
-@@ -285,7 +285,7 @@ static void receive_rcom_status(struct dlm_ls *ls,
- 
- static void receive_sync_reply(struct dlm_ls *ls, const struct dlm_rcom *rc_in)
- {
--	spin_lock(&ls->ls_rcom_spin);
-+	spin_lock_bh(&ls->ls_rcom_spin);
- 	if (!test_bit(LSFL_RCOM_WAIT, &ls->ls_flags) ||
- 	    le64_to_cpu(rc_in->rc_id) != ls->ls_rcom_seq) {
- 		log_debug(ls, "reject reply %d from %d seq %llx expect %llx",
-@@ -301,7 +301,7 @@ static void receive_sync_reply(struct dlm_ls *ls, const struct dlm_rcom *rc_in)
- 	clear_bit(LSFL_RCOM_WAIT, &ls->ls_flags);
- 	wake_up(&ls->ls_wait_general);
-  out:
--	spin_unlock(&ls->ls_rcom_spin);
-+	spin_unlock_bh(&ls->ls_rcom_spin);
- }
- 
- int dlm_rcom_names(struct dlm_ls *ls, int nodeid, char *last_name,
-@@ -613,11 +613,11 @@ void dlm_receive_rcom(struct dlm_ls *ls, const struct dlm_rcom *rc, int nodeid)
- 		break;
- 	}
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	status = ls->ls_recover_status;
- 	stop = dlm_recovery_stopped(ls);
- 	seq = ls->ls_recover_seq;
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
- 	if (stop && (rc->rc_type != cpu_to_le32(DLM_RCOM_STATUS)))
- 		goto ignore;
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index 172c6b73f37a..13bc845fa305 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -74,9 +74,9 @@ int dlm_wait_function(struct dlm_ls *ls, int (*testfn) (struct dlm_ls *ls))
- uint32_t dlm_recover_status(struct dlm_ls *ls)
- {
- 	uint32_t status;
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	status = ls->ls_recover_status;
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 	return status;
- }
- 
-@@ -87,9 +87,9 @@ static void _set_recover_status(struct dlm_ls *ls, uint32_t status)
- 
- void dlm_set_recover_status(struct dlm_ls *ls, uint32_t status)
- {
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	_set_recover_status(ls, status);
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- }
- 
- static int wait_status_all(struct dlm_ls *ls, uint32_t wait_status,
-@@ -188,13 +188,13 @@ int dlm_recover_members_wait(struct dlm_ls *ls, uint64_t seq)
- 
- 		rv = dlm_slots_assign(ls, &num_slots, &slots_size, &slots, &gen);
- 		if (!rv) {
--			spin_lock(&ls->ls_recover_lock);
-+			spin_lock_bh(&ls->ls_recover_lock);
- 			_set_recover_status(ls, DLM_RS_NODES_ALL);
- 			ls->ls_num_slots = num_slots;
- 			ls->ls_slots_size = slots_size;
- 			ls->ls_slots = slots;
- 			ls->ls_generation = gen;
--			spin_unlock(&ls->ls_recover_lock);
-+			spin_unlock_bh(&ls->ls_recover_lock);
- 		} else {
- 			dlm_set_recover_status(ls, DLM_RS_NODES_ALL);
- 		}
-@@ -241,9 +241,9 @@ static int recover_list_empty(struct dlm_ls *ls)
- {
- 	int empty;
- 
--	spin_lock(&ls->ls_recover_list_lock);
-+	spin_lock_bh(&ls->ls_recover_list_lock);
- 	empty = list_empty(&ls->ls_recover_list);
--	spin_unlock(&ls->ls_recover_list_lock);
-+	spin_unlock_bh(&ls->ls_recover_list_lock);
- 
- 	return empty;
- }
-@@ -252,23 +252,23 @@ static void recover_list_add(struct dlm_rsb *r)
- {
- 	struct dlm_ls *ls = r->res_ls;
- 
--	spin_lock(&ls->ls_recover_list_lock);
-+	spin_lock_bh(&ls->ls_recover_list_lock);
- 	if (list_empty(&r->res_recover_list)) {
- 		list_add_tail(&r->res_recover_list, &ls->ls_recover_list);
- 		ls->ls_recover_list_count++;
- 		dlm_hold_rsb(r);
- 	}
--	spin_unlock(&ls->ls_recover_list_lock);
-+	spin_unlock_bh(&ls->ls_recover_list_lock);
- }
- 
- static void recover_list_del(struct dlm_rsb *r)
- {
- 	struct dlm_ls *ls = r->res_ls;
- 
--	spin_lock(&ls->ls_recover_list_lock);
-+	spin_lock_bh(&ls->ls_recover_list_lock);
- 	list_del_init(&r->res_recover_list);
- 	ls->ls_recover_list_count--;
--	spin_unlock(&ls->ls_recover_list_lock);
-+	spin_unlock_bh(&ls->ls_recover_list_lock);
- 
- 	dlm_put_rsb(r);
- }
-@@ -277,7 +277,7 @@ static void recover_list_clear(struct dlm_ls *ls)
- {
- 	struct dlm_rsb *r, *s;
- 
--	spin_lock(&ls->ls_recover_list_lock);
-+	spin_lock_bh(&ls->ls_recover_list_lock);
- 	list_for_each_entry_safe(r, s, &ls->ls_recover_list, res_recover_list) {
- 		list_del_init(&r->res_recover_list);
- 		r->res_recover_locks_count = 0;
-@@ -290,17 +290,17 @@ static void recover_list_clear(struct dlm_ls *ls)
- 			  ls->ls_recover_list_count);
- 		ls->ls_recover_list_count = 0;
- 	}
--	spin_unlock(&ls->ls_recover_list_lock);
-+	spin_unlock_bh(&ls->ls_recover_list_lock);
- }
- 
- static int recover_idr_empty(struct dlm_ls *ls)
- {
- 	int empty = 1;
- 
--	spin_lock(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_idr_lock);
- 	if (ls->ls_recover_list_count)
- 		empty = 0;
--	spin_unlock(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_idr_lock);
- 
- 	return empty;
- }
-@@ -310,7 +310,7 @@ static int recover_idr_add(struct dlm_rsb *r)
- 	struct dlm_ls *ls = r->res_ls;
- 	int rv;
- 
--	spin_lock(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_idr_lock);
- 	if (r->res_id) {
- 		rv = -1;
- 		goto out_unlock;
-@@ -324,7 +324,7 @@ static int recover_idr_add(struct dlm_rsb *r)
- 	dlm_hold_rsb(r);
- 	rv = 0;
- out_unlock:
--	spin_unlock(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_idr_lock);
- 	return rv;
- }
- 
-@@ -332,11 +332,11 @@ static void recover_idr_del(struct dlm_rsb *r)
- {
- 	struct dlm_ls *ls = r->res_ls;
- 
--	spin_lock(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_idr_lock);
- 	idr_remove(&ls->ls_recover_idr, r->res_id);
- 	r->res_id = 0;
- 	ls->ls_recover_list_count--;
--	spin_unlock(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_idr_lock);
- 
- 	dlm_put_rsb(r);
- }
-@@ -345,9 +345,9 @@ static struct dlm_rsb *recover_idr_find(struct dlm_ls *ls, uint64_t id)
- {
- 	struct dlm_rsb *r;
- 
--	spin_lock(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_idr_lock);
- 	r = idr_find(&ls->ls_recover_idr, (int)id);
--	spin_unlock(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_idr_lock);
- 	return r;
- }
- 
-@@ -356,7 +356,7 @@ static void recover_idr_clear(struct dlm_ls *ls)
- 	struct dlm_rsb *r;
- 	int id;
- 
--	spin_lock(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_idr_lock);
- 
- 	idr_for_each_entry(&ls->ls_recover_idr, r, id) {
- 		idr_remove(&ls->ls_recover_idr, id);
-@@ -372,7 +372,7 @@ static void recover_idr_clear(struct dlm_ls *ls)
- 			  ls->ls_recover_list_count);
- 		ls->ls_recover_list_count = 0;
- 	}
--	spin_unlock(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_idr_lock);
- }
- 
- 
-@@ -887,7 +887,7 @@ void dlm_clear_toss(struct dlm_ls *ls)
- 	int i;
- 
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock(&ls->ls_rsbtbl[i].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].toss); n; n = next) {
- 			next = rb_next(n);
- 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
-@@ -895,7 +895,7 @@ void dlm_clear_toss(struct dlm_ls *ls)
- 			dlm_free_rsb(r);
- 			count++;
- 		}
--		spin_unlock(&ls->ls_rsbtbl[i].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
- 
- 	if (count)
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index 361327762c1b..a18738b74261 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -26,7 +26,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
- 	struct dlm_rsb *r;
- 	int i, error = 0;
- 
--	write_lock(&ls->ls_masters_lock);
-+	write_lock_bh(&ls->ls_masters_lock);
- 	if (!list_empty(&ls->ls_masters_list)) {
- 		log_error(ls, "root list not empty");
- 		error = -EINVAL;
-@@ -46,7 +46,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
- 		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
-  out:
--	write_unlock(&ls->ls_masters_lock);
-+	write_unlock_bh(&ls->ls_masters_lock);
- 	return error;
- }
- 
-@@ -54,12 +54,12 @@ static void dlm_release_masters_list(struct dlm_ls *ls)
- {
- 	struct dlm_rsb *r, *safe;
- 
--	write_lock(&ls->ls_masters_lock);
-+	write_lock_bh(&ls->ls_masters_lock);
- 	list_for_each_entry_safe(r, safe, &ls->ls_masters_list, res_masters_list) {
- 		list_del_init(&r->res_masters_list);
- 		dlm_put_rsb(r);
- 	}
--	write_unlock(&ls->ls_masters_lock);
-+	write_unlock_bh(&ls->ls_masters_lock);
- }
- 
- static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
-@@ -103,9 +103,9 @@ static int enable_locking(struct dlm_ls *ls, uint64_t seq)
- {
- 	int error = -EINTR;
- 
--	write_lock(&ls->ls_recv_active);
-+	write_lock_bh(&ls->ls_recv_active);
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	if (ls->ls_recover_seq == seq) {
- 		set_bit(LSFL_RUNNING, &ls->ls_flags);
- 		/* unblocks processes waiting to enter the dlm */
-@@ -113,9 +113,9 @@ static int enable_locking(struct dlm_ls *ls, uint64_t seq)
- 		clear_bit(LSFL_RECOVER_LOCK, &ls->ls_flags);
- 		error = 0;
- 	}
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
--	write_unlock(&ls->ls_recv_active);
-+	write_unlock_bh(&ls->ls_recv_active);
- 	return error;
- }
- 
-@@ -348,12 +348,12 @@ static void do_ls_recovery(struct dlm_ls *ls)
- 	struct dlm_recover *rv = NULL;
- 	int error;
- 
--	spin_lock(&ls->ls_recover_lock);
-+	spin_lock_bh(&ls->ls_recover_lock);
- 	rv = ls->ls_recover_args;
- 	ls->ls_recover_args = NULL;
- 	if (rv && ls->ls_recover_seq == rv->seq)
- 		clear_bit(LSFL_RECOVER_STOP, &ls->ls_flags);
--	spin_unlock(&ls->ls_recover_lock);
-+	spin_unlock_bh(&ls->ls_recover_lock);
- 
- 	if (rv) {
- 		error = ls_recover(ls, rv);
-diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
-index 9b646026df46..719a5243a069 100644
---- a/fs/dlm/requestqueue.c
-+++ b/fs/dlm/requestqueue.c
-@@ -68,7 +68,7 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	int error = 0;
- 
--	write_lock(&ls->ls_requestqueue_lock);
-+	write_lock_bh(&ls->ls_requestqueue_lock);
- 	for (;;) {
- 		if (list_empty(&ls->ls_requestqueue)) {
- 			clear_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
-@@ -96,11 +96,11 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 			error = -EINTR;
- 			break;
- 		}
--		write_unlock(&ls->ls_requestqueue_lock);
-+		write_unlock_bh(&ls->ls_requestqueue_lock);
- 		schedule();
--		write_lock(&ls->ls_requestqueue_lock);
-+		write_lock_bh(&ls->ls_requestqueue_lock);
- 	}
--	write_unlock(&ls->ls_requestqueue_lock);
-+	write_unlock_bh(&ls->ls_requestqueue_lock);
- 
- 	return error;
- }
-@@ -135,7 +135,7 @@ void dlm_purge_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	struct rq_entry *e, *safe;
- 
--	write_lock(&ls->ls_requestqueue_lock);
-+	write_lock_bh(&ls->ls_requestqueue_lock);
- 	list_for_each_entry_safe(e, safe, &ls->ls_requestqueue, list) {
- 		ms =  &e->request;
- 
-@@ -144,6 +144,6 @@ void dlm_purge_requestqueue(struct dlm_ls *ls)
- 			kfree(e);
- 		}
- 	}
--	write_unlock(&ls->ls_requestqueue_lock);
-+	write_unlock_bh(&ls->ls_requestqueue_lock);
- }
- 
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index 695e691b38b3..c0d35678ee54 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -206,7 +206,7 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t flags, int mode,
- 		return;
- 
- 	ls = lkb->lkb_resource->res_ls;
--	spin_lock(&ls->ls_clear_proc_locks);
-+	spin_lock_bh(&ls->ls_clear_proc_locks);
- 
- 	/* If ORPHAN/DEAD flag is set, it means the process is dead so an ast
- 	   can't be delivered.  For ORPHAN's, dlm_clear_proc_locks() freed
-@@ -228,12 +228,12 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t flags, int mode,
- 	if ((flags & DLM_CB_CAST) && lkb_is_endoflife(mode, status))
- 		set_bit(DLM_IFL_ENDOFLIFE_BIT, &lkb->lkb_iflags);
- 
--	spin_lock(&proc->asts_spin);
-+	spin_lock_bh(&proc->asts_spin);
- 
- 	rv = dlm_enqueue_lkb_callback(lkb, flags, mode, status, sbflags);
- 	switch (rv) {
- 	case DLM_ENQUEUE_CALLBACK_FAILURE:
--		spin_unlock(&proc->asts_spin);
-+		spin_unlock_bh(&proc->asts_spin);
- 		WARN_ON_ONCE(1);
- 		goto out;
- 	case DLM_ENQUEUE_CALLBACK_NEED_SCHED:
-@@ -247,19 +247,19 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t flags, int mode,
- 		WARN_ON_ONCE(1);
- 		break;
- 	}
--	spin_unlock(&proc->asts_spin);
-+	spin_unlock_bh(&proc->asts_spin);
- 
- 	if (test_bit(DLM_IFL_ENDOFLIFE_BIT, &lkb->lkb_iflags)) {
- 		/* N.B. spin_lock locks_spin, not asts_spin */
--		spin_lock(&proc->locks_spin);
-+		spin_lock_bh(&proc->locks_spin);
- 		if (!list_empty(&lkb->lkb_ownqueue)) {
- 			list_del_init(&lkb->lkb_ownqueue);
- 			dlm_put_lkb(lkb);
- 		}
--		spin_unlock(&proc->locks_spin);
-+		spin_unlock_bh(&proc->locks_spin);
- 	}
-  out:
--	spin_unlock(&ls->ls_clear_proc_locks);
-+	spin_unlock_bh(&ls->ls_clear_proc_locks);
- }
- 
- static int device_user_lock(struct dlm_user_proc *proc,
-@@ -832,10 +832,10 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	if (test_bit(DLM_PROC_FLAGS_CLOSING, &proc->flags))
- 		return -EINVAL;
- 
--	spin_lock(&proc->asts_spin);
-+	spin_lock_bh(&proc->asts_spin);
- 	if (list_empty(&proc->asts)) {
- 		if (file->f_flags & O_NONBLOCK) {
--			spin_unlock(&proc->asts_spin);
-+			spin_unlock_bh(&proc->asts_spin);
- 			return -EAGAIN;
- 		}
- 
-@@ -844,16 +844,16 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	repeat:
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		if (list_empty(&proc->asts) && !signal_pending(current)) {
--			spin_unlock(&proc->asts_spin);
-+			spin_unlock_bh(&proc->asts_spin);
- 			schedule();
--			spin_lock(&proc->asts_spin);
-+			spin_lock_bh(&proc->asts_spin);
- 			goto repeat;
- 		}
- 		set_current_state(TASK_RUNNING);
- 		remove_wait_queue(&proc->wait, &wait);
- 
- 		if (signal_pending(current)) {
--			spin_unlock(&proc->asts_spin);
-+			spin_unlock_bh(&proc->asts_spin);
- 			return -ERESTARTSYS;
- 		}
- 	}
-@@ -875,7 +875,7 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 		 */
- 		log_print("dlm_rem_lkb_callback empty %x", lkb->lkb_id);
- 		list_del_init(&lkb->lkb_cb_list);
--		spin_unlock(&proc->asts_spin);
-+		spin_unlock_bh(&proc->asts_spin);
- 		/* removes ref for proc->asts, may cause lkb to be freed */
- 		dlm_put_lkb(lkb);
- 		WARN_ON_ONCE(1);
-@@ -890,7 +890,7 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 		WARN_ON_ONCE(1);
- 		break;
- 	}
--	spin_unlock(&proc->asts_spin);
-+	spin_unlock_bh(&proc->asts_spin);
- 
- 	if (cb->flags & DLM_CB_BAST) {
- 		trace_dlm_bast(lkb->lkb_resource->res_ls, lkb, cb->mode);
-@@ -925,12 +925,12 @@ static __poll_t device_poll(struct file *file, poll_table *wait)
- 
- 	poll_wait(file, &proc->wait, wait);
- 
--	spin_lock(&proc->asts_spin);
-+	spin_lock_bh(&proc->asts_spin);
- 	if (!list_empty(&proc->asts)) {
--		spin_unlock(&proc->asts_spin);
-+		spin_unlock_bh(&proc->asts_spin);
- 		return EPOLLIN | EPOLLRDNORM;
- 	}
--	spin_unlock(&proc->asts_spin);
-+	spin_unlock_bh(&proc->asts_spin);
- 	return 0;
- }
- 
+Hello,
+
+kernel test robot noticed a -2.9% regression of will-it-scale.per_thread_ops on:
+
+
+commit: 0ede61d8589cc2d93aa78230d74ac58b5b8d0244 ("file: convert to SLAB_TYPESAFE_BY_RCU")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+testcase: will-it-scale
+test machine: 224 threads 4 sockets Intel(R) Xeon(R) Platinum 8380H CPU @ 2.90GHz (Cooper Lake) with 192G memory
+parameters:
+
+	nr_task: 16
+	mode: thread
+	test: poll2
+	cpufreq_governor: performance
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202311201406.2022ca3f-oliver.sang@intel.com
+
+
+Details are as below:
+-------------------------------------------------------------------------------------------------->
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20231120/202311201406.2022ca3f-oliver.sang@intel.com
+
+=========================================================================================
+compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
+  gcc-12/performance/x86_64-rhel-8.3/thread/16/debian-11.1-x86_64-20220510.cgz/lkp-cpl-4sp2/poll2/will-it-scale
+
+commit: 
+  93faf426e3 ("vfs: shave work on failed file open")
+  0ede61d858 ("file: convert to SLAB_TYPESAFE_BY_RCU")
+
+93faf426e3cc000c 0ede61d8589cc2d93aa78230d74 
+---------------- --------------------------- 
+         %stddev     %change         %stddev
+             \          |                \  
+      0.01 ±  9%  +58125.6%       4.17 ±175%  perf-sched.sch_delay.max.ms.schedule_timeout.rcu_gp_fqs_loop.rcu_gp_kthread.kthread
+     89056            -2.0%      87309        proc-vmstat.nr_slab_unreclaimable
+     97958 ±  7%      -9.7%      88449 ±  4%  sched_debug.cpu.avg_idle.stddev
+      0.00 ± 12%     +24.2%       0.00 ± 17%  sched_debug.cpu.next_balance.stddev
+   6391048            -2.9%    6208584        will-it-scale.16.threads
+    399440            -2.9%     388036        will-it-scale.per_thread_ops
+   6391048            -2.9%    6208584        will-it-scale.workload
+     19.99 ±  4%      -2.2       17.74        perf-profile.calltrace.cycles-pp.fput.do_poll.do_sys_poll.__x64_sys_poll.do_syscall_64
+      1.27 ±  5%      +0.8        2.11 ±  3%  perf-profile.calltrace.cycles-pp.__fdget.do_poll.do_sys_poll.__x64_sys_poll.do_syscall_64
+     32.69 ±  4%      +5.0       37.70        perf-profile.calltrace.cycles-pp.__fget_light.do_poll.do_sys_poll.__x64_sys_poll.do_syscall_64
+      0.00           +27.9       27.85        perf-profile.calltrace.cycles-pp.__get_file_rcu.__fget_light.do_poll.do_sys_poll.__x64_sys_poll
+     20.00 ±  4%      -2.3       17.75        perf-profile.children.cycles-pp.fput
+      0.24 ± 10%      -0.1        0.18 ±  2%  perf-profile.children.cycles-pp.syscall_return_via_sysret
+      1.48 ±  5%      +0.5        1.98 ±  3%  perf-profile.children.cycles-pp.__fdget
+     31.85 ±  4%      +6.0       37.86        perf-profile.children.cycles-pp.__fget_light
+      0.00           +27.7       27.67        perf-profile.children.cycles-pp.__get_file_rcu
+     30.90 ±  4%     -20.6       10.35 ±  2%  perf-profile.self.cycles-pp.__fget_light
+     19.94 ±  4%      -2.4       17.53        perf-profile.self.cycles-pp.fput
+      9.81 ±  4%      -2.4        7.42 ±  2%  perf-profile.self.cycles-pp.do_poll
+      0.23 ± 11%      -0.1        0.17 ±  4%  perf-profile.self.cycles-pp.syscall_return_via_sysret
+      0.00           +26.5       26.48        perf-profile.self.cycles-pp.__get_file_rcu
+ 2.146e+10 ±  2%      +8.5%  2.329e+10 ±  2%  perf-stat.i.branch-instructions
+      0.22 ± 14%      -0.0        0.19 ± 14%  perf-stat.i.branch-miss-rate%
+ 1.404e+10 ±  2%      +8.7%  1.526e+10 ±  2%  perf-stat.i.dTLB-stores
+     70.87            -2.3       68.59        perf-stat.i.iTLB-load-miss-rate%
+   5267608            -5.5%    4979133 ±  2%  perf-stat.i.iTLB-load-misses
+   2102507            +5.4%    2215725        perf-stat.i.iTLB-loads
+     18791 ±  3%     +10.5%      20757 ±  2%  perf-stat.i.instructions-per-iTLB-miss
+    266.67 ±  2%      +6.8%     284.75 ±  2%  perf-stat.i.metric.M/sec
+      0.01 ± 10%     -10.5%       0.01 ±  5%  perf-stat.overall.MPKI
+      0.19            -0.0        0.17        perf-stat.overall.branch-miss-rate%
+      0.65            -3.1%       0.63        perf-stat.overall.cpi
+      0.00 ±  4%      -0.0        0.00 ±  4%  perf-stat.overall.dTLB-store-miss-rate%
+     71.48            -2.3       69.21        perf-stat.overall.iTLB-load-miss-rate%
+     18757           +10.0%      20629        perf-stat.overall.instructions-per-iTLB-miss
+      1.54            +3.2%       1.59        perf-stat.overall.ipc
+   4795147            +6.4%    5100406        perf-stat.overall.path-length
+  2.14e+10 ±  2%      +8.5%  2.322e+10 ±  2%  perf-stat.ps.branch-instructions
+   1.4e+10 ±  2%      +8.7%  1.522e+10 ±  2%  perf-stat.ps.dTLB-stores
+   5253923            -5.5%    4966218 ±  2%  perf-stat.ps.iTLB-load-misses
+   2095770            +5.4%    2208605        perf-stat.ps.iTLB-loads
+ 3.065e+13            +3.3%  3.167e+13        perf-stat.total.instructions
+
+
+
+
+Disclaimer:
+Results have been estimated based on internal Intel analysis and are provided
+for informational purposes only. Any difference in system hardware or software
+design or configuration may affect actual performance.
+
+
 -- 
-2.39.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
