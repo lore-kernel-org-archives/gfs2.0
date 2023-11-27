@@ -1,82 +1,52 @@
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894BF10797
-	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 06:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SdwTw149Tz4f3kFZ
-	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 14:21:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 01D8A1A0DD5
-	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 14:21:58 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgDX2hB+NWRlrcU8CA--.57866S6;
-	Mon, 27 Nov 2023 14:21:57 +0800 (CST)
-From: Yu Kuai <yukuai1@huaweicloud.com>
-To: hch@infradead.org,
-	ming.lei@redhat.com,
-	axboe@kernel.dk,
-	roger.pau@citrix.com,
-	colyli@suse.de,
-	kent.overstreet@gmail.com,
-	joern@lazybastard.org,
-	miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com,
-	sth@linux.ibm.com,
-	hoeppner@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	dsterba@suse.com,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	nico@fluxnic.net,
-	xiang@kernel.org,
-	chao@kernel.org,
-	tytso@mit.edu,
-	adilger.kernel@dilger.ca,
-	agruenba@redhat.com,
-	jack@suse.com,
-	konishi.ryusuke@gmail.com,
-	dchinner@redhat.com,
-	linux@weissschuh.net,
-	min15.li@samsung.com,
-	yukuai3@huawei.com,
-	dlemoal@kernel.org,
-	willy@infradead.org,
-	akpm@linux-foundation.org,
-	hare@suse.de,
-	p.raghav@samsung.com
-Cc: linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-bcache@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-bcachefs@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-nilfs@vger.kernel.org,
-	yukuai1@huaweicloud.com,
-	yi.zhang@huawei.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54843E574
+	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 06:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="X33IAizB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PRdjsHwBJnTnCFJ6KWMNGkw3R1XwKUQdbL+BMJT0K70=; b=X33IAizBXxOu44K+tKNOQcX6aN
+	L3R58WnMzMuH49yXIvG7omqQGa3O2DELuiG9T0RDZfJfL9RxoTFv7kUL42tZGssHxvodfBhu53zAl
+	oziCAbD1I4rfcGgYF7+pmO1j4z7VlfcJSt54k/bu5RznWMw8UGAKzI85OeNE+/rj2cbLblF4OE6VJ
+	eTO7WwvbpkhSAH2j8YC9xxeFsHPww+97YyGIXXbr6H0E8B8/2bjSezQMUryHuqSaucYpxVB9Oms42
+	fJOuOXLDq1bOpbdO9PADT2+G/2FCegqrb+HsEfhKX3cA8yGKyYkW0zp9+6loKz3FcpZ/JElMbJsDK
+	wQbg0j1Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1r7VP7-003r7k-26;
+	Mon, 27 Nov 2023 06:47:37 +0000
+Date: Mon, 27 Nov 2023 06:47:37 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Yu Kuai <yukuai1@huaweicloud.com>
+Cc: hch@infradead.org, ming.lei@redhat.com, axboe@kernel.dk,
+	roger.pau@citrix.com, colyli@suse.de, kent.overstreet@gmail.com,
+	joern@lazybastard.org, miquel.raynal@bootlin.com, richard@nod.at,
+	vigneshr@ti.com, sth@linux.ibm.com, hoeppner@linux.ibm.com,
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+	jejb@linux.ibm.com, martin.petersen@oracle.com, clm@fb.com,
+	josef@toxicpanda.com, dsterba@suse.com, brauner@kernel.org,
+	nico@fluxnic.net, xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
+	adilger.kernel@dilger.ca, agruenba@redhat.com, jack@suse.com,
+	konishi.ryusuke@gmail.com, dchinner@redhat.com,
+	linux@weissschuh.net, min15.li@samsung.com, yukuai3@huawei.com,
+	dlemoal@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+	hare@suse.de, p.raghav@samsung.com, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+	linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-nilfs@vger.kernel.org, yi.zhang@huawei.com,
 	yangerkun@huawei.com
-Subject: [PATCH block/for-next v2 02/16] xen/blkback: use new helper to get inode from block_device
-Date: Mon, 27 Nov 2023 14:21:02 +0800
-Message-Id: <20231127062116.2355129-3-yukuai1@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231127062116.2355129-1-yukuai1@huaweicloud.com>
+Subject: Re: [PATCH block/for-next v2 00/16] block: remove field 'bd_inode'
+ from block_device
+Message-ID: <20231127064737.GH38156@ZenIV>
 References: <20231127062116.2355129-1-yukuai1@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
@@ -84,50 +54,27 @@ List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgDX2hB+NWRlrcU8CA--.57866S6
-X-Coremail-Antispam: 1UD129KBjvdXoWrKw17KF4DGrW3uF4UJr4DCFg_yoW3KFX_XF
-	18urW7Zrn3Crsaka45uFs3Z340kw18ur4F9a1Iva4Sq34UCFW0v392vFn5Gr47XFWUG3Z0
-	y3WxXFW7tr4xJjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXwA2048vs2IY02
-	0Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-	wVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
-	v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUHbyAU
-	UUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231127062116.2355129-1-yukuai1@huaweicloud.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-From: Yu Kuai <yukuai3@huawei.com>
+On Mon, Nov 27, 2023 at 02:21:00PM +0800, Yu Kuai wrote:
+> From: Yu Kuai <yukuai3@huawei.com>
+> 
+> Changes in v2:
+>  - split different portions into different patches, as greg k-h
+>  suggested.
+>  - use container_of() instead of "bdev + 1" to get the address of
+>  bd_inode in the new helper, as grep k-h suggested.
 
-Which is more efficiency, and also prepare to remove the field
-'bd_inode' from block_device.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
----
- drivers/block/xen-blkback/xenbus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/block/xen-blkback/xenbus.c b/drivers/block/xen-blkback/xenbus.c
-index e34219ea2b05..e11f8123d213 100644
---- a/drivers/block/xen-blkback/xenbus.c
-+++ b/drivers/block/xen-blkback/xenbus.c
-@@ -105,7 +105,7 @@ static void xen_update_blkif_status(struct xen_blkif *blkif)
- 		return;
- 	}
- 	invalidate_inode_pages2(
--			blkif->vbd.bdev_handle->bdev->bd_inode->i_mapping);
-+			bdev_inode(blkif->vbd.bdev_handle->bdev)->i_mapping);
- 
- 	for (i = 0; i < blkif->nr_rings; i++) {
- 		ring = &blkif->rings[i];
--- 
-2.39.2
-
+You might have misinterpreted gregkh - in your place I would rather
+do a one-patch never-rebased branch (introduction of bdev_inode() in
+form that returns bdev->bd_inode), with followup in your branch that
+switches it to your variant.  Then conversions of ->bd_inode users,
+to be either picked by individual filesystems of staying in your branch.
+Any filesystem tree could merge from your never-rebased branch, after
+which they could switch their ->bd_inode uses to the new helper, without
+introducing any bisection hazards or interdependencies.
+After the next -rc1, once all ->bd_inode users are gone from the tree -
+remove the field.
