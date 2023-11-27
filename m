@@ -1,65 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF731DDA6;
-	Mon, 27 Nov 2023 10:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFFL9zxn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C433C7;
-	Mon, 27 Nov 2023 10:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701080870;
-	bh=mqtFeeqGki//5Nb3R143+AqRimwbXXJttWageC3NiuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OFFL9zxnJAnhIv2QZsihLuUq6mKSrEU3HutEewWqBmC8wj4Ey9kZH08HHHrY0s6OK
-	 zJZxiyeDHaSXmt6RujDPBPT7LJnhuRH9OJliQMqLiUJp4RCXcxAYeyVDXQO0JCd49W
-	 1/eL8pYNWxbPBunN/ikK7aPYUr/nI0d2EHTOaXGxw2yoz6PMFwt1FvDvVsUmkD09L5
-	 u2TWtfr0bZ6oFm5a37f1YH5il4ot9Gs6cja1OS1Y66a9X9mqmQfbz9s3dTyGaD1cz1
-	 MOYYUotox20liwe8wOlhOdEtPTGsk7EHvqPuaSiHrypK3q+f/CrUaOAa1Ia9Vk/I6a
-	 nuBmvgv0yHIYQ==
-Date: Mon, 27 Nov 2023 11:27:43 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, linux-kernel@vger.kernel.org,
-	Jann Horn <jannh@google.com>, linux-doc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, intel-gfx@lists.freedesktop.org,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	bpf@vger.kernel.org, ying.huang@intel.com, feng.tang@intel.com,
-	fengwei.yin@intel.com
-Subject: Re: [linus:master] [file] 0ede61d858: will-it-scale.per_thread_ops
- -2.9% regression
-Message-ID: <20231127-kirschen-dissens-b511900fa85a@brauner>
-References: <202311201406.2022ca3f-oliver.sang@intel.com>
- <CAHk-=wjMKONPsXAJ=yJuPBEAx6HdYRkYE8TdYVBvpm3=x_EnCw@mail.gmail.com>
- <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190F02C85F
+	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 13:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Sf5Tj4nLhz4f3lCn
+	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 21:07:21 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 184D11A0C53
+	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 21:07:26 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+	by APP1 (Coremail) with SMTP id cCh0CgDX2hCKlGRldTJXCA--.14854S3;
+	Mon, 27 Nov 2023 21:07:25 +0800 (CST)
+Subject: Re: [PATCH block/for-next v2 01/16] block: add a new helper to get
+ inode from block_device
+To: Christoph Hellwig <hch@infradead.org>, Yu Kuai <yukuai1@huaweicloud.com>
+Cc: ming.lei@redhat.com, axboe@kernel.dk, roger.pau@citrix.com,
+ colyli@suse.de, kent.overstreet@gmail.com, joern@lazybastard.org,
+ miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+ sth@linux.ibm.com, hoeppner@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, jejb@linux.ibm.com,
+ martin.petersen@oracle.com, clm@fb.com, josef@toxicpanda.com,
+ dsterba@suse.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ nico@fluxnic.net, xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
+ adilger.kernel@dilger.ca, agruenba@redhat.com, jack@suse.com,
+ konishi.ryusuke@gmail.com, dchinner@redhat.com, linux@weissschuh.net,
+ min15.li@samsung.com, dlemoal@kernel.org, willy@infradead.org,
+ akpm@linux-foundation.org, hare@suse.de, p.raghav@samsung.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-bcache@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-bcachefs@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-nilfs@vger.kernel.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, "yukuai (C)" <yukuai3@huawei.com>
+References: <20231127062116.2355129-1-yukuai1@huaweicloud.com>
+ <20231127062116.2355129-2-yukuai1@huaweicloud.com>
+ <ZWRDeQ4K8BiYnV+X@infradead.org>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <6acdeece-7163-3219-95e2-827e54eadd0c@huaweicloud.com>
+Date: Mon, 27 Nov 2023 21:07:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com>
+In-Reply-To: <ZWRDeQ4K8BiYnV+X@infradead.org>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgDX2hCKlGRldTJXCA--.14854S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF1fWFWkJw1kuFy8XF43KFg_yoW8KrWDp3
+	y7KFn8tw1DJryFgan7tw1jqrn0g3W7GrWUZ34rZrsxurZ8WFy2qF10krsrXFyIyr48Jw4I
+	qF45AF43Xry2grJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_WFyU
+	JVCq3wCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26rxl6s0DYx
+	BIdaVFxhVjvjDU0xZFpf9x0JUd8n5UUUUU=
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-> So that nobody else would waste any time on this, attached is a new
-> attempt. This time actually tested *after* the changes.
+Hi,
 
-So I've picked up your patch (vfs.misc). It's clever alright so thanks
-for the comments in there otherwise I would've stared at this for far
-too long.
+ÔÚ 2023/11/27 15:21, Christoph Hellwig Ð´µÀ:
+> On Mon, Nov 27, 2023 at 02:21:01PM +0800, Yu Kuai wrote:
+>> From: Yu Kuai <yukuai3@huawei.com>
+>>
+>> block_devcie is allocated from bdev_alloc() by bdev_alloc_inode(), and
+>> currently block_device contains a pointer that point to the address of
+>> inode, while such inode is allocated together:
+> 
+> This is going the wrong way.  Nothing outside of core block layer code
+> should ever directly use the bdev inode.  We've been rather sloppy
+> and added a lot of direct reference to it, but they really need to
+> go away and be replaced with well defined high level operation on
+> struct block_device.  Once that is done we can remove the bd_inode
+> pointer, but replacing it with something that pokes even more deeply
+> into bdev internals is a bad idea.
 
-It's a little unpleasant because of the cast-orama going on before we
-check the file pointer but I don't see that it's in any way wrong. And
-given how focussed people are with __fget_* performance I think it might
-even be the right thing to do.
+Thanks for the advice, however, after collecting how other modules are
+using bdev inode, I got two main questions:
 
-But the cleverness means we have the same logic slightly differently
-twice. Not too bad ofc but not too nice either especially because that
-rcu lookup is pretty complicated already.
+1) Is't okay to add a new helper to pass in bdev for following apis?
+If so, then almost all the fs and driver can avoid to access bd_inode
+dirctly.
 
-A few days ago I did just write a long explanatory off-list email to
-someone who had questions about this and who is fairly experienced so
-we're not making it easy on people. But performance or simplicity; one
-can't necessarily always have both.
+errseq_check(&bdev->bd_inode->i_mapping->wb_err, wb_err);
+errseq_check_and_advance(&bdev->bd_inode->i_mapping->wb_err, &wb_err);
+mapping_gfp_constraint(bdev->bd_inode->i_mapping, gfp);
+i_size_read(bdev->bd_inode)
+find_get_page(bdev->bd_inode->i_mapping, offset);
+find_or_create_page(bdev->bd_inode->i_mapping, index, gfp);
+read_cache_page_gfp(bdev->bd_inode->i_mapping, index, gfp);
+invalidate_inode_pages2(bdev->bd_inode->i_mapping);
+invalidate_inode_pages2_range(bdev->bd_inode->i_mapping, start, end);
+read_mapping_folio(bdev->bd_inode->i_mapping, index, file);
+read_mapping_page(bdev->bd_inode->i_mapping, index, file);
+balance_dirty_pages_ratelimited(bdev->bd_inode->i_mapping)
+file_ra_state_init(ra, bdev->bd_inode->i_mapping);
+page_cache_sync_readahead(bdev->bd_inode->i_mapping, ra, file, index, 
+req_count);
+inode_to_bdi(bdev->bd_inode)
+
+2) For the file fs/buffer.c, there are some special usage like
+following that I don't think it's good to add a helper:
+
+spin_lock(&bd_inode->i_mapping->private_lock);
+
+Is't okay to move following apis from fs/buffer.c directly to
+block/bdev.c?
+
+__find_get_block
+bdev_getblk
+
+Thanks,
+Kuai
+
+> .
+> 
+
