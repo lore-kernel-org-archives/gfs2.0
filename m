@@ -1,92 +1,136 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C6364D2
-	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 16:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C7634558
+	for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 17:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3w8bJekj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=N2zDXv8N842SdWeP1QfvmzEvIcEsyQplx8msSV1RBzc=; b=3w8bJekjauD14xkhiSXsSeP1yp
-	9N3b2DKZZPdBt27xj1DIEE7RXLXZrvHxDKR2sRYD21pNAAIJ3vl1ZCKZ4NFvv5G6xjzqey6N1n0KK
-	ZrI0nakNUBsMEbW2Q4e4j1NRh5OeO1tyxIFUhlV8EaqwcQbah9MgH17+QPadh0DqL/pm4sqZ5f/vV
-	IH1EMWIP6up9ybGx4dw0MvcLdLRClPIEOMfWizJpOcO8WEMAVnlOuY5kgUVe2HK2Xt75AhDq2qkmf
-	jzAFQBFfr3qP/5tAASIdgOPBH9JmPj2A8s0x9fJ50RYVccYl2K4OsZZ71u82sMqjEZ1B5f5BIa6y8
-	Lia9qiAg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7eXO-0030D4-22;
-	Mon, 27 Nov 2023 16:32:46 +0000
-Date: Mon, 27 Nov 2023 08:32:46 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: Christoph Hellwig <hch@infradead.org>, ming.lei@redhat.com,
-	axboe@kernel.dk, roger.pau@citrix.com, colyli@suse.de,
-	kent.overstreet@gmail.com, joern@lazybastard.org,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	sth@linux.ibm.com, hoeppner@linux.ibm.com, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com, jejb@linux.ibm.com,
-	martin.petersen@oracle.com, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	nico@fluxnic.net, xiang@kernel.org, chao@kernel.org, tytso@mit.edu,
-	adilger.kernel@dilger.ca, agruenba@redhat.com, jack@suse.com,
-	konishi.ryusuke@gmail.com, dchinner@redhat.com,
-	linux@weissschuh.net, min15.li@samsung.com, dlemoal@kernel.org,
-	willy@infradead.org, akpm@linux-foundation.org, hare@suse.de,
-	p.raghav@samsung.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nilfs@vger.kernel.org, yi.zhang@huawei.com,
-	yangerkun@huawei.com, "yukuai (C)" <yukuai3@huawei.com>
-Subject: Re: [PATCH block/for-next v2 01/16] block: add a new helper to get
- inode from block_device
-Message-ID: <ZWTErvnMf7HiO1Wj@infradead.org>
-References: <20231127062116.2355129-1-yukuai1@huaweicloud.com>
- <20231127062116.2355129-2-yukuai1@huaweicloud.com>
- <ZWRDeQ4K8BiYnV+X@infradead.org>
- <6acdeece-7163-3219-95e2-827e54eadd0c@huaweicloud.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="K434LXdn"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a03a9009572so614020566b.3
+        for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 09:11:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1701105073; x=1701709873; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=X8veV/N8u0KLOX8kp8+RpeOybN7ghMV50gJ3VwXOlp8=;
+        b=K434LXdnoCtxECLuC9HspkYS251R2LgdTsLQiZdX+KUO2k98b/wVptUuuDGVLEEiAm
+         CnQJIKrYYB3ugQuJMfBZlhfWfrF7WIwUbbiPmuHFTAlsNw1wVGWAbXzlPoE5yvxbV7Rc
+         6kUkVPQswYGmsP78GLKgA4/E1UYzNWrNRVxig=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701105073; x=1701709873;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X8veV/N8u0KLOX8kp8+RpeOybN7ghMV50gJ3VwXOlp8=;
+        b=afdDwQz0RwAYZ9xndkz6rOYUM+NNdK9fSVGUHLfzpRsyB7lkt6FZOzDOEQkXbWt2tn
+         6Ygk2KE/OvkEYNYal1jRaG4vsjpaLfUkclknFhK3EkKM9I19Tm7sMiErQloig8ANT9I5
+         MXqLt6SPhcM6LmR7CR3EbjJJLKrGSdf4u94I/Rz46nJ4ko+O90/2X4f8NcKytEjDINeA
+         Hijvcl29Ce9Ks1eRKITyoD+IrKvNGx79K7FoTA+lZxXe3bBHDO+DUDY2X/G7Q3A4OYbe
+         GryBYKcrkWmhZr+SUI0INxHJM+THAF4NLVPli2LiOkzDAR82o6M48UCZoujAAkwQWnqd
+         yogw==
+X-Gm-Message-State: AOJu0YwYdH03f8GuRDtAodwChS+PJ2GUEcUsyRIdYpeCJ8Mo8RqMmWuj
+	01ftDuuf6AgNxp5n0z5xVNXPezJnFq/Csk2qD35JYQ==
+X-Google-Smtp-Source: AGHT+IFlPFhsRslhJbSJ2SAgSuiSjHCqNVXZL2MuuF5+yHkUOYkrkjQA8EqKkJI4yCEqSB6H7NRsNw==
+X-Received: by 2002:a17:906:3bdb:b0:a04:7d85:2a6e with SMTP id v27-20020a1709063bdb00b00a047d852a6emr9337590ejf.24.1701105073659;
+        Mon, 27 Nov 2023 09:11:13 -0800 (PST)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id x16-20020a1709064bd000b00a0ad580e1b6sm3686357ejv.48.2023.11.27.09.11.11
+        for <gfs2@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Nov 2023 09:11:12 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-54a95657df3so6364452a12.0
+        for <gfs2@lists.linux.dev>; Mon, 27 Nov 2023 09:11:11 -0800 (PST)
+X-Received: by 2002:a50:d4c5:0:b0:53e:1b:15f5 with SMTP id e5-20020a50d4c5000000b0053e001b15f5mr7964361edj.39.1701105070828;
+ Mon, 27 Nov 2023 09:11:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6acdeece-7163-3219-95e2-827e54eadd0c@huaweicloud.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <202311201406.2022ca3f-oliver.sang@intel.com> <CAHk-=wjMKONPsXAJ=yJuPBEAx6HdYRkYE8TdYVBvpm3=x_EnCw@mail.gmail.com>
+ <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com> <20231127-kirschen-dissens-b511900fa85a@brauner>
+In-Reply-To: <20231127-kirschen-dissens-b511900fa85a@brauner>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 27 Nov 2023 09:10:54 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgwpzgoSYU9Ob+MRyFuHRow4s5J099=DsCo1hGT=bkCtw@mail.gmail.com>
+Message-ID: <CAHk-=wgwpzgoSYU9Ob+MRyFuHRow4s5J099=DsCo1hGT=bkCtw@mail.gmail.com>
+Subject: Re: [linus:master] [file] 0ede61d858: will-it-scale.per_thread_ops
+ -2.9% regression
+To: Christian Brauner <brauner@kernel.org>
+Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>, linux-doc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, intel-gfx@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, bpf@vger.kernel.org, 
+	ying.huang@intel.com, feng.tang@intel.com, fengwei.yin@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 27, 2023 at 09:07:22PM +0800, Yu Kuai wrote:
-> 1) Is't okay to add a new helper to pass in bdev for following apis?
+On Mon, 27 Nov 2023 at 02:27, Christian Brauner <brauner@kernel.org> wrote:
+>
+> So I've picked up your patch (vfs.misc). It's clever alright so thanks
+> for the comments in there otherwise I would've stared at this for far
+> too long.
 
+Note that I should probably have commented on one other thing: that
+whole "just load from fd[0] is always safe, because the fd[] array
+always exists".
 
-For some we already have them (e.g. bdev_nr_bytes to read the bdev)
-size, for some we need to add them.  The big thing that seems to
-stick out is page cache API, and I think that is where we need to
-define maintainable APIs for file systems and others to use the
-block device page cache.  Probably only in folio versions and not
-pages once if we're touching the code anyay
+IOW, that whole "load and mask" thing only works when you know the
+array exists at all.
 
-> 2) For the file fs/buffer.c, there are some special usage like
-> following that I don't think it's good to add a helper:
-> 
-> spin_lock(&bd_inode->i_mapping->private_lock);
-> 
-> Is't okay to move following apis from fs/buffer.c directly to
-> block/bdev.c?
-> 
-> __find_get_block
-> bdev_getblk
+Doing that "just mask the index" wouldn't be valid if "size = 0" is an
+option and might mean that we don't have an array at all (ie if "->fd"
+itself could be NULL.
 
-I'm not sure moving is a good idea, but we might end up the
-some kind of low-level access from buffer.c, be that special
-helpers, a separate header or something else.  Let's sort out
-the rest of the kernel first.
+But we never have a completely empty file descriptor array, and
+fdp->fd is never NULL.  At a minimum 'max_fds' is NR_OPEN_DEFAULT.
 
+(The whole 'tsk->files' could be NULL, but only for kernel threads or
+when exiting, so fget_task() will check for *that*, but it's a
+separate thing)
+
+So that's why it's safe to *entirely* remove the whole
+
+                if (unlikely(fd >= fdt->max_fds))
+
+test, and do it *all* with just "mask the index, and mask the resulting load".
+
+Because we can *always* do that load at "fdt->fd[0]", and we want to
+check the result for NULL anyway, so the "mask at the end and check
+for NULL" is both natural and generates very good code.
+
+Anyway, not a big deal, bit it might be worth noting before somebody
+tries the same trick on some other array that *could* be zero-sized
+and with a NULL base pointer, and where that 'array[0]' access isn't
+necessarily guaranteed to be ok.
+
+> It's a little unpleasant because of the cast-orama going on before we
+> check the file pointer but I don't see that it's in any way wrong.
+
+In my cleanup phase - which was a bit messy - I did wonder if I should
+have some helper for it, since it shows up in both __fget_files_rcu()
+and in files_lookup_fd_raw().
+
+So I *could* have tried to add something like a
+"masked_rcu_dereference()" that took the base pointer, the index, and
+the mask, and did that whole dance.
+
+Or I could have had just a "mask_pointer()" function, which we do
+occasionally do in other places too (ie we hide data in low bits, and
+then we mask them away when the pointer is used as a pointer).
+
+But with only two users, it seemed to add more conceptual complexity
+than it's worth, and I was not convinced that we'd want to expose that
+pattern and have others use it.
+
+So having a helper might clarify things, but it might also encourage
+wrong users. I dunno.
+
+I suspect the only real use for this ends up being this very special
+"access the fdt->fd[] array using a file descriptor".
+
+Anyway, that's why I largely just did it with comments, and commented
+both places - and just kept the cast there in the open.
+
+             Linus
