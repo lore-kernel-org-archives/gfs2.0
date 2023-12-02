@@ -1,69 +1,61 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-251-73.mail.qq.com (out203-205-251-73.mail.qq.com [203.205.251.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0FC619AF
-	for <gfs2@lists.linux.dev>; Fri,  1 Dec 2023 23:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6ce00bd41d0so1358548b3a.3
-        for <gfs2@lists.linux.dev>; Fri, 01 Dec 2023 15:57:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701475041; x=1702079841;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kjqfKH8JvaG9Z/SqXxhblf/a00V2R0Ggq3QtYOjAI8Y=;
-        b=i5ltVvI/QRPPKkTAwcDBUasOwSTwuXXFH7FA2+vDiJlXVmc0tqEsUD7ZOe8Ml4C1Nf
-         DS0/iLutaKWSpsiumcmoNQXP7blFD63AWllcwUgAU3fS8AD6k1Q2xmFEJj38NVTF7bZI
-         Mgl9kxNKMKgmfkIDwOBMz0ZRgungZxT71ISPbQM7RRyPflK/mbNS9wsCOK67f6G7pr4M
-         r2Q3qQqJ+8dxjq5iSuEHjvNDeDzkOhNz3bWEX7bUqwASgUpb6ZaBGJXza1QA1TWVPow0
-         gGuczs5Gcojh78wh1bMVLtueUTSaKogxpFCEIOUU+5MMuli+mMgQ5kkGqfqWNR1rJ3Sd
-         1dJg==
-X-Gm-Message-State: AOJu0Yyo55Jln12YXA5E5Dy0zwKrAYpr/7ZKBXCpNJn0Tk4AvTiWOtya
-	6cCl3w+igwcrAxQNQdKH3tX74Yot2p5UnZw/GGYjCiHmd2YO
-X-Google-Smtp-Source: AGHT+IELM0fBx9fOf0rQ8pZ6h0rW43hS1lIsnd5aooH7E0TXVdzGupxSxTuUV88qqkRSdD+WHBQU+U9/bWwvxKjSYdKs+qchb4QP
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A51F9FB
+	for <gfs2@lists.linux.dev>; Sat,  2 Dec 2023 09:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="UWdd6LgL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1701509523; bh=vwasgKMlkrgq4cDMRp4Pe0lTBLkjlKM1cXwkKpfADzE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UWdd6LgLlOkHNDtopJsLme8grKF5IGsTMcAOohN4QlNEKhd1/dHH+dphQpQZHuW2f
+	 q9XVCDTN/RQ6P1gfORT1JUmFEvQjLysTqJb1rvGs8UaZIXD7ubUpgRCEHzWWJMEDc8
+	 AH0Nj8cOva37XMqRGUZVIEQmO1BujbIi6JYp8mqo=
+Received: from pek-lxu-l1.wrs.com ([111.198.228.56])
+	by newxmesmtplogicsvrszb9-1.qq.com (NewEsmtp) with SMTP
+	id 67122CEF; Sat, 02 Dec 2023 17:25:49 +0800
+X-QQ-mid: xmsmtpt1701509149tlxnb0q5j
+Message-ID: <tencent_FCCCB879B66D7C2C2D6E4C97F4E972EE3A0A@qq.com>
+X-QQ-XMAILINFO: MmuCfgcSBfHxKKwxo/p8YL3Gyc0/gL8pkt7W01IcJUeMPaIoW2hT5UvgbIKC4D
+	 eUqPIItdH6PG5/VdVyF3LdYSwnZmNMgpB+2xDlRYdG/kw0oMgMA07owVxaTaOUldueMGZhxCt0bK
+	 YGlkrOKPfsQPeoN3EJGIo/kODIXTt5Re7ISSiUNuAyNk7AY535TWNMPGidvaycZcd0Z/gjuSGtFM
+	 KH7bH4aONBFpnzQ9a2inPHMX+W3rM3eTkpMNoNIxnhm3kIOstJj0IqEffp0BmuEYES65ShOP5pCI
+	 WgmLRDc7vKXtkrER1tedXl9r6v9M92KcjyCgqDyn5G3PeJtTTH03evhPyMUzisdqLoJkTYVH7EpA
+	 dOXd4c1e2NvBpV2UDjOQzG70ZRIacPQeqJGUjZxx/TNDAScF/W2+Rc21xXsSHrPYwhxJOGcA5gHn
+	 Aia/j+OGVd9ZSVyq72LMEWDCi4golQ/oacXz2dSzNrTM5rIBA0XE7hYjfZ40ipVz7G+frq2poaWB
+	 PEs0JoH8syV2f3rCTBTY10NFiG/69Pbv6vkmWmTV3qTfGymCB2p7yuOgD4EiYO61QZT8yZG4grxf
+	 KeYQW03jeONBMzSCg3wIoqD6ldA5cerV/65dIBKsHcTfPzD68WQ3Ohx7vkxsRFsZl15SBwyPbZaY
+	 I/0AK2rYpL7ZY8YuMREP2NuiQ9kvkq8vmpMZsL5o7rQmikn38l/11lw/3ySNaTl5k16Sn6xdNy3Z
+	 DxI3uqgG1lxQnJ87kAqJNV52N4JChm/asoMzycBXja9QU8JJB5kebvH3x3aiAWBnh35Kwpg4nXjw
+	 BY+rQPl/w86q5pbmbd7d6rWtQs0WaKHVT16GtIDSJ1iimf0Puy41/PFpMdMOTvXIWPJIrizHmLeZ
+	 jxjsqxrjn3nS39WRRK1le7jqPatAOwvDcVASXGMlTo0aWlUsVZ6zXjnpnIXJHgPNNO/lY9z6Sycx
+	 DIuE9RRI0aUl009q8LMQ==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rpeterso@redhat.com,
+	syzkaller-bugs@googlegroups.com
+Subject: [PATCH] gfs2: fix kernel BUG in gfs2_quota_cleanup
+Date: Sat,  2 Dec 2023 17:25:49 +0800
+X-OQ-MSGID: <20231202092548.2852785-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <000000000000737829060b7b8775@google.com>
+References: <000000000000737829060b7b8775@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6a00:1908:b0:690:d251:28b9 with SMTP id
- y8-20020a056a00190800b00690d25128b9mr6006920pfi.4.1701475041636; Fri, 01 Dec
- 2023 15:57:21 -0800 (PST)
-Date: Fri, 01 Dec 2023 15:57:21 -0800
-In-Reply-To: <000000000000f0bfe70605025941@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000737829060b7b8775@google.com>
-Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_quota_cleanup
-From: syzbot <syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
-
-HEAD commit:    994d5c58e50e Merge tag 'hardening-v6.7-rc4' of git://git.k..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=165bc8d2e80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c2c74446ab4f0028
-dashboard link: https://syzkaller.appspot.com/bug?extid=3b6e67ac2b646da57862
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1268c086e80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=164b3faae80000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/dceb288ab9b9/disk-994d5c58.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/00a42d6cc05c/vmlinux-994d5c58.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/039fd7f1b283/bzImage-994d5c58.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/4022e7b58a1d/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-------------[ cut here ]------------
+[Syz report]
 kernel BUG at fs/gfs2/quota.c:1508!
 invalid opcode: 0000 [#1] PREEMPT SMP KASAN
 CPU: 0 PID: 5060 Comm: syz-executor505 Not tainted 6.7.0-rc3-syzkaller-00134-g994d5c58e50e #0
@@ -98,33 +90,51 @@ Call Trace:
  do_syscall_x64 arch/x86/entry/common.c:51 [inline]
  do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7f16d1b4b789
-Code: Unable to access opcode bytes at 0x7f16d1b4b75f.
-RSP: 002b:00007ffcad68ef38 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f16d1b4b789
-RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001
-RBP: 00007f16d1bd92d0 R08: ffffffffffffffb8 R09: 00007ffcad68f010
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f16d1bd92d0
-R13: 0000000000000000 R14: 00007f16d1bda040 R15: 00007f16d1b19cc0
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_quota_cleanup+0x6b5/0x6c0 fs/gfs2/quota.c:1508
-Code: fe e9 cf fd ff ff 44 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c 2d fe ff ff 4c 89 ef e8 b6 19 23 fe e9 20 fe ff ff e8 ec 11 c7 fd 90 <0f> 0b e8 84 9c 4f 07 0f 1f 40 00 66 0f 1f 00 55 41 57 41 56 41 54
-RSP: 0018:ffffc9000409f9e0 EFLAGS: 00010293
-RAX: ffffffff83c76854 RBX: 0000000000000002 RCX: ffff888026001dc0
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000409fb00 R08: ffffffff83c762b0 R09: 1ffff1100fd38015
-R10: dffffc0000000000 R11: ffffed100fd38016 R12: dffffc0000000000
-R13: ffff88807e9c0828 R14: ffff888014693580 R15: ffff88807e9c0000
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f16d1bd70f8 CR3: 000000000d730000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+...
 
+[pid  5060] fsconfig(4, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0) = 0
+[pid  5060] exit_group(1)               = ?
+...
 
+[Analysis]
+When the task exits, it will execute cleanup_mnt() to recycle the mounted gfs2 
+file system, but it performs a system call fsconfig(4, FSCONFIG_CMD_RECONFIGURE,
+NULL, NULL, 0) before executing the task exit operation.
+
+This will execute the following kernel path to complete the setting of 
+SDF_JOURNAL_LIVE for sd_flags:
+
+SYSCALL_DEFINE5(fsconfig, ..)->
+	vfs_fsconfig_locked()->
+		vfs_cmd_reconfigure()->
+			gfs2_reconfigure()->
+				gfs2_make_fs_rw()-> 
+					set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+
+[Fix]
+Add SDF_NORECOVERY check in gfs2_quota_cleanup() to avoid checking 
+SDF_JOURNAL_LIVE on the path where gfs2 is being unmounted.
+
+Reported-and-tested-by: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ fs/gfs2/quota.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 95dae7838b4e..af32dd8a72fa 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1505,7 +1505,8 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
+ 	LIST_HEAD(dispose);
+ 	int count;
+ 
+-	BUG_ON(test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
++	BUG_ON(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) && 
++		test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
+ 
+ 	spin_lock(&qd_lock);
+ 	list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
+-- 
+2.43.0
+
