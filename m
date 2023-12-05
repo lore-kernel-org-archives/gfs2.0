@@ -1,125 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FF45D48F
-	for <gfs2@lists.linux.dev>; Tue,  5 Dec 2023 13:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EEKHlwHu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701784310;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YqwroJrGTHefUhDWiBCdA2J4vAuymH0bz+Axm1qiXbE=;
-	b=EEKHlwHu/cCP8EIVV5eJiEHtTvKE26oweVv6GSZc2rSBH+vuqRbKgax3csNSrc7J0F1FwM
-	1iS4c1EITJ3sB0NVC5qpJb7oanz4Xn56fVB5cRKr0gJVIPvT7qnqrMzXJAN+Ps+uHcNo4p
-	DrY38dwjxTiJeMWUwOoQRz4pwnA5mV4=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-OUoZM8NENs6oTPjDavg6jg-1; Tue, 05 Dec 2023 08:51:47 -0500
-X-MC-Unique: OUoZM8NENs6oTPjDavg6jg-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1d0544c07c3so25642775ad.3
-        for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 05:51:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF55763DDB
+	for <gfs2@lists.linux.dev>; Tue,  5 Dec 2023 17:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-58d9a4e9464so2495519eaf.0
+        for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 09:03:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701784306; x=1702389106;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YqwroJrGTHefUhDWiBCdA2J4vAuymH0bz+Axm1qiXbE=;
-        b=Sl04mRoGJwp2zAXVPjRMgzWNROp09aeYdjivMeXoltISvBXUlZyIK3c6ogb2so3Ih+
-         8Nwil78L55yOEZGY6M+uGcw+6oOlRRP84C3L84UOGcXLqXqva3pnWk8YL6SavLOHSACI
-         HQo0DIMnfBqtEk15M7pi0bHxMr7+CgAxbb+LPESS5s4KbT7SNE+gKTZ6Jfa8SWPZtQxT
-         p9ISQjs1bw2QJZUEZ+iA2qVn19aSPJLgXGER7aKzhdVtqv223hXM9Qd7oVD3qfEfmQiJ
-         /ye63v9ZMtfo7qFZJpfoPE4KetPCGELm3MY2nIozhIESQIj5HXkPmDje7C8CMm/NPQp8
-         QLnA==
-X-Gm-Message-State: AOJu0YxVMF0bwiBodRPPq4Pb5bCpe8LHNkoJEisKO6tv8M9146OvthU3
-	PCuGw222acNkm0MiNhTAl27A1JNDDc6hHIFjnLAaLIU8gvUiE9wIQ/9O4NkxUNMhPSPlyEKl8Ox
-	9HOvmAnkUq//7pETY0TaulGulB/jbbQ==
-X-Received: by 2002:a17:902:e741:b0:1d0:8555:a1bc with SMTP id p1-20020a170902e74100b001d08555a1bcmr3325804plf.13.1701784306646;
-        Tue, 05 Dec 2023 05:51:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGz6qoVMl9eTDZiTRuQ7GXnKYIuL8zYPdZOJYvdGQGzFFqt7PvtFFUulBhuNSWU8a3LTp27fh5Kz0Th3mHZFuQ=
-X-Received: by 2002:a17:902:e741:b0:1d0:8555:a1bc with SMTP id
- p1-20020a170902e74100b001d08555a1bcmr3325793plf.13.1701784306367; Tue, 05 Dec
- 2023 05:51:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701795835; x=1702400635;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Kxt6CKccKyM2aD5KqaYbJ+5NRAtsSu20TdTe87tfro=;
+        b=Q0pCh9CmwfxFpeXet/0kGi2W/bqlc04h0shDOXYvn5VbcYJ9rZV05Ael5EG97ot2g4
+         XrRqfyaxk2+asheUV8h7LpqLl2gnGnnve3x+j+W8pJU8vwtfiWCsybYSHUr0XlqtWu44
+         Xv7lCDrdS9TN1Qtpkw370SyShwHCbnd+xK5NV9BamA2Ve9huNAq0pn9Id9I43ldIc5x7
+         kWO0QpO4PsMgLPERnyoTcwBUnTjxj1rOSLyZ70UsX8YeMNR9gu9GjOVEORescZTFRmIY
+         fZWsDAxx/vKUgoKLIUTSpzNKs1vZyP2nXjG92rqWGjF3MOakfunK3pbGCfPI54tUk/4r
+         YDGg==
+X-Gm-Message-State: AOJu0YyvsGYD6xm9wNTSUR5AAUJRxz5G1NKc9d5njO/66G+JmAoVnwcG
+	NwyLSwn5k8GTZksmr3gwbeA=
+X-Google-Smtp-Source: AGHT+IHREsBDTR/fguPuUAOPGrQJFqdX7+L934/9nqEfo9v3T6jgbM8x1qOuTAd7fOfx1S8tYfwMzA==
+X-Received: by 2002:a05:6358:6f95:b0:16e:43a1:6881 with SMTP id s21-20020a0563586f9500b0016e43a16881mr2252180rwn.26.1701795834695;
+        Tue, 05 Dec 2023 09:03:54 -0800 (PST)
+Received: from [172.20.2.177] (rrcs-173-197-90-226.west.biz.rr.com. [173.197.90.226])
+        by smtp.gmail.com with ESMTPSA id s25-20020a639259000000b00578afd8e012sm5146562pgn.92.2023.12.05.09.03.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Dec 2023 09:03:54 -0800 (PST)
+Message-ID: <189fa9b2-bcc8-4839-ac04-33a29bba9aaa@acm.org>
+Date: Tue, 5 Dec 2023 09:03:48 -0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <000000000000737829060b7b8775@google.com> <tencent_FCCCB879B66D7C2C2D6E4C97F4E972EE3A0A@qq.com>
-In-Reply-To: <tencent_FCCCB879B66D7C2C2D6E4C97F4E972EE3A0A@qq.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 5 Dec 2023 14:51:34 +0100
-Message-ID: <CAHc6FU4XREidNxwtW8m2YnsBGfANdH4W8b56KOeMNLjEEU_WGQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix kernel BUG in gfs2_quota_cleanup
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com, 
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next RFC 01/14] block: add some bdev apis
+Content-Language: en-US
+To: Yu Kuai <yukuai1@huaweicloud.com>, axboe@kernel.dk, roger.pau@citrix.com,
+ colyli@suse.de, kent.overstreet@gmail.com, joern@lazybastard.org,
+ miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+ sth@linux.ibm.com, hoeppner@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, jejb@linux.ibm.com,
+ martin.petersen@oracle.com, clm@fb.com, josef@toxicpanda.com,
+ dsterba@suse.com, nico@fluxnic.net, xiang@kernel.org, chao@kernel.org,
+ tytso@mit.edu, adilger.kernel@dilger.ca, agruenba@redhat.com, jack@suse.com,
+ konishi.ryusuke@gmail.com, willy@infradead.org, akpm@linux-foundation.org,
+ hare@suse.de, p.raghav@samsung.com
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-bcache@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-bcachefs@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, gfs2@lists.linux.dev,
+ linux-nilfs@vger.kernel.org, yukuai3@huawei.com, yi.zhang@huawei.com,
+ yangerkun@huawei.com
+References: <20231205123728.1866699-1-yukuai1@huaweicloud.com>
+ <20231205123728.1866699-2-yukuai1@huaweicloud.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20231205123728.1866699-2-yukuai1@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 2, 2023 at 10:34=E2=80=AFAM Edward Adam Davis <eadavis@qq.com> =
-wrote:
-> [Analysis]
-> When the task exits, it will execute cleanup_mnt() to recycle the mounted=
- gfs2
-> file system, but it performs a system call fsconfig(4, FSCONFIG_CMD_RECON=
-FIGURE,
-> NULL, NULL, 0) before executing the task exit operation.
->
-> This will execute the following kernel path to complete the setting of
-> SDF_JOURNAL_LIVE for sd_flags:
->
-> SYSCALL_DEFINE5(fsconfig, ..)->
->         vfs_fsconfig_locked()->
->                 vfs_cmd_reconfigure()->
->                         gfs2_reconfigure()->
->                                 gfs2_make_fs_rw()->
->                                         set_bit(SDF_JOURNAL_LIVE, &sdp->s=
-d_flags);
->
-> [Fix]
-> Add SDF_NORECOVERY check in gfs2_quota_cleanup() to avoid checking
-> SDF_JOURNAL_LIVE on the path where gfs2 is being unmounted.
+On 12/5/23 04:37, Yu Kuai wrote:
+> +static inline u8 block_bits(struct block_device *bdev)
+> +{
+> +	return bdev->bd_inode->i_blkbits;
+> +}
 
-Thanks for this fix, I've applied it and added the following tag:
-
-Fixes: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
-
->
-> Reported-and-tested-by: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail=
-.com
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> ---
->  fs/gfs2/quota.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> index 95dae7838b4e..af32dd8a72fa 100644
-> --- a/fs/gfs2/quota.c
-> +++ b/fs/gfs2/quota.c
-> @@ -1505,7 +1505,8 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
->         LIST_HEAD(dispose);
->         int count;
->
-> -       BUG_ON(test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
-> +       BUG_ON(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
-> +               test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
->
->         spin_lock(&qd_lock);
->         list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
-> --
-> 2.43.0
+This function needs a name that's more descriptive.
 
 Thanks,
-Andreas
 
+Bart.
