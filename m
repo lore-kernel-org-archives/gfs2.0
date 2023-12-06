@@ -1,75 +1,214 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5A610A23
-	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 05:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8354310952
+	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 06:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="b3J5XsDs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xcibP2/q8bOqf4fxy/s4jPIW/mCxqp75SLAGVg7i4NU=; b=b3J5XsDs0PyA92hRCgS7oXZdR9
-	ifDdarPmUYCMrG98S736dZG8kM1x/gQQQMc5wbP6LBstLaiBbMkgjdmm3ZBz1/VZYMYl2CKgSrOqA
-	6sv2Lx0erfBewjEuwGujlJGlwetZ28Sn5fFPkgpl7w9ObSzuwh0lFLzpJv0wptOrDoURjTJADLCwA
-	y9AxQ2Xb02C1t9sqLtDibhZsQhjvZhTJUa5jTZPHO/j47wPs5TAzpE67yotaXPyN/SzYNI4wSM+4B
-	R9yJgisFwpCMYV8xJB8jj/Ab+L1VErOFhZIjCSHrQBRU44+YzUnRp28je/BG611oRLdUIqfreibNC
-	VVVWoI6Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAksK-0098VN-1r;
-	Wed, 06 Dec 2023 05:55:12 +0000
-Date: Tue, 5 Dec 2023 21:55:12 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: axboe@kernel.dk, roger.pau@citrix.com, colyli@suse.de,
-	kent.overstreet@gmail.com, joern@lazybastard.org,
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-	sth@linux.ibm.com, hoeppner@linux.ibm.com, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com, jejb@linux.ibm.com,
-	martin.petersen@oracle.com, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, nico@fluxnic.net, xiang@kernel.org,
-	chao@kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	agruenba@redhat.com, jack@suse.com, konishi.ryusuke@gmail.com,
-	willy@infradead.org, akpm@linux-foundation.org, hare@suse.de,
-	p.raghav@samsung.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-nilfs@vger.kernel.org,
-	yukuai3@huawei.com, yi.zhang@huawei.com, yangerkun@huawei.com
-Subject: Re: [PATCH -next RFC 02/14] xen/blkback: use bdev api in
- xen_update_blkif_status()
-Message-ID: <ZXAMwBD8pd48qwX/@infradead.org>
-References: <20231205123728.1866699-1-yukuai1@huaweicloud.com>
- <20231205123728.1866699-3-yukuai1@huaweicloud.com>
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="Vg9KQKLy"
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-35d7cc7cabcso10295735ab.1
+        for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 22:06:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842794; x=1702447594; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wHSvpgHbJd6Eu7qsv8V2o7uK7jb6cBWSzdjaYC45cFQ=;
+        b=Vg9KQKLyoQu2vCP1OAsk53niZbBb9yi7bH0qqUuFalJWn0mxnrJPyJPHKSBe7e98oR
+         63li+bnmyFehs98kc0qNFTb9C82I1FvHij7l74GQfBOu6mWquxD3i0TXjn3IMRybJU4N
+         myPAtIb5DyWQqNT8yUopxuh8Wp1FUID6FbecETrPWFe3jrQWwmKIG8saaG4VqwIdvaLg
+         fuBHi2QJECd+CNIQ4scrSzI5IlJqKngy4RT51VvsEnszsJSfp21OAPbIECqUeABl2FKP
+         ec6Lphto0avStuhOEoaFmlfJszQxElUY9EieHBX0lC3LrJf3jfIE9qrpqup9MDVTLAK9
+         srNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701842794; x=1702447594;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wHSvpgHbJd6Eu7qsv8V2o7uK7jb6cBWSzdjaYC45cFQ=;
+        b=namLz/ezEddjCAQnZvCCsSwXb8PANbQ799m1ubUNm+KO3XZsPUZ+8zy38AW9Tm7rZJ
+         D7VDqFIvh1R8VfBgJwB9h54pyBo7NcKPHxH1pyvT2XmOr44xYQJI5MJMFaWnxDf70Ddi
+         fzf8oyqrEJf/N9n/tyyfTl7gNhpG04YpSihtRGW6ldYRC8sTURzV49BB2VOWHHxGSiOP
+         OBwVdimcugWwNATDMR0uUMAxMyBY7luB+xAg27sBZvnQmTJ9OUnd5wE9YXt4Ykf8/Y59
+         LLDUqFwT3cYggJWKKqsmywjpBFMNOkJ+hpnqNhZOYYze5XaFso/tX0rQc9FWJJ7qj3JA
+         +XAw==
+X-Gm-Message-State: AOJu0YwbfOotCItBKBn0V0F04UQrxFXgaeXEuuQM7lEZ7pnMrXI/Eytr
+	h2eEtNK/6xu3I/LsFfws3cmUNg==
+X-Google-Smtp-Source: AGHT+IFyEkydutbRflbUebHhG6N121DmGV5SoFJedHB237+BvShkltfvd92qMh3rpX3+xBNwHz7Raw==
+X-Received: by 2002:a05:6e02:13e8:b0:35d:6a39:faeb with SMTP id w8-20020a056e0213e800b0035d6a39faebmr517082ilj.10.1701842794477;
+        Tue, 05 Dec 2023 22:06:34 -0800 (PST)
+Received: from dread.disaster.area (pa49-180-125-5.pa.nsw.optusnet.com.au. [49.180.125.5])
+        by smtp.gmail.com with ESMTPSA id i123-20020a639d81000000b005c662e103a1sm6488754pgd.41.2023.12.05.22.06.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Dec 2023 22:06:33 -0800 (PST)
+Received: from [192.168.253.23] (helo=devoid.disaster.area)
+	by dread.disaster.area with esmtp (Exim 4.96)
+	(envelope-from <dave@fromorbit.com>)
+	id 1rAl3I-004VOv-0L;
+	Wed, 06 Dec 2023 17:06:31 +1100
+Received: from dave by devoid.disaster.area with local (Exim 4.97-RC0)
+	(envelope-from <dave@devoid.disaster.area>)
+	id 1rAl3H-0000000BrVQ-2oA0;
+	Wed, 06 Dec 2023 17:06:31 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-block@vger.kernel.org,
+	linux-cachefs@redhat.com,
+	dhowells@redhat.com,
+	gfs2@lists.linux.dev,
+	dm-devel@lists.linux.dev,
+	linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 06/11] vfs: factor out inode hash head calculation
+Date: Wed,  6 Dec 2023 17:05:35 +1100
+Message-ID: <20231206060629.2827226-7-david@fromorbit.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231206060629.2827226-1-david@fromorbit.com>
+References: <20231206060629.2827226-1-david@fromorbit.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205123728.1866699-3-yukuai1@huaweicloud.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 05, 2023 at 08:37:16PM +0800, Yu Kuai wrote:
-> diff --git a/drivers/block/xen-blkback/xenbus.c b/drivers/block/xen-blkback/xenbus.c
-> index e34219ea2b05..e645afa4af57 100644
-> --- a/drivers/block/xen-blkback/xenbus.c
-> +++ b/drivers/block/xen-blkback/xenbus.c
-> @@ -104,8 +104,7 @@ static void xen_update_blkif_status(struct xen_blkif *blkif)
->  		xenbus_dev_error(blkif->be->dev, err, "block flush");
->  		return;
->  	}
-> -	invalidate_inode_pages2(
-> -			blkif->vbd.bdev_handle->bdev->bd_inode->i_mapping);
-> +	invalidate_bdev(blkif->vbd.bdev_handle->bdev);
+From: Dave Chinner <dchinner@redhat.com>
 
-blkbak is a bdev exported.   I don't think it should ever call
-invalidate_inode_pages2, through a wrapper or not.
+In preparation for changing the inode hash table implementation.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+---
+ fs/inode.c | 44 +++++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
+
+diff --git a/fs/inode.c b/fs/inode.c
+index 3426691fa305..fead81550cf4 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -59,6 +59,22 @@ static unsigned int i_hash_shift __ro_after_init;
+ static struct hlist_head *inode_hashtable __ro_after_init;
+ static __cacheline_aligned_in_smp DEFINE_SPINLOCK(inode_hash_lock);
+ 
++static unsigned long hash(struct super_block *sb, unsigned long hashval)
++{
++	unsigned long tmp;
++
++	tmp = (hashval * (unsigned long)sb) ^ (GOLDEN_RATIO_PRIME + hashval) /
++			L1_CACHE_BYTES;
++	tmp = tmp ^ ((tmp ^ GOLDEN_RATIO_PRIME) >> i_hash_shift);
++	return tmp & i_hash_mask;
++}
++
++static inline struct hlist_head *i_hash_head(struct super_block *sb,
++		unsigned int hashval)
++{
++	return inode_hashtable + hash(sb, hashval);
++}
++
+ /*
+  * Empty aops. Can be used for the cases where the user does not
+  * define any of the address_space operations.
+@@ -502,16 +518,6 @@ static inline void inode_sb_list_del(struct inode *inode)
+ 		dlock_lists_del(&inode->i_sb_list);
+ }
+ 
+-static unsigned long hash(struct super_block *sb, unsigned long hashval)
+-{
+-	unsigned long tmp;
+-
+-	tmp = (hashval * (unsigned long)sb) ^ (GOLDEN_RATIO_PRIME + hashval) /
+-			L1_CACHE_BYTES;
+-	tmp = tmp ^ ((tmp ^ GOLDEN_RATIO_PRIME) >> i_hash_shift);
+-	return tmp & i_hash_mask;
+-}
+-
+ /**
+  *	__insert_inode_hash - hash an inode
+  *	@inode: unhashed inode
+@@ -1187,7 +1193,7 @@ struct inode *inode_insert5(struct inode *inode, unsigned long hashval,
+ 			    int (*test)(struct inode *, void *),
+ 			    int (*set)(struct inode *, void *), void *data)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(inode->i_sb, hashval);
++	struct hlist_head *head = i_hash_head(inode->i_sb, hashval);
+ 	struct inode *old;
+ 
+ again:
+@@ -1291,7 +1297,7 @@ EXPORT_SYMBOL(iget5_locked);
+  */
+ struct inode *iget_locked(struct super_block *sb, unsigned long ino)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, ino);
++	struct hlist_head *head = i_hash_head(sb, ino);
+ 	struct inode *inode;
+ again:
+ 	spin_lock(&inode_hash_lock);
+@@ -1359,7 +1365,7 @@ EXPORT_SYMBOL(iget_locked);
+  */
+ static int test_inode_iunique(struct super_block *sb, unsigned long ino)
+ {
+-	struct hlist_head *b = inode_hashtable + hash(sb, ino);
++	struct hlist_head *b = i_hash_head(sb, ino);
+ 	struct inode *inode;
+ 
+ 	hlist_for_each_entry_rcu(inode, b, i_hash) {
+@@ -1446,7 +1452,7 @@ EXPORT_SYMBOL(igrab);
+ struct inode *ilookup5_nowait(struct super_block *sb, unsigned long hashval,
+ 		int (*test)(struct inode *, void *), void *data)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
++	struct hlist_head *head = i_hash_head(sb, hashval);
+ 	struct inode *inode;
+ 
+ 	spin_lock(&inode_hash_lock);
+@@ -1501,7 +1507,7 @@ EXPORT_SYMBOL(ilookup5);
+  */
+ struct inode *ilookup(struct super_block *sb, unsigned long ino)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, ino);
++	struct hlist_head *head = i_hash_head(sb, ino);
+ 	struct inode *inode;
+ again:
+ 	spin_lock(&inode_hash_lock);
+@@ -1550,7 +1556,7 @@ struct inode *find_inode_nowait(struct super_block *sb,
+ 					     void *),
+ 				void *data)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
++	struct hlist_head *head = i_hash_head(sb, hashval);
+ 	struct inode *inode, *ret_inode = NULL;
+ 	int mval;
+ 
+@@ -1595,7 +1601,7 @@ EXPORT_SYMBOL(find_inode_nowait);
+ struct inode *find_inode_rcu(struct super_block *sb, unsigned long hashval,
+ 			     int (*test)(struct inode *, void *), void *data)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
++	struct hlist_head *head = i_hash_head(sb, hashval);
+ 	struct inode *inode;
+ 
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+@@ -1633,7 +1639,7 @@ EXPORT_SYMBOL(find_inode_rcu);
+ struct inode *find_inode_by_ino_rcu(struct super_block *sb,
+ 				    unsigned long ino)
+ {
+-	struct hlist_head *head = inode_hashtable + hash(sb, ino);
++	struct hlist_head *head = i_hash_head(sb, ino);
+ 	struct inode *inode;
+ 
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+@@ -1653,7 +1659,7 @@ int insert_inode_locked(struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
+ 	ino_t ino = inode->i_ino;
+-	struct hlist_head *head = inode_hashtable + hash(sb, ino);
++	struct hlist_head *head = i_hash_head(sb, ino);
+ 
+ 	while (1) {
+ 		struct inode *old = NULL;
+-- 
+2.42.0
 
