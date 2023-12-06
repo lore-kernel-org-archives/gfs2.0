@@ -1,55 +1,55 @@
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8354310952
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C531096B
 	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 06:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="Vg9KQKLy"
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-35d7cc7cabcso10295735ab.1
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="izYy211M"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5c68da9d639so2010679a12.3
         for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 22:06:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842794; x=1702447594; darn=lists.linux.dev;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842795; x=1702447595; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wHSvpgHbJd6Eu7qsv8V2o7uK7jb6cBWSzdjaYC45cFQ=;
-        b=Vg9KQKLyoQu2vCP1OAsk53niZbBb9yi7bH0qqUuFalJWn0mxnrJPyJPHKSBe7e98oR
-         63li+bnmyFehs98kc0qNFTb9C82I1FvHij7l74GQfBOu6mWquxD3i0TXjn3IMRybJU4N
-         myPAtIb5DyWQqNT8yUopxuh8Wp1FUID6FbecETrPWFe3jrQWwmKIG8saaG4VqwIdvaLg
-         fuBHi2QJECd+CNIQ4scrSzI5IlJqKngy4RT51VvsEnszsJSfp21OAPbIECqUeABl2FKP
-         ec6Lphto0avStuhOEoaFmlfJszQxElUY9EieHBX0lC3LrJf3jfIE9qrpqup9MDVTLAK9
-         srNw==
+        bh=p8wgNl1PchXcHI5F0qOFxbj06sbuE+5yXttvrgVz+ro=;
+        b=izYy211MqX6bUpmz7F3ax2GxltffF0ZlT+vLa1IxcxkOFohbVsIbbb9mWRwBM5ObvH
+         Ow4weZcgwkNpYbK/NEuHPHVI378Aay4/KM2peAHwn25l9KIJAXPBb/TjncU260+quhAt
+         cdy4p74HD+yTLGe/Y6I8VKrGEIMlDA30VILBVjqQXOkDfczNzBrhVos2chUNLKxdrZXv
+         5Qbbx4iOEKDbDwurzacOYiuVxTEroGtzwOOYAwT7YNPasFzyh0Sbl6eIUPge2xsJJcj+
+         ft9WSlEDG0dphW3sCsXgVmJANZi07mhPxNP+KVAznQDMJgWmta6PMKLYIXAtO8siOl6J
+         9VUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701842794; x=1702447594;
+        d=1e100.net; s=20230601; t=1701842795; x=1702447595;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wHSvpgHbJd6Eu7qsv8V2o7uK7jb6cBWSzdjaYC45cFQ=;
-        b=namLz/ezEddjCAQnZvCCsSwXb8PANbQ799m1ubUNm+KO3XZsPUZ+8zy38AW9Tm7rZJ
-         D7VDqFIvh1R8VfBgJwB9h54pyBo7NcKPHxH1pyvT2XmOr44xYQJI5MJMFaWnxDf70Ddi
-         fzf8oyqrEJf/N9n/tyyfTl7gNhpG04YpSihtRGW6ldYRC8sTURzV49BB2VOWHHxGSiOP
-         OBwVdimcugWwNATDMR0uUMAxMyBY7luB+xAg27sBZvnQmTJ9OUnd5wE9YXt4Ykf8/Y59
-         LLDUqFwT3cYggJWKKqsmywjpBFMNOkJ+hpnqNhZOYYze5XaFso/tX0rQc9FWJJ7qj3JA
-         +XAw==
-X-Gm-Message-State: AOJu0YwbfOotCItBKBn0V0F04UQrxFXgaeXEuuQM7lEZ7pnMrXI/Eytr
-	h2eEtNK/6xu3I/LsFfws3cmUNg==
-X-Google-Smtp-Source: AGHT+IFyEkydutbRflbUebHhG6N121DmGV5SoFJedHB237+BvShkltfvd92qMh3rpX3+xBNwHz7Raw==
-X-Received: by 2002:a05:6e02:13e8:b0:35d:6a39:faeb with SMTP id w8-20020a056e0213e800b0035d6a39faebmr517082ilj.10.1701842794477;
+        bh=p8wgNl1PchXcHI5F0qOFxbj06sbuE+5yXttvrgVz+ro=;
+        b=F4pQlInelo1qAaN5AVc8olgIi5iFrD40vEKLCtXY1gyi1kNP65gC0u4+SZ8PNL1R19
+         7rl/K3M5ePVaQrv2HJYDm9yPWtIjF4l+0DmVtYgavFov9g4OlVHezvHc9a8A4ICyU7dP
+         XkbvA4J7XWCJqUnNG60VWptcHrY72rsal6H0cel7rP/ASm+nB3IJejgM8vxi60VuJ2eB
+         c85osYD4skSu4WX0ZbXbhI7ft5uBX4RmLb8HG/pp+zQoT0SW311HXMdTj8Am1xAQDNIM
+         UHNtv7kHkekVK1ohpTjKpOOihQGoQ4w79X5xsQ78WdG6TA96kA1wEON34Lnom5sdLbA9
+         dz4g==
+X-Gm-Message-State: AOJu0Yz5/WHdfrX7H9CSbIdg/YshXx7G2iTqtvNhbHGoKk7PXRVDniDK
+	9phhQzHJE7yI7TZo10V/yW3Bjg==
+X-Google-Smtp-Source: AGHT+IEdPXfNmvKvrswUKJHm+sFsPS7aPY/u0WjJJT2ny1b5k9BwlvRmtzalQC13yVeEtaaHy4KiTw==
+X-Received: by 2002:a05:6a20:c19e:b0:18f:97c:8254 with SMTP id bg30-20020a056a20c19e00b0018f097c8254mr292006pzb.94.1701842794864;
         Tue, 05 Dec 2023 22:06:34 -0800 (PST)
 Received: from dread.disaster.area (pa49-180-125-5.pa.nsw.optusnet.com.au. [49.180.125.5])
-        by smtp.gmail.com with ESMTPSA id i123-20020a639d81000000b005c662e103a1sm6488754pgd.41.2023.12.05.22.06.33
+        by smtp.gmail.com with ESMTPSA id p12-20020a170902bd0c00b001d0c5037ed3sm2322833pls.46.2023.12.05.22.06.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 05 Dec 2023 22:06:33 -0800 (PST)
 Received: from [192.168.253.23] (helo=devoid.disaster.area)
 	by dread.disaster.area with esmtp (Exim 4.96)
 	(envelope-from <dave@fromorbit.com>)
-	id 1rAl3I-004VOv-0L;
+	id 1rAl3I-004VOz-0c;
 	Wed, 06 Dec 2023 17:06:31 +1100
 Received: from dave by devoid.disaster.area with local (Exim 4.97-RC0)
 	(envelope-from <dave@devoid.disaster.area>)
-	id 1rAl3H-0000000BrVQ-2oA0;
+	id 1rAl3H-0000000BrVV-32vJ;
 	Wed, 06 Dec 2023 17:06:31 +1100
 From: Dave Chinner <david@fromorbit.com>
 To: linux-fsdevel@vger.kernel.org
@@ -61,9 +61,9 @@ Cc: linux-block@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
 	selinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 06/11] vfs: factor out inode hash head calculation
-Date: Wed,  6 Dec 2023 17:05:35 +1100
-Message-ID: <20231206060629.2827226-7-david@fromorbit.com>
+Subject: [PATCH 07/11] hlist-bl: add hlist_bl_fake()
+Date: Wed,  6 Dec 2023 17:05:36 +1100
+Message-ID: <20231206060629.2827226-8-david@fromorbit.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231206060629.2827226-1-david@fromorbit.com>
 References: <20231206060629.2827226-1-david@fromorbit.com>
@@ -77,138 +77,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Dave Chinner <dchinner@redhat.com>
 
-In preparation for changing the inode hash table implementation.
+in preparation for switching the VFS inode cache over the hlist_bl
+lists, we nee dto be able to fake a list node that looks like it is
+hased for correct operation of filesystems that don't directly use
+the VFS indoe cache.
 
 Signed-off-by: Dave Chinner <dchinner@redhat.com>
 ---
- fs/inode.c | 44 +++++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
+ include/linux/list_bl.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 3426691fa305..fead81550cf4 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -59,6 +59,22 @@ static unsigned int i_hash_shift __ro_after_init;
- static struct hlist_head *inode_hashtable __ro_after_init;
- static __cacheline_aligned_in_smp DEFINE_SPINLOCK(inode_hash_lock);
- 
-+static unsigned long hash(struct super_block *sb, unsigned long hashval)
-+{
-+	unsigned long tmp;
-+
-+	tmp = (hashval * (unsigned long)sb) ^ (GOLDEN_RATIO_PRIME + hashval) /
-+			L1_CACHE_BYTES;
-+	tmp = tmp ^ ((tmp ^ GOLDEN_RATIO_PRIME) >> i_hash_shift);
-+	return tmp & i_hash_mask;
-+}
-+
-+static inline struct hlist_head *i_hash_head(struct super_block *sb,
-+		unsigned int hashval)
-+{
-+	return inode_hashtable + hash(sb, hashval);
-+}
-+
- /*
-  * Empty aops. Can be used for the cases where the user does not
-  * define any of the address_space operations.
-@@ -502,16 +518,6 @@ static inline void inode_sb_list_del(struct inode *inode)
- 		dlock_lists_del(&inode->i_sb_list);
+diff --git a/include/linux/list_bl.h b/include/linux/list_bl.h
+index ae1b541446c9..8ee2bf5af131 100644
+--- a/include/linux/list_bl.h
++++ b/include/linux/list_bl.h
+@@ -143,6 +143,28 @@ static inline void hlist_bl_del_init(struct hlist_bl_node *n)
+ 	}
  }
  
--static unsigned long hash(struct super_block *sb, unsigned long hashval)
--{
--	unsigned long tmp;
--
--	tmp = (hashval * (unsigned long)sb) ^ (GOLDEN_RATIO_PRIME + hashval) /
--			L1_CACHE_BYTES;
--	tmp = tmp ^ ((tmp ^ GOLDEN_RATIO_PRIME) >> i_hash_shift);
--	return tmp & i_hash_mask;
--}
--
- /**
-  *	__insert_inode_hash - hash an inode
-  *	@inode: unhashed inode
-@@ -1187,7 +1193,7 @@ struct inode *inode_insert5(struct inode *inode, unsigned long hashval,
- 			    int (*test)(struct inode *, void *),
- 			    int (*set)(struct inode *, void *), void *data)
++/**
++ * hlist_bl_add_fake - create a fake list consisting of a single headless node
++ * @n: Node to make a fake list out of
++ *
++ * This makes @n appear to be its own predecessor on a headless hlist.
++ * The point of this is to allow things like hlist_bl_del() to work correctly
++ * in cases where there is no list.
++ */
++static inline void hlist_bl_add_fake(struct hlist_bl_node *n)
++{
++	n->pprev = &n->next;
++}
++
++/**
++ * hlist_fake: Is this node a fake hlist_bl?
++ * @h: Node to check for being a self-referential fake hlist.
++ */
++static inline bool hlist_bl_fake(struct hlist_bl_node *n)
++{
++	return n->pprev == &n->next;
++}
++
+ static inline void hlist_bl_lock(struct hlist_bl_head *b)
  {
--	struct hlist_head *head = inode_hashtable + hash(inode->i_sb, hashval);
-+	struct hlist_head *head = i_hash_head(inode->i_sb, hashval);
- 	struct inode *old;
- 
- again:
-@@ -1291,7 +1297,7 @@ EXPORT_SYMBOL(iget5_locked);
-  */
- struct inode *iget_locked(struct super_block *sb, unsigned long ino)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, ino);
-+	struct hlist_head *head = i_hash_head(sb, ino);
- 	struct inode *inode;
- again:
- 	spin_lock(&inode_hash_lock);
-@@ -1359,7 +1365,7 @@ EXPORT_SYMBOL(iget_locked);
-  */
- static int test_inode_iunique(struct super_block *sb, unsigned long ino)
- {
--	struct hlist_head *b = inode_hashtable + hash(sb, ino);
-+	struct hlist_head *b = i_hash_head(sb, ino);
- 	struct inode *inode;
- 
- 	hlist_for_each_entry_rcu(inode, b, i_hash) {
-@@ -1446,7 +1452,7 @@ EXPORT_SYMBOL(igrab);
- struct inode *ilookup5_nowait(struct super_block *sb, unsigned long hashval,
- 		int (*test)(struct inode *, void *), void *data)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
-+	struct hlist_head *head = i_hash_head(sb, hashval);
- 	struct inode *inode;
- 
- 	spin_lock(&inode_hash_lock);
-@@ -1501,7 +1507,7 @@ EXPORT_SYMBOL(ilookup5);
-  */
- struct inode *ilookup(struct super_block *sb, unsigned long ino)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, ino);
-+	struct hlist_head *head = i_hash_head(sb, ino);
- 	struct inode *inode;
- again:
- 	spin_lock(&inode_hash_lock);
-@@ -1550,7 +1556,7 @@ struct inode *find_inode_nowait(struct super_block *sb,
- 					     void *),
- 				void *data)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
-+	struct hlist_head *head = i_hash_head(sb, hashval);
- 	struct inode *inode, *ret_inode = NULL;
- 	int mval;
- 
-@@ -1595,7 +1601,7 @@ EXPORT_SYMBOL(find_inode_nowait);
- struct inode *find_inode_rcu(struct super_block *sb, unsigned long hashval,
- 			     int (*test)(struct inode *, void *), void *data)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, hashval);
-+	struct hlist_head *head = i_hash_head(sb, hashval);
- 	struct inode *inode;
- 
- 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-@@ -1633,7 +1639,7 @@ EXPORT_SYMBOL(find_inode_rcu);
- struct inode *find_inode_by_ino_rcu(struct super_block *sb,
- 				    unsigned long ino)
- {
--	struct hlist_head *head = inode_hashtable + hash(sb, ino);
-+	struct hlist_head *head = i_hash_head(sb, ino);
- 	struct inode *inode;
- 
- 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-@@ -1653,7 +1659,7 @@ int insert_inode_locked(struct inode *inode)
- {
- 	struct super_block *sb = inode->i_sb;
- 	ino_t ino = inode->i_ino;
--	struct hlist_head *head = inode_hashtable + hash(sb, ino);
-+	struct hlist_head *head = i_hash_head(sb, ino);
- 
- 	while (1) {
- 		struct inode *old = NULL;
+ 	bit_spin_lock(0, (unsigned long *)b);
 -- 
 2.42.0
 
