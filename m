@@ -1,93 +1,95 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAA247F5B
-	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 19:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9F04186D
+	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 21:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fb3X+JvJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=qFHj2SF5KVjAIzNS6NPxpj90netkKzTkNHBhbOoeojk=; b=Fb3X+JvJeymV+rtJ3rW0dMLDAq
-	yf12OW6ZV1d+lHxk0c9yQhLMkW/MYk/zvjaOJON4GlytIliQvPXwlroTrX9544hmkpAKNX3gAxlFu
-	OYngUV9d8Vk/+iZRIRW2wfPKn0EnDg1SuaqxMMADfL/JfyZoLTcnDWw5qgSsXFCTugwKzHG0zq1Pw
-	L/c8VtWKsEwiGhola6XdJ7P1L8yYbqORapohm8FsQ0ptLcknZgQ5jFfaWyoR2JF/DUIpim4ihlDOF
-	fYpMP57+pRNoRdI6bA+USd6LYomACvUC7y+yyxHlHlyoCObhP9CjhkLnklE1bWlfPqEL0yVDDlAeH
-	Ryp4XtSg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rAy24-003CqM-DQ; Wed, 06 Dec 2023 19:58:08 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH] gfs2: Remove use of error flag in journal reads
-Date: Wed,  6 Dec 2023 19:58:06 +0000
-Message-Id: <20231206195807.764344-1-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="WBaGNm4w"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-db5e5647c24so1252069276.1
+        for <gfs2@lists.linux.dev>; Wed, 06 Dec 2023 13:52:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1701899573; x=1702504373; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ad4QKqllEurVWf/Pv2WnyL7sj04ktRUEA1KwimHLGBw=;
+        b=WBaGNm4wfsHMV3ctCr5WUIywVacaJnU56ryyv4A6wa/HwtaoxAmpsFuIkPLmgxUypc
+         YYQ3sYp4EBwoaecNan/OPJM8CIyj1xziS9YUqCcGlU6oBuFySBsEboejm/akXbC9IsIv
+         1bjHZSAeJ3yDJnA2uwgJbVfoLQXxyYSIM9NF63SvCIF+JBlEr7MNcUQ0DNNUi+49n0Cx
+         ch9dqtcmbMk2OvILKL3tcHwtVh4LIlAxRctUeb4DPKDrbYvLNwb3/ekCSgVp8YqmcjnQ
+         JkdwqPf3NvAk5mKP872boMkaPZ4Zgfp5tVdrQKzWURrY/t9CFAuVTX/8jJoYUHhg38n3
+         gziQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701899573; x=1702504373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ad4QKqllEurVWf/Pv2WnyL7sj04ktRUEA1KwimHLGBw=;
+        b=aa2HL2v4C854vjmIQ5wVmIaxw7ZMmMuB8D+b6+6BuOZODL1c+wHOB1LWXJFcn8ktNS
+         B1XOrSQDgP54GufL9OKvYAJFmlhnhYC1uahhrhu6AZb4oaktiYZvsiCawzHTHglCNoaD
+         YL0UFuqxDTtcPdk4GHsULzgsTjATm2icjeoKfHtUjhQl8sjoxlYU1W6R/5WYkIsQ3vWP
+         FS32Tdjy3nguLiV4TIsJyQ5G1lEGbYN+oGJJWPD4d0jp049jIu/VqHw9ZzD16XQrCPuR
+         QXVOfwrsMi9oRSSsVLI/moYmzcgs9NYGctlPvSkryjDRe36lsaRVyB9SAMLnnFdBMjgi
+         huCg==
+X-Gm-Message-State: AOJu0YxqhiHInyMs40CpX0J8xlesaZNAFB/ZH2XX772gRMd2quAfTil/
+	IWhWVrkj7pJ8BtjeRkFaOmFAmTEjciCtsOEBVwG/
+X-Google-Smtp-Source: AGHT+IEj7nPBQx69pTJuIU/DScLOgVaCvMx3IAuTkYQQJ5vMAh2Hehp1yFZ/6ct0anbgpUrLprVHp8nDNRkJVZqoN6c=
+X-Received: by 2002:a25:ab66:0:b0:db7:98ba:2468 with SMTP id
+ u93-20020a25ab66000000b00db798ba2468mr1505130ybi.28.1701899573074; Wed, 06
+ Dec 2023 13:52:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231206060629.2827226-1-david@fromorbit.com> <20231206060629.2827226-6-david@fromorbit.com>
+In-Reply-To: <20231206060629.2827226-6-david@fromorbit.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 6 Dec 2023 16:52:42 -0500
+Message-ID: <CAHC9VhTP3hRAkmp7wOKGrEzY5OXXJpnuofTG_+KdXDku18vkeA@mail.gmail.com>
+Subject: Re: [PATCH 05/11] selinux: use dlist for isec inode list
+To: Dave Chinner <david@fromorbit.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-cachefs@redhat.com, dhowells@redhat.com, gfs2@lists.linux.dev, 
+	dm-devel@lists.linux.dev, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Conventionally we use the uptodate bit to signal whether a read
-encountered an error or not.  Use folio_end_read() to set the uptodate
-bit on success.  Also use filemap_set_wb_err() to communicate the errno
-instead of the more heavy-weight mapping_set_error().
+On Wed, Dec 6, 2023 at 1:07=E2=80=AFAM Dave Chinner <david@fromorbit.com> w=
+rote:
+>
+> From: Dave Chinner <dchinner@redhat.com>
+>
+> Because it's a horrible point of lock contention under heavily
+> concurrent directory traversals...
+>
+>   - 12.14% d_instantiate
+>      - 12.06% security_d_instantiate
+>         - 12.13% selinux_d_instantiate
+>            - 12.16% inode_doinit_with_dentry
+>               - 15.45% _raw_spin_lock
+>                  - do_raw_spin_lock
+>                       14.68% __pv_queued_spin_lock_slowpath
+>
+>
+> Signed-off-by: Dave Chinner <dchinner@redhat.com>
+> ---
+>  include/linux/dlock-list.h        |  9 ++++
+>  security/selinux/hooks.c          | 72 +++++++++++++++----------------
+>  security/selinux/include/objsec.h |  6 +--
+>  3 files changed, 47 insertions(+), 40 deletions(-)
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- fs/gfs2/lops.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+In the cover letter you talk about testing, but I didn't see any
+mention of testing with SELinux enabled.  Given the lock contention
+stats in the description above I'm going to assume you did test this
+and pass along my ACK, but if you haven't tested the changes below
+please do before sending this anywhere important.
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 483f69807062..314ec2a70167 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -391,22 +391,15 @@ static void gfs2_log_write_page(struct gfs2_sbd *sdp, struct page *page)
-  * Simply unlock the pages in the bio. The main thread will wait on them and
-  * process them in order as necessary.
-  */
--
- static void gfs2_end_log_read(struct bio *bio)
- {
--	struct page *page;
--	struct bio_vec *bvec;
--	struct bvec_iter_all iter_all;
-+	int error = blk_status_to_errno(bio->bi_status);
-+	struct folio_iter fi;
- 
--	bio_for_each_segment_all(bvec, bio, iter_all) {
--		page = bvec->bv_page;
--		if (bio->bi_status) {
--			int err = blk_status_to_errno(bio->bi_status);
--
--			SetPageError(page);
--			mapping_set_error(page->mapping, err);
--		}
--		unlock_page(page);
-+	bio_for_each_folio_all(fi, bio) {
-+		/* We're abusing wb_err to get the error to gfs2_find_jhead */
-+		filemap_set_wb_err(fi.folio->mapping, error);
-+		folio_end_read(fi.folio, !error);
- 	}
- 
- 	bio_put(bio);
-@@ -475,7 +468,7 @@ static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
- 	folio = filemap_get_folio(jd->jd_inode->i_mapping, index);
- 
- 	folio_wait_locked(folio);
--	if (folio_test_error(folio))
-+	if (!folio_test_uptodate(folio))
- 		*done = true;
- 
- 	if (!*done)
--- 
-2.42.0
+Acked-by: Paul Moore <paul@paul-moore.com>
 
+--=20
+paul-moore.com
