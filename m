@@ -1,77 +1,93 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67CC6E59E
-	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAA247F5B
+	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 19:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jhEd/dyd"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fb3X+JvJ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Snap78XnwhxghrXH/x5DQQflOIE581aXjQMNJjr942g=; b=jhEd/dydrVcA4CqjenXKvBzOhR
-	81C86OaTSZvOMqak9GSj26Gk4YbmuiZYqP7Inoay495Qv5aZdhoCk8XtjbZygZ3zFO1MW8qKrFi2H
-	jyJUerjxpHvoYivz2Tw0Fom0GZl5ibZD6cI47f6RLNKkoLSSNt8ndPXabCTs9v50CaHUmh6n8EwdV
-	h3a11wO9KMQTDIeK5z9Ompws1FrJbStRk/+i8NoSwEjnMVM2d8/eYZK+A65e+FB9FyAW6cFULMbV3
-	D4ZCe0VCUv3C54OOIhpqqs0icRWLiCRtInXdBESqtPRpMCqUFSNmSUQ2owjCoBA1ulhjzpRpsIDuc
-	qR59KN6w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAw9b-00AzA5-00;
-	Wed, 06 Dec 2023 17:57:47 +0000
-Date: Wed, 6 Dec 2023 09:57:46 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Yu Kuai <yukuai1@huaweicloud.com>, axboe@kernel.dk,
-	roger.pau@citrix.com, colyli@suse.de, kent.overstreet@gmail.com,
-	joern@lazybastard.org, miquel.raynal@bootlin.com, richard@nod.at,
-	vigneshr@ti.com, sth@linux.ibm.com, hoeppner@linux.ibm.com,
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-	jejb@linux.ibm.com, martin.petersen@oracle.com, clm@fb.com,
-	josef@toxicpanda.com, dsterba@suse.com, nico@fluxnic.net,
-	xiang@kernel.org, chao@kernel.org, adilger.kernel@dilger.ca,
-	agruenba@redhat.com, jack@suse.com, konishi.ryusuke@gmail.com,
-	willy@infradead.org, akpm@linux-foundation.org, hare@suse.de,
-	p.raghav@samsung.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-nilfs@vger.kernel.org,
-	yukuai3@huawei.com, yi.zhang@huawei.com, yangerkun@huawei.com
-Subject: Re: [PATCH -next RFC 01/14] block: add some bdev apis
-Message-ID: <ZXC2Gg7NPWu9MULx@infradead.org>
-References: <20231205123728.1866699-1-yukuai1@huaweicloud.com>
- <20231205123728.1866699-2-yukuai1@huaweicloud.com>
- <ZXARKD0OmjLrvHmU@infradead.org>
- <20231206175038.GJ509422@mit.edu>
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=qFHj2SF5KVjAIzNS6NPxpj90netkKzTkNHBhbOoeojk=; b=Fb3X+JvJeymV+rtJ3rW0dMLDAq
+	yf12OW6ZV1d+lHxk0c9yQhLMkW/MYk/zvjaOJON4GlytIliQvPXwlroTrX9544hmkpAKNX3gAxlFu
+	OYngUV9d8Vk/+iZRIRW2wfPKn0EnDg1SuaqxMMADfL/JfyZoLTcnDWw5qgSsXFCTugwKzHG0zq1Pw
+	L/c8VtWKsEwiGhola6XdJ7P1L8yYbqORapohm8FsQ0ptLcknZgQ5jFfaWyoR2JF/DUIpim4ihlDOF
+	fYpMP57+pRNoRdI6bA+USd6LYomACvUC7y+yyxHlHlyoCObhP9CjhkLnklE1bWlfPqEL0yVDDlAeH
+	Ryp4XtSg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rAy24-003CqM-DQ; Wed, 06 Dec 2023 19:58:08 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH] gfs2: Remove use of error flag in journal reads
+Date: Wed,  6 Dec 2023 19:58:06 +0000
+Message-Id: <20231206195807.764344-1-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231206175038.GJ509422@mit.edu>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 06, 2023 at 12:50:38PM -0500, Theodore Ts'o wrote:
-> This was added because pulling a mounted a USB thumb drive (or a HDD
-> drops off the SATA bus) while the file system is mounted and actively
-> in use, would result in a kernel OOPS.  If that's no longer true,
-> that's great, but it would be good to test to make sure this is the
-> case....
+Conventionally we use the uptodate bit to signal whether a read
+encountered an error or not.  Use folio_end_read() to set the uptodate
+bit on success.  Also use filemap_set_wb_err() to communicate the errno
+instead of the more heavy-weight mapping_set_error().
 
-And, surprise, surprise - that didn't just affect ext4.  So I ended
-up fixing this properly in the block layer.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/gfs2/lops.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-> If we really want to remove it, I'd suggest doing this as a separate
-> commit, so that after we see syzbot reports, or users complaining
-> about kernel crashes, we can revert the removal if necessary.
-
-Yes, this should of course be separate, well documented commit.
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index 483f69807062..314ec2a70167 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -391,22 +391,15 @@ static void gfs2_log_write_page(struct gfs2_sbd *sdp, struct page *page)
+  * Simply unlock the pages in the bio. The main thread will wait on them and
+  * process them in order as necessary.
+  */
+-
+ static void gfs2_end_log_read(struct bio *bio)
+ {
+-	struct page *page;
+-	struct bio_vec *bvec;
+-	struct bvec_iter_all iter_all;
++	int error = blk_status_to_errno(bio->bi_status);
++	struct folio_iter fi;
+ 
+-	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		page = bvec->bv_page;
+-		if (bio->bi_status) {
+-			int err = blk_status_to_errno(bio->bi_status);
+-
+-			SetPageError(page);
+-			mapping_set_error(page->mapping, err);
+-		}
+-		unlock_page(page);
++	bio_for_each_folio_all(fi, bio) {
++		/* We're abusing wb_err to get the error to gfs2_find_jhead */
++		filemap_set_wb_err(fi.folio->mapping, error);
++		folio_end_read(fi.folio, !error);
+ 	}
+ 
+ 	bio_put(bio);
+@@ -475,7 +468,7 @@ static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
+ 	folio = filemap_get_folio(jd->jd_inode->i_mapping, index);
+ 
+ 	folio_wait_locked(folio);
+-	if (folio_test_error(folio))
++	if (!folio_test_uptodate(folio))
+ 		*done = true;
+ 
+ 	if (!*done)
+-- 
+2.42.0
 
