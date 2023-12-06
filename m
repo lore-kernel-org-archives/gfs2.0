@@ -1,56 +1,56 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A169310A1A
-	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 06:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1262910A04
+	for <gfs2@lists.linux.dev>; Wed,  6 Dec 2023 06:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="gKo3CVOI"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5c6b9583dcbso771604a12.2
-        for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 22:06:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="w9aQwWya"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6cb749044a2so6840064b3a.0
+        for <gfs2@lists.linux.dev>; Tue, 05 Dec 2023 22:06:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842797; x=1702447597; darn=lists.linux.dev;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842796; x=1702447596; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k4fn8znMBnHx32svyrnbDfUnHhzlVQ7G5pzlVkycieA=;
-        b=gKo3CVOIlOTtmPkRMVGg6Jt6jbwM0Xluz+yFweLNe9pcNIEWmwRycnar9Agh9ofJfI
-         QeiFIo7eQdX1tZ4OcoSPqfTm3/3mYU/vNsUQgYfJiHye1GGCMy9oYY8iuoNKtWsuCHzt
-         zeruuQmf1RDzrVvWYd+hGoR9VriGwhTPdBDdNUfERUF9FLked5OETspRX95smrwhdsG8
-         0rUpqgiB2d8nJl6mL3xhcGjEMlNZ5DQrknbQ/vSomc1hKzQMDpJe4p+RJbSvQAMXWm5A
-         P67JqLy/XYxXrpgmqTKlEfv9iQ9olri5I6jtw9Coo5JUhCmnpzWRiz8s4dHLAexDG6Fd
-         LvKg==
+        bh=LLgME4lRnn5RupWlODhqkby7STuCvfx+W1FcT+Yq4Ko=;
+        b=w9aQwWya1qOwVASl1v6w3LjwhUCGVJ2WhAd4Wbp4PrP1nveQFKuxt6kMYYXy+dxBLG
+         mbqm9Ag4eRkF9x8QYmPJSP7Vd0DVazF0KDSxCz9hXuMYjzIMYdv5lT0poVFEDihhSk0W
+         PS1syXEhb7p7HKfZih5CmpZ4ZB8Ic8dW9vpFq8QwjidWIyJiSqW/7SBCArTTltDpfBbT
+         4jtSgbvrSAkw2QsWnElQ5UG1NAK5JrDr/5IEEhqCWdOxITNZPcFPOajKb4hnL/2PAF8M
+         fLpCFgnmVGAutF3S1KtrJIU8gG7qviD63qH+1HVl1bWSOhCBtlHSoY9yknOKpJk3dcMZ
+         9C1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701842797; x=1702447597;
+        d=1e100.net; s=20230601; t=1701842796; x=1702447596;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=k4fn8znMBnHx32svyrnbDfUnHhzlVQ7G5pzlVkycieA=;
-        b=gp6pEawbaANujoHtgMs7XuV15JodEYEnW67t7z+ukwMATlvDuRa1f4ZnXA34EAJgFR
-         lWJK7UfHgoKZHqHFPNsGWvmkfgVaS0I0Y1cSUskLQhmKR7Jb3527MItjC2KllCNwgmFO
-         cC7SerZWQaFwt6odMQaVMIrvpOElgY4Hpk1E3qfwSQ3CylNEcaIHbb0ZoEuRE1L40zUE
-         Pnn1oeSDE66wVHhHHfvtMrZCSnBTh8W2IxeYHeE9NbqnEOsw9fCiJYNtnCx+UI7+4Eoc
-         NzR8F14AlTwaMN/EFBh4eYul86x88kRZfUwxmmz6g4MBd2f5VLBkmSasI08aTPnoLcGB
-         e23g==
-X-Gm-Message-State: AOJu0YyUc9brvOmI2GjgyeT9v/az2bao+6sdVk1jVTc1dfBBV+hR8hjL
-	KTexVOnGI9jjq3eMZY4VjZcgPQ==
-X-Google-Smtp-Source: AGHT+IHh3TFL/DzofTOA4bttY6oq6gSidAZO08x8CTr+BDDGslel3+9RSP1rqlq7aRu9sSclIqBRzA==
-X-Received: by 2002:a17:902:7795:b0:1d0:5806:f45d with SMTP id o21-20020a170902779500b001d05806f45dmr351927pll.42.1701842796981;
+        bh=LLgME4lRnn5RupWlODhqkby7STuCvfx+W1FcT+Yq4Ko=;
+        b=lObK8dMu8Wcb4cmnlFs7KXQlZ3ansFSj23Qmy7LRIx5BS3ZglE/ss37csIhH+4Wxbd
+         TNgHTcQgf+ahvh0LZVxatRH5JXUoqgJ9wza5TYzOgZOp/mGsATyxdP0tKPrYrH+2tLYR
+         H/pdEffgCrJd3CAhCMdIh7bFAsdmewGQtL8UU2dK3gINu34YsTnD/8yoiMCb66OxlAcR
+         CXegk/ZCeRjICOa4NKYfNbd1Gb+CuBbv+13AQ2zkattIKheN0MJR+G2SYMtN+BTVEkFx
+         njVBTWpGvYpbdfsm8oMMySyHz3aPHekgPtssDBaoSBgB2tCI46+JuNEDkxIiu87IDMKl
+         O1AQ==
+X-Gm-Message-State: AOJu0YyaVgQ7QETk6RbkP+ROMijQa64HX1UkKxnX+p2d+srlLMnz566J
+	+hy1MnEJPDjb/FgdDANhfWTs/Q==
+X-Google-Smtp-Source: AGHT+IH+aQFHMSGIozcOdaBliY55eigBuUxiaWQdWCWNVwDrMclqdESCoFsOiInPxf+hF9ZoMguhIw==
+X-Received: by 2002:a05:6a20:4308:b0:18f:97c:8a1d with SMTP id h8-20020a056a20430800b0018f097c8a1dmr467536pzk.72.1701842796169;
         Tue, 05 Dec 2023 22:06:36 -0800 (PST)
 Received: from dread.disaster.area (pa49-180-125-5.pa.nsw.optusnet.com.au. [49.180.125.5])
-        by smtp.gmail.com with ESMTPSA id k10-20020a170902c40a00b001d087f68ef8sm2308763plk.37.2023.12.05.22.06.34
+        by smtp.gmail.com with ESMTPSA id w18-20020a63af12000000b005b32d6b4f2fsm6965686pge.81.2023.12.05.22.06.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 05 Dec 2023 22:06:34 -0800 (PST)
 Received: from [192.168.253.23] (helo=devoid.disaster.area)
 	by dread.disaster.area with esmtp (Exim 4.96)
 	(envelope-from <dave@fromorbit.com>)
-	id 1rAl3I-004VPF-1Q;
-	Wed, 06 Dec 2023 17:06:32 +1100
+	id 1rAl3H-004VOa-2d;
+	Wed, 06 Dec 2023 17:06:31 +1100
 Received: from dave by devoid.disaster.area with local (Exim 4.97-RC0)
 	(envelope-from <dave@devoid.disaster.area>)
-	id 1rAl3H-0000000BrVp-49wq;
-	Wed, 06 Dec 2023 17:06:32 +1100
+	id 1rAl3H-0000000BrV2-1eky;
+	Wed, 06 Dec 2023 17:06:31 +1100
 From: Dave Chinner <david@fromorbit.com>
 To: linux-fsdevel@vger.kernel.org
 Cc: linux-block@vger.kernel.org,
@@ -61,9 +61,9 @@ Cc: linux-block@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
 	selinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] hlist-bl: introduced nested locking for dm-snap
-Date: Wed,  6 Dec 2023 17:05:40 +1100
-Message-ID: <20231206060629.2827226-12-david@fromorbit.com>
+Subject: [PATCH 01/11] lib/dlock-list: Distributed and lock-protected lists
+Date: Wed,  6 Dec 2023 17:05:30 +1100
+Message-ID: <20231206060629.2827226-2-david@fromorbit.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231206060629.2827226-1-david@fromorbit.com>
 References: <20231206060629.2827226-1-david@fromorbit.com>
@@ -75,131 +75,552 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Waiman Long <longman@redhat.com>
 
-Testing with lockdep enabled threw this warning from generic/081 in
-fstests:
+Linked list is used everywhere in the Linux kernel. However, if many
+threads are trying to add or delete entries into the same linked list,
+it can create a performance bottleneck.
 
-[ 2369.724151] ============================================
-[ 2369.725805] WARNING: possible recursive locking detected
-[ 2369.727125] 6.7.0-rc2-dgc+ #1952 Not tainted
-[ 2369.728647] --------------------------------------------
-[ 2369.730197] systemd-udevd/389493 is trying to acquire lock:
-[ 2369.732378] ffff888116a1a320 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x13e/0x7f0
-[ 2369.736197]
-               but task is already holding lock:
-[ 2369.738657] ffff8881098a4fd0 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x136/0x7f0
-[ 2369.742118]
-               other info that might help us debug this:
-[ 2369.744403]  Possible unsafe locking scenario:
+This patch introduces a new list APIs that provide a set of distributed
+lists (one per CPU), each of which is protected by its own spinlock.
+To the callers, however, the set of lists acts like a single
+consolidated list.  This allows list entries insertion and deletion
+operations to happen in parallel instead of being serialized with a
+global list and lock.
 
-[ 2369.746814]        CPU0
-[ 2369.747675]        ----
-[ 2369.748496]   lock(&(et->table + i)->lock);
-[ 2369.749877]   lock(&(et->table + i)->lock);
-[ 2369.751241]
-                *** DEADLOCK ***
+List entry insertion is strictly per cpu. List deletion, however, can
+happen in a cpu other than the one that did the insertion. So we still
+need lock to protect the list. Because of that, there may still be
+a small amount of contention when deletion is being done.
 
-[ 2369.753173]  May be due to missing lock nesting notation
+A new header file include/linux/dlock-list.h will be added with the
+associated dlock_list_head and dlock_list_node structures. The following
+functions are provided to manage the per-cpu list:
 
-[ 2369.754963] 4 locks held by systemd-udevd/389493:
-[ 2369.756124]  #0: ffff88811b3a1f48 (mapping.invalidate_lock#2){++++}-{3:3}, at: page_cache_ra_unbounded+0x69/0x190
-[ 2369.758516]  #1: ffff888121ceff10 (&md->io_barrier){.+.+}-{0:0}, at: dm_get_live_table+0x52/0xd0
-[ 2369.760888]  #2: ffff888110240078 (&s->lock#2){++++}-{3:3}, at: snapshot_map+0x12e/0x7f0
-[ 2369.763254]  #3: ffff8881098a4fd0 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x136/0x7f0
-[ 2369.765896]
-               stack backtrace:
-[ 2369.767429] CPU: 3 PID: 389493 Comm: systemd-udevd Not tainted 6.7.0-rc2-dgc+ #1952
-[ 2369.770203] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[ 2369.773771] Call Trace:
-[ 2369.774657]  <TASK>
-[ 2369.775494]  dump_stack_lvl+0x5c/0xc0
-[ 2369.776765]  dump_stack+0x10/0x20
-[ 2369.778031]  print_deadlock_bug+0x220/0x2f0
-[ 2369.779568]  __lock_acquire+0x1255/0x2180
-[ 2369.781013]  lock_acquire+0xb9/0x2c0
-[ 2369.782456]  ? snapshot_map+0x13e/0x7f0
-[ 2369.783927]  ? snapshot_map+0x136/0x7f0
-[ 2369.785240]  _raw_spin_lock+0x34/0x70
-[ 2369.786413]  ? snapshot_map+0x13e/0x7f0
-[ 2369.787482]  snapshot_map+0x13e/0x7f0
-[ 2369.788462]  ? lockdep_init_map_type+0x75/0x250
-[ 2369.789650]  __map_bio+0x1d7/0x200
-[ 2369.790364]  dm_submit_bio+0x17d/0x570
-[ 2369.791387]  __submit_bio+0x4a/0x80
-[ 2369.792215]  submit_bio_noacct_nocheck+0x108/0x350
-[ 2369.793357]  submit_bio_noacct+0x115/0x450
-[ 2369.794334]  submit_bio+0x43/0x60
-[ 2369.795112]  mpage_readahead+0xf1/0x130
-[ 2369.796037]  ? blkdev_write_begin+0x30/0x30
-[ 2369.797007]  blkdev_readahead+0x15/0x20
-[ 2369.797893]  read_pages+0x5c/0x230
-[ 2369.798703]  page_cache_ra_unbounded+0x143/0x190
-[ 2369.799810]  force_page_cache_ra+0x9a/0xc0
-[ 2369.800754]  page_cache_sync_ra+0x2e/0x50
-[ 2369.801704]  filemap_get_pages+0x112/0x630
-[ 2369.802696]  ? __lock_acquire+0x413/0x2180
-[ 2369.803663]  filemap_read+0xfc/0x3a0
-[ 2369.804527]  ? __might_sleep+0x42/0x70
-[ 2369.805443]  blkdev_read_iter+0x6d/0x150
-[ 2369.806370]  vfs_read+0x1a6/0x2d0
-[ 2369.807148]  ksys_read+0x71/0xf0
-[ 2369.807936]  __x64_sys_read+0x19/0x20
-[ 2369.808810]  do_syscall_64+0x3c/0xe0
-[ 2369.809746]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[ 2369.810914] RIP: 0033:0x7f9f14dbb03d
+ 1. int alloc_dlock_list_heads(struct dlock_list_heads *dlist)
+ 2. void free_dlock_list_heads(struct dlock_list_heads *dlist)
+ 3. void dlock_list_add(struct dlock_list_node *node,
+		        struct dlock_list_heads *dlist)
+ 4. void dlock_list_del(struct dlock_list *node)
 
-Turns out that dm-snap holds two hash-bl locks at the same time,
-so we need nesting semantics to ensure lockdep understands what is
-going on.
+Iteration of all the list entries within a dlock list array
+is done by calling either the dlist_for_each_entry() or
+dlist_for_each_entry_safe() macros. They correspond to the
+list_for_each_entry() and list_for_each_entry_safe() macros
+respectively. The iteration states are keep in a dlock_list_iter
+structure that is passed to the iteration macros.
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
 ---
- drivers/md/dm-snap.c    |  2 +-
- include/linux/list_bl.h | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/linux/dlock-list.h | 242 +++++++++++++++++++++++++++++++++++++
+ lib/Makefile               |   2 +-
+ lib/dlock-list.c           | 234 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 477 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/dlock-list.h
+ create mode 100644 lib/dlock-list.c
 
-diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
-index bf7a574499a3..cd97d5cb295d 100644
---- a/drivers/md/dm-snap.c
-+++ b/drivers/md/dm-snap.c
-@@ -645,7 +645,7 @@ static void dm_exception_table_lock_init(struct dm_snapshot *s, chunk_t chunk,
- static void dm_exception_table_lock(struct dm_exception_table_lock *lock)
- {
- 	hlist_bl_lock(lock->complete_slot);
--	hlist_bl_lock(lock->pending_slot);
-+	hlist_bl_lock_nested(lock->pending_slot, SINGLE_DEPTH_NESTING);
- }
- 
- static void dm_exception_table_unlock(struct dm_exception_table_lock *lock)
-diff --git a/include/linux/list_bl.h b/include/linux/list_bl.h
-index 990ad8e24e0b..0e3e60c10563 100644
---- a/include/linux/list_bl.h
-+++ b/include/linux/list_bl.h
-@@ -83,6 +83,11 @@ static inline void hlist_bl_lock(struct hlist_bl_head *b)
- 	spin_lock(&b->lock);
- }
- 
-+static inline void hlist_bl_lock_nested(struct hlist_bl_head *b, int subclass)
+diff --git a/include/linux/dlock-list.h b/include/linux/dlock-list.h
+new file mode 100644
+index 000000000000..327cb9edc7e3
+--- /dev/null
++++ b/include/linux/dlock-list.h
+@@ -0,0 +1,242 @@
++/*
++ * Distributed and locked list
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * (C) Copyright 2016 Hewlett-Packard Enterprise Development LP
++ * (C) Copyright 2017-2018 Red Hat, Inc.
++ *
++ * Authors: Waiman Long <longman@redhat.com>
++ */
++#ifndef __LINUX_DLOCK_LIST_H
++#define __LINUX_DLOCK_LIST_H
++
++#include <linux/spinlock.h>
++#include <linux/list.h>
++
++/*
++ * include/linux/dlock-list.h
++ *
++ * The dlock_list_head structure contains the spinlock. It is cacheline
++ * aligned to reduce contention among different CPUs. The other
++ * dlock_list_node structures contains a pointer to the head entry instead.
++ */
++struct dlock_list_head {
++	struct list_head list;
++	spinlock_t lock;
++} ____cacheline_aligned_in_smp;
++
++struct dlock_list_heads {
++	struct dlock_list_head *heads;
++};
++
++/*
++ * dlock list node data structure
++ */
++struct dlock_list_node {
++	struct list_head list;
++	struct dlock_list_head *head;
++};
++
++/*
++ * dlock list iteration state
++ *
++ * This is an opaque data structure that may change. Users of this structure
++ * should not access the structure members directly other than using the
++ * helper functions and macros provided in this header file.
++ */
++struct dlock_list_iter {
++	int index;
++	struct dlock_list_head *head, *entry;
++};
++
++#define DLOCK_LIST_ITER_INIT(dlist)		\
++	{					\
++		.index = -1,			\
++		.head = (dlist)->heads,		\
++	}
++
++#define DEFINE_DLOCK_LIST_ITER(s, heads)	\
++	struct dlock_list_iter s = DLOCK_LIST_ITER_INIT(heads)
++
++static inline void init_dlock_list_iter(struct dlock_list_iter *iter,
++					struct dlock_list_heads *heads)
 +{
-+	spin_lock_nested(&b->lock, subclass);
++	*iter = (struct dlock_list_iter)DLOCK_LIST_ITER_INIT(heads);
 +}
 +
- static inline void hlist_bl_unlock(struct hlist_bl_head *b)
- {
- 	spin_unlock(&b->lock);
-@@ -125,6 +130,11 @@ static inline void hlist_bl_lock(struct hlist_bl_head *b)
- 	bit_spin_lock(0, (unsigned long *)b);
- }
- 
-+static inline void hlist_bl_lock_nested(struct hlist_bl_head *b, int subclass)
++#define DLOCK_LIST_NODE_INIT(name)		\
++	{					\
++		.list = LIST_HEAD_INIT(name)	\
++	}
++
++static inline void init_dlock_list_node(struct dlock_list_node *node)
 +{
-+	hlist_bl_lock(b);
++	*node = (struct dlock_list_node)DLOCK_LIST_NODE_INIT(node->list);
 +}
 +
- static inline void hlist_bl_unlock(struct hlist_bl_head *b)
- {
- 	__bit_spin_unlock(0, (unsigned long *)b);
++/**
++ * dlock_list_unlock - unlock the spinlock that protects the current list
++ * @iter: Pointer to the dlock list iterator structure
++ */
++static inline void dlock_list_unlock(struct dlock_list_iter *iter)
++{
++	spin_unlock(&iter->entry->lock);
++}
++
++/**
++ * dlock_list_relock - lock the spinlock that protects the current list
++ * @iter: Pointer to the dlock list iterator structure
++ */
++static inline void dlock_list_relock(struct dlock_list_iter *iter)
++{
++	spin_lock(&iter->entry->lock);
++}
++
++/*
++ * Allocation and freeing of dlock list
++ */
++extern int  __alloc_dlock_list_heads(struct dlock_list_heads *dlist,
++				     struct lock_class_key *key);
++extern void free_dlock_list_heads(struct dlock_list_heads *dlist);
++
++/**
++ * alloc_dlock_list_head - Initialize and allocate the list of head entries.
++ * @dlist  : Pointer to the dlock_list_heads structure to be initialized
++ * Return  : 0 if successful, -ENOMEM if memory allocation error
++ */
++#define alloc_dlock_list_heads(dlist)					\
++({									\
++	static struct lock_class_key _key;				\
++	__alloc_dlock_list_heads(dlist, &_key);				\
++})
++
++/*
++ * Check if a dlock list is empty or not.
++ */
++extern bool dlock_lists_empty(struct dlock_list_heads *dlist);
++
++/*
++ * The dlock list addition and deletion functions here are not irq-safe.
++ * Special irq-safe variants will have to be added if we need them.
++ */
++extern void dlock_lists_add(struct dlock_list_node *node,
++			    struct dlock_list_heads *dlist);
++extern void dlock_lists_del(struct dlock_list_node *node);
++
++/*
++ * Find the first entry of the next available list.
++ */
++extern struct dlock_list_node *
++__dlock_list_next_list(struct dlock_list_iter *iter);
++
++/**
++ * __dlock_list_next_entry - Iterate to the next entry of the dlock list
++ * @curr : Pointer to the current dlock_list_node structure
++ * @iter : Pointer to the dlock list iterator structure
++ * Return: Pointer to the next entry or NULL if all the entries are iterated
++ *
++ * The iterator has to be properly initialized before calling this function.
++ */
++static inline struct dlock_list_node *
++__dlock_list_next_entry(struct dlock_list_node *curr,
++			struct dlock_list_iter *iter)
++{
++	/*
++	 * Find next entry
++	 */
++	if (curr)
++		curr = list_next_entry(curr, list);
++
++	if (!curr || (&curr->list == &iter->entry->list)) {
++		/*
++		 * The current list has been exhausted, try the next available
++		 * list.
++		 */
++		curr = __dlock_list_next_list(iter);
++	}
++
++	return curr;	/* Continue the iteration */
++}
++
++/**
++ * _dlock_list_next_list_entry - get first element from next list in iterator
++ * @iter  : The dlock list iterator.
++ * @pos   : A variable of the struct that is embedded in.
++ * @member: The name of the dlock_list_node within the struct.
++ * Return : Pointer to first entry or NULL if all the lists are iterated.
++ */
++#define _dlock_list_next_list_entry(iter, pos, member)			\
++	({								\
++		struct dlock_list_node *_n;				\
++		_n = __dlock_list_next_entry(NULL, iter);		\
++		_n ? list_entry(_n, typeof(*pos), member) : NULL;	\
++	})
++
++/**
++ * _dlock_list_next_entry - iterate to the next entry of the list
++ * @pos   : The type * to cursor
++ * @iter  : The dlock list iterator.
++ * @member: The name of the dlock_list_node within the struct.
++ * Return : Pointer to the next entry or NULL if all the entries are iterated.
++ *
++ * Note that pos can't be NULL.
++ */
++#define _dlock_list_next_entry(pos, iter, member)			\
++	({								\
++		struct dlock_list_node *_n;				\
++		_n = __dlock_list_next_entry(&(pos)->member, iter);	\
++		_n ? list_entry(_n, typeof(*(pos)), member) : NULL;	\
++	})
++
++/**
++ * dlist_for_each_entry - iterate over the dlock list
++ * @pos   : Type * to use as a loop cursor
++ * @iter  : The dlock list iterator
++ * @member: The name of the dlock_list_node within the struct
++ *
++ * This iteration macro isn't safe with respect to list entry removal, but
++ * it can correctly iterate newly added entries right after the current one.
++ * This iteration function is designed to be used in a while loop.
++ */
++#define dlist_for_each_entry(pos, iter, member)				\
++	for (pos = _dlock_list_next_list_entry(iter, pos, member);	\
++	     pos != NULL;						\
++	     pos = _dlock_list_next_entry(pos, iter, member))
++
++/**
++ * dlist_for_each_entry_safe - iterate over the dlock list & safe over removal
++ * @pos   : Type * to use as a loop cursor
++ * @n	  : Another type * to use as temporary storage
++ * @iter  : The dlock list iterator
++ * @member: The name of the dlock_list_node within the struct
++ *
++ * This iteration macro is safe with respect to list entry removal.
++ * However, it cannot correctly iterate newly added entries right after the
++ * current one.
++ *
++ * The call to __dlock_list_next_list() is deferred until the next entry
++ * is being iterated to avoid use-after-unlock problem.
++ */
++#define dlist_for_each_entry_safe(pos, n, iter, member)			\
++	for (pos = NULL;						\
++	    ({								\
++		if (!pos ||						\
++		   (&(pos)->member.list == &(iter)->entry->list))	\
++			pos = _dlock_list_next_list_entry(iter, pos,	\
++							  member);	\
++		if (pos)						\
++			n = list_next_entry(pos, member.list);		\
++		pos;							\
++	    });								\
++	    pos = n)
++
++#endif /* __LINUX_DLOCK_LIST_H */
+diff --git a/lib/Makefile b/lib/Makefile
+index 6b09731d8e61..73d84b569f1e 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -48,7 +48,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+ 	 bsearch.o find_bit.o llist.o lwq.o memweight.o kfifo.o \
+ 	 percpu-refcount.o rhashtable.o base64.o \
+ 	 once.o refcount.o rcuref.o usercopy.o errseq.o bucket_locks.o \
+-	 generic-radix-tree.o bitmap-str.o
++	 generic-radix-tree.o bitmap-str.o dlock-list.o
+ obj-$(CONFIG_STRING_SELFTEST) += test_string.o
+ obj-y += string_helpers.o
+ obj-$(CONFIG_TEST_STRING_HELPERS) += test-string_helpers.o
+diff --git a/lib/dlock-list.c b/lib/dlock-list.c
+new file mode 100644
+index 000000000000..f64ea4cc5e79
+--- /dev/null
++++ b/lib/dlock-list.c
+@@ -0,0 +1,234 @@
++/*
++ * Distributed and locked list
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * (C) Copyright 2016 Hewlett-Packard Enterprise Development LP
++ * (C) Copyright 2017-2018 Red Hat, Inc.
++ *
++ * Authors: Waiman Long <longman@redhat.com>
++ */
++#include <linux/dlock-list.h>
++#include <linux/lockdep.h>
++#include <linux/slab.h>
++#include <linux/cpumask.h>
++
++/*
++ * The distributed and locked list is a distributed set of lists each of
++ * which is protected by its own spinlock, but acts like a single
++ * consolidated list to the callers. For scaling purpose, the number of
++ * lists used is equal to the number of possible CPUs in the system to
++ * minimize contention.
++ *
++ * However, it is possible that individual CPU numbers may be equal to
++ * or greater than the number of possible CPUs when there are holes in
++ * the CPU number list. As a result, we need to map the CPU number to a
++ * list index.
++ */
++static DEFINE_PER_CPU_READ_MOSTLY(int, cpu2idx);
++
++/*
++ * Initialize cpu2idx mapping table
++ *
++ * It is possible that a dlock-list can be allocated before the cpu2idx is
++ * initialized. In this case, all the cpus are mapped to the first entry
++ * before initialization.
++ *
++ */
++static int __init cpu2idx_init(void)
++{
++	int idx, cpu;
++
++	idx = 0;
++	for_each_possible_cpu(cpu)
++		per_cpu(cpu2idx, cpu) = idx++;
++	return 0;
++}
++postcore_initcall(cpu2idx_init);
++
++/**
++ * __alloc_dlock_list_heads - Initialize and allocate the list of head entries
++ * @dlist: Pointer to the dlock_list_heads structure to be initialized
++ * @key  : The lock class key to be used for lockdep
++ * Return: 0 if successful, -ENOMEM if memory allocation error
++ *
++ * This function does not allocate the dlock_list_heads structure itself. The
++ * callers will have to do their own memory allocation, if necessary. However,
++ * this allows embedding the dlock_list_heads structure directly into other
++ * structures.
++ *
++ * Dynamically allocated locks need to have their own special lock class
++ * to avoid lockdep warning.
++ */
++int __alloc_dlock_list_heads(struct dlock_list_heads *dlist,
++			     struct lock_class_key *key)
++{
++	int idx;
++
++	dlist->heads = kcalloc(nr_cpu_ids, sizeof(struct dlock_list_head),
++			       GFP_KERNEL);
++
++	if (!dlist->heads)
++		return -ENOMEM;
++
++	for (idx = 0; idx < nr_cpu_ids; idx++) {
++		struct dlock_list_head *head = &dlist->heads[idx];
++
++		INIT_LIST_HEAD(&head->list);
++		head->lock = __SPIN_LOCK_UNLOCKED(&head->lock);
++		lockdep_set_class(&head->lock, key);
++	}
++	return 0;
++}
++EXPORT_SYMBOL(__alloc_dlock_list_heads);
++
++/**
++ * free_dlock_list_heads - Free all the heads entries of the dlock list
++ * @dlist: Pointer of the dlock_list_heads structure to be freed
++ *
++ * This function doesn't free the dlock_list_heads structure itself. So
++ * the caller will have to do it, if necessary.
++ */
++void free_dlock_list_heads(struct dlock_list_heads *dlist)
++{
++	kfree(dlist->heads);
++	dlist->heads = NULL;
++}
++EXPORT_SYMBOL(free_dlock_list_heads);
++
++/**
++ * dlock_lists_empty - Check if all the dlock lists are empty
++ * @dlist: Pointer to the dlock_list_heads structure
++ * Return: true if list is empty, false otherwise.
++ *
++ * This can be a pretty expensive function call. If this function is required
++ * in a performance critical path, we may have to maintain a global count
++ * of the list entries in the global dlock_list_heads structure instead.
++ */
++bool dlock_lists_empty(struct dlock_list_heads *dlist)
++{
++	int idx;
++
++	for (idx = 0; idx < nr_cpu_ids; idx++)
++		if (!list_empty(&dlist->heads[idx].list))
++			return false;
++	return true;
++}
++EXPORT_SYMBOL(dlock_lists_empty);
++
++/**
++ * dlock_lists_add - Adds a node to the given dlock list
++ * @node : The node to be added
++ * @dlist: The dlock list where the node is to be added
++ *
++ * List selection is based on the CPU being used when the dlock_list_add()
++ * function is called. However, deletion may be done by a different CPU.
++ */
++void dlock_lists_add(struct dlock_list_node *node,
++		     struct dlock_list_heads *dlist)
++{
++	struct dlock_list_head *head = &dlist->heads[this_cpu_read(cpu2idx)];
++
++	/*
++	 * There is no need to disable preemption
++	 */
++	spin_lock(&head->lock);
++	WRITE_ONCE(node->head, head);
++	list_add(&node->list, &head->list);
++	spin_unlock(&head->lock);
++}
++EXPORT_SYMBOL(dlock_lists_add);
++
++/**
++ * dlock_lists_del - Delete a node from a dlock list
++ * @node : The node to be deleted
++ *
++ * We need to check the lock pointer again after taking the lock to guard
++ * against concurrent deletion of the same node. If the lock pointer changes
++ * (becomes NULL or to a different one), we assume that the deletion was done
++ * elsewhere. A warning will be printed if this happens as it is likely to be
++ * a bug.
++ */
++void dlock_lists_del(struct dlock_list_node *node)
++{
++	struct dlock_list_head *head;
++	bool retry;
++
++	do {
++		head = READ_ONCE(node->head);
++		if (WARN_ONCE(!head, "%s: node 0x%lx has no associated head\n",
++			      __func__, (unsigned long)node))
++			return;
++
++		spin_lock(&head->lock);
++		if (likely(head == READ_ONCE(node->head))) {
++			list_del_init(&node->list);
++			WRITE_ONCE(node->head, NULL);
++			retry = false;
++		} else {
++			/*
++			 * The lock has somehow changed. Retry again if it is
++			 * not NULL. Otherwise, just ignore the delete
++			 * operation.
++			 */
++			retry = (READ_ONCE(node->head) != NULL);
++		}
++		spin_unlock(&head->lock);
++	} while (retry);
++}
++EXPORT_SYMBOL(dlock_lists_del);
++
++/**
++ * __dlock_list_next_list: Find the first entry of the next available list
++ * @dlist: Pointer to the dlock_list_heads structure
++ * @iter : Pointer to the dlock list iterator structure
++ * Return: true if the entry is found, false if all the lists exhausted
++ *
++ * The information about the next available list will be put into the iterator.
++ */
++struct dlock_list_node *__dlock_list_next_list(struct dlock_list_iter *iter)
++{
++	struct dlock_list_node *next;
++	struct dlock_list_head *head;
++
++restart:
++	if (iter->entry) {
++		spin_unlock(&iter->entry->lock);
++		iter->entry = NULL;
++	}
++
++next_list:
++	/*
++	 * Try next list
++	 */
++	if (++iter->index >= nr_cpu_ids)
++		return NULL;	/* All the entries iterated */
++
++	if (list_empty(&iter->head[iter->index].list))
++		goto next_list;
++
++	head = iter->entry = &iter->head[iter->index];
++	spin_lock(&head->lock);
++	/*
++	 * There is a slight chance that the list may become empty just
++	 * before the lock is acquired. So an additional check is
++	 * needed to make sure that a valid node will be returned.
++	 */
++	if (list_empty(&head->list))
++		goto restart;
++
++	next = list_entry(head->list.next, struct dlock_list_node,
++			  list);
++	WARN_ON_ONCE(next->head != head);
++
++	return next;
++}
++EXPORT_SYMBOL(__dlock_list_next_list);
 -- 
 2.42.0
 
