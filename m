@@ -1,64 +1,112 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4FA10A00;
-	Thu,  7 Dec 2023 06:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BC719BA7
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 07:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="sz34+fma"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Wh70aY3q"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HiucoW+8Qq+OeGHdkctb71sJtz0w/36Ur4eVZYT+4P8=; b=sz34+fmatIf4sQJKuz9hINZ+wK
-	Ml8GARBI7U2S82llMyj6nKnhgN6JS0a+NHihfwUeHWmuBvEUSpF4Qn+NwaXoZS1vL5A3fFn/NrqVe
-	TJIDO+8XXB+whFkoqiZqL73hpiH2NOg1PvNWaPvAwNBkf8qM3AbYZG9t4bLphAUehRqBoU8W6x/EY
-	ZLaPJFCenV3O7pb51r73svqe+JQjqOb+C5L5skHhISACaK+4PFPweYQSi6B1nOagTGVG6IMB43fF5
-	EmLeBpxT0rcfo0Apwf+NlpqSD7VNssQv6w6qHM53RxZlbZL94bOge/FHZBFvhaqedJwZMwNIGzfgB
-	rGuyIp0Q==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rB8CE-0087sO-2z;
-	Thu, 07 Dec 2023 06:49:19 +0000
-Date: Thu, 7 Dec 2023 06:49:18 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Dave Chinner <david@fromorbit.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-cachefs@redhat.com, dhowells@redhat.com, gfs2@lists.linux.dev,
-	dm-devel@lists.linux.dev, linux-security-module@vger.kernel.org,
-	selinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/11] lib/dlock-list: Make sibling CPUs share the same
- linked list
-Message-ID: <20231207064918.GZ1674809@ZenIV>
-References: <20231206060629.2827226-1-david@fromorbit.com>
- <20231206060629.2827226-5-david@fromorbit.com>
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=7reiZj9zur86NcKW9Z3NM8dpV8YTIvvmOrGho5B9fuE=; b=Wh70aY3qfNq/eoknmeAT/td7Ks
+	XGIzQJ7jaItCrbqi+AmZKMTRKRIAR4ECsRA5Y8EqEes5jz2rlUgnfKFfGR2siHYX4XizKw5wrBZoM
+	z5WRGkPdgY4YpDl5gwV/37KUjmTDKnzFa0ApseBqX30n1XE2vrytLbwy61xTYS/bJgt/IJ53Z2FEM
+	qkZ2G5JXkh5W/16YdQAHECEtpMkUtevQ8x68/MmU/6QLJ2V0XswDpyNaeCTrOSxRe7YWKyDtCUnFh
+	CknUX3XcqQWxDMyi3AdKxKF7PCSzn2U5LaqK0RO0RKkx8PtdQKig/wmWuH7YY/aRm4ZhgScxnxksc
+	QIUvE3Xw==;
+Received: from [2001:4bb8:191:e7ca:4bf6:cea4:9bbf:8b02] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rB8mz-00C4xo-1S;
+	Thu, 07 Dec 2023 07:27:17 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandan.babu@oracle.com>,
+	Zhang Yi <yi.zhang@huaweicloud.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	gfs2@lists.linux.dev
+Subject: [PATCH 01/14] iomap: clear the per-folio dirty bits on all writeback failures
+Date: Thu,  7 Dec 2023 08:26:57 +0100
+Message-Id: <20231207072710.176093-2-hch@lst.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231207072710.176093-1-hch@lst.de>
+References: <20231207072710.176093-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231206060629.2827226-5-david@fromorbit.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, Dec 06, 2023 at 05:05:33PM +1100, Dave Chinner wrote:
-> From: Waiman Long <longman@redhat.com>
-> 
-> The dlock list needs one list for each of the CPUs available. However,
-> for sibling CPUs, they are sharing the L2 and probably L1 caches
-> too. As a result, there is not much to gain in term of avoiding
-> cacheline contention while increasing the cacheline footprint of the
-> L1/L2 caches as separate lists may need to be in the cache.
-> 
-> This patch makes all the sibling CPUs share the same list, thus
-> reducing the number of lists that need to be maintained in each
-> dlock list without having any noticeable impact on performance. It
-> also improves dlock list iteration performance as fewer lists need
-> to be iterated.
+write_cache_pages always clear the page dirty bit before calling into the
+file systems, and leaves folios with a writeback failure without the
+dirty bit after return.  We also clear the per-block writeback bits for
+writeback failures unless no I/O has submitted, which will leave the
+folio in an inconsistent state where it doesn't have the folio dirty,
+but one or more per-block dirty bits.  This seems to be due the place
+where the iomap_clear_range_dirty call was inserted into the existing
+not very clearly structured code when adding per-block dirty bit support
+and not actually intentional.  Switch to always clearing the dirty on
+writeback failure.
 
-Probably a dumb question, but... "available" != "possible"; the code
-actually goes for the latter, which avoids nasty questions about
-CPU hotplug interations.  Is the sibling relation on CPUs unchanging
-on CPU hotplug?
+Fixes: 4ce02c679722 ("iomap: Add per-block dirty state tracking to improve performance")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ fs/iomap/buffered-io.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index f72df2babe561a..fc5c64712318aa 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1843,16 +1843,10 @@ iomap_writepage_map(struct iomap_writepage_ctx *wpc,
+ 	if (unlikely(error)) {
+ 		/*
+ 		 * Let the filesystem know what portion of the current page
+-		 * failed to map. If the page hasn't been added to ioend, it
+-		 * won't be affected by I/O completion and we must unlock it
+-		 * now.
++		 * failed to map.
+ 		 */
+ 		if (wpc->ops->discard_folio)
+ 			wpc->ops->discard_folio(folio, pos);
+-		if (!count) {
+-			folio_unlock(folio);
+-			goto done;
+-		}
+ 	}
+ 
+ 	/*
+@@ -1861,6 +1855,16 @@ iomap_writepage_map(struct iomap_writepage_ctx *wpc,
+ 	 * all the dirty bits in the folio here.
+ 	 */
+ 	iomap_clear_range_dirty(folio, 0, folio_size(folio));
++
++	/*
++	 * If the page hasn't been added to the ioend, it won't be affected by
++	 * I/O completion and we must unlock it now.
++	 */
++	if (error && !count) {
++		folio_unlock(folio);
++		goto done;
++	}
++
+ 	folio_start_writeback(folio);
+ 	folio_unlock(folio);
+ 
+-- 
+2.39.2
+
