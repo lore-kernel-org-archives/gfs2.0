@@ -1,29 +1,32 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2F14438D
-	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 15:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 04D90227A87; Thu,  7 Dec 2023 16:03:12 +0100 (CET)
-Date: Thu, 7 Dec 2023 16:03:11 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandan.babu@oracle.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-	linux-ext4@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH 13/14] iomap: map multiple blocks at a time
-Message-ID: <20231207150311.GA18830@lst.de>
-References: <20231207072710.176093-1-hch@lst.de> <20231207072710.176093-14-hch@lst.de> <4e4a86a0-5681-210f-0c94-263126967082@huaweicloud.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F013481D0
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 17:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="puHq3JkW"
+Date: Thu, 7 Dec 2023 12:08:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1701968920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eUd3xjH2HF2EejUSWZhUOf3yJDKcu6pMWysVFu8RiZs=;
+	b=puHq3JkWtcBQNKbK5bAHnkin2RfTU367Wzc1OrpC+avd7p55JGJwuTXnTu5dsJFxD5ldDx
+	K6V9iF4AyslZAbVyNff4Y9Nf/U8Xw1NCt8ZIJEwr0O1wLkJaGCgAZIMJd7Ef0iHSMKdh2l
+	jxh5eUm5lg2fT0kvqSeerFEajefqv9k=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Dave Chinner <david@fromorbit.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-cachefs@redhat.com, dhowells@redhat.com, gfs2@lists.linux.dev,
+	dm-devel@lists.linux.dev, linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/11] vfs: inode cache scalability improvements
+Message-ID: <20231207170835.yjpfpjy5or6bfkva@moria.home.lan>
+References: <20231206060629.2827226-1-david@fromorbit.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -32,54 +35,15 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4e4a86a0-5681-210f-0c94-263126967082@huaweicloud.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20231206060629.2827226-1-david@fromorbit.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Dec 07, 2023 at 09:39:44PM +0800, Zhang Yi wrote:
-> > +	do {
-> > +		unsigned map_len;
-> > +
-> > +		error = wpc->ops->map_blocks(wpc, inode, pos);
-> > +		if (error)
-> > +			break;
-> > +		trace_iomap_writepage_map(inode, &wpc->iomap);
-> > +
-> > +		map_len = min_t(u64, dirty_len,
-> > +			wpc->iomap.offset + wpc->iomap.length - pos);
-> > +		WARN_ON_ONCE(!folio->private && map_len < dirty_len);
+On Wed, Dec 06, 2023 at 05:05:29PM +1100, Dave Chinner wrote:
+...o
+> Git tree containing this series can be pulled from:
 > 
-> While I was debugging this series on ext4, I would suggest try to add map_len
-> or dirty_len into this trace point could be more convenient.
+> https://git.kernel.org/pub/scm/linux/kernel/git/dgc/linux-xfs.git vfs-scale
 
-That does seem useful, but it means we need to have an entirely new
-even class.  Can I offload this to you for inclusion in your ext4
-series? :)
+For the series:
 
-> > +		case IOMAP_HOLE:
-> > +			break;
-> 
-> BTW, I want to ask an unrelated question of this patch series. Do you
-> agree with me to add a IOMAP_DELAYED case and re-dirty folio here? The
-> background is that on ext4, jbd2 thread call ext4_normal_submit_inode_data_buffers()
-> submit data blocks in data=ordered mode, but it can only submit mapped
-> blocks, now we skip unmapped blocks and re-dirty folios in
-> ext4_do_writepages()->mpage_prepare_extent_to_map()->..->ext4_bio_write_folio().
-> So we have to inherit this logic when convert to iomap, I suppose ext4's
-> ->map_blocks() return IOMAP_DELALLOC for this case, and iomap do something
-> like:
-> 
-> +               case IOMAP_DELALLOC:
-> +                       iomap_set_range_dirty(folio, offset_in_folio(folio, pos),
-> +                                             map_len);
-> +                       folio_redirty_for_writepage(wbc, folio);
-> +                       break;
-
-I guess we could add it, but it feels pretty quirky to me, so it would at
-least need a very big comment.
-
-But I think Ted mentioned a while ago that dropping the classic
-data=ordered mode for ext4 might be a good idea eventually no that ext4
-can update the inode size at I/O completion time (Ted, correct me if
-I'm wrong).  If that's the case it might make sense to just drop the
-ordered mode instead of adding these quirks to iomap.
-
+Tested-by: Kent Overstreet <kent.overstreet@linux.dev>
