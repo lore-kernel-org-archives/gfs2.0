@@ -1,87 +1,178 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6F61E489
-	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 09:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-3b892926906so1403467b6e.0
-        for <gfs2@lists.linux.dev>; Thu, 07 Dec 2023 01:56:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701942980; x=1702547780;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ScwbojD04F2at3hLMumIFTXdjPyNKsTIy2RhBT11T1o=;
-        b=KwvEafYPTwauWcsPqDNAN+Fg7+smdS3KVnidv7DFwD9bTBozqGlBlVLsa5FzgDVnn/
-         vMmVZVpmkP/rJ3Pt8x4sRrt47AUlEkBzjOPaShYhLsz4DPOjLgRlC2Ii17hIEgIUE01a
-         ztvH1FOeL391TroKKE78V9T2IlnlhyfgT6gc6dNhhuPgYCHbd0oj92dqFNDgcTJCQayO
-         ioSMvNJPBc2xak0QxaOhrmK9e1Rd4nmOa2MxT2BK6Vo4tvwf4JyJ7nsLqGwAdXzwEbT8
-         C45llH0gT0XBQsPc6beb9fAMWw6c/VLSZwSu+xsh9ZDZHeEJH4ITi5L8sCd3FlRbGgdq
-         jnxA==
-X-Gm-Message-State: AOJu0YwbihxSt2RLRVELeuDtnTP24T6seBkft+z3aEN9hQEDCrIg4Ipu
-	tET8C0h3rIeG3owdJqpd9GBvcSmG3dpETK8cmts9FBxj/PNNg80=
-X-Google-Smtp-Source: AGHT+IE2CB85UZCMHKfz8FuIzMEfBv2d88hnYymoGoXVFebV0bh8KsWkEDw4SOmC5VaO0teGgmDorKGoPqlnKVgBtLwTm6W0EtlU
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C853DB99
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 13:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4SmFkR6c27z4f3js4
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 21:39:43 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 379711A0523
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 21:39:46 +0800 (CST)
+Received: from [10.174.176.34] (unknown [10.174.176.34])
+	by APP1 (Coremail) with SMTP id cCh0CgA3iA4gy3FlieX6Cw--.40476S3;
+	Thu, 07 Dec 2023 21:39:46 +0800 (CST)
+Subject: Re: [PATCH 13/14] iomap: map multiple blocks at a time
+To: Christoph Hellwig <hch@lst.de>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+ Chandan Babu R <chandan.babu@oracle.com>,
+ Ritesh Harjani <ritesh.list@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+ Andreas Gruenbacher <agruenba@redhat.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+ gfs2@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+ linux-ext4@vger.kernel.org
+References: <20231207072710.176093-1-hch@lst.de>
+ <20231207072710.176093-14-hch@lst.de>
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+Message-ID: <4e4a86a0-5681-210f-0c94-263126967082@huaweicloud.com>
+Date: Thu, 7 Dec 2023 21:39:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:200c:b0:3b8:5dc1:3177 with SMTP id
- q12-20020a056808200c00b003b85dc13177mr2212198oiw.1.1701942980419; Thu, 07 Dec
- 2023 01:56:20 -0800 (PST)
-Date: Thu, 07 Dec 2023 01:56:20 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c6a5df060be87a45@google.com>
-Subject: [syzbot] Monthly gfs2 report (Dec 2023)
-From: syzbot <syzbot+list7414194430be1506e979@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20231207072710.176093-14-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgA3iA4gy3FlieX6Cw--.40476S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxWr1UJFWfAr18XFy7Cr4fGrg_yoW5Kr1fpr
+	yvkws8Crs8Jw47uFn3Aayqvr1Fkay8ZFWUtF13Ww43Zas8Jr1xKFy0g3WjvF45Gr9rGwna
+	qFWFkFykW3W7A3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7I2V7IY0VAS
+	07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
+	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_
+	GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU1zuWJUUUUU==
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 
-Hello gfs2 maintainers/developers,
+Hi, Christoph.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+On 2023/12/7 15:27, Christoph Hellwig wrote:
+> The ->map_blocks interface returns a valid range for writeback, but we
+> still call back into it for every block, which is a bit inefficient.
+> 
+> Change iomap_writepage_map to use the valid range in the map until the
+> end of the folio or the dirty range inside the folio instead of calling
+> back into every block.
+> 
+> Note that the range is not used over folio boundaries as we need to be
+> able to check the mapping sequence count under the folio lock.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  fs/iomap/buffered-io.c | 116 ++++++++++++++++++++++++++++-------------
+>  include/linux/iomap.h  |   7 +++
+>  2 files changed, 88 insertions(+), 35 deletions(-)
+> 
+[..]
+> @@ -1738,29 +1775,41 @@ static int iomap_add_to_ioend(struct iomap_writepage_ctx *wpc,
+>  
+>  static int iomap_writepage_map_blocks(struct iomap_writepage_ctx *wpc,
+>  		struct writeback_control *wbc, struct folio *folio,
+> -		struct inode *inode, u64 pos, unsigned *count)
+> +		struct inode *inode, u64 pos, unsigned dirty_len,
+> +		unsigned *count)
+>  {
+>  	int error;
+>  
+> -	error = wpc->ops->map_blocks(wpc, inode, pos);
+> -	if (error)
+> -		goto fail;
+> -	trace_iomap_writepage_map(inode, &wpc->iomap);
+> -
+> -	switch (wpc->iomap.type) {
+> -	case IOMAP_INLINE:
+> -		WARN_ON_ONCE(1);
+> -		error = -EIO;
+> -		break;
+> -	case IOMAP_HOLE:
+> -		break;
+> -	default:
+> -		error = iomap_add_to_ioend(wpc, wbc, folio, inode, pos);
+> -		if (!error)
+> -			(*count)++;
+> -	}
+> +	do {
+> +		unsigned map_len;
+> +
+> +		error = wpc->ops->map_blocks(wpc, inode, pos);
+> +		if (error)
+> +			break;
+> +		trace_iomap_writepage_map(inode, &wpc->iomap);
+> +
+> +		map_len = min_t(u64, dirty_len,
+> +			wpc->iomap.offset + wpc->iomap.length - pos);
+> +		WARN_ON_ONCE(!folio->private && map_len < dirty_len);
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 20 issues are still open and 22 have been fixed so far.
+While I was debugging this series on ext4, I would suggest try to add map_len
+or dirty_len into this trace point could be more convenient.
 
-Some of the still happening issues:
+> +
+> +		switch (wpc->iomap.type) {
+> +		case IOMAP_INLINE:
+> +			WARN_ON_ONCE(1);
+> +			error = -EIO;
+> +			break;
+> +		case IOMAP_HOLE:
+> +			break;
 
-Ref  Crashes Repro Title
-<1>  4739    Yes   WARNING in __folio_mark_dirty (2)
-                   https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2>  3678    Yes   WARNING in folio_account_dirtied
-                   https://syzkaller.appspot.com/bug?extid=8d1d62bfb63d6a480be1
-<3>  668     Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<4>  55      Yes   WARNING in gfs2_check_blk_type
-                   https://syzkaller.appspot.com/bug?extid=092b28923eb79e0f3c41
-<5>  37      Yes   general protection fault in gfs2_dump_glock (2)
-                   https://syzkaller.appspot.com/bug?extid=427fed3295e9a7e887f2
-<6>  9       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rgrp_dump
-                   https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-<7>  9       Yes   INFO: task hung in write_cache_pages (3)
-                   https://syzkaller.appspot.com/bug?extid=4fcffdd85e518af6f129
-<8>  5       Yes   WARNING in gfs2_ri_update
-                   https://syzkaller.appspot.com/bug?extid=f8bc4176e51e87e0928f
-<9>  4       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rindex_update
-                   https://syzkaller.appspot.com/bug?extid=2b32df23ff6b5b307565
-<10> 2       Yes   memory leak in gfs2_trans_begin
-                   https://syzkaller.appspot.com/bug?extid=45a7939b6f493f374ee1
+BTW, I want to ask an unrelated question of this patch series. Do you
+agree with me to add a IOMAP_DELAYED case and re-dirty folio here? The
+background is that on ext4, jbd2 thread call ext4_normal_submit_inode_data_buffers()
+submit data blocks in data=ordered mode, but it can only submit mapped
+blocks, now we skip unmapped blocks and re-dirty folios in
+ext4_do_writepages()->mpage_prepare_extent_to_map()->..->ext4_bio_write_folio().
+So we have to inherit this logic when convert to iomap, I suppose ext4's
+->map_blocks() return IOMAP_DELALLOC for this case, and iomap do something
+like:
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
++               case IOMAP_DELALLOC:
++                       iomap_set_range_dirty(folio, offset_in_folio(folio, pos),
++                                             map_len);
++                       folio_redirty_for_writepage(wbc, folio);
++                       break;
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Thanks,
+Yi.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+> +		default:
+> +			error = iomap_add_to_ioend(wpc, wbc, folio, inode, pos,
+> +					map_len);
+> +			if (!error)
+> +				(*count)++;
+> +			break;
+> +		}
+> +		dirty_len -= map_len;
+> +		pos += map_len;
+> +	} while (dirty_len && !error);
+>  
+> -fail:
+>  	/*
+>  	 * We cannot cancel the ioend directly here on error.  We may have
+>  	 * already set other pages under writeback and hence we have to run I/O
+> @@ -1827,7 +1876,7 @@ static bool iomap_writepage_handle_eof(struct folio *folio, struct inode *inode,
+>  		 * beyond i_size.
+>  		 */
+>  		folio_zero_segment(folio, poff, folio_size(folio));
+> -		*end_pos = isize;
+> +		*end_pos = round_up(isize, i_blocksize(inode));
+>  	}
+>  
+>  	return true;
 
-You may send multiple commands in a single email message.
