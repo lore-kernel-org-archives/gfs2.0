@@ -1,151 +1,87 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A8328A7
-	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 07:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="4DPPOb15"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=y+NglUGlgZ9YBrdTJdpOBFfcM6D33ZO9uf8JCBTQOZ8=; b=4DPPOb15nmRr71vLaSqWwT2ORq
-	PLSsaSvO0xL6TiE88y9Tl6/Di/HKDezf1XcsIvWzb2hTXPlt1xZz3OaS2k4xUj2uvFuqKFt4sIanm
-	CqXsu+ZPZFqsVkl2TqqJJXvQvbvqK2PBLW8cudvuAkVVy5MsU07YcPkBzGwcfNNmG0xOJxmHcaiPH
-	lPzFWRU67gDArF2yHf9eVcRZaDQ57GLqVAQvXJS8pCnliMOdZYTA3JpZePYVmhN9FjmECoYHMuwrv
-	oqhAnq4i7AELm48Hk6Np/nO2SWj22Ug/t48k6iL4tJP9Yk8jCKAGhfktgx2ry98oxCjVgFjmsLZFM
-	eRtSFs1g==;
-Received: from [2001:4bb8:191:e7ca:4bf6:cea4:9bbf:8b02] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rB8nc-00C59G-23;
-	Thu, 07 Dec 2023 07:27:57 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandan.babu@oracle.com>,
-	Zhang Yi <yi.zhang@huaweicloud.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev
-Subject: [PATCH 14/14] iomap: pass the length of the dirty region to ->map_blocks
-Date: Thu,  7 Dec 2023 08:27:10 +0100
-Message-Id: <20231207072710.176093-15-hch@lst.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231207072710.176093-1-hch@lst.de>
-References: <20231207072710.176093-1-hch@lst.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6F61E489
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 09:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-3b892926906so1403467b6e.0
+        for <gfs2@lists.linux.dev>; Thu, 07 Dec 2023 01:56:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701942980; x=1702547780;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ScwbojD04F2at3hLMumIFTXdjPyNKsTIy2RhBT11T1o=;
+        b=KwvEafYPTwauWcsPqDNAN+Fg7+smdS3KVnidv7DFwD9bTBozqGlBlVLsa5FzgDVnn/
+         vMmVZVpmkP/rJ3Pt8x4sRrt47AUlEkBzjOPaShYhLsz4DPOjLgRlC2Ii17hIEgIUE01a
+         ztvH1FOeL391TroKKE78V9T2IlnlhyfgT6gc6dNhhuPgYCHbd0oj92dqFNDgcTJCQayO
+         ioSMvNJPBc2xak0QxaOhrmK9e1Rd4nmOa2MxT2BK6Vo4tvwf4JyJ7nsLqGwAdXzwEbT8
+         C45llH0gT0XBQsPc6beb9fAMWw6c/VLSZwSu+xsh9ZDZHeEJH4ITi5L8sCd3FlRbGgdq
+         jnxA==
+X-Gm-Message-State: AOJu0YwbihxSt2RLRVELeuDtnTP24T6seBkft+z3aEN9hQEDCrIg4Ipu
+	tET8C0h3rIeG3owdJqpd9GBvcSmG3dpETK8cmts9FBxj/PNNg80=
+X-Google-Smtp-Source: AGHT+IE2CB85UZCMHKfz8FuIzMEfBv2d88hnYymoGoXVFebV0bh8KsWkEDw4SOmC5VaO0teGgmDorKGoPqlnKVgBtLwTm6W0EtlU
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Received: by 2002:a05:6808:200c:b0:3b8:5dc1:3177 with SMTP id
+ q12-20020a056808200c00b003b85dc13177mr2212198oiw.1.1701942980419; Thu, 07 Dec
+ 2023 01:56:20 -0800 (PST)
+Date: Thu, 07 Dec 2023 01:56:20 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000c6a5df060be87a45@google.com>
+Subject: [syzbot] Monthly gfs2 report (Dec 2023)
+From: syzbot <syzbot+list7414194430be1506e979@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Let the file system know how much dirty data exists at the passed
-in offset.  This allows file systems to allocate the right amount
-of space that actually is written back if they can't eagerly
-convert (e.g. because they don't support unwritten extents).
+Hello gfs2 maintainers/developers,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
+
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 20 issues are still open and 22 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  4739    Yes   WARNING in __folio_mark_dirty (2)
+                   https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
+<2>  3678    Yes   WARNING in folio_account_dirtied
+                   https://syzkaller.appspot.com/bug?extid=8d1d62bfb63d6a480be1
+<3>  668     Yes   kernel BUG in gfs2_glock_nq (2)
+                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<4>  55      Yes   WARNING in gfs2_check_blk_type
+                   https://syzkaller.appspot.com/bug?extid=092b28923eb79e0f3c41
+<5>  37      Yes   general protection fault in gfs2_dump_glock (2)
+                   https://syzkaller.appspot.com/bug?extid=427fed3295e9a7e887f2
+<6>  9       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rgrp_dump
+                   https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+<7>  9       Yes   INFO: task hung in write_cache_pages (3)
+                   https://syzkaller.appspot.com/bug?extid=4fcffdd85e518af6f129
+<8>  5       Yes   WARNING in gfs2_ri_update
+                   https://syzkaller.appspot.com/bug?extid=f8bc4176e51e87e0928f
+<9>  4       Yes   BUG: unable to handle kernel NULL pointer dereference in gfs2_rindex_update
+                   https://syzkaller.appspot.com/bug?extid=2b32df23ff6b5b307565
+<10> 2       Yes   memory leak in gfs2_trans_begin
+                   https://syzkaller.appspot.com/bug?extid=45a7939b6f493f374ee1
+
 ---
- block/fops.c           | 2 +-
- fs/gfs2/bmap.c         | 2 +-
- fs/iomap/buffered-io.c | 2 +-
- fs/xfs/xfs_aops.c      | 3 ++-
- fs/zonefs/file.c       | 3 ++-
- include/linux/iomap.h  | 2 +-
- 6 files changed, 8 insertions(+), 6 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/block/fops.c b/block/fops.c
-index 0abaac705dafb0..7e921f999182dc 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -467,7 +467,7 @@ static void blkdev_readahead(struct readahead_control *rac)
- }
- 
- static int blkdev_map_blocks(struct iomap_writepage_ctx *wpc,
--		struct inode *inode, loff_t offset)
-+		struct inode *inode, loff_t offset, unsigned int len)
- {
- 	loff_t isize = i_size_read(inode);
- 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index d9ccfd27e4f11f..789af5c8fade9d 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -2465,7 +2465,7 @@ int __gfs2_punch_hole(struct file *file, loff_t offset, loff_t length)
- }
- 
- static int gfs2_map_blocks(struct iomap_writepage_ctx *wpc, struct inode *inode,
--		loff_t offset)
-+		loff_t offset, unsigned int len)
- {
- 	int ret;
- 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d8f56968962b97..e0c9cede82ee4b 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1783,7 +1783,7 @@ static int iomap_writepage_map_blocks(struct iomap_writepage_ctx *wpc,
- 	do {
- 		unsigned map_len;
- 
--		error = wpc->ops->map_blocks(wpc, inode, pos);
-+		error = wpc->ops->map_blocks(wpc, inode, pos, dirty_len);
- 		if (error)
- 			break;
- 		trace_iomap_writepage_map(inode, &wpc->iomap);
-diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
-index b45ee6cbbdaab2..bf26a91ecdbbc6 100644
---- a/fs/xfs/xfs_aops.c
-+++ b/fs/xfs/xfs_aops.c
-@@ -276,7 +276,8 @@ static int
- xfs_map_blocks(
- 	struct iomap_writepage_ctx *wpc,
- 	struct inode		*inode,
--	loff_t			offset)
-+	loff_t			offset,
-+	unsigned int		len)
- {
- 	struct xfs_inode	*ip = XFS_I(inode);
- 	struct xfs_mount	*mp = ip->i_mount;
-diff --git a/fs/zonefs/file.c b/fs/zonefs/file.c
-index b2c9b35df8f76d..1526e0ec6bfeaf 100644
---- a/fs/zonefs/file.c
-+++ b/fs/zonefs/file.c
-@@ -125,7 +125,8 @@ static void zonefs_readahead(struct readahead_control *rac)
-  * which implies that the page range can only be within the fixed inode size.
-  */
- static int zonefs_write_map_blocks(struct iomap_writepage_ctx *wpc,
--				   struct inode *inode, loff_t offset)
-+				   struct inode *inode, loff_t offset,
-+				   unsigned int len)
- {
- 	struct zonefs_zone *z = zonefs_inode_zone(inode);
- 
-diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 49d93f53878565..6fc1c858013d1e 100644
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -318,7 +318,7 @@ struct iomap_writeback_ops {
- 	 * by the file system if it is still valid.
- 	 */
- 	int (*map_blocks)(struct iomap_writepage_ctx *wpc, struct inode *inode,
--				loff_t offset);
-+			  loff_t offset, unsigned len);
- 
- 	/*
- 	 * Optional, allows the file systems to perform actions just before
--- 
-2.39.2
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
