@@ -1,26 +1,26 @@
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B3319BA6
-	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 07:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348F619BAD
+	for <gfs2@lists.linux.dev>; Thu,  7 Dec 2023 07:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q8o2Ww2Q"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Vh0UFb5U"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=pcip+qcShfpKiIdrtbE2krVPBRD3cmZ1GZq0o0dnBeM=; b=q8o2Ww2Q2d2/00K/DKOgyxjzNg
-	tz0Y3gxLAOGXDMeu51iRxWdMpnefWUvbebmCHeILVJJ7bUH/RZ6Q2GeqldiqXYJeVtXOcZ8C4Xaf/
-	Owf7IrSBUhSGYfLPKuSs89YdFnroEx+G/aBUJY8muaqlIR1bcuXHBRYLV9AJn0QYzyfXjDaazUjQd
-	j71vTIY4FC6O99RJdt8wCN3T4dkiH6nTK3bbhTXY3gFHEq911pDYhz/IR0F+sUN2XWVt97G56/Ete
-	6TpepAl1PcPbM6iu26THTIY778QOYUzijyvjepzoeEM3XQBwFhBD8aFctJ8HKkESUMOchwAzZ8AhX
-	iUqExRsg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=Zq1p2D6CIWYIAN1TsIMnd1JMbwcaUt5eEkAWi8KwBmU=; b=Vh0UFb5UqYlCnXfTGHim8JxHXr
+	joTNw9ufG9VAmBSi1dyBPWk7nFDOj41pMvIEfV9Kh9PuiW4i4hCpJamF/ezTz3aRL2MlzT6fw7d22
+	WfkrF5WCE95qZaXcb+Ezkv+jMW1WPYgSeguUlh/t2g2yGyh4zYuZAg0Gx5kUouxY4bYbgyr1/JXw/
+	wLQkVX4PsQRryLceWm2PdgfkRLMX9UoGC43+e6/yvTORQYrNuEmKcmthDxm3BWG48MgVHRV6E7Sax
+	DvtLvZCdya63/sjbRy0zvIhZE0f9eIwCzHVipndj8psejg6hcWeIOSYFZpHeuIpZUNT13meBljImJ
+	ytVjE6DA==;
 Received: from [2001:4bb8:191:e7ca:4bf6:cea4:9bbf:8b02] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rB8mw-00C4wx-2I;
-	Thu, 07 Dec 2023 07:27:15 +0000
+	id 1rB8n5-00C4yV-1S;
+	Thu, 07 Dec 2023 07:27:24 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Christian Brauner <brauner@kernel.org>
 Cc: "Darrick J. Wong" <djwong@kernel.org>,
@@ -36,10 +36,12 @@ Cc: "Darrick J. Wong" <djwong@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	linux-block@vger.kernel.org,
 	gfs2@lists.linux.dev
-Subject: map multiple blocks per ->map_blocks in iomap writeback
-Date: Thu,  7 Dec 2023 08:26:56 +0100
-Message-Id: <20231207072710.176093-1-hch@lst.de>
+Subject: [PATCH 03/14] iomap: move the io_folios field out of struct iomap_ioend
+Date: Thu,  7 Dec 2023 08:26:59 +0100
+Message-Id: <20231207072710.176093-4-hch@lst.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231207072710.176093-1-hch@lst.de>
+References: <20231207072710.176093-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -49,48 +51,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Hi all,
+The io_folios member in struct iomap_ioend counts the number of folios
+added to an ioend.  It is only used at submission time and can thus be
+moved to iomap_writepage_ctx instead.
 
-this series overhaults a large chunk of the iomap writeback code with
-the end result that ->map_blocks can now map multiple blocks at a time,
-at least as long as they are all inside the same folio.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ fs/iomap/buffered-io.c | 7 ++++---
+ include/linux/iomap.h  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-On a sufficiently large system (32 cores in my case) this significantly
-reduces CPU usage for buffered write workloads on xfs, with a very minor
-improvement in write bandwith that might be within the measurement
-tolerance.
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 2426cab70b7102..dc5039cdacd928 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1685,10 +1685,11 @@ iomap_alloc_ioend(struct inode *inode, struct iomap_writepage_ctx *wpc,
+ 	ioend->io_flags = wpc->iomap.flags;
+ 	ioend->io_inode = inode;
+ 	ioend->io_size = 0;
+-	ioend->io_folios = 0;
+ 	ioend->io_offset = offset;
+ 	ioend->io_bio = bio;
+ 	ioend->io_sector = sector;
++
++	wpc->nr_folios = 0;
+ 	return ioend;
+ }
+ 
+@@ -1732,7 +1733,7 @@ iomap_can_add_to_ioend(struct iomap_writepage_ctx *wpc, loff_t offset,
+ 	 * also prevents long tight loops ending page writeback on all the
+ 	 * folios in the ioend.
+ 	 */
+-	if (wpc->ioend->io_folios >= IOEND_BATCH_SIZE)
++	if (wpc->nr_folios >= IOEND_BATCH_SIZE)
+ 		return false;
+ 	return true;
+ }
+@@ -1829,7 +1830,7 @@ iomap_writepage_map(struct iomap_writepage_ctx *wpc,
+ 		count++;
+ 	}
+ 	if (count)
+-		wpc->ioend->io_folios++;
++		wpc->nr_folios++;
+ 
+ 	WARN_ON_ONCE(!wpc->ioend && !list_empty(&submit_list));
+ 	WARN_ON_ONCE(!folio_test_locked(folio));
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 96dd0acbba44ac..b2a05dff914d0c 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -293,7 +293,6 @@ struct iomap_ioend {
+ 	struct list_head	io_list;	/* next ioend in chain */
+ 	u16			io_type;
+ 	u16			io_flags;	/* IOMAP_F_* */
+-	u32			io_folios;	/* folios added to ioend */
+ 	struct inode		*io_inode;	/* file being written to */
+ 	size_t			io_size;	/* size of the extent */
+ 	loff_t			io_offset;	/* offset in the file */
+@@ -329,6 +328,7 @@ struct iomap_writepage_ctx {
+ 	struct iomap		iomap;
+ 	struct iomap_ioend	*ioend;
+ 	const struct iomap_writeback_ops *ops;
++	u32			nr_folios;	/* folios added to the ioend */
+ };
+ 
+ void iomap_finish_ioends(struct iomap_ioend *ioend, int error);
+-- 
+2.39.2
 
-e.g. on a fio sequential write workload using io_uring I get these values
-(median out of 5 runs):
-
-before:
-  cpu          : usr=5.26%, sys=4.81%, ctx=4009750, majf=0, minf=13
-  WRITE: bw=1096MiB/s (1150MB/s), 1096MiB/s-1096MiB/s (1150MB/s-1150MB/s), io=970GiB (1042GB), run=906036-906036msec
-
-with this series:
-  cpu          : usr=4.95%, sys=2.72%, ctx=4084578, majf=0, minf=12
-  WRITE: bw=1111MiB/s (1165MB/s), 1111MiB/s-1111MiB/s (1165MB/s-1165MB/s), io=980GiB (1052GB), run=903234-903234msec
-
-On systems with a small number of cores the cpu usage reduction is much
-lower and barely visible.
-
-Changes since RFC:
- - various commit message typo fixes
- - minor formatting fixes
- - keep the PF_MEMALLOC check and move it to iomap_writepages
- - rename the offset argument to iomap_can_add_to_ioend to pos
- - fix missing error handling in an earlier patch (only required for
-   bisection, no change to the end result)
- - remove a stray whitespace
- - refactor ifs_find_dirty_range a bit to make it more readable
- - add a patch to pass the dirty_len to the file system to make life for
-   ext2 easier
-
-Diffstat:
- block/fops.c           |    2 
- fs/gfs2/bmap.c         |    2 
- fs/iomap/buffered-io.c |  576 +++++++++++++++++++++++--------------------------
- fs/xfs/xfs_aops.c      |    9 
- fs/zonefs/file.c       |    3 
- include/linux/iomap.h  |   19 +
- 6 files changed, 306 insertions(+), 305 deletions(-)
