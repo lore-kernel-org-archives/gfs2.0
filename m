@@ -1,125 +1,113 @@
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DC4107A7
-	for <gfs2@lists.linux.dev>; Fri,  8 Dec 2023 07:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SmjYy4696z4f3jHm
-	for <gfs2@lists.linux.dev>; Fri,  8 Dec 2023 15:33:58 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id AAEDB1A0875
-	for <gfs2@lists.linux.dev>; Fri,  8 Dec 2023 15:33:59 +0800 (CST)
-Received: from [10.174.176.34] (unknown [10.174.176.34])
-	by APP1 (Coremail) with SMTP id cCh0CgDHyhDlxnJlkc9ADA--.40165S3;
-	Fri, 08 Dec 2023 15:33:59 +0800 (CST)
-Subject: Re: [PATCH 13/14] iomap: map multiple blocks at a time
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DB215AD8;
+	Mon, 11 Dec 2023 10:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLcRQhqp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A87DC433C8;
+	Mon, 11 Dec 2023 10:45:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702291551;
+	bh=C9SWpDe50LejcoRBfB5+9Vj9FrSJV2LSQGio56TrmEM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aLcRQhqpmVpI6Pe9RDF2UNzcNAgB0MvorxxDR0SVutDFClSz3hRe4moFXkhDKa0Th
+	 wLYlvqwCxenK0kcC9N/+kL7d+R+UoDsebx+0ng2n+OD+JF15KlS0WX6OsAAKK0y3Xu
+	 sW1rEdOgTe51bvkpHLKkOqVcjzJZUbfA+X0wWq3tlpzE/JjgphWlXaf4iW1vNOtJx1
+	 IbQ0A9Xkj3Abr+Gw+uNxyjPpCF00bR+qy38ZI4UEV1HjwdgD3jPkH+T+Pa2/JsuMud
+	 cNIUo59OgmF3KjRMgw/2RccwyW5N3xMQxp7udZCZ0ujv+XwrqaU7FumdH6YQP7HJds
+	 DBcKwhaOFEQjQ==
+From: Christian Brauner <brauner@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
- Chandan Babu R <chandan.babu@oracle.com>,
- Ritesh Harjani <ritesh.list@gmail.com>, Jens Axboe <axboe@kernel.dk>,
- Andreas Gruenbacher <agruenba@redhat.com>,
- Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
- gfs2@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
- linux-ext4@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>
+Cc: Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandan.babu@oracle.com>,
+	Zhang Yi <yi.zhang@huaweicloud.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	gfs2@lists.linux.dev
+Subject: Re: map multiple blocks per ->map_blocks in iomap writeback
+Date: Mon, 11 Dec 2023 11:45:38 +0100
+Message-ID: <20231211-listen-ehrbaren-105219c9ab09@brauner>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231207072710.176093-1-hch@lst.de>
 References: <20231207072710.176093-1-hch@lst.de>
- <20231207072710.176093-14-hch@lst.de>
- <4e4a86a0-5681-210f-0c94-263126967082@huaweicloud.com>
- <20231207150311.GA18830@lst.de>
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-Message-ID: <d5f3979b-344a-bf01-8a45-49ae02b0bed0@huaweicloud.com>
-Date: Fri, 8 Dec 2023 15:33:57 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20231207150311.GA18830@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgDHyhDlxnJlkc9ADA--.40165S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7urW8tFW7JF1Dtw1DCrWxJFb_yoW8try8pF
-	WIganYkF1DJ34avrn7Za1UZr10yasxGF48t343tFy3Aa98Kr1S9F1xK3WjvFWY9rZrWr1S
-	vFW8t3s3XFnIyrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-	e2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a
-	6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE
-	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
-	9x07UZ18PUUUUU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3026; i=brauner@kernel.org; h=from:subject:message-id; bh=C9SWpDe50LejcoRBfB5+9Vj9FrSJV2LSQGio56TrmEM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSWvQgsjp5xwY3H+uAOockT/dOVbKMfTT0qOeXhz7REq dl6XPOXd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykaSUjw8V3zx7tmbrUxHdj 5XKv0tJ3B8QDVmaVqjzv3iFoa/szfjUjwwqT1B9ijBavMnMu3L6172Ad77R3S/TPdHB+eei3Ziv fUU4A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On 2023/12/7 23:03, Christoph Hellwig wrote:
-> On Thu, Dec 07, 2023 at 09:39:44PM +0800, Zhang Yi wrote:
->>> +	do {
->>> +		unsigned map_len;
->>> +
->>> +		error = wpc->ops->map_blocks(wpc, inode, pos);
->>> +		if (error)
->>> +			break;
->>> +		trace_iomap_writepage_map(inode, &wpc->iomap);
->>> +
->>> +		map_len = min_t(u64, dirty_len,
->>> +			wpc->iomap.offset + wpc->iomap.length - pos);
->>> +		WARN_ON_ONCE(!folio->private && map_len < dirty_len);
->>
->> While I was debugging this series on ext4, I would suggest try to add map_len
->> or dirty_len into this trace point could be more convenient.
+On Thu, 07 Dec 2023 08:26:56 +0100, Christoph Hellwig wrote:
+> this series overhaults a large chunk of the iomap writeback code with
+> the end result that ->map_blocks can now map multiple blocks at a time,
+> at least as long as they are all inside the same folio.
 > 
-> That does seem useful, but it means we need to have an entirely new
-> even class.  Can I offload this to you for inclusion in your ext4
-> series? :)
+> On a sufficiently large system (32 cores in my case) this significantly
+> reduces CPU usage for buffered write workloads on xfs, with a very minor
+> improvement in write bandwith that might be within the measurement
+> tolerance.
 > 
+> [...]
 
-Sure, I'm glad to do it.
+Darrick, Christoph, I gave us a separate branch for this. I thought about
+putting this on top of vfs.misc but I feel that this would be a bit ugly.
+Different layout is possible though.
 
->>> +		case IOMAP_HOLE:
->>> +			break;
->>
->> BTW, I want to ask an unrelated question of this patch series. Do you
->> agree with me to add a IOMAP_DELAYED case and re-dirty folio here? The
->> background is that on ext4, jbd2 thread call ext4_normal_submit_inode_data_buffers()
->> submit data blocks in data=ordered mode, but it can only submit mapped
->> blocks, now we skip unmapped blocks and re-dirty folios in
->> ext4_do_writepages()->mpage_prepare_extent_to_map()->..->ext4_bio_write_folio().
->> So we have to inherit this logic when convert to iomap, I suppose ext4's
->> ->map_blocks() return IOMAP_DELALLOC for this case, and iomap do something
->> like:
->>
->> +               case IOMAP_DELALLOC:
->> +                       iomap_set_range_dirty(folio, offset_in_folio(folio, pos),
->> +                                             map_len);
->> +                       folio_redirty_for_writepage(wbc, folio);
->> +                       break;
-> 
-> I guess we could add it, but it feels pretty quirky to me, so it would at
-> least need a very big comment.
-> 
-> But I think Ted mentioned a while ago that dropping the classic
-> data=ordered mode for ext4 might be a good idea eventually no that ext4
-> can update the inode size at I/O completion time (Ted, correct me if
-> I'm wrong).  If that's the case it might make sense to just drop the
-> ordered mode instead of adding these quirks to iomap.
-> 
+---
 
-Yeah, make sense, we could remove these quirks after ext4 drop
-data=ordered mode. For now, let me implement it according to this
-temporary method.
+Applied to the vfs.iomap branch of the vfs/vfs.git tree.
+Patches in the vfs.iomap branch should appear in linux-next soon.
 
-Thanks,
-Yi.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.iomap
+
+[01/14] iomap: clear the per-folio dirty bits on all writeback failures
+        https://git.kernel.org/vfs/vfs/c/7c821e1f5a5a
+[02/14] iomap: treat inline data in iomap_writepage_map as an I/O error
+        https://git.kernel.org/vfs/vfs/c/6571f184afe3
+[03/14] iomap: move the io_folios field out of struct iomap_ioend
+        https://git.kernel.org/vfs/vfs/c/e5f9e159cf10
+[04/14] iomap: move the PF_MEMALLOC check to iomap_writepages
+        https://git.kernel.org/vfs/vfs/c/fc51566e62ef
+[05/14] iomap: factor out a iomap_writepage_handle_eof helper
+        https://git.kernel.org/vfs/vfs/c/89d887160535
+[06/14] iomap: move all remaining per-folio logic into iomap_writepage_map
+        https://git.kernel.org/vfs/vfs/c/6d3bac5014bf
+[07/14] iomap: clean up the iomap_alloc_ioend calling convention
+        https://git.kernel.org/vfs/vfs/c/d7acac8ed175
+[08/14] iomap: move the iomap_sector sector calculation out of iomap_add_to_ioend
+        https://git.kernel.org/vfs/vfs/c/a04db4e40bdb
+[09/14] iomap: don't chain bios
+        https://git.kernel.org/vfs/vfs/c/7a579e360d15
+[10/14] iomap: only call mapping_set_error once for each failed bio
+        https://git.kernel.org/vfs/vfs/c/a64f2b75da6b
+[11/14] iomap: factor out a iomap_writepage_map_block helper
+        https://git.kernel.org/vfs/vfs/c/3853862b0b77
+[12/14] iomap: submit ioends immediately
+        https://git.kernel.org/vfs/vfs/c/ae00bec07dee
+[13/14] iomap: map multiple blocks at a time
+        https://git.kernel.org/vfs/vfs/c/2487070c95f4
+[14/14] iomap: pass the length of the dirty region to ->map_blocks
+        https://git.kernel.org/vfs/vfs/c/a828782eaff6
