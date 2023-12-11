@@ -1,113 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DB215AD8;
-	Mon, 11 Dec 2023 10:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLcRQhqp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A87DC433C8;
-	Mon, 11 Dec 2023 10:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702291551;
-	bh=C9SWpDe50LejcoRBfB5+9Vj9FrSJV2LSQGio56TrmEM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLcRQhqpmVpI6Pe9RDF2UNzcNAgB0MvorxxDR0SVutDFClSz3hRe4moFXkhDKa0Th
-	 wLYlvqwCxenK0kcC9N/+kL7d+R+UoDsebx+0ng2n+OD+JF15KlS0WX6OsAAKK0y3Xu
-	 sW1rEdOgTe51bvkpHLKkOqVcjzJZUbfA+X0wWq3tlpzE/JjgphWlXaf4iW1vNOtJx1
-	 IbQ0A9Xkj3Abr+Gw+uNxyjPpCF00bR+qy38ZI4UEV1HjwdgD3jPkH+T+Pa2/JsuMud
-	 cNIUo59OgmF3KjRMgw/2RccwyW5N3xMQxp7udZCZ0ujv+XwrqaU7FumdH6YQP7HJds
-	 DBcKwhaOFEQjQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandan.babu@oracle.com>,
-	Zhang Yi <yi.zhang@huaweicloud.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev
-Subject: Re: map multiple blocks per ->map_blocks in iomap writeback
-Date: Mon, 11 Dec 2023 11:45:38 +0100
-Message-ID: <20231211-listen-ehrbaren-105219c9ab09@brauner>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231207072710.176093-1-hch@lst.de>
-References: <20231207072710.176093-1-hch@lst.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B871938DF8
+	for <gfs2@lists.linux.dev>; Mon, 11 Dec 2023 11:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3b9f1ae85adso4426162b6e.0
+        for <gfs2@lists.linux.dev>; Mon, 11 Dec 2023 03:58:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702295906; x=1702900706;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gXKTIALbyouSGf/POO3O289jn5YeMVhjl/ASe319lHc=;
+        b=fwBybQwIxqoinr3M2ixO//fd5GCfvPMeQRPDUz/SQIV/EfFpJiJU0PFVWW5Toyxugz
+         nXGlu7xvChID5MV/FvcYO8arys2hQG4+hmg3IDUaR7lZlLTJnVZL7VXMB2c8mlI3qUk4
+         eZ+dzODf2fhHm08eDzuiraf28t/e3lhkK44bjL6RALh+sW5kdw2v2oJhFyGaO8fXLc3G
+         ZQ6oCKV4ZlWzA1rjovP8WDt6XhVMScNW3sYr3MeCszXOYIUkDnF7kacaXhSAfmSg32z+
+         ig1hX4bBr0HIhHv36eMGAs7ll6MzjolMrufA176cvMFmkkuF2zN00tWVnG2ztQXUqEIP
+         6DEg==
+X-Gm-Message-State: AOJu0YwM9CyvUV+aCsGjZ5GR114VPwsHjIc2lNpqGxx1PiRaawh009Fn
+	BytAlaMLfjuWoDh6UGy1mVpGv4mK8pwVKUNDfmKLjQUX4l/o
+X-Google-Smtp-Source: AGHT+IE27QIdYr079A/T3mwVVk3ZrwtRaYf+m0GsAZwN6tQ+StzdigAG/5Oe3+IkyvCBIyQAzmTUkzfevoPxSc+vk936ATPccYDa
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3026; i=brauner@kernel.org; h=from:subject:message-id; bh=C9SWpDe50LejcoRBfB5+9Vj9FrSJV2LSQGio56TrmEM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSWvQgsjp5xwY3H+uAOockT/dOVbKMfTT0qOeXhz7REq dl6XPOXd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykaSUjw8V3zx7tmbrUxHdj 5XKv0tJ3B8QDVmaVqjzv3iFoa/szfjUjwwqT1B9ijBavMnMu3L6172Ad77R3S/TPdHB+eei3Ziv fUU4A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:2087:b0:3b9:de11:cc9c with SMTP id
+ s7-20020a056808208700b003b9de11cc9cmr4131856oiw.5.1702295906763; Mon, 11 Dec
+ 2023 03:58:26 -0800 (PST)
+Date: Mon, 11 Dec 2023 03:58:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000d3490c060c3aa67a@google.com>
+Subject: [syzbot] [gfs2] WARNING in vfs_utimes
+From: syzbot <syzbot+0c64a8706d587f73409e@syzkaller.appspotmail.com>
+To: brauner@kernel.org, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 07 Dec 2023 08:26:56 +0100, Christoph Hellwig wrote:
-> this series overhaults a large chunk of the iomap writeback code with
-> the end result that ->map_blocks can now map multiple blocks at a time,
-> at least as long as they are all inside the same folio.
-> 
-> On a sufficiently large system (32 cores in my case) this significantly
-> reduces CPU usage for buffered write workloads on xfs, with a very minor
-> improvement in write bandwith that might be within the measurement
-> tolerance.
-> 
-> [...]
+Hello,
 
-Darrick, Christoph, I gave us a separate branch for this. I thought about
-putting this on top of vfs.misc but I feel that this would be a bit ugly.
-Different layout is possible though.
+syzbot found the following issue on:
+
+HEAD commit:    aed8aee11130 Merge tag 'pmdomain-v6.6-rc1' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10ec0a28680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=df91a3034fe3f122
+dashboard link: https://syzkaller.appspot.com/bug?extid=0c64a8706d587f73409e
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/310bcfc234f7/disk-aed8aee1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9ca036d3eeb2/vmlinux-aed8aee1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1e0032b9919c/bzImage-aed8aee1.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0c64a8706d587f73409e@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x1, magic = 0xffff8880371ddef0, owner = 0xffff88801d773b80, curr 0xffff888023728000, list empty
+WARNING: CPU: 0 PID: 13147 at kernel/locking/rwsem.c:1370 __up_write kernel/locking/rwsem.c:1369 [inline]
+WARNING: CPU: 0 PID: 13147 at kernel/locking/rwsem.c:1370 up_write+0x4f4/0x580 kernel/locking/rwsem.c:1626
+Modules linked in:
+CPU: 0 PID: 13147 Comm: syz-executor.1 Not tainted 6.6.0-rc1-syzkaller-00072-gaed8aee11130 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+RIP: 0010:__up_write kernel/locking/rwsem.c:1369 [inline]
+RIP: 0010:up_write+0x4f4/0x580 kernel/locking/rwsem.c:1626
+Code: 48 c7 c7 a0 98 0a 8b 48 c7 c6 e0 9a 0a 8b 48 8b 54 24 28 48 8b 4c 24 18 4d 89 e0 4c 8b 4c 24 30 53 e8 b0 12 e8 ff 48 83 c4 08 <0f> 0b e9 75 fd ff ff 48 c7 c1 10 9b 9a 8e 80 e1 07 80 c1 03 38 c1
+RSP: 0018:ffffc9001520fbe0 EFLAGS: 00010292
+RAX: 144e8f9151b91a00 RBX: ffffffff8b0a9980 RCX: ffff888023728000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc9001520fcb0 R08: ffffffff81542432 R09: 1ffff92002a41ee8
+R10: dffffc0000000000 R11: fffff52002a41ee9 R12: ffff88801d773b80
+R13: ffff8880371ddef0 R14: 1ffff92002a41f84 R15: dffffc0000000000
+FS:  00007fadafbfe6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f527c5b8000 CR3: 000000001c7cb000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ inode_unlock include/linux/fs.h:807 [inline]
+ vfs_utimes+0x4c2/0x760 fs/utimes.c:68
+ do_utimes_path fs/utimes.c:99 [inline]
+ do_utimes fs/utimes.c:145 [inline]
+ __do_sys_utime fs/utimes.c:226 [inline]
+ __se_sys_utime+0x1e1/0x2e0 fs/utimes.c:215
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fadb847cae9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fadafbfe0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000084
+RAX: ffffffffffffffda RBX: 00007fadb859c050 RCX: 00007fadb847cae9
+RDX: 0000000000000000 RSI: 0000000020000100 RDI: 0000000020000080
+RBP: 00007fadb84c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fadb859c050 R15: 00007ffca2821ba8
+ </TASK>
+
 
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Applied to the vfs.iomap branch of the vfs/vfs.git tree.
-Patches in the vfs.iomap branch should appear in linux-next soon.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.iomap
-
-[01/14] iomap: clear the per-folio dirty bits on all writeback failures
-        https://git.kernel.org/vfs/vfs/c/7c821e1f5a5a
-[02/14] iomap: treat inline data in iomap_writepage_map as an I/O error
-        https://git.kernel.org/vfs/vfs/c/6571f184afe3
-[03/14] iomap: move the io_folios field out of struct iomap_ioend
-        https://git.kernel.org/vfs/vfs/c/e5f9e159cf10
-[04/14] iomap: move the PF_MEMALLOC check to iomap_writepages
-        https://git.kernel.org/vfs/vfs/c/fc51566e62ef
-[05/14] iomap: factor out a iomap_writepage_handle_eof helper
-        https://git.kernel.org/vfs/vfs/c/89d887160535
-[06/14] iomap: move all remaining per-folio logic into iomap_writepage_map
-        https://git.kernel.org/vfs/vfs/c/6d3bac5014bf
-[07/14] iomap: clean up the iomap_alloc_ioend calling convention
-        https://git.kernel.org/vfs/vfs/c/d7acac8ed175
-[08/14] iomap: move the iomap_sector sector calculation out of iomap_add_to_ioend
-        https://git.kernel.org/vfs/vfs/c/a04db4e40bdb
-[09/14] iomap: don't chain bios
-        https://git.kernel.org/vfs/vfs/c/7a579e360d15
-[10/14] iomap: only call mapping_set_error once for each failed bio
-        https://git.kernel.org/vfs/vfs/c/a64f2b75da6b
-[11/14] iomap: factor out a iomap_writepage_map_block helper
-        https://git.kernel.org/vfs/vfs/c/3853862b0b77
-[12/14] iomap: submit ioends immediately
-        https://git.kernel.org/vfs/vfs/c/ae00bec07dee
-[13/14] iomap: map multiple blocks at a time
-        https://git.kernel.org/vfs/vfs/c/2487070c95f4
-[14/14] iomap: pass the length of the dirty region to ->map_blocks
-        https://git.kernel.org/vfs/vfs/c/a828782eaff6
+If you want to undo deduplication, reply with:
+#syz undup
