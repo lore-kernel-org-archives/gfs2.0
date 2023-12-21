@@ -1,62 +1,63 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918926D6C4
-	for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 14:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507B636084
+	for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q0cbWoGT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KjfNK2HW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703167830;
+	s=mimecast20190719; t=1703167901;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UlVJnKa/yWhQ8C8K+JZ2YshQ+iGXn7Ia+DVE3ZSzFGE=;
-	b=Q0cbWoGTAK+z4R7ghV02tK/hRPSJQRhrvAhdWENZ3gIhfHvPnSqNzWET0GRfxIhXTevUBF
-	D4U6iT/52UylSFQ5VSSUs4guSg43LjBR9IFVBRHKVlzWxatdW6pzoF3L5HC7w7pcC/9+W2
-	cCO01EbKeDguPa2EETZSnIse87OH2Jg=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pmpbR4zRGyIfWBWmW3TWB17Ci3rGfKoAnT89Zuwgqao=;
+	b=KjfNK2HWMMFPqVbW0kX02LqRYnc760MBx2Oxil7OjMiEnMQnrW0tKQaxhaeYfIGpD+MJVI
+	Ban9Ulb25Th0HyOaYHvGIpfGbHAqOGyZximzSErMZsGuU2P49GvSuY6/4l6WQdJvte4wdt
+	9tF9Zy/pSxWnKyir2SuIXY8IChKErbA=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-OCXJGC_XPbiuJhuhGotn9w-1; Thu, 21 Dec 2023 09:10:28 -0500
-X-MC-Unique: OCXJGC_XPbiuJhuhGotn9w-1
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-5cd61dccd77so437536a12.3
-        for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 06:10:28 -0800 (PST)
+ us-mta-673-pWFmOB27NCSELwjNcdwS_Q-1; Thu, 21 Dec 2023 09:11:39 -0500
+X-MC-Unique: pWFmOB27NCSELwjNcdwS_Q-1
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-5ca5b61c841so261628a12.3
+        for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 06:11:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703167827; x=1703772627;
+        d=1e100.net; s=20230601; t=1703167898; x=1703772698;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UlVJnKa/yWhQ8C8K+JZ2YshQ+iGXn7Ia+DVE3ZSzFGE=;
-        b=ry0pLgHGtbLGR5we5FQ3beRiUnb/3C/Sr6d3RtICdD8aF1UTFJjLA1wPpuHuwunBAU
-         yd4NTda8G0/yhGt2P1uwjt8I3/0UYHOyUxWfeiZQIjHzPfcrGCT2JZQ/4cauarXN4FUB
-         2CF7j/82aTDV73R0Gqjr89WbW1cZPRrB0sqDUrPrDQdNif8uOOFkxMpawBHrw/DCUeZl
-         aGLOfh0oEszevGhqtFYSehWmFl6/IaqLJljL8nmp1XyMUv4Mj+GYS5zfRNXP6cfR8yXC
-         vZWkfYcVxtcJFtHQWYtLI+OmXd1803mv0F6esk2b1GrseipON6Mum0Im5MdLXqKphyyQ
-         Xsgg==
-X-Gm-Message-State: AOJu0Yxd5ctHqKBE12R1ivjpaLbgX+4xLv0RWwql2tGbUXGoV1QIX1gm
-	rZGnGJXfhl9vc9A6Hw1wpmYQaNLHoaJvEJlvq8IvNoTtw0ZyAA2jRY6g7WNCDk1FvxcCyC0KiJl
-	zYFkCom5MgX2XPUKxh+yf/oClqZgNzg==
-X-Received: by 2002:a17:902:6549:b0:1d3:fada:b5e8 with SMTP id d9-20020a170902654900b001d3fadab5e8mr1192000pln.4.1703167827658;
-        Thu, 21 Dec 2023 06:10:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcZ6imbcNnwWmt9JtxcmK35hxltCND/m1D6h16cvFFeSk3+9z54jfnkdkeoblDhLJKAH2enrYfTybRF75hwHY=
-X-Received: by 2002:a17:902:6549:b0:1d3:fada:b5e8 with SMTP id
- d9-20020a170902654900b001d3fadab5e8mr1191990pln.4.1703167827324; Thu, 21 Dec
- 2023 06:10:27 -0800 (PST)
+        bh=pmpbR4zRGyIfWBWmW3TWB17Ci3rGfKoAnT89Zuwgqao=;
+        b=OUodUfSwJ7pEihAEbkvxiHynBCL3ObKNKjqthADNayXcvo4MzLtnPxwBob3HJveHw2
+         sQAeB/s14BkjdfbV1Q1LGstLsXtpe/qxL2bZQkAzdHig9MI+bRwwQvN39EnPwmfOt7Dy
+         421CpydTEQCrMbVdLd6c2C7zpcGk/AFRqYrvAJYU3uGnqdGV8HUIzqpbU4kS7xsJltP1
+         4JlwX7kZA9YVPY36+FLmDbi4+hrUmnu05B9PZoJdv8ApjHU7V31vTIyj4TEXno1Hd4ks
+         ev1UcC0isFykzL3owKpxo5ZkjS54hmm6PYb/fOPQvjdguVqUSMLJyS8bammdT/q90/Wv
+         ShJg==
+X-Gm-Message-State: AOJu0Yzq4yT5tqra+xHeqnGu9P0GPZ84IobG2o4ifewB+/3nZ1jRGN2Y
+	yOVtU7QGb4WsM59t3x6nOB3U54gwwKW6ZO6t0QBkLCvnbPRzrY0FBhUtvoh3Umso8CI0N8qXBo1
+	IOhbl8QG7pYDSaa26Sa7Ja/pLHfYUFw==
+X-Received: by 2002:a17:902:e789:b0:1d0:6ffe:1e6a with SMTP id cp9-20020a170902e78900b001d06ffe1e6amr13169408plb.77.1703167898613;
+        Thu, 21 Dec 2023 06:11:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGrmQ7AphNiGOI6sScviIQgDZwQpEoPAwYbzLtgmXILJaxyuzIa63kNWUED6YdDLexPci01nEJ6o+R6SIO+CFw=
+X-Received: by 2002:a17:902:e789:b0:1d0:6ffe:1e6a with SMTP id
+ cp9-20020a170902e78900b001d06ffe1e6amr13169395plb.77.1703167898304; Thu, 21
+ Dec 2023 06:11:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231218053558.1200822-1-haokexin@gmail.com>
-In-Reply-To: <20231218053558.1200822-1-haokexin@gmail.com>
+References: <20231218053558.1200822-1-haokexin@gmail.com> <20231218053558.1200822-2-haokexin@gmail.com>
+In-Reply-To: <20231218053558.1200822-2-haokexin@gmail.com>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 21 Dec 2023 15:10:15 +0100
-Message-ID: <CAHc6FU7DJkL68oD5we35mgO7fOAptmy1G=d3XrgHjBpWSWaVGQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] gfs2: Add missing set_freezable() for freezable kthread
+Date: Thu, 21 Dec 2023 15:11:26 +0100
+Message-ID: <CAHc6FU5MK7zN36tsY_4YMuKxuo1yRuCgh4D4YSUR9OgjJ6vECw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] gfs2: Use wait_event_freezable_timeout() for
+ freezable kthread
 To: Kevin Hao <haokexin@gmail.com>
 Cc: gfs2@lists.linux.dev, "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>
 X-Mimecast-Spam-Score: 0
@@ -68,46 +69,63 @@ Kevin,
 
 On Mon, Dec 18, 2023 at 6:36=E2=80=AFAM Kevin Hao <haokexin@gmail.com> wrot=
 e:
-> The kernel thread function gfs2_logd() and gfs2_quotad() invoke the
-> try_to_freeze() in its loop. But all the kernel threads are no-freezable
-> by default. So if we want to make a kernel thread to be freezable,
-> we have to invoke set_freezable() explicitly.
+> A freezable kernel thread can enter frozen state during freezing by
+> either calling try_to_freeze() or using wait_event_freezable() and its
+> variants. So for the following snippet of code in a kernel thread loop:
+>   try_to_freeze();
+>   wait_event_interruptible_timeout();
+>
+> We can change it to a simple wait_event_freezable_timeout() and then
+> eliminate a function call.
 >
 > Signed-off-by: Kevin Hao <haokexin@gmail.com>
 > ---
->  fs/gfs2/log.c   | 1 +
->  fs/gfs2/quota.c | 1 +
->  2 files changed, 2 insertions(+)
+>  fs/gfs2/log.c   | 4 +---
+>  fs/gfs2/quota.c | 4 +---
+>  2 files changed, 2 insertions(+), 6 deletions(-)
 >
 > diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-> index e5271ae87d1c..a268b69bb636 100644
+> index a268b69bb636..20059fc913e7 100644
 > --- a/fs/gfs2/log.c
 > +++ b/fs/gfs2/log.c
-> @@ -1297,6 +1297,7 @@ int gfs2_logd(void *data)
->         struct gfs2_sbd *sdp =3D data;
->         unsigned long t =3D 1;
+> @@ -1331,9 +1331,7 @@ int gfs2_logd(void *data)
 >
-> +       set_freezable();
->         while (!kthread_should_stop()) {
->                 if (gfs2_withdrawn(sdp))
->                         break;
+>                 t =3D gfs2_tune_get(sdp, gt_logd_secs) * HZ;
+>
+> -               try_to_freeze();
+> -
+> -               t =3D wait_event_interruptible_timeout(sdp->sd_logd_waitq=
+,
+> +               t =3D wait_event_freezable_timeout(sdp->sd_logd_waitq,
+>                                 test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_fl=
+ags) ||
+>                                 gfs2_ail_flush_reqd(sdp) ||
+>                                 gfs2_jrnl_flush_reqd(sdp) ||
 > diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> index fa47824acf13..173581736a6e 100644
+> index 173581736a6e..05ef8409b614 100644
 > --- a/fs/gfs2/quota.c
 > +++ b/fs/gfs2/quota.c
-> @@ -1583,6 +1583,7 @@ int gfs2_quotad(void *data)
->         unsigned long quotad_timeo =3D 0;
->         unsigned long t =3D 0;
+> @@ -1603,11 +1603,9 @@ int gfs2_quotad(void *data)
+>                 quotad_check_timeo(sdp, "sync", gfs2_quota_sync, t,
+>                                    &quotad_timeo, &tune->gt_quota_quantum=
+);
 >
-> +       set_freezable();
->         while (!kthread_should_stop()) {
->                 if (gfs2_withdrawn(sdp))
->                         break;
+> -               try_to_freeze();
+> -
+>                 t =3D min(quotad_timeo, statfs_timeo);
+>
+> -               t =3D wait_event_interruptible_timeout(sdp->sd_quota_wait=
+,
+> +               t =3D wait_event_freezable_timeout(sdp->sd_quota_wait,
+>                                 sdp->sd_statfs_force_sync ||
+>                                 gfs2_withdrawn(sdp) ||
+>                                 kthread_should_stop(),
 > --
 > 2.39.2
 >
 
-This is looking good, thank you. I've applied it to our for-next branch.
+This also is looking good; applied as well.
 
+Thank you,
 Andreas
 
