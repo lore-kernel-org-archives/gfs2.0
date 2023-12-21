@@ -1,80 +1,113 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0AF1DDE3
-	for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 12:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918926D6C4
+	for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 14:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y/4hUsMV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q0cbWoGT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703162299;
+	s=mimecast20190719; t=1703167830;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cfOAS/Cfvy73NfYNUGoNrYx/8Pw3cjNZcgnpRXHhVXg=;
-	b=Y/4hUsMVm09qwOBnvvT9v9i3SSjuIcPKm+CdF7fTrkVZpj324/9id1xef4Yg2VfLVp3QLv
-	bO1Pww1ChsvyhQX/vBURd4/W/CcNVXcmAlaako5XII1788JKBK3ncQtC8LO9Hob6fNPD+4
-	9C6Xw2re7VbazB/Vq/3ZFuts5L0D/WY=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UlVJnKa/yWhQ8C8K+JZ2YshQ+iGXn7Ia+DVE3ZSzFGE=;
+	b=Q0cbWoGTAK+z4R7ghV02tK/hRPSJQRhrvAhdWENZ3gIhfHvPnSqNzWET0GRfxIhXTevUBF
+	D4U6iT/52UylSFQ5VSSUs4guSg43LjBR9IFVBRHKVlzWxatdW6pzoF3L5HC7w7pcC/9+W2
+	cCO01EbKeDguPa2EETZSnIse87OH2Jg=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-cD6qNAQwO5mrENYcM5LK1g-1; Thu, 21 Dec 2023 07:38:17 -0500
-X-MC-Unique: cD6qNAQwO5mrENYcM5LK1g-1
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1d04dbb4811so7774855ad.0
-        for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 04:38:17 -0800 (PST)
+ us-mta-591-OCXJGC_XPbiuJhuhGotn9w-1; Thu, 21 Dec 2023 09:10:28 -0500
+X-MC-Unique: OCXJGC_XPbiuJhuhGotn9w-1
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-5cd61dccd77so437536a12.3
+        for <gfs2@lists.linux.dev>; Thu, 21 Dec 2023 06:10:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703162297; x=1703767097;
+        d=1e100.net; s=20230601; t=1703167827; x=1703772627;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cfOAS/Cfvy73NfYNUGoNrYx/8Pw3cjNZcgnpRXHhVXg=;
-        b=vac7JYEOrxjnJiOgIkNUbrt7MtsuraQ9JWfFqDNNLkxpAiCt9UB4hMyMnWMzfS6IqB
-         XSZutzj4oPklgOCC+WtMke3LtoNMO9Fq1sKjHV56jjwpiFKaX4pTg7w83kVVKJnQujxs
-         9N32r51YtNwrPYtOOzTOp8cVvPSwwXbPyBXiqTZ9vL2xo2H8aVjHWCYJ1aUOhw0tgul9
-         cyrCkAlUQXTXkORABcYsdvl1xXmb13QvLsDLmP5AfpkIVDUomZEF7+f/lNWrMfdyFX6T
-         2sc/pUiivwzTpQ1gwCtimK51CcWaaBF9BXmcwn1Xrorc6bg5oDcdG5Cpo/gs+o0fF0D5
-         C7FQ==
-X-Gm-Message-State: AOJu0YwpDUNIfjtP8GDAqTRLUPORl5WN4CvNo3O6RLfhCYeN/EBREYWd
-	3XGbeJu/pPA6oKBc0qIzwqq7cpJOkUW/DhCLn3aQaBIM+DyhwR1rv45GBBpBo4PCXCAFrWoT0f7
-	0zpnjJl9DdfYJolT6UCd/oDjzhnA2Cw==
-X-Received: by 2002:a17:902:e54e:b0:1d0:b42f:e41b with SMTP id n14-20020a170902e54e00b001d0b42fe41bmr24446213plf.64.1703162296809;
-        Thu, 21 Dec 2023 04:38:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcxmSGTi9Cen2vOZLOtaY1q0MkvT4Sc2+5Jcq+fjVEuZ63u18UmONPJhGdPt3NhdWBJzlbTeYFpqiaqcEO7EY=
-X-Received: by 2002:a17:902:e54e:b0:1d0:b42f:e41b with SMTP id
- n14-20020a170902e54e00b001d0b42fe41bmr24446200plf.64.1703162296493; Thu, 21
- Dec 2023 04:38:16 -0800 (PST)
+        bh=UlVJnKa/yWhQ8C8K+JZ2YshQ+iGXn7Ia+DVE3ZSzFGE=;
+        b=ry0pLgHGtbLGR5we5FQ3beRiUnb/3C/Sr6d3RtICdD8aF1UTFJjLA1wPpuHuwunBAU
+         yd4NTda8G0/yhGt2P1uwjt8I3/0UYHOyUxWfeiZQIjHzPfcrGCT2JZQ/4cauarXN4FUB
+         2CF7j/82aTDV73R0Gqjr89WbW1cZPRrB0sqDUrPrDQdNif8uOOFkxMpawBHrw/DCUeZl
+         aGLOfh0oEszevGhqtFYSehWmFl6/IaqLJljL8nmp1XyMUv4Mj+GYS5zfRNXP6cfR8yXC
+         vZWkfYcVxtcJFtHQWYtLI+OmXd1803mv0F6esk2b1GrseipON6Mum0Im5MdLXqKphyyQ
+         Xsgg==
+X-Gm-Message-State: AOJu0Yxd5ctHqKBE12R1ivjpaLbgX+4xLv0RWwql2tGbUXGoV1QIX1gm
+	rZGnGJXfhl9vc9A6Hw1wpmYQaNLHoaJvEJlvq8IvNoTtw0ZyAA2jRY6g7WNCDk1FvxcCyC0KiJl
+	zYFkCom5MgX2XPUKxh+yf/oClqZgNzg==
+X-Received: by 2002:a17:902:6549:b0:1d3:fada:b5e8 with SMTP id d9-20020a170902654900b001d3fadab5e8mr1192000pln.4.1703167827658;
+        Thu, 21 Dec 2023 06:10:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEcZ6imbcNnwWmt9JtxcmK35hxltCND/m1D6h16cvFFeSk3+9z54jfnkdkeoblDhLJKAH2enrYfTybRF75hwHY=
+X-Received: by 2002:a17:902:6549:b0:1d3:fada:b5e8 with SMTP id
+ d9-20020a170902654900b001d3fadab5e8mr1191990pln.4.1703167827324; Thu, 21 Dec
+ 2023 06:10:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231206195807.764344-1-willy@infradead.org> <ZYMQx2070yb9Vkgs@casper.infradead.org>
-In-Reply-To: <ZYMQx2070yb9Vkgs@casper.infradead.org>
+References: <20231218053558.1200822-1-haokexin@gmail.com>
+In-Reply-To: <20231218053558.1200822-1-haokexin@gmail.com>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 21 Dec 2023 13:38:05 +0100
-Message-ID: <CAHc6FU5Wn8NYn96SXyeWq5ifHnO9GChqcbDX5x2ebQaKKfvJYg@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: Remove use of error flag in journal reads
-To: Matthew Wilcox <willy@infradead.org>
-Cc: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Date: Thu, 21 Dec 2023 15:10:15 +0100
+Message-ID: <CAHc6FU7DJkL68oD5we35mgO7fOAptmy1G=d3XrgHjBpWSWaVGQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] gfs2: Add missing set_freezable() for freezable kthread
+To: Kevin Hao <haokexin@gmail.com>
+Cc: gfs2@lists.linux.dev, "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 20, 2023 at 5:05=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
-> On Wed, Dec 06, 2023 at 07:58:06PM +0000, Matthew Wilcox (Oracle) wrote:
-> > Conventionally we use the uptodate bit to signal whether a read
-> > encountered an error or not.  Use folio_end_read() to set the uptodate
-> > bit on success.  Also use filemap_set_wb_err() to communicate the errno
-> > instead of the more heavy-weight mapping_set_error().
->
-> Ping?
+Kevin,
 
-Pushed to for-next now. Thanks for the patch and reminder.
+On Mon, Dec 18, 2023 at 6:36=E2=80=AFAM Kevin Hao <haokexin@gmail.com> wrot=
+e:
+> The kernel thread function gfs2_logd() and gfs2_quotad() invoke the
+> try_to_freeze() in its loop. But all the kernel threads are no-freezable
+> by default. So if we want to make a kernel thread to be freezable,
+> we have to invoke set_freezable() explicitly.
+>
+> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> ---
+>  fs/gfs2/log.c   | 1 +
+>  fs/gfs2/quota.c | 1 +
+>  2 files changed, 2 insertions(+)
+>
+> diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+> index e5271ae87d1c..a268b69bb636 100644
+> --- a/fs/gfs2/log.c
+> +++ b/fs/gfs2/log.c
+> @@ -1297,6 +1297,7 @@ int gfs2_logd(void *data)
+>         struct gfs2_sbd *sdp =3D data;
+>         unsigned long t =3D 1;
+>
+> +       set_freezable();
+>         while (!kthread_should_stop()) {
+>                 if (gfs2_withdrawn(sdp))
+>                         break;
+> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+> index fa47824acf13..173581736a6e 100644
+> --- a/fs/gfs2/quota.c
+> +++ b/fs/gfs2/quota.c
+> @@ -1583,6 +1583,7 @@ int gfs2_quotad(void *data)
+>         unsigned long quotad_timeo =3D 0;
+>         unsigned long t =3D 0;
+>
+> +       set_freezable();
+>         while (!kthread_should_stop()) {
+>                 if (gfs2_withdrawn(sdp))
+>                         break;
+> --
+> 2.39.2
+>
+
+This is looking good, thank you. I've applied it to our for-next branch.
 
 Andreas
 
