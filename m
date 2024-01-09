@@ -1,140 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCCB2941E
-	for <gfs2@lists.linux.dev>; Mon,  8 Jan 2024 12:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Urxd7q1a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704715559;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HtmrrRZs23B4hXwrrEuiwzHUR6n+wAsGzVFjIlhR+Rs=;
-	b=Urxd7q1adjd86ewPKPPwxh4bP6jr6Vx5xhxvKKj0ZOYAwwlOrpiYFAJWghsR5yril7W0X5
-	45iA7keN3dyziqi4qOTIy4J05Pjr+4YiGpGpJg8Mbe0rP97LQKrJLUUOY/WOe2uHLLBPpz
-	cvTMzUWMm/tvG/gxjHr7P7CV8GRJ5oY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-mSyYL8gpNv-4cBr26tSdRg-1; Mon, 08 Jan 2024 07:05:55 -0500
-X-MC-Unique: mSyYL8gpNv-4cBr26tSdRg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A285585A58B;
-	Mon,  8 Jan 2024 12:05:55 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.45.227.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BA3401C060AF;
-	Mon,  8 Jan 2024 12:05:54 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] gfs2 changes
-Date: Mon,  8 Jan 2024 13:05:53 +0100
-Message-ID: <20240108120553.4993-1-agruenba@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A273C46B
+	for <gfs2@lists.linux.dev>; Tue,  9 Jan 2024 18:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7bed8faf6a6so120008639f.0
+        for <gfs2@lists.linux.dev>; Tue, 09 Jan 2024 10:20:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704824432; x=1705429232;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aPTzyGzO0RVliTZIwtT4o/yk3Uuej80rZWM7X5yCgfY=;
+        b=qfSY/fhktaVSDeWcpLlJfhH4a6Yc0XjeiYzG1NaeWg//Pbdj3fvaxou+dBG1crKrYS
+         7AfOPdFCkShvgx7QknHsdGga2W9vrRtMf/Kue9qYQgfvuEaWFLDmRvqo8dhrgFMDqP5K
+         4l+DzC+EbeeZnOhc751ajLlOK6Wsrp8MAWG8ORmLj9uhBjQWlSptOCoI6CfRq1/gcM25
+         GBa/R8MrP2Y4KJQ1K550849uNmRUhI9AZ2lG5OuCIApperjl7vgzJLP2Pxt/527d1X+V
+         UCQkiv5+94wRG3tKT+zcrf8El6mWvHm3Dlh90DLJhOLA0IW6OfS4DF0FNAox4zH1XjIn
+         CisA==
+X-Gm-Message-State: AOJu0YzU/DDv3FEkr9gWHQlD+3cednUozPf3HkrFXsxgr0NmNvVnnJgz
+	UE7Zhx1JGtnGhe9QIIbM2O7xcbpLEL/i+eygxXUS/XCXZyttm4w=
+X-Google-Smtp-Source: AGHT+IEJsobw5Y2sb2LoAztipvn7kTyaYyjGWKnTMJG6cIATk5Xjhnfs0AK2082xbky+XsV5Oj+9qVo50vdhKAcqp7rRL1UOMICb
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Received: by 2002:a05:6e02:1c22:b0:360:7783:b60 with SMTP id
+ m2-20020a056e021c2200b0036077830b60mr762012ilh.6.1704824431850; Tue, 09 Jan
+ 2024 10:20:31 -0800 (PST)
+Date: Tue, 09 Jan 2024 10:20:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000aa3e5a060e875eda@google.com>
+Subject: [syzbot] Monthly gfs2 report (Jan 2024)
+From: syzbot <syzbot+list25f7fd386a79080c0cdd@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Linus,
+Hello gfs2 maintainers/developers,
 
-please consider pulling the following gfs2 changes.
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
 
-In addition to the usual fixes and cleanups, this adds gfs2 support for
-non-blocking lookups (MAY_NOT_BLOCK / LOOKUP_RCU).  That's a worthwhile
-improvement by itself and gets us one step closer to making RESOLVE_CACHED
-work (*).
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 19 issues are still open and 22 have been fixed so far.
 
-https://lore.kernel.org/linux-fsdevel/20231109190844.2044940-1-agruenba@redhat.com/
+Some of the still happening issues:
 
-Thanks,
-Andreas
+Ref Crashes Repro Title
+<1> 5332    Yes   WARNING in __folio_mark_dirty (2)
+                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
+<2> 3678    Yes   WARNING in folio_account_dirtied
+                  https://syzkaller.appspot.com/bug?extid=8d1d62bfb63d6a480be1
+<3> 675     Yes   kernel BUG in gfs2_glock_nq (2)
+                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<4> 64      Yes   WARNING in gfs2_check_blk_type
+                  https://syzkaller.appspot.com/bug?extid=092b28923eb79e0f3c41
+<5> 48      Yes   general protection fault in gfs2_dump_glock (2)
+                  https://syzkaller.appspot.com/bug?extid=427fed3295e9a7e887f2
 
-The following changes since commit b85ea95d086471afb4ad062012a4d73cd328fa86:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-  Linux 6.7-rc1 (2023-11-12 16:19:07 -0800)
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-are available in the Git repository at:
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.7-rc1-fixes
-
-for you to fetch changes up to e345b87b0b0444d1c644b0ea15cfb50e88f10b55:
-
-  gfs2: Fix freeze consistency check in log_write_header (2023-12-27 13:16:48 +0100)
-
-----------------------------------------------------------------
-gfs2 updates
-
-- Add support for non-blocking lookup (MAY_NOT_BLOCK / LOOKUP_RCU)
-
-- Various minor fixes and cleanups
-
-----------------------------------------------------------------
-Abhi Das (1):
-      gfs2: Use GL_NOBLOCK flag for non-blocking lookups
-
-Al Viro (2):
-      gfs2: d_obtain_alias(ERR_PTR(...)) will do the right thing
-      gfs2: use is_subdir()
-
-Andreas Gruenbacher (9):
-      gfs2: Fix inode_go_instantiate description
-      gfs2: Add GL_NOBLOCK flag
-      gfs2: Minor gfs2_ail1_empty cleanup
-      gfs2: Mark withdraws as unlikely
-      gfs2: Rename gfs2_withdrawn to gfs2_withdrawing_or_withdrawn
-      gfs2: Lift withdraw check out of gfs2_ail1_empty
-      gfs2: Minor gfs2_{freeze,thaw}_super cleanup
-      gfs2: Refcounting fix in gfs2_thaw_super
-      gfs2: Fix freeze consistency check in log_write_header
-
-Edward Adam Davis (1):
-      gfs2: fix kernel BUG in gfs2_quota_cleanup
-
-Kevin Hao (2):
-      gfs2: Add missing set_freezable() for freezable kthread
-      gfs2: Use wait_event_freezable_timeout() for freezable kthread
-
-Matthew Wilcox (Oracle) (1):
-      gfs2: Remove use of error flag in journal reads
-
-Osama Muhammad (1):
-      gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
-
-Randy Dunlap (1):
-      gfs2: rgrp: fix kernel-doc warnings
-
- fs/gfs2/aops.c       |  2 +-
- fs/gfs2/dentry.c     | 23 ++++++++------
- fs/gfs2/export.c     |  2 --
- fs/gfs2/file.c       |  2 +-
- fs/gfs2/glock.c      | 47 +++++++++++++++++++++++++---
- fs/gfs2/glock.h      |  1 +
- fs/gfs2/glops.c      |  4 +--
- fs/gfs2/inode.c      |  8 ++---
- fs/gfs2/lock_dlm.c   |  8 ++---
- fs/gfs2/log.c        | 63 +++++++++++++++++++++----------------
- fs/gfs2/lops.c       | 21 +++++--------
- fs/gfs2/meta_io.c    |  9 ++++--
- fs/gfs2/ops_fstype.c |  2 +-
- fs/gfs2/quota.c      | 16 +++++-----
- fs/gfs2/recovery.c   |  2 +-
- fs/gfs2/rgrp.c       | 12 +++----
- fs/gfs2/super.c      | 88 +++++++++++++++++++++-------------------------------
- fs/gfs2/sys.c        |  2 +-
- fs/gfs2/trans.c      |  2 +-
- fs/gfs2/util.c       |  4 +--
- fs/gfs2/util.h       | 15 ++++-----
- 21 files changed, 182 insertions(+), 151 deletions(-)
-
+You may send multiple commands in a single email message.
