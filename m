@@ -1,98 +1,152 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E0C250EA
-	for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 20:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AA0604C9;
+	Tue, 16 Jan 2024 22:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705438017; cv=none; b=WjofGofTPpVKbxlBysHBX8jHslUYn5AYlXC0LRFayj2RGVuz2koarm3RtHPZmqxge4tUwfNTj+ioN6OeuWSuqBXzUZjEmUwoL7jZjEOZ54waKptK3JK4NLaLc6QSlAYaiIu9OhVLN2W0szpJPV8Xst0q5YzLqi6EPO0aK53QQJI=
+	t=1705442842; cv=none; b=mxA/fBe0P7/k1b/gR4jrApKQvmo2A/g4J4NaB5GXODTEbtUlFeVYyEfSykWWeU87L/JW3I2KM+CXz2r2K1T9i0crFFVtmQWPE1TK83fq/r1OTnpAYlwCfzA2aNbAOgYg1WsWlZxn85NRsC1cQz0PcCJEYS0DaXwPRnFRz6raDQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705438017; c=relaxed/simple;
-	bh=ospxE6Ywnr4fHa2us3RDJ0glfrJaABYoOmOTOUL9jbM=;
-	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=SJymId8BDwf2bnZamH3/DKcLN68NozXAVR2QGjVFwZ2Kh/D1mucG/54NEp3GQCyG3Jct7wN0UWZSOaut1tsXuExX6q95hTaiXTti50cXFgLJdybALoA2AYs2uHjVB+JxWE/Jy3TDYaDXIztjEQJWuhQnuGo+fd9RRxiTY394PtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id DE19D1C007B; Tue, 16 Jan 2024 21:46:54 +0100 (CET)
-Date: Tue, 16 Jan 2024 21:46:54 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 4.19 11/12] gfs2: Refcounting fix in
- gfs2_thaw_super
-Message-ID: <ZabrPnsVr6WHz2lM@duo.ucw.cz>
-References: <20240116002817.216837-1-sashal@kernel.org>
- <20240116002817.216837-11-sashal@kernel.org>
+	s=arc-20240116; t=1705442842; c=relaxed/simple;
+	bh=IYYnR2EFburvoZquoTc+yWa7KgPsEyYwG1E6dao281I=;
+	h=Received:Received:Received:Content-Type:Content-Transfer-Encoding:
+	 MIME-Version:From:To:Cc:Subject:In-reply-to:References:Date:
+	 Message-id:X-Spamd-Result:X-Rspamd-Server:X-Rspamd-Queue-Id:
+	 X-Spam-Level:X-Spam-Score:X-Spam-Flag; b=pDF6nvhUZZq3diTsTd1xPhM1zGrgIy4BzgfRcKZKyhhZW8ye8fSbyg7NuJIU2ye13gL69oO2YSqpXR+85pE6OMgaSIZy2M/TKCmL+snyjGwgJIEr0puHO5M+9Tfhy5vYPmc08w2RBJGUCt5TJCzn0riVgvXPKwziVEucDK032Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B7C1322168;
+	Tue, 16 Jan 2024 22:07:18 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2BB4613751;
+	Tue, 16 Jan 2024 22:07:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0xBrNAj+pmWWeAAAD6G6ig
+	(envelope-from <neilb@suse.de>); Tue, 16 Jan 2024 22:07:04 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="w5MB4wnlx5osspG+"
-Content-Disposition: inline
-In-Reply-To: <20240116002817.216837-11-sashal@kernel.org>
+From: "NeilBrown" <neilb@suse.de>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Christian Brauner" <brauner@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Dominique Martinet" <asmadeus@codewreck.org>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>, "Xiubo Li" <xiubli@redhat.com>,
+ "Ilya Dryomov" <idryomov@gmail.com>, "Alexander Aring" <aahringo@redhat.com>,
+ "David Teigland" <teigland@redhat.com>, "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Trond Myklebust" <trond.myklebust@hammerspace.com>,
+ "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <chuck.lever@oracle.com>,
+ "Olga Kornievskaia" <kolga@netapp.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "Jan Kara" <jack@suse.cz>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>, "Steve French" <sfrench@samba.org>,
+ "Paulo Alcantara" <pc@manguebit.com>, "Ronnie Sahlberg" <lsahlber@redhat.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sergey Senozhatsky" <senozhatsky@chromium.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-trace-kernel@vger.kernel.org, "Jeff Layton" <jlayton@kernel.org>
+Subject:
+ Re: [PATCH 01/20] filelock: split common fields into struct file_lock_core
+In-reply-to: <20240116-flsplit-v1-1-c9d0f4370a5d@kernel.org>
+References: <20240116-flsplit-v1-0-c9d0f4370a5d@kernel.org>,
+ <20240116-flsplit-v1-1-c9d0f4370a5d@kernel.org>
+Date: Wed, 17 Jan 2024 09:07:02 +1100
+Message-id: <170544282220.23031.10628392788633554158@noble.neil.brown.name>
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	 REPLY(-4.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: B7C1322168
+X-Spam-Level: 
+X-Spam-Score: -4.00
+X-Spam-Flag: NO
 
+On Wed, 17 Jan 2024, Jeff Layton wrote:
+> In a future patch, we're going to split file leases into their own
+> structure. Since a lot of the underlying machinery uses the same fields
+> move those into a new file_lock_core, and embed that inside struct
+> file_lock.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  include/linux/filelock.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/filelock.h b/include/linux/filelock.h
+> index 95e868e09e29..7825511c1c11 100644
+> --- a/include/linux/filelock.h
+> +++ b/include/linux/filelock.h
+> @@ -85,8 +85,9 @@ bool opens_in_grace(struct net *);
+>   *
+>   * Obviously, the last two criteria only matter for POSIX locks.
+>   */
+> -struct file_lock {
+> -	struct file_lock *fl_blocker;	/* The lock, that is blocking us */
+> +
+> +struct file_lock_core {
+> +	struct file_lock *fl_blocker;	/* The lock that is blocking us */
+>  	struct list_head fl_list;	/* link into file_lock_context */
+>  	struct hlist_node fl_link;	/* node in global lists */
+>  	struct list_head fl_blocked_requests;	/* list of requests with
+> @@ -102,6 +103,10 @@ struct file_lock {
+>  	int fl_link_cpu;		/* what cpu's list is this on? */
+>  	wait_queue_head_t fl_wait;
+>  	struct file *fl_file;
+> +};
+> +
+> +struct file_lock {
+> +	struct file_lock_core fl_core;
+>  	loff_t fl_start;
+>  	loff_t fl_end;
+>  
 
---w5MB4wnlx5osspG+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If I we doing this, I would rename all the fields in file_lock_core to
+have an "flc_" prefix, and add some #defines like
 
-Hi!
+ #define fl_list fl_core.flc_list
 
-> From: Andreas Gruenbacher <agruenba@redhat.com>
->=20
-> [ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
->=20
-> It turns out that the .freeze_super and .thaw_super operations require
-> the filesystem to manage the superblock refcount itself.  We are using
-> the freeze_super() and thaw_super() helpers to mostly take care of that
-> for us, but this means that the superblock may no longer be around by
-> when thaw_super() returns, and gfs2_thaw_super() will then access freed
-> memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
-> that.
+so there would be no need to squash this with later patches to achieve
+bisectability.
 
-Patch was broken during backport.
+The #defines would be removed after the coccinelle scripts etc are
+applied.
 
-> +++ b/fs/gfs2/super.c
-> @@ -1013,6 +1013,7 @@ static int gfs2_freeze(struct super_block *sb)
->  		goto out;
->  	}
-> =20
-> +	atomic_inc(&sb->s_active);
->  	for (;;) {
->  		error =3D gfs2_lock_fs_check_clean(sdp, &sdp->sd_freeze_gh);
->  		if (!error)
-> @@ -1034,6 +1035,7 @@ static int gfs2_freeze(struct super_block *sb)
->  	error =3D 0;
->  out:
->  	mutex_unlock(&sdp->sd_freeze_mutex);
-> +	deactivate_super(sb);
->  	return error;
->  }
+I would also do the "convert some internal functions" patches *before*
+the bulk conversion of fl_foo to fl_code.flc_foo so that those functions
+don't get patched twice.
 
-Notice the goto out? That now jumps around the atomic_inc, but we
-still do decrease. This will break 4.19, please fix or drop.
+But this is all personal preference.  If you prefer your approach,
+please leave it that way.  The only clear benefit of my approach is that
+you don't need to squash patches together, and that is probably not a
+big deal.
 
-BR,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---w5MB4wnlx5osspG+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabrPgAKCRAw5/Bqldv6
-8vXvAJ4xPIsInQY8b9aJf+YojgyqIbnsEgCfdfWZWyfqcu9gi+6i7xz/o4JIdnY=
-=u5qo
------END PGP SIGNATURE-----
-
---w5MB4wnlx5osspG+--
+Thanks,
+NeilBrown
