@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46B25FEFA;
-	Tue, 16 Jan 2024 00:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBEC64AA0;
+	Tue, 16 Jan 2024 00:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqPetzLa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EF9C433C7;
-	Tue, 16 Jan 2024 00:28:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AC3ynQRy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0F0C433B2;
+	Tue, 16 Jan 2024 00:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705364882;
-	bh=3jJHOPQa0mr2Qfc7Y8nOM2W7SPLwLOUsNKrjKQsLx18=;
+	s=k20201202; t=1705364922;
+	bh=m5rPlNU7OgLcvCTGM6mSvAH1UFCN9n3MJ5KAXvKT+tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqPetzLaCsXgxzwLLuJdRdzPTYZjqxwijq0bmXisph5bcaxyXP0Rg2ZFYaXzgLkeo
-	 SXt/hnvM6os27JcA3mtmkwPPa629dGuwDJgC6p9LmZoqJNFYwEH98lCRS7R6zVti6T
-	 0sMHQ5yNRguTxQ8HnQ7CGGU0Z34iNAx0xpnOGyvEL0+sW1Noi9s2+FfOgISXJRlWLq
-	 rnD4jEjxkGvPCgHV8wEbVLonkUTXevBGXqxVh5fcKchdrq6a1b5tLBAN3Bp8OgqM12
-	 PcEH5rcsGjhR4OGF05j5ehaUN0a6M3AQKE+fmXaLJfU4KOu6SWjpThy508YT03mSbH
-	 7SBOUXU67hsRQ==
+	b=AC3ynQRyzjEcZ/L4xFspxWKsjoY4sQXogDrK83c7rHa5saNwaCEMyYWPUITvSTw5m
+	 6hDleL9AcZpwaEYnk1KJTOHevvZooe9wvR8ftOGuwfUBjuPlQ3rOQ/APP5xMsd3ibl
+	 qWBbiXaHqdG1nD0X2uWvQQuBmB8iqsQ+Y6Zi5ghgcxHSKB9BlmklfbVDTLX3Ie4ORc
+	 7PJPcxJkr0G2lsHmTRuVcUTkCE9NKR0F15WsM6KSjMaUPAaljZTCqXomeyP7ZYnYmt
+	 s0+2NChEJI7CtK2gYDxpyBCzThcli/wtXgpyz2sHbStK62nfquKIImZbWgwLaBqE6P
+	 4wBhC874L2dTw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 11/12] gfs2: Refcounting fix in gfs2_thaw_super
-Date: Mon, 15 Jan 2024 19:27:17 -0500
-Message-ID: <20240116002731.216549-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 11/12] gfs2: Refcounting fix in gfs2_thaw_super
+Date: Mon, 15 Jan 2024 19:28:04 -0500
+Message-ID: <20240116002817.216837-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116002731.216549-1-sashal@kernel.org>
-References: <20240116002731.216549-1-sashal@kernel.org>
+In-Reply-To: <20240116002817.216837-1-sashal@kernel.org>
+References: <20240116002817.216837-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.267
+X-stable-base: Linux 4.19.305
 Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
@@ -59,10 +59,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 15e757f76380..e6aa7e279785 100644
+index 29157f7d9663..2993598d18a4 100644
 --- a/fs/gfs2/super.c
 +++ b/fs/gfs2/super.c
-@@ -770,6 +770,7 @@ static int gfs2_freeze(struct super_block *sb)
+@@ -1013,6 +1013,7 @@ static int gfs2_freeze(struct super_block *sb)
  		goto out;
  	}
  
@@ -70,8 +70,8 @@ index 15e757f76380..e6aa7e279785 100644
  	for (;;) {
  		error = gfs2_lock_fs_check_clean(sdp, &sdp->sd_freeze_gh);
  		if (!error)
-@@ -786,6 +787,7 @@ static int gfs2_freeze(struct super_block *sb)
- 	set_bit(SDF_FS_FROZEN, &sdp->sd_flags);
+@@ -1034,6 +1035,7 @@ static int gfs2_freeze(struct super_block *sb)
+ 	error = 0;
  out:
  	mutex_unlock(&sdp->sd_freeze_mutex);
 +	deactivate_super(sb);
