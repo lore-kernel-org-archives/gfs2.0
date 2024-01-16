@@ -1,44 +1,50 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598421C68D
-	for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 15:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701A21C6B7
+	for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 15:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z0fopgfc"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d5ce88b51cso308075ad.0
-        for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 07:56:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705420600; x=1706025400; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BQbY8Mrxi51oRnesHl3OqUsTVue+4Gtvh2bYWjGB6WA=;
-        b=z0fopgfcsKAq5/rwfSwDfsgW+Pn7LJlIwGpxv9lhh6/fI3ei10oE1hMsWvhyQAOzRw
-         CiHzvE990h+WYQHnYTxhqee+PED5I2ZIEZc+3u7CcblC3jqGk41YbuRZ7X9xdp5Fs/35
-         p4dKpoEzFy48HhyU/qWOF7at0JyUgFl70iGUScvQiklWRU/VVN7l/GaUIA1P/17skeG5
-         oRrB5F6NExHtOOA6SCt0wprpF1SPP0zGwIsE1YotjnjIPru0SGFsjjFAUIaScNkVbsKM
-         66QXFQ8/xDRuEmdOslbUPwqeDU+a+whLL6gIEnmg8O6s0lur13ndp3z72aye2T878sio
-         uWtw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c99AJCvc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705420697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j3+81Y370yZULKu921Q3F9OVI+1X1VMWHK6XvqAJu5s=;
+	b=c99AJCvcx2CZyfD11uoPlAgHM1UVZlZEM73NgIq4FlAC3DQslA4ktPs8zHCuJqEZOQLb0G
+	UY47kzz4Le6mDdr/CgNBehjxkfCwF78SJbapkRqTTn70JWgSM6JwrW35zzFzSuGSUeY61e
+	wqakyTVXzEDv6J2zcszjBBgScfThW5I=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-115-Kyh8nWuXPom6r0RaPSk2kQ-1; Tue, 16 Jan 2024 10:58:11 -0500
+X-MC-Unique: Kyh8nWuXPom6r0RaPSk2kQ-1
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-5cf2714e392so4882530a12.0
+        for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 07:58:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705420600; x=1706025400;
+        d=1e100.net; s=20230601; t=1705420690; x=1706025490;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BQbY8Mrxi51oRnesHl3OqUsTVue+4Gtvh2bYWjGB6WA=;
-        b=l1TY1fg7AJr0K9a4hGirGPrz6ouSvY/PMBrrpYaocjCi79IgJm3rpPWLsUGGo++l28
-         q1She66wNOBIZl/zDgKgd5n9XdxUAd7d83G67vGjssui6AHo27MkO3B5mTHUaUaLSvMr
-         wDzmvNv7KBkAFUBT/CpVIRdxD8DZCm5KL/MpqioqRMnpgEFeZfW/7xSoQ3mn7rwF80Rp
-         NkP2iYjxk0X904poRJXAiToUtSZ3gTHCIfKFTarBBauYXBIF7Uk8fTQIZh2G37zPON59
-         o3MJ2yLMkI874D+tBSRwIXC3P0FXa/BZr+MEhm776TnSfWicY8XmL8Zs0PLhsUrPDY8V
-         e6Pg==
-X-Gm-Message-State: AOJu0YzEcXvKGClkaUvL/MFHJDYhI/hCzV3LsAVR0N7uX+4WKba0XU/C
-	euionWDu9TtrIjA4Mv4Mmu+6dDraZuT9tfHdREdHShytB+xF
-X-Google-Smtp-Source: AGHT+IEFpSNk4yBS3FQmOkIM6MlBaIX6qNQNXfqDHiHknuvALzTkBvr0USexOou2u5DTtKnzkASC4edoT/chV8i6aJg=
-X-Received: by 2002:a17:903:191:b0:1d4:ceab:58ba with SMTP id
- z17-20020a170903019100b001d4ceab58bamr6868plg.10.1705420600448; Tue, 16 Jan
- 2024 07:56:40 -0800 (PST)
+        bh=j3+81Y370yZULKu921Q3F9OVI+1X1VMWHK6XvqAJu5s=;
+        b=hhMp708Rv99I1kJZwsK9vI2kW4Jn1MoWtAoH00pjzwQ/WGSwNeQ3Pc9+98UNtIqh/E
+         zSyS6Fka9Vs5iOulSug6zC0LFpufDHx9Uhdi9aOMGjsdMqhzvZ7k/FhNp1Krm2UTW1CO
+         dLbigXNBROaJfX2IdhaayFhk/bk2Tk87qC8azZDi8wq4vVKlnqjXtm72O9ZD3i/tN85b
+         1TOBMlwDpgkkpMqc4p3n94wNXWsaWq5Fiii1CTModIRfXU0M2p9eakjFHZOfifksdhJH
+         EHPNJ+V5xF19sl6BGqNjnUVpCeSXiGZx4hcORvx191Yy6p5q2KjTVCnqR4vDckpkCxIx
+         ht5Q==
+X-Gm-Message-State: AOJu0YzXhMQEjHiqoDOHbUeN7mf28Gg9ws288ndfPmyFA5far6tamYEq
+	qgsqOwjJXZyjSZOLMATYAC9OCJs34FdO4mAhkPOPP/DbuVqse1kUH6YqOnMR8qT6Oa7Cz9R18vc
+	NBgyMC9gK/lmh6uRxOFF8uN534caIN96RUrIUEg==
+X-Received: by 2002:a17:902:860a:b0:1d5:6648:a7c2 with SMTP id f10-20020a170902860a00b001d56648a7c2mr8407127plo.65.1705420689959;
+        Tue, 16 Jan 2024 07:58:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE/5NEy07nCVG6NnmBEYEpT6FFnmHrRdkz28cHmFwSkUBCszqq6bHwK4J8ZyqQ2XTkNvDPrrn/xVsSj8tGGBic=
+X-Received: by 2002:a17:902:860a:b0:1d5:6648:a7c2 with SMTP id
+ f10-20020a170902860a00b001d56648a7c2mr8407109plo.65.1705420689693; Tue, 16
+ Jan 2024 07:58:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,24 +53,23 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <0000000000008d00ec05f06bcb35@google.com> <000000000000ac2378060f12234c@google.com>
 In-Reply-To: <000000000000ac2378060f12234c@google.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Tue, 16 Jan 2024 16:56:28 +0100
-Message-ID: <CANp29Y4J+bAFu5r8-hATpmsyNJ+insC5Qhws_qops5N38+Fiyw@mail.gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 16 Jan 2024 16:57:58 +0100
+Message-ID: <CAHc6FU5iG_tAOSaxzRdri3gugmxgu=Hx3VEYcNRbg2h34k3EuA@mail.gmail.com>
 Subject: Re: [syzbot] [gfs2?] BUG: unable to handle kernel NULL pointer
  dereference in gfs2_rindex_update
 To: syzbot <syzbot+2b32df23ff6b5b307565@syzkaller.appspotmail.com>
-Cc: agruenba@redhat.com, axboe@kernel.dk, brauner@kernel.org, 
-	cluster-devel@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rpeterso@redhat.com, syzkaller-bugs@googlegroups.com
+Cc: axboe@kernel.dk, brauner@kernel.org, cluster-devel@redhat.com, 
+	gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+X-Mimecast-Spam-Score: 1
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-#syz fix: fs: Block writes to mounted block devices
-
 On Tue, Jan 16, 2024 at 4:54=E2=80=AFPM syzbot
 <syzbot+2b32df23ff6b5b307565@syzkaller.appspotmail.com> wrote:
->
 > syzbot suspects this issue was fixed by commit:
 >
 > commit 6f861765464f43a71462d52026fbddfc858239a5
@@ -90,8 +95,8 @@ a76
 > If the result looks correct, please mark the issue as fixed by replying w=
 ith:
 >
-> #syz fix: fs: Block writes to mounted block devices
->
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
-ion
->
+
+Another one to go away.
+
+#syz fix: fs: Block writes to mounted block devices
+
