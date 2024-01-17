@@ -1,182 +1,119 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F8524212;
-	Wed, 17 Jan 2024 18:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE19250E2
+	for <gfs2@lists.linux.dev>; Wed, 17 Jan 2024 21:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705517964; cv=none; b=LrtjQOe8GZXDE69Fe/TLGgY9ksw0n/huaz+NBFnASGVR7UQPxbsB5xeb+3t7CNymmlXwc7bbl0iVRSLseaebxUCiFGnmTG6A8QBtEXWnT4I80eqfN7CWsAfHBWUwKXZuDrZVAa5cNWXIp+m5NCAp2h3F5ELo5y5FeRqRXJaSNsg=
+	t=1705525365; cv=none; b=okTeKfqBhau0ZXb8hJfhkXrEpq+pV/ZvR/OBLW/zCez8bF+OzqiVhH2gVK2xhHFkgIBhh0ivpcjXKzZhlZ2/JUF8dZZOiPRyGvGohniFPOYhmZpPeSK4lg8UOeoJDWrCTCjwF9sB5zlQgVk/1zu/joWYM/31fZ7AIfPz0yRWpoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705517964; c=relaxed/simple;
-	bh=y5ipUQurDVauXRqc8laDxRO7z7X/T9tYZni+X4r3YoM=;
-	h=Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From:To:Cc:Subject:
-	 In-reply-to:References:Date:Message-id:X-Spamd-Result:
-	 X-Rspamd-Server:X-Spam-Score:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Spam-Flag:X-Spamd-Bar; b=Gx947A3NTyqn1HcmucYYtjj0oToF2y6+0cjswzQUuBFXStsGKk9h4FboTm1WPQa2RA4j1JkJxA2Nuoe8odPBFN32UxYae0kGioR1jjQ6Js9ocvbPqNe8e6Nx2d2VAn3PuQazrdfgXIUDjI5/b4EJWhbE6qa76llWTy8Q4FkoIp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bokyynVi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Hf1fhwne; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bokyynVi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Hf1fhwne; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1705525365; c=relaxed/simple;
+	bh=gXC8vhHEypDFAD+2EMd1iJlmoDPhd9SxDcDQbBVes5k=;
+	h=DKIM-Signature:Received:X-MC-Unique:Received:
+	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Received:
+	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 X-Mimecast-Spam-Score:X-Mimecast-Originator:Content-Type:
+	 Content-Transfer-Encoding; b=OhoNfdXr7GbLYYqGR3OV7sZxABFJtO1DNtE+zLUPkgTo17kNz5k2tGHA2dPeVy6GaQ9t0+jzGoaGwzMwQfgHxmP7X+WLGQDyzjCmQhvVlgkVUnWboETvyU3X0pbThG9vnwQ5eHsIw96Mpfxwhk/nQW+q61Ym9N47rPEFEVi1KUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FQG2UYFL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bokyynVi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Hf1fhwne";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bokyynVi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Hf1fhwne"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 849632201D;
-	Wed, 17 Jan 2024 18:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705517960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FQG2UYFL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705525363;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=noM15di5cvIK0OqUnGYNFVuIuKXsDIbW7D9yrRXfJBA=;
-	b=bokyynViqgWX8EwZm5wi+bXf0WXQPO7hu/kzla1s8MixAeY1EXZAlg/ZVB9bTSXAATCwtk
-	+QgcL9zApBk82BcwqNZEpb17YPvOhf8ZF2h4JEjGEdk/eA/Ma5fOpOrHK/y3V7ZxmCQ8fT
-	ePJgvv+xyJuaKLOyJ1HO5zFmKxp3w6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705517960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=noM15di5cvIK0OqUnGYNFVuIuKXsDIbW7D9yrRXfJBA=;
-	b=Hf1fhwne1mFJ9AqrYL68FzLRplqkLHg7BJlTDQKeP4RNvybhIcstU403RdcOuRzmKZHmZU
-	8gCjUq7Vg4E/WTAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705517960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=noM15di5cvIK0OqUnGYNFVuIuKXsDIbW7D9yrRXfJBA=;
-	b=bokyynViqgWX8EwZm5wi+bXf0WXQPO7hu/kzla1s8MixAeY1EXZAlg/ZVB9bTSXAATCwtk
-	+QgcL9zApBk82BcwqNZEpb17YPvOhf8ZF2h4JEjGEdk/eA/Ma5fOpOrHK/y3V7ZxmCQ8fT
-	ePJgvv+xyJuaKLOyJ1HO5zFmKxp3w6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705517960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=noM15di5cvIK0OqUnGYNFVuIuKXsDIbW7D9yrRXfJBA=;
-	b=Hf1fhwne1mFJ9AqrYL68FzLRplqkLHg7BJlTDQKeP4RNvybhIcstU403RdcOuRzmKZHmZU
-	8gCjUq7Vg4E/WTAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2A4A013800;
-	Wed, 17 Jan 2024 18:59:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QSC0NHojqGUyWwAAD6G6ig
-	(envelope-from <neilb@suse.de>); Wed, 17 Jan 2024 18:59:06 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	bh=n+DzpEr/4DH+2H07cTiqH57tznzr6NoeA4/02gf07O8=;
+	b=FQG2UYFLTaN482gdo5NY0uSBcKuxfkOztQS3Jj94TgFDRm6RW4pid8RkqBIu6KH7/75Z2N
+	OxP1bCHP2eXe0AUY+rD/OkqLUb4rAEP+c78VPeYNlPPNELlgI2MHJJBakTfARCnwmpdS7P
+	Q+YK9HOd8I81H49Gke4Bj7JITE5e5qA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-qPxYSml3Ph2JTcinQ2NM0Q-1; Wed, 17 Jan 2024 16:02:41 -0500
+X-MC-Unique: qPxYSml3Ph2JTcinQ2NM0Q-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a28f6a78b83so726965866b.1
+        for <gfs2@lists.linux.dev>; Wed, 17 Jan 2024 13:02:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705525360; x=1706130160;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n+DzpEr/4DH+2H07cTiqH57tznzr6NoeA4/02gf07O8=;
+        b=LyHADxF/rQOwGsTmWLDSqw88+I8WmeLhx3erhF4voMyjCBw3x5iyXbHBsXX04Rvw3d
+         PKl5OYAEsMJ6YcbSuTtfgXmcnnp2RG17mBq2ELKWXNNKgawgSCO2qw0kDH0QDtB7USp4
+         /ctNxqgJtwQTYp7Ha9Uz04MP1ulzyAmFG40gedssL67M8STsFkLrB+DdmgcgamHf6Hv0
+         9BPKPDQgQWZ4VnFHXQnV87bbu35jB6EL2kwk+iaX8YQeJUzdb6sFjrCbK8QZ5uKkskgb
+         oiQJDCR0PjtgdEISQBRuwq1FWGHxIEjJwdDmAegNyd58cYOdW923ZRBSM9fBdkuVEFnr
+         IKEQ==
+X-Gm-Message-State: AOJu0YwyFsou6Nlqr+YpL7EIMOri/VD1pbX8nGWza4OdU21NQhVWE30f
+	p+7uvDK4R4sUs4aKdhBSDzxTON5L1Zcb76ryZWv78J04arfYhwv/h64KH34dIhuZaf/KmQNEkmm
+	U7g5wv7lkfQXcjY3im9hvjrDX8Exr4MbKMy853/jrG+AMdw==
+X-Received: by 2002:a17:907:8e9b:b0:a2d:372d:e890 with SMTP id tx27-20020a1709078e9b00b00a2d372de890mr4115816ejc.40.1705525360504;
+        Wed, 17 Jan 2024 13:02:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHQz/Dw47Pi+fHfpYSqlqFV3ZetQl5qaxFDQSjRPTH9F2ge0jXKcKubjfhE29n4rUofs5Oy1vj7o9ZZKeaa7ec=
+X-Received: by 2002:a17:907:8e9b:b0:a2d:372d:e890 with SMTP id
+ tx27-20020a1709078e9b00b00a2d372de890mr4115810ejc.40.1705525360249; Wed, 17
+ Jan 2024 13:02:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Chuck Lever" <chuck.lever@oracle.com>
-Cc: "Jeff Layton" <jlayton@kernel.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Eric Van Hensbergen" <ericvh@kernel.org>,
- "Latchesar Ionkov" <lucho@ionkov.net>,
- "Dominique Martinet" <asmadeus@codewreck.org>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>, "Xiubo Li" <xiubli@redhat.com>,
- "Ilya Dryomov" <idryomov@gmail.com>, "Alexander Aring" <aahringo@redhat.com>,
- "David Teigland" <teigland@redhat.com>, "Miklos Szeredi" <miklos@szeredi.hu>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "Trond Myklebust" <trond.myklebust@hammerspace.com>,
- "Anna Schumaker" <anna@kernel.org>, "Olga Kornievskaia" <kolga@netapp.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Jan Kara" <jack@suse.cz>, "Mark Fasheh" <mark@fasheh.com>,
- "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>,
- "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.com>,
- "Ronnie Sahlberg" <lsahlber@redhat.com>,
- "Shyam Prasad N" <sprasad@microsoft.com>,
- "Namjae Jeon" <linkinjeon@kernel.org>,
- "Sergey Senozhatsky" <senozhatsky@chromium.org>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
- gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/20] filelock: split struct file_lock into file_lock and
- file_lease structs
-In-reply-to: <ZafuXpR4Y8Y6HFFl@tissot.1015granger.net>
-References: <20240116-flsplit-v1-0-c9d0f4370a5d@kernel.org>,
- <ZafuXpR4Y8Y6HFFl@tissot.1015granger.net>
-Date: Thu, 18 Jan 2024 05:59:04 +1100
-Message-id: <170551794427.23031.1969485804246583443@noble.neil.brown.name>
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bokyynVi;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hf1fhwne
-X-Spamd-Result: default: False [-0.31 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 R_RATELIMIT(0.00)[from(RLewrxuus8mos16izbn),to_ip_from(RLouahofup1mwqksbidco3ksry)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_TWELVE(0.00)[45];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[kernel.org,zeniv.linux.org.uk,ionkov.net,codewreck.org,crudebyte.com,redhat.com,auristor.com,gmail.com,szeredi.hu,hammerspace.com,netapp.com,oracle.com,talpey.com,suse.cz,fasheh.com,evilplan.org,linux.alibaba.com,samba.org,manguebit.com,microsoft.com,chromium.org,goodmis.org,efficios.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,lists.samba.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[16.90%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -0.31
-X-Rspamd-Queue-Id: 849632201D
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Bar: /
+References: <20231119163817.751872-1-aahringo@redhat.com> <20231119163817.751872-14-aahringo@redhat.com>
+In-Reply-To: <20231119163817.751872-14-aahringo@redhat.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Wed, 17 Jan 2024 16:02:28 -0500
+Message-ID: <CAK-6q+iEwBUzWej8znaEQBePAKA1mT=Ya0DkPCFvPjuLJSOK-A@mail.gmail.com>
+Subject: Re: [PATCHv2 dlm/next 13/13] dlm: do dlm message processing in
+ softirq context
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 18 Jan 2024, Chuck Lever wrote:
-> On Tue, Jan 16, 2024 at 02:45:56PM -0500, Jeff Layton wrote:
-> > Long ago, file locks used to hang off of a singly-linked list in struct
-> > inode. Because of this, when leases were added, they were added to the
-> > same list and so they had to be tracked using the same sort of
-> > structure.
-> > 
-> > Several years ago, we added struct file_lock_context, which allowed us
-> > to use separate lists to track different types of file locks. Given
-> > that, leases no longer need to be tracked using struct file_lock.
-> > 
-> > That said, a lot of the underlying infrastructure _is_ the same between
-> > file leases and locks, so we can't completely separate everything.
-> 
-> Naive question: locks and leases are similar. Why do they need to be
-> split apart? The cover letter doesn't address that, and I'm new
-> enough at this that I don't have that context.
+Hi,
 
-For me, the big win was in the last patch where we got separate
-lock_manager_operations and lease_manager_operations.  There is zero
-overlap between the two.  This highlights that one one level these are
-different things with different behaviours.
+On Sun, Nov 19, 2023 at 11:38=E2=80=AFAM Alexander Aring <aahringo@redhat.c=
+om> wrote:
+>
+> This patch moves the dlm message processing from a ordered workqueue
+> context to a ordered softirq context. Later we want to call the user
+> defined ast/bast callbacks directly inside the dlm message processing
+> context instead of doing an additional context switch to the exisiting
+> callback workqueue. This should slightly improve the dlm message parsing
+> behaviour. There are two main reasons why to change to this behaviour:
+>
+> 1. Bringing the ast/callback callback to softirq context that the use is
+>    aware it should not block into this context. Later patches will
+>    introduce a per lockspace flag to signal that the user is capable to
+>    handling these callbacks in softirq context to solve backwards
+>    compatibility.
+>
+> 2. We can easily switch to a per dlm instance concurrent dlm message
+>    parsing when DLM is ready to handle it. This instance could be in
+>    e.g. per lockspace instance or more fine granulatiry instance such as
+>    per lock instance.
+>
+> Futher patches will unveil more improvements to switch to a per message
+> softirq parsing context. Especially if we getting DLM in a state that we
+> can allow concurrent message parsing.
+>
 
-NeilBrown
+I forgot to take care about [0], which seems to be a rare case because
+I never triggered a sleep while atomic warning.
+
+Nevertheless I need to send a new version when rc1 is out and fix this
+because it's called in dlm message processing.
+
+- Alex
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/fs/dlm/lock.c?h=3Dv6.7#n2538
+
