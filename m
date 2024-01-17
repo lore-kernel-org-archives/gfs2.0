@@ -1,78 +1,89 @@
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B2023BB
-	for <gfs2@lists.linux.dev>; Wed, 17 Jan 2024 00:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1367B14265
+	for <gfs2@lists.linux.dev>; Wed, 17 Jan 2024 09:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705452486; cv=none; b=SX6ZipnFPJGLet4Ss6enddw4ASIU0NtTJjUp3vLpViwHOe2YBkmFtzeIoo+b14j1FTQpzrPmUowJGFf7ywZFDY2EjS1SZ8NqFVSHxAEFd3qZknC0zwMGU/97xMGIQ1H5wwJDHiAhnNE6c7Fq01s0v3Ca/C7ANyN5D7pFT1WcoKE=
+	t=1705484964; cv=none; b=ptCV5uyUUGgoRxwCYFc+RjqE5Xo8fbB+nbOcuJMig04QXm+D8Ry96ojmGoLCv1SSBMrJpOi1LbKdfWMoQK4GMy7APzMsweAo849TdfUt+5sn9B3tr4srJ5Rd/M2KDh/NUCP+RuwnIfdoF4WFzeyeUUmyM1jTxB/kGCN8BwSzrx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705452486; c=relaxed/simple;
-	bh=AAf/I4I42rLMBWEVS3mffH9UrtbgCWfulkA5r6p8F0g=;
-	h=Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Google-Smtp-Source:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:
-	 Message-ID:Subject:From:To:Content-Type; b=IysnpJuHufekhQBQ6yXH9SDkhiYafkqLyABgOtTqcJUKupy3zLKHd6JWUWPAKPmCz9CUYl1rg4ytshoVJ0GSG+ryF58DYqBf4Y4v4Xs+4fBKvIw0KpptXw0HU2pqTij84DcQrYEUlO/Wj1yNOnJ833G6ltSPEpKfTOrKRo57T+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7bedddd00d5so589139639f.3
-        for <gfs2@lists.linux.dev>; Tue, 16 Jan 2024 16:48:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705452484; x=1706057284;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TzIe28wbwr/i91YfIe1SnCMYHz0m9HJdrPMgOmh1W7s=;
-        b=R/gc2T16A8za3b2k6ES58wBXKGB/ym77Fulje2ofMviRvOpN+X/zDVFygIOildGufQ
-         S+g+F1/dctbJOW5Krruky9if5WhqCDFdQrDc2/lLN4AwEEvtvQHUMdBk5/8u2IGI1USw
-         VYaO+oj8y0FX9slsWxMHcnI7jXKpTAIRyNllC5DkhixEHO6buinWhPHkrSf9XUYCAt8m
-         tfMYIIYhI+6qdXtowam1BOfMzoOIWp0YMqXEYMBf6Ditb3vbS4jDqDp+6E6yWlESL9Sp
-         W/1TxE6YwWFYCklZMNJecVjTTMxVysarp9KwOffCL96pBDA16wlU3ZCbc/9hb+kQGwPp
-         Bf6w==
-X-Gm-Message-State: AOJu0YzSC9Ve1BQb4ugemZHZ3+khxjKNW2Ul+6XQPbSQ8ZubsHYd+9CF
-	egWDPHJsWPJAneQtplXx3X77KA27xzBBFHJCGfV+rUSvhGoj
-X-Google-Smtp-Source: AGHT+IHZVgMumbYxDDuWNDkufYNSG2RSuuRZw5AZC5yXzVcZyTrEb3BR3h9XXdNCm2Cw3PsN4qPkDImjOvsVezYDvFpng64qP0vK
+	s=arc-20240116; t=1705484964; c=relaxed/simple;
+	bh=7GWS1V6NjJSHOFU7bkOXSHE/D7l3qrvU5HZcUfH1Vnk=;
+	h=X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-INFO:X-CID-META:X-CID-BVR:
+	 X-CID-BAS:X-CID-FACTOR:X-UUID:Received:Received:X-ns-mid:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding; b=AYHSX/GKvJ4bTCuDL3/X+wxlhErzCFYc7mAXBfERfRWiM4Axtlx2oxdFhFrqlK8AxHMZHg3V4JqxHiBF3PV/xgYc3HIjHVngaOriZjQ9c0hUHY1Xs+uALJZmsnor4WTtQJ50DlNbwyS7VkxS1REeznhukg8yzbtcqTN7/sfAFS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6a3c479c79494d19a82d0990871f5611-20240117
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:99b7ab5f-8fc9-4f37-af81-8e90cc9060ab,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:20
+X-CID-INFO: VERSION:1.1.35,REQID:99b7ab5f-8fc9-4f37-af81-8e90cc9060ab,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:5d391d7,CLOUDID:f0ac432f-1ab8-4133-9780-81938111c800,B
+	ulkID:240117174916YVG0YATC,BulkQuantity:0,Recheck:0,SF:66|24|17|19|44|102,
+	TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
+	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 6a3c479c79494d19a82d0990871f5611-20240117
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 757765849; Wed, 17 Jan 2024 17:49:15 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 0B315E000EB9;
+	Wed, 17 Jan 2024 17:49:15 +0800 (CST)
+X-ns-mid: postfix-65A7A29A-856248760
+Received: from kernel.. (unknown [172.20.15.234])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 911CEE000EB9;
+	Wed, 17 Jan 2024 17:49:14 +0800 (CST)
+From: Kunwu Chan <chentao@kylinos.cn>
+To: aahringo@redhat.com,
+	teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Kunwu Chan <chentao@kylinos.cn>
+Subject: [PATCH] fs: dlm: Simplify the allocation of slab caches in dlm_lowcomms_msg_cache_create
+Date: Wed, 17 Jan 2024 17:49:12 +0800
+Message-Id: <20240117094912.155729-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a07:b0:35f:db4b:69dd with SMTP id
- s7-20020a056e021a0700b0035fdb4b69ddmr837348ild.0.1705452484751; Tue, 16 Jan
- 2024 16:48:04 -0800 (PST)
-Date: Tue, 16 Jan 2024 16:48:04 -0800
-In-Reply-To: <0000000000007caa3f06014cad2e@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000088f73f060f1999fa@google.com>
-Subject: Re: [syzbot] [gfs2?] BUG: sleeping function called from invalid
- context in gfs2_make_fs_ro
-From: syzbot <syzbot+60369f4775c014dd1804@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, axboe@kernel.dk, brauner@kernel.org, 
-	cluster-devel@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rpeterso@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot suspects this issue was fixed by commit:
+Use the new KMEM_CACHE() macro instead of direct kmem_cache_create
+to simplify the creation of SLAB caches.
 
-commit 6f861765464f43a71462d52026fbddfc858239a5
-Author: Jan Kara <jack@suse.cz>
-Date:   Wed Nov 1 17:43:10 2023 +0000
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+---
+ fs/dlm/lowcomms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    fs: Block writes to mounted block devices
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 6296c62c10fa..712165a1e567 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -248,7 +248,7 @@ struct kmem_cache *dlm_lowcomms_writequeue_cache_crea=
+te(void)
+=20
+ struct kmem_cache *dlm_lowcomms_msg_cache_create(void)
+ {
+-	return kmem_cache_create("dlm_msg", sizeof(struct dlm_msg), 0, 0, NULL)=
+;
++	return KMEM_CACHE(dlm_msg, 0);
+ }
+=20
+ /* need to held writequeue_lock */
+--=20
+2.39.2
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=126262dbe80000
-start commit:   46670259519f Merge tag 'for-6.5-rc2-tag' of git://git.kern..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a4507c291b5ab5d4
-dashboard link: https://syzkaller.appspot.com/bug?extid=60369f4775c014dd1804
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1602904ea80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12d67e9ea80000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: fs: Block writes to mounted block devices
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
