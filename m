@@ -1,128 +1,110 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B43241FB
-	for <gfs2@lists.linux.dev>; Thu, 18 Jan 2024 11:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E4E57899
+	for <gfs2@lists.linux.dev>; Fri, 19 Jan 2024 21:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705578654; cv=none; b=UH60Dgf0RekIWfko977AipsmzjSBmETP7m1qI6PvXAexQHMXT5B3JFDzCekIrWcnKMibKnF+XCWyceLB+J5CoUtCd6FoTdCRfWMk1HdGle1ktEHQ0c22HVk3JNPdKSLzWusV3aUX0As/T+IFYxtkEFm9jf24+l9UmAdXKCyVGY8=
+	t=1705699264; cv=none; b=cUvG+tXS3OETqVd1MvMIm4aIcH9k6jK+F+x9Y9W/TxChObBwdnFZ1SjyDuU642999jV7gNLfd9cSfdVR40COWViiXzjm10uBWePKsVPOA5B+zqWUH7ScNGYba0WxBq8q/lKSvrlXs7uZBCaONImOA7/vlGwkMjKUPILBXlmCBKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705578654; c=relaxed/simple;
-	bh=gt35hwddnpNUWAan27VYVSM0nHY7vcCvCwkZZknrkR0=;
-	h=DKIM-Signature:Received:X-MC-Unique:Received:
-	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Received:
-	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 X-Mimecast-Spam-Score:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding; b=In4UmfYzKl1XtNesa08AzoJYP48aW1mjIkze8/qRkbQjgfg7LW5CfOXBhNhiiH4z4gRHDcC2+gN1jiMaab3Eet0Sf8ebYIyJACEcG69SWtgktmyyB/2jkPepAwu+wCEDixzYntIAdXmgBinItjZf/fBy5uWqyXAlWqI6fuxgtqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SXjje/vT; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1705699264; c=relaxed/simple;
+	bh=ZBAqbdhGIgpMIrdtwE53HndGraexhm6hkYgjyzTZOZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oc1BYal2jX4odomwBr5QOTgUfVuQ8BG+URprFVkhJsQvABMEZHJmj8IZVBuikOaKwbUDXD6pYYAD6TIm+CT+sTxuaYbHPGs/wlzxw0JWziTvePEeKDnVC3h0Gy56hHJFNsHhQ4SGLLi8n0MTTkwwha8qtmwsGaqHgOxCYG/hokU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DPappRi0; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SXjje/vT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DPappRi0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705578651;
+	s=mimecast20190719; t=1705699261;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QT9qXfX+i5084J8ucGBrAuMK3QTq9k9pLJjBMMFh3rE=;
-	b=SXjje/vT9+vqiAGnAdtgnhGz12f4LEbUe02RAeji67okrlX0I3Z3/L0dP+cI6p84/aqNl9
-	LW7wvzgOsSmevT3K9vWUnfnPoavxQHB30rdIk2JzQu/KkHXFkyvaaL8x+KO+GQFuXjmbAK
-	i3gDJihQ37fN+PST0LnhUGnpjjrvwLs=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-ab3obiylNam2W9bWhCxmNQ-1; Thu, 18 Jan 2024 06:50:50 -0500
-X-MC-Unique: ab3obiylNam2W9bWhCxmNQ-1
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-28bbe965867so8328345a91.1
-        for <gfs2@lists.linux.dev>; Thu, 18 Jan 2024 03:50:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705578649; x=1706183449;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QT9qXfX+i5084J8ucGBrAuMK3QTq9k9pLJjBMMFh3rE=;
-        b=CdRwRu7c1JaXrQjGpRLkHQJT/K/ZDNstIRsOY+9HmFgv1+4CeSVIhpkzWVbvw2C72s
-         hsOi8FcUej1T1LMyE2R2wLjJ5gmOZeZE+9EYnW01ThgTeTtR6vSV7G10H4i6+sZjmugQ
-         gz09uStLNU3Z9WmAt8lO+hToCHSXfuaiz6BijjnspLItOTPIYlUAAkeNrDxLsQ31SN0J
-         m/1WEJlcM8PBxTdHVw/TP471y/NUVsx4E2AkMXHJy14RuPNH9xUtr3kL0UqfnCX76d4f
-         sTzbAQ2OE0Uwr0NHDF8LfJSlnHwYsejRomNRRODFYcLRw5U4XiNyy+IjgNlQK0gTJe6C
-         PBnw==
-X-Gm-Message-State: AOJu0Yyw42k3EsHRSC8ZroZlBXFZpe8UkOIhZAwzkCm81WnXba/Ox7Yw
-	nVCrVsBkJJsch2e2QQ0FwifRaFCsx6cudD9dRu3/QqhalsjIIDM8+ImiDpzk1jpTKwcy7lKF6pt
-	jx3Tj00ulfEJ8GqooD5qCc9xHhsvUnnhtJtXdiyNuERHsH1TMOcXUjyhOQUYz4kgbuuaBh4A4xH
-	QWHRMH0Kot+dJGllhu2BVa9/6LMg==
-X-Received: by 2002:a17:90a:fa08:b0:28f:423f:1cfe with SMTP id cm8-20020a17090afa0800b0028f423f1cfemr537980pjb.18.1705578648794;
-        Thu, 18 Jan 2024 03:50:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVs+zCTtfvuguPsuMp6IoFUt9geCNapxlrZ6013/fZtiox4ORl6FknrWsaFGhDHw+mmfqpBre4bZ+1zAqDKZk=
-X-Received: by 2002:a17:90a:fa08:b0:28f:423f:1cfe with SMTP id
- cm8-20020a17090afa0800b0028f423f1cfemr537973pjb.18.1705578648531; Thu, 18 Jan
- 2024 03:50:48 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FKXtz5Br3ccJyNyeaejyrGGoYV5KDeTeIprGgd3KI0A=;
+	b=DPappRi03YozWUugLpMzbxrkRMQhV/EUnGJgaBIWbAQQ0gu8XJ7pfTRPFo/O9Yf/WoQCgz
+	3sb7kE7TuvvA34OdqWw0OosH8co/wKoRP8LxoG/pfeALtAite4OhQw9KihMxPT3ijfpkm2
+	fWdnve573qfKMbrvCx4nXGDUjz/FlUg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-2WiLEU5fNESjBfZiJuil8Q-1; Fri,
+ 19 Jan 2024 16:20:57 -0500
+X-MC-Unique: 2WiLEU5fNESjBfZiJuil8Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 836DC1C05154;
+	Fri, 19 Jan 2024 21:20:57 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.45.226.46])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DCB5D40C1430;
+	Fri, 19 Jan 2024 21:20:56 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 0/9] gfs2: Bugs in "Use GL_NOBLOCK flag for non-blocking lookups"
+Date: Fri, 19 Jan 2024 22:20:47 +0100
+Message-ID: <20240119212056.805617-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240116002817.216837-1-sashal@kernel.org> <20240116002817.216837-11-sashal@kernel.org>
- <ZabrPnsVr6WHz2lM@duo.ucw.cz>
-In-Reply-To: <ZabrPnsVr6WHz2lM@duo.ucw.cz>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 18 Jan 2024 12:50:37 +0100
-Message-ID: <CAHc6FU70RD8fktBp=Srv6xeq3qXoLCdT8pi6y=1Y7bMHFK-mtQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 4.19 11/12] gfs2: Refcounting fix in gfs2_thaw_super
-To: Sasha Levin <sashal@kernel.org>, Pavel Machek <pavel@denx.de>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, gfs2@lists.linux.dev
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Tue, Jan 16, 2024 at 9:53=E2=80=AFPM Pavel Machek <pavel@denx.de> wrote:
-> Hi!
->
-> > From: Andreas Gruenbacher <agruenba@redhat.com>
-> >
-> > [ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
-> >
-> > It turns out that the .freeze_super and .thaw_super operations require
-> > the filesystem to manage the superblock refcount itself.  We are using
-> > the freeze_super() and thaw_super() helpers to mostly take care of that
-> > for us, but this means that the superblock may no longer be around by
-> > when thaw_super() returns, and gfs2_thaw_super() will then access freed
-> > memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
-> > that.
->
-> Patch was broken during backport.
->
-> > +++ b/fs/gfs2/super.c
-> > @@ -1013,6 +1013,7 @@ static int gfs2_freeze(struct super_block *sb)
-> >               goto out;
-> >       }
-> >
-> > +     atomic_inc(&sb->s_active);
-> >       for (;;) {
-> >               error =3D gfs2_lock_fs_check_clean(sdp, &sdp->sd_freeze_g=
-h);
-> >               if (!error)
-> > @@ -1034,6 +1035,7 @@ static int gfs2_freeze(struct super_block *sb)
-> >       error =3D 0;
-> >  out:
-> >       mutex_unlock(&sdp->sd_freeze_mutex);
-> > +     deactivate_super(sb);
-> >       return error;
-> >  }
->
-> Notice the goto out? That now jumps around the atomic_inc, but we
-> still do decrease. This will break 4.19, please fix or drop.
+Hello,
 
-Thanks, Pavel.
+Al Viro has reported issues with commit dd00aaeb3432 ("gfs2: Use
+GL_NOBLOCK flag for non-blocking lookups"):
 
-Sasha, you don't want that fix without "gfs2: Rework freeze / thaw
-logic" and the follow-up fixes, and backporting that probably isn't
-going to be worth it.
+* First, parent can now be NULL and dereferencing it in
+  gfs2_dir_check(d_inode(parent), &dentry->d_name, ip) isn't going to
+  work;
+
+* Second, gfs2_dir_check() can still sleep, which breaks LOOKUP_RCU
+  mode.
+
+These patches should fix both of these problems.  We'll either need
+these fixes added, or commit dd00aaeb3432 reverted for now.
 
 Thanks,
 Andreas
+
+Andreas Gruenbacher (9):
+  gfs2: Fix gfs2_drevalidate NULL pointer dereference
+  gfs2: Pass FGP flags to gfs2_getbuf
+  gfs2: Split gfs2_meta_read_async off from gfs2_meta_read
+  gfs2: Add FGP_NOWAIT support to gfs2_meta_read_async
+  gfs2: Pass FGP flags to gfs2_meta_{,inode_}buffer
+  gfs2: Pass FGP flags to gfs2_dirent_search
+  gfs2: Pass FGP flags to gfs2_dir_check
+  gfs2: Minor gfs2_drevalidate cleanup
+  gfs2: Fix LOOKUP_RCU support in gfs2_drevalidate
+
+ fs/gfs2/aops.c       |   4 +-
+ fs/gfs2/bmap.c       |  21 ++++----
+ fs/gfs2/dentry.c     |  32 ++++++++-----
+ fs/gfs2/dir.c        |  52 +++++++++++---------
+ fs/gfs2/dir.h        |   2 +-
+ fs/gfs2/file.c       |   4 +-
+ fs/gfs2/glops.c      |   2 +-
+ fs/gfs2/incore.h     |   1 -
+ fs/gfs2/inode.c      |  10 ++--
+ fs/gfs2/meta_io.c    | 112 ++++++++++++++++++++++++++++---------------
+ fs/gfs2/meta_io.h    |  15 +++---
+ fs/gfs2/ops_fstype.c |   4 +-
+ fs/gfs2/quota.c      |   2 +-
+ fs/gfs2/recovery.c   |   2 +-
+ fs/gfs2/rgrp.c       |   5 +-
+ fs/gfs2/super.c      |   6 +--
+ fs/gfs2/xattr.c      |  17 ++++---
+ 17 files changed, 173 insertions(+), 118 deletions(-)
+
+-- 
+2.43.0
 
