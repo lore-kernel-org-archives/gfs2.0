@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7885789A
-	for <gfs2@lists.linux.dev>; Fri, 19 Jan 2024 21:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E117EF
+	for <gfs2@lists.linux.dev>; Fri, 19 Jan 2024 21:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705699264; cv=none; b=FAeDe6IXC9ct6SoErYUoiqoYGxdxkbN6tHwVZV+wPBY+f5vCERvrzoy9zR5CR/W+jjFTa1NmLeRRu4085Iol/gLY1kC2KOSO9SHufZNnS1ZiDOWdloSG3y7WmBlFT2RBPzO0Ne8ubx2E542ciURh+vdfHZYqPdEt6hGzD1AvcN0=
+	t=1705699265; cv=none; b=pBary4MI86tMTEv/9BRGOp3JiiSGN9koDPyqEmUzyiMdEZqUfgd2PVc05jKOU3yS4cnGDISCoWE6bq6zVGYyM54wb5kp2LRYhM4BSHleD0D3RCquxsl7uIbxcD82xe34w2010g6yEeWahBeRb12QvW6gYs1WZlukyc3zhQj9I4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705699264; c=relaxed/simple;
-	bh=6MpkVEuy9fgxYqNp4BCvRIiuu3Tf3P5Fh3yjBgWhwUU=;
+	s=arc-20240116; t=1705699265; c=relaxed/simple;
+	bh=beiySI6G+qqkWOcFXOn96Ot42S2LhM96ucVTugSClbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qq7EgfzG7ZuT3lFkZUl6Z+Uud38sWeVop4wY5AybMscQQS1kYnaJjy9O2PchmXNkm8EuoY1g/QhwffuFwn6URZ7wgQCxP4qLnUf0baSbBw7xjB8I2kv14hQpE0wtqbWA/lGhdRV4XrtlFZO8TeKug1AtuXm+JYyOQGkZxQhMUWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H9IJkFC8; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=TmdEDCR3aw4oxWftgXAFSvFEREf1SSWUu8RF7moFHdjKYyyOvKj6zj5T7aFcwz5hD7HgUht7Mkw0fDpnQsiz1h42H8495fpi/v4wSPxf88r7BONA9cMhxIepQe3C5FOP1Kzegtjee2yzoS/bZ/rWn9wYsdx7JiaE7t0+7N1PLh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DrRuiTCI; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H9IJkFC8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DrRuiTCI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705699262;
+	s=mimecast20190719; t=1705699261;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=37TYOJG7oiVNT1y//nbn1EV8JPNAwKg0n0yFXLoZhIA=;
-	b=H9IJkFC8d/vsR+M6VUy6cRzVdpjKrcqNMsAKw5105PKjQ5KDh6AXMfYIwchv38yQOel4bc
-	RV6Wm6w2ixgtz8czRXw8G8AlEpVJFjVbqeWUJKO0amIcRpRSULvPNazW0bOnNj3h9xWq4A
-	F0gxsGBp11jsmqjphERofWMULbJAAYM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-7eza5FbtPbOmNg4gVBfDdA-1; Fri, 19 Jan 2024 16:21:00 -0500
-X-MC-Unique: 7eza5FbtPbOmNg4gVBfDdA-1
+	bh=b/n5UXrD2DwmYBGAyBR+rjpWCmpb5LndJ5KoD7WiY0g=;
+	b=DrRuiTCIqLvxHP8VTge4vPc/LEi1jttpH6pkv3I50eLccv/ef52JNODeVlq80tYifLTWuA
+	3+z+/TLGz5+Nt4NXHyaFw3B65z71o/RvSi3RAxccNOb4wp47eS4USdb71lptkayyn+AJ19
+	xBQrtqYcIDjiJvX2uuDK19dFHmVyP+I=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-G39-ftl1MOSCmK9LuJfIAw-1; Fri,
+ 19 Jan 2024 16:20:59 -0500
+X-MC-Unique: G39-ftl1MOSCmK9LuJfIAw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 17566185A785;
-	Fri, 19 Jan 2024 21:21:00 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.45.226.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7538440C95AD;
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BE45280640F;
 	Fri, 19 Jan 2024 21:20:59 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.45.226.46])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9A70D40C1430;
+	Fri, 19 Jan 2024 21:20:58 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Al Viro <viro@zeniv.linux.org.uk>,
 	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 3/9] gfs2: Split gfs2_meta_read_async off from gfs2_meta_read
-Date: Fri, 19 Jan 2024 22:20:50 +0100
-Message-ID: <20240119212056.805617-4-agruenba@redhat.com>
+Subject: [PATCH 2/9] gfs2: Pass FGP flags to gfs2_getbuf
+Date: Fri, 19 Jan 2024 22:20:49 +0100
+Message-ID: <20240119212056.805617-3-agruenba@redhat.com>
 In-Reply-To: <20240119212056.805617-1-agruenba@redhat.com>
 References: <20240119212056.805617-1-agruenba@redhat.com>
 Precedence: bulk
@@ -61,266 +61,162 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Split gfs2_meta_read_async() off from gfs2_meta_read() and implement
-gfs2_meta_read() in terms of gfs2_meta_read_async() and
-gfs2_meta_wait().
+Replace gfs2_getbuf()'s create argument with a fgp_flags argument.  Use
+the FGP_CREAT flag instead of the CREATE flag to indicate that new
+buffers should be created.
 
-The initial check for filesystem withdrawal in gfs2_meta_wait() is
-unnecessary and can be removed because gfs2_meta_wait() always follows
-gfs2_meta_read_async() in the code and gfs2_meta_read_async() already
-performs that check.
+In addition, when the FGP_NOWAIT flag is set and gfs2_getbuf() would
+sleep, -EAGAIN is returned instead.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/dir.c     |  6 +++---
- fs/gfs2/incore.h  |  1 -
- fs/gfs2/meta_io.c | 46 ++++++++++++++++++++++------------------------
- fs/gfs2/meta_io.h |  6 ++++--
- fs/gfs2/quota.c   |  2 +-
- fs/gfs2/rgrp.c    |  3 ++-
- fs/gfs2/xattr.c   | 13 ++++++-------
- 7 files changed, 38 insertions(+), 39 deletions(-)
+ fs/gfs2/bmap.c    |  2 +-
+ fs/gfs2/dir.c     |  2 +-
+ fs/gfs2/meta_io.c | 33 +++++++++++++++++++--------------
+ fs/gfs2/meta_io.h |  2 +-
+ 4 files changed, 22 insertions(+), 17 deletions(-)
 
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index d9ccfd27e4f1..92945e5b7643 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -301,7 +301,7 @@ static void gfs2_metapath_ra(struct gfs2_glock *gl, __be64 *start, __be64 *end)
+ 		if (!*t)
+ 			continue;
+ 
+-		rabh = gfs2_getbuf(gl, be64_to_cpu(*t), CREATE);
++		rabh = gfs2_getbuf(gl, be64_to_cpu(*t), FGP_CREAT);
+ 		if (trylock_buffer(rabh)) {
+ 			if (!buffer_uptodate(rabh)) {
+ 				rabh->b_end_io = end_buffer_read_sync;
 diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
-index 518a7fb42df0..446e374a8d78 100644
+index 560e4624c09f..518a7fb42df0 100644
 --- a/fs/gfs2/dir.c
 +++ b/fs/gfs2/dir.c
-@@ -105,7 +105,7 @@ static int gfs2_dir_get_existing_buffer(struct gfs2_inode *ip, u64 block,
- 	struct buffer_head *bh;
- 	int error;
+@@ -1500,7 +1500,7 @@ static void gfs2_dir_readahead(struct inode *inode, unsigned hsize, u32 index,
+ 		if (blocknr == last)
+ 			continue;
  
--	error = gfs2_meta_read(ip->i_gl, block, DIO_WAIT, 0, &bh);
-+	error = gfs2_meta_read(ip->i_gl, block, 0, &bh);
- 	if (error)
- 		return error;
- 	if (gfs2_metatype_check(GFS2_SB(&ip->i_inode), bh, GFS2_METATYPE_JD)) {
-@@ -300,7 +300,7 @@ static int gfs2_dir_read_data(struct gfs2_inode *ip, __be64 *buf,
- 			BUG_ON(extlen < 1);
- 			bh = gfs2_meta_ra(ip->i_gl, dblock, extlen);
- 		} else {
--			error = gfs2_meta_read(ip->i_gl, dblock, DIO_WAIT, 0, &bh);
-+			error = gfs2_meta_read(ip->i_gl, dblock, 0, &bh);
- 			if (error)
- 				goto fail;
- 		}
-@@ -757,7 +757,7 @@ static int get_leaf(struct gfs2_inode *dip, u64 leaf_no,
- {
- 	int error;
- 
--	error = gfs2_meta_read(dip->i_gl, leaf_no, DIO_WAIT, 0, bhp);
-+	error = gfs2_meta_read(dip->i_gl, leaf_no, 0, bhp);
- 	if (!error && gfs2_metatype_check(GFS2_SB(&dip->i_inode), *bhp, GFS2_METATYPE_LF)) {
- 		/* pr_info("block num=%llu\n", leaf_no); */
- 		error = -EIO;
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 95a334d64da2..e1343fd0a5b1 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -22,7 +22,6 @@
- #include <linux/rhashtable.h>
- #include <linux/mutex.h>
- 
--#define DIO_WAIT	0x00000010
- #define DIO_METADATA	0x00000020
- 
- struct gfs2_log_operations;
+-		bh = gfs2_getbuf(gl, blocknr, 1);
++		bh = gfs2_getbuf(gl, blocknr, FGP_CREAT);
+ 		if (trylock_buffer(bh)) {
+ 			if (buffer_uptodate(bh)) {
+ 				unlock_buffer(bh);
 diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index d0f3727f24db..6492d000d366 100644
+index f814054c8cd0..d0f3727f24db 100644
 --- a/fs/gfs2/meta_io.c
 +++ b/fs/gfs2/meta_io.c
-@@ -240,18 +240,17 @@ static void gfs2_submit_bhs(blk_opf_t opf, struct buffer_head *bhs[], int num)
- }
- 
- /**
-- * gfs2_meta_read - Read a block from disk
-+ * gfs2_meta_read_async - Read a block from disk
-  * @gl: The glock covering the block
-  * @blkno: The block number
-- * @flags: flags
-  * @rahead: Do read-ahead
-  * @bhp: the place where the buffer is returned (NULL on failure)
+@@ -106,12 +106,15 @@ const struct address_space_operations gfs2_rgrp_aops = {
+  * gfs2_getbuf - Get a buffer with a given address space
+  * @gl: the glock
+  * @blkno: the block number (filesystem scope)
+- * @create: 1 if the buffer should be created
++ * @fgp_flags: Flags like FGP_CREAT and FGP_NOWAIT
++ *
++ * Returns ERR_PTR(-EAGAIN) if the FGP_NOWAIT flag is set and the function
++ * would sleep.
   *
-  * Returns: errno
+  * Returns: the buffer
   */
- 
--int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
--		   int rahead, struct buffer_head **bhp)
-+int gfs2_meta_read_async(struct gfs2_glock *gl, u64 blkno,
-+			 int rahead, struct buffer_head **bhp)
+-
+-struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno, int create)
++struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno,
++				fgf_t fgp_flags)
  {
+ 	struct address_space *mapping = gfs2_glock2aspace(gl);
  	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
- 	struct buffer_head *bh, *bhs[2];
-@@ -268,7 +267,6 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+@@ -128,17 +131,19 @@ struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno, int create)
+ 	index = blkno >> shift;             /* convert block to page */
+ 	bufnum = blkno - (index << shift);  /* block buf index within page */
+ 
+-	if (create) {
++	fgp_flags |= FGP_LOCK | FGP_ACCESSED;
++	if (fgp_flags & FGP_CREAT) {
+ 		folio = __filemap_get_folio(mapping, index,
+-				FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
++				fgp_flags,
+ 				mapping_gfp_mask(mapping) | __GFP_NOFAIL);
++		if (IS_ERR(folio))
++			return ERR_CAST(folio);
+ 		bh = folio_buffers(folio);
+-		if (!bh)
++		if (!bh && !(fgp_flags & FGP_NOWAIT))
+ 			bh = create_empty_buffers(folio,
+ 				sdp->sd_sb.sb_bsize, 0);
+ 	} else {
+-		folio = __filemap_get_folio(mapping, index,
+-				FGP_LOCK | FGP_ACCESSED, 0);
++		folio = __filemap_get_folio(mapping, index, fgp_flags, 0);
+ 		if (IS_ERR(folio))
+ 			return NULL;
+ 		bh = folio_buffers(folio);
+@@ -181,7 +186,7 @@ static void meta_prep_new(struct buffer_head *bh)
+ struct buffer_head *gfs2_meta_new(struct gfs2_glock *gl, u64 blkno)
+ {
+ 	struct buffer_head *bh;
+-	bh = gfs2_getbuf(gl, blkno, CREATE);
++	bh = gfs2_getbuf(gl, blkno, FGP_CREAT);
+ 	meta_prep_new(bh);
+ 	return bh;
+ }
+@@ -258,7 +263,7 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+ 		return -EIO;
+ 	}
+ 
+-	*bhp = bh = gfs2_getbuf(gl, blkno, CREATE);
++	*bhp = bh = gfs2_getbuf(gl, blkno, FGP_CREAT);
+ 
  	lock_buffer(bh);
  	if (buffer_uptodate(bh)) {
- 		unlock_buffer(bh);
--		flags &= ~DIO_WAIT;
- 	} else {
- 		bh->b_end_io = end_buffer_read_sync;
- 		get_bh(bh);
-@@ -289,20 +287,6 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+@@ -271,7 +276,7 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
  	}
  
- 	gfs2_submit_bhs(REQ_OP_READ | REQ_META | REQ_PRIO, bhs, num);
--	if (!(flags & DIO_WAIT))
--		return 0;
--
--	bh = *bhp;
--	wait_on_buffer(bh);
--	if (unlikely(!buffer_uptodate(bh))) {
--		struct gfs2_trans *tr = current->journal_info;
--		if (tr && test_bit(TR_TOUCHED, &tr->tr_flags))
--			gfs2_io_error_bh_wd(sdp, bh);
--		brelse(bh);
--		*bhp = NULL;
--		return -EIO;
--	}
--
- 	return 0;
- }
+ 	if (rahead) {
+-		bh = gfs2_getbuf(gl, blkno + 1, CREATE);
++		bh = gfs2_getbuf(gl, blkno + 1, FGP_CREAT);
  
-@@ -316,10 +300,6 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+ 		lock_buffer(bh);
+ 		if (buffer_uptodate(bh)) {
+@@ -443,7 +448,7 @@ void gfs2_journal_wipe(struct gfs2_inode *ip, u64 bstart, u32 blen)
+ 	gfs2_ail1_wipe(sdp, bstart, blen);
+ 	while (blen) {
+ 		ty = REMOVE_META;
+-		bh = gfs2_getbuf(ip->i_gl, bstart, NO_CREATE);
++		bh = gfs2_getbuf(ip->i_gl, bstart, 0);
+ 		if (!bh && gfs2_is_jdata(ip)) {
+ 			bh = gfs2_getjdatabuf(ip, bstart);
+ 			ty = REMOVE_JDATA;
+@@ -519,7 +524,7 @@ struct buffer_head *gfs2_meta_ra(struct gfs2_glock *gl, u64 dblock, u32 extlen)
+ 	if (extlen > max_ra)
+ 		extlen = max_ra;
  
- int gfs2_meta_wait(struct gfs2_sbd *sdp, struct buffer_head *bh)
- {
--	if (gfs2_withdrawing_or_withdrawn(sdp) &&
--	    !gfs2_withdraw_in_prog(sdp))
--		return -EIO;
--
- 	wait_on_buffer(bh);
+-	first_bh = gfs2_getbuf(gl, dblock, CREATE);
++	first_bh = gfs2_getbuf(gl, dblock, FGP_CREAT);
  
- 	if (!buffer_uptodate(bh)) {
-@@ -335,6 +315,24 @@ int gfs2_meta_wait(struct gfs2_sbd *sdp, struct buffer_head *bh)
- 	return 0;
- }
+ 	if (buffer_uptodate(first_bh))
+ 		goto out;
+@@ -529,7 +534,7 @@ struct buffer_head *gfs2_meta_ra(struct gfs2_glock *gl, u64 dblock, u32 extlen)
+ 	extlen--;
  
-+int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno,
-+		   int rahead, struct buffer_head **bhp)
-+{
-+	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+	int ret;
-+
-+	ret = gfs2_meta_read_async(gl, blkno, rahead, bhp);
-+	if (ret)
-+		return ret;
-+
-+	ret = gfs2_meta_wait(sdp, *bhp);
-+	if (ret) {
-+		brelse(*bhp);
-+		*bhp = NULL;
-+	}
-+	return ret;
-+}
-+
- void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
- {
- 	struct address_space *mapping = bh->b_folio->mapping;
-@@ -491,7 +489,7 @@ int gfs2_meta_buffer(struct gfs2_inode *ip, u32 mtype, u64 num,
- 	if (num == ip->i_no_addr)
- 		rahead = ip->i_rahead;
+ 	while (extlen) {
+-		bh = gfs2_getbuf(gl, dblock, CREATE);
++		bh = gfs2_getbuf(gl, dblock, FGP_CREAT);
  
--	ret = gfs2_meta_read(gl, num, DIO_WAIT, rahead, &bh);
-+	ret = gfs2_meta_read(gl, num, rahead, &bh);
- 	if (ret == 0 && gfs2_metatype_check(sdp, bh, mtype)) {
+ 		bh_readahead(bh, REQ_RAHEAD | REQ_META | REQ_PRIO);
  		brelse(bh);
- 		ret = -EIO;
 diff --git a/fs/gfs2/meta_io.h b/fs/gfs2/meta_io.h
-index e239e410881c..f04c91eadfb4 100644
+index 831d988c2ceb..e239e410881c 100644
 --- a/fs/gfs2/meta_io.h
 +++ b/fs/gfs2/meta_io.h
-@@ -51,9 +51,11 @@ static inline struct gfs2_sbd *gfs2_mapping2sbd(struct address_space *mapping)
- }
- 
- struct buffer_head *gfs2_meta_new(struct gfs2_glock *gl, u64 blkno);
--int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
--		   int rahead, struct buffer_head **bhp);
-+int gfs2_meta_read_async(struct gfs2_glock *gl, u64 blkno,
-+			 int rahead, struct buffer_head **bhp);
+@@ -55,7 +55,7 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+ 		   int rahead, struct buffer_head **bhp);
  int gfs2_meta_wait(struct gfs2_sbd *sdp, struct buffer_head *bh);
-+int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno,
-+		   int rahead, struct buffer_head **bhp);
  struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno,
- 				fgf_t fgp_flags);
+-			        int create);
++				fgf_t fgp_flags);
  enum {
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index aa9cf0102848..a68af8bdf7de 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -424,7 +424,7 @@ static int bh_get(struct gfs2_quota_data *qd)
- 		goto fail;
- 
- 	error = gfs2_meta_read(ip->i_gl, iomap.addr >> inode->i_blkbits,
--			       DIO_WAIT, 0, &bh);
-+			       0, &bh);
- 	if (error)
- 		goto fail;
- 	error = -EIO;
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 26d6c1eea559..fcef82c767e3 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -1210,7 +1210,8 @@ int gfs2_rgrp_go_instantiate(struct gfs2_glock *gl)
- 
- 	for (x = 0; x < length; x++) {
- 		bi = rgd->rd_bits + x;
--		error = gfs2_meta_read(gl, rgd->rd_addr + x, 0, 0, &bi->bi_bh);
-+		error = gfs2_meta_read_async(gl, rgd->rd_addr + x, 0,
-+					     &bi->bi_bh);
- 		if (error)
- 			goto fail;
- 	}
-diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
-index 8c96ba6230d1..759347ec67af 100644
---- a/fs/gfs2/xattr.c
-+++ b/fs/gfs2/xattr.c
-@@ -128,7 +128,7 @@ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
- 	__be64 *eablk, *end;
- 	int error;
- 
--	error = gfs2_meta_read(ip->i_gl, ip->i_eattr, DIO_WAIT, 0, &bh);
-+	error = gfs2_meta_read(ip->i_gl, ip->i_eattr, 0, &bh);
- 	if (error)
- 		return error;
- 
-@@ -152,7 +152,7 @@ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
- 			break;
- 		bn = be64_to_cpu(*eablk);
- 
--		error = gfs2_meta_read(ip->i_gl, bn, DIO_WAIT, 0, &eabh);
-+		error = gfs2_meta_read(ip->i_gl, bn, 0, &eabh);
- 		if (error)
- 			break;
- 		error = ea_foreach_i(ip, eabh, ea_call, data);
-@@ -468,8 +468,8 @@ static int gfs2_iter_unstuffed(struct gfs2_inode *ip, struct gfs2_ea_header *ea,
- 		return -ENOMEM;
- 
- 	for (x = 0; x < nptrs; x++) {
--		error = gfs2_meta_read(ip->i_gl, be64_to_cpu(*dataptrs), 0, 0,
--				       bh + x);
-+		error = gfs2_meta_read_async(ip->i_gl, be64_to_cpu(*dataptrs),
-+					     0, bh + x);
- 		if (error) {
- 			while (x--)
- 				brelse(bh[x]);
-@@ -976,8 +976,7 @@ static int ea_set_block(struct gfs2_inode *ip, struct gfs2_ea_request *er,
- 	if (ip->i_diskflags & GFS2_DIF_EA_INDIRECT) {
- 		__be64 *end;
- 
--		error = gfs2_meta_read(ip->i_gl, ip->i_eattr, DIO_WAIT, 0,
--				       &indbh);
-+		error = gfs2_meta_read(ip->i_gl, ip->i_eattr, 0, &indbh);
- 		if (error)
- 			return error;
- 
-@@ -1279,7 +1278,7 @@ static int ea_dealloc_indirect(struct gfs2_inode *ip)
- 
- 	memset(&rlist, 0, sizeof(struct gfs2_rgrp_list));
- 
--	error = gfs2_meta_read(ip->i_gl, ip->i_eattr, DIO_WAIT, 0, &indbh);
-+	error = gfs2_meta_read(ip->i_gl, ip->i_eattr, 0, &indbh);
- 	if (error)
- 		return error;
- 
+ 	REMOVE_JDATA = 0,
+ 	REMOVE_META = 1,
 -- 
 2.43.0
 
