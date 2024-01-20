@@ -1,102 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDDA5789A
-	for <gfs2@lists.linux.dev>; Fri, 19 Jan 2024 21:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7EA38F
+	for <gfs2@lists.linux.dev>; Sat, 20 Jan 2024 00:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705699273; cv=none; b=kCoqovRBsEy9Cmal1pP9prwA2AgvC2D7oPriJ2HynSXu6lXBOXSc41wn7r0MP73Kv1W3mBnL/62sYCBTGDGwVOwhn8PaHSW3y5vP6308jdeEQaBhA6BltEfyer/u1oeTM8dXxbr6rsh6u0CVlQ74YXXHWaZedwMrEQA6jTlAThk=
+	t=1705709430; cv=none; b=C5rCaIlDCfjqbEUWkMXoLFui5Rh1a7yktHRoWJvb3VqAQgyjq8oWHgedtRRpGRQOoOh5vxoyMR9mmktEFaSOxRCdCipfylzSaPrO0INl18pnOp28IxP9D/QXL/iAD9dge4GKUb8MR4iO/IubWM+C2qG+hlQdMwGCJUJfXKCvgUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705699273; c=relaxed/simple;
-	bh=PBJyyLNHdOiZCn6wdTU7OjOzf8G/+3GJe4pfSuB6N04=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AveNFN6z8MlLp1Q9qKaM34USOzzCyp4OrH2VgBCksa+0W4knEbWPtRW6vGLiYCH+kRuUwy3FTMRu2QhO9wPlLWuZ638OzqurZVuEYzpaTUdbgjdyLY6N9h4Q8q5GG9bxMT0AtRWuSPLevz5bYKPTnMCbqxNkbsfBroo4HXQRRN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fMfQCj+S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fMfQCj+S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705699270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yusACiKuitu6DnaEHLe24tcRTYsAEN48bcjV+caMBVM=;
-	b=fMfQCj+SJEhoodvBtFeeILigGE+E7pCb4bb8RUOJq2xS028Jr1lHSWi9jNdR9w+xZYNcEU
-	uBS3I9ElFgP2qxdm6xgRVgUtNSbSKTK4/vEP2++Yg9ybMIdKRo7bnVOgmGJBWvhvSMxeSZ
-	EwTDyam253qBvqnZsPzVVfZ8tPPhxto=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-FT39UQJXPOuGkf897s7hKQ-1; Fri, 19 Jan 2024 16:21:05 -0500
-X-MC-Unique: FT39UQJXPOuGkf897s7hKQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DDF683B82C;
-	Fri, 19 Jan 2024 21:21:05 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.45.226.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8C4A440C1430;
-	Fri, 19 Jan 2024 21:21:04 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 9/9] gfs2: Fix LOOKUP_RCU support in gfs2_drevalidate
-Date: Fri, 19 Jan 2024 22:20:56 +0100
-Message-ID: <20240119212056.805617-10-agruenba@redhat.com>
-In-Reply-To: <20240119212056.805617-1-agruenba@redhat.com>
-References: <20240119212056.805617-1-agruenba@redhat.com>
+	s=arc-20240116; t=1705709430; c=relaxed/simple;
+	bh=TpjuO+9hturNxfceTgvrYXC0vPl+mUZKkcYoB4KY7qE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NI2Z9JwAl+in3LwgSUh+ACtHDMxWFS+FZrViMHn5aMOKVnyg/i8bXGfqL/a8TLI0dZtDb4+XYnqBs5qgiutWlU4VIyz5IhKzTSB23eAXYp9K8WS44glbD0moUhxtGQZXZMmcTgVWj2nm8vBO2HmdKQB3ddpN8jyflQbH6P8WZTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7baa6cc3af2so140927139f.2
+        for <gfs2@lists.linux.dev>; Fri, 19 Jan 2024 16:10:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705709427; x=1706314227;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dhkNMjQVOB5HvLrNxJgMnjKkdtuka8k8P2aFjXPVvzg=;
+        b=LDllB28l+wtZoryazp/Sd2p45txqqlkmxxsvb6VENxo21/BwtM30Ge/Kx7BP6J7aJ0
+         R7QXgnnperkq1xAbZb8bkHN/Dt6RBa0aoxuYY5aPfSZHjJXabpzpJ5YG0ibw+vBfCJB4
+         JnlvlIuzuVDitRq1TRQBMyMAEOjZY0+7ghIy4PV/rcfS+Kmk7Q8KWHbUfXqjgYiqHE7x
+         rvWtGISMILubJq9ltpkRHTRdolkvRaeD6KLWLCI0bHZBGA8rQuwp/IsQH4T9AfaDhyYn
+         a+hZziEpXqOMmiLKedthLlG4cSQeEEou2mMjd3mAw3hlHs4xm2vbUe5TPHt2qQOvQl1I
+         KswQ==
+X-Gm-Message-State: AOJu0YyLFTnacAxXPrbdrmInl9XTYmMgoid9ubJ4jGP101MrOwYVbjW6
+	/xQ85k3mXM+UAzUgbSqCDruDLF93ivZxl6YWALTadS7TMAtVKNsosTuJmXo6gxv0nEPZwm+1n1r
+	vlEmZKcISBttHhvzf+R+qsHnGlJR+38C7fVIKK5Cz099TwVAjkK+pfas=
+X-Google-Smtp-Source: AGHT+IENlsaqQKmpztFNm40psPASW8ds8BZji2cekHi1ejZbY6Utl5GS1rYK1eLJPnwVvvZEsLuQGlmA+UtjdZMb0e2EtvWmmk+R
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Received: by 2002:a05:6e02:b4a:b0:360:17a7:d897 with SMTP id
+ f10-20020a056e020b4a00b0036017a7d897mr63312ilu.4.1705709427780; Fri, 19 Jan
+ 2024 16:10:27 -0800 (PST)
+Date: Fri, 19 Jan 2024 16:10:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000887374060f556c07@google.com>
+Subject: [syzbot] [gfs2?] kernel BUG in qd_put (2)
+From: syzbot <syzbot+43ad5525e32c939e3f22@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Fix non-sleeping lookups in gfs2_drevalidate() by passing the FGP_NOWAIT
-flag down to gfs2_dir_check().  This will cause gfs2_dir_check() to
-return -EAGAIN when it would otherwise sleep.
+Hello,
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+syzbot found the following issue on:
+
+HEAD commit:    052d534373b7 Merge tag 'exfat-for-6.8-rc1' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1262e4b5e80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=878a2a4af11180a7
+dashboard link: https://syzkaller.appspot.com/bug?extid=43ad5525e32c939e3f22
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-052d5343.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/35f5d1189e2a/vmlinux-052d5343.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0405012bdefc/bzImage-052d5343.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+43ad5525e32c939e3f22@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/quota.c:336!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 2 PID: 5207 Comm: syz-executor.0 Not tainted 6.7.0-syzkaller-09928-g052d534373b7 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:qd_put+0x133/0x190 fs/gfs2/quota.c:336
+Code: 43 70 00 00 00 00 48 8d 73 78 e8 38 46 19 fe 4c 89 e7 e8 f0 44 e1 06 5b 5d 41 5c 41 5d 41 5e e9 93 ab da fd e8 8e ab da fd 90 <0f> 0b e8 86 ab da fd 4c 89 e7 e8 6e 98 b7 00 4c 89 e7 e8 c6 44 e1
+RSP: 0000:ffffc90003b87c38 EFLAGS: 00010293
+
+RAX: 0000000000000000 RBX: ffff88804a1bc000 RCX: ffffffff83ad6445
+RDX: ffff888023370000 RSI: ffffffff83ad6512 RDI: 0000000000000005
+RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff88804a1bc030
+R13: ffff88804a1bc070 R14: ffff888050da8a68 R15: ffff88801801e808
+FS:  0000000000000000(0000) GS:ffff88802c800000(0063) knlGS:000000005748a400
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00007fd6a0c6a42d CR3: 0000000078e90000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ gfs2_quota_sync+0x44b/0x630 fs/gfs2/quota.c:1373
+ gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:669
+ sync_filesystem+0x109/0x280 fs/sync.c:56
+ generic_shutdown_super+0x7e/0x3d0 fs/super.c:625
+ kill_block_super+0x3b/0x90 fs/super.c:1680
+ gfs2_kill_sb+0x361/0x410 fs/gfs2/ops_fstype.c:1804
+ deactivate_locked_super+0xbc/0x1a0 fs/super.c:477
+ deactivate_super+0xde/0x100 fs/super.c:510
+ cleanup_mnt+0x222/0x450 fs/namespace.c:1267
+ task_work_run+0x14d/0x240 kernel/task_work.c:180
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:108 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
+ syscall_exit_to_user_mode+0x281/0x2b0 kernel/entry/common.c:212
+ __do_fast_syscall_32+0x86/0x110 arch/x86/entry/common.c:324
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x70/0x7a
+RIP: 0023:0xf7fbc579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000ffbf1df8 EFLAGS: 00000292 ORIG_RAX: 0000000000000034
+RAX: 0000000000000000 RBX: 00000000ffbf1ea0 RCX: 000000000000000a
+RDX: 00000000f7354ff4 RSI: 00000000f72a53bd RDI: 00000000ffbf2f44
+RBP: 00000000ffbf1ea0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:qd_put+0x133/0x190 fs/gfs2/quota.c:336
+Code: 43 70 00 00 00 00 48 8d 73 78 e8 38 46 19 fe 4c 89 e7 e8 f0 44 e1 06 5b 5d 41 5c 41 5d 41 5e e9 93 ab da fd e8 8e ab da fd 90 <0f> 0b e8 86 ab da fd 4c 89 e7 e8 6e 98 b7 00 4c 89 e7 e8 c6 44 e1
+RSP: 0000:ffffc90003b87c38 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88804a1bc000 RCX: ffffffff83ad6445
+RDX: ffff888023370000 RSI: ffffffff83ad6512 RDI: 0000000000000005
+RBP: 00000000ffffff80 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000ffffff80 R11: 0000000000000000 R12: ffff88804a1bc030
+R13: ffff88804a1bc070 R14: ffff888050da8a68 R15: ffff88801801e808
+FS:  0000000000000000(0000) GS:ffff88802c800000(0063) knlGS:000000005748a400
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00007fd6a0c6a42d CR3: 0000000078e90000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	10 06                	adc    %al,(%rsi)
+   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
+   6:	10 07                	adc    %al,(%rdi)
+   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
+   c:	10 08                	adc    %cl,(%rax)
+   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
+  1e:	00 51 52             	add    %dl,0x52(%rcx)
+  21:	55                   	push   %rbp
+  22:	89 e5                	mov    %esp,%ebp
+  24:	0f 34                	sysenter
+  26:	cd 80                	int    $0x80
+* 28:	5d                   	pop    %rbp <-- trapping instruction
+  29:	5a                   	pop    %rdx
+  2a:	59                   	pop    %rcx
+  2b:	c3                   	ret
+  2c:	90                   	nop
+  2d:	90                   	nop
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+
+
 ---
- fs/gfs2/dentry.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/gfs2/dentry.c b/fs/gfs2/dentry.c
-index 99239d80982b..b14956cdab0e 100644
---- a/fs/gfs2/dentry.c
-+++ b/fs/gfs2/dentry.c
-@@ -74,12 +74,20 @@ static int gfs2_drevalidate(struct dentry *dentry, unsigned int flags)
- 			goto out;
- 	}
- 
--	error = gfs2_dir_check(dinode, &dentry->d_name, ip, 0);
-+	if (flags & LOOKUP_RCU) {
-+		error = gfs2_dir_check(dinode, &dentry->d_name, ip, FGP_NOWAIT);
-+		if (error == -EAGAIN) {
-+			error = -ECHILD;
-+			goto out;
-+		}
-+	} else {
-+		error = gfs2_dir_check(dinode, &dentry->d_name, ip, 0);
-+	}
- 	error = inode ? !error : (error == -ENOENT);
- 
-+out:
- 	if (gfs2_holder_initialized(&d_gh))
- 		gfs2_glock_dq_uninit(&d_gh);
--out:
- 	dput(parent);
- 	return error;
- }
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
