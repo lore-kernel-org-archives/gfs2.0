@@ -1,75 +1,74 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087155D486
-	for <gfs2@lists.linux.dev>; Thu,  1 Feb 2024 14:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9706F626AD
+	for <gfs2@lists.linux.dev>; Thu,  1 Feb 2024 15:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706799598; cv=none; b=cd3JeGkm8Aka3XNz/H0GZ6dkhU3VVFlhrigqDAXpK4bc0Avwetrt1euK3UpmK2KqaVIdRkqPJYC3GDMQcF8IBl3FNX6N3XUi14vUd/uJbwk8yxx0xAEnAQEiGJ/rXUabsG0lKGf1cElVTRCoHoQKB1+HvyS6QXnRZz/ysFIu1bQ=
+	t=1706799852; cv=none; b=hYKrqDOXq9Lhi3Y8oZR3z2eaOSXq8VYiyKrrfrDFMdThr8ILiNe17ndk6jTtWhrEIp/FQC02psE4TM4/DzY6iS6KLnXbcOr93L7XXp5fgcfdNukxRCPVBukSzqnW7RoxUn0cu65Az3taubRUFq5uKf9MMDY3Irw2GM0jBL6UeVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706799598; c=relaxed/simple;
-	bh=94I4Hngt7inm0HyyqmR8znoRw2619UwGASlJ5ipJCpI=;
+	s=arc-20240116; t=1706799852; c=relaxed/simple;
+	bh=pxxTgIJTz9K7aIFtVClndmfx7TgyFrsDNwdyR5Llcng=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K/RvynMJBk9TNE6bUAMdNrnK0TRiErKAs4hyVcB3om3gyQDG3xt3Cr8tVN9DkFb5PzjEMP19UJtq1H0MCNB+nE3JQnGQ0XG2VxHO+ptnYwE/D2jy61BHpl477MDGIBSPGpetwLGDt3CUHLSPs9M4CQXuTy8kbqpxPtVnCco8W/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K+PRPxaI; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=mCYJJ3g/pZky70vxBuA1w4/L1WB2S4To1aLN5lFABJQoQlMzckKAn7/WjXI9WMAU0A4u5M9Na1kGSO9SgNbdLnEvwWCeLhMsQdQSksmNlNsQ3g22pEV5fB42N7FaK4FKSyB8TR8/F8X/7DbOb8eDQr2fBE1rXVPqVkC6poM86Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ba+k23u1; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K+PRPxaI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ba+k23u1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706799595;
+	s=mimecast20190719; t=1706799843;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=94I4Hngt7inm0HyyqmR8znoRw2619UwGASlJ5ipJCpI=;
-	b=K+PRPxaIRvzsCTsZgjPtVnFlILUP+mwkdJczWGc3Q/5bpgdnLlqxV1QiiLqn/duKXBFNHA
-	M2rfaKn/eMXgt43Xt/G+eepAquzjE2ftafInBorvn3hjc211ZyAk8iESpNa9nKa9zTye7w
-	YWOB493KbynOSa/w2IkDGiKXm7TxKyM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=H6HpAWNpDHGsf1BQTVsjCsUN+OeOJy6cYnxrx+iISmk=;
+	b=ba+k23u1P55ODnJ4Vl9bWtOuzpeph27Q6a7SaAqY81qgvkQ3hXLuVS/dLaxhoYrTY0D3Sa
+	SeuSGL8cbcEaWiN4zQ6VcPggHXn1xs4Aus++gqftfk99EpPU7+9KjVScUO+D9iEZThZSmh
+	Wsg62HA1UZAIQr9/qc9GUlFIxThpiJM=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-DtHUiXkWMwqAbHMqupojIw-1; Thu, 01 Feb 2024 09:59:54 -0500
-X-MC-Unique: DtHUiXkWMwqAbHMqupojIw-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a2b068401b4so109072666b.1
-        for <gfs2@lists.linux.dev>; Thu, 01 Feb 2024 06:59:54 -0800 (PST)
+ us-mta-646-qksuH1wtMzCYO9ufTALgdw-1; Thu, 01 Feb 2024 10:03:56 -0500
+X-MC-Unique: qksuH1wtMzCYO9ufTALgdw-1
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-4b9f7440527so567820e0c.2
+        for <gfs2@lists.linux.dev>; Thu, 01 Feb 2024 07:03:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706799593; x=1707404393;
+        d=1e100.net; s=20230601; t=1706799834; x=1707404634;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=94I4Hngt7inm0HyyqmR8znoRw2619UwGASlJ5ipJCpI=;
-        b=Fxpi2RZrLd9nlyHvTa53NX1/uSLVaFC+JlAFMlwgJRMKfooSCijLf8T4nsgsLxB5a8
-         1FV+Sv2LAFFk98F2KTeLeDUX4y/A5s75U8dEqVIaLigUUzEsH2eJPDmMi1nnC+M6QMOI
-         ubzMWd89mwFIaYpoYhOtAUVIgn7J5M2s42PdziHBUS5MoUu6xTao7i48JJRZIUFANwOQ
-         /8+/b5nT/oJL/rKrjd+aAIImCS1ZdMpSdGX4FqCG81gI6OnY2jye7Qtc40v6mjM+sHIK
-         Yo9MwFi0mQinSoyI1IFDeIHo4od/RpeEmenfvBg2qtKsD+a12OR89tPfTOECbI/DgqYc
-         qaMg==
-X-Gm-Message-State: AOJu0Yylaxus9aTie3O67OdIudDooH7+L60nNKtG46YiHHZgH3sNtml6
-	tZFXxUDBo1SHT0MFXphuKReQLIEo49A0xQvzADXYM0+23XcB4ZEuEtuogs0cFsfBPXXU8qFL0/N
-	suwnbX49NfpOVB3y3uTsbatPi36OwQU41fLo9Ysrs4IL1IUTTTb+ekcOTrYI78Wgw36L1zSVgd0
-	3HwP9CDoyOdqb49qijDJanfkK4jw==
-X-Received: by 2002:a17:906:e0a:b0:a36:86be:aa76 with SMTP id l10-20020a1709060e0a00b00a3686beaa76mr4193443eji.15.1706799593211;
-        Thu, 01 Feb 2024 06:59:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF6Y5YQ9ZRCSFznfVuD8jaL3DWybT5I6SS9dOL/ws+LXeyzrCIM/drqeWDfWguj4Svx99xGj/ZIFZu2ZX9UUnI=
-X-Received: by 2002:a17:906:e0a:b0:a36:86be:aa76 with SMTP id
- l10-20020a1709060e0a00b00a3686beaa76mr4193429eji.15.1706799592901; Thu, 01
- Feb 2024 06:59:52 -0800 (PST)
+        bh=H6HpAWNpDHGsf1BQTVsjCsUN+OeOJy6cYnxrx+iISmk=;
+        b=w8W/2xmCGggSTex7MtuBzQXAIHSckbxJzZwpOVuEApSdCwuREfNcLI053octvfEcU0
+         eqTwtZhooXZMEXalwHsEkc32PQGc0BzoU62PA1TPL8kXI1OgmOvLECobkh19eJl4ZRRi
+         jJfBy2hx1O+8rJUP5nmxn60GU2ysYqzJDvIspPmp73bbK/wth/NrKk0luZ2OxW3nj1VO
+         XypJ75LRz86MAiTDukyCPyt7VWCZwkyyD8TQoS60gr6YUjiRLTI5JrCIT7i7BJ9z8H53
+         GD52+qqGhgvPjZMJ1GIrSHqdgdZhgVxMlAtOxr8Pac29sGr26A5yDT+3VRmYOU9Kgd44
+         DPKg==
+X-Gm-Message-State: AOJu0YwF+bGA3KFSrztjVgKsvHiKd602R/zMAOgCFJDR1+jsY87lN49P
+	zs/ivTYDXlmKjg7sbXl2QK00c7l6lr/H8zAi49GcItbWSBwDlDOgaAsF1b6si5dnL/CfWmzHzA5
+	CZheXC5OeYTxbe4zpntkGlbDwEdmC5eMLSaL9hcYnSTWuh4uXilDd2955n6tf6fXXwiDW2SjwDa
+	8mbpbALJnm3bheYMLCnhndlo5COQ==
+X-Received: by 2002:a05:6122:2310:b0:4bd:6861:97ea with SMTP id bq16-20020a056122231000b004bd686197eamr2411161vkb.0.1706799833943;
+        Thu, 01 Feb 2024 07:03:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzlrbpMBjXBnLtAkLwmvEyCeX77OMzK4bMmXA6mBvwP78cmiTkUUw4j4hSy3rrXmbj7dlfxMfBTX4uAxUdb00=
+X-Received: by 2002:a05:6122:2310:b0:4bd:6861:97ea with SMTP id
+ bq16-20020a056122231000b004bd686197eamr2411137vkb.0.1706799833693; Thu, 01
+ Feb 2024 07:03:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231113204809.4052009-1-aahringo@redhat.com>
-In-Reply-To: <20231113204809.4052009-1-aahringo@redhat.com>
+References: <20230925201827.1703857-1-aahringo@redhat.com> <CAK-6q+hrsfCn+y3yjqnti9JUfSOhOWgiEtSioukL5H3dA6-_8A@mail.gmail.com>
+In-Reply-To: <CAK-6q+hrsfCn+y3yjqnti9JUfSOhOWgiEtSioukL5H3dA6-_8A@mail.gmail.com>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 1 Feb 2024 09:59:41 -0500
-Message-ID: <CAK-6q+hh_A0Ldwsmmy0BdagDotNBV=Xgk35ZZQ3DAzB9OXwLgw@mail.gmail.com>
-Subject: Re: [PATCHv2 1/2] refcount: introduce __refcount_dec_and_lock macro
-To: peterz@infradead.org
-Cc: will@kernel.org, gfs2@lists.linux.dev, boqun.feng@gmail.com, 
-	mark.rutland@arm.com, linux-kernel@vger.kernel.org
+Date: Thu, 1 Feb 2024 10:03:41 -0500
+Message-ID: <CAK-6q+gGtd4eRo=FxM34UFWsSid2QVe=p8HjCSABwPouZo_oCw@mail.gmail.com>
+Subject: Re: [PATCHv2] generic: add fcntl corner cases tests
+To: fstests@vger.kernel.org
+Cc: zlang@redhat.com, gfs2@lists.linux.dev, jlayton@kernel.org
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
@@ -77,22 +76,36 @@ Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Mon, Nov 13, 2023 at 3:48=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+On Thu, Nov 2, 2023 at 10:37=E2=80=AFAM Alexander Aring <aahringo@redhat.co=
 m> wrote:
 >
-> This patch adds the __refcount_dec_and_lock macro to generate code for a
-> lock specific refcount_dec_and_lock implementation. Existing
-> refcount_dec_and_lock implementation are updated to use the new
-> __refcount_dec_and_lock macro. In future other lock implementation can
-> added to use the refcount_dec_and_lock trick to only hold the lock when
-> the refcount is going to be zero. Per subsystem own lock implementation
-> can use the macro as well to provide such implementation for their own
-> locking type.
+> Hi,
 >
+> On Mon, Sep 25, 2023 at 4:18=E2=80=AFPM Alexander Aring <aahringo@redhat.=
+com> wrote:
+> >
+> > This patch adds fcntl corner cases that was being used to confirm issue=
+s
+> > on a GFS2 filesystem. The GFS2 filesystem has it's own ->lock()
+> > implementation and in those corner cases issues was being found and
+> > fixed.
+> >
+> > Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> > ---
+> > changes since v2:
+> > - move fcntl tests into one fcntl c file
+> > - remove ofd and same owner tests, should be reflected by only one test
+> > - simplify commit message (remove testname out of it)
+> > - add error messages in fcntl.c to give more information if an error
+> >   occur
+>
+> ping, any comments? Would for me nice to have these fcntl() tests
+> upstream and have a starting point to add more tests regarding dlm
+> plock implementation.
+>
+> Thanks.
 
-ping? :)
-
-Any chance to bring this upstream?
+ping?
 
 - Alex
 
