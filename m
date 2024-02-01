@@ -1,71 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E7862A00;
-	Thu,  1 Feb 2024 06:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372C85336F;
+	Thu,  1 Feb 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706768317; cv=none; b=c3zPVO//Sh/uX/AVXwjL5Wpj5wuFPtkZ7YPyCRmLrrLIwcKqU06h/DtebPJllr8HE/EXw6+o49UEM2k/RzJcKkR2gFw7E/MSI91pg2BQxeqEk724Q7LIE+jFDeJz6WxxG+GcSVjlcYzOL2iUTWGyc1vWQn0gvbJ9VjEYvPX1kpo=
+	t=1706793819; cv=none; b=nhfff6XUkuDKMCFt5wyIPu3vrV+gOeULzrR3/tnZwTKvWQ59EfrOShoaHsLj60GAAQNnHGWCH0CrB2uB+yFgelb45j3EyHxleq1TxWiytO13WzgWUkNRl9anW4NiJUQboFgY14cBxxt52fjmSATPTDMtH1OUR2cspzBuiAazHvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706768317; c=relaxed/simple;
-	bh=7lPao0EeRa+duvgbDVDws3GUnXCSHK1RnAbhNYvktCI=;
+	s=arc-20240116; t=1706793819; c=relaxed/simple;
+	bh=NtqHFlxEJNZmH7ys32ys/m/kxKwQbmeoWmnAwqZzgqA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o/fxHWArZfypfMdGry6AXo3b6xDHvFGaUQoWcjEjzQk3BxBHEFK8oCd6+N3zgLW7SMvTEKfp5d0dT1SCSK+HuNF+LQGB5tovMP2OYW/RDxzvWFOaPExd4rfvfwrsmPQPypp5LCnEd3Mm5UIFzrNozDOyX6xAMVjx/f+s+vaQois=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwybIUqw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=T2HKxKudo6NOkenyfFqD5okWadStYxO8+xCOL1EthcA6bGrJ+I7Qb5+F4GkXIrdrHBJg/mlXtylc+eTm5du1aGRQN3jDxftWtHYjiUScR9f/rYqD7QCGfsAcHC5zpo2QgDUgqv7VedoferRmUwz85Fd2XcbvOdIQeqRNEWZ4HxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWcsUdm3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwybIUqw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E67C433C7;
-	Thu,  1 Feb 2024 06:18:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWcsUdm3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F338C433F1;
+	Thu,  1 Feb 2024 13:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706768316;
-	bh=7lPao0EeRa+duvgbDVDws3GUnXCSHK1RnAbhNYvktCI=;
+	s=k20201202; t=1706793818;
+	bh=NtqHFlxEJNZmH7ys32ys/m/kxKwQbmeoWmnAwqZzgqA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwybIUqwU91BDczF5jGT4+MDO6CDJMTOX971ulyo41C6c440zNVnQHXrRD8zkZ95M
-	 eTRw2WdYohn0o2uHYhpCjRpaPDL4reUWqCHqgSX9vLCrxgJYVs6LSpgqKvYkeiIRgh
-	 0E6LH+cnlVT/lLPzAbYEYNQ2bDPgz9vFNGGy++FfAkuBK7OBdjctPF8laagoLW5wZV
-	 AyGTafKkgFRhmMXceJ3ixulghuVKME2MmAWEgHs2hhL8wYK3VBOj2ueN1yiaimKbsx
-	 NelTzcGV+fZPSts5Fjq2bLnTWZFh6HbOGVBK9I+6djjplAjQOxnUalG1R6Rtws9Aef
-	 4DqyU6XY+9YWQ==
-Date: Wed, 31 Jan 2024 22:18:35 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Chandan Babu R <chandan.babu@oracle.com>,
-	Zhang Yi <yi.zhang@huaweicloud.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev
+	b=jWcsUdm32chHvmL/xxPi5Q7MJBIP6dyqox55U1S2j3jMlUQU2jc0OiZpXdqNRtNZ7
+	 EneM+5P9eF+aCN5jUh+SaHEumhGSh99JWC4SzTcaLfKjJ8aJ9rSHMV/iNH7lrGEyMT
+	 mc1FjiTkNhwuhNrB90Xm3h3Pf8v+WNbfvWExRlDgPNXGDlxrP7fezyc/gPX1H7DYHc
+	 YJa23oiRd1NzwLRGMh+qPQYJo1zB522PGdSlfMlMIhy+3sg0JoyGnhwTB6MU1q739x
+	 hi6tAwAjalLBmrvh2Xv146+YVZp0AFHozpG+B2mLXPBnJwAzI2FVLcJruq+tUyEkq6
+	 FEgGOBmKCYTEA==
+Date: Thu, 1 Feb 2024 14:23:30 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: "Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>
+Cc: Chandan Babu R <chandan.babu@oracle.com>, 
+	Zhang Yi <yi.zhang@huaweicloud.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Jens Axboe <axboe@kernel.dk>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
+	Johannes Thumshirn <jth@kernel.org>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
 Subject: Re: map multiple blocks per ->map_blocks in iomap writeback
-Message-ID: <20240201061835.GC616564@frogsfrogsfrogs>
+Message-ID: <20240201-ebenso-flugobjekt-7e89e69907b0@brauner>
 References: <20231207072710.176093-1-hch@lst.de>
  <20231211-listen-ehrbaren-105219c9ab09@brauner>
  <20240201060716.GA15869@lst.de>
+ <20240201061835.GC616564@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240201060716.GA15869@lst.de>
+In-Reply-To: <20240201061835.GC616564@frogsfrogsfrogs>
 
-On Thu, Feb 01, 2024 at 07:07:16AM +0100, Christoph Hellwig wrote:
-> On Mon, Dec 11, 2023 at 11:45:38AM +0100, Christian Brauner wrote:
-> > Applied to the vfs.iomap branch of the vfs/vfs.git tree.
-> > Patches in the vfs.iomap branch should appear in linux-next soon.
+On Wed, Jan 31, 2024 at 10:18:35PM -0800, Darrick J. Wong wrote:
+> On Thu, Feb 01, 2024 at 07:07:16AM +0100, Christoph Hellwig wrote:
+> > On Mon, Dec 11, 2023 at 11:45:38AM +0100, Christian Brauner wrote:
+> > > Applied to the vfs.iomap branch of the vfs/vfs.git tree.
+> > > Patches in the vfs.iomap branch should appear in linux-next soon.
+> > 
+> > So it seems like this didn't make it to Linus for the 6.8 cycle, and
+> > also doesn't appear in current linux-next.  Was that an oversight
+> > or did I miss something?
 > 
-> So it seems like this didn't make it to Linus for the 6.8 cycle, and
-> also doesn't appear in current linux-next.  Was that an oversight
-> or did I miss something?
+> Speaking solely for myself, I got covid like 2 days before you sent this
+> and didn't get my brain back from the cleaners until ~2.5 weeks after.
+> I totally forgot that any of this was going on. :(
 
-Speaking solely for myself, I got covid like 2 days before you sent this
-and didn't get my brain back from the cleaners until ~2.5 weeks after.
-I totally forgot that any of this was going on. :(
+Bah, sorry to hear that.
 
---D
+Sorry Christoph and Darrick. This was my fault as I seemingly dropped
+that branch. I've rebased this onto v6.8-rc1 and it's now in vfs.iomap
+and merged into vfs.all.
+
+Going forward I'll be sending reminders to double-check branches for any
+accidently dropped commits. Feel free to remind me in case I miss
+anything!
