@@ -1,81 +1,87 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A5B17BB6
-	for <gfs2@lists.linux.dev>; Fri,  2 Feb 2024 05:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5417717548
+	for <gfs2@lists.linux.dev>; Fri,  2 Feb 2024 05:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706850154; cv=none; b=Ot2SYBaJUPsXbm3RL53CIH6WoY5jsfwMBFU+TvHnc33FGK58/+qAlHYaExhdZJoVVAMCHzCixcPlzzQ25/BGX4MTZAway69MVTsSOKcFke5FXfo4xKzPxsmUbHnngUeHALcWom19sywjjM5Qi6mQ/p1PoMxgGvt4YU/dlZmCxxY=
+	t=1706853306; cv=none; b=Rqz/smmhaMdUSOSwNMO8aULPjV+tXzj7CdOr/Dr/rg8nnP9jdLOSXfwyYpVjOZTd+QYuqkoDSz5pD3GISH81vp+445lwzELJBBmlKFb2Zfy8ZCdI+xRchp1M8LYHQtRqybxit8z87A40smre8g887qMdtskvsCEX8wNh4bVtMAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706850154; c=relaxed/simple;
-	bh=KvTp6PnkNm2equQRENGf0G9Rl3Zwj6RtiWN8DxRXU8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bUdf03PLtVlNO+ZXqRvo+Dkvk+/KO6iGGsL7267WqOH9D6m0tbSP3wqUSw+D6C0gsfG5WIJ5jtGzqk4mi/WCeu+aP6tyCp2SpXfMpLeDpEHiGNfeCyCWHcB3RosXLcRM5eO66jWD0POH38THjPDbxHk7v+va3rv6Ykm6x1OgGRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=RQPdAXtO; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="RQPdAXtO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hLigsYGKaLuPhwoyZISiAMt8KCEZ5cIgXPMSzirvRYM=; b=RQPdAXtObA4qEI2bq4zpXm0TLS
-	uQpr+6J6X/sk/vxXZizlT7yHv/mlsr108Sb3tVK79bbh0pbZsdqEFmUAuKBnReofva5nrPG4w1pYm
-	KEHyub6csQPaU5uRgY0qK7dJlCn+AptdHh4yUr/8w0Qn3NgRFc20WHxHPsWto5SdTDepDisKlYGyy
-	xTmjJr0sEK1rQNt34qHGAPIw6Rr5cB29bWhKSLbbW/gPjosAv9Nr07prZD7qBo6Rm2IyTbug1HCPt
-	aETJUitHe0WxBjQqPXhmuiU4jTTJ9LnU8RkR0pS/pGCb50gKPyg/Me1qOJ2BK+jHDNY1KDBiHzUZ+
-	Klmw0TXA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rVlh8-003fpN-0Z;
-	Fri, 02 Feb 2024 05:02:30 +0000
-Date: Fri, 2 Feb 2024 05:02:30 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev
-Subject: Re: [PATCH 0/9] gfs2: Bugs in "Use GL_NOBLOCK flag for non-blocking
- lookups"
-Message-ID: <20240202050230.GA875515@ZenIV>
-References: <20240119212056.805617-1-agruenba@redhat.com>
- <20240202042312.GY2087318@ZenIV>
- <20240202045943.GA873800@ZenIV>
+	s=arc-20240116; t=1706853306; c=relaxed/simple;
+	bh=NOpVa/OUtOKujNTyeIEoISQonKHZhoDpyB3fGq9yx+0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=mTQis3iWD+7EtNKC8TIMTRC0j6qus9qYgs5xWMbGrEyhGLvtKZU8pVygKeGyUDiobwScTPYIclvQFTH1yM8gEGZDSch5yBsfdwTJL7E8eeBd6bONkMYrr5Bo3xe4Js0vWVqutUeL4shiAlIv9TJVqOnH1HGdfcs1MlOjvU9cSN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-363ab88c5b0so9499335ab.1
+        for <gfs2@lists.linux.dev>; Thu, 01 Feb 2024 21:55:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706853304; x=1707458104;
+        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MEc5E3mccOuN0U/Fg3US4nqEiWMGUs8/Cg9UTmyUt8=;
+        b=qRMntehuhE62cBPW2VRmOmyYcRhPNzI6A8z64gI5sxR54yJheD1MmRdD3chnoxmOU7
+         s10YKdofTPEYtfW94PITYfNCj9oanVwUu/hc4R+Q83+mQbrzLH/dp7Mk3IetRmZZcEE0
+         QS9sw43vmN4sho+ruDSwB0TukMAQQWGoY4nVEpLEAAsHgKk2FGzgRphlv/sVuMUAdyWX
+         UZDYR6yjlsylLLbLClErguSAptw+3gMUsD62iYqX73I2lmy8xWcgKYvEsoVPEM9zaJUt
+         qwRpyO0f60SBzynXN59Dpo9QGnqBDtx8fpTH9vm3CD2si2uWwVXKagnhc4S2ThzBn5C8
+         jGTA==
+X-Gm-Message-State: AOJu0YzC0Gtux8Q76oLuIVV2Y1VNNKvpDr2ERCkbTfYkXZo9h+ecjtdZ
+	fsMg8sAE+CH2SghDPFgsJGKWkS04Zr8SOcrUyCpIoC2ljUizq07AJ6X8ozBZ4UbV/TnF3GLQ88X
+	m6Q+rikRBGtsGP4HNTLd6NLTA0AfmCMk0xRirgLlriNmqIcdfsl7Uxs8=
+X-Google-Smtp-Source: AGHT+IEf3r+zk5uKfc0FMTQL6XTpNA9fzR0z9tbBZRA45BY8gcc3opkKkE4tnF+bySDAQ4ej+GUb594OJNLFOmmfwEa0XgK0MlV4
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240202045943.GA873800@ZenIV>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Received: by 2002:a05:6e02:1d8f:b0:363:9d58:8052 with SMTP id
+ h15-20020a056e021d8f00b003639d588052mr505081ila.2.1706853304570; Thu, 01 Feb
+ 2024 21:55:04 -0800 (PST)
+Date: Thu, 01 Feb 2024 21:55:04 -0800
+In-Reply-To: <000000000000f121b705df9f5a0a@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000e7440306105fc0e2@google.com>
+Subject: Re: [syzbot] [gfs2?] WARNING in folio_account_dirtied
+From: syzbot <syzbot+8d1d62bfb63d6a480be1@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, akpm@linux-foundation.org, arthurgrillo@riseup.net, 
+	cluster-devel@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mairacanal@riseup.net, 
+	mcanal@igalia.com, rpeterso@redhat.com, syzkaller-bugs@googlegroups.com, 
+	willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 02, 2024 at 04:59:44AM +0000, Al Viro wrote:
-> On Fri, Feb 02, 2024 at 04:23:13AM +0000, Al Viro wrote:
-> 
-> >         if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
-> >                 int noblock = may_not_block ? GL_NOBLOCK : 0;
-> >                 error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED,
-> >                                            LM_FLAG_ANY | noblock, &i_gh);
-> >                 if (error)
-> >                         return error;
-> >         }
-> > 
-> > See the problem?  In RCU mode we carefully fetch ->i_gl and verify
-> > it's not NULL.  Then we proceed to dereference it again.
-> > 
-> > IOW, these ip->i_gl below ought to be replaced with gl, or you are
-> > risking a compiler fetching the sucker again and getting NULL this
-> > time around.
-> 
-> Wait, what's going on with this part?
->         if (gfs2_holder_initialized(&i_gh))
-> 		gfs2_glock_dq_uninit(&i_gh);
-> 
-> First of all, gfs2_glock_dq_uninit() can bloody well sleep in
-> gfs2_glock_dq().  What's more, it drops a reference to ->gh_gl,
-> i.e. our gl, in gfs2_holder_uninit().  Where is the matching
-> increment of gl's refcount?
+syzbot suspects this issue was fixed by commit:
 
-The same applies to gfs2_drevalidate(), both before and after your
-fixes.  Am I missing something subtle here?
+commit a0e6a017ab56936c0405fe914a793b241ed25ee0
+Author: Ma=C3=ADra Canal <mcanal@igalia.com>
+Date:   Tue May 23 12:32:08 2023 +0000
+
+    drm/vkms: Fix race-condition between the hrtimer and the atomic commit
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D11c756601800=
+00
+start commit:   1f5abbd77e2c Merge tag 'thermal-6.2-rc3' of git://git.kern.=
+.
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D9babfdc3dd4772d=
+0
+dashboard link: https://syzkaller.appspot.com/bug?extid=3D8d1d62bfb63d6a480=
+be1
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D139473cc48000=
+0
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D17581426480000
+
+If the result looks correct, please mark the issue as fixed by replying wit=
+h:
+
+#syz fix: drm/vkms: Fix race-condition between the hrtimer and the atomic c=
+ommit
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisectio=
+n
