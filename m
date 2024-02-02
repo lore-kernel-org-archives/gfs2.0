@@ -1,87 +1,236 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5417717548
-	for <gfs2@lists.linux.dev>; Fri,  2 Feb 2024 05:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058647F78;
+	Fri,  2 Feb 2024 11:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706853306; cv=none; b=Rqz/smmhaMdUSOSwNMO8aULPjV+tXzj7CdOr/Dr/rg8nnP9jdLOSXfwyYpVjOZTd+QYuqkoDSz5pD3GISH81vp+445lwzELJBBmlKFb2Zfy8ZCdI+xRchp1M8LYHQtRqybxit8z87A40smre8g887qMdtskvsCEX8wNh4bVtMAc=
+	t=1706872623; cv=none; b=i8OC3HwIAcQLCUQvYIIhpocvqr7QYvdkwKeEn5rZpUR5r1uUk4wC0RcJMIQB2gPjL1mXxzkvfaU+BF8ejAXoQ0X7+jOC841jamO8CSBhhqR5GJfyiNgZ80KcEmcKPMqnC/KAYuzXRzqN8mENNfE2HfH6Ur4tFmeuACBkvyu2ytk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706853306; c=relaxed/simple;
-	bh=NOpVa/OUtOKujNTyeIEoISQonKHZhoDpyB3fGq9yx+0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=mTQis3iWD+7EtNKC8TIMTRC0j6qus9qYgs5xWMbGrEyhGLvtKZU8pVygKeGyUDiobwScTPYIclvQFTH1yM8gEGZDSch5yBsfdwTJL7E8eeBd6bONkMYrr5Bo3xe4Js0vWVqutUeL4shiAlIv9TJVqOnH1HGdfcs1MlOjvU9cSN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-363ab88c5b0so9499335ab.1
-        for <gfs2@lists.linux.dev>; Thu, 01 Feb 2024 21:55:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706853304; x=1707458104;
-        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
-         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5MEc5E3mccOuN0U/Fg3US4nqEiWMGUs8/Cg9UTmyUt8=;
-        b=qRMntehuhE62cBPW2VRmOmyYcRhPNzI6A8z64gI5sxR54yJheD1MmRdD3chnoxmOU7
-         s10YKdofTPEYtfW94PITYfNCj9oanVwUu/hc4R+Q83+mQbrzLH/dp7Mk3IetRmZZcEE0
-         QS9sw43vmN4sho+ruDSwB0TukMAQQWGoY4nVEpLEAAsHgKk2FGzgRphlv/sVuMUAdyWX
-         UZDYR6yjlsylLLbLClErguSAptw+3gMUsD62iYqX73I2lmy8xWcgKYvEsoVPEM9zaJUt
-         qwRpyO0f60SBzynXN59Dpo9QGnqBDtx8fpTH9vm3CD2si2uWwVXKagnhc4S2ThzBn5C8
-         jGTA==
-X-Gm-Message-State: AOJu0YzC0Gtux8Q76oLuIVV2Y1VNNKvpDr2ERCkbTfYkXZo9h+ecjtdZ
-	fsMg8sAE+CH2SghDPFgsJGKWkS04Zr8SOcrUyCpIoC2ljUizq07AJ6X8ozBZ4UbV/TnF3GLQ88X
-	m6Q+rikRBGtsGP4HNTLd6NLTA0AfmCMk0xRirgLlriNmqIcdfsl7Uxs8=
-X-Google-Smtp-Source: AGHT+IEf3r+zk5uKfc0FMTQL6XTpNA9fzR0z9tbBZRA45BY8gcc3opkKkE4tnF+bySDAQ4ej+GUb594OJNLFOmmfwEa0XgK0MlV4
+	s=arc-20240116; t=1706872623; c=relaxed/simple;
+	bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YW5RgozmrnQ3pKS8CLKjnYgWhW9NIXk2Weoy3c5IhG7Dw3tlLq/UhF5nZQ8nANs0DQ6GAyMtyLgx3GiKWvngya6VLk3l4qGGPezq+Zu0z/XJjHCxC4KVhzahkVLDtYCluvffqUXRSDhwkG5i5cmgfqyYvDoepAjW2lFPBr79dtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIClvloQ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HIClvloQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0642EC433C7;
+	Fri,  2 Feb 2024 11:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706872622;
+	bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HIClvloQZ1M129peATTtWb6atela5X7cYHFsZrb67lwZ1vtHh1l4IF6scBTjv/PzB
+	 87X+qdn9IaowdLggFLz78Dw2QGQYzTGTKYlYjesUecF7SKGmXP3K7d4MiNpysRK0C4
+	 t1j6G+/iD6LfqO1isYZWLf7PzibnKlRmHEvbs7+NgM3HuNE42GCI1Q9GRAefkReH7D
+	 h1xPrbjqj6a/OYMEAXoJHIZOoDahFAwploUpVgqALFamW0OGHq4qX5LWxM1UPydgH/
+	 YFeXyS+Ct198tCxuXtgduVxQagdX4vudq08ofGv4NLeAgh6fW/WoGrhSFTAIx7hFzB
+	 9jJR67v3JsAHQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	ceph-devel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Neil Brown <neilb@suse.de>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Miklos Szeredi <miklos@szeredi.hu>
+Subject: Re: [PATCH v3 00/47] filelock: split file leases out of struct file_lock
+Date: Fri,  2 Feb 2024 12:16:44 +0100
+Message-ID: <20240202-neigung-ergiebig-9e4a18e7afa3@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
+References: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d8f:b0:363:9d58:8052 with SMTP id
- h15-20020a056e021d8f00b003639d588052mr505081ila.2.1706853304570; Thu, 01 Feb
- 2024 21:55:04 -0800 (PST)
-Date: Thu, 01 Feb 2024 21:55:04 -0800
-In-Reply-To: <000000000000f121b705df9f5a0a@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e7440306105fc0e2@google.com>
-Subject: Re: [syzbot] [gfs2?] WARNING in folio_account_dirtied
-From: syzbot <syzbot+8d1d62bfb63d6a480be1@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, akpm@linux-foundation.org, arthurgrillo@riseup.net, 
-	cluster-devel@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mairacanal@riseup.net, 
-	mcanal@igalia.com, rpeterso@redhat.com, syzkaller-bugs@googlegroups.com, 
-	willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7495; i=brauner@kernel.org; h=from:subject:message-id; bh=FCOQ3oxfwys8se6zxDBVnjGUrQ0D43QqafAIstBsJ2g=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTuOS+797jkjleqZtyND8RfphxXTPnGFqfbdXTF9ZorU m3xJaVmHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMp/szIsFSbbfeTWHs/ozKH C7Ehv34yMCgvm1q6s+pDttikJ9sudzD8d1F9tTlx75EtAWdeGenLRlVo7ZEr/xU0sd55YRk/75c /7AA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-syzbot suspects this issue was fixed by commit:
+On Wed, 31 Jan 2024 18:01:41 -0500, Jeff Layton wrote:
+> I'm not sure this is much prettier than the last, but contracting
+> "fl_core" to "c", as Neil suggested is a bit easier on the eyes.
+> 
+> I also added a few small helpers and converted several users over to
+> them. That reduces the size of the per-fs conversion patches later in
+> the series. I played with some others too, but they were too awkward
+> or not frequently used enough to make it worthwhile.
+> 
+> [...]
 
-commit a0e6a017ab56936c0405fe914a793b241ed25ee0
-Author: Ma=C3=ADra Canal <mcanal@igalia.com>
-Date:   Tue May 23 12:32:08 2023 +0000
+Fyi, I've merged this series as in I've turned this series into a pull
+request based on the patches. And this has a merge commit of the
+following form:
 
-    drm/vkms: Fix race-condition between the hrtimer and the atomic commit
+commit 363af2435e403ac323ab2543da91f5984047bdb8
+Merge: 6613476e225e 6c6109548454
+Author:     Christian Brauner <brauner@kernel.org>
+AuthorDate: Fri Feb 2 12:09:26 2024 +0100
+Commit:     Christian Brauner <brauner@kernel.org>
+CommitDate: Fri Feb 2 12:09:26 2024 +0100
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D11c756601800=
-00
-start commit:   1f5abbd77e2c Merge tag 'thermal-6.2-rc3' of git://git.kern.=
-.
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D9babfdc3dd4772d=
-0
-dashboard link: https://syzkaller.appspot.com/bug?extid=3D8d1d62bfb63d6a480=
-be1
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D139473cc48000=
-0
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D17581426480000
+    Merge patch series "filelock: split file leases out of struct file_lock"
 
-If the result looks correct, please mark the issue as fixed by replying wit=
-h:
+    Pull file locking patch series from Jeff Layton:
 
-#syz fix: drm/vkms: Fix race-condition between the hrtimer and the atomic c=
-ommit
+For larger series such as this this is what I think we should end up
+doing because it gives bigger series an overall summary without forcing
+the author to always provide a tag or branch or whatever. Often the
+cover letter description is good for long term contributors already. So
+I stole most of it from v1.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisectio=
-n
+Thanks for basing this on a mainline tag!
+
+---
+
+Applied to the vfs.file branch of the vfs/vfs.git tree.
+Patches in the vfs.file branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.file
+
+[01/47] filelock: fl_pid field should be signed int
+        https://git.kernel.org/vfs/vfs/c/0e9876d8e88d
+[02/47] filelock: rename some fields in tracepoints
+        https://git.kernel.org/vfs/vfs/c/587a67b6830b
+[03/47] filelock: rename fl_pid variable in lock_get_status
+        https://git.kernel.org/vfs/vfs/c/6021d62c677f
+[04/47] filelock: add some new helper functions
+        https://git.kernel.org/vfs/vfs/c/403594111407
+[05/47] 9p: rename fl_type variable in v9fs_file_do_lock
+        https://git.kernel.org/vfs/vfs/c/2911c0e3a5dd
+[06/47] afs: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/46a9b98baecc
+[07/47] ceph: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/7c82f3103915
+[08/47] dlm: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/7851cb526662
+[09/47] gfs2: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/47bc8fa51b46
+[10/47] lockd: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/b9570e87b652
+[11/47] nfs: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/28ad1884a338
+[12/47] nfsd: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/4e2cd366d826
+[13/47] ocfs2: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/a336b91b2340
+[14/47] smb/client: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/39647541cb26
+[15/47] smb/server: convert to using new filelock helpers
+        https://git.kernel.org/vfs/vfs/c/1d9b1c4525f6
+[16/47] filelock: drop the IS_* macros
+        https://git.kernel.org/vfs/vfs/c/22716eba8323
+[17/47] filelock: split common fields into struct file_lock_core
+        https://git.kernel.org/vfs/vfs/c/b2566e35e7d6
+[18/47] filelock: have fs/locks.c deal with file_lock_core directly
+        https://git.kernel.org/vfs/vfs/c/424dc929f8f1
+[19/47] filelock: convert more internal functions to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/2d1cfb3cf69e
+[20/47] filelock: make posix_same_owner take file_lock_core pointers
+        https://git.kernel.org/vfs/vfs/c/c91b6f218894
+[21/47] filelock: convert posix_owner_key to take file_lock_core arg
+        https://git.kernel.org/vfs/vfs/c/6944d789d1a1
+[22/47] filelock: make locks_{insert,delete}_global_locks take file_lock_core arg
+        https://git.kernel.org/vfs/vfs/c/ff30006ce158
+[23/47] filelock: convert locks_{insert,delete}_global_blocked
+        https://git.kernel.org/vfs/vfs/c/b7ae01bb4138
+[24/47] filelock: make __locks_delete_block and __locks_wake_up_blocks take file_lock_core
+        https://git.kernel.org/vfs/vfs/c/6ada65e99171
+[25/47] filelock: convert __locks_insert_block, conflict and deadlock checks to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/f449edd19f07
+[26/47] filelock: convert fl_blocker to file_lock_core
+        https://git.kernel.org/vfs/vfs/c/9bb41e6b6ea5
+[27/47] filelock: clean up locks_delete_block internals
+        https://git.kernel.org/vfs/vfs/c/78d1567cb873
+[28/47] filelock: reorganize locks_delete_block and __locks_insert_block
+        https://git.kernel.org/vfs/vfs/c/b261e8d3d5eb
+[29/47] filelock: make assign_type helper take a file_lock_core pointer
+        https://git.kernel.org/vfs/vfs/c/ae37275d53ed
+[30/47] filelock: convert locks_wake_up_blocks to take a file_lock_core pointer
+        https://git.kernel.org/vfs/vfs/c/acd1c6f76c17
+[31/47] filelock: convert locks_insert_lock_ctx and locks_delete_lock_ctx
+        https://git.kernel.org/vfs/vfs/c/77d7ed489db4
+[32/47] filelock: convert locks_translate_pid to take file_lock_core
+        https://git.kernel.org/vfs/vfs/c/e2c23bf73104
+[33/47] filelock: convert seqfile handling to use file_lock_core
+        https://git.kernel.org/vfs/vfs/c/a15d945405a3
+[34/47] 9p: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/d09f798f208c
+[35/47] afs: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/febb326af51b
+[36/47] ceph: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/afd5898079d2
+[37/47] dlm: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/f40b314ab0f2
+[38/47] gfs2: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/f1b0d238e179
+[39/47] fuse: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/ca2a24a9ff7f
+[40/47] lockd: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/1c910b2459cf
+[41/47] nfs: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/455100f41471
+[42/47] nfsd: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/48c7900f7b21
+[43/47] ocfs2: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/b7b8c39a9587
+[44/47] smb/client: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/7cd03c482447
+[45/47] smb/server: adapt to breakup of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/5087b21fd5ee
+[46/47] filelock: remove temporary compatibility macros
+        https://git.kernel.org/vfs/vfs/c/e0bde6d6d7e3
+[47/47] filelock: split leases out of struct file_lock
+        https://git.kernel.org/vfs/vfs/c/6c6109548454
