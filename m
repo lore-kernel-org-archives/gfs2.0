@@ -1,127 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0871BC3A;
-	Mon,  5 Feb 2024 12:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBABF2E629
+	for <gfs2@lists.linux.dev>; Mon,  5 Feb 2024 15:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707135609; cv=none; b=M32jxlRBK1Bi6wxXjgj0BBINnZRF+0XWhCWaPp07HLb/BetPSDkJOdLJmkcIX7VlL4f220jhISRmeH8R/FLdg6b9419pi7nlunMMpombtN0j2qbXUEK/d0e3+/yX0lKqLBXB5cyDoR5flBKYLy7aNXijhr7YuKqVUjboV68h8mM=
+	t=1707148122; cv=none; b=HdGIzgZtYzoxK63yPUp+CpCzYW3NRP5KrMpYf28o97euL/VHJlqRSQEZPuX81BFS+Nq5pTsSQ1ZMqPxyNZ6t2clUSpwDfEegIlWr8uJ7v6wwIKhVqTYxi8Gpy2pVFJYZEn9HYICU12/tX7G5dV+Fo7gbpXmsl3wyBjtWF68kexw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707135609; c=relaxed/simple;
-	bh=7//g9J4D+ZXpm9UU4QExrEcw6hVi83+PWFQfkzUzwQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=umu2cF5gD4dIt1c6IXxfxrL2lFRXkhDJf4rB+/onymC6e20b4ahpfIMNUpr5g3Q7WkAYNyTFtOQYuUMfUE6BOjITaSf91ZfIMovJJEPpDwdp8fYIgFPylIW4u3e6r3G0mXkaWakEFpuxdOtDDSZgz/E0iM0JaKHoCQ6AGdDhn/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NI3CgvHq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707148122; c=relaxed/simple;
+	bh=vrdez0L5tIcAR2ey6kFkzUZKNUIy0IfUlqczBNcIcpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qy16N2bkeDUfH+5NvzsnQOjWvrQ1WN6YbhdhUOsvOpZCPSYB1pZ8dkM+k4M/P/cH8fbwi9c0KVgneNw7xf2hMgQ02wPSkoolFAmefcirfWS3pZqdHA/W3Pt9sfAoFhv/35HZ9NZja+iZYGDbnKZWVE8zxbb92WDtnJy0SHT93hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e6DupGfq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NI3CgvHq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DC7C433F1;
-	Mon,  5 Feb 2024 12:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707135609;
-	bh=7//g9J4D+ZXpm9UU4QExrEcw6hVi83+PWFQfkzUzwQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NI3CgvHqbCduKOUG55PcantMhEuO6cn+Q82WktDz/McB8+xXuzAr9oWfxBNRDlJIq
-	 EUGGrhAl14I7YROetxKLGMcqGt8Ru+AmVB9bfDoQy4MxBuJTscGI6an5jXX1a1UxlY
-	 iH0tINjNfz+a+kl3LaOWdJAlnwQq7npi5RyjBS1soNm/JRgw9c+6hBFsGgc/vYpFgs
-	 dev0mLv7LL+uzC+/lrHORqWInlmNXxUEGlfF+z82l0aWpZ8rLwcWppSKbu1HoVVCxo
-	 MqPT8nFMBRA5HdSKbdJcN8lFf+Y1tStm+kUjtpb43bBeSysyW23YnK908iHBQqL4uI
-	 oEI2OhqzX3GkA==
-Date: Mon, 5 Feb 2024 13:19:57 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Chuck Lever <chuck.lever@oracle.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Neil Brown <neilb@suse.de>, Olga Kornievskaia <kolga@netapp.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, v9fs@lists.linux.dev, linux-afs@lists.infradead.org, 
-	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH v3 04/47] filelock: add some new helper functions
-Message-ID: <20240205-fragil-begraben-4b78fd1b5981@brauner>
-References: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
- <20240131-flsplit-v3-4-c6129007ee8d@kernel.org>
- <20240205-wegschauen-unappetitlich-2b0926023605@brauner>
- <de77ec5ade7fac7e72445cb2d10d95efe8bf9c92.camel@kernel.org>
- <20240205-laufen-hosen-38578e076df5@brauner>
- <f7ec5cfe94ff1472e309e8c4d92f24f2fc6cd618.camel@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e6DupGfq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707148119;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7/3d8T+eb9hJ60CvN5Bd8QYnRgS9ZnzJk8Ite2+KscU=;
+	b=e6DupGfqgSjGVwZp1b2QU+u1EQ4ZGoJjdVJsEjGhVqVvdkovy15YhxhiRyJIn19nmVues9
+	sEioQNd4nUnVxhhIY9wrRHfBr+sun9wIJ9csrBPZyb0REisBRx+SVFE1jGHt4z0kN6xWk1
+	XJavpHN9q4h27F18R0jQNOZACORhpFg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-e8BHfB0qPGS6yxMMU7weyg-1; Mon, 05 Feb 2024 10:48:38 -0500
+X-MC-Unique: e8BHfB0qPGS6yxMMU7weyg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02153185A788
+	for <gfs2@lists.linux.dev>; Mon,  5 Feb 2024 15:48:38 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.fast.eng.rdu2.dc.redhat.com [10.6.23.54])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id EEB471121312;
+	Mon,  5 Feb 2024 15:48:37 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCH dlm/next] MAINTAINERS: update DLM git repository entry
+Date: Mon,  5 Feb 2024 10:48:31 -0500
+Message-ID: <20240205154831.1462530-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f7ec5cfe94ff1472e309e8c4d92f24f2fc6cd618.camel@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, Feb 05, 2024 at 07:06:00AM -0500, Jeff Layton wrote:
-> On Mon, 2024-02-05 at 12:57 +0100, Christian Brauner wrote:
-> > On Mon, Feb 05, 2024 at 06:55:44AM -0500, Jeff Layton wrote:
-> > > On Mon, 2024-02-05 at 12:36 +0100, Christian Brauner wrote:
-> > > > > diff --git a/include/linux/filelock.h b/include/linux/filelock.h
-> > > > > index 085ff6ba0653..a814664b1053 100644
-> > > > > --- a/include/linux/filelock.h
-> > > > > +++ b/include/linux/filelock.h
-> > > > > @@ -147,6 +147,29 @@ int fcntl_setlk64(unsigned int, struct file *, unsigned int,
-> > > > >  int fcntl_setlease(unsigned int fd, struct file *filp, int arg);
-> > > > >  int fcntl_getlease(struct file *filp);
-> > > > >  
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > +static inline bool lock_is_unlock(struct file_lock *fl)
-> > > > > +{
-> > > > > +	return fl->fl_type == F_UNLCK;
-> > > > > +}
-> > > > > +
-> > > > > +static inline bool lock_is_read(struct file_lock *fl)
-> > > > > +{
-> > > > > +	return fl->fl_type == F_RDLCK;
-> > > > > +}
-> > > > > +
-> > > > > +static inline bool lock_is_write(struct file_lock *fl)
-> > > > > +{
-> > > > > +	return fl->fl_type == F_WRLCK;
-> > > > > +}
-> > > > > +
-> > > > > +static inline void locks_wake_up(struct file_lock *fl)
-> > > > > +{
-> > > > > +	wake_up(&fl->fl_wait);
-> > > > > +}
-> > > > > +
-> > > > > +/* for walking lists of file_locks linked by fl_list */
-> > > > > +#define for_each_file_lock(_fl, _head)	list_for_each_entry(_fl, _head, fl_list)
-> > > > > +
-> > > > 
-> > > > This causes a build warning for fs/ceph/ and fs/afs when
-> > > > !CONFIG_FILE_LOCKING. I'm about to fold the following diff into this
-> > > > patch. The diff looks a bit wonky but essentially I've moved
-> > > > lock_is_unlock(), lock_is_{read,write}(), locks_wake_up() and
-> > > > for_each_file_lock() out of the ifdef CONFIG_FILE_LOCKING:
-> > > > 
-> > > 
-> > > I sent a patch for this problem yesterday. Did you not get it?
-> > 
-> > Whoops, probably missed it on the trip back from fosdem.
-> > I'll double check now.
-> 
-> No worries. If you choose to go with your version, you can add:
+This patch updates the DLM git repository url to the new one that is
+created under the DLM shared space to join the effort between the
+current DLM maintainers.
 
-No, I took yours. :)
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 960512bec428..05a201bb296a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6244,7 +6244,7 @@ M:	David Teigland <teigland@redhat.com>
+ L:	gfs2@lists.linux.dev
+ S:	Supported
+ W:	https://pagure.io/dlm
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlm/linux-dlm.git
+ F:	fs/dlm/
+ 
+ DMA BUFFER SHARING FRAMEWORK
+-- 
+2.43.0
+
