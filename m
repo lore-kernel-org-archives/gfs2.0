@@ -1,85 +1,149 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D947211C89
-	for <gfs2@lists.linux.dev>; Mon,  5 Feb 2024 08:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10DE18E00;
+	Mon,  5 Feb 2024 11:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707123604; cv=none; b=WIPkfA6RSZa51OYUlinb41/aqiPBwh3ywn14nSa41QD3BWzWrF0QGdV6TBZjpf6px64fKCQO/4tBOO0A8s3MfnxRaLVJR+/NC8ycHpRDxh9OE93SweZvHzghr+Rd+aiXV8tQGrdWM8rwqBsjtIG0cC6ursEJMXHHqiXsILeFCZk=
+	t=1707132980; cv=none; b=cMOup714zGX1IJaloq3IfS/vL3L6351XKFKbbtz9J9QfqGjbzQq0fukJEvS5E8s4+sdhUs2Gq8xj9/CHerdVe28QM408QvWpaaAi7ojaxbOzW1Z2bbZ4Yb9Jn8xXqRoPYBtuoK8pKeXy3eGE/Nd3ZGrcXofgNI3MeHAxI1y9nHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707123604; c=relaxed/simple;
-	bh=iUexCMalKBWpEfcbdAvmle3x/PtwaKT1i+ys8RT6WyA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YFzLRNMSTxn/I+512KxbG5NkX8c2FzA+sDSfP+Si8w7u0/WcVnm2UlwXjv1SH2iU3CQcl2fvvRYurlmkz6OyhkcaAWHHj66Q+oMxdVKOEMQwGigm3ABwD6nZrmtZsBUL/z7vp0p+BPsJ6tWu1jOmQblp3CbK1ARiGONIDt2/tL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 945148aa29f24604a0175eae1108e9c7-20240205
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:a2d60129-7c4b-490e-9c8a-a98836b1eafe,IP:20,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:30
-X-CID-INFO: VERSION:1.1.35,REQID:a2d60129-7c4b-490e-9c8a-a98836b1eafe,IP:20,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:30
-X-CID-META: VersionHash:5d391d7,CLOUDID:38212280-4f93-4875-95e7-8c66ea833d57,B
-	ulkID:2402051659566CSA1LK0,BulkQuantity:0,Recheck:0,SF:66|24|17|19|44|102,
-	TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
-	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-UUID: 945148aa29f24604a0175eae1108e9c7-20240205
-Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
-	(envelope-from <chentao@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1952537164; Mon, 05 Feb 2024 16:59:53 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 26A27E0005A3;
-	Mon,  5 Feb 2024 16:59:52 +0800 (CST)
-X-ns-mid: postfix-65C0A387-960952945
-Received: from kernel.. (unknown [172.20.15.254])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 65085E000EBC;
-	Mon,  5 Feb 2024 16:59:51 +0800 (CST)
-From: Kunwu Chan <chentao@kylinos.cn>
-To: aahringo@redhat.com,
-	teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: [PATCH] fs: dlm: Simplify the allocation of slab caches in dlm_midcomms_cache_create
-Date: Mon,  5 Feb 2024 16:59:49 +0800
-Message-Id: <20240205085949.439628-1-chentao@kylinos.cn>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1707132980; c=relaxed/simple;
+	bh=XXMTy7omW95QL4wYydLM30UA75bH/787fQ5A85xLdT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OhrKDpFUkiXYAYVsE4XM5HIxXDxBNFSu1EaOjLZVcdNnpVvDGSuW3956uJkyLndAW91OEzRG3QpLElJVd1tqglrJ8pn2nhPG9BlnE9PMC7dTN/zTAM5CBLcbssyTBIRRgzZS1elTUVKsSaggeYA0IN2k+FVNMKBPyp540haKkBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ea5No9/B; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ea5No9/B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8BEC433C7;
+	Mon,  5 Feb 2024 11:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707132979;
+	bh=XXMTy7omW95QL4wYydLM30UA75bH/787fQ5A85xLdT4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ea5No9/B9/3ZwCOcBfLkGLDE/MvFK7jfTUn58PgVM0YUBlaEetZHBUxE4H4EzZn42
+	 VWdhM23gfRNhm+XkbKtNEj3C0OmneHbqvfBlFcfZLvnjj3kZ4di005cvbN+JyjMJdQ
+	 BruEA7v+rRVY+KS6rCy/IwVi0gCGBix8KOWYvJHTF29ICn+h5BgF4YiPjGhV27Ivp0
+	 jO6Cl/P5PsiUPrSoyHjFnTn7f3CBaebYqvaP/rB+cBxBXBaKeixBPxLeuM1DmUhs89
+	 fZgMOGkmBEvIyeouCRrK7VIoPHz5+OYJ84CAAZZqjo1XPLWVZIGfTK1XnMbrLvuspx
+	 LDK7mVCz6FqrA==
+Date: Mon, 5 Feb 2024 12:36:07 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Chuck Lever <chuck.lever@oracle.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, Neil Brown <neilb@suse.de>, Olga Kornievskaia <kolga@netapp.com>, 
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, v9fs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH v3 04/47] filelock: add some new helper functions
+Message-ID: <20240205-wegschauen-unappetitlich-2b0926023605@brauner>
+References: <20240131-flsplit-v3-0-c6129007ee8d@kernel.org>
+ <20240131-flsplit-v3-4-c6129007ee8d@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240131-flsplit-v3-4-c6129007ee8d@kernel.org>
 
-Use the new KMEM_CACHE() macro instead of direct kmem_cache_create
-to simplify the creation of SLAB caches.
+> diff --git a/include/linux/filelock.h b/include/linux/filelock.h
+> index 085ff6ba0653..a814664b1053 100644
+> --- a/include/linux/filelock.h
+> +++ b/include/linux/filelock.h
+> @@ -147,6 +147,29 @@ int fcntl_setlk64(unsigned int, struct file *, unsigned int,
+>  int fcntl_setlease(unsigned int fd, struct file *filp, int arg);
+>  int fcntl_getlease(struct file *filp);
+>  
+> +static inline bool lock_is_unlock(struct file_lock *fl)
+> +{
+> +	return fl->fl_type == F_UNLCK;
+> +}
+> +
+> +static inline bool lock_is_read(struct file_lock *fl)
+> +{
+> +	return fl->fl_type == F_RDLCK;
+> +}
+> +
+> +static inline bool lock_is_write(struct file_lock *fl)
+> +{
+> +	return fl->fl_type == F_WRLCK;
+> +}
+> +
+> +static inline void locks_wake_up(struct file_lock *fl)
+> +{
+> +	wake_up(&fl->fl_wait);
+> +}
+> +
+> +/* for walking lists of file_locks linked by fl_list */
+> +#define for_each_file_lock(_fl, _head)	list_for_each_entry(_fl, _head, fl_list)
+> +
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
----
- fs/dlm/midcomms.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+This causes a build warning for fs/ceph/ and fs/afs when
+!CONFIG_FILE_LOCKING. I'm about to fold the following diff into this
+patch. The diff looks a bit wonky but essentially I've moved
+lock_is_unlock(), lock_is_{read,write}(), locks_wake_up() and
+for_each_file_lock() out of the ifdef CONFIG_FILE_LOCKING:
 
-diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
-index 2247ebb61be1..8e9920f1b48b 100644
---- a/fs/dlm/midcomms.c
-+++ b/fs/dlm/midcomms.c
-@@ -226,8 +226,7 @@ static DEFINE_MUTEX(close_lock);
-=20
- struct kmem_cache *dlm_midcomms_cache_create(void)
+diff --git a/include/linux/filelock.h b/include/linux/filelock.h
+index a814664b1053..62be9c6b1e59 100644
+--- a/include/linux/filelock.h
++++ b/include/linux/filelock.h
+@@ -133,20 +133,6 @@ struct file_lock_context {
+        struct list_head        flc_lease;
+ };
+
+-#ifdef CONFIG_FILE_LOCKING
+-int fcntl_getlk(struct file *, unsigned int, struct flock *);
+-int fcntl_setlk(unsigned int, struct file *, unsigned int,
+-                       struct flock *);
+-
+-#if BITS_PER_LONG == 32
+-int fcntl_getlk64(struct file *, unsigned int, struct flock64 *);
+-int fcntl_setlk64(unsigned int, struct file *, unsigned int,
+-                       struct flock64 *);
+-#endif
+-
+-int fcntl_setlease(unsigned int fd, struct file *filp, int arg);
+-int fcntl_getlease(struct file *filp);
+-
+ static inline bool lock_is_unlock(struct file_lock *fl)
  {
--	return kmem_cache_create("dlm_mhandle", sizeof(struct dlm_mhandle),
--				 0, 0, NULL);
-+	return KMEM_CACHE(dlm_mhandle, 0);
- }
-=20
- static inline const char *dlm_state_str(int state)
---=20
-2.39.2
+        return fl->fl_type == F_UNLCK;
+@@ -170,6 +156,20 @@ static inline void locks_wake_up(struct file_lock *fl)
+ /* for walking lists of file_locks linked by fl_list */
+ #define for_each_file_lock(_fl, _head) list_for_each_entry(_fl, _head, fl_list)
+
++#ifdef CONFIG_FILE_LOCKING
++int fcntl_getlk(struct file *, unsigned int, struct flock *);
++int fcntl_setlk(unsigned int, struct file *, unsigned int,
++                       struct flock *);
++
++#if BITS_PER_LONG == 32
++int fcntl_getlk64(struct file *, unsigned int, struct flock64 *);
++int fcntl_setlk64(unsigned int, struct file *, unsigned int,
++                       struct flock64 *);
++#endif
++
++int fcntl_setlease(unsigned int fd, struct file *filp, int arg);
++int fcntl_getlease(struct file *filp);
++
+ /* fs/locks.c */
+ void locks_free_lock_context(struct inode *inode);
+ void locks_free_lock(struct file_lock *fl);
 
