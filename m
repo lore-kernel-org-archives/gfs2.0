@@ -1,190 +1,213 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B061E4A2
-	for <gfs2@lists.linux.dev>; Wed,  7 Feb 2024 18:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CBC13699D
+	for <gfs2@lists.linux.dev>; Wed,  7 Feb 2024 21:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707330796; cv=none; b=Vd089TWx/YK1/xOEn1S2goOEgNtIllE54QlWFD2t77wKRetDjwdeFZECeqyTX0efPMXlH/FINTufik+z2+bYkz2Usp7v1aEtW+XuhtOLUQcWx5qps+QHESU2/bmdUYdTE973lHpoO2NLuidxJqiLf/4UZdrWO10OlZSx+gUKZYE=
+	t=1707341285; cv=none; b=M7CPcrtHotgz0aF1RfXa0oDWlzAY3oJz4se1OHGIl6E1Aogj4D8XwTnwGmvUGy5AwynKdbagPZ8v22JOGXCM0mSDDqVgs+nNlMuF29Vetnc43hB4IWrPs5me+hmKQQFDC6w8ngM0m1FZl0SALtOIkZC8yZQ7g8ePjBjYot+rgf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707330796; c=relaxed/simple;
-	bh=vcbjnt5RH4cAV2tJXYgIsVQe1Lf+xy5epqYic0XC5Hg=;
+	s=arc-20240116; t=1707341285; c=relaxed/simple;
+	bh=TcuoTBYzJOyVKpA/NOdorcJZuoBN+Bx+mnRuQV92i2Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QdLS5GW/eCLwTgyWNYyd5XwcYEqaqQSMBEMrjjGMZM8tOJWkxmrpiktLyt0/wC1MVcIB5nG03Pjng+vQtAWhlJVjpQZ/Q7OIE99tiSleb7ajlw7KhGikXdlZZiD9iFVwoVukQCpONNFmrjAZ92OuBWgQcbm00QlY3Ky2UnR+qrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QOhvmaZs; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=tbdCvrEDg+CNC+OE3wiLDq1qeg29ZCRzwpWHSZnwZnw0ip13GPFunoyStNZgswmCCbkocy5i3C8PmNZZ23dIu9Fgohfp2GJ/Uj7ZPpuaB/pE/7iVHVSu7G27N3y/JwdVyvmYpXc0i6gqESBK/xpvoGqX47q/QrO5BzKooHoOoUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EKlnVZON; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QOhvmaZs"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so131450466b.2
-        for <gfs2@lists.linux.dev>; Wed, 07 Feb 2024 10:33:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707330793; x=1707935593; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DPN6YHmWuLd5MWUOmF+xJhqXptNUFEEGocEdREYkoUg=;
-        b=QOhvmaZsPXWiokHf3rAc3+gLgH9k3VhuasYtA2dnIGQRrLHu7BCdsey7yWzRWkmyom
-         wJcYW0I/2ku3RkOlNLPUUpz9rD8nF+0euJPNnFIGAT/BSi25WnRKjmiqKJ1va8mQDPBo
-         1kPgsAC7z8AHwaEPe7J7wUeFlXEF2AKKkk91aJr72RkE7DAUzcCpFZbYlrZvUP8Xe0EU
-         4TeTipbV3TqHBwx9ycfrzQ/NklnS1rq4BEQhTa5bJ41wAafrp6X6ReBgIECuPEecQdKL
-         4OS7ILzmUubUtLgsPMljHi6KyRLfKFAUFZMq0kdiIvZMTRCuf56nqOszH3OHSLCK9hAb
-         M2Ww==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EKlnVZON"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707341283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rsF5scQbGC/NKEqVyzUdcfrlWaBsz3GB8A3Ix6fxwJM=;
+	b=EKlnVZON0TRtxGa5MPgaos3JZDc7hRrDIi2Nk3LPiXqIfqTiTK02GnSCfyGGHQU4q4/1z5
+	J+j5sckBlKpp50Lto5eisydXXIpZLO1eKGokwTHcogLISmbzhWdumY4rXO7iIaTssUDSat
+	YcX70eTygfalCU2/cwDq/pq2swdENUs=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-keYpCFWTNsqQPaBhqrnbXg-1; Wed, 07 Feb 2024 16:28:01 -0500
+X-MC-Unique: keYpCFWTNsqQPaBhqrnbXg-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d0a20a788dso11822921fa.1
+        for <gfs2@lists.linux.dev>; Wed, 07 Feb 2024 13:28:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707330793; x=1707935593;
+        d=1e100.net; s=20230601; t=1707341280; x=1707946080;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DPN6YHmWuLd5MWUOmF+xJhqXptNUFEEGocEdREYkoUg=;
-        b=vizzJdDSf9T6PeR26Z6kPxTkZ121X223vRoEy75LqHoOcmMlwhkuYRp7TpfnVKmYPE
-         scvm561yEF4u9lJhxgrRRN9jn6y2On8rZB3AXmBWtEig5/f7p6mHSOxC9Qeuxmznk/Z/
-         hWhhZ2jkKpameVTwtnUGRJkxKPGXy9nLbw66lpz4EcnpJusdRqNyVr4VWR4KxHTwXH+3
-         Kw9LwYAuoL9emgURX764IbdaAbvHTKWoskYFOR/5Y7RiuI5NbaNzQHSWm+cbIWiQwrVn
-         IxY9w9sHIRz4eFIY2svOBZotoyzS3yBnZrZ3Z7VqIJyfWdhLOIEB7PejgtPklmdwennP
-         nuXQ==
-X-Gm-Message-State: AOJu0Yx6rmBqsKiMOOSpEeRncLhMTbbuKSZniSCI6twO01OoIDe/8YHf
-	uKQG9hb28FfsfoHmTLLgObppN285EGEMxsgfzeQ18Sf2fmiXoGFGKiv6WsHkXGUG526bkaFhidT
-	QnEdhH+Fe5NBnmxRRm8XFwALSTX6VtHsXJFdQ
-X-Google-Smtp-Source: AGHT+IEmincd4Fm+vxfFykn5vYT7vHDEMm4sKWDOLRSn5dY2DxhjYcMa066xPr14AMS0mJHD4AbsNPK3mEUonbBdGTM=
-X-Received: by 2002:a17:906:4bd2:b0:a37:9c44:c5cf with SMTP id
- x18-20020a1709064bd200b00a379c44c5cfmr4748046ejv.24.1707330792878; Wed, 07
- Feb 2024 10:33:12 -0800 (PST)
+        bh=rsF5scQbGC/NKEqVyzUdcfrlWaBsz3GB8A3Ix6fxwJM=;
+        b=Cl1zNQnLcgOk7zJdQiKG0H9shJ/sx4Wp4mqIFvW3b7ce4YfKJoHFyh4qWNLdmUQigc
+         r/A4vJN4BOJ+symMgG65OSCuTOA29oQ+Rd5zM+K8C3F9btyhjNyLXLWGAl28oSXfWOZB
+         5PTU/4GUhFnWRsKcZVxHHKSF7j+3aro+OYMhbG6s00vdcBcRvqZS31bq5KlWRO2EftgX
+         8PDNbS/ZGwuIGfQXbxgQ5yIpIqnXFCav5FtsFfkxeMNo6+zNg8Uubua1v69E65Y7gJth
+         G2ugWqkYVd/BMbY3KyWjSa/RPE6T8df03gH71zpJjfJ2w5RMDI/j7b0VOj8jIolZdnIj
+         OmKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFFAbW7IHCSnE2fAHrrxB9ietAUu47mf1Q4qRGnSb+RqtSzSQFwjtpI0V8/zA65Ub9E6uDInir6sd/VBJrsR9ay8wEtQ==
+X-Gm-Message-State: AOJu0YyGmFK0r8lgnUI2FC1G2To7Tme8JG6SAXuO/fpUcwagw9giJlPj
+	Ss4cWCPX6xtyfaKtxDueQz61EdFJPfr3CabQFP9GNv5moH7fwbnr+DluFdFGxt1DkI7TXWMLQu1
+	DA3FqGo3/XXS5GiFw/gOpgMG+6KYCKegk7GAmX2AA7Y6OuaRLAC7vB8gMPlbfzlrqhdoPzJWFS0
+	STVq7bNm12aU38EAAGFu3OF2Oxvg==
+X-Received: by 2002:a05:651c:211c:b0:2d0:c176:ebcc with SMTP id a28-20020a05651c211c00b002d0c176ebccmr5145864ljq.18.1707341280231;
+        Wed, 07 Feb 2024 13:28:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFn1f4xD8ODxbeXjM0ldAqf8jj+ZejpBEaAt+zqZ446U/CEMk1rYJTD5iEcL9px/pawkKbLVveasSpw7fcHSDI=
+X-Received: by 2002:a05:651c:211c:b0:2d0:c176:ebcc with SMTP id
+ a28-20020a05651c211c00b002d0c176ebccmr5145847ljq.18.1707341279916; Wed, 07
+ Feb 2024 13:27:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at> <ZcNdzZVPD76uSbps@eldamar.lan>
-In-Reply-To: <ZcNdzZVPD76uSbps@eldamar.lan>
-From: Jordan Rife <jrife@google.com>
-Date: Wed, 7 Feb 2024 10:33:00 -0800
-Message-ID: <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
+References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at>
+ <ZcNdzZVPD76uSbps@eldamar.lan> <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
+In-Reply-To: <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Wed, 7 Feb 2024 16:27:48 -0500
+Message-ID: <CAK-6q+hza9yXb5KpBS2VJMNHJa805nXqiYPTovnf9G-JFadBsg@mail.gmail.com>
 Subject: Re: [regression 6.1.67] dlm: cannot start dlm midcomms -97 after
  backport of e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Valentin Kleibel <valentin@vrvis.at>, David Teigland <teigland@redhat.com>, 
-	Alexander Aring <aahringo@redhat.com>, 1063338@bugs.debian.org, gfs2@lists.linux.dev, 
+To: Jordan Rife <jrife@google.com>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Valentin Kleibel <valentin@vrvis.at>, 
+	David Teigland <teigland@redhat.com>, 1063338@bugs.debian.org, gfs2@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
 	gregkh@linuxfoundation.org, regressions@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 7, 2024 at 2:39=E2=80=AFAM Salvatore Bonaccorso <carnil@debian.=
-org> wrote:
+Hi,
+
+On Wed, Feb 7, 2024 at 1:33=E2=80=AFPM Jordan Rife <jrife@google.com> wrote=
+:
 >
-> Hi Valentin, hi all
+> On Wed, Feb 7, 2024 at 2:39=E2=80=AFAM Salvatore Bonaccorso <carnil@debia=
+n.org> wrote:
+> >
+> > Hi Valentin, hi all
+> >
+> > [This is about a regression reported in Debian for 6.1.67]
+> >
+> > On Tue, Feb 06, 2024 at 01:00:11PM +0100, Valentin Kleibel wrote:
+> > > Package: linux-image-amd64
+> > > Version: 6.1.76+1
+> > > Source: linux
+> > > Source-Version: 6.1.76+1
+> > > Severity: important
+> > > Control: notfound -1 6.6.15-2
+> > >
+> > > Dear Maintainers,
+> > >
+> > > We discovered a bug affecting dlm that prevents any tcp communication=
+s by
+> > > dlm when booted with debian kernel 6.1.76-1.
+> > >
+> > > Dlm startup works (corosync-cpgtool shows the dlm:controld group with=
+ all
+> > > expected nodes) but as soon as we try to add a lockspace dmesg shows:
+> > > ```
+> > > dlm: Using TCP for communications
+> > > dlm: cannot start dlm midcomms -97
+> > > ```
+> > >
+> > > It seems that commit "dlm: use kernel_connect() and kernel_bind()"
+> > > (e9cdebbe) was merged to 6.1.
+> > >
+> > > Checking the code it seems that the changed function dlm_tcp_listen_b=
+ind()
+> > > fails with exit code 97 (EAFNOSUPPORT)
+> > > It is called from
+> > >
+> > > dlm/lockspace.c: threads_start() -> dlm_midcomms_start()
+> > > dlm/midcomms.c: dlm_midcomms_start() -> dlm_lowcomms_start()
+> > > dlm/lowcomms.c: dlm_lowcomms_start() -> dlm_listen_for_all() ->
+> > > dlm_proto_ops->listen_bind() =3D dlm_tcp_listen_bind()
+> > >
+> > > The error code is returned all the way to threads_start() where the e=
+rror
+> > > message is emmitted.
+> > >
+> > > Booting with the unsigned kernel from testing (6.6.15-2), which also
+> > > contains this commit, works without issues.
+> > >
+> > > I'm not sure what additional changes are required to get this working=
+ or if
+> > > rolling back this change is an option.
+> > >
+> > > We'd be happy to test patches that might fix this issue.
+> >
+> > Thanks for your report. So we have a 6.1.76 specific regression for
+> > the backport of e9cdebbe23f1 ("dlm: use kernel_connect() and
+> > kernel_bind()") .
+> >
+> > Let's loop in the upstream regression list for tracking and people
+> > involved for the subsystem to see if the issue can be identified. As
+> > it is working for 6.6.15 which includes the commit backport as well it
+> > might be very well that a prerequisite is missing.
+> >
+> > # annotate regression with 6.1.y specific commit
+> > #regzbot ^introduced e11dea8f503341507018b60906c4a9e7332f3663
+> > #regzbot link: https://bugs.debian.org/1063338
+> >
+> > Any ideas?
+> >
+> > Regards,
+> > Salvatore
 >
-> [This is about a regression reported in Debian for 6.1.67]
 >
-> On Tue, Feb 06, 2024 at 01:00:11PM +0100, Valentin Kleibel wrote:
-> > Package: linux-image-amd64
-> > Version: 6.1.76+1
-> > Source: linux
-> > Source-Version: 6.1.76+1
-> > Severity: important
-> > Control: notfound -1 6.6.15-2
-> >
-> > Dear Maintainers,
-> >
-> > We discovered a bug affecting dlm that prevents any tcp communications =
-by
-> > dlm when booted with debian kernel 6.1.76-1.
-> >
-> > Dlm startup works (corosync-cpgtool shows the dlm:controld group with a=
-ll
-> > expected nodes) but as soon as we try to add a lockspace dmesg shows:
-> > ```
-> > dlm: Using TCP for communications
-> > dlm: cannot start dlm midcomms -97
-> > ```
-> >
-> > It seems that commit "dlm: use kernel_connect() and kernel_bind()"
-> > (e9cdebbe) was merged to 6.1.
-> >
-> > Checking the code it seems that the changed function dlm_tcp_listen_bin=
-d()
-> > fails with exit code 97 (EAFNOSUPPORT)
-> > It is called from
-> >
-> > dlm/lockspace.c: threads_start() -> dlm_midcomms_start()
-> > dlm/midcomms.c: dlm_midcomms_start() -> dlm_lowcomms_start()
-> > dlm/lowcomms.c: dlm_lowcomms_start() -> dlm_listen_for_all() ->
-> > dlm_proto_ops->listen_bind() =3D dlm_tcp_listen_bind()
-> >
-> > The error code is returned all the way to threads_start() where the err=
-or
-> > message is emmitted.
-> >
-> > Booting with the unsigned kernel from testing (6.6.15-2), which also
-> > contains this commit, works without issues.
-> >
-> > I'm not sure what additional changes are required to get this working o=
-r if
-> > rolling back this change is an option.
-> >
-> > We'd be happy to test patches that might fix this issue.
+> Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
+> and 6.6 stable branches,
+> it looks like there is a mismatch here with the dlm_local_addr[0] paramet=
+er.
 >
-> Thanks for your report. So we have a 6.1.76 specific regression for
-> the backport of e9cdebbe23f1 ("dlm: use kernel_connect() and
-> kernel_bind()") .
+> 6.1
+> ----
 >
-> Let's loop in the upstream regression list for tracking and people
-> involved for the subsystem to see if the issue can be identified. As
-> it is working for 6.6.15 which includes the commit backport as well it
-> might be very well that a prerequisite is missing.
+> static int dlm_tcp_listen_bind(struct socket *sock)
+> {
+> int addr_len;
 >
-> # annotate regression with 6.1.y specific commit
-> #regzbot ^introduced e11dea8f503341507018b60906c4a9e7332f3663
-> #regzbot link: https://bugs.debian.org/1063338
+> /* Bind to our port */
+> make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
+> return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
+>    addr_len);
+> }
 >
-> Any ideas?
+> 6.6
+> ----
+> static int dlm_tcp_listen_bind(struct socket *sock)
+> {
+> int addr_len;
 >
-> Regards,
-> Salvatore
+> /* Bind to our port */
+> make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
+> return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
+>    addr_len);
+> }
+>
+> 6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on heap)=
+ which
+> changed
+>
+> static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
+>
+> to
+>
+> static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
+>
+> It looks like kernel_bind() in 6.1 needs to be modified to match.
+>
 
+makes sense. I tried to cherry-pick e9cdebbe23f1 ("dlm: use
+kernel_connect() and kernel_bind()") on v6.1.67 as I don't see it
+there. It failed and does not apply cleanly.
 
-Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
-and 6.6 stable branches,
-it looks like there is a mismatch here with the dlm_local_addr[0] parameter=
-.
+Are we talking here about a debian kernel specific backport? If so,
+maybe somebody missed to modify those parts you mentioned.
 
-6.1
-----
+- Alex
 
-static int dlm_tcp_listen_bind(struct socket *sock)
-{
-int addr_len;
-
-/* Bind to our port */
-make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-   addr_len);
-}
-
-6.6
-----
-static int dlm_tcp_listen_bind(struct socket *sock)
-{
-int addr_len;
-
-/* Bind to our port */
-make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-   addr_len);
-}
-
-6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on heap) w=
-hich
-changed
-
-static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
-
-to
-
-static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
-
-It looks like kernel_bind() in 6.1 needs to be modified to match.
-
-
--Jordan
