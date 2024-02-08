@@ -1,189 +1,76 @@
-Received: from iris.vrvis.at (iris.vrvis.at [92.60.8.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFD46F079;
-	Thu,  8 Feb 2024 12:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.60.8.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A5B41A88
+	for <gfs2@lists.linux.dev>; Thu,  8 Feb 2024 14:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707394676; cv=none; b=Uilvv9dSY9xUFpgPNMMkUIlhUSvRlDHCOaG0enFWh/CflnUnYk0mWnQVbN+v9NhIyDJly2dQ9w/xWd7O4OfltUyo1XkFulddb10Uqvnc/BP0mThnS2nZgzAwVgPNHX5BI9PzpAcV9emKfrdZAMMAqoWtSlmGG50r16aB9VeQiZE=
+	t=1707404231; cv=none; b=LozbZPUS7+43NdZz0zTQsyFtYFnc9Ov9U6/RszzaJn05RzrMT1NpAYK/Nyc4nxijh+R7lDXm9Y6EJ0xRAjWBuI0C5dkUsIXmVABZCjdyYrqJMv6woK55o8KRd8BC+NHC8sU4Q/mvIUR3IanhYfDFzDluBe2Hujq9qd/KIqJCbrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707394676; c=relaxed/simple;
-	bh=em70S6fl4jXKXISeqX4EQDrqUqnNdkplx9N5uRCApyE=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Cc:To:References:From:
-	 In-Reply-To:Subject; b=pO6yZz6Fa/mo6gTlo/1zZ1Gn/zPV3Q/4NE5cM8VhU1uiq6a/10Pz+0dbXqBY3KDqA3kmhcKDIIvSUmMxExx6Ddd/8ztwHwp52pc9uxMUSgl4wKPp/DghruVbC1M4hp/66y3TK+8b5HpbEz5vbYc/a8jmk8qQVXeBJlNKFagA5v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vrvis.at; spf=pass smtp.mailfrom=vrvis.at; arc=none smtp.client-ip=92.60.8.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vrvis.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vrvis.at
-Received: from whiskey.org.vrvis.lan ([10.42.2.171])
-	by iris.vrvis.at with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(ESMPT Server)
-	(envelope-from <valentin@vrvis.at>)
-	id 1rY2ii-0004Cp-0r;
-	Thu, 08 Feb 2024 12:37:37 +0100
-Content-Type: multipart/mixed; boundary="------------8nT1Vb4atVC4dwNucelwL7VP"
-Message-ID: <1d4c7d06-0c02-4adb-a2a3-ec85fd802ddb@vrvis.at>
-Date: Thu, 8 Feb 2024 12:37:31 +0100
+	s=arc-20240116; t=1707404231; c=relaxed/simple;
+	bh=EcT89sa0CxyQPOU9UiYTX07w8+mCU891y6BBe80654o=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=AyGXS2XcegOVzB+RjyOIC/3sbnZadkRkoEHoREc4XE/1p8Tgn31r0ffwwu6kjg+ryk2kzj8+lpMTto+hNyYKb1+EAZNtOvE6TQnq10btR4TQnx8VI5XD4H+iEu0csjqHrknpQqQ6qW4lFDxxx+zfoGClaC7cbca5dZroudeEhSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7bf36117dfbso216932539f.3
+        for <gfs2@lists.linux.dev>; Thu, 08 Feb 2024 06:57:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707404229; x=1708009029;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LcJiD/mRara/hhLkrTg732ODmYQ+uP41FmyKJ/8GEkU=;
+        b=rO1ww6NaxuOXxjZwGiZW6QxtbfpuGlGgGU/RjjCdxpUF9SupDICtcT/4S3gIkB16gc
+         Hljs2hBWV3MgXEPOAqgT9jW2i4pgoxFOO+UvarQoOOVpzFwKDuSFTwnKZhqxW31wWk72
+         oY6/IvJXtx76mSAqfYelC1SG+qyCFoRb6J8tZN4eUcgU+5iQGkmh/gYtM8pWendVY4qx
+         NYxYl0LMn+bUsN7VubXFUDWXzlT2I+aAvh45Zj23w/3ecUBju8kSu+auP4fhLz+/Dwuy
+         lbJ8bVbJNl33JgGPOX6KmZjhA/ViGvwfE3jUd4ZfESV6W7Tx7p26Ym+dzcYnrRo4o+gt
+         9K1Q==
+X-Gm-Message-State: AOJu0Yz3miZK72n5mMDZlRH1J0rHcceaykRT1XIwvwZ4ArZh3zHD8vJf
+	sukoedzEjXSUJ7LXzrkMwlFn5vBynR0HVaBHsJWPbZ4u7V9ifemWnF8LwDqKI6tgxnCG+zLwtFS
+	B/bNjS/bmtuYY9kjNkLErXzteJPvta+Tm75JrcU4ogOPld8SAyqPxGWY=
+X-Google-Smtp-Source: AGHT+IGRyXJH9KkquSL5YHNP2ZJcCXVn/DbIJyhV1FaZoSlUL5Enc9Ksfp/fkqadCiyOutNlQQ+CpnxukUxtJAJgJUaWJqCk16IZ
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: David Teigland <teigland@redhat.com>,
- Alexander Aring <aahringo@redhat.com>, 1063338@bugs.debian.org,
- gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- gregkh@linuxfoundation.org, regressions@lists.linux.dev
-Content-Language: en-US
-To: Jordan Rife <jrife@google.com>, Salvatore Bonaccorso <carnil@debian.org>
-References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at>
- <ZcNdzZVPD76uSbps@eldamar.lan>
- <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
-From: Valentin Kleibel <valentin@vrvis.at>
-In-Reply-To: <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -4.5 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-	* -0.1 GREYLIST_ISWHITE The incoming server has been whitelisted for this
-	*      receipient and sender
-Subject: Re: [regression 6.1.76] dlm: cannot start dlm midcomms -97 after
- backport of e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
+X-Received: by 2002:a05:6602:2d8a:b0:7c0:2e8f:8a3a with SMTP id
+ k10-20020a0566022d8a00b007c02e8f8a3amr413393iow.4.1707404229237; Thu, 08 Feb
+ 2024 06:57:09 -0800 (PST)
+Date: Thu, 08 Feb 2024 06:57:09 -0800
+In-Reply-To: <0000000000001e48350610dbc5c5@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009263050610e00681@google.com>
+Subject: Re: [syzbot] [gfs2?] general protection fault in gfs2_rindex_update
+From: syzbot <syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, cluster-devel@redhat.com, gfs2@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rpeterso@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is a multi-part message in MIME format.
---------------8nT1Vb4atVC4dwNucelwL7VP
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+syzbot has bisected this issue to:
 
-Hi Jordan, hi all
+commit de3f906f0af0c3f5d862b07df4d020c9322cd9c3
+Author: Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Thu Jun 2 20:15:02 2022 +0000
 
-> Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
-> and 6.6 stable branches,
-> it looks like there is a mismatch here with the dlm_local_addr[0] parameter.
-> 
-> 6.1
-> ----
-> 
-> static int dlm_tcp_listen_bind(struct socket *sock)
-> {
-> int addr_len;
-> 
-> /* Bind to our port */
-> make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
->     addr_len);
-> }
-> 
-> 6.6
-> ----
-> static int dlm_tcp_listen_bind(struct socket *sock)
-> {
-> int addr_len;
-> 
-> /* Bind to our port */
-> make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
->     addr_len);
-> }
-> 
-> 6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on heap) which
-> changed
-> 
-> static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> 
-> to
-> 
-> static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> 
-> It looks like kernel_bind() in 6.1 needs to be modified to match.
+    gfs2: Revert 'Fix "truncate in progress" hang'
 
-We tried to apply commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on 
-heap) to the debian kernel 6.1.76 and came up with the attached patch. 
-Besides the different offsets there is a slight change dlm_tcp_bind() 
-where in 6.1.76 kernel_bind() is used instead of sock->ops->bind() in 
-the original commit.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15f06904180000
+start commit:   547ab8fc4cb0 Merge tag 'loongarch-fixes-6.8-2' of git://gi..
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=17f06904180000
+console output: https://syzkaller.appspot.com/x/log.txt?x=13f06904180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=89a5d896b14c4565
+dashboard link: https://syzkaller.appspot.com/bug?extid=74edb1a3ea8f1c65a086
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11395147e80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=126ff68fe80000
 
-This patch solves the issue we experienced.
+Reported-by: syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com
+Fixes: de3f906f0af0 ("gfs2: Revert 'Fix "truncate in progress" hang'")
 
-Thanks for your help,
-Valentin
---------------8nT1Vb4atVC4dwNucelwL7VP
-Content-Type: text/x-patch; charset=UTF-8;
- name="dlm_dont_put_dlm_local_addrs_on_heap.patch"
-Content-Disposition: attachment;
- filename="dlm_dont_put_dlm_local_addrs_on_heap.patch"
-Content-Transfer-Encoding: base64
-
-LS0tIGEvZnMvZGxtL2xvd2NvbW1zLmMJMjAyNC0wMi0wOCAxMDo0MjoxOS4zMjg4NjE0Nzkg
-KzAxMDAKKysrIGIvZnMvZGxtL2xvd2NvbW1zLmMJMjAyNC0wMi0wOCAxMDo1NzoyMi45MDA0
-NjMxNDkgKzAxMDAKQEAgLTE3NCw3ICsxNzQsNyBAQAogc3RhdGljIERFRklORV9TUElOTE9D
-SyhkbG1fbm9kZV9hZGRyc19zcGluKTsKIAogc3RhdGljIHN0cnVjdCBsaXN0ZW5fY29ubmVj
-dGlvbiBsaXN0ZW5fY29uOwotc3RhdGljIHN0cnVjdCBzb2NrYWRkcl9zdG9yYWdlICpkbG1f
-bG9jYWxfYWRkcltETE1fTUFYX0FERFJfQ09VTlRdOworc3RhdGljIHN0cnVjdCBzb2NrYWRk
-cl9zdG9yYWdlIGRsbV9sb2NhbF9hZGRyW0RMTV9NQVhfQUREUl9DT1VOVF07CiBzdGF0aWMg
-aW50IGRsbV9sb2NhbF9jb3VudDsKIGludCBkbG1fYWxsb3dfY29ubjsKIApAQCAtMzk4LDcg
-KzM5OCw3IEBACiAJaWYgKCFzYV9vdXQpCiAJCXJldHVybiAwOwogCi0JaWYgKGRsbV9sb2Nh
-bF9hZGRyWzBdLT5zc19mYW1pbHkgPT0gQUZfSU5FVCkgeworCWlmIChkbG1fbG9jYWxfYWRk
-clswXS5zc19mYW1pbHkgPT0gQUZfSU5FVCkgewogCQlzdHJ1Y3Qgc29ja2FkZHJfaW4gKmlu
-NCAgPSAoc3RydWN0IHNvY2thZGRyX2luICopICZzYXM7CiAJCXN0cnVjdCBzb2NrYWRkcl9p
-biAqcmV0NCA9IChzdHJ1Y3Qgc29ja2FkZHJfaW4gKikgc2Ffb3V0OwogCQlyZXQ0LT5zaW5f
-YWRkci5zX2FkZHIgPSBpbjQtPnNpbl9hZGRyLnNfYWRkcjsKQEAgLTcyNyw3ICs3MjcsNyBA
-QAogc3RhdGljIHZvaWQgbWFrZV9zb2NrYWRkcihzdHJ1Y3Qgc29ja2FkZHJfc3RvcmFnZSAq
-c2FkZHIsIHVpbnQxNl90IHBvcnQsCiAJCQkgIGludCAqYWRkcl9sZW4pCiB7Ci0Jc2FkZHIt
-PnNzX2ZhbWlseSA9ICBkbG1fbG9jYWxfYWRkclswXS0+c3NfZmFtaWx5OworCXNhZGRyLT5z
-c19mYW1pbHkgPSAgZGxtX2xvY2FsX2FkZHJbMF0uc3NfZmFtaWx5OwogCWlmIChzYWRkci0+
-c3NfZmFtaWx5ID09IEFGX0lORVQpIHsKIAkJc3RydWN0IHNvY2thZGRyX2luICppbjRfYWRk
-ciA9IChzdHJ1Y3Qgc29ja2FkZHJfaW4gKilzYWRkcjsKIAkJaW40X2FkZHItPnNpbl9wb3J0
-ID0gY3B1X3RvX2JlMTYocG9ydCk7CkBAIC0xMTY3LDcgKzExNjcsNyBAQAogCWludCBpLCBh
-ZGRyX2xlbiwgcmVzdWx0ID0gMDsKIAogCWZvciAoaSA9IDA7IGkgPCBkbG1fbG9jYWxfY291
-bnQ7IGkrKykgewotCQltZW1jcHkoJmxvY2FsYWRkciwgZGxtX2xvY2FsX2FkZHJbaV0sIHNp
-emVvZihsb2NhbGFkZHIpKTsKKwkJbWVtY3B5KCZsb2NhbGFkZHIsICZkbG1fbG9jYWxfYWRk
-cltpXSwgc2l6ZW9mKGxvY2FsYWRkcikpOwogCQltYWtlX3NvY2thZGRyKCZsb2NhbGFkZHIs
-IHBvcnQsICZhZGRyX2xlbik7CiAKIAkJaWYgKCFpKQpAQCAtMTE4Nyw3ICsxMTg3LDcgQEAK
-IC8qIEdldCBsb2NhbCBhZGRyZXNzZXMgKi8KIHN0YXRpYyB2b2lkIGluaXRfbG9jYWwodm9p
-ZCkKIHsKLQlzdHJ1Y3Qgc29ja2FkZHJfc3RvcmFnZSBzYXMsICphZGRyOworCXN0cnVjdCBz
-b2NrYWRkcl9zdG9yYWdlIHNhczsKIAlpbnQgaTsKIAogCWRsbV9sb2NhbF9jb3VudCA9IDA7
-CkBAIC0xMTk1LDIxICsxMTk1LDEwIEBACiAJCWlmIChkbG1fb3VyX2FkZHIoJnNhcywgaSkp
-CiAJCQlicmVhazsKIAotCQlhZGRyID0ga21lbWR1cCgmc2FzLCBzaXplb2YoKmFkZHIpLCBH
-RlBfTk9GUyk7Ci0JCWlmICghYWRkcikKLQkJCWJyZWFrOwotCQlkbG1fbG9jYWxfYWRkcltk
-bG1fbG9jYWxfY291bnQrK10gPSBhZGRyOworCQltZW1jcHkoJmRsbV9sb2NhbF9hZGRyW2Rs
-bV9sb2NhbF9jb3VudCsrXSwgJnNhcywgc2l6ZW9mKHNhcykpOwogCX0KIH0KIAotc3RhdGlj
-IHZvaWQgZGVpbml0X2xvY2FsKHZvaWQpCi17Ci0JaW50IGk7Ci0KLQlmb3IgKGkgPSAwOyBp
-IDwgZGxtX2xvY2FsX2NvdW50OyBpKyspCi0JCWtmcmVlKGRsbV9sb2NhbF9hZGRyW2ldKTsK
-LX0KLQogc3RhdGljIHN0cnVjdCB3cml0ZXF1ZXVlX2VudHJ5ICpuZXdfd3JpdGVxdWV1ZV9l
-bnRyeShzdHJ1Y3QgY29ubmVjdGlvbiAqY29uKQogewogCXN0cnVjdCB3cml0ZXF1ZXVlX2Vu
-dHJ5ICplbnRyeTsKQEAgLTE1NzUsNyArMTU2NCw3IEBACiAJfQogCiAJLyogQ3JlYXRlIGEg
-c29ja2V0IHRvIGNvbW11bmljYXRlIHdpdGggKi8KLQlyZXN1bHQgPSBzb2NrX2NyZWF0ZV9r
-ZXJuKCZpbml0X25ldCwgZGxtX2xvY2FsX2FkZHJbMF0tPnNzX2ZhbWlseSwKKwlyZXN1bHQg
-PSBzb2NrX2NyZWF0ZV9rZXJuKCZpbml0X25ldCwgZGxtX2xvY2FsX2FkZHJbMF0uc3NfZmFt
-aWx5LAogCQkJCSAgU09DS19TVFJFQU0sIGRsbV9wcm90b19vcHMtPnByb3RvLCAmc29jayk7
-CiAJaWYgKHJlc3VsdCA8IDApCiAJCWdvdG8gc29ja2V0X2VycjsKQEAgLTE3ODYsNyArMTc3
-NSw2IEBACiAJZm9yZWFjaF9jb25uKGZyZWVfY29ubik7CiAJc3JjdV9yZWFkX3VubG9jaygm
-Y29ubmVjdGlvbnNfc3JjdSwgaWR4KTsKIAl3b3JrX3N0b3AoKTsKLQlkZWluaXRfbG9jYWwo
-KTsKIAogCWRsbV9wcm90b19vcHMgPSBOVUxMOwogfQpAQCAtMTgwMyw3ICsxNzkxLDcgQEAK
-IAlpZiAocmVzdWx0IDwgMCkKIAkJcmV0dXJuIHJlc3VsdDsKIAotCXJlc3VsdCA9IHNvY2tf
-Y3JlYXRlX2tlcm4oJmluaXRfbmV0LCBkbG1fbG9jYWxfYWRkclswXS0+c3NfZmFtaWx5LAor
-CXJlc3VsdCA9IHNvY2tfY3JlYXRlX2tlcm4oJmluaXRfbmV0LCBkbG1fbG9jYWxfYWRkclsw
-XS5zc19mYW1pbHksCiAJCQkJICBTT0NLX1NUUkVBTSwgZGxtX3Byb3RvX29wcy0+cHJvdG8s
-ICZzb2NrKTsKIAlpZiAocmVzdWx0IDwgMCkgewogCQlsb2dfcHJpbnQoIkNhbid0IGNyZWF0
-ZSBjb21tcyBzb2NrZXQ6ICVkIiwgcmVzdWx0KTsKQEAgLTE4NDIsNyArMTgzMCw3IEBACiAJ
-LyogQmluZCB0byBvdXIgY2x1c3Rlci1rbm93biBhZGRyZXNzIGNvbm5lY3RpbmcgdG8gYXZv
-aWQKIAkgKiByb3V0aW5nIHByb2JsZW1zLgogCSAqLwotCW1lbWNweSgmc3JjX2FkZHIsIGRs
-bV9sb2NhbF9hZGRyWzBdLCBzaXplb2Yoc3JjX2FkZHIpKTsKKwltZW1jcHkoJnNyY19hZGRy
-LCAmZGxtX2xvY2FsX2FkZHJbMF0sIHNpemVvZihzcmNfYWRkcikpOwogCW1ha2Vfc29ja2Fk
-ZHIoJnNyY19hZGRyLCAwLCAmYWRkcl9sZW4pOwogCiAJcmVzdWx0ID0ga2VybmVsX2JpbmQo
-c29jaywgKHN0cnVjdCBzb2NrYWRkciAqKSZzcmNfYWRkciwKQEAgLTE4OTksNyArMTg4Nyw3
-IEBACiAJaW50IGFkZHJfbGVuOwogCiAJLyogQmluZCB0byBvdXIgcG9ydCAqLwotCW1ha2Vf
-c29ja2FkZHIoZGxtX2xvY2FsX2FkZHJbMF0sIGRsbV9jb25maWcuY2lfdGNwX3BvcnQsICZh
-ZGRyX2xlbik7CisJbWFrZV9zb2NrYWRkcigmZGxtX2xvY2FsX2FkZHJbMF0sIGRsbV9jb25m
-aWcuY2lfdGNwX3BvcnQsICZhZGRyX2xlbik7CiAJcmV0dXJuIGtlcm5lbF9iaW5kKHNvY2ss
-IChzdHJ1Y3Qgc29ja2FkZHIgKikmZGxtX2xvY2FsX2FkZHJbMF0sCiAJCQkgICBhZGRyX2xl
-bik7CiB9CkBAIC0xOTkyLDcgKzE5ODAsNyBAQAogCiAJZXJyb3IgPSB3b3JrX3N0YXJ0KCk7
-CiAJaWYgKGVycm9yKQotCQlnb3RvIGZhaWxfbG9jYWw7CisJCWdvdG8gZmFpbDsKIAogCWRs
-bV9hbGxvd19jb25uID0gMTsKIApAQCAtMjAyMiw4ICsyMDEwLDYgQEAKIGZhaWxfcHJvdG9f
-b3BzOgogCWRsbV9hbGxvd19jb25uID0gMDsKIAl3b3JrX3N0b3AoKTsKLWZhaWxfbG9jYWw6
-Ci0JZGVpbml0X2xvY2FsKCk7CiBmYWlsOgogCXJldHVybiBlcnJvcjsKIH0K
-
---------------8nT1Vb4atVC4dwNucelwL7VP--
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
