@@ -1,225 +1,172 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F2112D752;
-	Wed,  7 Feb 2024 21:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208976BFC2
+	for <gfs2@lists.linux.dev>; Thu,  8 Feb 2024 09:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707341955; cv=none; b=Ph3S7LuFY+uCgbdo4R/K7kYOADOLn6DKmro3XfR7YOkdYvrUq339BAmh2CivYra4BfEBxdwgPl+xz1AbLbVw8UVfFuRWyjCg5+Vwi1gyEAwbxtMEJJN4p7gmHQioEd8TlD4jqARbXxT27H5TVyjXbYUkxRbYYV/Zfcwbv6lU3Us=
+	t=1707385953; cv=none; b=CiDR5xZ1DoD1qn7TRVDVdyfbxUFZ/MH2r/OiF6pQkwRjWoEFO/c+4fJWZBJW4X2/Zbu+v9ta9pod5+jg5sWxKGEXY9DFlV9FQX9oP9U7ohb2RMyXW2VYwhqOXllzQrozIJA3d9/WKRwFaxGpf/kaB3iQK8X4z6kJyFMBKafkVVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707341955; c=relaxed/simple;
-	bh=6ZWqFx3ca1jpgWlsqAfIR5Ati7mNHH87BZaKOn9KJ9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CK3vEndJSIGDZcDixzvKiN3DKdAO1M87zWTIYoS2QdkH3O31dH7uiw8QxojYBq1L5XAfVfuCmEql7zCX5BRzcW/RUnqLGOKa9uqLKvOvOoEJB55AgCmigHoVBpCxBIQSNkUYUR83mIOedsI9m42st53qBnAHVzRptYlF4tHrmMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OIhkwCZG; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OIhkwCZG"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-55fcceb5f34so1185859a12.3;
-        Wed, 07 Feb 2024 13:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707341951; x=1707946751; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tHrWrs6xdhZ+695CZ3GqYRaPvXyFlxSiTcqYfb21vc0=;
-        b=OIhkwCZG4QDq4rMtxaGlPXeRHyVhmLQInCHZyzbMJfCiU4rOmWCmdA4xtThu3yjXQc
-         iLc2onhy3/hcB1NlcVuxdXJPGfQE9jV+NEaXllBcSrUXrWmvLUQFCzjxagNjZrbB2lVU
-         VhIolFxoGmy8DEI6zca97fpZCaWZnYZSgMxyKKSbeIeC9r6Z0OmD/0Ra/DmdDoilMEi0
-         S2GFPp0iTkF3XYMh0Mex2UlkFv50zj9Fd98SrkZh32k5P6C2FZusKnBrUd8dvQfvyidk
-         Ohs4L45+m8CYTH/IXJJo5n8ZSsdBsAS9FATXEqkxH+zQn05ic6EVqL6wowjj3GarH4YX
-         3w0w==
+	s=arc-20240116; t=1707385953; c=relaxed/simple;
+	bh=2w4AWd2vd+J4/iZZi2T1fGQLpqiDUh6qJPxmeFNh5rw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=WbD2FCwJVKeAAbAFyWI1UzIH2YHm66Z9QqLVfsQhT7+KfmxqQtGu0tpIdLZDSAloeiVPexgiPAjOK6fuckObcGdQJQBCzHjAQwInVZnmEBINQWXCVx0dzkSHkDKNrf6vu2LwztBs04tYiL74u2Ofh4d6HUggu+cbcGXfauh31eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7becfc75cd4so132727339f.3
+        for <gfs2@lists.linux.dev>; Thu, 08 Feb 2024 01:52:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707341951; x=1707946751;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHrWrs6xdhZ+695CZ3GqYRaPvXyFlxSiTcqYfb21vc0=;
-        b=VTgtPxIS5iu2NtdrEyyMmJFq9jLlWUHHS9Vu52YGUlXCa4HBu/13lV448/W3fCk+lk
-         +oDSklj60UWfklP80J99MDFXWHSnbG6lLmTlV/+unxoeVbW4uyseUrYF6VF2HsOWH+BI
-         cnruXEI3590rUnDQDaM22yUNE1G027sWAeSnfgJrvbZK3dwsUs1XvE21vXMmBjK9fUBg
-         7vvewwK9gNEYyHTVSo21bDsg7OBSwed3JC68XAZ3VK38eqNXRuZvL5fNIZf7VQXGyl/J
-         b+YxU7kn458LzG4zYGXMBvHx6FSixjLIYgeoWnnOJOC3VuLwl+VsfdApWQMr3HS/wVOC
-         KM9g==
-X-Gm-Message-State: AOJu0Yy7fuAHs/N4+UHzAmvQksM1J1AJMwJQeGU+jpq9ZD7wbBDAVONm
-	Pa0SmJNzDBY9F76btx95Nrk9kSrYx1Y+pCRk+9Ea3wMezCD3/ujd
-X-Google-Smtp-Source: AGHT+IH31AJIGaV5jSnbTxJFqgSEJhPOZR2SHDszJJRSiECJXp6pPaxQhhYbrQ2TFfU4Zn6lsuv1HQ==
-X-Received: by 2002:aa7:d391:0:b0:560:c6a8:e7d3 with SMTP id x17-20020aa7d391000000b00560c6a8e7d3mr3034780edq.1.1707341951102;
-        Wed, 07 Feb 2024 13:39:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXBIIJ98wcDQML8JTumvwwlEMas1YdRlwRZ9VPj2YErTrfZA0ITOze9hMyXD5njhtPGQDcMIbzZO8miUxa7gmUPQ+n2VUnNbB1kVVMF1VJ8+P4EcwyHsJ4+GMEhRSSnZHxk/e1LE1fgLcALZT6cnXGGVSWs4lackno8YBhI38F3byEcaVgvtM/qrA/DfK+KXXBBjwsjib/gZQfPvVgExxtmb8LbLXtVq2CyZ3Ei5H/mZzwtpFlRL9ajxZcpMn7WsjnK625IxW74f9jzuy4/GKJa8yOF3QM0O6E+xTG0VMIMGnXLpXmZf8M6zb9fFOatMPKgmEep
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id df21-20020a05640230b500b00557aa8d72c9sm120400edb.25.2024.02.07.13.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 13:39:10 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 7EF0EBE2EE8; Wed,  7 Feb 2024 22:39:09 +0100 (CET)
-Date: Wed, 7 Feb 2024 22:39:09 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: Jordan Rife <jrife@google.com>, Valentin Kleibel <valentin@vrvis.at>,
-	David Teigland <teigland@redhat.com>, 1063338@bugs.debian.org,
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, gregkh@linuxfoundation.org,
-	regressions@lists.linux.dev
-Subject: Re: [regression 6.1.76] dlm: cannot start dlm midcomms -97 after
- backport of e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-Message-ID: <ZcP4fXEllcCDHyE6@eldamar.lan>
-References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at>
- <ZcNdzZVPD76uSbps@eldamar.lan>
- <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
- <CAK-6q+hza9yXb5KpBS2VJMNHJa805nXqiYPTovnf9G-JFadBsg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1707385951; x=1707990751;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=agQyetsj5naa/u7LOwWHOmeV9dXsFEVSAys3SKLyAf0=;
+        b=ixddyvfYE87hBRUsXXICt5fGe4/bPDjSfnu70f6OPuNwK9zO0TxGhwo3lVCaVmEIOR
+         /V7DxPHusYvZtUjBabePDY6iBw/ObLbtigwLMyeyYqZ53DgZIn2uFA0RTzADA9X2N4/X
+         gZpNOmXC+a06npf/sFEQ6Gr/jWw4sU+LuBcLNAVf6Kemmrmo81gcTn3IpL7G2az3FWU2
+         bjrlZQjXWHCLrJYX7Vz78Qx0Wv5TQgkjbO1EvUsXlZVh6EgrQ3pwvU+rlWJAc7uq88X+
+         1e74CBqWBYeS1BvHx1sdWQXYZG/OFmMIDsg5eHnQvEYWZVYkGOMiecEUaQTT7fKfLCBL
+         fxSg==
+X-Gm-Message-State: AOJu0YzNy9ZqTs3azpPJ/MkgZVlcq2QNCquEC70Uz/J0CfinYhjs8D9p
+	uqCdfqGBdfbkfGdgjpyXSlGTI1vuqbd6x3mfGivhUhF9lEv7yEj2ylBXUhRoHZZLJs5H3P739qd
+	V8jtg5EJCjFE+Qbgdlq9KRHLDhFo6PTWppk07f8SUbj9BTX/uYQbbYfI=
+X-Google-Smtp-Source: AGHT+IGWYxfQPLsa25LGD4+WQy0pE/USEZf+EiCyvM8r6ZTVij5TJyJaUxV0twsV1+rYk36RCsZp/nMhCkzKf5Y4ssU8fLTgCeMW
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+hza9yXb5KpBS2VJMNHJa805nXqiYPTovnf9G-JFadBsg@mail.gmail.com>
+X-Received: by 2002:a05:6e02:219a:b0:361:9a73:5a8f with SMTP id
+ j26-20020a056e02219a00b003619a735a8fmr561612ila.5.1707385951240; Thu, 08 Feb
+ 2024 01:52:31 -0800 (PST)
+Date: Thu, 08 Feb 2024 01:52:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001e48350610dbc5c5@google.com>
+Subject: [syzbot] [gfs2?] general protection fault in gfs2_rindex_update
+From: syzbot <syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Alexander,
+Hello,
 
-On Wed, Feb 07, 2024 at 04:27:48PM -0500, Alexander Aring wrote:
-> Hi,
-> 
-> On Wed, Feb 7, 2024 at 1:33 PM Jordan Rife <jrife@google.com> wrote:
-> >
-> > On Wed, Feb 7, 2024 at 2:39 AM Salvatore Bonaccorso <carnil@debian.org> wrote:
-> > >
-> > > Hi Valentin, hi all
-> > >
-> > > [This is about a regression reported in Debian for 6.1.67]
-> > >
-> > > On Tue, Feb 06, 2024 at 01:00:11PM +0100, Valentin Kleibel wrote:
-> > > > Package: linux-image-amd64
-> > > > Version: 6.1.76+1
-> > > > Source: linux
-> > > > Source-Version: 6.1.76+1
-> > > > Severity: important
-> > > > Control: notfound -1 6.6.15-2
-> > > >
-> > > > Dear Maintainers,
-> > > >
-> > > > We discovered a bug affecting dlm that prevents any tcp communications by
-> > > > dlm when booted with debian kernel 6.1.76-1.
-> > > >
-> > > > Dlm startup works (corosync-cpgtool shows the dlm:controld group with all
-> > > > expected nodes) but as soon as we try to add a lockspace dmesg shows:
-> > > > ```
-> > > > dlm: Using TCP for communications
-> > > > dlm: cannot start dlm midcomms -97
-> > > > ```
-> > > >
-> > > > It seems that commit "dlm: use kernel_connect() and kernel_bind()"
-> > > > (e9cdebbe) was merged to 6.1.
-> > > >
-> > > > Checking the code it seems that the changed function dlm_tcp_listen_bind()
-> > > > fails with exit code 97 (EAFNOSUPPORT)
-> > > > It is called from
-> > > >
-> > > > dlm/lockspace.c: threads_start() -> dlm_midcomms_start()
-> > > > dlm/midcomms.c: dlm_midcomms_start() -> dlm_lowcomms_start()
-> > > > dlm/lowcomms.c: dlm_lowcomms_start() -> dlm_listen_for_all() ->
-> > > > dlm_proto_ops->listen_bind() = dlm_tcp_listen_bind()
-> > > >
-> > > > The error code is returned all the way to threads_start() where the error
-> > > > message is emmitted.
-> > > >
-> > > > Booting with the unsigned kernel from testing (6.6.15-2), which also
-> > > > contains this commit, works without issues.
-> > > >
-> > > > I'm not sure what additional changes are required to get this working or if
-> > > > rolling back this change is an option.
-> > > >
-> > > > We'd be happy to test patches that might fix this issue.
-> > >
-> > > Thanks for your report. So we have a 6.1.76 specific regression for
-> > > the backport of e9cdebbe23f1 ("dlm: use kernel_connect() and
-> > > kernel_bind()") .
-> > >
-> > > Let's loop in the upstream regression list for tracking and people
-> > > involved for the subsystem to see if the issue can be identified. As
-> > > it is working for 6.6.15 which includes the commit backport as well it
-> > > might be very well that a prerequisite is missing.
-> > >
-> > > # annotate regression with 6.1.y specific commit
-> > > #regzbot ^introduced e11dea8f503341507018b60906c4a9e7332f3663
-> > > #regzbot link: https://bugs.debian.org/1063338
-> > >
-> > > Any ideas?
-> > >
-> > > Regards,
-> > > Salvatore
-> >
-> >
-> > Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
-> > and 6.6 stable branches,
-> > it looks like there is a mismatch here with the dlm_local_addr[0] parameter.
-> >
-> > 6.1
-> > ----
-> >
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >    addr_len);
-> > }
-> >
-> > 6.6
-> > ----
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >    addr_len);
-> > }
-> >
-> > 6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on heap) which
-> > changed
-> >
-> > static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > to
-> >
-> > static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > It looks like kernel_bind() in 6.1 needs to be modified to match.
-> >
-> 
-> makes sense. I tried to cherry-pick e9cdebbe23f1 ("dlm: use
-> kernel_connect() and kernel_bind()") on v6.1.67 as I don't see it
-> there. It failed and does not apply cleanly.
-> 
-> Are we talking here about a debian kernel specific backport? If so,
-> maybe somebody missed to modify those parts you mentioned.
+syzbot found the following issue on:
 
-Thanks all for looking into it.
+HEAD commit:    547ab8fc4cb0 Merge tag 'loongarch-fixes-6.8-2' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1461a16c180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=89a5d896b14c4565
+dashboard link: https://syzkaller.appspot.com/bug?extid=74edb1a3ea8f1c65a086
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-No it's not a Debian specific backport, e9cdebbe23f1 ("dlm: use
-kernel_connect() and kernel_bind()") got in fact backported upstream
-in 6.1.76, 6.6.15 and 6.7.3. The respective commits are:
+Unfortunately, I don't have any reproducer for this issue yet.
 
-v6.1.76: e11dea8f503341507018b60906c4a9e7332f3663 dlm: use kernel_connect() and kernel_bind()
-v6.6.15: c018ab3e31b16ff97b9b95b69904104c9fcca95b dlm: use kernel_connect() and kernel_bind()
-v6.7.3: 4ecf1864f2076872b7aea29d463e785ef6fc9909 dlm: use kernel_connect() and kernel_bind()
-v6.8-rc1: e9cdebbe23f1aa9a1caea169862f479ab3fa2773 dlm: use kernel_connect() and kernel_bind()
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/a8d318be4c39/disk-547ab8fc.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8178462cbfb5/vmlinux-547ab8fc.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/62939e7c5fbb/bzImage-547ab8fc.xz
 
-But for the 6.1.76 case there is the above regression (while it works
-for 6.6.15 as confirmed by the reporter).
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com
 
-I'm very sorry I see where I have caused you confusion: The regression
-is in 6.1.*76* not 6.1.*67* and I misstyped the version in two places.
+general protection fault, probably for non-canonical address 0xdffffc0000000097: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000004b8-0x00000000000004bf]
+CPU: 1 PID: 10382 Comm: syz-executor.0 Not tainted 6.8.0-rc3-syzkaller-00041-g547ab8fc4cb0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+RIP: 0010:gfs2_rindex_update+0xbc/0x3d0 fs/gfs2/rgrp.c:1037
+Code: e8 f9 65 1d fe 4c 8d 74 24 60 48 8b 03 48 89 44 24 38 48 8d 98 b8 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 c6 65 1d fe 48 8b 03 48 89 44 24 20
+RSP: 0018:ffffc900030af1a0 EFLAGS: 00010202
+RAX: 0000000000000097 RBX: 00000000000004b8 RCX: dffffc0000000000
+RDX: ffffc90004a81000 RSI: 0000000000029498 RDI: 0000000000029499
+RBP: ffffc900030af2b0 R08: ffffffff83cb50d7 R09: 1ffff110078e74f8
+R10: dffffc0000000000 R11: ffffed10078e74f9 R12: 1ffff92000615e3c
+R13: ffff8880110c8000 R14: ffffc900030af200 R15: 0000000000000001
+FS:  00007f9d475ff6c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f81d7dff000 CR3: 0000000045cb6000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ punch_hole+0xe7b/0x3a30 fs/gfs2/bmap.c:1809
+ gfs2_truncatei_resume+0x3c/0x70 fs/gfs2/bmap.c:2159
+ gfs2_glock_holder_ready fs/gfs2/glock.c:1336 [inline]
+ gfs2_glock_wait+0x1df/0x2b0 fs/gfs2/glock.c:1356
+ gfs2_glock_nq_init fs/gfs2/glock.h:238 [inline]
+ init_statfs fs/gfs2/ops_fstype.c:694 [inline]
+ init_journal+0x1680/0x23f0 fs/gfs2/ops_fstype.c:816
+ init_inodes+0xdc/0x320 fs/gfs2/ops_fstype.c:884
+ gfs2_fill_super+0x1edb/0x26c0 fs/gfs2/ops_fstype.c:1263
+ get_tree_bdev+0x3f7/0x570 fs/super.c:1619
+ gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1341
+ vfs_get_tree+0x90/0x2a0 fs/super.c:1784
+ do_new_mount+0x2be/0xb40 fs/namespace.c:3352
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3875
+ do_syscall_64+0xf9/0x240
+ entry_SYSCALL_64_after_hwframe+0x6f/0x77
+RIP: 0033:0x7f9d4827f4aa
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 09 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f9d475feef8 EFLAGS: 00000202 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007f9d475fef80 RCX: 00007f9d4827f4aa
+RDX: 0000000020000040 RSI: 0000000020000100 RDI: 00007f9d475fef40
+RBP: 0000000020000040 R08: 00007f9d475fef80 R09: 0000000000008c1b
+R10: 0000000000008c1b R11: 0000000000000202 R12: 0000000020000100
+R13: 00007f9d475fef40 R14: 0000000000012789 R15: 0000000020000140
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_rindex_update+0xbc/0x3d0 fs/gfs2/rgrp.c:1037
+Code: e8 f9 65 1d fe 4c 8d 74 24 60 48 8b 03 48 89 44 24 38 48 8d 98 b8 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 c6 65 1d fe 48 8b 03 48 89 44 24 20
+RSP: 0018:ffffc900030af1a0 EFLAGS: 00010202
+RAX: 0000000000000097 RBX: 00000000000004b8 RCX: dffffc0000000000
+RDX: ffffc90004a81000 RSI: 0000000000029498 RDI: 0000000000029499
+RBP: ffffc900030af2b0 R08: ffffffff83cb50d7 R09: 1ffff110078e74f8
+R10: dffffc0000000000 R11: ffffed10078e74f9 R12: 1ffff92000615e3c
+R13: ffff8880110c8000 R14: ffffc900030af200 R15: 0000000000000001
+FS:  00007f9d475ff6c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb3c42d56c6 CR3: 0000000045cb6000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	e8 f9 65 1d fe       	call   0xfe1d65fe
+   5:	4c 8d 74 24 60       	lea    0x60(%rsp),%r14
+   a:	48 8b 03             	mov    (%rbx),%rax
+   d:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+  12:	48 8d 98 b8 04 00 00 	lea    0x4b8(%rax),%rbx
+  19:	48 89 d8             	mov    %rbx,%rax
+  1c:	48 c1 e8 03          	shr    $0x3,%rax
+  20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+  27:	fc ff df
+* 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
+  2e:	74 08                	je     0x38
+  30:	48 89 df             	mov    %rbx,%rdi
+  33:	e8 c6 65 1d fe       	call   0xfe1d65fe
+  38:	48 8b 03             	mov    (%rbx),%rax
+  3b:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
 
-Regards,
-Salvatore
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
