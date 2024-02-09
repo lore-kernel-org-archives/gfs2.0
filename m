@@ -1,599 +1,206 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E24F2C1B8
-	for <gfs2@lists.linux.dev>; Fri,  9 Feb 2024 11:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA399762DC
+	for <gfs2@lists.linux.dev>; Fri,  9 Feb 2024 16:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707479002; cv=none; b=IB8nVMriAdrJWi0Di+nq1O4xC9xLdE3ZVLf/G4gEn7VqwqmTfCZmVppL71DArJiBSRhhtq5XJ1IX2ENFPjDllbZGbMJTWus9CaGvHHyNC7RWyp1E3afvzPXj5/EB01leRMM+MTh4I03bk0spVikixubHLX2JbJjrCIK8ZuR3tvA=
+	t=1707495028; cv=none; b=BVdh8O0XRE7gcVHDBUzfpbu7xf44abGzz/BDzFXw11ie6DdWFzhFa0ySLKm2R0OMZ3KhCnvBWrDfTGAOMx1FSzZDSdzSCD/QInbm/VTmmxp0BFlorvdXNtyCqb0Nbds3gYmbtpFxdrpzvKMz4ggUkZXSkbOGichPpxDBWOTbhJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707479002; c=relaxed/simple;
-	bh=qci3/zhb+XOp3K7qTpDsekSsH5WwP2FVc1fxhdfL/rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=ixEHX/Z1V1YUg90e/gQbD8wkgAvetNrY/0Gf+htanL/bffmfqEhUkGoBIkWDyMgmJPyJ7M+Zpy4Z8QeTXXlOBt4qhqDfTpPSdZUdoaWJiZuS5ZSnM5nPnJUvamP4jQiiY+XqKptYGldLttHuIn8Z4EmTHVwct1Ob3Hrl5ijcUXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g9G3IHeh; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1707495028; c=relaxed/simple;
+	bh=faT4XIojwpXGfXx4hR/oBGsw+axJKde5TA9F28fGKto=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mMJsXdLRaIq89mDSX9Jb7Il/Qf9UMs2hETcolDz3hN5yc1XTWRfqgrgmh1ghlEcFFh5SOoN+p3sKrziMgSgnbwt08zBiZcE8loYUzphSjPZP6ek62i8toFnKsuHs1+2yuXJ3iMHXjbIJ47iINU+zjc5mIcJCROIivl7QdS+csfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OKrm65Bv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g9G3IHeh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OKrm65Bv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707478998;
+	s=mimecast20190719; t=1707495025;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JbrOSt/XxaDY3UUGhUkmqIyPUsKadd1Hxp/78rAC82c=;
-	b=g9G3IHehgvnlQ29kXR0Q4T6BfGMg987OZqdMZMRg3+e6AvDOHuEX5B6kP5u6jh1jKOkb4U
-	rp9r6OcYwHGJt5Y+5nuS8ChCVjU5Tn2T9WfJ5UGO/qc5aQsfYeiMW0UW2ai4CSfq3kcDQi
-	EkBnZ4RYj4ZFgCQmmjT3Hb1kz1RKarA=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sJH3SGrElNeqB1nIzBoZ2CKo3lO1D/YJdtcJ4jClzNk=;
+	b=OKrm65BvniIFywD6yyFwYEC31Z1j1EV7ygHGzMGrvM/dniQ3VY2n5Q/cK4XkLQU/9GiAjb
+	Y0wb6SmA7sf8sqvi0jFrpNOVCHoa2RQ8oseQxHwjx5nXkzkOaLLRmjnyDDdMH6juwPtVy6
+	JR/RxS4qRZQJ1uiD+Q2XXjbAiU9Hckc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-flQT7Db6OT-yGo86hKktTA-1; Fri, 09 Feb 2024 06:43:17 -0500
-X-MC-Unique: flQT7Db6OT-yGo86hKktTA-1
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-290c6d7776eso811941a91.2
-        for <gfs2@lists.linux.dev>; Fri, 09 Feb 2024 03:43:17 -0800 (PST)
+ us-mta-687-EcmIfMWeOmyRl5lh3DS0-A-1; Fri, 09 Feb 2024 11:10:24 -0500
+X-MC-Unique: EcmIfMWeOmyRl5lh3DS0-A-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7817253831cso140865085a.0
+        for <gfs2@lists.linux.dev>; Fri, 09 Feb 2024 08:10:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707478996; x=1708083796;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1707495024; x=1708099824;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JbrOSt/XxaDY3UUGhUkmqIyPUsKadd1Hxp/78rAC82c=;
-        b=xD6iIGXvH2RGTpFPBMIHBs7L8yeAoE10WZf2ifJ+vkmSJVw8m8JXp56aJOwoMlRhYH
-         tWbSddJ0PcrolliVrwRM/JF7o+CZwlHkM7Nl5XlWHGn64A03b0gdFL3uvBwqq71eWPpc
-         NQBWCd1nVn8X1YeW1AheYZQuaMfNeDY+x49tkn+6bE0WBoSw+uCq7BrnwhsKc4zFWBkN
-         8ww9kFcOwzkEI91Zrn01JpbBqPhZ5H9ytMGm2NaUDWw32uYPr7QB1IutrxPiH4LN2WQu
-         n2GWS1s7VhYDw5BwPxQwz5ZWcoIh/4DJVmcahP35pPtSmLm54Pbn/a2LgKTTxyZxq6Eu
-         NC6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVO6M74X+qeNhHEVno1WCSOeUMpa2vmNTQp1g/AknD0DTUISVgMcOfGsX9Sg4SBYV6N9xWT/NF9AbWiPOBjBRJsGxOCyA==
-X-Gm-Message-State: AOJu0YzD4q163xxm3Rv/IhFfCPLxfszPkhv79kS5dZIWoL8jbHXF8TEx
-	9S5cxbFqlLhaBHJGIABckGXZ7qbU6JO4NkUx4lRe4mkxe7bJ4WZDwNAVPONOI6HpIptuB+IyMKI
-	TdlgG40eSlJVQBeF9+P7aBTq5Wh1dO/XMPX3BZYQIE9AwXbJaZ1Q=
-X-Received: by 2002:a17:90b:1b48:b0:295:ade7:cdf2 with SMTP id nv8-20020a17090b1b4800b00295ade7cdf2mr1145557pjb.13.1707478996085;
-        Fri, 09 Feb 2024 03:43:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG6Z9oDR6A8/kXY7IGBBCHZfuShdt8aqCcGmu37c4GWuaSPpZJlJ2bJuNChfnyipCL9GZWl4w==
-X-Received: by 2002:a17:90b:1b48:b0:295:ade7:cdf2 with SMTP id nv8-20020a17090b1b4800b00295ade7cdf2mr1145542pjb.13.1707478995582;
-        Fri, 09 Feb 2024 03:43:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVjrDCAC6MtWxzvvmDkODnn2C24la1C63zPI6TJ3TIpMoKZMqqjumHu7R1RHJ/EjJn2HKaiBoLXlm5OE2qAGsbjtoaybXLXE39mrIYr7C26gHn//C86UvctVYJEA7YM+fV152uPPR7MixWPQiBUpjk6VIWQB9eVQS8x2F4pYaOXMrrc36l0Q8gtz2GDpUk=
-Received: from dell-per750-06-vm-08.rhts.eng.pek2.redhat.com ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id n11-20020a17090ade8b00b00295bc312ceasm1513536pjv.34.2024.02.09.03.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Feb 2024 03:43:15 -0800 (PST)
-Date: Fri, 9 Feb 2024 19:43:10 +0800
-From: Zorro Lang <zlang@redhat.com>
-To: Steve French <smfrench@gmail.com>
-Cc: Alexander Aring <aahringo@redhat.com>, fstests@vger.kernel.org,
-	gfs2@lists.linux.dev, jlayton@kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCHv2] generic: add fcntl corner cases tests
-Message-ID: <20240209114310.c4ny2dptikr24wx5@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
-References: <20230925201827.1703857-1-aahringo@redhat.com>
- <20240209052631.wfbjveicfosubwns@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
- <CAH2r5msWwX7QdXrzmR3tapU85WMga9Y-waNOHm+hMWmWPUF=tQ@mail.gmail.com>
+        bh=sJH3SGrElNeqB1nIzBoZ2CKo3lO1D/YJdtcJ4jClzNk=;
+        b=vZXMbDKizRsT2NHu+rGi3RfjJ+OsDv7eX7dATYeUXMAhCgc69qbklbDzv5+/iXJX1G
+         DYdHrSc7Bbwt2Zp891LhletXxkzaHOERf2U83/ppcJPL5F4BRqPDA7Ze5WTxaXSykhmo
+         cFcW3W+gnvferHR+u/uAT5ArpJJ3zUYdoGRlHDlD1a38mI5VT1HigmyIQ7JNBIPmes1B
+         BQObza+oG/M9vK+arFAL2lgpkqqY6C7aimAdgk20VPHiFFRd/6NOTVDOZ5MpIEqlehHE
+         f10hm+Bjqn4JbAO1ovJRZsRr9U9HZCu/l8Xy+oxBpG9Yq8nbNVj6K087w4GxTgOhv0FI
+         MEeg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5T620XVhhR3m9RSQ0EtHVqi/7gjpRqKWTfpBbF6nOIgpafQeBtscjRDri5AmeML7DWmqif07VVQ9Ry8QzK8RBSTwlIw==
+X-Gm-Message-State: AOJu0Yw7aNMZKPy6xrjLoHzP61LvNR7l1ZWeLKWhB6Skfzonk4mBnKHD
+	RQeySz7PfuMNmyCYoXzT+Pia7ZBuJNFMpnU/arhOw9CNyyOulAWrHgcWIwEUvzzV/xnHGvGG+KV
+	wtVQlmiWye1CcewgHODLGfYBpWSfPPtIODhv8DAKm3kAJISLGBJI=
+X-Received: by 2002:a05:620a:2009:b0:783:81f3:3a8d with SMTP id c9-20020a05620a200900b0078381f33a8dmr2332316qka.44.1707495023644;
+        Fri, 09 Feb 2024 08:10:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWwAgZwRN7lwiIr25TvDq4332vfRco7nZG1JYlwPJ8mIsVmi9NA9QYBQlkQzBe/tiBkZsGHg==
+X-Received: by 2002:a05:620a:2009:b0:783:81f3:3a8d with SMTP id c9-20020a05620a200900b0078381f33a8dmr2332302qka.44.1707495023375;
+        Fri, 09 Feb 2024 08:10:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWL3IdXDZMoF5P7sfyAcWsXbBniJo7JL6JFqd/rTs4HsobK0FRZ6mYB/EdWs+kzoXVnse1ZOWoYhFpXf52QC3uTCyuWduv/a9oyb/igknk+U+1PnI4uwIzmna0oh1oCMdMPuTUWEveHH2GRH+wmBsU5P7QGo8Zl3XpVI8NUJkJSNnaY6G7mqsrg+GmdkQ5SQMHhPOPoj3P4oCmAKg5xpGe93ddVeipBMlyMWncRdRhsciACAhlldPQ=
+Received: from [192.168.1.165] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id i24-20020a05620a0a1800b007856bff53d3sm820386qka.54.2024.02.09.08.10.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Feb 2024 08:10:22 -0800 (PST)
+Message-ID: <affa6134-de19-4b73-9925-f42d3c7c9b8b@redhat.com>
+Date: Fri, 9 Feb 2024 16:10:19 +0000
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <CAH2r5msWwX7QdXrzmR3tapU85WMga9Y-waNOHm+hMWmWPUF=tQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [gfs2?] general protection fault in gfs2_rindex_update
+To: syzbot <syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com>,
+ agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <000000000000c091060610dbd67b@google.com>
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <000000000000c091060610dbd67b@google.com>
+X-Mimecast-Spam-Score: 1
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 08, 2024 at 11:35:06PM -0600, Steve French wrote:
-> Could you forward the changeset for this so we could try it?
-
-Hi Steve,
-
-Thanks for your reply. Sure, there's a temporary branch "patches-in-queue",
-you can get it by:
-  # git clone -b patches-in-queue git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
-
-Then you can see a generic/740 test case in it, run it on cifs. I tested
-with cifs 3.11, and wrote the /etc/samba/smb.conf as:
-  [TEST_dev]
-  path = $dir
-  writable = yes
-  ea support = yes
-  strict allocate = yes
-And set:
-  MOUNT_OPTIONS="-o vers=3.11,mfsymlinks,username=root,password=xxxxxxxxxx"
-  TEST_FS_MOUNT_OPTS="-o vers=3.11,mfsymlinks,username=root,password=xxxxxxxx"
-
-I'm not sure if it's a cifs issue, Alexander writes this case for gfs2, it
-works for other fs, but blocked (until kill it manually) on cifs. So hope
-to get some suggestions from cifs list.
-
-Thanks,
-Zorro
-
+On 08/02/2024 09:57, syzbot wrote:
+> syzbot has found a reproducer for the following issue on:
 > 
-> On Thu, Feb 8, 2024 at 11:26 PM Zorro Lang <zlang@redhat.com> wrote:
-> >
-> > On Mon, Sep 25, 2023 at 04:18:27PM -0400, Alexander Aring wrote:
-> > > This patch adds fcntl corner cases that was being used to confirm issues
-> > > on a GFS2 filesystem. The GFS2 filesystem has it's own ->lock()
-> > > implementation and in those corner cases issues was being found and
-> > > fixed.
-> > >
-> > > Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> > > ---
-> >
-> > Hi Alexander,
-> >
-> > This test case directly hang on CIFS testing. Actually it's not a
-> > real hang, the fcntl_lock_corner_tests process can be killed, but
-> > before killing it manually, it was blocked there.
-> >
-> > Please check if it's a case issue or cifs bug, or it's not suitable
-> > for cifs? I'll try to delay this patch merging to next release,
-> > leave some time to have a discission. CC cifs list to get more
-> > reviewing.
-> >
-> > Thanks,
-> > Zorro
-> >
-> > FSTYP         -- cifs
-> > PLATFORM      -- Linux/ppc64le ibm-xxx-xxx-xxxx 6.8.0-rc3+ #1 SMP Wed Feb  7 01:38:35 EST 2024
-> > MKFS_OPTIONS  -- //xxx-xxx-xx-xxxx.xxxx.xxx.com/SCRATCH_dev
-> > MOUNT_OPTIONS -- -o vers=3.11,mfsymlinks,username=root,password=redhat -o context=system_u:object_r:root_t:s0 //xxx-xxx-xx-xxxx.xxxx.xxx.com/SCRATCH_dev /mnt/xfstests/scratch/cifs-client
-> >
-> > generic/740
-> > ...
-> > ...
-> >
-> > # ps axu|grep fcntl
-> > root     1138909  0.0  0.0   5056     0 ?        S    Feb07   0:00 /var/lib/xfstests/src/fcntl_lock_corner_tests /mnt/xfstests/test/cifs-client/testfile
-> > root     1138910  0.0  0.0  21760     0 ?        Sl   Feb07   0:00 /var/lib/xfstests/src/fcntl_lock_corner_tests /mnt/xfstests/test/cifs-client/testfile
-> > # cat /proc/1138909/stack
-> > [<0>] 0xc00000008d068a00
-> > [<0>] __switch_to+0x13c/0x228
-> > [<0>] do_wait+0x15c/0x224
-> > [<0>] kernel_wait4+0xb8/0x2c8
-> > [<0>] system_call_exception+0x134/0x390
-> > [<0>] system_call_vectored_common+0x15c/0x2ec
-> > # cat /proc/1138910/stack
-> > [<0>] 0xc00000008de94400
-> > [<0>] __switch_to+0x13c/0x228
-> > [<0>] futex_wait_queue+0xa8/0x134
-> > [<0>] __futex_wait+0xb4/0x15c
-> > [<0>] futex_wait+0x94/0x150
-> > [<0>] do_futex+0xe8/0x374
-> > [<0>] sys_futex+0xa4/0x234
-> > [<0>] system_call_exception+0x134/0x390
-> > [<0>] system_call_vectored_common+0x15c/0x2ec
-> >
-> > # strace -p 1138909
-> > strace: Process 1138909 attached
-> > wait4(-1,
-> > (nothing more output)
-> > strace: Process 1138909 detached
-> > ^C <detached ...>
-> > # strace -p 1138910
-> > strace: Process 1138910 attached
-> > futex(0x7fff97a8f110, FUTEX_WAIT_BITSET|FUTEX_CLOCK_REALTIME, 1138912, NULL, FUTEX_BITSET_MATCH_ANY
-> > (nothing more output)
-> > ^Cstrace: Process 1138910 detached
-> >  <detached ...>
-> >
-> >
-> > > changes since v2:
-> > > - move fcntl tests into one fcntl c file
-> > > - remove ofd and same owner tests, should be reflected by only one test
-> > > - simplify commit message (remove testname out of it)
-> > > - add error messages in fcntl.c to give more information if an error
-> > >   occur
-> > >
-> > >  src/Makefile          |   3 +-
-> > >  src/fcntl.c           | 322 ++++++++++++++++++++++++++++++++++++++++++
-> > >  tests/generic/732     |  32 +++++
-> > >  tests/generic/732.out |   2 +
-> > >  4 files changed, 358 insertions(+), 1 deletion(-)
-> > >  create mode 100644 src/fcntl.c
-> > >  create mode 100755 tests/generic/732
-> > >  create mode 100644 tests/generic/732.out
-> > >
-> > > diff --git a/src/Makefile b/src/Makefile
-> > > index 2815f919..67f936d3 100644
-> > > --- a/src/Makefile
-> > > +++ b/src/Makefile
-> > > @@ -19,7 +19,8 @@ TARGETS = dirstress fill fill2 getpagesize holes lstat64 \
-> > >       t_ofd_locks t_mmap_collision mmap-write-concurrent \
-> > >       t_get_file_time t_create_short_dirs t_create_long_dirs t_enospc \
-> > >       t_mmap_writev_overlap checkpoint_journal mmap-rw-fault allocstale \
-> > > -     t_mmap_cow_memory_failure fake-dump-rootino dio-buf-fault rewinddir-test
-> > > +     t_mmap_cow_memory_failure fake-dump-rootino dio-buf-fault rewinddir-test \
-> > > +     fcntl
-> > >
-> > >  LINUX_TARGETS = xfsctl bstat t_mtab getdevicesize preallo_rw_pattern_reader \
-> > >       preallo_rw_pattern_writer ftrunc trunc fs_perms testx looptest \
-> > > diff --git a/src/fcntl.c b/src/fcntl.c
-> > > new file mode 100644
-> > > index 00000000..8e375357
-> > > --- /dev/null
-> > > +++ b/src/fcntl.c
-> > > @@ -0,0 +1,322 @@
-> > > +// SPDX-License-Identifier: GPL-2.0+
-> > > +/* Copyright (c) 2023 Alexander Aring.  All Rights Reserved.
-> > > + */
-> > > +
-> > > +#include <pthread.h>
-> > > +#include <unistd.h>
-> > > +#include <string.h>
-> > > +#include <limits.h>
-> > > +#include <stdlib.h>
-> > > +#include <errno.h>
-> > > +#include <fcntl.h>
-> > > +#include <stdio.h>
-> > > +#include <wait.h>
-> > > +
-> > > +static char filename[PATH_MAX + 1];
-> > > +static int fd;
-> > > +
-> > > +static void usage(char *name, const char *msg)
-> > > +{
-> > > +     printf("Fatal: %s\nUsage:\n"
-> > > +            "%s <file for fcntl>\n", msg, name);
-> > > +     _exit(1);
-> > > +}
-> > > +
-> > > +static void *do_equal_file_lock_thread(void *arg)
-> > > +{
-> > > +       struct flock fl = {
-> > > +            .l_type = F_WRLCK,
-> > > +            .l_whence = SEEK_SET,
-> > > +            .l_start = 0L,
-> > > +            .l_len = 1L,
-> > > +       };
-> > > +       int rv;
-> > > +
-> > > +       rv = fcntl(fd, F_SETLKW, &fl);
-> > > +       if (rv == -1) {
-> > > +            perror("fcntl");
-> > > +            _exit(1);
-> > > +       }
-> > > +
-> > > +       return NULL;
-> > > +}
-> > > +
-> > > +static void do_test_equal_file_lock(void)
-> > > +{
-> > > +     struct flock fl;
-> > > +     pthread_t t[2];
-> > > +     int pid, rv;
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0L;
-> > > +     fl.l_len = 1L;
-> > > +
-> > > +     /* acquire range 0-0 */
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +            perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     pid = fork();
-> > > +     if (pid == 0) {
-> > > +             rv = pthread_create(&t[0], NULL, do_equal_file_lock_thread, NULL);
-> > > +             if (rv != 0) {
-> > > +                     fprintf(stderr, "failed to create pthread\n");
-> > > +                     _exit(1);
-> > > +             }
-> > > +
-> > > +             rv = pthread_create(&t[1], NULL, do_equal_file_lock_thread, NULL);
-> > > +             if (rv != 0) {
-> > > +                     fprintf(stderr, "failed to create pthread\n");
-> > > +                     _exit(1);
-> > > +             }
-> > > +
-> > > +             pthread_join(t[0], NULL);
-> > > +             pthread_join(t[1], NULL);
-> > > +
-> > > +             _exit(0);
-> > > +     }
-> > > +
-> > > +     /* wait until threads block on 0-0 */
-> > > +     sleep(3);
-> > > +
-> > > +     fl.l_type = F_UNLCK;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     sleep(3);
-> > > +
-> > > +     /* check if the ->lock() implementation got the
-> > > +      * right locks granted because two waiter with the
-> > > +      * same file_lock fields are waiting
-> > > +      */
-> > > +     fl.l_type = F_WRLCK;
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1 && errno == EAGAIN) {
-> > > +             fprintf(stderr, "deadlock, pthread not cleaned up correctly\n");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     wait(NULL);
-> > > +}
-> > > +
-> > > +static void catch_alarm(int num) { }
-> > > +
-> > > +static void do_test_signal_interrupt_child(int *pfd)
-> > > +{
-> > > +     struct sigaction act;
-> > > +     unsigned char m;
-> > > +     struct flock fl;
-> > > +     int rv;
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 1;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     memset(&act, 0, sizeof(act));
-> > > +     act.sa_handler = catch_alarm;
-> > > +     sigemptyset(&act.sa_mask);
-> > > +     sigaddset(&act.sa_mask, SIGALRM);
-> > > +     sigaction(SIGALRM, &act, NULL);
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     /* interrupt SETLKW by signal in 3 secs */
-> > > +     alarm(3);
-> > > +     rv = fcntl(fd, F_SETLKW, &fl);
-> > > +     if (rv == 0) {
-> > > +             fprintf(stderr, "fcntl interrupt successful but should fail with EINTR\n");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     /* synchronize to move parent to test region 1-1 */
-> > > +     write(pfd[1], &m, sizeof(m));
-> > > +
-> > > +     /* keep child alive */
-> > > +     read(pfd[1], &m, sizeof(m));
-> > > +}
-> > > +
-> > > +static void do_test_signal_interrupt(void)
-> > > +{
-> > > +     struct flock fl;
-> > > +     unsigned char m;
-> > > +     int pid, rv;
-> > > +     int pfd[2];
-> > > +
-> > > +     rv = pipe(pfd);
-> > > +     if (rv == -1) {
-> > > +             perror("pipe");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     pid = fork();
-> > > +     if (pid == 0) {
-> > > +             do_test_signal_interrupt_child(pfd);
-> > > +             _exit(0);
-> > > +     }
-> > > +
-> > > +     /* wait until child writes */
-> > > +     read(pfd[0], &m, sizeof(m));
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 1;
-> > > +     fl.l_len = 1;
-> > > +     /* parent testing childs region, the child will think
-> > > +      * it has region 1-1 locked because it was interrupted
-> > > +      * by region 0-0. Due bugs the interruption also unlocked
-> > > +      * region 1-1.
-> > > +      */
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == 0) {
-> > > +             fprintf(stderr, "fcntl trylock successful but should fail because child still acquires region\n");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     write(pfd[0], &m, sizeof(m));
-> > > +
-> > > +     wait(NULL);
-> > > +
-> > > +     close(pfd[0]);
-> > > +     close(pfd[1]);
-> > > +
-> > > +     /* cleanup everything */
-> > > +     fl.l_type = F_UNLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 2;
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +}
-> > > +
-> > > +static void do_test_kill_child(void)
-> > > +{
-> > > +     struct flock fl;
-> > > +     int rv;
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     rv = fcntl(fd, F_SETLKW, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +}
-> > > +
-> > > +static void do_test_kill(void)
-> > > +{
-> > > +     struct flock fl;
-> > > +     int pid_to_kill;
-> > > +     int rv;
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     pid_to_kill = fork();
-> > > +     if (pid_to_kill == 0) {
-> > > +             do_test_kill_child();
-> > > +             _exit(0);
-> > > +     }
-> > > +
-> > > +     /* wait until child blocks */
-> > > +     sleep(3);
-> > > +
-> > > +     kill(pid_to_kill, SIGKILL);
-> > > +
-> > > +     /* wait until Linux did plock cleanup */
-> > > +     sleep(3);
-> > > +
-> > > +     fl.l_type = F_UNLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     /* cleanup parent lock */
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if (rv == -1) {
-> > > +             perror("fcntl");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     fl.l_type = F_WRLCK;
-> > > +     fl.l_whence = SEEK_SET;
-> > > +     fl.l_start = 0;
-> > > +     fl.l_len = 1;
-> > > +
-> > > +     /* check if the child still holds the lock
-> > > +      * and killing the child was not cleaning
-> > > +      * up locks.
-> > > +      */
-> > > +     rv = fcntl(fd, F_SETLK, &fl);
-> > > +     if ((rv == -1 && errno == EAGAIN)) {
-> > > +             fprintf(stderr, "fcntl trylock failed but should be successful because killing child should cleanup acquired lock\n");
-> > > +             _exit(1);
-> > > +     }
-> > > +}
-> > > +
-> > > +int main(int argc, char * const argv[])
-> > > +{
-> > > +     if (optind != argc - 1)
-> > > +             usage(argv[0], "<file for fcntl> is mandatory to tell the file where to run fcntl() on it");
-> > > +
-> > > +     strncpy(filename, argv[1], PATH_MAX);
-> > > +
-> > > +     fd = open(filename, O_RDWR | O_CREAT, 0700);
-> > > +     if (fd == -1) {
-> > > +             perror("open");
-> > > +             _exit(1);
-> > > +     }
-> > > +
-> > > +     /* test to have to equal struct file_lock requests in ->lock() */
-> > > +     do_test_equal_file_lock();
-> > > +     /* test to interrupt F_SETLKW by a signal and cleanup only canceled the pending interrupted request */
-> > > +     do_test_signal_interrupt();
-> > > +     /* test if cleanup is correct if a child gets killed while being blocked in F_SETLKW */
-> > > +     do_test_kill();
-> > > +
-> > > +     close(fd);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > diff --git a/tests/generic/732 b/tests/generic/732
-> > > new file mode 100755
-> > > index 00000000..d77f9fc2
-> > > --- /dev/null
-> > > +++ b/tests/generic/732
-> > > @@ -0,0 +1,32 @@
-> > > +#! /bin/bash
-> > > +# SPDX-License-Identifier: GPL-2.0
-> > > +# Copyright (c) 2023 Alexander Aring.  All Rights Reserved.
-> > > +#
-> > > +# FS QA Test 732
-> > > +#
-> > > +# This tests performs some fcntl() corner cases. See fcntl test
-> > > +# program for more details.
-> > > +#
-> > > +. ./common/preamble
-> > > +_begin_fstest auto
-> > > +
-> > > +# Import common functions.
-> > > +. ./common/filter
-> > > +
-> > > +# real QA test starts here
-> > > +
-> > > +# Modify as appropriate.
-> > > +_supported_fs generic
-> > > +_require_test
-> > > +_require_test_program fcntl
-> > > +
-> > > +echo "Silence is golden"
-> > > +
-> > > +$here/src/fcntl $TEST_DIR/testfile
-> > > +if [ $? -ne 0 ]
-> > > +then
-> > > +     exit
-> > > +fi
-> > > +
-> > > +status=0
-> > > +exit
-> > > diff --git a/tests/generic/732.out b/tests/generic/732.out
-> > > new file mode 100644
-> > > index 00000000..451f82ce
-> > > --- /dev/null
-> > > +++ b/tests/generic/732.out
-> > > @@ -0,0 +1,2 @@
-> > > +QA output created by 732
-> > > +Silence is golden
-> > > --
-> > > 2.31.1
-> > >
-> >
-> >
+> HEAD commit:    547ab8fc4cb0 Merge tag 'loongarch-fixes-6.8-2' of git://gi..
+> git tree:       upstream
+> console+strace: https://syzkaller.appspot.com/x/log.txt?x=150285d4180000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=89a5d896b14c4565
+> dashboard link: https://syzkaller.appspot.com/bug?extid=74edb1a3ea8f1c65a086
+> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11395147e80000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=126ff68fe80000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/a8d318be4c39/disk-547ab8fc.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/8178462cbfb5/vmlinux-547ab8fc.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/62939e7c5fbb/bzImage-547ab8fc.xz
+> mounted in repro: https://storage.googleapis.com/syzbot-assets/93eefe621564/mount_0.gz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+74edb1a3ea8f1c65a086@syzkaller.appspotmail.com
+> 
+> loop0: detected capacity change from 0 to 32768
+> gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+> gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+> gfs2: fsid=syz:syz.0: journal 0 mapped with 20 extents in 0ms
+> general protection fault, probably for non-canonical address 0xdffffc0000000097: 0000 [#1] PREEMPT SMP KASAN PTI
+> KASAN: null-ptr-deref in range [0x00000000000004b8-0x00000000000004bf]
+> CPU: 0 PID: 5058 Comm: syz-executor337 Not tainted 6.8.0-rc3-syzkaller-00041-g547ab8fc4cb0 #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+> RIP: 0010:gfs2_rindex_update+0xbc/0x3d0 fs/gfs2/rgrp.c:1037
+> Code: e8 f9 65 1d fe 4c 8d 74 24 60 48 8b 03 48 89 44 24 38 48 8d 98 b8 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 c6 65 1d fe 48 8b 03 48 89 44 24 20
+> RSP: 0018:ffffc900040671a0 EFLAGS: 00010202
+> RAX: 0000000000000097 RBX: 00000000000004b8 RCX: dffffc0000000000
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88807f558000
+> RBP: ffffc900040672b0 R08: ffffffff83cb50d7 R09: 1ffff1100f02e2f8
+> R10: dffffc0000000000 R11: ffffed100f02e2f9 R12: 1ffff9200080ce3c
+> R13: ffff88807f558000 R14: ffffc90004067200 R15: 0000000000000001
+> FS:  0000555555a0f380(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000056427a53bb08 CR3: 0000000022d54000 CR4: 00000000003506f0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Call Trace:
+>   <TASK>
+>   punch_hole+0xe7b/0x3a30 fs/gfs2/bmap.c:1809
+>   gfs2_truncatei_resume+0x3c/0x70 fs/gfs2/bmap.c:2159
+
+The fuzzer is setting GFS2_DIF_TRUNC_IN_PROG on the 
+per_node/statfs_change0 'system' inode (it's setting all of the di_flags 
+bits but that is the relevant one) which sends us down this resume 
+truncation path in inode_go_held(), before the rindex has been 
+initialised in init_inodes().
+
+Is there a better solution than returning an error on the 
+(sdp->sd_rindex == NULL) case in gfs2_rindex_update()?
+
+Andy
+
+>   gfs2_glock_holder_ready fs/gfs2/glock.c:1336 [inline]
+>   gfs2_glock_wait+0x1df/0x2b0 fs/gfs2/glock.c:1356
+>   gfs2_glock_nq_init fs/gfs2/glock.h:238 [inline]
+>   init_statfs fs/gfs2/ops_fstype.c:694 [inline]
+>   init_journal+0x1680/0x23f0 fs/gfs2/ops_fstype.c:816
+>   init_inodes+0xdc/0x320 fs/gfs2/ops_fstype.c:884
+>   gfs2_fill_super+0x1edb/0x26c0 fs/gfs2/ops_fstype.c:1263
+>   get_tree_bdev+0x3f7/0x570 fs/super.c:1619
+>   gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1341
+>   vfs_get_tree+0x90/0x2a0 fs/super.c:1784
+>   do_new_mount+0x2be/0xb40 fs/namespace.c:3352
+>   do_mount fs/namespace.c:3692 [inline]
+>   __do_sys_mount fs/namespace.c:3898 [inline]
+>   __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3875
+>   do_syscall_64+0xf9/0x240
+>   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+> RIP: 0033:0x7fe98b1e18ba
+> Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 5e 04 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffe3b0f9eb8 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
+> RAX: ffffffffffffffda RBX: 00007ffe3b0f9ec0 RCX: 00007fe98b1e18ba
+> RDX: 0000000020000040 RSI: 0000000020000100 RDI: 00007ffe3b0f9ec0
+> RBP: 0000000000000004 R08: 00007ffe3b0f9f00 R09: 0000000000012783
+> R10: 0000000000008c1b R11: 0000000000000282 R12: 00007ffe3b0f9f00
+> R13: 0000000000000003 R14: 0000000001000000 R15: 0000000000000001
+>   </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:gfs2_rindex_update+0xbc/0x3d0 fs/gfs2/rgrp.c:1037
+> Code: e8 f9 65 1d fe 4c 8d 74 24 60 48 8b 03 48 89 44 24 38 48 8d 98 b8 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 c6 65 1d fe 48 8b 03 48 89 44 24 20
+> RSP: 0018:ffffc900040671a0 EFLAGS: 00010202
+> RAX: 0000000000000097 RBX: 00000000000004b8 RCX: dffffc0000000000
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88807f558000
+> RBP: ffffc900040672b0 R08: ffffffff83cb50d7 R09: 1ffff1100f02e2f8
+> R10: dffffc0000000000 R11: ffffed100f02e2f9 R12: 1ffff9200080ce3c
+> R13: ffff88807f558000 R14: ffffc90004067200 R15: 0000000000000001
+> FS:  0000555555a0f380(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000056427a53bb08 CR3: 0000000022d54000 CR4: 00000000003506f0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> ----------------
+> Code disassembly (best guess):
+>     0:	e8 f9 65 1d fe       	call   0xfe1d65fe
+>     5:	4c 8d 74 24 60       	lea    0x60(%rsp),%r14
+>     a:	48 8b 03             	mov    (%rbx),%rax
+>     d:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+>    12:	48 8d 98 b8 04 00 00 	lea    0x4b8(%rax),%rbx
+>    19:	48 89 d8             	mov    %rbx,%rax
+>    1c:	48 c1 e8 03          	shr    $0x3,%rax
+>    20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+>    27:	fc ff df
+> * 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
+>    2e:	74 08                	je     0x38
+>    30:	48 89 df             	mov    %rbx,%rdi
+>    33:	e8 c6 65 1d fe       	call   0xfe1d65fe
+>    38:	48 8b 03             	mov    (%rbx),%rax
+>    3b:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
 > 
 > 
-> -- 
-> Thanks,
-> 
-> Steve
+> ---
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
 > 
 
