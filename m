@@ -1,82 +1,74 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A559148FE2
-	for <gfs2@lists.linux.dev>; Fri, 23 Feb 2024 21:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A094D59C
+	for <gfs2@lists.linux.dev>; Sat, 24 Feb 2024 13:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708723647; cv=none; b=fohkYTTr6JCJeZs9Y+kZDZgMUbK67jPeoEpju8ZO4fiqQHXPlzRvB9/lMplNFhs/4sBouau1Q8E1PgeVlNuunl4aIqnW0lb4SRCfD5SIhw+57ITTNA2CsEQUECEz2EnKPPtGnILZuA+KwcFjNWVp2PvH18ONh2CxH3dmUzK45aU=
+	t=1708782537; cv=none; b=GnbhoyACMr0jdlufiWB3cLrLk5C1YIgIDMnT8DllP37/Y5JvcjtCkRBin14gZHUdO80LWU7K/GXmOyRlLpisH+dPfT2kpLvQs9LD470aprmaN3ArwuRKDUAN0c3vm4ucwmvCSlRrv0bCyz66SqSA4mI1SvuXdeS7JIJbZS6+os4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708723647; c=relaxed/simple;
-	bh=VLMGcoKqB8lRoDP0aswhFqwwhXnudyVIBfdJQmMCSS4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=tw4KPr8oMJuZ5c+Mn1M3Wk7+qssQUEwTQn2zDeDRzr4huIcXM0e1i3TQUnKYE1GkkFyoakXvVXrsq3Mi1cjAaSLgklu+YARtanqtc/uDfkdtNA0dLFZKHFnBaLa4rb/7hE6AMIzvUkQrMUqlp7Bu8u0ikiUhBmVWVupZXlpEAcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3651fd50053so8228625ab.3
-        for <gfs2@lists.linux.dev>; Fri, 23 Feb 2024 13:27:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708723645; x=1709328445;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=044LH8cJATSgHllL+X3xvCtVZ2tnyTB+fC4voAuIDv4=;
-        b=OPyU9Zr6a5wRXS26wJxFFzQL57LjYENsafoG2flvDPyV52F2MgVZ/CNpdW+8RDqFSo
-         vfgBp+QExgF7AAaEqW4n7Una9G0fECLi8pFHBQJGzcxUU+/UsyopVwYQowhcIImWyvhn
-         odHBYNeqdp3vHXSZ7K+UnPm6+S5ydTTkF0fBYlbhdpygQ7b7UdPhI5caTUk+KAU280fL
-         USHF7/qtadcMGMTvqlOW5O1NeF5u66PHSQLQsWZdNQeehAAMo+t6x4qXZ522E+oRUKkh
-         OzmSrMOkJGqFjGcLBA6udo5+/7cR1lc+ozYLFeav2cAQn0ZhDLHbdjgEhBVx29HxcY6r
-         3e4w==
-X-Gm-Message-State: AOJu0YzaK/BWS6xzQCieeo2BsN45fX2HhgIZg0lYOzdwV+CAeGZ3R9ke
-	CiwPhRi7auVByAWJkla1+kjmAG5q9yrRN5kKRRr6/rLOBwx1l+Z+qbroJI8Q3yt0bIEndLu1H6Z
-	JueS2+X01IDFNeCtS6OiIbsMAZX0Qgbfq3pbNksgQCZ92iQjE+wybKkHslA==
-X-Google-Smtp-Source: AGHT+IEmu9pZ71VokjjsFo+IJZvhbi2GgLkE2nE4NjmMnazl1hkHlv+sO/TWslddmfx2T7/pAl2sJLeumUQjPljJFUW5MPVJAyUz
+	s=arc-20240116; t=1708782537; c=relaxed/simple;
+	bh=y2pUB53F1wMAZ04nzFKOITyd4dvsaa9cjjMHjK96d5Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z2vY0qpmE90SkgEby8vi++U061vbGnhElRFbByc+wI08kK0srx65ufqV4NGFQORgJXQC89JqsRs8f8SINXDf/o/afKXmZf0BgsCUOTrXdMNnZ0b1SDiKRsFGLn/wRIr4pdyQzwMB0Zf+voxHLo82gypoeQa2pExSP98tEJRH5Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ms/zeVZy; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ms/zeVZy"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1708782534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rikMo19CagWQcspLQnXP+zWMLIAYXL5i/D+P5ICzeiQ=;
+	b=ms/zeVZyBJ5AE0Ryv8ygow1uTLiltSGM7YRvR9KT3WlR5UcXaXJ2GENMtdT3zBCI/rgEAi
+	7Un6qkTkajDJJz1lIJvGijrmeMRnBu0hxFcnrv7SnqsUwrkhmKNVidnFyzzCNgBYMcN+OW
+	FGzABBKfQhgjeZNO9TeKoMOlyLu98BY=
+From: chengming.zhou@linux.dev
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	vbabka@suse.cz,
+	roman.gushchin@linux.dev,
+	Xiongwei.Song@windriver.com,
+	chengming.zhou@linux.dev,
+	Chengming Zhou <zhouchengming@bytedance.com>
+Subject: [PATCH] gfs2: remove SLAB_MEM_SPREAD flag usage
+Date: Sat, 24 Feb 2024 13:48:47 +0000
+Message-Id: <20240224134847.829536-1-chengming.zhou@linux.dev>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c08:b0:365:5dbd:b956 with SMTP id
- l8-20020a056e021c0800b003655dbdb956mr52445ilh.3.1708723645570; Fri, 23 Feb
- 2024 13:27:25 -0800 (PST)
-Date: Fri, 23 Feb 2024 13:27:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e9e80e061213394a@google.com>
-Subject: [syzbot] Monthly gfs2 report (Feb 2024)
-From: syzbot <syzbot+list72751ee4e1b31b4ea4be@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello gfs2 maintainers/developers,
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+The SLAB_MEM_SPREAD flag is already a no-op as of 6.8-rc1, remove
+its usage so we can delete it from slab. No functional change.
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 13 issues are still open and 29 have been fixed so far.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 5640    Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 697     Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<3> 2       Yes   general protection fault in gfs2_rindex_update
-                  https://syzkaller.appspot.com/bug?extid=74edb1a3ea8f1c65a086
-
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/fs/gfs2/main.c b/fs/gfs2/main.c
+index 79be0cdc730c..04cadc02e5a6 100644
+--- a/fs/gfs2/main.c
++++ b/fs/gfs2/main.c
+@@ -111,7 +111,6 @@ static int __init init_gfs2_fs(void)
+ 	gfs2_inode_cachep = kmem_cache_create("gfs2_inode",
+ 					      sizeof(struct gfs2_inode),
+ 					      0,  SLAB_RECLAIM_ACCOUNT|
+-						  SLAB_MEM_SPREAD|
+ 						  SLAB_ACCOUNT,
+ 					      gfs2_init_inode_once);
+ 	if (!gfs2_inode_cachep)
+-- 
+2.40.1
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
