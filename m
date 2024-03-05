@@ -1,195 +1,78 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D579F53BE
-	for <gfs2@lists.linux.dev>; Sun,  3 Mar 2024 05:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FEE535B6
+	for <gfs2@lists.linux.dev>; Tue,  5 Mar 2024 09:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709442545; cv=none; b=RaHkVzGwlKOBtdEGGVLhoUcov6UknoXayxE7mlayjukKyI4miUQjtmPr8O+Sk6z8YJcGYqjuw2WQRY1DWy4ZGGKFoN3WtgAYKgZkfzN2vftFq10/peEjGJuCKA1X/UXHV0cNlKNt3FCD3T3R47s7fB2Iw+N6eeODbwKejECQqyQ=
+	t=1709632085; cv=none; b=hYbXN8rwbap7pksuJ1y1FVYSfnOpkSBQFGG7o7IkcACuc3FJN9+gavBZWgiKStX12CZPrxDrya6eMnH1oloSgNTRfY/iKk7sDqEQ72Hh0iDZXFmoklgeD7Sa92O8eTpC9v3oRtL8nes6eK/wIMkVpc0bJf2WLHJcDCmQ2nqzKt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709442545; c=relaxed/simple;
-	bh=l8gGo5ufDURZHmdvzVjci3F2EHTlOcDdHG1mCj3W+XI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=fSxCbCkxYRtmnoaGtzEHwb1ULPdisaqwnIl3xUY7hZ1XHNVZEJWYsyYjGM1tT8H9T2Wy5wPc7vcYibxNUcboWimzN147FKEr5cEN8DUVaMh27kjp3cLj4cQhR6LWZEoM8ApYl86kNdSGUSkoZzt95YXwVzZ9NCpbli3Lf07rxbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rgmzr7c8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rgmzr7c8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709442542;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JjpbPJcNRbSanMTpfhHKtMnGxhnRcTaRo2vwe3NOWtk=;
-	b=Rgmzr7c8YbBMMj+9L3HnZkwhxB+xiYqojM0pf4Bstqyw45PXouwbGf2WjoNlRKgeS5RN3G
-	U2v+gA6/ipm9sTyWBRP6iMD+exAdyzvGVbFHQvM5B7dZl4CUYp9WQACly8hkKM+/lLVkMM
-	lp358TRCy8S05xEveOHNsIVSK7xVs2Y=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-RsCUyELjOAmEzCipblTXAw-1; Sun, 03 Mar 2024 00:08:59 -0500
-X-MC-Unique: RsCUyELjOAmEzCipblTXAw-1
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3c19f4709c5so5359719b6e.0
-        for <gfs2@lists.linux.dev>; Sat, 02 Mar 2024 21:08:59 -0800 (PST)
+	s=arc-20240116; t=1709632085; c=relaxed/simple;
+	bh=FUV2UfMDI7InnPdcCSNJGtUvjpOsTPaChu2eym3FVR8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=UY1hqzV3UtswJ6V+7wjLnPGha9jZepxXiTlEY3P3V653xoKWoibNFTdj5viXcLLu1b9qHTSXBs+O3jGiGiMLWDmGn4eqjYdqaIS/Hi+CcCgH1GaCtyfI6SXBoLe+pAW5y202xwJkmyFO11RYzDlH/jx9XQqYwb/DYLEtWTD3R+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7c7857e6cb8so729775239f.3
+        for <gfs2@lists.linux.dev>; Tue, 05 Mar 2024 01:48:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709442539; x=1710047339;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1709632083; x=1710236883;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JjpbPJcNRbSanMTpfhHKtMnGxhnRcTaRo2vwe3NOWtk=;
-        b=suFYZfhhgbBAFtwONkMHOQ3MkI6/8s1Hj4rFsa+AZxl6VxMFLxecKTBybJdhr5Ckue
-         dlBjJe5sU+7PQ+U10SUveDwHmgrto1BEDopqtBQs8yMbJaTg/f4ddAOYbObh4wxI9bhj
-         zf/M1F8n+BhJwrEXBbEPKVOUFd6xz4WrxsTdjyhM5NaRYiVgacCo8YzJSTExjdiMzaUf
-         2OiZF/UxNSj5QNUaohavQf42dqcurOfwjMf0202/IK7BNn0Zb/NFsbbAV564+9XDni8c
-         FnrW3kso4dTEmZDhzhOTTLc0jnAYooGvcK28hdWtd6KTiBsUa1lgvVsc++QI9HRqPIkO
-         t/Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0wqFdzYPVNV9+bfll0rf0XL9j3Zj7/CEvuvUVPk4V8yi7+0husb0xi+bFa+TaHRFAW9o5P7q7HAAF1sQqE0o+/ky8hw==
-X-Gm-Message-State: AOJu0YzyFq7o7/3aEDm03p9lcgKygstwRTNxlvc+it3vPjiCJWudENKZ
-	DcjMw9WjP8EJilE5TXxoAcL7S2EaNSuo8Tf0Mfg8LPAs9GW/Fl419Brfe7d4qn01wjdkxhGJxOV
-	bihsTYnUAGh09dyBoGVmADO50EHA/x5VN4W2mByIwWIJ5Mr52mPI=
-X-Received: by 2002:a54:4388:0:b0:3c1:e835:3f8a with SMTP id u8-20020a544388000000b003c1e8353f8amr2050889oiv.39.1709442538708;
-        Sat, 02 Mar 2024 21:08:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHjv5iSXFkzoq34jTrZUzYGVoxQrDPBhk2ZX6DFNrWuKHpObbhXi7qJfeoIgV8G5L/hrfVcZA==
-X-Received: by 2002:a54:4388:0:b0:3c1:e835:3f8a with SMTP id u8-20020a544388000000b003c1e8353f8amr2050878oiv.39.1709442538325;
-        Sat, 02 Mar 2024 21:08:58 -0800 (PST)
-Received: from dell-per750-06-vm-08.rhts.eng.pek2.redhat.com ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id v8-20020a17090a458800b0029af67d4fd0sm5526321pjg.44.2024.03.02.21.08.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Mar 2024 21:08:57 -0800 (PST)
-Date: Sun, 3 Mar 2024 13:08:53 +0800
-From: Zorro Lang <zlang@redhat.com>
-To: Paulo Alcantara <pc@manguebit.com>,
-	Alexander Aring <aahringo@redhat.com>
-Cc: Steve French <smfrench@gmail.com>, fstests@vger.kernel.org,
-	gfs2@lists.linux.dev, jlayton@kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCHv2] generic: add fcntl corner cases tests
-Message-ID: <20240303050853.f7wslqfkkgdfv37i@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
-References: <20230925201827.1703857-1-aahringo@redhat.com>
- <20240209052631.wfbjveicfosubwns@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
- <CAH2r5msWwX7QdXrzmR3tapU85WMga9Y-waNOHm+hMWmWPUF=tQ@mail.gmail.com>
- <20240209114310.c4ny2dptikr24wx5@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
- <20240301103835.gylf2lzud2azgvx7@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
- <CAK-6q+jZVfK2=Z6RCCU+K+TLYuHgC4ynqOBz3K-nhcypCoN3ww@mail.gmail.com>
- <a5eb6c3a2de1b959117d49c436b81904@manguebit.com>
- <CAK-6q+isU4cQN6OV_bLmoKwULsisAUpkAZA+c6SRgOCk8Z9T=g@mail.gmail.com>
- <a6806fcca760e734f272596cafc2390f@manguebit.com>
+        bh=F/PW67TWH8skqmU8vKJwkoq7t3qUI1ZITrOnwecy99Q=;
+        b=dDyFMfwKiBYQr54NThTSdm/VXowVUlsDK7fjMVLx6xvGTmnMIqbYMjaZtosItJ9wsM
+         aB2msAc5Iy78f/3zJ3FICINMnwh0waP7KgvaTZWB9PlmA869xTIpUgPmWGF/ouTDNp8o
+         lYXQWC0McVL52F7LqSyR8pMOKX3lwIC47JEkxf8S9Gf8OK0IDQOq5j24/l5ebI+bqm4O
+         rqKnMrfEQPMSkwVbvy1Hr5KTJjlPUgxec0bWkzAyjyUPL+qmCiw8VwYIvHr3M20gNjW9
+         9MCB52iTidsVfa1M4h1UZ69UWTHd5c7UBFG4JNotkZwHqKv+QPEETArdnzGZrUhS9Bhv
+         N/LA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOHztU2J27uCjxQmxzw9SFCd80pbasFHErpG6LwwEh7w8NAnNQLBRsmpuaVQQg4uN/PaFNlprC/QDLcpeKI8GgYBQsUQ==
+X-Gm-Message-State: AOJu0YxHjgBGBICMGEAidQKgPTk7UyuwWd1TUDJ3Z++7lDnfwbuUM8bR
+	+GC/pkc/02bovAV7WU2GRw6UDnNQm6zvPflxqNE1osV2DBAT9psxBR+yYZbPWUSAKG893iog/aW
+	S7u6GHa1M8+SS6LhDnF0zXejoODPEGLWK+n8/MadWKjrWrNN9LE0mbVM=
+X-Google-Smtp-Source: AGHT+IG6l3HNMZupoKsS/1gWkPsOulXpjgLde5BhCiJPeE6FXHMXeTqCfcGSOQh3Xyp9sknk0aj3dTMHR9Y5+rBXctugU6xVy/Vs
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <a6806fcca760e734f272596cafc2390f@manguebit.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6638:1611:b0:474:edd2:24d5 with SMTP id
+ x17-20020a056638161100b00474edd224d5mr360168jas.4.1709632083746; Tue, 05 Mar
+ 2024 01:48:03 -0800 (PST)
+Date: Tue, 05 Mar 2024 01:48:03 -0800
+In-Reply-To: <000000000000c925dc0604f9e2ef@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000c6e0a0612e6bd58@google.com>
+Subject: Re: [syzbot] [gfs2?] BUG: sleeping function called from invalid
+ context in gfs2_withdraw
+From: syzbot <syzbot+577d06779fa95206ba66@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, axboe@kernel.dk, brauner@kernel.org, 
+	gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rpeterso@redhat.com, 
+	syzkaller-bugs@googlegroups.com, yuran.pereira@hotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 01, 2024 at 08:59:01PM -0300, Paulo Alcantara wrote:
-> Alexander Aring <aahringo@redhat.com> writes:
-> 
-> > Hi,
-> >
-> > On Fri, Mar 1, 2024 at 11:25 AM Paulo Alcantara <pc@manguebit.com> wrote:
-> >>
-> >> Hi Zorro,
-> >>
-> >> The problem is that cifs.ko is returning -EACCES from fcntl(2) called
-> >> in do_test_equal_file_lock() but it is expecting -EAGAIN to be
-> >> returned, so it hangs in wait4(2):
-> >>
-> >> ...
-> >> [pid 14846] fcntl(3, F_SETLK, {l_type=F_WRLCK, l_whence=SEEK_SET, l_start=0, l_len=1}) = -1 EACCES (Permission denied)
-> >> [pid 14846] wait4(-1,
-> >>
-> >> The man page says:
-> >>
-> >>       F_SETLK (struct flock *)
-> >>               Acquire a lock (when l_type is F_RDLCK or F_WRLCK) or release  a
-> >>               lock  (when  l_type  is  F_UNLCK)  on the bytes specified by the
-> >>               l_whence, l_start, and l_len fields of lock.  If  a  conflicting
-> >>               lock  is  held by another process, this call returns -1 and sets
-> >>               errno to EACCES or EAGAIN.  (The error  returned  in  this  case
-> >>               differs across implementations, so POSIX requires a portable ap‐
-> >>               plication to check for both errors.)
-> >>
-> >> so fcntl_lock_corner_tests should also handle -EACCES.
-> >>
-> >
-> > yes, that is a bug in the test but in my opinion there is still an
-> > issue. The mentioned fcntl(F_SETLK) above is just a sanity check to
-> > print out if something is not correct and it will print out that
-> > something is not correct and fails.
-> 
-> Yes, I agree it might be a cifs.ko issue.  However, it's still important
-> making sure that the test exits gracefully and then report an error
-> rather than hanging.
+syzbot suspects this issue was fixed by commit:
 
-Thanks for all of you look into it!
+commit 6f861765464f43a71462d52026fbddfc858239a5
+Author: Jan Kara <jack@suse.cz>
+Date:   Wed Nov 1 17:43:10 2023 +0000
 
-If the C program can deal with issue (report error rather than hang),
-that would be good. Or how about give the fcntl testing process a (long enough)
-timeout number, to avoid it block the whole fstests test running, and report
-error if it exits unnormally.
+    fs: Block writes to mounted block devices
 
-Thanks,
-Zorro
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=119f927a180000
+start commit:   6465e260f487 Linux 6.6-rc3
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8d7d7928f78936aa
+dashboard link: https://syzkaller.appspot.com/bug?extid=577d06779fa95206ba66
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10dbcdc1680000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17a367b6680000
 
-> 
-> > The problem is that wait() below, the child processes are not
-> > returning and are in a blocking state which should not be the case.
-> >
-> > What the test is doing is the following:
-> >
-> > parent:
-> >
-> > 1. lock(A) # should be successful to acquire
-> 
-> Client successfully acquires it.
-> 
-> > child:
-> > thread0:
-> > 2. lock(A) # should block
-> > thread1:
-> > 3. lock(A) # should block
-> 
-> OK - both threads are blocked.
-> 
-> > parent:
-> >
-> > 5. sleep(3) #wait until child are in blocking state of lock(A)
-> 
-> OK.
-> 
-> > 5. unlock(A) # both threads of the child should unlock and exit
-> 
-> At this point, both threads are woken up and one of them acquires the
-> lock and returns.  The other thread gets blocked again because it finds
-> a conflicting lock that was taken from the other thread.  The child then
-> never exits because it is waiting in pthread_join().
-> 
-> > 6. sleep 3 # wait for pending unlock op (not really sure if it's necessary)
-> > ...
-> > 7. trylock(A) # mentioned sanity check
-> 
-> Client returns -EACCES because one of the child threads acquired the
-> lock.
-> 
-> > The unlock(A) should unblock the child threads, it is important to
-> > mention that this test does a lock corner test and the lock(A) in both
-> > threads ends in a ->lock() call with a "struct file_lock" that has
-> > mostly the same fields. We had issues with that in gfs2 and a lookup
-> > function to find the right request with an async complete handler of
-> > the lock operation.
-> 
-> Alex, thanks for the explanation!  As we've talked, there might be a
-> missing check of fl_owner or some sort of protocol limitation while
-> checking for lock conflicts.
-> 
-> Steve, any thoughts on this?
-> 
+If the result looks correct, please mark the issue as fixed by replying with:
 
+#syz fix: fs: Block writes to mounted block devices
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
