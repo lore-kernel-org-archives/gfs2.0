@@ -1,115 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D635380C
-	for <gfs2@lists.linux.dev>; Tue,  5 Mar 2024 10:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBAF58224
+	for <gfs2@lists.linux.dev>; Tue,  5 Mar 2024 11:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709633241; cv=none; b=f3psPrYC1aK04+PajjzGjPnBsDSxwpzVi9pIoC0kiHPtx4YW9jWJXDd3nGUr93xd0SxDrtu4RuGQPCLKYzNJfd25RntiBMxJCfe+2aR7aB2jqBO9N8MMXiwOQ1yxAXaraMFCA7zHdhbpiuIDncHq0mI6SXbdbzGx1L8zOMG6UI8=
+	t=1709636611; cv=none; b=bdwASNMU1LHEuSpc5bM33dPvb9BkGAHyOHEhsWs9DtKa7Q7WA38l8fQRxQk0ckbBFjj3kM3jvdoVXx+DqGBmHwuXOIAiGbB/Njn0q+hbEfEZllszAhbXN65m4JPJTALHce2Vrl1/E//5nUcdZqDRTEBSuY6HAtX4tlG0p7Ydvl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709633241; c=relaxed/simple;
-	bh=tmWvhUXEZZ3pBn0rRhtM8Nj4vDkTWD01IJZIJla18XM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EDIR5W1ko2gqlilc2GuGFMueuTqCMK9FZwPrpMGOM/5xSzSQysd/jZOLcXUB6ZUBGSrJpn5RZ3yXB3CkuwM9vNUIkEXXZytK5Lw/sib3GKJ66x5xmmsZNEy6YDQ4lN6NkR4Xadc9th/ShWxaofCKpFjvvPrr6rDOsk3l3/PmyJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KfN54v7w; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KfN54v7w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709633239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5LvzkgpPOzZwlEgXOsRWtL0iyRGHSE/p12vv2dYEEWM=;
-	b=KfN54v7wKpZnBko2P5nLaVhRMkBze0S2EDlpKoHSavaCxQa0aEJ1z1OhRGdtZbXR+X1MI9
-	O8gZ7w5gD9lRojAcwsLzG0t/dBhf1Ut6572Ah6ZKUdzck3e5+wjcHoZQFRp34xofWwlqNJ
-	KZq1JYKohfMe0RLdWqk+IoDAxYWszjA=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-fssXHbzoPsG3-zliP6JxAw-1; Tue, 05 Mar 2024 05:07:17 -0500
-X-MC-Unique: fssXHbzoPsG3-zliP6JxAw-1
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1dc6f81c290so49860125ad.1
-        for <gfs2@lists.linux.dev>; Tue, 05 Mar 2024 02:07:17 -0800 (PST)
+	s=arc-20240116; t=1709636611; c=relaxed/simple;
+	bh=F6CCUVJjzFeMM02fSLem8/HHQsC/x2Ttc9fdcPJ/3WI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Qzc7LJtTLFC+zWPz55eD3/TJIoC8Hg8o2TyU6YuJql2cHlvmmya6zCbTHXxUsfhJYIQSjWxmM0GtJng3few20sW+sJY6dKkcJl9gje33ZdVH2Ad+DuuPdJvGqt7CtlFVAia+heovGyJF+Cs7sGRnzbjmZwnIBxPcrahFgGa966g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7c495649efdso715784239f.2
+        for <gfs2@lists.linux.dev>; Tue, 05 Mar 2024 03:03:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709633237; x=1710238037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5LvzkgpPOzZwlEgXOsRWtL0iyRGHSE/p12vv2dYEEWM=;
-        b=OoriiZWZOsv43LqMULHWdpCvdh2BGigr47A33rdR6saMy4dxfQGsX/9hVtyrW8q68l
-         /GvPCOOnN1ohz98ZqiNN75KsoXs+9hPh6i9IE98v+WFNQDH3yk0PZud9El0VB7NUqNpL
-         592Bq4BCu0oK1jWkgNeJziBEKBl357+6ry+n1nZuj/NOwJFOAXhoVMU6MqSm+JV3EuQE
-         +lstI6dKOfcekq/CLnq+EikLZpUOHU4oddakhsYj/Jf5cKnVTbwbk6KZcUOGaNWIsoQb
-         77Eq9+3nha/VsJvDQD+vHnnE76u5DNyz6XbAnG5hOx78ujhVVQC2kkaiSyvPhSCuaswp
-         dBYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgu0Lg9Jad+N5FMVx2Hi9mccSCChzS9efF4iQlq4v0GWYGmglVp3GidYOc+YX4QTHLsOx6wTgG/j3FoOgL0Yf6MicLvw==
-X-Gm-Message-State: AOJu0YxRiVdhaLenAHoK3whfyomlyooBfVdeft2zb36kABGImWCG/8pd
-	QdQr4k5y6ynwlLteNSMrQZf5yaupojo559mDOjJGvJeT3pSEpWvyn8HdHL3lQ9J9llQ8jFi6Sko
-	L9qPb7Im11UBwv4p3Ovc16xqNJ6HicO55KKYxHMIlkBZsq2ItxzvM+cvqaHO9YGZStPli5XawBN
-	bOdd/GwmBW5eFsUwiVPa1Z7v6SbQ==
-X-Received: by 2002:a17:902:ce8d:b0:1dc:b320:60d2 with SMTP id f13-20020a170902ce8d00b001dcb32060d2mr1446803plg.33.1709633236855;
-        Tue, 05 Mar 2024 02:07:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHMv6QAUQFA2PQMt09dU18T+73TTHk4Z3gqozQBVsQrgdPPOTCB2inQqNxcby7aXzwG2tWIwk4xFqDbjP3soXg=
-X-Received: by 2002:a17:902:ce8d:b0:1dc:b320:60d2 with SMTP id
- f13-20020a170902ce8d00b001dcb32060d2mr1446786plg.33.1709633236559; Tue, 05
- Mar 2024 02:07:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709636609; x=1710241409;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=61smrnQbOZotuakrMyfB8Rzk7rp+E0dZL4oOdtQON7w=;
+        b=H+Ucl0z+HuDtHS38cL+gXN84s+/xSa70O8PquZxGMijJQrnWVTOQJDPAp4W8BhCaEg
+         US5hNSO3pG5savsnjaV39fNvDRzDxyPx+fqkv0YGA1qkmVSf5GYGu1U4DT5bvGLVjj7r
+         4n5WeXy+m/6YzfbjR40PCAIuKlS2Pb8ZhcdB/b27WrRGnFxfyy/o7kZ0KDfU0g0c4YAo
+         ippHe/5Pek4SBLrw/mY2UDZxQzmWo71ZYthLYlH+oacvXBunm/8nUX+xUw1VIpRt+cmt
+         Aq0W736CxhcHlHyeGUhA5WFi2bBJa6xJ+VYq8ae+90bZrTjmxEwER7etCqHsWYMocYZQ
+         hdDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtmKRsNT4VWovuIuZeuqw+YWxm3PA6KxUHmFoblpGL38sFUHHUlZZu3KwolLM5zum2IVzmt5RSSGSOcBKS4BqWUV8SLA==
+X-Gm-Message-State: AOJu0YzZ8t7pQ5yE97uWvMRKJipdQb1I60X242YSXFbnsjxAma1PGedA
+	jA3xVh7440hvvEVkoaxn7u8r9iaWcdwkeUtOwdMPi2Xe8TSk/fxUlDtZgDLDDIJnhmVzWeUdWrW
+	7ZllLALg+ujvE/zsmFcRhZqufm/jNfzdcPh1oNjOyM9BM3xXtsgGQVjA=
+X-Google-Smtp-Source: AGHT+IGgh9KUvpUSaCh3JUfC4N2IL69Gm5j634ufd+1IjISlPa1TgEQyqU69uqmEcoVB5GrFpmtzAlZM8qoNczAqZ9Eryh1ULJ6F
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <000000000000c925dc0604f9e2ef@google.com> <0000000000000c6e0a0612e6bd58@google.com>
-In-Reply-To: <0000000000000c6e0a0612e6bd58@google.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 5 Mar 2024 11:07:05 +0100
-Message-ID: <CAHc6FU5ynRASxSQDYPMZ7FHuOmjxPbqe0E+TTJEc19+ArJby0Q@mail.gmail.com>
-Subject: Re: [syzbot] [gfs2?] BUG: sleeping function called from invalid
- context in gfs2_withdraw
-To: syzbot <syzbot+577d06779fa95206ba66@syzkaller.appspotmail.com>
-Cc: axboe@kernel.dk, brauner@kernel.org, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rpeterso@redhat.com, syzkaller-bugs@googlegroups.com, 
-	yuran.pereira@hotmail.com
-X-Mimecast-Spam-Score: 1
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6602:1486:b0:7c8:3577:2a50 with SMTP id
+ a6-20020a056602148600b007c835772a50mr402750iow.0.1709636609275; Tue, 05 Mar
+ 2024 03:03:29 -0800 (PST)
+Date: Tue, 05 Mar 2024 03:03:29 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ca86690612e7cacd@google.com>
+Subject: [syzbot] [gfs2?] WARNING in gfs2_check_blk_type (2)
+From: syzbot <syzbot+26e96d7e92eed8a21405@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 5, 2024 at 10:48=E2=80=AFAM syzbot
-<syzbot+577d06779fa95206ba66@syzkaller.appspotmail.com> wrote:
-> syzbot suspects this issue was fixed by commit:
->
-> commit 6f861765464f43a71462d52026fbddfc858239a5
-> Author: Jan Kara <jack@suse.cz>
-> Date:   Wed Nov 1 17:43:10 2023 +0000
->
->     fs: Block writes to mounted block devices
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D119f927a18=
-0000
-> start commit:   6465e260f487 Linux 6.6-rc3
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8d7d7928f7893=
-6aa
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3D577d06779fa9520=
-6ba66
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D10dbcdc1680=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D17a367b668000=
-0
->
-> If the result looks correct, please mark the issue as fixed by replying w=
-ith:
->
-> #syz fix: fs: Block writes to mounted block devices
+Hello,
 
-Sounds reasonable:
+syzbot found the following issue on:
 
-#syz fix: fs: Block writes to mounted block devices
+HEAD commit:    90d35da658da Linux 6.8-rc7
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=10bb48e4180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=119d08814b43915b
+dashboard link: https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17fcb02e180000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1028a27a180000
 
-Andreas
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/821deeb51f0a/disk-90d35da6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9a7d492f89d7/vmlinux-90d35da6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/78bfac3e2f5d/bzImage-90d35da6.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/a2629006a328/mount_0.gz
 
+Bisection is inconclusive: the issue happens on the oldest tested release.
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=130748e4180000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=108748e4180000
+console output: https://syzkaller.appspot.com/x/log.txt?x=170748e4180000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+26e96d7e92eed8a21405@syzkaller.appspotmail.com
+
+gfs2: fsid=syz:syz.0: first mount done, others may mount
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5058 at fs/gfs2/rgrp.c:2630 gfs2_check_blk_type+0x44e/0x680 fs/gfs2/rgrp.c:2630
+Modules linked in:
+CPU: 1 PID: 5058 Comm: syz-executor354 Not tainted 6.8.0-rc7-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+RIP: 0010:gfs2_check_blk_type+0x44e/0x680 fs/gfs2/rgrp.c:2630
+Code: d4 01 00 00 8b 1b 89 df 44 89 f6 e8 4c 49 bd fd 4c 89 74 24 10 44 39 f3 76 23 e8 7d 47 bd fd 45 31 ed eb 70 e8 73 47 bd fd 90 <0f> 0b 90 41 bf f9 ff ff ff 48 8b 5c 24 18 e9 46 01 00 00 e8 5a 47
+RSP: 0018:ffffc900040d78c0 EFLAGS: 00010293
+RAX: ffffffff83d6242c RBX: ffff88802ee40028 RCX: ffff8880779e0000
+RDX: 0000000000000000 RSI: 0000000000000012 RDI: 0000000000000013
+RBP: ffffc900040d79d0 R08: ffffffff83d62422 R09: 1ffff1100f3b75dc
+R10: dffffc0000000000 R11: ffffed100f3b75dd R12: 1ffff11005dc8006
+R13: ffff88802ee40000 R14: 0000000000000012 R15: 0000000000000013
+FS:  000055555631c380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000066c7e0 CR3: 000000002aba0000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ gfs2_inode_lookup+0xb05/0xc60 fs/gfs2/inode.c:178
+ gfs2_lookup_by_inum+0x51/0xf0 fs/gfs2/inode.c:251
+ gfs2_get_dentry fs/gfs2/export.c:139 [inline]
+ gfs2_fh_to_dentry+0x13a/0x1f0 fs/gfs2/export.c:160
+ exportfs_decode_fh_raw+0x152/0x5f0 fs/exportfs/expfs.c:444
+ exportfs_decode_fh+0x3c/0x80 fs/exportfs/expfs.c:584
+ do_handle_to_path fs/fhandle.c:155 [inline]
+ handle_to_path fs/fhandle.c:210 [inline]
+ do_handle_open+0x494/0x650 fs/fhandle.c:226
+ do_syscall_64+0xf9/0x240
+ entry_SYSCALL_64_after_hwframe+0x6f/0x77
+RIP: 0033:0x7f87a993d839
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 61 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff387ac1f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000130
+RAX: ffffffffffffffda RBX: 00007fff387ac3c8 RCX: 00007f87a993d839
+RDX: 0000000000000000 RSI: 0000000020000080 RDI: 0000000000000004
+RBP: 00007f87a99c3610 R08: 0000000000000000 R09: 00007fff387ac3c8
+R10: 00007f87a9978bf3 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007fff387ac3b8 R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
