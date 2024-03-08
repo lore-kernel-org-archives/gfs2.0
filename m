@@ -1,228 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A912C688
-	for <gfs2@lists.linux.dev>; Fri,  8 Mar 2024 16:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5515F15C8
+	for <gfs2@lists.linux.dev>; Fri,  8 Mar 2024 16:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709914720; cv=none; b=rdAaUzriAsuTtKfXYTIuBykDb/sLpiqd2GGwdzzY9zyaZU22lkFmAT7Bf/8xKu0hRjSKAEJUj2dNGvAh31ntj5YHHn6iY/G6RXKMvKufn8nZjT2kmlfNRWELAfN/PQEX4GHUZqP2qulhqMrxvgSzd26cr9x3UskzpZ71qsSqAeg=
+	t=1709915456; cv=none; b=UmBb+8gJZvZ1hCslz3ix12vQDaRZe5nttRKfVPh6y0RENwvK47sSgsRd7zF3OBhMAnL7t1sWda+QyHdokLXZlXtMo/1wHLSDx8CVlLP9H7voKZySzoF3nKTTkCo1o66croEhI7S3QSvY3+r3qxRo9twEJunroXetdURWkk2igWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709914720; c=relaxed/simple;
-	bh=aIMnlnGB9+jxXF/qW8TlRn+T0LRd7dn5KeOqlK6RUQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vlk934nYtj/im7kkjsqXxtOTOJaMv0ckwmg0yxLGOBnHVkaG8SP7rJSVGIciQ5QUJp/kQFo5bwtyESUP1PXl2Z5oEv67qKcL63Yr5IklWRRUt7DusU6/NKj0si4NtD701l7jr8uWKphWvPjKzRmXelNl9Bcr4aY24dg+4QRLQD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UUbQQqLX; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1709915456; c=relaxed/simple;
+	bh=KED6qbou+irwBRcxzVvDODZS2aWl14xZwZV9cA2F6mk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=can4HHbnMnLbOhHk8/sjdsi4miTowKMp4iseReMFVv2mNZ3kUQ7isdEcPIzEMf9gWawJVhIWCNE+goyqqKqJjFVdCkp2RIhPW7R7XQO9YAgaKP/ZXKTprJ93MXpjXu5QpJh2gHjqTMZThtazTfctOXQ1IvEwd/o1Z7FnvNu2nWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KhoDj3ZG; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UUbQQqLX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KhoDj3ZG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709914717;
+	s=mimecast20190719; t=1709915454;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S7Yv9xMbl0cno7xDwf/TPUsKQcy/Uk8Wwzc7nAwt690=;
-	b=UUbQQqLXFQAe5dQ8k7slQZcGwmwBNQBYIdztgAzTmqsZm07If7HlHKzXb0p+SPPJtCA28H
-	OjxKtx87V+hLWxmQNE+3VHPzjiX6JmUoVvqS8Z/2cySjWUEobjRD43v9fyMjKboCujRvgt
-	9jtjlOpX+MnxvlILhEmuW2P+uV84fFc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-vGz3zSDENBWUrMADBvF34w-1; Fri,
- 08 Mar 2024 11:18:24 -0500
-X-MC-Unique: vGz3zSDENBWUrMADBvF34w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E29813CBDF6B
-	for <gfs2@lists.linux.dev>; Fri,  8 Mar 2024 16:18:22 +0000 (UTC)
-Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.fast.eng.rdu2.dc.redhat.com [10.6.23.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D970E492BD8;
-	Fri,  8 Mar 2024 16:18:22 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [RFC v6.8-rc6 2/7] dlm: remove lkb from ast bast tracepoints
-Date: Fri,  8 Mar 2024 11:18:13 -0500
-Message-ID: <20240308161818.2388451-3-aahringo@redhat.com>
-In-Reply-To: <20240308161818.2388451-1-aahringo@redhat.com>
-References: <20240308161818.2388451-1-aahringo@redhat.com>
+	bh=c0rhFOzxwPIQMYdfBLNIsMH+bdHyY6gP6owgi++KGkg=;
+	b=KhoDj3ZGWNfMhg5BPQv53fvPkHD1WQgUMxlAuJOAfbr/0WRQRLvTVFEieUbBl2SXV4JibH
+	N91BXRm27+d5v9PuGiDSKx9zmtUGADZvHczbvuob358wYWUDvCWF8Nm+1GTDcWGz/YeLDe
+	R9F/mzocNkcaJHcB5rKO/k4FdwTnwyU=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-551-ffg_MD-XMG6o99cGrHMXJA-1; Fri, 08 Mar 2024 11:30:52 -0500
+X-MC-Unique: ffg_MD-XMG6o99cGrHMXJA-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2d32d9a312eso16733041fa.2
+        for <gfs2@lists.linux.dev>; Fri, 08 Mar 2024 08:30:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709915450; x=1710520250;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c0rhFOzxwPIQMYdfBLNIsMH+bdHyY6gP6owgi++KGkg=;
+        b=hF+dbcdNWQ8J49rAgnlRGTSeCaFGxfE02hLUqN2nLa87smPxsYreGQW9GZ8Z/p8S7u
+         T5K+QbOoOkWzGhBzIB0py49M3OyoiBHCw0WWmhHzmJlhtQw1LRJufuBA0/lwDjFI0sVh
+         cPzIp/ex9gtsQnKvBQyR6Ss97KBDixn3tBdjqrLUiuLN5juoHl8ZWjB1GPYKndI4rtkA
+         fK5iw+B4RL60gA+lWCTPalCVKQ4MM4LCs9daeL59bKH7EPy304oLN3LiwYy1Vz0hbwo4
+         OjIOARHxIVS8FdHfguKalxFDPjZ9nUugf8wUVCMYzijTqU6ek/g7+4lr7EoDnD54ia3F
+         AtSQ==
+X-Gm-Message-State: AOJu0YwC78Aje1KC+uPqcNNtisMK/S9glSRnjBNecQAeZIbhjJRexxDY
+	c6VVRue2DqE7EDxNXyKIyO+9EHCPnZ590cPjrdzP4QrICAzQZgCJYYQdCWjvpelR0O7IAcVRYxx
+	L7dTYXiekbm8JCe5pn6apXQnk5OH8/t+LjmbTw+iNV4xdFneV5+sf7ZmJhXn9oxDT+Ho+eA4bQd
+	fqWCQ1PZUWJrLZT9u8ePIZXyClyHCUS1suIfGm
+X-Received: by 2002:a2e:b816:0:b0:2d2:cb43:bc86 with SMTP id u22-20020a2eb816000000b002d2cb43bc86mr3399228ljo.45.1709915450715;
+        Fri, 08 Mar 2024 08:30:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH8vgAYucP/J8O4YzDNayADo6P6rIWtUW4MpmWv5DSEWxKUoaP9m2zgx3B6KK0csnNbZ43GjcLK+scxld4kWBk=
+X-Received: by 2002:a2e:b816:0:b0:2d2:cb43:bc86 with SMTP id
+ u22-20020a2eb816000000b002d2cb43bc86mr3399213ljo.45.1709915450406; Fri, 08
+ Mar 2024 08:30:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+References: <20240308161818.2388451-1-aahringo@redhat.com> <20240308161818.2388451-7-aahringo@redhat.com>
+In-Reply-To: <20240308161818.2388451-7-aahringo@redhat.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Fri, 8 Mar 2024 11:30:39 -0500
+Message-ID: <CAK-6q+hYA-6MNcvrVYzZeJfy0xT_jMo5HaNU1h10i=P0pm9utQ@mail.gmail.com>
+Subject: Re: [RFC v6.8-rc6 6/7] dlm: fix race between final callback and remove
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch removes the lkb dependency from the ast and bast DLM
-tracepoints to prepare to not hold a lkb reference when an ast or bast
-is queued to be called. There is also no need to check if the
-lkb_resource is set because it should always be the case in such
-context.
+Hi,
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/ast.c               |  9 ++++++--
- fs/dlm/user.c              |  9 ++++++--
- include/trace/events/dlm.h | 46 ++++++++++++++++----------------------
- 3 files changed, 33 insertions(+), 31 deletions(-)
+On Fri, Mar 8, 2024 at 11:18=E2=80=AFAM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+...
+> -}
+> -
+>  /* Figure out if this lock is at the end of its life and no longer
+>     available for the application to use.  The lkb still exists until
+>     the final ast is read.  A lock becomes EOL in three situations:
+> @@ -198,6 +181,7 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t f=
+lags, int mode,
+>         struct dlm_ls *ls;
+>         struct dlm_user_args *ua;
+>         struct dlm_user_proc *proc;
+> +       struct dlm_callback *cb;
+>         int rv;
+>
+>         if (test_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags) ||
+> @@ -229,11 +213,18 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t=
+ flags, int mode,
+>
+>         spin_lock(&proc->asts_spin);
+>
+> -       rv =3D dlm_enqueue_lkb_callback(lkb, flags, mode, status, sbflags=
+);
+> +       rv =3D dlm_queue_lkb_callback(lkb, flags, mode, status, sbflags, =
+&cb);
+>         switch (rv) {
+>         case DLM_ENQUEUE_CALLBACK_NEED_SCHED:
+> -               kref_get(&lkb->lkb_ref);
+> -               list_add_tail(&lkb->lkb_cb_list, &proc->asts);
+> +               cb->ua =3D *ua;
+> +               cb->lkb_lksb =3D &cb->ua.lksb;
+> +               if (cb->copy_lvb) {
+> +                       memcpy(&cb->lvbptr, lkb->lkb_lksb->sb_lvbptr,
+> +                              DLM_USER_LVB_LEN);
 
-diff --git a/fs/dlm/ast.c b/fs/dlm/ast.c
-index 0582b6739b29..76e1e3886076 100644
---- a/fs/dlm/ast.c
-+++ b/fs/dlm/ast.c
-@@ -173,6 +173,7 @@ void dlm_callback_work(struct work_struct *work)
- {
- 	struct dlm_lkb *lkb = container_of(work, struct dlm_lkb, lkb_cb_work);
- 	struct dlm_ls *ls = lkb->lkb_resource->res_ls;
-+	struct dlm_rsb *rsb = lkb->lkb_resource;
- 	void (*castfn) (void *astparam);
- 	void (*bastfn) (void *astparam, int mode);
- 	struct dlm_callback *cb;
-@@ -192,14 +193,18 @@ void dlm_callback_work(struct work_struct *work)
- 		bastfn = lkb->lkb_bastfn;
- 
- 		if (cb->flags & DLM_CB_BAST) {
--			trace_dlm_bast(ls, lkb, cb->mode);
-+			trace_dlm_bast(ls->ls_global_id, lkb->lkb_id,
-+				       cb->mode, rsb->res_name,
-+				       rsb->res_length);
- 			lkb->lkb_last_bast_time = ktime_get();
- 			lkb->lkb_last_bast_mode = cb->mode;
- 			bastfn(lkb->lkb_astparam, cb->mode);
- 		} else if (cb->flags & DLM_CB_CAST) {
- 			lkb->lkb_lksb->sb_status = cb->sb_status;
- 			lkb->lkb_lksb->sb_flags = cb->sb_flags;
--			trace_dlm_ast(ls, lkb);
-+			trace_dlm_ast(ls->ls_global_id, lkb->lkb_id,
-+				      cb->sb_flags, cb->sb_status,
-+				      rsb->res_name, rsb->res_length);
- 			lkb->lkb_last_cast_time = ktime_get();
- 			castfn(lkb->lkb_astparam);
- 		}
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index 337e91468aa4..c65b348606fe 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -805,6 +805,7 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	struct dlm_lkb *lkb;
- 	DECLARE_WAITQUEUE(wait, current);
- 	struct dlm_callback *cb;
-+	struct dlm_rsb *rsb;
- 	int rv;
- 
- 	if (count == sizeof(struct dlm_device_version)) {
-@@ -887,12 +888,16 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	}
- 	spin_unlock(&proc->asts_spin);
- 
-+	rsb = lkb->lkb_resource;
- 	if (cb->flags & DLM_CB_BAST) {
--		trace_dlm_bast(lkb->lkb_resource->res_ls, lkb, cb->mode);
-+		trace_dlm_bast(rsb->res_ls->ls_global_id, lkb->lkb_id,
-+			       cb->mode, rsb->res_name, rsb->res_length);
- 	} else if (cb->flags & DLM_CB_CAST) {
- 		lkb->lkb_lksb->sb_status = cb->sb_status;
- 		lkb->lkb_lksb->sb_flags = cb->sb_flags;
--		trace_dlm_ast(lkb->lkb_resource->res_ls, lkb);
-+		trace_dlm_ast(rsb->res_ls->ls_global_id, lkb->lkb_id,
-+			      cb->sb_flags, cb->sb_status, rsb->res_name,
-+			      rsb->res_length);
- 	}
- 
- 	rv = copy_result_to_user(lkb->lkb_ua,
-diff --git a/include/trace/events/dlm.h b/include/trace/events/dlm.h
-index c1a146f9fc91..af160082c9e3 100644
---- a/include/trace/events/dlm.h
-+++ b/include/trace/events/dlm.h
-@@ -189,29 +189,25 @@ TRACE_EVENT(dlm_lock_end,
- 
- TRACE_EVENT(dlm_bast,
- 
--	TP_PROTO(struct dlm_ls *ls, struct dlm_lkb *lkb, int mode),
-+	TP_PROTO(__u32 ls_id, __u32 lkb_id, int mode,
-+		 const char *res_name, size_t res_length),
- 
--	TP_ARGS(ls, lkb, mode),
-+	TP_ARGS(ls_id, lkb_id, mode, res_name, res_length),
- 
- 	TP_STRUCT__entry(
- 		__field(__u32, ls_id)
- 		__field(__u32, lkb_id)
- 		__field(int, mode)
--		__dynamic_array(unsigned char, res_name,
--				lkb->lkb_resource ? lkb->lkb_resource->res_length : 0)
-+		__dynamic_array(unsigned char, res_name, res_length)
- 	),
- 
- 	TP_fast_assign(
--		struct dlm_rsb *r;
--
--		__entry->ls_id = ls->ls_global_id;
--		__entry->lkb_id = lkb->lkb_id;
-+		__entry->ls_id = ls_id;
-+		__entry->lkb_id = lkb_id;
- 		__entry->mode = mode;
- 
--		r = lkb->lkb_resource;
--		if (r)
--			memcpy(__get_dynamic_array(res_name), r->res_name,
--			       __get_dynamic_array_len(res_name));
-+		memcpy(__get_dynamic_array(res_name), res_name,
-+		       __get_dynamic_array_len(res_name));
- 	),
- 
- 	TP_printk("ls_id=%u lkb_id=%x mode=%s res_name=%s",
-@@ -224,31 +220,27 @@ TRACE_EVENT(dlm_bast,
- 
- TRACE_EVENT(dlm_ast,
- 
--	TP_PROTO(struct dlm_ls *ls, struct dlm_lkb *lkb),
-+	TP_PROTO(__u32 ls_id, __u32 lkb_id, __u8 sb_flags, int sb_status,
-+		 const char *res_name, size_t res_length),
- 
--	TP_ARGS(ls, lkb),
-+	TP_ARGS(ls_id, lkb_id, sb_flags, sb_status, res_name, res_length),
- 
- 	TP_STRUCT__entry(
- 		__field(__u32, ls_id)
- 		__field(__u32, lkb_id)
--		__field(u8, sb_flags)
-+		__field(__u8, sb_flags)
- 		__field(int, sb_status)
--		__dynamic_array(unsigned char, res_name,
--				lkb->lkb_resource ? lkb->lkb_resource->res_length : 0)
-+		__dynamic_array(unsigned char, res_name, res_length)
- 	),
- 
- 	TP_fast_assign(
--		struct dlm_rsb *r;
--
--		__entry->ls_id = ls->ls_global_id;
--		__entry->lkb_id = lkb->lkb_id;
--		__entry->sb_flags = lkb->lkb_lksb->sb_flags;
--		__entry->sb_status = lkb->lkb_lksb->sb_status;
-+		__entry->ls_id = ls_id;
-+		__entry->lkb_id = lkb_id;
-+		__entry->sb_flags = sb_flags;
-+		__entry->sb_status = sb_status;
- 
--		r = lkb->lkb_resource;
--		if (r)
--			memcpy(__get_dynamic_array(res_name), r->res_name,
--			       __get_dynamic_array_len(res_name));
-+		memcpy(__get_dynamic_array(res_name), res_name,
-+		       __get_dynamic_array_len(res_name));
- 	),
- 
- 	TP_printk("ls_id=%u lkb_id=%x sb_flags=%s sb_status=%d res_name=%s",
--- 
-2.43.0
+That should be:
+
+memcpy(cb->lvbptr, ua->lksb.sb_lvbptr, DLM_USER_LVB_LEN);
+
+as for user space callbacks the lvbptr information is not in
+lkb->lkb_lksb->sb_lvbptr it's in lkb->lkb_ua->...
+
+I have it on my list to "more" merge the kernel and user space
+handling to have it at one place only...
+
+- Alex
 
