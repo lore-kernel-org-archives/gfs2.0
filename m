@@ -1,151 +1,345 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from valentin-vidic.from.hr (valentin-vidic.from.hr [116.203.65.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4215D1E500
-	for <gfs2@lists.linux.dev>; Sun, 10 Mar 2024 14:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8A43B1A4
+	for <gfs2@lists.linux.dev>; Sun, 10 Mar 2024 21:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.65.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710080866; cv=none; b=QMtuADDotBLlXyqyokj7my2hE7x9WrHpHUxDCOugGMt6nzCPjWMey/edRicCP9HfghVOO32pmI0p3+7L1fczIbfaoGIyrkJx98ZItysn4arqqBKG8gegqkWOzylOBtvD4/+m2w9mvn/FNyVMCdDm1B2PbKtL/fSz1bq9a6Ti0/M=
+	t=1710107813; cv=none; b=hmudd9CuSKlZcvJTnu3cAjSabKF4uv1HnKhgLvbS3jDPau+wvJ9GvAs1YThGq1XlUWo7Y5H7uDRvdcxe87ksDpIdOC4MK9vRdShXV8J+O/tVkw4kHpIEf2MgsraFZVwTMCaRnLXv2sN+XhLR34SfXlhn6oLABLjPV1LT2PECNLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710080866; c=relaxed/simple;
-	bh=1+85TM6DWrKvMp16s5nOlKNQ8Z8pNOix1zvC1hnv1WY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q+5KEqRtA3lZZNcbhyffTte8UWI0MYSljhUVhy7dZ0PyY9W8/FxkKjP57ZZQ/8Pdo9d2z4+Pnpc108W8c3n/z0kb7vA/16++lgczwK1zkt+IjmrLYmjyEXDPIUhtutW/OPh7o5HCbYzALJgklK9/uiJwzAmcBeRfnWpB3WzL+t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WrVM7FBX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1710107813; c=relaxed/simple;
+	bh=tzsGVJ2OU/UC5/2pdyK8Q+myamsUQp42QmeXWRnzTdA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iCdOcFQ/OzI/4aAtDzpIeKxu+AVv/719/Ol9C5teTJBkCO+hH9wN3lhHXBTVeQKy3hfXM7OnJQTHOnCikc8/Ax/x5b7MG0XyoMMuYZvKMQPh2q1WUMqtL9TK5jceMFvQ+KVIAMh29hIEdA4E+gD2TpLfWuiQne5j6fZRZIca4LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=valentin-vidic.from.hr; spf=pass smtp.mailfrom=valentin-vidic.from.hr; dkim=pass (4096-bit key) header.d=valentin-vidic.from.hr header.i=@valentin-vidic.from.hr header.b=v461m/9a; arc=none smtp.client-ip=116.203.65.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=valentin-vidic.from.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentin-vidic.from.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WrVM7FBX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710080863;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kgfeUu7yryli9iAixZeZzFpDSBcpi7o4vea5YA3Pe6Y=;
-	b=WrVM7FBXSCsDyS8hLdIzm+yTeBdjGVI3gPyhKLm/TEqitVe7qqKLE1pUQ/3V6R8m3fExft
-	/vG8Z/Z9p7AmA+4/SjsR6DgIDkdUMRQ8CUa9kAd+nwup57uWOlNKMey0DQ4xZrIs31qFtO
-	Gokxbq9VX8eiuj57eBxAj9DHdQNFBAw=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-Igm7YRXgOjOy-DmSUjW7zQ-1; Sun, 10 Mar 2024 10:27:41 -0400
-X-MC-Unique: Igm7YRXgOjOy-DmSUjW7zQ-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d2b9aa4e35so22768591fa.3
-        for <gfs2@lists.linux.dev>; Sun, 10 Mar 2024 07:27:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710080860; x=1710685660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kgfeUu7yryli9iAixZeZzFpDSBcpi7o4vea5YA3Pe6Y=;
-        b=FBCtt5qb2cMBwBzATOP2HOFoKiqQAYK8L6TYV8F+q6wtwqiGsNqxAcRuEWK8pv2Ksj
-         UfdzV98CpaIiiWLbC+tx1q402muNnHVy8DZZ5/u+DjmL5TyRmKaxEqQJIeOVHJitOuUf
-         NJgQBjNzqnrptVfIYnzz7QZ3sEZ556MrahIK3myk5ot+Mw2T2ZtCAN87Xdlx0qGIfnht
-         YZC/0y/x2xCT7w/yCd2indeh9i32NzybGsE6VqXMmY869HHSIzgx1W2RzEi/CLP6VBfG
-         ol4VQaEA2APocbhd+XCTtVUvc5fpDS9ce/VZXQoC8aVyysJEUiWohO13rHdei9us1HHY
-         ZEUQ==
-X-Gm-Message-State: AOJu0YzFbJdgLau3Edr1QRdSKgqSY2ENTxKMFHg8JSrpx8m2h2f2YWE8
-	AvqauXShj4/ZZ7+isEC3O0JttI5BoXLcU10gDOEoZcpHebQdPK8k41i6GBqP68AlinaWIWnrwf1
-	bH3xRpUgsONL/kOCGv8UMWaZh+W8PzYMJc9o2E3XqHq/mx+JvKeYlwU/+1pxkngz32MZwG7vAH5
-	kHea4sUCE51mA9VodVOG9zU+NCZvcmlHZi9g==
-X-Received: by 2002:a2e:be27:0:b0:2d2:a3bb:e319 with SMTP id z39-20020a2ebe27000000b002d2a3bbe319mr2635640ljq.1.1710080859889;
-        Sun, 10 Mar 2024 07:27:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG26ZUTeLIDVS+U9sEtvmM351nHSX87qp0NVfizPhX1OtyMsjzbhIyfvaLb3VdfByDR2MJbLJdrmwMeOSvf2E0=
-X-Received: by 2002:a2e:be27:0:b0:2d2:a3bb:e319 with SMTP id
- z39-20020a2ebe27000000b002d2a3bbe319mr2635633ljq.1.1710080859554; Sun, 10 Mar
- 2024 07:27:39 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=valentin-vidic.from.hr header.i=@valentin-vidic.from.hr header.b="v461m/9a"
+X-Virus-Scanned: Debian amavis at valentin-vidic.from.hr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=valentin-vidic.from.hr; s=2020; t=1710107210;
+	bh=tzsGVJ2OU/UC5/2pdyK8Q+myamsUQp42QmeXWRnzTdA=;
+	h=Date:From:To:Subject:From;
+	b=v461m/9a+KJQeQ0RShB1Gn3Od2gr/VrUt2zKL/dTgqQD+/+UhMm5X/nSqIT5FCru3
+	 uClVBHEB7Dfl3BsNc2y+gxmJgreZBFsOJj9LFwAM3fg5CegUDkU6Jw4KpKMgVPGb4G
+	 QS6ZcsV5pMRkRSA9VQazb58qS2fmtuD4gIY7qOk7ITFXbeHfKCiAkW/jMjNTgaYfDU
+	 fX+tcTCFv3uY9iueqSW8OMzef+vJ30eAm9n7jZocRKdj6bSv5cgR9niybnALf0RZUk
+	 vtgq29riusRxH3dUXZnu5W66W99iZt4t9jLUMHS+A06zZyPHBH3bTNf88m3TqyfIiz
+	 xnKw1QsAH5qGfjRMfLvF/e6mMw2DvfTP5uDDMCS6tG0SqiUrNCb6OpSGnZ0+GNZK2m
+	 wsLZ9QyiUs7uosD3KmYYnnpWRdqNakhLACf1+wH06NPqX2cJnWn9/ehaUadCgrcVqg
+	 MWoWNz0ctooKR259iXy4ROuICcj2vlW6VS4jSaJx8173D8Gi2iIKZj8WQV31Qm5sj5
+	 xPla9uMTAPLtbGYrLG/Q86bNLNaigJVU+nlQcdNTIy3WflLNH66lFpjBxEb1Zup1IX
+	 YqvZPcV7t4JBi2wYk94Hg4ppVfSeCTPk22lmlIIrt9mdTo+0n94uh2h35jJIQKHO7/
+	 QeF8muqZD1WnLfF7lqpILjJo=
+Received: by valentin-vidic.from.hr (Postfix, from userid 1000)
+	id 5D6742D276; Sun, 10 Mar 2024 22:46:50 +0100 (CET)
+Date: Sun, 10 Mar 2024 22:46:50 +0100
+From: Valentin =?utf-8?B?VmlkacSH?= <vvidic@valentin-vidic.from.hr>
+To: ocfs2-devel@oss.oracle.com, Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev
+Subject: ocfs2 mount error
+Message-ID: <Ze4qSvzGJDt5yxC3@valentin-vidic.from.hr>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240308161818.2388451-1-aahringo@redhat.com> <20240308161818.2388451-2-aahringo@redhat.com>
-In-Reply-To: <20240308161818.2388451-2-aahringo@redhat.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Sun, 10 Mar 2024 10:27:28 -0400
-Message-ID: <CAK-6q+h-RngJqJ6Rx2h4a0Qy1j+ZRvCn5E-3Qee7_P3pWXJonQ@mail.gmail.com>
-Subject: Re: [RFC v6.8-rc6 1/7] dlm: fix user space lock decision to copy lvb
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 Hi,
 
-On Fri, Mar 8, 2024 at 11:18=E2=80=AFAM Alexander Aring <aahringo@redhat.co=
-m> wrote:
->
-> This patch fixes the copy lvb decision in case of user space DLM lock
-> requests. Currently the granted mode and requested mode is the same when
-> evaluating the dlm_lvb_operations matrix. That reflects the diagonal of
-> the dlm_lvb_operations matrix. Luckely it will mostly return a non zero
-> result on its diagonal, but in case of requested mode PW or EX the
-> diagonal returns 0, depending on the granted mode before the user might
-> get an invalid lvb data that is marked as valid.
->
-> This patch will move the decision if the lvb area should be copied or
-> not to the enqueue callback functionality because the granted mode is
-> known there. It also removes any lkb reference in the user callback
-> result delivery functionality that is required for a future fix.
->
-> Fixes: 61bed0baa4db ("fs: dlm: use a non-static queue for callbacks")
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/dlm/ast.c          | 16 ++++++++++++++++
->  fs/dlm/dlm_internal.h |  1 +
->  fs/dlm/user.c         | 17 +++--------------
->  3 files changed, 20 insertions(+), 14 deletions(-)
->
-> diff --git a/fs/dlm/ast.c b/fs/dlm/ast.c
-> index 1f2f70a1b824..0582b6739b29 100644
-> --- a/fs/dlm/ast.c
-> +++ b/fs/dlm/ast.c
-> @@ -12,6 +12,7 @@
->  #include <trace/events/dlm.h>
->
->  #include "dlm_internal.h"
-> +#include "lvb_table.h"
->  #include "memory.h"
->  #include "lock.h"
->  #include "user.h"
-> @@ -42,6 +43,7 @@ int dlm_enqueue_lkb_callback(struct dlm_lkb *lkb, uint3=
-2_t flags, int mode,
->         struct dlm_ls *ls =3D lkb->lkb_resource->res_ls;
->         int rv =3D DLM_ENQUEUE_CALLBACK_SUCCESS;
->         struct dlm_callback *cb;
-> +       bool copy_lvb =3D false;
->         int prev_mode;
->
->         if (flags & DLM_CB_BAST) {
-> @@ -73,6 +75,19 @@ int dlm_enqueue_lkb_callback(struct dlm_lkb *lkb, uint=
-32_t flags, int mode,
->                                 goto out;
->                         }
->                 }
-> +
-> +               lkb->lkb_last_bast_time =3D ktime_get();
-> +               lkb->lkb_last_bast_mode =3D mode;
-> +       } else if (flags & DLM_CB_CAST) {
-> +               if (test_bit(DLM_DFL_USER_BIT, &lkb->lkb_dflags) && lkb->=
-lkb_last_cast) {
-> +                       prev_mode =3D lkb->lkb_last_cb->mode;
-> +
-> +                       if (!status && lkb->lkb_lksb->sb_lvbptr &&
-> +                           dlm_lvb_operations[prev_mode + 1][mode + 1])
-> +                               copy_lvb =3D true;
-> +               }
-> +
-> +               lkb->lkb_last_cast_time =3D ktime_get();
->         }
->
+I've started seeing the following mount error on recent kernels (6.7, 6.8)
+while the same script worked on older versions (6.1):
 
-still buggy because the first callback should be copy_lvb =3D true which
-isn't the case here but a later patch fixes that. However, I will fix
-it.
+2024-03-10T21:04:30,623900+00:00 ocfs2: Registered cluster interface user
+2024-03-10T21:04:30,627545+00:00 ocfs2: Unable to create the lockspace D6DCCE389FC84C8FB9E99ABE1D941825 (-17), because a ocfs2-tools program is running on this file system with the same name lockspace
+2024-03-10T21:04:30,630607+00:00 (mount.ocfs2,1577,0):ocfs2_dlm_init:3357 ERROR: status = -17
+2024-03-10T21:04:30,633153+00:00 (mount.ocfs2,1577,0):ocfs2_mount_volume:1791 ERROR: status = -17
+2024-03-10T21:04:30,634947+00:00 (mount.ocfs2,1577,0):ocfs2_fill_super:1176 ERROR: status = -17
 
-- Alex
+Script runs the commands in the following order:
 
+mkfs.ocfs2
+fsck.ocfs2
+mount.ocfs2
+
+fsck command tries to release the lockspace but it seems to be busy so
+it stays around and the mount command fails. Running dlm_tool leave
+manually removes it and after that the mount command works again. 
+
+A git bisect has led me to the following change:
+
+61bed0baa4dba17dd06cdfe20481a580718d6c7c fs: dlm: use a non-static queue for callbacks
+
+Could it be that some callback does not run correctly causing the lockspace
+to be busy? I have added some more debug info below including some logging of
+5 kref_get and 4 kref_put that could be related.
+
+# dlm_tool ls   
+dlm lockspaces
+name          D6DCCE389FC84C8FB9E99ABE1D941825
+id            0x3a105115
+flags         0x00000000 
+change        member 1 joined 1 remove 0 failed 0 seq 1,1
+members       1 
+
+# dlm_tool status D6DCCE389FC84C8FB9E99ABE1D941825
+cluster nodeid 1 quorate 1 ring seq 5 5
+daemon now 1831 fence_pid 0 
+node 1 M add 54 rem 0 fail 0 fence 0 at 0 0
+
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Resource 0000000020c29d80 Name (len=31) "S000000000000000000000200000000"
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Master Copy
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:LVB: 6f ec 98 7c e3 55 00 00 ef fb ff 7f fe ff ff ff 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:     df 11 59 d4 a4 7f 00 00 60 39 dc 7c e3 55 00 00 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Granted Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Conversion Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Waiting Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Resource 000000003cfd484e Name (len=17) ".5f5b44890bdfac21"
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Master Copy
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Granted Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Conversion Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Waiting Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Resource 00000000c8e96ac4 Name (len=31) "M0000000000000000000018fe4c9cda"
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Master Copy
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:LVB: 00 00 00 00 00 00 00 00 00 68 df 7c e3 55 00 00 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:     b0 01 6f d4 a4 7f 00 00 e0 46 9d 7c e3 55 00 00 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Granted Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Conversion Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Waiting Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Resource 000000004c006d70 Name (len=31) "M0000000000000000000019fe4c9cda"
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Master Copy
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:LVB: 00 00 00 00 00 00 00 00 00 7c df 7c e3 55 00 00 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:     b0 01 6f d4 a4 7f 00 00 e0 46 9d 7c e3 55 00 00 
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Granted Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Conversion Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825:Waiting Queue
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:rsb ptr nodeid first_lkid flags !root_list_empty !recover_list_empty recover_locks_count len
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:rsb 0000000020c29d80 0 0 0 0 0 0 31 str S000000000000000000000200000000
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:lvb 1 32 6f ec 98 7c e3 55 00 00 ef fb ff 7f fe ff ff ff df 11 59 d4 a4 7f 00 00 60 39 dc 7c e3 55 00 00
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:rsb 000000003cfd484e 0 0 0 0 0 0 17 str .5f5b44890bdfac21
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:rsb 00000000c8e96ac4 0 0 0 0 0 0 31 str M0000000000000000000018fe4c9cda
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:lvb 1 32 00 00 00 00 00 00 00 00 00 68 df 7c e3 55 00 00 b0 01 6f d4 a4 7f 00 00 e0 46 9d 7c e3 55 00 00
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:rsb 000000004c006d70 0 0 0 0 0 0 31 str M0000000000000000000019fe4c9cda
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_all:lvb 1 32 00 00 00 00 00 00 00 00 00 7c df 7c e3 55 00 00 b0 01 6f d4 a4 7f 00 00 e0 46 9d 7c e3 55 00 00
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_locks:id nodeid remid pid xid exflags flags sts grmode rqmode time_ms r_nodeid r_len r_name
+/sys/kernel/debug/dlm/D6DCCE389FC84C8FB9E99ABE1D941825_queued_asts:lkb_id lkb_flags mode flags sb_status sb_flags
+
+2024-03-10T21:04:29,431465+00:00 dlm: kref_get 1
+2024-03-10T21:04:29,432585+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:29,434951+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:29,436839+00:00 Call Trace:
+2024-03-10T21:04:29,437077+00:00  <TASK>
+2024-03-10T21:04:29,437308+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:29,437653+00:00  add_lkb+0x2f/0x300 [dlm]
+2024-03-10T21:04:29,438000+00:00  ? rsb_insert+0x85/0xd0 [dlm]
+2024-03-10T21:04:29,438378+00:00  _grant_lock+0x111/0x170 [dlm]
+2024-03-10T21:04:29,438756+00:00  do_request+0x71/0x90 [dlm]
+2024-03-10T21:04:29,439112+00:00  _request_lock+0x19b/0x270 [dlm]
+2024-03-10T21:04:29,439509+00:00  request_lock+0xc7/0x110 [dlm]
+2024-03-10T21:04:29,439887+00:00  dlm_user_request+0x10d/0x370 [dlm]
+2024-03-10T21:04:29,440304+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:29,440763+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:29,441161+00:00  ? __pfx_fake_astfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,441578+00:00  ? __pfx_fake_bastfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,442016+00:00  device_write+0x5f1/0x790 [dlm]
+2024-03-10T21:04:29,442413+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:29,442723+00:00  ? __x64_sys_fcntl+0x90/0xc0
+2024-03-10T21:04:29,443082+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:29,443389+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:29,443729+00:00  ? exc_page_fault+0x73/0x170
+2024-03-10T21:04:29,444086+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:29,453050+00:00 dlm: kref_get 1
+2024-03-10T21:04:29,453556+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:29,454373+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:29,455462+00:00 Call Trace:
+2024-03-10T21:04:29,455922+00:00  <TASK>
+2024-03-10T21:04:29,456345+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:29,456903+00:00  dlm_user_add_ast+0x1fc/0x300 [dlm]
+2024-03-10T21:04:29,457548+00:00  do_request+0x7b/0x90 [dlm]
+2024-03-10T21:04:29,458128+00:00  _request_lock+0x19b/0x270 [dlm]
+2024-03-10T21:04:29,458771+00:00  request_lock+0xc7/0x110 [dlm]
+2024-03-10T21:04:29,459375+00:00  dlm_user_request+0x10d/0x370 [dlm]
+2024-03-10T21:04:29,460021+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:29,460714+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:29,461363+00:00  ? __pfx_fake_astfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,462003+00:00  ? __pfx_fake_bastfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,462659+00:00  device_write+0x5f1/0x790 [dlm]
+2024-03-10T21:04:29,463268+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:29,463791+00:00  ? __x64_sys_fcntl+0x90/0xc0
+2024-03-10T21:04:29,464359+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:29,464891+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:29,465440+00:00  ? exc_page_fault+0x73/0x170
+2024-03-10T21:04:29,466005+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:29,475107+00:00 dlm: kref_get 1
+2024-03-10T21:04:29,475617+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:29,476460+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:29,477545+00:00 Call Trace:
+2024-03-10T21:04:29,478031+00:00  <TASK>
+2024-03-10T21:04:29,478494+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:29,479094+00:00  dlm_user_request+0x299/0x370 [dlm]
+2024-03-10T21:04:29,479787+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:29,480544+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:29,481195+00:00  ? __pfx_fake_astfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,481848+00:00  ? __pfx_fake_bastfn+0x10/0x10 [dlm]
+2024-03-10T21:04:29,482518+00:00  device_write+0x5f1/0x790 [dlm]
+2024-03-10T21:04:29,483140+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:29,483672+00:00  ? __x64_sys_fcntl+0x90/0xc0
+2024-03-10T21:04:29,484254+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:29,484785+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:29,485380+00:00  ? exc_page_fault+0x73/0x170
+2024-03-10T21:04:29,485954+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,416950+00:00 dlm: kref_get 1
+2024-03-10T21:04:30,417698+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,418547+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,419629+00:00 Call Trace:
+2024-03-10T21:04:30,420115+00:00  <TASK>
+2024-03-10T21:04:30,420566+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,421157+00:00  find_lkb+0x4e/0xd0 [dlm]
+2024-03-10T21:04:30,421758+00:00  dlm_user_unlock+0x6b/0x2f0 [dlm]
+2024-03-10T21:04:30,422422+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,423140+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,423785+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,424404+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,425057+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,425606+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,426268+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,426857+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,427415+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,427969+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,428534+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,429098+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,429657+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,430211+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,440429+00:00 dlm: kref_put 1
+2024-03-10T21:04:30,441102+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,441961+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,443065+00:00 Call Trace:
+2024-03-10T21:04:30,443571+00:00  <TASK>
+2024-03-10T21:04:30,444029+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,444618+00:00  _unlock_lock+0x73/0x110 [dlm]
+2024-03-10T21:04:30,445257+00:00  unlock_lock.constprop.0+0x55/0x90 [dlm]
+2024-03-10T21:04:30,445979+00:00  dlm_user_unlock+0x13b/0x2f0 [dlm]
+2024-03-10T21:04:30,446641+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,447345+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,447979+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,448593+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,449460+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,450394+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,451160+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,451773+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,452316+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,452894+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,453491+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,454053+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,454621+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,455175+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,464305+00:00 dlm: kref_put 1
+2024-03-10T21:04:30,464804+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,465649+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,466737+00:00 Call Trace:
+2024-03-10T21:04:30,467220+00:00  <TASK>
+2024-03-10T21:04:30,467684+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,468276+00:00  _unlock_lock+0x9e/0x110 [dlm]
+2024-03-10T21:04:30,468912+00:00  unlock_lock.constprop.0+0x55/0x90 [dlm]
+2024-03-10T21:04:30,469607+00:00  dlm_user_unlock+0x13b/0x2f0 [dlm]
+2024-03-10T21:04:30,470261+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,470961+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,471611+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,472221+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,472867+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,473397+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,474055+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,474633+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,475179+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,475759+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,476322+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,476883+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,477442+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,478000+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,486964+00:00 dlm: kref_get 1
+2024-03-10T21:04:30,487460+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,488304+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,489384+00:00 Call Trace:
+2024-03-10T21:04:30,489869+00:00  <TASK>
+2024-03-10T21:04:30,490320+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,490918+00:00  dlm_user_add_ast+0x1fc/0x300 [dlm]
+2024-03-10T21:04:30,491609+00:00  _unlock_lock+0xbe/0x110 [dlm]
+2024-03-10T21:04:30,492231+00:00  unlock_lock.constprop.0+0x55/0x90 [dlm]
+2024-03-10T21:04:30,492914+00:00  dlm_user_unlock+0x13b/0x2f0 [dlm]
+2024-03-10T21:04:30,493553+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,494238+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,494869+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,495479+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,496133+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,496660+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,497318+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,497898+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,498428+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,498978+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,499532+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,500086+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,500639+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,501192+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,510147+00:00 dlm: kref_put 1
+2024-03-10T21:04:30,510651+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,511482+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,512564+00:00 Call Trace:
+2024-03-10T21:04:30,513045+00:00  <TASK>
+2024-03-10T21:04:30,513496+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,514081+00:00  __put_lkb+0x30/0x100 [dlm]
+2024-03-10T21:04:30,514683+00:00  dlm_user_add_ast+0x1cc/0x300 [dlm]
+2024-03-10T21:04:30,515337+00:00  _unlock_lock+0xbe/0x110 [dlm]
+2024-03-10T21:04:30,515953+00:00  unlock_lock.constprop.0+0x55/0x90 [dlm]
+2024-03-10T21:04:30,516633+00:00  dlm_user_unlock+0x13b/0x2f0 [dlm]
+2024-03-10T21:04:30,517265+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,517957+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,518586+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,519199+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,519840+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,520365+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,521021+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,521586+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,522100+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,522654+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,523212+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,523779+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,524333+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,524888+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+2024-03-10T21:04:30,533818+00:00 dlm: kref_put 1
+2024-03-10T21:04:30,534317+00:00 CPU: 0 PID: 1562 Comm: fsck.ocfs2 Not tainted 6.8.0-rc7+ #80
+2024-03-10T21:04:30,535151+00:00 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+2024-03-10T21:04:30,536247+00:00 Call Trace:
+2024-03-10T21:04:30,536729+00:00  <TASK>
+2024-03-10T21:04:30,537179+00:00  dump_stack_lvl+0x43/0x60
+2024-03-10T21:04:30,537755+00:00  __put_lkb+0x30/0x100 [dlm]
+2024-03-10T21:04:30,538355+00:00  dlm_user_unlock+0x213/0x2f0 [dlm]
+2024-03-10T21:04:30,539003+00:00  ? __kmalloc_node_track_caller+0x1a9/0x420
+2024-03-10T21:04:30,539698+00:00  ? device_write+0x44/0x790 [dlm]
+2024-03-10T21:04:30,540319+00:00  device_write+0x5bd/0x790 [dlm]
+2024-03-10T21:04:30,540927+00:00  ? security_file_permission+0x32/0x50
+2024-03-10T21:04:30,541569+00:00  vfs_write+0xec/0x470
+2024-03-10T21:04:30,542093+00:00  ? syscall_exit_to_user_mode+0x81/0x220
+2024-03-10T21:04:30,542759+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,543327+00:00  ksys_write+0x6b/0xf0
+2024-03-10T21:04:30,543851+00:00  do_syscall_64+0x87/0x1a0
+2024-03-10T21:04:30,544395+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,544949+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,545500+00:00  ? do_syscall_64+0x93/0x1a0
+2024-03-10T21:04:30,546059+00:00  ? __irq_exit_rcu+0x3b/0xb0
+2024-03-10T21:04:30,546621+00:00  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+2024-03-10T21:04:30,547274+00:00 RIP: 0033:0x7fa4d45f0ba0
+
+-- 
+Valentin
