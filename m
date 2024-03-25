@@ -1,63 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3333F5A7B5;
-	Mon, 18 Mar 2024 22:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905D55475D
+	for <gfs2@lists.linux.dev>; Mon, 25 Mar 2024 12:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710802043; cv=none; b=uQCXD7K873Vi/HGg68Uz62c0WQsPm0NvZgI4Aq30ERxb6pmWXyEK59g2q9BCV1IVGUSeesAej7FE+0whDrwoIwQe+FWvzKImEOEtoo9RH4dv8EFzGJkLsGiU6+/WaMR9XylPfrIVkc1MMrxwU0QSySTeBjwPYBP4sNovVNjav+Y=
+	t=1711368632; cv=none; b=dVkusw131Npz5xZ1DPJ8WMdPoUVOGrElEt3i0zYMHPB6ZFupxmPB0/2/SEujsJG76KQz6HzYKHzg72n9VRr7HkUq7At9jnFTQkIclAu2ugz/LLh9Z7Z7Ir8e6KMdS80A2GNCP6A6TcbHU+g8x5UwGQIe8H6vAD875MQWVcd5JGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710802043; c=relaxed/simple;
-	bh=S29ZDlq5zsqiy67Ywa547JogWhdz/uzlq4uE8L+j8Sk=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Jc98vCRk9gkcjl+p10OcPpd6FZ6NQICWpmevqmXbXsaYGPvlR2drLN/riPDBB2w+7SzmQG6LcMLEoHdevJ+0D/uO9vbZXDQjCnhKPQqXxuJYKXmaozYRf5kafSHnXG9HquGSiq53lxdIJRH2PWBHUXm60GBk/TGHldVO0I5EsfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIeJlOIO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711368632; c=relaxed/simple;
+	bh=K71KdlxYZsiIMFj5o/hNwVsIU+3ZrPbx4L7G25LkjLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q4xcT73gLTNDERKbQhqozGoqUdI3Nx1EOz0tI8ysy4ecdgTB4RMWpWiORGrYFGgjxumoH5qfZ4RvmDHtJipQmZNZOW8fh7zpPxWjDyNyCAvba8+pY8tQFrYLgHRlofjoWaIHCrsutFXc5+KOVlUDYWjVrK08VtGn/dbKomQ8pXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AgBlIYtW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIeJlOIO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 11DACC43609;
-	Mon, 18 Mar 2024 22:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710802043;
-	bh=S29ZDlq5zsqiy67Ywa547JogWhdz/uzlq4uE8L+j8Sk=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=IIeJlOIOlxo6fFxMNj03LCzSjCcwtt3yc1H3kByGqDbr7aWXOi+AeePSwTflrrYU8
-	 /IDXQD1ydfTMO7VEUAiZcLhyMS4yVdIrZcCQ4mGSkJM3fRLnvGTohmNmKYytm0H2I6
-	 ORcBX5zAlP4P+TwHPz/kCY4QT3gTwahncsH1gMpWIbdd7S/Spl+1x/E3QDMZrApk7d
-	 GGKGL7Ydo5J+IzQYy3J810K+MI2YcbQ7pi9j/zuWTL/+g1AnudobGQTATQMxyweV+r
-	 HTn1ce8Ox7R6fyMfU/MhuV3hen2gKXGIDgRlcyuRrGES5yGrj5oMxiCrkNMo8LAmGh
-	 Bar7dEktyHKPA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0ADC7D84BB3;
-	Mon, 18 Mar 2024 22:47:23 +0000 (UTC)
-Subject: Re: [GIT PULL v2] dlm fixes for 6.9
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <ZfixMxRWFNmkf-Ta@redhat.com>
-References: <ZfixMxRWFNmkf-Ta@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZfixMxRWFNmkf-Ta@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.9
-X-PR-Tracked-Commit-Id: c53309b912fdd652eb3c2de44626aac4b0fc9bf9
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b3603fcb79b1036acae10602bffc4855a4b9af80
-Message-Id: <171080204304.23091.3377206822949979856.pr-tracker-bot@kernel.org>
-Date: Mon, 18 Mar 2024 22:47:23 +0000
-To: David Teigland <teigland@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AgBlIYtW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711368629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LN0ZWoyXU4SKqZ/oMmr2x3t+IqeauNxfkUGdiuWye84=;
+	b=AgBlIYtW1cNvBqGU96+zAnfKPXa54gwvV+7+kqgUWNLpaogFawZ6/xlMnGd0nNjbjG8U57
+	zGk5UcaV0/84zY9Z/TH3/P9y5OCajz5juLdLprWYAmGS4klY+ZmMLKTMlbSt4SJ5bWiOy5
+	DkRLs+H2LBDRhXEyV11aSP1Prlms1JI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-1HWGQpVFOIWVJFIIuZ5MEQ-1; Mon,
+ 25 Mar 2024 08:10:26 -0400
+X-MC-Unique: 1HWGQpVFOIWVJFIIuZ5MEQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C156A1C07F39;
+	Mon, 25 Mar 2024 12:10:25 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 077E4492BF5;
+	Mon, 25 Mar 2024 12:10:24 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 fix
+Date: Mon, 25 Mar 2024 13:10:16 +0100
+Message-ID: <20240325121020.337540-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-The pull request you sent on Mon, 18 Mar 2024 16:25:07 -0500:
+Hello Linus,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.9
+please consider pulling the following gfs2 fix.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b3603fcb79b1036acae10602bffc4855a4b9af80
+Thank you very much,
+Andreas
 
-Thank you!
+The following changes since commit e8f897f4afef0031fe618a8e94127a0934896aba:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+  Linux 6.8 (2024-03-10 13:38:09 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.8-fix
+
+for you to fetch changes up to c95346ac918c5badf51b9a7ac58a26d3bd5bb224:
+
+  gfs2: Fix invalid metadata access in punch_hole (2024-03-11 17:11:18 +0100)
+
+----------------------------------------------------------------
+gfs2 fix
+
+- Fix boundary check in punch_hole
+
+----------------------------------------------------------------
+Andrew Price (1):
+      gfs2: Fix invalid metadata access in punch_hole
+
+ fs/gfs2/bmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
