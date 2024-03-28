@@ -1,51 +1,51 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE7312EBC4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7053612F59C
 	for <gfs2@lists.linux.dev>; Thu, 28 Mar 2024 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711640928; cv=none; b=qNBENv/xOFbnOh4oLMhkLhZ54DlGiDmxDmZ9XyXm/20fgr5KBgD4YW3ush4+SUkqni6R8BE/re/BTHeZ2bfSNOEuwrfGppuxudcy0fJz2uBx8X49xo5gv6a+/i2yOzzQwMOu3HunsNAavEYU12LlGD0pB1G+qgIZX+FNSswj5Gw=
+	t=1711640928; cv=none; b=hbGBCcYacENH21mdCkqe8AIgi0y76yzEDj8Y+j5HGJiHPPaIpU8+B5InsC7kJe2Cn/qZw64TaxSUFCHQVSNc7x0tNo45SL1ThVNBngfyPTwxVS800ymazVLtzIXsoX0ImJfhWbt76Ht7kalnnrNzL8RemdAGMi2THuvxG2nadiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711640928; c=relaxed/simple;
-	bh=neDD8No3sL970oU8Fk0VGWc2GNcvO9HkYXFY4U0Jxps=;
+	bh=46WpczucCyTh6Cv7gOTVvLofifa/zlW1irs5OZpdzZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=itas/CnFRkoYa99fUsYNOKGesdbLbJUWS6fDPaAudwnjaPz+ZF/Lluz8s890Tlfn4On90mRpPLsW1pI+//bKMetayGHFQ0guD7gOSmi8QF9n8RQGBX+BQOiBNF2/3wPIc/ON7Ec12ZGNNxu9anQffOXbi5W/nfdxNJWTKNQ6TWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V2GJcpyt; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=Pz3KxC6sTMmJcRxT0Un2hKhaVLXhJNIt6r6htAaqUW85xIwAURaCOcz8GkDvSjpyuPEDZH1HAY05nSxrEP3kVlpvNHZJqCjagwsaUMFfajDv8cZBieg4P6Mh2truH2uYJL7RrgCkV8EZRlr1ZHmhaeZMFMJJit3X7QzoIDkP5LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MQLr37L2; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V2GJcpyt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MQLr37L2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1711640925;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Uf3BQrvI2fKuFaVX5+VwPeDPPHlM6FDJdsLPd/cUEVI=;
-	b=V2GJcpytwpcfG4Qd+lYPAM2MRIeu7ICjzXgvZX87efW7WC5CEfwwAFaTCnRuVvJnVY3jKz
-	DpSeP2W8kXCjt21swAOQigur4TPCrzTO9bEymK7PwKHM9XR7h5bv82q5pE4DSwNwtvuCgz
-	dZsH56heFUifN9/xiTGU7EVqlcSLAEI=
+	bh=BBo/bd1gq0fWi2h4WTrwZco5Gw5V48aLvXeNl1yOcyc=;
+	b=MQLr37L2G8FHFAr6VUpuWdpblFczoVlzPYfWw5TXdrKgqMg19Gj1Jb8Xv/zrdhQ1ebXHap
+	/GuNgIyFnmspYk3lv015qpY6JXyODI06tEYfkHXGgiRGm2C8hEOqCqpjgCigieXxEduRYo
+	8jv5y7mly7lxJEbwVnlsawy+3qXOOV4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-Kw_c-MtoOZiD9L2BnU-crg-1; Thu, 28 Mar 2024 11:48:43 -0400
-X-MC-Unique: Kw_c-MtoOZiD9L2BnU-crg-1
+ us-mta-563-WbHJKXfMMJOMe5JZXR07pg-1; Thu, 28 Mar 2024 11:48:44 -0400
+X-MC-Unique: WbHJKXfMMJOMe5JZXR07pg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A0B75800267
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BBE25800269
 	for <gfs2@lists.linux.dev>; Thu, 28 Mar 2024 15:48:43 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 98C00C04125;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B3E91C04122;
 	Thu, 28 Mar 2024 15:48:43 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev
-Subject: [PATCH v6.9-rc1 04/10] dlm: put lkbs instead of force free
-Date: Thu, 28 Mar 2024 11:48:36 -0400
-Message-ID: <20240328154842.1099288-4-aahringo@redhat.com>
+Subject: [PATCH v6.9-rc1 06/10] dlm: remove callback queue debugfs functionality
+Date: Thu, 28 Mar 2024 11:48:38 -0400
+Message-ID: <20240328154842.1099288-6-aahringo@redhat.com>
 In-Reply-To: <20240328154842.1099288-1-aahringo@redhat.com>
 References: <20240328154842.1099288-1-aahringo@redhat.com>
 Precedence: bulk
@@ -60,113 +60,176 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch converts a force free of the lkb idr and switch to use the
-lkbs put functionality. If there are still references hold due the lkb
-programming logic and its state it will be drop before. Instead of force
-freeing the lkbs of the idr using the refcounters makes sure we using
-the reference counters correctly. If we do that, then no rsb should be
-left on the lockspace keep hash bucket which is an additonally check
-added to this patch. All rsbs on the toss list should have a reference
-counter of 1.
+This patch removes the whole functionality to dump the pending lkb
+callbacks. We are preparing to remove any relation from the lkb and its
+callback because we cannot held any lkb reference when the callback
+occurs. As result we will drop the per lkb callback queue.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c      |  2 +-
- fs/dlm/lock.h      |  1 +
- fs/dlm/lockspace.c | 33 +++++++++++++++++++++++----------
- 3 files changed, 25 insertions(+), 11 deletions(-)
+ fs/dlm/debug_fs.c | 96 -----------------------------------------------
+ 1 file changed, 96 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index fd752dd03896..a39c2c49bff8 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1368,7 +1368,7 @@ static void add_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb, int status)
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 4fa11d9ddbb6..289d959c7700 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -366,52 +366,6 @@ static void print_format4(struct dlm_rsb *r, struct seq_file *s)
+ 	unlock_rsb(r);
+ }
+ 
+-static void print_format5_lock(struct seq_file *s, struct dlm_lkb *lkb)
+-{
+-	struct dlm_callback *cb;
+-
+-	/* lkb_id lkb_flags mode flags sb_status sb_flags */
+-
+-	spin_lock(&lkb->lkb_cb_lock);
+-	list_for_each_entry(cb, &lkb->lkb_callbacks, list) {
+-		seq_printf(s, "%x %x %d %x %d %x\n",
+-			   lkb->lkb_id,
+-			   dlm_iflags_val(lkb),
+-			   cb->mode,
+-			   cb->flags,
+-			   cb->sb_status,
+-			   cb->sb_flags);
+-	}
+-	spin_unlock(&lkb->lkb_cb_lock);
+-}
+-
+-static void print_format5(struct dlm_rsb *r, struct seq_file *s)
+-{
+-	struct dlm_lkb *lkb;
+-
+-	lock_rsb(r);
+-
+-	list_for_each_entry(lkb, &r->res_grantqueue, lkb_statequeue) {
+-		print_format5_lock(s, lkb);
+-		if (seq_has_overflowed(s))
+-			goto out;
+-	}
+-
+-	list_for_each_entry(lkb, &r->res_convertqueue, lkb_statequeue) {
+-		print_format5_lock(s, lkb);
+-		if (seq_has_overflowed(s))
+-			goto out;
+-	}
+-
+-	list_for_each_entry(lkb, &r->res_waitqueue, lkb_statequeue) {
+-		print_format5_lock(s, lkb);
+-		if (seq_has_overflowed(s))
+-			goto out;
+-	}
+- out:
+-	unlock_rsb(r);
+-}
+-
+ struct rsbtbl_iter {
+ 	struct dlm_rsb *rsb;
+ 	unsigned bucket;
+@@ -455,13 +409,6 @@ static int table_seq_show(struct seq_file *seq, void *iter_ptr)
+ 		}
+ 		print_format4(ri->rsb, seq);
+ 		break;
+-	case 5:
+-		if (ri->header) {
+-			seq_puts(seq, "lkb_id lkb_flags mode flags sb_status sb_flags\n");
+-			ri->header = 0;
+-		}
+-		print_format5(ri->rsb, seq);
+-		break;
  	}
- }
  
--static void del_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+void del_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	return 0;
+@@ -471,7 +418,6 @@ static const struct seq_operations format1_seq_ops;
+ static const struct seq_operations format2_seq_ops;
+ static const struct seq_operations format3_seq_ops;
+ static const struct seq_operations format4_seq_ops;
+-static const struct seq_operations format5_seq_ops;
+ 
+ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
  {
- 	lkb->lkb_status = 0;
- 	list_del(&lkb->lkb_statequeue);
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index b54e2cbbe6e2..853c3d3dc49d 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -60,6 +60,7 @@ int dlm_debug_add_lkb(struct dlm_ls *ls, uint32_t lkb_id, char *name, int len,
- 		      int lkb_nodeid, unsigned int lkb_flags, int lkb_status);
- int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
- 				 int mstype, int to_nodeid);
-+void del_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb);
+@@ -503,8 +449,6 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
+ 		ri->format = 3;
+ 	if (seq->op == &format4_seq_ops)
+ 		ri->format = 4;
+-	if (seq->op == &format5_seq_ops)
+-		ri->format = 5;
  
- static inline int is_master(struct dlm_rsb *r)
+ 	tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
+ 
+@@ -659,18 +603,10 @@ static const struct seq_operations format4_seq_ops = {
+ 	.show  = table_seq_show,
+ };
+ 
+-static const struct seq_operations format5_seq_ops = {
+-	.start = table_seq_start,
+-	.next  = table_seq_next,
+-	.stop  = table_seq_stop,
+-	.show  = table_seq_show,
+-};
+-
+ static const struct file_operations format1_fops;
+ static const struct file_operations format2_fops;
+ static const struct file_operations format3_fops;
+ static const struct file_operations format4_fops;
+-static const struct file_operations format5_fops;
+ 
+ static int table_open1(struct inode *inode, struct file *file)
  {
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 0455dddb0797..0f9d7b498602 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -737,14 +737,30 @@ static int lkb_idr_is_any(int id, void *p, void *data)
- 	return 1;
- }
- 
--static int lkb_idr_free(int id, void *p, void *data)
-+/*
-+ * No locking required, lockspace usage should be synchronized
-+ * to have any activity anymore.
-+ */
-+static int lkb_idr_put(int id, void *p, void *data)
- {
- 	struct dlm_lkb *lkb = p;
- 
--	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
--		dlm_free_lvb(lkb->lkb_lvbptr);
-+	if (lkb->lkb_status)
-+		del_lkb(lkb->lkb_resource, lkb);
- 
--	dlm_free_lkb(lkb);
-+	/*
-+	 * Forcibly reset wait_count and associated refcount. The
-+	 * wait_count will almost always be 1, but in case of an
-+	 * overlapping unlock/cancel it could be 2: see where
-+	 * add_to_waiters() finds the lkb is already on the waiters
-+	 * list and does lkb_wait_count++; hold_lkb().
-+	 */
-+	while (lkb->lkb_wait_count) {
-+		lkb->lkb_wait_count--;
-+		dlm_put_lkb(lkb);
-+	}
-+
-+	WARN_ON_ONCE(!dlm_put_lkb(lkb));
+@@ -757,20 +693,6 @@ static int table_open4(struct inode *inode, struct file *file)
  	return 0;
  }
  
-@@ -826,7 +842,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 	 * Free all lkb's in idr
- 	 */
+-static int table_open5(struct inode *inode, struct file *file)
+-{
+-	struct seq_file *seq;
+-	int ret;
+-
+-	ret = seq_open(file, &format5_seq_ops);
+-	if (ret)
+-		return ret;
+-
+-	seq = file->private_data;
+-	seq->private = inode->i_private; /* the dlm_ls */
+-	return 0;
+-}
+-
+ static const struct file_operations format1_fops = {
+ 	.owner   = THIS_MODULE,
+ 	.open    = table_open1,
+@@ -804,14 +726,6 @@ static const struct file_operations format4_fops = {
+ 	.release = seq_release
+ };
  
--	idr_for_each(&ls->ls_lkbidr, lkb_idr_free, ls);
-+	idr_for_each(&ls->ls_lkbidr, lkb_idr_put, ls);
- 	idr_destroy(&ls->ls_lkbidr);
+-static const struct file_operations format5_fops = {
+-	.owner   = THIS_MODULE,
+-	.open    = table_open5,
+-	.read    = seq_read,
+-	.llseek  = seq_lseek,
+-	.release = seq_release
+-};
+-
+ /*
+  * dump lkb's on the ls_waiters list
+  */
+@@ -1021,16 +935,6 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 							  dlm_root,
+ 							  ls,
+ 							  &waiters_fops);
+-
+-	/* format 5 */
+-
+-	snprintf(name, sizeof(name), "%s_queued_asts", ls->ls_name);
+-
+-	ls->ls_debug_queued_asts_dentry = debugfs_create_file(name,
+-							      0644,
+-							      dlm_root,
+-							      ls,
+-							      &format5_fops);
+ }
  
- 	/*
-@@ -834,15 +850,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 	 */
- 
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		while ((n = rb_first(&ls->ls_rsbtbl[i].keep))) {
--			rsb = rb_entry(n, struct dlm_rsb, res_hashnode);
--			rb_erase(n, &ls->ls_rsbtbl[i].keep);
--			dlm_free_rsb(rsb);
--		}
-+		WARN_ON_ONCE(!RB_EMPTY_ROOT(&ls->ls_rsbtbl[i].keep));
- 
- 		while ((n = rb_first(&ls->ls_rsbtbl[i].toss))) {
- 			rsb = rb_entry(n, struct dlm_rsb, res_hashnode);
- 			rb_erase(n, &ls->ls_rsbtbl[i].toss);
-+			WARN_ON_ONCE(kref_read(&rsb->res_ref) != 1);
- 			dlm_free_rsb(rsb);
- 		}
- 	}
+ void __init dlm_register_debugfs(void)
 -- 
 2.43.0
 
