@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071B515B57E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CD215B57B
 	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712085504; cv=none; b=Ef3QEFhcwYXZHDMHlDuzzJ8c2iFDR3yJCoLYUYPTCd4geHygeTtF/HKobdjLwSD0nNAvgHaXeX7uExb/JjIxyU05xoE4fbI4LH8KEd4SfjUqsuDKkeSvzE54+kDt0Iu5+soaF6++StVqdVXaLzlw59wPL0lboET3kmylumoNRHQ=
+	t=1712085504; cv=none; b=XGJ/7FUbpIPuMZFwiVPIgw9og4Z/SVG4hwaomwk6nKt9rWNEqYG17yot9NQ6cCh5MjDdxVlylJuFfph0nM7e1UhILKYVYoHT6lgz1j9OJ63MFwLHXeIUQrfayvA8ewwB1xLuwoJkPG0XduSE17jdsKhuzfmnrTpb3ewEuYpAFXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712085504; c=relaxed/simple;
-	bh=oJvVA6HGbKfSaua+WIQWMUH9JsrF04dhwipXhzXBoPw=;
+	bh=2U1QN6zOo17ICOsNv0BdBUyrkkhlvDduX1lFEc6iKUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IXbeIka1y/ulYQPLdKxxOJ+BWpE6oY/60KUabIhnk0+KSL49ya/C4I/K6UKOZUPDT1qHGJQjgRjrekLLftA7Vm3kQ0t4wgGG0Wc4gNN/KUKMPXHcSbDp61Rkc1c0B6r1C8XwROAB5/bz2Xh6VHmOoZ/7jtzU03hVd9yRJvmKUp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wh1C6Ztk; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=FO50NT+nxVvfFSBR6favmPOk+ZnHAvmV+xVpzN5xGC7gyow5sYYkFY7L1q75PHYo6dM85FI5FlFdCSuje2lG32HpuHamnZRLtQyBWiJAp7sBpDHs6w8NYVW5oiCHEBaKUuqITaJt27VHJbic+sNTP1GsmCVltLIj42uyYOCEpoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ej020tst; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wh1C6Ztk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ej020tst"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712085500;
+	s=mimecast20190719; t=1712085501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UoVdnoS/q27nBGmDYKyphJiM8FFgLrCOEdOEk2rNidM=;
-	b=Wh1C6ZtktaYPiOZvMKN2aLRBJz443Cxqwzpl4m3Bwgy4yTAVOX3aKtiR2om4PFmQzAzFUu
-	OsBLMjPN9cPZYg2nNSCdzZJv0iKcGN2MjYh4RLjWQEPmve44iqG7j+SDuY2+gx86HbYs6e
-	Ja12Bu78l2h1Q+kNXlcEEqAY9YyDdSE=
+	bh=FS2f4mgZsHbzo9qDe3j80t4rjcsETjmiaAttXsdBIcc=;
+	b=Ej020tstHRItk2poOCYEN3IRbSBUMeUYVSl6YGoijdTc+DkiqkpekIcSJp9og3lneTMOaH
+	m4lC/h/F9vycSNYsPjEi38Nf1Z7aiQ5BLQymeB2hGOXyw+2t7NqqByMH7tMAmJ3/j3fcxf
+	uY7cE99hfl3y/js7K0RHnxkVh+EANyo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-0PBYlbYFPZWvhvCgSL6ymQ-1; Tue, 02 Apr 2024 15:18:19 -0400
-X-MC-Unique: 0PBYlbYFPZWvhvCgSL6ymQ-1
+ us-mta-395-8lL9yPevOuKTiwBbpZ6DOQ-1; Tue, 02 Apr 2024 15:18:19 -0400
+X-MC-Unique: 8lL9yPevOuKTiwBbpZ6DOQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B6B06101A53A
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E352185A782
 	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id AD38B40C6CC2;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 95E6240C6DAE;
 	Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv4 dlm/next 11/15] dlm: make requestqueue handling non sleepable
-Date: Tue,  2 Apr 2024 15:18:06 -0400
-Message-ID: <20240402191810.1932939-12-aahringo@redhat.com>
+Subject: [PATCHv4 dlm/next 08/15] dlm: drop holding waiters mutex in waiters recovery
+Date: Tue,  2 Apr 2024 15:18:03 -0400
+Message-ID: <20240402191810.1932939-9-aahringo@redhat.com>
 In-Reply-To: <20240402191810.1932939-1-aahringo@redhat.com>
 References: <20240402191810.1932939-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,216 +61,159 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch removes the ls_requestqueue_wait and convert the
-ls_requestqueue_mutex to a rw lock. Instead of calling wait_event() in
-dlm processing which waits until all messages are processed and allow
-new message processing after recovering is done, this patch is using a
-bitflag to signal when a message should be saved for future or not. When
-recovery processes all saved messages we will clear this bit again and
-allow new messages to processed directly.
+This patch drops to hold the ls_waiters_mutex in
+dlm_recover_waiters_pre(). The dlm_recover_waiters_pre() function is
+only being called when recovery handling is being done for the specific
+lockspace. During this time there can't be new lock requests initiated
+or dlm messages being processed that manipulates the lockspace waiters
+list.
+
+Only debugfs can access the lockspace waiters list when
+dlm_recover_waiters_pre() may manipulates it. This is not possible
+anymore because debugfs will hold the recovery lock when it's acccessing
+the waiters list.
+
+A check was introduced in remove_from_waiters_ms() for local dlm
+messaging to check if really the lockspace is stopped and no new lock
+requests can be initiated.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dlm_internal.h |  5 ++---
- fs/dlm/lock.c         | 16 ++++++++++++++--
- fs/dlm/lockspace.c    |  4 +---
- fs/dlm/member.c       |  5 +++++
- fs/dlm/requestqueue.c | 41 ++++++++---------------------------------
- 5 files changed, 30 insertions(+), 41 deletions(-)
+ fs/dlm/debug_fs.c | 13 +++++++++++++
+ fs/dlm/lock.c     | 17 +++++++++--------
+ fs/dlm/lock.h     |  1 +
+ 3 files changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 9f98a815f935..61820b8c47a7 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -655,9 +655,7 @@ struct dlm_ls {
- 	struct rw_semaphore	ls_in_recovery;	/* block local requests */
- 	struct rw_semaphore	ls_recv_active;	/* block dlm_recv */
- 	struct list_head	ls_requestqueue;/* queue remote requests */
--	atomic_t		ls_requestqueue_cnt;
--	wait_queue_head_t	ls_requestqueue_wait;
--	struct mutex		ls_requestqueue_mutex;
-+	rwlock_t		ls_requestqueue_lock;
- 	struct dlm_rcom		*ls_recover_buf;
- 	int			ls_recover_nodeid; /* for debugging */
- 	unsigned int		ls_recover_locks_in; /* for log info */
-@@ -717,6 +715,7 @@ struct dlm_ls {
- #define LSFL_UEVENT_WAIT	7
- #define LSFL_CB_DELAY		9
- #define LSFL_NODIR		10
-+#define LSFL_RECV_MSG_BLOCKED	11
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 19cdedd56629..c238a9308323 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -737,6 +737,12 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ 	size_t len = DLM_DEBUG_BUF_LEN, pos = 0, ret, rv;
  
- #define DLM_PROC_FLAGS_CLOSING 1
- #define DLM_PROC_FLAGS_COMPAT  2
+ 	mutex_lock(&debug_buf_lock);
++	ret = dlm_lock_recovery_try(ls);
++	if (!ret) {
++		rv = -EAGAIN;
++		goto out;
++	}
++
+ 	mutex_lock(&ls->ls_waiters_mutex);
+ 	memset(debug_buf, 0, sizeof(debug_buf));
+ 
+@@ -749,8 +755,10 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ 		pos += ret;
+ 	}
+ 	mutex_unlock(&ls->ls_waiters_mutex);
++	dlm_unlock_recovery(ls);
+ 
+ 	rv = simple_read_from_buffer(userbuf, count, ppos, debug_buf, pos);
++out:
+ 	mutex_unlock(&debug_buf_lock);
+ 	return rv;
+ }
+@@ -772,7 +780,12 @@ static ssize_t waiters_write(struct file *file, const char __user *user_buf,
+ 	if (n != 3)
+ 		return -EINVAL;
+ 
++	error = dlm_lock_recovery_try(ls);
++	if (!error)
++		return -EAGAIN;
++
+ 	error = dlm_debug_add_lkb_to_waiters(ls, lkb_id, mstype, to_nodeid);
++	dlm_unlock_recovery(ls);
+ 	if (error)
+ 		return error;
+ 
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 7b309231eebd..98d9c5a4be00 100644
+index 43a2f4d0af53..395b904a82f4 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -4752,20 +4752,32 @@ static void _receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- static void dlm_receive_message(struct dlm_ls *ls, const struct dlm_message *ms,
- 				int nodeid)
+@@ -201,7 +201,7 @@ void dlm_dump_rsb(struct dlm_rsb *r)
+ 
+ /* Threads cannot use the lockspace while it's being recovered */
+ 
+-static inline void dlm_lock_recovery(struct dlm_ls *ls)
++void dlm_lock_recovery(struct dlm_ls *ls)
  {
--	if (dlm_locking_stopped(ls)) {
-+try_again:
-+	read_lock(&ls->ls_requestqueue_lock);
-+	if (test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
- 		/* If we were a member of this lockspace, left, and rejoined,
- 		   other nodes may still be sending us messages from the
- 		   lockspace generation before we left. */
- 		if (WARN_ON_ONCE(!ls->ls_generation)) {
-+			read_unlock(&ls->ls_requestqueue_lock);
- 			log_limit(ls, "receive %d from %d ignore old gen",
- 				  le32_to_cpu(ms->m_type), nodeid);
- 			return;
- 		}
- 
-+		read_unlock(&ls->ls_requestqueue_lock);
-+		write_lock(&ls->ls_requestqueue_lock);
-+		/* recheck because we hold writelock now */
-+		if (!test_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags)) {
-+			write_unlock_bh(&ls->ls_requestqueue_lock);
-+			goto try_again;
-+		}
-+
- 		dlm_add_requestqueue(ls, nodeid, ms);
-+		write_unlock(&ls->ls_requestqueue_lock);
- 	} else {
--		dlm_wait_requestqueue(ls);
- 		_receive_message(ls, ms, 0);
-+		read_unlock(&ls->ls_requestqueue_lock);
- 	}
+ 	down_read(&ls->ls_in_recovery);
+ }
+@@ -1556,7 +1556,11 @@ static int remove_from_waiters(struct dlm_lkb *lkb, int mstype)
  }
  
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 945139805605..757e473bc619 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -554,9 +554,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	init_rwsem(&ls->ls_in_recovery);
- 	init_rwsem(&ls->ls_recv_active);
- 	INIT_LIST_HEAD(&ls->ls_requestqueue);
--	atomic_set(&ls->ls_requestqueue_cnt, 0);
--	init_waitqueue_head(&ls->ls_requestqueue_wait);
--	mutex_init(&ls->ls_requestqueue_mutex);
-+	rwlock_init(&ls->ls_requestqueue_lock);
- 	spin_lock_init(&ls->ls_clear_proc_locks);
+ /* Handles situations where we might be processing a "fake" or "local" reply in
+-   which we can't try to take waiters_mutex again. */
++ * the recovery context which stops any locking activity. Only debugfs might
++ * change the lockspace waiters but they will held the recovery lock to ensure
++ * remove_from_waiters_ms() in local case will be the only user manipulating the
++ * lockspace waiters in recovery context.
++ */
  
- 	/* Due backwards compatibility with 3.1 we need to use maximum
-diff --git a/fs/dlm/member.c b/fs/dlm/member.c
-index be7909ead71b..707cebcdc533 100644
---- a/fs/dlm/member.c
-+++ b/fs/dlm/member.c
-@@ -642,6 +642,11 @@ int dlm_ls_stop(struct dlm_ls *ls)
- 	set_bit(LSFL_RECOVER_STOP, &ls->ls_flags);
- 	new = test_and_clear_bit(LSFL_RUNNING, &ls->ls_flags);
- 	ls->ls_recover_seq++;
-+
-+	/* activate requestqueue and stop processing */
-+	write_lock(&ls->ls_requestqueue_lock);
-+	set_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
-+	write_unlock(&ls->ls_requestqueue_lock);
- 	spin_unlock(&ls->ls_recover_lock);
+ static int remove_from_waiters_ms(struct dlm_lkb *lkb,
+ 				  const struct dlm_message *ms, bool local)
+@@ -1566,6 +1570,9 @@ static int remove_from_waiters_ms(struct dlm_lkb *lkb,
  
- 	/*
-diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
-index c05940afd063..9b646026df46 100644
---- a/fs/dlm/requestqueue.c
-+++ b/fs/dlm/requestqueue.c
-@@ -48,10 +48,7 @@ void dlm_add_requestqueue(struct dlm_ls *ls, int nodeid,
- 	memcpy(&e->request, ms, sizeof(*ms));
- 	memcpy(&e->request.m_extra, ms->m_extra, length);
+ 	if (!local)
+ 		mutex_lock(&ls->ls_waiters_mutex);
++	else
++		WARN_ON_ONCE(!rwsem_is_locked(&ls->ls_in_recovery) ||
++			     !dlm_locking_stopped(ls));
+ 	error = _remove_from_waiters(lkb, le32_to_cpu(ms->m_type), ms);
+ 	if (!local)
+ 		mutex_unlock(&ls->ls_waiters_mutex);
+@@ -4398,7 +4405,6 @@ static void _receive_convert_reply(struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
  
--	atomic_inc(&ls->ls_requestqueue_cnt);
--	mutex_lock(&ls->ls_requestqueue_mutex);
- 	list_add_tail(&e->list, &ls->ls_requestqueue);
--	mutex_unlock(&ls->ls_requestqueue_mutex);
- }
+-	/* local reply can happen with waiters_mutex held */
+ 	error = remove_from_waiters_ms(lkb, ms, local);
+ 	if (error)
+ 		goto out;
+@@ -4437,7 +4443,6 @@ static void _receive_unlock_reply(struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
  
- /*
-@@ -71,16 +68,14 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	int error = 0;
+-	/* local reply can happen with waiters_mutex held */
+ 	error = remove_from_waiters_ms(lkb, ms, local);
+ 	if (error)
+ 		goto out;
+@@ -4489,7 +4494,6 @@ static void _receive_cancel_reply(struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
  
--	mutex_lock(&ls->ls_requestqueue_mutex);
+-	/* local reply can happen with waiters_mutex held */
+ 	error = remove_from_waiters_ms(lkb, ms, local);
+ 	if (error)
+ 		goto out;
+@@ -4890,8 +4894,6 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
+ 	if (!ms_local)
+ 		return;
+ 
+-	mutex_lock(&ls->ls_waiters_mutex);
 -
-+	write_lock(&ls->ls_requestqueue_lock);
- 	for (;;) {
- 		if (list_empty(&ls->ls_requestqueue)) {
--			mutex_unlock(&ls->ls_requestqueue_mutex);
-+			clear_bit(LSFL_RECV_MSG_BLOCKED, &ls->ls_flags);
- 			error = 0;
- 			break;
+ 	list_for_each_entry_safe(lkb, safe, &ls->ls_waiters, lkb_wait_reply) {
+ 
+ 		dir_nodeid = dlm_dir_nodeid(lkb->lkb_resource);
+@@ -4984,7 +4986,6 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
  		}
--		e = list_entry(ls->ls_requestqueue.next, struct rq_entry, list);
--		mutex_unlock(&ls->ls_requestqueue_mutex);
-+		e = list_first_entry(&ls->ls_requestqueue, struct rq_entry, list);
- 
- 		ms = &e->request;
- 
-@@ -93,41 +88,23 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
- 			  e->recover_seq);
- 
- 		dlm_receive_message_saved(ls, &e->request, e->recover_seq);
--
--		mutex_lock(&ls->ls_requestqueue_mutex);
- 		list_del(&e->list);
--		if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
--			wake_up(&ls->ls_requestqueue_wait);
- 		kfree(e);
- 
- 		if (dlm_locking_stopped(ls)) {
- 			log_debug(ls, "process_requestqueue abort running");
--			mutex_unlock(&ls->ls_requestqueue_mutex);
- 			error = -EINTR;
- 			break;
- 		}
-+		write_unlock(&ls->ls_requestqueue_lock);
  		schedule();
-+		write_lock(&ls->ls_requestqueue_lock);
  	}
-+	write_unlock(&ls->ls_requestqueue_lock);
- 
- 	return error;
+-	mutex_unlock(&ls->ls_waiters_mutex);
+ 	kfree(ms_local);
  }
  
--/*
-- * After recovery is done, locking is resumed and dlm_recoverd takes all the
-- * saved requests and processes them as they would have been by dlm_recv.  At
-- * the same time, dlm_recv will start receiving new requests from remote nodes.
-- * We want to delay dlm_recv processing new requests until dlm_recoverd has
-- * finished processing the old saved requests.  We don't check for locking
-- * stopped here because dlm_ls_stop won't stop locking until it's suspended us
-- * (dlm_recv).
-- */
--
--void dlm_wait_requestqueue(struct dlm_ls *ls)
--{
--	wait_event(ls->ls_requestqueue_wait,
--		   atomic_read(&ls->ls_requestqueue_cnt) == 0);
--}
--
- static int purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
- {
- 	__le32 type = ms->m_type;
-@@ -158,17 +135,15 @@ void dlm_purge_requestqueue(struct dlm_ls *ls)
- 	struct dlm_message *ms;
- 	struct rq_entry *e, *safe;
+diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
+index c8ff7780d3cc..b2fd74a2f8eb 100644
+--- a/fs/dlm/lock.h
++++ b/fs/dlm/lock.h
+@@ -23,6 +23,7 @@ void dlm_hold_rsb(struct dlm_rsb *r);
+ int dlm_put_lkb(struct dlm_lkb *lkb);
+ void dlm_scan_rsbs(struct dlm_ls *ls);
+ int dlm_lock_recovery_try(struct dlm_ls *ls);
++void dlm_lock_recovery(struct dlm_ls *ls);
+ void dlm_unlock_recovery(struct dlm_ls *ls);
  
--	mutex_lock(&ls->ls_requestqueue_mutex);
-+	write_lock(&ls->ls_requestqueue_lock);
- 	list_for_each_entry_safe(e, safe, &ls->ls_requestqueue, list) {
- 		ms =  &e->request;
- 
- 		if (purge_request(ls, ms, e->nodeid)) {
- 			list_del(&e->list);
--			if (atomic_dec_and_test(&ls->ls_requestqueue_cnt))
--				wake_up(&ls->ls_requestqueue_wait);
- 			kfree(e);
- 		}
- 	}
--	mutex_unlock(&ls->ls_requestqueue_mutex);
-+	write_unlock(&ls->ls_requestqueue_lock);
- }
- 
+ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
 -- 
 2.43.0
 
