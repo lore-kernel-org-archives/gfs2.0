@@ -1,54 +1,50 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2646215B569
-	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F3215B966
+	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712085505; cv=none; b=Y5XRH2zm0gbwSp6amSQshfc8NP2W2Bjx5c1/hUX7t4Beh6uPlt2/dj0i/B6e7/SKWjfduraMgx/2bKEPEN77kghjrDFOFLlGksUuPOkW/mlPi9C3IFyvsI2IfE/ZMrpz1+lGZrsQ0OdEJ+sJftKl1rB0cKUXOC6CH34HuJ6bo0E=
+	t=1712085505; cv=none; b=Kv7H39GjToeuzamaXecOACa8YrRkNRKwV1YQ4FVgAHZh7wZoDC7IRiIW90OOEABOCGhtbfHoahXnNRQ1BND5ecmSQVpToIu/HJ/TD7eIvYlDtJ0SvGSOTpiBi4c2yKJmziY49E8HdOjaFLl5ekVpDBaeyMhKZu//RV05e764M38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712085505; c=relaxed/simple;
-	bh=2e0Ls/ImJ1+6/yaOwj0u4z9K90q2oAsuu+NDprnJJd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4qipDlCT1vAyFsBi6Z4YAdDtqC/d4kkOl16LzfbLen6gS1ewPKMMYgrwQKxuPp0w4IFskNktr8KYRLaDha0HDPoszBXRxpgZLv/fZVJY3X0V0Ld4otBFbcHP7ksC1PJSiJnQcCojimjSU7Fl0nDCjKHVUXJXfQb/yusOVNoNCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hB3Ew3yQ; arc=none smtp.client-ip=170.10.133.124
+	bh=8peWKTSk39fFLBd9R9yhtsdAcuPiOGDFHKpKOZ7E20o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nuk98HXLTBSgTgzi8CoB4vsc5ZsmiFIdj9WEX1rWBxGQSrHaM6UdLohxKcxm+YqpNfWSSJoP2w1p90q+CKOac/KeIWYfnlpzRF72wjcImf5MC5SV04G/BgdTuuilMo+PtCdsreEwu/+mvORweFLz7CjkeftAu3Zs2OfIYG5g1ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YATaceAT; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hB3Ew3yQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YATaceAT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712085500;
+	s=mimecast20190719; t=1712085502;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wqefuzLq21FIKcVpoqu1Ufn5zcJjSKnPEs5+vrVRjmI=;
-	b=hB3Ew3yQQwi8C9AmGzZci5JUywhCw9qUAVq9ehHJD7zju59QMfXqa8Axka2W0swht5dgdy
-	FhRkicnkhyf0Qdg1e2TcX5U+1okqEJr1yaFBjHDqJAX0rW9FBc2NLc47LYUUkeBqr8PuiV
-	b0Q1WwtAqm4UusQqf8lsrGjT4x9B9RA=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+3TnyeoUs/q96ftZoJMrXHbUU+IbsqYU7oLOX4cS5RY=;
+	b=YATaceATp/24K1wkdHVuAiWEv0vn2VuRLIPdKgZsJmRBRWw7LKplPzquXbeD7Petfo//CC
+	QDKFYkwVkeWRaTPBJXrf02jQOvDe320LNQfAtb4ajFZ5PCn8tv9MQGQTr93K/IV2CN91dv
+	KlQV+xx1qMkqK7aU1eD0A06bEU3NCaE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-0GE0C6f7Mua_AdqTPZMfvQ-1; Tue, 02 Apr 2024 15:18:18 -0400
-X-MC-Unique: 0GE0C6f7Mua_AdqTPZMfvQ-1
+ us-mta-6-nh6JWSpBPxO0V-drAnkYyA-1; Tue, 02 Apr 2024 15:18:18 -0400
+X-MC-Unique: nh6JWSpBPxO0V-drAnkYyA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 694ED101A536
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57D01185A788
 	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 5E9E140C6DAD;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 4F75740C6DAE;
 	Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv4 dlm/next 02/15] dlm: remove allocation parameter in msg allocation
-Date: Tue,  2 Apr 2024 15:17:57 -0400
-Message-ID: <20240402191810.1932939-3-aahringo@redhat.com>
-In-Reply-To: <20240402191810.1932939-1-aahringo@redhat.com>
-References: <20240402191810.1932939-1-aahringo@redhat.com>
+Subject: [PATCHv4 dlm/next 00/15] dlm: bring message parsing to softirq context
+Date: Tue,  2 Apr 2024 15:17:55 -0400
+Message-ID: <20240402191810.1932939-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -61,394 +57,99 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch removes the context parameter for message allocations and
-replace it by always do GFP_ATOMIC. We are preparing to process dlm
-message in softirq context therefore it's necessary to switch to
-GFP_ATOMIC allocation as we cannot sleep in this context. To simplify
-the code overall we just drop the allocation flag and have GFP_ATOMIC
-hardcoded when calling the allocation function.
+Hi,
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c     | 31 ++++++++++++-------------------
- fs/dlm/lowcomms.c | 16 +++++++---------
- fs/dlm/lowcomms.h |  5 ++---
- fs/dlm/memory.c   |  8 ++++----
- fs/dlm/memory.h   |  4 ++--
- fs/dlm/midcomms.c | 24 ++++++++++--------------
- fs/dlm/midcomms.h |  3 +--
- fs/dlm/rcom.c     |  7 +++----
- 8 files changed, 41 insertions(+), 57 deletions(-)
+this is version 4 of my attempt to bring dlm message parsing to softirq
+context. This will "minimal" improve the dlm message parsing that is
+still message after message parsing. There is still a context switch
+involed that is the dlm callback workqueue. This patch mostly have the
+effect that we call "queue_work()" more often. In future we will get
+rid of the dlm callback workqueue and call the DLM user callback
+directly in the dlm message processing softirq context. However this
+requires that DLM users adapt the changes and signal this capability
+over a new lockspace flag.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c8426f6f518c..2f94ffc3cf82 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -3330,8 +3330,7 @@ int dlm_unlock(dlm_lockspace_t *lockspace,
- static int _create_message(struct dlm_ls *ls, int mb_len,
- 			   int to_nodeid, int mstype,
- 			   struct dlm_message **ms_ret,
--			   struct dlm_mhandle **mh_ret,
--			   gfp_t allocation)
-+			   struct dlm_mhandle **mh_ret)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
-@@ -3341,7 +3340,7 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
- 	   pass into midcomms_commit and a message buffer (mb) that we
- 	   write our data into */
- 
--	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, allocation, &mb);
-+	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, &mb);
- 	if (!mh)
- 		return -ENOBUFS;
- 
-@@ -3363,8 +3362,7 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
- static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 			  int to_nodeid, int mstype,
- 			  struct dlm_message **ms_ret,
--			  struct dlm_mhandle **mh_ret,
--			  gfp_t allocation)
-+			  struct dlm_mhandle **mh_ret)
- {
- 	int mb_len = sizeof(struct dlm_message);
- 
-@@ -3385,7 +3383,7 @@ static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 	}
- 
- 	return _create_message(r->res_ls, mb_len, to_nodeid, mstype,
--			       ms_ret, mh_ret, allocation);
-+			       ms_ret, mh_ret);
- }
- 
- /* further lowcomms enhancements or alternate implementations may make
-@@ -3454,7 +3452,7 @@ static int send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
- 	if (error)
- 		return error;
- 
--	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh, GFP_NOFS);
-+	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
- 	if (error)
- 		goto fail;
- 
-@@ -3514,8 +3512,7 @@ static int send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh,
--			       GFP_NOFS);
-+	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh);
- 	if (error)
- 		goto out;
- 
-@@ -3536,8 +3533,7 @@ static int send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode)
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh,
--			       GFP_NOFS);
-+	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh);
- 	if (error)
- 		goto out;
- 
-@@ -3562,8 +3558,7 @@ static int send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 	if (error)
- 		return error;
- 
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh,
--			       GFP_NOFS);
-+	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh);
- 	if (error)
- 		goto fail;
- 
-@@ -3587,8 +3582,7 @@ static int send_remove(struct dlm_rsb *r)
- 
- 	to_nodeid = dlm_dir_nodeid(r);
- 
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh,
--			       GFP_ATOMIC);
-+	error = create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh);
- 	if (error)
- 		goto out;
- 
-@@ -3609,7 +3603,7 @@ static int send_common_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh, GFP_NOFS);
-+	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
- 	if (error)
- 		goto out;
- 
-@@ -3651,8 +3645,7 @@ static int send_lookup_reply(struct dlm_ls *ls,
- 	struct dlm_mhandle *mh;
- 	int error, nodeid = le32_to_cpu(ms_in->m_header.h_nodeid);
- 
--	error = create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh,
--			       GFP_NOFS);
-+	error = create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh);
- 	if (error)
- 		goto out;
- 
-@@ -6103,7 +6096,7 @@ static int send_purge(struct dlm_ls *ls, int nodeid, int pid)
- 	int error;
- 
- 	error = _create_message(ls, sizeof(struct dlm_message), nodeid,
--				DLM_MSG_PURGE, &ms, &mh, GFP_NOFS);
-+				DLM_MSG_PURGE, &ms, &mh);
- 	if (error)
- 		return error;
- 	ms->m_nodeid = cpu_to_le32(nodeid);
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 712165a1e567..ab2cfbd2ea77 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1229,14 +1229,13 @@ static struct writequeue_entry *new_wq_entry(struct connection *con, int len,
- };
- 
- static struct dlm_msg *dlm_lowcomms_new_msg_con(struct connection *con, int len,
--						gfp_t allocation, char **ppc,
--						void (*cb)(void *data),
-+						char **ppc, void (*cb)(void *data),
- 						void *data)
- {
- 	struct writequeue_entry *e;
- 	struct dlm_msg *msg;
- 
--	msg = dlm_allocate_msg(allocation);
-+	msg = dlm_allocate_msg();
- 	if (!msg)
- 		return NULL;
- 
-@@ -1261,9 +1260,8 @@ static struct dlm_msg *dlm_lowcomms_new_msg_con(struct connection *con, int len,
-  * dlm_lowcomms_commit_msg which is a must call if success
-  */
- #ifndef __CHECKER__
--struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
--				     char **ppc, void (*cb)(void *data),
--				     void *data)
-+struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, char **ppc,
-+				     void (*cb)(void *data), void *data)
- {
- 	struct connection *con;
- 	struct dlm_msg *msg;
-@@ -1284,7 +1282,7 @@ struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
- 		return NULL;
- 	}
- 
--	msg = dlm_lowcomms_new_msg_con(con, len, allocation, ppc, cb, data);
-+	msg = dlm_lowcomms_new_msg_con(con, len, ppc, cb, data);
- 	if (!msg) {
- 		srcu_read_unlock(&connections_srcu, idx);
- 		return NULL;
-@@ -1348,8 +1346,8 @@ int dlm_lowcomms_resend_msg(struct dlm_msg *msg)
- 	if (msg->retransmit)
- 		return 1;
- 
--	msg_resend = dlm_lowcomms_new_msg_con(msg->entry->con, msg->len,
--					      GFP_ATOMIC, &ppc, NULL, NULL);
-+	msg_resend = dlm_lowcomms_new_msg_con(msg->entry->con, msg->len, &ppc,
-+					      NULL, NULL);
- 	if (!msg_resend)
- 		return -ENOMEM;
- 
-diff --git a/fs/dlm/lowcomms.h b/fs/dlm/lowcomms.h
-index 3e8dca66183b..8deb16f8f620 100644
---- a/fs/dlm/lowcomms.h
-+++ b/fs/dlm/lowcomms.h
-@@ -39,9 +39,8 @@ void dlm_lowcomms_stop(void);
- void dlm_lowcomms_init(void);
- void dlm_lowcomms_exit(void);
- int dlm_lowcomms_close(int nodeid);
--struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, gfp_t allocation,
--				     char **ppc, void (*cb)(void *data),
--				     void *data);
-+struct dlm_msg *dlm_lowcomms_new_msg(int nodeid, int len, char **ppc,
-+				     void (*cb)(void *data), void *data);
- void dlm_lowcomms_commit_msg(struct dlm_msg *msg);
- void dlm_lowcomms_put_msg(struct dlm_msg *msg);
- int dlm_lowcomms_resend_msg(struct dlm_msg *msg);
-diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
-index be9398ddf357..ab663ca66aca 100644
---- a/fs/dlm/memory.c
-+++ b/fs/dlm/memory.c
-@@ -130,9 +130,9 @@ void dlm_free_lkb(struct dlm_lkb *lkb)
- 	kmem_cache_free(lkb_cache, lkb);
- }
- 
--struct dlm_mhandle *dlm_allocate_mhandle(gfp_t allocation)
-+struct dlm_mhandle *dlm_allocate_mhandle(void)
- {
--	return kmem_cache_alloc(mhandle_cache, allocation);
-+	return kmem_cache_alloc(mhandle_cache, GFP_ATOMIC);
- }
- 
- void dlm_free_mhandle(struct dlm_mhandle *mhandle)
-@@ -150,9 +150,9 @@ void dlm_free_writequeue(struct writequeue_entry *writequeue)
- 	kmem_cache_free(writequeue_cache, writequeue);
- }
- 
--struct dlm_msg *dlm_allocate_msg(gfp_t allocation)
-+struct dlm_msg *dlm_allocate_msg(void)
- {
--	return kmem_cache_alloc(msg_cache, allocation);
-+	return kmem_cache_alloc(msg_cache, GFP_ATOMIC);
- }
- 
- void dlm_free_msg(struct dlm_msg *msg)
-diff --git a/fs/dlm/memory.h b/fs/dlm/memory.h
-index 6b29563d24f7..15198d46b42a 100644
---- a/fs/dlm/memory.h
-+++ b/fs/dlm/memory.h
-@@ -20,11 +20,11 @@ struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls);
- void dlm_free_lkb(struct dlm_lkb *l);
- char *dlm_allocate_lvb(struct dlm_ls *ls);
- void dlm_free_lvb(char *l);
--struct dlm_mhandle *dlm_allocate_mhandle(gfp_t allocation);
-+struct dlm_mhandle *dlm_allocate_mhandle(void);
- void dlm_free_mhandle(struct dlm_mhandle *mhandle);
- struct writequeue_entry *dlm_allocate_writequeue(void);
- void dlm_free_writequeue(struct writequeue_entry *writequeue);
--struct dlm_msg *dlm_allocate_msg(gfp_t allocation);
-+struct dlm_msg *dlm_allocate_msg(void);
- void dlm_free_msg(struct dlm_msg *msg);
- struct dlm_callback *dlm_allocate_cb(void);
- void dlm_free_cb(struct dlm_callback *cb);
-diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
-index 8e9920f1b48b..ed6fb9b9a582 100644
---- a/fs/dlm/midcomms.c
-+++ b/fs/dlm/midcomms.c
-@@ -379,8 +379,7 @@ static int dlm_send_ack(int nodeid, uint32_t seq)
- 	struct dlm_msg *msg;
- 	char *ppc;
- 
--	msg = dlm_lowcomms_new_msg(nodeid, mb_len, GFP_ATOMIC, &ppc,
--				   NULL, NULL);
-+	msg = dlm_lowcomms_new_msg(nodeid, mb_len, &ppc, NULL, NULL);
- 	if (!msg)
- 		return -ENOMEM;
- 
-@@ -428,7 +427,7 @@ static int dlm_send_fin(struct midcomms_node *node,
- 	struct dlm_mhandle *mh;
- 	char *ppc;
- 
--	mh = dlm_midcomms_get_mhandle(node->nodeid, mb_len, GFP_ATOMIC, &ppc);
-+	mh = dlm_midcomms_get_mhandle(node->nodeid, mb_len, &ppc);
- 	if (!mh)
- 		return -ENOMEM;
- 
-@@ -976,13 +975,13 @@ static void midcomms_new_msg_cb(void *data)
- }
- 
- static struct dlm_msg *dlm_midcomms_get_msg_3_2(struct dlm_mhandle *mh, int nodeid,
--						int len, gfp_t allocation, char **ppc)
-+						int len, char **ppc)
- {
- 	struct dlm_opts *opts;
- 	struct dlm_msg *msg;
- 
- 	msg = dlm_lowcomms_new_msg(nodeid, len + DLM_MIDCOMMS_OPT_LEN,
--				   allocation, ppc, midcomms_new_msg_cb, mh);
-+				   ppc, midcomms_new_msg_cb, mh);
- 	if (!msg)
- 		return NULL;
- 
-@@ -1001,8 +1000,7 @@ static struct dlm_msg *dlm_midcomms_get_msg_3_2(struct dlm_mhandle *mh, int node
-  * dlm_midcomms_commit_mhandle which is a must call if success
-  */
- #ifndef __CHECKER__
--struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
--					     gfp_t allocation, char **ppc)
-+struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len, char **ppc)
- {
- 	struct midcomms_node *node;
- 	struct dlm_mhandle *mh;
-@@ -1017,7 +1015,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
- 	/* this is a bug, however we going on and hope it will be resolved */
- 	WARN_ON_ONCE(test_bit(DLM_NODE_FLAG_STOP_TX, &node->flags));
- 
--	mh = dlm_allocate_mhandle(allocation);
-+	mh = dlm_allocate_mhandle();
- 	if (!mh)
- 		goto err;
- 
-@@ -1028,8 +1026,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
- 
- 	switch (node->version) {
- 	case DLM_VERSION_3_1:
--		msg = dlm_lowcomms_new_msg(nodeid, len, allocation, ppc,
--					   NULL, NULL);
-+		msg = dlm_lowcomms_new_msg(nodeid, len, ppc, NULL, NULL);
- 		if (!msg) {
- 			dlm_free_mhandle(mh);
- 			goto err;
-@@ -1040,8 +1037,7 @@ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
- 		/* send ack back if necessary */
- 		dlm_send_ack_threshold(node, DLM_SEND_ACK_BACK_MSG_THRESHOLD);
- 
--		msg = dlm_midcomms_get_msg_3_2(mh, nodeid, len, allocation,
--					       ppc);
-+		msg = dlm_midcomms_get_msg_3_2(mh, nodeid, len, ppc);
- 		if (!msg) {
- 			dlm_free_mhandle(mh);
- 			goto err;
-@@ -1501,8 +1497,8 @@ int dlm_midcomms_rawmsg_send(struct midcomms_node *node, void *buf,
- 	rd.node = node;
- 	rd.buf = buf;
- 
--	msg = dlm_lowcomms_new_msg(node->nodeid, buflen, GFP_NOFS,
--				   &msgbuf, midcomms_new_rawmsg_cb, &rd);
-+	msg = dlm_lowcomms_new_msg(node->nodeid, buflen, &msgbuf,
-+				   midcomms_new_rawmsg_cb, &rd);
- 	if (!msg)
- 		return -ENOMEM;
- 
-diff --git a/fs/dlm/midcomms.h b/fs/dlm/midcomms.h
-index e7246fb3ef57..278d26fdeb2c 100644
---- a/fs/dlm/midcomms.h
-+++ b/fs/dlm/midcomms.h
-@@ -16,8 +16,7 @@ struct midcomms_node;
- 
- int dlm_validate_incoming_buffer(int nodeid, unsigned char *buf, int len);
- int dlm_process_incoming_buffer(int nodeid, unsigned char *buf, int buflen);
--struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len,
--					     gfp_t allocation, char **ppc);
-+struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len, char **ppc);
- void dlm_midcomms_commit_mhandle(struct dlm_mhandle *mh, const void *name,
- 				 int namelen);
- int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len);
-diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
-index 3b734aed26b5..2e3f529f3ff2 100644
---- a/fs/dlm/rcom.c
-+++ b/fs/dlm/rcom.c
-@@ -55,7 +55,7 @@ static int create_rcom(struct dlm_ls *ls, int to_nodeid, int type, int len,
- 	struct dlm_mhandle *mh;
- 	char *mb;
- 
--	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, GFP_NOFS, &mb);
-+	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, &mb);
- 	if (!mh) {
- 		log_print("%s to %d type %d len %d ENOBUFS",
- 			  __func__, to_nodeid, type, len);
-@@ -75,8 +75,7 @@ static int create_rcom_stateless(struct dlm_ls *ls, int to_nodeid, int type,
- 	struct dlm_msg *msg;
- 	char *mb;
- 
--	msg = dlm_lowcomms_new_msg(to_nodeid, mb_len, GFP_NOFS, &mb,
--				   NULL, NULL);
-+	msg = dlm_lowcomms_new_msg(to_nodeid, mb_len, &mb, NULL, NULL);
- 	if (!msg) {
- 		log_print("create_rcom to %d type %d len %d ENOBUFS",
- 			  to_nodeid, type, len);
-@@ -510,7 +509,7 @@ int dlm_send_ls_not_ready(int nodeid, const struct dlm_rcom *rc_in)
- 	char *mb;
- 	int mb_len = sizeof(struct dlm_rcom) + sizeof(struct rcom_config);
- 
--	mh = dlm_midcomms_get_mhandle(nodeid, mb_len, GFP_NOFS, &mb);
-+	mh = dlm_midcomms_get_mhandle(nodeid, mb_len, &mb);
- 	if (!mh)
- 		return -ENOBUFS;
- 
+- Alex
+
+changes since v4:
+ - add still "dlm: Simplify the allocation of slab caches in
+   dlm_lowcomms_msg_cache_create" that was forgotten in the last
+   patch series.
+ - update commit message to hopefully more clear
+ - use new WQ_BH instead of tasklets
+ - use trylock and return -EAGAIN if debugfs cannot access waiters
+   due recovery is going on
+ - move clear of root_list in its own goto label instead doing it
+   when its already cleared
+ - introduce dlm_refcount_dec_and_lock_bh() that hopefully can
+   be later moved into refcount code instead of
+   local_bh_disable/enable all the time
+
+changes since v3:
+ - add patches that got meanwhile on the mailinglist to resend them.
+ - add "remove schedule in dlm receive path" to remove a schedule()
+   in the dlm msg processing path.
+ - change commit message of "dlm: do dlm message processing in softirq
+   context" to mention the
+
+changes since v2:
+
+I changed in v2 that we split the root_list to root_list and a per
+lockspace masters list. The root_list can be used as a stack list
+variable in ls_recover() as it's only used for recovery handling. The
+masters list is somehow special because it is being used for other dlm
+nodes to dump the nodes master rsbs. The current implementation
+guarantees that this happens in a very special part of the recovery
+handling by using a kind of distributed cluster barriers. I added more
+sanity checks for this handling and a more per node based recovery log
+mechanism. There is also a TODO that describes we should keep track of
+all masters rsb while lockspace locking handling and not create them
+while recovery handling which I think should improve the handling to
+maybe get rid of those barriers.
+
+Alexander Aring (14):
+  dlm: remove allocation parameter in msg allocation
+  dlm: switch to GFP_ATOMIC in dlm allocations
+  dlm: move root_list functionality to recover.c
+  dlm: move master dir dump to own list
+  dlm: move root_list to ls_recover() stack
+  dlm: implement directory dump context
+  dlm: drop holding waiters mutex in waiters recovery
+  dlm: convert ls_waiters_mutex to spinlock
+  dlm: convert res_lock to spinlock
+  dlm: make requestqueue handling non sleepable
+  dlm: ls_recv_active semaphore to rwlock
+  dlm: remove schedule in dlm receive path
+  dlm: convert message parsing locks to disable bh
+  dlm: do dlm message processing in softirq context
+
+Kunwu Chan (1):
+  dlm: Simplify the allocation of slab caches in
+    dlm_lowcomms_msg_cache_create
+
+ fs/dlm/ast.c          |  12 +-
+ fs/dlm/debug_fs.c     |  41 ++++---
+ fs/dlm/dir.c          | 147 +++++++++++++++++++----
+ fs/dlm/dir.h          |   3 +-
+ fs/dlm/dlm_internal.h |  20 ++--
+ fs/dlm/lock.c         | 271 +++++++++++++++++++++++-------------------
+ fs/dlm/lock.h         |   7 +-
+ fs/dlm/lockspace.c    |  65 +++++-----
+ fs/dlm/lowcomms.c     |  62 ++++++----
+ fs/dlm/lowcomms.h     |   5 +-
+ fs/dlm/member.c       |  23 ++--
+ fs/dlm/memory.c       |  14 +--
+ fs/dlm/memory.h       |   4 +-
+ fs/dlm/midcomms.c     |  64 +++++-----
+ fs/dlm/midcomms.h     |   3 +-
+ fs/dlm/rcom.c         |  33 +++--
+ fs/dlm/recover.c      | 126 ++++++--------------
+ fs/dlm/recover.h      |  10 +-
+ fs/dlm/recoverd.c     | 142 ++++++++++++++++++----
+ fs/dlm/requestqueue.c |  43 ++-----
+ fs/dlm/user.c         |  32 ++---
+ 21 files changed, 647 insertions(+), 480 deletions(-)
+
 -- 
 2.43.0
 
