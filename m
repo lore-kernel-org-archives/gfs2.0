@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264C115B572
-	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B469C15B579
+	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712085503; cv=none; b=OPKBxwZfk2034dUMtad14KU01H/sxX81MnYOplX3DdOVXIdB8gQBTAq3io8RukoJWz5NoOg8dgglAjltcayw43KBGqdMcvs8r1PAIxtJk90vJ6YkRpctVTPr5soPO88uNKhCryD2QuDoa048+3naZkgBXdKFrrNurNroDVdd0KQ=
+	t=1712085503; cv=none; b=c+lOffV0D6M5XG1ULdd67Os17exRpu+l3BldDv6wwEFBoZC1oAYK0DwbRTcxa4GgmDNKFxOaJTVKWOdrs8UNeBXmr9RvpZQfWKj+dS+PP9QPxpat7ytiKyXJRZp9F8kf4Qx6nSFyEYmLKJPWQQLpJNGPpb+2abLsu2TzGUrKc2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712085503; c=relaxed/simple;
-	bh=tUp3893INq+lt8BruCkO8eZNG63VCL7MlrNyJisDBl4=;
+	bh=qI9zbi96jtKmzrRkY02OGQa1Mooj7/dk40ELjOK/8ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pqlp9JkYgHZmPkQMQzfGhLITcWs8cBN3VttuZAiOI5j1NfDYnrQfvNIkN4m5qjzCFw+/vjJ7BsLS9b88xdUWBYFIaUNp0iEz0Tla8JIhz6rgRFhmdMPjfaNXD/SpeCiV5vPSU8Nu6vDf70pEifiWmop0Nsj/Wv+6h6Son+6rbbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UW/QFc4A; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=j9/5u9bTz1TA2aD2RPCJq0MJ84R9Tf3kbHAK8cvEdVWXme+TXzNh5mHhLTvZM6DqizzVlRP/NJHRPEvwYWL20CYsHdxqnnw6J3FNC8R4RJd+ADx5V4lPuR8DBQ3op+LTeOVwlEaId2bMpTckwYvn4CnffxqK5ajmNdD2f/ewdGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YFnQ7ZsU; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UW/QFc4A"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YFnQ7ZsU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1712085500;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=irLOCE2NSGFkRpPCT7PhBu3a9EK/5YgRT6WQXwrRHbo=;
-	b=UW/QFc4ABJONoGEPMUcmOFNnJIHUwhy6yr3MgCpG5pqZmmljPvkMoPT0fHGdDqm3U25WE9
-	O8QUvc0yjLPoF37n/IW3KUYlG1U/JcedfyXS6L53ejuUP9Zup0DOh+1sdIyBbVcLXoil5j
-	sFmQZL55qc+EZPBNnefkLMAe2OfTI9w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-QuUx2uQyNkmr-lDlrzejHA-1; Tue, 02 Apr 2024 15:18:18 -0400
-X-MC-Unique: QuUx2uQyNkmr-lDlrzejHA-1
+	bh=m8qYFAK8L8MWcTt8WEY6WfEz3rXw4uL2fue0gA5TVYY=;
+	b=YFnQ7ZsUGtBp8ohPN5+Qf+rm4PEneyQ3rf2/q7CuuB8/OLSNIgrDlHbUZWGPeAw/2tDsWo
+	LJxVwdihMnCdd1mTirCqSLKbvSRBIAK5/bfAOHDlSKmDRgLG+XqlKLwAUyJp/WadzdrogF
+	NZQ67Oia2CMmCc1l04KZUH3UOG01c0w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-14VFbDIMOsaq_l-Q3lg8hQ-1; Tue,
+ 02 Apr 2024 15:18:19 -0400
+X-MC-Unique: 14VFbDIMOsaq_l-Q3lg8hQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 791F3185A781
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF1143816453
 	for <gfs2@lists.linux.dev>; Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7049F40C6DB7;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id D5CA040C6CC5;
 	Tue,  2 Apr 2024 19:18:18 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv4 dlm/next 04/15] dlm: move root_list functionality to recover.c
-Date: Tue,  2 Apr 2024 15:17:59 -0400
-Message-ID: <20240402191810.1932939-5-aahringo@redhat.com>
+Subject: [PATCHv4 dlm/next 15/15] dlm: do dlm message processing in softirq context
+Date: Tue,  2 Apr 2024 15:18:10 -0400
+Message-ID: <20240402191810.1932939-16-aahringo@redhat.com>
 In-Reply-To: <20240402191810.1932939-1-aahringo@redhat.com>
 References: <20240402191810.1932939-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,132 +61,112 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch moves dlm_create_root_list() and dlm_release_root_list() to
-recover.c and declare them static because they are only used there.
+This patch moves the dlm message processing from a ordered workqueue
+context to a ordered softirq context. Later we want to call the user
+defined ast/bast callbacks directly inside the dlm message processing
+context instead of doing an additional context switch to the exisiting
+callback workqueue. This should slightly improve the dlm message parsing
+behaviour. There are two main reasons why to change to this behaviour:
+
+1.
+   Allow fewer scheduling possibilities for dlm message parsing context.
+   This should deliver faster DLM user responses to ast/bast callbacks.
+   Fewer interrupting of lock requests processing that might trigger a
+   new lock request avoids situations that we don't finish lock
+   requests. In future the DLM callback workqueue can be disabled by
+   a kernel lockspace flag to signal the DLM kernel user is capable
+   of exectuing the callbacks in softirq context. If this flag is set,
+   the dlm processing gets rid of an additional queue_work() context
+   switch that should take more advantage about the new softirq context
+   because the last preemption possibility is removed from the message
+   processing context.
+
+2. Bringing the ast/callback callback to softirq context that the use is
+   aware it should not block into this context. Later patches will
+   introduce a per lockspace flag to signal that the user is capable to
+   handling these callbacks in softirq context to solve backwards
+   compatibility. Handling the callback in the receive part and not in a
+   workqueue will reduce a unnecessarily context switch. Signaling the
+   user that the callback context can run in a softirq context will
+   force that the user of DLM will not sleep in such context and leave
+   it "fast as possible" again.
+
+Futher patches will unveil more improvements to switch to a per message
+softirq parsing context. Especially if we getting DLM in a state that we
+can allow concurrent message parsing.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/recover.c  | 42 ------------------------------------------
- fs/dlm/recover.h  |  2 --
- fs/dlm/recoverd.c | 39 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 39 insertions(+), 44 deletions(-)
+ fs/dlm/lowcomms.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index ce6dc914cb86..6abc283f8f36 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -889,48 +889,6 @@ void dlm_recover_rsbs(struct dlm_ls *ls)
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 444dc858c4a4..6b8078085e56 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -204,6 +204,7 @@ static void process_dlm_messages(struct work_struct *work);
+ static DECLARE_WORK(process_work, process_dlm_messages);
+ static DEFINE_SPINLOCK(processqueue_lock);
+ static bool process_dlm_messages_pending;
++static DECLARE_WAIT_QUEUE_HEAD(processqueue_wq);
+ static atomic_t processqueue_count;
+ static LIST_HEAD(processqueue);
  
- /* Create a single list of all root rsb's to be used during recovery */
+@@ -877,7 +878,8 @@ static void process_dlm_messages(struct work_struct *work)
+ 	}
  
--int dlm_create_root_list(struct dlm_ls *ls)
--{
--	struct rb_node *n;
--	struct dlm_rsb *r;
--	int i, error = 0;
--
--	down_write(&ls->ls_root_sem);
--	if (!list_empty(&ls->ls_root_list)) {
--		log_error(ls, "root list not empty");
--		error = -EINVAL;
--		goto out;
--	}
--
--	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock(&ls->ls_rsbtbl[i].lock);
--		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
--			r = rb_entry(n, struct dlm_rsb, res_hashnode);
--			list_add(&r->res_root_list, &ls->ls_root_list);
--			dlm_hold_rsb(r);
--		}
--
--		if (!RB_EMPTY_ROOT(&ls->ls_rsbtbl[i].toss))
--			log_error(ls, "dlm_create_root_list toss not empty");
--		spin_unlock(&ls->ls_rsbtbl[i].lock);
--	}
-- out:
--	up_write(&ls->ls_root_sem);
--	return error;
--}
--
--void dlm_release_root_list(struct dlm_ls *ls)
--{
--	struct dlm_rsb *r, *safe;
--
--	down_write(&ls->ls_root_sem);
--	list_for_each_entry_safe(r, safe, &ls->ls_root_list, res_root_list) {
--		list_del_init(&r->res_root_list);
--		dlm_put_rsb(r);
--	}
--	up_write(&ls->ls_root_sem);
--}
--
- void dlm_clear_toss(struct dlm_ls *ls)
- {
- 	struct rb_node *n, *next;
-diff --git a/fs/dlm/recover.h b/fs/dlm/recover.h
-index dbc51013ecad..0b54550ee055 100644
---- a/fs/dlm/recover.h
-+++ b/fs/dlm/recover.h
-@@ -23,8 +23,6 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq);
- int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc);
- int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq);
- void dlm_recovered_lock(struct dlm_rsb *r);
--int dlm_create_root_list(struct dlm_ls *ls);
--void dlm_release_root_list(struct dlm_ls *ls);
- void dlm_clear_toss(struct dlm_ls *ls);
- void dlm_recover_rsbs(struct dlm_ls *ls);
+ 	list_del(&pentry->list);
+-	atomic_dec(&processqueue_count);
++	if (atomic_dec_and_test(&processqueue_count))
++		wake_up(&processqueue_wq);
+ 	spin_unlock_bh(&processqueue_lock);
  
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index 4d17491dea2f..8eb42554ccb0 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -20,6 +20,45 @@
- #include "requestqueue.h"
- #include "recoverd.h"
+ 	for (;;) {
+@@ -895,7 +897,8 @@ static void process_dlm_messages(struct work_struct *work)
+ 		}
  
-+static void dlm_create_root_list(struct dlm_ls *ls)
-+{
-+	struct rb_node *n;
-+	struct dlm_rsb *r;
-+	int i;
-+
-+	down_write(&ls->ls_root_sem);
-+	if (!list_empty(&ls->ls_root_list)) {
-+		log_error(ls, "root list not empty");
-+		goto out;
-+	}
-+
-+	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
-+		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
-+		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
-+			r = rb_entry(n, struct dlm_rsb, res_hashnode);
-+			list_add(&r->res_root_list, &ls->ls_root_list);
-+			dlm_hold_rsb(r);
-+		}
-+
-+		if (!RB_EMPTY_ROOT(&ls->ls_rsbtbl[i].toss))
-+			log_error(ls, "%s toss not empty", __func__);
-+		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
-+	}
-+ out:
-+	up_write(&ls->ls_root_sem);
-+}
-+
-+static void dlm_release_root_list(struct dlm_ls *ls)
-+{
-+	struct dlm_rsb *r, *safe;
-+
-+	down_write(&ls->ls_root_sem);
-+	list_for_each_entry_safe(r, safe, &ls->ls_root_list, res_root_list) {
-+		list_del_init(&r->res_root_list);
-+		dlm_put_rsb(r);
-+	}
-+	up_write(&ls->ls_root_sem);
-+}
+ 		list_del(&pentry->list);
+-		atomic_dec(&processqueue_count);
++		if (atomic_dec_and_test(&processqueue_count))
++			wake_up(&processqueue_wq);
+ 		spin_unlock_bh(&processqueue_lock);
+ 	}
+ }
+@@ -1511,7 +1514,20 @@ static void process_recv_sockets(struct work_struct *work)
+ 		/* CF_RECV_PENDING cleared */
+ 		break;
+ 	case DLM_IO_FLUSH:
+-		flush_workqueue(process_workqueue);
++		/* we can't flush the process_workqueue here because a
++		 * WQ_MEM_RECLAIM workequeue can occurr a deadlock for a non
++		 * WQ_MEM_RECLAIM workqueue such as process_workqueue. Instead
++		 * we have a waitqueue to wait until all messages are
++		 * processed.
++		 *
++		 * This handling is only necessary to backoff the sender and
++		 * not queue all messages from the socket layer into DLM
++		 * processqueue. When DLM is capable to parse multiple messages
++		 * on an e.g. per socket basis this handling can might be
++		 * removed. Especially in a message burst we are too slow to
++		 * process messages and the queue will fill up memory.
++		 */
++		wait_event(processqueue_wq, !atomic_read(&processqueue_count));
+ 		fallthrough;
+ 	case DLM_IO_RESCHED:
+ 		cond_resched();
+@@ -1701,11 +1717,7 @@ static int work_start(void)
+ 		return -ENOMEM;
+ 	}
  
- /* If the start for which we're re-enabling locking (seq) has been superseded
-    by a newer stop (ls_recover_seq), we need to leave locking disabled.
+-	/* ordered dlm message process queue,
+-	 * should be converted to a tasklet
+-	 */
+-	process_workqueue = alloc_ordered_workqueue("dlm_process",
+-						    WQ_HIGHPRI | WQ_MEM_RECLAIM);
++	process_workqueue = alloc_workqueue("dlm_process", WQ_HIGHPRI | WQ_BH, 0);
+ 	if (!process_workqueue) {
+ 		log_print("can't start dlm_process");
+ 		destroy_workqueue(io_workqueue);
 -- 
 2.43.0
 
