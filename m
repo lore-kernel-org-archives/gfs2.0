@@ -1,142 +1,100 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB99152175;
-	Wed,  3 Apr 2024 17:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC09E171E44
+	for <gfs2@lists.linux.dev>; Fri,  5 Apr 2024 17:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712165059; cv=none; b=flpH2jzR0oic9Ki8XW3PQR/Uzukc63MF4vjJlu+lF/LnAdcmzoQaqrfy7Iuyzw61tzBjzIOozoKHQyB+acT2Wdx86BqiIgxDeeLteE+3lj/73HI1DhMpt3uEJMGY9906l8Q4nj8NL8+2kP+Xan+TZcDlc4lRSlrDjNthnwXrUg0=
+	t=1712339198; cv=none; b=fM7KVmgpzjziYhyUux5AobqxEeC854c8Qu5O+9eAbv8MK/PDx2of0ICg5ERxG7oQs4bcmoE5YQxcGXCDNlduKvk6vr3GWC625S7ZqgB12ytbUzbAIPxXBG3qA4LGuFoleioAt1zpwfmru7OtBU3jx9L6Y+uzmbJAXPl9xs+mUiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712165059; c=relaxed/simple;
-	bh=2orlmU3+ddfZAx8MxU/h/dDPtWin+PllLR1kRvdFdF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn0+CjYdyGe35UqsVbNUUsiubFeKVTrppFptcZ9VTNyd0VlFhiLB43kkJKh6tX0H3Atcn0IoR2aXDJwvPOjt7IA32vV4TiGEiG+xKb8Cbn1M2mVffISgDNISyf5Xvu1utBrD5EvOns20gqkeyxcPu0q5JBQnLOpcdkFUBIrzUw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lnRKjm1r; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1712339198; c=relaxed/simple;
+	bh=Wm0mo8vXdN1wzFCD7wJWuJkFZ/j7Ky+KnJ65ppXBp5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WhO6uu2QzMC3Akt0Xb7GIVzTvBzZR7imlAjG/7bJTrjHIcFOIVomwEB1NnA7G2xITGfqPfGG13FTNAyxivb/2kVh3HH4CYD0LwhQEJD0OSgu9K+I9StAn4pVoqeXl3xcYVagqLnGCMQBHxBty7kPbAW9cMRTp0yg9KYy8fZGibc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A9qdep1i; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lnRKjm1r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=8F4T2283ehKXbosjyapVzSIDjXmVUuBE7uMEC2QD6mI=; b=lnRKjm1rnYPHl+KuzlczISLgLf
-	ufclFtmCJA3gjmQ7BPMedt+YHuEA7irzgpl1Vdo/zDma73UTcidoQ5sP8dn4zXm1u9o8TRgaU498k
-	EJPjFog0fTFY4DGMJXcNXRuGVDusQcV4m5kmbzE8GRhWnhxmzS8F150oAl6Y/7Jhi9f3c7fgmQDFg
-	PuM0+0DiK64LI9HRXNtfGRWGsm1lqiZjWARpJmvp/Hy5PJiQ8QOvnqJd18TjsCTQ0FX4rEvdPc6Dk
-	lBZ9cJRfngGwE6U6S0bt6e1NEmT0eX9kKkMTzIdW7e6wCLVYWL+ltoEesIGJoDd/u+WWJ2nEjAdcI
-	xBiMBu3g==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rs4LE-0000000651h-2Ud3;
-	Wed, 03 Apr 2024 17:24:04 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-fsdevel@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH 3/4] gfs2: Simplify gfs2_read_super
-Date: Wed,  3 Apr 2024 18:23:50 +0100
-Message-ID: <20240403172400.1449213-4-willy@infradead.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240403172400.1449213-1-willy@infradead.org>
-References: <20240403172400.1449213-1-willy@infradead.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A9qdep1i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712339195;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZGuClJGV6i73juVUdyhNxtuynVX+peFTFkaVD25mGnQ=;
+	b=A9qdep1i6qi2pXhEmu4oObKM9l9G2g+aErtGnJz+J6Y1Qn+5AJE6rfby6fs2NeJf5UnWtT
+	f8RxJ13gSLZd1aPVWdbxJpI/w9jcgCjSC9AGDx1Cv5lCo/GKijsQw6Op4Q4Qlt7jwW76t5
+	r752kP4lh9c5Bx/Q7XBm5MuIcbZthzc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-Zsh7Ar7COdOyu2E8MB-s7g-1; Fri, 05 Apr 2024 13:46:34 -0400
+X-MC-Unique: Zsh7Ar7COdOyu2E8MB-s7g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CD818A3D34
+	for <gfs2@lists.linux.dev>; Fri,  5 Apr 2024 17:46:32 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8455E2166AFE;
+	Fri,  5 Apr 2024 17:46:32 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: aahringo@redhat.com
+Subject: [PATCH dlm-tool] tool: ignore file header on lockdebug
+Date: Fri,  5 Apr 2024 13:46:18 -0400
+Message-ID: <20240405174618.2277289-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Use submit_bio_wait() instead of hand-rolling our own synchronous
-wait.  Also allocate the BIO on the stack since we're not deep in
-the call stack at this point.
+Since kernel commit 5beebc1dda47 ("dlm: update format header reflect
+current format") the headline of some debugfs entries was updated to the
+current format so it is possible to lookup what - what is instead of
+looking up the source code. As side effect there is now an ugly:
 
-There's no need to kmap the page, since it isn't allocated from HIGHMEM.
-Turn the GFP_NOFS allocation into GFP_KERNEL; if the page allocator
-enters reclaim, we cannot be called as the filesystem has not yet been
-initialised and so has no pages to reclaim.
+print_rsb error rv 2 line "rsb ptr nodeid first_lkid flags
+!root_list_empty !recover_list_empty recover_locks_count len
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+in front of every lockdebug dump as dlm_tool parse everything (including
+the file header). Afterwards the dump proceeds. This patch will ignore
+the first line of lockdebug in dlm_tool that is not required for
+lockdebug pretty printout.
 ---
- fs/gfs2/ops_fstype.c | 46 +++++++++++++-------------------------------
- 1 file changed, 13 insertions(+), 33 deletions(-)
+ dlm_tool/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 572d58e86296..f98651229c8f 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -184,22 +184,10 @@ static int gfs2_check_sb(struct gfs2_sbd *sdp, int silent)
- 	return 0;
- }
+diff --git a/dlm_tool/main.c b/dlm_tool/main.c
+index 2e6810d6..5878ebc5 100644
+--- a/dlm_tool/main.c
++++ b/dlm_tool/main.c
+@@ -1085,6 +1085,10 @@ static void do_lockdebug(char *name)
+ 	memset(&summary, 0, sizeof(struct summary));
+ 	memset(&info, 0, sizeof(struct rinfo));
  
--static void end_bio_io_page(struct bio *bio)
--{
--	struct page *page = bio->bi_private;
--
--	if (!bio->bi_status)
--		SetPageUptodate(page);
--	else
--		pr_warn("error %d reading superblock\n", bio->bi_status);
--	unlock_page(page);
--}
--
--static void gfs2_sb_in(struct gfs2_sbd *sdp, const void *buf)
-+static void gfs2_sb_in(struct gfs2_sbd *sdp, const struct gfs2_sb *str)
- {
- 	struct gfs2_sb_host *sb = &sdp->sd_sb;
- 	struct super_block *s = sdp->sd_vfs;
--	const struct gfs2_sb *str = buf;
++	/* skip file header */
++	if (!fgets(line, LOCK_LINE_MAX, file))
++		goto done;
++
+ 	while (fgets(line, LOCK_LINE_MAX, file)) {
  
- 	sb->sb_magic = be32_to_cpu(str->sb_header.mh_magic);
- 	sb->sb_type = be32_to_cpu(str->sb_header.mh_type);
-@@ -239,34 +227,26 @@ static void gfs2_sb_in(struct gfs2_sbd *sdp, const void *buf)
- static int gfs2_read_super(struct gfs2_sbd *sdp, sector_t sector, int silent)
- {
- 	struct super_block *sb = sdp->sd_vfs;
--	struct gfs2_sb *p;
- 	struct page *page;
--	struct bio *bio;
-+	struct bio_vec bvec;
-+	struct bio bio;
-+	int err;
- 
--	page = alloc_page(GFP_NOFS);
-+	page = alloc_page(GFP_KERNEL);
- 	if (unlikely(!page))
- 		return -ENOMEM;
- 
--	ClearPageUptodate(page);
--	ClearPageDirty(page);
--	lock_page(page);
--
--	bio = bio_alloc(sb->s_bdev, 1, REQ_OP_READ | REQ_META, GFP_NOFS);
--	bio->bi_iter.bi_sector = sector * (sb->s_blocksize >> 9);
--	__bio_add_page(bio, page, PAGE_SIZE, 0);
-+	bio_init(&bio, sb->s_bdev, &bvec, 1, REQ_OP_READ | REQ_META);
-+	bio.bi_iter.bi_sector = sector * (sb->s_blocksize >> 9);
-+	__bio_add_page(&bio, page, PAGE_SIZE, 0);
- 
--	bio->bi_end_io = end_bio_io_page;
--	bio->bi_private = page;
--	submit_bio(bio);
--	wait_on_page_locked(page);
--	bio_put(bio);
--	if (!PageUptodate(page)) {
-+	err = submit_bio_wait(&bio);
-+	if (err) {
-+		pr_warn("error %d reading superblock\n", err);
- 		__free_page(page);
--		return -EIO;
-+		return err;
+ 		if (old)
+@@ -1114,6 +1118,7 @@ static void do_lockdebug(char *name)
+  raw:
+ 		printf("%s", line);
  	}
--	p = kmap(page);
--	gfs2_sb_in(sdp, p);
--	kunmap(page);
-+	gfs2_sb_in(sdp, page_address(page));
- 	__free_page(page);
- 	return gfs2_check_sb(sdp, silent);
- }
++ done:
+ 	count_rinfo(&summary, &info);
+ 	clear_rinfo(&info);
+ 	printf("\n");
 -- 
 2.43.0
 
