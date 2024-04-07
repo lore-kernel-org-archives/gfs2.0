@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680C07E58F;
-	Sun,  7 Apr 2024 13:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB2112DD84;
+	Sun,  7 Apr 2024 13:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712495563; cv=none; b=FZgfxpU43qW7N6t6A98rM9doD6YcvPPQfdbgmX/mglDWlTbEnQ06qlB6lT9g3OLIzqaz9vEEG19KN8/jlGfbnlRbyt49wINsio7HcwH96jYP6xqYaZYXV00QtQJuBloL7768NEwsYo+qw691MtG1LC/oNI76hIMSC4V3hbhBVGM=
+	t=1712495603; cv=none; b=jZdBw7DbRT/BjnmuMigeP+FVUvI3+I92ChhsEzo2P5xMg6IgD+Wna3FgC5yJf7Vl3dflYia45u4eUFW/jmLARvEotgjeeaCrHp4sFt7ex0I3eKXQuwNUEq/3vY3PhMh/Pl46npHM+QOcwYAbW65pin6jOEXGrZkPgUg4PRGSO90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712495563; c=relaxed/simple;
-	bh=8UFHsvHgzCsXgZDjS9bHr7Ics7xVVOT44/zZgR3dvCY=;
+	s=arc-20240116; t=1712495603; c=relaxed/simple;
+	bh=ExiDq7Dr9hNGSblPCeuSJ3kySLnJtO2FQk3DC3vnvC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtgVsmMZiGivhGtpXYA6L9lKs/1UCMulDl+crjI1MYlvanvgPp9Q8LmJ2QgWqYY5HaY0zE+kkdG6kvDAshGOK+zVITrsWawTQ6RXp8E3yodyNgLUT9AQsxUlDuULXQsd7LuFswa54A18DrpPSHK9+eSkUlpquvOc/NJuzJpkn1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hx4Sfm0r; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=myMEQEGiDeQu2D7/n818bSbqdth3SWKjsCtfeOSp0cvjLkOqk+gVJRJAjCb9vLcnayLAG7sYbeMStruApVINExBb+YcA9c2Jwlwa7OpLN/5S83PKSF870uiTOeCoxLRPihWkV6TISvvPnUrJkH4bx2WGz5UeZ08RqdxKmlSuaFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3vC4lsA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hx4Sfm0r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911A1C43394;
-	Sun,  7 Apr 2024 13:12:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3vC4lsA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE557C43390;
+	Sun,  7 Apr 2024 13:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712495563;
-	bh=8UFHsvHgzCsXgZDjS9bHr7Ics7xVVOT44/zZgR3dvCY=;
+	s=k20201202; t=1712495603;
+	bh=ExiDq7Dr9hNGSblPCeuSJ3kySLnJtO2FQk3DC3vnvC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx4Sfm0r88cEAwrJZ+E1Lz2c3Llzm7U3mZgGLXzD62zrID2/dKg8gxPW2Y/paEP9F
-	 u5aC2OeWf2VGXs/IipDdVSjLvTpaRJi6wyz1mBJ7NUkQ6VA3sNOKkTMDE1FI77HFGC
-	 amhS3ShlUMQcT6oqXmyo7879YEs+R8+qjv4HWuU49b2FYcH06y+Vj4rGP2/vDJd+sf
-	 oCY2N1OQaLcS//ueVybE9zJClEvmQnlOkewiwshgYtcbGBLC1qw5fiFLdulPdt2iv/
-	 rOMcTbHGDmivSI5tMrs0TZtGHwX18F3kEBPr/4HWkVsN4GCSWGoN47G+rE/D+IZf7w
-	 kiLTCgafWR8/g==
+	b=N3vC4lsAVB2uOD6hVnXNobY26G9GJA24lU/E2CcdWfEw+Fmq0PNOR953sWf1Olr8W
+	 3VfrJQL0cbM1RHo3Pmo1+Twf6kQcNuvG6N2A7VO65EEO5ZJq+oIjJ4dG8Dkaux5TwL
+	 MAlXuRm1YGztWkNN43KMndxsYUR0q+1iPlOwbJECWkPH+Ao7AG7Abvqs0fLpC/1q1a
+	 6SXVXc/CC2DVV1zpK3ClszHnToF1wPj/cqEevConw6hbmLS2FRyoXA+R3aVcfWIMmE
+	 b4f3WkxurIBuIEdjwM3w8ZTbba5CzAnavHPNpMVJivr5cdhUNWangAQPmwIDdzwcOp
+	 l7ncM5Ub4RAtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -33,12 +33,12 @@ Cc: Andrew Price <anprice@redhat.com>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 08/22] gfs2: Fix invalid metadata access in punch_hole
-Date: Sun,  7 Apr 2024 09:12:07 -0400
-Message-ID: <20240407131231.1051652-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 05/13] gfs2: Fix invalid metadata access in punch_hole
+Date: Sun,  7 Apr 2024 09:13:04 -0400
+Message-ID: <20240407131316.1052393-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240407131231.1051652-1-sashal@kernel.org>
-References: <20240407131231.1051652-1-sashal@kernel.org>
+In-Reply-To: <20240407131316.1052393-1-sashal@kernel.org>
+References: <20240407131316.1052393-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.25
+X-stable-base: Linux 6.1.84
 Content-Transfer-Encoding: 8bit
 
 From: Andrew Price <anprice@redhat.com>
@@ -67,10 +67,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index ef7017fb69512..2b578615607e4 100644
+index e7537fd305dd2..9ad11e5bf14c3 100644
 --- a/fs/gfs2/bmap.c
 +++ b/fs/gfs2/bmap.c
-@@ -1715,7 +1715,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+@@ -1702,7 +1702,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
  	struct buffer_head *dibh, *bh;
  	struct gfs2_holder rd_gh;
  	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
@@ -80,15 +80,15 @@ index ef7017fb69512..2b578615607e4 100644
  	__u16 start_list[GFS2_MAX_META_HEIGHT];
  	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
  	unsigned int start_aligned, end_aligned;
-@@ -1726,7 +1727,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+@@ -1713,7 +1714,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
  	u64 prev_bnr = 0;
  	__be64 *start, *end;
  
 -	if (offset >= maxsize) {
 +	if (offset + bsize - 1 >= maxsize) {
  		/*
- 		 * The starting point lies beyond the allocated metadata;
- 		 * there are no blocks to deallocate.
+ 		 * The starting point lies beyond the allocated meta-data;
+ 		 * there are no blocks do deallocate.
 -- 
 2.43.0
 
