@@ -1,100 +1,237 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC09E171E44
-	for <gfs2@lists.linux.dev>; Fri,  5 Apr 2024 17:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AA61C0DF3
+	for <gfs2@lists.linux.dev>; Sun,  7 Apr 2024 05:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712339198; cv=none; b=fM7KVmgpzjziYhyUux5AobqxEeC854c8Qu5O+9eAbv8MK/PDx2of0ICg5ERxG7oQs4bcmoE5YQxcGXCDNlduKvk6vr3GWC625S7ZqgB12ytbUzbAIPxXBG3qA4LGuFoleioAt1zpwfmru7OtBU3jx9L6Y+uzmbJAXPl9xs+mUiM=
+	t=1712467107; cv=none; b=g7KNBnmNsCssyFMv3Pc3ol42X6/vsT5AFN5h5X3gedIxEDDWCIIO244k2UxvTAVhgw1heeFEaTZ/cwaW7YFYWdZlrVKA9TgI0jWKZcn5NmYFL88q2m+Mytox1AbQbFeuy7fw6KlWpQ9Bojn3CeriuoHPmHNJrzY7s3Tev4xxyCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712339198; c=relaxed/simple;
-	bh=Wm0mo8vXdN1wzFCD7wJWuJkFZ/j7Ky+KnJ65ppXBp5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WhO6uu2QzMC3Akt0Xb7GIVzTvBzZR7imlAjG/7bJTrjHIcFOIVomwEB1NnA7G2xITGfqPfGG13FTNAyxivb/2kVh3HH4CYD0LwhQEJD0OSgu9K+I9StAn4pVoqeXl3xcYVagqLnGCMQBHxBty7kPbAW9cMRTp0yg9KYy8fZGibc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A9qdep1i; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A9qdep1i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712339195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZGuClJGV6i73juVUdyhNxtuynVX+peFTFkaVD25mGnQ=;
-	b=A9qdep1i6qi2pXhEmu4oObKM9l9G2g+aErtGnJz+J6Y1Qn+5AJE6rfby6fs2NeJf5UnWtT
-	f8RxJ13gSLZd1aPVWdbxJpI/w9jcgCjSC9AGDx1Cv5lCo/GKijsQw6Op4Q4Qlt7jwW76t5
-	r752kP4lh9c5Bx/Q7XBm5MuIcbZthzc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-Zsh7Ar7COdOyu2E8MB-s7g-1; Fri, 05 Apr 2024 13:46:34 -0400
-X-MC-Unique: Zsh7Ar7COdOyu2E8MB-s7g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CD818A3D34
-	for <gfs2@lists.linux.dev>; Fri,  5 Apr 2024 17:46:32 +0000 (UTC)
-Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8455E2166AFE;
-	Fri,  5 Apr 2024 17:46:32 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: aahringo@redhat.com
-Subject: [PATCH dlm-tool] tool: ignore file header on lockdebug
-Date: Fri,  5 Apr 2024 13:46:18 -0400
-Message-ID: <20240405174618.2277289-1-aahringo@redhat.com>
+	s=arc-20240116; t=1712467107; c=relaxed/simple;
+	bh=MlmTbqDCXZmzQ8g8iy/EAy7eKiq1xs3qaAP7fvLBjbA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=G2pgroruhoZIHOEdXhwUe4M4xs9qZqlVQ3ofqdMiX4+yR45CoQUkJmePORP6+oyzstPETwAidVfBLzOWzmsc/a1OdGJVfgcIaUeLQDYTMgu4kI2+ZLjxtU3AWCkXriI5PTtcxSzeyJLkWXwp88VHNlcf0+RD+y7NkqpM/uYOa18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7d5dbbc3e9fso26703739f.1
+        for <gfs2@lists.linux.dev>; Sat, 06 Apr 2024 22:18:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712467105; x=1713071905;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MH8LCDUm7YgevgRehOESoxCJDka7u1fwHf2mJqhbyBc=;
+        b=tNon3m9tAyteyaKA5c/BvBe+pwdjpAGEWnhIAReHVrwZKhbZvCKwQcdr3NOWBjxV4h
+         fw1QIy9Idkz48JECLCtMoe9kZpJc92Mq+AbW636C6iwYNfgbiLTX699ZHSIH9Ry/CNvB
+         GImeHwB9sTl+A4so03Ni5w59FEo/ZArAAPT0Z2EKg6tGse0kor05+fpKG56YcZPO1iXS
+         Z36fZnt6y5u7SBFCq0x5mEU4v49XbGuEmCU9deBYeCd3woAf5HMZWBBrrK+dtu1XgKC5
+         kB5C77oVsXI0j618i85uj5BEeWQBlNCqVLtNsYkZBwjlJy7i1f/pK9RwfaSOZiSDFyUz
+         qqwg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7X8cbPKKNffuhj/Q9LQi8FWhUmUH43CJVIrbI4Bsq3eE/CVMqHgYvkmoJ2JpY1L2ctTDz2udfFK2YC2VyxFksBcILMg==
+X-Gm-Message-State: AOJu0Yz/UPUdwl7eoX7LQPcERXVXQl1ikVy5w5y5lqHFqOltZvR4DvuY
+	cbY3eUObkoCRLzZ1HCoBvTp2BUsY0BnD+uV4fLPicHZ99rsPVAY9YplgoaWUll2EIVsZJug1DwD
+	WJ6qVf2q7Xx8rjL0DGHDYLFiFhqpaA+9WNChdU+uywcJE0imCGKI5DRw=
+X-Google-Smtp-Source: AGHT+IFdLLzlKY5AWQR5Ou5hh1jTnjMqczmCfF4ygNKuMZt6ZcFQRq02Uqqt1yFcrxKtT7RhBzzpokKaDR0nflXrDWGZUH+1WzPL
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Received: by 2002:a05:6638:2999:b0:480:4e6a:bf00 with SMTP id
+ eh25-20020a056638299900b004804e6abf00mr105863jab.2.1712467105172; Sat, 06 Apr
+ 2024 22:18:25 -0700 (PDT)
+Date: Sat, 06 Apr 2024 22:18:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007e66d506157ad1bc@google.com>
+Subject: [syzbot] [gfs2?] possible deadlock in do_qc
+From: syzbot <syzbot+8ef337b733667f9a7ec8@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Since kernel commit 5beebc1dda47 ("dlm: update format header reflect
-current format") the headline of some debugfs entries was updated to the
-current format so it is possible to lookup what - what is instead of
-looking up the source code. As side effect there is now an ugly:
+Hello,
 
-print_rsb error rv 2 line "rsb ptr nodeid first_lkid flags
-!root_list_empty !recover_list_empty recover_locks_count len
+syzbot found the following issue on:
 
-in front of every lockdebug dump as dlm_tool parse everything (including
-the file header). Afterwards the dump proceeds. This patch will ignore
-the first line of lockdebug in dlm_tool that is not required for
-lockdebug pretty printout.
+HEAD commit:    707081b61156 Merge branch 'for-next/core', remote-tracking..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=15db6719180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=caeac3f3565b057a
+dashboard link: https://syzkaller.appspot.com/bug?extid=8ef337b733667f9a7ec8
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm64
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6cad68bf7532/disk-707081b6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1a27e5400778/vmlinux-707081b6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/67dfc53755d0/Image-707081b6.gz.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8ef337b733667f9a7ec8@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.8.0-rc7-syzkaller-g707081b61156 #0 Not tainted
+------------------------------------------------------
+syz-executor.3/6998 is trying to acquire lock:
+ffff0000ccd04ae8 (&sdp->sd_quota_mutex){+.+.}-{3:3}, at: do_qc+0xac/0x5c8 fs/gfs2/quota.c:720
+
+but task is already holding lock:
+ffff0000db995688 (&ip->i_rw_mutex){++++}-{3:3}, at: sweep_bh_for_rgrps fs/gfs2/bmap.c:1529 [inline]
+ffff0000db995688 (&ip->i_rw_mutex){++++}-{3:3}, at: punch_hole+0x1f58/0x2f7c fs/gfs2/bmap.c:1852
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&ip->i_rw_mutex){++++}-{3:3}:
+       down_read+0x58/0x2fc kernel/locking/rwsem.c:1526
+       __gfs2_iomap_get+0x138/0x1058 fs/gfs2/bmap.c:859
+       gfs2_iomap_get+0xd8/0x154 fs/gfs2/bmap.c:1413
+       bh_get+0x1ec/0x690 fs/gfs2/quota.c:417
+       qdsb_get+0x1c8/0x30c fs/gfs2/quota.c:566
+       gfs2_quota_hold+0x16c/0x560 fs/gfs2/quota.c:646
+       punch_hole+0xc10/0x2f7c fs/gfs2/bmap.c:1813
+       gfs2_iomap_end+0x448/0x618 fs/gfs2/bmap.c:1174
+       iomap_iter+0x1f4/0x1018 fs/iomap/iter.c:79
+       iomap_file_buffered_write+0x968/0xb30 fs/iomap/buffered-io.c:976
+       gfs2_file_buffered_write+0x468/0x76c fs/gfs2/file.c:1059
+       gfs2_file_write_iter+0x79c/0xdb0 fs/gfs2/file.c:1163
+       call_write_iter include/linux/fs.h:2087 [inline]
+       new_sync_write fs/read_write.c:497 [inline]
+       vfs_write+0x968/0xc3c fs/read_write.c:590
+       ksys_write+0x15c/0x26c fs/read_write.c:643
+       __do_sys_write fs/read_write.c:655 [inline]
+       __se_sys_write fs/read_write.c:652 [inline]
+       __arm64_sys_write+0x7c/0x90 fs/read_write.c:652
+       __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+       invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+       el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+       do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+       el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+       el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+       el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+
+-> #0 (&sdp->sd_quota_mutex){+.+.}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3134 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+       validate_chain kernel/locking/lockdep.c:3869 [inline]
+       __lock_acquire+0x3384/0x763c kernel/locking/lockdep.c:5137
+       lock_acquire+0x23c/0x71c kernel/locking/lockdep.c:5754
+       __mutex_lock_common+0x190/0x21a0 kernel/locking/mutex.c:608
+       __mutex_lock kernel/locking/mutex.c:752 [inline]
+       mutex_lock_nested+0x2c/0x38 kernel/locking/mutex.c:804
+       do_qc+0xac/0x5c8 fs/gfs2/quota.c:720
+       gfs2_quota_change+0x238/0x728 fs/gfs2/quota.c:1315
+       punch_hole+0x2a30/0x2f7c fs/gfs2/bmap.c:1953
+       gfs2_iomap_end+0x448/0x618 fs/gfs2/bmap.c:1174
+       iomap_iter+0x1f4/0x1018 fs/iomap/iter.c:79
+       iomap_file_buffered_write+0x968/0xb30 fs/iomap/buffered-io.c:976
+       gfs2_file_buffered_write+0x468/0x76c fs/gfs2/file.c:1059
+       gfs2_file_write_iter+0x79c/0xdb0 fs/gfs2/file.c:1163
+       call_write_iter include/linux/fs.h:2087 [inline]
+       new_sync_write fs/read_write.c:497 [inline]
+       vfs_write+0x968/0xc3c fs/read_write.c:590
+       ksys_write+0x15c/0x26c fs/read_write.c:643
+       __do_sys_write fs/read_write.c:655 [inline]
+       __se_sys_write fs/read_write.c:652 [inline]
+       __arm64_sys_write+0x7c/0x90 fs/read_write.c:652
+       __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+       invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+       el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+       do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+       el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+       el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+       el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&ip->i_rw_mutex);
+                               lock(&sdp->sd_quota_mutex);
+                               lock(&ip->i_rw_mutex);
+  lock(&sdp->sd_quota_mutex);
+
+ *** DEADLOCK ***
+
+6 locks held by syz-executor.3/6998:
+ #0: ffff0000d5936348 (&f->f_pos_lock){+.+.}-{3:3}, at: __fdget_pos+0x218/0x2a4 fs/file.c:1191
+ #1: ffff0000f2b02420 (sb_writers#24){.+.+}-{0:0}, at: file_start_write include/linux/fs.h:2794 [inline]
+ #1: ffff0000f2b02420 (sb_writers#24){.+.+}-{0:0}, at: vfs_write+0x368/0xc3c fs/read_write.c:586
+ #2: ffff0000db9951f0 (&sb->s_type->i_mutex_key#27){+.+.}-{3:3}, at: inode_lock include/linux/fs.h:804 [inline]
+ #2: ffff0000db9951f0 (&sb->s_type->i_mutex_key#27){+.+.}-{3:3}, at: gfs2_file_write_iter+0x2ac/0xdb0 fs/gfs2/file.c:1114
+ #3: ffff0000f2b02610 (sb_internal#6){.+.+}-{0:0}, at: gfs2_trans_begin+0x8c/0x100 fs/gfs2/trans.c:118
+ #4: ffff0000ccd05060 (&sdp->sd_log_flush_lock){++++}-{3:3}, at: __gfs2_trans_begin+0x510/0x908 fs/gfs2/trans.c:87
+ #5: ffff0000db995688 (&ip->i_rw_mutex){++++}-{3:3}, at: sweep_bh_for_rgrps fs/gfs2/bmap.c:1529 [inline]
+ #5: ffff0000db995688 (&ip->i_rw_mutex){++++}-{3:3}, at: punch_hole+0x1f58/0x2f7c fs/gfs2/bmap.c:1852
+
+stack backtrace:
+CPU: 0 PID: 6998 Comm: syz-executor.3 Not tainted 6.8.0-rc7-syzkaller-g707081b61156 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call trace:
+ dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:291
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:298
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ dump_stack+0x1c/0x28 lib/dump_stack.c:113
+ print_circular_bug+0x150/0x1b8 kernel/locking/lockdep.c:2060
+ check_noncircular+0x310/0x404 kernel/locking/lockdep.c:2187
+ check_prev_add kernel/locking/lockdep.c:3134 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+ validate_chain kernel/locking/lockdep.c:3869 [inline]
+ __lock_acquire+0x3384/0x763c kernel/locking/lockdep.c:5137
+ lock_acquire+0x23c/0x71c kernel/locking/lockdep.c:5754
+ __mutex_lock_common+0x190/0x21a0 kernel/locking/mutex.c:608
+ __mutex_lock kernel/locking/mutex.c:752 [inline]
+ mutex_lock_nested+0x2c/0x38 kernel/locking/mutex.c:804
+ do_qc+0xac/0x5c8 fs/gfs2/quota.c:720
+ gfs2_quota_change+0x238/0x728 fs/gfs2/quota.c:1315
+ punch_hole+0x2a30/0x2f7c fs/gfs2/bmap.c:1953
+ gfs2_iomap_end+0x448/0x618 fs/gfs2/bmap.c:1174
+ iomap_iter+0x1f4/0x1018 fs/iomap/iter.c:79
+ iomap_file_buffered_write+0x968/0xb30 fs/iomap/buffered-io.c:976
+ gfs2_file_buffered_write+0x468/0x76c fs/gfs2/file.c:1059
+ gfs2_file_write_iter+0x79c/0xdb0 fs/gfs2/file.c:1163
+ call_write_iter include/linux/fs.h:2087 [inline]
+ new_sync_write fs/read_write.c:497 [inline]
+ vfs_write+0x968/0xc3c fs/read_write.c:590
+ ksys_write+0x15c/0x26c fs/read_write.c:643
+ __do_sys_write fs/read_write.c:655 [inline]
+ __se_sys_write fs/read_write.c:652 [inline]
+ __arm64_sys_write+0x7c/0x90 fs/read_write.c:652
+ __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+ el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+
+
 ---
- dlm_tool/main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/dlm_tool/main.c b/dlm_tool/main.c
-index 2e6810d6..5878ebc5 100644
---- a/dlm_tool/main.c
-+++ b/dlm_tool/main.c
-@@ -1085,6 +1085,10 @@ static void do_lockdebug(char *name)
- 	memset(&summary, 0, sizeof(struct summary));
- 	memset(&info, 0, sizeof(struct rinfo));
- 
-+	/* skip file header */
-+	if (!fgets(line, LOCK_LINE_MAX, file))
-+		goto done;
-+
- 	while (fgets(line, LOCK_LINE_MAX, file)) {
- 
- 		if (old)
-@@ -1114,6 +1118,7 @@ static void do_lockdebug(char *name)
-  raw:
- 		printf("%s", line);
- 	}
-+ done:
- 	count_rinfo(&summary, &info);
- 	clear_rinfo(&info);
- 	printf("\n");
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
