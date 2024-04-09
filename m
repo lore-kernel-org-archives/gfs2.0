@@ -1,51 +1,51 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEBD153594
-	for <gfs2@lists.linux.dev>; Tue,  9 Apr 2024 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C174152DE2
+	for <gfs2@lists.linux.dev>; Tue,  9 Apr 2024 16:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712681126; cv=none; b=WNPDkmDV4XzL3iebg2hjDs4vJYvWZ0Io6cnmQuG5Iv5otTjtftT/DXs0z6o+FY2h1m5jzv0x105/86eJ/k6geJhq0KeADFjqy8UbxciyK2+HtKctNqDd3rl0bHTi2CB2Sq7pDAbfzO2Pi+lyAFR0N76RaeZAgFwX6/JGuce2x/g=
+	t=1712681127; cv=none; b=SR8LkjTmE+Bgwkz3lmeLb5ajWtlc62HehVIkY4Bqe9N1qJXX+qLo1sTf/vFrH7pPuTxdcyauc8YYZTWRaWwIWeTxUwSqtSiexGaPtT1f6YGfgq7iJI/s/ph+VhlTX5hXirTIL1hgL4GImJoJr1M0blnki/XL1rUvC2o23oQwNlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712681126; c=relaxed/simple;
-	bh=/2CM6dCPDQDOLrtYeYlavaAFML9DzFYizOqHfo2mimg=;
+	s=arc-20240116; t=1712681127; c=relaxed/simple;
+	bh=eFENms8ozOuPCBh+AlMy1+Dw3Qo6mX7TqBjzuybzsA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vxo6LxvK8GnaEhxOe3MK0w/EmJe3gGCsHG7sSuuP1Uv2qXkQzsZPyb9/ahn0INAb1oxwmfNzD4WVxvKmAy5oVqOvloWTm7XXoSApz+s6+QtPZNg7PXDN2/DKOL+S3oQ2qoqIGbY4kgWR7h55dvdtulnY3xijd8QYaEzUkT7ur4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ir7Y0yGU; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=kt2khMegBMqk6UwWOc7wIADlR1qSc85IOdzKrsxK7Lh58QZoCuBncUS4dZsrGayDx8KX8dbG6DcfmdYAVvsAtdAzZJQKX5uEOpXxN7qGX1Jp/ySczqcttExqVJSrkMdH9OOD30YIKibXCkwXBC/3/pmg/lO9/QpDIoM0F2zpYnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4AZx2Dd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ir7Y0yGU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4AZx2Dd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712681124;
+	s=mimecast20190719; t=1712681125;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kx+vfb1pRg5yFxrvSCS5MZ3gpPRxnRk0NCYu4XB5/ac=;
-	b=Ir7Y0yGU9f+D9Amm1JD/aioqpezf/1Qjs2tPmyHS2UChk9QWb/z7GY59GsWuJIh2vpZU/F
-	UL9GoyRF4KHyMRAxW79SQvfi/gjJq6lx5RIkvnzBoq8i7KCJkWXaxyrs0IPVRwdZZavhwK
-	AZFErm8pdygq4b+kb8mipknDEuQ/R+o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-Iip1Y17QMn-4Di_cM_noTA-1; Tue,
- 09 Apr 2024 12:45:23 -0400
-X-MC-Unique: Iip1Y17QMn-4Di_cM_noTA-1
+	bh=a8TqokGbH8s5Wk/qQp7Fbg4N3nBlOg5BqanfbtHUKKk=;
+	b=E4AZx2DdvTZyThH2ULqukXtBVD4rwPHlUUVtvYJdZ0VfvTjq3mrcLslf9okRzfn8Am4XH6
+	QZb6odtOVsZqsdEZyDoUwwO594QtE3Ro8fCK/+UAKRoDauhDH4CQdJo+7F6fmsufGmXyek
+	GcuamRjhYygoHpXZKO0ga2pTy2Cw4DU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-ZON2tfQHOGa_ZVZ2_4SANg-1; Tue, 09 Apr 2024 12:45:23 -0400
+X-MC-Unique: ZON2tfQHOGa_ZVZ2_4SANg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E8BF928EC102
-	for <gfs2@lists.linux.dev>; Tue,  9 Apr 2024 16:45:22 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC4DD80B3E0
+	for <gfs2@lists.linux.dev>; Tue,  9 Apr 2024 16:45:23 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.28])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6A354C0157E;
-	Tue,  9 Apr 2024 16:45:22 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2DE45C0157E;
+	Tue,  9 Apr 2024 16:45:23 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 12/15] Revert "gfs2: fix glock shrinker ref issues"
-Date: Tue,  9 Apr 2024 18:45:02 +0200
-Message-ID: <20240409164508.79570-13-agruenba@redhat.com>
+Subject: [PATCH 13/15] gfs2: Fix "Make glock lru list scanning safer"
+Date: Tue,  9 Apr 2024 18:45:03 +0200
+Message-ID: <20240409164508.79570-14-agruenba@redhat.com>
 In-Reply-To: <20240409164508.79570-1-agruenba@redhat.com>
 References: <20240409164508.79570-1-agruenba@redhat.com>
 Precedence: bulk
@@ -60,34 +60,71 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This reverts commit 62862485a4c3a52029fc30f4bdde9af04afdafc9.
+Commit 228804a35caa tried to add a refcount check to
+gfs2_scan_glock_lru() to make sure that glocks that are still referenced
+cannot be freed.  It failed to account for the bias state_change() adds
+to the refcount for held glocks, so held glocks are no longer removed
+from the glock cache, which can lead to out-of-memory problems.  Fix
+that.  (The inodes those glocks are associated with do get shrunk and do
+get pushed out of memory.)
 
-Commit 62862485a4c3 tried to fix issues introduced by commit
-228804a35caa ("gfs2: Make glock lru list scanning safer"), but like that
-commit, it failed to account for the bias state_change() adds to the
-glock reference count for locked glocks.  Revert commit 62862485a4c3 so
-that we can fix commit 228804a35caa properly.
+In addition, use the same eligibility check in gfs2_scan_glock_lru() and
+gfs2_dispose_glock_lru().
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/glock.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/gfs2/glock.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index ec1f8eb28950..2882a42e88aa 100644
+index 2882a42e88aa..04e0a8ac61d7 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -2056,9 +2056,7 @@ static long gfs2_scan_glock_lru(int nr)
- 		if (!test_bit(GLF_LOCK, &gl->gl_flags)) {
- 			if (!spin_trylock(&gl->gl_lockref.lock))
- 				continue;
--			if (gl->gl_lockref.count <= 1 &&
--			    (gl->gl_state == LM_ST_UNLOCKED ||
--			     demote_ok(gl))) {
-+			if (!gl->gl_lockref.count) {
- 				list_move(&gl->gl_lru, &dispose);
- 				atomic_dec(&lru_count);
- 				freed++;
+@@ -1987,6 +1987,14 @@ static int glock_cmp(void *priv, const struct list_head *a,
+ 	return 0;
+ }
+ 
++static bool can_free_glock(struct gfs2_glock *gl)
++{
++	bool held = gl->gl_state != LM_ST_UNLOCKED;
++
++	return !test_bit(GLF_LOCK, &gl->gl_flags) &&
++	       gl->gl_lockref.count == held;
++}
++
+ /**
+  * gfs2_dispose_glock_lru - Demote a list of glocks
+  * @list: The list to dispose of
+@@ -2020,7 +2028,7 @@ __acquires(&lru_lock)
+ 			atomic_inc(&lru_count);
+ 			continue;
+ 		}
+-		if (test_bit(GLF_LOCK, &gl->gl_flags)) {
++		if (!can_free_glock(gl)) {
+ 			spin_unlock(&gl->gl_lockref.lock);
+ 			goto add_back_to_lru;
+ 		}
+@@ -2052,16 +2060,10 @@ static long gfs2_scan_glock_lru(int nr)
+ 	list_for_each_entry_safe(gl, next, &lru_list, gl_lru) {
+ 		if (nr-- <= 0)
+ 			break;
+-		/* Test for being demotable */
+-		if (!test_bit(GLF_LOCK, &gl->gl_flags)) {
+-			if (!spin_trylock(&gl->gl_lockref.lock))
+-				continue;
+-			if (!gl->gl_lockref.count) {
+-				list_move(&gl->gl_lru, &dispose);
+-				atomic_dec(&lru_count);
+-				freed++;
+-			}
+-			spin_unlock(&gl->gl_lockref.lock);
++		if (can_free_glock(gl)) {
++			list_move(&gl->gl_lru, &dispose);
++			atomic_dec(&lru_count);
++			freed++;
+ 		}
+ 	}
+ 	if (!list_empty(&dispose))
 -- 
 2.44.0
 
