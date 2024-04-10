@@ -1,54 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A2015FA82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE131649D3
 	for <gfs2@lists.linux.dev>; Wed, 10 Apr 2024 13:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712756953; cv=none; b=cEUx7AOOBrazU+KeFaUK8SsSnWE1l2R18+D6IRhyrNn6n3XgC84F1Pg2nPZf/hVpnGdysQ9CaqT2h0GTC/ld29WiZg9iqFSltLe07FG74Jv6KDDynH5JvrQZk9tjmmDmmR1VetAvjmBZTOkp1vbUa/BgaT/tw+ERIgxmxTf26KM=
+	t=1712756953; cv=none; b=GjOAhQFKYpS+MB2QOsQI0AIf85JwS2IjOKCUVpGstfSPzQ0B9QHkeGEeM7KjLfPhAD2kfLbcGmtWUXtTM3d4ly1jfX/llrMHC/36NlZqQEJToD4LdPQfbw7Y7wfyvz007ryxrG2Me9UHDBs/wCopCd5v3o2KI7375d7qXrgIK0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712756953; c=relaxed/simple;
-	bh=oIB3SWBbiaOEVl7Vg50Y+SJr7jipZ4HSXTBwRunTN5M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HjHhfJUm+9Oc2dvIcK3iUUgIQ1ysBCz8hN9mtKwPg7h8geicDJ56odFjls/FOIqJ4pZyLL6QzSut6/zMeM0d7vSplxUyHHASqEzHZR39xwrQ0zmBw8fZm0oV6zzNO4+m4EL0MyeHdEWqwfLseZhSqIgfzVRm5sf/S/Ix629lQ/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JbNYDI5K; arc=none smtp.client-ip=170.10.129.124
+	bh=XyhyMiTz/V7bK49AbI9BpDgfGt4mhk+RXt/NRVtSKX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KfXMVnBBJ3HE7QIIxOAbdz74U4Vk8YxM+S3t3mw0eUvY6l64H6hgvYcM+7o1vc9AY9O3c7tjuga5Er9FFEOAbjTjznVZEH/lQnJq6/E7H8MMKouwPycyID2Nj4CgVSvcEwwQP3EjeeV/QzSCzBIYo54/eqintT1sl1z9lpVfsvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BKXCuvdD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JbNYDI5K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BKXCuvdD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1712756950;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7tG5z+0KJ+kdtryysSw+vcMMAD/i/vs0LMKRXaLMMeQ=;
-	b=JbNYDI5K1kGzhCqzyn7ZjyYy9UC9P6sOCJcIlISqa3yC9GIADi4noqkXEWBA3upntmthBW
-	rckMFQUN150ufpwzgdvbceE+wVIpE8pf1grwuuN3kCStSreWhpuHuawEPE3D22M+8Jr81p
-	OHg6E4GtMkB7ehAzXjXdFS6wa4KnbOg=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=natD32SMD1SxmfoiGToxoiKoETqLjYl+hL/lBdNbapQ=;
+	b=BKXCuvdDffUXLy+IPaYYf7mM8N+rM5pL4wmoevpdqbz7S26mX/F5RBD+iRKjpadvp8UpRx
+	ESUkada5aMkO2LUikxp/lR/EpqtnW9SHTJebRLD0O90wO3KAZfMS0hxG1o63Gff2QxBeql
+	v7Q+wZEhTZPw2qLtvr9NrX3YvnVP8vI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-48uneWnQNAmeUHDbBXEEwA-1; Wed, 10 Apr 2024 09:49:09 -0400
-X-MC-Unique: 48uneWnQNAmeUHDbBXEEwA-1
+ us-mta-212-Hgb8vosfPkWL8FdeaNMvDw-1; Wed, 10 Apr 2024 09:49:08 -0400
+X-MC-Unique: Hgb8vosfPkWL8FdeaNMvDw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D6BD080B519
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8224B1049BD3
 	for <gfs2@lists.linux.dev>; Wed, 10 Apr 2024 13:49:08 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id CAA59C26A4B;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7685AC0157E;
 	Wed, 10 Apr 2024 13:49:08 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [RFC dlm/next 6/9] dlm: remove refcounting if rsb is on toss
-Date: Wed, 10 Apr 2024 09:48:55 -0400
-Message-ID: <20240410134858.3295266-7-aahringo@redhat.com>
-In-Reply-To: <20240410134858.3295266-1-aahringo@redhat.com>
-References: <20240410134858.3295266-1-aahringo@redhat.com>
+Subject: [RFC dlm/next 0/9] dlm: sand fix, rhashtable, timers and lookup hotpath speedup
+Date: Wed, 10 Apr 2024 09:48:49 -0400
+Message-ID: <20240410134858.3295266-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -61,210 +57,72 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-In the past we had problems when rsb have a reference counter greater
-than one when they are in the toss state. A rsb in the toss state is
-not "alive" anymore and should not have any other references holding
-than just the last one keeping it on the rsb hash. It is a delayed free
-as kind of garbage collection with an additional handling to move the
-rsb into the keep state thats alive again.
+Hi,
 
-The reference counter should only be used when the rsb is not in toss
-state (keep state), if the rsb isn't used anymore in keep state it will
-be moved to toss state where it can be freed on the right time. The
-release() function of the keep rsb will therefore set the RSB_TOSS state
-and does not kref_init() at this state as toss rsbs should never deal
-with any reference counting. If the rsb got alive again then the
-RSB_TOSS flag will be cleared and the kref_init() will be called to use
-reference counters when the rsb is in keep state.
+this is a RFC for an immense change in DLM rsb hashtable logic. It
+removes the double lookup functionality for rsb hashtables, convert to
+rhashtable instead of own bucket hlist hash implementation.
 
-There are warnings introduced now that will be triggered if we ever use
-any reference counting when a rsb is in toss state. All before
-kref_put() in toss state was only a sanity check if it ever wasn't 1.
-This will be removed and we directly free the rsb when it should be
-freed in the toss state. If there are still references around it is a
-bug.
+At first there is a fix for scand that I detected while I was
+implementing this patch series. It could be that remove messages are
+still send when the lockspace is releasing the resource that could occur
+into a use after free.
 
-This WARN_ON_ONCE() should hopefully find maybe more cases where we hold
-references of a toss rsb which we should not have as receive_remove() in
-the most cases requires to have the rsb in toss state. Otherwise we can
-run into problems when e.g. the directory rsb wasn't removed and the
-directory node tells the master node in case of a lookup message.
+There is a conversion to use lists (keep/toss lists) instead of
+iterating over the hash bucket. As we do a transition to rhashtable,
+they don't like to being iterated regarding to their own bucket sizing
+implementation that is sitting in the rhashtable implementation. We just
+introduce the lists to do the iteration, as advantage we have a huge
+reduce of code in the debugfs dump functionality as we use the dump list
+helpers of debugfs. There is also a potential refcount bug when holding
+rsb references of rsbs in toss state as receive remove message requires
+no rsb references being hold. Another issue is also holding rsb in keep
+state as they are not going into toss state when they required to.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c    | 61 ++++++++++++++++++++++++------------------------
- fs/dlm/lock.h    |  1 +
- fs/dlm/recover.c |  2 +-
- 3 files changed, 32 insertions(+), 32 deletions(-)
+It is now forbidden to hold references of rsbs in toss state. The
+refcounter must be only functional in rsb keep state. That hopefully
+will show is more invalid usage of the rsb refcounter if the rsb is in
+toss state.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index defb90b56b72..fee1a4164fc1 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -325,6 +325,8 @@ static void queue_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int rqmode)
- 
- static inline void hold_rsb(struct dlm_rsb *r)
- {
-+	/* rsbs in toss state never get referenced */
-+	WARN_ON(rsb_flag(r, RSB_TOSS));
- 	kref_get(&r->res_ref);
- }
- 
-@@ -631,6 +633,11 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 
- 	list_move(&r->res_rsbs_list, &ls->ls_keep);
- 	rsb_clear_flag(r, RSB_TOSS);
-+	/* rsb got out of toss state, it becomes alive again
-+	 * and we reinit the reference counter that is only
-+	 * valid for keep state rsbs
-+	 */
-+	kref_init(&r->res_ref);
- 	goto out_unlock;
- 
- 
-@@ -765,6 +772,11 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 
- 	list_move(&r->res_rsbs_list, &ls->ls_keep);
- 	rsb_clear_flag(r, RSB_TOSS);
-+	/* rsb got out of toss state, it becomes alive again
-+	 * and we reinit the reference counter that is only
-+	 * valid for keep state rsbs
-+	 */
-+	kref_init(&r->res_ref);
- 	goto out_unlock;
- 
- 
-@@ -1112,8 +1124,6 @@ static void toss_rsb(struct kref *kref)
- 	struct dlm_ls *ls = r->res_ls;
- 
- 	DLM_ASSERT(list_empty(&r->res_root_list), dlm_print_rsb(r););
--	kref_init(&r->res_ref);
--	WARN_ON(rsb_flag(r, RSB_TOSS));
- 	rsb_set_flag(r, RSB_TOSS);
- 	list_move(&r->res_rsbs_list, &ls->ls_toss);
- 	r->res_toss_time = jiffies;
-@@ -1129,16 +1139,20 @@ static void toss_rsb(struct kref *kref)
- static void unhold_rsb(struct dlm_rsb *r)
- {
- 	int rv;
-+
-+	/* rsbs in toss state never get referenced */
-+	WARN_ON(rsb_flag(r, RSB_TOSS));
- 	rv = kref_put(&r->res_ref, toss_rsb);
- 	DLM_ASSERT(!rv, dlm_dump_rsb(r););
- }
- 
--static void kill_rsb(struct kref *kref)
-+void free_toss_rsb(struct dlm_rsb *r)
- {
--	struct dlm_rsb *r = container_of(kref, struct dlm_rsb, res_ref);
-+	WARN_ON_ONCE(!rsb_flag(r, RSB_TOSS));
- 
--	/* All work is done after the return from kref_put() so we
--	   can release the write_lock before the remove and free. */
-+	/* check if all work is done after the rsb is on toss list
-+	 * and it can be freed.
-+	 */
- 
- 	DLM_ASSERT(list_empty(&r->res_lookup), dlm_dump_rsb(r););
- 	DLM_ASSERT(list_empty(&r->res_grantqueue), dlm_dump_rsb(r););
-@@ -1147,6 +1161,8 @@ static void kill_rsb(struct kref *kref)
- 	DLM_ASSERT(list_empty(&r->res_root_list), dlm_dump_rsb(r););
- 	DLM_ASSERT(list_empty(&r->res_recover_list), dlm_dump_rsb(r););
- 	DLM_ASSERT(list_empty(&r->res_masters_list), dlm_dump_rsb(r););
-+
-+	dlm_free_rsb(r);
- }
- 
- /* Attaching/detaching lkb's from rsb's is for rsb reference counting.
-@@ -1611,15 +1627,10 @@ static void shrink_bucket(struct dlm_ls *ls)
- 			continue;
- 		}
- 
--		if (!kref_put(&r->res_ref, kill_rsb)) {
--			log_error(ls, "tossed rsb in use %s", r->res_name);
--			continue;
--		}
--
- 		list_del(&r->res_rsbs_list);
- 		rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
- 				       dlm_rhash_rsb_params);
--		dlm_free_rsb(r);
-+		free_toss_rsb(r);
- 	}
- 
- 	if (need_shrink)
-@@ -1680,19 +1691,13 @@ static void shrink_bucket(struct dlm_ls *ls)
- 			continue;
- 		}
- 
--		if (!kref_put(&r->res_ref, kill_rsb)) {
--			spin_unlock_bh(&ls->ls_rsbtbl_lock);
--			log_error(ls, "remove_name in use %s", name);
--			continue;
--		}
--
- 		list_del(&r->res_rsbs_list);
- 		rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
- 				       dlm_rhash_rsb_params);
- 		send_remove(r);
- 		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 
--		dlm_free_rsb(r);
-+		free_toss_rsb(r);
- 	}
- }
- 
-@@ -4180,18 +4185,12 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 		return;
- 	}
- 
--	if (kref_put(&r->res_ref, kill_rsb)) {
--		list_del(&r->res_rsbs_list);
--		rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
--				       dlm_rhash_rsb_params);
--		spin_unlock_bh(&ls->ls_rsbtbl_lock);
--		dlm_free_rsb(r);
--	} else {
--		log_error(ls, "receive_remove from %d rsb ref error",
--			  from_nodeid);
--		dlm_print_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl_lock);
--	}
-+	list_del(&r->res_rsbs_list);
-+	rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
-+			       dlm_rhash_rsb_params);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
-+
-+	free_toss_rsb(r);
- }
- 
- static void receive_purge(struct dlm_ls *ls, const struct dlm_message *ms)
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index 33616d4b0cdb..b56a34802762 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -18,6 +18,7 @@ void dlm_receive_message_saved(struct dlm_ls *ls, const struct dlm_message *ms,
- 			       uint32_t saved_seq);
- void dlm_receive_buffer(const union dlm_packet *p, int nodeid);
- int dlm_modes_compat(int mode1, int mode2);
-+void free_toss_rsb(struct dlm_rsb *r);
- void dlm_put_rsb(struct dlm_rsb *r);
- void dlm_hold_rsb(struct dlm_rsb *r);
- int dlm_put_lkb(struct dlm_lkb *lkb);
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index c21ef115123b..d43189532b14 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -889,7 +889,7 @@ void dlm_clear_toss(struct dlm_ls *ls)
- 		list_del(&r->res_rsbs_list);
- 		rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
- 				       dlm_rhash_rsb_params);
--		dlm_free_rsb(r);
-+		free_toss_rsb(r);
- 		count++;
- 	}
- 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+The scand was being fixed but now also it's removed. The scand process
+was holding the hashtable/hash bucket lock for a longer timer because it
+iterated over the whole hash. We use timers now to reduce the held time
+of the hashtable lock. We take here the advantage of the timers
+data structure that the rsb timer will delete the rsb itself from the
+hash. No lookup required as this is part of the timer subsystem.
+
+As end we move very likely lookup hotpath to read lock mostly. This
+should for sure avoid contention in the most cases. Unlikely path need
+to still hold the write lock and do some extra relookup and check if the
+state of an rsb changed. However I think we hit over 90% the likely path
+that we only need to hold the read lock and avoid contention between
+processing DLM messages and the user triggers new DLM requests.
+
+- Alex
+
+Alexander Aring (9):
+  dlm: increment ls_count on find_ls_to_scan()
+  dlm: change to non per bucket hashtable lock
+  dlm: merge toss and keep hash into one
+  dlm: fix avoid rsb hold during debugfs dump
+  dlm: switch to use rhashtable for rsbs
+  dlm: remove refcounting if rsb is on toss
+  dlm: drop scand kthread and use timers
+  dlm: likely read lock path for rsb lookup
+  dlm: convert lkbidr to rwlock
+
+ fs/dlm/config.c       |   8 +
+ fs/dlm/config.h       |   2 +
+ fs/dlm/debug_fs.c     | 212 ++----------
+ fs/dlm/dir.c          |  14 +-
+ fs/dlm/dlm_internal.h |  39 +--
+ fs/dlm/lock.c         | 774 ++++++++++++++++++++++--------------------
+ fs/dlm/lock.h         |   3 +-
+ fs/dlm/lockspace.c    | 151 ++------
+ fs/dlm/recover.c      |  38 ++-
+ fs/dlm/recoverd.c     |  40 +--
+ 10 files changed, 541 insertions(+), 740 deletions(-)
+
 -- 
 2.43.0
 
