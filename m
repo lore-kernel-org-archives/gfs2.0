@@ -1,102 +1,295 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAE0152DFC
-	for <gfs2@lists.linux.dev>; Thu, 11 Apr 2024 14:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F1B160883
+	for <gfs2@lists.linux.dev>; Thu, 11 Apr 2024 16:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712844031; cv=none; b=FhLFeBccXSpeu6ytx9eIASdETbDqdGOkomnshKUY4Livl+5jMTe6QCe6rvS4BriZZV8ZAHE6pzHJJ8l9qxuZwfm1dW2WY5XRgza9kLaAQuCR73mI5EPbkz5NvgDVIPUnLIrp8G8/tJ8LzurIAs+vIR1B/sZx35KRL6r3cE40Dp8=
+	t=1712852262; cv=none; b=NCcOZxnQJQhVxPxikzuosgT/Kam1olEX5dGJlbd+xuzYjPVA+gYPwRN3rKZol53WY0Z0ztZWIz5ARtjiArBjGWNpKFAmnenj+hagbvDdUbijWtp8yWdZ6vH/ZcpCyxddL7pRvzL7Y12mgMVVVhTylUk5CRjSfdQH10d6Rc1L0i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712844031; c=relaxed/simple;
-	bh=BF/eYiKh5Kkhq6X7teygEr5y+xHjztwFXXVrHafmkpg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SoL9s0986MPqYWwWwgkjEZg+Y+Quytn5Z5tws2QhRIy6GzBNsmxTUM8Ns+kNi9wRIcKJBhUkBmfSC0/6kFpEd08FcofKlc3JT4/iAqp+zjb2NMPmL4aZkm76o4lCCMKQKb5hcLmKpzzdkMJ/xYh6zl1Pj76uH7U8G+11a3Mue74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X2onNDBv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X2onNDBv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712844029;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BF/eYiKh5Kkhq6X7teygEr5y+xHjztwFXXVrHafmkpg=;
-	b=X2onNDBvgwKf5JT6GRVwNAjTUxQVR7AzKSd9GGOHxZmiGG6gpXgld86PNmqpfA6gkUaUvO
-	/xwsuGZITOyBHGD9699s7MQu75nUZWThGg/sprQ8MWBTnB6TdgcQqWFpBfzYOuA99OEcLo
-	ChqDSeZkkUZo6bWdxvvfCWntso/3OkI=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-mGh3YVE1Oa-0tGOBHOZuiA-1; Thu, 11 Apr 2024 10:00:27 -0400
-X-MC-Unique: mGh3YVE1Oa-0tGOBHOZuiA-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2d88bc8e8a4so40740761fa.2
-        for <gfs2@lists.linux.dev>; Thu, 11 Apr 2024 07:00:26 -0700 (PDT)
+	s=arc-20240116; t=1712852262; c=relaxed/simple;
+	bh=RtuHXctgfiOYrGiYfq+e/OTERtXigR4+wb783+m1Dp8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dFAjtUWyFQxNlxuBb9P0eizEV83wDyuMSrSbFqnhFC558aKrfTcR31SLbZ7M89v6hY56BJGH7tJoOxbiD1Y3FzjGZygqr5OkxBFMgU5kS981jcZq5lh/b1QOlpyBQWplb3YLUMpCZavoFH/HibRfzvza2yHg/UXWd1GZjAoPHKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-36a1ab65a52so307415ab.0
+        for <gfs2@lists.linux.dev>; Thu, 11 Apr 2024 09:17:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712844025; x=1713448825;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BF/eYiKh5Kkhq6X7teygEr5y+xHjztwFXXVrHafmkpg=;
-        b=IAcVoz31TscEKDKmv8nLE08x+09ssIiV360tU0pQe68u609IA3fs/oRkAhAIpS4MqB
-         5u5qlsfiaU50FiXxBWLIT7690XT4Qb4Vzcln/HtKVp+OWt5l8fQUZoA7qrTcQJ2i4JGX
-         LgtBte2/q4VCjFxAlV4DxnhWEK+t+9hxMwfqhweZSlR779jbg+dFmevWc9lzgGpnPvXb
-         saCA3PkWi/35XU4Jxpa2PQVnSOoCTb6GW+S5viheWicz1Kb82uU9GoT+Xlsva6UJhSqK
-         8wO3/l2zqC/+53t/pj+w8bNglvC0AOx8gOV3oMDDlRZhYD3/OTWwZ8dAgfo0fPRq2Nbz
-         tS8g==
-X-Gm-Message-State: AOJu0Yz3YHm/sdvFp3UC9NkH8ZtXjmUpG3PqdtQPDhnGtjYzQDH+sqZ2
-	6Sqnl8kcgFgPXdEgC7EJSB1uOlkubY9btBpWRsAfPGXIZFG6CzAbP5xa8jPGVlooSefF4KDiQaE
-	KaOJdjjtm9Cb6j8tWQV7hpk2Dc1LKxw3Id7Q/5nWcQbiaWMMOFC1PHrewMaHqjss1sal5U/9xkk
-	N5J2U3UBCOTytIakIjZWKjOXfz1w==
-X-Received: by 2002:a2e:8457:0:b0:2d8:d23a:f43d with SMTP id u23-20020a2e8457000000b002d8d23af43dmr3367029ljh.2.1712844025737;
-        Thu, 11 Apr 2024 07:00:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfxWisjawO9zSLwcdOqz/Ii3I/drE4htC5lDqR6d729dv6SA7p3OfsaFCFpZnU1mTmk9O3x8pNNGEtvI1YRpo=
-X-Received: by 2002:a2e:8457:0:b0:2d8:d23a:f43d with SMTP id
- u23-20020a2e8457000000b002d8d23af43dmr3367011ljh.2.1712844025420; Thu, 11 Apr
- 2024 07:00:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712852256; x=1713457056;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1d7kQPd3I2BsF0hyHoGzV2RNfmF4ykWGkYznWmyDBko=;
+        b=sjFtPfwZMBq8d+bK5Yr5Jl9t6TGJMYhJ/Am1ATTYFPUjSeTSujG89KVG2vnm/U6Q8A
+         GlSPqlMACzA3f2S6Px1hR2+TF272cNmc2t5kPwyuQLUr7gwHE99IoM5HIlKkAnW074Rc
+         wBw7jOZ1/Q2DTLnmz6aYwF9Pxr0yhtAERB38FkGy7UKmEGX5XnlAZ/uj1sUhPqLasXLW
+         VB/FCu3q+eVWrUKPQaWdIZQtUom1xAO8DU/iH7qxpOja1cvTiFGAoVbiEKJmts9ARnnI
+         LAyiZ7uf1ZugZbTZwZMx4WvogR6C+XGM4YWKcumfkXC7ljxP8HMhcu6VGfVdWioYQ0vP
+         Gbdg==
+X-Forwarded-Encrypted: i=1; AJvYcCWskOCWWFbU/z71OxlZ9DpdoTIYwIlYV0nCp8Hto+4D/c2C0ncDhf6vW7z8e6zH0/aT9ztg6HewWTg8qmCDfrtvtjITDQ==
+X-Gm-Message-State: AOJu0Yxt5yvQFHTgz/Q4Wu8PqludlrfX3w5RSAvYp5jXB5+vQJZWS2p2
+	p3U2w85Zh+5U0c9li5CbbaFJXmbnickrMfyCL6IFsWws6bUg/JXmwrasH0oXVg3JoJKv+6V9CvG
+	U796ioflxy6E65SUbVTxx9doBvw5aHEKuOVeiYRMPi3QSTXblq52F80c=
+X-Google-Smtp-Source: AGHT+IHv2a4kUISj8aISAEEpksJbCdjrcpVuiOr291qVbATDu1HYshEyLe1Jk8+7jNl/4NvppSY2vjK2El4KJcG04q6rYzgQ3OCz
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240410134858.3295266-1-aahringo@redhat.com> <20240410134858.3295266-8-aahringo@redhat.com>
-In-Reply-To: <20240410134858.3295266-8-aahringo@redhat.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 11 Apr 2024 10:00:14 -0400
-Message-ID: <CAK-6q+hyW4tHLZJ-R_himF0uROUO_Qp05Lj++sDF6MYM8w-j1g@mail.gmail.com>
-Subject: Re: [RFC dlm/next 7/9] dlm: drop scand kthread and use timers
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6e02:1566:b0:36a:20a2:e47b with SMTP id
+ k6-20020a056e02156600b0036a20a2e47bmr406669ilu.6.1712852256636; Thu, 11 Apr
+ 2024 09:17:36 -0700 (PDT)
+Date: Thu, 11 Apr 2024 09:17:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004f557c0615d47e6d@google.com>
+Subject: [syzbot] [gfs2?] KASAN: slab-use-after-free Read in gfs2_invalidate_folio
+From: syzbot <syzbot+3a36aeabd31497d63f6e@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello,
 
-On Wed, Apr 10, 2024 at 9:49=E2=80=AFAM Alexander Aring <aahringo@redhat.co=
-m> wrote:
->
-> Currently the scand kthread acts like a garbage collection for expired
-> rsbs on toss list to clean them up after a certain timeout. It triggers
-> every couple of seconds and iterates over the toss list while holding
-> ls_rsbtbl_lock for the whole hash bucket iteration. To reduce the amount
-> of holding the ls_rsbtbl_lock time we handle free of cached rsbs (tossed
-> rsbs) on a per rsb timer. If it expires the rsb deletes itseld out of
-> rsb data structures. Addtional the timer can run on any cpu instead of
-> scand that was only running on one cpu, so there should be a performance
-> speedup handling such freeing of resources.
->
+syzbot found the following issue on:
 
-I currently try to work on a per lockspace timer that gets rearmed
-when the next rsb is expired instead of spamming the timer subsystems
-with a lot of timers.
+HEAD commit:    e8c39d0f57f3 Merge tag 'probes-fixes-v6.9-rc3' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12ce66a3180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=285be8dd6baeb438
+dashboard link: https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16892dcb180000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=130547bd180000
 
-That has also the advantage to simply shutdown the per ls timer,
-instead iterating over all timers which is done by some flags in this
-version.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-e8c39d0f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d33b002ae0bf/vmlinux-e8c39d0f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/047d0bfb2db7/bzImage-e8c39d0f.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/749aec76707a/mount_0.gz
 
-- Alex
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3a36aeabd31497d63f6e@syzkaller.appspotmail.com
 
+==================================================================
+BUG: KASAN: slab-use-after-free in list_empty include/linux/list.h:373 [inline]
+BUG: KASAN: slab-use-after-free in gfs2_discard fs/gfs2/aops.c:617 [inline]
+BUG: KASAN: slab-use-after-free in gfs2_invalidate_folio+0x718/0x820 fs/gfs2/aops.c:655
+Read of size 8 at addr ffff88801db08168 by task syz-executor595/5186
+
+CPU: 3 PID: 5186 Comm: syz-executor595 Not tainted 6.9.0-rc3-syzkaller-00073-ge8c39d0f57f3 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:488
+ kasan_report+0xd9/0x110 mm/kasan/report.c:601
+ list_empty include/linux/list.h:373 [inline]
+ gfs2_discard fs/gfs2/aops.c:617 [inline]
+ gfs2_invalidate_folio+0x718/0x820 fs/gfs2/aops.c:655
+ folio_invalidate mm/truncate.c:158 [inline]
+ truncate_cleanup_folio+0x2ac/0x3e0 mm/truncate.c:178
+ truncate_inode_pages_range+0x271/0xe90 mm/truncate.c:358
+ gfs2_evict_inode+0x75b/0x1460 fs/gfs2/super.c:1508
+ evict+0x2ed/0x6c0 fs/inode.c:667
+ iput_final fs/inode.c:1741 [inline]
+ iput.part.0+0x5a8/0x7f0 fs/inode.c:1767
+ iput+0x5c/0x80 fs/inode.c:1757
+ gfs2_put_super+0x2bd/0x760 fs/gfs2/super.c:625
+ generic_shutdown_super+0x159/0x3d0 fs/super.c:641
+ kill_block_super+0x3b/0x90 fs/super.c:1675
+ gfs2_kill_sb+0x360/0x410 fs/gfs2/ops_fstype.c:1804
+ deactivate_locked_super+0xbe/0x1a0 fs/super.c:472
+ deactivate_super+0xde/0x100 fs/super.c:505
+ cleanup_mnt+0x222/0x450 fs/namespace.c:1267
+ task_work_run+0x14e/0x250 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0xa7d/0x2c10 kernel/exit.c:878
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1027
+ __do_sys_exit_group kernel/exit.c:1038 [inline]
+ __se_sys_exit_group kernel/exit.c:1036 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1036
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe708777789
+Code: Unable to access opcode bytes at 0x7fe70877775f.
+RSP: 002b:00007ffd15e3f838 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fe708777789
+RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001
+RBP: 00007fe7088122b0 R08: ffffffffffffffb8 R09: 000000000001f6db
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe7088122b0
+R13: 0000000000000000 R14: 00007fe708813020 R15: 00007fe708745cc0
+ </TASK>
+
+Allocated by task 5186:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ unpoison_slab_object mm/kasan/common.c:312 [inline]
+ __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:338
+ kasan_slab_alloc include/linux/kasan.h:201 [inline]
+ slab_post_alloc_hook mm/slub.c:3798 [inline]
+ slab_alloc_node mm/slub.c:3845 [inline]
+ kmem_cache_alloc+0x136/0x320 mm/slub.c:3852
+ kmem_cache_zalloc include/linux/slab.h:739 [inline]
+ gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
+ gfs2_trans_add_data+0x4b3/0x7f0 fs/gfs2/trans.c:209
+ gfs2_unstuffer_folio fs/gfs2/bmap.c:81 [inline]
+ __gfs2_unstuff_inode fs/gfs2/bmap.c:119 [inline]
+ gfs2_unstuff_dinode+0xad9/0x1460 fs/gfs2/bmap.c:166
+ gfs2_adjust_quota+0x124/0xb10 fs/gfs2/quota.c:879
+ do_sync+0xa73/0xd30 fs/gfs2/quota.c:990
+ gfs2_quota_sync+0x419/0x630 fs/gfs2/quota.c:1370
+ gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:669
+ sync_filesystem+0x10d/0x290 fs/sync.c:56
+ generic_shutdown_super+0x7e/0x3d0 fs/super.c:620
+ kill_block_super+0x3b/0x90 fs/super.c:1675
+ gfs2_kill_sb+0x360/0x410 fs/gfs2/ops_fstype.c:1804
+ deactivate_locked_super+0xbe/0x1a0 fs/super.c:472
+ deactivate_super+0xde/0x100 fs/super.c:505
+ cleanup_mnt+0x222/0x450 fs/namespace.c:1267
+ task_work_run+0x14e/0x250 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0xa7d/0x2c10 kernel/exit.c:878
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1027
+ __do_sys_exit_group kernel/exit.c:1038 [inline]
+ __se_sys_exit_group kernel/exit.c:1036 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1036
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 5186:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:579
+ poison_slab_object mm/kasan/common.c:240 [inline]
+ __kasan_slab_free+0x11d/0x1a0 mm/kasan/common.c:256
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2106 [inline]
+ slab_free mm/slub.c:4280 [inline]
+ kmem_cache_free+0x12e/0x380 mm/slub.c:4344
+ trans_drain fs/gfs2/log.c:1028 [inline]
+ gfs2_log_flush+0x1486/0x29b0 fs/gfs2/log.c:1167
+ do_sync+0x550/0xd30 fs/gfs2/quota.c:1010
+ gfs2_quota_sync+0x419/0x630 fs/gfs2/quota.c:1370
+ gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:669
+ sync_filesystem+0x10d/0x290 fs/sync.c:56
+ generic_shutdown_super+0x7e/0x3d0 fs/super.c:620
+ kill_block_super+0x3b/0x90 fs/super.c:1675
+ gfs2_kill_sb+0x360/0x410 fs/gfs2/ops_fstype.c:1804
+ deactivate_locked_super+0xbe/0x1a0 fs/super.c:472
+ deactivate_super+0xde/0x100 fs/super.c:505
+ cleanup_mnt+0x222/0x450 fs/namespace.c:1267
+ task_work_run+0x14e/0x250 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0xa7d/0x2c10 kernel/exit.c:878
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1027
+ __do_sys_exit_group kernel/exit.c:1038 [inline]
+ __se_sys_exit_group kernel/exit.c:1036 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1036
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88801db08150
+ which belongs to the cache gfs2_bufdata of size 80
+The buggy address is located 24 bytes inside of
+ freed 80-byte region [ffff88801db08150, ffff88801db081a0)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1db08
+flags: 0xfff80000000800(slab|node=0|zone=1|lastcpupid=0xfff)
+page_type: 0xffffffff()
+raw: 00fff80000000800 ffff88801a5aedc0 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000080240024 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY), pid 5186, tgid 5186 (syz-executor595), ts 45296183443, free_ts 44935801807
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x2d4/0x350 mm/page_alloc.c:1534
+ prep_new_page mm/page_alloc.c:1541 [inline]
+ get_page_from_freelist+0xa28/0x3780 mm/page_alloc.c:3317
+ __alloc_pages+0x22b/0x2460 mm/page_alloc.c:4575
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0xcc/0x3a0 mm/slub.c:2391
+ ___slab_alloc+0x66d/0x1790 mm/slub.c:3525
+ __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3610
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc+0x2e9/0x320 mm/slub.c:3852
+ kmem_cache_zalloc include/linux/slab.h:739 [inline]
+ gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
+ gfs2_trans_add_meta+0xade/0xf50 fs/gfs2/trans.c:251
+ gfs2_alloc_extent fs/gfs2/rgrp.c:2239 [inline]
+ gfs2_alloc_blocks+0x46c/0x19c0 fs/gfs2/rgrp.c:2449
+ __gfs2_unstuff_inode fs/gfs2/bmap.c:107 [inline]
+ gfs2_unstuff_dinode+0x499/0x1460 fs/gfs2/bmap.c:166
+ gfs2_adjust_quota+0x124/0xb10 fs/gfs2/quota.c:879
+ do_sync+0xa73/0xd30 fs/gfs2/quota.c:990
+ gfs2_quota_sync+0x419/0x630 fs/gfs2/quota.c:1370
+ gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:669
+ sync_filesystem+0x10d/0x290 fs/sync.c:56
+ generic_shutdown_super+0x7e/0x3d0 fs/super.c:620
+page last free pid 4684 tgid 4684 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1141 [inline]
+ free_unref_page_prepare+0x527/0xb10 mm/page_alloc.c:2347
+ free_unref_page+0x33/0x3c0 mm/page_alloc.c:2487
+ __put_partials+0x14c/0x170 mm/slub.c:2906
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x4e/0x140 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x192/0x1e0 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:322
+ kasan_slab_alloc include/linux/kasan.h:201 [inline]
+ slab_post_alloc_hook mm/slub.c:3798 [inline]
+ slab_alloc_node mm/slub.c:3845 [inline]
+ kmem_cache_alloc+0x136/0x320 mm/slub.c:3852
+ getname_flags.part.0+0x50/0x4f0 fs/namei.c:139
+ getname_flags+0x9b/0xf0 include/linux/audit.h:322
+ vfs_fstatat+0x9a/0x150 fs/stat.c:303
+ __do_sys_newfstatat+0x98/0x120 fs/stat.c:468
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff88801db08000: fa fb fb fb fb fb fb fb fb fb fc fc fc fc fa fb
+ ffff88801db08080: fb fb fb fb fb fb fb fb fc fc fc fc fa fb fb fb
+>ffff88801db08100: fb fb fb fb fb fb fc fc fc fc fa fb fb fb fb fb
+                                                          ^
+ ffff88801db08180: fb fb fb fb fc fc fc fc fa fb fb fb fb fb fb fb
+ ffff88801db08200: fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
