@@ -1,95 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD6DD51E
-	for <gfs2@lists.linux.dev>; Fri, 12 Apr 2024 06:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC6953E0D
+	for <gfs2@lists.linux.dev>; Fri, 12 Apr 2024 09:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712901669; cv=none; b=sDcg9H2kgH2zk/n8/RuWjjZlciiOH3VlU7+uahdhWIgdg9DL4LPCWcBLfysAMGtwPA4lGQvGRekVDN9LD98nH9dx+VPYop9iYNBb4DPM5bHJoqtFVeTRCPEEtXMrYkUy/B1IpOwoynRDMuFIWj1UzzGQNZqzqIPNi9hdSQLlD4k=
+	t=1712912434; cv=none; b=UDXZHji2sv+DEyqIZ0cIwk/GdD6q3r/FBsbCCLQQZf/a/WAkePTIpZ/p5f0+Pyx52ur8jOS7cf5UQZM5LDTm6y1PE6XBV1zTL15iJUhjengzjcjWAFUA0jVaujheG2ltEjjCiS3kYF1u+TDvtfNUv92YRhLgnE3lKL1iTPyOmNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712901669; c=relaxed/simple;
-	bh=wEG6QSytqo1ohq6Juej7jE/IO9BVkMMXEDxw0NB0o/w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=aJCJdCWahdg7/jxjSpJh36W1vwWewAt0pYZf/Z72wTkCrkA9Q10fLnype7WiXMOVSVfNkNbB31YY6M48ZHNOtOd9zvC1vl4INwN2tvLRfyS922LwkFp95CWpmeYYaeHrX2FZSgQ97L32Z4HrdE/IUPjj3/iZ6P0GXbFpifqEOgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R8d6y775; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R8d6y775"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712901667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P8l0WklzArYiBnL1KkTcJOniBDgTljluKZTXZbEDnKk=;
-	b=R8d6y775kHslI7owE4b52mHyM14gSpurRhsXz33Qo1Oa3eZZjLJIAa7CrEBRhNS19zAMAZ
-	Xwcr631iIIORStkgl7iGhJRT54MrZTTJ+8xB4QmC1BnbsFkm4ICn1VGhQipHyxYODHAZY6
-	MaCTnwZVL9uYnqlubGT8b0wd8d5A/+0=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-yi8kjAcwPGaVt3bzxpv4xw-1; Fri, 12 Apr 2024 02:01:05 -0400
-X-MC-Unique: yi8kjAcwPGaVt3bzxpv4xw-1
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-29bf071cc04so587855a91.0
-        for <gfs2@lists.linux.dev>; Thu, 11 Apr 2024 23:01:05 -0700 (PDT)
+	s=arc-20240116; t=1712912434; c=relaxed/simple;
+	bh=lUR8gjpQoG75Rj0AXF/vb4V7WxkjkkemsnpsDiJ1y+8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OeV7s/orOhUP2WNlA3rvSy6lAubn42N81vi7Dh7B7cMb3m620rePSZuGF6bcCcvZ4n1Z76I3lcy4Kzug43wKMXeaLoelt25rnHsiHF/fvI6TZfnOEY2eIm5JdfdMEElKhn11yaRZj1UR1EaSeHbKR5A0TSpc6v9ajAfd53U1WzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-36a15771b9aso7765185ab.0
+        for <gfs2@lists.linux.dev>; Fri, 12 Apr 2024 02:00:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712901663; x=1713506463;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P8l0WklzArYiBnL1KkTcJOniBDgTljluKZTXZbEDnKk=;
-        b=HRsl81jZTZyDvtYBSZTCgQ+0TsIBxfNTiutQVR+KQbSNJITMBbv2OxqgAzRQbgoMXv
-         ZZyKGDeu95gcbkq3xxGrrNyYwmbhcajNTNLyJYh4N0+enREmn6bO7XGzQPjRVK6ThUs9
-         X1uCVzXmcCNKeWtWr1eIKj4NIjCI6ncOB/qhWAIEfmYM2dRbCGg1BL5PfQZdYYA0AarJ
-         yFDdIRxxZVCozvi8upUmN78aaU/FNlpjzPKESM4sHM3Kzt+FII1A9JGOi6xeeV/pOmuV
-         u+/0M5sB4zVAhvYj/H9LHdMPdnFK6Eyhy4xddOzUTRIXOAQQ6KQrdWgWtaKypjSSc6KX
-         NRgQ==
-X-Gm-Message-State: AOJu0YysdRUQ/7mDV6dJZlRbmKOHUJiO8n4hAyNFRUbdjzP+DpQQEXX1
-	AhLOM6jH0lET7iijRvGcjRpDSlUMj/aGm3fSyMq05ytQoau9rwHWZFt7oIyW4tfBPRBM8wx2ZhF
-	CoEKjXwEmaqBYYFOkyitF1NMEU8H+yIIPjSlGQw7OolzX/NUuCtcAhYPI1ArMhH4VJVYJ1vGGda
-	mPVNBHmO0vZxS7R6yvQwJHBEnJEVGshFIMHg==
-X-Received: by 2002:a17:903:483:b0:1e5:963d:963 with SMTP id jj3-20020a170903048300b001e5963d0963mr1332576plb.68.1712901663488;
-        Thu, 11 Apr 2024 23:01:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLJ7N6+iyBzfsX2Sq82FRFRPH3GGexHMxNdyDXQddN5k6icm0fPmp4ya9jUEBQVCqpeOHgVrRlkWHOaRoQoNU=
-X-Received: by 2002:a17:903:483:b0:1e5:963d:963 with SMTP id
- jj3-20020a170903048300b001e5963d0963mr1332565plb.68.1712901663141; Thu, 11
- Apr 2024 23:01:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712912431; x=1713517231;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jVD4bGYtEQYA0AWSL1QYjeD+MyjUVeeblZwNbRgRNwc=;
+        b=e9Twtk4qYlNQKNH/Rs3KGYXmJSapmEUACq1tzjLlrdn5Tb7Jtgm2MS8HDEaXemhx0H
+         8jLBiAXB1qGXurg6nmCuvs8AnOE3LpZSH+vZqUXvgSO1KiP8whYJRt7xblCPpzCQt0SY
+         xbHpQghwTuhypQGgZ7KcqlP8LFw2Q9+7KXJ0eiR/WnJQxCUXG/MBleOSgo5ZkzetTSNk
+         3VwQY00KT0qxsLacCYcG3PzkB3lyQbeF5bVQnwXL2fkzKUoXKoU1GEfEPieY4JKu05sK
+         o8KP+4QTsU++kXl3twaQ12aRpPvd9ZVwHttAlwhz1MATxAfTHyp6K1WnxsAWCqfX/vYC
+         huEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVY11Zr0YWpL5G6spBK07+OV6bwWQqw/XK6fycX/GYR3+3qw0lw1+PFyA/tc2eugwU12F5qSPiQEPfpv33Yl57qoK/EMw==
+X-Gm-Message-State: AOJu0YwxKN3N8nL8dc8hMU58XNr96bdcUMey7PljBjWLomZfc5v02fe+
+	1TUMX8xlY50ywiDWKlEpYb/xhp4SxQObYnZU/vzFBPDcBfyYda7tD15NE0lyEisqk5Nq6Yp2OcL
+	j0j0r/aDfSAYIrYTS8cMN2yjI9/waUqBZb9u296SLboaAP0FyH+gcXxo=
+X-Google-Smtp-Source: AGHT+IF8+U3ZUe/fDcoTVmUyOQa04e2x3lFY2i5czruXTEPUjNU6CxOwokCVIRorMwur482oS7jf1dGJCkbwQjk4sEi7BculncDX
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240409164508.79570-1-agruenba@redhat.com> <20240409164508.79570-15-agruenba@redhat.com>
-In-Reply-To: <20240409164508.79570-15-agruenba@redhat.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 12 Apr 2024 08:00:00 +0200
-Message-ID: <CAHc6FU6H9CL0Z3GpMR6+DDTvtXjR8RszmQd=FaLTwae7xGY=Zg@mail.gmail.com>
-Subject: Re: [PATCH 14/15] gfs2: Get rid of demote_ok checks
-To: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a92:ca0d:0:b0:368:efa4:be00 with SMTP id
+ j13-20020a92ca0d000000b00368efa4be00mr160157ils.3.1712912431720; Fri, 12 Apr
+ 2024 02:00:31 -0700 (PDT)
+Date: Fri, 12 Apr 2024 02:00:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000063e340615e2811c@google.com>
+Subject: [syzbot] [gfs2?] INFO: task hung in __gfs2_lookup
+From: syzbot <syzbot+8a86bdd8c524e46ff97a@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 9, 2024 at 6:45=E2=80=AFPM Andreas Gruenbacher <agruenba@redhat=
-.com> wrote:
-> The demote_ok glock operation is only still used to prevent the inode
-> glocks of the "jindex" and "rindex" directories from getting recycled
-> while they are still referenced by sdp->sd_jindex and sdp->sd_rindex.
-> However, the LRU walking code will no longer recycle glocks which are
-> referenced, so the demote_ok glock operation is obsolete and can be
-> removed.
->
-> Each of a glock's holders in the gl_holders list is holding a reference
-> on the glock, so when the list of holders isn't empty in demote_ok(),
-> the existing reference count check will already prevent the glock from
-> getting released.  This means that demote_ok() is obsolete as well.
+Hello,
 
-This patch only works after a few additional patches I haven't posted
-yet. I'm removing it from for-next for now and I'll repost later.
+syzbot found the following issue on:
 
-Thanks,
-Andreas
+HEAD commit:    4118d9533ff3 Add linux-next specific files for 20240411
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=101fa5cb180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=16ca158ef7e08662
+dashboard link: https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1509eb25180000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12fbeaa3180000
 
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1eb8b3998228/disk-4118d953.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c17244f68cad/vmlinux-4118d953.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/df207f8c8f2a/bzImage-4118d953.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/2b56e1dd3dfb/mount_0.gz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8a86bdd8c524e46ff97a@syzkaller.appspotmail.com
+
+INFO: task syz-executor359:5091 blocked for more than 143 seconds.
+      Not tainted 6.9.0-rc3-next-20240411-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor359 state:D stack:24984 pid:5091  tgid:5091  ppid:5088   flags:0x00004002
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5409 [inline]
+ __schedule+0x17e8/0x4a50 kernel/sched/core.c:6746
+ __schedule_loop kernel/sched/core.c:6823 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6838
+ bit_wait+0x12/0xd0 kernel/sched/wait_bit.c:199
+ __wait_on_bit+0xb0/0x2f0 kernel/sched/wait_bit.c:49
+ out_of_line_wait_on_bit+0x1d5/0x260 kernel/sched/wait_bit.c:64
+ wait_on_bit include/linux/wait_bit.h:76 [inline]
+ gfs2_glock_wait+0xc7/0x2b0 fs/gfs2/glock.c:1344
+ gfs2_glock_nq_init fs/gfs2/glock.h:238 [inline]
+ __gfs2_lookup+0x11b/0x280 fs/gfs2/inode.c:905
+ __lookup_slow+0x28c/0x3f0 fs/namei.c:1692
+ lookup_slow+0x53/0x70 fs/namei.c:1709
+ walk_component+0x2e1/0x410 fs/namei.c:2004
+ lookup_last fs/namei.c:2461 [inline]
+ path_lookupat+0x16f/0x450 fs/namei.c:2485
+ filename_lookup+0x256/0x610 fs/namei.c:2514
+ user_path_at_empty+0x42/0x60 fs/namei.c:2921
+ user_path_at include/linux/namei.h:57 [inline]
+ ksys_umount fs/namespace.c:1916 [inline]
+ __do_sys_umount fs/namespace.c:1924 [inline]
+ __se_sys_umount fs/namespace.c:1922 [inline]
+ __x64_sys_umount+0xf4/0x170 fs/namespace.c:1922
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f83e9183587
+RSP: 002b:00007fffdb5f1f68 EFLAGS: 00000202 ORIG_RAX: 00000000000000a6
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f83e9183587
+RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007fffdb5f2020
+RBP: 00007fffdb5f2020 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000ffffffff R11: 0000000000000202 R12: 00007fffdb5f3110
+R13: 0000555562dbd740 R14: 0000555562dac338 R15: 00007fffdb5f5290
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/30:
+ #0: ffffffff8e335ca0 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:329 [inline]
+ #0: ffffffff8e335ca0 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
+ #0: ffffffff8e335ca0 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6614
+2 locks held by getty/4849:
+ #0: ffff88802ad660a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
+ #1: ffffc90002f162f0 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0x6b5/0x1e10 drivers/tty/n_tty.c:2201
+1 lock held by syz-executor359/5091:
+ #0: ffff888068e3d1f0 (&type->i_mutex_dir_key#6){.+.+}-{3:3}, at: inode_lock_shared include/linux/fs.h:801 [inline]
+ #0: ffff888068e3d1f0 (&type->i_mutex_dir_key#6){.+.+}-{3:3}, at: lookup_slow+0x45/0x70 fs/namei.c:1708
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 PID: 30 Comm: khungtaskd Not tainted 6.9.0-rc3-next-20240411-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:160 [inline]
+ check_hung_uninterruptible_tasks kernel/hung_task.c:223 [inline]
+ watchdog+0xfde/0x1020 kernel/hung_task.c:380
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 PID: 4529 Comm: klogd Not tainted 6.9.0-rc3-next-20240411-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+RIP: 0010:__rb_insert_augmented+0x9/0x6b0 lib/rbtree.c:458
+Code: c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 41 57 41 56 <41> 55 41 54 53 48 83 ec 38 48 89 54 24 08 48 89 74 24 10 48 89 fd
+RSP: 0018:ffffc90004a4f518 EFLAGS: 00000086
+RAX: 000000052ae920a0 RBX: ffff8880b943e6c0 RCX: dffffc0000000000
+RDX: ffffffff816bbee0 RSI: ffff8880b943e710 RDI: ffff88807d890090
+RBP: 1ffff1100fb12019 R08: ffff88807d8900a7 R09: 0000000000000000
+R10: ffff88807d890098 R11: ffffed100fb12015 R12: ffff88802e575b18
+R13: dffffc0000000000 R14: ffff88807d890080 R15: ffff88807d8900c8
+FS:  00007ff2573a4380(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005617143a8600 CR3: 000000002be1e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+ put_prev_entity+0x62/0x210 kernel/sched/fair.c:5493
+ pick_next_task_fair+0x363/0xde0 kernel/sched/fair.c:8535
+ __pick_next_task+0xb0/0x2c0 kernel/sched/core.c:6030
+ pick_next_task kernel/sched/core.c:6120 [inline]
+ __schedule+0x729/0x4a50 kernel/sched/core.c:6702
+ preempt_schedule_common+0x84/0xd0 kernel/sched/core.c:6925
+ preempt_schedule+0xe1/0xf0 kernel/sched/core.c:6949
+ preempt_schedule_thunk+0x1a/0x30 arch/x86/entry/thunk.S:12
+ __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+ _raw_spin_unlock_irqrestore+0x130/0x140 kernel/locking/spinlock.c:194
+ spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+ __wake_up_common_lock+0x18c/0x1e0 kernel/sched/wait.c:108
+ sock_def_readable+0x20f/0x5b0 net/core/sock.c:3353
+ unix_dgram_sendmsg+0x148e/0x1f80 net/unix/af_unix.c:2113
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:745
+ __sys_sendto+0x3a4/0x4f0 net/socket.c:2191
+ __do_sys_sendto net/socket.c:2203 [inline]
+ __se_sys_sendto net/socket.c:2199 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2199
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff2575069b5
+Code: 8b 44 24 08 48 83 c4 28 48 98 c3 48 98 c3 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 26 45 31 c9 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 76 7a 48 8b 15 44 c4 0c 00 f7 d8 64 89 02 48 83
+RSP: 002b:00007fff461d0318 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007ff2575069b5
+RDX: 000000000000004e RSI: 0000556259833d70 RDI: 0000000000000003
+RBP: 000055625982f910 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000004000 R11: 0000000000000246 R12: 0000000000000013
+R13: 00007ff257694212 R14: 00007fff461d0418 R15: 0000000000000000
+ </TASK>
+INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 1.937 msecs
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
