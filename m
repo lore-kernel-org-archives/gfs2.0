@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770C8139CEC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD8D154BEB
 	for <gfs2@lists.linux.dev>; Mon, 15 Apr 2024 18:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713206389; cv=none; b=SrluuB8g2cUxqjK4YSYxpeOLVjz1uhWzxQox46HySilkbbSn1+yv5eNyZxPtZ7XxGYvtVA3xHPkEA+qA8juX/PZMy+LlvyrA9vYi7o5plq2YTbY9zbV4T9r3FZAmJq0+g2fu0DJNJgaIQ+tXaCxTjcTlyMYJV2GEXFtSPQCGy2Q=
+	t=1713206389; cv=none; b=uswzaa8GSQwgb18rv1uh5TNH9hls37NDLeW/sAxu1pb5GmVGlhgMor9u1D0vv/YdLTs5jg9DYhh4Ps64aL6LCVtRlBQMIvZY2IiM6pbmQ0SH5zBWk5zJjzu6MuKQnwf6OVW6FC/DdNsyjiUWM+R48v1B5vI3XlxBBZE4/seNaN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713206389; c=relaxed/simple;
-	bh=X3pw3UVRYJDQPum8+o7Cmh0mFZ7zVRp/MiEiNwGXuoQ=;
+	bh=n59d619nRxhy395h3LKEdXA4ymnnWAWUu9/1P2TN2QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QfF2xBBv41NoGeg+zckjtj+ncUDloQDkjQ2r0oyR6JkpII6QkMqGYa1fkGgzdF+lv77lOWYVFNj0GJ5shZulnX4/Y5Su6P9mStwa2fgbqfGsMtgWTiMYVOFTyWD+QuLwaVT1NGX9HXKZBnXuZnIaPnStNCKK1qMYL8WCTq4tBis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZhkVvDUi; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=QZDO4zbhuO2aMTXcQrCOTiZux1ACOWQwZlqqvdvWPQcq2vexe5RGcF3mQO7FmNIOcH1ZaOMYD3JKY87INg2cC6Gtq1N9pVeC3cAPo5g0GU+HDi3ehEmO8zT3n3MDO+ljJ98V7N7/EMnelREjPiG44ZrgoGx1u1w1Z0y0KNEX4q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gqqM0Yzw; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZhkVvDUi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gqqM0Yzw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1713206386;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k6oKSL+6KyTedGWawz1BSpCIuS+9iVyqYPLCnxTAJj8=;
-	b=ZhkVvDUiqGz4newqrWmJrvkT9c7mvdh+M7v/J8tQfXEXt8icLYfxuhTQExLhBjGoozSXqd
-	cUppiOrC+Nz3MTrc5qhLaCbXwTkmmjHBtD2UYG1CU6Mu1qG7fRY7H+exOxGvnRCxEfcTZJ
-	ZeiuXmvvzrN5EqkH1Y0R6NoGLxmaIj0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-nUXYWckjNsOVMnp9o9BKIw-1; Mon, 15 Apr 2024 14:39:45 -0400
-X-MC-Unique: nUXYWckjNsOVMnp9o9BKIw-1
+	bh=BzDKeFfrM1inf2PyGP6UXgIZ2+Pdpn0NYz7cyVHa8oc=;
+	b=gqqM0YzwayJuV8J1Vi/GAFJdXDQDOzgf1YSUaZXcXyq6x8c8VX+peFQENAFgZAVYQEcViq
+	orCCgiKZE4g27JYnK3vQ2M1PjW7wixiHB6zgROyZdJz5RywFu22mbdCRQaQkVigZIKrd1E
+	0TPT8bBE92PWm1FrblRmNUyBH1lzEtY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-tBd7COF9MfyNvxV454EO0w-1; Mon,
+ 15 Apr 2024 14:39:45 -0400
+X-MC-Unique: tBd7COF9MfyNvxV454EO0w-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DBD4F811005
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EB91538000AE
 	for <gfs2@lists.linux.dev>; Mon, 15 Apr 2024 18:39:44 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id CE104C13FA3;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DE675C04227;
 	Mon, 15 Apr 2024 18:39:44 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 dlm/next 2/9] dlm: change to non per bucket hashtable lock
-Date: Mon, 15 Apr 2024 14:39:36 -0400
-Message-ID: <20240415183943.645497-3-aahringo@redhat.com>
+Subject: [PATCHv2 dlm/next 3/9] dlm: merge toss and keep hash into one
+Date: Mon, 15 Apr 2024 14:39:37 -0400
+Message-ID: <20240415183943.645497-4-aahringo@redhat.com>
 In-Reply-To: <20240415183943.645497-1-aahringo@redhat.com>
 References: <20240415183943.645497-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,569 +61,494 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch prepares to switch to use the resizable, scalable, concurrent
-hash table (rhashtable) implementation instead of having a own per
-bucket implementation. The rhashtable implementation deals with the
-buckets internally for that reason we use a per lockspace rhashtable
-lock to protect mutual rhashtable access. This might reduce the
-perfromance of the hash, depends on how rhashtable lookup performs to
-the current own DLM hash bucket implementation. However we switch to the
-rhashtable implementation and a potential lockless access can be part of
-future changes.
+There are several places in current DLM that can end in two lookups,
+e.g. first look into the keep hash, then into the toss hash if its not
+in the keep hash. However there can't be never the same rsb into both of
+these hashs. This patch introduce a new rsb state flag "RSB_TOSS" that
+signals if the rsb would be on the toss hash or not, which then would be
+on the keep hash. Instead of those multiple lookups there is only one
+now that reduce the amount of hash lookups in cases where the rsb wasn't
+on keep hash. The move of an rsb from rsb toss to keep hash or vice versa
+need to be done automatically anyway.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/debug_fs.c     | 24 +++++++-------
- fs/dlm/dir.c          |  4 +--
- fs/dlm/dlm_internal.h |  2 +-
- fs/dlm/lock.c         | 77 +++++++++++++++++++++----------------------
- fs/dlm/lockspace.c    |  2 +-
- fs/dlm/recover.c      |  4 +--
- fs/dlm/recoverd.c     |  8 ++---
- 7 files changed, 60 insertions(+), 61 deletions(-)
+ fs/dlm/debug_fs.c     |  29 ++++++++++--
+ fs/dlm/dir.c          |   6 +--
+ fs/dlm/dlm_internal.h |   4 +-
+ fs/dlm/lock.c         | 103 ++++++++++++++++++++++--------------------
+ fs/dlm/lockspace.c    |  13 ++----
+ fs/dlm/recover.c      |   7 ++-
+ fs/dlm/recoverd.c     |  12 ++---
+ 7 files changed, 98 insertions(+), 76 deletions(-)
 
 diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index cba5514688ee..b8234eba5e34 100644
+index b8234eba5e34..37f4dfca5e44 100644
 --- a/fs/dlm/debug_fs.c
 +++ b/fs/dlm/debug_fs.c
-@@ -452,7 +452,7 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
+@@ -450,12 +450,20 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
+ 	if (seq->op == &format4_seq_ops)
+ 		ri->format = 4;
  
- 	tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
+-	tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
++	tree = &ls->ls_rsbtbl[bucket].r;
  
--	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
  	if (!RB_EMPTY_ROOT(tree)) {
  		for (node = rb_first(tree); node; node = rb_next(node)) {
  			r = rb_entry(node, struct dlm_rsb, res_hashnode);
-@@ -460,12 +460,12 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
++			if (toss) {
++				if (!rsb_flag(r, RSB_TOSS))
++					continue;
++			} else {
++				if (rsb_flag(r, RSB_TOSS))
++					continue;
++			}
++
+ 			if (!entry--) {
  				dlm_hold_rsb(r);
  				ri->rsb = r;
- 				ri->bucket = bucket;
--				spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+				spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 				return ri;
- 			}
+@@ -482,12 +490,20 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
+ 			kfree(ri);
+ 			return NULL;
  		}
- 	}
--	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+-		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
++		tree = &ls->ls_rsbtbl[bucket].r;
  
- 	/*
- 	 * move to the first rsb in the next non-empty bucket
-@@ -484,18 +484,18 @@ static void *table_seq_start(struct seq_file *seq, loff_t *pos)
- 		}
- 		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
- 
--		spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 		spin_lock_bh(&ls->ls_rsbtbl_lock);
  		if (!RB_EMPTY_ROOT(tree)) {
  			node = rb_first(tree);
  			r = rb_entry(node, struct dlm_rsb, res_hashnode);
++			if (toss) {
++				if (!rsb_flag(r, RSB_TOSS))
++					continue;
++			} else {
++				if (rsb_flag(r, RSB_TOSS))
++					continue;
++			}
++
  			dlm_hold_rsb(r);
  			ri->rsb = r;
  			ri->bucket = bucket;
--			spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			*pos = n;
- 			return ri;
+@@ -548,12 +564,19 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
+ 			++*pos;
+ 			return NULL;
  		}
--		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	}
- }
+-		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
++		tree = &ls->ls_rsbtbl[bucket].r;
  
-@@ -516,7 +516,7 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 	 * move to the next rsb in the same bucket
- 	 */
- 
--	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	rp = ri->rsb;
- 	next = rb_next(&rp->res_hashnode);
- 
-@@ -524,12 +524,12 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 		r = rb_entry(next, struct dlm_rsb, res_hashnode);
- 		dlm_hold_rsb(r);
- 		ri->rsb = r;
--		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		dlm_put_rsb(rp);
- 		++*pos;
- 		return ri;
- 	}
--	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	dlm_put_rsb(rp);
- 
- 	/*
-@@ -550,18 +550,18 @@ static void *table_seq_next(struct seq_file *seq, void *iter_ptr, loff_t *pos)
- 		}
- 		tree = toss ? &ls->ls_rsbtbl[bucket].toss : &ls->ls_rsbtbl[bucket].keep;
- 
--		spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 		spin_lock_bh(&ls->ls_rsbtbl_lock);
  		if (!RB_EMPTY_ROOT(tree)) {
  			next = rb_first(tree);
  			r = rb_entry(next, struct dlm_rsb, res_hashnode);
++			if (toss) {
++				if (!rsb_flag(r, RSB_TOSS))
++					continue;
++			} else {
++				if (rsb_flag(r, RSB_TOSS))
++					continue;
++			}
  			dlm_hold_rsb(r);
  			ri->rsb = r;
  			ri->bucket = bucket;
--			spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			*pos = n;
- 			return ri;
- 		}
--		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	}
- }
- 
 diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
-index ff3a51c759b5..5315f4f46cc7 100644
+index 5315f4f46cc7..f8039f3ee2d1 100644
 --- a/fs/dlm/dir.c
 +++ b/fs/dlm/dir.c
-@@ -204,12 +204,12 @@ static struct dlm_rsb *find_rsb_root(struct dlm_ls *ls, const char *name,
- 	hash = jhash(name, len, 0);
+@@ -205,12 +205,8 @@ static struct dlm_rsb *find_rsb_root(struct dlm_ls *ls, const char *name,
  	bucket = hash & (ls->ls_rsbtbl_size - 1);
  
--	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].keep, name, len, &r);
- 	if (rv)
- 		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].toss,
- 					 name, len, &r);
--	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+-	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].keep, name, len, &r);
+-	if (rv)
+-		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].toss,
+-					 name, len, &r);
++	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[bucket].r, name, len, &r);
+ 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+-
  	if (!rv)
  		return r;
+ 
 diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 269c12e0824f..2c961db53b27 100644
+index 2c961db53b27..af88fc2f978c 100644
 --- a/fs/dlm/dlm_internal.h
 +++ b/fs/dlm/dlm_internal.h
-@@ -105,7 +105,6 @@ do { \
+@@ -103,8 +103,7 @@ do { \
+ #define DLM_RTF_SHRINK_BIT	0
+ 
  struct dlm_rsbtable {
- 	struct rb_root		keep;
- 	struct rb_root		toss;
--	spinlock_t		lock;
+-	struct rb_root		keep;
+-	struct rb_root		toss;
++	struct rb_root          r;
  	unsigned long		flags;
  };
  
-@@ -593,6 +592,7 @@ struct dlm_ls {
- 	spinlock_t		ls_lkbidr_spin;
+@@ -376,6 +375,7 @@ enum rsb_flags {
+ 	RSB_RECOVER_CONVERT,
+ 	RSB_RECOVER_GRANT,
+ 	RSB_RECOVER_LVB_INVAL,
++	RSB_TOSS,
+ };
  
- 	struct dlm_rsbtable	*ls_rsbtbl;
-+	spinlock_t		ls_rsbtbl_lock;
- 	uint32_t		ls_rsbtbl_size;
- 
- 	spinlock_t		ls_waiters_lock;
+ static inline void rsb_set_flag(struct dlm_rsb *r, enum rsb_flags flag)
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 4ff4ef2a5f87..af57d9d12434 100644
+index af57d9d12434..08ec1a04476a 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -369,13 +369,12 @@ static inline int dlm_kref_put_lock_bh(struct kref *kref,
- static void put_rsb(struct dlm_rsb *r)
- {
- 	struct dlm_ls *ls = r->res_ls;
--	uint32_t bucket = r->res_bucket;
- 	int rv;
+@@ -616,23 +616,22 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
  
- 	rv = dlm_kref_put_lock_bh(&r->res_ref, toss_rsb,
--				  &ls->ls_rsbtbl[bucket].lock);
-+				  &ls->ls_rsbtbl_lock);
- 	if (rv)
--		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- }
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
  
- void dlm_put_rsb(struct dlm_rsb *r)
-@@ -615,7 +614,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 			goto out;
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
++	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
+ 	if (error)
+-		goto do_toss;
++		goto do_new;
+ 	
+ 	/*
+ 	 * rsb is active, so we can't check master_nodeid without lock_rsb.
+ 	 */
+ 
++	if (rsb_flag(r, RSB_TOSS))
++		goto do_toss;
++
+ 	kref_get(&r->res_ref);
+ 	goto out_unlock;
+ 
+ 
+  do_toss:
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
+-	if (error)
+-		goto do_new;
+-
+ 	/*
+ 	 * rsb found inactive (master_nodeid may be out of date unless
+ 	 * we are the dir_nodeid or were the master)  No other thread
+@@ -669,8 +668,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		r->res_first_lkid = 0;
  	}
  
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+-	rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
+-	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
++	rsb_clear_flag(r, RSB_TOSS);
+ 	goto out_unlock;
  
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
- 	if (error)
-@@ -685,7 +684,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
  
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto retry;
+@@ -731,7 +729,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
  	}
- 	if (error)
-@@ -734,7 +733,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 
   out_add:
- 	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
+-	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
++	error = rsb_insert(r, &ls->ls_rsbtbl[b].r);
   out_unlock:
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
   out:
- 	*r_ret = r;
- 	return error;
-@@ -759,7 +758,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 	if (error < 0)
- 		goto out;
+@@ -760,8 +758,11 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
  
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
  
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
++	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
  	if (error)
-@@ -817,7 +816,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
++		goto do_new;
++
++	if (rsb_flag(r, RSB_TOSS))
+ 		goto do_toss;
  
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto retry;
+ 	/*
+@@ -773,10 +774,6 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 
+ 
+  do_toss:
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
+-	if (error)
+-		goto do_new;
+-
+ 	/*
+ 	 * rsb found inactive. No other thread is using this rsb because
+ 	 * it's on the toss list, so we can look at or update
+@@ -804,8 +801,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 		r->res_nodeid = 0;
  	}
- 	if (error)
-@@ -832,7 +831,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
  
- 	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
+-	rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
+-	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
++	rsb_clear_flag(r, RSB_TOSS);
+ 	goto out_unlock;
+ 
+ 
+@@ -829,7 +825,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 	r->res_nodeid = (dir_nodeid == our_nodeid) ? 0 : dir_nodeid;
+ 	kref_init(&r->res_ref);
+ 
+-	error = rsb_insert(r, &ls->ls_rsbtbl[b].keep);
++	error = rsb_insert(r, &ls->ls_rsbtbl[b].r);
   out_unlock:
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
   out:
- 	*r_ret = r;
- 	return error;
-@@ -1049,7 +1048,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 	if (error < 0)
+@@ -1049,8 +1045,11 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
  		return error;
  
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
++	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
  	if (!error) {
++		if (rsb_flag(r, RSB_TOSS))
++			goto do_toss;
++
  		/* because the rsb is active, we need to lock_rsb before
-@@ -1057,7 +1056,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 		 * checking/changing re_master_nodeid
  		 */
+@@ -1067,12 +1066,11 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 		put_rsb(r);
  
- 		hold_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		lock_rsb(r);
+ 		return 0;
+-	}
+-
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
+-	if (error)
++	} else {
+ 		goto not_found;
++	}
  
- 		__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, false,
-@@ -1083,14 +1082,14 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 
++ do_toss:
+ 	/* because the rsb is inactive (on toss list), it's not refcounted
+ 	 * and lock_rsb is not used, but is protected by the rsbtbl lock
+ 	 */
+@@ -1102,8 +1100,9 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 	r->res_nodeid = from_nodeid;
+ 	kref_init(&r->res_ref);
  	r->res_toss_time = jiffies;
- 	/* the rsb was inactive (on toss list) */
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
++	rsb_set_flag(r, RSB_TOSS);
  
- 	return 0;
- 
-  not_found:
- 	error = get_rsb_struct(ls, name, len, &r);
- 	if (error == -EAGAIN) {
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto retry;
- 	}
- 	if (error)
-@@ -1108,7 +1107,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+-	error = rsb_insert(r, &ls->ls_rsbtbl[b].toss);
++	error = rsb_insert(r, &ls->ls_rsbtbl[b].r);
  	if (error) {
  		/* should never happen */
  		dlm_free_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto retry;
- 	}
+@@ -1127,8 +1126,11 @@ static void dlm_dump_rsb_hash(struct dlm_ls *ls, uint32_t hash)
  
-@@ -1116,7 +1115,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 		*result = DLM_LU_ADD;
- 	*r_nodeid = from_nodeid;
-  out_unlock:
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	return error;
- }
- 
-@@ -1126,15 +1125,15 @@ static void dlm_dump_rsb_hash(struct dlm_ls *ls, uint32_t hash)
- 	struct dlm_rsb *r;
- 	int i;
- 
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
  	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
+-		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
++		for (n = rb_first(&ls->ls_rsbtbl[i].r); n; n = rb_next(n)) {
  			r = rb_entry(n, struct dlm_rsb, res_hashnode);
++			if (rsb_flag(r, RSB_TOSS))
++				continue;
++
  			if (r->res_hash == hash)
  				dlm_dump_rsb(r);
  		}
--		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- }
- 
- void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
-@@ -1146,7 +1145,7 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
- 	hash = jhash(name, len, 0);
+@@ -1146,14 +1148,10 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
  	b = hash & (ls->ls_rsbtbl_size - 1);
  
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
++	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
  	if (!error)
- 		goto out_dump;
-@@ -1157,7 +1156,7 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
-  out_dump:
+-		goto out_dump;
+-
+-	error = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
+-	if (error)
+ 		goto out;
+- out_dump:
++
  	dlm_dump_rsb(r);
   out:
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- }
+ 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+@@ -1166,8 +1164,8 @@ static void toss_rsb(struct kref *kref)
  
- static void toss_rsb(struct kref *kref)
-@@ -1621,10 +1620,10 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 	memset(&ls->ls_remove_lens, 0, sizeof(int) * DLM_REMOVE_NAMES_MAX);
- 
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 
- 	if (!test_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags)) {
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 	DLM_ASSERT(list_empty(&r->res_root_list), dlm_print_rsb(r););
+ 	kref_init(&r->res_ref);
+-	rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[r->res_bucket].keep);
+-	rsb_insert(r, &ls->ls_rsbtbl[r->res_bucket].toss);
++	WARN_ON(rsb_flag(r, RSB_TOSS));
++	rsb_set_flag(r, RSB_TOSS);
+ 	r->res_toss_time = jiffies;
+ 	set_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[r->res_bucket].flags);
+ 	if (r->res_lvbptr) {
+@@ -1627,9 +1625,11 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
  		return;
  	}
  
-@@ -1681,7 +1680,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 		set_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags);
- 	else
- 		clear_bit(DLM_RTF_SHRINK_BIT, &ls->ls_rsbtbl[b].flags);
--	spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+-	for (n = rb_first(&ls->ls_rsbtbl[b].toss); n; n = next) {
++	for (n = rb_first(&ls->ls_rsbtbl[b].r); n; n = next) {
+ 		next = rb_next(n);
+ 		r = rb_entry(n, struct dlm_rsb, res_hashnode);
++		if (!rsb_flag(r, RSB_TOSS))
++			continue;
  
- 	/*
- 	 * While searching for rsb's to free, we found some that require
-@@ -1696,16 +1695,16 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 		name = ls->ls_remove_names[i];
- 		len = ls->ls_remove_lens[i];
- 
--		spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_lock_bh(&ls->ls_rsbtbl_lock);
- 		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
- 		if (rv) {
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			log_debug(ls, "remove_name not toss %s", name);
+ 		/* If we're the directory record for this rsb, and
+ 		   we're not the master of it, then we need to wait
+@@ -1672,7 +1672,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
  			continue;
  		}
  
- 		if (r->res_master_nodeid != our_nodeid) {
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			log_debug(ls, "remove_name master %d dir %d our %d %s",
- 				  r->res_master_nodeid, r->res_dir_nodeid,
- 				  our_nodeid, name);
-@@ -1714,7 +1713,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 		if (r->res_dir_nodeid == our_nodeid) {
- 			/* should never happen */
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			log_error(ls, "remove_name dir %d master %d our %d %s",
- 				  r->res_dir_nodeid, r->res_master_nodeid,
- 				  our_nodeid, name);
-@@ -1723,21 +1722,21 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
- 
- 		if (!time_after_eq(jiffies, r->res_toss_time +
- 				   dlm_config.ci_toss_secs * HZ)) {
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			log_debug(ls, "remove_name toss_time %lu now %lu %s",
- 				  r->res_toss_time, jiffies, name);
- 			continue;
- 		}
- 
- 		if (!kref_put(&r->res_ref, kill_rsb)) {
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			log_error(ls, "remove_name in use %s", name);
- 			continue;
- 		}
- 
- 		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
- 		send_remove(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 
+-		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
++		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].r);
  		dlm_free_rsb(r);
  	}
-@@ -4201,7 +4200,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 	hash = jhash(name, len, 0);
- 	b = hash & (ls->ls_rsbtbl_size - 1);
  
--	spin_lock_bh(&ls->ls_rsbtbl[b].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+@@ -1696,8 +1696,14 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
+ 		len = ls->ls_remove_lens[i];
  
- 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
+ 		spin_lock_bh(&ls->ls_rsbtbl_lock);
+-		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
++		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
+ 		if (rv) {
++			spin_unlock_bh(&ls->ls_rsbtbl_lock);
++			log_error(ls, "remove_name not found %s", name);
++			continue;
++		}
++
++		if (!rsb_flag(r, RSB_TOSS)) {
+ 			spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 			log_debug(ls, "remove_name not toss %s", name);
+ 			continue;
+@@ -1734,7 +1740,7 @@ static void shrink_bucket(struct dlm_ls *ls, int b)
+ 			continue;
+ 		}
+ 
+-		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
++		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].r);
+ 		send_remove(r);
+ 		spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 
+@@ -4202,17 +4208,16 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
+ 
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 
+-	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].toss, name, len, &r);
++	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].r, name, len, &r);
  	if (rv) {
-@@ -4211,7 +4210,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 			/* should not happen */
- 			log_error(ls, "receive_remove from %d not found %s",
- 				  from_nodeid, name);
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			return;
- 		}
+-		/* verify the rsb is on keep list per comment above */
+-		rv = dlm_search_rsb_tree(&ls->ls_rsbtbl[b].keep, name, len, &r);
+-		if (rv) {
+-			/* should not happen */
+-			log_error(ls, "receive_remove from %d not found %s",
+-				  from_nodeid, name);
+-			spin_unlock_bh(&ls->ls_rsbtbl_lock);
+-			return;
+-		}
++		/* should not happen */
++		log_error(ls, "%s from %d not found %s", __func__,
++			  from_nodeid, name);
++		spin_unlock_bh(&ls->ls_rsbtbl_lock);
++		return;
++	}
++
++	if (!rsb_flag(r, RSB_TOSS)) {
  		if (r->res_master_nodeid != from_nodeid) {
-@@ -4219,14 +4218,14 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
+ 			/* should not happen */
  			log_error(ls, "receive_remove keep from %d master %d",
- 				  from_nodeid, r->res_master_nodeid);
- 			dlm_print_rsb(r);
--			spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+			spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 			return;
- 		}
- 
- 		log_debug(ls, "receive_remove from %d master %d first %x %s",
- 			  from_nodeid, r->res_master_nodeid, r->res_first_lkid,
- 			  name);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		return;
- 	}
- 
-@@ -4234,19 +4233,19 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 		log_error(ls, "receive_remove toss from %d master %d",
- 			  from_nodeid, r->res_master_nodeid);
- 		dlm_print_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		return;
+@@ -4238,7 +4243,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
  	}
  
  	if (kref_put(&r->res_ref, kill_rsb)) {
- 		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
+-		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].toss);
++		rb_erase(&r->res_hashnode, &ls->ls_rsbtbl[b].r);
+ 		spin_unlock_bh(&ls->ls_rsbtbl_lock);
  		dlm_free_rsb(r);
  	} else {
- 		log_error(ls, "receive_remove from %d rsb ref error",
- 			  from_nodeid);
- 		dlm_print_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[b].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	}
- }
- 
-@@ -5314,7 +5313,7 @@ static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls, int bucket)
- 	struct rb_node *n;
+@@ -5314,8 +5319,10 @@ static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls, int bucket)
  	struct dlm_rsb *r;
  
--	spin_lock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	for (n = rb_first(&ls->ls_rsbtbl[bucket].keep); n; n = rb_next(n)) {
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+-	for (n = rb_first(&ls->ls_rsbtbl[bucket].keep); n; n = rb_next(n)) {
++	for (n = rb_first(&ls->ls_rsbtbl[bucket].r); n; n = rb_next(n)) {
  		r = rb_entry(n, struct dlm_rsb, res_hashnode);
++		if (rsb_flag(r, RSB_TOSS))
++			continue;
  
-@@ -5325,10 +5324,10 @@ static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls, int bucket)
+ 		if (!rsb_flag(r, RSB_RECOVER_GRANT))
  			continue;
- 		}
- 		hold_rsb(r);
--		spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+		spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 		return r;
- 	}
--	spin_unlock_bh(&ls->ls_rsbtbl[bucket].lock);
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 	return NULL;
- }
- 
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 731c48371a27..d33dbcd5f4a1 100644
+index d33dbcd5f4a1..b5184ad550fa 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -495,6 +495,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	 */
- 	ls->ls_exflags = (flags & ~(DLM_LSFL_FS | DLM_LSFL_NEWEXCL));
- 
-+	spin_lock_init(&ls->ls_rsbtbl_lock);
- 	size = READ_ONCE(dlm_config.ci_rsbtbl_size);
- 	ls->ls_rsbtbl_size = size;
- 
-@@ -504,7 +505,6 @@ static int new_lockspace(const char *name, const char *cluster,
+@@ -503,8 +503,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	if (!ls->ls_rsbtbl)
+ 		goto out_lsfree;
  	for (i = 0; i < size; i++) {
- 		ls->ls_rsbtbl[i].keep.rb_node = NULL;
- 		ls->ls_rsbtbl[i].toss.rb_node = NULL;
--		spin_lock_init(&ls->ls_rsbtbl[i].lock);
+-		ls->ls_rsbtbl[i].keep.rb_node = NULL;
+-		ls->ls_rsbtbl[i].toss.rb_node = NULL;
++		ls->ls_rsbtbl[i].r.rb_node = NULL;
  	}
  
  	for (i = 0; i < DLM_REMOVE_NAMES_MAX; i++) {
+@@ -837,15 +836,9 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	 */
+ 
+ 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
+-		while ((n = rb_first(&ls->ls_rsbtbl[i].keep))) {
++		while ((n = rb_first(&ls->ls_rsbtbl[i].r))) {
+ 			rsb = rb_entry(n, struct dlm_rsb, res_hashnode);
+-			rb_erase(n, &ls->ls_rsbtbl[i].keep);
+-			dlm_free_rsb(rsb);
+-		}
+-
+-		while ((n = rb_first(&ls->ls_rsbtbl[i].toss))) {
+-			rsb = rb_entry(n, struct dlm_rsb, res_hashnode);
+-			rb_erase(n, &ls->ls_rsbtbl[i].toss);
++			rb_erase(n, &ls->ls_rsbtbl[i].r);
+ 			dlm_free_rsb(rsb);
+ 		}
+ 	}
 diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index 13bc845fa305..9a4c8e4b2442 100644
+index 9a4c8e4b2442..e53d88e4ec93 100644
 --- a/fs/dlm/recover.c
 +++ b/fs/dlm/recover.c
-@@ -886,8 +886,8 @@ void dlm_clear_toss(struct dlm_ls *ls)
- 	unsigned int count = 0;
- 	int i;
+@@ -888,10 +888,13 @@ void dlm_clear_toss(struct dlm_ls *ls)
  
-+	spin_lock(&ls->ls_rsbtbl_lock);
+ 	spin_lock(&ls->ls_rsbtbl_lock);
  	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].toss); n; n = next) {
+-		for (n = rb_first(&ls->ls_rsbtbl[i].toss); n; n = next) {
++		for (n = rb_first(&ls->ls_rsbtbl[i].r); n; n = next) {
  			next = rb_next(n);
  			r = rb_entry(n, struct dlm_rsb, res_hashnode);
-@@ -895,8 +895,8 @@ void dlm_clear_toss(struct dlm_ls *ls)
+-			rb_erase(n, &ls->ls_rsbtbl[i].toss);
++			if (!rsb_flag(r, RSB_TOSS))
++				continue;
++
++			rb_erase(n, &ls->ls_rsbtbl[i].r);
  			dlm_free_rsb(r);
  			count++;
  		}
--		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
- 
- 	if (count)
- 		log_rinfo(ls, "dlm_clear_toss %u done", count);
 diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index c82cc48988c6..fa6608363302 100644
+index fa6608363302..ad696528ebe7 100644
 --- a/fs/dlm/recoverd.c
 +++ b/fs/dlm/recoverd.c
-@@ -33,8 +33,8 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
- 		goto out;
- 	}
+@@ -35,9 +35,9 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
  
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
  	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
+-		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
++		for (n = rb_first(&ls->ls_rsbtbl[i].r); n; n = rb_next(n)) {
  			r = rb_entry(n, struct dlm_rsb, res_hashnode);
- 			if (r->res_nodeid)
-@@ -43,8 +43,8 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
+-			if (r->res_nodeid)
++			if (rsb_flag(r, RSB_TOSS) || r->res_nodeid)
+ 				continue;
+ 
  			list_add(&r->res_masters_list, &ls->ls_masters_list);
+@@ -70,14 +70,14 @@ static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
+ 
+ 	spin_lock_bh(&ls->ls_rsbtbl_lock);
+ 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
+-		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
++		for (n = rb_first(&ls->ls_rsbtbl[i].r); n; n = rb_next(n)) {
+ 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
++			if (WARN_ON_ONCE(rsb_flag(r, RSB_TOSS)))
++				continue;
++
+ 			list_add(&r->res_root_list, root_list);
  			dlm_hold_rsb(r);
  		}
--		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
+-
+-		if (!RB_EMPTY_ROOT(&ls->ls_rsbtbl[i].toss))
+-			log_error(ls, "%s toss not empty", __func__);
  	}
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
-  out:
- 	write_unlock_bh(&ls->ls_masters_lock);
- 	return error;
-@@ -68,8 +68,8 @@ static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
- 	struct dlm_rsb *r;
- 	int i;
- 
-+	spin_lock_bh(&ls->ls_rsbtbl_lock);
- 	for (i = 0; i < ls->ls_rsbtbl_size; i++) {
--		spin_lock_bh(&ls->ls_rsbtbl[i].lock);
- 		for (n = rb_first(&ls->ls_rsbtbl[i].keep); n; n = rb_next(n)) {
- 			r = rb_entry(n, struct dlm_rsb, res_hashnode);
- 			list_add(&r->res_root_list, root_list);
-@@ -78,8 +78,8 @@ static void dlm_create_root_list(struct dlm_ls *ls, struct list_head *root_list)
- 
- 		if (!RB_EMPTY_ROOT(&ls->ls_rsbtbl[i].toss))
- 			log_error(ls, "%s toss not empty", __func__);
--		spin_unlock_bh(&ls->ls_rsbtbl[i].lock);
- 	}
-+	spin_unlock_bh(&ls->ls_rsbtbl_lock);
+ 	spin_unlock_bh(&ls->ls_rsbtbl_lock);
  }
- 
- static void dlm_release_root_list(struct list_head *root_list)
 -- 
 2.43.0
 
