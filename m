@@ -1,167 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33FB335C7
-	for <gfs2@lists.linux.dev>; Wed, 17 Apr 2024 07:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FFC13C8EA
+	for <gfs2@lists.linux.dev>; Wed, 17 Apr 2024 11:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713340544; cv=none; b=ZMOn6ka76MJgAA5KqodWEOxYXa2KaSZVZmdAfKWwK97Ay2BqOp29jZKTmb7AdKZ3R84GzT3cTGTRxjRBcd/gnvrvnA70KTQ7TL0nf16PdN416xhEuwts7X0xEs7lYtK2vAcGCelOcs90Cop8pIsIt4plPAt1jk7OYNNNiRfFDe4=
+	t=1713354050; cv=none; b=QPjb0kP84237voE5xUnEpYhE039k+JXXDLYSSoHEHJ6EiuJks8NbT7+pu7Ozsz/UyIZFeZDd6vJgS2+dYU2JKf6FyXlxtNzzNc9dejxrL5rji5Gk5z/FXgix7TWVvnd06dhvS/1TwZha4qbn65czsDIUQt/V2zPZeWHSkqK+epc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713340544; c=relaxed/simple;
-	bh=E1DPCW4Gx9/aSyymSd8OFy+RGj5UBxPnSgSJShXTFto=;
+	s=arc-20240116; t=1713354050; c=relaxed/simple;
+	bh=UleH45v2JxgonZhsx9G653Pl6fJWAC7ykZs1aPCoGvE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M9r8naF0Y4w2d30OBKYh2rGIxRYu68JcUjtrsjOO0YEAkMe5xPcPkLz2Zs1xH0Kk82dPwBobcOo9pvRXfvEFr6O6LeG5QRm0bHZ1ol09mejJknq89i6ZE3T6YYCKd+D9exSJ9sVE4jsTdKPFlirFKoFes+apXK5PeSKbOpjIrFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f2VFyq2r; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=NhvZayfXUl/iFj459VVN0axcTzrihs7wCe6sYSoccENe++dUKlZ8uvA1vmCOoHJiPAk05dB+e8fQhhYC1H5Eo3H8LIz7xTjZNamWt4PEPrY6RZFRlo12BHKsuzmXTPPsOvDyuhmB2JF5FQk1QmaV/sSfWSoNR+1KkQ/WhB851xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=glwU3DOd; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f2VFyq2r"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="glwU3DOd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713340541;
+	s=mimecast20190719; t=1713354047;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7TrZSS8syHLojkCZPcAFaKvnI3+Dx6bA+yOiVPy0Xgg=;
-	b=f2VFyq2rimzt8tJyfswdXwksZjM0QGuPWD2XXrgJB74B6zI7/wQgsFoJtztvEtJZN7ihML
-	LOFOaQlcAxt7gMo8DznwM0mvTvhnLq2DxmJeg3Ev22IshORDksicAVgr0sQK09RqPW4Xp/
-	GjCfbgTwN2j+FLXMWDya8cRKgqhS8R4=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=SeebRnX/BWwg5OwgWqih4TdoNfl8RwZ74w+fGyak3GA=;
+	b=glwU3DOdStrCrUg/QN++7PV1iin+B3j5B/BfR9DdrY2jcLdfZSzugs9mtCULTtmQXvEX8U
+	z5vN7Qv8bcIyg9Xrj/lH0O0OIOIfri2LZBkJoD18Kis59PHjIyGB8WLym4Man1CnmwXT/1
+	Fsjloz+oLXPx7UCqt3gD5/qRRzRxpnk=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-iIygHhf1Nv64KEIuOtm3rw-1; Wed, 17 Apr 2024 03:55:40 -0400
-X-MC-Unique: iIygHhf1Nv64KEIuOtm3rw-1
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6efef492e79so2853662b3a.1
-        for <gfs2@lists.linux.dev>; Wed, 17 Apr 2024 00:55:39 -0700 (PDT)
+ us-mta-155-MK5__8gmNsKyYH0FaI0fzw-1; Wed, 17 Apr 2024 07:40:45 -0400
+X-MC-Unique: MK5__8gmNsKyYH0FaI0fzw-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2d99533a6c3so3711341fa.0
+        for <gfs2@lists.linux.dev>; Wed, 17 Apr 2024 04:40:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713340537; x=1713945337;
+        d=1e100.net; s=20230601; t=1713354044; x=1713958844;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7TrZSS8syHLojkCZPcAFaKvnI3+Dx6bA+yOiVPy0Xgg=;
-        b=r8zsE+sClKY2X2KkAcqDgJ57oKwENbflbqMRtwli/JmzQ4N+gn6a4j/4B+VSLYTC2u
-         IaCVCY21r3/PQs1tCOjQHJRDoZf6kEhV2pL6Y2SDWXjNvLDAcT3bzHqUaVpBAtXmOWQ5
-         SUECopUBDey6dTb+ri0/s3Lk3ppxZrXf8bWRZ4LZG1Po3kwe4Vo1NxJtg5xqfKqiNHB1
-         e4CQ++TComEogQaz9zpbj/120fV6zmWk20pWGucFihC/LTQq2mah5/qTh8raTm4tY/Yz
-         92VNhWmjWsDagfKJ7XXsI4hieoDuQ5s/7qgX6ns5cgIRUUkDCC3OndaSfsJjkqYQy9RO
-         OdEw==
-X-Gm-Message-State: AOJu0YzKtHMGtfc54Yh0GORQ+qvAcfaKcWSKerARbv43whEQmF8mbmzW
-	NYMT4AGpx+lDGLg1ALKwPbfLBDQ5d0IOrXDBeTlp4ckHO6+QYrueE8ZplBGF0+hXdn4bK0BYG/D
-	9fWfAGKltJE+MeA9QTCrIDbdumt30Wit45VqaPr36k+W5AOU1BOPQj9wdCQCyFK9zMoAEFDbLOp
-	vmWKS2qxAyhymd4jLhPNQ9vbHqbQVLmWMQ5Mmm
-X-Received: by 2002:a05:6a20:978c:b0:1a7:502:23e8 with SMTP id hx12-20020a056a20978c00b001a7050223e8mr12959797pzc.35.1713340537617;
-        Wed, 17 Apr 2024 00:55:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHUblo/INvH8ITBs1w8xacy5HcUQQCsv8uHHRbqRFtBaKnE169jJKztKfDnMNE23mRJyX0fD9aB4Mp+fEsLTrs=
-X-Received: by 2002:a05:6a20:978c:b0:1a7:502:23e8 with SMTP id
- hx12-20020a056a20978c00b001a7050223e8mr12959787pzc.35.1713340537249; Wed, 17
- Apr 2024 00:55:37 -0700 (PDT)
+        bh=SeebRnX/BWwg5OwgWqih4TdoNfl8RwZ74w+fGyak3GA=;
+        b=fhEmn/+h4nhIx5FLnTcKTqj1R3issXRMt/PEh/VvKcXY+Njpk2MQQTuYYg1FJ23KP9
+         5UVr+L93WGmD3NtI4aFl4paGeCpElyGw5VISwDYqzjysOaAlid13aDnB7cLqrPz6LnlW
+         JS7Yvnqjq0cjbTEZ+t0PdYMjSNIF2LgcUD2qm+X7BezQ6CLpg5xSKzhP2jGOdXVHa0Hf
+         vy4XNiGRdC4wYAxoJcIJjyVVwoLlOwwTSJnJfjiHV1QG4UUpD8cRGzUPm7RTrPU3lSLy
+         t8syHNrhQId46A5GyHO+qFFjdMjUGyz0tKKv9TgeSl3qJKLKc6NKSR5RVWZtKxtHNi03
+         3BQg==
+X-Gm-Message-State: AOJu0YzUwsYyvsXvkRsAOrTB2shKp4YXU1C6P+F+W4XHsa15Xxf7adsy
+	wAPOqeT60I5XptVGJnreko6rHuVgfQDgQseVO09pa0DOQFonjMs+grZUtLOzyQuMZhSZ6+m2MFT
+	NAx09dPQsmhZuymYeT3hbHkLc7FiB3B2OLTwBGiuAYHTELneER1N0u32rFWEkku7VqX7iFOBoHs
+	q/NG5lg+CAcvFGfV7x4+QtML9BoQ==
+X-Received: by 2002:a2e:9f4c:0:b0:2d8:4637:405f with SMTP id v12-20020a2e9f4c000000b002d84637405fmr1829257ljk.9.1713354044425;
+        Wed, 17 Apr 2024 04:40:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXFF+iLdsQSleOArQ9NN/F7yoyZsbnSqTpsMvbpE4Z5b3BBRp0TomD38+Ogn5nyXR/GQEVG+aScybbCivj2qY=
+X-Received: by 2002:a2e:9f4c:0:b0:2d8:4637:405f with SMTP id
+ v12-20020a2e9f4c000000b002d84637405fmr1829245ljk.9.1713354044046; Wed, 17 Apr
+ 2024 04:40:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240409164508.79570-1-agruenba@redhat.com> <20240409164508.79570-14-agruenba@redhat.com>
- <f1c9bcc3-475f-4b1c-8a0a-078c200d31e2@redhat.com>
-In-Reply-To: <f1c9bcc3-475f-4b1c-8a0a-078c200d31e2@redhat.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 17 Apr 2024 09:55:25 +0200
-Message-ID: <CAHc6FU69L8htb_GuedG2NEgzE76hLdvddKGYEVhUuvpxjiWXUQ@mail.gmail.com>
-Subject: Re: [PATCH 13/15] gfs2: Fix "Make glock lru list scanning safer"
-To: Andrew Price <anprice@redhat.com>
+References: <20240415183943.645497-1-aahringo@redhat.com> <20240415183943.645497-8-aahringo@redhat.com>
+In-Reply-To: <20240415183943.645497-8-aahringo@redhat.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Wed, 17 Apr 2024 07:40:32 -0400
+Message-ID: <CAK-6q+gnZs+jCi=nezCT4fZ85__N55R05Bq5G5cuzA=kcutqzQ@mail.gmail.com>
+Subject: Re: [PATCHv2 dlm/next 7/9] dlm: drop scand kthread and use timers
+To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 16, 2024 at 6:56=E2=80=AFPM Andrew Price <anprice@redhat.com> w=
-rote:
-> On 09/04/2024 17:45, Andreas Gruenbacher wrote:
-> > Commit 228804a35caa tried to add a refcount check to
-> > gfs2_scan_glock_lru() to make sure that glocks that are still reference=
-d
-> > cannot be freed.  It failed to account for the bias state_change() adds
-> > to the refcount for held glocks, so held glocks are no longer removed
-> > from the glock cache, which can lead to out-of-memory problems.  Fix
-> > that.  (The inodes those glocks are associated with do get shrunk and d=
-o
-> > get pushed out of memory.)
-> >
-> > In addition, use the same eligibility check in gfs2_scan_glock_lru() an=
-d
-> > gfs2_dispose_glock_lru().
-> >
-> > Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-> > ---
-> >   fs/gfs2/glock.c | 24 +++++++++++++-----------
-> >   1 file changed, 13 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-> > index 2882a42e88aa..04e0a8ac61d7 100644
-> > --- a/fs/gfs2/glock.c
-> > +++ b/fs/gfs2/glock.c
-> > @@ -1987,6 +1987,14 @@ static int glock_cmp(void *priv, const struct li=
-st_head *a,
-> >       return 0;
-> >   }
-> >
-> > +static bool can_free_glock(struct gfs2_glock *gl)
-> > +{
-> > +     bool held =3D gl->gl_state !=3D LM_ST_UNLOCKED;
-> > +
-> > +     return !test_bit(GLF_LOCK, &gl->gl_flags) &&
-> > +            gl->gl_lockref.count =3D=3D held;
+Hi,
+
+On Mon, Apr 15, 2024 at 2:39=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
 >
-> Wouldn't this comparison go wrong when the lockref count is > 1? In any
-> case it's unusual to see a lockref count being compared to a bool.
-
-We could do something like the below, but the result is the same:
-
-  int count =3D gl->gl_lockref.count;
-  if (gl->gl_state !=3D LM_ST_UNLOCKED)
-    count--;
-  return !test_bit(GLF_LOCK, &gl->gl_flags) && count =3D=3D 0;
-
-> Andy
+> Currently the scand kthread acts like a garbage collection for expired
+> rsbs on toss list to clean them up after a certain timeout. It triggers
+> every couple of seconds and iterates over the toss list while holding
+> ls_rsbtbl_lock for the whole hash bucket iteration. To reduce the amount
+> of holding the ls_rsbtbl_lock time we handle free of cached rsbs (tossed
+> rsbs) on a per rsb timer. If it expires the rsb deletes itself out of
+> the rsb toss queue that is an ordered queue of tossed rsbs. First entry
+> is the earliest rsb to expire the last is the lastest rsb that will expir=
+e.
+> The res_toss_time is now an absolute value of when it will be expired
+> before it was the time when the rsb was tossed. It was an debug
+> functionality for debugfs anyway, we change a little bit the semantic
+> here.
 >
-> > +}
-> > +
-> >   /**
-> >    * gfs2_dispose_glock_lru - Demote a list of glocks
-> >    * @list: The list to dispose of
-> > @@ -2020,7 +2028,7 @@ __acquires(&lru_lock)
-> >                       atomic_inc(&lru_count);
-> >                       continue;
-> >               }
-> > -             if (test_bit(GLF_LOCK, &gl->gl_flags)) {
-> > +             if (!can_free_glock(gl)) {
-> >                       spin_unlock(&gl->gl_lockref.lock);
-> >                       goto add_back_to_lru;
-> >               }
-> > @@ -2052,16 +2060,10 @@ static long gfs2_scan_glock_lru(int nr)
-> >       list_for_each_entry_safe(gl, next, &lru_list, gl_lru) {
-> >               if (nr-- <=3D 0)
-> >                       break;
-> > -             /* Test for being demotable */
-> > -             if (!test_bit(GLF_LOCK, &gl->gl_flags)) {
-> > -                     if (!spin_trylock(&gl->gl_lockref.lock))
-> > -                             continue;
-> > -                     if (!gl->gl_lockref.count) {
-> > -                             list_move(&gl->gl_lru, &dispose);
-> > -                             atomic_dec(&lru_count);
-> > -                             freed++;
-> > -                     }
-> > -                     spin_unlock(&gl->gl_lockref.lock);
-> > +             if (can_free_glock(gl)) {
-> > +                     list_move(&gl->gl_lru, &dispose);
-> > +                     atomic_dec(&lru_count);
-> > +                     freed++;
-> >               }
-> >       }
-> >       if (!list_empty(&dispose))
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> ---
+>  fs/dlm/dlm_internal.h |  16 +-
+>  fs/dlm/lock.c         | 382 ++++++++++++++++++++++++++----------------
+>  fs/dlm/lock.h         |   2 +
+>  fs/dlm/lockspace.c    | 105 ++----------
+>  fs/dlm/member.c       |   2 +
+>  fs/dlm/recover.c      |   5 +
+>  fs/dlm/recoverd.c     |  10 ++
+>  7 files changed, 283 insertions(+), 239 deletions(-)
 >
+> diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+> index cf43b97cf3e5..98a0ac511bc8 100644
+> --- a/fs/dlm/dlm_internal.h
+> +++ b/fs/dlm/dlm_internal.h
+> @@ -334,6 +334,7 @@ struct dlm_rsb {
+>         struct list_head        res_root_list;      /* used for recovery =
+*/
+>         struct list_head        res_masters_list;   /* used for recovery =
+*/
+>         struct list_head        res_recover_list;   /* used for recovery =
+*/
+> +       struct list_head        res_toss_q_list;
+>         int                     res_recover_locks_count;
+>
+>         char                    *res_lvbptr;
+> @@ -584,13 +585,20 @@ struct dlm_ls {
+>         spinlock_t              ls_lkbidr_spin;
+>
+>         struct rhashtable       ls_rsbtbl;
+> -#define DLM_RTF_SHRINK_BIT     0
+> -       unsigned long           ls_rsbtbl_flags;
+>         spinlock_t              ls_rsbtbl_lock;
+>
+>         struct list_head        ls_toss;
+>         struct list_head        ls_keep;
+>
+> +       struct timer_list       ls_timer;
+> +       /* this queue is ordered according the
+> +        * absolute res_toss_time jiffies time
+> +        * to mod_timer() with the first element
+> +        * if necessary.
+> +        */
+> +       struct list_head        ls_toss_q;
+> +       spinlock_t              ls_toss_q_lock;
+> +
+>         spinlock_t              ls_waiters_lock;
+>         struct list_head        ls_waiters;     /* lkbs needing a reply *=
+/
+>
+> @@ -601,9 +609,6 @@ struct dlm_ls {
+>         int                     ls_new_rsb_count;
+>         struct list_head        ls_new_rsb;     /* new rsb structs */
+>
+> -       char
+...
+> +       spin_unlock_bh(&ls->ls_rsbtbl_lock);
+> +
+>         goto out_unlock;
+>
+>
+> @@ -777,6 +1009,9 @@ static int find_rsb_nodir(struct dlm_ls *ls, const v=
+oid *name, int len,
+>          * valid for keep state rsbs
+>          */
+>         kref_init(&r->res_ref);
+> +       rsb_delete_toss_timer(ls, r);
+> +       spin_unlock_bh(&ls->ls_rsbtbl_lock);
+> +
+>         goto out_unlock;
 
-Thanks,
-Andreas
+those spin_unlock_bh() are twice there... just for note I realized it
+now, it was fixed in the next patch. Probably because I was doing some
+git rebase things and tried to solve conflicts and made this
+mistake...
+
+- Alex
 
