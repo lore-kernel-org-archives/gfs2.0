@@ -1,161 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E5122324
-	for <gfs2@lists.linux.dev>; Wed, 17 Apr 2024 19:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473C21E525
+	for <gfs2@lists.linux.dev>; Sun, 21 Apr 2024 23:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713381211; cv=none; b=gUoSKOu4Fti19uIfK7IKSuP3yp8gN3s/EdU/FfcozJABzufnH/l7LuTbB9fNjeWxfRLfzEzTDvhwUTSJiupa5SPtLiNd81mS5NPIUWZi1egUGnYLpWcmdrktyWfJxv2Kl20/ZcEybnC+4XWA9jyz2adfGm7Bs+k6J+8d4BOfWGA=
+	t=1713741082; cv=none; b=C9h/iuKcznOsGk0zAOFb1xhe6EWfFXpbFkis9NaYyN2faJB8RmxTI7eXLCz+aWGm7mCTOFf3WaBc4s+v8xF/L7e2QhcwYroZgh+p7ZxFjMJPuakUy8cb6ZuRdaQzaPgJCiSz+ffLln4/XpEZJcHRBgT2uajW+MNr+EN9ZhMSg54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713381211; c=relaxed/simple;
-	bh=NzEOmZxnGLUU4WiIYkbePVmxpGcSXEmE+FJSaJmuLtg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RNNx9gx8Rgifv35v+1yf03EJ2Vo9qLKlFhNngE6kQJMPggByXduPE2dxufdI59qgyNYm5xcjRw7Xlcu6kjlVE0A5vyZF/g4gpulKYuRqU+GJ0/bIQo6uFhNm51QZRuYej2W05xlgErlG3FTIZB7wjT3+LQZy9YCPkiDJ/YjGdCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jNqNPyHI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jNqNPyHI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713381208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RnR38b0QcdM9mU9AXbgtdqQPPfQLFpak54cHHtMCNBQ=;
-	b=jNqNPyHIz7VT+x9Qx/y77f3G+MGoQkb/AGiPC1nSurkR3tzXJ8l1KAwgUwLMUOYVm2OlBK
-	vOrt0dr1Cfo0txcntTr44Kcgm/YwPb0C1j8wsa9109LXXMqbmjwj4tjWM0qV3/eZRHT4Uu
-	T7UkB9DYvJagtWRm4wwtcQlr7inh+CE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-P45hNQOEN5OV7-diYGdFlg-1; Wed,
- 17 Apr 2024 15:13:24 -0400
-X-MC-Unique: P45hNQOEN5OV7-diYGdFlg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D50AC1C0514E;
-	Wed, 17 Apr 2024 19:13:23 +0000 (UTC)
-Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id B8C1A2166B31;
-	Wed, 17 Apr 2024 19:13:23 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	dan.carpenter@linaro.org,
-	aahringo@redhat.com
-Subject: [PATCH dlm/next] dlm: fix sleep in atomic context
-Date: Wed, 17 Apr 2024 15:13:22 -0400
-Message-ID: <20240417191322.952359-1-aahringo@redhat.com>
+	s=arc-20240116; t=1713741082; c=relaxed/simple;
+	bh=KeJ/hkv/ADmBtwjyRjiC8mPob6I7p2+aO0XnhEs5+J4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=EG/qbCXpDyNlh2sCaD2nlVRYSD/v9ce9bz6hNzUePgEJwJPWUSKlRKd3iRgYgWJiMyUcfAUaB6BY17xud4UbnRERkKgTxeVgd0/e0xX+gXVIbxSD9uCjzDAuLj9PG4Cdc5Dsw2+xDG0zxWShiLPLur1l/lzkQLBjqnZIJqkS3lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7d5f08fdba8so503303539f.0
+        for <gfs2@lists.linux.dev>; Sun, 21 Apr 2024 16:11:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713741080; x=1714345880;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m1vHar25Ogd48V75kwe5mhigjdoQz3FAHOecQmxlZ0I=;
+        b=K412ttnvSVJdG4L1hW81XfLDNgSKTcsX9AtWYRaV8xJq+fGMyXhnsF3Tz5eyYIljPk
+         njsuaz8iWzoQ+bZzDfHapKJT3Pz/9G1KWIXbdad5Ne7DTYE8VV4ev9HJH9d0hqi/yCm/
+         D0/gdzuStojJ4IdhV9aO1T9YjaLWstVUISZVEkGO5jZK3KwtP79oAvvsxdMLyPBEhz5X
+         Zie7giKLXi2p80wVGUzEJPC114pPiGS8HyrdQWpAMHdU3s1AM/T3sdHghakrriy2p+Da
+         2FetFRX7EUgFJ0Kl4V+G+0zD2AJ4wCiCfuKqIkHBMW/9lMkXvQm6CcTD0bdWdGqBXs/T
+         ZX4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX0afNs29ROgk26jT5gXDC5oDlduCcjPmSV3kCD/chBR0z/RccDz9jTwIcBUUCWv8/ypRPEmY+3EFfBpoNDzYjL+gKsKQ==
+X-Gm-Message-State: AOJu0YyQK0LzxzAIk7TsWWuThDBvGdfxpMafQttab/cD/0N/4P7jrqow
+	b4WGP8x3ADwKMYNzlLdCKT1iULr0ynxWu1tdkWa8ZbmjdM4yQr2ZZ+CrLLjMF+PMeov1F7pk9fy
+	/IemgxSOHVGCXU6GRXri5SeFU01t07mYqTB/BQQgTqckNpIEewPY73is=
+X-Google-Smtp-Source: AGHT+IFoRple7mPFvEEIYfSJNcuZ8oYmhOVat8p2dm1OioF5nSrzhC29oYHAjczu9whuWLy4Eb0hG72BktFHTiCtlpxQAMc/MVRf
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Received: by 2002:a05:6638:8928:b0:484:e632:5b8c with SMTP id
+ jc40-20020a056638892800b00484e6325b8cmr429557jab.3.1713741079704; Sun, 21 Apr
+ 2024 16:11:19 -0700 (PDT)
+Date: Sun, 21 Apr 2024 16:11:19 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004b08ca0616a37065@google.com>
+Subject: [syzbot] [gfs2?] KMSAN: uninit-value in inode_go_dump (4)
+From: syzbot <syzbot+bec528924d6c98923e5d@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This patch changes the orphans mutex to a spinlock since commit
-c288745f1d4a ("dlm: avoid blocking receive at the end of recovery") is
-using a rwlock_t to lock the DLM message receive path and do_purge() can
-be called while this lock is held that forbids to sleep.
+Hello,
 
-We need to use spin_lock_bh() because also a user context that calls
-dlm_user_purge() can call do_purge() and since commit 92d59adfaf71
-("dlm: do message processing in softirq context") the DLM message
-receive path is done under softirq context.
+syzbot found the following issue on:
 
-Fixes: c288745f1d4a ("dlm: avoid blocking receive at the end of recovery")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/gfs2/9ad928eb-2ece-4ad9-a79c-d2bce228e4bc@moroto.mountain/
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
+HEAD commit:    96fca68c4fbf Merge tag 'nfsd-6.9-3' of git://git.kernel.or..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=104a186f180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=87a805e655619c64
+dashboard link: https://syzkaller.appspot.com/bug?extid=bec528924d6c98923e5d
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e9cf2979b8c2/disk-96fca68c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8c31261f0d8c/vmlinux-96fca68c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/86f7ecfba229/bzImage-96fca68c.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+bec528924d6c98923e5d@syzkaller.appspotmail.com
+
+gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+gfs2: fsid=syz:syz.0: fatal: filesystem consistency error
+  inode = 3 2074
+  function = gfs2_dinode_in, file = fs/gfs2/glops.c, line = 470
+gfs2: fsid=syz:syz.0: G:  s:SH n:2/81a f:qobnN t:SH d:EX/0 a:0 v:0 r:3 m:20 p:1
+gfs2: fsid=syz:syz.0:  H: s:SH f:H e:0 p:20593 [syz-executor.0] init_inodes+0x125/0x510 fs/gfs2/ops_fstype.c:884
+=====================================================
+BUG: KMSAN: uninit-value in inode_go_dump+0x475/0x4b0 fs/gfs2/glops.c:549
+ inode_go_dump+0x475/0x4b0 fs/gfs2/glops.c:549
+ gfs2_dump_glock+0x221c/0x2340 fs/gfs2/glock.c:2410
+ gfs2_consist_inode_i+0x19f/0x230 fs/gfs2/util.c:456
+ gfs2_dinode_in fs/gfs2/glops.c:470 [inline]
+ gfs2_inode_refresh+0x12c7/0x1560 fs/gfs2/glops.c:490
+ inode_go_instantiate+0x6e/0xc0 fs/gfs2/glops.c:509
+ gfs2_instantiate+0x272/0x4c0 fs/gfs2/glock.c:454
+ gfs2_glock_holder_ready fs/gfs2/glock.c:1336 [inline]
+ gfs2_glock_wait+0x2a4/0x3e0 fs/gfs2/glock.c:1356
+ gfs2_glock_nq+0x288b/0x3a20 fs/gfs2/glock.c:1616
+ gfs2_glock_nq_init fs/gfs2/glock.h:238 [inline]
+ gfs2_jindex_hold fs/gfs2/ops_fstype.c:580 [inline]
+ init_journal+0x315/0x3a40 fs/gfs2/ops_fstype.c:749
+ init_inodes+0x125/0x510 fs/gfs2/ops_fstype.c:884
+ gfs2_fill_super+0x3c15/0x42b0 fs/gfs2/ops_fstype.c:1263
+ get_tree_bdev+0x681/0x890 fs/super.c:1614
+ gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1341
+ vfs_get_tree+0xa7/0x570 fs/super.c:1779
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __ia32_sys_mount+0xe3/0x150 fs/namespace.c:3875
+ ia32_sys_call+0x3a9a/0x40a0 arch/x86/include/generated/asm/syscalls_32.h:22
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb4/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:346
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:384
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Uninit was created at:
+ __alloc_pages+0x9d6/0xe70 mm/page_alloc.c:4598
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page mm/slub.c:2175 [inline]
+ allocate_slab mm/slub.c:2338 [inline]
+ new_slab+0x2de/0x1400 mm/slub.c:2391
+ ___slab_alloc+0x1184/0x33d0 mm/slub.c:3525
+ __slab_alloc mm/slub.c:3610 [inline]
+ __slab_alloc_node mm/slub.c:3663 [inline]
+ slab_alloc_node mm/slub.c:3835 [inline]
+ kmem_cache_alloc_lru+0x6d7/0xbe0 mm/slub.c:3864
+ alloc_inode_sb include/linux/fs.h:3091 [inline]
+ gfs2_alloc_inode+0x66/0x210 fs/gfs2/super.c:1537
+ alloc_inode+0x86/0x460 fs/inode.c:261
+ iget5_locked+0xa9/0x210 fs/inode.c:1235
+ gfs2_inode_lookup+0xbe/0x1450 fs/gfs2/inode.c:124
+ gfs2_lookup_root fs/gfs2/ops_fstype.c:460 [inline]
+ init_sb+0xe63/0x1880 fs/gfs2/ops_fstype.c:527
+ gfs2_fill_super+0x3288/0x42b0 fs/gfs2/ops_fstype.c:1230
+ get_tree_bdev+0x681/0x890 fs/super.c:1614
+ gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1341
+ vfs_get_tree+0xa7/0x570 fs/super.c:1779
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3352
+ path_mount+0x742/0x1f20 fs/namespace.c:3679
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x725/0x810 fs/namespace.c:3875
+ __ia32_sys_mount+0xe3/0x150 fs/namespace.c:3875
+ ia32_sys_call+0x3a9a/0x40a0 arch/x86/include/generated/asm/syscalls_32.h:22
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb4/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:346
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:384
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+CPU: 0 PID: 20593 Comm: syz-executor.0 Tainted: G        W          6.9.0-rc4-syzkaller-00031-g96fca68c4fbf #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+=====================================================
+
+
 ---
- fs/dlm/dlm_internal.h |  2 +-
- fs/dlm/lock.c         | 12 ++++++------
- fs/dlm/lockspace.c    |  2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 19e57cbd5b13..9085ba3b2f20 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -602,7 +602,7 @@ struct dlm_ls {
- 	spinlock_t		ls_waiters_lock;
- 	struct list_head	ls_waiters;	/* lkbs needing a reply */
- 
--	struct mutex		ls_orphans_mutex;
-+	spinlock_t		ls_orphans_lock;
- 	struct list_head	ls_orphans;
- 
- 	spinlock_t		ls_new_rsb_spin;
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index bbbc9593a64e..f103b8c30592 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -5880,7 +5880,7 @@ int dlm_user_adopt_orphan(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 	int found_other_mode = 0;
- 	int rv = 0;
- 
--	mutex_lock(&ls->ls_orphans_mutex);
-+	spin_lock_bh(&ls->ls_orphans_lock);
- 	list_for_each_entry(iter, &ls->ls_orphans, lkb_ownqueue) {
- 		if (iter->lkb_resource->res_length != namelen)
- 			continue;
-@@ -5897,7 +5897,7 @@ int dlm_user_adopt_orphan(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 		*lkid = iter->lkb_id;
- 		break;
- 	}
--	mutex_unlock(&ls->ls_orphans_mutex);
-+	spin_unlock_bh(&ls->ls_orphans_lock);
- 
- 	if (!lkb && found_other_mode) {
- 		rv = -EAGAIN;
-@@ -6089,9 +6089,9 @@ static int orphan_proc_lock(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 	int error;
- 
- 	hold_lkb(lkb); /* reference for the ls_orphans list */
--	mutex_lock(&ls->ls_orphans_mutex);
-+	spin_lock_bh(&ls->ls_orphans_lock);
- 	list_add_tail(&lkb->lkb_ownqueue, &ls->ls_orphans);
--	mutex_unlock(&ls->ls_orphans_mutex);
-+	spin_unlock_bh(&ls->ls_orphans_lock);
- 
- 	set_unlock_args(0, lkb->lkb_ua, &args);
- 
-@@ -6241,7 +6241,7 @@ static void do_purge(struct dlm_ls *ls, int nodeid, int pid)
- {
- 	struct dlm_lkb *lkb, *safe;
- 
--	mutex_lock(&ls->ls_orphans_mutex);
-+	spin_lock_bh(&ls->ls_orphans_lock);
- 	list_for_each_entry_safe(lkb, safe, &ls->ls_orphans, lkb_ownqueue) {
- 		if (pid && lkb->lkb_ownpid != pid)
- 			continue;
-@@ -6249,7 +6249,7 @@ static void do_purge(struct dlm_ls *ls, int nodeid, int pid)
- 		list_del_init(&lkb->lkb_ownqueue);
- 		dlm_put_lkb(lkb);
- 	}
--	mutex_unlock(&ls->ls_orphans_mutex);
-+	spin_unlock_bh(&ls->ls_orphans_lock);
- }
- 
- static int send_purge(struct dlm_ls *ls, int nodeid, int pid)
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 5ce26882159e..ed23787271b1 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -436,7 +436,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	INIT_LIST_HEAD(&ls->ls_waiters);
- 	spin_lock_init(&ls->ls_waiters_lock);
- 	INIT_LIST_HEAD(&ls->ls_orphans);
--	mutex_init(&ls->ls_orphans_mutex);
-+	spin_lock_init(&ls->ls_orphans_lock);
- 
- 	INIT_LIST_HEAD(&ls->ls_new_rsb);
- 	spin_lock_init(&ls->ls_new_rsb_spin);
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
