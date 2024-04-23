@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942421422A4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FE1422A3
 	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713902169; cv=none; b=nAEmYlAoPNXjBfbNReRGJOMooZLmKc8xX2/yJav2X7EDpXO3qv+IdvJLyecfoTm6Bh9IZzE1Cdz6zsGr1kf7KHlq9OnevaU7aLbwxDUKVTPVv8ev2nHA/Sh9Wh9hyoAfyOT84Wm8LzOB61YNhq50Eke2A02P6GTDx5IV2BMv5Ns=
+	t=1713902169; cv=none; b=D7SoDUPa+L5OOT0m5NChbhBGa5GP3Cz3C1lMG/J2p3Y4ZtKMqfUoW17+TKGaEe8t2KcLIaEOK6qmE+umUByPgAJmbWPn+zosX4EaoZOy5ky7VTpbjUWOtuzg6tzbl4j0F6kw23oEmmfTvr02pEDpTL5a9di9qccHgIIl8VqFG8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713902169; c=relaxed/simple;
-	bh=OXco+3LFKa055G6zHS5n7Lr4zuRkvTXmD44PozPcUZI=;
+	bh=mVPeSMLhUW46hq41caCGpfU7loZ9ALsxeZnftOKUyMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s6HpBc+0fl+uaJqVjca6K2pBfkphvp+XtwkcNoYSqOC+PXCQwNjzu7fwsKxmhjG+6HCVpaBwTMprshS9vxv7ApO6oV949Yklz14BxFTTPT6kovNbNkOM1AZnevoQ7s1dF7gYb7h7GYjHb1bvy72zSkd3T+J5dwTKfyiA+oBF74A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V4z6c1La; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Tfuqf+bdo16ITvEhXOmg6t1yzoDmfdeTuD7iteX6501/imM5PZHiJvgZ1EkuJd+6fwmsB5NWVEBOQ6dzZYKc3jdAfHCqP4vfz8TP40QLXcnuDi37BiYQHyoHiv1dYTnw5qgFMXppADRqdEot46dCnDUvA9iX7N38dQ6vzyzu+5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iaDMV219; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V4z6c1La"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iaDMV219"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1713902166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DT11DsgOiPlFs+ssGuzM8PSMmgTBvtqRZrjD7jQilqs=;
-	b=V4z6c1LaNIqWOft/vA6lugZ1YGyho+AsmvQqwRuopU53bSfSNFUu3maWYjf4IZKmkEaame
-	D36S0aYDFFc7h2twq9ysKCtkz7Ng4TDdQeupjRiRxZNiU/FmjC/dqRj/QIiafQ9j802rnj
-	aLsVHFenssp4rACZEzzOKg5Na7j6QM4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-kzUxynZFPYidkvmcIiCX5w-1; Tue,
- 23 Apr 2024 15:56:05 -0400
-X-MC-Unique: kzUxynZFPYidkvmcIiCX5w-1
+	bh=5n7bus8EARjhz4CUgYDexSUxp0PErX3rInszeqYnOC4=;
+	b=iaDMV219mubQPkjil6Fi4X6OHDm32Fq5pJgC6OCBQpAI0ScG1W0YoOryAI98oVmw1xrjz3
+	f9eHqSf98CfVIYCKRhA71g5HLgpfX+2CA7/9WvR+3Ad6rrcLF+VwGz5zWu3mS/1sYP/uIT
+	VjWLoJWkLu0XOOJlSqrJdlImLXNTQW0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-86-7hAyPS-BNsypQqrAsBS6pA-1; Tue, 23 Apr 2024 15:56:05 -0400
+X-MC-Unique: 7hAyPS-BNsypQqrAsBS6pA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C1C2F3810D23
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A552D812C50
 	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id B9F56492BC7;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9B72C40F183;
 	Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 10/10] dlm: use is_master() where it's prossible
-Date: Tue, 23 Apr 2024 15:55:59 -0400
-Message-ID: <20240423195559.1527187-10-aahringo@redhat.com>
+Subject: [PATCH dlm/next 07/10] dlm: move lkb idr to xarray datastructure
+Date: Tue, 23 Apr 2024 15:55:56 -0400
+Message-ID: <20240423195559.1527187-7-aahringo@redhat.com>
 In-Reply-To: <20240423195559.1527187-1-aahringo@redhat.com>
 References: <20240423195559.1527187-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,70 +61,242 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-There are numbers of checks to check if the node itself of a rsb is the
-master or not. There is a helper is_master() for it. This patch changes
-various places to use this helper.
+According to kernel doc idr is deprecated and xarrays should be used
+nowadays. This patch is moving the lkb idr implementation to xarrays.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c     | 9 ++++-----
- fs/dlm/recoverd.c | 2 +-
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ fs/dlm/dlm_internal.h |  5 ++--
+ fs/dlm/lock.c         | 30 ++++++++++++----------
+ fs/dlm/lockspace.c    | 60 +++++++++++++++++++++----------------------
+ 3 files changed, 49 insertions(+), 46 deletions(-)
 
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index 606d201c59f0..f262f53ec5fa 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -37,6 +37,7 @@
+ #include <linux/rhashtable.h>
+ #include <linux/mutex.h>
+ #include <linux/idr.h>
++#include <linux/xarray.h>
+ #include <linux/ratelimit.h>
+ #include <linux/uaccess.h>
+ 
+@@ -579,8 +580,8 @@ struct dlm_ls {
+ 	unsigned long		ls_scan_time;
+ 	struct kobject		ls_kobj;
+ 
+-	struct idr		ls_lkbidr;
+-	rwlock_t		ls_lkbidr_lock;
++	struct xarray		ls_lkbxa;
++	rwlock_t		ls_lkbxa_lock;
+ 
+ 	struct rhashtable	ls_rsbtbl;
+ 	rwlock_t		ls_rsbtbl_lock;
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 5063d3a60834..5b19c246d308 100644
+index 5b05b3a2f43a..1c170e284c31 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -242,7 +242,7 @@ static inline int is_granted(struct dlm_lkb *lkb)
- static inline int is_remote(struct dlm_rsb *r)
- {
- 	DLM_ASSERT(r->res_master_nodeid != 0, dlm_print_rsb(r););
--	return r->res_master_nodeid != dlm_our_nodeid();
-+	return !is_master(r);
+@@ -1460,11 +1460,15 @@ static void detach_lkb(struct dlm_lkb *lkb)
  }
  
- static inline int is_process_copy(struct dlm_lkb *lkb)
-@@ -3978,7 +3978,7 @@ static int receive_request(struct dlm_ls *ls, const struct dlm_message *ms)
+ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+-		       int start, int end)
++		       unsigned long start, unsigned long end)
+ {
++	struct xa_limit limit;
+ 	struct dlm_lkb *lkb;
+ 	int rv;
  
- 	lock_rsb(r);
++	limit.max = end;
++	limit.min = start;
++
+ 	lkb = dlm_allocate_lkb(ls);
+ 	if (!lkb)
+ 		return -ENOMEM;
+@@ -1478,14 +1482,12 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+ 	INIT_LIST_HEAD(&lkb->lkb_ownqueue);
+ 	INIT_LIST_HEAD(&lkb->lkb_rsb_lookup);
  
--	if (r->res_master_nodeid != dlm_our_nodeid()) {
-+	if (!is_master(r)) {
- 		error = validate_master_nodeid(ls, r, from_nodeid);
- 		if (error) {
- 			unlock_rsb(r);
-@@ -4400,8 +4400,7 @@ static int receive_request_reply(struct dlm_ls *ls,
- 			  from_nodeid, result, r->res_master_nodeid,
- 			  r->res_dir_nodeid, r->res_first_lkid, r->res_name);
+-	write_lock_bh(&ls->ls_lkbidr_lock);
+-	rv = idr_alloc(&ls->ls_lkbidr, lkb, start, end, GFP_NOWAIT);
+-	if (rv >= 0)
+-		lkb->lkb_id = rv;
+-	write_unlock_bh(&ls->ls_lkbidr_lock);
++	write_lock_bh(&ls->ls_lkbxa_lock);
++	rv = xa_alloc(&ls->ls_lkbxa, &lkb->lkb_id, lkb, limit, GFP_ATOMIC);
++	write_unlock_bh(&ls->ls_lkbxa_lock);
  
--		if (r->res_dir_nodeid != dlm_our_nodeid() &&
--		    r->res_master_nodeid != dlm_our_nodeid()) {
-+		if (r->res_dir_nodeid != dlm_our_nodeid() && !is_master(r)) {
- 			/* cause _request_lock->set_master->send_lookup */
- 			r->res_master_nodeid = 0;
- 			lkb->lkb_master_nodeid = 0;
-@@ -4415,7 +4414,7 @@ static int receive_request_reply(struct dlm_ls *ls,
- 		} else {
- 			_request_lock(r, lkb);
+ 	if (rv < 0) {
+-		log_error(ls, "create_lkb idr error %d", rv);
++		log_error(ls, "create_lkb xa error %d", rv);
+ 		dlm_free_lkb(lkb);
+ 		return rv;
+ 	}
+@@ -1496,18 +1498,18 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
  
--			if (r->res_master_nodeid == dlm_our_nodeid())
-+			if (is_master(r))
- 				confirm_master(r, 0);
- 		}
- 		break;
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index 06959b128bd0..98d83f90a0db 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -34,7 +34,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
+ static int create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret)
+ {
+-	return _create_lkb(ls, lkb_ret, 1, 0);
++	return _create_lkb(ls, lkb_ret, 1, ULONG_MAX);
+ }
  
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
- 	list_for_each_entry(r, &ls->ls_keep, res_rsbs_list) {
--		if (r->res_master_nodeid != dlm_our_nodeid())
-+		if (!is_master(r))
- 			continue;
+ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
+ {
+ 	struct dlm_lkb *lkb;
  
- 		list_add(&r->res_masters_list, &ls->ls_masters_list);
+-	read_lock_bh(&ls->ls_lkbidr_lock);
+-	lkb = idr_find(&ls->ls_lkbidr, lkid);
++	read_lock_bh(&ls->ls_lkbxa_lock);
++	lkb = xa_load(&ls->ls_lkbxa, lkid);
+ 	if (lkb)
+ 		kref_get(&lkb->lkb_ref);
+-	read_unlock_bh(&ls->ls_lkbidr_lock);
++	read_unlock_bh(&ls->ls_lkbxa_lock);
+ 
+ 	*lkb_ret = lkb;
+ 	return lkb ? 0 : -ENOENT;
+@@ -1532,10 +1534,10 @@ static int __put_lkb(struct dlm_ls *ls, struct dlm_lkb *lkb)
+ 	int rv;
+ 
+ 	rv = dlm_kref_put_write_lock_bh(&lkb->lkb_ref, kill_lkb,
+-					&ls->ls_lkbidr_lock);
++					&ls->ls_lkbxa_lock);
+ 	if (rv) {
+-		idr_remove(&ls->ls_lkbidr, lkid);
+-		write_unlock_bh(&ls->ls_lkbidr_lock);
++		xa_erase(&ls->ls_lkbxa, lkid);
++		write_unlock_bh(&ls->ls_lkbxa_lock);
+ 
+ 		detach_lkb(lkb);
+ 
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index c4d4c53e5897..be33877d98fd 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -421,8 +421,8 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	if (error)
+ 		goto out_lsfree;
+ 
+-	idr_init(&ls->ls_lkbidr);
+-	rwlock_init(&ls->ls_lkbidr_lock);
++	xa_init_flags(&ls->ls_lkbxa, XA_FLAGS_ALLOC | XA_FLAGS_LOCK_BH);
++	rwlock_init(&ls->ls_lkbxa_lock);
+ 
+ 	INIT_LIST_HEAD(&ls->ls_waiters);
+ 	spin_lock_init(&ls->ls_waiters_lock);
+@@ -471,7 +471,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	 */
+ 	ls->ls_recover_buf = kmalloc(DLM_MAX_SOCKET_BUFSIZE, GFP_NOFS);
+ 	if (!ls->ls_recover_buf)
+-		goto out_lkbidr;
++		goto out_lkbxa;
+ 
+ 	ls->ls_slot = 0;
+ 	ls->ls_num_slots = 0;
+@@ -571,8 +571,8 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	spin_unlock_bh(&lslist_lock);
+ 	idr_destroy(&ls->ls_recover_idr);
+ 	kfree(ls->ls_recover_buf);
+- out_lkbidr:
+-	idr_destroy(&ls->ls_lkbidr);
++ out_lkbxa:
++	xa_destroy(&ls->ls_lkbxa);
+ 	rhashtable_destroy(&ls->ls_rsbtbl);
+  out_lsfree:
+ 	if (do_unreg)
+@@ -632,22 +632,8 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
+ 				   ops_arg, ops_result, lockspace);
+ }
+ 
+-static int lkb_idr_is_local(int id, void *p, void *data)
++static int lkb_idr_free(struct dlm_lkb *lkb)
+ {
+-	struct dlm_lkb *lkb = p;
+-
+-	return lkb->lkb_nodeid == 0 && lkb->lkb_grmode != DLM_LOCK_IV;
+-}
+-
+-static int lkb_idr_is_any(int id, void *p, void *data)
+-{
+-	return 1;
+-}
+-
+-static int lkb_idr_free(int id, void *p, void *data)
+-{
+-	struct dlm_lkb *lkb = p;
+-
+ 	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
+ 		dlm_free_lvb(lkb->lkb_lvbptr);
+ 
+@@ -655,23 +641,34 @@ static int lkb_idr_free(int id, void *p, void *data)
+ 	return 0;
+ }
+ 
+-/* NOTE: We check the lkbidr here rather than the resource table.
++/* NOTE: We check the lkbxa here rather than the resource table.
+    This is because there may be LKBs queued as ASTs that have been unlinked
+    from their RSBs and are pending deletion once the AST has been delivered */
+ 
+ static int lockspace_busy(struct dlm_ls *ls, int force)
+ {
+-	int rv;
++	struct dlm_lkb *lkb;
++	unsigned long id;
++	int rv = 0;
+ 
+-	read_lock_bh(&ls->ls_lkbidr_lock);
++	read_lock_bh(&ls->ls_lkbxa_lock);
+ 	if (force == 0) {
+-		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_any, ls);
++		xa_for_each(&ls->ls_lkbxa, id, lkb) {
++			rv = 1;
++			break;
++		}
+ 	} else if (force == 1) {
+-		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_local, ls);
++		xa_for_each(&ls->ls_lkbxa, id, lkb) {
++			if (lkb->lkb_nodeid == 0 &&
++			    lkb->lkb_grmode != DLM_LOCK_IV) {
++				rv = 1;
++				break;
++			}
++		}
+ 	} else {
+ 		rv = 0;
+ 	}
+-	read_unlock_bh(&ls->ls_lkbidr_lock);
++	read_unlock_bh(&ls->ls_lkbxa_lock);
+ 	return rv;
+ }
+ 
+@@ -684,6 +681,8 @@ static void rhash_free_rsb(void *ptr, void *arg)
+ 
+ static int release_lockspace(struct dlm_ls *ls, int force)
+ {
++	struct dlm_lkb *lkb;
++	unsigned long id;
+ 	int busy, rv;
+ 
+ 	busy = lockspace_busy(ls, force);
+@@ -740,11 +739,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	kfree(ls->ls_recover_buf);
+ 
+ 	/*
+-	 * Free all lkb's in idr
++	 * Free all lkb's in xa
+ 	 */
+-
+-	idr_for_each(&ls->ls_lkbidr, lkb_idr_free, ls);
+-	idr_destroy(&ls->ls_lkbidr);
++	xa_for_each(&ls->ls_lkbxa, id, lkb) {
++		lkb_idr_free(lkb);
++	}
++	xa_destroy(&ls->ls_lkbxa);
+ 
+ 	/*
+ 	 * Free all rsb's on rsbtbl
 -- 
 2.43.0
 
