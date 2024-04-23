@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3343D1420C9
-	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37351411F4
+	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713902171; cv=none; b=NjcvZW0dl8/4iOLuedze2jial0kLceU3XVlRxmCLc2sfu2OvUnwK3Bq1nlPwJcwniXVq7ZptLv/y3Ljwaq3EhGJZdhNkkZLTepXaXJ3TheW8sPtZ3ez3MF4azWu9CfBFvp0Wi076lf1JeZBmmWyCmzz3lkoOiwtROtm1Bibe5WA=
+	t=1713902173; cv=none; b=Aqn4NA7V6wUkg2CrIRy89j8aqH7PLyWtRQokogG3ZhGGtMY1FRA60r4Bpa1nCSdraW1xeGf49eMkA1OCmV9RRCm/yFsV6Y9yJNmWqD0XCYzmdp9gu3zTtBc2+GOZjgAJ4il9CpcdAiyuJ6o8+Fps31VJlkAJzFKvFMdiRzns+Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713902171; c=relaxed/simple;
-	bh=UutEfSWIlRgI/+R7DB6HMVuDT9llFd9fW3FpnDCHrwU=;
+	s=arc-20240116; t=1713902173; c=relaxed/simple;
+	bh=AwrXBwl0vEPb3MuBGQiuMklu+KxxWvGUAlQHGRHkfek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jV8hCvZi+WwwXkK+UM8OY5gnAnfxRAl2aW2YNLY28YBuFoAsmeBclTihOsbncO5yw2f2b0PgQ/WTXz7a3wix7iBHjMLS82ykLHDTftPOMmg/ocjiH79z7xFf6PyFH4VAcVdG5PI+5D6ryMr8uN5ZqWhoD3oJFW57EGCM9Op2Zjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YZFqYHUa; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=ZceH4sYD4PzfA/TKhTKenEdO1XbJNDzV570Zz71+OXPtEcszaLizgfRMDIc+/JGBKlf9DlsFvavLt1kAmm22+BRoeDK+X12oCvugf3TP4TVy5yDbXhITwr/RmZ+RsnlbPeUJSstzc2p/b1htXIqD3ANCEdQCtTYqdjKcfFePJ/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J4EUALMm; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YZFqYHUa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J4EUALMm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713902168;
+	s=mimecast20190719; t=1713902171;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oiMC6a16zNULljp9tLsNwF5zSHcsjOmppYQkF0rjMww=;
-	b=YZFqYHUabgxIsbbe0xX8nnoxGXgQKKq23O5NgP+9X7ML40r8zZGAZ8JYbbFdhzMDP5HZGo
-	GsPsW5cO+Pv+LOW6zPaXJXGZYNgug0Y05mhcYI36uaTDYx9P6CLyD9TjK7CUZkJLYKVohv
-	JOF5hjIJo0xC3qUNoY+1yAkFc8mFWY4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-4UL21f0oNF2yFddUbRIxNQ-1; Tue,
- 23 Apr 2024 15:56:05 -0400
-X-MC-Unique: 4UL21f0oNF2yFddUbRIxNQ-1
+	bh=SACX7EjJqFSMK3QXur0aoU0qcLvs7hRT/J8chlo+GNQ=;
+	b=J4EUALMmbboOTAIBkJj1bXI4+KSwE5ccsMYrfSHiI2h/AqatruNU4IBcjPSxCaq3iRWMw4
+	rp+6iOtEu0S39RFyR6X0gtqxxJG7C/oTfx9CNx3qYADsyI88djZg+E9GL3ixFbglbT50Jb
+	LWJhbwKcWLFlSr9YIDTexA4iTVY2p/I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226--UN9JyvnPOuY7YXh7NH2gQ-1; Tue, 23 Apr 2024 15:56:04 -0400
+X-MC-Unique: -UN9JyvnPOuY7YXh7NH2gQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADA4329AC00D
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A10780D0F3
 	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A420041ADC3;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7217C40F01A;
 	Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 08/10] dlm: move recover idr to xarray datastructure
-Date: Tue, 23 Apr 2024 15:55:57 -0400
-Message-ID: <20240423195559.1527187-8-aahringo@redhat.com>
+Subject: [PATCH dlm/next 02/10] dlm: remove unused parameter in dlm_midcomms_addr
+Date: Tue, 23 Apr 2024 15:55:51 -0400
+Message-ID: <20240423195559.1527187-2-aahringo@redhat.com>
 In-Reply-To: <20240423195559.1527187-1-aahringo@redhat.com>
 References: <20240423195559.1527187-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,238 +61,89 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-According to kdoc idr is deprecated and xarrays should be used nowadays.
-This patch is moving the recover idr implementation to xarray
-datastructure.
+This patch removes an parameter which is currently not used by
+dlm_midcomms_addr().
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dlm_internal.h |  7 +++--
- fs/dlm/lockspace.c    |  8 +++---
- fs/dlm/recover.c      | 61 +++++++++++++++++++++++--------------------
- 3 files changed, 40 insertions(+), 36 deletions(-)
+ fs/dlm/config.c   | 2 +-
+ fs/dlm/lowcomms.c | 2 +-
+ fs/dlm/lowcomms.h | 2 +-
+ fs/dlm/midcomms.c | 4 ++--
+ fs/dlm/midcomms.h | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index f262f53ec5fa..aec99ccf2d0d 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -36,7 +36,6 @@
- #include <linux/miscdevice.h>
- #include <linux/rhashtable.h>
- #include <linux/mutex.h>
--#include <linux/idr.h>
- #include <linux/xarray.h>
- #include <linux/ratelimit.h>
- #include <linux/uaccess.h>
-@@ -317,7 +316,7 @@ struct dlm_rsb {
- 	int			res_nodeid;
- 	int			res_master_nodeid;
- 	int			res_dir_nodeid;
--	int			res_id;		/* for ls_recover_idr */
-+	unsigned long		res_id;		/* for ls_recover_xa */
- 	uint32_t                res_lvbseq;
- 	uint32_t		res_hash;
- 	unsigned long		res_toss_time;
-@@ -659,8 +658,8 @@ struct dlm_ls {
- 	struct list_head	ls_recover_list;
- 	spinlock_t		ls_recover_list_lock;
- 	int			ls_recover_list_count;
--	struct idr		ls_recover_idr;
--	spinlock_t		ls_recover_idr_lock;
-+	struct xarray		ls_recover_xa;
-+	spinlock_t		ls_recover_xa_lock;
- 	wait_queue_head_t	ls_wait_general;
- 	wait_queue_head_t	ls_recover_lock_wait;
- 	spinlock_t		ls_clear_proc_locks;
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index be33877d98fd..c50f7bb5a54c 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -480,8 +480,8 @@ static int new_lockspace(const char *name, const char *cluster,
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 517fa975dc5a..99952234799e 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -672,7 +672,7 @@ static ssize_t comm_addr_store(struct config_item *item, const char *buf,
  
- 	INIT_LIST_HEAD(&ls->ls_recover_list);
- 	spin_lock_init(&ls->ls_recover_list_lock);
--	idr_init(&ls->ls_recover_idr);
--	spin_lock_init(&ls->ls_recover_idr_lock);
-+	xa_init_flags(&ls->ls_recover_xa, XA_FLAGS_ALLOC | XA_FLAGS_LOCK_BH);
-+	spin_lock_init(&ls->ls_recover_xa_lock);
- 	ls->ls_recover_list_count = 0;
- 	init_waitqueue_head(&ls->ls_wait_general);
- 	INIT_LIST_HEAD(&ls->ls_masters_list);
-@@ -569,7 +569,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	spin_lock_bh(&lslist_lock);
- 	list_del(&ls->ls_list);
- 	spin_unlock_bh(&lslist_lock);
--	idr_destroy(&ls->ls_recover_idr);
-+	xa_destroy(&ls->ls_recover_xa);
- 	kfree(ls->ls_recover_buf);
-  out_lkbxa:
- 	xa_destroy(&ls->ls_lkbxa);
-@@ -735,7 +735,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	memcpy(addr, buf, len);
  
- 	dlm_delete_debug_file(ls);
- 
--	idr_destroy(&ls->ls_recover_idr);
-+	xa_destroy(&ls->ls_recover_xa);
- 	kfree(ls->ls_recover_buf);
- 
- 	/*
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index 75d44d51636a..4f5b2d4eb41a 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -293,73 +293,78 @@ static void recover_list_clear(struct dlm_ls *ls)
- 	spin_unlock_bh(&ls->ls_recover_list_lock);
+-	rv = dlm_midcomms_addr(cm->nodeid, addr, len);
++	rv = dlm_midcomms_addr(cm->nodeid, addr);
+ 	if (rv) {
+ 		kfree(addr);
+ 		return rv;
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 6b8078085e56..591385701c7d 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -461,7 +461,7 @@ static bool dlm_lowcomms_con_has_addr(const struct connection *con,
+ 	return false;
  }
  
--static int recover_idr_empty(struct dlm_ls *ls)
-+static int recover_xa_empty(struct dlm_ls *ls)
+-int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr, int len)
++int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr)
  {
- 	int empty = 1;
- 
--	spin_lock_bh(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_xa_lock);
- 	if (ls->ls_recover_list_count)
- 		empty = 0;
--	spin_unlock_bh(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_xa_lock);
- 
- 	return empty;
+ 	struct connection *con;
+ 	bool ret, idx;
+diff --git a/fs/dlm/lowcomms.h b/fs/dlm/lowcomms.h
+index 8deb16f8f620..fd0df604eb93 100644
+--- a/fs/dlm/lowcomms.h
++++ b/fs/dlm/lowcomms.h
+@@ -46,7 +46,7 @@ void dlm_lowcomms_put_msg(struct dlm_msg *msg);
+ int dlm_lowcomms_resend_msg(struct dlm_msg *msg);
+ int dlm_lowcomms_connect_node(int nodeid);
+ int dlm_lowcomms_nodes_set_mark(int nodeid, unsigned int mark);
+-int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr, int len);
++int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr);
+ void dlm_midcomms_receive_done(int nodeid);
+ struct kmem_cache *dlm_lowcomms_writequeue_cache_create(void);
+ struct kmem_cache *dlm_lowcomms_msg_cache_create(void);
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index c34f38e9ee5c..2c101bbe261a 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -334,12 +334,12 @@ static struct midcomms_node *nodeid2node(int nodeid)
+ 	return __find_node(nodeid, nodeid_hash(nodeid));
  }
  
--static int recover_idr_add(struct dlm_rsb *r)
-+static int recover_xa_add(struct dlm_rsb *r)
+-int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len)
++int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr)
  {
- 	struct dlm_ls *ls = r->res_ls;
-+	struct xa_limit limit = {
-+		.min = 1,
-+		.max = UINT_MAX,
-+	};
-+	uint32_t id;
- 	int rv;
+ 	int ret, idx, r = nodeid_hash(nodeid);
+ 	struct midcomms_node *node;
  
--	spin_lock_bh(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_xa_lock);
- 	if (r->res_id) {
- 		rv = -1;
- 		goto out_unlock;
- 	}
--	rv = idr_alloc(&ls->ls_recover_idr, r, 1, 0, GFP_NOWAIT);
-+	rv = xa_alloc(&ls->ls_recover_xa, &id, r, limit, GFP_ATOMIC);
- 	if (rv < 0)
- 		goto out_unlock;
+-	ret = dlm_lowcomms_addr(nodeid, addr, len);
++	ret = dlm_lowcomms_addr(nodeid, addr);
+ 	if (ret)
+ 		return ret;
  
--	r->res_id = rv;
-+	r->res_id = id;
- 	ls->ls_recover_list_count++;
- 	dlm_hold_rsb(r);
- 	rv = 0;
- out_unlock:
--	spin_unlock_bh(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_xa_lock);
- 	return rv;
- }
- 
--static void recover_idr_del(struct dlm_rsb *r)
-+static void recover_xa_del(struct dlm_rsb *r)
- {
- 	struct dlm_ls *ls = r->res_ls;
- 
--	spin_lock_bh(&ls->ls_recover_idr_lock);
--	idr_remove(&ls->ls_recover_idr, r->res_id);
-+	spin_lock_bh(&ls->ls_recover_xa_lock);
-+	xa_erase_bh(&ls->ls_recover_xa, r->res_id);
- 	r->res_id = 0;
- 	ls->ls_recover_list_count--;
--	spin_unlock_bh(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_xa_lock);
- 
- 	dlm_put_rsb(r);
- }
- 
--static struct dlm_rsb *recover_idr_find(struct dlm_ls *ls, uint64_t id)
-+static struct dlm_rsb *recover_xa_find(struct dlm_ls *ls, uint64_t id)
- {
- 	struct dlm_rsb *r;
- 
--	spin_lock_bh(&ls->ls_recover_idr_lock);
--	r = idr_find(&ls->ls_recover_idr, (int)id);
--	spin_unlock_bh(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_xa_lock);
-+	r = xa_load(&ls->ls_recover_xa, (int)id);
-+	spin_unlock_bh(&ls->ls_recover_xa_lock);
- 	return r;
- }
- 
--static void recover_idr_clear(struct dlm_ls *ls)
-+static void recover_xa_clear(struct dlm_ls *ls)
- {
- 	struct dlm_rsb *r;
--	int id;
-+	unsigned long id;
- 
--	spin_lock_bh(&ls->ls_recover_idr_lock);
-+	spin_lock_bh(&ls->ls_recover_xa_lock);
- 
--	idr_for_each_entry(&ls->ls_recover_idr, r, id) {
--		idr_remove(&ls->ls_recover_idr, id);
-+	xa_for_each(&ls->ls_recover_xa, id, r) {
-+		xa_erase_bh(&ls->ls_recover_xa, id);
- 		r->res_id = 0;
- 		r->res_recover_locks_count = 0;
- 		ls->ls_recover_list_count--;
-@@ -372,7 +377,7 @@ static void recover_idr_clear(struct dlm_ls *ls)
- 			  ls->ls_recover_list_count);
- 		ls->ls_recover_list_count = 0;
- 	}
--	spin_unlock_bh(&ls->ls_recover_idr_lock);
-+	spin_unlock_bh(&ls->ls_recover_xa_lock);
- }
- 
- 
-@@ -470,7 +475,7 @@ static int recover_master(struct dlm_rsb *r, unsigned int *count, uint64_t seq)
- 		set_new_master(r);
- 		error = 0;
- 	} else {
--		recover_idr_add(r);
-+		recover_xa_add(r);
- 		error = dlm_send_rcom_lookup(r, dir_nodeid, seq);
- 	}
- 
-@@ -551,10 +556,10 @@ int dlm_recover_masters(struct dlm_ls *ls, uint64_t seq,
- 
- 	log_rinfo(ls, "dlm_recover_masters %u of %u", count, total);
- 
--	error = dlm_wait_function(ls, &recover_idr_empty);
-+	error = dlm_wait_function(ls, &recover_xa_empty);
-  out:
- 	if (error)
--		recover_idr_clear(ls);
-+		recover_xa_clear(ls);
- 	return error;
- }
- 
-@@ -563,7 +568,7 @@ int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc)
- 	struct dlm_rsb *r;
- 	int ret_nodeid, new_master;
- 
--	r = recover_idr_find(ls, le64_to_cpu(rc->rc_id));
-+	r = recover_xa_find(ls, le64_to_cpu(rc->rc_id));
- 	if (!r) {
- 		log_error(ls, "dlm_recover_master_reply no id %llx",
- 			  (unsigned long long)le64_to_cpu(rc->rc_id));
-@@ -582,9 +587,9 @@ int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc)
- 	r->res_nodeid = new_master;
- 	set_new_master(r);
- 	unlock_rsb(r);
--	recover_idr_del(r);
-+	recover_xa_del(r);
- 
--	if (recover_idr_empty(ls))
-+	if (recover_xa_empty(ls))
- 		wake_up(&ls->ls_wait_general);
-  out:
- 	return 0;
+diff --git a/fs/dlm/midcomms.h b/fs/dlm/midcomms.h
+index 278d26fdeb2c..7fad1d170bba 100644
+--- a/fs/dlm/midcomms.h
++++ b/fs/dlm/midcomms.h
+@@ -19,7 +19,7 @@ int dlm_process_incoming_buffer(int nodeid, unsigned char *buf, int buflen);
+ struct dlm_mhandle *dlm_midcomms_get_mhandle(int nodeid, int len, char **ppc);
+ void dlm_midcomms_commit_mhandle(struct dlm_mhandle *mh, const void *name,
+ 				 int namelen);
+-int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len);
++int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr);
+ void dlm_midcomms_version_wait(void);
+ int dlm_midcomms_close(int nodeid);
+ int dlm_midcomms_start(void);
 -- 
 2.43.0
 
