@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FE1422A3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919EA1420C9
 	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713902169; cv=none; b=D7SoDUPa+L5OOT0m5NChbhBGa5GP3Cz3C1lMG/J2p3Y4ZtKMqfUoW17+TKGaEe8t2KcLIaEOK6qmE+umUByPgAJmbWPn+zosX4EaoZOy5ky7VTpbjUWOtuzg6tzbl4j0F6kw23oEmmfTvr02pEDpTL5a9di9qccHgIIl8VqFG8s=
+	t=1713902169; cv=none; b=rdsf1LrUpyvic0q3Hl5/BSyVPIbhEmh4sUcBjmOlHULC0FjJLS6uIeb6bF5zCnWtUvvZr4x61j9q7YPqKFOIc3RF5YIgpHpQgoZqGD6GtR8udiW7bSgZT8lrsbsKGMcuNMyx+B4KCYRXXnwfhbUDOXHsQycAH0gM90U53aMSk9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713902169; c=relaxed/simple;
-	bh=mVPeSMLhUW46hq41caCGpfU7loZ9ALsxeZnftOKUyMM=;
+	bh=yKFic5vuB3rpFtIbFkrWBEs9+OpmFrfr75eAosS28+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tfuqf+bdo16ITvEhXOmg6t1yzoDmfdeTuD7iteX6501/imM5PZHiJvgZ1EkuJd+6fwmsB5NWVEBOQ6dzZYKc3jdAfHCqP4vfz8TP40QLXcnuDi37BiYQHyoHiv1dYTnw5qgFMXppADRqdEot46dCnDUvA9iX7N38dQ6vzyzu+5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iaDMV219; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=YVdB3iwNFCFdcHy38WiXLdW/IobqFCytYMQCd7hc3jfuYYifa1ARqbMVVagHXPwEQXTKi6qZTLI/9ncRELFubVglbZ9iij2+tBJ6b0MNizLozv3hRrgobBQs6odzLzCulLO8+j3bG+6IhSfHLFLHI3zoPxzapekklqyTdZnir4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jLkspeY9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iaDMV219"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jLkspeY9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1713902166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5n7bus8EARjhz4CUgYDexSUxp0PErX3rInszeqYnOC4=;
-	b=iaDMV219mubQPkjil6Fi4X6OHDm32Fq5pJgC6OCBQpAI0ScG1W0YoOryAI98oVmw1xrjz3
-	f9eHqSf98CfVIYCKRhA71g5HLgpfX+2CA7/9WvR+3Ad6rrcLF+VwGz5zWu3mS/1sYP/uIT
-	VjWLoJWkLu0XOOJlSqrJdlImLXNTQW0=
+	bh=/iCXUALBfwxZS3Qj1iP7+ERGRZFsAiE99becy2HrA5s=;
+	b=jLkspeY9VniOFz78SPJ3yxpR2/ODQ3VMbgXJPkmWjKqENWrAuLpRtqfa+8mtxQjvKKsvbQ
+	lwRow9kIxCw8l7nuRsk44jFw5VbE00iksd/xofPCS68URIDMFBa70eEdOttV5pctgH9hE8
+	uihw+JLu0A5R4ykpYjf9VmtiP+oVf3w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-7hAyPS-BNsypQqrAsBS6pA-1; Tue, 23 Apr 2024 15:56:05 -0400
-X-MC-Unique: 7hAyPS-BNsypQqrAsBS6pA-1
+ us-mta-437-KMINysChNMSAbiCt_r8Xjw-1; Tue, 23 Apr 2024 15:56:05 -0400
+X-MC-Unique: KMINysChNMSAbiCt_r8Xjw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A552D812C50
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAEC480D678
 	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 9B72C40F183;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AE4DC477F83;
 	Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 07/10] dlm: move lkb idr to xarray datastructure
-Date: Tue, 23 Apr 2024 15:55:56 -0400
-Message-ID: <20240423195559.1527187-7-aahringo@redhat.com>
+Subject: [PATCH dlm/next 09/10] dlm: merge nodeid field to master_nodeid
+Date: Tue, 23 Apr 2024 15:55:58 -0400
+Message-ID: <20240423195559.1527187-9-aahringo@redhat.com>
 In-Reply-To: <20240423195559.1527187-1-aahringo@redhat.com>
 References: <20240423195559.1527187-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,242 +61,825 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-According to kernel doc idr is deprecated and xarrays should be used
-nowadays. This patch is moving the lkb idr implementation to xarrays.
+There is a TODO in dlm_internal.h for the dlm_rsb struct:
+
+"remove res_nodeid and only use res_master_nodeid"
+
+The res_nodeid and res_master_nodeid should represent the same
+information in a different numbers mapping. This patch tries to work on
+this TODO by removing res_nodeid and use res_master_nodeid only. The
+same applies for struct lkb with it's lkb_nodeid and lkb_master_nodeid
+fields. It use the new representation for those numbers and introduce
+backwardscompability because those representation are used for debugfs
+and the DLM protocol. In future we might use the new number
+representation for res_master_nodeid only and remove the copied value in
+struct lkb.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dlm_internal.h |  5 ++--
- fs/dlm/lock.c         | 30 ++++++++++++----------
- fs/dlm/lockspace.c    | 60 +++++++++++++++++++++----------------------
- 3 files changed, 49 insertions(+), 46 deletions(-)
+ fs/dlm/debug_fs.c     |  33 +++++-----
+ fs/dlm/dlm_internal.h |  33 ++++++++--
+ fs/dlm/lock.c         | 144 ++++++++++++++++++------------------------
+ fs/dlm/lock.h         |   5 +-
+ fs/dlm/lockspace.c    |   2 +-
+ fs/dlm/rcom.c         |   4 +-
+ fs/dlm/recover.c      |  20 ++----
+ fs/dlm/recoverd.c     |   2 +-
+ 8 files changed, 119 insertions(+), 124 deletions(-)
 
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 6ab3ed4074c6..40eb1696f3b6 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -58,9 +58,10 @@ static void print_format1_lock(struct seq_file *s, struct dlm_lkb *lkb,
+ 	    lkb->lkb_status == DLM_LKSTS_WAITING)
+ 		seq_printf(s, " (%s)", print_lockmode(lkb->lkb_rqmode));
+ 
+-	if (lkb->lkb_nodeid) {
+-		if (lkb->lkb_nodeid != res->res_nodeid)
+-			seq_printf(s, " Remote: %3d %08x", lkb->lkb_nodeid,
++	if (lkb->lkb_master_nodeid != dlm_our_nodeid()) {
++		if (lkb->lkb_master_nodeid != res->res_master_nodeid)
++			seq_printf(s, " Remote: %3d %08x",
++				   dlm_res_nodeid(lkb->lkb_master_nodeid),
+ 				   lkb->lkb_remid);
+ 		else
+ 			seq_printf(s, " Master:     %08x", lkb->lkb_remid);
+@@ -88,16 +89,15 @@ static void print_format1(struct dlm_rsb *res, struct seq_file *s)
+ 			seq_printf(s, "%c", '.');
+ 	}
+ 
+-	if (res->res_nodeid > 0)
+-		seq_printf(s, "\"\nLocal Copy, Master is node %d\n",
+-			   res->res_nodeid);
+-	else if (res->res_nodeid == 0)
+-		seq_puts(s, "\"\nMaster Copy\n");
+-	else if (res->res_nodeid == -1)
++
++	if (res->res_master_nodeid == 0)
+ 		seq_printf(s, "\"\nLooking up master (lkid %x)\n",
+ 			   res->res_first_lkid);
++	else if (res->res_master_nodeid == dlm_our_nodeid())
++		seq_puts(s, "\"\nMaster Copy\n");
+ 	else
+-		seq_printf(s, "\"\nInvalid master %d\n", res->res_nodeid);
++		seq_printf(s, "\"\nLocal Copy, Master is node %d\n",
++			   res->res_master_nodeid);
+ 	if (seq_has_overflowed(s))
+ 		goto out;
+ 
+@@ -184,7 +184,7 @@ static void print_format2_lock(struct seq_file *s, struct dlm_lkb *lkb,
+ 
+ 	seq_printf(s, "%x %d %x %u %llu %x %x %d %d %d %llu %u %d \"%s\"\n",
+ 		   lkb->lkb_id,
+-		   lkb->lkb_nodeid,
++		   dlm_res_nodeid(lkb->lkb_master_nodeid),
+ 		   lkb->lkb_remid,
+ 		   lkb->lkb_ownpid,
+ 		   (unsigned long long)xid,
+@@ -194,7 +194,7 @@ static void print_format2_lock(struct seq_file *s, struct dlm_lkb *lkb,
+ 		   lkb->lkb_grmode,
+ 		   lkb->lkb_rqmode,
+ 		   (unsigned long long)us,
+-		   r->res_nodeid,
++		   dlm_res_nodeid(r->res_master_nodeid),
+ 		   r->res_length,
+ 		   r->res_name);
+ }
+@@ -238,7 +238,7 @@ static void print_format3_lock(struct seq_file *s, struct dlm_lkb *lkb,
+ 
+ 	seq_printf(s, "lkb %x %d %x %u %llu %x %x %d %d %d %d %d %d %u %llu %llu\n",
+ 		   lkb->lkb_id,
+-		   lkb->lkb_nodeid,
++		   dlm_res_nodeid(lkb->lkb_master_nodeid),
+ 		   lkb->lkb_remid,
+ 		   lkb->lkb_ownpid,
+ 		   (unsigned long long)xid,
+@@ -265,7 +265,7 @@ static void print_format3(struct dlm_rsb *r, struct seq_file *s)
+ 
+ 	seq_printf(s, "rsb %p %d %x %lx %d %d %u %d ",
+ 		   r,
+-		   r->res_nodeid,
++		   dlm_res_nodeid(r->res_master_nodeid),
+ 		   r->res_first_lkid,
+ 		   r->res_flags,
+ 		   !list_empty(&r->res_root_list),
+@@ -341,7 +341,7 @@ static void print_format4(struct dlm_rsb *r, struct seq_file *s)
+ 
+ 	seq_printf(s, "rsb %p %d %d %d %d %lu %lx %d ",
+ 		   r,
+-		   r->res_nodeid,
++		   dlm_res_nodeid(r->res_master_nodeid),
+ 		   r->res_master_nodeid,
+ 		   r->res_dir_nodeid,
+ 		   our_nodeid,
+@@ -611,7 +611,8 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ 	list_for_each_entry(lkb, &ls->ls_waiters, lkb_wait_reply) {
+ 		ret = snprintf(debug_buf + pos, len - pos, "%x %d %d %s\n",
+ 			       lkb->lkb_id, lkb->lkb_wait_type,
+-			       lkb->lkb_nodeid, lkb->lkb_resource->res_name);
++			       dlm_res_nodeid(lkb->lkb_master_nodeid),
++			       lkb->lkb_resource->res_name);
+ 		if (ret >= len - pos)
+ 			break;
+ 		pos += ret;
 diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 606d201c59f0..f262f53ec5fa 100644
+index aec99ccf2d0d..f2b5a61d6477 100644
 --- a/fs/dlm/dlm_internal.h
 +++ b/fs/dlm/dlm_internal.h
-@@ -37,6 +37,7 @@
- #include <linux/rhashtable.h>
- #include <linux/mutex.h>
- #include <linux/idr.h>
-+#include <linux/xarray.h>
- #include <linux/ratelimit.h>
- #include <linux/uaccess.h>
+@@ -253,7 +253,7 @@ struct dlm_callback {
+ struct dlm_lkb {
+ 	struct dlm_rsb		*lkb_resource;	/* the rsb */
+ 	struct kref		lkb_ref;
+-	int			lkb_nodeid;	/* copied from rsb */
++	unsigned int		lkb_master_nodeid;	/* copied from rsb */
+ 	int			lkb_ownpid;	/* pid of lock owner */
+ 	uint32_t		lkb_id;		/* our lock ID */
+ 	uint32_t		lkb_remid;	/* lock ID on remote partner */
+@@ -303,18 +303,41 @@ struct dlm_lkb {
+  *
+  * res_nodeid is "odd": -1 is unset/invalid, zero means our_nodeid,
+  * greater than zero when another nodeid.
+- *
+- * (TODO: remove res_nodeid and only use res_master_nodeid)
+  */
  
-@@ -579,8 +580,8 @@ struct dlm_ls {
- 	unsigned long		ls_scan_time;
- 	struct kobject		ls_kobj;
- 
--	struct idr		ls_lkbidr;
--	rwlock_t		ls_lkbidr_lock;
-+	struct xarray		ls_lkbxa;
-+	rwlock_t		ls_lkbxa_lock;
- 
- 	struct rhashtable	ls_rsbtbl;
- 	rwlock_t		ls_rsbtbl_lock;
++/* For backwards compatibility, see above.
++ * The protocol is still using res_nodeid.
++ */
++static inline int dlm_res_nodeid(unsigned int res_master_nodeid)
++{
++	if (res_master_nodeid == 0)
++		return -1;
++	else if (res_master_nodeid == dlm_our_nodeid())
++		return 0;
++	else
++		return res_master_nodeid;
++}
++
++/* For backwards compatibility, see above.
++ * The protocol is still using res_nodeid.
++ */
++static inline int dlm_res_master_nodeid(int res_nodeid)
++{
++	if (res_nodeid == -1)
++		return 0;
++	else if (res_nodeid == 0)
++		return dlm_our_nodeid();
++	else
++		return res_nodeid;
++}
++
+ struct dlm_rsb {
+ 	struct dlm_ls		*res_ls;	/* the lockspace */
+ 	struct kref		res_ref;
+ 	spinlock_t		res_lock;
+ 	unsigned long		res_flags;
+ 	int			res_length;	/* length of rsb name */
+-	int			res_nodeid;
+-	int			res_master_nodeid;
++	unsigned int		res_master_nodeid;
+ 	int			res_dir_nodeid;
+ 	unsigned long		res_id;		/* for ls_recover_xa */
+ 	uint32_t                res_lvbseq;
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 5b05b3a2f43a..1c170e284c31 100644
+index 1c170e284c31..5063d3a60834 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -1460,11 +1460,15 @@ static void detach_lkb(struct dlm_lkb *lkb)
+@@ -160,21 +160,19 @@ static const int __quecvt_compat_matrix[8][8] = {
+ 
+ void dlm_print_lkb(struct dlm_lkb *lkb)
+ {
+-	printk(KERN_ERR "lkb: nodeid %d id %x remid %x exflags %x flags %x "
++	pr_err("lkb: master_nodeid %d id %x remid %x exflags %x flags %x "
+ 	       "sts %d rq %d gr %d wait_type %d wait_nodeid %d seq %llu\n",
+-	       lkb->lkb_nodeid, lkb->lkb_id, lkb->lkb_remid, lkb->lkb_exflags,
+-	       dlm_iflags_val(lkb), lkb->lkb_status, lkb->lkb_rqmode,
+-	       lkb->lkb_grmode, lkb->lkb_wait_type, lkb->lkb_wait_nodeid,
+-	       (unsigned long long)lkb->lkb_recover_seq);
++	       lkb->lkb_master_nodeid, lkb->lkb_id, lkb->lkb_remid,
++	       lkb->lkb_exflags, dlm_iflags_val(lkb), lkb->lkb_status,
++	       lkb->lkb_rqmode, lkb->lkb_grmode, lkb->lkb_wait_type,
++	       lkb->lkb_wait_nodeid, (unsigned long long)lkb->lkb_recover_seq);
  }
  
- static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
--		       int start, int end)
-+		       unsigned long start, unsigned long end)
+ static void dlm_print_rsb(struct dlm_rsb *r)
  {
-+	struct xa_limit limit;
- 	struct dlm_lkb *lkb;
- 	int rv;
+-	printk(KERN_ERR "rsb: nodeid %d master %d dir %d flags %lx first %x "
+-	       "rlc %d name %s\n",
+-	       r->res_nodeid, r->res_master_nodeid, r->res_dir_nodeid,
+-	       r->res_flags, r->res_first_lkid, r->res_recover_locks_count,
+-	       r->res_name);
++	pr_err("rsb: master %d dir %d flags %lx first %x rlc %d name %s\n",
++	       r->res_master_nodeid, r->res_dir_nodeid, r->res_flags,
++	       r->res_first_lkid, r->res_recover_locks_count, r->res_name);
+ }
  
-+	limit.max = end;
-+	limit.min = start;
-+
- 	lkb = dlm_allocate_lkb(ls);
- 	if (!lkb)
- 		return -ENOMEM;
-@@ -1478,14 +1482,12 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
- 	INIT_LIST_HEAD(&lkb->lkb_ownqueue);
- 	INIT_LIST_HEAD(&lkb->lkb_rsb_lookup);
+ void dlm_dump_rsb(struct dlm_rsb *r)
+@@ -243,13 +241,13 @@ static inline int is_granted(struct dlm_lkb *lkb)
  
--	write_lock_bh(&ls->ls_lkbidr_lock);
--	rv = idr_alloc(&ls->ls_lkbidr, lkb, start, end, GFP_NOWAIT);
--	if (rv >= 0)
--		lkb->lkb_id = rv;
--	write_unlock_bh(&ls->ls_lkbidr_lock);
-+	write_lock_bh(&ls->ls_lkbxa_lock);
-+	rv = xa_alloc(&ls->ls_lkbxa, &lkb->lkb_id, lkb, limit, GFP_ATOMIC);
-+	write_unlock_bh(&ls->ls_lkbxa_lock);
+ static inline int is_remote(struct dlm_rsb *r)
+ {
+-	DLM_ASSERT(r->res_nodeid >= 0, dlm_print_rsb(r););
+-	return !!r->res_nodeid;
++	DLM_ASSERT(r->res_master_nodeid != 0, dlm_print_rsb(r););
++	return r->res_master_nodeid != dlm_our_nodeid();
+ }
  
- 	if (rv < 0) {
--		log_error(ls, "create_lkb idr error %d", rv);
-+		log_error(ls, "create_lkb xa error %d", rv);
- 		dlm_free_lkb(lkb);
- 		return rv;
+ static inline int is_process_copy(struct dlm_lkb *lkb)
+ {
+-	return lkb->lkb_nodeid &&
++	return lkb->lkb_master_nodeid != dlm_our_nodeid() &&
+ 	       !test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags);
+ }
+ 
+@@ -819,7 +817,6 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		dlm_print_rsb(r);
+ 		/* fix it and go on */
+ 		r->res_master_nodeid = our_nodeid;
+-		r->res_nodeid = 0;
+ 		rsb_clear_flag(r, RSB_MASTER_UNCERTAIN);
+ 		r->res_first_lkid = 0;
  	}
-@@ -1496,18 +1498,18 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+@@ -865,7 +862,6 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		log_debug(ls, "find_rsb new from_dir %d recreate %s",
+ 			  from_nodeid, r->res_name);
+ 		r->res_master_nodeid = our_nodeid;
+-		r->res_nodeid = 0;
+ 		goto out_add;
+ 	}
  
- static int create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret)
+@@ -888,11 +884,9 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		/* When we are the dir nodeid, we can set the master
+ 		   node immediately */
+ 		r->res_master_nodeid = our_nodeid;
+-		r->res_nodeid = 0;
+ 	} else {
+ 		/* set_master will send_lookup to dir_nodeid */
+ 		r->res_master_nodeid = 0;
+-		r->res_nodeid = -1;
+ 	}
+ 
+  out_add:
+@@ -995,7 +989,6 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 			  our_nodeid, r->res_master_nodeid, dir_nodeid);
+ 		dlm_print_rsb(r);
+ 		r->res_master_nodeid = our_nodeid;
+-		r->res_nodeid = 0;
+ 	}
+ 
+ 	list_move(&r->res_rsbs_list, &ls->ls_keep);
+@@ -1023,7 +1016,6 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 	r->res_hash = hash;
+ 	r->res_dir_nodeid = dir_nodeid;
+ 	r->res_master_nodeid = dir_nodeid;
+-	r->res_nodeid = (dir_nodeid == our_nodeid) ? 0 : dir_nodeid;
+ 	kref_init(&r->res_ref);
+ 
+ 	write_lock_bh(&ls->ls_rsbtbl_lock);
+@@ -1103,7 +1095,8 @@ static int validate_master_nodeid(struct dlm_ls *ls, struct dlm_rsb *r,
+ 		return -ENOTBLK;
+ 	} else {
+ 		/* our rsb is not master, but the dir nodeid has sent us a
+-	   	   request; this could happen with master 0 / res_nodeid -1 */
++		 * request; this could happen with res_master_nodeid 0
++		 */
+ 
+ 		if (r->res_master_nodeid) {
+ 			log_error(ls, "validate master from_dir %d master %d "
+@@ -1113,7 +1106,6 @@ static int validate_master_nodeid(struct dlm_ls *ls, struct dlm_rsb *r,
+ 		}
+ 
+ 		r->res_master_nodeid = dlm_our_nodeid();
+-		r->res_nodeid = 0;
+ 		return 0;
+ 	}
+ }
+@@ -1136,11 +1128,10 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
+ 		/* Recovery uses this function to set a new master when
+ 		 * the previous master failed.  Setting NEW_MASTER will
+ 		 * force dlm_recover_masters to call recover_master on this
+-		 * rsb even though the res_nodeid is no longer removed.
++		 * rsb even though the res_master_nodeid is no longer removed.
+ 		 */
+ 
+ 		r->res_master_nodeid = from_nodeid;
+-		r->res_nodeid = from_nodeid;
+ 		rsb_set_flag(r, RSB_NEW_MASTER);
+ 
+ 		if (toss_list) {
+@@ -1156,9 +1147,9 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
+ 		 * cycle before recovering this master value
+ 		 */
+ 
+-		log_limit(ls, "%s from_master %d master_nodeid %d res_nodeid %d first %x %s",
++		log_limit(ls, "%s from_master %d master_nodeid %d first %x %s",
+ 			  __func__, from_nodeid, r->res_master_nodeid,
+-			  r->res_nodeid, r->res_first_lkid, r->res_name);
++			  r->res_first_lkid, r->res_name);
+ 
+ 		if (r->res_master_nodeid == our_nodeid) {
+ 			log_error(ls, "from_master %d our_master", from_nodeid);
+@@ -1167,7 +1158,6 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
+ 		}
+ 
+ 		r->res_master_nodeid = from_nodeid;
+-		r->res_nodeid = from_nodeid;
+ 		rsb_set_flag(r, RSB_NEW_MASTER);
+ 	}
+ 
+@@ -1179,7 +1169,6 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
+ 		log_debug(ls, "%s master 0 to %d first %x %s", __func__,
+ 			  from_nodeid, r->res_first_lkid, r->res_name);
+ 		r->res_master_nodeid = from_nodeid;
+-		r->res_nodeid = from_nodeid;
+ 	}
+ 
+ 	if (!from_master && !fix_master &&
+@@ -1341,7 +1330,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 	r->res_hash = hash;
+ 	r->res_dir_nodeid = our_nodeid;
+ 	r->res_master_nodeid = from_nodeid;
+-	r->res_nodeid = from_nodeid;
++	kref_init(&r->res_ref);
+ 	rsb_set_flag(r, RSB_TOSS);
+ 
+ 	write_lock_bh(&ls->ls_rsbtbl_lock);
+@@ -1476,7 +1465,6 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+ 	lkb->lkb_last_bast_cb_mode = DLM_LOCK_IV;
+ 	lkb->lkb_last_cast_cb_mode = DLM_LOCK_IV;
+ 	lkb->lkb_last_cb_mode = DLM_LOCK_IV;
+-	lkb->lkb_nodeid = -1;
+ 	lkb->lkb_grmode = DLM_LOCK_IV;
+ 	kref_init(&lkb->lkb_ref);
+ 	INIT_LIST_HEAD(&lkb->lkb_ownqueue);
+@@ -2438,8 +2426,9 @@ static int grant_pending_convert(struct dlm_rsb *r, int high, int *cw,
+ 		}
+ 
+ 		if (!demoted && is_demoted(lkb)) {
+-			log_print("WARN: pending demoted %x node %d %s",
+-				  lkb->lkb_id, lkb->lkb_nodeid, r->res_name);
++			log_print("WARN: pending demoted %x master_node %d %s",
++				  lkb->lkb_id, lkb->lkb_master_nodeid,
++				  r->res_name);
+ 			demote_restart = 1;
+ 			continue;
+ 		}
+@@ -2457,7 +2446,7 @@ static int grant_pending_convert(struct dlm_rsb *r, int high, int *cw,
+ 				}
+ 			} else {
+ 				log_print("WARN: pending deadlock %x node %d %s",
+-					  lkb->lkb_id, lkb->lkb_nodeid,
++					  lkb->lkb_id, lkb->lkb_master_nodeid,
+ 					  r->res_name);
+ 				dlm_dump_rsb(r);
+ 			}
+@@ -2526,7 +2515,8 @@ static void grant_pending_locks(struct dlm_rsb *r, unsigned int *count)
+ 	int cw = 0;
+ 
+ 	if (!is_master(r)) {
+-		log_print("grant_pending_locks r nodeid %d", r->res_nodeid);
++		log_print("%s r master_nodeid %d", __func__,
++			  r->res_master_nodeid);
+ 		dlm_dump_rsb(r);
+ 		return;
+ 	}
+@@ -2622,7 +2612,7 @@ static int set_master(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	if (rsb_flag(r, RSB_MASTER_UNCERTAIN)) {
+ 		rsb_clear_flag(r, RSB_MASTER_UNCERTAIN);
+ 		r->res_first_lkid = lkb->lkb_id;
+-		lkb->lkb_nodeid = r->res_nodeid;
++		lkb->lkb_master_nodeid = r->res_master_nodeid;
+ 		return 0;
+ 	}
+ 
+@@ -2631,13 +2621,8 @@ static int set_master(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 		return 1;
+ 	}
+ 
+-	if (r->res_master_nodeid == our_nodeid) {
+-		lkb->lkb_nodeid = 0;
+-		return 0;
+-	}
+-
+ 	if (r->res_master_nodeid) {
+-		lkb->lkb_nodeid = r->res_master_nodeid;
++		lkb->lkb_master_nodeid = r->res_master_nodeid;
+ 		return 0;
+ 	}
+ 
+@@ -2652,8 +2637,7 @@ static int set_master(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 			  lkb->lkb_id, r->res_master_nodeid, r->res_dir_nodeid,
+ 			  r->res_name);
+ 		r->res_master_nodeid = our_nodeid;
+-		r->res_nodeid = 0;
+-		lkb->lkb_nodeid = 0;
++		lkb->lkb_master_nodeid = our_nodeid;
+ 		return 0;
+ 	}
+ 
+@@ -2850,7 +2834,7 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ /* when dlm_unlock() sees -EBUSY with CANCEL/FORCEUNLOCK it returns 0
+    for success */
+ 
+-/* note: it's valid for lkb_nodeid/res_nodeid to be -1 when we get here
++/* note: it's valid for lkb_master_nodeid/res_master_nodeid to be 0 when we get here
+    because there may be a lookup in progress and it's valid to do
+    cancel/unlockf on it */
+ 
+@@ -3531,7 +3515,7 @@ static int send_message(struct dlm_mhandle *mh, struct dlm_message *ms,
+ static void send_args(struct dlm_rsb *r, struct dlm_lkb *lkb,
+ 		      struct dlm_message *ms)
  {
--	return _create_lkb(ls, lkb_ret, 1, 0);
-+	return _create_lkb(ls, lkb_ret, 1, ULONG_MAX);
+-	ms->m_nodeid   = cpu_to_le32(lkb->lkb_nodeid);
++	ms->m_nodeid   = cpu_to_le32(dlm_res_nodeid(lkb->lkb_master_nodeid));
+ 	ms->m_pid      = cpu_to_le32(lkb->lkb_ownpid);
+ 	ms->m_lkid     = cpu_to_le32(lkb->lkb_id);
+ 	ms->m_remid    = cpu_to_le32(lkb->lkb_remid);
+@@ -3578,7 +3562,7 @@ static int send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
+ 	struct dlm_mhandle *mh;
+ 	int to_nodeid, error;
+ 
+-	to_nodeid = r->res_nodeid;
++	to_nodeid = r->res_master_nodeid;
+ 
+ 	error = add_to_waiters(lkb, mstype, to_nodeid);
+ 	if (error)
+@@ -3642,7 +3626,7 @@ static int send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	struct dlm_mhandle *mh;
+ 	int to_nodeid, error;
+ 
+-	to_nodeid = lkb->lkb_nodeid;
++	to_nodeid = lkb->lkb_master_nodeid;
+ 
+ 	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh);
+ 	if (error)
+@@ -3663,7 +3647,7 @@ static int send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode)
+ 	struct dlm_mhandle *mh;
+ 	int to_nodeid, error;
+ 
+-	to_nodeid = lkb->lkb_nodeid;
++	to_nodeid = lkb->lkb_master_nodeid;
+ 
+ 	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh);
+ 	if (error)
+@@ -3733,7 +3717,7 @@ static int send_common_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
+ 	struct dlm_mhandle *mh;
+ 	int to_nodeid, error;
+ 
+-	to_nodeid = lkb->lkb_nodeid;
++	to_nodeid = lkb->lkb_master_nodeid;
+ 
+ 	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
+ 	if (error)
+@@ -3849,7 +3833,7 @@ static void fake_astfn(void *astparam)
+ static int receive_request_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 				const struct dlm_message *ms)
+ {
+-	lkb->lkb_nodeid = le32_to_cpu(ms->m_header.h_nodeid);
++	lkb->lkb_master_nodeid = dlm_res_master_nodeid(le32_to_cpu(ms->m_header.h_nodeid));
+ 	lkb->lkb_ownpid = le32_to_cpu(ms->m_pid);
+ 	lkb->lkb_remid = le32_to_cpu(ms->m_lkid);
+ 	lkb->lkb_grmode = DLM_LOCK_IV;
+@@ -3897,7 +3881,7 @@ static int receive_unlock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ static void setup_local_lkb(struct dlm_ls *ls, const struct dlm_message *ms)
+ {
+ 	struct dlm_lkb *lkb = &ls->ls_local_lkb;
+-	lkb->lkb_nodeid = le32_to_cpu(ms->m_header.h_nodeid);
++	lkb->lkb_master_nodeid = dlm_res_master_nodeid(le32_to_cpu(ms->m_header.h_nodeid));
+ 	lkb->lkb_remid = le32_to_cpu(ms->m_lkid);
  }
  
- static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
- {
+@@ -3922,7 +3906,7 @@ static int validate_message(struct dlm_lkb *lkb, const struct dlm_message *ms)
+ 	case cpu_to_le32(DLM_MSG_CONVERT):
+ 	case cpu_to_le32(DLM_MSG_UNLOCK):
+ 	case cpu_to_le32(DLM_MSG_CANCEL):
+-		if (!is_master_copy(lkb) || lkb->lkb_nodeid != from)
++		if (!is_master_copy(lkb) || lkb->lkb_master_nodeid != from)
+ 			error = -EINVAL;
+ 		break;
+ 
+@@ -3931,14 +3915,14 @@ static int validate_message(struct dlm_lkb *lkb, const struct dlm_message *ms)
+ 	case cpu_to_le32(DLM_MSG_CANCEL_REPLY):
+ 	case cpu_to_le32(DLM_MSG_GRANT):
+ 	case cpu_to_le32(DLM_MSG_BAST):
+-		if (!is_process_copy(lkb) || lkb->lkb_nodeid != from)
++		if (!is_process_copy(lkb) || lkb->lkb_master_nodeid != from)
+ 			error = -EINVAL;
+ 		break;
+ 
+ 	case cpu_to_le32(DLM_MSG_REQUEST_REPLY):
+ 		if (!is_process_copy(lkb))
+ 			error = -EINVAL;
+-		else if (lkb->lkb_nodeid != -1 && lkb->lkb_nodeid != from)
++		else if (lkb->lkb_master_nodeid != 0 && lkb->lkb_master_nodeid != from)
+ 			error = -EINVAL;
+ 		break;
+ 
+@@ -3952,7 +3936,7 @@ static int validate_message(struct dlm_lkb *lkb, const struct dlm_message *ms)
+ 			  "ignore invalid message %d from %d %x %x %x %d",
+ 			  le32_to_cpu(ms->m_type), from, lkb->lkb_id,
+ 			  lkb->lkb_remid, dlm_iflags_val(lkb),
+-			  lkb->lkb_nodeid);
++			  lkb->lkb_master_nodeid);
+ 	return error;
+ }
+ 
+@@ -4378,8 +4362,7 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 	   lookup as a request and sent request reply instead of lookup reply */
+ 	if (mstype == DLM_MSG_LOOKUP) {
+ 		r->res_master_nodeid = from_nodeid;
+-		r->res_nodeid = from_nodeid;
+-		lkb->lkb_nodeid = from_nodeid;
++		lkb->lkb_master_nodeid = from_nodeid;
+ 	}
+ 
+ 	/* this is the value returned from do_request() on the master */
+@@ -4421,8 +4404,7 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 		    r->res_master_nodeid != dlm_our_nodeid()) {
+ 			/* cause _request_lock->set_master->send_lookup */
+ 			r->res_master_nodeid = 0;
+-			r->res_nodeid = -1;
+-			lkb->lkb_nodeid = -1;
++			lkb->lkb_master_nodeid = 0;
+ 		}
+ 
+ 		if (is_overlap(lkb)) {
+@@ -4696,7 +4678,6 @@ static void receive_lookup_reply(struct dlm_ls *ls,
+ 
+ 	if (ret_nodeid == dlm_our_nodeid()) {
+ 		r->res_master_nodeid = ret_nodeid;
+-		r->res_nodeid = 0;
+ 		do_lookup_list = 1;
+ 		r->res_first_lkid = 0;
+ 	} else if (ret_nodeid == -1) {
+@@ -4704,12 +4685,10 @@ static void receive_lookup_reply(struct dlm_ls *ls,
+ 		log_error(ls, "receive_lookup_reply %x from %d bad ret_nodeid",
+ 			  lkb->lkb_id, le32_to_cpu(ms->m_header.h_nodeid));
+ 		r->res_master_nodeid = 0;
+-		r->res_nodeid = -1;
+-		lkb->lkb_nodeid = -1;
++		lkb->lkb_master_nodeid = 0;
+ 	} else {
+-		/* set_master() will set lkb_nodeid from r */
++		/* set_master() will set lkb_master_nodeid from r */
+ 		r->res_master_nodeid = ret_nodeid;
+-		r->res_nodeid = ret_nodeid;
+ 	}
+ 
+ 	if (is_overlap(lkb)) {
+@@ -4976,7 +4955,7 @@ static void recover_convert_waiter(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 		memset(ms_local, 0, sizeof(struct dlm_message));
+ 		ms_local->m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
+ 		ms_local->m_result = cpu_to_le32(to_dlm_errno(-EINPROGRESS));
+-		ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
++		ms_local->m_header.h_nodeid = cpu_to_le32(dlm_res_nodeid(lkb->lkb_master_nodeid));
+ 		_receive_convert_reply(lkb, ms_local, true);
+ 
+ 		/* Same special case as in receive_rcom_lock_args() */
+@@ -5032,13 +5011,12 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
+ 		   many and they aren't very interesting */
+ 
+ 		if (lkb->lkb_wait_type != DLM_MSG_UNLOCK) {
+-			log_debug(ls, "waiter %x remote %x msg %d r_nodeid %d "
+-				  "lkb_nodeid %d wait_nodeid %d dir_nodeid %d",
++			log_debug(ls, "waiter %x remote %x msg %d master_nodeid %d lkb_master_nodeid %d wait_nodeid %d dir_nodeid %d",
+ 				  lkb->lkb_id,
+ 				  lkb->lkb_remid,
+ 				  lkb->lkb_wait_type,
+-				  lkb->lkb_resource->res_nodeid,
+-				  lkb->lkb_nodeid,
++				  lkb->lkb_resource->res_master_nodeid,
++				  lkb->lkb_master_nodeid,
+ 				  lkb->lkb_wait_nodeid,
+ 				  dir_nodeid);
+ 		}
+@@ -5095,7 +5073,7 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
+ 			memset(ms_local, 0, sizeof(struct dlm_message));
+ 			ms_local->m_type = cpu_to_le32(DLM_MSG_UNLOCK_REPLY);
+ 			ms_local->m_result = cpu_to_le32(to_dlm_errno(local_unlock_result));
+-			ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
++			ms_local->m_header.h_nodeid = cpu_to_le32(dlm_res_nodeid(lkb->lkb_master_nodeid));
+ 			_receive_unlock_reply(lkb, ms_local, true);
+ 			dlm_put_lkb(lkb);
+ 			break;
+@@ -5105,7 +5083,7 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
+ 			memset(ms_local, 0, sizeof(struct dlm_message));
+ 			ms_local->m_type = cpu_to_le32(DLM_MSG_CANCEL_REPLY);
+ 			ms_local->m_result = cpu_to_le32(to_dlm_errno(local_cancel_result));
+-			ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
++			ms_local->m_header.h_nodeid = cpu_to_le32(dlm_res_nodeid(lkb->lkb_master_nodeid));
+ 			_receive_cancel_reply(lkb, ms_local, true);
+ 			dlm_put_lkb(lkb);
+ 			break;
+@@ -5201,11 +5179,10 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
+ 					&lkb->lkb_iflags);
+ 		err = 0;
+ 
+-		log_debug(ls, "waiter %x remote %x msg %d r_nodeid %d "
+-			  "lkb_nodeid %d wait_nodeid %d dir_nodeid %d "
+-			  "overlap %d %d", lkb->lkb_id, lkb->lkb_remid, mstype,
+-			  r->res_nodeid, lkb->lkb_nodeid, lkb->lkb_wait_nodeid,
+-			  dlm_dir_nodeid(r), oc, ou);
++		log_debug(ls, "waiter %x remote %x msg %d master_nodeid %d lkb_master_nodeid %d wait_nodeid %d dir_nodeid %d overlap %d %d",
++			  lkb->lkb_id, lkb->lkb_remid, mstype,
++			  r->res_master_nodeid, lkb->lkb_master_nodeid,
++			  lkb->lkb_wait_nodeid, dlm_dir_nodeid(r), oc, ou);
+ 
+ 		/*
+ 		 * No reply to the pre-recovery operation will now be received,
+@@ -5278,9 +5255,9 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
+ 		}
+ 
+ 		if (err) {
+-			log_error(ls, "waiter %x msg %d r_nodeid %d "
++			log_error(ls, "waiter %x msg %d master_nodeid %d "
+ 				  "dir_nodeid %d overlap %d %d",
+-				  lkb->lkb_id, mstype, r->res_nodeid,
++				  lkb->lkb_id, mstype, r->res_master_nodeid,
+ 				  dlm_dir_nodeid(r), oc, ou);
+ 		}
+ 		unlock_rsb(r);
+@@ -5333,8 +5310,8 @@ static void purge_dead_list(struct dlm_ls *ls, struct dlm_rsb *r,
+ 		if (!is_master_copy(lkb))
+ 			continue;
+ 
+-		if ((lkb->lkb_nodeid == nodeid_gone) ||
+-		    dlm_is_removed(ls, lkb->lkb_nodeid)) {
++		if ((lkb->lkb_master_nodeid == nodeid_gone) ||
++		    dlm_is_removed(ls, lkb->lkb_master_nodeid)) {
+ 
+ 			/* tell recover_lvb to invalidate the lvb
+ 			   because a node holding EX/PW failed */
+@@ -5471,7 +5448,7 @@ static struct dlm_lkb *search_remid_list(struct list_head *head, int nodeid,
  	struct dlm_lkb *lkb;
  
--	read_lock_bh(&ls->ls_lkbidr_lock);
--	lkb = idr_find(&ls->ls_lkbidr, lkid);
-+	read_lock_bh(&ls->ls_lkbxa_lock);
-+	lkb = xa_load(&ls->ls_lkbxa, lkid);
- 	if (lkb)
- 		kref_get(&lkb->lkb_ref);
--	read_unlock_bh(&ls->ls_lkbidr_lock);
-+	read_unlock_bh(&ls->ls_lkbxa_lock);
+ 	list_for_each_entry(lkb, head, lkb_statequeue) {
+-		if (lkb->lkb_nodeid == nodeid && lkb->lkb_remid == remid)
++		if (lkb->lkb_master_nodeid == nodeid && lkb->lkb_remid == remid)
+ 			return lkb;
+ 	}
+ 	return NULL;
+@@ -5500,7 +5477,7 @@ static int receive_rcom_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ {
+ 	struct rcom_lock *rl = (struct rcom_lock *) rc->rc_buf;
  
- 	*lkb_ret = lkb;
- 	return lkb ? 0 : -ENOENT;
-@@ -1532,10 +1534,10 @@ static int __put_lkb(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 	int rv;
+-	lkb->lkb_nodeid = le32_to_cpu(rc->rc_header.h_nodeid);
++	lkb->lkb_master_nodeid = dlm_res_master_nodeid(le32_to_cpu(rc->rc_header.h_nodeid));
+ 	lkb->lkb_ownpid = le32_to_cpu(rl->rl_ownpid);
+ 	lkb->lkb_remid = le32_to_cpu(rl->rl_lkid);
+ 	lkb->lkb_exflags = le32_to_cpu(rl->rl_exflags);
+@@ -6247,7 +6224,8 @@ int dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
  
- 	rv = dlm_kref_put_write_lock_bh(&lkb->lkb_ref, kill_lkb,
--					&ls->ls_lkbidr_lock);
-+					&ls->ls_lkbxa_lock);
- 	if (rv) {
--		idr_remove(&ls->ls_lkbidr, lkid);
--		write_unlock_bh(&ls->ls_lkbidr_lock);
-+		xa_erase(&ls->ls_lkbxa, lkid);
-+		write_unlock_bh(&ls->ls_lkbxa_lock);
+ /* debug functionality */
+ int dlm_debug_add_lkb(struct dlm_ls *ls, uint32_t lkb_id, char *name, int len,
+-		      int lkb_nodeid, unsigned int lkb_dflags, int lkb_status)
++		      int lkb_master_nodeid, unsigned int lkb_dflags,
++		      int lkb_status)
+ {
+ 	struct dlm_lksb *lksb;
+ 	struct dlm_lkb *lkb;
+@@ -6269,7 +6247,7 @@ int dlm_debug_add_lkb(struct dlm_ls *ls, uint32_t lkb_id, char *name, int len,
+ 	}
  
- 		detach_lkb(lkb);
+ 	dlm_set_dflags_val(lkb, lkb_dflags);
+-	lkb->lkb_nodeid = lkb_nodeid;
++	lkb->lkb_master_nodeid = lkb_master_nodeid;
+ 	lkb->lkb_lksb = lksb;
+ 	/* user specific pointer, just don't have it NULL for kernel locks */
+ 	if (~lkb_dflags & BIT(DLM_DFL_USER_BIT))
+diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
+index 8de9dee4c058..e59161d2fe84 100644
+--- a/fs/dlm/lock.h
++++ b/fs/dlm/lock.h
+@@ -61,13 +61,14 @@ int dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
+ int dlm_user_deadlock(struct dlm_ls *ls, uint32_t flags, uint32_t lkid);
+ void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc);
+ int dlm_debug_add_lkb(struct dlm_ls *ls, uint32_t lkb_id, char *name, int len,
+-		      int lkb_nodeid, unsigned int lkb_flags, int lkb_status);
++		      int lkb_master_nodeid, unsigned int lkb_flags,
++		      int lkb_status);
+ int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
+ 				 int mstype, int to_nodeid);
  
+ static inline int is_master(struct dlm_rsb *r)
+ {
+-	return !r->res_nodeid;
++	return r->res_master_nodeid == dlm_our_nodeid();
+ }
+ 
+ static inline void lock_rsb(struct dlm_rsb *r)
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index c4d4c53e5897..be33877d98fd 100644
+index c50f7bb5a54c..20b8eb4647ed 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -421,8 +421,8 @@ static int new_lockspace(const char *name, const char *cluster,
- 	if (error)
- 		goto out_lsfree;
- 
--	idr_init(&ls->ls_lkbidr);
--	rwlock_init(&ls->ls_lkbidr_lock);
-+	xa_init_flags(&ls->ls_lkbxa, XA_FLAGS_ALLOC | XA_FLAGS_LOCK_BH);
-+	rwlock_init(&ls->ls_lkbxa_lock);
- 
- 	INIT_LIST_HEAD(&ls->ls_waiters);
- 	spin_lock_init(&ls->ls_waiters_lock);
-@@ -471,7 +471,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	 */
- 	ls->ls_recover_buf = kmalloc(DLM_MAX_SOCKET_BUFSIZE, GFP_NOFS);
- 	if (!ls->ls_recover_buf)
--		goto out_lkbidr;
-+		goto out_lkbxa;
- 
- 	ls->ls_slot = 0;
- 	ls->ls_num_slots = 0;
-@@ -571,8 +571,8 @@ static int new_lockspace(const char *name, const char *cluster,
- 	spin_unlock_bh(&lslist_lock);
- 	idr_destroy(&ls->ls_recover_idr);
- 	kfree(ls->ls_recover_buf);
-- out_lkbidr:
--	idr_destroy(&ls->ls_lkbidr);
-+ out_lkbxa:
-+	xa_destroy(&ls->ls_lkbxa);
- 	rhashtable_destroy(&ls->ls_rsbtbl);
-  out_lsfree:
- 	if (do_unreg)
-@@ -632,22 +632,8 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
- 				   ops_arg, ops_result, lockspace);
- }
- 
--static int lkb_idr_is_local(int id, void *p, void *data)
-+static int lkb_idr_free(struct dlm_lkb *lkb)
- {
--	struct dlm_lkb *lkb = p;
--
--	return lkb->lkb_nodeid == 0 && lkb->lkb_grmode != DLM_LOCK_IV;
--}
--
--static int lkb_idr_is_any(int id, void *p, void *data)
--{
--	return 1;
--}
--
--static int lkb_idr_free(int id, void *p, void *data)
--{
--	struct dlm_lkb *lkb = p;
--
- 	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
- 		dlm_free_lvb(lkb->lkb_lvbptr);
- 
-@@ -655,23 +641,34 @@ static int lkb_idr_free(int id, void *p, void *data)
- 	return 0;
- }
- 
--/* NOTE: We check the lkbidr here rather than the resource table.
-+/* NOTE: We check the lkbxa here rather than the resource table.
-    This is because there may be LKBs queued as ASTs that have been unlinked
-    from their RSBs and are pending deletion once the AST has been delivered */
- 
- static int lockspace_busy(struct dlm_ls *ls, int force)
- {
--	int rv;
-+	struct dlm_lkb *lkb;
-+	unsigned long id;
-+	int rv = 0;
- 
--	read_lock_bh(&ls->ls_lkbidr_lock);
-+	read_lock_bh(&ls->ls_lkbxa_lock);
- 	if (force == 0) {
--		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_any, ls);
-+		xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+			rv = 1;
-+			break;
-+		}
+@@ -659,7 +659,7 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
+ 		}
  	} else if (force == 1) {
--		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_local, ls);
-+		xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+			if (lkb->lkb_nodeid == 0 &&
-+			    lkb->lkb_grmode != DLM_LOCK_IV) {
-+				rv = 1;
-+				break;
-+			}
-+		}
- 	} else {
- 		rv = 0;
+ 		xa_for_each(&ls->ls_lkbxa, id, lkb) {
+-			if (lkb->lkb_nodeid == 0 &&
++			if (lkb->lkb_master_nodeid == dlm_our_nodeid() &&
+ 			    lkb->lkb_grmode != DLM_LOCK_IV) {
+ 				rv = 1;
+ 				break;
+diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
+index be1a71a6303a..b545cd7a23cd 100644
+--- a/fs/dlm/rcom.c
++++ b/fs/dlm/rcom.c
+@@ -455,8 +455,8 @@ int dlm_send_rcom_lock(struct dlm_rsb *r, struct dlm_lkb *lkb, uint64_t seq)
+ 	if (lkb->lkb_lvbptr)
+ 		len += ls->ls_lvblen;
+ 
+-	error = create_rcom(ls, r->res_nodeid, DLM_RCOM_LOCK, len, &rc, &mh,
+-			    seq);
++	error = create_rcom(ls, r->res_master_nodeid, DLM_RCOM_LOCK, len, &rc,
++			    &mh, seq);
+ 	if (error)
+ 		goto out;
+ 
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index 4f5b2d4eb41a..b6eda679793f 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -408,7 +408,7 @@ static void set_lock_master(struct list_head *queue, int nodeid)
+ 
+ 	list_for_each_entry(lkb, queue, lkb_statequeue) {
+ 		if (!test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags)) {
+-			lkb->lkb_nodeid = nodeid;
++			lkb->lkb_master_nodeid = nodeid;
+ 			lkb->lkb_remid = 0;
+ 		}
  	}
--	read_unlock_bh(&ls->ls_lkbidr_lock);
-+	read_unlock_bh(&ls->ls_lkbxa_lock);
- 	return rv;
+@@ -416,9 +416,9 @@ static void set_lock_master(struct list_head *queue, int nodeid)
+ 
+ static void set_master_lkbs(struct dlm_rsb *r)
+ {
+-	set_lock_master(&r->res_grantqueue, r->res_nodeid);
+-	set_lock_master(&r->res_convertqueue, r->res_nodeid);
+-	set_lock_master(&r->res_waitqueue, r->res_nodeid);
++	set_lock_master(&r->res_grantqueue, r->res_master_nodeid);
++	set_lock_master(&r->res_convertqueue, r->res_master_nodeid);
++	set_lock_master(&r->res_waitqueue, r->res_master_nodeid);
  }
  
-@@ -684,6 +681,8 @@ static void rhash_free_rsb(void *ptr, void *arg)
+ /*
+@@ -455,7 +455,7 @@ static int recover_master(struct dlm_rsb *r, unsigned int *count, uint64_t seq)
+ 	if (is_master(r))
+ 		return 0;
  
- static int release_lockspace(struct dlm_ls *ls, int force)
+-	is_removed = dlm_is_removed(ls, r->res_nodeid);
++	is_removed = dlm_is_removed(ls, r->res_master_nodeid);
+ 
+ 	if (!is_removed && !rsb_flag(r, RSB_NEW_MASTER))
+ 		return 0;
+@@ -464,10 +464,8 @@ static int recover_master(struct dlm_rsb *r, unsigned int *count, uint64_t seq)
+ 	dir_nodeid = dlm_dir_nodeid(r);
+ 
+ 	if (dir_nodeid == our_nodeid) {
+-		if (is_removed) {
++		if (is_removed)
+ 			r->res_master_nodeid = our_nodeid;
+-			r->res_nodeid = 0;
+-		}
+ 
+ 		/* set master of lkbs to ourself when is_removed, or to
+ 		   another new master which we set along with NEW_MASTER
+@@ -501,14 +499,9 @@ static int recover_master(struct dlm_rsb *r, unsigned int *count, uint64_t seq)
+ static int recover_master_static(struct dlm_rsb *r, unsigned int *count)
  {
-+	struct dlm_lkb *lkb;
-+	unsigned long id;
- 	int busy, rv;
- 
- 	busy = lockspace_busy(ls, force);
-@@ -740,11 +739,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 	kfree(ls->ls_recover_buf);
- 
- 	/*
--	 * Free all lkb's in idr
-+	 * Free all lkb's in xa
- 	 */
+ 	int dir_nodeid = dlm_dir_nodeid(r);
+-	int new_master = dir_nodeid;
 -
--	idr_for_each(&ls->ls_lkbidr, lkb_idr_free, ls);
--	idr_destroy(&ls->ls_lkbidr);
-+	xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+		lkb_idr_free(lkb);
-+	}
-+	xa_destroy(&ls->ls_lkbxa);
+-	if (dir_nodeid == dlm_our_nodeid())
+-		new_master = 0;
  
- 	/*
- 	 * Free all rsb's on rsbtbl
+ 	dlm_purge_mstcpy_locks(r);
+ 	r->res_master_nodeid = dir_nodeid;
+-	r->res_nodeid = new_master;
+ 	set_new_master(r);
+ 	(*count)++;
+ 	return 0;
+@@ -584,7 +577,6 @@ int dlm_recover_master_reply(struct dlm_ls *ls, const struct dlm_rcom *rc)
+ 
+ 	lock_rsb(r);
+ 	r->res_master_nodeid = ret_nodeid;
+-	r->res_nodeid = new_master;
+ 	set_new_master(r);
+ 	unlock_rsb(r);
+ 	recover_xa_del(r);
+diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
+index 17a40d1e6036..06959b128bd0 100644
+--- a/fs/dlm/recoverd.c
++++ b/fs/dlm/recoverd.c
+@@ -34,7 +34,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
+ 
+ 	read_lock_bh(&ls->ls_rsbtbl_lock);
+ 	list_for_each_entry(r, &ls->ls_keep, res_rsbs_list) {
+-		if (r->res_nodeid)
++		if (r->res_master_nodeid != dlm_our_nodeid())
+ 			continue;
+ 
+ 		list_add(&r->res_masters_list, &ls->ls_masters_list);
 -- 
 2.43.0
 
