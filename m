@@ -1,294 +1,276 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C57F1420B6
-	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68688564F
+	for <gfs2@lists.linux.dev>; Thu, 25 Apr 2024 11:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713902174; cv=none; b=Z8CWNACm953p4JJVsfR7k110ER0sqR2/wio8MPGBoOyk7/ejsw2B1N8kI2WXxWkiyxgnDWLaDpF2G3eW+LRLUbvxd9BVABdNWjW1+Yw/ODdIy4oBdeD3JAANfniEY4pDvIPxa/RDDlKeoqHmQim6fF+a1mrTJ3v4pzqDRTpvQww=
+	t=1714043372; cv=none; b=Zpnj1KS3hI4WUHqiqjytwmHroJmKb5nOmLqsh44nn8DvBsZygcJ94MFtQ59O4IzmbdR6lK27I5AOCCTFevvm4D6Bj9nfMg/zsi/vWXu5nbYuyV2Nu6xjaDr0q/g4yePdU4kEK7My3RVTEnju8Es/87lyELVsAGapPjsvi0/0UMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713902174; c=relaxed/simple;
-	bh=AZjUJ8yDjL/NGfUliyOTbcJoyMCmYGi9WzpwjCN37xY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LvpitO8NK2YMJwv1Q1bJTgmV1kK2h1yM3eAgn9VX12ZkUfCE8vQ02EkY97ahzzLbjeLjgvW/pHzrXL2kpNDTsZK6z3GJFWkp5207nfQ/EToYYGfo9lCJiXaK9hRMYUC874PTTBkIGE1RUiNi9wwV7X7fWKUhYXtDbHLZ2ESdMSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G9R0EROJ; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1714043372; c=relaxed/simple;
+	bh=WxRT3GhFqQcicpmthVc/tY1Ez77a7MPeeg/zi6UXFAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AFAX5iu+gvJ2UK05ORh6ulyofxK6D8Gg2OEZSxNfAnZbpT1lOcvB3V5am3E5KbH/wKy6w91U93nHYj+qCX0cOwQ+jhebzdlFBc5DAWv97qUiRsbYaqCipTZyZYhDHH0Ugfm2X3x1Ye1Y5HhRKMAa2+Q39ngaDnR4NR0a2k16TT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U0B52sRx; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G9R0EROJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U0B52sRx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713902171;
+	s=mimecast20190719; t=1714043368;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uHq/RP60LOTVGYgwAOua6owb0Wg8jgwRZrKLhgQjp7E=;
-	b=G9R0EROJDmGiX8JTwelUAOV7ZLyiGpeTaucg6vSnNXMHc6VGKZOIQc9DrBuuLwNgRedICz
-	xfbdQCl8NHYjrkiQvh1vgHXu1L529lzIsPy6n7aZWm82h17mK7wKT672H8roe29/MQZh9l
-	NsTru6gKgDYH6RB5VwU5O3DQTKbh+Sc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-nptgTRV7Nu2zdtRL6emNDA-1; Tue,
- 23 Apr 2024 15:56:05 -0400
-X-MC-Unique: nptgTRV7Nu2zdtRL6emNDA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C31E3C02521
-	for <gfs2@lists.linux.dev>; Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
-Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 9309540C5C2;
-	Tue, 23 Apr 2024 19:56:04 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH dlm/next 06/10] dlm: using rcu to avoid rsb lookup again
-Date: Tue, 23 Apr 2024 15:55:55 -0400
-Message-ID: <20240423195559.1527187-6-aahringo@redhat.com>
-In-Reply-To: <20240423195559.1527187-1-aahringo@redhat.com>
-References: <20240423195559.1527187-1-aahringo@redhat.com>
+	bh=13l4VSJkvftMTOhfIDALxGVZS53fcbHHrPepYC6GY+M=;
+	b=U0B52sRxsTxJs7T+TAWcbxx43y0s7gfnPkdIwUO62YoIhAGo6LZzq1hAjoZgOkZ8/o6TiD
+	pusoJu4N0HZlM/a1qRyrCP1masmt6ma03BuZuXUCBbf8mb0mFWykWPKmkUe87ry1b5cVrU
+	bcsb9RgIwPLRdhlkuD2b7ukR525LqMg=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-m9m-zH34MG6cFhavavJb4w-1; Thu, 25 Apr 2024 07:09:27 -0400
+X-MC-Unique: m9m-zH34MG6cFhavavJb4w-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2db869d3805so7479321fa.3
+        for <gfs2@lists.linux.dev>; Thu, 25 Apr 2024 04:09:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714043365; x=1714648165;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=13l4VSJkvftMTOhfIDALxGVZS53fcbHHrPepYC6GY+M=;
+        b=LKL9W+uBHdo8hdi5+9MwH3yqr/VX6U0EeEACtVdOelCUXTSGhhsK7eWuE9WwOEQnrM
+         E+rd7CKnuxOg0oFl9vx8vpMICII8LkFuQTlDsWQxxT1tl6mMBF3Vuw1+4Fy4DVQI2adw
+         Rc75tPtJVdD7x6FJbo7kt91NtI73Vrz0JGIGqflMHYVVWKTiIfX5NHDc3BUl4M2C5O49
+         8iSYhDyLHDwJYrQS0/gn6J0+kCAuGn//Kd/qkpYX1JDYQUkDxBXYhJUerbItezYTJJkJ
+         YmYBpT3mYT9+Vp4OMR4klUA/2C02y+y2xs12rn5aT4sfdNTgvY+5BIh94pQgER87vN0H
+         H3eg==
+X-Gm-Message-State: AOJu0YxQFzBmmO9+CCSMCbd9yQnD5onHidfd1pcHOA9tX7Q91R9Vv+So
+	0HTVDqI9D4NF5ApT1DIaLaNqIDdP5o5LdDCMjSCB8q4Ty7R2lWqL7kZnSwhC7zheOgn/oFUirFD
+	/eKGRSa+uDmlF6N1XI/NIt/wZ/+PSJqrqtPaPS1FnRYgBlJEmUWSiUE3ov8YurZCTI18Lijq8ve
+	AhffA/wOXP1acsdf4p+7QGRXtARkAaxID5kQ==
+X-Received: by 2002:a2e:8395:0:b0:2de:81b8:7e57 with SMTP id x21-20020a2e8395000000b002de81b87e57mr2987361ljg.0.1714043365047;
+        Thu, 25 Apr 2024 04:09:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgRxL58xyZtAbLXRFvnzzDkka7fcVl5xdwZ040uGk7B1mvjSC5BUiridcnsbgTOPafW/+Gi7C65OOHcm5qkLE=
+X-Received: by 2002:a2e:8395:0:b0:2de:81b8:7e57 with SMTP id
+ x21-20020a2e8395000000b002de81b87e57mr2987341ljg.0.1714043364556; Thu, 25 Apr
+ 2024 04:09:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+References: <20240423195559.1527187-1-aahringo@redhat.com> <20240423195559.1527187-9-aahringo@redhat.com>
+In-Reply-To: <20240423195559.1527187-9-aahringo@redhat.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Thu, 25 Apr 2024 07:09:13 -0400
+Message-ID: <CAK-6q+gYRpem117c5Awm2t3=CL8u-UX1K69zpAiHWZO3WNLrEA@mail.gmail.com>
+Subject: Re: [PATCH dlm/next 09/10] dlm: merge nodeid field to master_nodeid
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch converts the rsb to be protected under rcu. When the rcu lock
-is held it cannot be freed. In combination with the new introduced flag
-RSB_HASHED we can check if the rsb is still part of the ls_rsbtbl
-hashtable, it cannot be part of another table. If its still part of the
-ls_rsbtbl we can avoid a second dlm_search_rsb_tree() call.
+Hi,
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/dlm_internal.h |  2 ++
- fs/dlm/lock.c         | 64 ++++++++++++++++++++++++++++++-------------
- fs/dlm/memory.c       |  9 +++++-
- fs/dlm/recover.c      |  1 +
- 4 files changed, 56 insertions(+), 20 deletions(-)
+On Tue, Apr 23, 2024 at 3:56=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+>
+> There is a TODO in dlm_internal.h for the dlm_rsb struct:
+>
+> "remove res_nodeid and only use res_master_nodeid"
+>
+> The res_nodeid and res_master_nodeid should represent the same
+> information in a different numbers mapping. This patch tries to work on
+> this TODO by removing res_nodeid and use res_master_nodeid only. The
+> same applies for struct lkb with it's lkb_nodeid and lkb_master_nodeid
+> fields. It use the new representation for those numbers and introduce
+> backwardscompability because those representation are used for debugfs
+> and the DLM protocol. In future we might use the new number
+> representation for res_master_nodeid only and remove the copied value in
+> struct lkb.
+>
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> ---
+>  fs/dlm/debug_fs.c     |  33 +++++-----
+>  fs/dlm/dlm_internal.h |  33 ++++++++--
+>  fs/dlm/lock.c         | 144 ++++++++++++++++++------------------------
+>  fs/dlm/lock.h         |   5 +-
+>  fs/dlm/lockspace.c    |   2 +-
+>  fs/dlm/rcom.c         |   4 +-
+>  fs/dlm/recover.c      |  20 ++----
+>  fs/dlm/recoverd.c     |   2 +-
+>  8 files changed, 119 insertions(+), 124 deletions(-)
+>
+> diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+> index 6ab3ed4074c6..40eb1696f3b6 100644
+> --- a/fs/dlm/debug_fs.c
+> +++ b/fs/dlm/debug_fs.c
+> @@ -58,9 +58,10 @@ static void print_format1_lock(struct seq_file *s, str=
+uct dlm_lkb *lkb,
+>             lkb->lkb_status =3D=3D DLM_LKSTS_WAITING)
+>                 seq_printf(s, " (%s)", print_lockmode(lkb->lkb_rqmode));
+>
+> -       if (lkb->lkb_nodeid) {
+> -               if (lkb->lkb_nodeid !=3D res->res_nodeid)
+> -                       seq_printf(s, " Remote: %3d %08x", lkb->lkb_nodei=
+d,
+> +       if (lkb->lkb_master_nodeid !=3D dlm_our_nodeid()) {
+> +               if (lkb->lkb_master_nodeid !=3D res->res_master_nodeid)
+> +                       seq_printf(s, " Remote: %3d %08x",
+> +                                  dlm_res_nodeid(lkb->lkb_master_nodeid)=
+,
+>                                    lkb->lkb_remid);
+>                 else
+>                         seq_printf(s, " Master:     %08x", lkb->lkb_remid=
+);
+> @@ -88,16 +89,15 @@ static void print_format1(struct dlm_rsb *res, struct=
+ seq_file *s)
+>                         seq_printf(s, "%c", '.');
+>         }
+>
+> -       if (res->res_nodeid > 0)
+> -               seq_printf(s, "\"\nLocal Copy, Master is node %d\n",
+> -                          res->res_nodeid);
+> -       else if (res->res_nodeid =3D=3D 0)
+> -               seq_puts(s, "\"\nMaster Copy\n");
+> -       else if (res->res_nodeid =3D=3D -1)
+> +
+> +       if (res->res_master_nodeid =3D=3D 0)
+>                 seq_printf(s, "\"\nLooking up master (lkid %x)\n",
+>                            res->res_first_lkid);
+> +       else if (res->res_master_nodeid =3D=3D dlm_our_nodeid())
+> +               seq_puts(s, "\"\nMaster Copy\n");
+>         else
+> -               seq_printf(s, "\"\nInvalid master %d\n", res->res_nodeid)=
+;
+> +               seq_printf(s, "\"\nLocal Copy, Master is node %d\n",
+> +                          res->res_master_nodeid);
+>         if (seq_has_overflowed(s))
+>                 goto out;
+>
+> @@ -184,7 +184,7 @@ static void print_format2_lock(struct seq_file *s, st=
+ruct dlm_lkb *lkb,
+>
+>         seq_printf(s, "%x %d %x %u %llu %x %x %d %d %d %llu %u %d \"%s\"\=
+n",
+>                    lkb->lkb_id,
+> -                  lkb->lkb_nodeid,
+> +                  dlm_res_nodeid(lkb->lkb_master_nodeid),
+>                    lkb->lkb_remid,
+>                    lkb->lkb_ownpid,
+>                    (unsigned long long)xid,
+> @@ -194,7 +194,7 @@ static void print_format2_lock(struct seq_file *s, st=
+ruct dlm_lkb *lkb,
+>                    lkb->lkb_grmode,
+>                    lkb->lkb_rqmode,
+>                    (unsigned long long)us,
+> -                  r->res_nodeid,
+> +                  dlm_res_nodeid(r->res_master_nodeid),
+>                    r->res_length,
+>                    r->res_name);
+>  }
+> @@ -238,7 +238,7 @@ static void print_format3_lock(struct seq_file *s, st=
+ruct dlm_lkb *lkb,
+>
+>         seq_printf(s, "lkb %x %d %x %u %llu %x %x %d %d %d %d %d %d %u %l=
+lu %llu\n",
+>                    lkb->lkb_id,
+> -                  lkb->lkb_nodeid,
+> +                  dlm_res_nodeid(lkb->lkb_master_nodeid),
+>                    lkb->lkb_remid,
+>                    lkb->lkb_ownpid,
+>                    (unsigned long long)xid,
+> @@ -265,7 +265,7 @@ static void print_format3(struct dlm_rsb *r, struct s=
+eq_file *s)
+>
+>         seq_printf(s, "rsb %p %d %x %lx %d %d %u %d ",
+>                    r,
+> -                  r->res_nodeid,
+> +                  dlm_res_nodeid(r->res_master_nodeid),
+>                    r->res_first_lkid,
+>                    r->res_flags,
+>                    !list_empty(&r->res_root_list),
+> @@ -341,7 +341,7 @@ static void print_format4(struct dlm_rsb *r, struct s=
+eq_file *s)
+>
+>         seq_printf(s, "rsb %p %d %d %d %d %lu %lx %d ",
+>                    r,
+> -                  r->res_nodeid,
+> +                  dlm_res_nodeid(r->res_master_nodeid),
+>                    r->res_master_nodeid,
+>                    r->res_dir_nodeid,
+>                    our_nodeid,
+> @@ -611,7 +611,8 @@ static ssize_t waiters_read(struct file *file, char _=
+_user *userbuf,
+>         list_for_each_entry(lkb, &ls->ls_waiters, lkb_wait_reply) {
+>                 ret =3D snprintf(debug_buf + pos, len - pos, "%x %d %d %s=
+\n",
+>                                lkb->lkb_id, lkb->lkb_wait_type,
+> -                              lkb->lkb_nodeid, lkb->lkb_resource->res_na=
+me);
+> +                              dlm_res_nodeid(lkb->lkb_master_nodeid),
+> +                              lkb->lkb_resource->res_name);
+>                 if (ret >=3D len - pos)
+>                         break;
+>                 pos +=3D ret;
+> diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+> index aec99ccf2d0d..f2b5a61d6477 100644
+> --- a/fs/dlm/dlm_internal.h
+> +++ b/fs/dlm/dlm_internal.h
+> @@ -253,7 +253,7 @@ struct dlm_callback {
+>  struct dlm_lkb {
+>         struct dlm_rsb          *lkb_resource;  /* the rsb */
+>         struct kref             lkb_ref;
+> -       int                     lkb_nodeid;     /* copied from rsb */
+> +       unsigned int            lkb_master_nodeid;      /* copied from rs=
+b */
+>         int                     lkb_ownpid;     /* pid of lock owner */
+>         uint32_t                lkb_id;         /* our lock ID */
+>         uint32_t                lkb_remid;      /* lock ID on remote part=
+ner */
+> @@ -303,18 +303,41 @@ struct dlm_lkb {
+>   *
+>   * res_nodeid is "odd": -1 is unset/invalid, zero means our_nodeid,
+>   * greater than zero when another nodeid.
+> - *
+> - * (TODO: remove res_nodeid and only use res_master_nodeid)
+>   */
+>
+> +/* For backwards compatibility, see above.
+> + * The protocol is still using res_nodeid.
+> + */
+> +static inline int dlm_res_nodeid(unsigned int res_master_nodeid)
+> +{
+> +       if (res_master_nodeid =3D=3D 0)
+> +               return -1;
+> +       else if (res_master_nodeid =3D=3D dlm_our_nodeid())
+> +               return 0;
+> +       else
+> +               return res_master_nodeid;
+> +}
+> +
+> +/* For backwards compatibility, see above.
+> + * The protocol is still using res_nodeid.
+> + */
+> +static inline int dlm_res_master_nodeid(int res_nodeid)
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 5600365684ef..606d201c59f0 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -333,6 +333,7 @@ struct dlm_rsb {
- 	struct list_head	res_recover_list;   /* used for recovery */
- 	struct list_head	res_toss_q_list;
- 	int			res_recover_locks_count;
-+	struct rcu_head		rcu;
- 
- 	char			*res_lvbptr;
- 	char			res_name[DLM_RESNAME_MAXLEN+1];
-@@ -366,6 +367,7 @@ enum rsb_flags {
- 	RSB_RECOVER_GRANT,
- 	RSB_RECOVER_LVB_INVAL,
- 	RSB_TOSS,
-+	RSB_HASHED,
- };
- 
- static inline void rsb_set_flag(struct dlm_rsb *r, enum rsb_flags flag)
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 5ecc50a001d9..5b05b3a2f43a 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -582,6 +582,7 @@ void dlm_rsb_toss_timer(struct timer_list *timer)
- 		list_del(&r->res_rsbs_list);
- 		rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
- 				       dlm_rhash_rsb_params);
-+		rsb_clear_flag(r, RSB_HASHED);
- 
- 		/* not necessary to held the ls_rsbtbl_lock when
- 		 * calling send_remove()
-@@ -658,8 +659,14 @@ int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
- 
- static int rsb_insert(struct dlm_rsb *rsb, struct rhashtable *rhash)
- {
--	return rhashtable_insert_fast(rhash, &rsb->res_node,
--				      dlm_rhash_rsb_params);
-+	int rv;
-+
-+	rv = rhashtable_insert_fast(rhash, &rsb->res_node,
-+				    dlm_rhash_rsb_params);
-+	if (!rv)
-+		rsb_set_flag(rsb, RSB_HASHED);
-+
-+	return rv;
- }
- 
- /*
-@@ -773,12 +780,11 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 
-  do_toss:
- 	write_lock_bh(&ls->ls_rsbtbl_lock);
--
--	/* retry lookup under write lock to see if its still in toss state
--	 * if not it's in keep state and we relookup - unlikely path.
-+	/* retry lookup under write lock to see if its still hashed and in
-+	 * toss state if not it's in keep state and we relookup - unlikely
-+	 * path.
- 	 */
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (!error) {
-+	if (rsb_flag(r, RSB_HASHED)) {
- 		if (!rsb_flag(r, RSB_TOSS)) {
- 			write_unlock_bh(&ls->ls_rsbtbl_lock);
- 			goto retry;
-@@ -949,12 +955,11 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 
-  do_toss:
- 	write_lock_bh(&ls->ls_rsbtbl_lock);
--
--	/* retry lookup under write lock to see if its still in toss state
--	 * if not it's in keep state and we relookup - unlikely path.
-+	/* retry lookup under write lock to see if its still hashed and in
-+	 * toss state if not it's in keep state and we relookup - unlikely
-+	 * path.
- 	 */
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (!error) {
-+	if (rsb_flag(r, RSB_HASHED)) {
- 		if (!rsb_flag(r, RSB_TOSS)) {
- 			write_unlock_bh(&ls->ls_rsbtbl_lock);
- 			goto retry;
-@@ -1046,6 +1051,7 @@ static int find_rsb(struct dlm_ls *ls, const void *name, int len,
- {
- 	int dir_nodeid;
- 	uint32_t hash;
-+	int rv;
- 
- 	if (len > DLM_RESNAME_MAXLEN)
- 		return -EINVAL;
-@@ -1053,12 +1059,20 @@ static int find_rsb(struct dlm_ls *ls, const void *name, int len,
- 	hash = jhash(name, len, 0);
- 	dir_nodeid = dlm_hash2nodeid(ls, hash);
- 
-+	/* hold the rcu lock here to prevent freeing of the rsb
-+	 * while looking it up, there are currently a optimization
-+	 * to not lookup the rsb twice instead look if its still
-+	 * part of the rsbtbl hash.
-+	 */
-+	rcu_read_lock();
- 	if (dlm_no_directory(ls))
--		return find_rsb_nodir(ls, name, len, hash, dir_nodeid,
--				      from_nodeid, flags, r_ret);
--	else
--		return find_rsb_dir(ls, name, len, hash, dir_nodeid,
-+		rv = find_rsb_nodir(ls, name, len, hash, dir_nodeid,
- 				    from_nodeid, flags, r_ret);
-+	else
-+		rv = find_rsb_dir(ls, name, len, hash, dir_nodeid,
-+				  from_nodeid, flags, r_ret);
-+	rcu_read_unlock();
-+	return rv;
- }
- 
- /* we have received a request and found that res_master_nodeid != our_nodeid,
-@@ -1244,6 +1258,12 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 
-  retry:
- 
-+	/* the rcu lock here is combined to RSB_HASHED that the rsb did not
-+	 * got freed during the read to write ls_rsbtbl_lock lock state change.
-+	 * We can then simply check if the rsb is still hashed instead of doing
-+	 * a lookup again.
-+	 */
-+	rcu_read_lock();
- 	/* check if the rsb is in keep state under read lock - likely path */
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
-@@ -1267,10 +1287,12 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 		/* the rsb was active */
- 		unlock_rsb(r);
- 		put_rsb(r);
-+		rcu_read_unlock();
- 
- 		return 0;
- 	} else {
- 		read_unlock_bh(&ls->ls_rsbtbl_lock);
-+		rcu_read_unlock();
- 		goto not_found;
- 	}
- 
-@@ -1279,19 +1301,22 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 	write_lock_bh(&ls->ls_rsbtbl_lock);
- 
- 	/* rsb_mod_timer() requires to held ls_rsbtbl_lock in write lock
--	 * check if the rsb is still in toss state, if not relookup
-+	 * check if the rsb is still hashed and in toss state, if not relookup
- 	 */
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (!error) {
-+	if (rsb_flag(r, RSB_HASHED)) {
- 		if (!rsb_flag(r, RSB_TOSS)) {
- 			write_unlock_bh(&ls->ls_rsbtbl_lock);
- 			/* something as changed, very unlikely but
- 			 * try again
- 			 */
-+			rcu_read_unlock();
- 			goto retry;
- 		}
-+
-+		rcu_read_unlock();
- 	} else {
- 		write_unlock_bh(&ls->ls_rsbtbl_lock);
-+		rcu_read_unlock();
- 		goto not_found;
- 	}
- 
-@@ -4306,6 +4331,7 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 	list_del(&r->res_rsbs_list);
- 	rhashtable_remove_fast(&ls->ls_rsbtbl, &r->res_node,
- 			       dlm_rhash_rsb_params);
-+	rsb_clear_flag(r, RSB_HASHED);
- 	write_unlock_bh(&ls->ls_rsbtbl_lock);
- 
- 	free_toss_rsb(r);
-diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
-index 15a8b1cee433..a7b994517bd8 100644
---- a/fs/dlm/memory.c
-+++ b/fs/dlm/memory.c
-@@ -101,13 +101,20 @@ struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls)
- 	return r;
- }
- 
--void dlm_free_rsb(struct dlm_rsb *r)
-+static void __dlm_free_rsb(struct rcu_head *rcu)
- {
-+	struct dlm_rsb *r = container_of(rcu, struct dlm_rsb, rcu);
-+
- 	if (r->res_lvbptr)
- 		dlm_free_lvb(r->res_lvbptr);
- 	kmem_cache_free(rsb_cache, r);
- }
- 
-+void dlm_free_rsb(struct dlm_rsb *r)
-+{
-+	call_rcu(&r->rcu, __dlm_free_rsb);
-+}
-+
- struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
- {
- 	struct dlm_lkb *lkb;
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index f493d5f30c58..75d44d51636a 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -894,6 +894,7 @@ void dlm_clear_toss(struct dlm_ls *ls)
- 		if (!list_empty(&r->res_toss_q_list))
- 			list_del_init(&r->res_toss_q_list);
- 
-+		/* no rsb_clear_flag(r, RSB_HASHED) necessary */
- 		free_toss_rsb(r);
- 		count++;
- 	}
--- 
-2.43.0
+I changed this to "unsigned int", but when I would follow net/ then
+this needed to be __le32 as nodeid is a addressing scheme on the wire.
+This might be a change for future patches.
+
+> +{
+> +       if (res_nodeid =3D=3D -1)
+> +               return 0;
+> +       else if (res_nodeid =3D=3D 0)
+> +               return dlm_our_nodeid();
+> +       else
+> +               return res_nodeid;
+> +}
+> +
+
+- Alex
 
