@@ -1,92 +1,74 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2907BA39
-	for <gfs2@lists.linux.dev>; Mon, 29 Apr 2024 12:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420F18C08
+	for <gfs2@lists.linux.dev>; Wed,  1 May 2024 17:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714394066; cv=none; b=SoGyVVLX6FU9SmuXtxN0ULua1GX5sLdSiXPgdmcd4s5FIRZhVUZXT77FVtENHzNmd3sK235Xj3RzUtulctsmFfFJNK9c/Mkf6HVeKnF6i47cXHGrxtc1w6lNaOo9253ysqcaKTd9b2CyDNCu5jq1JlhlFUw46J/fG7ntitejWDg=
+	t=1714584369; cv=none; b=HdC7/zMzcLuNBz8tT8sYyjcuRon4v4SLjm8XkcqReHZzGa6FS0dz4mXM9r/kUDgKo9Lw1z8dhqig7Mpf6TbH7Tz+/j9ZjuYQWP3/ltnMn65vSU3EsWfeCbRq712rT/O8FM7orrMCZ99QBWlVNPT7ES3W6jzBZklQd7vnCt1rg1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714394066; c=relaxed/simple;
-	bh=zNX4dvMj8sMaSc/H5ov7uAslSWACWgUB2DwD63KMJfc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=MmBptOHjVM9FA8nODiII5loMs9bfkNuxBcwJzqU0wxKhSAtYu2imUjz9dt7KoCfg0O82tXfSKjP5ObJKOWkjKp1YyPvII1QOfyLv//AOLRwPj3IXUduIW5uVpMyAuT4PiCZ8cUYM+Z02LS2B227OhQoA+MQkLU/wG4edP30Ej+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7dec58efbfaso173403639f.3
-        for <gfs2@lists.linux.dev>; Mon, 29 Apr 2024 05:34:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714394064; x=1714998864;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lIcH+uqjp3vumX9YpVxoQmZo6VBkUG5FwDdMSz/9KgE=;
-        b=vl1Q6NUpbxOKiEotikIyyXvE8MzQN1db1REMsKUw0yvXy6mIxdEtWYkOLPesNnpB+U
-         qkqVn80tRlAohYOfTVd6B2f4wjrw4WDax53D/gKinOB4Vvlu86ET+WjkyjuWpRyLPiQA
-         8uN0P71+i1RzIyFt/+Kcmn+DxH5gLzL9Sr4fK3SPot2YI2Ph6Z/+NoWVpGKWn1n2URHj
-         OhThn6vXFvqdetnCO6Ro1c7BEtKA+ZfiPvzreGPG5hHkFUFXVPxjainxUUsjh7ELZHrs
-         AlOxa59TS5cF8aXF4Epw5kClRfShxEKhy98/otYGysTV5eJ4xYfciZCaQk7QNFUY+OPi
-         7wAw==
-X-Gm-Message-State: AOJu0YyNG5/d0n/P78alyTgA22+yfsMj+AAutRRw7l9h7unqQ2Ybepwp
-	4T1CbQck1j0XIC1VLGG3hAnnByohPFSSW2ERqsk/Izpvez5xEvwvRFptsz2nggQKlAJnapVold4
-	+tIRcz8rf0+vkSVyN6tgMbaw31YLMpiPx0xlPHiSGR7meOqFjZb8xdKY=
-X-Google-Smtp-Source: AGHT+IFmGFq5GWv4TOIvJdOwBbT+UeOKGABz5MfdMy4OwFM1jJZ30xEQ78iGkI8pgziDJHL8eka2027lOFMUoQQis9xo9C0fNNFr
+	s=arc-20240116; t=1714584369; c=relaxed/simple;
+	bh=pxyoDJoWsm4q0CjgGMyBYAGoP5WzGYzcPp/UWMDspnI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ezKKX12alXHPHO0aWXJ+kOeyTGUjI5JnVCR5TTq4cXhug0zDcdwDaSVJ5EDCjkHWRekWqQ/6Lof7lERcbPjARI61TqxzOnYaQlhRV/6E+q5p5Xzd0tvA9iIRZSr4HGehrf7bCs2nOD303uoEduWeWwxYb5HzBia0PfUjzJgAPaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HrY4VN7Z; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HrY4VN7Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714584366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=1fD7tMSysEbq9rrBKugrf6SNTXEe4nm3wIjBQeMK/AM=;
+	b=HrY4VN7Zy+ZKdX3d57Y3wEz+F4OiZ+wNDRipVkd2ZqMqZX5fARsV9tQv5JwLXji/qYvuMZ
+	L1jG99A/GdUuaXQujEgH+GL8hz+D7HowCyBhQbFW3vpnwfDjtqPva/BN6gNA1/KEH/UMZK
+	o/oC2eLHwRS5s1DFD2rf6wHoZtZQivs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-230-pWDEIl_fNPeFKPls2G9BfQ-1; Wed, 01 May 2024 13:26:03 -0400
+X-MC-Unique: pWDEIl_fNPeFKPls2G9BfQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BCC580591B
+	for <gfs2@lists.linux.dev>; Wed,  1 May 2024 17:26:03 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.33.135])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 150DA1121306
+	for <gfs2@lists.linux.dev>; Wed,  1 May 2024 17:26:03 +0000 (UTC)
+Date: Wed, 1 May 2024 12:26:01 -0500
+From: David Teigland <teigland@redhat.com>
+To: gfs2@lists.linux.dev
+Subject: New: use GFS2/DLM without a cluster
+Message-ID: <ZjJ7KfWIVpn6kT5i@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:3d89:b0:487:c6e:1bf2 with SMTP id
- ci9-20020a0566383d8900b004870c6e1bf2mr816814jab.1.1714394064267; Mon, 29 Apr
- 2024 05:34:24 -0700 (PDT)
-Date: Mon, 29 Apr 2024 05:34:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000034bbf206173b7991@google.com>
-Subject: [syzbot] Monthly gfs2 report (Apr 2024)
-From: syzbot <syzbot+list8ffe20412d57261746c6@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello gfs2 maintainers/developers,
+A new daemon "dlm_sand" allows GFS2/DLM to be used without a cluster.
+dlm_sand is an alternative to dlm_controld.  Where dlm_controld uses
+corosync to coordinate GFS2/DLM usage and recovery, dlm_sand does the
+same coordination using the SAN storage that GFS2 is already using.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+This makes GFS2/DLM usage simpler, more self contained, and suited to use
+cases that are more data-oriented, rather than clustering/HA oriented.
+The behavior and requirements of a traditional cluster can be intrusive
+and limiting when the sole interest is just using the GFS2 file system.
 
-During the period, 6 new issues were detected and 0 were fixed.
-In total, 11 issues are still open and 31 have been fixed so far.
+At the link below you'll find an initial version of dlm_sand that should
+work well enough for basic usage.  The README includes how to use it, how
+it works, and current limitations.  I'd like to hear if you'd find it
+useful, how it works for you, or any suggestions.  Thanks!
 
-Some of the still happening issues:
+https://pagure.io/dlm/blob/main/f/dlm_sand
 
-Ref Crashes Repro Title
-<1> 61493   Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 746     Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<3> 108     Yes   INFO: task hung in __gfs2_lookup
-                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<4> 90      No    possible deadlock in do_qc
-                  https://syzkaller.appspot.com/bug?extid=8ef337b733667f9a7ec8
-<5> 22      Yes   INFO: task hung in gfs2_glock_nq
-                  https://syzkaller.appspot.com/bug?extid=dbb72d38131e90dc1f66
-<6> 12      Yes   WARNING in gfs2_check_blk_type (2)
-                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
-<7> 1       Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                  https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<8> 1       No    KMSAN: uninit-value in inode_go_dump (4)
-                  https://syzkaller.appspot.com/bug?extid=bec528924d6c98923e5d
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
