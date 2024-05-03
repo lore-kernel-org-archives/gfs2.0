@@ -1,177 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B2715D5D6
-	for <gfs2@lists.linux.dev>; Thu,  2 May 2024 20:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21D963C8;
+	Fri,  3 May 2024 18:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714681438; cv=none; b=F/3O6oM6r0QfIP8aKCyUarPAbioJQ12GvZeTwKNsBfOAbbcV4YV1iNn3R4om5mhFW6OGg2fJsQVJ4eL3tDosbNSPu7ubQXE7wYHx/DzCUkhbcoFioRC06IhmnrDjkg3zpPw36Lt9zE2RYGP5tJdyzDCdgqa9+cqyWCmkRU6QpP4=
+	t=1714761036; cv=none; b=ZrV9ZjV8J50j2bqFWOG7RLAK3PfZz0/5JZsI3T2R9EG/BPPT9pEX2RSD9EeRFHZn0OmZGIu5mvdOEMokc+3WMzP3JXvh3L7s8H9wbHgfTbQLnm/3nbFOA5AX7I0jVGX11oOjhnI4POc+TU04smQim8Sp6S3nTjCAPna9CfAhUnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714681438; c=relaxed/simple;
-	bh=BXDra/jVgkX/2Wvgok5nvfrciP+Q1+Pafbzt7wBxwwE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kNquB/r+ApSG728luppfuQKKONSl0EJdWFS4Vv+WZfXiJRjUp2I5N8XiQnaBsVNzuqmec20u1UBUk3XFQUgba8o1Zcf/Haizfof1ChHlW64SFtv3J5eU4V8AhrFuk8gFlmkWok84HWBCop0sXtlW5j1TJ6qtX4EaB29+MI2QF8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h5/DmK7/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1714761036; c=relaxed/simple;
+	bh=EAIFxHaAPyzBkAmVKi0pTDTDrJz6VOKyp8xDUa6EGxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qej4WezhDYIFFxAm67chM6o6EsBG4FYtDc4KSLHNL+HczaFPsVeNe4Xiu13i0SO1kJf/feOG2EURMoS1aXaqtMUalGF5/h7BLcZhCctF+eo5NB1VLSVXWy9SDa/nAZFXP4fwWpljswyqf7kZgnitQxA8dwZSPrUXTSUjqHnd/Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VCBbHlyh; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h5/DmK7/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714681435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4LHgLDkP4yyBOdFGKu9OPn6OdCvVVqlRZUjx/Ngp+3Q=;
-	b=h5/DmK7/G2hE5I5w96H8KLCK1ZRnIpI1nSMmJHDe375gYuSNkwQ12+0KY5+GXnOFYpykgl
-	PHFHK/8s+3wL/J971Vn+PoPgOJySeFbwehHgfeAVH3g4v4Two4h8CoW69cqnqUhGYCoH6K
-	jVqpJ1YIO6VtNALuH6uoewcNKYRbRME=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-275-lehzdOTROiWYwv5vVT3D3A-1; Thu, 02 May 2024 16:23:54 -0400
-X-MC-Unique: lehzdOTROiWYwv5vVT3D3A-1
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-61c6560f50bso164607a12.3
-        for <gfs2@lists.linux.dev>; Thu, 02 May 2024 13:23:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714681433; x=1715286233;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4LHgLDkP4yyBOdFGKu9OPn6OdCvVVqlRZUjx/Ngp+3Q=;
-        b=fkVX9aZHQpoOfusYEp8DsEKZIY55g0E7cX1MnuPak9rTITlIQJjpeCqVztDJ38qCgp
-         QxjSrI+whKCVsJnYXvesG/MKQ4UpWXLcynyB9E1S7mum3q3t86ciO6PF941AbvVYXvOP
-         9TPUdv/IGMugNyqqOQsL66XOWEcgDwgrfLQNvmYH/cFOjo88PpZCwb86KqGdl3Imv+Mf
-         73v0nSihvOHHOLA77Smcs7/hU0Qwjz72qGnY9oZmpaLtMZiDEzcLCtiB5Tg5zoDyTxOU
-         tarVIz4Wil55jSWTvJyoHmAwhI8w6bcxo41lwHjTj2Tl9QOhKnAkdTy5qRaA272zlKEK
-         t+Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLZAKYIMzoxF+87FThA4Fvv2zmr6KRxV5tzgYJ/tdwU2uXHIh2ng6yalWlIviamirvij7tmLlyBeSHLknSI16hMUuytw==
-X-Gm-Message-State: AOJu0YwjfHiU2MwflqYVRyzIgHJdreC5ayPYzA9n2sNNc9bZp8PAV5gJ
-	mRiLTvuYeGgY7QRejB50rhKDC9t+J2nvdWMXfnQBN8/rymTxt94KJUUXkdCBReZiS/fRExwa0SQ
-	yzSmC/03hlw22X2+M1HG3IASyRxEoqNeX5BY9DFDkd4o5T5NFrzyCqrFqjiJen+E0zCMX4VIQP7
-	SCz+JtFLj2Q+Uc4HKF5eVauCvy7g==
-X-Received: by 2002:a17:902:e949:b0:1eb:1fdc:25e7 with SMTP id b9-20020a170902e94900b001eb1fdc25e7mr954274pll.19.1714681433023;
-        Thu, 02 May 2024 13:23:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8E/K6oNgeR6xvb4tN8UeT/4XbrG+/hAf2murt0FLIlcGML5nHLvdF4Kp5fdkbpj47wX1da+qYbWspmQY//jo=
-X-Received: by 2002:a17:902:e949:b0:1eb:1fdc:25e7 with SMTP id
- b9-20020a170902e94900b001eb1fdc25e7mr954258pll.19.1714681432632; Thu, 02 May
- 2024 13:23:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VCBbHlyh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=zKeJhkU6mpI7ErDHj+NeL+Ui4doyR9klcioh+DXyEI8=; b=VCBbHlyhWvXWMO1qyc4byN9D9w
+	nr977TGODc/Ug/XTU/gvgWUmzs+xWcTN5GESoUVd/JCrlsfK+vVe0Jjpr59GXzZAY0Q7Z3XewwiTu
+	v+JqXvszMjQFgnWbBoCn6cLNtHxR2ZBQO7TVAZN/xy/IW617g/4UTtkjgJXjKU+CXiryqud80CvsS
+	MzekiuF4I0vc5ZBuZxFOwxXj0o1neUh/kv51T4twXP/zGgkPi1wSvnXvo2wEokSNlDLLCYmwU4Frq
+	tf41kO+7h+HP1FHAZmXMQifOEzOwgZi7BDUMjY2B+mEVSW+gOsIFGJJPdFMy/9L5q4meW8QC1L2h9
+	BoSErFUw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1s2xg0-00000004eQX-1yn7;
+	Fri, 03 May 2024 18:30:32 +0000
+Date: Fri, 3 May 2024 19:30:32 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH 2/4] gfs2: Add a migrate_folio operation for journalled
+ files
+Message-ID: <ZjUtSAxhcMnQ71fO@casper.infradead.org>
+References: <20240403172400.1449213-1-willy@infradead.org>
+ <20240403172400.1449213-3-willy@infradead.org>
+ <CAHc6FU6gdBq5+GYqcxUEfvypTokAsoGWSEt19jJUyBpVXW5myw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240403172400.1449213-1-willy@infradead.org> <20240403172400.1449213-3-willy@infradead.org>
-In-Reply-To: <20240403172400.1449213-3-willy@infradead.org>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 2 May 2024 22:23:41 +0200
-Message-ID: <CAHc6FU6gdBq5+GYqcxUEfvypTokAsoGWSEt19jJUyBpVXW5myw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] gfs2: Add a migrate_folio operation for journalled files
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHc6FU6gdBq5+GYqcxUEfvypTokAsoGWSEt19jJUyBpVXW5myw@mail.gmail.com>
 
-On Wed, Apr 3, 2024 at 7:24=E2=80=AFPM Matthew Wilcox (Oracle)
-<willy@infradead.org> wrote:
-> For journalled data, folio migration currently works by writing the folio
-> back, freeing the folio and faulting the new folio back in.  We can
-> bypass that by telling the migration code to migrate the buffer_heads
-> attached to our folios.
+On Thu, May 02, 2024 at 10:23:41PM +0200, Andreas Gruenbacher wrote:
+> On Wed, Apr 3, 2024 at 7:24 PM Matthew Wilcox (Oracle)
+> <willy@infradead.org> wrote:
+> > For journalled data, folio migration currently works by writing the folio
+> > back, freeing the folio and faulting the new folio back in.  We can
+> > bypass that by telling the migration code to migrate the buffer_heads
+> > attached to our folios.
+> 
+> This part sounds reasonable, but I disagree with the following assertion:
+> 
+> > That lets us delete gfs2_jdata_writepage() as it has no more callers.
+> 
+> The reason is that the log flush code calls gfs2_jdata_writepage()
+> indirectly via mapping->a_ops->writepage. So with this patch, we end
+> up with a bunch of Oopses.
+> 
+> Do you want to resend, or should I back out the gfs2_jdata_writepage
+> removal and add the remaining one-liner?
 
-This part sounds reasonable, but I disagree with the following assertion:
-
-> That lets us delete gfs2_jdata_writepage() as it has no more callers.
-
-The reason is that the log flush code calls gfs2_jdata_writepage()
-indirectly via mapping->a_ops->writepage. So with this patch, we end
-up with a bunch of Oopses.
-
-Do you want to resend, or should I back out the gfs2_jdata_writepage
-removal and add the remaining one-liner?
-
-Thanks,
-Andreas
-
-
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/gfs2/aops.c | 34 ++--------------------------------
->  1 file changed, 2 insertions(+), 32 deletions(-)
->
-> diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-> index 974aca9c8ea8..68fc8af14700 100644
-> --- a/fs/gfs2/aops.c
-> +++ b/fs/gfs2/aops.c
-> @@ -116,8 +116,7 @@ static int gfs2_write_jdata_folio(struct folio *folio=
-,
->   * @folio: The folio to write
->   * @wbc: The writeback control
->   *
-> - * This is shared between writepage and writepages and implements the
-> - * core of the writepage operation. If a transaction is required then
-> + * Implements the core of write back. If a transaction is required then
->   * the checked flag will have been set and the transaction will have
->   * already been started before this is called.
->   */
-> @@ -139,35 +138,6 @@ static int __gfs2_jdata_write_folio(struct folio *fo=
-lio,
->         return gfs2_write_jdata_folio(folio, wbc);
->  }
->
-> -/**
-> - * gfs2_jdata_writepage - Write complete page
-> - * @page: Page to write
-> - * @wbc: The writeback control
-> - *
-> - * Returns: errno
-> - *
-> - */
-> -
-> -static int gfs2_jdata_writepage(struct page *page, struct writeback_cont=
-rol *wbc)
-> -{
-> -       struct folio *folio =3D page_folio(page);
-> -       struct inode *inode =3D page->mapping->host;
-> -       struct gfs2_inode *ip =3D GFS2_I(inode);
-> -       struct gfs2_sbd *sdp =3D GFS2_SB(inode);
-> -
-> -       if (gfs2_assert_withdraw(sdp, ip->i_gl->gl_state =3D=3D LM_ST_EXC=
-LUSIVE))
-> -               goto out;
-> -       if (folio_test_checked(folio) || current->journal_info)
-> -               goto out_ignore;
-> -       return __gfs2_jdata_write_folio(folio, wbc);
-> -
-> -out_ignore:
-> -       folio_redirty_for_writepage(wbc, folio);
-> -out:
-> -       folio_unlock(folio);
-> -       return 0;
-> -}
-> -
->  /**
->   * gfs2_writepages - Write a bunch of dirty pages back to disk
->   * @mapping: The mapping to write
-> @@ -749,12 +719,12 @@ static const struct address_space_operations gfs2_a=
-ops =3D {
->  };
->
->  static const struct address_space_operations gfs2_jdata_aops =3D {
-> -       .writepage =3D gfs2_jdata_writepage,
->         .writepages =3D gfs2_jdata_writepages,
->         .read_folio =3D gfs2_read_folio,
->         .readahead =3D gfs2_readahead,
->         .dirty_folio =3D jdata_dirty_folio,
->         .bmap =3D gfs2_bmap,
-> +       .migrate_folio =3D buffer_migrate_folio,
->         .invalidate_folio =3D gfs2_invalidate_folio,
->         .release_folio =3D gfs2_release_folio,
->         .is_partially_uptodate =3D block_is_partially_uptodate,
-> --
-> 2.43.0
->
-
+Ugh, I see.  If you could just add the one-liner for now, and I'll
+come back with a better proposal next for merge window?
