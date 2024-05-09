@@ -1,126 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DD7AD5D
-	for <gfs2@lists.linux.dev>; Tue,  7 May 2024 10:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33922BCFF
+	for <gfs2@lists.linux.dev>; Thu,  9 May 2024 14:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715078641; cv=none; b=Goooej2mZMRd2LYzVpRzzF49PR6gfcwmZs4+7ayItqUpYvGlJrq9J5ADWinvxRMYd5VXK1RvaaBsyrMd3H5rgOznowySTtkky5zOjuk02Nm3VVyTpLA/+cdKaGKAfUGYyxR1wZWrF/BslkcdMgQvx38jQLiT5+bLmzuQOXf/+kI=
+	t=1715265938; cv=none; b=m2LYEeWioqDJ10nWzJSk4sd7QhEfhlLsWjIV+ycprK6Ifs0r2zbJ8Q3GQ8/Ym47pbzMcM1joJ08Ml/TlbiN6SSf5ORBIq8vqqjSrpjLOpoidq2osGPms1JgTHn4wVRLzCrZ+mvzeB1Xb7PIghcRrYGshKEGSemi+UP8LymVoHC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715078641; c=relaxed/simple;
-	bh=R6/ghx+oulXLj/O2tORcTmOhs43cmHl3hPKomAh0IY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WevzNT08h5P9ZWVrzT4h7U0kxo41mqVnZSGWAWklt8Cs7uMGhkCEQRRGVxfnfMHL12S/4MhwlmkRNF6Y4itsN0ton2VAeR8/08jW4JX00374b/tK03KHSXV6OxHD7ALjhxpjpK2w8UWTioKcoPFZQowdEASM8vlKs3Cu74ptCNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B3D2EszP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B3D2EszP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715078638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/3fM9M0o1zX7/Jphueg0GnHxDtD9oKmu56hIjicWK1w=;
-	b=B3D2EszPg4ZEM5Dmj9CDufck3ss6lekAWh5O+LiiqXMZHrfFsQoDhW5hILsPyBEq/HdR8v
-	gI4CKpUZbJb5JztOjuJ2OLwx+8RWsZkKFVZSJfwVha5SEzrSa1g9USFPgaGMXIEecnQGMP
-	Hpp5U/ODImd7XfEtfarmAss53PMVWLE=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-OrbsHa7iNn647zHPYKMceg-1; Tue, 07 May 2024 06:43:57 -0400
-X-MC-Unique: OrbsHa7iNn647zHPYKMceg-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1ee3b4f8165so14480295ad.3
-        for <gfs2@lists.linux.dev>; Tue, 07 May 2024 03:43:57 -0700 (PDT)
+	s=arc-20240116; t=1715265938; c=relaxed/simple;
+	bh=JwhMMWRxv2ICRacN18crwKf3kkNpdyiF4gIrLKIilNA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=kUVebJIuvTt0jvOgeeTQOHY3A2AbIAKm6EjdIL7b+CAmDXHyFHLRiiVeZx1yriMX/f4JqV9Ywh3RRTLaCnbHw3nlyoIasOrL1LbB3UIWlsEz9aKpI3BApUJzlKCVDOY9rNveZqi1oJTrFzjxOo1452qJVIOLH5SNp73F44Oug30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-36c74ef7261so12054235ab.3
+        for <gfs2@lists.linux.dev>; Thu, 09 May 2024 07:45:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715078634; x=1715683434;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/3fM9M0o1zX7/Jphueg0GnHxDtD9oKmu56hIjicWK1w=;
-        b=vDNk8a+5/1flfHCO9ZCdm40WL/oSTbP+qhYoGYSK1r1ZCwXzeL8S4TqgjFz0pnhMiY
-         QD/5rBKipFV8ZbUg3cIarq8NSyCsYz3s/n4Jr/mY9gzABKLI16CGTYYiOYtDxD4evXbj
-         +VOdA8lvXHvqX4Oa4keAo/ErM7wpGsZUQwlhxdiWKkiq0kVGKBlCD9ErU7jme/mPVG77
-         NBNK8A2WPAdt3809ZYLN4ZRb8dd2RanYyYsJy16f7KqFDQGtX3cGiTXY+EsilBwJbKvj
-         tyKIPhcK1MMxRS6Z5b6VKONNkC4Z79PltkksQTY6rBfdoxLwHfZM4ZdY3R7Ncu8+9Zv0
-         WDUg==
-X-Gm-Message-State: AOJu0Yx04G+dErRFRoCjDMy2CCsKLYT3Aq/ZPLJLidSKd+3FKYbMoULM
-	73yVhB4dVqGSYDlxFagbGtFozbj3642eYh06KFdWhR4WKY279j6zKqKE7JD0Cif9VPDDjuu8LTc
-	4E05cSKVQq+tX8AgZFM8znKF0otfWdyY6p5C4NgTqccwMAJEoI100k5n8sHkY/XglXN/nCM1tsI
-	2r1CqxC7wLMZxgTqBm+TJUUJP6ieMHVGCYHg==
-X-Received: by 2002:a17:902:c947:b0:1e4:a667:550e with SMTP id i7-20020a170902c94700b001e4a667550emr14538051pla.20.1715078634194;
-        Tue, 07 May 2024 03:43:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkqE7h3Ug3DYCUm3XLSnnG2LnyiQsj6L93HVfEkmFxKoF8scBOzOOHirbMZH0WbMIBnLnxvLclzYIESThmG0E=
-X-Received: by 2002:a17:902:c947:b0:1e4:a667:550e with SMTP id
- i7-20020a170902c94700b001e4a667550emr14538037pla.20.1715078633785; Tue, 07
- May 2024 03:43:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1715265936; x=1715870736;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kep4hL9N+kSuqGmJp/04bkNPAaAllEMZIj+lrFOrqGA=;
+        b=TPFAxmIr2imuRC1wfS2Vob+1N8d+DTWfTA8TlBR8H0OAL2DaAyubmlv9tNTdAOvMF1
+         yLxqgou12wYSfGyXx9aQEQ7Qt4CQJP+H8qP//i6Qf98LmilOEtWk9L8G2pTba72kdudz
+         2dbqVyndVqQCdftSQj2kB01L9q3zqDgK1m4mCAM8EztqjvTG7AOsJlsv8Z+O15Pohbuu
+         HYB+jSqyKe7EXmr7JKL8HMAgPdlAfd5yq6lQg3S+5hlhIX21Z5jC3EV9E+3cSXyRY6uA
+         BU0s+6r1tSAAaauWX8ZWRhtUlKqlSYR3Z2nF91xibbROlm3VNums+v0wwW7ayrWP3Bon
+         xfkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYeDecSANmzYY3PBuISZS+h46+6sy57Cmn0WxRuxOgzh8zBNfPmlh2yJ1j4aICrtCZx9MPkNot4OwY/djM0PvLZlHvbg==
+X-Gm-Message-State: AOJu0YzW3nKzUIvwsvkUPQ6FKW32VujKbGEozAIFMUp6MgSeD2EL1n0Z
+	uKNOfkErnlSlXuEO4V6QeUjuPW+aq972RBSX1dj8wWM3taeHPNNcGctkboQmi9eyIhzgWIkghPf
+	Bo5B1gHFlmhRHbTuG2+khp2PqlZWnzGkr5SnLxK1doKPF1+c/SBMrq+k=
+X-Google-Smtp-Source: AGHT+IHBBZ4HyuPUFBlL+gekmVeXRC25/ShLzRhrA1RfzNlQ3VHy/3HddBzzI1Px6HwtsfmTszOeHnGAenbCzUJ9xt9D4Z2Ggb/h
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240507090448.8043-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20240507090448.8043-2-wsa+renesas@sang-engineering.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 7 May 2024 12:43:41 +0200
-Message-ID: <CAHc6FU4HqrOKqmJgYhERNbb0tWzsmp-0wfKgh1rAsC7-3HNR=A@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: make timeout values more explicit
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6e02:138a:b0:36c:307b:7f08 with SMTP id
+ e9e14a558f8ab-36caeb4e817mr1985295ab.0.1715265931063; Thu, 09 May 2024
+ 07:45:31 -0700 (PDT)
+Date: Thu, 09 May 2024 07:45:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000008441d006180678ad@google.com>
+Subject: [syzbot] [gfs2?] WARNING in gfs2_ri_update (2)
+From: syzbot <syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 7, 2024 at 11:11=E2=80=AFAM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> 'timeout' is a vague name for the return value of wait_event_*_timeout
-> because it actually returns the time left. Because the variable is never
-> used later, just drop the return value. Since variable 'timeout' is then
-> only used to carry a fixed timeout value, drop this in favor of a fixed
-> function argument as in the other call to wait_event_timeout() above.
+Hello,
 
-Sure, applied.
+syzbot found the following issue on:
 
-Thanks,
-Andreas
+HEAD commit:    b9158815de52 Merge tag 'char-misc-6.9-rc7' of git://git.ke..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=12a4c440980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d2f00edef461175
+dashboard link: https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14834e4b180000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1059c0a8980000
 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->  fs/gfs2/super.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-> index e5f79466340d..6d0265ebb9d4 100644
-> --- a/fs/gfs2/super.c
-> +++ b/fs/gfs2/super.c
-> @@ -1261,7 +1261,6 @@ static bool gfs2_upgrade_iopen_glock(struct inode *=
-inode)
->         struct gfs2_inode *ip =3D GFS2_I(inode);
->         struct gfs2_sbd *sdp =3D GFS2_SB(inode);
->         struct gfs2_holder *gh =3D &ip->i_iopen_gh;
-> -       long timeout =3D 5 * HZ;
->         int error;
->
->         gh->gh_flags |=3D GL_NOCACHE;
-> @@ -1292,10 +1291,10 @@ static bool gfs2_upgrade_iopen_glock(struct inode=
- *inode)
->         if (error)
->                 return false;
->
-> -       timeout =3D wait_event_interruptible_timeout(sdp->sd_async_glock_=
-wait,
-> +       wait_event_interruptible_timeout(sdp->sd_async_glock_wait,
->                 !test_bit(HIF_WAIT, &gh->gh_iflags) ||
->                 test_bit(GLF_DEMOTE, &ip->i_gl->gl_flags),
-> -               timeout);
-> +               5 * HZ);
->         if (!test_bit(HIF_HOLDER, &gh->gh_iflags)) {
->                 gfs2_glock_dq(gh);
->                 return false;
-> --
-> 2.43.0
->
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/23a6adc6f595/disk-b9158815.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c2b325947833/vmlinux-b9158815.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/cd750d88d728/bzImage-b9158815.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/4b403095e3ca/mount_0.gz
 
+Bisection is inconclusive: the issue happens on the oldest tested release.
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13b2a774980000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1072a774980000
+console output: https://syzkaller.appspot.com/x/log.txt?x=17b2a774980000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
+
+gfs2: fsid=.: Now mounting FS (format 1801)...
+gfs2: fsid=..0: journal 0 mapped with 18 extents in 0ms
+gfs2: fsid=..0: first mount done, others may mount
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5074 at mm/page_alloc.c:4551 __alloc_pages+0x36a/0x6c0 mm/page_alloc.c:4551
+Modules linked in:
+CPU: 1 PID: 5074 Comm: syz-executor409 Not tainted 6.9.0-rc6-syzkaller-00290-gb9158815de52 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+RIP: 0010:__alloc_pages+0x36a/0x6c0 mm/page_alloc.c:4551
+Code: a9 00 00 08 00 0f 85 12 01 00 00 44 89 e9 81 e1 7f ff ff ff a9 00 00 04 00 44 0f 45 e9 e9 02 01 00 00 c6 05 28 e5 a7 0d 01 90 <0f> 0b 90 83 fb 0a 0f 86 6c fd ff ff 45 31 ed 48 c7 44 24 20 0e 36
+RSP: 0018:ffffc900035f7420 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 000000000000000b RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc900035f74a8
+RBP: ffffc900035f7530 R08: ffffc900035f74a7 R09: 0000000000000000
+R10: ffffc900035f7480 R11: fffff520006bee95 R12: 1ffff920006bee8c
+R13: 0000000000040d40 R14: dffffc0000000000 R15: 1ffff920006bee88
+FS:  000055557175d380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fffacbd3000 CR3: 000000007a07a000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ __kmalloc_large_node+0x91/0x1f0 mm/slub.c:3911
+ __do_kmalloc_node mm/slub.c:3954 [inline]
+ __kmalloc+0x320/0x4a0 mm/slub.c:3979
+ kmalloc_array include/linux/slab.h:665 [inline]
+ kcalloc include/linux/slab.h:696 [inline]
+ compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
+ read_rindex_entry fs/gfs2/rgrp.c:931 [inline]
+ gfs2_ri_update+0x549/0x1830 fs/gfs2/rgrp.c:1001
+ gfs2_rindex_update+0x304/0x3d0 fs/gfs2/rgrp.c:1051
+ init_inodes+0x24d/0x320 fs/gfs2/ops_fstype.c:912
+ gfs2_fill_super+0x1edb/0x26c0 fs/gfs2/ops_fstype.c:1263
+ get_tree_bdev+0x3f7/0x570 fs/super.c:1614
+ gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1341
+ vfs_get_tree+0x90/0x2a0 fs/super.c:1779
+ do_new_mount+0x2be/0xb40 fs/namespace.c:3352
+ do_mount fs/namespace.c:3692 [inline]
+ __do_sys_mount fs/namespace.c:3898 [inline]
+ __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3875
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd426e0c93a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 5e 04 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fffacbd27d8 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007fffacbd27e0 RCX: 00007fd426e0c93a
+RDX: 0000000020000040 RSI: 0000000020000100 RDI: 00007fffacbd27e0
+RBP: 0000000000000004 R08: 00007fffacbd2820 R09: 00000000000127be
+R10: 0000000000008cd3 R11: 0000000000000282 R12: 00007fffacbd2820
+R13: 0000000000000003 R14: 0000000001000000 R15: 0000000000000001
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
