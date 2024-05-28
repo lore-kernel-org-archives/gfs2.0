@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ED617B427
-	for <gfs2@lists.linux.dev>; Tue, 28 May 2024 21:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDBB17B421
+	for <gfs2@lists.linux.dev>; Tue, 28 May 2024 21:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716930771; cv=none; b=ML5mj11CoYtQp2uDVL9v8JK1hehioEeeyPVPPYxSJCUIaaWKQeB1pl7tZ24+OYJ8Cc5BmzUzVLdZPkvi0lO76cr91EIOjolcNcTcJArFzHD4g6LeOODdhxF9ifwgqwYhWYHWhu315M+PK1OSkBl3QJUAL3KZ/0yoC+v1MgZnZwo=
+	t=1716930772; cv=none; b=RsaUGdyad5pmX4BfNoDnQiX9GpBuAL3++l1/7NI3aLQddn314cTzQz5OAkSe2afzBYqdu3Ph1z7PFvbKImuU5DDA2KAKH1Pq3FkcP8Y+dZR3z0rZ3KTOU8BxTq16SB8JZb8kNFyNuMBqloHppxX/E5i2egj2SJ1IebPMTC9DJ/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716930771; c=relaxed/simple;
-	bh=NgqkexdILoZknDYQOsxx4aunaeYZFm1Qc8tnwTG4J+k=;
+	s=arc-20240116; t=1716930772; c=relaxed/simple;
+	bh=eIdY8g6PgAoZBH4Uksq4P5U1hFgYOFmAGoEdy8XcBOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gCtxaqAA37B3W6QXrXLCQ9KYPFgXpconhlzYx//qd+aaRw4mUIwigUtlk5PV18b5wlFqyiFz/aWg6Td4UK4rKKfbnUW4R/k9WWpEE4lMXkSiPosjDEVn17lBpw3WaNqW4QijkwS4UTqftZisVM3IfAltOhXCe19Nq9AxSd5Pfzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B5xC0MSd; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=FLrblHcmQmyQvmWJ9wGTnLlAWGxkTXwK4HMjEYE/0vQZLwEGvSK2qZ1AFz3lSylhNb+eicZ0jkdzWGed0HwflxhtLWmdohIsqejCJadjXWXYRa4dTW0DcYHTV/x3o+M+YGT0NkoEXny9QDtRLcjgthRJo2mI7K/afALLq3dj3Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ei57DNCF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B5xC0MSd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ei57DNCF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716930768;
+	s=mimecast20190719; t=1716930769;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nil8vdCuzbD7UwAr3AbqRzHs0EFCdtc12SK+z5U/qY0=;
-	b=B5xC0MSdwHFitKST4uETXRVV9jqKzVDXx2OUnXU1LXPeRq8tqaeZ5Ze3oOaK+kWrMXn87D
-	1bvX0LbAgEkK3zyahIYDNPFs/YA00cxGWHB+LRQmJr/mly6/S0F27CnCMl52D0cOE3Ee3t
-	xivTKICLEelbwD1cVXhvWzcXYbpYBKk=
+	bh=SA0CWspyYf6FuOvvwDuYHVN8x1fn1FncDxv9k9LEtZk=;
+	b=ei57DNCFi8Dincri5V287504/wqPE0c+GbYkY+2sieo4CpfM0Wg2JX7q5XXWk8HMuE7iAk
+	tAx2tc/66ZPOTsHKVoqeJMc2o7n0jhQz42yEp6haJNNXfdS2Rprhyu/0BK0aF38S3fC6T2
+	rXhDchfL28By2PCay+juC9zCxFebxqI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-gCY4nHnPNyS68AOeEGLqpQ-1; Tue, 28 May 2024 17:12:47 -0400
-X-MC-Unique: gCY4nHnPNyS68AOeEGLqpQ-1
+ us-mta-256-4oX0L71yNGa5xrW-865-gA-1; Tue, 28 May 2024 17:12:47 -0400
+X-MC-Unique: 4oX0L71yNGa5xrW-865-gA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3D986185A780
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0ED5A8008A4
 	for <gfs2@lists.linux.dev>; Tue, 28 May 2024 21:12:47 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 35F09200BAB1;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 04472200B4D7;
 	Tue, 28 May 2024 21:12:47 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.10-rc1 11/11] dlm: use is_master() where it's prossible
-Date: Tue, 28 May 2024 17:12:41 -0400
-Message-ID: <20240528211241.2140441-11-aahringo@redhat.com>
+Subject: [PATCH v6.10-rc1 06/11] dlm: drop own rsb pre allocation mechanism
+Date: Tue, 28 May 2024 17:12:36 -0400
+Message-ID: <20240528211241.2140441-6-aahringo@redhat.com>
 In-Reply-To: <20240528211241.2140441-1-aahringo@redhat.com>
 References: <20240528211241.2140441-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,70 +61,275 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-There are numbers of checks to check if the node itself of a rsb is the
-master or not. There is a helper is_master() for it. This patch changes
-various places to use this helper.
+This patch drops the own written rsb pre allocation mechanism as this is
+already done by using kmem caches, we don't need another layer on top of
+that to running some pre allocation scheme.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c     | 9 ++++-----
- fs/dlm/recoverd.c | 2 +-
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ fs/dlm/dlm_internal.h |  9 +----
+ fs/dlm/lock.c         | 92 ++++++-------------------------------------
+ fs/dlm/lockspace.c    | 11 ------
+ 3 files changed, 13 insertions(+), 99 deletions(-)
 
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index e93ed8f7addd..61dc58bdd006 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -322,10 +322,7 @@ struct dlm_rsb {
+ 	unsigned long		res_toss_time;
+ 	uint32_t		res_first_lkid;
+ 	struct list_head	res_lookup;	/* lkbs waiting on first */
+-	union {
+-		struct list_head	res_hashchain;
+-		struct rhash_head	res_node; /* rsbtbl */
+-	};
++	struct rhash_head	res_node;	/* rsbtbl */
+ 	struct list_head	res_grantqueue;
+ 	struct list_head	res_convertqueue;
+ 	struct list_head	res_waitqueue;
+@@ -596,10 +593,6 @@ struct dlm_ls {
+ 	spinlock_t		ls_orphans_lock;
+ 	struct list_head	ls_orphans;
+ 
+-	spinlock_t		ls_new_rsb_spin;
+-	int			ls_new_rsb_count;
+-	struct list_head	ls_new_rsb;	/* new rsb structs */
+-
+ 	struct list_head	ls_nodes;	/* current nodes in ls */
+ 	struct list_head	ls_nodes_gone;	/* dead node list, recovery */
+ 	int			ls_num_nodes;	/* number of nodes in ls */
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index a044edc2d143..14a73948bbd5 100644
+index 205d6a20fcee..818e4b282b14 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -242,7 +242,7 @@ static inline int is_granted(struct dlm_lkb *lkb)
- static inline int is_remote(struct dlm_rsb *r)
- {
- 	DLM_ASSERT(r->res_master_nodeid != 0, dlm_print_rsb(r););
--	return r->res_master_nodeid != dlm_our_nodeid();
-+	return !is_master(r);
+@@ -389,38 +389,6 @@ void dlm_put_rsb(struct dlm_rsb *r)
+ 	put_rsb(r);
  }
  
- static inline int is_process_copy(struct dlm_lkb *lkb)
-@@ -3978,7 +3978,7 @@ static int receive_request(struct dlm_ls *ls, const struct dlm_message *ms)
+-static int pre_rsb_struct(struct dlm_ls *ls)
+-{
+-	struct dlm_rsb *r1, *r2;
+-	int count = 0;
+-
+-	spin_lock_bh(&ls->ls_new_rsb_spin);
+-	if (ls->ls_new_rsb_count > dlm_config.ci_new_rsb_count / 2) {
+-		spin_unlock_bh(&ls->ls_new_rsb_spin);
+-		return 0;
+-	}
+-	spin_unlock_bh(&ls->ls_new_rsb_spin);
+-
+-	r1 = dlm_allocate_rsb(ls);
+-	r2 = dlm_allocate_rsb(ls);
+-
+-	spin_lock_bh(&ls->ls_new_rsb_spin);
+-	if (r1) {
+-		list_add(&r1->res_hashchain, &ls->ls_new_rsb);
+-		ls->ls_new_rsb_count++;
+-	}
+-	if (r2) {
+-		list_add(&r2->res_hashchain, &ls->ls_new_rsb);
+-		ls->ls_new_rsb_count++;
+-	}
+-	count = ls->ls_new_rsb_count;
+-	spin_unlock_bh(&ls->ls_new_rsb_spin);
+-
+-	if (!count)
+-		return -ENOMEM;
+-	return 0;
+-}
+-
+ /* connected with timer_delete_sync() in dlm_ls_stop() to stop
+  * new timers when recovery is triggered and don't run them
+  * again until a dlm_timer_resume() tries it again.
+@@ -652,22 +620,10 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
+ 			  struct dlm_rsb **r_ret)
+ {
+ 	struct dlm_rsb *r;
+-	int count;
  
- 	lock_rsb(r);
+-	spin_lock_bh(&ls->ls_new_rsb_spin);
+-	if (list_empty(&ls->ls_new_rsb)) {
+-		count = ls->ls_new_rsb_count;
+-		spin_unlock_bh(&ls->ls_new_rsb_spin);
+-		log_debug(ls, "find_rsb retry %d %d %s",
+-			  count, dlm_config.ci_new_rsb_count,
+-			  (const char *)name);
+-		return -EAGAIN;
+-	}
+-
+-	r = list_first_entry(&ls->ls_new_rsb, struct dlm_rsb, res_hashchain);
+-	list_del(&r->res_hashchain);
+-	ls->ls_new_rsb_count--;
+-	spin_unlock_bh(&ls->ls_new_rsb_spin);
++	r = dlm_allocate_rsb(ls);
++	if (!r)
++		return -ENOMEM;
  
--	if (r->res_master_nodeid != dlm_our_nodeid()) {
-+	if (!is_master(r)) {
- 		error = validate_master_nodeid(ls, r, from_nodeid);
- 		if (error) {
- 			unlock_rsb(r);
-@@ -4400,8 +4400,7 @@ static int receive_request_reply(struct dlm_ls *ls,
- 			  from_nodeid, result, r->res_master_nodeid,
- 			  r->res_dir_nodeid, r->res_first_lkid, r->res_name);
+ 	r->res_ls = ls;
+ 	r->res_length = len;
+@@ -792,13 +748,6 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 	}
  
--		if (r->res_dir_nodeid != dlm_our_nodeid() &&
--		    r->res_master_nodeid != dlm_our_nodeid()) {
-+		if (r->res_dir_nodeid != dlm_our_nodeid() && !is_master(r)) {
- 			/* cause _request_lock->set_master->send_lookup */
- 			r->res_master_nodeid = 0;
- 			lkb->lkb_master_nodeid = 0;
-@@ -4415,7 +4414,7 @@ static int receive_request_reply(struct dlm_ls *ls,
- 		} else {
- 			_request_lock(r, lkb);
+  retry:
+-	if (create) {
+-		error = pre_rsb_struct(ls);
+-		if (error < 0)
+-			goto out;
+-	}
+-
+- retry_lookup:
  
--			if (r->res_master_nodeid == dlm_our_nodeid())
-+			if (is_master(r))
- 				confirm_master(r, 0);
- 		}
- 		break;
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index aae97bdc05f6..dd41ad444e98 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -34,7 +34,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
- 
+ 	/* check if the rsb is in keep state under read lock - likely path */
  	read_lock_bh(&ls->ls_rsbtbl_lock);
- 	list_for_each_entry(r, &ls->ls_keep, res_rsbs_list) {
--		if (r->res_master_nodeid != dlm_our_nodeid())
-+		if (!is_master(r))
- 			continue;
+@@ -832,7 +781,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 	if (!error) {
+ 		if (!rsb_flag(r, RSB_TOSS)) {
+ 			write_unlock_bh(&ls->ls_rsbtbl_lock);
+-			goto retry_lookup;
++			goto retry;
+ 		}
+ 	} else {
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+@@ -898,9 +847,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		goto out;
  
- 		list_add(&r->res_masters_list, &ls->ls_masters_list);
+ 	error = get_rsb_struct(ls, name, len, &r);
+-	if (error == -EAGAIN)
+-		goto retry;
+-	if (error)
++	if (WARN_ON_ONCE(error))
+ 		goto out;
+ 
+ 	r->res_hash = hash;
+@@ -952,7 +899,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 		 */
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+ 		dlm_free_rsb(r);
+-		goto retry_lookup;
++		goto retry;
+ 	} else if (!error) {
+ 		list_add(&r->res_rsbs_list, &ls->ls_keep);
+ 	}
+@@ -976,11 +923,6 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 	int error;
+ 
+  retry:
+-	error = pre_rsb_struct(ls);
+-	if (error < 0)
+-		goto out;
+-
+- retry_lookup:
+ 
+ 	/* check if the rsb is in keep state under read lock - likely path */
+ 	read_lock_bh(&ls->ls_rsbtbl_lock);
+@@ -1015,7 +957,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 	if (!error) {
+ 		if (!rsb_flag(r, RSB_TOSS)) {
+ 			write_unlock_bh(&ls->ls_rsbtbl_lock);
+-			goto retry_lookup;
++			goto retry;
+ 		}
+ 	} else {
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+@@ -1070,10 +1012,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 	 */
+ 
+ 	error = get_rsb_struct(ls, name, len, &r);
+-	if (error == -EAGAIN) {
+-		goto retry;
+-	}
+-	if (error)
++	if (WARN_ON_ONCE(error))
+ 		goto out;
+ 
+ 	r->res_hash = hash;
+@@ -1090,7 +1029,7 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
+ 		 */
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+ 		dlm_free_rsb(r);
+-		goto retry_lookup;
++		goto retry;
+ 	} else if (!error) {
+ 		list_add(&r->res_rsbs_list, &ls->ls_keep);
+ 	}
+@@ -1304,11 +1243,6 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 	}
+ 
+  retry:
+-	error = pre_rsb_struct(ls);
+-	if (error < 0)
+-		return error;
+-
+- retry_lookup:
+ 
+ 	/* check if the rsb is in keep state under read lock - likely path */
+ 	read_lock_bh(&ls->ls_rsbtbl_lock);
+@@ -1354,7 +1288,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 			/* something as changed, very unlikely but
+ 			 * try again
+ 			 */
+-			goto retry_lookup;
++			goto retry;
+ 		}
+ 	} else {
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+@@ -1376,9 +1310,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 
+  not_found:
+ 	error = get_rsb_struct(ls, name, len, &r);
+-	if (error == -EAGAIN)
+-		goto retry;
+-	if (error)
++	if (WARN_ON_ONCE(error))
+ 		goto out;
+ 
+ 	r->res_hash = hash;
+@@ -1395,7 +1327,7 @@ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 		 */
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+ 		dlm_free_rsb(r);
+-		goto retry_lookup;
++		goto retry;
+ 	} else if (error) {
+ 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+ 		/* should never happen */
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index d25a09d6c710..ecb9b5fcad8e 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -428,9 +428,6 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	INIT_LIST_HEAD(&ls->ls_orphans);
+ 	spin_lock_init(&ls->ls_orphans_lock);
+ 
+-	INIT_LIST_HEAD(&ls->ls_new_rsb);
+-	spin_lock_init(&ls->ls_new_rsb_spin);
+-
+ 	INIT_LIST_HEAD(&ls->ls_nodes);
+ 	INIT_LIST_HEAD(&ls->ls_nodes_gone);
+ 	ls->ls_num_nodes = 0;
+@@ -688,7 +685,6 @@ static void rhash_free_rsb(void *ptr, void *arg)
+ 
+ static int release_lockspace(struct dlm_ls *ls, int force)
+ {
+-	struct dlm_rsb *rsb;
+ 	int busy, rv;
+ 
+ 	busy = lockspace_busy(ls, force);
+@@ -756,13 +752,6 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	 */
+ 	rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL);
+ 
+-	while (!list_empty(&ls->ls_new_rsb)) {
+-		rsb = list_first_entry(&ls->ls_new_rsb, struct dlm_rsb,
+-				       res_hashchain);
+-		list_del(&rsb->res_hashchain);
+-		dlm_free_rsb(rsb);
+-	}
+-
+ 	/*
+ 	 * Free structures on any other lists
+ 	 */
 -- 
 2.43.0
 
