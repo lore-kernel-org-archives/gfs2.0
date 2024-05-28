@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBF117B414
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E637017B41C
 	for <gfs2@lists.linux.dev>; Tue, 28 May 2024 21:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716930771; cv=none; b=t/AMvurNnORS25m7tJJTI/UAXR4bBDgzEb9oKRZbfl4O4IwxdfM6xLBuRMifzmH8K18z6pYynmAi20IorqB/hUwYOxbeFKYamAqbx7gjYK6BChPpO2t4a9V6Z+7aZHVvc+8oqiB/3SZDb3UdJUfCSkZoOsy4IDDLHugt2u7tb4c=
+	t=1716930771; cv=none; b=RIL0lKB4NasDs8e6Xou0u9RKlWuxeFrKkfKu5jNqyJLUOuIxNf8Ok5zXDDV8D+Q1+4mm+amsG5ocLjv+Y0UuGFUcIGSgRkSHwoOvZsYe3+2W2Y7rYu3PoUIOQOlbJZuuaPFgZU/FHx1r934V6cA3hRpvs2C2YIfrKYodnYTz8bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716930771; c=relaxed/simple;
-	bh=1+hovymsvZOWij4Wql8wmNKiiOKYtvfXnaBGHvUXJtU=;
+	bh=Yp+QvKuNahvsH1drUcvrspzyJChAv1muwgbljdFP8Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TV7uXMxdFuGZB0jHofPwrrUu3f0F2Q2cFgvyLKorf8I8c4MbsjAx/9FGYXV+kbjdPaiukZSE2hsLruIw0j2IJNcRA0DrNMbb4Q8o+UgAqhAvGvffvuIhDJ8ftFMKqaZXIyp2G4dsv3yYY1WYXtTc9LYLeKDC+idgysk3URGC2X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GejqkH6u; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=sdus6xmF77Yc1oFH4DE5QbGj+Ffg5Ujq/eTqwTkrd1A752/BMFnm7Ct4IFXQvYydRgjMM8bfUSqPFhHGQyD2cW3+rf0HRd7vKpSuqQ3rYx6wnWkpOIra18RoBMqNhpnCgYyGDSv+jZ1AmhkJzZahUkxlVEwz1798zmZwHg2sw10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z8zsQF2H; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GejqkH6u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z8zsQF2H"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716930768;
+	s=mimecast20190719; t=1716930769;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VLUw73f4Cy5kDZ3hFCmUP5HnO8MBK93YhOi5mQg/rOY=;
-	b=GejqkH6uhjynGyGCMGanvF3JgrPK39sGPYDatM4r2Itm3BoT5JwS1HjLowoWTgNKxO6ui1
-	UOlJgswSaJ4OvuSMUj4N9F2qmNFgHM/rzaCAOTa7w8iMexigpOhCD0U/m0NTqZ1gZ2zGjq
-	F9Jga1QN6BHrR6z/mcRt174J/ZBFaLE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-nF-LFmXsNhKFvGI5iyH-Qw-1; Tue, 28 May 2024 17:12:47 -0400
-X-MC-Unique: nF-LFmXsNhKFvGI5iyH-Qw-1
+	bh=dDGcWe+W4NKF/U+0s1Zpz8q2ImaYij2qb5AqCqdhGm0=;
+	b=Z8zsQF2HCO5uBhiyZdSmuOJAAedFkd/1mOp/QWxOzg03ClQQp18tLkVPswseTXVyEx483R
+	2bpNa1/y/VZZIPUWcgig6T91cHo+KSfj9YefwZQj+Ky40IjDUmcFOcj5J1uBI2bSzI076q
+	+g/Q7aB4I/rt5W+mcFsA+prHETTk0Eo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-yfzm5CcJN2adfwpYHOFG6Q-1; Tue,
+ 28 May 2024 17:12:47 -0400
+X-MC-Unique: yfzm5CcJN2adfwpYHOFG6Q-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 216BE85A58C
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 059C1380670C
 	for <gfs2@lists.linux.dev>; Tue, 28 May 2024 21:12:47 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 17096200B4D8;
-	Tue, 28 May 2024 21:12:47 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id EE9B6200B3A1;
+	Tue, 28 May 2024 21:12:46 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.10-rc1 08/11] dlm: move lkb idr to xarray datastructure
-Date: Tue, 28 May 2024 17:12:38 -0400
-Message-ID: <20240528211241.2140441-8-aahringo@redhat.com>
+Subject: [PATCH v6.10-rc1 05/11] dlm: rename dlm_find_lockspace_local to dlm_get_lockspace
+Date: Tue, 28 May 2024 17:12:35 -0400
+Message-ID: <20240528211241.2140441-5-aahringo@redhat.com>
 In-Reply-To: <20240528211241.2140441-1-aahringo@redhat.com>
 References: <20240528211241.2140441-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,242 +61,214 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-According to kernel doc idr is deprecated and xarrays should be used
-nowadays. This patch is moving the lkb idr implementation to xarrays.
+Previous patch got rid of the unnecessary loop to lookup the lockspace
+pointer but the pointer to lookup was already the pointer that was
+looking for. The purpose of dlm_find_lockspace_local() is more a
+dlm_get_lockspace() to avoid lockspace releases. There is another
+question if dlm_get_lockspace() is really necessary to call as it is
+called in a lockspace resource itself and during this time the lockspace
+cannot be freed as it is used by e.g. udev. Another questionable current
+handling is refcounting when calling dlm api that might be an DLM user
+problem because calling dlm_lockspace_release() when there are still
+pending API calls around. However this might need more of a full code
+review in future to remove some of them.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dlm_internal.h |  5 ++--
- fs/dlm/lock.c         | 30 ++++++++++++----------
- fs/dlm/lockspace.c    | 60 +++++++++++++++++++++----------------------
- 3 files changed, 49 insertions(+), 46 deletions(-)
+ fs/dlm/lock.c      |  4 ++--
+ fs/dlm/lockspace.c |  8 ++++----
+ fs/dlm/lockspace.h |  2 +-
+ fs/dlm/plock.c     |  8 ++++----
+ fs/dlm/recoverd.c  |  4 ++--
+ fs/dlm/user.c      | 12 ++++++------
+ 6 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 5acdc6c2b4b8..3a62675bf52e 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -37,6 +37,7 @@
- #include <linux/rhashtable.h>
- #include <linux/mutex.h>
- #include <linux/idr.h>
-+#include <linux/xarray.h>
- #include <linux/ratelimit.h>
- #include <linux/uaccess.h>
- 
-@@ -571,8 +572,8 @@ struct dlm_ls {
- 	unsigned long		ls_flags;	/* LSFL_ */
- 	struct kobject		ls_kobj;
- 
--	struct idr		ls_lkbidr;
--	rwlock_t		ls_lkbidr_lock;
-+	struct xarray		ls_lkbxa;
-+	rwlock_t		ls_lkbxa_lock;
- 
- 	struct rhashtable	ls_rsbtbl;
- 	rwlock_t		ls_rsbtbl_lock;
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 69a25ec82d1e..e176cf48011a 100644
+index e66972ed97b1..205d6a20fcee 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -1460,11 +1460,15 @@ static void detach_lkb(struct dlm_lkb *lkb)
- }
+@@ -3391,7 +3391,7 @@ int dlm_lock(dlm_lockspace_t *lockspace,
+ 	struct dlm_args args;
+ 	int error, convert = flags & DLM_LKF_CONVERT;
  
- static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
--		       int start, int end)
-+		       unsigned long start, unsigned long end)
- {
-+	struct xa_limit limit;
- 	struct dlm_lkb *lkb;
- 	int rv;
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
  
-+	limit.max = end;
-+	limit.min = start;
-+
- 	lkb = dlm_allocate_lkb(ls);
- 	if (!lkb)
- 		return -ENOMEM;
-@@ -1478,14 +1482,12 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
- 	INIT_LIST_HEAD(&lkb->lkb_ownqueue);
- 	INIT_LIST_HEAD(&lkb->lkb_rsb_lookup);
+@@ -3443,7 +3443,7 @@ int dlm_unlock(dlm_lockspace_t *lockspace,
+ 	struct dlm_args args;
+ 	int error;
  
--	write_lock_bh(&ls->ls_lkbidr_lock);
--	rv = idr_alloc(&ls->ls_lkbidr, lkb, start, end, GFP_NOWAIT);
--	if (rv >= 0)
--		lkb->lkb_id = rv;
--	write_unlock_bh(&ls->ls_lkbidr_lock);
-+	write_lock_bh(&ls->ls_lkbxa_lock);
-+	rv = xa_alloc(&ls->ls_lkbxa, &lkb->lkb_id, lkb, limit, GFP_ATOMIC);
-+	write_unlock_bh(&ls->ls_lkbxa_lock);
- 
- 	if (rv < 0) {
--		log_error(ls, "create_lkb idr error %d", rv);
-+		log_error(ls, "create_lkb xa error %d", rv);
- 		dlm_free_lkb(lkb);
- 		return rv;
- 	}
-@@ -1496,18 +1498,18 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
- 
- static int create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret)
- {
--	return _create_lkb(ls, lkb_ret, 1, 0);
-+	return _create_lkb(ls, lkb_ret, 1, ULONG_MAX);
- }
- 
- static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
- {
- 	struct dlm_lkb *lkb;
- 
--	read_lock_bh(&ls->ls_lkbidr_lock);
--	lkb = idr_find(&ls->ls_lkbidr, lkid);
-+	read_lock_bh(&ls->ls_lkbxa_lock);
-+	lkb = xa_load(&ls->ls_lkbxa, lkid);
- 	if (lkb)
- 		kref_get(&lkb->lkb_ref);
--	read_unlock_bh(&ls->ls_lkbidr_lock);
-+	read_unlock_bh(&ls->ls_lkbxa_lock);
- 
- 	*lkb_ret = lkb;
- 	return lkb ? 0 : -ENOENT;
-@@ -1532,10 +1534,10 @@ static int __put_lkb(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 	int rv;
- 
- 	rv = dlm_kref_put_write_lock_bh(&lkb->lkb_ref, kill_lkb,
--					&ls->ls_lkbidr_lock);
-+					&ls->ls_lkbxa_lock);
- 	if (rv) {
--		idr_remove(&ls->ls_lkbidr, lkid);
--		write_unlock_bh(&ls->ls_lkbidr_lock);
-+		xa_erase(&ls->ls_lkbxa, lkid);
-+		write_unlock_bh(&ls->ls_lkbxa_lock);
- 
- 		detach_lkb(lkb);
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
  
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index ecb9b5fcad8e..a1aefe804727 100644
+index 8155d7475c79..d25a09d6c710 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -420,8 +420,8 @@ static int new_lockspace(const char *name, const char *cluster,
+@@ -38,7 +38,7 @@ static ssize_t dlm_control_store(struct dlm_ls *ls, const char *buf, size_t len)
+ 
+ 	if (rc)
+ 		return rc;
+-	ls = dlm_find_lockspace_local(ls);
++	ls = dlm_get_lockspace(ls);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+@@ -263,7 +263,7 @@ struct dlm_ls *dlm_find_lockspace_global(uint32_t id)
+ 	return ls;
+ }
+ 
+-struct dlm_ls *dlm_find_lockspace_local(dlm_lockspace_t *lockspace)
++struct dlm_ls *dlm_get_lockspace(dlm_lockspace_t *lockspace)
+ {
+ 	struct dlm_ls *ls = lockspace;
+ 
+@@ -794,12 +794,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+  * 3 - destroy lockspace as part of a forced shutdown
+  */
+ 
+-int dlm_release_lockspace(void *lockspace, int force)
++int dlm_release_lockspace(dlm_lockspace_t *lockspace, int force)
+ {
+ 	struct dlm_ls *ls;
+ 	int error;
+ 
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 	dlm_put_lockspace(ls);
+diff --git a/fs/dlm/lockspace.h b/fs/dlm/lockspace.h
+index 47ebd4411926..d59ce3fea03b 100644
+--- a/fs/dlm/lockspace.h
++++ b/fs/dlm/lockspace.h
+@@ -23,7 +23,7 @@
+ int dlm_lockspace_init(void);
+ void dlm_lockspace_exit(void);
+ struct dlm_ls *dlm_find_lockspace_global(uint32_t id);
+-struct dlm_ls *dlm_find_lockspace_local(void *id);
++struct dlm_ls *dlm_get_lockspace(dlm_lockspace_t *lockspace);
+ struct dlm_ls *dlm_find_lockspace_device(int minor);
+ void dlm_put_lockspace(struct dlm_ls *ls);
+ void dlm_stop_lockspaces(void);
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 9ca83ef70ed1..1ff172718d59 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -127,7 +127,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	struct plock_op *op;
+ 	int rv;
+ 
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+@@ -293,7 +293,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	int rv;
+ 	unsigned char saved_flags = fl->c.flc_flags;
+ 
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+@@ -370,7 +370,7 @@ int dlm_posix_cancel(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	if (WARN_ON_ONCE(!fl->fl_lmops || !fl->fl_lmops->lm_grant))
+ 		return -EOPNOTSUPP;
+ 
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+@@ -426,7 +426,7 @@ int dlm_posix_get(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	struct plock_op *op;
+ 	int rv;
+ 
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
+index 17a40d1e6036..7e6c2c27d815 100644
+--- a/fs/dlm/recoverd.c
++++ b/fs/dlm/recoverd.c
+@@ -389,9 +389,9 @@ static void do_ls_recovery(struct dlm_ls *ls)
+ 
+ static int dlm_recoverd(void *arg)
+ {
+-	struct dlm_ls *ls;
++	struct dlm_ls *ls = arg;
+ 
+-	ls = dlm_find_lockspace_local(arg);
++	ls = dlm_get_lockspace(arg);
+ 	if (!ls) {
+ 		log_print("dlm_recoverd: no lockspace %p", arg);
+ 		return -1;
+diff --git a/fs/dlm/user.c b/fs/dlm/user.c
+index f6635a5314f4..73d7fa768f73 100644
+--- a/fs/dlm/user.c
++++ b/fs/dlm/user.c
+@@ -259,7 +259,7 @@ static int device_user_lock(struct dlm_user_proc *proc,
+ 	uint32_t lkid;
+ 	int error = -ENOMEM;
+ 
+-	ls = dlm_find_lockspace_local(proc->lockspace);
++	ls = dlm_get_lockspace(proc->lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
+ 
+@@ -309,7 +309,7 @@ static int device_user_unlock(struct dlm_user_proc *proc,
+ 	struct dlm_user_args *ua;
+ 	int error = -ENOMEM;
+ 
+-	ls = dlm_find_lockspace_local(proc->lockspace);
++	ls = dlm_get_lockspace(proc->lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
+ 
+@@ -337,7 +337,7 @@ static int device_user_deadlock(struct dlm_user_proc *proc,
+ 	struct dlm_ls *ls;
+ 	int error;
+ 
+-	ls = dlm_find_lockspace_local(proc->lockspace);
++	ls = dlm_get_lockspace(proc->lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
+ 
+@@ -398,7 +398,7 @@ static int device_user_purge(struct dlm_user_proc *proc,
+ 	struct dlm_ls *ls;
+ 	int error;
+ 
+-	ls = dlm_find_lockspace_local(proc->lockspace);
++	ls = dlm_get_lockspace(proc->lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
+ 
+@@ -423,7 +423,7 @@ static int device_create_lockspace(struct dlm_lspace_params *params)
  	if (error)
- 		goto out_lsfree;
+ 		return error;
  
--	idr_init(&ls->ls_lkbidr);
--	rwlock_init(&ls->ls_lkbidr_lock);
-+	xa_init_flags(&ls->ls_lkbxa, XA_FLAGS_ALLOC | XA_FLAGS_LOCK_BH);
-+	rwlock_init(&ls->ls_lkbxa_lock);
+-	ls = dlm_find_lockspace_local(lockspace);
++	ls = dlm_get_lockspace(lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
  
- 	INIT_LIST_HEAD(&ls->ls_waiters);
- 	spin_lock_init(&ls->ls_waiters_lock);
-@@ -471,7 +471,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	ls->ls_recover_buf = kmalloc(DLM_MAX_SOCKET_BUFSIZE, GFP_NOFS);
- 	if (!ls->ls_recover_buf) {
- 		error = -ENOMEM;
--		goto out_lkbidr;
-+		goto out_lkbxa;
- 	}
+@@ -674,7 +674,7 @@ static int device_close(struct inode *inode, struct file *file)
+ 	struct dlm_user_proc *proc = file->private_data;
+ 	struct dlm_ls *ls;
  
- 	ls->ls_slot = 0;
-@@ -572,8 +572,8 @@ static int new_lockspace(const char *name, const char *cluster,
- 	spin_unlock_bh(&lslist_lock);
- 	idr_destroy(&ls->ls_recover_idr);
- 	kfree(ls->ls_recover_buf);
-- out_lkbidr:
--	idr_destroy(&ls->ls_lkbidr);
-+ out_lkbxa:
-+	xa_destroy(&ls->ls_lkbxa);
- 	rhashtable_destroy(&ls->ls_rsbtbl);
-  out_lsfree:
- 	if (do_unreg)
-@@ -633,22 +633,8 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
- 				   ops_arg, ops_result, lockspace);
- }
+-	ls = dlm_find_lockspace_local(proc->lockspace);
++	ls = dlm_get_lockspace(proc->lockspace);
+ 	if (!ls)
+ 		return -ENOENT;
  
--static int lkb_idr_is_local(int id, void *p, void *data)
-+static int lkb_idr_free(struct dlm_lkb *lkb)
- {
--	struct dlm_lkb *lkb = p;
--
--	return lkb->lkb_nodeid == 0 && lkb->lkb_grmode != DLM_LOCK_IV;
--}
--
--static int lkb_idr_is_any(int id, void *p, void *data)
--{
--	return 1;
--}
--
--static int lkb_idr_free(int id, void *p, void *data)
--{
--	struct dlm_lkb *lkb = p;
--
- 	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
- 		dlm_free_lvb(lkb->lkb_lvbptr);
- 
-@@ -656,23 +642,34 @@ static int lkb_idr_free(int id, void *p, void *data)
- 	return 0;
- }
- 
--/* NOTE: We check the lkbidr here rather than the resource table.
-+/* NOTE: We check the lkbxa here rather than the resource table.
-    This is because there may be LKBs queued as ASTs that have been unlinked
-    from their RSBs and are pending deletion once the AST has been delivered */
- 
- static int lockspace_busy(struct dlm_ls *ls, int force)
- {
--	int rv;
-+	struct dlm_lkb *lkb;
-+	unsigned long id;
-+	int rv = 0;
- 
--	read_lock_bh(&ls->ls_lkbidr_lock);
-+	read_lock_bh(&ls->ls_lkbxa_lock);
- 	if (force == 0) {
--		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_any, ls);
-+		xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+			rv = 1;
-+			break;
-+		}
- 	} else if (force == 1) {
--		rv = idr_for_each(&ls->ls_lkbidr, lkb_idr_is_local, ls);
-+		xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+			if (lkb->lkb_nodeid == 0 &&
-+			    lkb->lkb_grmode != DLM_LOCK_IV) {
-+				rv = 1;
-+				break;
-+			}
-+		}
- 	} else {
- 		rv = 0;
- 	}
--	read_unlock_bh(&ls->ls_lkbidr_lock);
-+	read_unlock_bh(&ls->ls_lkbxa_lock);
- 	return rv;
- }
- 
-@@ -685,6 +682,8 @@ static void rhash_free_rsb(void *ptr, void *arg)
- 
- static int release_lockspace(struct dlm_ls *ls, int force)
- {
-+	struct dlm_lkb *lkb;
-+	unsigned long id;
- 	int busy, rv;
- 
- 	busy = lockspace_busy(ls, force);
-@@ -741,11 +740,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 	kfree(ls->ls_recover_buf);
- 
- 	/*
--	 * Free all lkb's in idr
-+	 * Free all lkb's in xa
- 	 */
--
--	idr_for_each(&ls->ls_lkbidr, lkb_idr_free, ls);
--	idr_destroy(&ls->ls_lkbidr);
-+	xa_for_each(&ls->ls_lkbxa, id, lkb) {
-+		lkb_idr_free(lkb);
-+	}
-+	xa_destroy(&ls->ls_lkbxa);
- 
- 	/*
- 	 * Free all rsb's on rsbtbl
 -- 
 2.43.0
 
