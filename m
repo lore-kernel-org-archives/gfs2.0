@@ -1,51 +1,51 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703E01591FC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD6715B559
 	for <gfs2@lists.linux.dev>; Wed, 29 May 2024 17:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717002248; cv=none; b=lBFr9wXEa0fJTcKjFRTjS752NdVW2hGaTz7iT1hkxCN03oM0/HJSwrHOFu1qgd1qIP/jAAP6XDOq6iVrt32IfCZ64jKp+8VJUu8Jlw0lArLr+oOhNEN2n386s5rlCaChpkAkDf/Spox/6MidZIQDj5m/WrYOqH9vv7YWarRK0Tk=
+	t=1717002249; cv=none; b=ER0cAqX5COPdpA4hnPi9QEocsdDbRfEjfou2iXzipbXwUOiyjYA9A/aUuFViyokD9+nBNaX1Y/TNnocn+Kczu34fC7wIJ0u8FsQ9HC85Hez7AlFjo50a2dIF0yu7FkqW3Bi48Po0AC1+ajBYSXqgQMYM10utBGTFLJ7kVSggTeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717002248; c=relaxed/simple;
-	bh=0JEA8pZIs/TN6ayz7tPXyeTTwZ0jMIZyq8ay7ow0eS0=;
+	s=arc-20240116; t=1717002249; c=relaxed/simple;
+	bh=i+g4PmrKYUn3X+8yO2j90A8PNX94ZghmnPxZTmQl6ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sjYk7XkC7iEJm6CkYWBkj4LZJxtUIhNAI1J1Dco8NZt2czB3Gp7Apa4KXctG59QngAeellR1aW9onAOU+mLvCOGX4NhFLg6J515aYBhn8EAUqdYo8PxU127IQbOsSQjQAQk5aQWAh0pzmjhHTyvDVNcYYuflKPqSKlGZ/MHEVt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EwjeYM3F; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=JL8mU+uN6ENEwJk35/deUxSL1trOsTsUVXmpBRC/2GSs9YPTjDTDBfkewydslYLiY6LhCydcm+LpYr2ITIxIu7tMH0Js6XZjCwy2DdXPKMvL46ZpZan758A6iGWK3aF1DP01TD2Iz6fwxJMxEG+UURYIULTlvrKGH/+XiGR8HRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MaZtLEQc; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EwjeYM3F"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MaZtLEQc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717002246;
+	s=mimecast20190719; t=1717002247;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LYRep3eoIaPw1ZsxFEHslEyYf8UbxvuMaxBhrrKttkc=;
-	b=EwjeYM3FvsciDhjdlyYMB+G2xQ1YI6wnoiiAQAOj43xFCUp43HMuNIRIW72BY//r5In4u3
-	UfRBXE6DtRxRJMqcxouC+9slgklNvimiGXkDnOyPDFumZuCUZHDFAMmkNaZCYVh+eFLuwZ
-	Y3X5xIb3uo6yJAXcJnPUEmN9IGa+VPs=
+	bh=mD1igppmZr9lYb1BsjFvbWk7AMkgK5FqIH5vfVXqvx8=;
+	b=MaZtLEQcS/kVxtHKEVhh20FrBbT2tZRNygsPylQ21CTvBttr8RMFidjtttaaFV4IBOj5nh
+	4otLqMLvAnfUF5RNO+o8LDHZrTyYOrR8+XIlifApeA193tBrOLG6tviXbVek+h5tfNgMw5
+	K6Wbd+kNvdYeh77opOPqlhvz1fzouO8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-RVoh3ZQhM2W389np6EFhUQ-1; Wed, 29 May 2024 13:04:04 -0400
-X-MC-Unique: RVoh3ZQhM2W389np6EFhUQ-1
+ us-mta-615-69v7D9M_M0mcJ0gey8njVQ-1; Wed, 29 May 2024 13:04:05 -0400
+X-MC-Unique: 69v7D9M_M0mcJ0gey8njVQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2FE6800CB0
-	for <gfs2@lists.linux.dev>; Wed, 29 May 2024 17:04:04 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6417581227E
+	for <gfs2@lists.linux.dev>; Wed, 29 May 2024 17:04:05 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.40])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 25C80492BC6;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DCBBB492BC6;
 	Wed, 29 May 2024 17:04:04 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 14/15] Revert "GFS2: Don't add all glocks to the lru"
-Date: Wed, 29 May 2024 19:03:51 +0200
-Message-ID: <20240529170352.571141-15-agruenba@redhat.com>
+Subject: [PATCH 15/15] gfs2: Get rid of demote_ok checks
+Date: Wed, 29 May 2024 19:03:52 +0200
+Message-ID: <20240529170352.571141-16-agruenba@redhat.com>
 In-Reply-To: <20240529170352.571141-1-agruenba@redhat.com>
 References: <20240529170352.571141-1-agruenba@redhat.com>
 Precedence: bulk
@@ -60,103 +60,136 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This reverts commit e7ccaf5fe1590667b3fa2f8df5c5ec9ba0dc5b85.
+The demote_ok glock operation is only still used to prevent the inode
+glocks of the "jindex" and "rindex" directories from getting recycled
+while they are still referenced by sdp->sd_jindex and sdp->sd_rindex.
+However, the LRU walking code will no longer recycle glocks which are
+referenced, so the demote_ok glock operation is obsolete and can be
+removed.
 
-Before commit e7ccaf5fe159, every time a resource group glock was
-dequeued by gfs2_glock_dq(), it was added to the glock LRU list even
-though the glock was still referenced by the resource group and could
-never be evicted, anyway.  Commit e7ccaf5fe159 added a GLOF_LRU hack to
-avoid that overhead for resource group glocks, and that hack was since
-adopted for some other types of glocks as well.
-
-We now no longer add glocks to the glock LRU list while they are still
-referenced.  This solves the underlying problem, and obsoletes the
-GLOF_LRU hack.
+Each of a glock's holders in the gl_holders list is holding a reference
+on the glock, so when the list of holders isn't empty in demote_ok(),
+the existing reference count check will already prevent the glock from
+getting released.  This means that demote_ok() is obsolete as well.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-(cherry picked from commit 3e5257c810cba91e274d07f3db5cf013c7c830be)
 ---
- fs/gfs2/glock.c  | 7 -------
- fs/gfs2/glops.c  | 8 ++++----
- fs/gfs2/incore.h | 1 -
- 3 files changed, 4 insertions(+), 12 deletions(-)
+ Documentation/filesystems/gfs2-glocks.rst |  3 ---
+ fs/gfs2/glock.c                           | 23 +----------------------
+ fs/gfs2/glops.c                           | 18 ------------------
+ fs/gfs2/incore.h                          |  1 -
+ 4 files changed, 1 insertion(+), 44 deletions(-)
 
+diff --git a/Documentation/filesystems/gfs2-glocks.rst b/Documentation/filesystems/gfs2-glocks.rst
+index 17ce3413608a..adc0d4c4d979 100644
+--- a/Documentation/filesystems/gfs2-glocks.rst
++++ b/Documentation/filesystems/gfs2-glocks.rst
+@@ -61,8 +61,6 @@ Field              Purpose
+ go_sync            Called before remote state change (e.g. to sync dirty data)
+ go_xmote_bh        Called after remote state change (e.g. to refill cache)
+ go_inval           Called if remote state change requires invalidating the cache
+-go_demote_ok       Returns boolean value of whether its ok to demote a glock
+-                   (e.g. checks timeout, and that there is no cached data)
+ go_instantiate     Called when a glock has been acquired
+ go_held            Called every time a glock holder is acquired
+ go_dump            Called to print content of object for debugfs file, or on
+@@ -95,7 +93,6 @@ Operation        GLF_LOCK bit lock held    gl_lockref.lock spinlock held
+ go_sync               Yes                       No
+ go_xmote_bh           Yes                       No
+ go_inval              Yes                       No
+-go_demote_ok          Sometimes                 Yes
+ go_instantiate        No                        No
+ go_held               No                        No
+ go_dump               Sometimes                 Yes
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index e2a72c21194a..19f8df91b72e 100644
+index 19f8df91b72e..7f68e3d217e6 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -239,11 +239,7 @@ static int demote_ok(const struct gfs2_glock *gl)
+@@ -216,27 +216,6 @@ struct gfs2_glock *gfs2_glock_hold(struct gfs2_glock *gl)
+ 	return gl;
+ }
  
+-/**
+- * demote_ok - Check to see if it's ok to unlock a glock
+- * @gl: the glock
+- *
+- * Returns: 1 if it's ok
+- */
+-
+-static int demote_ok(const struct gfs2_glock *gl)
+-{
+-	const struct gfs2_glock_operations *glops = gl->gl_ops;
+-
+-	if (gl->gl_state == LM_ST_UNLOCKED)
+-		return 0;
+-	if (!list_empty(&gl->gl_holders))
+-		return 0;
+-	if (glops->go_demote_ok)
+-		return glops->go_demote_ok(gl);
+-	return 1;
+-}
+-
+-
  static void gfs2_glock_add_to_lru(struct gfs2_glock *gl)
  {
--	if (!(gl->gl_ops->go_flags & GLOF_LRU))
--		return;
--
  	spin_lock(&lru_lock);
--
- 	list_move_tail(&gl->gl_lru, &lru_list);
- 
- 	if (!test_bit(GLF_LRU, &gl->gl_flags)) {
-@@ -256,9 +252,6 @@ static void gfs2_glock_add_to_lru(struct gfs2_glock *gl)
- 
- static void gfs2_glock_remove_from_lru(struct gfs2_glock *gl)
- {
--	if (!(gl->gl_ops->go_flags & GLOF_LRU))
--		return;
--
- 	spin_lock(&lru_lock);
- 	if (test_bit(GLF_LRU, &gl->gl_flags)) {
- 		list_del_init(&gl->gl_lru);
+@@ -2049,7 +2028,7 @@ __acquires(&lru_lock)
+ 		clear_bit(GLF_LRU, &gl->gl_flags);
+ 		freed++;
+ 		gl->gl_lockref.count++;
+-		if (demote_ok(gl))
++		if (gl->gl_state != LM_ST_UNLOCKED)
+ 			request_demote(gl, LM_ST_UNLOCKED, 0, false);
+ 		gfs2_glock_queue_work(gl, 0);
+ 		spin_unlock(&gl->gl_lockref.lock);
 diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 39bb6758a2a0..7bc7f6785abd 100644
+index 7bc7f6785abd..95d8081681dc 100644
 --- a/fs/gfs2/glops.c
 +++ b/fs/gfs2/glops.c
-@@ -727,7 +727,7 @@ const struct gfs2_glock_operations gfs2_inode_glops = {
+@@ -385,23 +385,6 @@ static void inode_go_inval(struct gfs2_glock *gl, int flags)
+ 	gfs2_clear_glop_pending(ip);
+ }
+ 
+-/**
+- * inode_go_demote_ok - Check to see if it's ok to unlock an inode glock
+- * @gl: the glock
+- *
+- * Returns: 1 if it's ok
+- */
+-
+-static int inode_go_demote_ok(const struct gfs2_glock *gl)
+-{
+-	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-
+-	if (sdp->sd_jindex == gl->gl_object || sdp->sd_rindex == gl->gl_object)
+-		return 0;
+-
+-	return 1;
+-}
+-
+ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ {
+ 	struct gfs2_sbd *sdp = GFS2_SB(&ip->i_inode);
+@@ -722,7 +705,6 @@ const struct gfs2_glock_operations gfs2_meta_glops = {
+ const struct gfs2_glock_operations gfs2_inode_glops = {
+ 	.go_sync = inode_go_sync,
+ 	.go_inval = inode_go_inval,
+-	.go_demote_ok = inode_go_demote_ok,
+ 	.go_instantiate = inode_go_instantiate,
  	.go_held = inode_go_held,
  	.go_dump = inode_go_dump,
- 	.go_type = LM_TYPE_INODE,
--	.go_flags = GLOF_ASPACE | GLOF_LRU | GLOF_LVB,
-+	.go_flags = GLOF_ASPACE | GLOF_LVB,
- 	.go_unlocked = inode_go_unlocked,
- };
- 
-@@ -751,13 +751,13 @@ const struct gfs2_glock_operations gfs2_iopen_glops = {
- 	.go_type = LM_TYPE_IOPEN,
- 	.go_callback = iopen_go_callback,
- 	.go_dump = inode_go_dump,
--	.go_flags = GLOF_LRU | GLOF_NONDISK,
-+	.go_flags = GLOF_NONDISK,
- 	.go_subclass = 1,
- };
- 
- const struct gfs2_glock_operations gfs2_flock_glops = {
- 	.go_type = LM_TYPE_FLOCK,
--	.go_flags = GLOF_LRU | GLOF_NONDISK,
-+	.go_flags = GLOF_NONDISK,
- };
- 
- const struct gfs2_glock_operations gfs2_nondisk_glops = {
-@@ -768,7 +768,7 @@ const struct gfs2_glock_operations gfs2_nondisk_glops = {
- 
- const struct gfs2_glock_operations gfs2_quota_glops = {
- 	.go_type = LM_TYPE_QUOTA,
--	.go_flags = GLOF_LVB | GLOF_LRU | GLOF_NONDISK,
-+	.go_flags = GLOF_LVB | GLOF_NONDISK,
- };
- 
- const struct gfs2_glock_operations gfs2_journal_glops = {
 diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 5ee46af1f4bd..f75982d45635 100644
+index f75982d45635..90fd2584357a 100644
 --- a/fs/gfs2/incore.h
 +++ b/fs/gfs2/incore.h
-@@ -230,7 +230,6 @@ struct gfs2_glock_operations {
- 	const unsigned long go_flags;
- #define GLOF_ASPACE 1 /* address space attached */
- #define GLOF_LVB    2 /* Lock Value Block attached */
--#define GLOF_LRU    4 /* LRU managed */
- #define GLOF_NONDISK   8 /* not I/O related */
- };
- 
+@@ -218,7 +218,6 @@ struct gfs2_glock_operations {
+ 	int (*go_sync) (struct gfs2_glock *gl);
+ 	int (*go_xmote_bh)(struct gfs2_glock *gl);
+ 	void (*go_inval) (struct gfs2_glock *gl, int flags);
+-	int (*go_demote_ok) (const struct gfs2_glock *gl);
+ 	int (*go_instantiate) (struct gfs2_glock *gl);
+ 	int (*go_held)(struct gfs2_holder *gh);
+ 	void (*go_dump)(struct seq_file *seq, const struct gfs2_glock *gl,
 -- 
 2.45.1
 
