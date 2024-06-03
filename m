@@ -1,44 +1,44 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB4713C8EC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF6D13C8E1
 	for <gfs2@lists.linux.dev>; Mon,  3 Jun 2024 21:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717451775; cv=none; b=RvQyQtoCosveb/wnzvOk1GLpEkhd3uUb0e4bZA2cOTfhRp0dLY7IjVi8Z7gq59dhTgmrWGa/et8V2DdgRP6ZRPsXb5aN3/xJxtyRGh80PjijPK1FZULHiUvtl7Q56CSwHPlpn1HSJZeaRFh4lLMcc0iMdA3shvf36lCeZQtJi5w=
+	t=1717451775; cv=none; b=e66OOuss/Dt3gaRAWP7YOGButnHjolqv3umF9py0YyItkwem7ppI1WL+g43DGGUcz6FGBQvHBMkri/KwYwROt/vWJoYoG7JUAQ7N+tJVXeAI4pVE/vc2JIuO07fIjBd1Wy7lTb/LtJWjG6icXqtmfSz2dzUnNJrHu3NbD3xniCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717451775; c=relaxed/simple;
-	bh=lJSYqPVnbpDc5YM6Z6gAE26HGft7QpixXUV8OA7VU0g=;
+	bh=K+OwEKZcMQ++/P7KWZ9gm7ATqlj35yX+mcIVWMtKDXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwnxR3LKRltlkg/7bxGcTHu6IBTYxSvC/fk7MdIhGZnwd6CO1ejtBUm8/KH1fjYhlruvq0YT2NJRoX1vHVR+LN7MLakTIGjZaTvK/WTuosZOol+CHXJ2DWyHLkF8QeCeu+6SSG0q+GAQwdO4KBjBXXCdHNF6nIxomgMJrRDmG6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N0Aw4JNd; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=W4Ki46PhOLjhB26WROlrTU/keNK6x3QEgDU4975nBBn3nEPY3ze0ISJqnVDyCyoIxL5Y7GBETxa8/P3+2jXeAU7J8LOi87Lsj+8qaBJqjHMKFpfA4/7bH7RbMcpuz/NoK9ORNPCJIPhv8wjCvjpQNADyGsh2HMQzubx1pq+1p4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=StGdcGyI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N0Aw4JNd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="StGdcGyI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1717451772;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OWI8Av5qgSFzPq64lyUR9sWGRzYNmkWr6DlMVO9bubU=;
-	b=N0Aw4JNdgqU7MK0pLXf98o6C9mx0/iylISuKA7gUNMxn6JqtHeF9bNyUZj7WazjuzuKtnp
-	TBCs0V8zhuBvr1CIHzlYtEa+HX1HCCuE6bzZh7NfcISaskB3kkyFi/PARmPJHRsSOuPRzr
-	mFkrjt9cjsDvx+tNf7CauE0XzuA6H6k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-88qit2loOaiLAONRKz8MmA-1; Mon, 03 Jun 2024 17:56:09 -0400
-X-MC-Unique: 88qit2loOaiLAONRKz8MmA-1
+	bh=TWPGN/PZ9jdQvazGCAystLXhuoCD4EN7FycFhcF+Y+Y=;
+	b=StGdcGyI0JsaCc7jaH7RzrNiseL0S23Ze2bJ+V9AHI+9xl2A+FZ803uicEW2XgyYL7LaLc
+	W4npnF7Zmt3TCilBlsANL6fH3BZkTSv/q6gvM4PwdzVRFtlG0cYNsi5j2MrnZ0Akiqn5zb
+	lu0exRR+o+Vugbu341OGAPj1W36LPsM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-108-GYhw5mH5PuWL4r4xy2rTZA-1; Mon,
+ 03 Jun 2024 17:56:09 -0400
+X-MC-Unique: GYhw5mH5PuWL4r4xy2rTZA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0846101A525;
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3D963806701;
 	Mon,  3 Jun 2024 21:56:08 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C19E3200F074;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id D8630200E554;
 	Mon,  3 Jun 2024 21:56:08 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
@@ -47,9 +47,9 @@ Cc: gfs2@lists.linux.dev,
 	yukuai3@huawei.com,
 	linux-raid@vger.kernel.org,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 5/8] dlm: introduce DLM_LSFL_SOFTIRQ_SAFE
-Date: Mon,  3 Jun 2024 17:55:55 -0400
-Message-ID: <20240603215558.2722969-6-aahringo@redhat.com>
+Subject: [PATCH dlm/next 7/8] dlm: convert ls_cb_lock to rwlock
+Date: Mon,  3 Jun 2024 17:55:57 -0400
+Message-ID: <20240603215558.2722969-8-aahringo@redhat.com>
 In-Reply-To: <20240603215558.2722969-1-aahringo@redhat.com>
 References: <20240603215558.2722969-1-aahringo@redhat.com>
 Precedence: bulk
@@ -61,91 +61,114 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-This patch introduces the per lockspace DLM_LSFL_SOFTIRQ_SAFE flag to
-signal that the user is ready to handle ast/bast callbacks in
-softirq context. It is a reserved dlm kernel lockspace flag as seen from
-the user space yet. We not chose available 0x4 flag as this was recently
-flag that was dropped and should be not reused now. In future, if all
-users changed to use DLM_LSFL_SOFTIRQ_SAFE, we can hopefully drop this
-flag and dlm code functionality (dlm_callback workqueue) which belongs to
-it.
+Currently a parallel call of dlm_add_cb() can happen either from the DLM
+API call or from the DLM message receive context. In this case a rwlock
+could have a benefit when both context running into the same critical
+section at the same time. In future more parallel message receive
+context can happen at the same time so that this conversion of a per
+lockspace lock to a rwlock is more useful. In far future the whole
+delayed callbacks might not be necessary when the synchronization
+happens in a different way than it is now done.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lockspace.c       |  3 +++
- include/linux/dlm.h      | 17 ++++++++++++++++-
- include/uapi/linux/dlm.h |  2 ++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ fs/dlm/ast.c          | 21 +++++++++++++++------
+ fs/dlm/dlm_internal.h |  2 +-
+ fs/dlm/lockspace.c    |  2 +-
+ 3 files changed, 17 insertions(+), 8 deletions(-)
 
+diff --git a/fs/dlm/ast.c b/fs/dlm/ast.c
+index 742b30b61c19..ce8f1f5dfa0c 100644
+--- a/fs/dlm/ast.c
++++ b/fs/dlm/ast.c
+@@ -178,11 +178,20 @@ void dlm_add_cb(struct dlm_lkb *lkb, uint32_t flags, int mode, int status,
+ 	if (dlm_may_skip_callback(lkb, flags, mode, status, sbflags, NULL))
+ 		return;
+ 
+-	spin_lock_bh(&ls->ls_cb_lock);
++retry:
++	read_lock_bh(&ls->ls_cb_lock);
+ 	if (test_bit(LSFL_CB_DELAY, &ls->ls_flags)) {
++		read_unlock_bh(&ls->ls_cb_lock);
++		write_lock_bh(&ls->ls_cb_lock);
++		if (!test_bit(LSFL_CB_DELAY, &ls->ls_flags)) {
++			write_unlock_bh(&ls->ls_cb_lock);
++			goto retry;
++		}
++
+ 		rv = dlm_get_queue_cb(lkb, flags, mode, status, sbflags, &cb);
+ 		if (!rv)
+ 			list_add(&cb->list, &ls->ls_cb_delay);
++		write_unlock_bh(&ls->ls_cb_lock);
+ 	} else {
+ 		if (test_bit(LSFL_SOFTIRQ, &ls->ls_flags)) {
+ 			dlm_run_callback(ls->ls_global_id, lkb->lkb_id, mode, flags,
+@@ -195,8 +204,8 @@ void dlm_add_cb(struct dlm_lkb *lkb, uint32_t flags, int mode, int status,
+ 			if (!rv)
+ 				queue_work(ls->ls_callback_wq, &cb->work);
+ 		}
++		read_unlock_bh(&ls->ls_cb_lock);
+ 	}
+-	spin_unlock_bh(&ls->ls_cb_lock);
+ }
+ 
+ int dlm_callback_start(struct dlm_ls *ls)
+@@ -225,9 +234,9 @@ void dlm_callback_suspend(struct dlm_ls *ls)
+ 	if (!test_bit(LSFL_FS, &ls->ls_flags))
+ 		return;
+ 
+-	spin_lock_bh(&ls->ls_cb_lock);
++	write_lock_bh(&ls->ls_cb_lock);
+ 	set_bit(LSFL_CB_DELAY, &ls->ls_flags);
+-	spin_unlock_bh(&ls->ls_cb_lock);
++	write_unlock_bh(&ls->ls_cb_lock);
+ 
+ 	if (ls->ls_callback_wq)
+ 		flush_workqueue(ls->ls_callback_wq);
+@@ -245,7 +254,7 @@ void dlm_callback_resume(struct dlm_ls *ls)
+ 		return;
+ 
+ more:
+-	spin_lock_bh(&ls->ls_cb_lock);
++	write_lock_bh(&ls->ls_cb_lock);
+ 	list_for_each_entry_safe(cb, safe, &ls->ls_cb_delay, list) {
+ 		list_del(&cb->list);
+ 		if (test_bit(LSFL_SOFTIRQ, &ls->ls_flags))
+@@ -260,7 +269,7 @@ void dlm_callback_resume(struct dlm_ls *ls)
+ 	empty = list_empty(&ls->ls_cb_delay);
+ 	if (empty)
+ 		clear_bit(LSFL_CB_DELAY, &ls->ls_flags);
+-	spin_unlock_bh(&ls->ls_cb_lock);
++	write_unlock_bh(&ls->ls_cb_lock);
+ 
+ 	sum += count;
+ 	if (!empty) {
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index e299d8d4d971..5a7fbfec26fb 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -653,7 +653,7 @@ struct dlm_ls {
+ 
+ 	/* recovery related */
+ 
+-	spinlock_t		ls_cb_lock;
++	rwlock_t		ls_cb_lock;
+ 	struct list_head	ls_cb_delay; /* save for queue_work later */
+ 	struct task_struct	*ls_recoverd_task;
+ 	struct mutex		ls_recoverd_active;
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index be5dd5c990e5..51f9516b710d 100644
+index 5b3a4c32ac99..f6918f366faa 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -630,6 +630,9 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
- 			   void *ops_arg, int *ops_result,
- 			   dlm_lockspace_t **lockspace)
- {
-+	if (flags & DLM_LSFL_SOFTIRQ)
-+		return -EINVAL;
-+
- 	return __dlm_new_lockspace(name, cluster, flags, lvblen, ops,
- 				   ops_arg, ops_result, lockspace);
- }
-diff --git a/include/linux/dlm.h b/include/linux/dlm.h
-index c58c4f790c04..bacda9898f2b 100644
---- a/include/linux/dlm.h
-+++ b/include/linux/dlm.h
-@@ -35,6 +35,9 @@ struct dlm_lockspace_ops {
- 			      int num_slots, int our_slot, uint32_t generation);
- };
+@@ -449,7 +449,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	init_completion(&ls->ls_recovery_done);
+ 	ls->ls_recovery_result = -1;
  
-+/* only relevant for kernel lockspaces, will be removed in future */
-+#define DLM_LSFL_SOFTIRQ __DLM_LSFL_RESERVED0
-+
- /*
-  * dlm_new_lockspace
-  *
-@@ -55,6 +58,11 @@ struct dlm_lockspace_ops {
-  *   used to select the directory node.  Must be the same on all nodes.
-  * DLM_LSFL_NEWEXCL
-  *   dlm_new_lockspace() should return -EEXIST if the lockspace exists.
-+ * DLM_LSFL_SOFTIRQ
-+ *   dlm request callbacks (ast, bast) are softirq safe. Flag should be
-+ *   preferred by users. Will be default in some future. If set the
-+ *   strongest context for ast, bast callback is softirq as it avoids
-+ *   an additional context switch.
-  *
-  * lvblen: length of lvb in bytes.  Must be multiple of 8.
-  *   dlm_new_lockspace() returns an error if this does not match
-@@ -121,7 +129,14 @@ int dlm_release_lockspace(dlm_lockspace_t *lockspace, int force);
-  * call.
-  *
-  * AST routines should not block (at least not for long), but may make
-- * any locking calls they please.
-+ * any locking calls they please. If DLM_LSFL_SOFTIRQ for kernel
-+ * users of dlm_new_lockspace() is passed the ast and bast callbacks
-+ * can be processed in softirq context. Also some of the callback
-+ * contexts are in the same context as the DLM lock request API, users
-+ * must not hold locks while calling dlm lock request API and trying
-+ * to acquire this lock in the callback again, this will end in a
-+ * lock recursion. For newer implementation the DLM_LSFL_SOFTIRQ
-+ * should be used.
-  */
+-	spin_lock_init(&ls->ls_cb_lock);
++	rwlock_init(&ls->ls_cb_lock);
+ 	INIT_LIST_HEAD(&ls->ls_cb_delay);
  
- int dlm_lock(dlm_lockspace_t *lockspace,
-diff --git a/include/uapi/linux/dlm.h b/include/uapi/linux/dlm.h
-index e7e905fb0bb2..4eaf835780b0 100644
---- a/include/uapi/linux/dlm.h
-+++ b/include/uapi/linux/dlm.h
-@@ -71,6 +71,8 @@ struct dlm_lksb {
- /* DLM_LSFL_TIMEWARN is deprecated and reserved. DO NOT USE! */
- #define DLM_LSFL_TIMEWARN	0x00000002
- #define DLM_LSFL_NEWEXCL     	0x00000008
-+/* currently reserved due in-kernel use */
-+#define __DLM_LSFL_RESERVED0	0x00000010
- 
- 
- #endif /* _UAPI__DLM_DOT_H__ */
+ 	ls->ls_recoverd_task = NULL;
 -- 
 2.43.0
 
