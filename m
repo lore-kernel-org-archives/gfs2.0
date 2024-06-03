@@ -1,160 +1,132 @@
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E8171AB
-	for <gfs2@lists.linux.dev>; Sun,  2 Jun 2024 06:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E213C68E
+	for <gfs2@lists.linux.dev>; Mon,  3 Jun 2024 21:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717309224; cv=none; b=fy2cI5QV07f/T7t8VxE6fcIr8mR/aT9vH92GD26YO8RbV9vekgvRz9KQShdWQvodYXbk/VdNFozrGlMlw4YstiJz36VZ0hp/U7VMekPRwtlNA8HjPyVA63bbvAKyIW5hOVxv4YCdXL70gyMld/TrQDJp7gxwX0k8oULgqM0DkA8=
+	t=1717451773; cv=none; b=d75kgD7ZKMc5m7+5c8T7vQPjIEr507H+xNByHPJAFXnkA3cSJq9gwwql7RdHeHAMG0jEOeLLfdzhoRBtCDgCwBf7QQyUapneEgp4VKzR64BxJOOaRjOFbkpPyIRcEUSrofvWYf7QFNAJpk5oyrZRrQuFdIP4m2KB6K9fmjgjPZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717309224; c=relaxed/simple;
-	bh=wxwWOV1DHtZf+U/E0W6APZNj5PyrYS0cyMVG0sxJZLw=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=rmwbogLb5u4xKSFj9VEhv5OmKiM8xfT0HrEsyz6THdCIol+KyJZIENTbPSa06YCNLdxIY9+iUAH1VdcdHAq7Fyf/I/s7zaAEe+roP2gCwqV4P2Tiz1FxJWt26HPObqbCArdDo7FsdKqk1aMX3YSRzv5r5PlwKgVw0q/mDtN+gKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-7e1ea8608afso442552739f.2
-        for <gfs2@lists.linux.dev>; Sat, 01 Jun 2024 23:20:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717309222; x=1717914022;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=htGAco0bPsov3LqE3CBGEk0l7m4jTDd+5G2UFFbuNvo=;
-        b=kOCbXoyfM/B+oYSWjiude5vNjo8zrydvmFk8rwdR1EPM/31pXsBII9g5eBSRBx56qk
-         uEJuCxcZRx9cUd8VZuv9weJKSnQzIcX2Mf2U0wwTQRW97fn8RlHVv0QSGmPTe0AheN6N
-         8pvIMpWJS5IlOJZHZhYZrWQSKwLyNrScmCNzMWr1nljI7dzG/zibzMlaPPPGTI7a9a/l
-         sl7WxQkr/dn+5EcYLNQwBGc58iZ1wSdh250uNjMmFqLuLTcC+jyPlN4rvqGlTdvFRHCv
-         /jo3v1JFYMynsM0hJt6w28VeggahCeDbTiyh6CuzN3/jAjvfoPRi4bNXArLPtu2dj9TA
-         L8kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4oepZpMUSfXIkH4uPt+HJxH40CN2wEhqMhxCJxWn68q/HbLQeOPp9ll0uUahTKG1v3cbQOcm4vd2ZDv/4haiwt+Qk/w==
-X-Gm-Message-State: AOJu0Yy1ka9iQPfzjB3yjsANEQeTgcE5WAO7yjJptE2LDg7nqcq0cAw4
-	doVCqWcM0DBBILT8/ax+lUFHca93kJbf25WRKVaGZqN/HSn34edP7G9UKPIZrNWRh9nuStQxmEW
-	tD+9TbfoIIxiEOVz+E+q57r+pYCpxYqsOKuMKdEdcyZPMEQFtth4zCww=
-X-Google-Smtp-Source: AGHT+IFOpgdxpCnn1FbIK5ys+0pV5dixwDRHp6XHcl5Vy5xYm2nr0UlihlD3N8MS3QaxBZWNvtbGcS1XeNkqJ9+fdFOoWwNRICXL
+	s=arc-20240116; t=1717451773; c=relaxed/simple;
+	bh=uPyZhTczRbt6lqW73u9fuXTsDjMV6sRnxpZDbjct/CM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VpI+kZUDJTmRTvyj0n37z4w/+OakcWjXxGbEa8zgdR5AMyWKUvpdfmjybGYm+cigIMeWfWOzZyAUjNRbKRSR7O0qkK1GFWc8urOr0DK4mcx53H2ShseiSoyWiJmpx/7mG4w8OLXjkxPJuix4qfgk7dFUpPTjo58Jce59A33KoSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4c3WKVF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4c3WKVF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717451770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bShP03m/lI8RlVt6OnEiJn+8a8V/jVoXU4sKIi3R2B4=;
+	b=N4c3WKVFgYVnrhb/TVWVXW9ZJB32qvLtOyGvi0HHnSvZ+1o9++YgbfKv6wXZZ/1mzz9klt
+	QrcvoMv87Z3n1DIPN3IH0rJdJfPw8AdDSIKPdxuPl6y0lS+GjF5MRDD8GGw8BmjSKSS3LQ
+	ksSIhMy4mc4vlAP0DqthjmHMvfU6VKE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-xU-geX_dMD2EwJnmtGkG4g-1; Mon,
+ 03 Jun 2024 17:56:09 -0400
+X-MC-Unique: xU-geX_dMD2EwJnmtGkG4g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7CC33C025A1;
+	Mon,  3 Jun 2024 21:56:08 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AD40F200E575;
+	Mon,  3 Jun 2024 21:56:08 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	song@kernel.org,
+	yukuai3@huawei.com,
+	linux-raid@vger.kernel.org,
+	aahringo@redhat.com
+Subject: [PATCH dlm/next 3/8] dlm: use is_master() on checks if we are the master
+Date: Mon,  3 Jun 2024 17:55:53 -0400
+Message-ID: <20240603215558.2722969-4-aahringo@redhat.com>
+In-Reply-To: <20240603215558.2722969-1-aahringo@redhat.com>
+References: <20240603215558.2722969-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6425:b0:7de:de58:3b1f with SMTP id
- ca18e2360f4ac-7eafff5f893mr41162539f.4.1717309221955; Sat, 01 Jun 2024
- 23:20:21 -0700 (PDT)
-Date: Sat, 01 Jun 2024 23:20:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000002501960619e2366b@google.com>
-Subject: [syzbot] [gfs2?] BUG: corrupted list in gfs2_fill_super
-From: syzbot <syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Hello,
+There are checks if we are the master or not done by
+"r->res_master_nodeid == dlm_our_nodeid()" or unequal to check if we are
+not the master. There is a helper function is_master() for doing this
+kind of check. This patch replaces several checks of those by using the
+helper instead of using the mentioned condition check.
 
-syzbot found the following issue on:
-
-HEAD commit:    9d99040b1bc8 Add linux-next specific files for 20240529
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=166afa9a980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=735e953fee00ec19
-dashboard link: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=100817e6980000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f0deeb27b28b/disk-9d99040b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/5acd2205cee1/vmlinux-9d99040b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/222eebb6b9d8/bzImage-9d99040b.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/c09aa7fc8a5a/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: can't create logd thread: -4
-list_del corruption, ffff88806f0fe010->prev is LIST_POISON2 (dead000000000122)
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:61!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 PID: 5367 Comm: syz-executor.1 Not tainted 6.10.0-rc1-next-20240529-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:__list_del_entry_valid_or_report+0x106/0x140 lib/list_debug.c:59
-Code: e8 6f 50 d0 06 90 0f 0b 48 c7 c7 e0 03 20 8c 4c 89 fe e8 5d 50 d0 06 90 0f 0b 48 c7 c7 40 04 20 8c 4c 89 fe e8 4b 50 d0 06 90 <0f> 0b 48 c7 c7 a0 04 20 8c 4c 89 fe 48 89 d9 e8 36 50 d0 06 90 0f
-RSP: 0018:ffffc9000313f928 EFLAGS: 00010246
-RAX: 000000000000004e RBX: dead000000000122 RCX: 0a380b9a54d54400
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: 1ffff11005247900 R08: ffffffff8176b139 R09: 1ffff92000627ec0
-R10: dffffc0000000000 R11: fffff52000627ec1 R12: dffffc0000000000
-R13: ffff88806f0fe000 R14: ffff88806f0fdc10 R15: ffff88806f0fe010
-FS:  000055558b8fd480(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055776d320f00 CR3: 000000002dc2c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:124 [inline]
- __list_del_entry include/linux/list.h:215 [inline]
- list_del_rcu include/linux/rculist.h:157 [inline]
- destroy_workqueue+0x7b3/0xc40 kernel/workqueue.c:5859
- gfs2_fill_super+0x12a4/0x2520 fs/gfs2/ops_fstype.c:1311
- get_tree_bdev+0x3f7/0x570 fs/super.c:1615
- gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1330
- vfs_get_tree+0x90/0x2a0 fs/super.c:1780
- do_new_mount+0x2be/0xb40 fs/namespace.c:3352
- do_mount fs/namespace.c:3692 [inline]
- __do_sys_mount fs/namespace.c:3898 [inline]
- __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3875
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f40a8e7e5ea
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 09 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe7139d798 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007ffe7139d820 RCX: 00007f40a8e7e5ea
-RDX: 0000000020000200 RSI: 00000000200002c0 RDI: 00007ffe7139d7e0
-RBP: 0000000020000200 R08: 00007ffe7139d820 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000200002c0
-R13: 00007ffe7139d7e0 R14: 0000000000037f59 R15: 0000000020000140
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__list_del_entry_valid_or_report+0x106/0x140 lib/list_debug.c:59
-Code: e8 6f 50 d0 06 90 0f 0b 48 c7 c7 e0 03 20 8c 4c 89 fe e8 5d 50 d0 06 90 0f 0b 48 c7 c7 40 04 20 8c 4c 89 fe e8 4b 50 d0 06 90 <0f> 0b 48 c7 c7 a0 04 20 8c 4c 89 fe 48 89 d9 e8 36 50 d0 06 90 0f
-RSP: 0018:ffffc9000313f928 EFLAGS: 00010246
-RAX: 000000000000004e RBX: dead000000000122 RCX: 0a380b9a54d54400
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: 1ffff11005247900 R08: ffffffff8176b139 R09: 1ffff92000627ec0
-R10: dffffc0000000000 R11: fffff52000627ec1 R12: dffffc0000000000
-R13: ffff88806f0fe000 R14: ffff88806f0fdc10 R15: ffff88806f0fe010
-FS:  000055558b8fd480(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9b37cbc000 CR3: 000000002dc2c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/dlm/lock.c     | 9 ++++-----
+ fs/dlm/recoverd.c | 2 +-
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 3195d0b96c74..a41a6fa2123b 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -242,7 +242,7 @@ static inline int is_granted(struct dlm_lkb *lkb)
+ static inline int is_remote(struct dlm_rsb *r)
+ {
+ 	DLM_ASSERT(r->res_master_nodeid != 0, dlm_print_rsb(r););
+-	return r->res_master_nodeid != dlm_our_nodeid();
++	return !is_master(r);
+ }
+ 
+ static inline int is_process_copy(struct dlm_lkb *lkb)
+@@ -4025,7 +4025,7 @@ static int receive_request(struct dlm_ls *ls, const struct dlm_message *ms)
+ 
+ 	lock_rsb(r);
+ 
+-	if (r->res_master_nodeid != dlm_our_nodeid()) {
++	if (!is_master(r)) {
+ 		error = validate_master_nodeid(ls, r, from_nodeid);
+ 		if (error) {
+ 			unlock_rsb(r);
+@@ -4447,8 +4447,7 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 			  from_nodeid, result, r->res_master_nodeid,
+ 			  r->res_dir_nodeid, r->res_first_lkid, r->res_name);
+ 
+-		if (r->res_dir_nodeid != dlm_our_nodeid() &&
+-		    r->res_master_nodeid != dlm_our_nodeid()) {
++		if (r->res_dir_nodeid != dlm_our_nodeid() && !is_master(r)) {
+ 			/* cause _request_lock->set_master->send_lookup */
+ 			r->res_master_nodeid = 0;
+ 			lkb->lkb_master_nodeid = 0;
+@@ -4462,7 +4461,7 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 		} else {
+ 			_request_lock(r, lkb);
+ 
+-			if (r->res_master_nodeid == dlm_our_nodeid())
++			if (is_master(r))
+ 				confirm_master(r, 0);
+ 		}
+ 		break;
+diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
+index 06959b128bd0..98d83f90a0db 100644
+--- a/fs/dlm/recoverd.c
++++ b/fs/dlm/recoverd.c
+@@ -34,7 +34,7 @@ static int dlm_create_masters_list(struct dlm_ls *ls)
+ 
+ 	read_lock_bh(&ls->ls_rsbtbl_lock);
+ 	list_for_each_entry(r, &ls->ls_keep, res_rsbs_list) {
+-		if (r->res_master_nodeid != dlm_our_nodeid())
++		if (!is_master(r))
+ 			continue;
+ 
+ 		list_add(&r->res_masters_list, &ls->ls_masters_list);
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
