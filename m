@@ -1,133 +1,160 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258F21C69A
-	for <gfs2@lists.linux.dev>; Thu,  6 Jun 2024 02:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3993A19B3EC
+	for <gfs2@lists.linux.dev>; Thu,  6 Jun 2024 14:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717642090; cv=none; b=Pn30GUjnuYXDApgq81PV4ui6FjDoHkMkjQbaQBAxJD+v/VHFH1QGkkKlFrZg2KVC6PqZCjkdz1Oyawp0Jf216XPNYNt9No9SN/E4F5gNXdWa74+PJVIvdh2vRZ97p6E+vLVkVmzcbAXkPIO7B5f9u+YrK4jmm79133jZFoiKOOY=
+	t=1717684453; cv=none; b=at7FdhxBg3aglRU/jMLB93LoZmyRmPzZIbfyra8K+Bj4kc3WdlZ04ANBUzWUN5Qiz0gCJwiRJaUPbYj2BopV1j1FweJZtJVPgOfO4IlfD5aM2xEbsaH8FlPkUf2R0pdVgu9k7iPzGrq5rh7VHsAsqXWbpPhJHM7NuyJkJVZBBEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717642090; c=relaxed/simple;
-	bh=5NSZrFpB/GonGD46gDAy0SbbwmVebNNq7DJjorbO0dk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rlQwKWqnHK7ZPlMz+bRU/4R8hlkUwsuIZfUgzhWUrIWoKTWPwFALk6rwTP2FmxwGUZ8T1rL8mhR7tdw4BEX8ijbS503BczETx+8yJA6gpUvCf4wg25CPecvPmQWyYmBnGuVgdpHRU0HwAUY42YhLlzdGq71MHQfXKYf/9ny/Zi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Og5AyO3B; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1717684453; c=relaxed/simple;
+	bh=w1/NkoTv8okh3b4ZpKGtzQX3QsBOwjLqB8iAJ61xN4k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5xkASavvyNacQyJiznxz9Q6S4ldMMqE15WsJxQZnoQs/g4lhCAffThNpoBCGlLhm1j08GNbMQjo7MFGmoXAQq7w0udZLP9HPUX5oZOoGDsiWOGzLtDcCZG2cxIxs1yBo6f/C0v/P3i9ZvVNs8DcSwhuEYL+FY6fFhJcsVfpJCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H/lHyqjW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Og5AyO3B"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eaa89464a3so4938111fa.3
-        for <gfs2@lists.linux.dev>; Wed, 05 Jun 2024 19:48:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1717642085; x=1718246885; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N0jfz+nnR88SF/3jl+2qqnrwZqfMXV0m/DMzFLp5rwQ=;
-        b=Og5AyO3ByGhFbdUQ90d+Y3WvA92/QVm3Ov1zmhmcu7MwN6bmkX9aYQzYBecpjmN72m
-         nS+DHmWpcOuLEdi+zQsJNWGKBcxyJe0o0gEq9juRDC+k2XO6wN7f1dXlPkT+zWQLcLZO
-         P7dvBqSKV6uu6mzH64nJEq9IhI0QzssQdiqkhGyx+/N1tgYXTGxZVSkM8GbcM2fBCD6q
-         06ihYDoi22/ZvHr20fkestLl+b2mQuYCmVXZISr9DMpikzFbxqsqYoGqoyAXhOawQ8Mr
-         afVHHtsvC+72/800S2IK14Mnolg7mia7HSBA7RO07ySTz6Fyza7Xw8qPm0B00PeHsjAy
-         B4Uw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H/lHyqjW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717684451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w1/NkoTv8okh3b4ZpKGtzQX3QsBOwjLqB8iAJ61xN4k=;
+	b=H/lHyqjWdYZhlietGvYqvGWBLB0MefuKtuqmgm41oY4SvIOEwMnzqtZtzmfpJFysF4/NWb
+	S/SbHeUGo1PwnZHCkrJXTQ7/6Z1MAZsWbdUUiqVLmuUssZbzUzxbZF6gQxYqpUq50rp+Tz
+	KC2SwMY7hnNPoqC/xYLfirFB2VtXmm4=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-ZCBjpyXPMhWv3e-_-0iEjg-1; Thu, 06 Jun 2024 10:34:09 -0400
+X-MC-Unique: ZCBjpyXPMhWv3e-_-0iEjg-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ea8f9159f4so8024501fa.0
+        for <gfs2@lists.linux.dev>; Thu, 06 Jun 2024 07:34:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717642085; x=1718246885;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N0jfz+nnR88SF/3jl+2qqnrwZqfMXV0m/DMzFLp5rwQ=;
-        b=cTzE5/fdOzcIOMft2nsHJaXICNz2PXxLTUGvaK3BEij35J+ztrpsBrF1oHN89e+Lur
-         DgWh/hR/s2KmS11NnxZ78Csblcy0LZg8ywma5aZrpYV0JXYnvyokjrSXvo/aV6V3GPas
-         daSkmREQqbvbYap5iA/HaIPIjaWnk5HW0y6MOwiFylRSJ8JEwM/4dbyaoJ8B0unbKr97
-         +8OLofbnyS4qbx/N+YmvXaW5bHRFVyGWrNVwMv5PzM3yZgeX20Nd+4zZttyYfhgOMpfX
-         mg1etFjPG4bSM+DhkT9tzHZqP1H4EyflYj6CGZn6FSYyFSoZ/Q87ttNUtdeSjPlq3x47
-         wDIg==
-X-Gm-Message-State: AOJu0YzSCnfrmCssIJVWm9X6FytqAhPm0gqmrfWWIMl7l79UcjneRAkP
-	a0OPqDRdeekjmeYMRcCdfG3MwJPskEmpF7DuYwqMqcXCRb2H2JmYs3HPKpyEey8=
-X-Google-Smtp-Source: AGHT+IGazauN7aYw4PWByspyMiWDy+JywTjNvJ4Lkfm0DiySPRKfR6McZKYIQ8XSsbXI4yyAp55L5Q==
-X-Received: by 2002:a05:651c:2224:b0:2ea:8188:5bdf with SMTP id 38308e7fff4ca-2eac7a52b99mr29005151fa.36.1717642085173;
-        Wed, 05 Jun 2024 19:48:05 -0700 (PDT)
-Received: from [10.202.32.28] ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c2806cfa62sm2240261a91.48.2024.06.05.19.48.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jun 2024 19:48:04 -0700 (PDT)
-Message-ID: <41da824f-f3e5-429f-a701-5feddf8b2ed1@suse.com>
-Date: Thu, 6 Jun 2024 10:48:00 +0800
+        d=1e100.net; s=20230601; t=1717684448; x=1718289248;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w1/NkoTv8okh3b4ZpKGtzQX3QsBOwjLqB8iAJ61xN4k=;
+        b=r+zqzrBMoZoZReOXSqsxmI7cPbhVfdrOBbxR1wQpzZb5+lg0M0gEstv3S+L9aAx1oy
+         YLTotdS+TY9a7L0KfyEEhwUFKisB1eWLMMinZ3uTsOk5GrPwVald5eN1OUOG43kldXcy
+         ttqPFl//U/D74hZEIxpcmIoxWbZk4pFYcvZc7n+s4IGGVjOm/hcW0R8whl50f6Jdis/I
+         oBMEh95p9g2tAfNzHB+KsQOL0DHqAOUKHNN1Ec8HKv/zS/p+4Ty9e0SCOsu0kqAkFBXs
+         AlzzzBIkiu38Z/acHaKlwzG7FH6VVSHNkXvleHr5AlredGIZRmIIHRyGlBn15YKypv/I
+         VpMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXip6oEaPDlC/62yCbiKHJ7DLkJKnFse9svZXYUYEdQ9B6J1TFgB1w0qP60jOQb2yKZTnPHC29TnJ7D9I0CKFANKsUQZA==
+X-Gm-Message-State: AOJu0Yxzdzu5AIqEZmI7jfK3Kh4EVsKqDOmsY3kU957z2Jj1liY5uACO
+	RZhr2VSR38lCUN+XsLdtHZPdSUD4uFjt8FlrYHMrQWuARg9AevO40GGHDIv2VRqMdqSMscIplwt
+	VNQv/jvq6/MKYA8G6jbp4qfR8zn5fyrIo4BFu7jiUqH3cwzWsgIW1Awaz9kW30j0xcZeh9NnGpU
+	2YOZJXwKyRLBfa9FWKN3p337mIqg==
+X-Received: by 2002:a05:651c:2320:b0:2ea:79ab:6709 with SMTP id 38308e7fff4ca-2eac79ed93emr31221421fa.31.1717684448266;
+        Thu, 06 Jun 2024 07:34:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT3EWEpFlehIA5VQcmw82susmEa5mxX+JAN45jlMuv4WHB/jNJQcpr0eAhspVHZW4mCX0boPUjP5PU5/VPpdM=
+X-Received: by 2002:a05:651c:2320:b0:2ea:79ab:6709 with SMTP id
+ 38308e7fff4ca-2eac79ed93emr31221281fa.31.1717684447910; Thu, 06 Jun 2024
+ 07:34:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH dlm/next 8/8] md-cluster: use DLM_LSFL_SOFTIRQ for
- dlm_new_lockspace()
-To: Alexander Aring <aahringo@redhat.com>, teigland@redhat.com,
- yukuai3@huawei.com, song@kernel.org
-Cc: gfs2@lists.linux.dev, linux-raid@vger.kernel.org
-References: <20240603215558.2722969-1-aahringo@redhat.com>
- <20240603215558.2722969-9-aahringo@redhat.com>
- <CAK-6q+i18_oHfdh6Odfidi0y4hWiR9bn_svWf2BwPqnLwdEFGQ@mail.gmail.com>
-Content-Language: en-US
-From: Heming Zhao <heming.zhao@suse.com>
-In-Reply-To: <CAK-6q+i18_oHfdh6Odfidi0y4hWiR9bn_svWf2BwPqnLwdEFGQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240603215558.2722969-1-aahringo@redhat.com> <20240603215558.2722969-9-aahringo@redhat.com>
+ <CAK-6q+i18_oHfdh6Odfidi0y4hWiR9bn_svWf2BwPqnLwdEFGQ@mail.gmail.com> <41da824f-f3e5-429f-a701-5feddf8b2ed1@suse.com>
+In-Reply-To: <41da824f-f3e5-429f-a701-5feddf8b2ed1@suse.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Thu, 6 Jun 2024 10:33:56 -0400
+Message-ID: <CAK-6q+j0rbQ2CZ9y9wxZBUxsgGV03nF+ahVZPJEQPoUW-Mc8nQ@mail.gmail.com>
+Subject: Re: [PATCH dlm/next 8/8] md-cluster: use DLM_LSFL_SOFTIRQ for dlm_new_lockspace()
+To: Heming Zhao <heming.zhao@suse.com>, yukuai3@huawei.com, song@kernel.org
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-raid@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/6/24 02:54, Alexander Aring wrote:
-> Hi,
-> 
-> On Mon, Jun 3, 2024 at 5:56 PM Alexander Aring <aahringo@redhat.com> wrote:
->>
->> Recently the DLM subsystem introduced the flag DLM_LSFL_SOFTIRQ for
->> dlm_new_lockspace() to signal the capability to handle DLM ast/bast
->> callbacks in softirq context to avoid an additional context switch due
->> the DLM callback workqueue.
->>
->> The md-cluster implementation only does synchronized calls above the
->> async DLM API. That synchronized API should may be also offered by DLM,
->> however it is very simple as md-cluster callbacks only does a complete()
->> call for their wait_for_completion() wait that is occurred after the
->> async DLM API call. This patch activates the recently introduced
->> DLM_LSFL_SOFTIRQ flag that allows that the DLM callbacks are executed in
->> a softirq context that md-cluster can handle. It is reducing a
->> unnecessary context workqueue switch and should speed up DLM in some
->> circumstance.
->>
-> 
-> Can somebody with a md-cluster environment test it as well? All I was
-> doing was (with a working dlm_controld cluster env):
-> 
-> mdadm --create /dev/md0 --bitmap=clustered --metadata=1.2
-> --raid-devices=2 --level=mirror /dev/sda /dev/sdb
-> 
-> sda and sdb are shared block devices on each node.
-> 
-> Create a /etc/mdadm.conf with the content mostly out of:
-> 
-> mdadm --detail --scan
-> 
-> on each node.
-> 
-> Then call mdadm --assemble on all nodes where not "mdadm --create ..." happened.
-> I hope that is the right thing to do and I had with "dlm_tool ls" a
-> UUID as a lockspace name with some md-cluster locks being around.
+Hi Heming,
 
-The above setup method is correct.
-SUSE doc [1] provides more details on assembling the clustered array.
+On Wed, Jun 5, 2024 at 10:48=E2=80=AFPM Heming Zhao <heming.zhao@suse.com> =
+wrote:
+>
+> On 6/6/24 02:54, Alexander Aring wrote:
+> > Hi,
+> >
+> > On Mon, Jun 3, 2024 at 5:56=E2=80=AFPM Alexander Aring <aahringo@redhat=
+.com> wrote:
+> >>
+> >> Recently the DLM subsystem introduced the flag DLM_LSFL_SOFTIRQ for
+> >> dlm_new_lockspace() to signal the capability to handle DLM ast/bast
+> >> callbacks in softirq context to avoid an additional context switch due
+> >> the DLM callback workqueue.
+> >>
+> >> The md-cluster implementation only does synchronized calls above the
+> >> async DLM API. That synchronized API should may be also offered by DLM=
+,
+> >> however it is very simple as md-cluster callbacks only does a complete=
+()
+> >> call for their wait_for_completion() wait that is occurred after the
+> >> async DLM API call. This patch activates the recently introduced
+> >> DLM_LSFL_SOFTIRQ flag that allows that the DLM callbacks are executed =
+in
+> >> a softirq context that md-cluster can handle. It is reducing a
+> >> unnecessary context workqueue switch and should speed up DLM in some
+> >> circumstance.
+> >>
+> >
+> > Can somebody with a md-cluster environment test it as well? All I was
+> > doing was (with a working dlm_controld cluster env):
+> >
+> > mdadm --create /dev/md0 --bitmap=3Dclustered --metadata=3D1.2
+> > --raid-devices=3D2 --level=3Dmirror /dev/sda /dev/sdb
+> >
+> > sda and sdb are shared block devices on each node.
+> >
+> > Create a /etc/mdadm.conf with the content mostly out of:
+> >
+> > mdadm --detail --scan
+> >
+> > on each node.
+> >
+> > Then call mdadm --assemble on all nodes where not "mdadm --create ..." =
+happened.
+> > I hope that is the right thing to do and I had with "dlm_tool ls" a
+> > UUID as a lockspace name with some md-cluster locks being around.
+>
+> The above setup method is correct.
+> SUSE doc [1] provides more details on assembling the clustered array.
+>
 
-[1]: https://documentation.suse.com/fr-fr/sle-ha/15-SP5/html/SLE-HA-all/cha-ha-cluster-md.html#sec-ha-cluster-md-create
+yea, I saw that and mostly cut it down into the necessary steps in my
+development setup.
 
-> 
-> To bring this new flag upstream, would it be okay to get this through
-> dlm-tree? I am requesting here for an "Acked-by" tag from the md
-> maintainers.
-> 
+Thanks for confirming I did something right here.
 
-I compiled & tested the dlm-tree [2] with SUSE CI env, and didn't see these
-patches introduce new issue.
+> [1]: https://documentation.suse.com/fr-fr/sle-ha/15-SP5/html/SLE-HA-all/c=
+ha-ha-cluster-md.html#sec-ha-cluster-md-create
+>
+> >
+> > To bring this new flag upstream, would it be okay to get this through
+> > dlm-tree? I am requesting here for an "Acked-by" tag from the md
+> > maintainers.
+> >
+>
+> I compiled & tested the dlm-tree [2] with SUSE CI env, and didn't see the=
+se
+> patches introduce new issue.
+>
 
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git/log/?h=next
+Thanks for doing that. So that means you tried the dlm-tree with this
+patch series applied?
 
-Thanks,
-Heming
+Song or Yu, can I get an "Acked-by" from you and an answer if it is
+okay that this md-cluster.c patch goes upstream via dlm-tree?
+
+Thanks.
+
+- Alex
+
