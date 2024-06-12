@@ -1,98 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C0E381D1;
-	Wed, 12 Jun 2024 21:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127A8175A5
+	for <gfs2@lists.linux.dev>; Wed, 12 Jun 2024 21:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718226642; cv=none; b=unwALY3nChCQ4TJL2QTm1d4wAZMOjlzEps4wFLs+2mZtn69DpJxx4ssp8Qbm1Py1TVvf3d2Tshq9JNl05+4n6Mw8eQLvzQ6B/zuzd5fH7hEnOzpdpyhqtYwXq4f1K0UJlrAITEEMVnAQm82e32yKyf9oOnF1sfGXGCJuPzakm8w=
+	t=1718226966; cv=none; b=Zb21SVgA+xNHZSJAiw3X7TqYPtzM9sp6jylzQz+giNUEA5y8EFk7C9P6G7R/Qu0bAlqTz2x9Fb/t9pAv3V+fp28BArjAQyYrgLw2eeoxYylzbVPA94HGkoKl7BWOzyhP/0v3NOi2cw2s0Nd8vPv4a22j5NCIMVn07AnsiM9XC0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718226642; c=relaxed/simple;
-	bh=dqLO371b1vPErmMYi4CgWyvSUCQn8of4qGwTdEMzEhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cYZRf0uCnWnQSM6TjSEoHLMs122iF4srQ6UIWWY6tlZGY2zzjxOBufoGz5aBDXYlfPzjFuT64Rc6jiFc5i6DgyX6PG2Cyg8FM1oAUJpPCgT4/XXJzf+IgFdGvf3RBq/mQfjFrVBVcScBUyPyUrUzOw1NG4rXyIVHMVCeFjq0yt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIXhgPtR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718226966; c=relaxed/simple;
+	bh=g72ti1yIsLXYl89T+UD2NjTGWOqS23FpiobuB6rxjdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K9uqTH/PdOxNNBzPbjs5VrJFbykZsV96QytkEsTa9RZ9cObD5J+bSS1iJAo2M1GlW1KU1gbGV5y6YMQVGLHzE7jdGx/gTIaFqM+KQghu0Z5YduMG2OXddE4cKVLzjL0dhiXY+jI1ZZlrI8u6noxI3G8j90N7GwKZlTtgsAAYidI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KVmBdMHa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIXhgPtR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2F4C116B1;
-	Wed, 12 Jun 2024 21:10:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718226641;
-	bh=dqLO371b1vPErmMYi4CgWyvSUCQn8of4qGwTdEMzEhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DIXhgPtR71kSyV6/epJDyqhWKsEQEX5yhhZda5PPHpZ+0ARYCCiAtnRSNR1FnlC7P
-	 nPXkJq/SepET7ym8thpR7yujnnQ7ZHn3iRsMoIfGobXMy1OJxAIzKKtD9ftmAGl8KN
-	 kUltI84OFlF1WwDhedAy43xrdUjP8vTB+P26BCEb3a2HConB/TZUMHytqEARmpH8ln
-	 QCY5BssR28eFz1T409YzepxwR+K2C6Zp7Uo+S9MDDNObxIJC8bTjFUTi06cTVT7OeC
-	 lTnaI5hdCh11uuYSK3xj94QxhxrNjmNwqI7uE46+z3EGyJoGClyLogjejeb9r2ihDk
-	 QMYN4T27nFHOw==
-Date: Wed, 12 Jun 2024 14:10:40 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: John Garry <john.g.garry@oracle.com>
-Cc: axboe@kernel.dk, tytso@mit.edu, dchinner@redhat.com,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.com,
-	chandan.babu@oracle.com, hch@lst.de, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-xfs@vger.kernel.org, catherine.hoang@oracle.com,
-	ritesh.list@gmail.com, mcgrof@kernel.org,
-	mikulas@artax.karlin.mff.cuni.cz, agruenba@redhat.com,
-	miklos@szeredi.hu, martin.petersen@oracle.com
-Subject: Re: [PATCH v4 01/22] fs: Add generic_atomic_write_valid_size()
-Message-ID: <20240612211040.GJ2764752@frogsfrogsfrogs>
-References: <20240607143919.2622319-1-john.g.garry@oracle.com>
- <20240607143919.2622319-2-john.g.garry@oracle.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KVmBdMHa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718226963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iRviJC7KbfnutAvHLaeB9vB4Zxu7ogspktt7BB+WUrk=;
+	b=KVmBdMHa51/131LYGtTWoNzRBj/OLHbWqAIlRlf/56HEpmujfzi7Ks+qX5XgSBnzdmfUHL
+	ilpKa9uUH2/lNWDyZF8Au71hOydvCuDdzSgyS0R4nSRAUc7aQlga5nWQoFlJmCz2xOzc4q
+	eCDYiVBPqfCcCnaebLMSqs9ndsKzK5A=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-X3VMwR_LOOqTM4PUu-WXbQ-1; Wed,
+ 12 Jun 2024 17:16:00 -0400
+X-MC-Unique: X3VMwR_LOOqTM4PUu-WXbQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6809C1956096
+	for <gfs2@lists.linux.dev>; Wed, 12 Jun 2024 21:15:59 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC84D19560AA;
+	Wed, 12 Jun 2024 21:15:58 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCH dlm/next] dlm: remove DLM_LSFL_SOFTIRQ from exflags
+Date: Wed, 12 Jun 2024 17:15:56 -0400
+Message-ID: <20240612211556.3539617-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240607143919.2622319-2-john.g.garry@oracle.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Fri, Jun 07, 2024 at 02:38:58PM +0000, John Garry wrote:
-> Add a generic helper for FSes to validate that an atomic write is
-> appropriately sized (along with the other checks).
-> 
-> Signed-off-by: John Garry <john.g.garry@oracle.com>
-> ---
->  include/linux/fs.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 069cbab62700..e13d34f8c24e 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3645,4 +3645,16 @@ bool generic_atomic_write_valid(loff_t pos, struct iov_iter *iter)
->  	return true;
->  }
->  
-> +static inline
-> +bool generic_atomic_write_valid_size(loff_t pos, struct iov_iter *iter,
-> +				unsigned int unit_min, unsigned int unit_max)
-> +{
-> +	size_t len = iov_iter_count(iter);
-> +
-> +	if (len < unit_min || len > unit_max)
-> +		return false;
-> +
-> +	return generic_atomic_write_valid(pos, iter);
-> +}
+The DLM rcom handling has a check that all exflags are the same for the
+whole lockspace membership nodes. There are some flags that requires
+such handling, however DLM_LSFL_SOFTIRQ does not require this handling
+and it should be backwards compatibility with other lockspaces that does
+not set this flag.
 
-Now that I look back at "fs: Initial atomic write support" I wonder why
-not pass the iocb and the iov_iter instead of pos and the iov_iter?
-And can these be collapsed into a single generic_atomic_write_checks()
-function?
+Fixes: f328a26eeb53 ("dlm: introduce DLM_LSFL_SOFTIRQ_SAFE")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/lockspace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---D
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index 7c4f45ad2245..1848cbbc96a9 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -413,7 +413,8 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	/* ls_exflags are forced to match among nodes, and we don't
+ 	 * need to require all nodes to have some flags set
+ 	 */
+-	ls->ls_exflags = (flags & ~(DLM_LSFL_FS | DLM_LSFL_NEWEXCL));
++	ls->ls_exflags = (flags & ~(DLM_LSFL_FS | DLM_LSFL_NEWEXCL |
++				    DLM_LSFL_SOFTIRQ));
+ 
+ 	INIT_LIST_HEAD(&ls->ls_slow_inactive);
+ 	INIT_LIST_HEAD(&ls->ls_slow_active);
+-- 
+2.43.0
 
-> +
->  #endif /* _LINUX_FS_H */
-> -- 
-> 2.31.1
-> 
-> 
