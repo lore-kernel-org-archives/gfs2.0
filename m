@@ -1,56 +1,56 @@
-Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
+Received: from mail-yw1-f195.google.com (mail-yw1-f195.google.com [209.85.128.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0097D757EA
-	for <gfs2@lists.linux.dev>; Sun, 16 Jun 2024 18:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B0F1CA85
+	for <gfs2@lists.linux.dev>; Sun, 16 Jun 2024 18:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718562279; cv=none; b=bfbf2E2WVnWqUeDgPkYaXbSym+rbNgmmLAaJq2+8vPq3ayXrlgou518TbxPhnXrBv3p02gxhMDN4+nBQW0/mM9pj9Dj+UTMhon2O+/Crr3ndxe669ssS6XuCx1P51Mp/vjYik+dPhgD17JKVBfmkSHrzyuXWFkuq/vd0BQpRASs=
+	t=1718563179; cv=none; b=nqdUpXuIZq2uq568dMpVUKmc84Q9+BBePFey9rp9J2i3kDZQZJrke6YJtEOcTYMTlwHgmKsbe6bpoF0Z/JDvDT6y7X/97qtZnQ7bfDZcTw5ekABFQgU/bj88/AWBBCD/s5NjhKtCslPx/Ntl4jYYPCAbs6CMF80wFEY4SEKByd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718562279; c=relaxed/simple;
-	bh=9aQbROJJacasVHB0PYfd7B7a04QeCVBjogCcmr26hGY=;
+	s=arc-20240116; t=1718563179; c=relaxed/simple;
+	bh=/G4aNnkHL8BKKpL0cwbl5gPc5z1AVOIpFwjJYrxzmXk=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=KjuYKrmSuJL4cmIm2j1Jke4JxEsFKMl1f76dAYqybwuE2aDlGk9eOvUL5ZKFPk+8kysdHd2tYu9zYWF/q06mvP+cHDUfXveFYeOX04tFjg95OkBdHUHA5e5D/70FjX9M6DWfiyOIvxi7kcG9T72U3CUOOoeR2NdltK9049K0JW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bnNMAR4C; arc=none smtp.client-ip=209.85.222.193
+	 Message-Id:References:To; b=sSBOG35sX3hL9vEmcXLIhx8pKdFn7n54iwi2+6DxEBUdfoaklod9ruFoLxqqHMnJ/aCZ1QZiR4WMw9RZXUwxprjVpvZAs1q6SJfLRtUcTh9Z4ef8MTiLtfrwZijupLTOZU6hO0xvg+rcrDrL/183zHMAhyHFx6IP/IeyasTpXIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VBCgTt9j; arc=none smtp.client-ip=209.85.128.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bnNMAR4C"
-Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-795524bb6d9so245124585a.0
-        for <gfs2@lists.linux.dev>; Sun, 16 Jun 2024 11:24:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VBCgTt9j"
+Received: by mail-yw1-f195.google.com with SMTP id 00721157ae682-6325b04c275so20257217b3.3
+        for <gfs2@lists.linux.dev>; Sun, 16 Jun 2024 11:39:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718562276; x=1719167076; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1718563176; x=1719167976; darn=lists.linux.dev;
         h=to:references:message-id:content-transfer-encoding:cc:date
          :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OA5RrKHq6U5NOhutDc9FWGoFGxMbg9Hkcrkyxe1CR6Q=;
-        b=bnNMAR4C5WQbrIhbDkYEW/cIcDOQFNysXg29YGhC/LXlsNIc6qjSKBn3v+3JJEYbvy
-         spFsmk5Z1jDG/H2d9lmuTFdqv28Atur1t9yIqVOMwLBuXTJJFYfJQ9DKaQ6G0hZys9Og
-         uSai+RcI9rjHVhkZagZqwK90HmtAPE3gg7YosXkOwNWxF+WsP3I64stjizn1y2q9HVHo
-         A9u0FMGkjX/5MNqcPyEnjoQD+kwbXWxBy99wJE5FpXM+2I8mfDnYGCD527kwaW5eLQgZ
-         WiMxqwNE/T3NtaJzX9XJXxX7LOf3BYcKsGR4BzbAviH1ecla0wiUh265UqJx4EEc70IV
-         vv7A==
+        bh=2dBSl06qJo9WqlcLCJnHJhoAsogpiHmjtS8y3UqH/+k=;
+        b=VBCgTt9ju8XQd7XL4NjDbOX1k4EdGnkQvKG+O9mjLEVyRfijSlYMvfNNZEywTk3vz+
+         15xkXi86NQify24HMUA2dA0FCjLlM1nqgSqykUzh/vtSVhybs0rty2IOQqYIc/CwyaWd
+         ZZe+7QlwGdzEIs+wHin93nIgMrF5ygFr2XIsesjLNWYSD5Wp4abK/YQn9mAi0qThAEaa
+         /+r5o5h9G0d8oW8jtWkhINRauXGvlup7OcEWoDcOAFgH5WTLPfngUZikwG5tRJ76cDfv
+         KxdvBfYYuXDYNL4/pd1lGW6hCXBbH2tBtjDlG42aNJMs4UVzv7xE9VjfgF+8G9bV8wX3
+         EcvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718562276; x=1719167076;
+        d=1e100.net; s=20230601; t=1718563176; x=1719167976;
         h=to:references:message-id:content-transfer-encoding:cc:date
          :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OA5RrKHq6U5NOhutDc9FWGoFGxMbg9Hkcrkyxe1CR6Q=;
-        b=r8ySiLpuUjxJEIsWRCOE64a3wSjyfMqMLrMB+ntRik7YN2ueUP28IvmADtgwdXMdvN
-         IWwLxf2wjlHBkigPzogjw90GD/+rDXauSnMnqcY5zWFLEwyvr15Gk9u6lS4zR+NT36DA
-         iucE0cpBwxCn/42LW6QB2XNMzKnoFLxs+Fvjdd8Htp+U5aVJ3Mckdv65isoSwEKLjz17
-         qk09zT/oNaL/aKIpBrYZW0uhIGP8kt0nmzBaluxkPDlXQsPZlz8RbL9weIVHIkpjBnBP
-         MH3TxEJ3WNpMmgSPOqe13bIMGbiTnEfoHJRFYh1fl01H14QkKmfd+yPcqyoJtIXD0+kJ
-         qOYw==
-X-Gm-Message-State: AOJu0YxJvEsvHcnLzdJX0fTolv/Zzu01QAELGzT0ENcvK44z5ZJpWBBZ
-	3Td43pxIOyx5UO/2gcjsZLunS7Jbd3ElgRO0J2pMC9In8Jl36e4H
-X-Google-Smtp-Source: AGHT+IGE3xYGW7JIoU/LBvBNtkd+YSk2U++cDfApTOVkpXG3xU0LsKxWVyeaf57eYln5el83nQqfNw==
-X-Received: by 2002:a05:620a:4110:b0:795:5ca2:374e with SMTP id af79cd13be357-798d259c53fmr894491185a.54.1718562275655;
-        Sun, 16 Jun 2024 11:24:35 -0700 (PDT)
+        bh=2dBSl06qJo9WqlcLCJnHJhoAsogpiHmjtS8y3UqH/+k=;
+        b=kgNZqV9KWekRzJggSbUfSQ9fwqaOcnb5PHs3PxMXQx6CclVZxmGs5b1GFAduRamP12
+         SOk0sniVGd0yv1INm2ewTbFKMjUy7OQnaYu9xNt26IMJcd1KjzxN7G3Mk6ij3iQsV6+J
+         F0vxcGfqBia/1n+wzvs7tbf1p5DXfDNrAqxOK2EbowYbq9wWyz5MZnCJEuRXBTWs0dFz
+         W7hefmwG7svwTFTBpM+uv18L4dvA2AFygmiik+g7mNd6Km6yjOXuJrGFHP6EY/jRDaEm
+         7oiW1z+ibLC13Zc7OzYgT7gG/c+dNCi5Ad8z3r34ElnxPrdQG773Cxbn9FKD5Es4+dZL
+         mcyw==
+X-Gm-Message-State: AOJu0YwdabnUAak80yBzQtdZbrL6R3sZhFkPxxJAnprEWBWjkU6bOd7T
+	BuV/HzhqBUTRv81zq2UyVM+U9OYKHlDL1SZ66icg4c4fzuURyevTo0yB2xGjZQM=
+X-Google-Smtp-Source: AGHT+IHllHBEFQ/LRwlTVTg49AyukzQWYrrDxCc6xs6p+B7PVO2zBLAIAD3q+tzIE+Ha86yVkFTHig==
+X-Received: by 2002:a81:5c56:0:b0:610:b464:9f1a with SMTP id 00721157ae682-63224321323mr72687657b3.45.1718563176203;
+        Sun, 16 Jun 2024 11:39:36 -0700 (PDT)
 Received: from smtpclient.apple ([2601:98a:4102:7e80:2c22:6bd5:784c:5f44])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798abc0ceeesm360177785a.73.2024.06.16.11.24.34
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5c1ff4fsm46687146d6.47.2024.06.16.11.39.35
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 16 Jun 2024 11:24:35 -0700 (PDT)
+        Sun, 16 Jun 2024 11:39:35 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -60,15 +60,14 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
 Subject: Follow-Up on Reported Kernel Bug KASAN: slab-out-of-bounds in
- gfs2_check_blk_type 
+ gfs2_invalidate_folio 
 From: Shuangpeng Bai <shuangpengbai@gmail.com>
-In-Reply-To: <95FA39C9-7D8E-4857-B103-4B0E8503C7B4@gmail.com>
-Date: Sun, 16 Jun 2024 14:24:24 -0400
-Cc: gfs2@lists.linux.dev,
- linux-kernel@vger.kernel.org
+In-Reply-To: <560390DD-0A30-43DB-BB5B-69BCEBF4F3B0@gmail.com>
+Date: Sun, 16 Jun 2024 14:39:24 -0400
+Cc: gfs2@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5C25152C-6708-4200-95E6-449CA0EE49E6@gmail.com>
-References: <95FA39C9-7D8E-4857-B103-4B0E8503C7B4@gmail.com>
+Message-Id: <62179000-BA08-4033-B6AE-EF3D2A4A0EA6@gmail.com>
+References: <560390DD-0A30-43DB-BB5B-69BCEBF4F3B0@gmail.com>
 To: agruenba@redhat.com
 X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
@@ -77,379 +76,397 @@ Dear Kernel Maintainers,
 I hope this message finds you well.
 
 I am writing to follow up on the recent bug report KASAN: =
-slab-out-of-bounds in gfs2_check_blk_type. I was wondering if there have =
-been any updates or progress on this issue. Additionally, please let me =
-know if there is any assistance I can provide.
+slab-out-of-bounds in gfs2_invalidate_folio. I was wondering if there =
+have been any updates or progress on this issue. Additionally, please =
+let me know if there is any assistance I can provide.
 
 Thank you for your time and attention to this matter.
 
 Best regards,
 Shuangpeng
 
-
-> On Jun 11, 2024, at 00:19, Shuangpeng Bai <shuangpengbai@gmail.com> =
+> On May 13, 2024, at 22:50, Shuangpeng Bai <shuangpengbai@gmail.com> =
 wrote:
 >=20
 > Hi Kernel Maintainers,
 >=20
 > Our tool found a new kernel bug KASAN: slab-out-of-bounds in =
-gfs2_check_blk_type. Please see the details below.
+gfs2_invalidate_folio. Please see the details below.
 >=20
-> Kernel commit: v6.9 (Commits on May 12, 2024)
+> Kenrel commit: v6.8
 > Kernel config: attachment
 > C/Syz reproducer: attachment
 >=20
-> Please let me know for anything I can help.
 >=20
 > Best,
 > Shuangpeng
 >=20
->=20
-> [   71.590873][ T8079] =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [ 71.593005][ T8079] BUG: KASAN: slab-out-of-bounds in =
-gfs2_check_blk_type (fs/gfs2/rgrp.c:153 fs/gfs2/rgrp.c:2638)=20
-> [   71.595063][ T8079] Read of size 8 at addr ffff888021a377d0 by task =
-a.out/8079
-> [   71.596905][ T8079]
-> [   71.597832][ T8079] CPU: 0 PID: 8079 Comm: a.out Not tainted 6.9.0 =
-#8
-> [   71.600123][ T8079] Hardware name: QEMU Standard PC (i440FX + PIIX, =
-1996), BIOS 1.15.0-1 04/01/2014
-> [   71.603460][ T8079] Call Trace:
-> [   71.604602][ T8079]  <TASK>
-> [ 71.605683][ T8079] dump_stack_lvl (lib/dump_stack.c:117)=20
-> [ 71.607296][ T8079] print_report (mm/kasan/report.c:378 =
-mm/kasan/report.c:488)=20
-> [ 71.608909][ T8079] ? __phys_addr (arch/x86/mm/physaddr.c:32 =
-(discriminator 4))=20
-> [ 71.610551][ T8079] ? gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.612454][ T8079] kasan_report (mm/kasan/report.c:603)=20
-> [ 71.613973][ T8079] ? gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.615832][ T8079] gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.617677][ T8079] ? __pfx_gfs2_check_blk_type (fs/gfs2/rgrp.c:2614)=20=
-
-> [ 71.619723][ T8079] ? gfs2_evict_inode (fs/gfs2/super.c:1346 =
-fs/gfs2/super.c:1492)=20
-> [ 71.621526][ T8079] ? __gfs2_holder_init (fs/gfs2/glock.c:1272)=20
-> [ 71.623447][ T8079] gfs2_evict_inode (fs/gfs2/super.c:1346 =
-fs/gfs2/super.c:1492)=20
-> [ 71.626079][ T8079] ? __pfx_sched_clock_cpu =
-(kernel/sched/clock.c:389)=20
-> [ 71.628057][ T8079] ? pick_eevdf (kernel/sched/fair.c:909)=20
-> [ 71.629661][ T8079] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
-
-> [ 71.631511][ T8079] ? _raw_spin_unlock =
-(./arch/x86/include/asm/preempt.h:103 =
-./include/linux/spinlock_api_smp.h:143 kernel/locking/spinlock.c:186)=20
-> [ 71.633165][ T8079] ? finish_task_switch.isra.0 =
-(./arch/x86/include/asm/irqflags.h:42 =
-./arch/x86/include/asm/irqflags.h:77 kernel/sched/sched.h:1399 =
-kernel/sched/core.c:5163 kernel/sched/core.c:5281)=20
-> [ 71.635270][ T8079] ? __inode_wait_for_writeback =
-(fs/fs-writeback.c:1512)=20
-> [ 71.637336][ T8079] ? __pfx___inode_wait_for_writeback =
-(fs/fs-writeback.c:1512)=20
-> [ 71.639501][ T8079] ? evict (fs/inode.c:672)=20
-> [ 71.640957][ T8079] ? __pfx__raw_spin_lock =
-(kernel/locking/spinlock.c:153)=20
-> [ 71.642637][ T8079] ? __pfx__raw_spin_lock =
-(kernel/locking/spinlock.c:153)=20
-> [ 71.644575][ T8079] ? _raw_spin_lock =
-(./arch/x86/include/asm/atomic.h:115 =
-./include/linux/atomic/atomic-arch-fallback.h:2170 =
-./include/linux/atomic/atomic-instrumented.h:1302 =
-./include/asm-generic/qspinlock.h:111 ./include/linux/spinlock.h:187 =
-./include/linux/spinlock_api_smp.h:134 kernel/locking/spinlock.c:154)=20
-> [ 71.646161][ T8079] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
-
-> [ 71.648103][ T8079] evict (fs/inode.c:672)=20
-> [ 71.649493][ T8079] iput.part.0 (fs/inode.c:1741 fs/inode.c:1767)=20
-> [ 71.650985][ T8079] ? __pfx_gfs2_drop_inode (fs/gfs2/super.c:1025)=20
-> [ 71.652903][ T8079] iput (fs/inode.c:1769)=20
-> [ 71.654195][ T8079] dentry_unlink_inode (fs/dcache.c:401)=20
-> [ 71.655902][ T8079] __dentry_kill (fs/dcache.c:606)=20
-> [ 71.657456][ T8079] dput (fs/dcache.c:846 fs/dcache.c:833)=20
-> [ 71.658782][ T8079] shrink_dcache_for_umount =
-(./include/linux/list_bl.h:74 fs/dcache.c:1557)=20
-> [ 71.660731][ T8079] generic_shutdown_super (fs/super.c:620)=20
-> [ 71.662500][ T8079] kill_block_super (fs/super.c:1676)=20
-> [ 71.664147][ T8079] gfs2_kill_sb (fs/gfs2/ops_fstype.c:1805)=20
-> [ 71.665748][ T8079] deactivate_locked_super (fs/super.c:433 =
-fs/super.c:474)=20
-> [ 71.667612][ T8079] deactivate_super (fs/super.c:507)=20
-> [ 71.669282][ T8079] cleanup_mnt (fs/namespace.c:144 =
-fs/namespace.c:1268)=20
-> [ 71.670805][ T8079] task_work_run (kernel/task_work.c:181 =
-(discriminator 1))=20
-> [ 71.672412][ T8079] ? __pfx_task_work_run (kernel/task_work.c:148)=20
-> [ 71.674201][ T8079] ? __put_net (net/core/net_namespace.c:689)=20
-> [ 71.675709][ T8079] do_exit (kernel/exit.c:879)=20
-> [ 71.677175][ T8079] ? __count_memcg_events (mm/memcontrol.c:723 =
-mm/memcontrol.c:962)=20
-> [ 71.679117][ T8079] ? __pfx_do_exit (kernel/exit.c:819)=20
-> [ 71.680723][ T8079] ? __pfx__raw_spin_lock_irq =
-(kernel/locking/spinlock.c:169)=20
-> [ 71.682564][ T8079] ? zap_other_threads (kernel/signal.c:1390)=20
-> [ 71.684339][ T8079] do_group_exit (kernel/exit.c:1008)=20
-> [ 71.685853][ T8079] __x64_sys_exit_group (kernel/exit.c:1036)=20
-> [ 71.687482][ T8079] do_syscall_64 (arch/x86/entry/common.c:52 =
-arch/x86/entry/common.c:83)=20
-> [ 71.689990][ T8079] entry_SYSCALL_64_after_hwframe =
-(arch/x86/entry/entry_64.S:130)=20
-> [   71.691214][ T8079] RIP: 0033:0x7f5ca99d3146
-> [ 71.692267][ T8079] Code: Unable to access opcode bytes at =
-0x7f5ca99d311c.
->=20
-> Code starting with the faulting instruction
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   71.693702][ T8079] RSP: 002b:00007ffe66c629e8 EFLAGS: 00000246 =
-ORIG_RAX: 00000000000000e7
-> [   71.695408][ T8079] RAX: ffffffffffffffda RBX: 00007f5ca9ad88a0 =
-RCX: 00007f5ca99d3146
-> [   71.697059][ T8079] RDX: 0000000000000001 RSI: 000000000000003c =
-RDI: 0000000000000001
-> [   71.698635][ T8079] RBP: 0000000000000001 R08: 00000000000000e7 =
-R09: ffffffffffffff80
-> [   71.700276][ T8079] R10: 0000000000000002 R11: 0000000000000246 =
-R12: 00007f5ca9ad88a0
-> [   71.702040][ T8079] R13: 0000000000000001 R14: 00007f5ca9ae12e8 =
-R15: 0000000000000000
-> [   71.703663][ T8079]  </TASK>
-> [   71.704290][ T8079]
-> [   71.704752][ T8079] Allocated by task 8079:
-> [ 71.705650][ T8079] kasan_save_stack (mm/kasan/common.c:48)=20
-> [ 71.706631][ T8079] kasan_save_track =
-(./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 =
-mm/kasan/common.c:69)=20
-> [ 71.707574][ T8079] __kasan_kmalloc (mm/kasan/common.c:391)=20
-> [ 71.708505][ T8079] __kmalloc (./include/linux/kasan.h:211 =
-mm/slub.c:3972 mm/slub.c:3985)=20
-> [ 71.709364][ T8079] read_rindex_entry (./include/linux/slab.h:665 =
-./include/linux/slab.h:696 fs/gfs2/rgrp.c:766 fs/gfs2/rgrp.c:931)=20
-> [ 71.710394][ T8079] gfs2_ri_update (fs/gfs2/rgrp.c:1002 =
-(discriminator 1))=20
-> [ 71.711339][ T8079] gfs2_rindex_update (fs/gfs2/rgrp.c:1051)=20
-> [ 71.712483][ T8079] init_inodes (fs/gfs2/ops_fstype.c:913)=20
-> [ 71.713427][ T8079] gfs2_fill_super (fs/gfs2/ops_fstype.c:1264)=20
-> [ 71.714433][ T8079] get_tree_bdev (fs/super.c:1615)=20
-> [ 71.715380][ T8079] gfs2_get_tree (fs/gfs2/ops_fstype.c:1342)=20
-> [ 71.716319][ T8079] vfs_get_tree (fs/super.c:1780)=20
-> [ 71.717229][ T8079] path_mount (fs/namespace.c:3353 =
-fs/namespace.c:3679)=20
-> [ 71.718124][ T8079] __x64_sys_mount (fs/namespace.c:3693 =
-fs/namespace.c:3898 fs/namespace.c:3875 fs/namespace.c:3875)=20
-> [ 71.719108][ T8079] do_syscall_64 (arch/x86/entry/common.c:52 =
-arch/x86/entry/common.c:83)=20
-> [ 71.720025][ T8079] entry_SYSCALL_64_after_hwframe =
-(arch/x86/entry/entry_64.S:130)=20
-> [   71.721224][ T8079]
-> [   71.721838][ T8079] The buggy address belongs to the object at =
-ffff888021a37780
-> [   71.721838][ T8079]  which belongs to the cache kmalloc-96 of size =
-96
-> [   71.724602][ T8079] The buggy address is located 0 bytes to the =
-right of
-> [   71.724602][ T8079]  allocated 80-byte region [ffff888021a37780, =
-ffff888021a377d0)
-> [   71.727454][ T8079]
-> [   71.727931][ T8079] The buggy address belongs to the physical page:
-> [   71.729233][ T8079] page: refcount:1 mapcount:0 =
-mapping:0000000000000000 index:0x0 pfn:0x21a37
-> [   71.730941][ T8079] ksm flags: =
-0xfff00000000800(slab|node=3D0|zone=3D1|lastcpupid=3D0x7ff)
-> [   71.732522][ T8079] page_type: 0xffffffff()
-> [   71.733415][ T8079] raw: 00fff00000000800 ffff888011c41780 =
-ffffea0000860340 dead000000000003
-> [   71.735106][ T8079] raw: 0000000000000000 0000000080200020 =
-00000001ffffffff 0000000000000000
-> [   71.736792][ T8079] page dumped because: kasan: bad access detected
-> [   71.738102][ T8079] page_owner tracks the page as allocated
-> [   71.739229][ T8079] page last allocated via order 0, migratetype =
-Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid =
-1, tgid 1 (swapper/0), ts 18270934128, free_ts 182673967
-> [ 71.742812][ T8079] post_alloc_hook (./include/linux/page_owner.h:32 =
-mm/page_alloc.c:1534)=20
-> [ 71.743828][ T8079] get_page_from_freelist (mm/page_alloc.c:1543 =
-mm/page_alloc.c:3317)=20
-> [ 71.744948][ T8079] __alloc_pages (mm/page_alloc.c:4576)=20
-> [ 71.745863][ T8079] allocate_slab (mm/slub.c:2181 mm/slub.c:2343)=20
-> [ 71.746796][ T8079] ___slab_alloc (mm/slub.c:3531)=20
-> [ 71.747698][ T8079] __slab_alloc.constprop.0 (mm/slub.c:3615)=20
-> [ 71.748821][ T8079] kmalloc_trace (mm/slub.c:3668 mm/slub.c:3841 =
-mm/slub.c:3998)=20
-> [ 71.749739][ T8079] call_usermodehelper_setup (kernel/umh.c:364)=20
-> [ 71.750918][ T8079] kobject_uevent_env (lib/kobject_uevent.c:613)=20
-> [ 71.752105][ T8079] param_sysfs_builtin_init (kernel/params.c:822 =
-kernel/params.c:856 kernel/params.c:990)=20
-> [ 71.753257][ T8079] do_one_initcall (init/main.c:1245)=20
-> [ 71.754155][ T8079] kernel_init_freeable (init/main.c:1306 =
-init/main.c:1323 init/main.c:1342 init/main.c:1555)=20
-> [ 71.755340][ T8079] kernel_init (init/main.c:1446)=20
-> [ 71.756346][ T8079] ret_from_fork (arch/x86/kernel/process.c:153)=20
-> [ 71.757242][ T8079] ret_from_fork_asm (arch/x86/entry/entry_64.S:257)=20=
-
-> [   71.758204][ T8079] page last free pid 8 tgid 8 stack trace:
-> [ 71.759381][ T8079] free_unref_page_prepare =
-(./include/linux/page_owner.h:25 mm/page_alloc.c:1141 =
-mm/page_alloc.c:2347)=20
-> [ 71.760517][ T8079] free_unref_page (mm/page_alloc.c:2487)=20
-> [ 71.761655][ T8079] vfree.part.0 (./include/linux/sched.h:1988 =
-mm/vmalloc.c:3341)=20
-> [ 71.762567][ T8079] delayed_vfree_work (mm/vmalloc.c:3260 =
-(discriminator 1))=20
-> [ 71.763552][ T8079] process_one_work (kernel/workqueue.c:3272)=20
-> [ 71.764550][ T8079] worker_thread (kernel/workqueue.c:3342 =
-kernel/workqueue.c:3429)=20
-> [ 71.765490][ T8079] kthread (kernel/kthread.c:388)=20
-> [ 71.766344][ T8079] ret_from_fork (arch/x86/kernel/process.c:153)=20
-> [ 71.767258][ T8079] ret_from_fork_asm (arch/x86/entry/entry_64.S:257)=20=
-
-> [   71.768206][ T8079]
-> [   71.768674][ T8079] Memory state around the buggy address:
-> [   71.769194][ T8079]  ffff888021a37680: fa fb fb fb fb fb fb fb fb =
-fb fb fb fc fc fc fc
-> [   71.769942][ T8079]  ffff888021a37700: 00 00 00 00 00 00 00 00 00 =
-00 00 00 fc fc fc fc
-> [   71.770679][ T8079] >ffff888021a37780: 00 00 00 00 00 00 00 00 00 =
-00 fc fc fc fc fc fc
-> [   71.771410][ T8079]                                                 =
- ^
-> [   71.772016][ T8079]  ffff888021a37800: fa fb fb fb fb fb fb fb fb =
-fb fb fb fc fc fc fc
-> [   71.772768][ T8079]  ffff888021a37880: fa fb fb fb fb fb fb fb fb =
-fb fb fb fc fc fc fc
-> [   71.773516][ T8079] =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   71.778624][ T8079] Kernel panic - not syncing: KASAN: =
-panic_on_warn set ...
-> [   71.780113][ T8079] CPU: 0 PID: 8079 Comm: a.out Not tainted 6.9.0 =
-#8
-> [   71.781462][ T8079] Hardware name: QEMU Standard PC (i440FX + PIIX, =
-1996), BIOS 1.15.0-1 04/01/2014
-> [   71.783278][ T8079] Call Trace:
-> [   71.783932][ T8079]  <TASK>
-> [ 71.784536][ T8079] dump_stack_lvl (lib/dump_stack.c:118 =
-(discriminator 4))=20
-> [ 71.785477][ T8079] panic (kernel/panic.c:348)=20
-> [ 71.786276][ T8079] ? __pfx_panic (kernel/panic.c:282)=20
-> .787159][ T8079]
-> 1? preeMmessapge ft_schedule_romth suynk+sl0ogdx@s1yzkallaer/ 0x3at0 =
-Jun
-> 1 04:06:[ 71.789194][ T8079] ? preempt_schedule_common =
-(./arch/x86/include/asm/preempt.h:84 kernel/sched/core.c:6927)=20
-> [ 71.790322][ T8079] ? check_panic_on_warn (kernel/panic.c:240)=20
-> [ 71.791312][ T8079] ? gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.792378][ T8079] check_panic_on_warn (kernel/panic.c:241)=20
-> [ 71.793372][ T8079] end_report (mm/kasan/report.c:226)=20
-> [ 71.794210][ T8079] kasan_report (./arch/x86/include/asm/smap.h:56 =
-mm/kasan/report.c:606)=20
-> [ 71.795072][ T8079] ? gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.796124][ T8079] gfs2_check_blk_type (fs/gfs2/rgrp.c:153 =
-fs/gfs2/rgrp.c:2638)=20
-> [ 71.797166][ T8079] ? __pfx_gfs2_check_blk_type (fs/gfs2/rgrp.c:2614)=20=
-
-> [ 71.798273][ T8079] ? gfs2_evict_inode (fs/gfs2/super.c:1346 =
-fs/gfs2/super.c:1492)=20
-> [ 71.799279][ T8079] ? __gfs2_holder_init (fs/gfs2/glock.c:1272)=20
-> [ 71.800333][ T8079] gfs2_evict_inode (fs/gfs2/super.c:1346 =
-fs/gfs2/super.c:1492)=20
-> [ 71.801313][ T8079] ? __pfx_sched_clock_cpu =
-(kernel/sched/clock.c:389)=20
-> [ 71.802342][ T8079] ? pick_eevdf (kernel/sched/fair.c:909)=20
-> [ 71.803240][ T8079] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
-
-> [ 71.804316][ T8079] ? _raw_spin_unlock =
-(./arch/x86/include/asm/preempt.h:103 =
-./include/linux/spinlock_api_smp.h:143 kernel/locking/spinlock.c:186)=20
-> [ 71.805280][ T8079] ? finish_task_switch.isra.0 =
-(./arch/x86/include/asm/irqflags.h:42 =
-./arch/x86/include/asm/irqflags.h:77 kernel/sched/sched.h:1399 =
-kernel/sched/core.c:5163 kernel/sched/core.c:5281)=20
-> [ 71.806403][ T8079] ? __inode_wait_for_writeback =
-(fs/fs-writeback.c:1512)=20
-> [ 71.807560][ T8079] ? __pfx___inode_wait_for_writeback =
-(fs/fs-writeback.c:1512)=20
-> [ 71.808805][ T8079] ? evict (fs/inode.c:672)=20
-> [ 71.809617][ T8079] ? __pfx__raw_spin_lock =
-(kernel/locking/spinlock.c:153)=20
-> [ 71.810623][ T8079] ? __pfx__raw_spin_lock =
-(kernel/locking/spinlock.c:153)=20
-> [ 71.811620][ T8079] ? _raw_spin_lock =
-(./arch/x86/include/asm/atomic.h:115 =
-./include/linux/atomic/atomic-arch-fallback.h:2170 =
-./include/linux/atomic/atomic-instrumented.h:1302 =
-./include/asm-generic/qspinlock.h:111 ./include/linux/spinlock.h:187 =
-./include/linux/spinlock_api_smp.h:134 kernel/locking/spinlock.c:154)=20
-> [ 71.812546][ T8079] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
-
-> [ 71.813592][ T8079] evict (fs/inode.c:672)=20
-> [ 71.814368][ T8079] iput.part.0 (fs/inode.c:1741 fs/inode.c:1767)=20
-> [ 71.815242][ T8079] ? __pfx_gfs2_drop_inode (fs/gfs2/super.c:1025)=20
-> [ 71.816287][ T8079] iput (fs/inode.c:1769)=20
-> [ 71.817017][ T8079] dentry_unlink_inode (fs/dcache.c:401)=20
-> [ 71.818015][ T8079] __dentry_kill (fs/dcache.c:606)=20
-> [ 71.818920][ T8079] dput (fs/dcache.c:846 fs/dcache.c:833)=20
-> [ 71.819674][ T8079] shrink_dcache_for_umount =
-(./include/linux/list_bl.h:74 fs/dcache.c:1557)=20
-> [ 71.820782][ T8079] generic_shutdown_super (fs/super.c:620)=20
-> [ 71.821828][ T8079] kill_block_super (fs/super.c:1676)=20
-> [ 71.822766][ T8079] gfs2_kill_sb (fs/gfs2/ops_fstype.c:1805)=20
-> [ 71.823658][ T8079] deactivate_locked_super (fs/super.c:433 =
-fs/super.c:474)=20
-> [ 71.824712][ T8079] deactivate_super (fs/super.c:507)=20
-> [ 71.825633][ T8079] cleanup_mnt (fs/namespace.c:144 =
-fs/namespace.c:1268)=20
-> [ 71.826501][ T8079] task_work_run (kernel/task_work.c:181 =
-(discriminator 1))=20
-> [ 71.827407][ T8079] ? __pfx_task_work_run (kernel/task_work.c:148)=20
-> [ 71.828436][ T8079] ? __put_net (net/core/net_namespace.c:689)=20
-> [ 71.829281][ T8079] do_exit (kernel/exit.c:879)=20
-> [ 71.830111][ T8079] ? __count_memcg_events (mm/memcontrol.c:723 =
-mm/memcontrol.c:962)=20
-> [ 71.831169][ T8079] ? __pfx_do_exit (kernel/exit.c:819)=20
-> [ 71.832055][ T8079] ? __pfx__raw_spin_lock_irq =
-(kernel/locking/spinlock.c:169)=20
-> [ 71.833161][ T8079] ? zap_other_threads (kernel/signal.c:1390)=20
-> [ 71.834169][ T8079] do_group_exit (kernel/exit.c:1008)=20
-> [ 71.835077][ T8079] __x64_sys_exit_group (kernel/exit.c:1036)=20
-> [ 71.836064][ T8079] do_syscall_64 (arch/x86/entry/common.c:52 =
-arch/x86/entry/common.c:83)=20
-> [ 71.836965][ T8079] entry_SYSCALL_64_after_hwframe =
-(arch/x86/entry/entry_64.S:130)=20
-> [   71.838114][ T8079] RIP: 0033:0x7f5ca99d3146
-> [ 71.838990][ T8079] Code: Unable to access opcode bytes at =
-0x7f5ca99d311c.
->=20
-> Code starting with the faulting instruction
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   71.840378][ T8079] RSP: 002b:00007ffe66c629e8 EFLAGS: 00000246 =
-ORIG_RAX: 00000000000000e7
-> [   71.841988][ T8079] RAX: ffffffffffffffda RBX: 00007f5ca9ad88a0 =
-RCX: 00007f5ca99d3146
-> [   71.843542][ T8079] RDX: 0000000000000001 RSI: 000000000000003c =
-RDI: 0000000000000001
-> [   71.845086][ T8079] RBP: 0000000000000001 R08: 00000000000000e7 =
-R09: ffffffffffffff80
-> [   71.846664][ T8079] R10: 0000000000000002 R11: 0000000000000246 =
-R12: 00007f5ca9ad88a0
-> [   71.848199][ T8079] R13: 0000000000000001 R14: 00007f5ca9ae12e8 =
-R15: 0000000000000000
-> [   71.849736][ T8079]  </TASK>
-> [   71.850486][ T8079] Kernel Offset: disabled
-> [   71.851322][ T8079] Rebooting in 86400 seconds..
->=20
 > <repro.c><.config>
+>=20
+> [   94.491083][ T8162] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [ 94.492323][ T8162] BUG: KASAN: slab-out-of-bounds in =
+gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [   94.493520][ T8162] Read of size 8 at addr ffff888154826a20 by task =
+a.out/8162
+> [   94.494581][ T8162]
+> [   94.494936][ T8162] CPU: 1 PID: 8162 Comm: a.out Not tainted 6.8.0 =
+#6
+> [   94.495886][ T8162] Hardware name: QEMU Standard PC (i440FX + PIIX, =
+1996), BIOS 1.15.0-1 04/01/2014
+> [   94.497147][ T8162] Call Trace:
+> [   94.497621][ T8162]  <TASK>
+> [ 94.498059][ T8162] dump_stack_lvl (lib/dump_stack.c:107 =
+(discriminator 1))=20
+> [ 94.498745][ T8162] print_report (mm/kasan/report.c:378 =
+mm/kasan/report.c:488)=20
+> [ 94.499411][ T8162] ? __phys_addr (arch/x86/mm/physaddr.c:32 =
+(discriminator 4))=20
+> [ 94.500066][ T8162] ? gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.500852][ T8162] kasan_report (mm/kasan/report.c:603)=20
+> [ 94.501469][ T8162] ? gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.502233][ T8162] gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.502987][ T8162] ? _raw_spin_lock_irqsave =
+(./arch/x86/include/asm/atomic.h:115 =
+./include/atomic/atomic-arch-fallback.h:2164 =
+./include/atomic/atomic-instrumented.h:1296 =
+./include/asm-generic/qspinlock.h:111 ./include/spinlock.h:187 =
+./include/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)=20
+> [ 94.503730][ T8162] ? __pfx_gfs2_invalidate_folio =
+(fs/gfs2/aops.c:635)=20
+> [ 94.504521][ T8162] truncate_cleanup_folio (mm/truncate.c:158 =
+mm/truncate.c:178)=20
+> [ 94.505281][ T8162] truncate_inode_pages_range (mm/truncate.c:357 =
+(discriminator 3))=20
+> [ 94.506110][ T8162] ? __pfx_truncate_inode_pages_range =
+(mm/truncate.c:322)=20
+> [ 94.506984][ T8162] ? __x64_sys_exit_group (kernel/exit.c:1029)=20
+> [ 94.507707][ T8162] ? do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.508374][ T8162] ? entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [ 94.509247][ T8162] ? _raw_spin_unlock_irqrestore =
+(./arch/x86/include/asm/preempt.h:103 ./include/spinlock_api_smp.h:152 =
+kernel/locking/spinlock.c:194)=20
+> [ 94.510071][ T8162] ? debug_object_active_state =
+(lib/debugobjects.c:946)=20
+> [ 94.510953][ T8162] gfs2_evict_inode (fs/gfs2/super.c:1509)=20
+> [ 94.511707][ T8162] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
+
+> [ 94.512528][ T8162] ? _raw_spin_lock =
+(./arch/x86/include/asm/atomic.h:115 =
+./include/atomic/atomic-arch-fallback.h:2164 =
+./include/atomic/atomic-instrumented.h:1296 =
+./include/asm-generic/qspinlock.h:111 ./include/spinlock.h:187 =
+./include/spinlock_api_smp.h:134 kernel/locking/spinlock.c:154)=20
+> [ 94.513249][ T8162] ? __inode_wait_for_writeback =
+(fs/fs-writeback.c:1487)=20
+> [ 94.514183][ T8162] ? __pfx___inode_wait_for_writeback =
+(fs/fs-writeback.c:1487)=20
+> [ 94.515126][ T8162] ? __pfx_wake_bit_function =
+(kernel/sched/wait_bit.c:22)=20
+> [ 94.515982][ T8162] ? __pfx__raw_spin_lock =
+(kernel/locking/spinlock.c:153)=20
+> [ 94.516789][ T8162] ? __pfx__raw_spin_lock =
+(kernel/locking/spinlock.c:153)=20
+> [ 94.517614][ T8162] ? wb_io_lists_depopulated (fs/fs-writeback.c:100 =
+(discriminator 1))=20
+> [ 94.518465][ T8162] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
+
+> [ 94.519296][ T8162] evict (fs/inode.c:670)=20
+> [ 94.519915][ T8162] iput.part.0 (fs/inode.c:1739 fs/inode.c:1765)=20
+> [ 94.520609][ T8162] ? __pfx_gfs2_drop_inode (fs/gfs2/super.c:1025)=20
+> [ 94.521429][ T8162] iput (fs/inode.c:1767)=20
+> [ 94.522007][ T8162] gfs2_kill_sb (./include/sched.h:1984 =
+fs/gfs2/ops_fstype.c:1770 fs/gfs2/ops_fstype.c:1793)=20
+> [ 94.522720][ T8162] deactivate_locked_super (fs/super.c:433 =
+fs/super.c:474)=20
+> [ 94.523598][ T8162] deactivate_super (fs/super.c:507)=20
+> [ 94.524372][ T8162] cleanup_mnt (fs/namespace.c:144 =
+fs/namespace.c:1268)=20
+> [ 94.525113][ T8162] task_work_run (kernel/task_work.c:181 =
+(discriminator 1))=20
+> [ 94.525847][ T8162] ? __pfx_task_work_run (kernel/task_work.c:148)=20
+> [ 94.526638][ T8162] ? __put_net (net/core/net_namespace.c:667)=20
+> [ 94.527324][ T8162] do_exit (kernel/exit.c:872)=20
+> [ 94.527984][ T8162] ? __count_memcg_events (mm/memcontrol.c:722 =
+mm/memcontrol.c:961)=20
+> [ 94.528842][ T8162] ? __pfx_do_exit (kernel/exit.c:812)=20
+> [ 94.529564][ T8162] ? __pfx__raw_spin_lock_irq =
+(kernel/locking/spinlock.c:169)=20
+> [ 94.530422][ T8162] ? zap_other_threads (kernel/signal.c:1389)=20
+> [ 94.531215][ T8162] do_group_exit (kernel/exit.c:1001)=20
+> [ 94.531965][ T8162] __x64_sys_exit_group (kernel/exit.c:1029)=20
+> [ 94.532802][ T8162] do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.533517][ T8162] entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [   94.534478][ T8162] RIP: 0033:0x7f162e2ee146
+> [ 94.535174][ T8162] Code: Unable to access opcode bytes at =
+0x7f162e2ee11c.
+>=20
+> Code starting with the faulting instruction
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [   94.536235][ T8162] RSP: 002b:00007ffc8b584d98 EFLAGS: 00000246 =
+ORIG_RAX: 00000000000000e7
+> [   94.537548][ T8162] RAX: ffffffffffffffda RBX: 00007f162e3f38a0 =
+RCX: 00007f162e2ee146
+> [   94.538770][ T8162] RDX: 0000000000000001 RSI: 000000000000003c =
+RDI: 0000000000000001
+> [   94.539757][ T8162] RBP: 0000000000000001 R08: 00000000000000e7 =
+R09: ffffffffffffff80
+> [   94.540522][ T8162] R10: 0000000000000002 R11: 0000000000000246 =
+R12: 00007f162e3f38a0
+> [   94.541285][ T8162] R13: 0000000000000001 R14: 00007f162e3fc2e8 =
+R15: 0000000000000000
+> [   94.542056][ T8162]  </TASK>
+> [   94.542359][ T8162]
+> [   94.542595][ T8162] Allocated by task 8162:
+> [ 94.543016][ T8162] kasan_save_stack (mm/kasan/common.c:48)=20
+> [ 94.543491][ T8162] kasan_save_track =
+(./arch/x86/include/asm/current.h:42 mm/kasan/common.c:60 =
+mm/kasan/common.c:69)=20
+> [ 94.543956][ T8162] __kasan_kmalloc (mm/kasan/common.c:370 =
+mm/kasan/common.c:387)=20
+> [ 94.544467][ T8162] __kmalloc (./include/kasan.h:211 mm/slub.c:3981 =
+mm/slub.c:3994)=20
+> [ 94.544500][ T8162] ifs_alloc.isra.0 (fs/iomap/buffered-io.c:167)=20
+> [ 94.545641][ T8162] iomap_do_writepage (fs/iomap/buffered-io.c:138 =
+fs/iomap/buffered-io.c:1793 fs/iomap/buffered-io.c:1975)=20
+> [ 94.546152][ T8162] write_cache_pages (./include/page-flags.h:785 =
+./include/page-flags.h:806 ./include/mm.h:2059 mm/page-writeback.c:2475)=20=
+
+> [ 94.546645][ T8162] iomap_writepages (fs/iomap/buffered-io.c:1993)=20
+> [ 94.547109][ T8162] gfs2_writepages (fs/gfs2/aops.c:192)=20
+> [ 94.547586][ T8162] do_writepages (mm/page-writeback.c:2553)=20
+> [ 94.548048][ T8162] filemap_fdatawrite_wbc (mm/filemap.c:389 =
+mm/filemap.c:378)=20
+> [ 94.548575][ T8162] __filemap_fdatawrite_range (mm/filemap.c:413)=20
+> [ 94.549125][ T8162] gfs2_log_flush (./include/spinlock.h:351 =
+fs/gfs2/log.c:737 fs/gfs2/log.c:1105)=20
+> [ 94.549606][ T8162] gfs2_fileattr_set (fs/gfs2/file.c:245 =
+fs/gfs2/file.c:310)=20
+> [ 94.550091][ T8162] vfs_fileattr_set (fs/ioctl.c:697)=20
+> [ 94.550573][ T8162] do_vfs_ioctl (fs/ioctl.c:760 fs/ioctl.c:846)=20
+> [ 94.551052][ T8162] __x64_sys_ioctl (fs/ioctl.c:870 fs/ioctl.c:857 =
+fs/ioctl.c:857)=20
+> [ 94.551551][ T8162] do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.552002][ T8162] entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [   94.552597][ T8162]
+> [   94.552846][ T8162] The buggy address belongs to the object at =
+ffff888154826a00
+> [   94.552846][ T8162]  which belongs to the cache kmalloc-32 of size =
+32
+> [   94.554181][ T8162] The buggy address is located 8 bytes to the =
+right of
+> [   94.554181][ T8162]  allocated 24-byte region [ffff888154826a00, =
+ffff888154826a18)
+> [   94.555553][ T8162]
+> [   94.555790][ T8162] The buggy address belongs to the physical page:
+> [   94.556405][ T8162] page:ffffea0005520980 refcount:1 mapcount:0 =
+mapping:0000000000000000 index:0x0 pfn:06
+> [   94.557380][ T8162] flags: =
+0x57ff00000000800(slab|node=3D1|zone=3D2|lastcpupid=3D0x7ff)
+> [   94.558116][ T8162] page_type: 0xffffffff()
+> [   94.558541][ T8162] raw: 057ff00000000800 ffff888011c41500 =
+ffffea0005297580 dead000000000004
+> [   94.559361][ T8162] raw: 0000000000000000 0000000000400040 =
+00000001ffffffff 0000000000000000
+> [   94.560177][ T8162] page dumped because: kasan: bad access detected
+> [   94.560789][ T8162] page_owner tracks the page as allocated
+> [   94.561335][ T8162] page last allocated via order 0, migratetype =
+Unmovable, gfp_mask 0x12c40(GFP_NOFS|__3
+> [ 94.563070][ T8162] post_alloc_hook (./include/page_owner.h:31 =
+mm/page_alloc.c:1533)=20
+> [ 94.563544][ T8162] get_page_from_freelist (mm/page_alloc.c:1542 =
+mm/page_alloc.c:3311)=20
+> [ 94.564092][ T8162] __alloc_pages (mm/page_alloc.c:4570)=20
+> [ 94.564590][ T8162] allocate_slab (mm/slub.c:2191 mm/slub.c:2354)=20
+> [ 94.565064][ T8162] ___slab_alloc (mm/slub.c:3541)=20
+> [ 94.565562][ T8162] __slab_alloc.constprop.0 (mm/slub.c:3625)=20
+> [ 94.566102][ T8162] __kmalloc_node_track_caller (mm/slub.c:3678 =
+mm/slub.c:3850 mm/slub.c:3980 mm/slub.c:4001)=20
+> [ 94.566675][ T8162] kstrdup (mm/util.c:63)=20
+> [ 94.567064][ T8162] security_context_to_sid_core =
+(security/sess/services.c:1544)=20
+> [ 94.567637][ T8162] inode_doinit_use_xattr (security/sehooks.c:1392)=20=
+
+> [ 94.568159][ T8162] inode_doinit_with_dentry =
+(security/sehooks.c:1488)=20
+> [ 94.568713][ T8162] selinux_d_instantiate (security/sehooks.c:6343)=20=
+
+> [ 94.569220][ T8162] security_d_instantiate (security/security.c:3896 =
+(discriminator 11))=20
+> [ 94.569737][ T8162] d_splice_alias (./include/spinlock.h:351 =
+fs/dcache.c:2974)=20
+> [ 94.570192][ T8162] ext4_lookup (fs/ext4/namei.c:1883 =
+fs/ext4/namei.c:1830)=20
+> [ 94.570637][ T8162] path_openat (fs/namei.c:3478 fs/namei.c:3569 =
+fs/namei.c:3799)=20
+> [   94.571095][ T8162] page last free pid 4487 tgid 4487 stack trace:
+> [ 94.571702][ T8162] free_unref_page_prepare =
+(./include/page_owner.h:24 mm/page_alloc.c:1140 mm/page_alloc.c:2346)=20
+> [ 94.572235][ T8162] free_unref_page_list (mm/page_alloc.c:2532)=20
+> [ 94.572736][ T8162] release_pages (mm/swap.c:961)=20
+> [ 94.573204][ T8162] tlb_batch_pages_flush (mm/mmu_gather.c:99 =
+(discriminator 1))=20
+> [ 94.573717][ T8162] tlb_finish_mmu (mm/mmu_gather.c:112 =
+mm/mmu_gather.c:395)=20
+> [ 94.574178][ T8162] exit_mmap (mm/mmap.c:3307)=20
+> [ 94.574620][ T8162] __mmput (kernel/fork.c:1344)=20
+> [ 94.575030][ T8162] mmput (kernel/fork.c:1366)=20
+> [ 94.575406][ T8162] begin_new_exec (fs/exec.c:1314)=20
+> [ 94.575890][ T8162] load_elf_binary (fs/binfmt_elf.c:997)=20
+> [ 94.576374][ T8162] bprm_execve (fs/exec.c:1785 fs/exec.c:1825 =
+fs/exec.c:1877 fs/exec.c:1853)=20
+> [ 94.576827][ T8162] do_execveat_common.isra.0 (fs/exec.c:1984)=20
+> [ 94.577379][ T8162] __x64_sys_execve (fs/exec.c:2129)=20
+> [ 94.577858][ T8162] do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.578304][ T8162] entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [   94.578885][ T8162]
+> [   94.579121][ T8162] Memory state around the buggy address:
+> [   94.579655][ T8162]  ffff888154826900: 00 00 00 00 fc fc fc fc 00 =
+00 00 00 fc fc fc fc
+> [   94.580400][ T8162]  ffff888154826980: 00 00 00 00 fc fc fc fc fa =
+fb fb fb fc fc fc fc
+> [   94.581165][ T8162] >ffff888154826a00: 00 00 00 fc fc fc fc fc fa =
+fb fb fb fc fc fc fc
+> [   94.581935][ T8162]                                ^
+> [   94.582428][ T8162]  ffff888154826a80: 00 00 00 fc fc fc fc fc fa =
+fb fb fb fc fc fc fc
+> [   94.583194][ T8162]  ffff888154826b00: fa fb fb fb fc fc fc fc fa =
+fb fb fb fc fc fc fc
+> [   94.583958][ T8162] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [   94.594413][ T8162] Kernel panic - not syncing: KASAN: =
+panic_on_warn set ...
+> [   94.595479][ T8162] CPU: 1 PID: 8162 Comm: a.out Not tainted 6.8.0 =
+#6
+> [   94.596503][ T8162] Hardware name: QEMU Standard PC (i440FX + PIIX, =
+1996), BIOS 1.15.0-1 04/01/2014
+> [   94.597818][ T8162] Call Trace:
+> [   94.598344][ T8162]  <TASK>
+> [ 94.598807][ T8162] dump_stack_lvl (lib/dump_stack.c:107 =
+(discriminator 1))=20
+> [ 94.599531][ T8162] panic (kernel/panic.c:344)=20
+> [ 94.600156][ T8162] ? __pfx_panic (kernel/panic.c:278)=20
+> [ 94.600862][ T8162] ? preempt_schedule_thunk =
+(arch/x86/entry/thunk_64.S:45)=20
+> [ 94.601729][ T8162] ? preempt_schedule_common =
+(./arch/x86/include/asm/preempt.h:84 kernel/sched/core.c:6906)=20
+> [ 94.602591][ T8162] ? check_panic_on_warn (kernel/panic.c:236)=20
+> [ 94.603393][ T8162] ? gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.604199][ T8162] check_panic_on_warn (kernel/panic.c:237)=20
+> [ 94.604968][ T8162] end_report (mm/kasan/report.c:226)=20
+> [ 94.605647][ T8162] kasan_report (./arch/x86/include/asm/smap.h:56 =
+mm/kasan/report.c:606)=20
+> [ 94.606342][ T8162] ? gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.607198][ T8162] gfs2_invalidate_folio (fs/gfs2/aops.c:651)=20
+> [ 94.608041][ T8162] ? _raw_spin_lock_irqsave =
+(./arch/x86/include/asm/atomic.h:115 =
+./include/atomic/atomic-arch-fallback.h:2164 =
+./include/atomic/atomic-instrumented.h:1296 =
+./include/asm-generic/qspinlock.h:111 ./include/spinlock.h:187 =
+./include/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)=20
+> [ 94.608878][ T8162] ? __pfx_gfs2_invalidate_folio =
+(fs/gfs2/aops.c:635)=20
+> [ 94.609807][ T8162] truncate_cleanup_folio (mm/truncate.c:158 =
+mm/truncate.c:178)=20
+> [ 94.610659][ T8162] truncate_inode_pages_range (mm/truncate.c:357 =
+(discriminator 3))=20
+> [ 94.611563][ T8162] ? __pfx_truncate_inode_pages_range =
+(mm/truncate.c:322)=20
+> [ 94.612549][ T8162] ? __x64_sys_exit_group (kernel/exit.c:1029)=20
+> [ 94.613364][ T8162] ? do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.614114][ T8162] ? entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [ 94.615067][ T8162] ? _raw_spin_unlock_irqrestore =
+(./arch/x86/include/asm/preempt.h:103 ./include/spinlock_api_smp.h:152 =
+kernel/locking/spinlock.c:194)=20
+> [ 94.615979][ T8162] ? debug_object_active_state =
+(lib/debugobjects.c:946)=20
+> [ 94.616898][ T8162] gfs2_evict_inode (fs/gfs2/super.c:1509)=20
+> [ 94.617708][ T8162] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
+
+> [ 94.618567][ T8162] ? _raw_spin_lock =
+(./arch/x86/include/asm/atomic.h:115 =
+./include/atomic/atomic-arch-fallback.h:2164 =
+./include/atomic/atomic-instrumented.h:1296 =
+./include/asm-generic/qspinlock.h:111 ./include/spinlock.h:187 =
+./include/spinlock_api_smp.h:134 kernel/locking/spinlock.c:154)=20
+> [ 94.619353][ T8162] ? __inode_wait_for_writeback =
+(fs/fs-writeback.c:1487)=20
+> [ 94.620305][ T8162] ? __pfx___inode_wait_for_writeback =
+(fs/fs-writeback.c:1487)=20
+> [ 94.621277][ T8162] ? __pfx_wake_bit_function =
+(kernel/sched/wait_bit.c:22)=20
+> [ 94.622149][ T8162] ? __pfx__raw_spin_lock =
+(kernel/locking/spinlock.c:153)=20
+> [ 94.623011][ T8162] ? __pfx__raw_spin_lock =
+(kernel/locking/spinlock.c:153)=20
+> [ 94.623873][ T8162] ? wb_io_lists_depopulated (fs/fs-writeback.c:100 =
+(discriminator 1))=20
+> [ 94.624741][ T8162] ? __pfx_gfs2_evict_inode (fs/gfs2/super.c:1473)=20=
+
+> [ 94.625575][ T8162] evict (fs/inode.c:670)=20
+> [ 94.626200][ T8162] iput.part.0 (fs/inode.c:1739 fs/inode.c:1765)=20
+> [ 94.626907][ T8162] ? __pfx_gfs2_drop_inode (fs/gfs2/super.c:1025)=20
+> [ 94.627735][ T8162] iput (fs/inode.c:1767)=20
+> [ 94.628327][ T8162] gfs2_kill_sb (./include/sched.h:1984 =
+fs/gfs2/ops_fstype.c:1770 fs/gfs2/ops_fstype.c:1793)=20
+> [ 94.629089][ T8162] deactivate_locked_super (fs/super.c:433 =
+fs/super.c:474)=20
+> [ 94.629992][ T8162] deactivate_super (fs/super.c:507)=20
+> [ 94.630760][ T8162] cleanup_mnt (fs/namespace.c:144 =
+fs/namespace.c:1268)=20
+> [ 94.631469][ T8162] task_work_run (kernel/task_work.c:181 =
+(discriminator 1))=20
+> [ 94.632196][ T8162] ? __pfx_task_work_run (kernel/task_work.c:148)=20
+> [ 94.632935][ T8162] ? __put_net (net/core/net_namespace.c:667)=20
+> [ 94.633612][ T8162] do_exit (kernel/exit.c:872)=20
+> [ 94.634273][ T8162] ? __count_memcg_events (mm/memcontrol.c:722 =
+mm/memcontrol.c:961)=20
+> [ 94.635120][ T8162] ? __pfx_do_exit (kernel/exit.c:812)=20
+> [ 94.635833][ T8162] ? __pfx__raw_spin_lock_irq =
+(kernel/locking/spinlock.c:169)=20
+> [ 94.636701][ T8162] ? zap_other_threads (kernel/signal.c:1389)=20
+> [ 94.637515][ T8162] do_group_exit (kernel/exit.c:1001)=20
+> [ 94.638233][ T8162] __x64_sys_exit_group (kernel/exit.c:1029)=20
+> [ 94.639069][ T8162] do_syscall_64 (arch/x86/entry/common.c:52 =
+arch/x86/entry/common.c:83)=20
+> [ 94.639828][ T8162] entry_SYSCALL_64_after_hwframe =
+(arch/x86/entry/entry_64.S:129)=20
+> [   94.640782][ T8162] RIP: 0033:0x7f162e2ee146
+> [ 94.641525][ T8162] Code: Unable to access opcode bytes at =
+0x7f162e2ee11c.
+>=20
+> Code starting with the faulting instruction
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [   94.642646][ T8162] RSP: 002b:00007ffc8b584d98 EFLAGS: 00000246 =
+ORIG_RAX: 00000000000000e7
+> [   94.643938][ T8162] RAX: ffffffffffffffda RBX: 00007f162e3f38a0 =
+RCX: 00007f162e2ee146
+> [   94.645039][ T8162] RDX: 0000000000000001 RSI: 000000000000003c =
+RDI: 0000000000000001
+> [   94.646058][ T8162] RBP: 0000000000000001 R08: 00000000000000e7 =
+R09: ffffffffffffff80
+> [   94.647098][ T8162] R10: 0000000000000002 R11: 0000000000000246 =
+R12: 00007f162e3f38a0
+> [   94.648138][ T8162] R13: 0000000000000001 R14: 00007f162e3fc2e8 =
+R15: 0000000000000000
+> [   94.649181][ T8162]  </TASK>
+> [   94.649730][ T8162] Kernel Offset: disabled
+> [   94.650152][ T8162] Rebooting in 86400 seconds..
 >=20
 
