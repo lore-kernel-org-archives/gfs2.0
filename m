@@ -1,187 +1,92 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E166018C355
-	for <gfs2@lists.linux.dev>; Mon, 17 Jun 2024 07:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786A346521
+	for <gfs2@lists.linux.dev>; Tue, 18 Jun 2024 16:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718610863; cv=none; b=Divj53QBpkTviDznfgNQwcj2m37NzggQaZ517TLAyjgciV6CZX5uapt9zPinw/6LoPneG+Dj9mWWYLmmg/pEF8PeRcF59/o1//hteWHixbRuOY5UqZSN73Sy3YVfiSQMlVJRWSci54vBPtMNpRNZfu5iLw86gBuXN3XQ6/o2AOk=
+	t=1718726724; cv=none; b=tWJ3fqIY2QRKG7WJ5bmVzw7tinOqPT2wZfbSh7vzQR6gy5qE9QS7ZQlIRwwgQw49Amlpjw8KlkmtdiGh1FzMYCp2CzztoAvwZ7khkypnibMPVIhvs3S+mEr1wi15GPKVUnszxWdA/RZYrSMOUJHcgjyORmG5o83bkR+KSnuk9SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718610863; c=relaxed/simple;
-	bh=BcDumrzhJHX3BFZpVrgs8bCIW5Chag3b1JiIMKiW+1w=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=k3XKBBp6v7SJKHwL1ufSXnSa6rtyIyL/RjcuoOvSoNo2EpJg59whA/ozBEObs9O+S00x7nUObnr/sovpeCv6gYj9xkXP6PFUVsG7DB6+Y07hjR3JRHB/4EsqCqBxXmkf9L2TAy+2abvyuCpEwABXSeOd2bAGa2uFjsrV511LtZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-7ebf00251b9so367941239f.2
-        for <gfs2@lists.linux.dev>; Mon, 17 Jun 2024 00:54:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718610861; x=1719215661;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IL4TW/EgcknLwrn0dgOHn6yHg3+UpWQBoLA7pbtdQ1c=;
-        b=KRx7MyuXve9awz7yYUT2wAS3dMc59kpW1qX1tZrCIuXR97lG5vagc8QlwVvBOXxs3T
-         tlevdcRvonuLAcBhatSeA6qN9ziFJ/e5besxZcadtrc2rpd6BqYLlQm1DMCvF2Ni0R3a
-         xzdyhH/tG/okguqCRM8Fbx7/XnQ700c4ZExrBw0gQKFlysHLfxxycaDPj+Mi74dnSSje
-         7JvNnkPJJ789l22pZJz/mpckybVXtfAlJQAbIr/EmN9kurg1cvlIcdHMdzBvqazbCwaa
-         rJ0MMKwO/jo05/ggBBtd0navpmxnhNCo9B7c7yW7rkVMfxnIf5tP0KjjxYj0O3Ru+Mg9
-         hkvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGxXB61Tc3s5L0OCSIvQJZcq/deAGb9cegNGQfrbyzVsEOOaiZ1Zv3gR2PdUZfcZ/MGyifn3uCfKxOTHS/zy7oO9kjIg==
-X-Gm-Message-State: AOJu0Yy60hci5MfBobQ/kJgI3JYeEopbgiIjFUBT4Qk0tSotNPOp3xgk
-	hQsYtDjXWLW0yp5WwnP/E+rifOcf9XCn4VqhGpwlK6a/4XeBYyM4l5auOJQqAjJHhPovFzvsy1m
-	nLHoWGU76vLl4Tsu3nkx7IV8Z1choqGAzZ/pPFyU5VVk5Rt2/VO47brM=
-X-Google-Smtp-Source: AGHT+IFUhkn3WFmHdHTQBc9dtTTmorC7CDJAqII+Pbbz7a8XT6qZH0Lq6ZHtGymXONx22uxp9Scpobr+6wjqwqjp+38nGO/dpUZB
+	s=arc-20240116; t=1718726724; c=relaxed/simple;
+	bh=OpQpt+CnkB1oMwTTLTT5WXLdz/1af+eSFMfu8bhNJBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SZDbCDvzx6fVCvXWbWKNBqK8BSSRcpGOly50954c7vQ/LDgVx0B8QKXo/na2vsaOMj0GHPKuvDNqUoVt8LA5MvQAQ3TzC6waBRbVVjk/6kd6CWBp2H84ziWspM2OXIdW3kShrR8PaqIWeULIGhATvGUYp938AYQ64AVJYLTjMzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=edY7h4hB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="edY7h4hB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718726722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KMYUBg1ho3ZvRHWSOFzJgFBe2eH3mpMgYienFWInzGM=;
+	b=edY7h4hBw5KMK3WOGD4pptz3zL2/UcBbB0h+/+PcL6XEau6SoFNVgBlhKnKAR2dqqnmLHr
+	YbeIIXB5P+FVYDpfGZ4RRql2AvUllUOpwNFgJudgO23fAPSFW51LjawRR91n930lxhfVQ4
+	XbSNqXzkGWg/Q8DH4o1Tg852a3YmFTU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-131-b0JkDFWRPWGunCd8Iz8imw-1; Tue,
+ 18 Jun 2024 12:05:20 -0400
+X-MC-Unique: b0JkDFWRPWGunCd8Iz8imw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1A5281956055
+	for <gfs2@lists.linux.dev>; Tue, 18 Jun 2024 16:05:20 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.40])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 11BE419560B2;
+	Tue, 18 Jun 2024 16:05:18 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 00/13] gfs2: quota changes
+Date: Tue, 18 Jun 2024 18:05:04 +0200
+Message-ID: <20240618160517.901589-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:8524:b0:4b7:ba50:7059 with SMTP id
- 8926c6da1cb9f-4b963fa6971mr441709173.2.1718610861051; Mon, 17 Jun 2024
- 00:54:21 -0700 (PDT)
-Date: Mon, 17 Jun 2024 00:54:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e175c3061b1145e8@google.com>
-Subject: [syzbot] [gfs2?] WARNING: held lock freed in __flush_workqueue
-From: syzbot <syzbot+62f0a214565ddd1969d5@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello,
+We have recently discovered that commit 4c6a08125f22 ("gfs2: ignore
+negated quota changes") was causing corruption in "quota_change%u"
+files.  A more in-depth review of the quota code has revealed several
+more problems, both long-standing and in the quota changes merged last
+September.  Here are a number of fixes; please review.
 
-syzbot found the following issue on:
+Thanks,
+Andreas
 
-HEAD commit:    a957267fa7e9 Add linux-next specific files for 20240611
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13d6beda980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9a880e96898e79f8
-dashboard link: https://syzkaller.appspot.com/bug?extid=62f0a214565ddd1969d5
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+Andreas Gruenbacher (13):
+  gfs2: Minor gfs2_quota_init error path cleanup
+  gfs2: Check quota consistency on mount
+  gfs2: Revert "introduce qd_bh_get_or_undo"
+  gfs2: qd_check_sync cleanups
+  gfs2: Revert "ignore negated quota changes"
+  gfs2: Revert "Add quota_change type"
+  gfs2: Fix and clean up function do_qc
+  gfs2: quota need_sync cleanup
+  gfs2: Fold qd_fish into gfs2_quota_sync
+  gfs2: Add some missing quota locking
+  gfs2: Get rid of some unnecessary quota locking
+  gfs2: Be more careful with the quota sync generation
+  gfs2: Revert "check for no eligible quota changes"
 
-Unfortunately, I don't have any reproducer for this issue yet.
+ fs/gfs2/incore.h     |   1 -
+ fs/gfs2/ops_fstype.c |   1 -
+ fs/gfs2/quota.c      | 390 ++++++++++++++++++++++---------------------
+ fs/gfs2/util.c       |   6 +-
+ 4 files changed, 205 insertions(+), 193 deletions(-)
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/6451759a606b/disk-a957267f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7f635dbe5b8a/vmlinux-a957267f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/33eafd1b8aec/bzImage-a957267f.xz
+-- 
+2.45.1
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+62f0a214565ddd1969d5@syzkaller.appspotmail.com
-
-=========================
-WARNING: held lock freed!
-6.10.0-rc3-next-20240611-syzkaller #0 Not tainted
--------------------------
-syz-executor.0/7578 is freeing memory ffff88823bdf8000-ffff88823bdf81ff, with a lock still held there!
-ffff88823bdf8148 (&x->wait#58){+.+.}-{2:2}, at: touch_wq_lockdep_map kernel/workqueue.c:3895 [inline]
-ffff88823bdf8148 (&x->wait#58){+.+.}-{2:2}, at: __flush_workqueue+0x1b0/0x1710 kernel/workqueue.c:3937
-3 locks held by syz-executor.0/7578:
- #0: ffff8880221960e0 (&type->s_umount_key#107/1){+.+.}-{3:3}, at: alloc_super+0x221/0x9d0 fs/super.c:344
- #1: ffff88823bdf8148 (&x->wait#58){+.+.}-{2:2}, at: touch_wq_lockdep_map kernel/workqueue.c:3895 [inline]
- #1: ffff88823bdf8148 (&x->wait#58){+.+.}-{2:2}, at: __flush_workqueue+0x1b0/0x1710 kernel/workqueue.c:3937
- #2: ffffffff8e335560 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
- #2: ffffffff8e335560 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2558 [inline]
- #2: ffffffff8e335560 (rcu_callback){....}-{0:0}, at: rcu_core+0xa86/0x1830 kernel/rcu/tree.c:2838
-
-stack backtrace:
-CPU: 0 PID: 7578 Comm: syz-executor.0 Not tainted 6.10.0-rc3-next-20240611-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:91 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:117
- print_freed_lock_bug kernel/locking/lockdep.c:6607 [inline]
- debug_check_no_locks_freed+0x3ca/0x4b0 kernel/locking/lockdep.c:6642
- slab_free_hook mm/slub.c:2178 [inline]
- slab_free mm/slub.c:4455 [inline]
- kfree+0xfa/0x360 mm/slub.c:4576
- rcu_do_batch kernel/rcu/tree.c:2564 [inline]
- rcu_core+0xafd/0x1830 kernel/rcu/tree.c:2838
- handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
- __do_softirq kernel/softirq.c:588 [inline]
- invoke_softirq kernel/softirq.c:428 [inline]
- __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:lock_acquire+0x264/0x550 kernel/locking/lockdep.c:5821
-Code: 2b 00 74 08 4c 89 f7 e8 1a 18 8a 00 f6 44 24 61 02 0f 85 85 01 00 00 41 f7 c7 00 02 00 00 74 01 fb 48 c7 44 24 40 0e 36 e0 45 <4b> c7 44 25 00 00 00 00 00 43 c7 44 25 09 00 00 00 00 43 c7 44 25
-RSP: 0000:ffffc9000fdcf5c0 EFLAGS: 00000206
-RAX: 0000000000000001 RBX: 1ffff92001fb9ec4 RCX: e87e0b6d03ed4800
-RDX: dffffc0000000000 RSI: ffffffff8bcad320 RDI: ffffffff8c200760
-RBP: ffffc9000fdcf708 R08: ffffffff92fcb8ff R09: 1ffffffff25f971f
-R10: dffffc0000000000 R11: fffffbfff25f9720 R12: 1ffff92001fb9ec0
-R13: dffffc0000000000 R14: ffffc9000fdcf620 R15: 0000000000000246
- touch_wq_lockdep_map kernel/workqueue.c:3895 [inline]
- __flush_workqueue+0x1c9/0x1710 kernel/workqueue.c:3937
- drain_workqueue+0xc9/0x3a0 kernel/workqueue.c:4101
- destroy_workqueue+0xba/0xc40 kernel/workqueue.c:5812
- gfs2_fill_super+0x12a4/0x2520 fs/gfs2/ops_fstype.c:1311
- get_tree_bdev+0x3f7/0x570 fs/super.c:1615
- gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1330
- vfs_get_tree+0x90/0x2a0 fs/super.c:1780
- do_new_mount+0x2be/0xb40 fs/namespace.c:3379
- do_mount fs/namespace.c:3719 [inline]
- __do_sys_mount fs/namespace.c:3925 [inline]
- __se_sys_mount+0x2d6/0x3c0 fs/namespace.c:3902
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe59f07e5aa
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 09 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe59fe7eef8 EFLAGS: 00000202 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007fe59fe7ef80 RCX: 00007fe59f07e5aa
-RDX: 00000000200003c0 RSI: 0000000020037f80 RDI: 00007fe59fe7ef40
-RBP: 00000000200003c0 R08: 00007fe59fe7ef80 R09: 0000000000008000
-R10: 0000000000008000 R11: 0000000000000202 R12: 0000000020037f80
-R13: 00007fe59fe7ef40 R14: 0000000000037f59 R15: 0000000020000400
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	2b 00                	sub    (%rax),%eax
-   2:	74 08                	je     0xc
-   4:	4c 89 f7             	mov    %r14,%rdi
-   7:	e8 1a 18 8a 00       	call   0x8a1826
-   c:	f6 44 24 61 02       	testb  $0x2,0x61(%rsp)
-  11:	0f 85 85 01 00 00    	jne    0x19c
-  17:	41 f7 c7 00 02 00 00 	test   $0x200,%r15d
-  1e:	74 01                	je     0x21
-  20:	fb                   	sti
-  21:	48 c7 44 24 40 0e 36 	movq   $0x45e0360e,0x40(%rsp)
-  28:	e0 45
-* 2a:	4b c7 44 25 00 00 00 	movq   $0x0,0x0(%r13,%r12,1) <-- trapping instruction
-  31:	00 00
-  33:	43 c7 44 25 09 00 00 	movl   $0x0,0x9(%r13,%r12,1)
-  3a:	00 00
-  3c:	43                   	rex.XB
-  3d:	c7                   	.byte 0xc7
-  3e:	44                   	rex.R
-  3f:	25                   	.byte 0x25
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
