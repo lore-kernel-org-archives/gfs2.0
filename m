@@ -1,161 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151D91AED4E
-	for <gfs2@lists.linux.dev>; Thu, 20 Jun 2024 14:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02FE78C8E;
+	Thu, 20 Jun 2024 21:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718894764; cv=none; b=SlS4A4GQApjNPtRgBrjXI64SXWIF26J6yTlelD3a5E8v+1jo8RseiA5chndC86ENXeqjBwExnLgrppjb5OV03es9JSwUwXwxe/3tcdxBQhCcyPou6sBQpgMV/xS7jodzINSs6dvJudLQkG2nDMvtVHHX+cgGWu1rYl7D7teuPLE=
+	t=1718918643; cv=none; b=jn/TCGYywP8ZkBHVbXCG9rq1AOId25kJTTdgcQBspU2ydrNUymQYAXwXORkF4GxSo0Xw/cAcK2U1SFiZl47sflIACc8oMEg3rsNlEAI8+ScXTxxuH87xzAmYd4vxNwQkNvME6UNUj1LRQ4O9cqG4MrI0njeiUSaSFLRDRTVU3so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718894764; c=relaxed/simple;
-	bh=rJNoDvUaNOSxsFP7J7yPeo0Kb4QNp9frk4vxsBiu2+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l3nWSEaCafNiYarC/UT9YLES19RWIuLSy5MNXwtgWSR9w70mCHwVcvgBXUKje03FEpMQT2kYhVvI33nxtmrh0Ca6NUL1m9Vqxt5FhAvrsBq6sNt5tmBjJs/1UGbCEmntT4vOnBX34UelXOIN5yqpH2ICQVWrzP+J+ZDVGU6J3lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aGQRsxXx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718918643; c=relaxed/simple;
+	bh=J2GqEQCdBgJeMDsHOUD3ggS0L8MaxCNWl/BVWnLRCW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Klh52aQGeE2rm+1S/lVne1qMOtv44ALA3sso6+FQ0/MD+Xno5DrHOCaVgOaly34ujNaKTHct8zvolmUcuKjoAZjDGcZj+yR/foe+f0O2AGLNs0YsK+LGnZVQf6R3VfvgwTLkpHghJsYgUaN6KYGlv8Hu+64NrrIwdEgTCgS2QFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlQZkEWX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aGQRsxXx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718894762;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOyPbK7ga5DA65OixqRfLSJsSdBFQ6DtyLNoN6hbCSw=;
-	b=aGQRsxXxYChWQsAPjFCmu2+aBSFhofmIaSftYctLvASwBG4a2frdknU91TjkJG7v+/GEsS
-	SJ5VAhSOuIiGv+pweV3MgOIjbnCQqGllNzb8n/AMfdtGb5Q5uoylVzIYiCLKLQfxj8oVJd
-	/G+AU5+dtjiU8uDoAiEUBUUGN6Yy1rs=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-81-RJSpwyneO8KogpkkH8dmFg-1; Thu, 20 Jun 2024 10:45:57 -0400
-X-MC-Unique: RJSpwyneO8KogpkkH8dmFg-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1f68c07cbbeso9741965ad.3
-        for <gfs2@lists.linux.dev>; Thu, 20 Jun 2024 07:45:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718894756; x=1719499556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NOyPbK7ga5DA65OixqRfLSJsSdBFQ6DtyLNoN6hbCSw=;
-        b=IG0/eASlhZhyu/rHt1o+hsqjMuOLnIqr4GHlTKE/i20v2UHNHYVpqbRtPJ7n1A+NPf
-         NzlBkEHuGb1wBi7QecWyKky3CajJzjfj39hMV4wLMNyfxU+aKG/NHbVJeJtnQZcHs67C
-         6E3NfjTM348IFpk0mKv/zrhZxz59inj6O1oWev5Sl0mIfZHvqAF52PKqsd30/Y9ntkSU
-         LlBgJ/XnOE/FDyOXGJDakukX2p0ZiEbeXBNT4ts5Dwd83UW2far8aw40HVXSYgpvrPGu
-         AGRF3N9C4Fpir4sQjLN7lgGHAvXkJaugAWfVY/4tUKQVYYivIRvUXcp8ISm5DQPQxbZB
-         VPEQ==
-X-Gm-Message-State: AOJu0YydEeQr4qvq2JUPOdM5/833MOAUuCN9wTQpO/5bDhpYOo/ufoSj
-	oqPgm4xSM2W4SpYMfKmZfgiukM9TWbPI8J467nsFihg8vQV//hUD2Arpgdf2vjjzhaU9XcQwZac
-	IkXjUYOvp++IYaJJ7SF7pNcO2yU3x1YL3kK+5sKNruQAIqKoKuxz/PcssjIvO3H8gnbonc9T+Q4
-	k+126nXx02FU42io1NCSyjyi0jPg==
-X-Received: by 2002:a17:903:1cf:b0:1f9:9a87:76f5 with SMTP id d9443c01a7336-1f9aa42d459mr66127945ad.27.1718894756476;
-        Thu, 20 Jun 2024 07:45:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVPznqVHXRaTdmrOcWBN++woZDfmioTaGS8jiKKyzS/e7hw9Z1Y3zMTINL1846Y9FOWPmHqGu4yK+pu9Kd1AQ=
-X-Received: by 2002:a17:903:1cf:b0:1f9:9a87:76f5 with SMTP id
- d9443c01a7336-1f9aa42d459mr66127695ad.27.1718894756116; Thu, 20 Jun 2024
- 07:45:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlQZkEWX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578C8C2BD10;
+	Thu, 20 Jun 2024 21:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718918642;
+	bh=J2GqEQCdBgJeMDsHOUD3ggS0L8MaxCNWl/BVWnLRCW8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FlQZkEWXuYjG3lBPD+CbeqHswxAsU7y4iss7QjmrwwSkTw2iU3E6o6btinmhwPHrD
+	 lSF/mb5wOLfVwxtjYYm93dMIUn1hfwPO7/uvnuUvaMGfIVTVH8Kn/kMXsydRkfKkKk
+	 +q9uKCYgckPzfqcC2uHLzy4ZEe1BFH/G9Q8G00qfYW4ZlnjgKp1D8f5mbTBTzHet3f
+	 KJRe02ZO01MDudREL9gtQdj64PgKYAVNDPPdkW0hXvesX4jdchaliSxKMN5OssSrSq
+	 Ecnj4xZ09k4NozRYTQARzo3zXOkrOETiUmVHdKRiMwF75ak/8AVeIkVdoL0kbhtqfE
+	 xzqtOujZzBqdw==
+Date: Thu, 20 Jun 2024 14:24:01 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: John Garry <john.g.garry@oracle.com>
+Cc: axboe@kernel.dk, tytso@mit.edu, dchinner@redhat.com,
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.com,
+	chandan.babu@oracle.com, hch@lst.de, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-xfs@vger.kernel.org, catherine.hoang@oracle.com,
+	ritesh.list@gmail.com, mcgrof@kernel.org,
+	mikulas@artax.karlin.mff.cuni.cz, agruenba@redhat.com,
+	miklos@szeredi.hu, martin.petersen@oracle.com
+Subject: Re: [PATCH v4 01/22] fs: Add generic_atomic_write_valid_size()
+Message-ID: <20240620212401.GA3058325@frogsfrogsfrogs>
+References: <20240607143919.2622319-1-john.g.garry@oracle.com>
+ <20240607143919.2622319-2-john.g.garry@oracle.com>
+ <20240612211040.GJ2764752@frogsfrogsfrogs>
+ <a123946e-1df2-48da-b120-67b50c3aa9f5@oracle.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240618160517.901589-1-agruenba@redhat.com> <20240618160517.901589-12-agruenba@redhat.com>
- <CAK-6q+i4YsSPX5i3zAUK5PX1XZ4JY_U=hhx-8N8mEeoOiRKw5g@mail.gmail.com>
-In-Reply-To: <CAK-6q+i4YsSPX5i3zAUK5PX1XZ4JY_U=hhx-8N8mEeoOiRKw5g@mail.gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 20 Jun 2024 16:45:44 +0200
-Message-ID: <CAHc6FU4uYipHx6frNK2uCRuWjouKsTbr_6N=cJ52PPa+A3i-wg@mail.gmail.com>
-Subject: Re: [PATCH 11/13] gfs2: Get rid of some unnecessary quota locking
-To: Alexander Aring <aahringo@redhat.com>
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a123946e-1df2-48da-b120-67b50c3aa9f5@oracle.com>
 
-On Thu, Jun 20, 2024 at 4:24=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
-m> wrote:
-> Hi,
->
-> On Tue, Jun 18, 2024 at 12:13=E2=80=AFPM Andreas Gruenbacher
-> <agruenba@redhat.com> wrote:
-> >
-> > With the locking the previous patch has introduced for each struct
-> > gfs2_quota_data object, sd_quota_mutex has become largely irrelevant.
-> > By waiting on the buffer head instead of waiting on the mutex in
-> > get_bh(), it becomes completely irrelevant and can be removed.
-> >
-> ...
-> >         error =3D -EIO;
-> >         if (gfs2_metatype_check(sdp, bh, GFS2_METATYPE_QC))
-> > -               goto fail_brelse;
-> > -
-> > -       qd->qd_bh =3D bh;
-> > -       qd->qd_bh_qc =3D (struct gfs2_quota_change *)
-> > -               (bh->b_data + sizeof(struct gfs2_meta_header) +
-> > -                offset * sizeof(struct gfs2_quota_change));
-> > -
-> > -       mutex_unlock(&sdp->sd_quota_mutex);
-> > +               goto out;
-> >
-> > -       return 0;
-> > +       spin_lock(&qd->qd_lockref.lock);
-> > +       if (qd->qd_bh =3D=3D NULL) {
-> > +               qd->qd_bh =3D bh;
-> > +               qd->qd_bh_qc =3D (struct gfs2_quota_change *)
-> > +                       (bh->b_data + sizeof(struct gfs2_meta_header) +
-> > +                        offset * sizeof(struct gfs2_quota_change));
-> > +               bh =3D NULL;
->
-> here you set bh to NULL.
->
-> > +       }
-> > +       qd->qd_bh_count++;
-> > +       spin_unlock(&qd->qd_lockref.lock);
-> > +       error =3D 0;
-> >
-> > -fail_brelse:
-> > +out:
-> >         brelse(bh);
->
-> It might be called with bh =3D=3D NULL?
+On Thu, Jun 13, 2024 at 08:35:53AM +0100, John Garry wrote:
+> On 12/06/2024 22:10, Darrick J. Wong wrote:
+> > On Fri, Jun 07, 2024 at 02:38:58PM +0000, John Garry wrote:
+> > > Add a generic helper for FSes to validate that an atomic write is
+> > > appropriately sized (along with the other checks).
+> > > 
+> > > Signed-off-by: John Garry <john.g.garry@oracle.com>
+> > > ---
+> > >   include/linux/fs.h | 12 ++++++++++++
+> > >   1 file changed, 12 insertions(+)
+> > > 
+> > > diff --git a/include/linux/fs.h b/include/linux/fs.h
+> > > index 069cbab62700..e13d34f8c24e 100644
+> > > --- a/include/linux/fs.h
+> > > +++ b/include/linux/fs.h
+> > > @@ -3645,4 +3645,16 @@ bool generic_atomic_write_valid(loff_t pos, struct iov_iter *iter)
+> > >   	return true;
+> > >   }
+> > > +static inline
+> > > +bool generic_atomic_write_valid_size(loff_t pos, struct iov_iter *iter,
+> > > +				unsigned int unit_min, unsigned int unit_max)
+> > > +{
+> > > +	size_t len = iov_iter_count(iter);
+> > > +
+> > > +	if (len < unit_min || len > unit_max)
+> > > +		return false;
+> > > +
+> > > +	return generic_atomic_write_valid(pos, iter);
+> > > +}
+> > 
+> > Now that I look back at "fs: Initial atomic write support" I wonder why
+> > not pass the iocb and the iov_iter instead of pos and the iov_iter?
+> 
+> The original user of generic_atomic_write_valid() [blkdev_dio_unaligned() or
+> blkdev_dio_invalid() with the rename] used these same args, so I just went
+> with that.
 
-Yes, brelse() can handle that.
+Don't let the parameter types of static blockdev helpers determine the
+VFS API that filesystems need to implement untorn writes.
 
-> > -fail:
-> > -       qd->qd_bh_count--;
-> > -       mutex_unlock(&sdp->sd_quota_mutex);
-> >         return error;
-> >  }
-> >
-> >  static void bh_put(struct gfs2_quota_data *qd)
-> >  {
-> >         struct gfs2_sbd *sdp =3D qd->qd_sbd;
-> > +       struct buffer_head *bh =3D NULL;
-> >
-> > -       mutex_lock(&sdp->sd_quota_mutex);
-> > +       spin_lock(&qd->qd_lockref.lock);
-> >         gfs2_assert(sdp, qd->qd_bh_count);
-> >         if (!--qd->qd_bh_count) {
-> > -               brelse(qd->qd_bh);
-> > +               bh =3D qd->qd_bh;
-> >                 qd->qd_bh =3D NULL;
-> >                 qd->qd_bh_qc =3D NULL;
-> >         }
-> > -       mutex_unlock(&sdp->sd_quota_mutex);
-> > +       spin_unlock(&qd->qd_lockref.lock);
-> > +
-> > +       if (bh)
-> > +               brelse(bh);
->
-> Here you care about that bh is !=3D NULL.
->
-> is breise() now NULL proofed?
+In the block layer enablement patch, this could easily be:
 
-Yes, always has been. I'll remove that unnecessary NULL check.
+bool generic_atomic_write_valid(const struct kiocb *iocb,
+				const struct iov_iter *iter)
+{
+	size_t len = iov_iter_count(iter);
 
-Thanks,
-Andreas
+	if (!iter_is_ubuf(iter))
+		return false;
 
+	if (!is_power_of_2(len))
+		return false;
+
+	if (!IS_ALIGNED(iocb->ki_pos, len))
+		return false;
+
+	return true;
+}
+
+Then this becomes:
+
+bool generic_atomic_write_valid_size(const struct kiocb *iocb,
+				     const struct iov_iter *iter,
+				     unsigned int unit_min,
+				     unsigned int unit_max)
+{
+	size_t len = iov_iter_count(iter);
+
+	if (len < unit_min || len > unit_max)
+		return false;
+
+	return generic_atomic_write_valid(iocb, iter);
+}
+
+Yes, that means you have to rearrange the calling conventions of
+blkdev_dio_invalid a little bit, but the first two arguments match
+->read_iter and ->write_iter.  Filesystem writers can see that the first
+two arguments are the first two parameters to foofs_write_iter() and
+focus on the hard part, which is figuring out unit_{min,max}.
+
+static ssize_t
+xfs_file_dio_write(
+	struct kiocb		*iocb,
+	struct iov_iter		*from)
+{
+...
+	if ((iocb->ki_flags & IOCB_ATOMIC) &&
+	    !generic_atomic_write_valid_size(iocb, from,
+			i_blocksize(inode),
+			XFS_FSB_TO_B(mp, ip->i_extsize)))
+		return -EINVAL;
+	}
+
+
+> > And can these be collapsed into a single generic_atomic_write_checks()
+> > function?
+> 
+> bdev file operations would then need to use
+> generic_atomic_write_valid_size(), and there is no unit_min and unit_max
+> size there, apart from bdev awu min and max. And if I checked them, we would
+> be duplicating checks (of awu min and max) in the block layer.
+
+Fair enough, I concede this point.
+
+--D
+
+> 
+> Cheers,
+> John
+> 
