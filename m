@@ -1,168 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02FE78C8E;
-	Thu, 20 Jun 2024 21:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA9B16C86B
+	for <gfs2@lists.linux.dev>; Fri, 21 Jun 2024 07:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718918643; cv=none; b=jn/TCGYywP8ZkBHVbXCG9rq1AOId25kJTTdgcQBspU2ydrNUymQYAXwXORkF4GxSo0Xw/cAcK2U1SFiZl47sflIACc8oMEg3rsNlEAI8+ScXTxxuH87xzAmYd4vxNwQkNvME6UNUj1LRQ4O9cqG4MrI0njeiUSaSFLRDRTVU3so=
+	t=1718956659; cv=none; b=u3wtomtPCFvGACqf5agi4pPN5PJMYyQRYrshO31nBp1HvrGFKjVVPOyKCvSIplMrclTTyy5Xbdu2GfR7Edseedm5LPmLRNFl6owy1mI4FlBnC9rgmuglGZD2lbeLYqTM5H3e1cFT1TIRM9fB4SN5ajsQDow79wohj2eof6MpUPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718918643; c=relaxed/simple;
-	bh=J2GqEQCdBgJeMDsHOUD3ggS0L8MaxCNWl/BVWnLRCW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Klh52aQGeE2rm+1S/lVne1qMOtv44ALA3sso6+FQ0/MD+Xno5DrHOCaVgOaly34ujNaKTHct8zvolmUcuKjoAZjDGcZj+yR/foe+f0O2AGLNs0YsK+LGnZVQf6R3VfvgwTLkpHghJsYgUaN6KYGlv8Hu+64NrrIwdEgTCgS2QFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlQZkEWX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlQZkEWX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578C8C2BD10;
-	Thu, 20 Jun 2024 21:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718918642;
-	bh=J2GqEQCdBgJeMDsHOUD3ggS0L8MaxCNWl/BVWnLRCW8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FlQZkEWXuYjG3lBPD+CbeqHswxAsU7y4iss7QjmrwwSkTw2iU3E6o6btinmhwPHrD
-	 lSF/mb5wOLfVwxtjYYm93dMIUn1hfwPO7/uvnuUvaMGfIVTVH8Kn/kMXsydRkfKkKk
-	 +q9uKCYgckPzfqcC2uHLzy4ZEe1BFH/G9Q8G00qfYW4ZlnjgKp1D8f5mbTBTzHet3f
-	 KJRe02ZO01MDudREL9gtQdj64PgKYAVNDPPdkW0hXvesX4jdchaliSxKMN5OssSrSq
-	 Ecnj4xZ09k4NozRYTQARzo3zXOkrOETiUmVHdKRiMwF75ak/8AVeIkVdoL0kbhtqfE
-	 xzqtOujZzBqdw==
-Date: Thu, 20 Jun 2024 14:24:01 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: John Garry <john.g.garry@oracle.com>
-Cc: axboe@kernel.dk, tytso@mit.edu, dchinner@redhat.com,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.com,
-	chandan.babu@oracle.com, hch@lst.de, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-xfs@vger.kernel.org, catherine.hoang@oracle.com,
-	ritesh.list@gmail.com, mcgrof@kernel.org,
-	mikulas@artax.karlin.mff.cuni.cz, agruenba@redhat.com,
-	miklos@szeredi.hu, martin.petersen@oracle.com
-Subject: Re: [PATCH v4 01/22] fs: Add generic_atomic_write_valid_size()
-Message-ID: <20240620212401.GA3058325@frogsfrogsfrogs>
-References: <20240607143919.2622319-1-john.g.garry@oracle.com>
- <20240607143919.2622319-2-john.g.garry@oracle.com>
- <20240612211040.GJ2764752@frogsfrogsfrogs>
- <a123946e-1df2-48da-b120-67b50c3aa9f5@oracle.com>
+	s=arc-20240116; t=1718956659; c=relaxed/simple;
+	bh=XwzgDeJWleg5OR247GUJYTPFQ0uyUzPPoq151hb0C8c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nIv/vMzVm+VpSl2gt9NsRCb5aSku2HiRS5s1OoerLPjp6KlA9VbEILksZsSDPiceeqlglF3FEWGRcRThcWwm0J6nh9uFt/z/BPZyQeHDrMHCT4oXr8hWQ56RFMNLXHTxZlOW1mr4gmAM0Rcl+5BpcZjmokEn97Eb2Cw7HBZzXfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: e3280df02fa311ef9305a59a3cc225df-20240621
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:dd247ac0-53fc-4c76-8205-049e773f2f19,IP:15,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:6
+X-CID-INFO: VERSION:1.1.38,REQID:dd247ac0-53fc-4c76-8205-049e773f2f19,IP:15,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:6
+X-CID-META: VersionHash:82c5f88,CLOUDID:a4c1103e4110ee529d51a5886313aa4f,BulkI
+	D:240620044834U5B7J34Z,BulkQuantity:2,Recheck:0,SF:64|66|24|17|19|43|74|81
+	7|102,TC:nil,Content:0|-5,EDM:-3,IP:-2,URL:11|1,File:nil,RT:nil,Bulk:40,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 1,FCT|NGT
+X-CID-BAS: 1,FCT|NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,
+	TF_CID_SPAM_ULN
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI, GTI_FG_IT
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI
+	AMN_C_BU, ABX_MISS_RDNS
+X-UUID: e3280df02fa311ef9305a59a3cc225df-20240621
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.255)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 171995361; Fri, 21 Jun 2024 15:57:20 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: markus.elfring@web.de
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	teigland@redhat.com
+Subject: Re: [PATCH] dlm: use KMEM_CACHE() in dlm_memory_init()
+Date: Fri, 21 Jun 2024 15:55:33 +0800
+Message-Id: <20240621075533.86674-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <dec3e8d9-0a29-4e9b-afb5-888aaef4780d@web.de>
+References: <dec3e8d9-0a29-4e9b-afb5-888aaef4780d@web.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a123946e-1df2-48da-b120-67b50c3aa9f5@oracle.com>
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 13, 2024 at 08:35:53AM +0100, John Garry wrote:
-> On 12/06/2024 22:10, Darrick J. Wong wrote:
-> > On Fri, Jun 07, 2024 at 02:38:58PM +0000, John Garry wrote:
-> > > Add a generic helper for FSes to validate that an atomic write is
-> > > appropriately sized (along with the other checks).
-> > > 
-> > > Signed-off-by: John Garry <john.g.garry@oracle.com>
-> > > ---
-> > >   include/linux/fs.h | 12 ++++++++++++
-> > >   1 file changed, 12 insertions(+)
-> > > 
-> > > diff --git a/include/linux/fs.h b/include/linux/fs.h
-> > > index 069cbab62700..e13d34f8c24e 100644
-> > > --- a/include/linux/fs.h
-> > > +++ b/include/linux/fs.h
-> > > @@ -3645,4 +3645,16 @@ bool generic_atomic_write_valid(loff_t pos, struct iov_iter *iter)
-> > >   	return true;
-> > >   }
-> > > +static inline
-> > > +bool generic_atomic_write_valid_size(loff_t pos, struct iov_iter *iter,
-> > > +				unsigned int unit_min, unsigned int unit_max)
-> > > +{
-> > > +	size_t len = iov_iter_count(iter);
-> > > +
-> > > +	if (len < unit_min || len > unit_max)
-> > > +		return false;
-> > > +
-> > > +	return generic_atomic_write_valid(pos, iter);
-> > > +}
-> > 
-> > Now that I look back at "fs: Initial atomic write support" I wonder why
-> > not pass the iocb and the iov_iter instead of pos and the iov_iter?
-> 
-> The original user of generic_atomic_write_valid() [blkdev_dio_unaligned() or
-> blkdev_dio_invalid() with the rename] used these same args, so I just went
-> with that.
+>>> Can the three passed name strings matter still for the identification
+>>> of the created caches from this function implementation?
+>>> https://elixir.bootlin.com/linux/v6.10-rc4/source/fs/dlm/memory.c#L27
+>>> https://elixir.bootlin.com/linux/v6.10-rc4/source/mm/slab_common.c#L362
+>>
+>> probably only for "dlm_cb" that turns into "dlm_callback".
+>…
+>
+>Will the development attention grow for deviations of passed name strings
+>from applied data structure identifiers?
 
-Don't let the parameter types of static blockdev helpers determine the
-VFS API that filesystems need to implement untorn writes.
+My initial purpose is to replace kmem_cache_create() with KMEM_CACHE().
+In my view，there is no problem in unifying passed name strings and
+structure identifiers.
+Maybe that's wrong，I will resubmit a patch that does not change
+"dlm_cb" to "dlm_callback".
 
-In the block layer enablement patch, this could easily be:
-
-bool generic_atomic_write_valid(const struct kiocb *iocb,
-				const struct iov_iter *iter)
-{
-	size_t len = iov_iter_count(iter);
-
-	if (!iter_is_ubuf(iter))
-		return false;
-
-	if (!is_power_of_2(len))
-		return false;
-
-	if (!IS_ALIGNED(iocb->ki_pos, len))
-		return false;
-
-	return true;
-}
-
-Then this becomes:
-
-bool generic_atomic_write_valid_size(const struct kiocb *iocb,
-				     const struct iov_iter *iter,
-				     unsigned int unit_min,
-				     unsigned int unit_max)
-{
-	size_t len = iov_iter_count(iter);
-
-	if (len < unit_min || len > unit_max)
-		return false;
-
-	return generic_atomic_write_valid(iocb, iter);
-}
-
-Yes, that means you have to rearrange the calling conventions of
-blkdev_dio_invalid a little bit, but the first two arguments match
-->read_iter and ->write_iter.  Filesystem writers can see that the first
-two arguments are the first two parameters to foofs_write_iter() and
-focus on the hard part, which is figuring out unit_{min,max}.
-
-static ssize_t
-xfs_file_dio_write(
-	struct kiocb		*iocb,
-	struct iov_iter		*from)
-{
-...
-	if ((iocb->ki_flags & IOCB_ATOMIC) &&
-	    !generic_atomic_write_valid_size(iocb, from,
-			i_blocksize(inode),
-			XFS_FSB_TO_B(mp, ip->i_extsize)))
-		return -EINVAL;
-	}
-
-
-> > And can these be collapsed into a single generic_atomic_write_checks()
-> > function?
-> 
-> bdev file operations would then need to use
-> generic_atomic_write_valid_size(), and there is no unit_min and unit_max
-> size there, apart from bdev awu min and max. And if I checked them, we would
-> be duplicating checks (of awu min and max) in the block layer.
-
-Fair enough, I concede this point.
-
---D
-
-> 
-> Cheers,
-> John
-> 
+thanks,
+Hongfu Li
