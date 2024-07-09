@@ -1,191 +1,106 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D0A1AB513
-	for <gfs2@lists.linux.dev>; Thu,  4 Jul 2024 11:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB0318A932
+	for <gfs2@lists.linux.dev>; Tue,  9 Jul 2024 13:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720091058; cv=none; b=mzv5ZV1KNHPOlGMV9dlUUH543l9qNhN+xcDJMoqX2+r3/hExGGYkbeABPgjgyKQiFTDb/qZDRcxHi/4ZmRfrGkd5/JLhI5wTsnjGCd2sm39VfjokMbl+z5dOITtxAlWYwKgZ/sxYVAK4OVM3iNgXIF0wxCM9DlmNJEVDfHFGkls=
+	t=1720533417; cv=none; b=Fna9GC18aaNG8vuM/5xkQ7mmOatasd6HSmzOz4Ftgmy1L+WS/JDMJTFISAEMsK/o+yvwOLkbNO9vGR23HJH/HuNE/ynDTPOXI57cUnhNQcuSo39WDNzn/xjy1l+KmKb93m3J3v/4MhP2YFbNPzOMiVO3fe3JF8WciJ1L+Sz449o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720091058; c=relaxed/simple;
-	bh=gYS2whrZY86Kq5/Ysa/GGAOdZHOWk5qsRXJF/IiNlY0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=V/LJpjdf6wl+TjEbAdhEzp2Kdn/S+sP28ygx4J2QKQnWSUOQZXMpxAyNO1+GsM0ICf38e33AQHWLKeYgLeDR0N2Dgu2xsCvGpcYJDpTqwkenzLdlwSW4wxxouWFPx3orVkbq6DZtk1ZocaTQxh2dOVyp/yHvhfwcAokTUJl2EcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7f652a0d89dso69051539f.3
-        for <gfs2@lists.linux.dev>; Thu, 04 Jul 2024 04:04:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720091056; x=1720695856;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BIc8y7SfIQseVVtb2caKhWpDcc0rvRRo+xzgagIpOBQ=;
-        b=rwYXen/sd+aaRyswGaTzCCB3bELtuiH6KSJAAP4cWTTOivXQA2z+wS9YcGxNp1yIYM
-         wWPsI/XMZqaZ/P241azYaNT7/qGyxJ6Dp80BuYpNT6cwR2GKb+uJrqVtYsYQpUpAV1gI
-         uvTXMj7M3aTSVnU3Cyb0o0u0uTiS+4r3iccBEbw2LgeTbJ136PdgyCGU21LrWzPHbV0E
-         zyKhBb73qWHQ7A/syT2Z6dRI3IGg28+XhYtmakNGb+pv8eSTBhVYIyCB0+CzSx3mVqYv
-         9SevSD1l7xSg7Kd6egZjZUDgyq/PS9HsADYGebFTO6C+EY/DzYllK0wuUVjFV6KZxbAI
-         9ppA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUU82oym4TR8SJ9o/QUzPGwAxswzWohzVDzqc006SetEVsfTDD77acTqRIO1odw8QRJqPvkFG+9d8bgvUwJVx8fX6KnA==
-X-Gm-Message-State: AOJu0YzR2MJ9TSVn+1Q4izDDeTlKIYY9ipz70VPHZOpPk8i2VPJcoJmR
-	NkQTi4KO5sEeN10h39vMK57+Ybb97tmYJwwnYNJAkTTTs+kH15UnYyKnCIaafuJCaRjjPeH6ZLr
-	7MwridS//5mjdx1I2BpSruvWC9PNjyy4kVhRM0sTTg96z/fdVBx0IZ2s=
-X-Google-Smtp-Source: AGHT+IFeaPd5H1fJzhRGyCJpOUmF0sfxC90youmbetsLBodBTMQDNfXlWodcq3yNZuDvPmc4Y7wFs56GFlgR4MdgtAx1Y4qkgmBr
+	s=arc-20240116; t=1720533417; c=relaxed/simple;
+	bh=ndc/MQAgz/VBpmEiDtJ/xVS3tWuAoFNOy7XpvWzk2SU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=smkouJnT/4HrDK4yPnQ0kjXPriyEHEGiHolgIOF5TlcmKsGKsM4mCVk9E9cTpUbS+Pe9qRYA4a6vcOfhOKfICO1LhLI6MLY5e1rtjdO7PJyYAjtYdTx6ssidLdRowaTMPmoeUOpT/byEhf2qeLV+QjEmIxf2bQvR2GQyG+lhg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XLUuGfJL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XLUuGfJL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720533415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ca88xXkuQWO9sx7DbKYb9vv5SbyC+c+3trt0eZS9DCo=;
+	b=XLUuGfJLCKKjhXxkTyNbZykJOpnWM17VoysK4JJpV9Kbj/GRLD5yuKSlbxq8qDmfwZimAO
+	QJxG+ujPFNk0tLhFHK5bR9lbDEfPSQhJKXTRhZVZM7HDspssirNgWLf8Y06stsEYv4BD/v
+	qoWGdwzEGbXU280jpL8HacA4Ga0itjc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-oJ_aO2OtNFGpOaMt6vUjKQ-1; Tue,
+ 09 Jul 2024 09:56:53 -0400
+X-MC-Unique: oJ_aO2OtNFGpOaMt6vUjKQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3DFC18EB187
+	for <gfs2@lists.linux.dev>; Tue,  9 Jul 2024 13:56:47 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.226.14])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D622B1955E7F;
+	Tue,  9 Jul 2024 13:56:41 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH] gfs2: Clean up glock demote logic
+Date: Tue,  9 Jul 2024 15:56:40 +0200
+Message-ID: <20240709135640.32362-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6086:b0:7f3:a80e:8cec with SMTP id
- ca18e2360f4ac-7f66db5e21amr6845439f.0.1720091055821; Thu, 04 Jul 2024
- 04:04:15 -0700 (PDT)
-Date: Thu, 04 Jul 2024 04:04:15 -0700
-In-Reply-To: <0000000000000538640617a80980@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005d2c82061c69e8ca@google.com>
-Subject: Re: [syzbot] [gfs2?] KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-From: syzbot <syzbot+7efd59a5a532c57037e6@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-syzbot has found a reproducer for the following issue on:
+The logic for determining when to demote a glock in glock_work_func(),
+introduced in commit 7cf8dcd3b68a ("GFS2: Automatically adjust glock min
+hold time"), doesn't make sense: inode glocks have a minimum hold time
+that delays demotion, while all other glocks are expected to be demoted
+immediately.  Instead of demoting non-inode glocks immediately,
+glock_work_func() schedules glock work for them to be demoted, however.
+Get rid of that unnecessary indirection.
 
-HEAD commit:    795c58e4c7fc Merge tag 'trace-v6.10-rc6' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16418635980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1ace69f521989b1f
-dashboard link: https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e82849980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11b55181980000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/947727e7be17/disk-795c58e4.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8898920020bb/vmlinux-795c58e4.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/9aed6052df98/bzImage-795c58e4.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/7bee2c9df91a/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7efd59a5a532c57037e6@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0:  H: s:SH f:H e:0 p:5123 [syz-executor201] iterate_dir+0x57a/0x810 fs/readdir.c:110
-==================================================================
-BUG: KASAN: stack-out-of-bounds in gfs2_dump_glock+0x15b1/0x1bb0
-Read of size 8 at addr ffffc900034a7ca0 by task syz-executor201/5125
-
-CPU: 0 PID: 5125 Comm: syz-executor201 Not tainted 6.10.0-rc6-syzkaller-00069-g795c58e4c7fc #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- gfs2_dump_glock+0x15b1/0x1bb0
- gfs2_consist_inode_i+0xf5/0x110 fs/gfs2/util.c:457
- gfs2_dirent_scan+0x52b/0x670
- gfs2_dirent_search+0x30e/0x8c0 fs/gfs2/dir.c:853
- gfs2_dir_search+0xb2/0x2f0 fs/gfs2/dir.c:1653
- gfs2_lookupi+0x461/0x5e0 fs/gfs2/inode.c:340
- __gfs2_lookup+0xa4/0x280 fs/gfs2/inode.c:896
- __lookup_slow+0x28c/0x3f0 fs/namei.c:1692
- lookup_slow+0x53/0x70 fs/namei.c:1709
- walk_component fs/namei.c:2004 [inline]
- link_path_walk+0x9ea/0xea0 fs/namei.c:2331
- path_parentat fs/namei.c:2540 [inline]
- __filename_parentat+0x263/0x6f0 fs/namei.c:2564
- filename_parentat fs/namei.c:2582 [inline]
- filename_create+0xf6/0x540 fs/namei.c:3887
- do_mknodat+0x18b/0x5b0 fs/namei.c:4052
- __do_sys_mknod fs/namei.c:4098 [inline]
- __se_sys_mknod fs/namei.c:4096 [inline]
- __x64_sys_mknod+0x8e/0xa0 fs/namei.c:4096
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc9a7de9779
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 1f 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fc9a7d75168 EFLAGS: 00000246 ORIG_RAX: 0000000000000085
-RAX: ffffffffffffffda RBX: 00007fc9a7e7d6d8 RCX: 00007fc9a7de9779
-RDX: 0000000000000701 RSI: 0000000000000000 RDI: 0000000020000680
-RBP: 00007fc9a7e7d6d0 R08: 00007ffc076d7ae7 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fc9a7e7d6dc
-R13: 000000000000006e R14: 00007ffc076d7a00 R15: 00007ffc076d7ae8
- </TASK>
-
-The buggy address belongs to the virtual mapping at
- [ffffc900034a0000, ffffc900034a9000) created by:
- copy_process+0x5d1/0x3dc0 kernel/fork.c:2220
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88802c96fd80 pfn:0x2c96f
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000000000 0000000000000000 dead000000000122 0000000000000000
-raw: ffff88802c96fd80 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_ZERO), pid 5106, tgid 5106 (syz-executor201), ts 62007196465, free_ts 61954421151
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1473
- prep_new_page mm/page_alloc.c:1481 [inline]
- get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3425
- __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4683
- alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
- vm_area_alloc_pages mm/vmalloc.c:3575 [inline]
- __vmalloc_area_node mm/vmalloc.c:3651 [inline]
- __vmalloc_node_range_noprof+0x971/0x1460 mm/vmalloc.c:3832
- alloc_thread_stack_node kernel/fork.c:309 [inline]
- dup_task_struct+0x444/0x8c0 kernel/fork.c:1115
- copy_process+0x5d1/0x3dc0 kernel/fork.c:2220
- kernel_clone+0x223/0x870 kernel/fork.c:2797
- __do_sys_clone3 kernel/fork.c:3098 [inline]
- __se_sys_clone3+0x2cb/0x350 kernel/fork.c:3082
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-page last free pid 5074 tgid 5074 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1093 [inline]
- free_unref_page+0xd19/0xea0 mm/page_alloc.c:2588
- discard_slab mm/slub.c:2527 [inline]
- __put_partials+0xeb/0x130 mm/slub.c:2995
- put_cpu_partial+0x17c/0x250 mm/slub.c:3070
- __slab_free+0x2ea/0x3d0 mm/slub.c:4308
- qlink_free mm/kasan/quarantine.c:163 [inline]
- qlist_free_all+0x9e/0x140 mm/kasan/quarantine.c:179
- kasan_quarantine_reduce+0x14f/0x170 mm/kasan/quarantine.c:286
- __kasan_slab_alloc+0x23/0x80 mm/kasan/common.c:322
- kasan_slab_alloc include/linux/kasan.h:201 [inline]
- slab_post_alloc_hook mm/slub.c:3940 [inline]
- slab_alloc_node mm/slub.c:4002 [inline]
- kmem_cache_alloc_node_noprof+0x16b/0x320 mm/slub.c:4045
- __alloc_skb+0x1c3/0x440 net/core/skbuff.c:656
- netlink_sendmsg+0x631/0xcb0 net/netlink/af_netlink.c:1880
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:745
- ____sys_sendmsg+0x525/0x7d0 net/socket.c:2585
- ___sys_sendmsg net/socket.c:2639 [inline]
- __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2668
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Memory state around the buggy address:
- ffffc900034a7b80: 00 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
- ffffc900034a7c00: 00 00 00 00 f1 f1 f1 f1 00 00 00 00 00 00 00 00
->ffffc900034a7c80: 00 f3 f3 f3 f3 f3 f3 f3 00 00 00 00 00 00 00 00
-                               ^
- ffffc900034a7d00: 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
- ffffc900034a7d80: 04 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ fs/gfs2/glock.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 7f68e3d217e6..12a769077ea0 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1091,11 +1091,13 @@ static void glock_work_func(struct work_struct *work)
+ 	if (test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags) &&
+ 	    gl->gl_state != LM_ST_UNLOCKED &&
+ 	    gl->gl_demote_state != LM_ST_EXCLUSIVE) {
+-		unsigned long holdtime, now = jiffies;
++		if (gl->gl_name.ln_type == LM_TYPE_INODE) {
++			unsigned long holdtime, now = jiffies;
+ 
+-		holdtime = gl->gl_tchange + gl->gl_hold_time;
+-		if (time_before(now, holdtime))
+-			delay = holdtime - now;
++			holdtime = gl->gl_tchange + gl->gl_hold_time;
++			if (time_before(now, holdtime))
++				delay = holdtime - now;
++		}
+ 
+ 		if (!delay) {
+ 			clear_bit(GLF_PENDING_DEMOTE, &gl->gl_flags);
+@@ -1106,8 +1108,6 @@ static void glock_work_func(struct work_struct *work)
+ 	if (delay) {
+ 		/* Keep one glock reference for the work we requeue. */
+ 		drop_refs--;
+-		if (gl->gl_name.ln_type != LM_TYPE_INODE)
+-			delay = 0;
+ 		gfs2_glock_queue_work(gl, delay);
+ 	}
+ 
+-- 
+2.45.2
+
