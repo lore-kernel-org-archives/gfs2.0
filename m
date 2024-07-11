@@ -1,106 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB0318A932
-	for <gfs2@lists.linux.dev>; Tue,  9 Jul 2024 13:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369A15218A
+	for <gfs2@lists.linux.dev>; Thu, 11 Jul 2024 11:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720533417; cv=none; b=Fna9GC18aaNG8vuM/5xkQ7mmOatasd6HSmzOz4Ftgmy1L+WS/JDMJTFISAEMsK/o+yvwOLkbNO9vGR23HJH/HuNE/ynDTPOXI57cUnhNQcuSo39WDNzn/xjy1l+KmKb93m3J3v/4MhP2YFbNPzOMiVO3fe3JF8WciJ1L+Sz449o=
+	t=1720695631; cv=none; b=JgEV5JlSjF8+WFO2zolE+QPnABiVzWO+iUBbewIdfdjXXB9gk8NsSIqM8OWjHfu+dspp3m5T/tr0E5wmVrWh3mqn/mmtgo/Zhd3oA5j/GzJMQmPRgqSqiGBlDJgulTY4qmMx4nsbo0E3mAJHYC5cRshnFP7YjlynTIPSsAZfvgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720533417; c=relaxed/simple;
-	bh=ndc/MQAgz/VBpmEiDtJ/xVS3tWuAoFNOy7XpvWzk2SU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=smkouJnT/4HrDK4yPnQ0kjXPriyEHEGiHolgIOF5TlcmKsGKsM4mCVk9E9cTpUbS+Pe9qRYA4a6vcOfhOKfICO1LhLI6MLY5e1rtjdO7PJyYAjtYdTx6ssidLdRowaTMPmoeUOpT/byEhf2qeLV+QjEmIxf2bQvR2GQyG+lhg8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XLUuGfJL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XLUuGfJL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720533415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ca88xXkuQWO9sx7DbKYb9vv5SbyC+c+3trt0eZS9DCo=;
-	b=XLUuGfJLCKKjhXxkTyNbZykJOpnWM17VoysK4JJpV9Kbj/GRLD5yuKSlbxq8qDmfwZimAO
-	QJxG+ujPFNk0tLhFHK5bR9lbDEfPSQhJKXTRhZVZM7HDspssirNgWLf8Y06stsEYv4BD/v
-	qoWGdwzEGbXU280jpL8HacA4Ga0itjc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-oJ_aO2OtNFGpOaMt6vUjKQ-1; Tue,
- 09 Jul 2024 09:56:53 -0400
-X-MC-Unique: oJ_aO2OtNFGpOaMt6vUjKQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3DFC18EB187
-	for <gfs2@lists.linux.dev>; Tue,  9 Jul 2024 13:56:47 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.226.14])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D622B1955E7F;
-	Tue,  9 Jul 2024 13:56:41 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH] gfs2: Clean up glock demote logic
-Date: Tue,  9 Jul 2024 15:56:40 +0200
-Message-ID: <20240709135640.32362-1-agruenba@redhat.com>
+	s=arc-20240116; t=1720695631; c=relaxed/simple;
+	bh=ddmT7oyJ9piBmQXTe+lQG/PT9XyFxoMrK72nBn2P9ko=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=Rq93ASwyc3WZ6EEyPEDKbK8ErERzv9Ef12WlGcFjdAWq0LMiYmY//OZyITMMBsGORB8S3MwnzuLOWoBICaUtcpAW8DfrLYE6rQxeqYmoLDI16YXPYwcnfbQufO99gN005ikhB3no1BAYHvFjk0mHZl7/c5vc9xpUQFo/rqmzKIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-807b123d985so60465739f.0
+        for <gfs2@lists.linux.dev>; Thu, 11 Jul 2024 04:00:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720695629; x=1721300429;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tw2zfpiKXVI0VSbegHndyINqj2Ifk+/lWPppaUlLXFY=;
+        b=EZER4C/UrLyqY92KUtqmJQvuWWU1uMB60i8U+6k32PA4URNca8iIT9BaV+0fpyn30c
+         0ymLPpZLq4MmrLTs4HDCSI8/cHLqA/ctlCEMwuhXAE8ThUa06r9XJ5wwejAyZOV5+rpQ
+         HuSxx3b2I4DFTr9PWAHWC6RcM8OZxpbDzznTCidhlalVdzrkmEpMiVTDlMftY5dRzlsN
+         MxnPrH5WpNLWTVRPVyty9S9L4uuffHHafxOmMcxPV/Q3c4x1Kj/PQCkkXnbuxDAabkk/
+         e9jyPqAp3lLpDhEMw869fzim2uKkiPPR8R9ySeeY8/9VSxOn7ezDJ6SDSTX7P2Pj/ieD
+         mLfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaXL3mIeaGj3FRiRrUg5UwXEQgesnF1OB8BzXcG4Q6xohFv+Vi2CwkeRcmpyBZSiqj8y99opbsw5Ie0fDFhbQe23ejgQ==
+X-Gm-Message-State: AOJu0YxKPyCDBIMb7T52x+Gq/G4CFGkNYa7bySyMprgVcGJ2f0jf1pwD
+	7Y0tUGUfCsgi6NRVdefTdxEnYL4xpxRsKVAcvnovSRGdu6ajjJpemVAk6fqjpdIHp1fp8vTv8qS
+	6/fU9SuRbCPWupLS5txcPjrInPF7theD1wDZXlYUpuWxbxms1cdCNYfk=
+X-Google-Smtp-Source: AGHT+IHOxxQhZi4HG8jvCUKVTrJYz3gRiIkAfJQXjaKxRsvCaBDC+5V1xZOVe4pjQD0Kox9zl/lusYWRJFoceUBSMMI8wuJbA5Bs
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Received: by 2002:a05:6602:2cc7:b0:809:488:97f with SMTP id
+ ca18e2360f4ac-80904880adcmr26239f.4.1720695628955; Thu, 11 Jul 2024 04:00:28
+ -0700 (PDT)
+Date: Thu, 11 Jul 2024 04:00:28 -0700
+In-Reply-To: <0000000000002501960619e2366b@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000bb1365061cf6ab5b@google.com>
+Subject: Re: [syzbot] [gfs2?] BUG: corrupted list in gfs2_fill_super
+From: syzbot <syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, hdanton@sina.com, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The logic for determining when to demote a glock in glock_work_func(),
-introduced in commit 7cf8dcd3b68a ("GFS2: Automatically adjust glock min
-hold time"), doesn't make sense: inode glocks have a minimum hold time
-that delays demotion, while all other glocks are expected to be demoted
-immediately.  Instead of demoting non-inode glocks immediately,
-glock_work_func() schedules glock work for them to be demoted, however.
-Get rid of that unnecessary indirection.
+syzbot has found a reproducer for the following issue on:
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+HEAD commit:    523b23f0bee3 Add linux-next specific files for 20240710
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=100b427e980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=98dd8c4bab5cdce
+dashboard link: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16907bb9980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10ce66a5980000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/345bcd25ed2f/disk-523b23f0.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a4508962d345/vmlinux-523b23f0.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/4ba5eb555639/bzImage-523b23f0.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/65bde6695704/mount_3.gz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
+
+list_del corruption, ffff88801e354410->prev is LIST_POISON2 (dead000000000122)
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:61!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 5777 Comm: syz-executor410 Not tainted 6.10.0-rc7-next-20240710-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+RIP: 0010:__list_del_entry_valid_or_report+0x106/0x140 lib/list_debug.c:59
+Code: e8 af 5f d8 06 90 0f 0b 48 c7 c7 80 a0 20 8c 4c 89 fe e8 9d 5f d8 06 90 0f 0b 48 c7 c7 e0 a0 20 8c 4c 89 fe e8 8b 5f d8 06 90 <0f> 0b 48 c7 c7 40 a1 20 8c 4c 89 fe 48 89 d9 e8 76 5f d8 06 90 0f
+RSP: 0018:ffffc9000912f928 EFLAGS: 00010246
+RAX: 000000000000004e RBX: dead000000000122 RCX: 710a8d5645865200
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: 1ffff11005f41d00 R08: ffffffff8173e319 R09: 1ffff92001225ec0
+R10: dffffc0000000000 R11: fffff52001225ec1 R12: dffffc0000000000
+R13: ffff88801e354400 R14: ffff88802c12a810 R15: ffff88801e354410
+FS:  00007fcd932e66c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005555827377f8 CR3: 000000002046e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __list_del_entry_valid include/linux/list.h:124 [inline]
+ __list_del_entry include/linux/list.h:215 [inline]
+ list_del_rcu include/linux/rculist.h:157 [inline]
+ destroy_workqueue+0x7b3/0xc40 kernel/workqueue.c:5847
+ gfs2_fill_super+0x128a/0x2500 fs/gfs2/ops_fstype.c:1310
+ get_tree_bdev+0x3f7/0x570 fs/super.c:1624
+ gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1329
+ vfs_get_tree+0x90/0x2a0 fs/super.c:1789
+ do_new_mount+0x2be/0xb40 fs/namespace.c:3471
+ do_mount fs/namespace.c:3811 [inline]
+ __do_sys_mount fs/namespace.c:4019 [inline]
+ __se_sys_mount+0x2d6/0x3c0 fs/namespace.c:3996
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fcd9335b60a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 ee 08 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fcd932e5fd8 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007fcd932e5ff0 RCX: 00007fcd9335b60a
+RDX: 00000000200124c0 RSI: 0000000020012500 RDI: 00007fcd932e5ff0
+RBP: 0000000000000005 R08: 00007fcd932e6030 R09: 00000000000124a5
+R10: 0000000000000800 R11: 0000000000000282 R12: 00007fcd932e6030
+R13: 0000000000000800 R14: 0000000000000004 R15: 0000000001000000
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__list_del_entry_valid_or_report+0x106/0x140 lib/list_debug.c:59
+Code: e8 af 5f d8 06 90 0f 0b 48 c7 c7 80 a0 20 8c 4c 89 fe e8 9d 5f d8 06 90 0f 0b 48 c7 c7 e0 a0 20 8c 4c 89 fe e8 8b 5f d8 06 90 <0f> 0b 48 c7 c7 40 a1 20 8c 4c 89 fe 48 89 d9 e8 76 5f d8 06 90 0f
+RSP: 0018:ffffc9000912f928 EFLAGS: 00010246
+
+RAX: 000000000000004e RBX: dead000000000122 RCX: 710a8d5645865200
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: 1ffff11005f41d00 R08: ffffffff8173e319 R09: 1ffff92001225ec0
+R10: dffffc0000000000 R11: fffff52001225ec1 R12: dffffc0000000000
+R13: ffff88801e354400 R14: ffff88802c12a810 R15: ffff88801e354410
+FS:  00007fcd932e66c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005555827377f8 CR3: 000000002046e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
 ---
- fs/gfs2/glock.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 7f68e3d217e6..12a769077ea0 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1091,11 +1091,13 @@ static void glock_work_func(struct work_struct *work)
- 	if (test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags) &&
- 	    gl->gl_state != LM_ST_UNLOCKED &&
- 	    gl->gl_demote_state != LM_ST_EXCLUSIVE) {
--		unsigned long holdtime, now = jiffies;
-+		if (gl->gl_name.ln_type == LM_TYPE_INODE) {
-+			unsigned long holdtime, now = jiffies;
- 
--		holdtime = gl->gl_tchange + gl->gl_hold_time;
--		if (time_before(now, holdtime))
--			delay = holdtime - now;
-+			holdtime = gl->gl_tchange + gl->gl_hold_time;
-+			if (time_before(now, holdtime))
-+				delay = holdtime - now;
-+		}
- 
- 		if (!delay) {
- 			clear_bit(GLF_PENDING_DEMOTE, &gl->gl_flags);
-@@ -1106,8 +1108,6 @@ static void glock_work_func(struct work_struct *work)
- 	if (delay) {
- 		/* Keep one glock reference for the work we requeue. */
- 		drop_refs--;
--		if (gl->gl_name.ln_type != LM_TYPE_INODE)
--			delay = 0;
- 		gfs2_glock_queue_work(gl, delay);
- 	}
- 
--- 
-2.45.2
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
