@@ -1,168 +1,141 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607001CD3F
-	for <gfs2@lists.linux.dev>; Mon, 15 Jul 2024 16:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5750A63
+	for <gfs2@lists.linux.dev>; Mon, 15 Jul 2024 17:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721062667; cv=none; b=tP801Hi/hZFfhoYPpYmhIsolfU046iV4tK5X+o4+R7fR69GebeTIG14ZM9GjLfvZMhQ7txizm+tyvYqXCfz3t/KteInKTD07HQv8LoPZH435TO2Co4NHvINa/4q/5R5zrLSHtyF1mgzR/WcRpBZG0OAqNHi6JxhkRFB31ZPykl4=
+	t=1721065688; cv=none; b=L3sSU7Bb1X8Fzk4UwMtl20ha0oQaI6E0TW6A4F2Yp/a5ePfXoT1Cu78DyYfXw3kfdUtUCqIXt1CrJw6MruWe4HV89SbGH5OSpXvHkPJT1L6KHwXrMWNncsnmBQ7BG3YP14cSHbz8V6wYjN+f4rpNSxXqpVlJJVyN/NDzdSWtqLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721062667; c=relaxed/simple;
-	bh=xXNjCq2WW30UGIiUjaMaHuggEsEUhHxf0nXvby77kEQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W7vwer/OR6yXqSOH3kOiKaMfaMd1YUM0hlSu+wWaTaKANQLYubGCobXus3MMkylNz6aGafGAEZjLiCoMF1ZTlVB61eQPn3nkxvNPPVbzrLUpmJzR8u4EL00VhL7vOa5Rchh8drSOSQRpg46qhdMuLx/1WTAwd1xnl1K/7aK15Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=acsWy820; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1721065688; c=relaxed/simple;
+	bh=2MgBjh60/jTcVqxJi9DAm7CzsRRTTWx9s2Rl9CdWtlQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pb8Ko5re3Mu2D9sarvEdgfbrOMIU3AVOFqxqZfPgHl357LbHOTl3Ka8EXXxFv++kJYAWYgokNj5i7e5iNro8BSK2inY85vVbGnAPhTf8LgdxViQ+jiaIvi+na7cl0d6PdH9aTw/dptI0IzUdD9bGDqU5aGGoBKcnCaDIqNFgqr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SPzSJQ5s; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="acsWy820"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SPzSJQ5s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721062665;
+	s=mimecast20190719; t=1721065686;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y1FG23mSTcxbd1EYxLFTCH/TbFomvqVGQxfRti39P7g=;
-	b=acsWy820HLHLpspX6GPJ9H/7iwQnphMGh51jM4s2SSvqczmRyrYR0+HzbQz4hh6wFuReA9
-	9+SMdJlZNtuJuO2K+38+iMVNamg9dFfAt3vFuTMebbaPKxvNTyGF0mZFema0SaU60b0y04
-	ra6/CJDCWg9qIAhr8HTM/hcjuGkxJYY=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-b-sk9B6LNCKlAMYR7tKOyA-1; Mon, 15 Jul 2024 12:57:43 -0400
-X-MC-Unique: b-sk9B6LNCKlAMYR7tKOyA-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ee8eaccb7aso44420541fa.2
-        for <gfs2@lists.linux.dev>; Mon, 15 Jul 2024 09:57:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721062662; x=1721667462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y1FG23mSTcxbd1EYxLFTCH/TbFomvqVGQxfRti39P7g=;
-        b=ViqFW7tDEFmDjluMgrE9PP6EvKVUHZefsio5qFB1nbSL5Anz75uMvDKCPyBG5mndPm
-         GGKe2FyKbyMjclcLz5buf3lLa/OKcim48VupkxoAra6yv0mqVwVdWo5RYDx1y5cunY2g
-         eXj8dGkgxIEz76vr/XtIxsnL3wviYqROq+W1g0hz3WX4JAKSzLHKDa7Uc1ejndsKWJf+
-         kn7fKjLMs69ZVj/jIRl2FdKnBKguXx4hCuaXsHjJxo07grlRQ+cDaGZ7jezuNcjkTHrG
-         acS5PgizR42ByWhoMCnij5a6QBifq0fJuQlhErbQrpDPSBX39zFIfyaGeRsp1CEGjdgH
-         90bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4cSCDlN/wf3aSYUw2F2LLir35bJrckkNBUu4U2zPu3NioF+yX4rZTTcv1288YTSJItbcJIecZKwVJHWV2ccR+hxH+cg==
-X-Gm-Message-State: AOJu0YyT2jPCJbEQDXBAL1ZQWoO6e332Ue15EhGkRSPbEEYUdukxUyFE
-	69YbSjpQI3HboqyLpdMykqcyXtMMhJpkYmjaGa6StANwmx4aqvsDhNhXCmi/WGs9xmi8PFzFqVK
-	DbaaUAVd73HLUWDdEGGYwUttdmjBoWnSQt2BdX5BU7ntZj7yuVwrNj5IrHtLvTpzKIE9WOKm+J/
-	FBc3BUTBoMPZ5fiEEQJsCzlklEcw==
-X-Received: by 2002:a2e:3604:0:b0:2ee:7b7c:7f6e with SMTP id 38308e7fff4ca-2eef2d98034mr3360411fa.39.1721062662117;
-        Mon, 15 Jul 2024 09:57:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFe7JCLjfYbgdoILJ7WlOzC+ld1mr6rcbwXDmy9MlNEt6x0VMIBaXrkXPcXYBOG049FLSAoWIHxLpZgv7OWMAU=
-X-Received: by 2002:a2e:3604:0:b0:2ee:7b7c:7f6e with SMTP id
- 38308e7fff4ca-2eef2d98034mr3360301fa.39.1721062661732; Mon, 15 Jul 2024
- 09:57:41 -0700 (PDT)
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BGRZkrAJfPSnfkrlnJKN+UoV9mMX8K/tZ5mnh589us4=;
+	b=SPzSJQ5sL5W9moXvG2XXa2UJJh91Y8McCuIrinlkELDo15xMZlAOvYqOmMuzDgwa3ZfQrM
+	ztcBmAFn/eolld+CzTpH9zKITLplvVWW3LC2FFoyZqNrY4KNmaj1TPUev9g5gowQ5ee1ok
+	iLsWvYcj6yjZmj0TiUE3XPfnjPU0In0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655--_PPnhrWPxaswyjCTJowiQ-1; Mon,
+ 15 Jul 2024 13:48:02 -0400
+X-MC-Unique: -_PPnhrWPxaswyjCTJowiQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C7641955D45;
+	Mon, 15 Jul 2024 17:48:01 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.226.43])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 587CF1955F66;
+	Mon, 15 Jul 2024 17:47:59 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes
+Date: Mon, 15 Jul 2024 19:47:56 +0200
+Message-ID: <20240715174757.876203-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAK-6q+jSBjuFaFqGLQcfVLMUwRcJJMHk2oUnSgMObwz+OAih6g@mail.gmail.com>
- <2024071509-closable-drop-down-3a7f@gregkh>
-In-Reply-To: <2024071509-closable-drop-down-3a7f@gregkh>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 15 Jul 2024 12:57:30 -0400
-Message-ID: <CAK-6q+hCTSgODtBOXJ1NvafmMszdxk0V3aj6t3LWQ9B0BDbtRw@mail.gmail.com>
-Subject: Re: udev kset_create_and_add() with own struct kobj_type?
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, gfs2 <gfs2@lists.linux.dev>, 
-	David Teigland <teigland@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hi,
+Dear Linus,
 
-On Mon, Jul 15, 2024 at 11:33=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Mon, Jul 15, 2024 at 11:27:00AM -0400, Alexander Aring wrote:
-> > Hi,
-> >
-> > I am currently implementing namespace support into the fs/dlm
-> > subsystem. The DLM subsystem uses kset_create_and_add("dlm",
-> > &dlm_uevent_ops, kernel_kobj); to create the "dlm" sysfs directory.
-> > Underneath it creates for each lockspace a subdirectory using
-> > kobject_init_and_add() with a non-static name and being known during
-> > runtime.
-> >
-> > Now I want to add namespace support and need to change the "default"
-> > kset->kobj.ktype =3D &kset_ktype; that is set by
-> > kset_create_and_add()->kset_create() to my own kobj_type because I
-> > need to implement a different ".child_ns_type" callback before
-> > kset_register() is called.
-> >
-> > So kset_create_and_add() does not allow me to add my own
-> > ".child_ns_type" callback for the kset that is required for me to have
-> > my sysfs "kernel/dlm" directory separated by each net-namespace
-> > without breaking any backwards compatibility.
->
-> I don't understand, what "backwards compatibility" is happening here?
->
+please consider pulling the following gfs2 fixes and cleanups:
 
-The DLM sysfs udev directory for kobjects begins in
-"/sys/kernel/dlm/", that is the created kset by kset_create_and_add().
-Then a lot of per lockspace kobject directories are created by
-kobject_init_and_add() with a name known during runtime only.
-I cannot simply do a "/sys/kernel/dlm/lockspaces/" and have
-"lockspaces" separated by namespaces, it needs to be "dlm" as user
-space assume a specific directory structure in "/sys/kernel/dlm" and
-interprets it and we want to have lockspaces separated per namespace.
+* The first 15 of these patches rework the glock refcounting and LRU list
+  handling to be more sensible.
 
-> > My current solution is that I mostly copy&pasted the code of
-> > kset_create_and_add()/kset_create() to have a way to tell my own
-> > struct kobj_type that contains the implemented my own ".child_ns_type"
-> > callback.
->
-> Ick.
->
-> > I am writing this mail to get some advice on what I can do here
-> > without doing the copy&pasted code?
-> > Add a parameter to kset_create_and_add() that allows me to set an
-> > "struct kobj_type"?
-> > Introducing a new function that does allow me to set the new parameter
-> > (I probably like that because then I don't need to update all other
-> > users)?
->
-> A new function would be ok, but I hate it how filesystems have to use
+* The following 13 patches clean up the quota code, add some missing locking,
+  and work around the on-disk corruption that the reverted patch "gfs2: ignore
+  negated quota changes" causes.
 
-I will try this out. Thank you.
+* The final patch cleans up the glock demote logic in glock_work_func().
 
-> "raw" kobjects and the like all the time.  It's rough, sorry.
->
+Thanks,
+Andreas
 
-DLM "Distributed Lock Manager" is a networking subsystem but as there
-are mostly in-kernel filesystem users (gfs2, ocfs2) it is currently
-part of "fs/".
-The plan is to separate DLM lockspaces per net-namespace as each
-separation acts like a "network entity" (node) that is required anyway
-for each DLM socket handling.
 
-> Also, I didn't think sysfs namespaces worked for anything except
-> networking stuff.  Are you sure you really need this?  Where is your
-> "namespace" defined at?
->
+The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0:
 
-It is networking but I will not lie that at the end users of DLM e.g.
-the cluster file system gfs2 is required to separate their sysfs
-directly the same way as DLM is doing here as each mount is on a per
-"network entity" (cluster node) basis.
+  Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
 
-It will be an experimental support in the first place to use it for
-testing/developing (not required to synchronize traces over the
-network) and scale testing (testing on a limited resource machine a
-lockspace with 1000 of nodes instead of having 1000 VMs). The scale
-part is important for us to make DLM ready to handle a lot of node
-members to handle future use-cases.
+are available in the Git repository at:
 
-I hope that this "justify" here the use of net namespaces in udev.
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.10-rc1-fixes
 
-- Alex
+for you to fetch changes up to f75efefb6db305b5b5c56a9b9ae2d72b54f20780:
+
+  gfs2: Clean up glock demote logic (2024-07-09 10:40:03 +0200)
+
+----------------------------------------------------------------
+gfs2 fixes and cleanups
+
+- Revise the glock reference counting model
+
+- Several quota related fixes
+
+- Clean up the glock demote logic
+
+----------------------------------------------------------------
+Andreas Gruenbacher (29):
+      gfs2: Remove unnecessary function prototype
+      gfs2: Remove useless return statement in run_queue
+      gfs2: Rename GLF_FREEING to GLF_UNLOCKED
+      gfs2: Rename GLF_REPLY_PENDING to GLF_HAVE_REPLY
+      gfs2: Rename GLF_FROZEN to GLF_HAVE_FROZEN_REPLY
+      gfs2: Rename handle_callback to request_demote
+      gfs2: Update glocks documentation
+      gfs2: Remove outdated comment in glock_work_func
+      gfs2: Invert the GLF_INITIAL flag
+      gfs2: gfs2_glock_get cleanup
+      gfs2: Report when glocks cannot be freed for a long time
+      gfs2: Switch to a per-filesystem glock workqueue
+      gfs2: Revise glock reference counting model
+      Revert "GFS2: Don't add all glocks to the lru"
+      gfs2: Get rid of demote_ok checks
+      gfs2: Minor gfs2_quota_init error path cleanup
+      gfs2: Check quota consistency on mount
+      gfs2: Revert "introduce qd_bh_get_or_undo"
+      gfs2: qd_check_sync cleanups
+      gfs2: Revert "ignore negated quota changes"
+      gfs2: Revert "Add quota_change type"
+      gfs2: Fix and clean up function do_qc
+      gfs2: quota need_sync cleanup
+      gfs2: Fold qd_fish into gfs2_quota_sync
+      gfs2: Add some missing quota locking
+      gfs2: Get rid of some unnecessary quota locking
+      gfs2: Be more careful with the quota sync generation
+      gfs2: Revert "check for no eligible quota changes"
+      gfs2: Clean up glock demote logic
+
+ Documentation/filesystems/gfs2-glocks.rst |  55 ++---
+ fs/gfs2/glock.c                           | 227 ++++++++---------
+ fs/gfs2/glock.h                           |   1 -
+ fs/gfs2/glops.c                           |  42 +---
+ fs/gfs2/incore.h                          |  12 +-
+ fs/gfs2/lock_dlm.c                        |  28 ++-
+ fs/gfs2/ops_fstype.c                      |  13 +-
+ fs/gfs2/quota.c                           | 388 +++++++++++++++---------------
+ fs/gfs2/super.c                           |   1 -
+ fs/gfs2/trace_gfs2.h                      |   6 +-
+ fs/gfs2/util.c                            |  12 +-
+ 11 files changed, 380 insertions(+), 405 deletions(-)
 
