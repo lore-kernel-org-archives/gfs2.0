@@ -1,37 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A0B18FDBC;
-	Mon, 15 Jul 2024 15:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6954B1CF92
+	for <gfs2@lists.linux.dev>; Mon, 15 Jul 2024 16:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721057616; cv=none; b=lE4TEfFZ5+oxqByMMyWkrY/kVkprYOfUj00YaCBoQNmZliUIA2OtwE0mXS3xFLRzptdy4sUr8Ev+wa5OLyGJ243g874XaWUGX7LD6vjilRQZyApPILTWuSiApBAt1YIistMbYDIkZEQtl9nDJqz47QeTokH0PTT8mLZzb1zx32Q=
+	t=1721062524; cv=none; b=DlJVZ97Tc5SwYMKfCO6FZQIXijxFDkH2jR+LRwgVYTt3aI9o699m0rsgPjS2bGEGs7Rw5Eyg7Nln1mh/WztR7OwlZOIyu1yOq2CwZTPCUK+BA1Ylz8vUopq5kXuK0o7ZoPuRnLaIo2g6/EuGfyJrtlRbha/WagQHUb5DurapxZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721057616; c=relaxed/simple;
-	bh=uoAgvV4TAFahqFM6MfhR7wnigG35xC2qzRa7VklXYFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cku0VDpaytntkMJRG+TQDq1fdZ24qHn8zxJDqyzCOfxRJ2cTMpzGKV28r2D3LvadFNa5fWxx/SJlbOoB+zYtYyilbvU93Pj0mgQpgl1J8p5AjWBWBqT3OEljJJOuH8gnRayx73uE6PAa37n5kSa91qHezdS1tWRLFyRE40glVJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrOuQ8Y1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721062524; c=relaxed/simple;
+	bh=aE6yKi7dPET4tS4j83msbQcxhUAawST8Rx2fkVQBCFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=r2lS13gXXClZAjMZy10ZqPZpQ6h78Kxh3Csh6pFa+emabzFFg9s8ReM0wYpP61zUxrf0g7AlSXbdzWLUh1+EP1n1+BFKnT9uhjAJUjyMIohfDMZvOYx2iQxFHR0yWZ9Df5Ur1aG3W2KQYg/UYW5iLi2VM6bBl6ngwR0gMwoYxgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TNllRN4Z; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrOuQ8Y1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAA8C32782;
-	Mon, 15 Jul 2024 15:33:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721057615;
-	bh=uoAgvV4TAFahqFM6MfhR7wnigG35xC2qzRa7VklXYFU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TrOuQ8Y1I0VMAJvE98QPXVEwSWFlKK4Ld0wZhRimJgRPkQsD4vosoB7IrFE470sfU
-	 GlzUmV9X788ahqb2v9TliKZiUF4bHrnDmH7gK/kA26ACSAoyJDYzP7EU55LXsIfO9w
-	 syxpId3pITlJaqW9nOuNvRp9XaWk+VvxjV8WEOdU=
-Date: Mon, 15 Jul 2024 17:33:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: rafael@kernel.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	gfs2 <gfs2@lists.linux.dev>, David Teigland <teigland@redhat.com>
-Subject: Re: udev kset_create_and_add() with own struct kobj_type?
-Message-ID: <2024071509-closable-drop-down-3a7f@gregkh>
-References: <CAK-6q+jSBjuFaFqGLQcfVLMUwRcJJMHk2oUnSgMObwz+OAih6g@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TNllRN4Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721062522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=XMIv1mtz93g19iyFIr1rGeUjzzJtuEefPD6XIt0a1/0=;
+	b=TNllRN4ZjvrWqQI5Bp9JjztWp3vxKrQdQ9X5O66YovPZCyboHnWACOHlUtz7/pOPaK/8ts
+	/vRCHADPHaqVSPc90G5T3HPrOD/WAoyFLKvpttnFvPzCoSaNsC/kcG9hr0HEGrYL1JtOSw
+	peG1q9x1yAFNKHThfiIQN6n6/ldjeRA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-GSltMIc9MFSytx5rKUp-Ng-1; Mon,
+ 15 Jul 2024 12:55:17 -0400
+X-MC-Unique: GSltMIc9MFSytx5rKUp-Ng-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7FC8219540EE;
+	Mon, 15 Jul 2024 16:55:16 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.17.217])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6D7C219560AE;
+	Mon, 15 Jul 2024 16:55:15 +0000 (UTC)
+Date: Mon, 15 Jul 2024 11:55:12 -0500
+From: David Teigland <teigland@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: [GIT PULL] dlm updates for 6.11
+Message-ID: <ZpVUcCId-3JUmz03@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -40,53 +53,78 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK-6q+jSBjuFaFqGLQcfVLMUwRcJJMHk2oUnSgMObwz+OAih6g@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Mon, Jul 15, 2024 at 11:27:00AM -0400, Alexander Aring wrote:
-> Hi,
-> 
-> I am currently implementing namespace support into the fs/dlm
-> subsystem. The DLM subsystem uses kset_create_and_add("dlm",
-> &dlm_uevent_ops, kernel_kobj); to create the "dlm" sysfs directory.
-> Underneath it creates for each lockspace a subdirectory using
-> kobject_init_and_add() with a non-static name and being known during
-> runtime.
-> 
-> Now I want to add namespace support and need to change the "default"
-> kset->kobj.ktype = &kset_ktype; that is set by
-> kset_create_and_add()->kset_create() to my own kobj_type because I
-> need to implement a different ".child_ns_type" callback before
-> kset_register() is called.
-> 
-> So kset_create_and_add() does not allow me to add my own
-> ".child_ns_type" callback for the kset that is required for me to have
-> my sysfs "kernel/dlm" directory separated by each net-namespace
-> without breaking any backwards compatibility.
+Hi Linus,
 
-I don't understand, what "backwards compatibility" is happening here?
+Please pull dlm updates from tag:
 
-> My current solution is that I mostly copy&pasted the code of
-> kset_create_and_add()/kset_create() to have a way to tell my own
-> struct kobj_type that contains the implemented my own ".child_ns_type"
-> callback.
+git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.11
 
-Ick.
+Note, this set includes a patch touching drivers/md/md-cluster.c, acked
+by the md-cluster developers, making use of the new DLM_LSFL_SOFTIRQ_SAFE
+flag.  Overall, changes include:
 
-> I am writing this mail to get some advice on what I can do here
-> without doing the copy&pasted code?
-> Add a parameter to kset_create_and_add() that allows me to set an
-> "struct kobj_type"?
-> Introducing a new function that does allow me to set the new parameter
-> (I probably like that because then I don't need to update all other
-> users)?
+- New flag DLM_LSFL_SOFTIRQ_SAFE can be set by code using dlm
+  to indicate callbacks can be run from softirq.
+- Change md-cluster to set DLM_LSFL_SOFTIRQ_SAFE.
+- Clean up for previous changes, e.g. unused code and parameters.
+- Remove custom pre-allocation of rsb structs which is unnecessary
+  with kmem caches.
+- Change idr to xarray for lkb structs in use.
+- Change idr to xarray for rsb structs being recovered.
+- Change outdated naming related to internal rsb states.
+- Fix some incorrect add/remove of rsb on scan list.
+- Use rcu to free rsb structs.
 
-A new function would be ok, but I hate it how filesystems have to use
-"raw" kobjects and the like all the time.  It's rough, sorry.
+Thanks,
+Dave
 
-Also, I didn't think sysfs namespaces worked for anything except
-networking stuff.  Are you sure you really need this?  Where is your
-"namespace" defined at?
 
-thanks,
+Alexander Aring (14):
+      dlm: remove scand leftovers
+      dlm: don't kref_init rsbs created for toss list
+      dlm: remove unused parameter in dlm_midcomms_addr
+      dlm: remove ls_local_handle from struct dlm_ls
+      dlm: drop own rsb pre allocation mechanism
+      dlm: move lkb idr to xarray datastructure
+      dlm: move recover idr to xarray datastructure
+      dlm: use rcu to avoid an extra rsb struct lookup
+      dlm: use LSFL_FS to check for kernel lockspace
+      dlm: introduce DLM_LSFL_SOFTIRQ_SAFE
+      dlm: implement LSFL_SOFTIRQ_SAFE
+      md-cluster: use DLM_LSFL_SOFTIRQ for dlm_new_lockspace()
+      dlm: remove DLM_LSFL_SOFTIRQ from exflags
+      dlm: add rcu_barrier before destroy kmem cache
 
-greg k-h
+David Teigland (2):
+      dlm: change list and timer names
+      dlm: fix add_scan and del_scan usage
+
+Dr. David Alan Gilbert (1):
+      fs: dlm: remove unused struct 'dlm_processed_nodes'
+
+
+ drivers/md/md-cluster.c  |   2 +-
+ fs/dlm/ast.c             | 170 +++++++++-----
+ fs/dlm/ast.h             |  11 +-
+ fs/dlm/config.c          |   2 +-
+ fs/dlm/debug_fs.c        |  10 +-
+ fs/dlm/dlm_internal.h    |  60 ++---
+ fs/dlm/lock.c            | 568 +++++++++++++++++++++++------------------------
+ fs/dlm/lock.h            |   7 +-
+ fs/dlm/lockspace.c       | 131 +++++------
+ fs/dlm/lowcomms.c        |   8 +-
+ fs/dlm/lowcomms.h        |   2 +-
+ fs/dlm/member.c          |   2 +-
+ fs/dlm/memory.c          |  10 +-
+ fs/dlm/midcomms.c        |   4 +-
+ fs/dlm/midcomms.h        |   2 +-
+ fs/dlm/recover.c         |  78 +++----
+ fs/dlm/recover.h         |   2 +-
+ fs/dlm/recoverd.c        |  14 +-
+ fs/dlm/user.c            |  42 ++--
+ include/linux/dlm.h      |  17 +-
+ include/uapi/linux/dlm.h |   2 +
+ 21 files changed, 583 insertions(+), 561 deletions(-)
+
