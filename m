@@ -1,160 +1,99 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB6584A28
-	for <gfs2@lists.linux.dev>; Fri, 19 Jul 2024 10:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6479145FFB;
+	Fri, 19 Jul 2024 17:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721383706; cv=none; b=AoUeZEdycYHxKfC+Mmu36Upw0kO9PEr7LB+WScIm6NI4N9Qy9tb43e1ZL1Xd89JN+hyLB3ju8c8/JK1q8ELKpI5MN/RzcAY0KJ0Y82ylJINT6RECTBHO5L43AxSjgO7sDNJ2WowFq9A+2L+HLBttdHVCEUNYGOGOWi5KWRyLO/o=
+	t=1721411474; cv=none; b=SdNEWfd0ocdKaMVtXTWwZNbRN42JonKhsipGaRKazl+F8+gNTRwHEs69G2NwoGuLPBToHafLjeAvmtOJcdiOuqkihShRE1XDmMnKiehtDPAVokkBFAr4WVv2Rd9M+qglCqlwGf/XB86XF5RrRuM3uxjXI5QVt0lbwQS14Te//kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721383706; c=relaxed/simple;
-	bh=FhKNfukBE/pSbQV3cgjwp8Qn3uTtqXwLrxdjG4Uj65A=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=H4DGrqIziZdUTGci2qT7CmevXa5T2IJ2j2+vIns84Le02NoSA/JnUsk8TSqTUHt4F/HR7C0AtGuAylL9HLOkBvJxmqAG4Gx+C24Tepxu3G1lCFUydDKKNItjQu8sbahZ/wkifSoMB5ChKpG1uNlOJGAObfyZBL9he3zJMAmK6hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-8152f0c63c4so347794139f.0
-        for <gfs2@lists.linux.dev>; Fri, 19 Jul 2024 03:08:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721383703; x=1721988503;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TfmNVPjGxy5MSzYTL9vKwCzc+vRoDpDRSTp6krR1EgY=;
-        b=G+HklpR7C2slTNwjCK+r8UqOUhprSQ6P8/CbNOFoGH+apv9o5sRNfVeZd9BQUDwe04
-         tdHVa3cosauAwbFLI6lrSu2Fdt2H14vQrKBMukXhjLJgj44HVJ/pygjoeBDiKrv+XNKv
-         hXTeFIVH4CPi4mRzTU/915egn/4y+eTTH1jrMAiyB3b9JTbDiTwChNxQ2HKJWonwDxP/
-         TZma6dUry1C6eGgCqGySPA8WMVRcBjTdxwnndj8JQWqEMObgn2KKKonX/QKloBgbEz3H
-         gcmlpkcOEUFYfzTKq0oknqa0HWBFXTB2Cj1GwNaZx02c1E2PNHNZnG6s4GF2EJztk8Fe
-         APEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXO3917Qyfww7fXMxB6h3CT4uv0AooE+ZL3+ZwHRochzp83ji0khvhQyi5uZVN7KruUS7sUqolEwT5lFyfKYpCG3cWiMg==
-X-Gm-Message-State: AOJu0YwnRWGXrlSlhYbBuGk5tdKa9dhmXuN7ZUDTtOgt3kcsbHsQbdXM
-	yfaahs7ZaZsvho91zLlqHB76SISrcmyYuVSeZTy2GFUEG0RVFV6chfGE62AlTjcUNKpDgKimHtr
-	L/IjSdOYXz7CJcuT+5AFjGC2aLVBtVyWjJtHA+UFqBUSYZ0YSO0dSFkA=
-X-Google-Smtp-Source: AGHT+IH9Myk9sIYPOOOOzjBZplA1xAA2ZpHXKVtEhhTnD2z3crGHkjXG6MH1l2Fhnmj9A15Y+cdcNqTp/nsw/qdjpR8+6h3/6yFK
+	s=arc-20240116; t=1721411474; c=relaxed/simple;
+	bh=f3AnAbCdhP7uDxCrhcq1jIjBuYqKEB7kWnOPuV8bV6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=olq7lPf7EHhStAKqOKBqpi4ZzwAk/VRmM4nBa8xA6umsocAN4E6GiVPgYtoXDZr3IpEakPm0FM1tlUU1jPuiSSVLdg/ZI2G/XcPE77vI7AxBG8hPv3IxEAmkyQU3BuMJHvC/3VfMdZ0YrFwGKkj23mGKdVrNBOEZoYEUQFwQec8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=s8eOJHiA; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="s8eOJHiA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=3BH0lKK785jAOhDmb6rSgSz+2L3arHyij79aSxbGT/I=; b=s8eOJHiAQvWL5itGf9Uo3HN1NV
+	z/eWdaY899sh5cDQVjhS4FTTn6ZmxcoFl0C2ieXvnpP3kLOwhVHrOfyJF5cQKIsGeefVgtO2/h8TI
+	a91e1EjMat8b151G9lp8Uc6iWZA/+Erwa+wAUVhyqK6JfYgicO+5COwynA52OJCPvihOV/R7HMlPn
+	pfm6+EshcQogeFgSRj7DMfCt7RtMmEzadlDw3kJkDpzPfxEPQSW6IHGVpfOV1zK7xcbXX66RcJepy
+	iKE7qDGAUWZrhE+pnHVVPNg5tqrgCiuovh/FrN8lXRQCF8qVxw+IBB5/+gBEmtCj/Ae0YtgoauAq2
+	Xb8JieIg==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sUrl9-00000003J4g-1LrF;
+	Fri, 19 Jul 2024 17:51:11 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 2/4] gfs2: Remove __gfs2_writepage()
+Date: Fri, 19 Jul 2024 18:51:02 +0100
+Message-ID: <20240719175105.788253-3-willy@infradead.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240719175105.788253-1-willy@infradead.org>
+References: <20240719175105.788253-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:13cd:b0:4b9:ad94:2074 with SMTP id
- 8926c6da1cb9f-4c21fb88eaemr183873173.3.1721383703655; Fri, 19 Jul 2024
- 03:08:23 -0700 (PDT)
-Date: Fri, 19 Jul 2024 03:08:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000002dcf3e061d96e0ac@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in qd_put (3)
-From: syzbot <syzbot+0423714c06c369318794@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Call aops->writepages() instead of using write_cache_pages() to call
+aops->writepage.  Change the handling of -ENODATA to not set the
+persistent error on the block device.
 
-syzbot found the following issue on:
-
-HEAD commit:    3fe121b62282 Add linux-next specific files for 20240712
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=14c9152d980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=98dd8c4bab5cdce
-dashboard link: https://syzkaller.appspot.com/bug?extid=0423714c06c369318794
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15989efd980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=119e6b9e980000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/8c6fbf69718d/disk-3fe121b6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/39fc7e43dfc1/vmlinux-3fe121b6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/0a78e70e4b4e/bzImage-3fe121b6.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/60f4ea8cd0cc/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0423714c06c369318794@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/quota.c:333!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 5093 Comm: syz-executor256 Not tainted 6.10.0-rc7-next-20240712-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-RIP: 0010:qd_put+0x192/0x1a0 fs/gfs2/quota.c:333
-Code: ef e8 62 f6 17 fe e9 f2 fe ff ff 89 e9 80 e1 07 80 c1 03 38 c1 7c 82 48 89 ef e8 39 f7 17 fe e9 75 ff ff ff e8 2f 70 b0 fd 90 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900035dfc08 EFLAGS: 00010293
-RAX: ffffffff83e35ac1 RBX: 00000000ffffff80 RCX: ffff88801a358000
-RDX: 0000000000000000 RSI: 00000000ffffff80 RDI: 0000000000000000
-RBP: ffff88807f3f25b0 R08: ffffffff83e359a1 R09: fffff520006bbf6c
-R10: dffffc0000000000 R11: fffff520006bbf6c R12: ffff88807f3f2540
-R13: ffff88802a2eb800 R14: ffff88807f3f2570 R15: 1ffff1100fe7e4b6
-FS:  0000555576e86380(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffed6b8af98 CR3: 000000007942a000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- gfs2_quota_sync+0x41b/0x4a0 fs/gfs2/quota.c:1363
- gfs2_sync_fs+0x4d/0xc0 fs/gfs2/super.c:670
- sync_filesystem+0xed/0x230 fs/sync.c:56
- generic_shutdown_super+0x72/0x2d0 fs/super.c:621
- kill_block_super+0x44/0x90 fs/super.c:1685
- deactivate_locked_super+0xc4/0x130 fs/super.c:473
- cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1372
- task_work_run+0x24f/0x310 kernel/task_work.c:222
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x168/0x370 kernel/entry/common.c:218
- do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb2335fb597
-Code: 08 00 48 83 c4 08 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8
-RSP: 002b:00007ffed6b8b1f8 EFLAGS: 00000202 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 00007fb2335fb597
-RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffed6b8b2b0
-RBP: 00007ffed6b8b2b0 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000ffffffff R11: 0000000000000202 R12: 00007ffed6b8c320
-R13: 0000555576e876c0 R14: 431bde82d7b634db R15: 00007ffed6b8c340
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:qd_put+0x192/0x1a0 fs/gfs2/quota.c:333
-Code: ef e8 62 f6 17 fe e9 f2 fe ff ff 89 e9 80 e1 07 80 c1 03 38 c1 7c 82 48 89 ef e8 39 f7 17 fe e9 75 ff ff ff e8 2f 70 b0 fd 90 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900035dfc08 EFLAGS: 00010293
-
-RAX: ffffffff83e35ac1 RBX: 00000000ffffff80 RCX: ffff88801a358000
-RDX: 0000000000000000 RSI: 00000000ffffff80 RDI: 0000000000000000
-RBP: ffff88807f3f25b0 R08: ffffffff83e359a1 R09: fffff520006bbf6c
-R10: dffffc0000000000 R11: fffff520006bbf6c R12: ffff88807f3f2540
-R13: ffff88802a2eb800 R14: ffff88807f3f2570 R15: 1ffff1100fe7e4b6
-FS:  0000555576e86380(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffed6b8af98 CR3: 000000007942a000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/log.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 6ee6013fb825..f9c5089783d2 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -80,15 +80,6 @@ void gfs2_remove_from_ail(struct gfs2_bufdata *bd)
+ 	brelse(bd->bd_bh);
+ }
+ 
+-static int __gfs2_writepage(struct folio *folio, struct writeback_control *wbc,
+-		       void *data)
+-{
+-	struct address_space *mapping = data;
+-	int ret = mapping->a_ops->writepage(&folio->page, wbc);
+-	mapping_set_error(mapping, ret);
+-	return ret;
+-}
+-
+ /**
+  * gfs2_ail1_start_one - Start I/O on a transaction
+  * @sdp: The superblock
+@@ -140,7 +131,7 @@ __acquires(&sdp->sd_ail_lock)
+ 		if (!mapping)
+ 			continue;
+ 		spin_unlock(&sdp->sd_ail_lock);
+-		ret = write_cache_pages(mapping, wbc, __gfs2_writepage, mapping);
++		ret = mapping->a_ops->writepages(mapping, wbc);
+ 		if (need_resched()) {
+ 			blk_finish_plug(plug);
+ 			cond_resched();
+@@ -149,6 +140,7 @@ __acquires(&sdp->sd_ail_lock)
+ 		spin_lock(&sdp->sd_ail_lock);
+ 		if (ret == -ENODATA) /* if a jdata write into a new hole */
+ 			ret = 0; /* ignore it */
++		mapping_set_error(mapping, ret);
+ 		if (ret || wbc->nr_to_write <= 0)
+ 			break;
+ 		return -EBUSY;
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
