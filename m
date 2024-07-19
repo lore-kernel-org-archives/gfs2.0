@@ -1,42 +1,42 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410E9144D10;
-	Fri, 19 Jul 2024 17:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64331459F9;
+	Fri, 19 Jul 2024 17:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721411475; cv=none; b=qyaXh6eJ+Z4PeN1LTC5PUa6VRNFi24UdRXGtLDdFCsOTKAgP4CAXTihaAO8J7N7LqP7NIKZMQ2Vr9xQ3uUx5wC291yvBKWg8cs1A/p/GGkz9W9KBwqbhOpxe1TzaYYrrtImys1T1QHIwPcfCoKPJJ9phRMFVPLdvp6H17KYEfFQ=
+	t=1721411475; cv=none; b=D0daZSbcm0+UU1+Y8CyMC3Hdh/aKENuyguWJGBA61VyKVZKR1S8sHXxjGh3gLdQRqDIgEIl9MrlMH156RuIN68DaK8HAEv0BD3bZvN3fpFQTsv6qEvBUFyjOGqfy3rVAJ1gA4wzTgugC7dIP10brNb9weO4SUSFnNbxZPVn1fV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721411475; c=relaxed/simple;
-	bh=kzC2qViMsx88k0vwIV8SmdhFDbNiHbTy+4O/lYIKLPI=;
+	bh=Ih+1+iflwjA7GfUljQdgp4V0PyNkSIflg45bE0RmWTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQkS4OmCwZVvgfd/5V+pW6n3ILU9Yp9riDkISqPlqmvboAsp4ENgdkgMoxkuttmHShniWFhqW5bV3ejK7E1yNS/erH268b77SmC3UI7pnUMUUtovYhAQa1Ti06K5tSWSS0Uf5KRMoH/DpdKcN87i9xSaqJb7lL1pDD0UkJ2sbqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YwTonYp8; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=iXTD6BYUt1wybUphhf87Jsr3mu7ZSvEWYDBiRPM4bx06WH+nmuOrTadgffQ6bxn5Ndu6QlvZTcgd18lciusEYrW/GaezCE3HEHzr/cIvE6Ww3zgtMtGtpWRzNRkDOzUYv2b3jZYynCRcl3POExtd35snXgf1iqYncsbEu3QUpVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HfEhza6T; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YwTonYp8"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HfEhza6T"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=lCjuoji/Ly/uEdVza3rXJtH7Pa69hmvgSCUDuwqa04k=; b=YwTonYp8munhY24OleHYHuvcZU
-	jQ0GUEbz78avHqznFXsEPc197GNyxOJGdUrWFtB9lLEbcTtfBZLLAJUakFw8hfzJScHqkmldLM4qO
-	tMNhZy9vWebgepquITQv/JhPxRbbpqZyUOrngCinKin+3STOIM7b3VxO4fffBhWGO7aLcEg0Gq4js
-	FHfTQZ4jT+TRp+vm+v4l50Karzg5FsDblLEDawrpgEKUcF45iDQFtxkbDdN2EVI2LlA5UrwBL3rhh
-	Ak48iFKHM6UFSLkJdWcO1Q7CXEjfTbafF0y4xRQ7P5cE8OgBhqQZ3quUZrfkQFRmsRM3aiEODG8Ge
-	CdWIVQUQ==;
+	bh=TE2NR9PMMrrBqeqk/eXxMF6Rk4Xi7d2zHBTKL+xGqrQ=; b=HfEhza6TXVr4TtPQEM7USr4VYZ
+	ySgTekkjh8OoRiKnx2IxZzNjn4lpVgOJGFazidaP2ZBmcUHSsSDpl39iJB2Ua4KMCaTGgklkOlkgw
+	mpX2jvDq8ElVsXTCFqNzEsOSZF8li3/tP0tZGsuzFGBgnRkoGHD+OWcxoMw4UIJ3mfIsWvU+27H80
+	5oRnmyuFz6Q+7kgnOslmj8EqxRm5/ISpaaRykUqIY3Xc1oWvWPCkMuU7iX7sypKNUKjTW+JsXCw7H
+	UP4nykktfC+gjZgq9UWS+3idL0bPo93huch+B2KEkb5xYRb54ur4Xh0is4FxpZFwHvav8TgIldfkn
+	cHxv00Kw==;
 Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sUrl9-00000003J4k-1wX4;
+	id 1sUrl9-00000003J4b-11Fo;
 	Fri, 19 Jul 2024 17:51:11 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	gfs2@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 3/4] gfs2: Remove gfs2_jdata_writepage()
-Date: Fri, 19 Jul 2024 18:51:03 +0100
-Message-ID: <20240719175105.788253-4-willy@infradead.org>
+Subject: [PATCH 1/4] gfs2: Add gfs2_aspace_writepages()
+Date: Fri, 19 Jul 2024 18:51:01 +0100
+Message-ID: <20240719175105.788253-2-willy@infradead.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240719175105.788253-1-willy@infradead.org>
 References: <20240719175105.788253-1-willy@infradead.org>
@@ -48,62 +48,82 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are no remaining callers of gfs2_jdata_writepage() other than
-vmscan, which is known to do more harm than good.
+This saves one indirect function call per folio and gets us closer to
+removing aops->writepage.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/gfs2/aops.c | 30 ------------------------------
- 1 file changed, 30 deletions(-)
+ fs/gfs2/meta_io.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index 10d5acd3f742..68fc8af14700 100644
---- a/fs/gfs2/aops.c
-+++ b/fs/gfs2/aops.c
-@@ -138,35 +138,6 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
- 	return gfs2_write_jdata_folio(folio, wbc);
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 2b26e8d529aa..cfb204c9396c 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -30,9 +30,9 @@
+ #include "util.h"
+ #include "trace_gfs2.h"
+ 
+-static int gfs2_aspace_writepage(struct page *page, struct writeback_control *wbc)
++static void gfs2_aspace_write_folio(struct folio *folio,
++		struct writeback_control *wbc)
+ {
+-	struct folio *folio = page_folio(page);
+ 	struct buffer_head *bh, *head;
+ 	int nr_underway = 0;
+ 	blk_opf_t write_flags = REQ_META | REQ_PRIO | wbc_to_write_flags(wbc);
+@@ -66,8 +66,8 @@ static int gfs2_aspace_writepage(struct page *page, struct writeback_control *wb
+ 	} while ((bh = bh->b_this_page) != head);
+ 
+ 	/*
+-	 * The page and its buffers are protected by PageWriteback(), so we can
+-	 * drop the bh refcounts early.
++	 * The folio and its buffers are protected from truncation by
++	 * the writeback flag, so we can drop the bh refcounts early.
+ 	 */
+ 	BUG_ON(folio_test_writeback(folio));
+ 	folio_start_writeback(folio);
+@@ -84,14 +84,31 @@ static int gfs2_aspace_writepage(struct page *page, struct writeback_control *wb
+ 
+ 	if (nr_underway == 0)
+ 		folio_end_writeback(folio);
++}
++
++static int gfs2_aspace_writepage(struct page *page, struct writeback_control *wbc)
++{
++	gfs2_aspace_write_folio(page_folio(page), wbc);
+ 
+ 	return 0;
  }
  
--/**
-- * gfs2_jdata_writepage - Write complete page
-- * @page: Page to write
-- * @wbc: The writeback control
-- *
-- * Returns: errno
-- *
-- */
--
--static int gfs2_jdata_writepage(struct page *page, struct writeback_control *wbc)
--{
--	struct folio *folio = page_folio(page);
--	struct inode *inode = page->mapping->host;
--	struct gfs2_inode *ip = GFS2_I(inode);
--	struct gfs2_sbd *sdp = GFS2_SB(inode);
--
--	if (gfs2_assert_withdraw(sdp, ip->i_gl->gl_state == LM_ST_EXCLUSIVE))
--		goto out;
--	if (folio_test_checked(folio) || current->journal_info)
--		goto out_ignore;
--	return __gfs2_jdata_write_folio(folio, wbc);
--
--out_ignore:
--	folio_redirty_for_writepage(wbc, folio);
--out:
--	folio_unlock(folio);
--	return 0;
--}
--
- /**
-  * gfs2_writepages - Write a bunch of dirty pages back to disk
-  * @mapping: The mapping to write
-@@ -748,7 +719,6 @@ static const struct address_space_operations gfs2_aops = {
++static int gfs2_aspace_writepages(struct address_space *mapping,
++		struct writeback_control *wbc)
++{
++	struct folio *folio = NULL;
++	int error;
++
++	while ((folio = writeback_iter(mapping, wbc, folio, &error)))
++		gfs2_aspace_write_folio(folio, wbc);
++
++	return error;
++}
++
+ const struct address_space_operations gfs2_meta_aops = {
+ 	.dirty_folio	= block_dirty_folio,
+ 	.invalidate_folio = block_invalidate_folio,
+-	.writepage = gfs2_aspace_writepage,
++	.writepages = gfs2_aspace_writepages,
+ 	.release_folio = gfs2_release_folio,
  };
  
- static const struct address_space_operations gfs2_jdata_aops = {
--	.writepage = gfs2_jdata_writepage,
- 	.writepages = gfs2_jdata_writepages,
- 	.read_folio = gfs2_read_folio,
- 	.readahead = gfs2_readahead,
+@@ -99,6 +116,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
+ 	.dirty_folio	= block_dirty_folio,
+ 	.invalidate_folio = block_invalidate_folio,
+ 	.writepage = gfs2_aspace_writepage,
++	.writepages = gfs2_aspace_writepages,
+ 	.release_folio = gfs2_release_folio,
+ };
+ 
 -- 
 2.43.0
 
