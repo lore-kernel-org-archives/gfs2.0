@@ -1,68 +1,76 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22D61474B6;
-	Fri, 19 Jul 2024 17:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D93416631C
+	for <gfs2@lists.linux.dev>; Sun, 21 Jul 2024 22:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721411477; cv=none; b=deLRxIGKhdZpltezg5HjdeXlqtcpiaGPK6BGQMADY+5r64k50J8VnRyKiDf1tz0XaJnza6jFy7SNTwrVyafJv1urrMz4/iu2EY85nhDQV8Limb3b4Nn0jKzkg21ciDkrvTYsoJZ+faV6JiHJrhIKZ+CWPwA6yMoBZQKXLvH2yUc=
+	t=1721599864; cv=none; b=vATjrVGaCQ5ReJfFFzqW9av/kZMbdal+22wEIC1O/NE3kVpc9LygJm+7l2OU2Xs+X93AZiBW0R+NlB85N/hXfZzBp2cTiPMMyFazUXo/48FtXWqLspkP9vmiVtRki0e2NYkXURu4esfziMPmngjgKujz4Uhc/FksJkNi5Ud4IUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721411477; c=relaxed/simple;
-	bh=CRz8k3HTuooGAxsJPa1nycCff8Abgj7enByDexJkR18=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ho2hqYly9Zf8V4yOZEFSmzWh+qx4Z4W9xoJ8MH8wOJQCp97bQYV2QErCTy6iSuQorkT4l3s6XyXr2R0y9MSu44SpOsDbVGHU/ittIp35SUcqhBBd3srXDuUtqivNhTl8Pk0xw/COkmx1l/pR2hqUe+Fa1N8exdFobGYeCAZW9kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M60DHghG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M60DHghG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=2Xnp6qrgaJvcjlO5v2NL5ahM/o+86YGtr10T49BBtSg=; b=M60DHghGOq+8ehb/MPjEIwVNna
-	OqFS6jJg7CuWohcbpv6GBVqRVOHkuFdvDbtBeFqYnaExC8Hs2p+fNlxAuqk/8v2HVs4W7aq5seYGw
-	QRXrJWwhaJC6DSM3XR7BYNT/j5pnRPuaGrqeNCcbZ9aeJLe3u63tPQ8XbQiE4Ivh6IEMb5D0LlT7Q
-	wfU4KyBAMnA/q7ACpdA07Z0YU9p6PJOLgCpTu0R2VN5h+ea/3gIKjdpZ5un8L8tKxgYezI9dsarJ4
-	Gozeumc+mmFhVkVipfOAOskOPfpkPzx3xauyy91SAuW14jgfck+Dkyb5Q8jHnRVAs6wZbmG2NN7M+
-	UUnPTkSg==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sUrl9-00000003J4Z-0bXm;
-	Fri, 19 Jul 2024 17:51:11 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 0/4] Remove uses of aops->writepage from gfs2
-Date: Fri, 19 Jul 2024 18:51:00 +0100
-Message-ID: <20240719175105.788253-1-willy@infradead.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1721599864; c=relaxed/simple;
+	bh=ROuYac/v7HvupO/ZKKFWMQblw6xDVtj71Yh0bJWBPhM=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=EyGoM0KVmI9fZ2H4wqYNxBbuQPdoqbSxhWQaKZHQ3KsCAYVBCGVJ8s0LXQtVceq9xsSu6isGE3Bu40AMQ/FuKnGh2FYXv5+wggKmtG3Gt3wc4QwznxdAcqQGcMj73I+bsQrQkXVEmoSWFalsdsXUsAfc4y2BN5rMcW7gO4rciK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-8051524c1f8so620939139f.1
+        for <gfs2@lists.linux.dev>; Sun, 21 Jul 2024 15:11:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721599863; x=1722204663;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T/ElcXLSEs+o1vvYpa3l7nSiB+TQAeaMdVYMGYY04DA=;
+        b=Y6zACfXt2BrGEXaoyEl3DBTbt4bdlaTOUJ2jp90tXT8SLFB7iImDmW5d3pekpjx7tD
+         VDBl8qMBkmtrldLnSmvezGT5R1Ukjep4d7SBHt7CYLny2SOg3VoTMscU4SB1lTxFVRJf
+         D7gmb0rk2Ivojfme53QxjMLntSQNCqKrIf2/4M+0SoFEAhXeoir7hKsW6hby7qQDEmPS
+         Mf/T6pmSR68U32vzsZalZKwXX/bfitH7RaaWvJSzfPFBx32ErEPF6NMyufGUMCYbWt8P
+         0Sg4ICh6u5jydPGEIjopGKeACa0642T9JH4RFWzODRxqoz3bsO7W8UxjwttXl3EtSL+T
+         YlNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMIyoDk4xojBrcR6Un5GpGR6wbVs6X+SlYjp25CJl8ORqKqAwbrIXHxueQHLaDPYG+v2In9lx/In3YOPWDi5aDm0odpA==
+X-Gm-Message-State: AOJu0YyX7C5t9oHrsO5lGLUOrjnVOaSX5wa33Za9av9mq+DsD37HsP9C
+	0rCjgtmtPWNUXQwxuQPYNSUQuXMCRDWWMNsOnaUe/477N5SxBdGWg70ToObF32QITsXLVL4tRzf
+	Sqaw/6CyBrDiZLeUYxu3b8PgkBXDa/iYxV13/LmaYGLXddU5sTZkPgu4=
+X-Google-Smtp-Source: AGHT+IFwlqPBP6jWzZoW3rXuWMFQh7FGBhuuytJsPLPAnDTKR+xV7i3/zG+COlCuJ9KX+tHMpHzb43pblyAGQqs+ies1faZTIBDj
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6638:2395:b0:4b9:13c9:b0fb with SMTP id
+ 8926c6da1cb9f-4c23ffdacafmr276882173.5.1721599862798; Sun, 21 Jul 2024
+ 15:11:02 -0700 (PDT)
+Date: Sun, 21 Jul 2024 15:11:02 -0700
+In-Reply-To: <0000000000002501960619e2366b@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004485fa061dc93442@google.com>
+Subject: Re: [syzbot] [gfs2?] BUG: corrupted list in gfs2_fill_super
+From: syzbot <syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, hdanton@sina.com, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Andreas,
+syzbot has bisected this issue to:
 
-Here's my latest attempt to switch gfs2 from ->writepage to
-->writepages.  I've been a bit more careful this time; I'm not sure
-whether __gfs2_writepage() could call gfs2_aspace_writepage(), but
-this order of patches shouldn't break any bisection.
+commit 30e388d573673474cbd089dec83688331c117add
+Author: Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Thu Apr 11 12:13:30 2024 +0000
 
-Matthew Wilcox (Oracle) (4):
-  gfs2: Add gfs2_aspace_writepages()
-  gfs2: Remove __gfs2_writepage()
-  gfs2: Remove gfs2_jdata_writepage()
-  gfs2: Remove gfs2_aspace_writepage()
+    gfs2: Switch to a per-filesystem glock workqueue
 
- fs/gfs2/aops.c    | 30 ------------------------------
- fs/gfs2/log.c     | 12 ++----------
- fs/gfs2/meta_io.c | 24 +++++++++++++++++-------
- 3 files changed, 19 insertions(+), 47 deletions(-)
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13653eb5980000
+start commit:   523b23f0bee3 Add linux-next specific files for 20240710
+git tree:       linux-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=10e53eb5980000
+console output: https://syzkaller.appspot.com/x/log.txt?x=17653eb5980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=98dd8c4bab5cdce
+dashboard link: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16907bb9980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10ce66a5980000
 
--- 
-2.43.0
+Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
+Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
 
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
