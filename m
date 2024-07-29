@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC54128812
-	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C49186E4F
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722281809; cv=none; b=BJcCKhz0VKVGE+Xrc1gjhLn8Uk7Xz5cZk7aD6A0yDtMTawhV0v54eWuzTlBsvGy1C+mvrrYHTVZvnjOZ0QjVByiqxJad1V+yy3FiaV6qVCWPrxh5pnWgoV3iqm8mgpe1MxNNWLuqqUwtEETBNFHodN//OmMLfsoGASwxQ5NkTNo=
+	t=1722281810; cv=none; b=Gdw/G4ooXQq8Q/Yd2DWxBICvtANZ1U9g5Fn5aui6O9QIq/asH/OM3gQWHP5DuVLREqyAbPN9c7vRYnQJkS31F0xk7xKW89Iy4ycYFP9OJDLVBHS3CoaFSO6dMpvqthWsHl+rANI2hCe7eqlGvHAPK8CdX8KE7pMRHLXkqPuwMGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722281809; c=relaxed/simple;
-	bh=KqY3EpMKihmFQSgnScn0z7eqle+NzJqvkgCw9/+zZOY=;
+	s=arc-20240116; t=1722281810; c=relaxed/simple;
+	bh=5RU/PAgHyzqnGLR3MmtEO2TJd3hZ762NJGhhA6DYxFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZohN26AtYDP+SQGL77iq2Q39yjuJU/DavQNyhC4IjL4pEsD053XPQaA3IyjLMnt82tQCrWPlJURGwxA07c/JrnZObVmPsquMNFt47z9dQe2zHfaXG7QwyaLY76sKGzOhwYGHETz2ksArs38wuzKY7LzWLrOu37hR7DV+23DnH4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gk2lbBr9; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=teWFta8ZFhebsg53i7aQSX5tr8vCbwT6hz0h8xbXxyxEqZqbLmgRgHOYzHHWuE5oG3D4KoDxlrX2F0OzLT0ydHIJdNZuTS8cbw1XHT/zUG3HA589VHOnEfw8du4kyXU3jnqNxUazUB/A6tZhsssJxPOcSV36wKPYpG1mDamW+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NRu/10wI; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gk2lbBr9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NRu/10wI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722281807;
+	s=mimecast20190719; t=1722281808;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cwCsCekkYVuGcDYwJ/7T+/sTSk2g6PmLLAkhAWWxNI4=;
-	b=gk2lbBr9qN2FNU/GMBsRmwbJXmet7CZCaZX1UAx7n/3iFpF4WieeHR9Sd/4uojod+niSFh
-	Fa5L9GvE2aEHR2DJ0LvXJEIXKJ8Vb5nwpQlTxPzSAnv5WmZde3PwTrjGB5cBeEaMxxwMoS
-	DYqhoF3hLosDkvlWEk/rshBAU51XSmQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=xp23Ez1hwoa5NI7s2C0qoFCTjcATsmEzZnZDP7LIWFo=;
+	b=NRu/10wImxWDNywLBapqjQacpwj4md1SmYBIft127T4eXc90rz02JPOMujLtDVMszpr3gH
+	h3g9Emr+q13LjPLK0uSpR/Chp2sCdeiN2wVM/fcT7MkeBtcXMmEP3YAF5akRcC1ZtMEQTJ
+	dkSjf/M1+Fd+s71Q9n34hREI5boAe5c=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-QWJq4-tqOBSodQp0oSGfbA-1; Mon,
- 29 Jul 2024 15:36:45 -0400
-X-MC-Unique: QWJq4-tqOBSodQp0oSGfbA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-02n0-hiRPbODbZZAixqZJQ-1; Mon,
+ 29 Jul 2024 15:36:46 -0400
+X-MC-Unique: 02n0-hiRPbODbZZAixqZJQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8BB8D19560A2
-	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:44 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62BB01956064
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:45 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF7641955D47;
-	Mon, 29 Jul 2024 19:36:43 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B64031955D42;
+	Mon, 29 Jul 2024 19:36:44 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.11-rc1 09/10] dlm: move lkb xarray lookup out of lock
-Date: Mon, 29 Jul 2024 15:36:29 -0400
-Message-ID: <20240729193630.3344082-9-aahringo@redhat.com>
+Subject: [PATCH v6.11-rc1 10/10] dlm: do synchronized socket connect call
+Date: Mon, 29 Jul 2024 15:36:30 -0400
+Message-ID: <20240729193630.3344082-10-aahringo@redhat.com>
 In-Reply-To: <20240729193630.3344082-1-aahringo@redhat.com>
 References: <20240729193630.3344082-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,97 +62,110 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch moves the xarray lookup functionality for the lkb out of the
-ls_lkbxa_lock read lock handling. We can do that as the xarray should be
-possible to access lockless in case of reader like xa_load(). We confirm
-under ls_lkbxa_lock that the lkb is still part of the data structure and
-take a reference when its still part of ls_lkbxa to avoid being freed
-after doing the lookup. To do a check if the lkb is still part of the
-ls_lkbxa data structure we use a kref_read() as the last put will remove
-it from the ls_lkbxa data structure and any reference taken means it is
-still part of ls_lkbxa.
-
-A similar approach was done with the DLM rsb rhashtable just with a flag
-instead of the refcounter because the refcounter has a slightly
-different meaning.
+To avoid -EINPROGRESS cases on connect that just ends in a retry we just
+call connect in a synchronized way to wait until its done. Since commit
+dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling") we have a
+non ordered workqueue running for serving the DLM sockets that allows us
+to call send/recv for each DLM socket connection in parallel. Before
+each worker needed to wait until the previous worker was done and
+probably the reason why connect() was called in an asynchronous way to
+not block other workers. This is however not necessary anymore as other
+socket handling workers don't need to wait.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/dlm_internal.h |  1 +
- fs/dlm/lock.c         | 18 ++++++++++++++----
- fs/dlm/memory.c       |  9 ++++++++-
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ fs/dlm/lowcomms.c | 36 +-----------------------------------
+ 1 file changed, 1 insertion(+), 35 deletions(-)
 
-diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-index 0562099e60eb..d534a4bc162b 100644
---- a/fs/dlm/dlm_internal.h
-+++ b/fs/dlm/dlm_internal.h
-@@ -295,6 +295,7 @@ struct dlm_lkb {
- 		void			*lkb_astparam;	/* caller's ast arg */
- 		struct dlm_user_args	*lkb_ua;
- 	};
-+	struct rcu_head		rcu;
- };
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 2e3e269d820e..cb3a10b041c2 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -161,8 +161,6 @@ struct dlm_proto_ops {
+ 	const char *name;
+ 	int proto;
  
- /*
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 9d3ec359d5e3..865dc70a9dfc 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1527,11 +1527,21 @@ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
- {
- 	struct dlm_lkb *lkb;
+-	int (*connect)(struct connection *con, struct socket *sock,
+-		       struct sockaddr *addr, int addr_len);
+ 	void (*sockopts)(struct socket *sock);
+ 	int (*bind)(struct socket *sock);
+ 	int (*listen_validate)(void);
+@@ -1599,8 +1597,7 @@ static int dlm_connect(struct connection *con)
  
--	read_lock_bh(&ls->ls_lkbxa_lock);
-+	rcu_read_lock();
- 	lkb = xa_load(&ls->ls_lkbxa, lkid);
--	if (lkb)
--		kref_get(&lkb->lkb_ref);
--	read_unlock_bh(&ls->ls_lkbxa_lock);
-+	if (lkb) {
-+		/* check if lkb is still part of lkbxa under lkbxa_lock as
-+		 * the lkb_ref is tight to the lkbxa data structure, see
-+		 * __put_lkb().
-+		 */
-+		read_lock_bh(&ls->ls_lkbxa_lock);
-+		if (kref_read(&lkb->lkb_ref))
-+			kref_get(&lkb->lkb_ref);
-+		else
-+			lkb = NULL;
-+		read_unlock_bh(&ls->ls_lkbxa_lock);
-+	}
-+	rcu_read_unlock();
- 
- 	*lkb_ret = lkb;
- 	return lkb ? 0 : -ENOENT;
-diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
-index 442898cf7185..5c35cc67aca4 100644
---- a/fs/dlm/memory.c
-+++ b/fs/dlm/memory.c
-@@ -115,8 +115,10 @@ struct dlm_lkb *dlm_allocate_lkb(void)
- 	return kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
+ 	log_print_ratelimited("connecting to %d", con->nodeid);
+ 	make_sockaddr(&addr, dlm_config.ci_tcp_port, &addr_len);
+-	result = dlm_proto_ops->connect(con, sock, (struct sockaddr *)&addr,
+-					addr_len);
++	result = kernel_connect(sock, (struct sockaddr *)&addr, addr_len, 0);
+ 	switch (result) {
+ 	case -EINPROGRESS:
+ 		/* not an error */
+@@ -1634,13 +1631,6 @@ static void process_send_sockets(struct work_struct *work)
+ 			switch (ret) {
+ 			case 0:
+ 				break;
+-			case -EINPROGRESS:
+-				/* avoid spamming resched on connection
+-				 * we might can switch to a state_change
+-				 * event based mechanism if established
+-				 */
+-				msleep(100);
+-				break;
+ 			default:
+ 				/* CF_SEND_PENDING not cleared */
+ 				up_write(&con->sock_lock);
+@@ -1831,12 +1821,6 @@ static int dlm_tcp_bind(struct socket *sock)
+ 	return 0;
  }
  
--void dlm_free_lkb(struct dlm_lkb *lkb)
-+static void __free_lkb_rcu(struct rcu_head *rcu)
+-static int dlm_tcp_connect(struct connection *con, struct socket *sock,
+-			   struct sockaddr *addr, int addr_len)
+-{
+-	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
+-}
+-
+ static int dlm_tcp_listen_validate(void)
  {
-+	struct dlm_lkb *lkb = container_of(rcu, struct dlm_lkb, rcu);
-+
- 	if (test_bit(DLM_DFL_USER_BIT, &lkb->lkb_dflags)) {
- 		struct dlm_user_args *ua;
- 		ua = lkb->lkb_ua;
-@@ -129,6 +131,11 @@ void dlm_free_lkb(struct dlm_lkb *lkb)
- 	kmem_cache_free(lkb_cache, lkb);
+ 	/* We don't support multi-homed hosts */
+@@ -1873,7 +1857,6 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ static const struct dlm_proto_ops dlm_tcp_ops = {
+ 	.name = "TCP",
+ 	.proto = IPPROTO_TCP,
+-	.connect = dlm_tcp_connect,
+ 	.sockopts = dlm_tcp_sockopts,
+ 	.bind = dlm_tcp_bind,
+ 	.listen_validate = dlm_tcp_listen_validate,
+@@ -1886,22 +1869,6 @@ static int dlm_sctp_bind(struct socket *sock)
+ 	return sctp_bind_addrs(sock, 0);
  }
  
-+void dlm_free_lkb(struct dlm_lkb *lkb)
-+{
-+	call_rcu(&lkb->rcu, __free_lkb_rcu);
-+}
-+
- struct dlm_mhandle *dlm_allocate_mhandle(void)
+-static int dlm_sctp_connect(struct connection *con, struct socket *sock,
+-			    struct sockaddr *addr, int addr_len)
+-{
+-	int ret;
+-
+-	/*
+-	 * Make kernel_connect() function return in specified time,
+-	 * since O_NONBLOCK argument in connect() function does not work here,
+-	 * then, we should restore the default value of this attribute.
+-	 */
+-	sock_set_sndtimeo(sock->sk, 5);
+-	ret = kernel_connect(sock, addr, addr_len, 0);
+-	sock_set_sndtimeo(sock->sk, 0);
+-	return ret;
+-}
+-
+ static int dlm_sctp_listen_validate(void)
  {
- 	return kmem_cache_alloc(mhandle_cache, GFP_ATOMIC);
+ 	if (!IS_ENABLED(CONFIG_IP_SCTP)) {
+@@ -1929,7 +1896,6 @@ static const struct dlm_proto_ops dlm_sctp_ops = {
+ 	.name = "SCTP",
+ 	.proto = IPPROTO_SCTP,
+ 	.try_new_addr = true,
+-	.connect = dlm_sctp_connect,
+ 	.sockopts = dlm_sctp_sockopts,
+ 	.bind = dlm_sctp_bind,
+ 	.listen_validate = dlm_sctp_listen_validate,
 -- 
 2.43.0
 
