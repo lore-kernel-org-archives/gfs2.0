@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D913187337
-	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DAB85947
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722281806; cv=none; b=CpwO7gpeEqwLQNLba9QbaDpTIJiFfzdflhL4bSmTbn0+s9TD0XEkky0gNDyd6qHh5uUNeD5pUg5a5rVPYJCADLFvskhXKQF367O5UacAWEOXIrWrCwEXz5irX7O4AC4oXfLitIG927YlON5SbrPP6Zn7sznqrprS6C5JjrdH9Vw=
+	t=1722281806; cv=none; b=L7CLnbQoO7ITOC7kgLaK1toyNDoiNOF4QRkAIHdi8iKRnUUG62BzU1p8Xw85EbmyyoLiEixR73/MU8LGyHL4qvKyA22bLW1PA2JOxQTQO8RIQF+GRujmAFsMMgFqx9P+giPqS9p4rqZWVNdxKJlxm80GxpQmDvwy3Sa+jZZLTfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722281806; c=relaxed/simple;
-	bh=Q3uMSa0B8e2MRHY6CnA5SgoiV1TWdTzcr/4uNcb/nmY=;
+	bh=95fnvll8uXopA8SwJHVRBqlNhI3pR6qzlwSKBTanrC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kl1HgBxyOMHp+usL/lI7lwrMcZWAREXYs5Z6aLr/b8sVlT/9ts/daz/46DIZ9/Or4s2SSbZ1nLqY0HY1sfJ27cLwfnAQkZiSjFxXj9QqV0qChgOKAm8i38qiABVKmB9PE6AtDcsBtpprUKnCJt4TT+NYZz3FZlRseHsWErZPixs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YX7pSmT9; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=EUZiKbGBSCGZqS1Y0hVYCjWfM5QWkOqbJCHP7abCX3eJwAQNuON9TPT8FM2iLqkT2R2kJYVvkDjdOmJUbPBVH9Fx73z0EbBwPt2Z0QOOPXkewMmrekot7704LUSqeCqGZRAtl0W++JfjWGjG6SpLrXSfB/92fd0SALI5iR7x5N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WhDOFU8g; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YX7pSmT9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WhDOFU8g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1722281803;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=A7iBabShcun3mMofl7NvoeoLWupkHggzLcxCGmXRMEQ=;
-	b=YX7pSmT916yXfiQ1tAK9RUtV3IGBzfyrNNqQL8w8Dj2HV9NF0hMvVvvNVclXckRvEHr/BF
-	mH2fqFXjsUUwe6DJTwzBQMkfCZruTCw9TlKbVMoOYz6S0jRmPA+9ibgvVqM396+K7iOpcs
-	bSdP8R0qdoN3uOxGuVofy3aYJX9lN0Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=TfA0gyI9wcOL2eyq0HO8IQOs3T3yil2ksShp7vFHA7Y=;
+	b=WhDOFU8g7fPXXsHZ3PpN4f8HjiDPqEQB3nvWI9RF5Y9pS0XG9DVVjpS/bvK/3gSO5/RkBq
+	9jfFD+5c5M0dlH/yvcIrIEjZuoXTndEybmwD2mo9qC3QQ6lZtG1g4m0lORHC82a/Vo2Kjd
+	fScuzeGz3XFFBIAea0he3z7vNsPP3D4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-HfNlcJflNTaHOdbUwPqtzQ-1; Mon,
- 29 Jul 2024 15:36:41 -0400
-X-MC-Unique: HfNlcJflNTaHOdbUwPqtzQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-TMrbAHhQOrirkNZUY-uYXA-1; Mon,
+ 29 Jul 2024 15:36:42 -0400
+X-MC-Unique: TMrbAHhQOrirkNZUY-uYXA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4761A1955D45
-	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:40 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D99719560A2
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:41 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 860C51955D45;
-	Mon, 29 Jul 2024 19:36:39 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 717EA1955D42;
+	Mon, 29 Jul 2024 19:36:40 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.11-rc1 04/10] dlm: warn about invalid nodeid comparsions
-Date: Mon, 29 Jul 2024 15:36:24 -0400
-Message-ID: <20240729193630.3344082-4-aahringo@redhat.com>
+Subject: [PATCH v6.11-rc1 05/10] dlm: drop kobject release callback handling
+Date: Mon, 29 Jul 2024 15:36:25 -0400
+Message-ID: <20240729193630.3344082-5-aahringo@redhat.com>
 In-Reply-To: <20240729193630.3344082-1-aahringo@redhat.com>
 References: <20240729193630.3344082-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,118 +62,93 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch adds a warn on if is_master() and dlm_is_removed() checks on
-invalid nodeid states that are probably not what the caller wants to do
-here. The is_master() function checking on r->res_nodeid is invalid when
-it is set to -1, whereas the dlm_is_removed() has a different meaning
-as "nodeid member" and also 0 is invalid.
-
-We run into these cases and this patch changes those cases as we never
-will run into them. There should be no functional changes as the
-condition should return the same result. However this patch signals now
-on caller level that there might be an "extra" case to handle here.
+This patch removes the releasing of the "struct dlm ls" resource out of
+the kobject handling. Instead we run kfree() after kobject_put() of the
+lockspace kobject structure that should always being the last put call.
+This prepares to split the releasing of all lockspace resources
+asynchronously in the background and just deregister everything in
+release_lockspace().
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c    | 6 +++---
- fs/dlm/lock.h    | 2 ++
- fs/dlm/member.c  | 2 ++
- fs/dlm/recover.c | 9 +++++----
- 4 files changed, 12 insertions(+), 7 deletions(-)
+ fs/dlm/lockspace.c | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 720715ddaf48..30aec123a483 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1151,7 +1151,7 @@ static void __dlm_master_lookup(struct dlm_ls *ls, struct dlm_rsb *r, int our_no
- 		r->res_dir_nodeid = our_nodeid;
- 	}
- 
--	if (fix_master && dlm_is_removed(ls, r->res_master_nodeid)) {
-+	if (fix_master && r->res_master_nodeid && dlm_is_removed(ls, r->res_master_nodeid)) {
- 		/* Recovery uses this function to set a new master when
- 		 * the previous master failed.  Setting NEW_MASTER will
- 		 * force dlm_recover_masters to call recover_master on this
-@@ -5283,7 +5283,7 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
- 			case DLM_MSG_LOOKUP:
- 			case DLM_MSG_REQUEST:
- 				_request_lock(r, lkb);
--				if (is_master(r))
-+				if (r->res_nodeid != -1 && is_master(r))
- 					confirm_master(r, 0);
- 				break;
- 			case DLM_MSG_CONVERT:
-@@ -5396,7 +5396,7 @@ void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
- 
- 	list_for_each_entry(r, root_list, res_root_list) {
- 		lock_rsb(r);
--		if (is_master(r)) {
-+		if (r->res_nodeid != -1 && is_master(r)) {
- 			purge_dead_list(ls, r, &r->res_grantqueue,
- 					nodeid_gone, &lkb_count);
- 			purge_dead_list(ls, r, &r->res_convertqueue,
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index 4ed8d36f9c6d..b23d7b854ed4 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -66,6 +66,8 @@ int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
- 
- static inline int is_master(struct dlm_rsb *r)
- {
-+	WARN_ON_ONCE(r->res_nodeid == -1);
-+
- 	return !r->res_nodeid;
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index 1848cbbc96a9..bf14016d53e1 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -174,12 +174,6 @@ static ssize_t dlm_attr_store(struct kobject *kobj, struct attribute *attr,
+ 	return a->store ? a->store(ls, buf, len) : len;
  }
  
-diff --git a/fs/dlm/member.c b/fs/dlm/member.c
-index a7ee7fd2b9d3..c9661906568a 100644
---- a/fs/dlm/member.c
-+++ b/fs/dlm/member.c
-@@ -366,6 +366,8 @@ int dlm_is_member(struct dlm_ls *ls, int nodeid)
+-static void lockspace_kobj_release(struct kobject *k)
+-{
+-	struct dlm_ls *ls  = container_of(k, struct dlm_ls, ls_kobj);
+-	kfree(ls);
+-}
+-
+ static const struct sysfs_ops dlm_attr_ops = {
+ 	.show  = dlm_attr_show,
+ 	.store = dlm_attr_store,
+@@ -188,7 +182,6 @@ static const struct sysfs_ops dlm_attr_ops = {
+ static struct kobj_type dlm_ktype = {
+ 	.default_groups = dlm_groups,
+ 	.sysfs_ops     = &dlm_attr_ops,
+-	.release       = lockspace_kobj_release,
+ };
  
- int dlm_is_removed(struct dlm_ls *ls, int nodeid)
+ static struct kset *dlm_kset;
+@@ -328,7 +321,6 @@ static int new_lockspace(const char *name, const char *cluster,
+ 			 int *ops_result, dlm_lockspace_t **lockspace)
  {
-+	WARN_ON_ONCE(!nodeid || nodeid == -1);
-+
- 	if (find_memb(&ls->ls_nodes_gone, nodeid))
- 		return 1;
- 	return 0;
-diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
-index c7afb428a2b4..2e1169c81c6e 100644
---- a/fs/dlm/recover.c
-+++ b/fs/dlm/recover.c
-@@ -452,10 +452,11 @@ static int recover_master(struct dlm_rsb *r, unsigned int *count, uint64_t seq)
- 	int is_removed = 0;
+ 	struct dlm_ls *ls;
+-	int do_unreg = 0;
+ 	int namelen = strlen(name);
  	int error;
  
--	if (is_master(r))
-+	if (r->res_nodeid != -1 && is_master(r))
- 		return 0;
+@@ -530,9 +522,6 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	wait_event(ls->ls_recover_lock_wait,
+ 		   test_bit(LSFL_RECOVER_LOCK, &ls->ls_flags));
  
--	is_removed = dlm_is_removed(ls, r->res_nodeid);
-+	if (r->res_nodeid != -1)
-+		is_removed = dlm_is_removed(ls, r->res_nodeid);
+-	/* let kobject handle freeing of ls if there's an error */
+-	do_unreg = 1;
+-
+ 	ls->ls_kobj.kset = dlm_kset;
+ 	error = kobject_init_and_add(&ls->ls_kobj, &dlm_ktype, NULL,
+ 				     "%s", ls->ls_name);
+@@ -580,10 +569,8 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	xa_destroy(&ls->ls_lkbxa);
+ 	rhashtable_destroy(&ls->ls_rsbtbl);
+  out_lsfree:
+-	if (do_unreg)
+-		kobject_put(&ls->ls_kobj);
+-	else
+-		kfree(ls);
++	kobject_put(&ls->ls_kobj);
++	kfree(ls);
+  out:
+ 	module_put(THIS_MODULE);
+ 	return error;
+@@ -743,6 +730,8 @@ static int release_lockspace(struct dlm_ls *ls, int force)
  
- 	if (!is_removed && !rsb_flag(r, RSB_NEW_MASTER))
- 		return 0;
-@@ -664,7 +665,7 @@ int dlm_recover_locks(struct dlm_ls *ls, uint64_t seq,
- 	int error, count = 0;
+ 	dlm_delete_debug_file(ls);
  
- 	list_for_each_entry(r, root_list, res_root_list) {
--		if (is_master(r)) {
-+		if (r->res_nodeid != -1 && is_master(r)) {
- 			rsb_clear_flag(r, RSB_NEW_MASTER);
- 			continue;
- 		}
-@@ -858,7 +859,7 @@ void dlm_recover_rsbs(struct dlm_ls *ls, const struct list_head *root_list)
++	kobject_put(&ls->ls_kobj);
++
+ 	xa_destroy(&ls->ls_recover_xa);
+ 	kfree(ls->ls_recover_buf);
  
- 	list_for_each_entry(r, root_list, res_root_list) {
- 		lock_rsb(r);
--		if (is_master(r)) {
-+		if (r->res_nodeid != -1 && is_master(r)) {
- 			if (rsb_flag(r, RSB_RECOVER_CONVERT))
- 				recover_conversion(r);
+@@ -769,8 +758,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	dlm_clear_members_gone(ls);
+ 	kfree(ls->ls_node_array);
+ 	log_rinfo(ls, "release_lockspace final free");
+-	kobject_put(&ls->ls_kobj);
+-	/* The ls structure will be freed when the kobject is done with */
++	kfree(ls);
  
+ 	module_put(THIS_MODULE);
+ 	return 0;
 -- 
 2.43.0
 
