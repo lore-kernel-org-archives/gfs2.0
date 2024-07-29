@@ -1,76 +1,158 @@
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D93416631C
-	for <gfs2@lists.linux.dev>; Sun, 21 Jul 2024 22:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B01128812
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721599864; cv=none; b=vATjrVGaCQ5ReJfFFzqW9av/kZMbdal+22wEIC1O/NE3kVpc9LygJm+7l2OU2Xs+X93AZiBW0R+NlB85N/hXfZzBp2cTiPMMyFazUXo/48FtXWqLspkP9vmiVtRki0e2NYkXURu4esfziMPmngjgKujz4Uhc/FksJkNi5Ud4IUU=
+	t=1722281802; cv=none; b=ZaYMwx9ljkfKx2IEFvPZzfUZx980D5L4E4iqFbJwhO4V2zT3pvN3VNcbbgRSmevwQOet0jJS5hnnyPJDOFb7LSYUp6iOyD0LndzlfvrJYUGWo0f1zSw0qHaoSWeqZpKNKLa5MDcXST22w7tq0ft6GrOIRFpA5DnV3yI6WwEuG3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721599864; c=relaxed/simple;
-	bh=ROuYac/v7HvupO/ZKKFWMQblw6xDVtj71Yh0bJWBPhM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=EyGoM0KVmI9fZ2H4wqYNxBbuQPdoqbSxhWQaKZHQ3KsCAYVBCGVJ8s0LXQtVceq9xsSu6isGE3Bu40AMQ/FuKnGh2FYXv5+wggKmtG3Gt3wc4QwznxdAcqQGcMj73I+bsQrQkXVEmoSWFalsdsXUsAfc4y2BN5rMcW7gO4rciK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-8051524c1f8so620939139f.1
-        for <gfs2@lists.linux.dev>; Sun, 21 Jul 2024 15:11:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721599863; x=1722204663;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T/ElcXLSEs+o1vvYpa3l7nSiB+TQAeaMdVYMGYY04DA=;
-        b=Y6zACfXt2BrGEXaoyEl3DBTbt4bdlaTOUJ2jp90tXT8SLFB7iImDmW5d3pekpjx7tD
-         VDBl8qMBkmtrldLnSmvezGT5R1Ukjep4d7SBHt7CYLny2SOg3VoTMscU4SB1lTxFVRJf
-         D7gmb0rk2Ivojfme53QxjMLntSQNCqKrIf2/4M+0SoFEAhXeoir7hKsW6hby7qQDEmPS
-         Mf/T6pmSR68U32vzsZalZKwXX/bfitH7RaaWvJSzfPFBx32ErEPF6NMyufGUMCYbWt8P
-         0Sg4ICh6u5jydPGEIjopGKeACa0642T9JH4RFWzODRxqoz3bsO7W8UxjwttXl3EtSL+T
-         YlNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMIyoDk4xojBrcR6Un5GpGR6wbVs6X+SlYjp25CJl8ORqKqAwbrIXHxueQHLaDPYG+v2In9lx/In3YOPWDi5aDm0odpA==
-X-Gm-Message-State: AOJu0YyX7C5t9oHrsO5lGLUOrjnVOaSX5wa33Za9av9mq+DsD37HsP9C
-	0rCjgtmtPWNUXQwxuQPYNSUQuXMCRDWWMNsOnaUe/477N5SxBdGWg70ToObF32QITsXLVL4tRzf
-	Sqaw/6CyBrDiZLeUYxu3b8PgkBXDa/iYxV13/LmaYGLXddU5sTZkPgu4=
-X-Google-Smtp-Source: AGHT+IFwlqPBP6jWzZoW3rXuWMFQh7FGBhuuytJsPLPAnDTKR+xV7i3/zG+COlCuJ9KX+tHMpHzb43pblyAGQqs+ies1faZTIBDj
+	s=arc-20240116; t=1722281802; c=relaxed/simple;
+	bh=n7Afz2n91j35rnhSvPk3sx+SR48rL2Xdn0hF+JfTcwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=khdWNlsD/utDyGyh1S6o9UR0LJptxchuJjCoSEezaVDOkTRHZQcxh/EpCvvi8wOuNDV3DV8D8WW7pCPTApSj6I7fpH2/NsY6QTmMgIY3YQf4ADeKGsTHhoUHjRQmU4soNPZjhdy5BDxFjnLaAtv2CwwnSm2AlBNkHrZmR1ccjy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FKxKmes7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FKxKmes7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722281800;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=74AGwsvp2gKPcawCQnDRB9TvLDeSdxm19yrdhAEna1Y=;
+	b=FKxKmes7NYMgCN4UrZIP+Vtz1VSewRX96+XvoYPNQ3j57iPz2igBksbBwiUCMMvhaFdQg0
+	H0iST3JDPPc2g/fDcc906znwqwpd1UpaY7ehp3PWJekgdA5on7ObDpRlgrfoWmCuFSBlaK
+	KbTNEOt1DWA4rMb0vFPjMpdfayFi5U8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-rGTcsjzvOPuNs4swEgVxvA-1; Mon,
+ 29 Jul 2024 15:36:38 -0400
+X-MC-Unique: rGTcsjzvOPuNs4swEgVxvA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8724B1955D4C
+	for <gfs2@lists.linux.dev>; Mon, 29 Jul 2024 19:36:37 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C4BAC1955D47;
+	Mon, 29 Jul 2024 19:36:36 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCH v6.11-rc1 01/10] dlm: cleanup memory allocation helpers
+Date: Mon, 29 Jul 2024 15:36:21 -0400
+Message-ID: <20240729193630.3344082-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:2395:b0:4b9:13c9:b0fb with SMTP id
- 8926c6da1cb9f-4c23ffdacafmr276882173.5.1721599862798; Sun, 21 Jul 2024
- 15:11:02 -0700 (PDT)
-Date: Sun, 21 Jul 2024 15:11:02 -0700
-In-Reply-To: <0000000000002501960619e2366b@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004485fa061dc93442@google.com>
-Subject: Re: [syzbot] [gfs2?] BUG: corrupted list in gfs2_fill_super
-From: syzbot <syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, hdanton@sina.com, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-syzbot has bisected this issue to:
+This patch removes a unnecessary parameter from DLM memory allocation
+helpers and reduce some functions by just directly reply the pointer
+address of the allocated memory.
 
-commit 30e388d573673474cbd089dec83688331c117add
-Author: Andreas Gruenbacher <agruenba@redhat.com>
-Date:   Thu Apr 11 12:13:30 2024 +0000
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/lock.c   |  4 ++--
+ fs/dlm/memory.c | 19 +++++--------------
+ fs/dlm/memory.h |  4 ++--
+ 3 files changed, 9 insertions(+), 18 deletions(-)
 
-    gfs2: Switch to a per-filesystem glock workqueue
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 8bee4f444afd..6930d7c57216 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -600,7 +600,7 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
+ {
+ 	struct dlm_rsb *r;
+ 
+-	r = dlm_allocate_rsb(ls);
++	r = dlm_allocate_rsb();
+ 	if (!r)
+ 		return -ENOMEM;
+ 
+@@ -1497,7 +1497,7 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+ 	limit.max = end;
+ 	limit.min = start;
+ 
+-	lkb = dlm_allocate_lkb(ls);
++	lkb = dlm_allocate_lkb();
+ 	if (!lkb)
+ 		return -ENOMEM;
+ 
+diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
+index 8c44b954c166..442898cf7185 100644
+--- a/fs/dlm/memory.c
++++ b/fs/dlm/memory.c
+@@ -84,10 +84,7 @@ void dlm_memory_exit(void)
+ 
+ char *dlm_allocate_lvb(struct dlm_ls *ls)
+ {
+-	char *p;
+-
+-	p = kzalloc(ls->ls_lvblen, GFP_ATOMIC);
+-	return p;
++	return kzalloc(ls->ls_lvblen, GFP_ATOMIC);
+ }
+ 
+ void dlm_free_lvb(char *p)
+@@ -95,12 +92,9 @@ void dlm_free_lvb(char *p)
+ 	kfree(p);
+ }
+ 
+-struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls)
++struct dlm_rsb *dlm_allocate_rsb(void)
+ {
+-	struct dlm_rsb *r;
+-
+-	r = kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
+-	return r;
++	return kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
+ }
+ 
+ static void __free_rsb_rcu(struct rcu_head *rcu)
+@@ -116,12 +110,9 @@ void dlm_free_rsb(struct dlm_rsb *r)
+ 	call_rcu(&r->rcu, __free_rsb_rcu);
+ }
+ 
+-struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
++struct dlm_lkb *dlm_allocate_lkb(void)
+ {
+-	struct dlm_lkb *lkb;
+-
+-	lkb = kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
+-	return lkb;
++	return kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
+ }
+ 
+ void dlm_free_lkb(struct dlm_lkb *lkb)
+diff --git a/fs/dlm/memory.h b/fs/dlm/memory.h
+index 15198d46b42a..551b6b788489 100644
+--- a/fs/dlm/memory.h
++++ b/fs/dlm/memory.h
+@@ -14,9 +14,9 @@
+ 
+ int dlm_memory_init(void);
+ void dlm_memory_exit(void);
+-struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls);
++struct dlm_rsb *dlm_allocate_rsb(void);
+ void dlm_free_rsb(struct dlm_rsb *r);
+-struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls);
++struct dlm_lkb *dlm_allocate_lkb(void);
+ void dlm_free_lkb(struct dlm_lkb *l);
+ char *dlm_allocate_lvb(struct dlm_ls *ls);
+ void dlm_free_lvb(char *l);
+-- 
+2.43.0
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13653eb5980000
-start commit:   523b23f0bee3 Add linux-next specific files for 20240710
-git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=10e53eb5980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=17653eb5980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=98dd8c4bab5cdce
-dashboard link: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16907bb9980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10ce66a5980000
-
-Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
