@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E3315C126
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4516C15C131
+	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722619637; cv=none; b=mruMANAv4EiKrwpDNVRTw/UT7CRkJeSghxdoklBN0dSOrbp9qmgLlfjdov/w8x8EfFsqcwY5zMASDOHcmCLzrBwCAU1WyLDLz6a0tqZKtkhWS2ITJTi8LSnHlA6vGUCK8e7RggqX2wWyC+Bzgb4mzJ/E96fgEcaZSycGUnQ6kyU=
+	t=1722619637; cv=none; b=fDtfQdnxaBulEq7g9BVfG51C7457X96tUlCm8rzHXSdk6sfZeM6Wn7w+Ed7v6LrphVV9VK5uFIeT1iBGFaGAesAdaMdPbwPZRQHU6RfXiXpiY+yfkvQVIGGTraNYpqXFP//o8bUoi5iKCpG+wF4E1RUiBybimGV/My0bPdq80KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722619637; c=relaxed/simple;
-	bh=8Hoo1DrLpdD/YIF5wSHnDMauZj+lwETZmL77fJs+S3Y=;
+	bh=sW5IT7bduj/9w7OHkHGjqzSeRo3b9ZIQMPFLtPeJ0CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bv7uj+gydTMbQ1Z3OYfeAtCmaqMdmpq2boiIUpyRGuILjCDIxOfleOoXbtdWBabbslRAe0TdsE13Erb4HA85H/0csm/kHJGprxmdQx3X56IUTsvQ8kg4g9wrwGP8eY+6V6hcd3IjSnzH5ELM3VANTCkikPaBs9j08Q6FW3GbP3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=es1tIl/x; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=dVyMhRcge7+BAeSydmly4Q9E88nR8O67cwcUsYruct/HH3bYkVfNqNNhutxR5OMOhU6Q2Yv9CbOXhrqSP89lxCxhb54HNkEmHjhJwMd/6rhf6wH0l0Ga8LCETHh3yMSKAPefQ18Q7STqyv7PTxuoOaW8fj4DE+gFRBDKy5B3E3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PPC/qdnQ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="es1tIl/x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PPC/qdnQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722619633;
+	s=mimecast20190719; t=1722619635;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R/nREdBAI5U3tXdONd+0dX1YEdm6KfkO93wt/SjZ7rk=;
-	b=es1tIl/xS54bS+f5bpr0sBK/+BvIuckVW91SQwGC/zi2y0ryMDkbCCK53XLXKA49C76xX1
-	taQms19YmCvWA0LW2RC2gowqmTe1peN124VEgdAvRH4xG9vLzjRslaBUSmZ0U/AbqrULGU
-	wwO/oNxfzisFQznZBxPVSYliKZUzQVg=
+	bh=nI1gsXb+wikO0ReKALvyEGF8NNehIkanF6BL2WXavn4=;
+	b=PPC/qdnQNCiZE50r/AYuSihxvuqcxgyJIkAYn5B0wPrhE2KYLRMc/okD7mfgc4z3Mi5tDI
+	xew27euu3xdeiS/MiY7+63AYdzis0p5OcUcLU7us1aatZYUu0xEQuZ9hw5Ri3UFb9Tk7vf
+	E1NIvwEf4oIES4zHaAXVsCzUqx+8k0E=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-8gHU0w_dNGu53izdUAO1Rw-1; Fri,
- 02 Aug 2024 13:27:11 -0400
-X-MC-Unique: 8gHU0w_dNGu53izdUAO1Rw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-270-Wvrl6Ep5P46QSMHG3ipCzA-1; Fri,
+ 02 Aug 2024 13:27:13 -0400
+X-MC-Unique: Wvrl6Ep5P46QSMHG3ipCzA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 139391955EA1
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:11 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 487EF1955F69
+	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:09 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3A26319560AE;
-	Fri,  2 Aug 2024 17:27:10 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89EC719560AE;
+	Fri,  2 Aug 2024 17:27:08 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 v6.11-rc1 08/10] dlm: move dlm_search_rsb_tree() out of lock
-Date: Fri,  2 Aug 2024 13:26:45 -0400
-Message-ID: <20240802172647.582745-8-aahringo@redhat.com>
+Subject: [PATCHv2 v6.11-rc1 06/10] dlm: async freeing of lockspace resources
+Date: Fri,  2 Aug 2024 13:26:43 -0400
+Message-ID: <20240802172647.582745-6-aahringo@redhat.com>
 In-Reply-To: <20240802172647.582745-1-aahringo@redhat.com>
 References: <20240802172647.582745-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,164 +62,218 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-The rhashtable structure is lockless for readers such as
-rhashtable_lookup_fast(). It should be save to call this lookup
-functionality out of holding ls_rsbtbl_lock to get the rsb pointer out
-of the hash. This reduce the contention time of ls_rsbtbl_lock in some
-cases. We still need to check if the rsb is part of the check as this
-state can be changed while ls_rsbtbl_lock is not held. If its part of
-the rhashtable data structure we take a reference to be sure it will not
-be freed after we drop the ls_rsbtbl_lock read lock.
+This patch handles freeing of lockspace resources asynchronously besides
+the release_lockspace() context. The release_lockspace() context is
+sometimes called in a time critical context, e.g. umount syscall. Most
+every user space init system will timeout if it takes too long. To
+reduce the potential waiting time we deregister in release_lockspace()
+the lockspace from the DLM subsystem and do the actual releasing of
+lockspace resource in a worker of a workqueue following recommendation
+of:
+
+https://lore.kernel.org/all/49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp/T/#u
+
+as flushing of system workqueues are not allowed. The most time to
+release the DLM resources are spent to release the data structures
+"ls->ls_lkbxa" and "ls->ls_rsbtbl" as they iterate over each entries and
+those data structures can contain millions of entries. This patch handles
+for now only freeing of those data structures as those operations are
+the most reason why release_lockspace() blocking of being returned.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c | 77 +++++++++++++++++++++++++++++++--------------------
- 1 file changed, 47 insertions(+), 30 deletions(-)
+ fs/dlm/dlm_internal.h |  4 +++
+ fs/dlm/lockspace.c    | 77 ++++++++++++++++++++++++-------------------
+ fs/dlm/main.c         | 10 ++++++
+ 3 files changed, 58 insertions(+), 33 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 8bf3654f4827..9d3ec359d5e3 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -733,11 +733,13 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 	}
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index 32d98e63d25e..0562099e60eb 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -660,6 +660,8 @@ struct dlm_ls {
+ 	const struct dlm_lockspace_ops *ls_ops;
+ 	void			*ls_ops_arg;
  
-  retry:
-+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
-+	if (error)
-+		goto do_new;
- 
- 	/* check if the rsb is active under read lock - likely path */
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (error) {
-+	if (!rsb_flag(r, RSB_HASHED)) {
- 		read_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto do_new;
- 	}
-@@ -918,11 +920,13 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 	int error;
- 
-  retry:
-+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
-+	if (error)
-+		goto do_new;
- 
- 	/* check if the rsb is in active state under read lock - likely path */
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (error) {
-+	if (!rsb_flag(r, RSB_HASHED)) {
- 		read_unlock_bh(&ls->ls_rsbtbl_lock);
- 		goto do_new;
- 	}
-@@ -1276,36 +1280,38 @@ static int _dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *na
- 	}
- 
-  retry:
-+	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
-+	if (error)
-+		goto not_found;
- 
- 	/* check if the rsb is active under read lock - likely path */
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
--	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
--	if (!error) {
--		if (rsb_flag(r, RSB_INACTIVE)) {
--			read_unlock_bh(&ls->ls_rsbtbl_lock);
--			goto do_inactive;
--		}
--
--		/* because the rsb is active, we need to lock_rsb before
--		 * checking/changing re_master_nodeid
--		 */
-+	if (!rsb_flag(r, RSB_HASHED)) {
-+		read_unlock_bh(&ls->ls_rsbtbl_lock);
-+		goto not_found;
-+	}
- 
--		hold_rsb(r);
-+	if (rsb_flag(r, RSB_INACTIVE)) {
- 		read_unlock_bh(&ls->ls_rsbtbl_lock);
--		lock_rsb(r);
-+		goto do_inactive;
-+	}
- 
--		__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, false,
--				    flags, r_nodeid, result);
-+	/* because the rsb is active, we need to lock_rsb before
-+	 * checking/changing re_master_nodeid
-+	 */
- 
--		/* the rsb was active */
--		unlock_rsb(r);
--		put_rsb(r);
-+	hold_rsb(r);
-+	read_unlock_bh(&ls->ls_rsbtbl_lock);
-+	lock_rsb(r);
- 
--		return 0;
--	} else {
--		read_unlock_bh(&ls->ls_rsbtbl_lock);
--		goto not_found;
--	}
-+	__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, false,
-+			    flags, r_nodeid, result);
++	struct work_struct	ls_free_work;
 +
-+	/* the rsb was active */
-+	unlock_rsb(r);
-+	put_rsb(r);
-+
-+	return 0;
- 
-  do_inactive:
- 	/* unlikely path - check if still part of ls_rsbtbl */
-@@ -1403,14 +1409,14 @@ void dlm_dump_rsb_name(struct dlm_ls *ls, const char *name, int len)
- 	struct dlm_rsb *r = NULL;
- 	int error;
- 
--	read_lock_bh(&ls->ls_rsbtbl_lock);
-+	rcu_read_lock();
- 	error = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
- 	if (!error)
- 		goto out;
- 
- 	dlm_dump_rsb(r);
-  out:
--	read_unlock_bh(&ls->ls_rsbtbl_lock);
-+	rcu_read_unlock();
+ 	int			ls_namelen;
+ 	char			ls_name[DLM_LOCKSPACE_LEN + 1];
+ };
+@@ -803,6 +805,8 @@ static inline void dlm_set_sbflags_val(struct dlm_lkb *lkb, uint32_t val)
+ 			  __DLM_SBF_MAX_BIT);
  }
  
- static void deactivate_rsb(struct kref *kref)
-@@ -4309,16 +4315,27 @@ static void receive_remove(struct dlm_ls *ls, const struct dlm_message *ms)
- 	memset(name, 0, sizeof(name));
- 	memcpy(name, ms->m_extra, len);
- 
--	write_lock_bh(&ls->ls_rsbtbl_lock);
--
-+	rcu_read_lock();
- 	rv = dlm_search_rsb_tree(&ls->ls_rsbtbl, name, len, &r);
- 	if (rv) {
-+		rcu_read_unlock();
- 		/* should not happen */
- 		log_error(ls, "%s from %d not found %s", __func__,
- 			  from_nodeid, name);
-+		return;
-+	}
++extern struct workqueue_struct *dlm_wq;
 +
-+	write_lock_bh(&ls->ls_rsbtbl_lock);
-+	if (!rsb_flag(r, RSB_HASHED)) {
-+		rcu_read_unlock();
- 		write_unlock_bh(&ls->ls_rsbtbl_lock);
-+		/* should not happen */
-+		log_error(ls, "%s from %d got removed during removal %s",
-+			  __func__, from_nodeid, name);
- 		return;
- 	}
-+	/* at this stage the rsb can only being freed here */
-+	rcu_read_unlock();
+ int dlm_plock_init(void);
+ void dlm_plock_exit(void);
  
- 	if (!rsb_flag(r, RSB_INACTIVE)) {
- 		if (r->res_master_nodeid != from_nodeid) {
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index bf14016d53e1..8afac6e2dff0 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -315,6 +315,44 @@ static int threads_start(void)
+ 	return error;
+ }
+ 
++static int lkb_idr_free(struct dlm_lkb *lkb)
++{
++	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
++		dlm_free_lvb(lkb->lkb_lvbptr);
++
++	dlm_free_lkb(lkb);
++	return 0;
++}
++
++static void rhash_free_rsb(void *ptr, void *arg)
++{
++	struct dlm_rsb *rsb = ptr;
++
++	dlm_free_rsb(rsb);
++}
++
++static void free_lockspace(struct work_struct *work)
++{
++	struct dlm_ls *ls  = container_of(work, struct dlm_ls, ls_free_work);
++	struct dlm_lkb *lkb;
++	unsigned long id;
++
++	/*
++	 * Free all lkb's in xa
++	 */
++	xa_for_each(&ls->ls_lkbxa, id, lkb) {
++		lkb_idr_free(lkb);
++	}
++	xa_destroy(&ls->ls_lkbxa);
++
++	/*
++	 * Free all rsb's on rsbtbl
++	 */
++	rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL);
++
++	kfree(ls);
++}
++
+ static int new_lockspace(const char *name, const char *cluster,
+ 			 uint32_t flags, int lvblen,
+ 			 const struct dlm_lockspace_ops *ops, void *ops_arg,
+@@ -445,6 +483,8 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	spin_lock_init(&ls->ls_cb_lock);
+ 	INIT_LIST_HEAD(&ls->ls_cb_delay);
+ 
++	INIT_WORK(&ls->ls_free_work, free_lockspace);
++
+ 	ls->ls_recoverd_task = NULL;
+ 	mutex_init(&ls->ls_recoverd_active);
+ 	spin_lock_init(&ls->ls_recover_lock);
+@@ -627,15 +667,6 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
+ 				   ops_arg, ops_result, lockspace);
+ }
+ 
+-static int lkb_idr_free(struct dlm_lkb *lkb)
+-{
+-	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
+-		dlm_free_lvb(lkb->lkb_lvbptr);
+-
+-	dlm_free_lkb(lkb);
+-	return 0;
+-}
+-
+ /* NOTE: We check the lkbxa here rather than the resource table.
+    This is because there may be LKBs queued as ASTs that have been unlinked
+    from their RSBs and are pending deletion once the AST has been delivered */
+@@ -667,17 +698,8 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
+ 	return rv;
+ }
+ 
+-static void rhash_free_rsb(void *ptr, void *arg)
+-{
+-	struct dlm_rsb *rsb = ptr;
+-
+-	dlm_free_rsb(rsb);
+-}
+-
+ static int release_lockspace(struct dlm_ls *ls, int force)
+ {
+-	struct dlm_lkb *lkb;
+-	unsigned long id;
+ 	int busy, rv;
+ 
+ 	busy = lockspace_busy(ls, force);
+@@ -735,19 +757,6 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	xa_destroy(&ls->ls_recover_xa);
+ 	kfree(ls->ls_recover_buf);
+ 
+-	/*
+-	 * Free all lkb's in xa
+-	 */
+-	xa_for_each(&ls->ls_lkbxa, id, lkb) {
+-		lkb_idr_free(lkb);
+-	}
+-	xa_destroy(&ls->ls_lkbxa);
+-
+-	/*
+-	 * Free all rsb's on rsbtbl
+-	 */
+-	rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL);
+-
+ 	/*
+ 	 * Free structures on any other lists
+ 	 */
+@@ -757,9 +766,11 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+ 	dlm_clear_members(ls);
+ 	dlm_clear_members_gone(ls);
+ 	kfree(ls->ls_node_array);
+-	log_rinfo(ls, "release_lockspace final free");
+-	kfree(ls);
+ 
++	log_rinfo(ls, "%s final free", __func__);
++
++	/* delayed free of data structures see free_lockspace() */
++	queue_work(dlm_wq, &ls->ls_free_work);
+ 	module_put(THIS_MODULE);
+ 	return 0;
+ }
+diff --git a/fs/dlm/main.c b/fs/dlm/main.c
+index 6ca28299c9db..cb15db8ba9bf 100644
+--- a/fs/dlm/main.c
++++ b/fs/dlm/main.c
+@@ -22,6 +22,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/dlm.h>
+ 
++struct workqueue_struct *dlm_wq;
++
+ static int __init init_dlm(void)
+ {
+ 	int error;
+@@ -50,10 +52,16 @@ static int __init init_dlm(void)
+ 	if (error)
+ 		goto out_user;
+ 
++	dlm_wq = alloc_workqueue("dlm_wq", 0, 0);
++	if (!dlm_wq)
++		goto out_plock;
++
+ 	printk("DLM installed\n");
+ 
+ 	return 0;
+ 
++ out_plock:
++	dlm_plock_exit();
+  out_user:
+ 	dlm_user_exit();
+  out_debug:
+@@ -70,6 +78,8 @@ static int __init init_dlm(void)
+ 
+ static void __exit exit_dlm(void)
+ {
++	/* be sure every pending work e.g. freeing is done */
++	destroy_workqueue(dlm_wq);
+ 	dlm_plock_exit();
+ 	dlm_user_exit();
+ 	dlm_config_exit();
 -- 
 2.43.0
 
