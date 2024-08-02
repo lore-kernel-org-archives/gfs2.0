@@ -1,51 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56259136327
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A42F15C131
+	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722619631; cv=none; b=dx0oEWn6o4BHlrAtMKGYBNnFzbmglh2trxDkweuoEHVE4W63ry+gE285Rx77w16O54tCffVdAquQIgd+OWt7BBSh9X6+9IVWSzpFDkbr8R3bnio2AsvXVWOpWhO07I9mubS8Gjesv1SOI8fRWj6ct/gUJPZcwxLISZJUP81Wk0Y=
+	t=1722619631; cv=none; b=ksSd0SD6owLw+ySj40KENqk71zoJh1f/zEmBpJt1XC/b0dA8Eo8cw1/qEhfSqoxagyS3tfAcQ785XM03C1PNDoHgzM5zQFLK9KkyGXS6vknDdav+G9PCayn2mJd6pFy56QZzz1N68MFWwXcAr0Hbc4Ddtx1MkEpTKa2vKQPlR8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722619631; c=relaxed/simple;
-	bh=n7Afz2n91j35rnhSvPk3sx+SR48rL2Xdn0hF+JfTcwU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RBJ+11+0nzWWGilLPPw8GNadueKrYlKs66N4y0BuApEJ7l0tip6opiBJ7pwvzoQvvT7ejt1o/PJ75d2OFXtqUOC+oy9WoZxJrij9fYxcoM0Bsl+Br5YyMTm3CEg59XSAy3INGzgPIpO+HtWNuEph/CM8MuY+EPL7gltd+fgppWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f8v8JGLS; arc=none smtp.client-ip=170.10.133.124
+	bh=YPK2U4pIyyZrsq2SYubShjFdXGXiBEEjHJ2uLZt+4R8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G6qQ5zKyTZ0jKXHbOFDF9t8p+tfHPF04XD6Nt48b5IQeIY0CzE2rMTo1bmH+55a+3PoZgAM1ULUbQ6O/AQ/a+IifrGl07Xr3+Y2JIUyxg6DSwX+qIdwcfJGZ/hqBHv/BjmOiqTbPrE08fnclABwn3zd8pMuto/2WUYXCBFklfZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bMiXjXPS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f8v8JGLS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bMiXjXPS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722619626;
+	s=mimecast20190719; t=1722619629;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=74AGwsvp2gKPcawCQnDRB9TvLDeSdxm19yrdhAEna1Y=;
-	b=f8v8JGLS9MHaUOuYe7k0sVPk/ZEPXRJp7K9Skt3bynHbdtLtZWAlibgueMJvS9CqHxiYjE
-	BsvYHGInp9g0UyucEDD9NRHAgBSxPE5iX4dRGIoYUYvhKIXJIBEqxwvKNGAJjIFsfxHJ01
-	o7mR1Sg9ENXWDsNv7R1jJllTPapKMZU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lNFQ3Xg+P/srGAlTnRjtpo3tkXsCL8rjL6RTEU23vCs=;
+	b=bMiXjXPStqT63iIm7Lz9+eFNyQK+s/gSUml5++ydNDSRxYXDqQP2fVbU9SWpq4fUgOYX9U
+	9Gb+TBGziz5R3lb+m5kb6Ft3PXHHlkc7vvYWGf4BZrYBmWNo+NEGsPtBYd+ZCr+djHaxOi
+	O3ldGay9EM7kucdVr5q3Uto9PSVqWak=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-6LTHYsrOORSYFUMu5ToBPw-1; Fri,
- 02 Aug 2024 13:27:05 -0400
-X-MC-Unique: 6LTHYsrOORSYFUMu5ToBPw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-jKnAaj6-OjCuKzklOXrNDA-1; Fri,
+ 02 Aug 2024 13:27:07 -0400
+X-MC-Unique: jKnAaj6-OjCuKzklOXrNDA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF3221955D50
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:04 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A27C1944A84
+	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:06 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EBBC019560AE;
-	Fri,  2 Aug 2024 17:27:03 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A8A8D19560AE;
+	Fri,  2 Aug 2024 17:27:05 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCHv2 v6.11-rc1 01/10] dlm: cleanup memory allocation helpers
-Date: Fri,  2 Aug 2024 13:26:38 -0400
-Message-ID: <20240802172647.582745-1-aahringo@redhat.com>
+Subject: [PATCHv2 v6.11-rc1 03/10] dlm: never return invalid nodeid by dlm_our_nodeid()
+Date: Fri,  2 Aug 2024 13:26:40 -0400
+Message-ID: <20240802172647.582745-3-aahringo@redhat.com>
+In-Reply-To: <20240802172647.582745-1-aahringo@redhat.com>
+References: <20240802172647.582745-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -58,101 +62,30 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch removes a unnecessary parameter from DLM memory allocation
-helpers and reduce some functions by just directly reply the pointer
-address of the allocated memory.
+This patch will remote the return of an invalid nodeid value when
+local_comm is not set. This case should never happen as the DLM stack
+tries to compare valid nodeids with an invalid nodeid returned by
+dlm_our_nodeid(). Instead we let it crash to getting at least recognized
+if we running into such state.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c   |  4 ++--
- fs/dlm/memory.c | 19 +++++--------------
- fs/dlm/memory.h |  4 ++--
- 3 files changed, 9 insertions(+), 18 deletions(-)
+ fs/dlm/config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 8bee4f444afd..6930d7c57216 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -600,7 +600,7 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 99952234799e..eac96f1c1d74 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -928,7 +928,7 @@ int dlm_comm_seq(int nodeid, uint32_t *seq)
+ 
+ int dlm_our_nodeid(void)
  {
- 	struct dlm_rsb *r;
- 
--	r = dlm_allocate_rsb(ls);
-+	r = dlm_allocate_rsb();
- 	if (!r)
- 		return -ENOMEM;
- 
-@@ -1497,7 +1497,7 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
- 	limit.max = end;
- 	limit.min = start;
- 
--	lkb = dlm_allocate_lkb(ls);
-+	lkb = dlm_allocate_lkb();
- 	if (!lkb)
- 		return -ENOMEM;
- 
-diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
-index 8c44b954c166..442898cf7185 100644
---- a/fs/dlm/memory.c
-+++ b/fs/dlm/memory.c
-@@ -84,10 +84,7 @@ void dlm_memory_exit(void)
- 
- char *dlm_allocate_lvb(struct dlm_ls *ls)
- {
--	char *p;
--
--	p = kzalloc(ls->ls_lvblen, GFP_ATOMIC);
--	return p;
-+	return kzalloc(ls->ls_lvblen, GFP_ATOMIC);
+-	return local_comm ? local_comm->nodeid : 0;
++	return local_comm->nodeid;
  }
  
- void dlm_free_lvb(char *p)
-@@ -95,12 +92,9 @@ void dlm_free_lvb(char *p)
- 	kfree(p);
- }
- 
--struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls)
-+struct dlm_rsb *dlm_allocate_rsb(void)
- {
--	struct dlm_rsb *r;
--
--	r = kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
--	return r;
-+	return kmem_cache_zalloc(rsb_cache, GFP_ATOMIC);
- }
- 
- static void __free_rsb_rcu(struct rcu_head *rcu)
-@@ -116,12 +110,9 @@ void dlm_free_rsb(struct dlm_rsb *r)
- 	call_rcu(&r->rcu, __free_rsb_rcu);
- }
- 
--struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls)
-+struct dlm_lkb *dlm_allocate_lkb(void)
- {
--	struct dlm_lkb *lkb;
--
--	lkb = kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
--	return lkb;
-+	return kmem_cache_zalloc(lkb_cache, GFP_ATOMIC);
- }
- 
- void dlm_free_lkb(struct dlm_lkb *lkb)
-diff --git a/fs/dlm/memory.h b/fs/dlm/memory.h
-index 15198d46b42a..551b6b788489 100644
---- a/fs/dlm/memory.h
-+++ b/fs/dlm/memory.h
-@@ -14,9 +14,9 @@
- 
- int dlm_memory_init(void);
- void dlm_memory_exit(void);
--struct dlm_rsb *dlm_allocate_rsb(struct dlm_ls *ls);
-+struct dlm_rsb *dlm_allocate_rsb(void);
- void dlm_free_rsb(struct dlm_rsb *r);
--struct dlm_lkb *dlm_allocate_lkb(struct dlm_ls *ls);
-+struct dlm_lkb *dlm_allocate_lkb(void);
- void dlm_free_lkb(struct dlm_lkb *l);
- char *dlm_allocate_lvb(struct dlm_ls *ls);
- void dlm_free_lvb(char *l);
+ /* num 0 is first addr, num 1 is second addr */
 -- 
 2.43.0
 
