@@ -1,286 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FA918A92F
-	for <gfs2@lists.linux.dev>; Tue, 30 Jul 2024 15:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCFE1BF301
+	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 07:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722353879; cv=none; b=TJRqyjkHRyaIfeRN8DOdFHoEWsN+QQod/PxhqbZHKHclUwMdr7fQZoPMlfPMnPLbatuhiUN98R0h86xYuhTw1ibhWFeVSYX2mORjG8NPwWrvj1eWvDPHMjwjZb3jdsAigz3ed5jZcZyckPNbjBJ18YlyJ2zkEqJD2R5cvfyEJNw=
+	t=1722583589; cv=none; b=GM6Z5loug5QUFFGSkNvckEOcsP8zxJog31yPIBCrH6I/FyWfDZUlJs0jDCajgYswgV+4j9emKWlOEz2g6dEbZHHhWbdRMfPiHBDpXjMA4t33OhvLthq8rXeLOkMsQEKjNYmtjOTbEAC/S+QLh6Fay3jj7zazUHVmLsrIDhy4wDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722353879; c=relaxed/simple;
-	bh=f/B9MPjdXQXwCAWdMV4OFACasrZgZwYN89K5nK7VnzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DHmqsd8Ha/TPo2rw8v2dytAe1/1YsQ3cnN3KJOVlx5M+oMXfnuBWeoVBkyCANfEgSHzLGPe27j5CU/dysIaZInYjtUHAb0y6GPw6psu9uBYWHIuA0TvoT9HbTt/SIRnwybjdlvz6nuz1VPjv+h/ZUO6Oje+e2Rhr5RppmPGa4JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cjVPZ6BC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cjVPZ6BC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722353876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3ewTpuZoMO//qD7ai0P5L3NUJTCmzZ1N4WbCrlBJZA=;
-	b=cjVPZ6BCc+OVudK8BYYao+XuAd57JP4/eVeyNHqgga+jrA3X5BEZ7UlYsTz3S8cgupF8N4
-	33sSAndbDt4p+UjhpDGQNLeevmsaowO10RV+Wb6oNthdD8c49xRQeFnesH9GMY3RRP4RiH
-	PeCy/BLujMTj4MKjmDsneQh9Wk9R7a0=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-1SLMgj_VOJ-dwlU16_Alrg-1; Tue, 30 Jul 2024 11:37:52 -0400
-X-MC-Unique: 1SLMgj_VOJ-dwlU16_Alrg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2ef315c6990so34860901fa.1
-        for <gfs2@lists.linux.dev>; Tue, 30 Jul 2024 08:37:51 -0700 (PDT)
+	s=arc-20240116; t=1722583589; c=relaxed/simple;
+	bh=Q7isDA4cLD+NJOp6yTaUe+JZ4Vy9np6f6rMW0uX2Zyo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ejyk3gRbp8PgKkBcSCBGOG38TDUluOYLyYN0AQTkkqtxMbcqo5xkA7jqjBxVw7QwRgFhsgcUq/zAjl91qp5Ft+SYsy+Er4AT+OUC/EjRC1MdEAZjIJMHdeLYx9ymGMyM4QrCgmGE03Vrk4NMtvAXyLUDx5R2ubl7TS3oqCyPyLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-39862b50109so113471945ab.3
+        for <gfs2@lists.linux.dev>; Fri, 02 Aug 2024 00:26:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722353870; x=1722958670;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u3ewTpuZoMO//qD7ai0P5L3NUJTCmzZ1N4WbCrlBJZA=;
-        b=S72AtzJ/XAXigxkRMMLt72LaGeXp6IYfTLlLb4Wk6ISoaivciLV+K8234TEvRABpF8
-         U6lHBMmV9NWGuMUNOpixNEdD4hDw5xwuYR3GjmmbB2M/Y+TVJtaYY/e7zPJdNJXTlt7K
-         J3OPME4iGdnOg7JKwAJoEGvflS/kgvz0VsrxsRPk+3Y8VKmdsPIUnB/dVZymOTtDxcMf
-         BtzHa4YnQxg8Ube9vWeyiVyn7ms+eAGUH9eweH88Jqd+YADI2i3m2qI6PaZ/JfeEEx2Z
-         BxYAWWADhiznYNLJyyM6xo2xT9JEvgI8zn8yiNvJ13nUMJZ7MCdFNqAWOJvHPZ19vBVc
-         R0jw==
-X-Gm-Message-State: AOJu0YxmEZPtmR+Yuxbq3Zu+KoaS2iQ5TT5SX3vYcNmQMbNsF8InmDeX
-	NTgyo/nMQQwmYik+bRaXpSQovHcNuieIggq9qshcubhmGjnf5yDpMMVTfgXNztBoDpnz/iaIU1O
-	qrbtNJvVnIPkSnc4P52KzRIbpTUq8ki1d4IAVdjhVEnlI1tl+6i40OPeaJPxAs3eCeJv9wtyU5O
-	+o3BSGSGnA6YBxw/0SlA2976iLEA==
-X-Received: by 2002:a2e:9e05:0:b0:2ef:1efb:1b6b with SMTP id 38308e7fff4ca-2f1478f991dmr7458791fa.15.1722353870637;
-        Tue, 30 Jul 2024 08:37:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNZHA556Ld3iOZcPHTr2KDXiGDK+Di0+z8zqwUc39fi5X/XQUIgvdPhyQotPGmlNVS3VQQAEhzL9wQKZz0aak=
-X-Received: by 2002:a2e:9e05:0:b0:2ef:1efb:1b6b with SMTP id
- 38308e7fff4ca-2f1478f991dmr7458721fa.15.1722353870222; Tue, 30 Jul 2024
- 08:37:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722583587; x=1723188387;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qU4YHEI5FOJW3hx872vK4nm0dqI+dc1npOneKYtbxQA=;
+        b=RkbLkT3RgbVtVomTMiQyY9nGRXTWDxAGCeENXkKWruWx2Jv3nExyekiLF2DB4xyIvb
+         PN7vpSgGOHXtgaD9b9fEGo+Sl0ffr2cE2Bn30VhSVZBXD0Y/HuG7+EpfomtAhM7+/NlZ
+         W9wJJUv0wIZHsykXBrMVfXBb5Z1J2D3mrjhOHqXur34gTguzhPOqiIjnQChvtWL0xAY4
+         Pp0D/3NR17ki3h0xUKKaG8+iKHjuddOzpT3X2kSbA3UelxNh2rxWTiXYsTLPmQCpfc+z
+         vBomva4oEcYa4T97Bqx4GBC/yRxwPp0BhuyPUB9SPmoSP9aNrVvP/AaZf2rPOZHNd1UF
+         RXxA==
+X-Gm-Message-State: AOJu0YxasAU4as8mMn4tSE7gJrLiohQXTc78laN3JfKrVP3ZG+xugL51
+	mdNi8Q9kgwU5AnXZ/l7XrcO9HpEKBEwi29/UduiS99Hs2hv+MoskQO+5HOd4y/5pJVWT0bvcZCg
+	PVSV0up4kdp7dWrc/4/yG0SHdlDD0xuhRqo9ycXHBiatjN8BFAvDDZ8M=
+X-Google-Smtp-Source: AGHT+IFgoLsJ3Olpb4xM+WKgxtJtmrUqo6TemLUxZj1WQUH10l9PFtOsHjCb8QuKZfPmmc/KlMZx2Jb/kJnwPReKukIOTmKYVRgf
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240729193630.3344082-1-aahringo@redhat.com> <20240729193630.3344082-6-aahringo@redhat.com>
-In-Reply-To: <20240729193630.3344082-6-aahringo@redhat.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Tue, 30 Jul 2024 11:37:39 -0400
-Message-ID: <CAK-6q+jLwBDYV0e45r2TvYkq7E+tGPe2mvPbAPiYzZenUpDq0w@mail.gmail.com>
-Subject: Re: [PATCH v6.11-rc1 06/10] dlm: async freeing of lockspace resources
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6e02:1d0e:b0:39a:e800:eec9 with SMTP id
+ e9e14a558f8ab-39b1fc58ef4mr1859095ab.4.1722583587180; Fri, 02 Aug 2024
+ 00:26:27 -0700 (PDT)
+Date: Fri, 02 Aug 2024 00:26:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000cf67e9061eae3e91@google.com>
+Subject: [syzbot] Monthly gfs2 report (Aug 2024)
+From: syzbot <syzbot+listb61a1d58ae517f6982e4@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello gfs2 maintainers/developers,
 
-On Mon, Jul 29, 2024 at 3:36=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
-m> wrote:
->
-> This patch handles freeing of lockspace resources asynchronously besides
-> the release_lockspace() context. The release_lockspace() context is
-> sometimes called in a time critical context, e.g. umount syscall. Most
-> every user space init system will timeout if it takes too long. To
-> reduce the potential waiting time we deregister in release_lockspace()
-> the lockspace from the DLM subsystem and do the actual releasing of
-> lockspace resource in a worker of a workqueue following recommendation
-> of:
->
-> https://lore.kernel.org/all/49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.S=
-AKURA.ne.jp/T/#u
->
-> as flushing of system workqueues are not allowed. The most time to
-> release the DLM resources are spent to release the data structures
-> "ls->ls_lkbxa" and "ls->ls_rsbtbl" as they iterate over each entries and
-> those data structures can contain millions of entries.
->
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/dlm/dlm_internal.h |   4 ++
->  fs/dlm/lockspace.c    | 100 +++++++++++++++++++++++-------------------
->  fs/dlm/main.c         |  10 +++++
->  3 files changed, 69 insertions(+), 45 deletions(-)
->
-> diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
-> index 32d98e63d25e..0562099e60eb 100644
-> --- a/fs/dlm/dlm_internal.h
-> +++ b/fs/dlm/dlm_internal.h
-> @@ -660,6 +660,8 @@ struct dlm_ls {
->         const struct dlm_lockspace_ops *ls_ops;
->         void                    *ls_ops_arg;
->
-> +       struct work_struct      ls_free_work;
-> +
->         int                     ls_namelen;
->         char                    ls_name[DLM_LOCKSPACE_LEN + 1];
->  };
-> @@ -803,6 +805,8 @@ static inline void dlm_set_sbflags_val(struct dlm_lkb=
- *lkb, uint32_t val)
->                           __DLM_SBF_MAX_BIT);
->  }
->
-> +extern struct workqueue_struct *dlm_wq;
-> +
->  int dlm_plock_init(void);
->  void dlm_plock_exit(void);
->
-> diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-> index bf14016d53e1..e1df92853a53 100644
-> --- a/fs/dlm/lockspace.c
-> +++ b/fs/dlm/lockspace.c
-> @@ -315,6 +315,56 @@ static int threads_start(void)
->         return error;
->  }
->
-> +static int lkb_idr_free(struct dlm_lkb *lkb)
-> +{
-> +       if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_ifl=
-ags))
-> +               dlm_free_lvb(lkb->lkb_lvbptr);
-> +
-> +       dlm_free_lkb(lkb);
-> +       return 0;
-> +}
-> +
-> +static void rhash_free_rsb(void *ptr, void *arg)
-> +{
-> +       struct dlm_rsb *rsb =3D ptr;
-> +
-> +       dlm_free_rsb(rsb);
-> +}
-> +
-> +static void free_lockspace(struct work_struct *work)
-> +{
-> +       struct dlm_ls *ls  =3D container_of(work, struct dlm_ls, ls_free_=
-work);
-> +       struct dlm_lkb *lkb;
-> +       unsigned long id;
-> +
-> +       xa_destroy(&ls->ls_recover_xa);
-> +       kfree(ls->ls_recover_buf);
-> +
-> +       /*
-> +        * Free all lkb's in xa
-> +        */
-> +       xa_for_each(&ls->ls_lkbxa, id, lkb) {
-> +               lkb_idr_free(lkb);
-> +       }
-> +       xa_destroy(&ls->ls_lkbxa);
-> +
-> +       /*
-> +        * Free all rsb's on rsbtbl
-> +        */
-> +       rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL)=
-;
-> +
-> +       /*
-> +        * Free structures on any other lists
-> +        */
-> +
-> +       dlm_purge_requestqueue(ls);
-> +       kfree(ls->ls_recover_args);
-> +       dlm_clear_members(ls);
-> +       dlm_clear_members_gone(ls);
-> +       kfree(ls->ls_node_array);
-> +       kfree(ls);
-> +}
-> +
->  static int new_lockspace(const char *name, const char *cluster,
->                          uint32_t flags, int lvblen,
->                          const struct dlm_lockspace_ops *ops, void *ops_a=
-rg,
-> @@ -445,6 +495,8 @@ static int new_lockspace(const char *name, const char=
- *cluster,
->         spin_lock_init(&ls->ls_cb_lock);
->         INIT_LIST_HEAD(&ls->ls_cb_delay);
->
-> +       INIT_WORK(&ls->ls_free_work, free_lockspace);
-> +
->         ls->ls_recoverd_task =3D NULL;
->         mutex_init(&ls->ls_recoverd_active);
->         spin_lock_init(&ls->ls_recover_lock);
-> @@ -627,15 +679,6 @@ int dlm_new_user_lockspace(const char *name, const c=
-har *cluster,
->                                    ops_arg, ops_result, lockspace);
->  }
->
-> -static int lkb_idr_free(struct dlm_lkb *lkb)
-> -{
-> -       if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_ifl=
-ags))
-> -               dlm_free_lvb(lkb->lkb_lvbptr);
-> -
-> -       dlm_free_lkb(lkb);
-> -       return 0;
-> -}
-> -
->  /* NOTE: We check the lkbxa here rather than the resource table.
->     This is because there may be LKBs queued as ASTs that have been unlin=
-ked
->     from their RSBs and are pending deletion once the AST has been delive=
-red */
-> @@ -667,17 +710,8 @@ static int lockspace_busy(struct dlm_ls *ls, int for=
-ce)
->         return rv;
->  }
->
-> -static void rhash_free_rsb(void *ptr, void *arg)
-> -{
-> -       struct dlm_rsb *rsb =3D ptr;
-> -
-> -       dlm_free_rsb(rsb);
-> -}
-> -
->  static int release_lockspace(struct dlm_ls *ls, int force)
->  {
-> -       struct dlm_lkb *lkb;
-> -       unsigned long id;
->         int busy, rv;
->
->         busy =3D lockspace_busy(ls, force);
-> @@ -732,34 +766,10 @@ static int release_lockspace(struct dlm_ls *ls, int=
- force)
->
->         kobject_put(&ls->ls_kobj);
->
-> -       xa_destroy(&ls->ls_recover_xa);
-> -       kfree(ls->ls_recover_buf);
-> -
-> -       /*
-> -        * Free all lkb's in xa
-> -        */
-> -       xa_for_each(&ls->ls_lkbxa, id, lkb) {
-> -               lkb_idr_free(lkb);
-> -       }
-> -       xa_destroy(&ls->ls_lkbxa);
-> -
-> -       /*
-> -        * Free all rsb's on rsbtbl
-> -        */
-> -       rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL)=
-;
-> -
-> -       /*
-> -        * Free structures on any other lists
-> -        */
-> -
-> -       dlm_purge_requestqueue(ls);
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
 
-this.
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 14 issues are still open and 31 have been fixed so far.
 
-> -       kfree(ls->ls_recover_args);
-> -       dlm_clear_members(ls);
+Some of the still happening issues:
 
-and this.
+Ref Crashes Repro Title
+<1> 378206  Yes   WARNING in __folio_mark_dirty (2)
+                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
+<2> 6347    Yes   WARNING: locking bug in gfs2_fill_super
+                  https://syzkaller.appspot.com/bug?extid=ee157488ade46c021ef4
+<3> 1305    Yes   kernel BUG in gfs2_glock_nq (2)
+                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<4> 729     No    possible deadlock in do_qc
+                  https://syzkaller.appspot.com/bug?extid=8ef337b733667f9a7ec8
+<5> 115     Yes   INFO: task hung in __gfs2_lookup
+                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
+<6> 102     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
+                  https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
+<7> 24      Yes   INFO: task hung in gfs2_glock_nq
+                  https://syzkaller.appspot.com/bug?extid=dbb72d38131e90dc1f66
+<8> 14      Yes   WARNING in gfs2_check_blk_type (2)
+                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
 
-Should stay here, it does more than just releasing memory. But the
-rest should be okay to handle it in the background in a different
-context in some kind of slow path. As mentioned in the commit msg it
-is mostly about the data structures here that may contain millions of
-entries (we don't know what the DLM user is doing)  and we are doing
-"our best" to return faster from the release_lockspace() function.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-- Alex
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
