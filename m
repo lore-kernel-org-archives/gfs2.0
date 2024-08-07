@@ -1,171 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7AF15C12A
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97881C9DD6;
+	Wed,  7 Aug 2024 12:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722619639; cv=none; b=rArRmvBu0wuVqNni9FgqwCa86MJ2Y09EijcrszoQ354rLB66IcwQ8XNFFJSWSVTSbWEbUyMxYburD90/LZvWnxP5OaKJ50kjWa1V9P/ER07uZdQsnpqGByq3k5Io9fzIL1tnLktdqFm2K9VduBpikJCYN0fShzKBiBFba1nnT5Y=
+	t=1723033305; cv=none; b=bd4GFWbYRGmkQfvQnpOl7Ygn7xAcB0HfSMLUvuVgYsMw2v8rQlwrnalcMPdI4o17DAoDrj930tdP5bku6IRwPGlZZ51StquZ9iQy7bGD1RSlYHjuuZWHRP48VCc7EdnZfQZiNz29+vw74a9dvybvA5Mwy/Yuk5PNb7Q+d1uASLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722619639; c=relaxed/simple;
-	bh=5RU/PAgHyzqnGLR3MmtEO2TJd3hZ762NJGhhA6DYxFI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ccxtgRjZ7DaW9fAv7mm3fC73EWnHTCbyBIneeORn1brzUUT1YIaQzcgvnpavMdbYbDD/gObPJce2CQH8eapDhM08s5vVGtfSdzG0k7LhFzzSRioi1UCh8DHt+2W6+4H4Nhp6KPzNPJAd6b3xYKQ+nrV8QAEQ0S0bd3kSu6aEs/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cj1MSAod; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1723033305; c=relaxed/simple;
+	bh=l7TcIO1csvGx6kjhyKUQowUbhqEgKBOmsuZGPcWIBPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CaZM4Q170q/dnINFEyHmCfnJKRzSlptPICOd2LcZO1ZOFPfdAdTKVa5zKd6+Yv3VRwLj6jWS3RjNcJb1JNr+a2PypcjuGU4ARk8cqBpWolWVUYv6WbYKMdbRHax4jX7rT5zkyU94goSj+u4ZhVGc/yDtgNRFI9lqusDGKDXhqA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=enol2k7M; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cj1MSAod"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722619635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xp23Ez1hwoa5NI7s2C0qoFCTjcATsmEzZnZDP7LIWFo=;
-	b=Cj1MSAodCm7e4gJUwyE4U5XaafYYB9LpP7Pa8mb5zTzeszfsqN4KhdagvnwQq2kDVJaHbB
-	BwC7onW1LvIVTRPhX87qELbL3lKoPQEXbmTpxwBs3ZLl5koFerSmgv4k1CUM3qUQDWwGQf
-	WXrqZhg/jfuiVsBrkjjbXc3qsOa/8JA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-J5IMU2V0PNOQ3p2MEromuQ-1; Fri,
- 02 Aug 2024 13:27:13 -0400
-X-MC-Unique: J5IMU2V0PNOQ3p2MEromuQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DFFFC1944A96
-	for <gfs2@lists.linux.dev>; Fri,  2 Aug 2024 17:27:12 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DA1F1955F6B;
-	Fri,  2 Aug 2024 17:27:11 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCHv2 v6.11-rc1 10/10] dlm: do synchronized socket connect call
-Date: Fri,  2 Aug 2024 13:26:47 -0400
-Message-ID: <20240802172647.582745-10-aahringo@redhat.com>
-In-Reply-To: <20240802172647.582745-1-aahringo@redhat.com>
-References: <20240802172647.582745-1-aahringo@redhat.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="enol2k7M"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=01hbJ+SofGGB7cpRH5QHBvHR4Rahe+jY5XQFkwRfm5E=; b=enol2k7M8rgW8c7JC6r54S5jEg
+	D98ssNAta4QCBs14ooQL1rcEFzZveUEgKy7nmcP3M3R12nZKWwkricF1y0jRqNoMYTyQb4SB/dekN
+	3zkM7zfATYxR9K218UhBopMJNK3MDHpXav92bkBlpe6z0l82MTUYZQqM0cIkh3cVabUH5lIhLThuf
+	WP4mXxjmkhuPXtpAnFS8ccqUxUFmg6lLrDdgDBXti8vP8E9Vv71cuWpkJJ+NyFJ7ZyB4HcgkGDlZU
+	tVI35YrkED9bTOSMoZzn1AxY2V3JM6ylhIbQFXq1/QLIWWQvqr7bG25yGDtleXNx4flcVXVEfldaK
+	ZGFz2dMw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sbffi-00000007HGs-28Aq;
+	Wed, 07 Aug 2024 12:21:42 +0000
+Date: Wed, 7 Aug 2024 13:21:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/4] Remove uses of aops->writepage from gfs2
+Message-ID: <ZrNm1gh6Fsm0tIil@casper.infradead.org>
+References: <20240719175105.788253-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719175105.788253-1-willy@infradead.org>
 
-To avoid -EINPROGRESS cases on connect that just ends in a retry we just
-call connect in a synchronized way to wait until its done. Since commit
-dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling") we have a
-non ordered workqueue running for serving the DLM sockets that allows us
-to call send/recv for each DLM socket connection in parallel. Before
-each worker needed to wait until the previous worker was done and
-probably the reason why connect() was called in an asynchronous way to
-not block other workers. This is however not necessary anymore as other
-socket handling workers don't need to wait.
+On Fri, Jul 19, 2024 at 06:51:00PM +0100, Matthew Wilcox (Oracle) wrote:
+> Hi Andreas,
+> 
+> Here's my latest attempt to switch gfs2 from ->writepage to
+> ->writepages.  I've been a bit more careful this time; I'm not sure
+> whether __gfs2_writepage() could call gfs2_aspace_writepage(), but
+> this order of patches shouldn't break any bisection.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lowcomms.c | 36 +-----------------------------------
- 1 file changed, 1 insertion(+), 35 deletions(-)
+ping
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 2e3e269d820e..cb3a10b041c2 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -161,8 +161,6 @@ struct dlm_proto_ops {
- 	const char *name;
- 	int proto;
- 
--	int (*connect)(struct connection *con, struct socket *sock,
--		       struct sockaddr *addr, int addr_len);
- 	void (*sockopts)(struct socket *sock);
- 	int (*bind)(struct socket *sock);
- 	int (*listen_validate)(void);
-@@ -1599,8 +1597,7 @@ static int dlm_connect(struct connection *con)
- 
- 	log_print_ratelimited("connecting to %d", con->nodeid);
- 	make_sockaddr(&addr, dlm_config.ci_tcp_port, &addr_len);
--	result = dlm_proto_ops->connect(con, sock, (struct sockaddr *)&addr,
--					addr_len);
-+	result = kernel_connect(sock, (struct sockaddr *)&addr, addr_len, 0);
- 	switch (result) {
- 	case -EINPROGRESS:
- 		/* not an error */
-@@ -1634,13 +1631,6 @@ static void process_send_sockets(struct work_struct *work)
- 			switch (ret) {
- 			case 0:
- 				break;
--			case -EINPROGRESS:
--				/* avoid spamming resched on connection
--				 * we might can switch to a state_change
--				 * event based mechanism if established
--				 */
--				msleep(100);
--				break;
- 			default:
- 				/* CF_SEND_PENDING not cleared */
- 				up_write(&con->sock_lock);
-@@ -1831,12 +1821,6 @@ static int dlm_tcp_bind(struct socket *sock)
- 	return 0;
- }
- 
--static int dlm_tcp_connect(struct connection *con, struct socket *sock,
--			   struct sockaddr *addr, int addr_len)
--{
--	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
--}
--
- static int dlm_tcp_listen_validate(void)
- {
- 	/* We don't support multi-homed hosts */
-@@ -1873,7 +1857,6 @@ static int dlm_tcp_listen_bind(struct socket *sock)
- static const struct dlm_proto_ops dlm_tcp_ops = {
- 	.name = "TCP",
- 	.proto = IPPROTO_TCP,
--	.connect = dlm_tcp_connect,
- 	.sockopts = dlm_tcp_sockopts,
- 	.bind = dlm_tcp_bind,
- 	.listen_validate = dlm_tcp_listen_validate,
-@@ -1886,22 +1869,6 @@ static int dlm_sctp_bind(struct socket *sock)
- 	return sctp_bind_addrs(sock, 0);
- }
- 
--static int dlm_sctp_connect(struct connection *con, struct socket *sock,
--			    struct sockaddr *addr, int addr_len)
--{
--	int ret;
--
--	/*
--	 * Make kernel_connect() function return in specified time,
--	 * since O_NONBLOCK argument in connect() function does not work here,
--	 * then, we should restore the default value of this attribute.
--	 */
--	sock_set_sndtimeo(sock->sk, 5);
--	ret = kernel_connect(sock, addr, addr_len, 0);
--	sock_set_sndtimeo(sock->sk, 0);
--	return ret;
--}
--
- static int dlm_sctp_listen_validate(void)
- {
- 	if (!IS_ENABLED(CONFIG_IP_SCTP)) {
-@@ -1929,7 +1896,6 @@ static const struct dlm_proto_ops dlm_sctp_ops = {
- 	.name = "SCTP",
- 	.proto = IPPROTO_SCTP,
- 	.try_new_addr = true,
--	.connect = dlm_sctp_connect,
- 	.sockopts = dlm_sctp_sockopts,
- 	.bind = dlm_sctp_bind,
- 	.listen_validate = dlm_sctp_listen_validate,
--- 
-2.43.0
-
+> Matthew Wilcox (Oracle) (4):
+>   gfs2: Add gfs2_aspace_writepages()
+>   gfs2: Remove __gfs2_writepage()
+>   gfs2: Remove gfs2_jdata_writepage()
+>   gfs2: Remove gfs2_aspace_writepage()
+> 
+>  fs/gfs2/aops.c    | 30 ------------------------------
+>  fs/gfs2/log.c     | 12 ++----------
+>  fs/gfs2/meta_io.c | 24 +++++++++++++++++-------
+>  3 files changed, 19 insertions(+), 47 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
