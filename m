@@ -1,111 +1,198 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453B41369AA
-	for <gfs2@lists.linux.dev>; Wed,  7 Aug 2024 16:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62977157466
+	for <gfs2@lists.linux.dev>; Thu,  8 Aug 2024 19:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723047902; cv=none; b=CiPjbk87OE3nepaoAV4ihYD+kB5Y/Sjzd5Hw+PpLqklv4t760lz7v/qt2A3A2cnsq9AKnUBPRP+09x0ff63OV2F0KOmoWS6Crjk6kadeJ4kJwBAy35df8J5db/NFZmgRYdrv42JWvoV4V/p7vdjBL/n3Oqwq8/vlD5+MGKy2bfU=
+	t=1723145301; cv=none; b=RpP+P05qKe/+32mOVnGu559K8RtlR1j4HVoVYdQvYTL3/kLDCWfQWOkbd+R5IghVSIQ36vlHW7zdRWAa7wNux/A15iECwSXxPUvpWYDKzWIHcuP5288W5hY6/IRwiOheT4+7KLQTgLY4stti+7Lv1D299H3pT1wQs4e5ulNa9cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723047902; c=relaxed/simple;
-	bh=6lPMOQH431GKWxLLmMbzAnj9XuawpFfji+CXA1tfKoc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NQwNr+I5Z3wWqc0oq9Tueg1/s00QBEsQ37cpk8GAFiPJKqh6ZyB2pgQKrG58UJkwOSbeBMkdNzJ8kxE7FDYAbPfYXhp91vsfc15MT1+S1Gcv97TGkJgD8lE8dO0ad7UVDAhUqAGJwVvy3KQXLJFJQ13PCSR1kTBFBhAOicVqNbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WCqyh5dm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1723145301; c=relaxed/simple;
+	bh=moGq7PvzGvB0S6UQMZuwnIDOkPknvOA1+Hh9JdRtibM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Q+a+R/3CgMp/xospULwU/3el0a1dzAdtye5jpaomFqLhmGKJy1qIIJLKh/RBtOPrnSFNX0rTTNuoecST4mfkWGtj/je+BrcLvDLC8BQ/CFTufFeDJZfIPcqieLb95Vhx6JrXpgQGYuxKZ3My8luBeIMwBfldGXB2aPdmgjBqucQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=cvCke/gr; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WCqyh5dm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723047899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L0C9YfRuY1PQLeP1M6aYawPuUYOmUOGm2Mf6dVrGLnI=;
-	b=WCqyh5dmWlwV2QiYjPM42TsiKZcHNiszMFXgLqG4L7CfXhlbmmPhEo/WndILr1EgjwJCnq
-	yL62pcroJNOJyz94i1QRuzKD3EgF4SahjIx8KyMTBOjcDWZxywSlKAesJGzQAUDJaBQTCK
-	2cKuKjRPlizmOhYbPnqLUeihmW5H5zI=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-evKDrpibP9CUqiQ_qYbyvg-1; Wed, 07 Aug 2024 12:24:57 -0400
-X-MC-Unique: evKDrpibP9CUqiQ_qYbyvg-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1fc596b86a6so10557355ad.1
-        for <gfs2@lists.linux.dev>; Wed, 07 Aug 2024 09:24:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="cvCke/gr"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a1e0ff6871so78823185a.2
+        for <gfs2@lists.linux.dev>; Thu, 08 Aug 2024 12:28:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723145298; x=1723750098; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=agwST92yUhpv2dWxzT9/pEGlKDn9gtYgiwLWoC5Trsk=;
+        b=cvCke/grXNWYyML6wTZQRNayPyYg8QU5QqtI6aiRN78gIwY3P5XVOzVURa1aE3fJSl
+         2pAhwXBIVA3lOXuPHPXmRGdh1aeCU6C2WIKCviP8LWphGPxhXTZN/tBZu5ipsgxEvDZE
+         Ju5ek4sD6iCEtSrWRKz4WTEZx0S5xJfNNDTWaEPQxlz1UxJcMbI+c+YVfVTRMHO3AcKV
+         nePjyb/Sz1WxUL4Hm2KDchAMnmTr5QlFr2F4CqLm5AxMOVklY68jhXhkJeq/FV9GQs9g
+         UtwJDbUpAFNY+qYcIIRHJ9yPLQt8GM/Xj+qsC91IFgQbVkESjWxuV2BmQukh19ltKJdK
+         fQOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723047895; x=1723652695;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L0C9YfRuY1PQLeP1M6aYawPuUYOmUOGm2Mf6dVrGLnI=;
-        b=YNqcyh9yrdEVQc5ireECXESPEJ+S0Po6fdD929VzImFLD8d9vVrvxK7mPjbHH559N7
-         0XWh2iSBh+7QWVxTyqTL/g4MP+cd98ZL3WDUh4Hhi+ZKSGAu9pMuiD9WrsyN1uFhHYe4
-         /nDtsYXIFf2T2Rq9OYvEUMTLDhULPxYUQaXnbhiSKJmHMF4BpXFKzYxOuWntPIqAT7jW
-         ZVBOJcFeLGU7jqabZfBy3aFxhEMjFCyxIGJ4HXZ/wkUHsuxqhZAZC736pjIcQswa42Od
-         uOLFh+QTc8JdBg1C5zF+yyvBhUQpD/AuPJMUhVeO9e5z7J4bYuB/ShESBmJQNGBakLEV
-         ZO0w==
-X-Gm-Message-State: AOJu0YwMBpaTkPTsnVNB+Ij+OiYJUF4ytAb2tivtJOeEcB+XYjsjhGNo
-	yLkDsqMaZ5ye7YZ0M0uDP6X2p5/kAb1Uivj9dctE+HryLDUDvhy938S9m80p6KE9MM6JdjePbh5
-	jmn7xqbxzjdMwfLBB9bvPkmzcREcKi438v4jBZU1nq8qCu1HHLA49MVBGy64o/SYjx3QU/Li7f/
-	eMh4/jwJN3Qj9FVMOG1Rfn2C8o0o0q3CBdBQ==
-X-Received: by 2002:a17:903:32c8:b0:1fb:80a3:5826 with SMTP id d9443c01a7336-200853e6263mr46329685ad.4.1723047895457;
-        Wed, 07 Aug 2024 09:24:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmpmXkhAE5hUqLSQ0+2y7OvmcWYO6zPANJy3anj8AtdA79ZKNfIl9VuRJiROff7yJ5+Aj3W7cRzHoSavKmZmI=
-X-Received: by 2002:a17:903:32c8:b0:1fb:80a3:5826 with SMTP id
- d9443c01a7336-200853e6263mr46329295ad.4.1723047894949; Wed, 07 Aug 2024
- 09:24:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723145298; x=1723750098;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=agwST92yUhpv2dWxzT9/pEGlKDn9gtYgiwLWoC5Trsk=;
+        b=Fc4PHMy5hYyPAY/e0IUJgM9I3Y284R7qm7AtVuMRcPotpWxqw+Eg1EIbuEf1lSK/nD
+         LxJCAsGcAIMcT6RyHnpO4DVcbrAkBCJ8yjJ+q1f+m4IObO0fD7mXE4w2/K25GA69usBA
+         NtzOHCsg+Nydz9438+HDIgrVjMX4XlyrN1ZHI91kSSyJ/F/vNkf9j/msJwtSY2snjeda
+         xmrjmbYBsyhOHqoE5RYtVQm+jDsGLQUbp9bzPPPxFhg8IjY6W52/en2UoINAFOU3M7tG
+         JX9EOsF4pl9F0hg090ahLzUWZsTG4dPdrsad4R6pdAlTl5jHO3cGw2mDQ2G/nPiuHXf2
+         pLIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWi7dFmUwjtdDd8Dx3x0Q9DTYMSrA943GQI4QQpnEodlwPIT7VEzRaj8DfAg+oOdHqLM4hlT/P5mV1aAZ0yNIssVDyS6Q==
+X-Gm-Message-State: AOJu0YwfYCZfbZgTPDShZ/ecllX5Qk5LySSMq8bMVV9Ggaw9jAiCVuEN
+	3YJDalaE5nn0LpSU49RPIFfUTabhzkUD9xcpF+VOc5bB3l2rU6zeh+ClmOss6nM=
+X-Google-Smtp-Source: AGHT+IGGxHal+nvm3DWblQGxQewjVvUB+tmtzj67hYOald+f6l1Hj85ZVGGxy87PgKyA6cAN7fLx5A==
+X-Received: by 2002:a05:620a:4515:b0:79f:436:7e3a with SMTP id af79cd13be357-7a381872787mr341626485a.48.1723145298198;
+        Thu, 08 Aug 2024 12:28:18 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785d2a3csm189653585a.18.2024.08.08.12.28.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Aug 2024 12:28:17 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: kernel-team@fb.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	amir73il@gmail.com,
+	brauner@kernel.org,
+	linux-xfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-bcachefs@vger.kernel.org
+Subject: [PATCH v2 00/16] fanotify: add pre-content hooks
+Date: Thu,  8 Aug 2024 15:27:02 -0400
+Message-ID: <cover.1723144881.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240719175105.788253-1-willy@infradead.org> <ZrNm1gh6Fsm0tIil@casper.infradead.org>
-In-Reply-To: <ZrNm1gh6Fsm0tIil@casper.infradead.org>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 7 Aug 2024 18:24:42 +0200
-Message-ID: <CAHc6FU76ioJT4UDRPQNMZ94QOgs6ReuM2WUcSAD4irqERmGckg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Remove uses of aops->writepage from gfs2
-To: Matthew Wilcox <willy@infradead.org>
-Cc: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Willy,
+v1: https://lore.kernel.org/linux-fsdevel/cover.1721931241.git.josef@toxicpanda.com/
 
-On Wed, Aug 7, 2024 at 2:21=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
- wrote:
-> On Fri, Jul 19, 2024 at 06:51:00PM +0100, Matthew Wilcox (Oracle) wrote:
-> > Hi Andreas,
-> >
-> > Here's my latest attempt to switch gfs2 from ->writepage to
-> > ->writepages.  I've been a bit more careful this time; I'm not sure
-> > whether __gfs2_writepage() could call gfs2_aspace_writepage(), but
-> > this order of patches shouldn't break any bisection.
->
-> ping
+v1->v2:
+- reworked the page fault logic based on Jan's suggestion and turned it into a
+  helper.
+- Added 3 patches per-fs where we need to call the fsnotify helper from their
+  ->fault handlers.
+- Disabled readahead in the case that there's a pre-content watch in place.
+- Disabled huge faults when there's a pre-content watch in place (entirely
+  because it's untested, theoretically it should be straightforward to do).
+- Updated the command numbers.
+- Addressed the random spelling/grammer mistakes that Jan pointed out.
+- Addressed the other random nits from Jan.
 
-Thank you very much for the patches. I've had a quick look, and it
-looks like they should be working now. Testing still pending, though.
+--- Original email ---
 
-Andreas
+Hello,
 
-> > Matthew Wilcox (Oracle) (4):
-> >   gfs2: Add gfs2_aspace_writepages()
-> >   gfs2: Remove __gfs2_writepage()
-> >   gfs2: Remove gfs2_jdata_writepage()
-> >   gfs2: Remove gfs2_aspace_writepage()
-> >
-> >  fs/gfs2/aops.c    | 30 ------------------------------
-> >  fs/gfs2/log.c     | 12 ++----------
-> >  fs/gfs2/meta_io.c | 24 +++++++++++++++++-------
-> >  3 files changed, 19 insertions(+), 47 deletions(-)
-> >
-> > --
-> > 2.43.0
-> >
->
+These are the patches for the bare bones pre-content fanotify support.  The
+majority of this work is Amir's, my contribution to this has solely been around
+adding the page fault hooks, testing and validating everything.  I'm sending it
+because Amir is traveling a bunch, and I touched it last so I'm going to take
+all the hate and he can take all the credit.
+
+There is a PoC that I've been using to validate this work, you can find the git
+repo here
+
+https://github.com/josefbacik/remote-fetch
+
+This consists of 3 different tools.
+
+1. populate.  This just creates all the stub files in the directory from the
+   source directory.  Just run ./populate ~/linux ~/hsm-linux and it'll
+   recursively create all of the stub files and directories.
+2. remote-fetch.  This is the actual PoC, you just point it at the source and
+   destination directory and then you can do whatever.  ./remote-fetch ~/linux
+   ~/hsm-linux.
+3. mmap-validate.  This was to validate the pagefault thing, this is likely what
+   will be turned into the selftest with remote-fetch.  It creates a file and
+   then you can validate the file matches the right pattern with both normal
+   reads and mmap.  Normally I do something like
+
+   ./mmap-validate create ~/src/foo
+   ./populate ~/src ~/dst
+   ./rmeote-fetch ~/src ~/dst
+   ./mmap-validate validate ~/dst/foo
+
+I did a bunch of testing, I also got some performance numbers.  I copied a
+kernel tree, and then did remote-fetch, and then make -j4
+
+Normal
+real    9m49.709s
+user    28m11.372s
+sys     4m57.304s
+
+HSM
+real    10m6.454s
+user    29m10.517s
+sys     5m2.617s
+
+So ~17 seconds more to build with HSM.  I then did a make mrproper on both trees
+to see the size
+
+[root@fedora ~]# du -hs /src/linux
+1.6G    /src/linux
+[root@fedora ~]# du -hs dst
+125M    dst
+
+This mirrors the sort of savings we've seen in production.
+
+Meta has had these patches (minus the page fault patch) deployed in production
+for almost a year with our own utility for doing on-demand package fetching.
+The savings from this has been pretty significant.
+
+The page-fault hooks are necessary for the last thing we need, which is
+on-demand range fetching of executables.  Some of our binaries are several gigs
+large, having the ability to remote fetch them on demand is a huge win for us
+not only with space savings, but with startup time of containers.
+
+There will be tests for this going into LTP once we're satisfied with the
+patches and they're on their way upstream.  Thanks,
+
+Josef
+
+Amir Goldstein (8):
+  fsnotify: introduce pre-content permission event
+  fsnotify: generate pre-content permission event on open
+  fanotify: introduce FAN_PRE_ACCESS permission event
+  fanotify: introduce FAN_PRE_MODIFY permission event
+  fanotify: pass optional file access range in pre-content event
+  fanotify: rename a misnamed constant
+  fanotify: report file range info with pre-content events
+  fanotify: allow to set errno in FAN_DENY permission response
+
+Josef Bacik (8):
+  fanotify: don't skip extra event info if no info_mode is set
+  fanotify: add a helper to check for pre content events
+  fanotify: disable readahead if we have pre-content watches
+  mm: don't allow huge faults for files with pre content watches
+  fsnotify: generate pre-content permission event on page fault
+  bcachefs: add pre-content fsnotify hook to fault
+  gfs2: add pre-content fsnotify hook to fault
+  xfs: add pre-content fsnotify hook for write faults
+
+ fs/bcachefs/fs-io-pagecache.c      |  13 ++++
+ fs/gfs2/file.c                     |  13 ++++
+ fs/namei.c                         |   9 +++
+ fs/notify/fanotify/fanotify.c      |  32 ++++++--
+ fs/notify/fanotify/fanotify.h      |  20 +++++
+ fs/notify/fanotify/fanotify_user.c | 116 +++++++++++++++++++++++------
+ fs/notify/fsnotify.c               |  14 +++-
+ fs/xfs/xfs_file.c                  |  20 ++++-
+ include/linux/fanotify.h           |  20 +++--
+ include/linux/fsnotify.h           |  54 ++++++++++++--
+ include/linux/fsnotify_backend.h   |  59 ++++++++++++++-
+ include/linux/mm.h                 |   2 +
+ include/uapi/linux/fanotify.h      |  17 +++++
+ mm/filemap.c                       | 109 +++++++++++++++++++++++++--
+ mm/memory.c                        |  22 ++++++
+ mm/readahead.c                     |  13 ++++
+ security/selinux/hooks.c           |   3 +-
+ 17 files changed, 482 insertions(+), 54 deletions(-)
+
+-- 
+2.43.0
 
