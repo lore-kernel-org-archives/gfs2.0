@@ -1,54 +1,57 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62977157466
-	for <gfs2@lists.linux.dev>; Thu,  8 Aug 2024 19:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E4B158DA0
+	for <gfs2@lists.linux.dev>; Thu,  8 Aug 2024 19:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723145301; cv=none; b=RpP+P05qKe/+32mOVnGu559K8RtlR1j4HVoVYdQvYTL3/kLDCWfQWOkbd+R5IghVSIQ36vlHW7zdRWAa7wNux/A15iECwSXxPUvpWYDKzWIHcuP5288W5hY6/IRwiOheT4+7KLQTgLY4stti+7Lv1D299H3pT1wQs4e5ulNa9cA=
+	t=1723145303; cv=none; b=KYQjibORrau4xQLiakGfuO3uHcw4gG6WBYRDwPoG0msfT9nasOLD1gR2BChhFArsJwbFBkOdbm/PwdZVQIlfoOsUXLb+79l982LumhOhRcTTtbXTadpC/qWFK3rbHCyDGiIPw9kl5nm8hL6tTnqCR1cCxK0uKLLnQGMVnn47104=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723145301; c=relaxed/simple;
-	bh=moGq7PvzGvB0S6UQMZuwnIDOkPknvOA1+Hh9JdRtibM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Q+a+R/3CgMp/xospULwU/3el0a1dzAdtye5jpaomFqLhmGKJy1qIIJLKh/RBtOPrnSFNX0rTTNuoecST4mfkWGtj/je+BrcLvDLC8BQ/CFTufFeDJZfIPcqieLb95Vhx6JrXpgQGYuxKZ3My8luBeIMwBfldGXB2aPdmgjBqucQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=cvCke/gr; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1723145303; c=relaxed/simple;
+	bh=AjMEINZmgDlFiuIMbDg0DxklpTafNFhb5Kj9+SN+Xhg=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nb1+zZU1os5jBbAdynpPQ5CZ6YyQJsHMCwRvu0kG5hKhkz5lbKppdzNG/astdLkhjD+H0Suv+1pbjqaG3XUS7j0VpOzt9/9tagc+Pkiuy9SZjSERMG5M0JBd8zX1AuRSaG5+8JZdUJ+V4iMcapuO5cKJ9dRPo/QwpjCZ7U1uQc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=1Eobb875; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="cvCke/gr"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a1e0ff6871so78823185a.2
-        for <gfs2@lists.linux.dev>; Thu, 08 Aug 2024 12:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="1Eobb875"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7091558067eso705294a34.3
+        for <gfs2@lists.linux.dev>; Thu, 08 Aug 2024 12:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723145298; x=1723750098; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=agwST92yUhpv2dWxzT9/pEGlKDn9gtYgiwLWoC5Trsk=;
-        b=cvCke/grXNWYyML6wTZQRNayPyYg8QU5QqtI6aiRN78gIwY3P5XVOzVURa1aE3fJSl
-         2pAhwXBIVA3lOXuPHPXmRGdh1aeCU6C2WIKCviP8LWphGPxhXTZN/tBZu5ipsgxEvDZE
-         Ju5ek4sD6iCEtSrWRKz4WTEZx0S5xJfNNDTWaEPQxlz1UxJcMbI+c+YVfVTRMHO3AcKV
-         nePjyb/Sz1WxUL4Hm2KDchAMnmTr5QlFr2F4CqLm5AxMOVklY68jhXhkJeq/FV9GQs9g
-         UtwJDbUpAFNY+qYcIIRHJ9yPLQt8GM/Xj+qsC91IFgQbVkESjWxuV2BmQukh19ltKJdK
-         fQOw==
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723145300; x=1723750100; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RfzczfZaBcEy/mBP9fMeuoTBUjG4OtJdJggqfPPwrUM=;
+        b=1Eobb875qMdHdl3meCkBC2XzwY8hxdr/jTD5sqtQF5xQEFVd/7yOr2qgE6vjtN62UY
+         t8bij9RuicPeAn9R7X+nY+I5RYisU9oKPcEi9Ut3aLWYupfdUPlduCDEGI8k9UU5/8nj
+         wkW5jcxNtSzCVLuXvWlFmwtm6ZoKgy8yURJ5K4ndJFxwhIouVaUqzS5PRNIVcs1xLeJ5
+         fiZiG9FRA0peW82Jb2edKfRYLBK7SoETWcBY6WeXn7awoerjp1s446haHHL8FK/GJape
+         bQwA0os+lD0hP9LxWcGOH8iaZwAap6dTgkCSJgnCuzPohTxYwH+u84IBLkGdM7qW7Z6q
+         7AbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723145298; x=1723750098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=agwST92yUhpv2dWxzT9/pEGlKDn9gtYgiwLWoC5Trsk=;
-        b=Fc4PHMy5hYyPAY/e0IUJgM9I3Y284R7qm7AtVuMRcPotpWxqw+Eg1EIbuEf1lSK/nD
-         LxJCAsGcAIMcT6RyHnpO4DVcbrAkBCJ8yjJ+q1f+m4IObO0fD7mXE4w2/K25GA69usBA
-         NtzOHCsg+Nydz9438+HDIgrVjMX4XlyrN1ZHI91kSSyJ/F/vNkf9j/msJwtSY2snjeda
-         xmrjmbYBsyhOHqoE5RYtVQm+jDsGLQUbp9bzPPPxFhg8IjY6W52/en2UoINAFOU3M7tG
-         JX9EOsF4pl9F0hg090ahLzUWZsTG4dPdrsad4R6pdAlTl5jHO3cGw2mDQ2G/nPiuHXf2
-         pLIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWi7dFmUwjtdDd8Dx3x0Q9DTYMSrA943GQI4QQpnEodlwPIT7VEzRaj8DfAg+oOdHqLM4hlT/P5mV1aAZ0yNIssVDyS6Q==
-X-Gm-Message-State: AOJu0YwfYCZfbZgTPDShZ/ecllX5Qk5LySSMq8bMVV9Ggaw9jAiCVuEN
-	3YJDalaE5nn0LpSU49RPIFfUTabhzkUD9xcpF+VOc5bB3l2rU6zeh+ClmOss6nM=
-X-Google-Smtp-Source: AGHT+IGGxHal+nvm3DWblQGxQewjVvUB+tmtzj67hYOald+f6l1Hj85ZVGGxy87PgKyA6cAN7fLx5A==
-X-Received: by 2002:a05:620a:4515:b0:79f:436:7e3a with SMTP id af79cd13be357-7a381872787mr341626485a.48.1723145298198;
-        Thu, 08 Aug 2024 12:28:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723145300; x=1723750100;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RfzczfZaBcEy/mBP9fMeuoTBUjG4OtJdJggqfPPwrUM=;
+        b=j74nZp/jXp3onkvzrev5m4stmfA4nyF5diyjcCjxafQ7+Ap+2OaHbq9CsJdPWqSCOS
+         +z2fs4yxAahKsS5Fac9x0VYfiKC1X2b+UxscAp39r6qUgHKOh/yIBp0Qc7mm4D+y0kaL
+         KJDYAX/ZOh0B9kJmvycbbHb+iOcdz9ACU9cZBhP8lNYwhpEZvvN7BP8xtDwD1F1fDGI1
+         mEuBnjZzzGr7DHwLm7ZRuIcIkAIV6pD88YKeofCSpMNFDXjSHmLeEScAfvHe+MFz6TSv
+         0pufDYIidABtSTMKACD35OJHRjgPw+SnRy9MLay5UeoKyUyJmUAXQlpH3hVS+HvqlzFv
+         AyyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXTJJl9wgxYRR+xQxW8u30VW4eiaYpDZZcJbornYLPhUz8F26Tj14JPhrsW0DVuvLHSA2Tjf5JofVTGu66kYDJZ2HK1w==
+X-Gm-Message-State: AOJu0YwSZVNp64UTX3t+2mlNzqCQ7ntOvGz+kIhiewnEFE/E8DRaFZjl
+	cT9snNtV4MYbvIdzZjp7Emn54oH3jZaWHuINt+5t8reedY0lDYJYczpGr4i7sng=
+X-Google-Smtp-Source: AGHT+IFLYp5VTPJUoVcL4vvQ9CTbr2LLDuMn9IUx4rBw9P/IpMywByjToDcaLuZIzEi2P8UI2UosKA==
+X-Received: by 2002:a05:6830:61cd:b0:703:5ba3:581b with SMTP id 46e09a7af769-70b4fc2f6bamr4011410a34.5.1723145300564;
+        Thu, 08 Aug 2024 12:28:20 -0700 (PDT)
 Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785d2a3csm189653585a.18.2024.08.08.12.28.17
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-451c8717bbcsm15607261cf.35.2024.08.08.12.28.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 12:28:17 -0700 (PDT)
+        Thu, 08 Aug 2024 12:28:20 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
 To: kernel-team@fb.com,
 	linux-fsdevel@vger.kernel.org,
@@ -58,10 +61,12 @@ To: kernel-team@fb.com,
 	linux-xfs@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-bcachefs@vger.kernel.org
-Subject: [PATCH v2 00/16] fanotify: add pre-content hooks
-Date: Thu,  8 Aug 2024 15:27:02 -0400
-Message-ID: <cover.1723144881.git.josef@toxicpanda.com>
+Subject: [PATCH v2 02/16] fsnotify: introduce pre-content permission event
+Date: Thu,  8 Aug 2024 15:27:04 -0400
+Message-ID: <83e50a373eb541de178bfbbc518a4be2bacb2372.1723144881.git.josef@toxicpanda.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1723144881.git.josef@toxicpanda.com>
+References: <cover.1723144881.git.josef@toxicpanda.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -70,129 +75,139 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-v1: https://lore.kernel.org/linux-fsdevel/cover.1721931241.git.josef@toxicpanda.com/
+From: Amir Goldstein <amir73il@gmail.com>
 
-v1->v2:
-- reworked the page fault logic based on Jan's suggestion and turned it into a
-  helper.
-- Added 3 patches per-fs where we need to call the fsnotify helper from their
-  ->fault handlers.
-- Disabled readahead in the case that there's a pre-content watch in place.
-- Disabled huge faults when there's a pre-content watch in place (entirely
-  because it's untested, theoretically it should be straightforward to do).
-- Updated the command numbers.
-- Addressed the random spelling/grammer mistakes that Jan pointed out.
-- Addressed the other random nits from Jan.
+The new FS_PRE_ACCESS permission event is similar to FS_ACCESS_PERM,
+but it meant for a different use case of filling file content before
+access to a file range, so it has slightly different semantics.
 
---- Original email ---
+Generate FS_PRE_ACCESS/FS_ACCESS_PERM as two seperate events, same as
+we did for FS_OPEN_PERM/FS_OPEN_EXEC_PERM.
 
-Hello,
+FS_PRE_MODIFY is a new permission event, with similar semantics as
+FS_PRE_ACCESS, which is called before a file is modified.
 
-These are the patches for the bare bones pre-content fanotify support.  The
-majority of this work is Amir's, my contribution to this has solely been around
-adding the page fault hooks, testing and validating everything.  I'm sending it
-because Amir is traveling a bunch, and I touched it last so I'm going to take
-all the hate and he can take all the credit.
+FS_ACCESS_PERM is reported also on blockdev and pipes, but the new
+pre-content events are only reported for regular files and dirs.
 
-There is a PoC that I've been using to validate this work, you can find the git
-repo here
+The pre-content events are meant to be used by hierarchical storage
+managers that want to fill the content of files on first access.
 
-https://github.com/josefbacik/remote-fetch
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/notify/fsnotify.c             |  2 +-
+ include/linux/fsnotify.h         | 27 ++++++++++++++++++++++++---
+ include/linux/fsnotify_backend.h | 13 +++++++++++--
+ security/selinux/hooks.c         |  3 ++-
+ 4 files changed, 38 insertions(+), 7 deletions(-)
 
-This consists of 3 different tools.
-
-1. populate.  This just creates all the stub files in the directory from the
-   source directory.  Just run ./populate ~/linux ~/hsm-linux and it'll
-   recursively create all of the stub files and directories.
-2. remote-fetch.  This is the actual PoC, you just point it at the source and
-   destination directory and then you can do whatever.  ./remote-fetch ~/linux
-   ~/hsm-linux.
-3. mmap-validate.  This was to validate the pagefault thing, this is likely what
-   will be turned into the selftest with remote-fetch.  It creates a file and
-   then you can validate the file matches the right pattern with both normal
-   reads and mmap.  Normally I do something like
-
-   ./mmap-validate create ~/src/foo
-   ./populate ~/src ~/dst
-   ./rmeote-fetch ~/src ~/dst
-   ./mmap-validate validate ~/dst/foo
-
-I did a bunch of testing, I also got some performance numbers.  I copied a
-kernel tree, and then did remote-fetch, and then make -j4
-
-Normal
-real    9m49.709s
-user    28m11.372s
-sys     4m57.304s
-
-HSM
-real    10m6.454s
-user    29m10.517s
-sys     5m2.617s
-
-So ~17 seconds more to build with HSM.  I then did a make mrproper on both trees
-to see the size
-
-[root@fedora ~]# du -hs /src/linux
-1.6G    /src/linux
-[root@fedora ~]# du -hs dst
-125M    dst
-
-This mirrors the sort of savings we've seen in production.
-
-Meta has had these patches (minus the page fault patch) deployed in production
-for almost a year with our own utility for doing on-demand package fetching.
-The savings from this has been pretty significant.
-
-The page-fault hooks are necessary for the last thing we need, which is
-on-demand range fetching of executables.  Some of our binaries are several gigs
-large, having the ability to remote fetch them on demand is a huge win for us
-not only with space savings, but with startup time of containers.
-
-There will be tests for this going into LTP once we're satisfied with the
-patches and they're on their way upstream.  Thanks,
-
-Josef
-
-Amir Goldstein (8):
-  fsnotify: introduce pre-content permission event
-  fsnotify: generate pre-content permission event on open
-  fanotify: introduce FAN_PRE_ACCESS permission event
-  fanotify: introduce FAN_PRE_MODIFY permission event
-  fanotify: pass optional file access range in pre-content event
-  fanotify: rename a misnamed constant
-  fanotify: report file range info with pre-content events
-  fanotify: allow to set errno in FAN_DENY permission response
-
-Josef Bacik (8):
-  fanotify: don't skip extra event info if no info_mode is set
-  fanotify: add a helper to check for pre content events
-  fanotify: disable readahead if we have pre-content watches
-  mm: don't allow huge faults for files with pre content watches
-  fsnotify: generate pre-content permission event on page fault
-  bcachefs: add pre-content fsnotify hook to fault
-  gfs2: add pre-content fsnotify hook to fault
-  xfs: add pre-content fsnotify hook for write faults
-
- fs/bcachefs/fs-io-pagecache.c      |  13 ++++
- fs/gfs2/file.c                     |  13 ++++
- fs/namei.c                         |   9 +++
- fs/notify/fanotify/fanotify.c      |  32 ++++++--
- fs/notify/fanotify/fanotify.h      |  20 +++++
- fs/notify/fanotify/fanotify_user.c | 116 +++++++++++++++++++++++------
- fs/notify/fsnotify.c               |  14 +++-
- fs/xfs/xfs_file.c                  |  20 ++++-
- include/linux/fanotify.h           |  20 +++--
- include/linux/fsnotify.h           |  54 ++++++++++++--
- include/linux/fsnotify_backend.h   |  59 ++++++++++++++-
- include/linux/mm.h                 |   2 +
- include/uapi/linux/fanotify.h      |  17 +++++
- mm/filemap.c                       | 109 +++++++++++++++++++++++++--
- mm/memory.c                        |  22 ++++++
- mm/readahead.c                     |  13 ++++
- security/selinux/hooks.c           |   3 +-
- 17 files changed, 482 insertions(+), 54 deletions(-)
-
+diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
+index 272c8a1dab3c..1ca4a8da7f29 100644
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -621,7 +621,7 @@ static __init int fsnotify_init(void)
+ {
+ 	int ret;
+ 
+-	BUILD_BUG_ON(HWEIGHT32(ALL_FSNOTIFY_BITS) != 23);
++	BUILD_BUG_ON(HWEIGHT32(ALL_FSNOTIFY_BITS) != 25);
+ 
+ 	ret = init_srcu_struct(&fsnotify_mark_srcu);
+ 	if (ret)
+diff --git a/include/linux/fsnotify.h b/include/linux/fsnotify.h
+index 278620e063ab..028ce807805a 100644
+--- a/include/linux/fsnotify.h
++++ b/include/linux/fsnotify.h
+@@ -133,12 +133,13 @@ static inline int fsnotify_file(struct file *file, __u32 mask)
+ 
+ #ifdef CONFIG_FANOTIFY_ACCESS_PERMISSIONS
+ /*
+- * fsnotify_file_area_perm - permission hook before access to file range
++ * fsnotify_file_area_perm - permission hook before access/modify of file range
+  */
+ static inline int fsnotify_file_area_perm(struct file *file, int perm_mask,
+ 					  const loff_t *ppos, size_t count)
+ {
+-	__u32 fsnotify_mask = FS_ACCESS_PERM;
++	struct inode *inode = file_inode(file);
++	__u32 fsnotify_mask;
+ 
+ 	/*
+ 	 * filesystem may be modified in the context of permission events
+@@ -147,7 +148,27 @@ static inline int fsnotify_file_area_perm(struct file *file, int perm_mask,
+ 	 */
+ 	lockdep_assert_once(file_write_not_started(file));
+ 
+-	if (!(perm_mask & MAY_READ))
++	/*
++	 * Generate FS_PRE_ACCESS/FS_ACCESS_PERM as two seperate events.
++	 */
++	if (perm_mask & MAY_READ) {
++		int ret = fsnotify_file(file, FS_ACCESS_PERM);
++
++		if (ret)
++			return ret;
++	}
++
++	/*
++	 * Pre-content events are only reported for regular files and dirs.
++	 */
++	if (!S_ISDIR(inode->i_mode) && !S_ISREG(inode->i_mode))
++		return 0;
++
++	if (perm_mask & MAY_WRITE)
++		fsnotify_mask = FS_PRE_MODIFY;
++	else if (perm_mask & MAY_READ)
++		fsnotify_mask = FS_PRE_ACCESS;
++	else
+ 		return 0;
+ 
+ 	return fsnotify_file(file, fsnotify_mask);
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index 8be029bc50b1..200a5e3b1cd4 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -56,6 +56,9 @@
+ #define FS_ACCESS_PERM		0x00020000	/* access event in a permissions hook */
+ #define FS_OPEN_EXEC_PERM	0x00040000	/* open/exec event in a permission hook */
+ 
++#define FS_PRE_ACCESS		0x00080000	/* Pre-content access hook */
++#define FS_PRE_MODIFY		0x00100000	/* Pre-content modify hook */
++
+ /*
+  * Set on inode mark that cares about things that happen to its children.
+  * Always set for dnotify and inotify.
+@@ -77,8 +80,14 @@
+  */
+ #define ALL_FSNOTIFY_DIRENT_EVENTS (FS_CREATE | FS_DELETE | FS_MOVE | FS_RENAME)
+ 
+-#define ALL_FSNOTIFY_PERM_EVENTS (FS_OPEN_PERM | FS_ACCESS_PERM | \
+-				  FS_OPEN_EXEC_PERM)
++/* Content events can be used to inspect file content */
++#define FSNOTIFY_CONTENT_PERM_EVENTS (FS_OPEN_PERM | FS_OPEN_EXEC_PERM | \
++				      FS_ACCESS_PERM)
++/* Pre-content events can be used to fill file content */
++#define FSNOTIFY_PRE_CONTENT_EVENTS  (FS_PRE_ACCESS | FS_PRE_MODIFY)
++
++#define ALL_FSNOTIFY_PERM_EVENTS (FSNOTIFY_CONTENT_PERM_EVENTS | \
++				  FSNOTIFY_PRE_CONTENT_EVENTS)
+ 
+ /*
+  * This is a list of all events that may get sent to a parent that is watching
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 55c78c318ccd..2997edf3e7cd 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3406,7 +3406,8 @@ static int selinux_path_notify(const struct path *path, u64 mask,
+ 		perm |= FILE__WATCH_WITH_PERM;
+ 
+ 	/* watches on read-like events need the file:watch_reads permission */
+-	if (mask & (FS_ACCESS | FS_ACCESS_PERM | FS_CLOSE_NOWRITE))
++	if (mask & (FS_ACCESS | FS_ACCESS_PERM | FS_PRE_ACCESS |
++		    FS_CLOSE_NOWRITE))
+ 		perm |= FILE__WATCH_READS;
+ 
+ 	return path_has_perm(current_cred(), path, perm);
 -- 
 2.43.0
 
