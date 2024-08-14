@@ -1,130 +1,219 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CE61C37B2
-	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 20:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D001C37AA
+	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723668469; cv=none; b=UYu7S12pDOLZElgWCZWealKm6+r1v7yo5WBDNQ/Q8Nu9eReKYwFdbIUz/xLRp2ATBNPPRZgl05N84ennPg8U1C2M0HI/saKio3T/N/laC74HkLjmnkKhhZsCCkLAUgxRwt46S3HnHHyibADBpQmZNSrZLumZ0v2EVIjFYQqNl/A=
+	t=1723670767; cv=none; b=YMXqYDDQsgZLAJgpihsQaaX1l3JevgcPyr/BhQwnHsi9ed0EWkD83D8oIcKLXAk2kbvzc5+ttIJtzot4qhxhr73L5dIi1ERUnaAL+ueWxdgcqCB409nphXQbrK+n+FPoZprDX7uRbE6xQ/WtFgeAvcfyLgkg5fhjFK4yfd1WLvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723668469; c=relaxed/simple;
-	bh=xAuqg4LG4M0fbnSo/GQcVfg4wjhYXdK6fQ96rx9RI40=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IwFaXTyerkvO1t/waDtVCAeb1ZuwSWd6ZYJ86bCw24xXHc2ZYGDCESrLXIcDLJgO2kzbQTOOTlNVOJBW8vOUT19RWkpxlbYNDaeAh57WGyt7HwVcXvu+nWxSxDlsujhszlblkL3iyT+48b0ZzWG/8u8G8TV41ry4DdjdiBw9q7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OA7UOBV2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1723670767; c=relaxed/simple;
+	bh=GWaaaFa5p9YV8pWOdymeo3ub/M+DKWgxitUWjUW2hSU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=g8bv2kutC/WVPVOxKFHIRySiYXTXSMlfXKm1AjXgbUMNTLgqcFgOu1juQBnFKQnOIVLC5xlUtIMRRNsSgXUAHpsjNhtuELItuvDFxUn+Uqj5Sh7cYc45wGooDPOpo9O8J16izkQHuZCCYs7xqlvMW0xkr4COWo6wQtszGtL7Kjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=K0uiixpO; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OA7UOBV2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723668464;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L+6lTZVqxZijRPSjfEzQi+vwTAY7CwJ2b1e+TxM4Mrk=;
-	b=OA7UOBV25OigDon4mYpG0PaGojzrCq8mEdXd7EhmqAdIGNWqQ0WOjVSJ5WKYa2xd+4DkOj
-	yh3/4+NVQ0cwBHF7IVZ7T3K1UWkNIqYonSldUUw1oHl6+OAhB1F78XyzzSRAz9Cz+lrBQe
-	nb4OX+LP9lh7bJQwf0ribAeigiLUuas=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-s_BJkkrbOx6hzGMGNONBvQ-1; Wed, 14 Aug 2024 16:47:42 -0400
-X-MC-Unique: s_BJkkrbOx6hzGMGNONBvQ-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2ef22e62457so2294731fa.2
-        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 13:47:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="K0uiixpO"
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5d5bb03fe42so205014eaf.3
+        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670764; x=1724275564; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pyau8aOJuyZnZfGNcIVxqfibv2avRjwgFV+ZdZpslNc=;
+        b=K0uiixpOHP0aJ+i4mjzEQzAfE9YwOOgOI/p/+n1Vg2t9JkOdvtE17+AsVxW8NqMyLe
+         5RaK0Ro1gv/pd0ngCXyngJAjYiOj1LfNwBHm6sstJI1XeWpNuucA9ezsaJRw3zuPXk+z
+         RgoSn08tqAtVGMKiCWnNjY5va8aUibkzjyOfchUApu8GXOOLshmiIa0anAweT3SpUeNu
+         a85MWzmo2llEaQIUfF35W4Z9IfVegMpR1KDGES0t9GGqaiF5MbU/PH/oyACz52TCtXil
+         yHrk7V36BVITsOJQp1rXophCN4wteSsi8vyXuBUsHC9s0sMCq7HpBV8VTJsSQOHlyFED
+         /feA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723668461; x=1724273261;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L+6lTZVqxZijRPSjfEzQi+vwTAY7CwJ2b1e+TxM4Mrk=;
-        b=qJ/PE6hO3T9t3J1m6EoXj+lvXCjooA8Qb8x7BYI4PKVimdNeo0A5A4sbY9Oj6yRWl+
-         6ly/SpoYFFRIWc58Wi98rhhICrUl9XAgCY49GCg8BBoSqUJ47jfCznmBUqaKdDCvsVSQ
-         O+iqqi3mjOaCIJas6eXSoUkHkkmB0NBpqBgBAXqSqJX3lNf/RNcfZwExQgQ7WTO0Kb9Q
-         q84C44cyAKgOCav95v421Zaqs/cFkw3EvVbfBP/1KGsdJ+0P2+DoLtHWj/8nSIGbHjFE
-         VCQZ3J7lLRYn+LRT+my0rlBgRE709smTUjE4uQ+bjSYDuX/petz/Rx2TI4+VzCJxHMfN
-         rzSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWpq20UzNu0fCEWtO7TEtU2qeBeMRm5wk+kIytfLAAmicdTRYlXA9vE4EYaH/zz0V3Znzum0P4QRlsxewOeZN3kH2SWyw==
-X-Gm-Message-State: AOJu0YyRsGmSepUk/un50QxGqFFrr30QxaY+SknVmCKlR1+OcerGKGwA
-	ZscjdY6xNHtAqMmVIUN6CTJPCDPDhAYGmFJZBcnSLlK6YNkrPw6L1Mh47egMZkqgVOpvc/tzLtT
-	Yo8vHBrOOch5XcT74ZChG+g0zhUFHq4GCJMpPPVtrLyhUqPlceV2W1f0wil7ZbEBR+U7MytL8gg
-	tmfpQioP96R7bD6fmAbelXa8ynig==
-X-Received: by 2002:a2e:9683:0:b0:2ef:2ce0:6ac with SMTP id 38308e7fff4ca-2f3aa1f1dd1mr24000331fa.22.1723668460826;
-        Wed, 14 Aug 2024 13:47:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOJF6QT6rKh2U8kgEkPVDV5badXvR0hhWLGciNfUm778LjMDYtscMG23tmLAtY9tHBPsjoWq2/pM4uncBTUwk=
-X-Received: by 2002:a2e:9683:0:b0:2ef:2ce0:6ac with SMTP id
- 38308e7fff4ca-2f3aa1f1dd1mr24000091fa.22.1723668460232; Wed, 14 Aug 2024
- 13:47:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723670764; x=1724275564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pyau8aOJuyZnZfGNcIVxqfibv2avRjwgFV+ZdZpslNc=;
+        b=Hn8LdYztEUCz0bHidoc7hf9UbPNzmQNPCSRtvYHM47o44o31V2//2wDzO/oyaJVwrG
+         wGM3h1GoTqG4SE2umaS815yW+rUQ+N9+YI/xbfdH8g5MIDSJjIw6e1Rf+UAOI+NqHqc5
+         /2Q7BmlHSHtGKp7uKbl3F/3+fxmtt9F6ijwFuSsZWalODDT9/aHrWj2B3dtFKLcnhDhu
+         6QFCvTYKnJdgS5EPZoIkreHVMLwygIUrEkM9ynWCYHDDxMFf4t2j7YuVFTdUoaDSz4Tb
+         18wBNpZgCb0Py6lcmHFGdaPwiUqwAtTyJAGSy4mNG6u/b1aG0SWk/8KOu6jJyu4UWYT+
+         k+sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ5CNf+Vc7YfTHYUmX0RnvgPlLHmHH6S2vW/qLLQA91BdiPiICLQfsluQbFQwQHNWtPKEtRpDJVFlHeqJaMfZq+HRM4w==
+X-Gm-Message-State: AOJu0YzHi/1vq8Vyu9+UpscD1/lpuAfz/d1UfGjhzRGtwFi/41NxZtWo
+	CunGhYxy6SJjurQPaalVwGu1X0HFvUgIddBBQQ6RAY+pqfwpZ8d2ZPW1EWQWMMQ=
+X-Google-Smtp-Source: AGHT+IEJyMAMyA8U3woOzIEEj3JSvwjQmFqO5kjZauXzQokagOUrsDyTtU+QTE5PXpZ2YP7fpxx74w==
+X-Received: by 2002:a05:6358:6f15:b0:1b1:a666:2bba with SMTP id e5c5f4694b2df-1b1aad5368dmr492206355d.24.1723670764131;
+        Wed, 14 Aug 2024 14:26:04 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fe06fdfsm642966d6.34.2024.08.14.14.26.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Aug 2024 14:26:03 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: kernel-team@fb.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	amir73il@gmail.com,
+	brauner@kernel.org,
+	linux-xfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-bcachefs@vger.kernel.org
+Subject: [PATCH v4 00/16] fanotify: add pre-content hooks
+Date: Wed, 14 Aug 2024 17:25:18 -0400
+Message-ID: <cover.1723670362.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240814143414.1877505-1-aahringo@redhat.com> <20240814143414.1877505-10-aahringo@redhat.com>
- <2024081445-coffee-antiques-e9cc@gregkh>
-In-Reply-To: <2024081445-coffee-antiques-e9cc@gregkh>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 14 Aug 2024 16:47:28 -0400
-Message-ID: <CAK-6q+hN8ZRAHc7aS7C_RO4pEGN1t3eA_vDChsSgsQOcJEU4vg@mail.gmail.com>
-Subject: Re: [RFC dlm/next 09/12] kobject: export generic helper ops
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org, 
-	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org, 
-	joseph.qi@linux.alibaba.com, rafael@kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, lucien.xin@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+v3: https://lore.kernel.org/linux-fsdevel/cover.1723228772.git.josef@toxicpanda.com/
+v2: https://lore.kernel.org/linux-fsdevel/cover.1723144881.git.josef@toxicpanda.com/
+v1: https://lore.kernel.org/linux-fsdevel/cover.1721931241.git.josef@toxicpanda.com/
 
-On Wed, Aug 14, 2024 at 11:06=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Wed, Aug 14, 2024 at 10:34:11AM -0400, Alexander Aring wrote:
-> > This patch exports generic helpers like kset_release() and
-> > kset_get_ownership() so users can use them in their own struct kobj_typ=
-e
-> > implementation instead of implementing their own functions that do the
-> > same.
->
-> Why is anyone needing these?  What raw kobjects require this type of
-> stuff?
->
+v3->v4:
+- Trying to send a final verson Friday at 5pm before you go on vacation is a
+  recipe for silly mistakes, fixed the xfs handling yet again, per Christoph's
+  review.
+- Reworked the file system helper so it's handling of fpin was a little less
+  silly, per Chinner's suggestion.
+- Updated the return values to not or in VM_FAULT_RETRY, as we have a comment
+  in filemap_fault that says if VM_FAULT_ERROR is set we won't have
+  VM_FAULT_RETRY set.
 
-In this patch series I introduced kset_type_create_and_add() to have
-the possibility to do the exact same what kset_create_and_add() is
-doing, just setting a different "struct kobj_type", for the kset that
-is created internally by kset_create_and_add(). I can't use
-kset_create_and_add() as it always uses "kset_ktype", see [0].
+v2->v3:
+- Fix the pagefault path to do MAY_ACCESS instead, updated the perm handler to
+  emit PRE_ACCESS in this case, so we can avoid the extraneous perm event as per
+  Amir's suggestion.
+- Reworked the exported helper so the per-filesystem changes are much smaller,
+  per Amir's suggestion.
+- Fixed the screwup for DAX writes per Chinner's suggestion.
+- Added Christian's reviewed-by's where appropriate.
 
-I am doing that to have only a callback for ".child_ns_type" assigned
-as it returns the "&net_ns_type_operations;" structure to tell
-underneath everything is separated by net namespaces.
-I don't want to change anything else so the "struct kobj_type" should
-look like what kset_create_and_add() is doing. Therefore I am creating
-the same structure as kset_create_and_add() is using, see [0]. The
-"kobj_sysfs_ops" structure seems to be already accessible from
-outside, just the two functions I am exporting in this patch are
-missing. Or I implement it in the same way in the dlm/gfs2 codebase
-(that is what nfs is currently doing, see [1]).
+v1->v2:
+- reworked the page fault logic based on Jan's suggestion and turned it into a
+  helper.
+- Added 3 patches per-fs where we need to call the fsnotify helper from their
+  ->fault handlers.
+- Disabled readahead in the case that there's a pre-content watch in place.
+- Disabled huge faults when there's a pre-content watch in place (entirely
+  because it's untested, theoretically it should be straightforward to do).
+- Updated the command numbers.
+- Addressed the random spelling/grammer mistakes that Jan pointed out.
+- Addressed the other random nits from Jan.
 
-And then we are at the two users of those kobjects that are using
-those functions, it's DLM and GFS2 as they used kset_create_and_add()
-before and I just want to add the ".child_ns_type" callback. Other
-users could be nfs [1] (for the release, get_ownership - I have no
-idea).
+--- Original email ---
 
-thanks.
+Hello,
 
-- Alex
+These are the patches for the bare bones pre-content fanotify support.  The
+majority of this work is Amir's, my contribution to this has solely been around
+adding the page fault hooks, testing and validating everything.  I'm sending it
+because Amir is traveling a bunch, and I touched it last so I'm going to take
+all the hate and he can take all the credit.
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/lib/kobject.c?h=3Dv6.11-rc3#n937
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/fs/nfs/sysfs.c?h=3Dv6.11-rc3#n23
+There is a PoC that I've been using to validate this work, you can find the git
+repo here
+
+https://github.com/josefbacik/remote-fetch
+
+This consists of 3 different tools.
+
+1. populate.  This just creates all the stub files in the directory from the
+   source directory.  Just run ./populate ~/linux ~/hsm-linux and it'll
+   recursively create all of the stub files and directories.
+2. remote-fetch.  This is the actual PoC, you just point it at the source and
+   destination directory and then you can do whatever.  ./remote-fetch ~/linux
+   ~/hsm-linux.
+3. mmap-validate.  This was to validate the pagefault thing, this is likely what
+   will be turned into the selftest with remote-fetch.  It creates a file and
+   then you can validate the file matches the right pattern with both normal
+   reads and mmap.  Normally I do something like
+
+   ./mmap-validate create ~/src/foo
+   ./populate ~/src ~/dst
+   ./rmeote-fetch ~/src ~/dst
+   ./mmap-validate validate ~/dst/foo
+
+I did a bunch of testing, I also got some performance numbers.  I copied a
+kernel tree, and then did remote-fetch, and then make -j4
+
+Normal
+real    9m49.709s
+user    28m11.372s
+sys     4m57.304s
+
+HSM
+real    10m6.454s
+user    29m10.517s
+sys     5m2.617s
+
+So ~17 seconds more to build with HSM.  I then did a make mrproper on both trees
+to see the size
+
+[root@fedora ~]# du -hs /src/linux
+1.6G    /src/linux
+[root@fedora ~]# du -hs dst
+125M    dst
+
+This mirrors the sort of savings we've seen in production.
+
+Meta has had these patches (minus the page fault patch) deployed in production
+for almost a year with our own utility for doing on-demand package fetching.
+The savings from this has been pretty significant.
+
+The page-fault hooks are necessary for the last thing we need, which is
+on-demand range fetching of executables.  Some of our binaries are several gigs
+large, having the ability to remote fetch them on demand is a huge win for us
+not only with space savings, but with startup time of containers.
+
+There will be tests for this going into LTP once we're satisfied with the
+patches and they're on their way upstream.  Thanks,
+
+Josef
+
+Amir Goldstein (8):
+  fsnotify: introduce pre-content permission event
+  fsnotify: generate pre-content permission event on open
+  fanotify: introduce FAN_PRE_ACCESS permission event
+  fanotify: introduce FAN_PRE_MODIFY permission event
+  fanotify: pass optional file access range in pre-content event
+  fanotify: rename a misnamed constant
+  fanotify: report file range info with pre-content events
+  fanotify: allow to set errno in FAN_DENY permission response
+
+Josef Bacik (8):
+  fanotify: don't skip extra event info if no info_mode is set
+  fanotify: add a helper to check for pre content events
+  fanotify: disable readahead if we have pre-content watches
+  mm: don't allow huge faults for files with pre content watches
+  fsnotify: generate pre-content permission event on page fault
+  bcachefs: add pre-content fsnotify hook to fault
+  gfs2: add pre-content fsnotify hook to fault
+  xfs: add pre-content fsnotify hook for write faults
+
+ fs/bcachefs/fs-io-pagecache.c      |   4 +
+ fs/gfs2/file.c                     |   4 +
+ fs/namei.c                         |   9 ++
+ fs/notify/fanotify/fanotify.c      |  32 ++++++--
+ fs/notify/fanotify/fanotify.h      |  20 +++++
+ fs/notify/fanotify/fanotify_user.c | 116 +++++++++++++++++++++-----
+ fs/notify/fsnotify.c               |  14 +++-
+ fs/xfs/xfs_file.c                  |   4 +
+ include/linux/fanotify.h           |  20 +++--
+ include/linux/fsnotify.h           |  54 ++++++++++--
+ include/linux/fsnotify_backend.h   |  59 ++++++++++++-
+ include/linux/mm.h                 |   1 +
+ include/uapi/linux/fanotify.h      |  17 ++++
+ mm/filemap.c                       | 128 +++++++++++++++++++++++++++--
+ mm/memory.c                        |  22 +++++
+ mm/readahead.c                     |  13 +++
+ security/selinux/hooks.c           |   3 +-
+ 17 files changed, 469 insertions(+), 51 deletions(-)
+
+-- 
+2.43.0
 
