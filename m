@@ -1,57 +1,57 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE92D1C9EA6
-	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3BF1C9DDE
+	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723670774; cv=none; b=NlvSG3AgdZEY5lzqXuRwl57IO7m9rqFXpBOjSgMRvaOwJjD0sKRW0d38xY8bKpOlg30KJifAjYxP+D/M4l4CFfcrI2fAs1NqgNbelTMuPLLXq1sq3T5a2YE7lOIwGUMBDjM42Ejhk+39Sgj6gtuWr3NeeZ8X0ZLKy3zTOUHK4DE=
+	t=1723670775; cv=none; b=ASWMSbJ00SlLPQmBpW+hqBjCt5OjNquGb36NGV5mEM8/rnjYL/0nFh8K4cvXvCkTM8beKXD1xy5U4YWqhEyeqaE/AMDHmfbpOGqWltdzqOqr0hgN30NkxmUFENiRwADvAyD/ukhlbV7AEo30yfietYY+nlbhrnKOe33xOX4JRg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723670774; c=relaxed/simple;
-	bh=qausY9NaTn1Dmt/1fWvpjV6gSoo0TkpL7RjFx1j8ing=;
+	s=arc-20240116; t=1723670775; c=relaxed/simple;
+	bh=x/zxNttmCT+y0dOsXy0tvMYfEvnIhvz+MK7V5Zr+cWQ=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSsw1fkogU8oAoQOTYdixP3Qa6c7TEVcWP7ykGY53tdVRo0zhanc129NmTA4567KSYzNSSqOqpGssCkGQ675V1/eyEtfOPZ6G5xxOB/zLTyiRYbtUoP+ozgLv2JwTM8MtQCIY55ScfZsv8LT6NvGSfzcF0duNOFJTgtdbO29Rmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=WyFPZrOs; arc=none smtp.client-ip=209.85.222.177
+	 MIME-Version; b=iY/vVDuXsQCTgSmX+q3+qVoBm9Eni+eOO8MPN9ixEwC4bzaeNRc3W2e/d0ex4XsqyOTGCDGVXgQ02JHdblcwbHm2E4RgJ8y9PPOpA4PwXRaUD4X5IKatgpvU2bgpp6+TQtLwZj5fw3AssKanKrUJ/DEo9QujGa7UVwoJh2y3p3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=cuBLbThf; arc=none smtp.client-ip=209.85.221.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="WyFPZrOs"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1e0ff6871so18851985a.2
-        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="cuBLbThf"
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4f511fddfcfso128135e0c.1
+        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670772; x=1724275572; darn=lists.linux.dev;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670773; x=1724275573; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JmFE9zypkxWwtjgDkL/vbyJWxHrdDWRoGs2W5KUFOnA=;
-        b=WyFPZrOsYjIIhrKZmyPKHiSZ505RJzgvejSqGa68K2/nkpRcx7maUS/e/vbynFQATX
-         wXSitXNVOo/2XQltkUGABDK/bBwq7wmnyhWa4lBylSUnUBnKQE8TQE8Ms6T1qQEF8krj
-         Ohm/CTbf9z/4YkDiLP+QWtBENCiTIbWpcZR8l4BxV/J7XwZSxsQB/orMAByNLZF/Y9PK
-         4WbI7+tLbG44o/bGj6HlcTIgpk7jg86sjpvS3vUZQ/c8KBtYNKrcH01hcUXetmuNpwkO
-         vJz7IPZyOY2a0BL/0GfiJ6q39Z/VejLC3GV3rO1BBmOC2gAwYZzo3EMYS0s8cHAwqwcc
-         kMhg==
+        bh=c/Hz6ZhLh0CWwWHWSWJMj1KvT9KtOfMKuwzMM3GJFXM=;
+        b=cuBLbThfNqiDBMz77mKqYyK611z9rW6qhMc/eJF32pt3Ra1/QFuTeEU+Kz00m9Jm34
+         yq9CWbC0vFsiHLBTVscSQBdK3PMqIW85KpvYbMrrTd0Uo1ryTsIqm/Ux9I+aBNOJg6If
+         o3UgS1GUzY3/8CTCeu61WalVvNNDP9pUH73dH9md6NScNo87EJyMrON+pmAH8CdK5iXD
+         rkD8vUYIjLQsMVe000qJY7yBmIMntOYCXXT/BGwCdWatfu6aasa8pY0C3e1XVkZI+lZ7
+         2A53xYZ4BAD0hqEUCxKT79NMkeFKZhBO2VC4281W89NmtwPndHFKgguOFRntKPGi1mCb
+         WelQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723670772; x=1724275572;
+        d=1e100.net; s=20230601; t=1723670773; x=1724275573;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JmFE9zypkxWwtjgDkL/vbyJWxHrdDWRoGs2W5KUFOnA=;
-        b=SacclkCWBCk/epkETj+GdLz9tw5e4qeBxDg9V99MWHYIbok4rUC1XCA84AVUBWk2Vt
-         4ZjHL0iF36Qv6sRWn22Ky6LI6kQzZKbAmRN+ole9Z0D8CGh3cKD9zsgcrjHQk6ptUhwC
-         0OYE09BsBzktXVq9X6tcpFvd6pHb9A+u6LdUxHdkvcGigPgLOkOSupFEc5Mk3VgCmOeN
-         pposmgAZiInuYemLHep/a//HoFaaO5x93krTKmwIBikdaL9KcQJqcA2grthY5kxcvQ9G
-         E4xIuFEWHv7Z+VndIbHODS/QhOAFmkksyl+XrdzSy3FMDpGG4nGIBXhv/ONDjGbicnOc
-         kVdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVfDlyzfSsOIrnAv4UKcX1i+XNlyu0R4ejnPBoARaDmPaGQFQtki/3tinU5hUZFcZymn9vC9IDnr2dqrBxlGPX52VLeQ==
-X-Gm-Message-State: AOJu0YysxHTsGwMWdhycFuAW6oesVK1+/AEAFoWkG869ibgHnXLVXDmv
-	Zj0yfdmJPEaErS8qNybACAYGR4xBZKa8+Kh/WjUvSkJV9UEj+8zeUa5/p/RuoCE=
-X-Google-Smtp-Source: AGHT+IHIPCQoJFD/t0/lClNrUMrlZFIcM/ZiNaxk2Ar4OdyVmABqqGlEDSnusGifSdOunrg99gpoDQ==
-X-Received: by 2002:a05:620a:1907:b0:79d:76c3:5309 with SMTP id af79cd13be357-7a4ee323d52mr531446985a.4.1723670771708;
-        Wed, 14 Aug 2024 14:26:11 -0700 (PDT)
+        bh=c/Hz6ZhLh0CWwWHWSWJMj1KvT9KtOfMKuwzMM3GJFXM=;
+        b=WU+HSlJP+EGPm+qQSyJ4RUVljgcPbvXBH+ydbX/qexviaUR7iollyzoXpFWFVXFDl0
+         0fBXuWWhHlAdv0QWEBagqmnO7Sm511JYvO+FOp69HusGcXR5PArN33w/l7YUGj5Q5Bhe
+         W3htJj8PJ6oFeFlGJtF+iDdbRosky51Sjlp+FRvLesHkrAFL1Z0FkAJjRIc0h5ScQE39
+         88gxDrXl6feEw63E7F4zlM2WfRBH3GwRH+O0VuhHLjxrL2FfZBHvENpvaF7wkUiU7rE7
+         kFbTsgS0+iph7prH1tM5Fgbnsk4izxmitDVYQ3btw7yCwuqx33N9pFbzeVob0wj17aBu
+         xKGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXz5vgnNdQqcb/JYSPh2bnuay8M2gkSKrIiNfOJSRa5xmiNW+NmQ/cZ1ZU7YYMnFgydcWqe05YZBztEht9zb8Qb3X2ovQ==
+X-Gm-Message-State: AOJu0YyfJgbIqLHPh9X+Bjzo2puLYTKjqww57eaKmL3ncgSbrW/4sp1b
+	hmXCRdEPZNKtsowISxt9mzKf+1C6H/tCpgtpKY8505RyAaJXCH0I2+hb5k6GTtw=
+X-Google-Smtp-Source: AGHT+IEgvzETar+HRop8OxZM9BBYNdvV/dcg/BqJjJoXGsdJI9+RkgFTa2pKDMrLYqGGS3MRLjx9Ew==
+X-Received: by 2002:a05:6122:4699:b0:4f2:f2e1:5f04 with SMTP id 71dfb90a1353d-4fad1ea4056mr4448238e0c.8.1723670772920;
+        Wed, 14 Aug 2024 14:26:12 -0700 (PDT)
 Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff1073e5sm7925585a.121.2024.08.14.14.26.11
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45369ff11d9sm557421cf.21.2024.08.14.14.26.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 14:26:11 -0700 (PDT)
+        Wed, 14 Aug 2024 14:26:12 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
 To: kernel-team@fb.com,
 	linux-fsdevel@vger.kernel.org,
@@ -61,9 +61,9 @@ To: kernel-team@fb.com,
 	linux-xfs@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-bcachefs@vger.kernel.org
-Subject: [PATCH v4 07/16] fanotify: rename a misnamed constant
-Date: Wed, 14 Aug 2024 17:25:25 -0400
-Message-ID: <13c1df955c0e8af0aee2afce78b1ea1f2e3f8f66.1723670362.git.josef@toxicpanda.com>
+Subject: [PATCH v4 08/16] fanotify: report file range info with pre-content events
+Date: Wed, 14 Aug 2024 17:25:26 -0400
+Message-ID: <b72ac7d8171570eaa9adf05e5a55f6ea8ba41ac2.1723670362.git.josef@toxicpanda.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1723670362.git.josef@toxicpanda.com>
 References: <cover.1723670362.git.josef@toxicpanda.com>
@@ -77,54 +77,133 @@ Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
 
-FANOTIFY_PIDFD_INFO_HDR_LEN is not the length of the header.
+With group class FAN_CLASS_PRE_CONTENT, report offset and length info
+along with FAN_PRE_ACCESS and FAN_PRE_MODIFY permission events.
+
+This information is meant to be used by hierarchical storage managers
+that want to fill partial content of files on first access to range.
 
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/notify/fanotify/fanotify.h      |  8 +++++++
+ fs/notify/fanotify/fanotify_user.c | 38 ++++++++++++++++++++++++++++++
+ include/uapi/linux/fanotify.h      |  7 ++++++
+ 3 files changed, 53 insertions(+)
 
+diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
+index 93598b7d5952..7f06355afa1f 100644
+--- a/fs/notify/fanotify/fanotify.h
++++ b/fs/notify/fanotify/fanotify.h
+@@ -448,6 +448,14 @@ static inline bool fanotify_is_perm_event(u32 mask)
+ 		mask & FANOTIFY_PERM_EVENTS;
+ }
+ 
++static inline bool fanotify_event_has_access_range(struct fanotify_event *event)
++{
++	if (!(event->mask & FANOTIFY_PRE_CONTENT_EVENTS))
++		return false;
++
++	return FANOTIFY_PERM(event)->ppos;
++}
++
+ static inline struct fanotify_event *FANOTIFY_E(struct fsnotify_event *fse)
+ {
+ 	return container_of(fse, struct fanotify_event, fse);
 diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 3a7101544f30..5ece186d5c50 100644
+index 5ece186d5c50..ed56fe6f5ec7 100644
 --- a/fs/notify/fanotify/fanotify_user.c
 +++ b/fs/notify/fanotify/fanotify_user.c
-@@ -119,7 +119,7 @@ struct kmem_cache *fanotify_perm_event_cachep __ro_after_init;
- #define FANOTIFY_EVENT_ALIGN 4
- #define FANOTIFY_FID_INFO_HDR_LEN \
- 	(sizeof(struct fanotify_event_info_fid) + sizeof(struct file_handle))
--#define FANOTIFY_PIDFD_INFO_HDR_LEN \
-+#define FANOTIFY_PIDFD_INFO_LEN \
+@@ -123,6 +123,8 @@ struct kmem_cache *fanotify_perm_event_cachep __ro_after_init;
  	sizeof(struct fanotify_event_info_pidfd)
  #define FANOTIFY_ERROR_INFO_LEN \
  	(sizeof(struct fanotify_event_info_error))
-@@ -174,14 +174,14 @@ static size_t fanotify_event_len(unsigned int info_mode,
- 		dot_len = 1;
- 	}
++#define FANOTIFY_RANGE_INFO_LEN \
++	(sizeof(struct fanotify_event_info_range))
  
--	if (info_mode & FAN_REPORT_PIDFD)
--		event_len += FANOTIFY_PIDFD_INFO_HDR_LEN;
--
- 	if (fanotify_event_has_object_fh(event)) {
- 		fh_len = fanotify_event_object_fh_len(event);
- 		event_len += fanotify_fid_info_len(fh_len, dot_len);
- 	}
+ static int fanotify_fid_info_len(int fh_len, int name_len)
+ {
+@@ -182,6 +184,9 @@ static size_t fanotify_event_len(unsigned int info_mode,
+ 	if (info_mode & FAN_REPORT_PIDFD)
+ 		event_len += FANOTIFY_PIDFD_INFO_LEN;
  
-+	if (info_mode & FAN_REPORT_PIDFD)
-+		event_len += FANOTIFY_PIDFD_INFO_LEN;
++	if (fanotify_event_has_access_range(event))
++		event_len += FANOTIFY_RANGE_INFO_LEN;
 +
  	return event_len;
  }
  
-@@ -511,7 +511,7 @@ static int copy_pidfd_info_to_user(int pidfd,
- 				   size_t count)
- {
- 	struct fanotify_event_info_pidfd info = { };
--	size_t info_len = FANOTIFY_PIDFD_INFO_HDR_LEN;
-+	size_t info_len = FANOTIFY_PIDFD_INFO_LEN;
+@@ -526,6 +531,30 @@ static int copy_pidfd_info_to_user(int pidfd,
+ 	return info_len;
+ }
  
- 	if (WARN_ON_ONCE(info_len > count))
- 		return -EFAULT;
++static size_t copy_range_info_to_user(struct fanotify_event *event,
++				      char __user *buf, int count)
++{
++	struct fanotify_perm_event *pevent = FANOTIFY_PERM(event);
++	struct fanotify_event_info_range info = { };
++	size_t info_len = FANOTIFY_RANGE_INFO_LEN;
++
++	if (WARN_ON_ONCE(info_len > count))
++		return -EFAULT;
++
++	if (WARN_ON_ONCE(!pevent->ppos))
++		return -EINVAL;
++
++	info.hdr.info_type = FAN_EVENT_INFO_TYPE_RANGE;
++	info.hdr.len = info_len;
++	info.offset = *(pevent->ppos);
++	info.count = pevent->count;
++
++	if (copy_to_user(buf, &info, info_len))
++		return -EFAULT;
++
++	return info_len;
++}
++
+ static int copy_info_records_to_user(struct fanotify_event *event,
+ 				     struct fanotify_info *info,
+ 				     unsigned int info_mode, int pidfd,
+@@ -647,6 +676,15 @@ static int copy_info_records_to_user(struct fanotify_event *event,
+ 		total_bytes += ret;
+ 	}
+ 
++	if (fanotify_event_has_access_range(event)) {
++		ret = copy_range_info_to_user(event, buf, count);
++		if (ret < 0)
++			return ret;
++		buf += ret;
++		count -= ret;
++		total_bytes += ret;
++	}
++
+ 	return total_bytes;
+ }
+ 
+diff --git a/include/uapi/linux/fanotify.h b/include/uapi/linux/fanotify.h
+index ac00fad66416..cc28dce5f744 100644
+--- a/include/uapi/linux/fanotify.h
++++ b/include/uapi/linux/fanotify.h
+@@ -145,6 +145,7 @@ struct fanotify_event_metadata {
+ #define FAN_EVENT_INFO_TYPE_DFID	3
+ #define FAN_EVENT_INFO_TYPE_PIDFD	4
+ #define FAN_EVENT_INFO_TYPE_ERROR	5
++#define FAN_EVENT_INFO_TYPE_RANGE	6
+ 
+ /* Special info types for FAN_RENAME */
+ #define FAN_EVENT_INFO_TYPE_OLD_DFID_NAME	10
+@@ -191,6 +192,12 @@ struct fanotify_event_info_error {
+ 	__u32 error_count;
+ };
+ 
++struct fanotify_event_info_range {
++	struct fanotify_event_info_header hdr;
++	__u64 offset;
++	__u64 count;
++};
++
+ /*
+  * User space may need to record additional information about its decision.
+  * The extra information type records what kind of information is included.
 -- 
 2.43.0
 
