@@ -1,46 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E5518C910
-	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51D71B9B2D
+	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723646088; cv=none; b=oAc3OqBUaVumoRd0d6qxUPJez0WMINJQ61jvNKblT8WW1N2wC6EWYfa3U4TPeulvGehxI+0bci/UmuGlW2BgpYSOzwCkVdoXkttXjv26pOGXGdlR3FcYgdHDuNqjh8ILgPdBxhypAjgZMo203aIOW+H04kfjFkqIAIkAG2z48lw=
+	t=1723646093; cv=none; b=Ae79I+oWiFDQQfp6PrXD+iChh0TPjPp2Zf8+um5pf65ytJ2Aw4sFqb2fjsvN7h/dU4SBuQDK7dD9914IUDQMay8ges3534ASeZEhG+r8zS40uf1aSIzhCVyJm01Gmhvd84XJQUgA3g7IoOIC+t/S/AvGtnKdBFtq8h/33VmXPvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723646088; c=relaxed/simple;
-	bh=U0nOA7Z1A1/Dy25L8IFvcBZsOwg8CiDXCZ/aPn74aWY=;
+	s=arc-20240116; t=1723646093; c=relaxed/simple;
+	bh=mZ01JtDaUD/i9QmvCnEBD7uT+iQumoqRxJK8mE937U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0BVGizMtIM/yR/39CACGPjpIxrpak7vA6gREzsimoiEz64YVqLrR8NfbNhGyVQsM0yCbhGajhEIqUuJnlfgMb9ZFDyRqlrNfJUQvzL6JGPNjeo0VhQY8zqW6PVuDAQM41Hl0uookrwStjm23cvX8pVvN0GtemTW6niDxbHE/y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hBIqkno0; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=AS1R4yW/CZITJ1IqtS5M3A0vL91peV+K3HHMTPbRxy7nT4o0N9HWES94/XJdsa6n9oqAARCpl53dN1rfyIWlJLR47sZehH2HXbbv9SzmuEnoyhwl7GMO5A+lsyHH6jWNka3cpJH3Axk8CHxDYX4mdUD51vvCVcT9+KFvem/9jyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VEpwdNWN; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hBIqkno0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VEpwdNWN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723646085;
+	s=mimecast20190719; t=1723646090;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gRLptKCiXpp4gNIkR9o/h84xalWa/aBGlKLc9592qnI=;
-	b=hBIqkno0P2Lj3wWXNkPTgKn4Rlbr3i/q5QUbBFKcNTeDldW7Iyc7H0JcFg6VQvuynBieaL
-	WCF+UUdYso7/JQKCixtGNWWb2K3DNU0uVQRp4LBlgb7rSND2dwGxkvaWS/qxz/H4GQJ7O5
-	AuWeuQvGiehqqWvU+GbI2Ohn2CxarDA=
+	bh=Xq6iygHBk0ksC7GNR20/uaYtB/Nu4ijVs0KvpevZBKI=;
+	b=VEpwdNWNFYdewjozUhPe8G2aAVIYFW40erNKjnwzxWhpExC4h0YirhcDx9TBWhqPtRAi/H
+	fuGaa7G4bT1vr9keZUkJwNsTZ76MGuZ6Pr1I/lqC3151HYRsJMlGUdgSo85EDFlHWLL7qG
+	FfkQkdiksSFg2Sz99Nh1vRQNKEUOTf0=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-lioQxatQODqY5_mNC0l4pQ-1; Wed,
- 14 Aug 2024 10:34:40 -0400
-X-MC-Unique: lioQxatQODqY5_mNC0l4pQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-kltiuUI-N0SERsKfbxUp1g-1; Wed,
+ 14 Aug 2024 10:34:44 -0400
+X-MC-Unique: kltiuUI-N0SERsKfbxUp1g-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38489195420C;
-	Wed, 14 Aug 2024 14:34:38 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D11B11953945;
+	Wed, 14 Aug 2024 14:34:42 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 84ED33001FE5;
-	Wed, 14 Aug 2024 14:34:35 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AA1F4300019C;
+	Wed, 14 Aug 2024 14:34:40 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
@@ -58,9 +58,9 @@ Cc: gfs2@lists.linux.dev,
 	ocfs2-devel@lists.linux.dev,
 	lucien.xin@gmail.com,
 	aahringo@redhat.com
-Subject: [RFC dlm/next 06/12] dlm: dlm_config_info config fields to unsigned int
-Date: Wed, 14 Aug 2024 10:34:08 -0400
-Message-ID: <20240814143414.1877505-7-aahringo@redhat.com>
+Subject: [RFC dlm/next 08/12] kobject: add kset_type_create_and_add() helper
+Date: Wed, 14 Aug 2024 10:34:10 -0400
+Message-ID: <20240814143414.1877505-9-aahringo@redhat.com>
 In-Reply-To: <20240814143414.1877505-1-aahringo@redhat.com>
 References: <20240814143414.1877505-1-aahringo@redhat.com>
 Precedence: bulk
@@ -72,62 +72,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-We are using kstrtouint() to parse common integer fields. This patch
-will switch to use unsigned int instead of int as we are parsing
-unsigned integer values.
+Currently there exists the kset_create_and_add() helper that does not
+allow to have a different ktype for the created kset kobject. To allow
+a different ktype this patch will introduce the function
+kset_type_create_and_add() that allows to set a different ktype instead
+of using the global default kset_ktype variable.
+
+In my example I need to separate the created kobject inside the kset by
+net-namespaces. This patch allows me to do that by providing a user
+defined kobj_type structure that implements the necessary namespace
+functionality.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/config.c |  3 ++-
- fs/dlm/config.h | 22 +++++++++++-----------
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ include/linux/kobject.h |  8 +++++--
+ lib/kobject.c           | 49 +++++++++++++++++++++++++----------------
+ 2 files changed, 36 insertions(+), 21 deletions(-)
 
-diff --git a/fs/dlm/config.c b/fs/dlm/config.c
-index d9cde614ddd4..a98f0e746e9e 100644
---- a/fs/dlm/config.c
-+++ b/fs/dlm/config.c
-@@ -153,7 +153,8 @@ static ssize_t cluster_tcp_port_store(struct config_item *item,
+diff --git a/include/linux/kobject.h b/include/linux/kobject.h
+index c8219505a79f..7504b7547ed2 100644
+--- a/include/linux/kobject.h
++++ b/include/linux/kobject.h
+@@ -175,8 +175,12 @@ struct kset {
+ void kset_init(struct kset *kset);
+ int __must_check kset_register(struct kset *kset);
+ void kset_unregister(struct kset *kset);
+-struct kset * __must_check kset_create_and_add(const char *name, const struct kset_uevent_ops *u,
+-					       struct kobject *parent_kobj);
++struct kset * __must_check
++kset_type_create_and_add(const char *name, const struct kset_uevent_ops *u,
++			 struct kobject *parent_kobj, const struct kobj_type *ktype);
++struct kset * __must_check
++kset_create_and_add(const char *name, const struct kset_uevent_ops *u,
++		    struct kobject *parent_kobj);
  
- CONFIGFS_ATTR(cluster_, tcp_port);
- 
--static ssize_t cluster_set(int *info_field, int (*check_cb)(unsigned int x),
-+static ssize_t cluster_set(unsigned int *info_field,
-+			   int (*check_cb)(unsigned int x),
- 			   const char *buf, size_t len)
+ static inline struct kset *to_kset(struct kobject *kobj)
  {
- 	unsigned int x;
-diff --git a/fs/dlm/config.h b/fs/dlm/config.h
-index 9cb4300cce7c..9abe71453c5e 100644
---- a/fs/dlm/config.h
-+++ b/fs/dlm/config.h
-@@ -30,17 +30,17 @@ extern const struct rhashtable_params dlm_rhash_rsb_params;
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 72fa20f405f1..fbae94ea9bb5 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -957,7 +957,8 @@ static const struct kobj_type kset_ktype = {
+  */
+ static struct kset *kset_create(const char *name,
+ 				const struct kset_uevent_ops *uevent_ops,
+-				struct kobject *parent_kobj)
++				struct kobject *parent_kobj,
++				const struct kobj_type *ktype)
+ {
+ 	struct kset *kset;
+ 	int retval;
+@@ -973,17 +974,32 @@ static struct kset *kset_create(const char *name,
+ 	kset->uevent_ops = uevent_ops;
+ 	kset->kobj.parent = parent_kobj;
  
- struct dlm_config_info {
- 	__be16 ci_tcp_port;
--	int ci_buffer_size;
--	int ci_rsbtbl_size;
--	int ci_recover_timer;
--	int ci_toss_secs;
--	int ci_scan_secs;
--	int ci_log_debug;
--	int ci_log_info;
--	int ci_protocol;
--	int ci_mark;
--	int ci_new_rsb_count;
--	int ci_recover_callbacks;
-+	unsigned int ci_buffer_size;
-+	unsigned int ci_rsbtbl_size;
-+	unsigned int ci_recover_timer;
-+	unsigned int ci_toss_secs;
-+	unsigned int ci_scan_secs;
-+	unsigned int ci_log_debug;
-+	unsigned int ci_log_info;
-+	unsigned int ci_protocol;
-+	unsigned int ci_mark;
-+	unsigned int ci_new_rsb_count;
-+	unsigned int ci_recover_callbacks;
- 	char ci_cluster_name[DLM_LOCKSPACE_LEN];
- };
+-	/*
+-	 * The kobject of this kset will have a type of kset_ktype and belong to
+-	 * no kset itself.  That way we can properly free it when it is
+-	 * finished being used.
+-	 */
+-	kset->kobj.ktype = &kset_ktype;
++	kset->kobj.ktype = ktype;
+ 	kset->kobj.kset = NULL;
+ 
+ 	return kset;
+ }
+ 
++struct kset *kset_type_create_and_add(const char *name,
++				      const struct kset_uevent_ops *uevent_ops,
++				      struct kobject *parent_kobj,
++				      const struct kobj_type *ktype)
++{
++	struct kset *kset;
++	int error;
++
++	kset = kset_create(name, uevent_ops, parent_kobj, ktype);
++	if (!kset)
++		return NULL;
++	error = kset_register(kset);
++	if (error) {
++		kfree(kset);
++		return NULL;
++	}
++	return kset;
++}
++EXPORT_SYMBOL_GPL(kset_type_create_and_add);
++
+ /**
+  * kset_create_and_add() - Create a struct kset dynamically and add it to sysfs.
+  *
+@@ -1002,18 +1018,13 @@ struct kset *kset_create_and_add(const char *name,
+ 				 const struct kset_uevent_ops *uevent_ops,
+ 				 struct kobject *parent_kobj)
+ {
+-	struct kset *kset;
+-	int error;
+-
+-	kset = kset_create(name, uevent_ops, parent_kobj);
+-	if (!kset)
+-		return NULL;
+-	error = kset_register(kset);
+-	if (error) {
+-		kfree(kset);
+-		return NULL;
+-	}
+-	return kset;
++	/*
++	 * The kobject of this kset will have a type of kset_ktype and belong to
++	 * no kset itself.  That way we can properly free it when it is
++	 * finished being used.
++	 */
++	return kset_type_create_and_add(name, uevent_ops, parent_kobj,
++					&kset_ktype);
+ }
+ EXPORT_SYMBOL_GPL(kset_create_and_add);
  
 -- 
 2.43.0
