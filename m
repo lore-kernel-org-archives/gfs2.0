@@ -1,57 +1,57 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233901CB33E
-	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD6D1D0DC3
+	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723670779; cv=none; b=TGmaVsc/iSwFm3kBOrC+pOK4bnZ3WSJ+SgxWUobAJnClqYLmSlKba0zIYdRCimJ5FH8QqlTk9JFJD2hsze62OsX4rk1nbvpgpAGlDWG9cfRV0iKZloMJe6DQD8NK3i2/4t92T7Sh9pVbHtIRkEwUIeHykPGisKpSU7NcrYVjdNg=
+	t=1723670779; cv=none; b=ewRnC8yAoIu0TAPMau+6mXRRYhYk2sqfxG4Cm2+BT2CUGD9F61lL8Q7uISBJg1QIz0zWAJO3SPEJd4hyfXqaclFvV7BRqkaYt5JSR+EFGlhApM/5HBTU/4N3EMk649nffElHWZNIANGqOabmvHFEN1Pntqo6nz8++NzxzuQ2gh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723670779; c=relaxed/simple;
-	bh=oIFEloV+HJRwW7KKzTETqcSZwuMF6cvmESmc2+RUi2s=;
+	bh=RuLIdPYLf2U7vdfwd0GY223a6ukGYtQumd4qAvMMF1s=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2IRuWnXtg+5Ss7Tsx2BfAIakwpP2Z7+WjR32uWLW+351lVr1T6KzbRFZ5uVyRadcEIWiJ7dRMu4F5y8MDlRa9A3pgkxF17Z6NhA/AbgVa+1CrQYefubtB55/qXM5uF+p7grOduViafQxjojAmMCBab8ZPaZB7lWf8ajAqWl/HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=EbqS5BLH; arc=none smtp.client-ip=209.85.160.178
+	 MIME-Version; b=EAO/SpfMXoMJLW/Jzxkvt34XskvMZw0KIqI8ezK6qWmUmnt1381v9MQAfOQERSr8YwEGPbEZKI8Zs/AtHzpa9CBKTSzhgZ1mCrrIxtz9NmfjV7xK8UCs612jg5999T8nz2vHQeysYDVY1wBKdFeMtg6k4wOFFciETTsn518/DgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=BIbIdq/N; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="EbqS5BLH"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-44fea44f725so2517531cf.1
-        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="BIbIdq/N"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6b797a2384cso1805906d6.0
+        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670775; x=1724275575; darn=lists.linux.dev;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670776; x=1724275576; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iqckBRUWRZ8lY2PUqxw8YY3RQIFbRSWL2L9gDiXv76o=;
-        b=EbqS5BLH0A5+xMIl2i7Sozc1gTNs6cIO0NFaj4wHD+NILl0IBuaJxuOiEinLGr/Crq
-         LoliR4sZULhY4zSvx+P8U+B4AIn6cJtLTj1/vLQ3Bsdk+yq1hmE9UAge5s5u+Je0xicO
-         eGfRXidY7SGe7OivyxEkrbRnJhQH6iMijtNASNeKzoD40/OKHwfWkpT4PfIfMmjIB2z2
-         hhQQaQEXDMtcAFTltZqd+mMMthIyap/ZL5WwcK8/gVoOl+6+RHeMdTPPzQxL7hlAzBPA
-         K7duWh9N/9mq8ID5YUuRCC31h/Ga3Quo4eTo4i9YzupBmLfUQALk8Qn+/J+OdyGcYtvr
-         wRhQ==
+        bh=NQ0y3/dQBSJxG2OyPRkhEh3Vj0wjByustgiYia+MZqs=;
+        b=BIbIdq/NtM04gLhBlOT5T8oFm8ATNL13/QtH38Ist5thTvMhOpQPBXpDOsvx6N/4is
+         Vh1mMlCwDZqJBvti0XEGfFPugUTEmiAMrrmKK/CaUueEYpYh7J+XcOWGnkQPR4WgU9v9
+         TI76xgaiLLWs+OnOdgQWZq96niM6+VB8UD9e8diN0j1sSghk84IhdIf2TmZI0L/wAjfM
+         oC4btWNRTIs9Z2m4ulKHMM5KXAcYik7ppA2XRhN3pkREcbSoYMeABj9O/NCTmT2dfurH
+         5WvKpdhww5OrubVzQU5KE5AFvXjiEI8YEqIsdgNTSHjfSSXS9LQfcGsFQ2Ru/IEMVh/n
+         zBrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723670775; x=1724275575;
+        d=1e100.net; s=20230601; t=1723670776; x=1724275576;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iqckBRUWRZ8lY2PUqxw8YY3RQIFbRSWL2L9gDiXv76o=;
-        b=w9zwa3vYA9p4Um3TZtgYT6YJS9uTmNPl23XISfioy4vGl3Xf7mEEoKUg45OX5PUlLG
-         nsZ1qyovv9HcEa8+L66Mtov4LpwyQHIjHXfRNxumfPKFvySAhwK3tj1gCUGktBdMqARn
-         7RcVt+oFP/QqNxgmxwRI3eKkIwxlVlvKjkM4rXweMacukpnqKR24tfeHa+LpBZHDKMwu
-         eDoTJ6WfPko6sYiks9AwD67wti+pvgPQI214p/mga3bVfUvXvxMfisBCRhr3EWlsgboV
-         prqJScqVoHFoGFx6H9HjvASs7VukJlk74KN4TztkYuNdxxm40fbvWNuzwsMdvv0viK+O
-         8YdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIlAF41iSOce4cmU1Dc0BrT4Xt67H3PxvONacdmx7pKWo8hvNSKT81QgWJjllVLSalwpiYv0DztcKUQSZiiFcwtUYOXg==
-X-Gm-Message-State: AOJu0Yx4AG9nGy8cQumiH3b+n8Kmm8CRMjrwch4fVCO2j50L+7/eSq25
-	JZ125M/8GRTHP8AUnrgCkj5j4WLZG+MWZvGkV6BKpKW81pLCVKy5lq9Y44V91h4=
-X-Google-Smtp-Source: AGHT+IEd/MmUwaA1JVX+VfdhiUmDxdoXxYs9e30nr4Gux5C2du2HbwieZEhvSa2zBuHRp84nZOLlBA==
-X-Received: by 2002:a05:622a:4c8e:b0:453:57b0:8814 with SMTP id d75a77b69052e-453678456ebmr18969301cf.6.1723670775058;
-        Wed, 14 Aug 2024 14:26:15 -0700 (PDT)
+        bh=NQ0y3/dQBSJxG2OyPRkhEh3Vj0wjByustgiYia+MZqs=;
+        b=RgBdBd2+jfUFO80tPIRdCt0BRzMTz2Uoj4FBRTOfijoa3MdQzHPKkC43A0VO6sQUhW
+         Q0PPAgUf8GQE4rqhIbuftmh3coMt7NB8F4rpty4n+6XdOFfr9RpS1SlmkgOP+DiitV9k
+         bGs2mP67nO0jIF7/VDISky8lA3NFKk9tnuY6ZAfndR5kk6+BTujFX9jM6cWtxe0pw60U
+         s3lFm3VgItx5+LqTBPJ93usfL4urDJmAGsVlf+SZyhaVFYa/suM/yhMV8iqPF7Mw6K8u
+         6Iu1xmC48KGdk41IrvIURpPeD3mjQIIFpSpKHGgMdp7TE155NP1ILn9A7VI4e9ipUkL5
+         naGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrp+YQ1AJw/gMIrJ4nRQjmxWJ1YDrtoimUMoEULMO/yS+fDv5GQlj6mfPD9ugp9MYkYSE6nopMVnQ7soBHE+s9F27iEA==
+X-Gm-Message-State: AOJu0Yy9JN7NJy7hD8lPeZJceQR73PbE9eLGohiMuAs6l/1EmSJ7NiY4
+	VgmoFYq1m7qozD/CiUFrKQ4N4XPcep2kZgY1Lcu6EkhACcXh1VZbm1B8GDqY5ds=
+X-Google-Smtp-Source: AGHT+IExGAEQEamrim6ho8QAd+QcOVhJTtOVmgmL6OYA606guNdAfaz4yD+2UP67QG+9AhpysKNQAg==
+X-Received: by 2002:a05:6214:2e4a:b0:6b7:a9dd:ba58 with SMTP id 6a1803df08f44-6bf5d1fa365mr62306796d6.18.1723670776088;
+        Wed, 14 Aug 2024 14:26:16 -0700 (PDT)
 Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4536a04e22esm502161cf.74.2024.08.14.14.26.14
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fe26c71sm618696d6.61.2024.08.14.14.26.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 14:26:14 -0700 (PDT)
+        Wed, 14 Aug 2024 14:26:15 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
 To: kernel-team@fb.com,
 	linux-fsdevel@vger.kernel.org,
@@ -61,9 +61,9 @@ To: kernel-team@fb.com,
 	linux-xfs@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-bcachefs@vger.kernel.org
-Subject: [PATCH v4 10/16] fanotify: add a helper to check for pre content events
-Date: Wed, 14 Aug 2024 17:25:28 -0400
-Message-ID: <b02993d0e384326194023c76e437c0ea838a5c06.1723670362.git.josef@toxicpanda.com>
+Subject: [PATCH v4 11/16] fanotify: disable readahead if we have pre-content watches
+Date: Wed, 14 Aug 2024 17:25:29 -0400
+Message-ID: <9a458c9c553c6a8d5416c91650a9b152458459d0.1723670362.git.josef@toxicpanda.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1723670362.git.josef@toxicpanda.com>
 References: <cover.1723670362.git.josef@toxicpanda.com>
@@ -75,73 +75,88 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We want to emit events during page fault, and calling into fanotify
-could be expensive, so add a helper to allow us to skip calling into
-fanotify from page fault.  This will also be used to disable readahead
-for content watched files which will be handled in a subsequent patch.
+With page faults we can trigger readahead on the file, and then
+subsequent faults can find these pages and insert them into the file
+without emitting an fanotify event.  To avoid this case, disable
+readahead if we have pre-content watches on the file.  This way we are
+guaranteed to get an event for every range we attempt to access on a
+pre-content watched file.
 
 Reviewed-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- fs/notify/fsnotify.c             | 12 ++++++++++++
- include/linux/fsnotify_backend.h | 14 ++++++++++++++
- 2 files changed, 26 insertions(+)
+ mm/filemap.c   | 12 ++++++++++++
+ mm/readahead.c | 13 +++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 1ca4a8da7f29..cbfaa000f815 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -201,6 +201,18 @@ static inline bool fsnotify_object_watched(struct inode *inode, __u32 mnt_mask,
- 	return mask & marks_mask & ALL_FSNOTIFY_EVENTS;
- }
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ca8c8d889eef..8b1684b62177 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3122,6 +3122,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	unsigned long vm_flags = vmf->vma->vm_flags;
+ 	unsigned int mmap_miss;
  
-+#ifdef CONFIG_FANOTIFY_ACCESS_PERMISSIONS
-+bool fsnotify_file_has_pre_content_watches(struct file *file)
-+{
-+	struct inode *inode = file_inode(file);
-+	__u32 mnt_mask = real_mount(file->f_path.mnt)->mnt_fsnotify_mask;
++	/*
++	 * If we have pre-content watches we need to disable readahead to make
++	 * sure that we don't populate our mapping with 0 filled pages that we
++	 * never emitted an event for.
++	 */
++	if (fsnotify_file_has_pre_content_watches(file))
++		return fpin;
 +
-+	return fsnotify_object_watched(inode, mnt_mask,
-+				       FSNOTIFY_PRE_CONTENT_EVENTS);
-+}
-+#endif
-+
-+
- /*
-  * Notify this dentry's parent about a child's events with child name info
-  * if parent is watching or if inode/sb/mount are interested in events with
-diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
-index 276320846bfd..b495a0676dd3 100644
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -900,6 +900,15 @@ static inline void fsnotify_init_event(struct fsnotify_event *event)
- 	INIT_LIST_HEAD(&event->list);
- }
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	/* Use the readahead code, even if readahead is disabled */
+ 	if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+@@ -3190,6 +3198,10 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	struct file *fpin = NULL;
+ 	unsigned int mmap_miss;
  
-+#ifdef CONFIG_FANOTIFY_ACCESS_PERMISSIONS
-+bool fsnotify_file_has_pre_content_watches(struct file *file);
-+#else
-+static inline bool fsnotify_file_has_pre_content_watches(struct file *file)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_FANOTIFY_ACCESS_PERMISSIONS */
++	/* See comment in do_sync_mmap_readahead. */
++	if (fsnotify_file_has_pre_content_watches(file))
++		return fpin;
 +
- #else
+ 	/* If we don't want any read-ahead, don't bother */
+ 	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
+ 		return fpin;
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 817b2a352d78..bc068d9218e3 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -128,6 +128,7 @@
+ #include <linux/blk-cgroup.h>
+ #include <linux/fadvise.h>
+ #include <linux/sched/mm.h>
++#include <linux/fsnotify.h>
  
- static inline int fsnotify(__u32 mask, const void *data, int data_type,
-@@ -938,6 +947,11 @@ static inline u32 fsnotify_get_cookie(void)
- static inline void fsnotify_unmount_inodes(struct super_block *sb)
- {}
+ #include "internal.h"
  
-+static inline bool fsnotify_file_has_pre_content_watches(struct file *file)
-+{
-+	return false;
-+}
+@@ -674,6 +675,14 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ {
+ 	bool do_forced_ra = ractl->file && (ractl->file->f_mode & FMODE_RANDOM);
+ 
++	/*
++	 * If we have pre-content watches we need to disable readahead to make
++	 * sure that we don't find 0 filled pages in cache that we never emitted
++	 * events for.
++	 */
++	if (ractl->file && fsnotify_file_has_pre_content_watches(ractl->file))
++		return;
 +
- #endif	/* CONFIG_FSNOTIFY */
+ 	/*
+ 	 * Even if readahead is disabled, issue this request as readahead
+ 	 * as we'll need it to satisfy the requested range. The forced
+@@ -704,6 +713,10 @@ void page_cache_async_ra(struct readahead_control *ractl,
+ 	if (!ractl->ra->ra_pages)
+ 		return;
  
- #endif	/* __KERNEL __ */
++	/* See the comment in page_cache_sync_ra. */
++	if (ractl->file && fsnotify_file_has_pre_content_watches(ractl->file))
++		return;
++
+ 	/*
+ 	 * Same bit is used for PG_readahead and PG_reclaim.
+ 	 */
 -- 
 2.43.0
 
