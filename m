@@ -1,104 +1,95 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992521D1F69
-	for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 21:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D011547C0;
+	Thu, 15 Aug 2024 05:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723670785; cv=none; b=iXX7uswilL8v+z40NZ/947Q1ba8IsYPaTzgzhkz2mOv16kEFLDnoo6Ac/HTHOG+yoeaLsj/A54/60GSsYDh38QY5pr83Th1p73w7X1FeRkdPl3tUVMXaDKMb0tX6lL5F0zLlO7PY1GnpAG4W8eLEK372rGN5MCX5i4VfUaf20IM=
+	t=1723699686; cv=none; b=oG9T5n1BGo1fiOkeAwadrTcjaLTninywY07pb6LwjtFPuOb0Ev3AWzw8DogNNXloVnVzJ2PDTDPSvLOYxu+RHt/vw96gkiZBNO4M1BTzCs+unJIhJnKD7B0NnBO5DIbUhnuUU2I9pZduvpf9wo+hApI60rl6+SnlZlx9hM6zj2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723670785; c=relaxed/simple;
-	bh=S0mezk7lokrHR+8fcU6LAupASbj5zKj9YDRU//oGrc4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6OKoB842fqrMiFwYPAVWoY6S0P/k+HwYE8GmeD4ObrwhIPjUmNH4ugEgesPFaesyzM61Vkqao8ldWApddxHNDUJT4zElwqKZZRAntuHoEnnLT6MP1C+LeLpZHk+j4jttdh8piMboDH9P80nDCrpxZkvcFFA9hMfwiyfu1GllTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=FpDGDD97; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1723699686; c=relaxed/simple;
+	bh=eSAiG30U4Qk4f+W5EYF3TdYcm6s5V1OE+Tr7YHKbOXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XV4YJhdq1Dqkkch2vbN0JNqbrEDVnpuU8emomSbuRManTMRgf8sjNm31TBr7nbp/W8nAoAeekHlrUTnvlMnhaPZEsswsN8X+wlPm0D+NCZdRRWw98NlXkBn6N2S6GzSKx5Rs95JQnfcHg9SEKSy+h617FKxgo+H/QiUYqzqCJYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHw50lU0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="FpDGDD97"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7a1d7bc07b7so21122385a.0
-        for <gfs2@lists.linux.dev>; Wed, 14 Aug 2024 14:26:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1723670781; x=1724275581; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/g0betjFPlSWGNNLN2rg+et8Qa/vCpguwAUALfab+wk=;
-        b=FpDGDD97eyGqqNMHXxSmOuaYZ1p9dXtS/IGOM8P20LajLjMo4mmNJliljw91uzorfv
-         aAG3aNV9oNXW9w17WceUKrkXZljV7AX9mZL4SIXqN2z/nY+2gcWUKXTVQ/szN+PGTODZ
-         H9CvF19y2H5230pccOybBNPfANAz6aVi7OfSsyLV4oqnoURdUzzXsuttxAA3rlrTH3Lw
-         LcF6rNZlwZpoCGYv9lTtq87Z076lAyjTzmB8mD71X8XCLTUK4k0bwpoQ1Xl/cTH/vNGf
-         JO7VmFPdIk/2QBQQPZtLjecd/N3pngVHGvh/vbzLoAFiMG5DoSTSO46DmdZh/DaV/b/B
-         7RKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723670781; x=1724275581;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/g0betjFPlSWGNNLN2rg+et8Qa/vCpguwAUALfab+wk=;
-        b=oJZItdCocJSku2VTCQE+sdmYs7gQttQfdqfn3pabo+zNmBU9zD2SKztM7Z/naB5kIs
-         yPHAkMSmV2L2mKtZxR1d6r3RkUfee7AbRB3azwiu+v1a05xQbG6liD0la6cyNpVt5eoz
-         /4YwHIbmWxAnWCgkdkrC/p0xo1nTGuNwvXyZOLfwgem9HMGxDNGTt5237Z/SgCbQyA59
-         EI82SKGWEY7pkzRTUVwXR8b8V53k4s0wALgHJuIsZINkskYITqPAi7HkJ1q79h3YX4bW
-         vCnGwDqKsZOwT0ufb7BxzC5jUgdBk4n5VCGQF19PO8vGx2uAtBOWR44QjXQj+XbBbzzM
-         EPMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQsxT5dVgZ+s+Ly8kKotfsicR7Nc0/pIRZRPPSwkMMhgFNX5YtmiQZUCbDvPjcXKOigOYCi1hOkyT5YuYRZdLD7D82vQ==
-X-Gm-Message-State: AOJu0Yx7q7/j0W8ikM/Q0FdzS97N7li3s7v7fxJwFqD4mGZBqpJ4xEXR
-	ztHb9Fem8SfGq/VL96F3/MmnfHobUwi662QoOg3tYFt/3bYY9yYEGLXu5+leb1I=
-X-Google-Smtp-Source: AGHT+IEwLYSHYYTuAZJvUuE3hfd+/zuyGZIMkGIICNZLTcaMoU6Cqa81XGFABSQNoiEu298KSeXnZA==
-X-Received: by 2002:a05:620a:288a:b0:79f:17d9:d86b with SMTP id af79cd13be357-7a4ee318773mr448400785a.12.1723670781667;
-        Wed, 14 Aug 2024 14:26:21 -0700 (PDT)
-Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4536a072683sm480751cf.85.2024.08.14.14.26.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 14:26:21 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: kernel-team@fb.com,
-	linux-fsdevel@vger.kernel.org,
-	jack@suse.cz,
-	amir73il@gmail.com,
-	brauner@kernel.org,
-	linux-xfs@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-bcachefs@vger.kernel.org
-Subject: [PATCH v4 16/16] xfs: add pre-content fsnotify hook for write faults
-Date: Wed, 14 Aug 2024 17:25:34 -0400
-Message-ID: <631039816bbac737db351e3067520e85a8774ba1.1723670362.git.josef@toxicpanda.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1723670362.git.josef@toxicpanda.com>
-References: <cover.1723670362.git.josef@toxicpanda.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHw50lU0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4662BC4AF0A;
+	Thu, 15 Aug 2024 05:28:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723699685;
+	bh=eSAiG30U4Qk4f+W5EYF3TdYcm6s5V1OE+Tr7YHKbOXw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hHw50lU0zcvoqZryILu6hk6kw/qqvBsksy7t17Z3t5vNSSZFNg3rhC60tZdyDA5uo
+	 7hu123/rmhafQd0QTImyUwCAlCPZwZNcFK51NkilkilfBS4+RDpYaqre/dvQSJHFIv
+	 Cv1qTbJXdv5MOto6QzABXxwsmB26eMuiHLGea0n8=
+Date: Thu, 15 Aug 2024 07:28:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org,
+	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com,
+	jlbec@evilplan.org, joseph.qi@linux.alibaba.com, rafael@kernel.org,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	lucien.xin@gmail.com
+Subject: Re: [RFC dlm/next 09/12] kobject: export generic helper ops
+Message-ID: <2024081519-caddy-monstrous-b37d@gregkh>
+References: <20240814143414.1877505-1-aahringo@redhat.com>
+ <20240814143414.1877505-10-aahringo@redhat.com>
+ <2024081445-coffee-antiques-e9cc@gregkh>
+ <CAK-6q+hN8ZRAHc7aS7C_RO4pEGN1t3eA_vDChsSgsQOcJEU4vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK-6q+hN8ZRAHc7aS7C_RO4pEGN1t3eA_vDChsSgsQOcJEU4vg@mail.gmail.com>
 
-xfs has it's own handling for write faults, so we need to add the
-pre-content fsnotify hook for this case.  Reads go through filemap_fault
-so they're handled properly there.
+On Wed, Aug 14, 2024 at 04:47:28PM -0400, Alexander Aring wrote:
+> Hi,
+> 
+> On Wed, Aug 14, 2024 at 11:06 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Aug 14, 2024 at 10:34:11AM -0400, Alexander Aring wrote:
+> > > This patch exports generic helpers like kset_release() and
+> > > kset_get_ownership() so users can use them in their own struct kobj_type
+> > > implementation instead of implementing their own functions that do the
+> > > same.
+> >
+> > Why is anyone needing these?  What raw kobjects require this type of
+> > stuff?
+> >
+> 
+> In this patch series I introduced kset_type_create_and_add() to have
+> the possibility to do the exact same what kset_create_and_add() is
+> doing, just setting a different "struct kobj_type", for the kset that
+> is created internally by kset_create_and_add(). I can't use
+> kset_create_and_add() as it always uses "kset_ktype", see [0].
+> 
+> I am doing that to have only a callback for ".child_ns_type" assigned
+> as it returns the "&net_ns_type_operations;" structure to tell
+> underneath everything is separated by net namespaces.
+> I don't want to change anything else so the "struct kobj_type" should
+> look like what kset_create_and_add() is doing. Therefore I am creating
+> the same structure as kset_create_and_add() is using, see [0]. The
+> "kobj_sysfs_ops" structure seems to be already accessible from
+> outside, just the two functions I am exporting in this patch are
+> missing. Or I implement it in the same way in the dlm/gfs2 codebase
+> (that is what nfs is currently doing, see [1]).
+> 
+> And then we are at the two users of those kobjects that are using
+> those functions, it's DLM and GFS2 as they used kset_create_and_add()
+> before and I just want to add the ".child_ns_type" callback. Other
+> users could be nfs [1] (for the release, get_ownership - I have no
+> idea).
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- fs/xfs/xfs_file.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Ah, makes much more sense, thanks.  And ick, network namespaces...
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index 4cdc54dc9686..e61c4c389d7d 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -1283,6 +1283,10 @@ xfs_write_fault(
- 	unsigned int		lock_mode = XFS_MMAPLOCK_SHARED;
- 	vm_fault_t		ret;
- 
-+	ret = filemap_maybe_emit_fsnotify_event(vmf);
-+	if (unlikely(ret))
-+		return ret;
-+
- 	sb_start_pagefault(inode->i_sb);
- 	file_update_time(vmf->vma->vm_file);
- 
--- 
-2.43.0
+Anyway, feel free to take this through whatever tree the rest of the
+series needs to go through:
 
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
