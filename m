@@ -1,119 +1,188 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A764120B
-	for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 03:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD2149005;
+	Tue, 20 Aug 2024 07:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724124719; cv=none; b=XCbTwF3lZrv+uhjmRAcqlhVMz6wDZ2C/vlx0xsaRxWdwjTOkXNRqjEPQQZyoViInZKSW+MMhY+D9QVDrSjOctb4Oh5HxAaAWeYlLE/+98YkbyqIpD+rswPVmeNBflPH4eLkGDs69l1j6TQ0NLk9/txRX65Hk0o1m1Jy3I3A26CE=
+	t=1724139628; cv=none; b=SmrbbYP9xNyfHOASDP8ASoP1nIXYFRxyzx4YWlP3eCqlB9XXrK0yFoAZSjslzST02auuumiefjAeEnj5mXUPg9/8vE4Uf4J1XZQZPGGudfOBhSmGbAwBhfz0FJ4W9Kz8o7pMfFUyJXeRsmds85iXPUs0v2k5Irz4Rag0WBpj69M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724124719; c=relaxed/simple;
-	bh=Lsks9gT6Mzx0h2HgXjICoo9sTX9N2S+fZp6knFYb9CU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NJu74hMYwv0Uj+2Lt86DlGxX1tEW3qVLZBYAzZUkKD+9p7ZF+GBLSJzO64tT7t1u3SJqRvgCr1K8L1rBWAZUR8iQpUq/qkj9HmNNJpcatLGKH9ZmfWZiSBSLkNAl4J040RkC1oi5hhSwB9RUAFRAJfsazbdMDHtox+TKAdMlRuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BrjClzLz; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724139628; c=relaxed/simple;
+	bh=hawFFnGsZ8QIvUfjOYbiKz9xBDXapD08x6QGiLvAwPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XJJ4JsGoZ2b6oV2Hxh0TRa8gk1Xcjpic3GGo0l/sY6vWYB0ihIR/7CeGl719VL0hwba20gD8kT1+dUL8zvqvdAGgsQu6/X+o9033CgFjweRbphrMNhD4gOCS4yhhQpAJDOinOdLfwkQ4c5NqCiCfiWatBxcgfMCjJgSDiK7HVTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=frH76/Tv; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BrjClzLz"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2021a99af5eso22538575ad.1
-        for <gfs2@lists.linux.dev>; Mon, 19 Aug 2024 20:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724124717; x=1724729517; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nBpomUDHMNH7osuoqx8GMBZw65c4SL4hGXGtEruA0HY=;
-        b=BrjClzLzKh54/ZW+Wg/fnaU2zbysAojpf66WvnbzpxCUhbnwVOKQwLDNLS1zvg7bNw
-         qJ5TSdxJjOW6twMwLIExrL6BGYf2Wl8K+hf4QVNVHC5tbobu6Mcm8nMneMlF1RyCsVxb
-         xMMzHPyfdTlmqQYe9KYaW8Jl49NvZKgsguIyIhltDSyj+WtxhOTRAIiP8UhFcqc5O3RN
-         ytP7CHFXGFilMvIrWAylGHuO61kR3BDdSx9g5EgThBgIYWkYq0dhHTVkBMaEFXZiDV8X
-         Wax6sA2YNYZ0BKBxO9dGsAIaiHtXe1q/y0D3TfmPKJrW7d8R8uzn8Xy+ybHdbOgTissO
-         CPVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724124717; x=1724729517;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nBpomUDHMNH7osuoqx8GMBZw65c4SL4hGXGtEruA0HY=;
-        b=W6Sf0lTQ8IrUJtrR980T3nw28O+btykOsyNCYiuCdneathj0kXXYgMNQ3P8dbiUWxA
-         nqKKkEE9DsaNQwG7B+J0ZUo0nXEIGnNlQ0Xxi6FeeeOmRqkD4RVPEDI9GGqf8fAkNE9/
-         jHVEgLENISZCQlLDQzFvWVeqM3gyOr7F3VK8+aBUYAVXiaCcyPnVN4dTzirvT9dGDiKc
-         Wh/dOBz5OE92nxginqfGHsVfSH+SaHVh4aZ+nVnJIVRfKc0hAgl0K/9KHPn5c7UKmqC0
-         xk2y2dtPCb/lg5ERGTonPl+6n2XXjDUjyO8Fh4MTXO5sTtCMODzT+YjaA9bck+47BtDz
-         pe0g==
-X-Gm-Message-State: AOJu0YzivWFAUdypmob0Ur0qc9lt70HOPTGaP70+y0vhCS1Nc+l8bGQU
-	6TC0Q/ToHs1cRwaGGeM1S0CTuVHtr0E/R56uSbCrMm4qM+Iq2y61FP0t389t
-X-Google-Smtp-Source: AGHT+IEffL7jXIh+0ls5CoWvCOqF31cquBrZihGEprotxLlNle5BEtjn//syfW/d1AuHY06fynYBNQ==
-X-Received: by 2002:a17:903:41cf:b0:1fb:973f:866 with SMTP id d9443c01a7336-20203f47a9emr140920385ad.52.1724124716575;
-        Mon, 19 Aug 2024 20:31:56 -0700 (PDT)
-Received: from localhost ([123.113.109.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f0302d28sm69242465ad.31.2024.08.19.20.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 20:31:56 -0700 (PDT)
-From: Julian Sun <sunjunchao2870@gmail.com>
-To: gfs2@lists.linux.dev,
-	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Cc: agruenba@redhat.com,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] gfs2: fix double destroy_workqueue error
-Date: Tue, 20 Aug 2024 11:31:48 +0800
-Message-Id: <20240820033148.29662-1-sunjunchao2870@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="frH76/Tv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724139627; x=1755675627;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hawFFnGsZ8QIvUfjOYbiKz9xBDXapD08x6QGiLvAwPs=;
+  b=frH76/Tv+9ifIDSxpBY3VH9ps0y884t7IF5Ex8vS36mYiIv2KrTqe5Ak
+   a68PyDpHcufaHPlMTPcQX3Cgl0T/DeDmKMLNTovUNz503NMPSqwzB3JFw
+   +3PAlVG20arGqaehpl1fqE0KaZgC/FjbXJutzb7iJ/sebRYb9QAX4lNmJ
+   0a1875KkqgGUs1CpgyYtUxbkQQJhPgxGHCyEMnthvX/HFP8snkBXIK03L
+   oMaymjYIkHQTJk08dOndFwDGlCeahbaNbAd/oc4Jcbv51mrKnMiuG8aU7
+   MRgy3gxvSHrUcf/P0EpZx0XNsJQLYqyohYQFJ44TYAzl+CRTlqknh2p+1
+   g==;
+X-CSE-ConnectionGUID: scJOoLEnS3yDGcrImuoP0A==
+X-CSE-MsgGUID: lv0Cx7yiRameHnzwWvYjGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="39926456"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="39926456"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 00:40:25 -0700
+X-CSE-ConnectionGUID: u+Uf2G9mTouWtcLGx/72Lw==
+X-CSE-MsgGUID: Ni+zAIHISxyEEUBu7A5x+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="91406661"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Aug 2024 00:40:21 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sgJTW-0009r2-39;
+	Tue, 20 Aug 2024 07:40:18 +0000
+Date: Tue, 20 Aug 2024 15:40:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexander Aring <aahringo@redhat.com>, teigland@redhat.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	gfs2@lists.linux.dev, song@kernel.org, yukuai3@huawei.com,
+	agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com, gregkh@linuxfoundation.org,
+	rafael@kernel.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, netdev@vger.kernel.org,
+	vvidic@valentin-vidic.from.hr, heming.zhao@suse.com,
+	lucien.xin@gmail.com, aahringo@redhat.com
+Subject: Re: [PATCH dlm/next 11/12] dlm: add nldlm net-namespace aware UAPI
+Message-ID: <202408201509.g1VKeeOl-lkp@intel.com>
+References: <20240819183742.2263895-12-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819183742.2263895-12-aahringo@redhat.com>
 
-When gfs2_fill_super() fails, destroy_workqueue()
-is called within gfs2_gl_hash_clear(), and the
-subsequent code path calls destroy_workqueue()
-on the same work queue again.
+Hi Alexander,
 
-This issue can be fixed by setting the work
-queue pointer to NULL after the first
-destroy_workqueue() call and checking for
-a NULL pointer before attempting to destroy
-the work queue again.
+kernel test robot noticed the following build warnings:
 
-Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
-Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
----
- fs/gfs2/glock.c      | 1 +
- fs/gfs2/ops_fstype.c | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+[auto build test WARNING on teigland-dlm/next]
+[also build test WARNING on next-20240820]
+[cannot apply to gfs2/for-next driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.11-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 12a769077ea0..4775c2cb8ae1 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -2249,6 +2249,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
- 	gfs2_free_dead_glocks(sdp);
- 	glock_hash_walk(dump_glock_func, sdp);
- 	destroy_workqueue(sdp->sd_glock_wq);
-+	sdp->sd_glock_wq = NULL;
- }
- 
- static const char *state2str(unsigned state)
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index ff1f3e3dc65c..c1a7ff713c84 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1305,7 +1305,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 	gfs2_delete_debugfs_file(sdp);
- 	gfs2_sys_fs_del(sdp);
- fail_delete_wq:
--	destroy_workqueue(sdp->sd_delete_wq);
-+	if (sdp->sd_delete_wq)
-+		destroy_workqueue(sdp->sd_delete_wq);
- fail_glock_wq:
- 	destroy_workqueue(sdp->sd_glock_wq);
- fail_free:
+url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Aring/dlm-introduce-dlm_find_lockspace_name/20240820-024440
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git next
+patch link:    https://lore.kernel.org/r/20240819183742.2263895-12-aahringo%40redhat.com
+patch subject: [PATCH dlm/next 11/12] dlm: add nldlm net-namespace aware UAPI
+config: x86_64-buildonly-randconfig-001-20240820 (https://download.01.org/0day-ci/archive/20240820/202408201509.g1VKeeOl-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240820/202408201509.g1VKeeOl-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408201509.g1VKeeOl-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> fs/dlm/nldlm.c:195:2: warning: variable 'ls' is used uninitialized whenever 'for' loop exits because its condition is false [-Wsometimes-uninitialized]
+     195 |         list_for_each_entry(ls_iter, &dn->lockspaces, list) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/list.h:779:7: note: expanded from macro 'list_for_each_entry'
+     779 |              !list_entry_is_head(pos, head, member);                    \
+         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   fs/dlm/nldlm.c:202:7: note: uninitialized use occurs here
+     202 |         if (!ls) {
+         |              ^~
+   fs/dlm/nldlm.c:195:2: note: remove the condition if it is always true
+     195 |         list_for_each_entry(ls_iter, &dn->lockspaces, list) {
+         |         ^
+   include/linux/list.h:779:7: note: expanded from macro 'list_for_each_entry'
+     779 |              !list_entry_is_head(pos, head, member);                    \
+         |              ^
+   fs/dlm/nldlm.c:185:23: note: initialize the variable 'ls' to silence this warning
+     185 |         struct dlm_cfg_ls *ls, *ls_iter = NULL;
+         |                              ^
+         |                               = NULL
+>> fs/dlm/nldlm.c:918:11: warning: variable 'log_level' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+     918 |         else if (dn->config.ci_log_debug)
+         |                  ^~~~~~~~~~~~~~~~~~~~~~~
+   fs/dlm/nldlm.c:921:50: note: uninitialized use occurs here
+     921 |         rv = nla_put_u32(skb, NLDLM_CFG_ATTR_LOG_LEVEL, log_level);
+         |                                                         ^~~~~~~~~
+   fs/dlm/nldlm.c:918:7: note: remove the 'if' if its condition is always true
+     918 |         else if (dn->config.ci_log_debug)
+         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     919 |                 log_level = NLDLM_LOG_LEVEL_DEBUG;
+   fs/dlm/nldlm.c:868:20: note: initialize the variable 'log_level' to silence this warning
+     868 |         uint32_t log_level;
+         |                           ^
+         |                            = 0
+   2 warnings generated.
+
+
+vim +195 fs/dlm/nldlm.c
+
+   181	
+   182	static int nldlm_get_ls(struct sk_buff *msg, struct genl_info *info)
+   183	{
+   184		struct dlm_net *dn = dlm_pernet(sock_net(msg->sk));
+ > 185		struct dlm_cfg_ls *ls, *ls_iter = NULL;
+   186		char lsname[DLM_LOCKSPACE_LEN];
+   187		struct sk_buff *skb;
+   188		int rv;
+   189	
+   190		rv = nldlm_parse_ls(info->attrs[NLDLM_ATTR_LS], lsname);
+   191		if (rv < 0)
+   192			return rv;
+   193	
+   194		mutex_lock(&dn->cfg_lock);
+ > 195		list_for_each_entry(ls_iter, &dn->lockspaces, list) {
+   196			if (!strncmp(ls_iter->name, lsname, DLM_LOCKSPACE_LEN)) {
+   197				ls = ls_iter;
+   198				break;
+   199			}
+   200		}
+   201	
+   202		if (!ls) {
+   203			rv = -ENOENT;
+   204			goto err;
+   205		}
+   206	
+   207		skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
+   208		if (!skb) {
+   209			rv = -ENOMEM;
+   210			goto err;
+   211		}
+   212	
+   213		rv = __nldlm_get_ls(skb, ls, info->snd_portid,
+   214				    info->snd_seq, NULL, 0);
+   215		if (rv < 0) {
+   216			nlmsg_free(skb);
+   217			goto err;
+   218		}
+   219	
+   220		rv = genlmsg_reply(skb, info);
+   221	
+   222	err:
+   223		mutex_unlock(&dn->cfg_lock);
+   224		return rv;
+   225	}
+   226	
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
