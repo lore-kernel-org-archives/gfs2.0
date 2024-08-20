@@ -1,54 +1,54 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F73C193090
-	for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 14:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC39191F8C
+	for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 14:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724164711; cv=none; b=AehJoqRTC+ITmKmT7R77CAIdo+m6tzLXhgcbQCrnAWQJ+smnXFjHzwr6MylLjTVO3wzxoMGkwcocOJbGDU9ZAQUlORhWB3W4RmAOGP/B2cjeaUkU6ZFQ2BFSI8IoxG+71YXn+lsOX+9cQ+ROiONVwt0UEH00hMP3g5+OmQIayXA=
+	t=1724164899; cv=none; b=E2SiJICuZO7KOphIsdlRj2JeTnaekQH1gOakhJDBvYZBW+1aur5BiTcO/umRpS9SrLfseijBVrkjY32e8WKM4CQTwRwPse8d1oMWsJYPB7Bj3q9rdmNsB6Uu5FrzDSbyPkDaAJukYd36w0IwrWZU57AOIEX/oXS99DAUMAPJLtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724164711; c=relaxed/simple;
-	bh=ih/n8CrewKI6D1+9ualLUR3DuDWkOzuYv5KaIh7VetU=;
+	s=arc-20240116; t=1724164899; c=relaxed/simple;
+	bh=ol+KLWbA2n+RZgCVOjQA6F0ZFiUQopgZSe8GIuN2fzA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vjrf4A3GQdsPU92c5mv6X75+4q/wekGNlF6zE9KB39cLdAEpfJRoyUYIorWN/SFSwclpbgCCE05lL9iA3r7YybkX2bGgdiLs7ZxcaWbB45Wc4D+GmrtWbyhwfrbUq7sd/5w/Vhe6ddkrVSeYYKx+r7/VrSh++Nk4tG/BoB7BD7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hep0zoE8; arc=none smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=kqo8p1iGT28EdnEBQQwDbfjYAmS1ufEu2533/vKkZWi6z6vHfgAEZeOIA+PGAXV6giFyM2N5zsgsUozvV/0df0LuH3aNL9Ww5T7PTyPwLtT4J4A9fddlyBy+ckNFXIcjdOzRSQLX+XBK6kDjd1it0roFgOkewUEd+WuIjGiuI4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxQ1Em0Z; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hep0zoE8"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5bed0a2ae0fso4649205a12.1
-        for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 07:38:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxQ1Em0Z"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f3eabcd293so11351711fa.2
+        for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 07:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724164708; x=1724769508; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724164896; x=1724769696; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PlKyZcerJI/b+5rW9w5YGY77JDxGB+71LgW6P71rn+M=;
-        b=hep0zoE8aC0fNgV9dAByNhCx3SCEfabZR19XLlorr5zuCn/F0Au4eeewPgw4jSOVUH
-         BLZlNy5KxMcddTHsu74Rr5W/jOCBhe9pHYc35QEqDxB0fSbEG8Z6AW501GEuAd3BJk1l
-         QIloCw3rNIAnXSYdwQiYZFj4RG7+xl/ouYuAb7upCp3sNO2ohWm/xucXfN90M7ReMXrw
-         qE1XGy8AnqfL/e4f22aDeMxnAp76QuzBKaV1a2JPPKiCUMh5q/a7KhtvKyPebhy8uPn0
-         N/AZXf3M8CUM+F7/InTYfcuBqbm+aCsHhmOYbWwHOkjrduOi26Y2te8EGvaFNWlbioyH
-         QnfA==
+        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
+        b=FxQ1Em0ZyCpS5zI8GvxistJ/rCj+IemSubzVS6AT9lZ9CTz7uPMhOB28AeJYMKPyHH
+         ozsAjsuwpXypWg8+PGhxRl1wal+YrkgvI45iLv1tZ0fIuelc2YK7PgWgpzbeBV7Bp22N
+         IWRfoH3vgyHn3bgJGq9+8ZQqEu2SmKslsLiXqVp8Yc0lC1L5zQHYLuNOcQMr/tNWFuXR
+         QiDLUxaflPxLCfBsCJWNDYZ7dVp+bt/DJIxGdYMS0J4laIbTfGNSSU9RWxyhkjEi08qO
+         vzJddODWhYQFiFdSOaISIxjEfusaJZ/rLRBJBSL85rLdvRqSUzHty7IViELA4QpOiPbI
+         vmTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724164708; x=1724769508;
+        d=1e100.net; s=20230601; t=1724164896; x=1724769696;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PlKyZcerJI/b+5rW9w5YGY77JDxGB+71LgW6P71rn+M=;
-        b=OMfE1nlx7Rnlu8zy1x2PvuGLfNQYcDW3OabQqVkBcS+KWFJ47lXM8NVgvolYdVQDXx
-         C6n+8iddcBsO+GtSg73uWOQiLlZqLlqcg2IRXvaHP4U96f500WrMq2EZ9emmDZ5r95vT
-         XLJynCWG7tszeEm8q34VnSf8nJEvquoBTF4ljW5N6vd1RXhfnbTwGlcSh//FBXTPpald
-         Pqtq1BlSQcQgkVcAK93swJ6/QuUmB8+IHUVYTR2ADbrha+mf+4m2q66l4/AlX7L/cVw6
-         p+t5ZM5bZ6VQtAM3e/psrY0HIeaZpHiXD9wTexdUrCNdyKp+ftA5YDSr0J6qfHDy/F96
-         kVag==
-X-Gm-Message-State: AOJu0Yw57oMp96k20X797twltGLKAFcR0nv6AOUwRARviaKys1RKWpQy
-	G9NHWG+2XZyIFDHTvs/ZD5BmDF7QpMkwmEcQ3LBI0q3Vq9dJQWp6OrSwVeofasFUAq6ltRtrz5e
-	vYsKWIIN7QuvA+OC+liubcD90VxA=
-X-Google-Smtp-Source: AGHT+IE/Q/pID2ImU9RPleC5mWD1P480kdwVLhC0s8JHB9DkygTJCsuzHRZVusRgrZlKdW5KHj8OvpykW/N/5BC9NSk=
-X-Received: by 2002:a05:6402:27cd:b0:5be:d5a8:e0e with SMTP id
- 4fb4d7f45d1cf-5bf0d2d2ab5mr1738851a12.37.1724164707363; Tue, 20 Aug 2024
- 07:38:27 -0700 (PDT)
+        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
+        b=wOUumG3MvSPkr3+2TP2vL2LBHxrkHBDS1G9OOwdYRnuqXKvkt4mZih0R6l6hPZht9D
+         DJ5SUzEzigE+zEJdweQnz9bRq1bG2Ibskh/FmKO7HRWas6uH8gEczmM77VDFhZlkgFBB
+         4P2MZKt9eRJMy4xDUyTSLXE5wieEyHzyMGRq9PXMYGAdkzJUTp6snpVz3yzS1FqWDFZ5
+         SuvBLjkwkT+jOXGWa4ryScpB6fDqhl6zNY2fLo3jAoIltEC3ngoCxE1lx1VkzUtR/Gqb
+         vpKJsQKV7oaY2ja1VGGLyPLeFYUWvKgrOOHpo4beDM2a+HrofQhuOCjXFCZwCwrJDk/r
+         PD9A==
+X-Gm-Message-State: AOJu0YyGmqtyG+oNPX5CDMWlEk73l/mSIw2V1Hx2Ll2VXqjDe6N6b18J
+	+W/3dr+S9E43iGo1q2m6xdxdBn3gmmNiqYzvTLvFeUg8uh/XNYbWcAMsyfSDJhwxVGYM25r5Xf/
+	eCHwKxDa8eOJNlwmO1rC03gnukU4=
+X-Google-Smtp-Source: AGHT+IFs3rvyeXkj2tvWqusUlk0Gnjrjtiy6bfyOtPXdZdDMGbtqrAaEhUtsoSoT/xZRdVNT440vMqkHDu8HrJmMptM=
+X-Received: by 2002:a2e:bc09:0:b0:2ef:23ec:9356 with SMTP id
+ 38308e7fff4ca-2f3be574b0amr101743041fa.8.1724164894866; Tue, 20 Aug 2024
+ 07:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -58,8 +58,8 @@ MIME-Version: 1.0
 References: <20240820033148.29662-1-sunjunchao2870@gmail.com> <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
 In-Reply-To: <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
 From: Julian Sun <sunjunchao2870@gmail.com>
-Date: Tue, 20 Aug 2024 22:38:15 +0800
-Message-ID: <CAHB1Nagi560YvT_9LKevFGh-yvDxDTtTd04eskQ74OgcOamAeA@mail.gmail.com>
+Date: Tue, 20 Aug 2024 22:41:22 +0800
+Message-ID: <CAHB1NagXgRMj-Rhb=86L8kaXEe8H24=Of6nrUmhMVR2fxTqYkA@mail.gmail.com>
 Subject: Re: [PATCH] gfs2: fix double destroy_workqueue error
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: gfs2@lists.linux.dev, 
@@ -127,15 +127,8 @@ com> wrote:
 >
 > > but here, we check if sdp->sd_delete_wq is NULL? That doesn't make sens=
 e.
-
-I'm not sure if I have missed anything important. My understanding is
-that in gfs2_fill_super(), if execution jumps to the fail_lm label,
-gfs2_gl_hash_clear() is called first, which internally calls
-destroy_workqueue(sdp->sd_glock_wq). Subsequently, the code reaches
-the fail_delete_wq label, where destroy_workqueue(sdp->sd_glock_wq) is
-called again, leading to a bug.
-If there is anything important I'm missing, please let me know.
-
+Oh... I see. Sorry for this stupid mistake. I will correct it and send
+a patch v2.
 >
 > >  fail_glock_wq:
 > >         destroy_workqueue(sdp->sd_glock_wq);
