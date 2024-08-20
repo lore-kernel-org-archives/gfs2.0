@@ -1,120 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC9D1990B3;
-	Tue, 20 Aug 2024 14:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CBD18E361
+	for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 15:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724165027; cv=none; b=hP87ZboUpHiAjRbMRfo/nW+CTMDfkh87OXsccjPsuNF5Wp7u+3jYoPLCL9N7U0LKHoaxWu7HTcc5BRh+8bBlOPPtl97i8mvB9Ka4fVcDO36RSbUQ7Jn15I9Add/XoN+fnfsGyK03h4zInw5GnCsFz2CnmgpLfA7Jv9knjECG9Mo=
+	t=1724166541; cv=none; b=O0azgajunPKqMkEg/A1PPbc7fC17BWXPZPMzDlz3eAfk97lHTU+Rhb1zl+FWWKWPHIVBviEtnI9sHKROBI26MKZcpbcrbAHkEp2wqG590hzkE9w1z1Xn+Un1E0ukDFUftfWn9HvycVS824x4WS8LkiV9lgxOXw5A5TNuR1E6HK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724165027; c=relaxed/simple;
-	bh=khzBjM6tTTIrfEx7SUEq8d1H8tHgDTjNBHiBaWajyRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dJ7WlWIkCjspn7+tS7YP1X1KSVjH9Am7Jvg1gCW6YQyIqEek1emYOfUOWsH3mRkUxt/q1Dt4Xs/jbbdUwm/C52hhUlmHEoh1zX4X53YLZ0Oz9J+8DnUT+KfI5mS6GwUyC/qokiwAqRWlWideTM4EnGYkM7VM3LaWGboKmSdR4Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dwhfqlfs; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1724166541; c=relaxed/simple;
+	bh=eIBe5VU0rwzRYmoZ+ezGTfEUNZB4FKbZoyKyuWgfjEU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pT4Gc5uqnixdLAwhxLsjvsJ+qpUbgHulW/tK51BI0dIubtffns64TsAW7NTsJ2Ppkgai4/W5DKLvS8AgCKpffeNMOooQDjzhyR2njD5XFSFz3jFaAScb2OuloylFoIW5MUUBJzhBzDDisCiZElLcN4gc3Ko6Tw4lMJx6lek8yak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKtYcyxk; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dwhfqlfs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724165026; x=1755701026;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=khzBjM6tTTIrfEx7SUEq8d1H8tHgDTjNBHiBaWajyRc=;
-  b=dwhfqlfsTwgv66J/uD0UjcgBcKZlA7pE8zeaJSy0Uoq3y+gMEvhXqUJT
-   ZR9sDi52M75R1skAErNi8H/A0fZwdh6/JAfm5BNYnO3+P8nMZGdeJfqkb
-   wuva8yZlS+LlxdbD/0Nu47CgGks9MTtmMU6L6cQ2Dwt3qzMtuIkuSY9IE
-   KoFc3CIr0mes2KjlpgXbPHzfPV45ZYYxS1eu2eSNt81N21cOREg4sFKUv
-   +01zmmXfH8Q2MYFlpZTUyM+1Ca71AtZKh62udahSApm+gObRLHdbCz/fy
-   VhOKI2bE4iI/OKixf/4CNb4x7Z7gfs82eIPuVDa9oSbVtE0jNj9cHvWIx
-   Q==;
-X-CSE-ConnectionGUID: 4pn48BzfTdKiI2GPt6dl4Q==
-X-CSE-MsgGUID: EKHEZfb4QIK5IUZ3a1QqXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="26221534"
-X-IronPort-AV: E=Sophos;i="6.10,162,1719903600"; 
-   d="scan'208";a="26221534"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 07:43:45 -0700
-X-CSE-ConnectionGUID: y+2QOYKjTgKIjxm9GBuLOA==
-X-CSE-MsgGUID: m0LGFuy+T1WnGhIUGLeoQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,162,1719903600"; 
-   d="scan'208";a="60812367"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 20 Aug 2024 07:43:41 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sgQ5C-000AIY-1h;
-	Tue, 20 Aug 2024 14:43:38 +0000
-Date: Tue, 20 Aug 2024 22:42:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Aring <aahringo@redhat.com>, teigland@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev, song@kernel.org,
-	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com,
-	jlbec@evilplan.org, joseph.qi@linux.alibaba.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	netdev@vger.kernel.org, vvidic@valentin-vidic.from.hr,
-	heming.zhao@suse.com, lucien.xin@gmail.com, aahringo@redhat.com
-Subject: Re: [PATCH dlm/next 12/12] gfs2: separate mount context by
- net-namespaces
-Message-ID: <202408202240.cavJRcbt-lkp@intel.com>
-References: <20240819183742.2263895-13-aahringo@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKtYcyxk"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-201fae21398so33665945ad.1
+        for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 08:08:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724166538; x=1724771338; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W/VVL2iFwMtIglkiNUI7sZ7vpqFc9+UuopSaFpbmGHU=;
+        b=cKtYcyxkVhow5u95DhsMchJ6PvKip6WGY7u6VwI18Ijwp1cO76FXzRrAmSdSOc10/i
+         ECsJip3GK6m0UrFc0t0vls9eRePhkJele0QcJpGg/3aidzo1VXjAuYo9WO1rs708IAxt
+         KQA21vZBjVxh/66/SHefayNA2e08SUzijJduqWdT5la8V+DY+Lhb+m5jQiWZnpdsv+Mk
+         8w77Yvt1RT+0X2jnWqcTvKRwMdDKGGyymhDHLi/alHBEY5apdnjVhuETdU/X+wPjQFEB
+         j9TUs/cCP6Ac7dcjzc0w4KtsYf5oWKG64eZgqYfb3IA5CC3TcVJG7Cq50+i4az+6uQZ2
+         pmjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724166538; x=1724771338;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W/VVL2iFwMtIglkiNUI7sZ7vpqFc9+UuopSaFpbmGHU=;
+        b=tAvZNMUnRUAtIfMqVgcIimQdH6Bds1C6LWqztw09oaIjXmOP6mtKYVUZDmQ1jvHL0Q
+         XDuIPsPvP85XKKoDwkkMgb4jJH5z5ZWsk5p0k1JDCPLN/ToZZ2iKkNwwDiDcJn4giT+/
+         2eKnb8X985Mh9rWCuhdq75B9ClK8NxIV2UTYdGo9hpt+z2s9c01XHtBE+CovPsELB16S
+         jDc2k3bK8njBADh+NgRg1shMv9RWn5w3vwfCfdzzjFlsPQetvCqIimPrBj+N6TSpkSc8
+         lOgdAr7ZvZwE5ks6f6sJ6zDrMUdNVZXoY5Qke8rLQNeH+W3j4WVqwNTUiO4Nrue/G4xb
+         bixw==
+X-Gm-Message-State: AOJu0YyYdlHk0yineG9NHlFVb83PEjJoAtv/GZ/K2wqJ5/DcY8VSP7r+
+	VFB++Jzzcg5vCJsRa+RhJOJCnyynpz30QPGG3Se/CzjlXIo2iS5P+ru2Cws3
+X-Google-Smtp-Source: AGHT+IFFSAlPPJrEB2CHN3/9oCW5VDc9wktc5KS2Mnp7P63mo1edOgBdh/CJLhEtlPtauLWNHjqYOA==
+X-Received: by 2002:a17:903:247:b0:1fd:92a7:6ccc with SMTP id d9443c01a7336-20203ec1b8cmr146835015ad.30.1724166537516;
+        Tue, 20 Aug 2024 08:08:57 -0700 (PDT)
+Received: from localhost ([36.112.193.99])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f038b40csm78834595ad.220.2024.08.20.08.08.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 08:08:57 -0700 (PDT)
+From: Julian Sun <sunjunchao2870@gmail.com>
+To: gfs2@lists.linux.dev,
+	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	Julian Sun <sunjunchao2870@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] gfs2: fix double destroy_workqueue error
+Date: Tue, 20 Aug 2024 23:08:27 +0800
+Message-Id: <20240820150827.139326-1-sunjunchao2870@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240819183742.2263895-13-aahringo@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Alexander,
+When gfs2_fill_super() fails, destroy_workqueue()
+is called within gfs2_gl_hash_clear(), and the
+subsequent code path calls destroy_workqueue()
+on the same work queue again.
 
-kernel test robot noticed the following build errors:
+This issue can be fixed by setting the work
+queue pointer to NULL after the first
+destroy_workqueue() call and checking for
+a NULL pointer before attempting to destroy
+the work queue again.
 
-[auto build test ERROR on teigland-dlm/next]
-[also build test ERROR on next-20240820]
-[cannot apply to gfs2/for-next driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.11-rc4]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
+Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+---
+ fs/gfs2/glock.c      | 1 +
+ fs/gfs2/ops_fstype.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Aring/dlm-introduce-dlm_find_lockspace_name/20240820-024440
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git next
-patch link:    https://lore.kernel.org/r/20240819183742.2263895-13-aahringo%40redhat.com
-patch subject: [PATCH dlm/next 12/12] gfs2: separate mount context by net-namespaces
-config: sh-randconfig-001-20240820 (https://download.01.org/0day-ci/archive/20240820/202408202240.cavJRcbt-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240820/202408202240.cavJRcbt-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408202240.cavJRcbt-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   sh4-linux-ld: fs/gfs2/sys.o: in function `gfs2_sysfs_object_child_ns_type':
->> fs/gfs2/sys.c:66:(.text+0x64): undefined reference to `net_ns_type_operations'
-   sh4-linux-ld: fs/gfs2/sys.o: in function `gfs2_kobj_namespace':
->> fs/gfs2/sys.c:407:(.text+0x74): undefined reference to `init_net'
-
-
-vim +66 fs/gfs2/sys.c
-
-    60	
-    61	/* gfs2 sysfs is separated by net-namespaces */
-    62	static const struct kobj_ns_type_operations *
-    63	gfs2_sysfs_object_child_ns_type(const struct kobject *kobj)
-    64	{
-    65		return &net_ns_type_operations;
-  > 66	}
-    67	
-
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 32991cb22023..5838039d78e3 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -2273,6 +2273,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
+ 	gfs2_free_dead_glocks(sdp);
+ 	glock_hash_walk(dump_glock_func, sdp);
+ 	destroy_workqueue(sdp->sd_glock_wq);
++	sdp->sd_glock_wq = NULL;
+ }
+ 
+ static const char *state2str(unsigned state)
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index 0561edd6cc86..5c0e1b24d6ec 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1308,7 +1308,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ fail_delete_wq:
+ 	destroy_workqueue(sdp->sd_delete_wq);
+ fail_glock_wq:
+-	destroy_workqueue(sdp->sd_glock_wq);
++	if (sdp->sd_glock_wq)
++		destroy_workqueue(sdp->sd_glock_wq);
+ fail_free:
+ 	free_sbd(sdp);
+ 	sb->s_fs_info = NULL;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
