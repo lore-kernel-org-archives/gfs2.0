@@ -1,163 +1,136 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57E4158A23
-	for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 19:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BF219994C
+	for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 13:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724181734; cv=none; b=asIU16U5Iz5+s1KM2uzxQP51GB6McLwPCjn1JCCuRZ7KMUKbq3QXSLgVgmOKeotqZJYuac7jsaB/nh85r+Zfh/EEx7CyFZUiADqLqX/3yDveLwl85d1CFmJCTj/c4gDr4428OoE3+WOOHLLfmmYd2NtFvxQLX/uhvikG1ZmLDo0=
+	t=1724246018; cv=none; b=OHQjWoRw5+f4gW+rsVWKAZ46kkdjYuZbOllMfidVw/WZKfCOdayYWDvIKX5bxtwepd6ExAxzcykHzVYzC7Bu+H7cRHBmxj9VZ3TB1oqJ6dJJhlaqaNxoFzsN0FF5s9Gji3VOLpHNTL0TIZ5wj4OAMNOGxUIaS60nMAxbJhV5FNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724181734; c=relaxed/simple;
-	bh=BpPOfDmirINhx2FeN9v389nMMWzGfbW4wtOzqy53by0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=l8AhNdHjVJr6N3mcLDfvR/4hnXgpnHvtP1hqprcNvpHXjcISM4a8PB43jVsbufMcggIluwWUzD9XfPamARiMrqpf05FwecGhxXyqx4WHnsMXODKDTiEfxo8Q0p2TYadLvMf0ySjHqN1NrSPl7u0sUea3PpWYyYxoImDL2z1+yFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CXQ4C9ac; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1724246018; c=relaxed/simple;
+	bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F8k0m+QAnX6Oyx9iwyZ9oZB+6+8gJVQanVrmEgwzrPIlxn9DZ0UoNM4W6UzRioQ7XXX4J8EaHwYuJBRp6q822v7SeevyQCwjfuv0wqZyRv0znjPU70x/Zz+G5hDZSXQ/Gl+0Q2F6TY79UmZlt/9dSi4l7zsjTjPeJPxUk5P2LyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DY9JGeAz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CXQ4C9ac"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53310adb4c3so6584360e87.3
-        for <gfs2@lists.linux.dev>; Tue, 20 Aug 2024 12:22:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724181731; x=1724786531; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s5Vgh7cIhAR8EzOC5rIRmEerU1CHjbVHuOqeMf4SYoY=;
-        b=CXQ4C9ack/zOJ0aDMA7s7UlvLpOTGdo8ljYywC22Iv8yubp3gedE9yPEph9Bwjb8VZ
-         CO9VimynjZkeM5258+feN8bevwEj4T3XYp51CF0eZhAvwgV2vPJ+J+SWl9Tul2ZUzGEJ
-         v6hNdpUfaHveSfUkqf89RVcAa0XU1x9zrpZsbiX4iODuEhCajN/1QSlERSLm4trGKeF3
-         oUYPewPs9A5kPnoJjpbTUgCqsyQifGEsx9lw8jIu2YkUiVrd/bDuW7O9l+SkRGlOvibX
-         DQnEHHgLO04LUFKyjR+fNmiNpdtY//oFa2PeEIk4GZyo7qS5j001yd/DPPTyAeow0DOx
-         Vg+Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DY9JGeAz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724246016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
+	b=DY9JGeAz9K87/d9DgzpkrWDycbq5Tn3K1G+LlQTmYiW0/xgOmirOYkM2lyq1fFRjLvo0Qt
+	ZpDIDiDlznwaeuS0FkbalVBVu9edYXl0uL+cD9GCcdDzsIf2bJyrBaLQ5f3UUNqfVyqFVZ
+	GsBzvMO/3zzRCLkjgzYQnAZXdYtlmx8=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-jKmRjir9MK2aAGn-sE5afw-1; Wed, 21 Aug 2024 09:13:34 -0400
+X-MC-Unique: jKmRjir9MK2aAGn-sE5afw-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ef311ad4bcso57028061fa.0
+        for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 06:13:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724181731; x=1724786531;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s5Vgh7cIhAR8EzOC5rIRmEerU1CHjbVHuOqeMf4SYoY=;
-        b=VqmNqnsf6AeXLheIRFUvHImEJIDaeU+3OiorXRynMhDzkLchTnMbRXcztunA7tgHqN
-         yq7mnB1vEPG7V+vTRJcceiooTDFbMviUK751FrP1rfSSPg9FffJL6HNnFoFXXsdpeaWk
-         GNLv5n2VktHlRZ6wP3hh5CmCPa/W6QYjBgV8SW06mEvucFf9gbBVKk+kf30UFkLEK4lA
-         hKVclvvNPq1RFebYUFX6yeHGwvDePk/O0Ic8ip03kqLesw9w0ZEmx/R7eSPNdGDBYUEN
-         R6BuNc9JrqSpfvmRILaN8Y48QonasLm3VeD9FCfWpcBklJMpCxH4p8ExO6WFoW6uZKFq
-         dIZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTVpdqLfyRkmnki38IPm5zNzh6tYhEgpOOnym4WAOvYIdQx4qVE0GWAdcjfVmGW3dEsH56@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOjy+vVp2KOO5E95OBh5k8KNGw3u4B3HgoHAHCIX5ScJj9o/18
-	wt9DmkhzpoVhF/bXfNFdC/me3wmDsylfCVz3xfQxUyglKRVYyYs0FZnojwkKhbs=
-X-Google-Smtp-Source: AGHT+IHf7Tbewe2gDUqpiwgN6v47D7zLV+pEDL7AQ0VkyE9qIIIroi+fCDpfoFTJLhwZIOCQ0RIEIA==
-X-Received: by 2002:a05:6512:230a:b0:52c:8aa6:4e9d with SMTP id 2adb3069b0e04-5331c6b010bmr11047307e87.29.1724181730489;
-        Tue, 20 Aug 2024 12:22:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a838396d0cdsm799992266b.219.2024.08.20.12.22.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 12:22:09 -0700 (PDT)
-Date: Tue, 20 Aug 2024 22:22:05 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-	teigland@redhat.com
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev,
-	song@kernel.org, yukuai3@huawei.com, agruenba@redhat.com,
-	mark@fasheh.com, jlbec@evilplan.org, joseph.qi@linux.alibaba.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	netdev@vger.kernel.org, vvidic@valentin-vidic.from.hr,
-	heming.zhao@suse.com, lucien.xin@gmail.com, aahringo@redhat.com
-Subject: Re: [PATCH dlm/next 10/12] dlm: separate dlm lockspaces per
- net-namespace
-Message-ID: <2a99ef8c-9475-4843-87e7-c8f03c756e2b@stanley.mountain>
+        d=1e100.net; s=20230601; t=1724246013; x=1724850813;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
+        b=jltPKlV1AYyXH5IIVL6KvDPuPufVk6NtPaKq7VOfd3Ib/INS8LopZQdeU67Tygc5le
+         e8hVheVtK6MlXc7r5oT7tAnfNRwxd3ETFxV627o+EkhOJAm6qqtJve/ZSzO3W3xoTm0T
+         DgLsCSCRGpr3yQKmJugozg+7HsXdmIHvmWOsQUJd/oMluU0GUnB4GanZEYrX6tSjFxwi
+         B3Iab2ahhO0N5o33xV//JiGJrUgVbc1P6AeCnWQyzSf+5yx8oOaEWe3x8QR9hLoFWfwM
+         yS7S9EywXsLolQ3SWhbvEdG7B/2LSZFd2zk5agNx1Q94CvjIpL4NsuXWpBW91td2YKiC
+         8y7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVaKbta+C4IYZzVlg7JqG5sn3coTxaWxxIHk9pJHBaTt1dwIHWmPiZUKL5UTtUCGiGj7BwI@lists.linux.dev
+X-Gm-Message-State: AOJu0YxBmswvrnlcKTUldtVCCZkOeki1VAv4ZAtFUrB5QCdF2Ltr87jh
+	7kRU0g9/T6GcTAaUpSWpj7a/+vVZFKU/6/iVXk5B2+KnG9G/e4T7s36+AA99rC9oCUJTdwAStGk
+	HpL46+3HAIa3NLRoIaYw3LQcyvoOrXQ2bWy/LKguBTpkzZIHsBKLGVOv+TYKy0M1SaHuDjg/aqT
+	5zy5rOny8u0sIUI6o32/0e3qJlRg==
+X-Received: by 2002:a2e:e09:0:b0:2ee:88d8:e807 with SMTP id 38308e7fff4ca-2f3f88a6e99mr13197341fa.16.1724246013042;
+        Wed, 21 Aug 2024 06:13:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbXz/zZNLpgYy914DPQE0G3jUIMMtBg2FW5l+r7EiJf3/VyOVgUXkDaaMO4gGanew6Bd0Rh41sjKlfIR/KxZc=
+X-Received: by 2002:a2e:e09:0:b0:2ee:88d8:e807 with SMTP id
+ 38308e7fff4ca-2f3f88a6e99mr13196981fa.16.1724246012310; Wed, 21 Aug 2024
+ 06:13:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240819183742.2263895-11-aahringo@redhat.com>
+References: <20240819183742.2263895-1-aahringo@redhat.com> <20240819183742.2263895-12-aahringo@redhat.com>
+ <20240819151227.4d7f9e99@kernel.org>
+In-Reply-To: <20240819151227.4d7f9e99@kernel.org>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Wed, 21 Aug 2024 09:13:21 -0400
+Message-ID: <CAK-6q+hx8MNeZCc0T-sTPdMgXH=ZcpLVqc2-5+psMCoQ_W0FxA@mail.gmail.com>
+Subject: Re: [PATCH dlm/next 11/12] dlm: add nldlm net-namespace aware UAPI
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org, 
+	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org, 
+	joseph.qi@linux.alibaba.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	netdev@vger.kernel.org, vvidic@valentin-vidic.from.hr, heming.zhao@suse.com, 
+	lucien.xin@gmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
+Hi Jakob,
 
-kernel test robot noticed the following build warnings:
+On Mon, Aug 19, 2024 at 6:12=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Mon, 19 Aug 2024 14:37:41 -0400 Alexander Aring wrote:
+> > Recent patches introduced support to separate DLM lockspaces on a per
+> > net-namespace basis. Currently the file based configfs mechanism is use=
+d
+> > to configure parts of DLM. Due the lack of namespace awareness (and it'=
+s
+> > probably complicated to add support for this) in configfs we introduce =
+a
+> > socket based UAPI using "netlink". As the DLM subsystem offers now a
+> > config layer it can simultaneously being used with configfs, just that
+> > nldlm is net-namespace aware.
+> >
+> > Most of the current configfs functionality that is necessary to
+> > configure DLM is being adapted for now. The nldlm netlink interface
+> > offers also a multicast group for lockspace events NLDLM_MCGRP_EVENT.
+> > This event group can be used as alternative to the already existing ude=
+v
+> > event behaviour just it only contains DLM related subsystem events.
+> >
+> > Attributes e.g. nodeid, port, IP addresses are expected from the user
+> > space to fill those numbers as they appear on the wire. In case of DLM
+> > fields it is using little endian byte order.
+> >
+> > The dumps are being designed to scale in future with high numbers of
+> > members in a lockspace. E.g. dump members require an unique lockspace
+> > identifier (currently only the name) and nldlm is using a netlink dump
+> > behaviour to be prepared if all entries may not fit into one netlink
+> > message.
+>
+> Did you consider using the YAML spec stuff to code gen the policies
+> and make user space easier?
+>
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I will try to take a look into that and prepare a spec for PATCHv2. I
+saw that there is a documentation about it at [0].
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Aring/dlm-introduce-dlm_find_lockspace_name/20240820-024440
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git next
-patch link:    https://lore.kernel.org/r/20240819183742.2263895-11-aahringo%40redhat.com
-patch subject: [PATCH dlm/next 10/12] dlm: separate dlm lockspaces per net-namespace
-config: x86_64-randconfig-161-20240820 (https://download.01.org/0day-ci/archive/20240821/202408210031.QCBHr27k-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+I did a kind of "prototype" libnldlm [1] to have easy access to the
+netlink api but if there are more common ways to generate code to
+easily access it, I am happy to give it a try.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202408210031.QCBHr27k-lkp@intel.com/
+Thanks.
 
-New smatch warnings:
-fs/dlm/lock.c:4989 dlm_receive_buffer() error: we previously assumed 'ls' could be null (see line 4988)
+- Alex
 
-
-vim +/ls +4989 fs/dlm/lock.c
-
-bde0f4dba584ae Alexander Aring 2024-08-19  4961  void dlm_receive_buffer(struct dlm_net *dn, const union dlm_packet *p,
-bde0f4dba584ae Alexander Aring 2024-08-19  4962  			int nodeid)
-c36258b5925e6c David Teigland  2007-09-27  4963  {
-1151935182b40b Alexander Aring 2023-08-01  4964  	const struct dlm_header *hd = &p->header;
-c36258b5925e6c David Teigland  2007-09-27  4965  	struct dlm_ls *ls;
-c36258b5925e6c David Teigland  2007-09-27  4966  	int type = 0;
-c36258b5925e6c David Teigland  2007-09-27  4967  
-c36258b5925e6c David Teigland  2007-09-27  4968  	switch (hd->h_cmd) {
-c36258b5925e6c David Teigland  2007-09-27  4969  	case DLM_MSG:
-00e99ccde75722 Alexander Aring 2022-04-04  4970  		type = le32_to_cpu(p->message.m_type);
-c36258b5925e6c David Teigland  2007-09-27  4971  		break;
-c36258b5925e6c David Teigland  2007-09-27  4972  	case DLM_RCOM:
-2f9dbeda8dc04b Alexander Aring 2022-04-04  4973  		type = le32_to_cpu(p->rcom.rc_type);
-c36258b5925e6c David Teigland  2007-09-27  4974  		break;
-c36258b5925e6c David Teigland  2007-09-27  4975  	default:
-c36258b5925e6c David Teigland  2007-09-27  4976  		log_print("invalid h_cmd %d from %u", hd->h_cmd, nodeid);
-c36258b5925e6c David Teigland  2007-09-27  4977  		return;
-c36258b5925e6c David Teigland  2007-09-27  4978  	}
-c36258b5925e6c David Teigland  2007-09-27  4979  
-3428785a65dabf Alexander Aring 2022-04-04  4980  	if (le32_to_cpu(hd->h_nodeid) != nodeid) {
-c36258b5925e6c David Teigland  2007-09-27  4981  		log_print("invalid h_nodeid %d from %d lockspace %x",
-3428785a65dabf Alexander Aring 2022-04-04  4982  			  le32_to_cpu(hd->h_nodeid), nodeid,
-3428785a65dabf Alexander Aring 2022-04-04  4983  			  le32_to_cpu(hd->u.h_lockspace));
-c36258b5925e6c David Teigland  2007-09-27  4984  		return;
-c36258b5925e6c David Teigland  2007-09-27  4985  	}
-c36258b5925e6c David Teigland  2007-09-27  4986  
-bde0f4dba584ae Alexander Aring 2024-08-19  4987  	ls = dlm_find_lockspace_global(dn, le32_to_cpu(hd->u.h_lockspace));
-c36258b5925e6c David Teigland  2007-09-27 @4988  	if (!ls) {
-bde0f4dba584ae Alexander Aring 2024-08-19 @4989  		log_limit(ls, "dlm: invalid lockspace %u from %d cmd %d type %d\n",
-                                                                          ^^
-ls is NULL here so this doesn't work.
-
-3428785a65dabf Alexander Aring 2022-04-04  4990  			  le32_to_cpu(hd->u.h_lockspace), nodeid,
-3428785a65dabf Alexander Aring 2022-04-04  4991  			  hd->h_cmd, type);
-c36258b5925e6c David Teigland  2007-09-27  4992  
-c36258b5925e6c David Teigland  2007-09-27  4993  		if (hd->h_cmd == DLM_RCOM && type == DLM_RCOM_STATUS)
-bde0f4dba584ae Alexander Aring 2024-08-19  4994  			dlm_send_ls_not_ready(dn, nodeid, &p->rcom);
-c36258b5925e6c David Teigland  2007-09-27  4995  		return;
-c36258b5925e6c David Teigland  2007-09-27  4996  	}
-c36258b5925e6c David Teigland  2007-09-27  4997  
-c36258b5925e6c David Teigland  2007-09-27  4998  	/* this rwsem allows dlm_ls_stop() to wait for all dlm_recv threads to
-c36258b5925e6c David Teigland  2007-09-27  4999  	   be inactive (in this ls) before transitioning to recovery mode */
-c36258b5925e6c David Teigland  2007-09-27  5000  
-578acf9a87a875 Alexander Aring 2024-04-02  5001  	read_lock_bh(&ls->ls_recv_active);
-c36258b5925e6c David Teigland  2007-09-27  5002  	if (hd->h_cmd == DLM_MSG)
-eef7d739c218cb Al Viro         2008-01-25  5003  		dlm_receive_message(ls, &p->message, nodeid);
-f45307d395da7a Alexander Aring 2022-08-15  5004  	else if (hd->h_cmd == DLM_RCOM)
-eef7d739c218cb Al Viro         2008-01-25  5005  		dlm_receive_rcom(ls, &p->rcom, nodeid);
-f45307d395da7a Alexander Aring 2022-08-15  5006  	else
-f45307d395da7a Alexander Aring 2022-08-15  5007  		log_error(ls, "invalid h_cmd %d from %d lockspace %x",
-f45307d395da7a Alexander Aring 2022-08-15  5008  			  hd->h_cmd, nodeid, le32_to_cpu(hd->u.h_lockspace));
-578acf9a87a875 Alexander Aring 2024-04-02  5009  	read_unlock_bh(&ls->ls_recv_active);
-c36258b5925e6c David Teigland  2007-09-27  5010  
-c36258b5925e6c David Teigland  2007-09-27  5011  	dlm_put_lockspace(ls);
-c36258b5925e6c David Teigland  2007-09-27  5012  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[0] https://docs.kernel.org/userspace-api/netlink/specs.html
+[1] https://gitlab.com/netcoder/nldlm/
 
