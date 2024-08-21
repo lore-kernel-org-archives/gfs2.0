@@ -1,136 +1,136 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BF219994C
-	for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 13:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736491B2ED0
+	for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 17:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724246018; cv=none; b=OHQjWoRw5+f4gW+rsVWKAZ46kkdjYuZbOllMfidVw/WZKfCOdayYWDvIKX5bxtwepd6ExAxzcykHzVYzC7Bu+H7cRHBmxj9VZ3TB1oqJ6dJJhlaqaNxoFzsN0FF5s9Gji3VOLpHNTL0TIZ5wj4OAMNOGxUIaS60nMAxbJhV5FNM=
+	t=1724262114; cv=none; b=FqqhnixSWU5SJYx7kGlwBJdvU23y5dpY4Ksm7jl7OTwbPyNZ7dcQInLp1hw7sSsuKIY1iRXxXrbAN4o26gh7Y5Y3hKy3F/xrK8FzZj3htuGeTnu07SzmViV/19R0sXCBqOww6JNce/sO+H+zFh1bJRrmU5lHztdlYhW0U+sFWEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724246018; c=relaxed/simple;
-	bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
+	s=arc-20240116; t=1724262114; c=relaxed/simple;
+	bh=lJHx3OSbEEPVy0QsUtl2SMna9ucj4s6ThUgvmDM2zkU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F8k0m+QAnX6Oyx9iwyZ9oZB+6+8gJVQanVrmEgwzrPIlxn9DZ0UoNM4W6UzRioQ7XXX4J8EaHwYuJBRp6q822v7SeevyQCwjfuv0wqZyRv0znjPU70x/Zz+G5hDZSXQ/Gl+0Q2F6TY79UmZlt/9dSi4l7zsjTjPeJPxUk5P2LyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DY9JGeAz; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=akgnIs7z78bFdf3sQKuKxtJqrnvMZzJ5ycyP2YuQGiw7WNtU4Ly9qVFgsn/tCVjpBolmK7kOCVJvQndaI7BLyv05l7wqtp3Qez2/sIminm9/zy2VBZljq5GiJPqjf9DZwKwlnGDw1Q3ILbhSo2T/8+Dj2RTEF5WdFR7sMoaQs4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VSBgIkJv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DY9JGeAz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VSBgIkJv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724246016;
+	s=mimecast20190719; t=1724262111;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
-	b=DY9JGeAz9K87/d9DgzpkrWDycbq5Tn3K1G+LlQTmYiW0/xgOmirOYkM2lyq1fFRjLvo0Qt
-	ZpDIDiDlznwaeuS0FkbalVBVu9edYXl0uL+cD9GCcdDzsIf2bJyrBaLQ5f3UUNqfVyqFVZ
-	GsBzvMO/3zzRCLkjgzYQnAZXdYtlmx8=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0cowNrCIRL1hn88DkS2gvPwjwTNe7k5RZOOLKS07j64=;
+	b=VSBgIkJv0QCZO5dZEFDblEC8yMaTURgTJ1IRZNZ3RcJg9blxKaXRPrwwKoYGqEB+GtUmjY
+	oog4GtB6L/IEb2Ys31+u+UdO4DqT7wO4SIA8YUQ9pA1SnOdPBI2f0bgecUPeF6IYmqIUvY
+	mFHMJN17+HSgp14P8EPepfSVYymVVMY=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-jKmRjir9MK2aAGn-sE5afw-1; Wed, 21 Aug 2024 09:13:34 -0400
-X-MC-Unique: jKmRjir9MK2aAGn-sE5afw-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ef311ad4bcso57028061fa.0
-        for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 06:13:34 -0700 (PDT)
+ us-mta-661-yKDA9EylMmSYnVzEPEiYAw-1; Wed, 21 Aug 2024 13:41:50 -0400
+X-MC-Unique: yKDA9EylMmSYnVzEPEiYAw-1
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-201fa0bc77aso46849645ad.0
+        for <gfs2@lists.linux.dev>; Wed, 21 Aug 2024 10:41:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724246013; x=1724850813;
+        d=1e100.net; s=20230601; t=1724262109; x=1724866909;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VxdnQRQ9RoJiHroH7aL12ZENbeWU8OgMK4PjHewMYIM=;
-        b=jltPKlV1AYyXH5IIVL6KvDPuPufVk6NtPaKq7VOfd3Ib/INS8LopZQdeU67Tygc5le
-         e8hVheVtK6MlXc7r5oT7tAnfNRwxd3ETFxV627o+EkhOJAm6qqtJve/ZSzO3W3xoTm0T
-         DgLsCSCRGpr3yQKmJugozg+7HsXdmIHvmWOsQUJd/oMluU0GUnB4GanZEYrX6tSjFxwi
-         B3Iab2ahhO0N5o33xV//JiGJrUgVbc1P6AeCnWQyzSf+5yx8oOaEWe3x8QR9hLoFWfwM
-         yS7S9EywXsLolQ3SWhbvEdG7B/2LSZFd2zk5agNx1Q94CvjIpL4NsuXWpBW91td2YKiC
-         8y7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVaKbta+C4IYZzVlg7JqG5sn3coTxaWxxIHk9pJHBaTt1dwIHWmPiZUKL5UTtUCGiGj7BwI@lists.linux.dev
-X-Gm-Message-State: AOJu0YxBmswvrnlcKTUldtVCCZkOeki1VAv4ZAtFUrB5QCdF2Ltr87jh
-	7kRU0g9/T6GcTAaUpSWpj7a/+vVZFKU/6/iVXk5B2+KnG9G/e4T7s36+AA99rC9oCUJTdwAStGk
-	HpL46+3HAIa3NLRoIaYw3LQcyvoOrXQ2bWy/LKguBTpkzZIHsBKLGVOv+TYKy0M1SaHuDjg/aqT
-	5zy5rOny8u0sIUI6o32/0e3qJlRg==
-X-Received: by 2002:a2e:e09:0:b0:2ee:88d8:e807 with SMTP id 38308e7fff4ca-2f3f88a6e99mr13197341fa.16.1724246013042;
-        Wed, 21 Aug 2024 06:13:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGbXz/zZNLpgYy914DPQE0G3jUIMMtBg2FW5l+r7EiJf3/VyOVgUXkDaaMO4gGanew6Bd0Rh41sjKlfIR/KxZc=
-X-Received: by 2002:a2e:e09:0:b0:2ee:88d8:e807 with SMTP id
- 38308e7fff4ca-2f3f88a6e99mr13196981fa.16.1724246012310; Wed, 21 Aug 2024
- 06:13:32 -0700 (PDT)
+        bh=0cowNrCIRL1hn88DkS2gvPwjwTNe7k5RZOOLKS07j64=;
+        b=S2iZi0xs+twASxTCTzS+WOvPXV3q6Szovc5VTG011PQudNnfvsLNrwVEKje4bKtZSr
+         skgbtTCFjEm3Sv1IlApxwcUUk4R1XbW5TOUUCwse1tXCIIRL+X/Cbil9hs9m/zygjOs+
+         YWKT5IH98lWmonf8FDhvDD1SEcncv2TmWSf/Jm1E5zlntG8dZWH6uJCy6hbKLRJmYBPP
+         +NQA/EncKUtCn2vU6TV2f4I7UKQ3+t9DV3ce3ugo+tP3ANmHValTIWJtTbZkY4blR69u
+         gf4mxwLoVxOXEnTPIiHeWoy3M+j/B3mibsvJGB4+cXPsjQ12Ve4GzC6YYXcXr7iHkX0c
+         qzNw==
+X-Gm-Message-State: AOJu0Yzkv7evmTY01KrIvkOqgA3at9s3NHo6Q1D02SNaWdcKMjXSpBPE
+	VebXHHdqp4WtCOQA1Jq80x9uQ3/Ym5SGlMwn9c7vKzjGJOpfvFC1PI4FOqFKX96+cFvL3Q1Lg4C
+	cR7g2vKZAFGhxOKMVF3C8uuktpwVLUE2xeWInmLeRCun2rS5fxSlKq2cURw3SiElX/A8+y7cbhd
+	4JPpS42XKSu/WrTOz8O7pANCTPltu4GgcLHQ==
+X-Received: by 2002:a17:902:fa84:b0:202:1b1e:c1e6 with SMTP id d9443c01a7336-2036818cb26mr24827085ad.44.1724262108841;
+        Wed, 21 Aug 2024 10:41:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJfvoGXcEcqhhmu6MdAXcpbF6Lin373qLe1xFzZcX/kE4L+aYZOQBB5ATuZn9OWnspJaAf6ujkHJPEy0dIipo=
+X-Received: by 2002:a17:902:fa84:b0:202:1b1e:c1e6 with SMTP id
+ d9443c01a7336-2036818cb26mr24826955ad.44.1724262108177; Wed, 21 Aug 2024
+ 10:41:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240819183742.2263895-1-aahringo@redhat.com> <20240819183742.2263895-12-aahringo@redhat.com>
- <20240819151227.4d7f9e99@kernel.org>
-In-Reply-To: <20240819151227.4d7f9e99@kernel.org>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 21 Aug 2024 09:13:21 -0400
-Message-ID: <CAK-6q+hx8MNeZCc0T-sTPdMgXH=ZcpLVqc2-5+psMCoQ_W0FxA@mail.gmail.com>
-Subject: Re: [PATCH dlm/next 11/12] dlm: add nldlm net-namespace aware UAPI
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org, 
-	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org, 
-	joseph.qi@linux.alibaba.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	netdev@vger.kernel.org, vvidic@valentin-vidic.from.hr, heming.zhao@suse.com, 
-	lucien.xin@gmail.com
+References: <20240820150827.139326-1-sunjunchao2870@gmail.com>
+In-Reply-To: <20240820150827.139326-1-sunjunchao2870@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Wed, 21 Aug 2024 19:41:36 +0200
+Message-ID: <CAHc6FU6O_WOy9y6T3Lji-deT1NNfLos3vKMVprb5jLPcyuk=zw@mail.gmail.com>
+Subject: Re: [PATCH v2] gfs2: fix double destroy_workqueue error
+To: Julian Sun <sunjunchao2870@gmail.com>
+Cc: gfs2@lists.linux.dev, 
+	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com, stable@vger.kernel.org
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jakob,
-
-On Mon, Aug 19, 2024 at 6:12=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On Tue, Aug 20, 2024 at 5:09=E2=80=AFPM Julian Sun <sunjunchao2870@gmail.co=
+m> wrote:
+> When gfs2_fill_super() fails, destroy_workqueue()
+> is called within gfs2_gl_hash_clear(), and the
+> subsequent code path calls destroy_workqueue()
+> on the same work queue again.
 >
-> On Mon, 19 Aug 2024 14:37:41 -0400 Alexander Aring wrote:
-> > Recent patches introduced support to separate DLM lockspaces on a per
-> > net-namespace basis. Currently the file based configfs mechanism is use=
-d
-> > to configure parts of DLM. Due the lack of namespace awareness (and it'=
-s
-> > probably complicated to add support for this) in configfs we introduce =
-a
-> > socket based UAPI using "netlink". As the DLM subsystem offers now a
-> > config layer it can simultaneously being used with configfs, just that
-> > nldlm is net-namespace aware.
-> >
-> > Most of the current configfs functionality that is necessary to
-> > configure DLM is being adapted for now. The nldlm netlink interface
-> > offers also a multicast group for lockspace events NLDLM_MCGRP_EVENT.
-> > This event group can be used as alternative to the already existing ude=
-v
-> > event behaviour just it only contains DLM related subsystem events.
-> >
-> > Attributes e.g. nodeid, port, IP addresses are expected from the user
-> > space to fill those numbers as they appear on the wire. In case of DLM
-> > fields it is using little endian byte order.
-> >
-> > The dumps are being designed to scale in future with high numbers of
-> > members in a lockspace. E.g. dump members require an unique lockspace
-> > identifier (currently only the name) and nldlm is using a netlink dump
-> > behaviour to be prepared if all entries may not fit into one netlink
-> > message.
+> This issue can be fixed by setting the work
+> queue pointer to NULL after the first
+> destroy_workqueue() call and checking for
+> a NULL pointer before attempting to destroy
+> the work queue again.
+
+Applied now.
+
+Thanks,
+Andreas
+
+> Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dd34c2a269ed512c531b0
+> Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+> ---
+>  fs/gfs2/glock.c      | 1 +
+>  fs/gfs2/ops_fstype.c | 3 ++-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 >
-> Did you consider using the YAML spec stuff to code gen the policies
-> and make user space easier?
+> diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+> index 32991cb22023..5838039d78e3 100644
+> --- a/fs/gfs2/glock.c
+> +++ b/fs/gfs2/glock.c
+> @@ -2273,6 +2273,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
+>         gfs2_free_dead_glocks(sdp);
+>         glock_hash_walk(dump_glock_func, sdp);
+>         destroy_workqueue(sdp->sd_glock_wq);
+> +       sdp->sd_glock_wq =3D NULL;
+>  }
 >
-
-I will try to take a look into that and prepare a spec for PATCHv2. I
-saw that there is a documentation about it at [0].
-
-I did a kind of "prototype" libnldlm [1] to have easy access to the
-netlink api but if there are more common ways to generate code to
-easily access it, I am happy to give it a try.
-
-Thanks.
-
-- Alex
-
-[0] https://docs.kernel.org/userspace-api/netlink/specs.html
-[1] https://gitlab.com/netcoder/nldlm/
+>  static const char *state2str(unsigned state)
+> diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+> index 0561edd6cc86..5c0e1b24d6ec 100644
+> --- a/fs/gfs2/ops_fstype.c
+> +++ b/fs/gfs2/ops_fstype.c
+> @@ -1308,7 +1308,8 @@ static int gfs2_fill_super(struct super_block *sb, =
+struct fs_context *fc)
+>  fail_delete_wq:
+>         destroy_workqueue(sdp->sd_delete_wq);
+>  fail_glock_wq:
+> -       destroy_workqueue(sdp->sd_glock_wq);
+> +       if (sdp->sd_glock_wq)
+> +               destroy_workqueue(sdp->sd_glock_wq);
+>  fail_free:
+>         free_sbd(sdp);
+>         sb->s_fs_info =3D NULL;
+> --
+> 2.39.2
+>
 
