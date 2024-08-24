@@ -1,68 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B2E168497;
-	Wed, 21 Aug 2024 22:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7D5152196;
+	Sat, 24 Aug 2024 05:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724281058; cv=none; b=ZWzrAeUV9hA6/J6q9h31yVQHJ97E0W33xnOSmglBWYgBLNbpEJlo/sBAHPxyzh3cZgfENsV7RNAewxDimLf8A5X6J+6xtENJT4NJyQbIg/Us+4gB8i82lLC6qYo5rlNmrmDhkEFARNEnKLmIIcCpEp8UFNuUVzHiK1SwySCoWJc=
+	t=1724476689; cv=none; b=D7oGd1xK3Q55wHol5XMwxVc/8hdFAitgGWvSfAyCLzUn9RhS9BIDKagyM65IE69H7xO7J1pnTPqO6/deGwcc6p6QDQvyz0lMiTDafbKFF2RWDauU/W6b7+xQZfqgJWx1tJICuAk5a0UU7cOTaMBplSLHeHXLGC2H4NgT2oyJDCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724281058; c=relaxed/simple;
-	bh=CQbjtuMOeSh9AmKi2kF6EWr5v9mmXD/mis1t5FfkenU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n3NCC4pHJgcrOuK5P41uDoIV4kPSZtxKPAPasVRSFvYEf1ShJY2RPIAUOapN9pdyKoPndcrbo+sSWyzSxJ7ci5gn6QAXgNxH1tA77EFHDEbtf1qyYkPpaedONmCOgeGbGfSdtI9QUkUBXOg4Xp6tZZq1Y36qb95Vn2zaOJaFTkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0qYM/gD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724476689; c=relaxed/simple;
+	bh=tbL42V7xA89gdaoQidKlBjowYiUCMvR8ALjXWE5YhkU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fTdLoHMNqnNXdWqPPza6UCOruO0p8FVYGklitTT2V/AoYjfziDtq4wzKSR2CQGvPsDwZD7Cwwchimg+tMLtaaIkKWwbQdnoNUGpd1IUn2E/iTZamxFip9BuKv9luRnCvDPmNj6teL29VEu2FwzsUN7cLCRXwX5+0Mxot8y8+58Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLdUEpqv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0qYM/gD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F094DC32781;
-	Wed, 21 Aug 2024 22:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724281057;
-	bh=CQbjtuMOeSh9AmKi2kF6EWr5v9mmXD/mis1t5FfkenU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=a0qYM/gDynuqwWPxM5MvVyn23rgCtOXxcqD5PYQsgVyrRfHMgR6fx6jSWwzImOLGs
-	 cvNolQGYATxBEQp3mK4vIW0HcQkTHre5yKIVwwwa0aTlsGzFchvs+2J242TSwKD4Uz
-	 RSAPdH0zHtBxGselG9TD+PtyuqDIdG82kVYoT8pM8H4XNFgTTFzNFoviNfGn2vOXjz
-	 ztwFciWbrEbX8MISOhDdc6d31pjExvIdrEhTLWtU/nsKGcXFO+NQOXLgrZaOiGY50h
-	 nSj/lPUl9GrjFnU5WYTC8nAYHm0USFOsiQ7acDHskrB+KeFszGIMIVCIMwTCmnSH13
-	 nNCD6NM5X7Pww==
-Date: Wed, 21 Aug 2024 15:57:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLdUEpqv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8ABC32781;
+	Sat, 24 Aug 2024 05:18:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724476689;
+	bh=tbL42V7xA89gdaoQidKlBjowYiUCMvR8ALjXWE5YhkU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RLdUEpqv7Kr/6oelFfLOU/fDluRcUft0DZ3+6Y8zyEjCzjlQ8ECT6WwIEI6k2yTv6
+	 QvkQCs+xvaPaDh1q17t3t/gcQ04Z1C/N9H1i5UgzZH170PkLfPEnbzBBp7vu6NgE26
+	 UJtUW3l8uxLpyBEYLQoDnZr9zWwhDXi7ZwTJbGXE=
+Date: Sat, 24 Aug 2024 10:26:09 +0800
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Alexander Aring <aahringo@redhat.com>
 Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org,
- yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com,
- jlbec@evilplan.org, joseph.qi@linux.alibaba.com,
- gregkh@linuxfoundation.org, rafael@kernel.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, netdev@vger.kernel.org,
- vvidic@valentin-vidic.from.hr, heming.zhao@suse.com, lucien.xin@gmail.com
-Subject: Re: [PATCH dlm/next 11/12] dlm: add nldlm net-namespace aware UAPI
-Message-ID: <20240821155736.64d0350c@kernel.org>
-In-Reply-To: <CAK-6q+hx8MNeZCc0T-sTPdMgXH=ZcpLVqc2-5+psMCoQ_W0FxA@mail.gmail.com>
-References: <20240819183742.2263895-1-aahringo@redhat.com>
-	<20240819183742.2263895-12-aahringo@redhat.com>
-	<20240819151227.4d7f9e99@kernel.org>
-	<CAK-6q+hx8MNeZCc0T-sTPdMgXH=ZcpLVqc2-5+psMCoQ_W0FxA@mail.gmail.com>
+	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com,
+	jlbec@evilplan.org, joseph.qi@linux.alibaba.com, rafael@kernel.org,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	lucien.xin@gmail.com
+Subject: Re: [RFC dlm/next 08/12] kobject: add kset_type_create_and_add()
+ helper
+Message-ID: <2024082459-neatly-screen-9d29@gregkh>
+References: <20240814143414.1877505-1-aahringo@redhat.com>
+ <20240814143414.1877505-9-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240814143414.1877505-9-aahringo@redhat.com>
 
-On Wed, 21 Aug 2024 09:13:21 -0400 Alexander Aring wrote:
-> > Did you consider using the YAML spec stuff to code gen the policies
-> > and make user space easier?
+On Wed, Aug 14, 2024 at 10:34:10AM -0400, Alexander Aring wrote:
+> Currently there exists the kset_create_and_add() helper that does not
+> allow to have a different ktype for the created kset kobject. To allow
+> a different ktype this patch will introduce the function
+> kset_type_create_and_add() that allows to set a different ktype instead
+> of using the global default kset_ktype variable.
 > 
-> I will try to take a look into that and prepare a spec for PATCHv2. I
-> saw that there is a documentation about it at [0].
+> In my example I need to separate the created kobject inside the kset by
+> net-namespaces. This patch allows me to do that by providing a user
+> defined kobj_type structure that implements the necessary namespace
+> functionality.
 > 
-> I did a kind of "prototype" libnldlm [1] to have easy access to the
-> netlink api but if there are more common ways to generate code to
-> easily access it, I am happy to give it a try.
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
 
-Right, even if you don't end up using it on the user space side, having
-YNL generate the kernel boiler plate simplifies the human review, if
-nothing else :) YNL always uses the latest and safest kernel constructs.
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
