@@ -1,113 +1,183 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F78F383A5
-	for <gfs2@lists.linux.dev>; Sun, 25 Aug 2024 19:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F71019E7DC
+	for <gfs2@lists.linux.dev>; Tue, 27 Aug 2024 10:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724615668; cv=none; b=rrdSbzN30jMsvf+Hw3DL3jx7GekyKUMykUBw3Wkh6fLIdFE1o7nYJfMtV47SRSkkQslTN1tFNir8f2F+smc2v1b9JJKaIv32qgMUHXkg/AHjnrrLSTSZgSpA2Y1sDGIvJRBxh30MTBL+YNsWekgu+By5XoiHK62ug6cpWpa3fDI=
+	t=1724755959; cv=none; b=oUtchGXywbpiJT0mgOL5JcoM1r9UEgvY/EgWqrQwknBD0+tAjvLhkRvKWIn9BVWxra3lIDT3/kLOOJGQ9e2IQLDB0OoqYLxRUO6xdED1DS7ydPqnf7iXeCxM+yQ4Ywm9nctHA7qqSitKky6mbVo8YlJJ20t6+63bxamzdMtqqnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724615668; c=relaxed/simple;
-	bh=SZDhFSz5cGQqOrGnjwqK1octDVUeO0+e9a3ispg7DMk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HKqxRl9A7ThKlaCPqbps7cVUNIsvTMK7mVPijMxwRPLqrNFu3Ta0vGp0Iy1xRjOh/ePdrCJ0GLHRpPBTw8Yy/uikOFdI+U7DeD25mMwS8TYBlEG351s19KqNr/bmxGv25Pln2tPb9E/RwDR23M9XRq3YcCZaQjPwFNyQasFv41k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CWPU8w/Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1724755959; c=relaxed/simple;
+	bh=YAHryf6iiMmo8Z5kIbH9aWPG4RIhK6tCmOKITSG3vyM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=CcnqKIjK0lEI1C+HuHYpm6+QntJr5hqPLGIHrw4RUFX9NgRKtbstFY6ZSVWc2rDYG3P8tEMc7kWofgDd0zmf3msa7lyDa2ZS1VWVKtHNBS2Jm28OXVZ1p7U+2JlSEiat3k0jtXZs28LtmWW6gt4eilbeuhUQBoOam3ihanIekM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=zVqhxma6; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CWPU8w/Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724615664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SZDhFSz5cGQqOrGnjwqK1octDVUeO0+e9a3ispg7DMk=;
-	b=CWPU8w/Zr3X2eu8X1zdOj4DmiTeGOlTzQkKqaLhBjb253nfbA3zY1B+qOSPuhaIxzbzWDV
-	ZxjJpD0VCsCU1h4aJ9YXqP8bHfaaymltVBjMarwrwR1VV+qAfEVgop/P35N8JMpF0xxugq
-	szzXoqyiVVS5moMUdDjCcOq6ETIn3UY=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-qIDfVAtBMN-Ip6otcuvlkg-1; Sun, 25 Aug 2024 15:54:21 -0400
-X-MC-Unique: qIDfVAtBMN-Ip6otcuvlkg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2f3f82f55feso29621631fa.0
-        for <gfs2@lists.linux.dev>; Sun, 25 Aug 2024 12:54:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="zVqhxma6"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1d7a544e7so350170285a.3
+        for <gfs2@lists.linux.dev>; Tue, 27 Aug 2024 03:52:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1724755956; x=1725360756; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L1/OASOdgW5eIZgb3nAGmTZU5/BzJCX72a/WaHOTVAA=;
+        b=zVqhxma6YfukjA9rjeXLLhRWaFrGA5TSwWXB+HZnr7e7R1TqFwpkwYJOwSgzj1kbUr
+         hP1zCSE/R0HNcy7DqTW7b8MC7XB0STxDUyK2XuweNsCxaEyS76vkz7evPmAT37nYpMsK
+         3KZWSILBwhMnTIRAfTPHgF1+LnLhCkB54PPxXNPzy2ARCrzZLLoBhcBjtaNIM4ypR4i6
+         K64xttLKxd07hIpxg85MO/t5+Q+5Q6nxriZuBGwFtezyD07/7SCsz5AxnG5Po0zqUzNh
+         PylHsWvGrU1b1nU53oSXhmPc/37pw2T2ezkF9J6RbVA27CkCvS9q61WxPAApcxM9iEm4
+         BbzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724615660; x=1725220460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SZDhFSz5cGQqOrGnjwqK1octDVUeO0+e9a3ispg7DMk=;
-        b=KwJwCzFUb/CXdphe8ppNNt9hlZUcIiSDshUwBabQqohf4QJulkPVnz8x7tqhy9ddaq
-         eRaE+7M0OepxVKDk2LyO4w5p8rTgFPPbWCdb/ntgcRRXcfpSz13dYeoIURPH6tB0WoLM
-         fklv3wOFNY+AF/3jbhFKVOq71tSFRV3AoUF1Dey6s/wmiaxO/3Zc0nk6k8hcrQ2FxI2i
-         kR/I8VNv9R9h/d0p+5dSt0282Ra3FtZtDSClCvDzLEZ6pMigDwkBlNso7jPzoaORbUAa
-         c4SA5m4GdMcCATW7MgHD/VPvt1usoLd+jMx++JFcu4Aht/1/5HPkEmzky3nenBKttbpB
-         BN5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXFOUPQXe25oI53P08dcgvWwl9lBes1UWW2xreQEcktC+nPk06+P5KzEWmiqLPlMKiLe+Hd@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3mvU8CCIraYg5//XHeE8WhfvQyUXDAHR6UgTL6Ulv4B0DXv4+
-	AxK9nKkflYNd0FH/Xa0JFgp2qyZJ8S8ATkuniKbiRiEGUDozxCexwU3C/3X/oxCod5R2hmyd4+N
-	WFrQaGLR8CbBW3sHFeSqT6R6YVudo3KfB8yQCYdc1NHU2sVArkr8Q67PkhCmi/H5dGY/+rMAxpL
-	aIOAPipNrtb+8lR/F1afgO5LdvTw==
-X-Received: by 2002:a05:651c:88a:b0:2ef:2843:4135 with SMTP id 38308e7fff4ca-2f401ef2f8bmr42010111fa.22.1724615660298;
-        Sun, 25 Aug 2024 12:54:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRR2RFGKYRIqaHIAtJY42+DmWhiPgyqSAg1f8W2qWMs4UGf31c1qZMTWRheB2QuKBk9MdDY6hnbgQqeIx520A=
-X-Received: by 2002:a05:651c:88a:b0:2ef:2843:4135 with SMTP id
- 38308e7fff4ca-2f401ef2f8bmr42009901fa.22.1724615659703; Sun, 25 Aug 2024
- 12:54:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724755956; x=1725360756;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L1/OASOdgW5eIZgb3nAGmTZU5/BzJCX72a/WaHOTVAA=;
+        b=OWP6weoNd9n8TYB1JyA7BmvTmWtKqbjzu8CEFd0mKx0fqLyXmshwzJhouTrwQ6g1/e
+         Go8uTYfIvwDqiwAJGf29BwW4RYs6kXA+d8IkLrjY1cUPuYv5nYMD87Y3TKj25xR/4qVB
+         SIJacKarHQYNMZtlN81SrfOVkjnEJUTIJrK7eWAQigT9poTnJcnX2BfPkxEbUw4sI1cr
+         JIJ0C++sBAFAGwYMsKGVqVoNEmcuFaJkLjD+vUvXt/eXM59Pn9oJn/3jLsOvRPnCYc8e
+         xMIN2GbI30yTIAjf+TWKQR0z+Uhq9YzCfyrYqBBebREySeZlembhoK9B8gY80hXHWvg8
+         3jlA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXXUH66+qbdHnNHxUF6oCTacrp0aIxgG81Xi2G7TdZbHjWbQui+rq/BUwkVCz1Yqa0bXIq@lists.linux.dev
+X-Gm-Message-State: AOJu0YwitldfsIDfqZlP6fMH1Rwerlv9fIpE0P99LcyL+LOTAFpFGhJ6
+	JGZDzCxLwGHNGtS8pdjk4KFnfx1PvQ31aGpXD4Om3znxJzri+oi2HbYmfmznMTU=
+X-Google-Smtp-Source: AGHT+IE/0KGfnI+BxdhiEauhnPCob4ywwYjoJfsqESQCbI3vPjdvAlSHONAnBe+aYMYMzbvGRJ/oLQ==
+X-Received: by 2002:a05:620a:4590:b0:79f:181e:3c58 with SMTP id af79cd13be357-7a689728cd7mr1596802185a.42.1724755956035;
+        Tue, 27 Aug 2024 03:52:36 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a67f31b81dsm539781885a.14.2024.08.27.03.52.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2024 03:52:35 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	dlemoal@kernel.org,
+	djwong@kernel.org,
+	brauner@kernel.org
+Subject: [PATCH][RFC] iomap: add a private argument for iomap_file_buffered_write
+Date: Tue, 27 Aug 2024 06:51:36 -0400
+Message-ID: <7f55c7c32275004ba00cddf862d970e6e633f750.1724755651.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240814143414.1877505-1-aahringo@redhat.com> <20240814143414.1877505-9-aahringo@redhat.com>
- <2024082459-neatly-screen-9d29@gregkh>
-In-Reply-To: <2024082459-neatly-screen-9d29@gregkh>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Sun, 25 Aug 2024 15:54:08 -0400
-Message-ID: <CAK-6q+hqhitE=_Lw2kd3kN3-hrquK550-d4jHgrkUX1uqj=zDg@mail.gmail.com>
-Subject: Re: [RFC dlm/next 08/12] kobject: add kset_type_create_and_add() helper
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org, 
-	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org, 
-	joseph.qi@linux.alibaba.com, rafael@kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, lucien.xin@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+In order to switch fuse over to using iomap for buffered writes we need
+to be able to have the struct file for the original write, in case we
+have to read in the page to make it uptodate.  Handle this by using the
+existing private field in the iomap_iter, and add the argument to
+iomap_file_buffered_write.  This will allow us to pass the file in
+through the iomap buffered write path, and is flexible for any other
+file systems needs.
 
-On Sat, Aug 24, 2024 at 1:18=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Aug 14, 2024 at 10:34:10AM -0400, Alexander Aring wrote:
-> > Currently there exists the kset_create_and_add() helper that does not
-> > allow to have a different ktype for the created kset kobject. To allow
-> > a different ktype this patch will introduce the function
-> > kset_type_create_and_add() that allows to set a different ktype instead
-> > of using the global default kset_ktype variable.
-> >
-> > In my example I need to separate the created kobject inside the kset by
-> > net-namespaces. This patch allows me to do that by providing a user
-> > defined kobj_type structure that implements the necessary namespace
-> > functionality.
-> >
-> > Signed-off-by: Alexander Aring <aahringo@redhat.com>
->
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+Alternatively we could just stuff the iocb in the iter, or the file, or any
+other such changes to give us access to the file for the original operation.  I
+don't have a strong opinion here, I just want to be able to take advantage of
+iomap for FUSE, so whatever the prevailing opinion is here I'll happily do it
+differently.
 
-note that I added the comments the kernel test robot pointed out. [0]
+ block/fops.c           | 2 +-
+ fs/gfs2/file.c         | 2 +-
+ fs/iomap/buffered-io.c | 3 ++-
+ fs/xfs/xfs_file.c      | 2 +-
+ fs/zonefs/file.c       | 2 +-
+ include/linux/iomap.h  | 2 +-
+ 6 files changed, 7 insertions(+), 6 deletions(-)
 
-Thanks.
-
-- Alex
-
-[0] https://lore.kernel.org/gfs2/20240819183742.2263895-9-aahringo@redhat.c=
-om/T/#u
+diff --git a/block/fops.c b/block/fops.c
+index 9825c1713a49..d16a6dddb12a 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -665,7 +665,7 @@ blkdev_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 
+ static ssize_t blkdev_buffered_write(struct kiocb *iocb, struct iov_iter *from)
+ {
+-	return iomap_file_buffered_write(iocb, from, &blkdev_iomap_ops);
++	return iomap_file_buffered_write(iocb, from, &blkdev_iomap_ops, NULL);
+ }
+ 
+ /*
+diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+index 08982937b5df..f7dd64856c9b 100644
+--- a/fs/gfs2/file.c
++++ b/fs/gfs2/file.c
+@@ -1057,7 +1057,7 @@ static ssize_t gfs2_file_buffered_write(struct kiocb *iocb,
+ 	}
+ 
+ 	pagefault_disable();
+-	ret = iomap_file_buffered_write(iocb, from, &gfs2_iomap_ops);
++	ret = iomap_file_buffered_write(iocb, from, &gfs2_iomap_ops, NULL);
+ 	pagefault_enable();
+ 	if (ret > 0)
+ 		written += ret;
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index f420c53d86ac..a047a11541e6 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1022,13 +1022,14 @@ static loff_t iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i)
+ 
+ ssize_t
+ iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *i,
+-		const struct iomap_ops *ops)
++		const struct iomap_ops *ops, void *private)
+ {
+ 	struct iomap_iter iter = {
+ 		.inode		= iocb->ki_filp->f_mapping->host,
+ 		.pos		= iocb->ki_pos,
+ 		.len		= iov_iter_count(i),
+ 		.flags		= IOMAP_WRITE,
++		.private	= private,
+ 	};
+ 	ssize_t ret;
+ 
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 4cdc54dc9686..e9c693bb20bc 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -760,7 +760,7 @@ xfs_file_buffered_write(
+ 
+ 	trace_xfs_file_buffered_write(iocb, from);
+ 	ret = iomap_file_buffered_write(iocb, from,
+-			&xfs_buffered_write_iomap_ops);
++			&xfs_buffered_write_iomap_ops, NULL);
+ 
+ 	/*
+ 	 * If we hit a space limit, try to free up some lingering preallocated
+diff --git a/fs/zonefs/file.c b/fs/zonefs/file.c
+index 3b103715acc9..35166c92420c 100644
+--- a/fs/zonefs/file.c
++++ b/fs/zonefs/file.c
+@@ -563,7 +563,7 @@ static ssize_t zonefs_file_buffered_write(struct kiocb *iocb,
+ 	if (ret <= 0)
+ 		goto inode_unlock;
+ 
+-	ret = iomap_file_buffered_write(iocb, from, &zonefs_write_iomap_ops);
++	ret = iomap_file_buffered_write(iocb, from, &zonefs_write_iomap_ops, NULL);
+ 	if (ret == -EIO)
+ 		zonefs_io_error(inode, true);
+ 
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 6fc1c858013d..f792b37f7627 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -257,7 +257,7 @@ static inline const struct iomap *iomap_iter_srcmap(const struct iomap_iter *i)
+ }
+ 
+ ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
+-		const struct iomap_ops *ops);
++		const struct iomap_ops *ops, void *private);
+ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+ 		struct iomap *iomap, loff_t pos, loff_t length, ssize_t written,
+ 		int (*punch)(struct inode *inode, loff_t pos, loff_t length));
+-- 
+2.43.0
 
