@@ -1,88 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19367155CBD;
-	Tue, 27 Aug 2024 11:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5851D27AA
+	for <gfs2@lists.linux.dev>; Tue, 27 Aug 2024 18:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724756930; cv=none; b=iRo+uiTBhaCMyrBOHEePJMcZGAcrZH82wLokZ/Ekp5ZfVYXx4KZh3SAAGsOqmVkS7ds7jFFWJuhwiS4HbVNYs6qnFh8k2bk+dILwZl9qKYufdEiFC0HPCDLrwYkR3Aj9+gwn+HthGVSutnlcKUttSXaQxMto8rfwbRKPqlTqo2Q=
+	t=1724781789; cv=none; b=vEofDJ1eRDc8EYVXzh8O17uGT+9/4PnBGZ89XkrDJOUeDKfoxLZ/ab9HXfLzCN20CNtuQPb9Rpj/u7QAPrfccvCTk/djkstXQVZ2dkuzvqr8o6Y/+6S1MOsJH9qcQE96Vs4MXVQ0gWG5pXFY0N9Ro7SnGWHI/0c3VOvXxxw/C8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724756930; c=relaxed/simple;
-	bh=0jqwgqPIXNN1LmGJDYYxJ3TQrTr4aXoEwYHIdHuw+8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MY3ZykzO+j3Ja4x7ZykIzAd6El6/5sBU+EiMeKiLZ+T5c65cgDNuKJp09kbp4YgWCvld9fwk9iXYJi13z39YfYEpzqz0uR7mi8m8Ja1HY8pYB29aC5bydBxgr5SURFLSyas9M8e0GazRbUMTotZbm2ye33nBAb2nIdDJk8L1oiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJjteGJ4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724781789; c=relaxed/simple;
+	bh=oR96iOXx+rs3wrdkJBENkx2GGB/C+AMxImmsvKqiHvA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ozr4sRIbmqQjODe2aV9SYSeTIN3dWzVXNO3Bj8NfxsH0PhhtfrjTV18EBAj6/QiP93GWutWXk+QZyrMk2zf/eSNFdzEJw64H0+1mUQNZcBwNZibH4Du2OeQVL9tMyXvxAsfOVxKe7c441QpNvxKPMjRkUV2LuVdIkcyDsqxB/fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bHb07a7o; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJjteGJ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CD8C8B7A0;
-	Tue, 27 Aug 2024 11:08:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724756929;
-	bh=0jqwgqPIXNN1LmGJDYYxJ3TQrTr4aXoEwYHIdHuw+8o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJjteGJ4vHkow673wpU3uvzb0qWFO4R5Vbi/MOwUpeey0EppkCDijPpJJaEIZGPEh
-	 4i7Ty9XwKiVVaj6QVVZrUg9df128mUjSjB+3tgJwmmGlVwj1h+ZiVwRaddPKD6PdUx
-	 gB/b44o9dKnbygwJD/8Az3pTdfE345zu1ytwhL0YIkmdvkp3HLud6xVim2n8Y/g4oJ
-	 HidNpm9+B49ogWM4b+AzTsGWiXbwiBa6dPqcADEbZxXZvD/a8U2W/VKFkKVtYNo/k+
-	 J0KH/4u4u13sv6ID/ctAy59+HCSF/D6GokVxOVFywqceUVvxzLTFMhIS/C504OPL22
-	 K1JXRWIsFc8Wg==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	linux-xfs@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-block@vger.kernel.org,
-	dlemoal@kernel.org,
-	djwong@kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH][RFC] iomap: add a private argument for iomap_file_buffered_write
-Date: Tue, 27 Aug 2024 13:07:43 +0200
-Message-ID: <20240827-inmitten-gletscher-db68c1048145@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To:  <7f55c7c32275004ba00cddf862d970e6e633f750.1724755651.git.josef@toxicpanda.com>
-References:  <7f55c7c32275004ba00cddf862d970e6e633f750.1724755651.git.josef@toxicpanda.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bHb07a7o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724781786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p8/cxNE6VJvsneEbrGqWQbWsphVxB+ixn/SyQ/i73Rc=;
+	b=bHb07a7oLhTnGDNDMXVvU61lKdn22+SEM0ks1WaK/DWhr5WVtQcdtgQja/EDBSAixjDENX
+	pf097P0StQ0ewOVSNNcPjCCVZBjUSkxvWTDdVyIgxO1UlhYZ5wvK41lmbEfsg80iARloMp
+	75cyLi5DbHtE3DcOKZQMHUq3Sr5iUjo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-x4bboJ_cMxOfXXcFMjZ1oA-1; Tue,
+ 27 Aug 2024 14:03:03 -0400
+X-MC-Unique: x4bboJ_cMxOfXXcFMjZ1oA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8B2C1955D48;
+	Tue, 27 Aug 2024 18:02:58 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EAE651955F1B;
+	Tue, 27 Aug 2024 18:02:53 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	song@kernel.org,
+	yukuai3@huawei.com,
+	agruenba@redhat.com,
+	mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	netdev@vger.kernel.org,
+	vvidic@valentin-vidic.from.hr,
+	heming.zhao@suse.com,
+	lucien.xin@gmail.com,
+	paulmck@kernel.org,
+	rcu@vger.kernel.org,
+	juri.lelli@redhat.com,
+	williams@redhat.com,
+	aahringo@redhat.com
+Subject: [RFC 0/7] dlm: the ultimate verifier for DLM lock correctness
+Date: Tue, 27 Aug 2024 14:02:29 -0400
+Message-ID: <20240827180236.316946-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1546; i=brauner@kernel.org; h=from:subject:message-id; bh=0jqwgqPIXNN1LmGJDYYxJ3TQrTr4aXoEwYHIdHuw+8o=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSd3bxrx17z38m3G2c83XVI9N7mnb9WXXU56tY+/amk7 aYDe0SSwztKWRjEuBhkxRRZHNpNwuWW81RsNsrUgJnDygQyhIGLUwAmUqfC8D99+eQNHRfZLWbE iujOfnJR5OGSpTd7qy8ufPBlqlthpeRcRoYn9w9EKBy67XJYs76qxkWmRMNJd8a7Iu9F6/o8Xl6 Y9pYfAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Tue, 27 Aug 2024 06:51:36 -0400, Josef Bacik wrote:
-> In order to switch fuse over to using iomap for buffered writes we need
-> to be able to have the struct file for the original write, in case we
-> have to read in the page to make it uptodate.  Handle this by using the
-> existing private field in the iomap_iter, and add the argument to
-> iomap_file_buffered_write.  This will allow us to pass the file in
-> through the iomap buffered write path, and is flexible for any other
-> file systems needs.
-> 
-> [...]
+Hi,
 
-It's in vfs.blocksize because there's other work that touches iomap in there.
-But I'll likely rename the branch to something that's more generic such as
-vfs.iomap at some point soon now that we have other stuff coming in.
+I send this rfc patch series to show a (for me) usable use-case for the
+DLM net-namespace functionality that is currently pending, see [0]. This
+patch-series introduce the DLM verifier to check on DLM correctness on
+any workload running on DLM with net-namespace feature. E.g. on gfs2 you
+can just run some filesystem benchmark tests and see if DLM works as
+aspected.
 
----
+This comes very useful when DLM recovery kicks in e.g. when nodes
+leaving the lockspace due e.g. fencing and recovery solves lock
+dependencies transparently from the user. However there is no "fake
+fencing switch" yet for DLM net-namespaces, but might be an idea for
+future functionality.
 
-Applied to the vfs.blocksize branch of the vfs/vfs.git tree.
-Patches in the vfs.blocksize branch should appear in linux-next soon.
+There could be bugs in the verifier, that I don't care if they exists...
+We need to check whats happening when the verifier complains but so far
+everything looks fine. It just an issue if the verifier doesn't say
+anything but a small bug introduced in DLM and the verifier will
+complain a lot.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+There might be still improvements in the DLM verifier. I needed to
+change a little bit the python scripts to generate the code but I did
+not add them here to this patch series. Also checkpatch complains about
+some things in the verifier code but I oriented myself mostly to the
+other existing verifiers. There is a printout of all holders if those
+violates the DLM compatible locking states. I might improve them when I
+actually try to figure out an existing problem, but for now this
+printout is very minimal.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+I mainly do this work because I prepare more changes in the DLM recovery
+code in future to scale with lockspaces with a lot of members that we
+can easily try out with the net-namespace functionality.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+I cc here the rcu people, may they also get some ideas to check on lock
+correctness using tracing kernel verifier subsystem.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.blocksize
+- Alex
 
-[1/1] iomap: add a private argument for iomap_file_buffered_write
-      https://git.kernel.org/vfs/vfs/c/f143d1a48d6e
+[0] https://lore.kernel.org/gfs2/20240814143414.1877505-1-aahringo@redhat.com/
+
+Alexander Aring (7):
+  dlm: fix possible lkb_resource null dereference
+  dlm: fix swapped args sb_flags vs sb_status
+  dlm: make add_to_waiters() that is can't fail
+  dlm: add our_nodeid to tracepoints
+  dlm: add lkb rv mode to ast tracepoint
+  dlm: add more tracepoints for DLM kernel verifier
+  rv: add dlm compatible lock state kernel verifier
+
+ Documentation/trace/rv/monitor_dlm.rst |  77 +++++
+ fs/dlm/ast.c                           |  30 +-
+ fs/dlm/dlm_internal.h                  |   3 +
+ fs/dlm/lock.c                          |  64 ++--
+ fs/dlm/lockspace.c                     |   4 +
+ fs/dlm/user.c                          |   9 +-
+ include/trace/events/dlm.h             | 121 ++++++-
+ include/trace/events/rv.h              |   9 +
+ kernel/trace/rv/Kconfig                |  18 +
+ kernel/trace/rv/Makefile               |   1 +
+ kernel/trace/rv/monitors/dlm/dlm.c     | 445 +++++++++++++++++++++++++
+ kernel/trace/rv/monitors/dlm/dlm.h     |  38 +++
+ kernel/trace/rv/monitors/dlm/dlm_da.h  | 143 ++++++++
+ tools/verification/models/dlm.dot      |  14 +
+ 14 files changed, 907 insertions(+), 69 deletions(-)
+ create mode 100644 Documentation/trace/rv/monitor_dlm.rst
+ create mode 100644 kernel/trace/rv/monitors/dlm/dlm.c
+ create mode 100644 kernel/trace/rv/monitors/dlm/dlm.h
+ create mode 100644 kernel/trace/rv/monitors/dlm/dlm_da.h
+ create mode 100644 tools/verification/models/dlm.dot
+
+-- 
+2.43.0
+
