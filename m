@@ -1,169 +1,105 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30AC12B8B
-	for <gfs2@lists.linux.dev>; Thu, 29 Aug 2024 11:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7752D18E348
+	for <gfs2@lists.linux.dev>; Thu, 29 Aug 2024 11:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724930282; cv=none; b=lpWb9QzlZFsCcw0f50Z920rdU1mwAggKFUCccFXzDaNC0LANqeLQyXiOt06ZYdNHLOA37r5Ih80JYHPb9nyXFm75uYGWeO8dnPCXUA7QHjosKRJgMcQBlARokifHQ/B/PdbDPeAbUvh9dP7MN3uUSKOHQ8hzRfRwdnUnqVwnPZg=
+	t=1724930790; cv=none; b=KhqG8wl+DBwJyThJrGhW26x8SbbmNDoU4ESoo1S9Ca6h6Leir0VtJZfQKugTb6kFew1P7vAVH34KLyg4BtY6hGzEnHLcXrjbYr4Eei8/RzK4PLZyd1K64ebxyX08rpqAtvO4EK+z/mYWRaCRZj6KSV3Fb9sZ+RSXeQ0M5dhwBAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724930282; c=relaxed/simple;
-	bh=/PwGxbIVR+NNi8MVB+lEH0f0kwNGHAH5RR5iiYcu7UQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=URNtWWvstILVSqThrPGJEbRE7/3mY80JLSHllnvcVucp5LIEOmr2heVLjZDX8AkyNPX+ytYMrAw5f3nb1LXiJo9nWVcmnRh62MVj8mBc4HTMiWSpq0X1kw8yVQ4uoe55Tc86bv+0IyZWy8xX9v3eLxK9kJLaO0Dnf5aOTB815Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BpL8AwJj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=IJjfXb59; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qEyZu7Tr; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=wOXoTiVg; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1724930790; c=relaxed/simple;
+	bh=gOx6qmYz1ck2X6HyQGme0UfMW99Cp51bAJbqgEhNEeo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EnKmFXA1AMEOqIZtTBp82J9BrMYlqg4hQ9uqA6MovbhOZdWa1tMKuqSQMb7ZaM3vsx0a5IbrANd3vQv5lTI2WvXOcJ0CnhfTw7ypRAScjo70j1sa/LY3sjpaL1kOutBmsZDkOWJNaFC6OY4wGWFk+PutsfDA/1muuGuG6C/ouEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bzXOAsQb; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BpL8AwJj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="IJjfXb59";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qEyZu7Tr";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="wOXoTiVg"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E113B1F381;
-	Thu, 29 Aug 2024 11:17:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724930279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0VbUZDZQwysdju52Mc/Prv655x840ugcPnmGGooE7sA=;
-	b=BpL8AwJj59PVb3dhbuAZcXAjX8r2rxJ9g24wzvJyYcCP8rcssgGm+TQ1F/jPcroXo8/1Pe
-	YFaWVlj+m3K8aJzagPO/sgbHGzwOgf77v29MtpIbF81CyRhDulQI8AqfQMI1X1eq2MRMEQ
-	qxYA+mrzUrcwHcpOu0i3EBzjVQZYm8Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724930279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0VbUZDZQwysdju52Mc/Prv655x840ugcPnmGGooE7sA=;
-	b=IJjfXb59ZkfzJRClFLr8yRG/1v10ufGm7twMC3KAPEhATFAMD3EU3uf3jkn53dLAd5NWrE
-	yG7ZNyvNZbjKBMAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qEyZu7Tr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wOXoTiVg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724930277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0VbUZDZQwysdju52Mc/Prv655x840ugcPnmGGooE7sA=;
-	b=qEyZu7TrP7Uxt5l0A9md+zJ+QViU0Edmm8HTIxAFOAzjzz+vO869cxaF1zblg/0eqyiS2A
-	0Rphkh3+budjfwfAVVTYsY9OSXdIk/4LGLQc9cYMeNJidhJApLgqSgWKFLZxRiz7lDHbPq
-	x7gvXFQD7DWz24DgDrltYMV7+LBPjhc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724930277;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0VbUZDZQwysdju52Mc/Prv655x840ugcPnmGGooE7sA=;
-	b=wOXoTiVgrQNH+YEaJYYhfy98Z6l5wjLMOT/1w232L0/67UTfdCGUFxPiSrijSvddshI62Y
-	wBL+JVxhD/lc/oDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D5B9A139B0;
-	Thu, 29 Aug 2024 11:17:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id g30sNOVY0GZ9FgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 29 Aug 2024 11:17:57 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 87F0AA0965; Thu, 29 Aug 2024 13:17:53 +0200 (CEST)
-Date: Thu, 29 Aug 2024 13:17:53 +0200
-From: Jan Kara <jack@suse.cz>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: kernel-team@fb.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	amir73il@gmail.com, brauner@kernel.org, linux-xfs@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-bcachefs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v4 16/16] xfs: add pre-content fsnotify hook for write
- faults
-Message-ID: <20240829111753.3znmdajndwwfwh6n@quack3>
-References: <cover.1723670362.git.josef@toxicpanda.com>
- <631039816bbac737db351e3067520e85a8774ba1.1723670362.git.josef@toxicpanda.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bzXOAsQb"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6bf92f96f83so2793166d6.3
+        for <gfs2@lists.linux.dev>; Thu, 29 Aug 2024 04:26:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724930788; x=1725535588; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gOx6qmYz1ck2X6HyQGme0UfMW99Cp51bAJbqgEhNEeo=;
+        b=bzXOAsQbY3MBQ0WcxEdIoc5mMcgqajjjKOcTNcTrirm0lC2bPqx8GNRGhLcyCtDbvU
+         309hd1ZftMguWal0WPlv8MaZVCxYFQ5DqzEXiQ/s/Cendh0UzpSsrJWrVrRcer4KAhmO
+         zF2u1LjKq491H6B9wfX6CP4ZrWj1vCS75Ypzfptpr2Eg/8B6azfHKmWDACn4ZMgk/0ui
+         bWq2SgCgo2zYgIvh+0XXmTGhkVz2s7knVAlhCZPk3xBc9jhBkUQ+TdgQ5jUoQkuQIH5n
+         01hFdhKomnCkBLm0nc3TDnPLUk9ZTr/0Idshi0ztxGJuvtlmTdtcgzJMzvHY3tXE1y5b
+         ZRFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724930788; x=1725535588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gOx6qmYz1ck2X6HyQGme0UfMW99Cp51bAJbqgEhNEeo=;
+        b=H3BUfF79QHtUnnVD0J6fL78Jpvkw2/4KpvJepaIwdsKTPxkxLMSoMV2kzSIshFsjhC
+         2HO8riV9SRRzzuPahKvMJUVelsiN8aOnaAevKoDa0F3otQg//HrZgL+L+Mla2sdaNEwQ
+         nmtnkqe8E2cDkM+s6NDqG/CEi+aYvnmBCbXulruYPhfC9eoMrpS7sxiD63EuRWwr/Kye
+         jUgjTXN7YyjCneEDSywceeSpPZN/gn0ycuUBjbHTVnTF93XHJARuZ8AkLH6Az7Zt2qLR
+         FlLIjkDjuPugyDfDaYtRKW7QQWcyEgXY/XzFUYHeoBqGUXwf5JTabmHT3V23dJsLsqMQ
+         RTsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQpkTX1bi/XLcEnTKcqtUsY9Wqzgxoi5t3f+8QjFfjQs38dygaCHcAp8YLlR76SOBa7LR+@lists.linux.dev
+X-Gm-Message-State: AOJu0YyObE2AO19AbDbzyhm2aIQFjkIBopK6X2vtWcvdZ3a2g7rlyZ8z
+	FAIyd/wGIWs89fxz4eD8+VlrwBOYy33KS+XG27br0zDguTe2OPgpcBBCNw2b3Fy6eHP80APz4ui
+	G08QqYNS/27WPwevtJVSE+1zOZYI=
+X-Google-Smtp-Source: AGHT+IF9Q1Ms8z/doAt1y4SkEv8z6ZQR3pz6NK2GvaKkD36Rbpxx93lLppwh2O+ZQ4ORSU1yEkhjdAHk+vkdNGr/aKc=
+X-Received: by 2002:a05:6214:3388:b0:6c1:6ad1:72af with SMTP id
+ 6a1803df08f44-6c33e62452fmr25327836d6.29.1724930788119; Thu, 29 Aug 2024
+ 04:26:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <631039816bbac737db351e3067520e85a8774ba1.1723670362.git.josef@toxicpanda.com>
-X-Rspamd-Queue-Id: E113B1F381
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,toxicpanda.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_CC(0.00)[fb.com,vger.kernel.org,suse.cz,gmail.com,kernel.org,lists.linux.dev,fromorbit.com,infradead.org];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
-X-Spam-Flag: NO
+References: <cover.1723670362.git.josef@toxicpanda.com> <2bd333be8352f31163eac7528fdcb8b47a1f97b4.1723670362.git.josef@toxicpanda.com>
+ <20240829111510.dfyqczbyzefqzdtx@quack3>
+In-Reply-To: <20240829111510.dfyqczbyzefqzdtx@quack3>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 29 Aug 2024 13:26:17 +0200
+Message-ID: <CAOQ4uxjuySfiOXy_R28nhQnF+=ty=hL2Zj3h=aVrGXjm_v7gug@mail.gmail.com>
+Subject: Re: [PATCH v4 15/16] gfs2: add pre-content fsnotify hook to fault
+To: Jan Kara <jack@suse.cz>
+Cc: Josef Bacik <josef@toxicpanda.com>, kernel-team@fb.com, linux-fsdevel@vger.kernel.org, 
+	brauner@kernel.org, linux-xfs@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-bcachefs@vger.kernel.org, Andreas Gruenbacher <agruenba@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed 14-08-24 17:25:34, Josef Bacik wrote:
-> xfs has it's own handling for write faults, so we need to add the
-> pre-content fsnotify hook for this case.  Reads go through filemap_fault
-> so they're handled properly there.
-> 
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+On Thu, Aug 29, 2024 at 1:15=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> On Wed 14-08-24 17:25:33, Josef Bacik wrote:
+> > gfs2 takes the glock before calling into filemap fault, so add the
+> > fsnotify hook for ->fault before we take the glock in order to avoid an=
+y
+> > possible deadlock with the HSM.
+> >
+> > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>
+> The idea of interactions between GFS2 cluster locking and HSM gives me
+> creeps. But yes, this patch looks good to me. Would be nice to get ack fr=
+om
+> GFS2 guys. Andreas?
 
-Looks good to me but it would be great to get explicit ack from some XFS
-guy...  Some selection CCed :)
+If we are being honest, I think that the fact that HSM events require caref=
+ul
+handling in ->fault() and not to mention no documentation of this fact,
+perhaps we should let HSM events be an opt-in file_system_type feature?
 
-								Honza
+Additionally, we had to introduce FS_DISALLOW_NOTIFY_PERM
+and restrict sb marks on SB_NOUSER, all because these fanotify
+features did not require fs opt-in to begin with.
 
-> ---
->  fs/xfs/xfs_file.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-> index 4cdc54dc9686..e61c4c389d7d 100644
-> --- a/fs/xfs/xfs_file.c
-> +++ b/fs/xfs/xfs_file.c
-> @@ -1283,6 +1283,10 @@ xfs_write_fault(
->  	unsigned int		lock_mode = XFS_MMAPLOCK_SHARED;
->  	vm_fault_t		ret;
->  
-> +	ret = filemap_maybe_emit_fsnotify_event(vmf);
-> +	if (unlikely(ret))
-> +		return ret;
-> +
->  	sb_start_pagefault(inode->i_sb);
->  	file_update_time(vmf->vma->vm_file);
->  
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I think we would be repeating this mistake if we do not add
+FS_ALLOW_HSM from the start.
+
+After all, I cannot imagine HSM being used on anything but
+the major disk filesystems.
+
+Hmm?
+
+Amir.
