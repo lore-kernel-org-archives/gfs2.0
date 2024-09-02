@@ -1,171 +1,180 @@
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99A0186607
-	for <gfs2@lists.linux.dev>; Mon,  2 Sep 2024 08:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E1913D520
+	for <gfs2@lists.linux.dev>; Mon,  2 Sep 2024 10:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725267270; cv=none; b=o8jlivmpiqK55Ftq/S1Eg0GnHU/1SSyKUOXNiB/OgwekrL/zAbjaM4M2a5Dnv96fKN0FZ5SGiTWl6LX8iR0NUvgzLNxwVYH68m39gZs8z0DTjPR8MJC9rYNdPRbMt4YRgcdjlLWlVlX50kdpjl0r3hfv4xxWaZBq6QQATq61Hmc=
+	t=1725272628; cv=none; b=CtYFgFX7+OhB6LRHJEzDj1BuemYahrfxW2gNECsKiLbATA2lat2AbF+a8v0sOabk1mNN9liS0MFKT3Z9GKrOgMgn2tBJVMw0Gb2+5/Tk2XlCCpM1EuqgdTUCEUVmhP8Nq73HTpcMIOQMsMg+3GQKjuC5jc/rK4QK04TMIaIxtyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725267270; c=relaxed/simple;
-	bh=CAATabSCr5CKZj+7nol0qkzBbFz1DplMI5QO7FJBzGI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OToWB66YYKFStKK2GPxeFUNwRQVmIQW+xfhUuaKnvZF+0zFCB/TMOT9xB6eNO2l/I/osCH9Gj9WLyW3qRPvzqMs88uFEJWfqXOSYzgP0IhRz8xMS1l9xuxlNWwU55zN8vIQydka+BBsGHHFKa4rMZTG5LMn9usDqUKJXTU6Ct1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-82a217cec33so415941439f.1
-        for <gfs2@lists.linux.dev>; Mon, 02 Sep 2024 01:54:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725267268; x=1725872068;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/CIsymnBzIqW1PBO0525sxPG7c5ImAMzTvr4SODwBk=;
-        b=qhiQQmyjoLEMY7BXuOjw8menZagOijuV8pgzjQY7Ytu22sre8w5Zfo4Y8oSIU2psNj
-         BmaVerTihRS6ouYiWu5TJ0g7tjmiVxZL2f78uF7gJip+MfQV3DFLbZJXtnogNdXSWgkJ
-         NZHSxbiZpZTkFTfXn7TWDKQvW1bLOH1ue0hMa8dH3HdfsCBfRO977q5i6cW4sE2C7dvn
-         n8bj2r0TtLWQeWxc9oWKNiOeokkXOPj4q7rv8v/Yn18KEikIqRT4p3LucqoiNLZ7k1LQ
-         l0RkV0TTvhaAdLMcqw5ctLXQj2Gwn9l74nGCZ6ZprakwB9m99ZpCD0Hs3DODOzh1wxm8
-         JzWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJKfj2YGjobi+mGjrwJpW3hpwsxtiWHpbc+1tTy8/q4vk0M8VTVT02dHszny8TxUW6a/Gs@lists.linux.dev
-X-Gm-Message-State: AOJu0YybsBvwZa4mY4IMo4zmi5M5KNOwd4zbeLy7EbE6a/y/Dm1MIIxy
-	1eVdkwzAp4bgnuHsX8451JKBggUf0FpXErw63jsDRTVB05NbiZJMyxSaxLEFkMgG0Ess0WNdcnf
-	0Le37RQHZ4vCzo3pp0R3/VR54RARbWHJUVWJnQ82BNDj6nqFkSM0RhEA=
-X-Google-Smtp-Source: AGHT+IHdEqahd/WpfkzJfahG0HAilrL2z+XzKuERzqkNKckNS21qCjTnadX9f3/YE6tajvhTbCtXXpf+hidjUHSKTskreDTziCRb
+	s=arc-20240116; t=1725272628; c=relaxed/simple;
+	bh=N8oazSSiWhM8MmQJ05BE+dKrBh8QnfEgDtFuFZgxa1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WIHTbLy1An0PKXc9tHEXJhfjAt4aToBMLufX7m9qvQYqUFPLL9/1GuFj9RMbdfR1o70kkmAFV+R9G6s5MOcClW6snn5kBDtv9xEuiTLPEIq1kcz9FKd/2ga9dQ6j05FnbYcLSxM3Yh+y5GzSgtvfDiTRNHcN294p1Uz/c2VMG/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=t0ZMyoLN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4nUCsoLr; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=t0ZMyoLN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4nUCsoLr; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="t0ZMyoLN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4nUCsoLr";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="t0ZMyoLN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4nUCsoLr"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AC93E1F78A;
+	Mon,  2 Sep 2024 10:23:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1725272624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2La409HlsVP43DvNdlRrcc4P/nFvA33DMAMaKY/R8N0=;
+	b=t0ZMyoLNCpz8mZm+IWqY6DiLFKyf09kIutXhEuQE2q68/XZLfZeWotmbMCmp7P1JG5J+B1
+	kQ8OrZm+FfewsDUvPnS/ak/GeJdNJtbji9r5zrpkgjsjZZLNDpSnfMyy9izWsbJ3wnov26
+	pjtsaIT86gtB2qJtepSbYd/5jNsuM9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1725272624;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2La409HlsVP43DvNdlRrcc4P/nFvA33DMAMaKY/R8N0=;
+	b=4nUCsoLrv0mpcvKWQijwPvMuPKbyUIVF3aJIrFW2G0GPFhhqiiv/OXp13H8zovmhTr7ZIK
+	9r0R8xkPE6nFYuAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t0ZMyoLN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4nUCsoLr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1725272624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2La409HlsVP43DvNdlRrcc4P/nFvA33DMAMaKY/R8N0=;
+	b=t0ZMyoLNCpz8mZm+IWqY6DiLFKyf09kIutXhEuQE2q68/XZLfZeWotmbMCmp7P1JG5J+B1
+	kQ8OrZm+FfewsDUvPnS/ak/GeJdNJtbji9r5zrpkgjsjZZLNDpSnfMyy9izWsbJ3wnov26
+	pjtsaIT86gtB2qJtepSbYd/5jNsuM9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1725272624;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2La409HlsVP43DvNdlRrcc4P/nFvA33DMAMaKY/R8N0=;
+	b=4nUCsoLrv0mpcvKWQijwPvMuPKbyUIVF3aJIrFW2G0GPFhhqiiv/OXp13H8zovmhTr7ZIK
+	9r0R8xkPE6nFYuAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D2D613AE0;
+	Mon,  2 Sep 2024 10:23:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fxcaJjCS1WbyZQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 02 Sep 2024 10:23:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4D2B7A0965; Mon,  2 Sep 2024 12:23:44 +0200 (CEST)
+Date: Mon, 2 Sep 2024 12:23:44 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Josef Bacik <josef@toxicpanda.com>,
+	kernel-team@fb.com, linux-fsdevel@vger.kernel.org,
+	amir73il@gmail.com, brauner@kernel.org, linux-xfs@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-bcachefs@vger.kernel.org,
+	Dave Chinner <david@fromorbit.com>,
+	Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v4 16/16] xfs: add pre-content fsnotify hook for write
+ faults
+Message-ID: <20240902102344.evvpipetu6zghrwz@quack3>
+References: <cover.1723670362.git.josef@toxicpanda.com>
+ <631039816bbac737db351e3067520e85a8774ba1.1723670362.git.josef@toxicpanda.com>
+ <20240829111753.3znmdajndwwfwh6n@quack3>
+ <20240830232833.GR6216@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1805:b0:39d:1ca5:3903 with SMTP id
- e9e14a558f8ab-39f40f042d4mr8857135ab.1.1725267268010; Mon, 02 Sep 2024
- 01:54:28 -0700 (PDT)
-Date: Mon, 02 Sep 2024 01:54:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a7170b06211f16b3@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in gfs2_withdraw
-From: syzbot <syzbot+ed42f17ebcb58526788c@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240830232833.GR6216@frogsfrogsfrogs>
+X-Rspamd-Queue-Id: AC93E1F78A
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[suse.cz,toxicpanda.com,fb.com,vger.kernel.org,gmail.com,kernel.org,lists.linux.dev,fromorbit.com,infradead.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DWL_DNSWL_BLOCKED(0.00)[suse.cz:dkim];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.01
+X-Spam-Flag: NO
 
-Hello,
+On Fri 30-08-24 16:28:33, Darrick J. Wong wrote:
+> On Thu, Aug 29, 2024 at 01:17:53PM +0200, Jan Kara wrote:
+> > On Wed 14-08-24 17:25:34, Josef Bacik wrote:
+> > > xfs has it's own handling for write faults, so we need to add the
+> > > pre-content fsnotify hook for this case.  Reads go through filemap_fault
+> > > so they're handled properly there.
+> > > 
+> > > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> > 
+> > Looks good to me but it would be great to get explicit ack from some XFS
+> > guy...  Some selection CCed :)
+> 
+> Looks decent to me, but I wonder why xfs_write_fault has to invoke
+> filemap_maybe_emit_fsnotify_event itself?  Can that be done from
+> whatever calls ->page_mkwrite and friends?
 
-syzbot found the following issue on:
+So we were discussing this already here [1]. The options we have:
 
-HEAD commit:    928f79a188aa Merge tag 'loongarch-fixes-6.11-2' of git://g..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=14987643980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a0455552d0b27491
-dashboard link: https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12d2f62b980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=109fb60b980000
+1) Call filemap_maybe_emit_fsnotify_event() from filesystem hooks
+(filemap_fault() for those who use it). This is a bit ugly because it
+requires modification to filesystems with their own fault handlers.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f1ca818b8564/disk-928f79a1.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2cae3d4d58a7/vmlinux-928f79a1.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d66b706213bc/bzImage-928f79a1.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/d2e2e3a9aae8/mount_0.gz
+2) Call filemap_maybe_emit_fsnotify_event() from generic code before
+calling ->fault() and if we needed to send event (and thus dropped
+mmap_lock), we will retry the fault. This requires no special fs awareness
+but the ->fault hook will then be called after retry most of the times on
+HSM managed fs and thus without possibility to drop mmap_lock making
+contention there possibly worse.
 
-Bisection is inconclusive: the issue happens on the oldest tested release.
+3) (I don't think we've discussed this option yet): Call
+filemap_maybe_emit_fsnotify_event() in generic code before calling ->fault
+and then continue to call ->fault even if we've dropped mmap_lock. This
+will require changing calling convention for ->fault as vmf->vma must not
+be touched after we've dropped mmap_lock and practically all users end up
+using it to get vmf->vma->vm_file. With per-fs opt in flag to enable HSM
+events this could be manageable but frankly I'm not convinced the
+complicated calling convention would be better outcome than 1). But I'm
+open for discussion.
+								Honza
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=108f297b980000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=128f297b980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=148f297b980000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ed42f17ebcb58526788c@syzkaller.appspotmail.com
-
-gfs2: fsid=_){&.s: fatal: filesystem consistency error - inode = 1 19, function = gfs2_jdesc_check, file = fs/gfs2/super.c, line = 119
-gfs2: fsid=_){&.s: G:  s:SH n:2/13 f:aqob t:SH d:EX/0 a:0 v:0 r:2 m:20 p:3
-gfs2: fsid=_){&.s:  H: s:SH f:eEcH e:0 p:5212 [syz-executor117] init_journal+0x1881/0x2420 fs/gfs2/ops_fstype.c:806
-gfs2: fsid=_){&.s:  I: n:1/19 t:8 f:0x00 d:0x00000200 s:8388608 p:0
-gfs2: fsid=_){&.s: about to withdraw this file system
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/util.c:340!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 5212 Comm: syz-executor117 Not tainted 6.11.0-rc5-syzkaller-00079-g928f79a188aa #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-RIP: 0010:gfs2_withdraw+0x1459/0x1460 fs/gfs2/util.c:340
-Code: ff ff 48 8b 4c 24 10 80 e1 07 80 c1 03 38 c1 0f 8c 51 fd ff ff 48 8b 7c 24 10 e8 02 2c 14 fe e9 42 fd ff ff e8 48 0f b0 fd 90 <0f> 0b 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900033373c0 EFLAGS: 00010293
-RAX: ffffffff83e37c58 RBX: 0000000000000004 RCX: ffff88807b0a0000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
-RBP: ffffc90003337560 R08: ffffffff83e36aae R09: 1ffff92000666e18
-R10: dffffc0000000000 R11: fffff52000666e19 R12: 1ffff11005354815
-R13: 1ffff92000666e8c R14: dffffc0000000000 R15: ffff888029aa4340
-FS:  0000555569397380(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000005fdeb8 CR3: 000000007ae7c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- gfs2_jdesc_check+0x17b/0x2e0
- check_journal_clean+0x162/0x360 fs/gfs2/util.c:69
- init_journal+0x1881/0x2420 fs/gfs2/ops_fstype.c:806
- init_inodes+0xdc/0x320 fs/gfs2/ops_fstype.c:864
- gfs2_fill_super+0x1c18/0x2500 fs/gfs2/ops_fstype.c:1249
- get_tree_bdev+0x3f7/0x570 fs/super.c:1635
- gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1329
- vfs_get_tree+0x90/0x2b0 fs/super.c:1800
- do_new_mount+0x2be/0xb40 fs/namespace.c:3472
- do_mount fs/namespace.c:3812 [inline]
- __do_sys_mount fs/namespace.c:4020 [inline]
- __se_sys_mount+0x2d6/0x3c0 fs/namespace.c:3997
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9b18ad2b3a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 5e 04 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd7482ab88 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007ffd7482aba0 RCX: 00007f9b18ad2b3a
-RDX: 00000000200124c0 RSI: 0000000020012500 RDI: 00007ffd7482aba0
-RBP: 0000000000000004 R08: 00007ffd7482abe0 R09: 0000000000012613
-R10: 0000000002800002 R11: 0000000000000282 R12: 0000000002800002
-R13: 00007ffd7482abe0 R14: 0000000000000003 R15: 0000000001000000
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_withdraw+0x1459/0x1460 fs/gfs2/util.c:340
-Code: ff ff 48 8b 4c 24 10 80 e1 07 80 c1 03 38 c1 0f 8c 51 fd ff ff 48 8b 7c 24 10 e8 02 2c 14 fe e9 42 fd ff ff e8 48 0f b0 fd 90 <0f> 0b 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900033373c0 EFLAGS: 00010293
-RAX: ffffffff83e37c58 RBX: 0000000000000004 RCX: ffff88807b0a0000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
-RBP: ffffc90003337560 R08: ffffffff83e36aae R09: 1ffff92000666e18
-R10: dffffc0000000000 R11: fffff52000666e19 R12: 1ffff11005354815
-R13: 1ffff92000666e8c R14: dffffc0000000000 R15: ffff888029aa4340
-FS:  0000555569397380(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000005fdeb8 CR3: 000000007ae7c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+[1] https://lore.kernel.org/all/CAOQ4uxgXEzT=Buwu8SOkQG+2qcObmdH4NgsGme8bECObiobfTQ@mail.gmail.com
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
