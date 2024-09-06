@@ -1,149 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7E18FDC8
-	for <gfs2@lists.linux.dev>; Tue,  3 Sep 2024 17:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4074BF5
+	for <gfs2@lists.linux.dev>; Fri,  6 Sep 2024 06:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725385649; cv=none; b=UgEzdATbRGTBaTFT4qG9kfPKo8mvqmPQBcec25dLNatni/hym4geaScM3FmM5CPQa+FyzziwAbUx2lQKtrqBWtDSluhpnRVHq+lyZlUsjU/aKXaPHnbrTyvR9o5Z1OQr6sNIgIVUGklqBl8fo2Khb5gCfWxE3qAaPF57wTb8C4o=
+	t=1725603551; cv=none; b=SZMAlUwq1LutDHDpkZCfuP+buvzBfLzJP+7md39FCJkLnzPxN4riIzEl/KX+22zbzBwYcyibN/mHxLekrz6hk4wwoUjhqh9g4QdTroGEKJa8NKzb8broj+Z8pVDu7uK/CG6j6eoiTopB6S3Tw8ahS+y39/33maI9asl9nkBTmyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725385649; c=relaxed/simple;
-	bh=vilaWUSJal499Udwz4dDYaxHQfBpjxAcpzruaqhWlWo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jNRuWiVMjd061pN0tIo+OINvsioqARg9Cf2PpzvPtt0A5sQTR0uv49NcFeVw/BnrB1dc6K6wSV55iHQEWH4AA/EHPbH0DuQ9vIitMSWR9iD9ILYshv25WKNxl+spiKcfCm7gcmC8erUGRWKpQ3C6xv46QHfqGrzaiksShSyn7i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ggPmcnud; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ggPmcnud"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725385646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FNXqs/lNoSaUpgBeX3QA/3YkwVc/xXeOo6r0HFbZOuc=;
-	b=ggPmcnudUnr9O/swBecZOaZ3wKpMVHLK3zkblyDlLP5c5HThb85RPUjojpmCDCv08V2cRv
-	kMz0wJRoqpyURQkyclpsXQILGSUXyRB91KeGW6k2jt0FRDr5HLusYwFrUqrqLHl1YZxKmm
-	5YX2FgW3W6BYNz0TCgT/910tTPabOeY=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-RbHKsSK-MTKFm1Xb480afA-1; Tue, 03 Sep 2024 13:47:24 -0400
-X-MC-Unique: RbHKsSK-MTKFm1Xb480afA-1
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-7cd98f27becso5630966a12.3
-        for <gfs2@lists.linux.dev>; Tue, 03 Sep 2024 10:47:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725385644; x=1725990444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FNXqs/lNoSaUpgBeX3QA/3YkwVc/xXeOo6r0HFbZOuc=;
-        b=AfSNK/MDgTX3vN+NBlhRDf5jR/pHpQiuJh1Y6ZcuUh+CT/Y882sadU4KqeVFDm8Tfc
-         uEdXTG3abSuSOBxE5ZXqCAlx5ZLT4JZAcXfPlcb2uSlU42g/5AXsrO1nOGf8WC1jHPEh
-         nrhxDPZFs26AR5aK/H7j4uwqvBnfKCgpZ9PKx8t6h7fD4V/mVS3Tvy/mmjN95pJB2IuE
-         iCtMGIUcR05vTO5PUyBMUAbsJvLeSglr6yD1rVBFJgXOTGcNJSVWbmXwxpntPrPzhYKb
-         6Wpbn9OvJrY+O9dYdwiC39nSx21WQSq7ue8JMWhF6gyp923qvJA6knDmFZwy5hKLjtmg
-         GDNQ==
-X-Gm-Message-State: AOJu0YyNfWHNQYluUBxfGPUsziKCxeYOgd1OyeWsucMwxrFfrBQQR2A4
-	+C5Vzh0tLM+Xw06UR3ExPpXbJrYBTcZNHtFKQQP6eYvG5vP0WeKN+KWYOfjF/sFys+01bnuXTKg
-	sBJSRafwqSZ2VYGBuGElAGTum/i3jKbUJNw2otvARDXkXKBCLvFYRv0RILPECajeiZ7bOpi+Vv1
-	/e8p1Ffh9YPxZVeCUaFfastElosA==
-X-Received: by 2002:a17:902:db0d:b0:205:7835:38dc with SMTP id d9443c01a7336-20578353a3emr94726375ad.60.1725385643787;
-        Tue, 03 Sep 2024 10:47:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrZyUIweOEljpt2l1gAEepYaw7yFw7Iw8NeKb3l3vIGgC5JNPoK4i1YlSRAOirQL3ons22O9Zd9Id9Io4MdQI=
-X-Received: by 2002:a17:902:db0d:b0:205:7835:38dc with SMTP id
- d9443c01a7336-20578353a3emr94725985ad.60.1725385643238; Tue, 03 Sep 2024
- 10:47:23 -0700 (PDT)
+	s=arc-20240116; t=1725603551; c=relaxed/simple;
+	bh=/z9BUTspTYTyCpbpvwg/0LvLuAIgJLO8Sryoouivmhw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n/25MrpXV4Mr8kAIPvm6BVN6IjP0OaNdIGumdzb9pmju94KfYxk4Z+10zbW8zUd8WjBbf6pqdtAXIkIqPdItn6MG5KECW7d3SxiE5/33smL+dR6jDJcBX3VyHXFOzul1x542qbpVcqEfIlhoiiUNiv3QGm+cYEw7d38tgqkcAQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4X0QxF15D9z1xx4X;
+	Fri,  6 Sep 2024 14:17:05 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id B40861400DB;
+	Fri,  6 Sep 2024 14:19:06 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Sep
+ 2024 14:19:06 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <aahringo@redhat.com>, <teigland@redhat.com>, <gfs2@lists.linux.dev>
+CC: <chenjun102@huawei.com>, <zhangzekun11@huawei.com>
+Subject: [PATCH] dlm: Remove unused declartions in header files
+Date: Fri, 6 Sep 2024 14:05:29 +0800
+Message-ID: <20240906060529.9887-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <2142bfe8-c91f-4c56-a3e9-3d5cf11826a2@roeck-us.net>
-In-Reply-To: <2142bfe8-c91f-4c56-a3e9-3d5cf11826a2@roeck-us.net>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 3 Sep 2024 19:47:11 +0200
-Message-ID: <CAHc6FU62ShJjBLujC4=zNupXrWWxL7JkQnX1_Xra50rog7HFwg@mail.gmail.com>
-Subject: Re: lockdep warnings in gfs2 code
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: gfs2@lists.linux.dev, Matthew Wilcox <willy@infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
 
-Hello,
+The definition of dlm_lowcomms_shutdown_node() has been removed since
+commit 54fbe0c15d9a ("fs: dlm: bring back previous shutdown handling").
 
-On Mon, Sep 2, 2024 at 5:14=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> w=
-rote:
->
-> Hi,
->
-> I keep getting the following warnings when testing gfs2.
-> This is with CONFIG_LOCKDEP=3Dy.
->
-> [   12.210205] gfs2: fsid=3Dsda2.0: first mount done, others may mount
-> [   20.014136] ------------[ cut here ]------------
-> [   20.014417] WARNING: CPU: 0 PID: 2154 at include/linux/backing-dev.h:2=
-51 __folio_mark_dirty+0x318/0x350
-> ...
-> [   20.016969] Call trace:
-> [   20.017017]  __folio_mark_dirty+0x318/0x350
-> [   20.017088]  mark_buffer_dirty+0x8c/0x18c
-> [   20.017145]  gfs2_unpin+0x6c/0x434
-> [   20.017198]  buf_lo_after_commit+0x6c/0x90
-> [   20.017253]  gfs2_log_flush+0x3b8/0xd08
-> [   20.017310]  gfs2_kill_sb+0x3c/0x1fc
->
->
-> [   20.033440] WARNING: CPU: 0 PID: 2154 at include/linux/backing-dev.h:2=
-51 __folio_start_writeback+0x2f0/0x32c
-> [   20.033551] Modules linked in:
-> ...
-> [   20.035108] Call trace:
-> [   20.035148]  __folio_start_writeback+0x2f0/0x32c
-> [   20.035210]  gfs2_aspace_writepage+0xdc/0x208
-> [   20.035268]  __gfs2_writepage+0x20/0xc8
-> [   20.035322]  write_cache_pages+0x70/0xe4
-> [   20.035381]  gfs2_ail1_flush+0x20c/0x600
-> [   20.035436]  gfs2_ail1_start+0x50/0x80
-> [   20.035490]  gfs2_log_flush+0xb40/0xd08
-> [   20.035544]  gfs2_kill_sb+0x3c/0x1fc
->
->
-> [   20.043396] WARNING: CPU: 1 PID: 79 at include/linux/backing-dev.h:251=
- __folio_end_writeback+0x368/0x40c
-> ...
-> [   20.045083] Call trace:
-> [   20.045123]  __folio_end_writeback+0x368/0x40c
-> [   20.045195]  folio_end_writeback+0xec/0x140
-> [   20.045252]  end_buffer_async_write+0xe4/0x1a0
-> [   20.045311]  end_bio_bh_io_sync+0x34/0x74
-> [   20.045369]  bio_endio+0x184/0x26c
-> [   20.045422]  blk_update_request+0x230/0x4e4
-> [   20.045496]  scsi_end_request+0x30/0x40c
-> [   20.045554]  scsi_io_completion+0x48/0x5b4
->
-> This is seen all the way back to v6.1.y.
->
-> Would it be possible to get this fixed ? It should be easy to
-> reproduce by enabling lock debugging.
+Also, the definition of dlm_midcomms_receive_done has been removed
+since commit 1696c75f1864 ("fs: dlm: add send ack threshold and append
+acks to msgs"). Let's remove these empty declartions.
 
-This is a known issue; see [1] for a previous discussion, for example.
-We don't have a fix; for using lockdep on gfs2, we remove that
-assertion from backing-dev.h. A proper fix would indeed be great to
-have, but I've never gotten far enough on it.
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+---
+ fs/dlm/lowcomms.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-Note that Matthew Wilcox's recent aops->writepage removal patches [2]
-seem to reduce the number of warnings somewhat.
-
-[1] https://lore.kernel.org/cluster-devel/20210713180958.66995-11-rpeterso@=
-redhat.com/
-[2] https://lore.kernel.org/gfs2/CAHc6FU76ioJT4UDRPQNMZ94QOgs6ReuM2WUcSAD4i=
-rqERmGckg@mail.gmail.com/T/#t
-
-Thanks,
-Andreas
+diff --git a/fs/dlm/lowcomms.h b/fs/dlm/lowcomms.h
+index fd0df604eb93..d3654f052972 100644
+--- a/fs/dlm/lowcomms.h
++++ b/fs/dlm/lowcomms.h
+@@ -34,7 +34,6 @@ bool dlm_lowcomms_is_running(void);
+ 
+ int dlm_lowcomms_start(void);
+ void dlm_lowcomms_shutdown(void);
+-void dlm_lowcomms_shutdown_node(int nodeid, bool force);
+ void dlm_lowcomms_stop(void);
+ void dlm_lowcomms_init(void);
+ void dlm_lowcomms_exit(void);
+@@ -47,7 +46,6 @@ int dlm_lowcomms_resend_msg(struct dlm_msg *msg);
+ int dlm_lowcomms_connect_node(int nodeid);
+ int dlm_lowcomms_nodes_set_mark(int nodeid, unsigned int mark);
+ int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr);
+-void dlm_midcomms_receive_done(int nodeid);
+ struct kmem_cache *dlm_lowcomms_writequeue_cache_create(void);
+ struct kmem_cache *dlm_lowcomms_msg_cache_create(void);
+ 
+-- 
+2.17.1
 
