@@ -1,154 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472EF1BBBD5
-	for <gfs2@lists.linux.dev>; Wed, 11 Sep 2024 19:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63FB190660
+	for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 09:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726083812; cv=none; b=RcGbCRcXom22hjJsCMEFKY9e3/k4h/EcWc4odaKi7RN6rbq6+R3yCtVO7tBANW1dZSj3APsRGH+V62/Md6bpTjAzOLq6yPsIjTP3XmChvwFytzuy74N2Lf/xDg5ffXHZAj/QNyAzI8ouuzx2UgSoaYveODRwE5XFWmGHc+C2nT8=
+	t=1726133789; cv=none; b=DlZi5F9t06WKx5cvs1NQaIFcAMciIh5u9D7MWu4Z87GFN7WG5eXdMSCMowuyrDX/FxzBdv6k/jDTrX7FgVnyW+2z/z05XnB8kPvXxeomEkhXJoJ2dkNaNlyiYbxSaVR1DzwRAvNyUXqWsw1wO/aHbuna+cXQ/x8tWldY/2PgJIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726083812; c=relaxed/simple;
-	bh=ePfUocyP7grZ5CDYVXoBDNFKwP41bxMPDU//9kt//Gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ9O6n6JY7kfQM/SKmGSG0UZDt3LQcN0pV1+cI55mmwMVWEXocM4q48btn8nFGVtnOtbFQ+9+7LQg73SwiMueAhPO/iV8gJ9qs7EOBfECp3r5K8BSJyAFtVDm7Ks2JVEehZ6Q4mMTn12xwV4sKz6mr25UWkTvbKlb6x7uhjkpUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h46ZnwhA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h46ZnwhA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726083810;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/RZ3edwXcia6MZkZjPsBRO16l+GEAsyaTjIaabh2Mx0=;
-	b=h46ZnwhALQTKIm4alqmJ849CzEfETfwwG2i0YcVMDO1FF5rNRtOxGbViZ3juRuKHKeoek+
-	S2wSiSJkFKgvV1aVprdDkhXvktIEz2ADnf6q2Vm3X7O5teGw4cM2A6+aoHIJafc3/XNMuF
-	NYp/lacJt+eALPUNblC/1udOUfNmq/w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-Vl4PSZm0M46c4jBtI8fjnw-1; Wed,
- 11 Sep 2024 15:43:29 -0400
-X-MC-Unique: Vl4PSZm0M46c4jBtI8fjnw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 861721956089;
-	Wed, 11 Sep 2024 19:43:26 +0000 (UTC)
-Received: from bcodding.csb.redhat.com (unknown [10.22.48.7])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 16B8B1956086;
-	Wed, 11 Sep 2024 19:43:21 +0000 (UTC)
-From: Benjamin Coddington <bcodding@redhat.com>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Neil Brown <neilb@suse.de>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Ahring Oder Aring <aahringo@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev
-Subject: [PATCH v1 4/4] exportfs: Remove EXPORT_OP_ASYNC_LOCK
-Date: Wed, 11 Sep 2024 15:43:00 -0400
-Message-ID: <0a114db814fec3086f937ae3d44a086f13b8de26.1726083391.git.bcodding@redhat.com>
-In-Reply-To: <cover.1726083391.git.bcodding@redhat.com>
-References: <cover.1726083391.git.bcodding@redhat.com>
+	s=arc-20240116; t=1726133789; c=relaxed/simple;
+	bh=mL4k831LDyv5pQPGpi2fEErthbwQFXgBYakL0Nbzj38=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=euYSFHspPUjU6FmEhD6Gh5NyJpF7gltCTwAGD944SPCgQVKbS1TP/M++7s4oTviSwwBDSNCySWIbgjPdUw+iW/oyfeTsEcWaKCPKO5cK3XMcX/1s61N+QIrwJEYrriddgq1u/3pfQuM/8oV2Sry3WjJWfgpf0Lmn9buijTcsyiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-82aa499f938so227064239f.0
+        for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 02:36:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726133786; x=1726738586;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YKB0eE7ZI9MF1JlypPId8csJw6x53bmImAvh3U/e124=;
+        b=xNUPTLO3/+O/ByYzu2r4HPGgn3+kcwZjnYhotnwBn6qmZOAmenHGFvScczT87J/BcK
+         ow0SLKW2HHLgvs+FzrZh0e3934GCPNkwDU73Z7Nzhv1Q8FEsdqwB9KOg5KZiBIHnAWeU
+         NsP/ErCFTYDVozCyIVHxSbI5NKsuckU7ivkE67WyTTqlhn6whZVz/PNw2R/uczNkOnJk
+         ajee488wnNp2IuUzNw99mBgMiRyOUyAMvoUTpoDyrmURqswTMaV7/0tdDWvLl+zOLIW8
+         Q5mpnP9sJ9QzhbCVGsNaacfr7XkFhOQaMHWuj4xyX4a5yKgmTA2svV3mrcWnWVRM2N2U
+         0Neg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnUfGBH3ADHdhdkzY7U4iw6KjpiTepamVYhfTUbXm4r8oE6WrZo3tmNSjKKrUoJLLDFaYj@lists.linux.dev
+X-Gm-Message-State: AOJu0YyzgFPO4P530TxW85vkX8/gObgdYVhY7b5sj20IFI+Srb87JmQE
+	65dgHThnXK/uljLTjGYpl0LbxOJXsDfld1c67LmsMvvvKOjykJSJEPfCB03kOxLT+h7NeDUs6Cr
+	+8/dhEIyPgy0c6wB7zIfLcU1SPMS+yM4HwpzQ3tbb2LdVmObEDIQpH4o=
+X-Google-Smtp-Source: AGHT+IFBtokV6oT9MfGcBhz2EtUKaNEj+xA2/9/AR24nutyEM8/mMsRKeNVHIyDbA07l6sm1j6M8l+TzrOf8Bqw/2Cgn86kCzPDT
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Received: by 2002:a05:6e02:1cab:b0:39b:35d8:dc37 with SMTP id
+ e9e14a558f8ab-3a08464e389mr14609875ab.13.1726133785922; Thu, 12 Sep 2024
+ 02:36:25 -0700 (PDT)
+Date: Thu, 12 Sep 2024 02:36:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000251ced0621e8d78d@google.com>
+Subject: [syzbot] [gfs2?] WARNING in rgblk_free
+From: syzbot <syzbot+363090afa6ba1357e375@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Now that GFS2 and OCFS2 are signalling async ->lock() support with
-FOP_ASYNC_LOCK and checks for support are converted, we can remove
-EXPORT_OP_ASYNC_LOCK.
+Hello,
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+syzbot found the following issue on:
+
+HEAD commit:    7c6a3a65ace7 minmax: reduce min/max macro expansion in ato..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=167d5807980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=61d235cb8d15001c
+dashboard link: https://syzkaller.appspot.com/bug?extid=363090afa6ba1357e375
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-7c6a3a65.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1a9a78c56595/vmlinux-7c6a3a65.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1b4e1f2187a1/bzImage-7c6a3a65.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+363090afa6ba1357e375@syzkaller.appspotmail.com
+
+loop0: detected capacity change from 0 to 32768
+gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+gfs2: fsid=syz:syz.0: journal 0 mapped with 1 extents in 2ms
+gfs2: fsid=syz:syz.0: first mount done, others may mount
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5117 at fs/gfs2/rgrp.c:2269 rgblk_free+0x1f5/0x960 fs/gfs2/rgrp.c:2269
+Modules linked in:
+CPU: 0 UID: 0 PID: 5117 Comm: syz.0.0 Not tainted 6.11.0-rc7-syzkaller-00021-g7c6a3a65ace7 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:rgblk_free+0x1f5/0x960 fs/gfs2/rgrp.c:2269
+Code: 20 84 c0 0f 85 fc 06 00 00 8b 1b 89 df 44 89 ee e8 d0 d5 ac fd 44 39 eb 76 60 e8 06 d4 ac fd e9 e0 00 00 00 e8 fc d3 ac fd 90 <0f> 0b 90 49 bc 00 00 00 00 00 fc ff df 48 c7 84 24 80 00 00 00 0e
+RSP: 0018:ffffc90002faf420 EFLAGS: 00010283
+RAX: ffffffff83e6b7a8 RBX: ffff888000cd4028 RCX: 0000000000040000
+RDX: ffffc9000b8d2000 RSI: 000000000000a5db RDI: 000000000000a5dc
+RBP: ffffc90002faf530 R08: ffffffff83e6b79e R09: 1ffffffff2030ebd
+R10: dffffc0000000000 R11: fffffbfff2030ebe R12: 0000000000090047
+R13: 00000000000024a4 R14: dffffc0000000000 R15: ffff888000cd4000
+FS:  00007fb62c0a76c0(0000) GS:ffff88801fe00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb62c067470 CR3: 0000000035656000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __gfs2_free_blocks fs/gfs2/rgrp.c:2525 [inline]
+ gfs2_free_meta+0x99/0x280 fs/gfs2/rgrp.c:2552
+ ea_dealloc_unstuffed+0x7cf/0xb00 fs/gfs2/xattr.c:303
+ ea_remove_unstuffed fs/gfs2/xattr.c:342 [inline]
+ ea_set_remove_unstuffed+0x1cb/0x290 fs/gfs2/xattr.c:1086
+ __gfs2_xattr_set+0x6f8/0xcf0 fs/gfs2/xattr.c:1217
+ gfs2_xattr_set+0x35d/0x460 fs/gfs2/xattr.c:1258
+ __vfs_setxattr+0x468/0x4a0 fs/xattr.c:200
+ __vfs_setxattr_noperm+0x12e/0x660 fs/xattr.c:234
+ vfs_setxattr+0x221/0x430 fs/xattr.c:321
+ do_setxattr fs/xattr.c:629 [inline]
+ path_setxattr+0x37e/0x4d0 fs/xattr.c:658
+ __do_sys_setxattr fs/xattr.c:676 [inline]
+ __se_sys_setxattr fs/xattr.c:672 [inline]
+ __x64_sys_setxattr+0xbb/0xd0 fs/xattr.c:672
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb62b37def9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fb62c0a7038 EFLAGS: 00000246 ORIG_RAX: 00000000000000bc
+RAX: ffffffffffffffda RBX: 00007fb62b535f80 RCX: 00007fb62b37def9
+RDX: 00000000200001c0 RSI: 0000000020000180 RDI: 00000000200000c0
+RBP: 00007fb62b3f0b76 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fb62b535f80 R15: 00007fff806d2368
+ </TASK>
+
+
 ---
- Documentation/filesystems/nfs/exporting.rst |  7 -------
- fs/gfs2/export.c                            |  1 -
- fs/ocfs2/export.c                           |  1 -
- include/linux/exportfs.h                    | 13 -------------
- 4 files changed, 22 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
-index f04ce1215a03..de64d2d002a2 100644
---- a/Documentation/filesystems/nfs/exporting.rst
-+++ b/Documentation/filesystems/nfs/exporting.rst
-@@ -238,10 +238,3 @@ following flags are defined:
-     all of an inode's dirty data on last close. Exports that behave this
-     way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
-     waiting for writeback when closing such files.
--
--  EXPORT_OP_ASYNC_LOCK - Indicates a capable filesystem to do async lock
--    requests from lockd. Only set EXPORT_OP_ASYNC_LOCK if the filesystem has
--    it's own ->lock() functionality as core posix_lock_file() implementation
--    has no async lock request handling yet. For more information about how to
--    indicate an async lock request from a ->lock() file_operations struct, see
--    fs/locks.c and comment for the function vfs_lock_file().
-diff --git a/fs/gfs2/export.c b/fs/gfs2/export.c
-index d418d8b5367f..3334c394ce9c 100644
---- a/fs/gfs2/export.c
-+++ b/fs/gfs2/export.c
-@@ -190,6 +190,5 @@ const struct export_operations gfs2_export_ops = {
- 	.fh_to_parent = gfs2_fh_to_parent,
- 	.get_name = gfs2_get_name,
- 	.get_parent = gfs2_get_parent,
--	.flags = EXPORT_OP_ASYNC_LOCK,
- };
- 
-diff --git a/fs/ocfs2/export.c b/fs/ocfs2/export.c
-index 96b684763b39..b95724b767e1 100644
---- a/fs/ocfs2/export.c
-+++ b/fs/ocfs2/export.c
-@@ -280,5 +280,4 @@ const struct export_operations ocfs2_export_ops = {
- 	.fh_to_dentry	= ocfs2_fh_to_dentry,
- 	.fh_to_parent	= ocfs2_fh_to_parent,
- 	.get_parent	= ocfs2_get_parent,
--	.flags		= EXPORT_OP_ASYNC_LOCK,
- };
-diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index 893a1d21dc1c..1ab165c2939f 100644
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -250,19 +250,6 @@ struct export_operations {
- 	unsigned long	flags;
- };
- 
--/**
-- * exportfs_lock_op_is_async() - export op supports async lock operation
-- * @export_ops:	the nfs export operations to check
-- *
-- * Returns true if the nfs export_operations structure has
-- * EXPORT_OP_ASYNC_LOCK in their flags set
-- */
--static inline bool
--exportfs_lock_op_is_async(const struct export_operations *export_ops)
--{
--	return export_ops->flags & EXPORT_OP_ASYNC_LOCK;
--}
--
- extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
- 				    int *max_len, struct inode *parent,
- 				    int flags);
--- 
-2.44.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
