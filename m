@@ -1,51 +1,51 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63FB190660
-	for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 09:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091B8193403
+	for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 09:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726133789; cv=none; b=DlZi5F9t06WKx5cvs1NQaIFcAMciIh5u9D7MWu4Z87GFN7WG5eXdMSCMowuyrDX/FxzBdv6k/jDTrX7FgVnyW+2z/z05XnB8kPvXxeomEkhXJoJ2dkNaNlyiYbxSaVR1DzwRAvNyUXqWsw1wO/aHbuna+cXQ/x8tWldY/2PgJIw=
+	t=1726134384; cv=none; b=XjLDjqhqEjNnZ/Ir+p1ErSUPGlh9Se+F3OGNDjvSqxFP2MLAka1HnhOkl+QkLyitzKr4Ms+cPfU0We/oPlAOisXX0X++0QZS0W+GmHxaZt8HfxBvP03r/i/kVengtGRxTIR05l+GUa8gNEoM+RCtBAb/VSyYW3/v4jxs4Zu0nsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726133789; c=relaxed/simple;
-	bh=mL4k831LDyv5pQPGpi2fEErthbwQFXgBYakL0Nbzj38=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=euYSFHspPUjU6FmEhD6Gh5NyJpF7gltCTwAGD944SPCgQVKbS1TP/M++7s4oTviSwwBDSNCySWIbgjPdUw+iW/oyfeTsEcWaKCPKO5cK3XMcX/1s61N+QIrwJEYrriddgq1u/3pfQuM/8oV2Sry3WjJWfgpf0Lmn9buijTcsyiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+	s=arc-20240116; t=1726134384; c=relaxed/simple;
+	bh=NjzYRBNG2lMBlzjbh1aj0f917nsYUrL5rqCLwGTzklU=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KH2DnZPdnhGt/5Pmu4X7RJc7bKDurQRQ16XZ98L2AglfO9Vz4dinNNBze7zz1xSu3U9tnzblBImbmhmyxoDKuiUqntfrZjOPOdtzloSI5iI/3Zoxl3u+Jmztk3uQiL3y919Addjjpn0cCBgLJmXPwYzBMEimH9MYUFcNX55vrOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-82aa499f938so227064239f.0
-        for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 02:36:26 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a047cb2e7dso10031525ab.3
+        for <gfs2@lists.linux.dev>; Thu, 12 Sep 2024 02:46:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726133786; x=1726738586;
+        d=1e100.net; s=20230601; t=1726134382; x=1726739182;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YKB0eE7ZI9MF1JlypPId8csJw6x53bmImAvh3U/e124=;
-        b=xNUPTLO3/+O/ByYzu2r4HPGgn3+kcwZjnYhotnwBn6qmZOAmenHGFvScczT87J/BcK
-         ow0SLKW2HHLgvs+FzrZh0e3934GCPNkwDU73Z7Nzhv1Q8FEsdqwB9KOg5KZiBIHnAWeU
-         NsP/ErCFTYDVozCyIVHxSbI5NKsuckU7ivkE67WyTTqlhn6whZVz/PNw2R/uczNkOnJk
-         ajee488wnNp2IuUzNw99mBgMiRyOUyAMvoUTpoDyrmURqswTMaV7/0tdDWvLl+zOLIW8
-         Q5mpnP9sJ9QzhbCVGsNaacfr7XkFhOQaMHWuj4xyX4a5yKgmTA2svV3mrcWnWVRM2N2U
-         0Neg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnUfGBH3ADHdhdkzY7U4iw6KjpiTepamVYhfTUbXm4r8oE6WrZo3tmNSjKKrUoJLLDFaYj@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzgFPO4P530TxW85vkX8/gObgdYVhY7b5sj20IFI+Srb87JmQE
-	65dgHThnXK/uljLTjGYpl0LbxOJXsDfld1c67LmsMvvvKOjykJSJEPfCB03kOxLT+h7NeDUs6Cr
-	+8/dhEIyPgy0c6wB7zIfLcU1SPMS+yM4HwpzQ3tbb2LdVmObEDIQpH4o=
-X-Google-Smtp-Source: AGHT+IFBtokV6oT9MfGcBhz2EtUKaNEj+xA2/9/AR24nutyEM8/mMsRKeNVHIyDbA07l6sm1j6M8l+TzrOf8Bqw/2Cgn86kCzPDT
+        bh=B1R+h/OmDweOJUF721+4YYV7lgj8RjG9bGByowlRGDQ=;
+        b=NWhVZK6mewt/xSAGQytnSjvl0MG9J277L6NlDOq8Est0QQzKtuiJUP4hNcpIwmo4gZ
+         0jyZ98txl6RIFAZuJ5RvnIXaSmSLln+uy/hWXMyeHrVxc98TbLf3O7/uxju1AVPPwwSa
+         o7Vi5odEVWvueqTH9jKTESVcDvRctumzetDudWCAfjnIhRkYiLupLbkwW9f42pe5ExN7
+         SqXoN2B/qep33kgh1AAmtSAkt2KyfUVQHnppbKZ0pt7bAJHJK9ZDrVGJY9tf5iiSO50W
+         kQOZl5iJxRkJYcYSNldWgjnZjQIiNAohkCNByjqkOBxSBska77SaFNIeLk9CfkYJSpT9
+         hH1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUiHNy0jFqp2v5wLPY20gnDO1GeZMpfzXpCSUePsCA+utTNmOUBdYbV4tf9kPmw94I2DBa+@lists.linux.dev
+X-Gm-Message-State: AOJu0Yysjl0t0h7HNx2bpdqUwKRVE4GXMD7DYMEJ3e2+mH19rKqUlH7F
+	F5jGvaESp3jmJ3J409uFNNxthQRhr3EG+MewphCb2HaZKaUEw6mVYIZWqHlp9xIXLuehUVWFW4S
+	BmjFUS82pDCr9dVvHUCuhUAnVK38F40Ejw9xpVhnYRLgfYOz5ojQObJ0=
+X-Google-Smtp-Source: AGHT+IEJPqcz94gV+wDKD10A32pSng2GnEUN5E2b2FVVu+m50EW7cQtRC5UXqqxLk6Mynzke/5AnmlbfozF/hFpk8BmLmdu0Ulz0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1cab:b0:39b:35d8:dc37 with SMTP id
- e9e14a558f8ab-3a08464e389mr14609875ab.13.1726133785922; Thu, 12 Sep 2024
- 02:36:25 -0700 (PDT)
-Date: Thu, 12 Sep 2024 02:36:25 -0700
+X-Received: by 2002:a05:6e02:18cb:b0:39f:7020:6a13 with SMTP id
+ e9e14a558f8ab-3a0848c9ea3mr23325795ab.6.1726134382141; Thu, 12 Sep 2024
+ 02:46:22 -0700 (PDT)
+Date: Thu, 12 Sep 2024 02:46:22 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000251ced0621e8d78d@google.com>
-Subject: [syzbot] [gfs2?] WARNING in rgblk_free
-From: syzbot <syzbot+363090afa6ba1357e375@syzkaller.appspotmail.com>
+Message-ID: <000000000000aeb73d0621e8fa14@google.com>
+Subject: [syzbot] [gfs2?] kernel BUG in gfs2_assert_warn_i
+From: syzbot <syzbot+ffe01cefd437cbde362b@syzkaller.appspotmail.com>
 To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
@@ -54,75 +54,61 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    7c6a3a65ace7 minmax: reduce min/max macro expansion in ato..
+HEAD commit:    89f5e14d05b4 Merge tag 'timers_urgent_for_v6.11_rc7' of gi..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=167d5807980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=61d235cb8d15001c
-dashboard link: https://syzkaller.appspot.com/bug?extid=363090afa6ba1357e375
+console output: https://syzkaller.appspot.com/x/log.txt?x=17b54807980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=58a85aa6925a8b78
+dashboard link: https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
 compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-7c6a3a65.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/1a9a78c56595/vmlinux-7c6a3a65.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1b4e1f2187a1/bzImage-7c6a3a65.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-89f5e14d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/dfc310daee41/vmlinux-89f5e14d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a92f22c06568/bzImage-89f5e14d.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+363090afa6ba1357e375@syzkaller.appspotmail.com
+Reported-by: syzbot+ffe01cefd437cbde362b@syzkaller.appspotmail.com
 
-loop0: detected capacity change from 0 to 32768
-gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
-gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
-gfs2: fsid=syz:syz.0: journal 0 mapped with 1 extents in 2ms
-gfs2: fsid=syz:syz.0: first mount done, others may mount
+gfs2: fsid=syz:syz.0: warning: assertion "!qd->qd_change" failed - function = gfs2_qd_dispose, file = fs/gfs2/quota.c, line = 129
 ------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5117 at fs/gfs2/rgrp.c:2269 rgblk_free+0x1f5/0x960 fs/gfs2/rgrp.c:2269
-Modules linked in:
-CPU: 0 UID: 0 PID: 5117 Comm: syz.0.0 Not tainted 6.11.0-rc7-syzkaller-00021-g7c6a3a65ace7 #0
+kernel BUG at fs/gfs2/util.c:414!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 76 Comm: kswapd0 Not tainted 6.11.0-rc6-syzkaller-00363-g89f5e14d05b4 #0
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:rgblk_free+0x1f5/0x960 fs/gfs2/rgrp.c:2269
-Code: 20 84 c0 0f 85 fc 06 00 00 8b 1b 89 df 44 89 ee e8 d0 d5 ac fd 44 39 eb 76 60 e8 06 d4 ac fd e9 e0 00 00 00 e8 fc d3 ac fd 90 <0f> 0b 90 49 bc 00 00 00 00 00 fc ff df 48 c7 84 24 80 00 00 00 0e
-RSP: 0018:ffffc90002faf420 EFLAGS: 00010283
-RAX: ffffffff83e6b7a8 RBX: ffff888000cd4028 RCX: 0000000000040000
-RDX: ffffc9000b8d2000 RSI: 000000000000a5db RDI: 000000000000a5dc
-RBP: ffffc90002faf530 R08: ffffffff83e6b79e R09: 1ffffffff2030ebd
-R10: dffffc0000000000 R11: fffffbfff2030ebe R12: 0000000000090047
-R13: 00000000000024a4 R14: dffffc0000000000 R15: ffff888000cd4000
-FS:  00007fb62c0a76c0(0000) GS:ffff88801fe00000(0000) knlGS:0000000000000000
+RIP: 0010:gfs2_assert_warn_i+0x2df/0x2f0 fs/gfs2/util.c:414
+Code: fe 48 c7 c7 40 a9 4f 8c 48 89 ee 48 8b 54 24 08 48 8b 4c 24 10 4c 8b 44 24 18 44 8b 4c 24 04 e8 87 88 ce 07 e8 e2 73 ab fd 90 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 90 90 90 90 90
+RSP: 0018:ffffc90000e57328 EFLAGS: 00010293
+RAX: ffffffff83e818ce RBX: 0000000000000004 RCX: ffff88801f3f8000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
+RBP: ffff8880119ec000 R08: ffffffff83e81787 R09: 1ffff920001cae04
+R10: dffffc0000000000 R11: fffff520001cae05 R12: ffff8880119ec2bc
+R13: 00000000000003e8 R14: 1ffff1100233d857 R15: 0000000000000126
+FS:  0000000000000000(0000) GS:ffff88801fe00000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb62c067470 CR3: 0000000035656000 CR4: 0000000000350ef0
+CR2: 00007f391d5a6000 CR3: 000000001e06e000 CR4: 0000000000350ef0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __gfs2_free_blocks fs/gfs2/rgrp.c:2525 [inline]
- gfs2_free_meta+0x99/0x280 fs/gfs2/rgrp.c:2552
- ea_dealloc_unstuffed+0x7cf/0xb00 fs/gfs2/xattr.c:303
- ea_remove_unstuffed fs/gfs2/xattr.c:342 [inline]
- ea_set_remove_unstuffed+0x1cb/0x290 fs/gfs2/xattr.c:1086
- __gfs2_xattr_set+0x6f8/0xcf0 fs/gfs2/xattr.c:1217
- gfs2_xattr_set+0x35d/0x460 fs/gfs2/xattr.c:1258
- __vfs_setxattr+0x468/0x4a0 fs/xattr.c:200
- __vfs_setxattr_noperm+0x12e/0x660 fs/xattr.c:234
- vfs_setxattr+0x221/0x430 fs/xattr.c:321
- do_setxattr fs/xattr.c:629 [inline]
- path_setxattr+0x37e/0x4d0 fs/xattr.c:658
- __do_sys_setxattr fs/xattr.c:676 [inline]
- __se_sys_setxattr fs/xattr.c:672 [inline]
- __x64_sys_setxattr+0xbb/0xd0 fs/xattr.c:672
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb62b37def9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fb62c0a7038 EFLAGS: 00000246 ORIG_RAX: 00000000000000bc
-RAX: ffffffffffffffda RBX: 00007fb62b535f80 RCX: 00007fb62b37def9
-RDX: 00000000200001c0 RSI: 0000000020000180 RDI: 00000000200000c0
-RBP: 00007fb62b3f0b76 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fb62b535f80 R15: 00007fff806d2368
+ gfs2_qd_dispose+0x4af/0x5b0 fs/gfs2/quota.c:129
+ gfs2_qd_list_dispose fs/gfs2/quota.c:146 [inline]
+ gfs2_qd_shrink_scan+0x2ae/0x360 fs/gfs2/quota.c:185
+ do_shrink_slab+0x701/0x1160 mm/shrinker.c:435
+ shrink_slab+0x1093/0x14d0 mm/shrinker.c:662
+ shrink_one+0x43b/0x850 mm/vmscan.c:4795
+ shrink_many mm/vmscan.c:4856 [inline]
+ lru_gen_shrink_node mm/vmscan.c:4934 [inline]
+ shrink_node+0x3799/0x3de0 mm/vmscan.c:5914
+ kswapd_shrink_node mm/vmscan.c:6742 [inline]
+ balance_pgdat mm/vmscan.c:6934 [inline]
+ kswapd+0x1cbc/0x3720 mm/vmscan.c:7203
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
  </TASK>
+Modules linked in:
 
 
 ---
