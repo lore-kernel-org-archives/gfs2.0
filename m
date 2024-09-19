@@ -1,106 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1041517BEB4
-	for <gfs2@lists.linux.dev>; Tue, 17 Sep 2024 17:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F59620DC3;
+	Thu, 19 Sep 2024 05:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726592763; cv=none; b=R2sjWYQ2tRemR2bseqxTdV14Dblvj4iNbMnfnCu2RqaYCQXBYUe6+n1vB7tOiDDHutroKKaB4bUZqE4mx1HHTiq9mIZfSVe2CkwlnZGnLGGGXfP1M7ezezS+CZkeOJfZ2tlrGuDYxpQg35ckLMtff4zWACL6aYm0VVIZ1AP1MEI=
+	t=1726723207; cv=none; b=VRrVfuiwLDPJb08opMJj2UTrn3X2G/CUZWpaQ6N6iHC7nbKtmGSVp1yf4vLoMWAG8DSE/cN14krldrYHGfLZs5ncycJSI96KxQU5NIUp7B4dxctMHXyDWUjWkCbieKBEs+87SVPX61/g5pH6V9kUKUpTpPKwlasRCM01qdxm9qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726592763; c=relaxed/simple;
-	bh=yofaqTlpDkZ3rM8UqrkeWaXbUIPcYHKzv6DpVeMdtJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=NPPllnjlFVYAXw6N4Di0otWY4NTuk+CgbiYUZuYhPN2j00oaZS8ZpNAEHP/B8DUE7jdlLIEuzxya0XOfYJmjADx/PZpO1eCPkKtGiJ7KOSCHOKyCKHltVfcXRu6RtoQose7FfN1OL9ocBHD5bMxigWELOSOXHObZgTqesqVvhSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RN/MOw5w; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726723207; c=relaxed/simple;
+	bh=3dBCnoo8xoMidFhLHa1R/3mGHDzudsxjfApLYuWSVDM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=b4FJQjbCfG8aJ6+2kay69GwHslCAAPEKrWU9sZDgAgn6dE0MKJQLuXT7owONxUZy6UL6cps9Vj91PRpaFwYIQ2HtZzE94eqD8OKGYFKguOjoH4LkkUwa1Sc0yxxO+H9s/THF1OpXQFdlIUGTrWO0pieC6rJ/y1d5VqYtUTr/Rd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrtjQnVD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RN/MOw5w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726592761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=GcaVjrRqk5FeRsN7VHgUJ2H6ojvGJU2nwJ6HohGK7ao=;
-	b=RN/MOw5wnPNHBg6yc8dxi4LqvOmLibfnlZqXSI/hBn7bQ6kO/4ycQM5nD8DnXhnq+wJuOG
-	Emwv/7aBGnUGFun6/s8WbZ+n0kgvsOsUJyYBe0PcYDHsq4j5li8GQ6kYOEJ6BeWZVvI1wa
-	5D62w5z/14RQbaKCjp9DJkK5ieILNWs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-Zco_hSZBNKiFAW6Zfmncpw-1; Tue,
- 17 Sep 2024 13:05:57 -0400
-X-MC-Unique: Zco_hSZBNKiFAW6Zfmncpw-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 298E51955F45;
-	Tue, 17 Sep 2024 17:05:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.22.9.12])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACBF719560AA;
-	Tue, 17 Sep 2024 17:05:53 +0000 (UTC)
-Date: Tue, 17 Sep 2024 12:05:50 -0500
-From: David Teigland <teigland@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
-Subject: [GIT PULL] dlm updates for 6.12
-Message-ID: <Zum2QP7hS1mDzqBT@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrtjQnVD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AF0C4CEC7;
+	Thu, 19 Sep 2024 05:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726723207;
+	bh=3dBCnoo8xoMidFhLHa1R/3mGHDzudsxjfApLYuWSVDM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=YrtjQnVDLwxRWo08yXfNdSbufkV+XcXLyJUJlPWbqkIcmgDED1PtpBiIOYjj5psHf
+	 qDU9YW1qqTpnqI7y2OB/BmEbRXz4ryY8L16EIZ5BIMWCwG9Kc/0+nhnJ0DHlglFvQi
+	 3b+UVMN7xr7jCGYCjKua4wLgLsVJzde3EL0pqkcsDL5zKD1oDYXuAPklDswDrmeLCy
+	 Iswze6btLTSipIu/8rO3pshDX0yLpay7YIeScwQwQDBuXBGGemEhhA82D0ErX/hIPQ
+	 EyP21/aE2GXuHIqVmsZoxi7IJUxEUdlaUIMjNSrLJDPsX8+zZVJE8bmhheFUNunzOL
+	 7xomowYXro+Ag==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 26A9E3806651;
+	Thu, 19 Sep 2024 05:20:10 +0000 (UTC)
+Subject: Re: [GIT PULL] dlm updates for 6.12
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <Zum2QP7hS1mDzqBT@redhat.com>
+References: <Zum2QP7hS1mDzqBT@redhat.com>
+X-PR-Tracked-List-Id: <gfs2.lists.linux.dev>
+X-PR-Tracked-Message-Id: <Zum2QP7hS1mDzqBT@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.12
+X-PR-Tracked-Commit-Id: 652b0ae675fede81420758e3af7c5174cdaa8404
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 932d2d1fcb2bbbc3cb30a762302a5d2eac7720bb
+Message-Id: <172672320897.1036593.11926145104390807598.pr-tracker-bot@kernel.org>
+Date: Thu, 19 Sep 2024 05:20:08 +0000
+To: David Teigland <teigland@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hi Linus,
+The pull request you sent on Tue, 17 Sep 2024 12:05:50 -0500:
 
-Please pull dlm updates from tag:
+> git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.12
 
-git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.12
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/932d2d1fcb2bbbc3cb30a762302a5d2eac7720bb
 
-Summary:
+Thank you!
 
-- Remove some unnecesary hold/unhold rsb refcounting
-  in cases where an existing refcount is known to exist.
-- Remove some unnecessary checking for zero nodeids, which
-  should never exist, and add some warning if they do.
-- Make the slow freeing of structs in release_lockspace()
-  async, run from a workqueue.
-- Prior rcu freeing allows some further struct lookups to
-  run without a lock.
-- Use blocking kernel_connect on sockets to avoid EINPROGRESS.
-
-Thanks,
-Dave
-
-
-Alexander Aring (11):
-      dlm: cleanup memory allocation helpers
-      dlm: remove unnecessary refcounts
-      dlm: never return invalid nodeid by dlm_our_nodeid()
-      dlm: warn about invalid nodeid comparsions
-      dlm: drop kobject release callback handling
-      dlm: async freeing of lockspace resources
-      dlm: use RSB_HASHED to avoid lookup twice
-      dlm: move dlm_search_rsb_tree() out of lock
-      dlm: move lkb xarray lookup out of lock
-      dlm: do synchronized socket connect call
-      dlm: add missing -ENOMEM if alloc_workqueue() fails
-
-
- fs/dlm/config.c       |   2 +-
- fs/dlm/dlm_internal.h |   5 ++
- fs/dlm/lock.c         | 134 +++++++++++++++++++++++++++-----------------------
- fs/dlm/lock.h         |   2 +
- fs/dlm/lockspace.c    |  97 ++++++++++++++++++------------------
- fs/dlm/lowcomms.c     |  36 +-------------
- fs/dlm/main.c         |  12 +++++
- fs/dlm/member.c       |   2 +
- fs/dlm/memory.c       |  28 +++++------
- fs/dlm/memory.h       |   4 +-
- fs/dlm/recover.c      |   9 ++--
- 11 files changed, 164 insertions(+), 167 deletions(-)
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
