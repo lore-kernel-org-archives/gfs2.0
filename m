@@ -1,91 +1,106 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E064D19E990
-	for <gfs2@lists.linux.dev>; Mon, 23 Sep 2024 17:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2757916419
+	for <gfs2@lists.linux.dev>; Mon, 23 Sep 2024 18:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727113775; cv=none; b=cnt8HJfuevxPWBeNzbvPKddFyY5pbCULKT1CI/QudIbeGziwWr78X2j9ytvSxR47KnOrWg/yOpFGiMRkLSWpp260AkhNJdjJIZh5LcbCe9nWWvW0vjQ6Bc6yqEO9UQMhQYVc1Se1Sbc0i2vc+xWC6SrzMKPEwMnzy634chr1i5E=
+	t=1727114680; cv=none; b=BRFevmSPEldK3PVBjeEHaXzadGFdGfUK4u+urD3H9NKYuu6TzLHfl4WJzNzVgfqKw8dNxNAcOUnKi4HCQCXd8lUitksYusGi7CQFfuqVXjOcgX19jT8lwasaP3CNklSg4L1ETgON2iCSgqDwZko55NaUl+4nnF3fJKIcwFW/BwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727113775; c=relaxed/simple;
-	bh=LCi5as8tr2ldxM530hte0aShriHsWKbt0neamqouoKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a/HmgajuaSEg0Vsp8cBNsY0mMesOT6t7L9qFIuU53KEZTz8PK0ZUafX3VhaR9VMy2U0WSSPt9Sjf2OJOCylRRVXpGs6s1FClq6PI/HDy3qPUd+pdGuX6CPi+y7u9qoziAujRATlMZFOcMLKdjZQ9Zc6G3AAbH4W9zr3ex7fGoRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gnHU0tIp; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1727114680; c=relaxed/simple;
+	bh=EZHCrKzxbPNEXtJuwznFWUbHe1GuS0ZswjOMle0CaFY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DoT55u12xj5C7frB/0ZdXs0TnYkwZ7jWwLy6VNFGdRZKoCs5KqNnF9R0IEF2kGSaiWwtoB+oLrMV5YpusflCFQm0iD+WpplkpFjbLtOP8V4yVVbUhxCyP30zTy4tRSr8nTXSyAMoftNm4GPya17XVNRrBKEqC8hoUkljpIHeiMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LVKpdzI2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gnHU0tIp"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9018103214so673622066b.3
-        for <gfs2@lists.linux.dev>; Mon, 23 Sep 2024 10:49:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1727113770; x=1727718570; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RUYv6+7WELIuXT4Lyojyqw1b8CePFF71EV43HfQ6mr4=;
-        b=gnHU0tIpHB69ALRmXkKYeQY687qqv20dtGDBOEQhi0BGOa8cdcmnSghh9I8zGtTpOa
-         Y10H9cvqJZESsqUNOAZLcDldFYLr5RvwgKeiYMDgZRX7HI73YYrd6Zlw1ZViJZ+wYSbD
-         HzLzYPafBBseVkQD7Xf8eVo1NMOPaIEwK7upM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727113770; x=1727718570;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RUYv6+7WELIuXT4Lyojyqw1b8CePFF71EV43HfQ6mr4=;
-        b=JYT2/EDAZpMaQgXkosFVpoAvp++XTyjGLODdYZ/ybnTECNzQxelMaOwfwoFsAbE4Qx
-         jKsbTpTfZUuDXxbVtApdYdwuh/7VobjOhU9c8n0J4ImSspj0J0VUmzjZQ135ECFG00fb
-         D/Z4G2eCWGnVgMers3j9nMQB6wu2IRO/eeap363DoK8mSWtsgwjqJnhQKrA5gtsZ0w8S
-         uqlR3b96xr5A2pGbZJuIxay+3A7tA/yRF9gfOiDCExUDfOQPqbkKniDoGdH8ts+eA3X1
-         95r7jXW+62xJr6lPsyLX1yQ+T6IXXekFxfFhmBpFTyAFBEoU0WYuM8h771H6bDYN9oBp
-         J4LA==
-X-Gm-Message-State: AOJu0Yz8J8RvfX2ses2MpHwtS1sPyaDizEtzkkKO6KzW1eizizBmEcng
-	1989xA5yKey9VxLmW1eJ3odK5i20c8UdPr2fDLBQU/XtUuf+3H8oaidrUJFmTczkN7O4Q3TF90D
-	PHfk=
-X-Google-Smtp-Source: AGHT+IGN+fiYBpJBvoNMIRYLq1iNON17Z/Qdf+rTKyUmyRSu/HNiHdRbFejQK0H7P1cdu8WEKHe52A==
-X-Received: by 2002:a17:906:cae1:b0:a8d:2a46:6068 with SMTP id a640c23a62f3a-a90d5775f44mr1059622466b.39.1727113769768;
-        Mon, 23 Sep 2024 10:49:29 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90612b3fcesm1257167766b.133.2024.09.23.10.49.29
-        for <gfs2@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Sep 2024 10:49:29 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a90349aa7e5so693004866b.0
-        for <gfs2@lists.linux.dev>; Mon, 23 Sep 2024 10:49:29 -0700 (PDT)
-X-Received: by 2002:a17:907:2d22:b0:a8d:3998:2de with SMTP id
- a640c23a62f3a-a90d566cecdmr1222211766b.12.1727113768756; Mon, 23 Sep 2024
- 10:49:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LVKpdzI2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727114678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4zk2H1hCENikiPreGuVpe9tmODe6t3h9N4bM5aN33PM=;
+	b=LVKpdzI2rf01THFZYxGezsWDGC46RoV4OJkRLFgqfHPVSvOxjHz0OsvIlPUJMl/mgpKv9o
+	Ff3hjm+LDqX9w6/yMtYCndAbWUEH7yGR1Y/lvVWwuS3+7cO77ZK2JoA8o8Vlhqhsrxo640
+	j9UDyb9TtzV3e8XizlChStGmEhCuNHc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-swlbcMiON5ef1CIK3F8CtA-1; Mon,
+ 23 Sep 2024 14:04:36 -0400
+X-MC-Unique: swlbcMiON5ef1CIK3F8CtA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF4EF1911B0E;
+	Mon, 23 Sep 2024 18:04:35 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.77])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 33C9919560A3;
+	Mon, 23 Sep 2024 18:04:33 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes
+Date: Mon, 23 Sep 2024 20:04:30 +0200
+Message-ID: <20240923180432.270779-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240922140047.261100-1-agruenba@redhat.com>
-In-Reply-To: <20240922140047.261100-1-agruenba@redhat.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 23 Sep 2024 10:49:11 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wittQGvXXMB5vk5GYyBWSbNmEtuY_i0O1WcR2SZed2dVQ@mail.gmail.com>
-Message-ID: <CAHk-=wittQGvXXMB5vk5GYyBWSbNmEtuY_i0O1WcR2SZed2dVQ@mail.gmail.com>
-Subject: Re: [GIT PULL] gfs2 changes
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Sun, 22 Sept 2024 at 07:00, Andreas Gruenbacher <agruenba@redhat.com> wrote:
->
-> The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0:
->
->   Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.10-rc1-fixes
+Dear Linus,
 
-This is just a repeat of the pull request you did (and I merged) back in July.
+please consider pulling the following gfs2 changes.
 
-I'm assuming you meant for me to pull something more recent, but I
-don't see any newer tag names either.
+Thank you very much,
+Andreas
 
-Hmm?
 
-                Linus
+The following changes since commit 6706415bf9f3dcb425f4b60a08a3a6f1d94ec0e0:
+
+  Merge tag 'gfs2-v6.10-rc1-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2024-07-17 12:23:33 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-v6.10-fixes
+
+for you to fetch changes up to 6888c1e85f5db129e6ddcff879bb127bbfdb5c64:
+
+  gfs2: Remove gfs2_aspace_writepage() (2024-09-02 14:46:37 +0200)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Eliminate the writepage address space operation (by Matthew Wilcox).
+
+- A syzkaller fix (by Julian Sun) and a minor cleanup (by Andreas
+  Gruenbacher).
+
+----------------------------------------------------------------
+Andreas Gruenbacher (1):
+      gfs2: Minor gfs2_glock_cb cleanup
+
+Julian Sun (1):
+      gfs2: fix double destroy_workqueue error
+
+Matthew Wilcox (Oracle) (4):
+      gfs2: Add gfs2_aspace_writepages()
+      gfs2: Remove __gfs2_writepage()
+      gfs2: Remove gfs2_jdata_writepage()
+      gfs2: Remove gfs2_aspace_writepage()
+
+ fs/gfs2/aops.c       | 30 ------------------------------
+ fs/gfs2/glock.c      |  9 ++++++---
+ fs/gfs2/log.c        | 12 ++----------
+ fs/gfs2/meta_io.c    | 24 +++++++++++++++++-------
+ fs/gfs2/ops_fstype.c |  3 ++-
+ 5 files changed, 27 insertions(+), 51 deletions(-)
+
