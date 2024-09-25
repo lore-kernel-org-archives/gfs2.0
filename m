@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A9E141987
-	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC542AD20
+	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727301832; cv=none; b=cKD8FqoIc7jFRXQyqkA+5jWQJM2ugpzso4xzQuJduBdYg9xtRXSDCiho5LPSWw6nt7IqZhFjbxY3yQj66m8lS1NZ3we5TqypFw6Qao+WCqeiaTLCfOzUaHlHndmRmOpau5Y0lx5Qbkw3/vfr2RhJxZhlJ3CezsXXFONm6ch5KHA=
+	t=1727301834; cv=none; b=qJ51aFoy2apYwvm9+TYTnAJZx+eSd62yc4/FrZI1F8RUZe/qfnvPN029ulItx2E1RIr9oqjSjL5cgvm7JS6L+pGHFzb49rPFnuj2j4ZfUE89GrP1z4zSvDJHGIR15QkIzdY+hvOtLL4W9bTm+QHhZHncwYhugMw5f6G2nxZpi0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727301832; c=relaxed/simple;
-	bh=fpqjWbaiEMsRuXqDWLOITvL3Mc+WqjGFQhCSGAIayTU=;
+	s=arc-20240116; t=1727301834; c=relaxed/simple;
+	bh=PTuha4QB/HOIPeUtxnqRzO/ksd1pZ52u5iEvLtpGVfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q5iePDZ7bqMvQnf+uZhDMNfGdkSQLLNCVrJgZsOtDOsaZdj6Gt1aLxnGNn2CAJKBTYyP/OV29QbOSi0R4tle7gqCabcU7gcVliwRUjzCoTw9Oy5H9RuFq7c0cvdizBnnVPtnD5jV5100e6qYyoQHyCnoB1EwCw9pa8q1Ql/UNQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MIEOBs4u; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=BUIBl5Sd7KtupU8ME411A0jm+RtSbs6nUZolxddDxS1ndmkp7X/T8aCeJA2Umhkz/fpaK2EyH0NuQfNL/ot5FWvrIEuMNA2Owm7pAnjQ22CUjrTtbtzTYyNntQOsg0+bXJeAPuWrud1756sQ3PdPu6bwzN2OSmZtI77ryDjCzw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fkZlsNAK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MIEOBs4u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fkZlsNAK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727301829;
+	s=mimecast20190719; t=1727301831;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=A8YF1hcs09T0vNbkJEIsJMuNWwpvWI2raQJ9C+kcVEA=;
-	b=MIEOBs4uQ6NkdA047hGuUKuVyM1k4vb9U+WgX4oYS3nuvHn2L2QtndWvz6KbFiZjKXLk75
-	B+ACEmbhGFi4GfVFJoXm+gWqM9kpeLryYGDYpZ0rDDjnjAGgzzb85eT6eMhPIPjoBVK+d3
-	x/8hBJbV0LI6NtnjrPhHBXA44wql69w=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=xwuEFEtdyrBs1sjBNds32acNYzDbvsK/LaZX0ZEORdo=;
+	b=fkZlsNAKzPcrWM9lKE7jqMVg1JWzFiX3Do6xHxL30sJXqpYJuQSS2c6PP3yz0Cxi+DyLMr
+	4yH2Vz8GZmn/oLA8l9LpVOD5JG1CW7+OJ4Dsf9c4hWxe7+EpIA86UPWbJ9ls4J/D/a3umH
+	TcYVPrHzh1Wmy7AfkubiuT+pWYvTMkY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-vvgfNdeIMMSd_CKGrQ_wXQ-1; Wed,
- 25 Sep 2024 18:03:48 -0400
-X-MC-Unique: vvgfNdeIMMSd_CKGrQ_wXQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-JKh2d7klO9u3syDXJSjR3A-1; Wed,
+ 25 Sep 2024 18:03:50 -0400
+X-MC-Unique: JKh2d7klO9u3syDXJSjR3A-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 167B619344B3
-	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:48 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A0651936110
+	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:50 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.77])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1C27319560AA;
-	Wed, 25 Sep 2024 22:03:46 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8AD4119560AD;
+	Wed, 25 Sep 2024 22:03:48 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 08/16] gfs2: Return enum evict_behavior from gfs2_upgrade_iopen_glock
-Date: Thu, 26 Sep 2024 00:03:18 +0200
-Message-ID: <20240925220331.417856-9-agruenba@redhat.com>
+Subject: [PATCH 09/16] gfs2: Minor delete_work_func cleanup
+Date: Thu, 26 Sep 2024 00:03:19 +0200
+Message-ID: <20240925220331.417856-10-agruenba@redhat.com>
 In-Reply-To: <20240925220331.417856-1-agruenba@redhat.com>
 References: <20240925220331.417856-1-agruenba@redhat.com>
 Precedence: bulk
@@ -61,71 +61,36 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-In case an iopen glock cannot be upgraded, function
-gfs2_upgrade_iopen_glock() needs to communicate to gfs2_evict_inode()
-whether deleting the inode should be deferred or skipped altogether.
-Change the function to return the appropriate enum evict_behavior value
-to indicate that.
+Move those definitions into the the scope in which they are used.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/super.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ fs/gfs2/glock.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index bfe822827bbd..55cbe672d42e 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1257,7 +1257,7 @@ static void gfs2_glock_put_eventually(struct gfs2_glock *gl)
- 		gfs2_glock_put(gl);
- }
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index c095ff2efe1d..9ec305b8d4d4 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1028,8 +1028,6 @@ static void delete_work_func(struct work_struct *work)
+ 	struct delayed_work *dwork = to_delayed_work(work);
+ 	struct gfs2_glock *gl = container_of(dwork, struct gfs2_glock, gl_delete);
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-	struct inode *inode;
+-	u64 no_addr = gl->gl_name.ln_number;
  
--static bool gfs2_upgrade_iopen_glock(struct inode *inode)
-+static enum evict_behavior gfs2_upgrade_iopen_glock(struct inode *inode)
- {
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	struct gfs2_sbd *sdp = GFS2_SB(inode);
-@@ -1290,7 +1290,7 @@ static bool gfs2_upgrade_iopen_glock(struct inode *inode)
- 	gfs2_holder_reinit(LM_ST_EXCLUSIVE, GL_ASYNC | GL_NOCACHE, gh);
- 	error = gfs2_glock_nq(gh);
- 	if (error)
--		return false;
-+		return EVICT_SHOULD_SKIP_DELETE;
- 
- 	wait_event_interruptible_timeout(sdp->sd_async_glock_wait,
- 		!test_bit(HIF_WAIT, &gh->gh_iflags) ||
-@@ -1298,9 +1298,14 @@ static bool gfs2_upgrade_iopen_glock(struct inode *inode)
- 		5 * HZ);
- 	if (!test_bit(HIF_HOLDER, &gh->gh_iflags)) {
- 		gfs2_glock_dq(gh);
--		return false;
-+		if (glock_needs_demote(ip->i_gl))
-+			return EVICT_SHOULD_SKIP_DELETE;
-+		return EVICT_SHOULD_DEFER_DELETE;
+ 	if (test_and_clear_bit(GLF_TRY_TO_EVICT, &gl->gl_flags)) {
+ 		/*
+@@ -1059,6 +1057,9 @@ static void delete_work_func(struct work_struct *work)
  	}
--	return gfs2_glock_holder_ready(gh) == 0;
-+	error = gfs2_glock_holder_ready(gh);
-+	if (error)
-+		return EVICT_SHOULD_SKIP_DELETE;
-+	return EVICT_SHOULD_DELETE;
- }
  
- /**
-@@ -1359,9 +1364,12 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- should_delete:
- 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
- 	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags)) {
--		if (!gfs2_upgrade_iopen_glock(inode)) {
-+		enum evict_behavior behavior =
-+			gfs2_upgrade_iopen_glock(inode);
+ 	if (test_and_clear_bit(GLF_VERIFY_DELETE, &gl->gl_flags)) {
++		u64 no_addr = gl->gl_name.ln_number;
++		struct inode *inode;
 +
-+		if (behavior != EVICT_SHOULD_DELETE) {
- 			gfs2_holder_uninit(&ip->i_iopen_gh);
--			return EVICT_SHOULD_SKIP_DELETE;
-+			return behavior;
- 		}
- 	}
- 	return EVICT_SHOULD_DELETE;
+ 		inode = gfs2_lookup_by_inum(sdp, no_addr, gl->gl_no_formal_ino,
+ 					    GFS2_BLKST_UNLINKED);
+ 		if (IS_ERR(inode)) {
 -- 
 2.46.0
 
