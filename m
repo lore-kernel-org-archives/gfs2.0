@@ -1,271 +1,107 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96921487DC
-	for <gfs2@lists.linux.dev>; Tue, 24 Sep 2024 09:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252F51D5AD5
+	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727171726; cv=none; b=R2qV7zlSXkSPIzRbnTzcRQymtGYAwM3I4mz4KI09ytZHZAOIaMVatxi1TU/H6PVmWiseM2T77L8MYKQSIVFV+0cwfZeTQYmSCLRH1zef+yaiIHd8NSiQHibU31YUfupxTcRuJw4CVty8m5ArIUlEs3rPWGOH/wiWrVoOAIv2q0w=
+	t=1727301818; cv=none; b=dOPlat6Qg6EC2j/CuUYgbntSXS56aaR5TF9oUk7gKDpn9iEomoEKPaCbDBfHMisZUl2FDEc876SSakddXixIDmNrLBTpEhE5A8qm9SLpM2CCIp8/hPeqfu3pWMmLZUbEsG7BcHLO2lHK4vYBPiifv1+h851Iwva33XiQaGkah/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727171726; c=relaxed/simple;
-	bh=yFvKR2sGhE0+kxDoQ+6dSgI1whRDI7/WaDxLGjGa9wA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GQqDDAyy6D2VPKtrcdqFk/dbuh9MZWOcDdYisElBrK3YU5JBEQAd0qkifzKABAz+8lM57spIb1TQk7KkPWgf+0Y4DPAqhhrk+VC52lRUkpdGI2ugF+tNzERHu2InW6eEIRLO5mpNkeSEJeOnWATY5YFbz8avHxs9JYR8xcFDPb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a047cb2e7dso64467885ab.3
-        for <gfs2@lists.linux.dev>; Tue, 24 Sep 2024 02:55:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727171724; x=1727776524;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HHG6tr2pgwfTXV9tJzIhznVuSbyduy3fmuYBlcIRvW8=;
-        b=fuBTiZRh8txQ9eeGRBF8S6pTVNncnXDIUUN5kBre5iT5ZoWxoRHkOTj7con/UTA1Xk
-         fE0EDgxPVT6hO2xgieaOCv73NaR/ZOEEIWY0BkRrqI592l3gXRaa34lZdlNGdeK+Y0ci
-         DHnAgSGPYUuxIVWW/iarslP5NR0BC8CbHPdQoUdeddHMx46zLuIUPLj2xLOjBJKDpmTe
-         C2NeeKRI5GqX0PW9bcuaKoik+D1kxfLqhWE8w+X7ubA2+wLEBjHyJRDd3VuhEEH7kPbe
-         ndPVC5jTPSBAsP2qzUR2zFLMkbRpx34GT0BlV/ThC7c9w7YG3Ka0J1BkdCt+DC6NZRmu
-         wpRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUr34KwrOfzELtWcTOtK/sQZzwUn6rV40ZMBN5cKb6kX2L6GlfnKLYpNwLfu1MwJwwC0PoB@lists.linux.dev
-X-Gm-Message-State: AOJu0YxdRGzfHMwcItTL7KSjZ7w3BX6cV71ry6bXNSpr1Oi5O+4/jYrJ
-	8T+dm8q4wO8xb1Bj8V2OsxEwNbAVPMpcoogaYf2e8qS2GZwfsAj7Ok6E2LIvs224nT2BJSS5H9u
-	FogwNVeAasGRYwSSwqzhYXIwI9sChDxeyjNPQzrrw+bG/Sr9TfU+p3YQ=
-X-Google-Smtp-Source: AGHT+IHA7AuE5ACxSmnWHiZF8xgdFVhF6pLFnfdeALjzQVb94LCp3O8U0f4lVsinU+Gb7HRPyzln0+IU/eMXBCgSnZI+rraPVl1q
+	s=arc-20240116; t=1727301818; c=relaxed/simple;
+	bh=nnbbktvuKErj+3xy+97nAIZMSc81uhBC24lW+xKuoG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RHrmCkKC0BB036x3A/E60+baCzsiZ0Y9oDIeiHiXHRu9kuSCXPNxjfZ4bv3m66I+qKCbHq+SqmAnWWEReVE2HzVj5YYt/CorwQjhCp/RJlqurWSai8viczeZMxz2/ZpxJIGWMwJoUYpNp4OTXWvsKdObsmUYXp9a34DGN198Tqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DuzN5+0o; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DuzN5+0o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727301816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GGdkG7lseYARJ/IdrO2yEYYL8C8o4kmVIRGdAnLurrs=;
+	b=DuzN5+0oWR2Jn6wSTR9dwJ6Jmt1HQ/t2xoNf7FqEJTdLCcyiUH6Y/pwQ6CRUNHMI64azqp
+	B0tjHhJ54yYQGR/9rqpj0HHJyoQfE7QVoHm3vWpigWqD3bBbUj5gzQIl2vXs4Fs8gkdr46
+	Y5nAnMhrBGja+iZVn2AUhGvN5GtTVoA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-EtvfgpIfPBu1zZlVb23-Og-1; Wed,
+ 25 Sep 2024 18:03:35 -0400
+X-MC-Unique: EtvfgpIfPBu1zZlVb23-Og-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37B9F1933E97
+	for <gfs2@lists.linux.dev>; Wed, 25 Sep 2024 22:03:34 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.77])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3D3F019560AA;
+	Wed, 25 Sep 2024 22:03:32 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 00/16] gfs2: unlinked inodes
+Date: Thu, 26 Sep 2024 00:03:10 +0200
+Message-ID: <20240925220331.417856-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:17cc:b0:3a0:9238:d38 with SMTP id
- e9e14a558f8ab-3a0c8ca4dfbmr139817965ab.10.1727171723830; Tue, 24 Sep 2024
- 02:55:23 -0700 (PDT)
-Date: Tue, 24 Sep 2024 02:55:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <66f28c8b.050a0220.c23dd.0027.GAE@google.com>
-Subject: [syzbot] [gfs2?] possible deadlock in gfs2_trans_begin
-From: syzbot <syzbot+5baab0d4d584f7b68982@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello,
+We have recently run into cases where unlinked inodes end up
+accumulating.  This should only happen as a result of cluster node
+failures, and those unlinked inodes should be cleaned up during
+allocations.  Sometimes, for some reason, neiter happened.
 
-syzbot found the following issue on:
+In turns out that this is mainly due to a bug in commit f0e56edc2ec7
+("gfs2: Split the two kinds of glock "delete" work"); see patch "gfs2:
+Fix unlinked inode cleanup".
 
-HEAD commit:    1868f9d0260e Merge tag 'for-linux-6.12-ofs1' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14b11e9f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d0b35925215243c6
-dashboard link: https://syzkaller.appspot.com/bug?extid=5baab0d4d584f7b68982
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+While going through the relevant parts of the code, I noticed a number
+of additional minor problems which this patch set addresses as well.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Any thoughts?
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-1868f9d0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/79ecea60635a/vmlinux-1868f9d0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2e88a1660d19/bzImage-1868f9d0.xz
+Thanks,
+Andreas
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5baab0d4d584f7b68982@syzkaller.appspotmail.com
+Andreas Gruenbacher (16):
+  gfs2: Rename GLF_VERIFY_EVICT to GLF_VERIFY_DELETE
+  gfs2: Initialize gl_no_formal_ino earlier
+  gfs2: Allow immediate GLF_VERIFY_DELETE work
+  gfs2: Fix unlinked inode cleanup
+  gfs2: Faster gfs2_upgrade_iopen_glock wakeups
+  gfs2: Rename GIF_{DEFERRED -> DEFER}_DELETE
+  gfs2: Rename dinode_demise to evict_behavior
+  gfs2: Return enum evict_behavior from gfs2_upgrade_iopen_glock
+  gfs2: Minor delete_work_func cleanup
+  gfs2: Clean up delete work processing
+  gfs2: Call gfs2_queue_verify_delete from gfs2_evict_inode
+  gfs2: Update to the evict / remote delete documentation
+  gfs2: Use mod_delayed_work in gfs2_queue_try_to_evict
+  gfs2: Randomize GLF_VERIFY_DELETE work delay
+  gfs2: Use get_random_u32 in gfs2_orlov_skip
+  gfs2: Make gfs2_inode_refresh static
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.11.0-syzkaller-07462-g1868f9d0260e #0 Not tainted
-------------------------------------------------------
-kswapd0/78 is trying to acquire lock:
-ffff88801fe9a610 (sb_internal#2){.+.+}-{0:0}, at: gfs2_trans_begin+0x71/0xe0 fs/gfs2/trans.c:118
+ fs/gfs2/glock.c  | 100 ++++++++++++++++-------------------------------
+ fs/gfs2/glock.h  |   7 ++++
+ fs/gfs2/glops.c  |  11 +++++-
+ fs/gfs2/incore.h |   4 +-
+ fs/gfs2/inode.c  |   1 +
+ fs/gfs2/inode.h  |   2 -
+ fs/gfs2/rgrp.c   |   6 +--
+ fs/gfs2/super.c  |  76 +++++++++++++++++++++--------------
+ 8 files changed, 101 insertions(+), 106 deletions(-)
 
-but task is already holding lock:
-ffffffff8ea369a0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6821 [inline]
-ffffffff8ea369a0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xbf1/0x3720 mm/vmscan.c:7203
+-- 
+2.46.0
 
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #3 (fs_reclaim){+.+.}-{0:0}:
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
-       __fs_reclaim_acquire mm/page_alloc.c:3825 [inline]
-       fs_reclaim_acquire+0x88/0x140 mm/page_alloc.c:3839
-       might_alloc include/linux/sched/mm.h:334 [inline]
-       prepare_alloc_pages+0x147/0x5d0 mm/page_alloc.c:4473
-       __alloc_pages_noprof+0x166/0x6c0 mm/page_alloc.c:4691
-       alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2263
-       alloc_pages_noprof mm/mempolicy.c:2343 [inline]
-       folio_alloc_noprof+0x128/0x180 mm/mempolicy.c:2350
-       filemap_alloc_folio_noprof+0xdf/0x500 mm/filemap.c:1010
-       __filemap_get_folio+0x446/0xbd0 mm/filemap.c:1952
-       filemap_grab_folio include/linux/pagemap.h:806 [inline]
-       gfs2_unstuff_dinode+0xfb/0x15e0 fs/gfs2/bmap.c:162
-       fallocate_chunk fs/gfs2/file.c:1190 [inline]
-       __gfs2_fallocate+0xf4e/0x1e00 fs/gfs2/file.c:1337
-       gfs2_fallocate+0x35c/0x490 fs/gfs2/file.c:1401
-       vfs_fallocate+0x569/0x6e0 fs/open.c:333
-       ksys_fallocate fs/open.c:356 [inline]
-       __do_sys_fallocate fs/open.c:364 [inline]
-       __se_sys_fallocate fs/open.c:362 [inline]
-       __x64_sys_fallocate+0xbd/0x110 fs/open.c:362
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #2 (&ip->i_rw_mutex){++++}-{3:3}:
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
-       down_write+0x99/0x220 kernel/locking/rwsem.c:1579
-       gfs2_unstuff_dinode+0xa0/0x15e0 fs/gfs2/bmap.c:161
-       fallocate_chunk fs/gfs2/file.c:1190 [inline]
-       __gfs2_fallocate+0xf4e/0x1e00 fs/gfs2/file.c:1337
-       gfs2_fallocate+0x35c/0x490 fs/gfs2/file.c:1401
-       vfs_fallocate+0x569/0x6e0 fs/open.c:333
-       ksys_fallocate fs/open.c:356 [inline]
-       __do_sys_fallocate fs/open.c:364 [inline]
-       __se_sys_fallocate fs/open.c:362 [inline]
-       __x64_sys_fallocate+0xbd/0x110 fs/open.c:362
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (&sdp->sd_log_flush_lock){++++}-{3:3}:
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
-       down_read+0xb1/0xa40 kernel/locking/rwsem.c:1526
-       __gfs2_trans_begin+0x55d/0x950 fs/gfs2/trans.c:87
-       gfs2_trans_begin+0x71/0xe0 fs/gfs2/trans.c:118
-       alloc_dinode+0x2ef/0x5e0 fs/gfs2/inode.c:418
-       gfs2_create_inode+0xf39/0x1b30 fs/gfs2/inode.c:739
-       gfs2_atomic_open+0xe5/0x230 fs/gfs2/inode.c:1315
-       atomic_open fs/namei.c:3455 [inline]
-       lookup_open fs/namei.c:3566 [inline]
-       open_last_lookups fs/namei.c:3694 [inline]
-       path_openat+0x101b/0x3590 fs/namei.c:3930
-       do_filp_open+0x235/0x490 fs/namei.c:3960
-       do_sys_openat2+0x13e/0x1d0 fs/open.c:1415
-       do_sys_open fs/open.c:1430 [inline]
-       __do_sys_creat fs/open.c:1506 [inline]
-       __se_sys_creat fs/open.c:1500 [inline]
-       __x64_sys_creat+0x123/0x170 fs/open.c:1500
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (sb_internal#2){.+.+}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3158 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3277 [inline]
-       validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3901
-       __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5199
-       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
-       percpu_down_read include/linux/percpu-rwsem.h:51 [inline]
-       __sb_start_write include/linux/fs.h:1715 [inline]
-       sb_start_intwrite include/linux/fs.h:1898 [inline]
-       __gfs2_trans_begin+0x471/0x950 fs/gfs2/trans.c:76
-       gfs2_trans_begin+0x71/0xe0 fs/gfs2/trans.c:118
-       gfs2_dirty_inode+0x3e0/0x6b0 fs/gfs2/super.c:520
-       __mark_inode_dirty+0x2ee/0xe90 fs/fs-writeback.c:2493
-       mark_inode_dirty_sync include/linux/fs.h:2478 [inline]
-       iput+0x1f1/0xa50 fs/inode.c:1906
-       __dentry_kill+0x20d/0x630 fs/dcache.c:615
-       shrink_kill+0xa9/0x2c0 fs/dcache.c:1060
-       shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1087
-       prune_dcache_sb+0x10f/0x180 fs/dcache.c:1168
-       super_cache_scan+0x34f/0x4b0 fs/super.c:221
-       do_shrink_slab+0x701/0x1160 mm/shrinker.c:435
-       shrink_slab+0x1093/0x14d0 mm/shrinker.c:662
-       shrink_one+0x43b/0x850 mm/vmscan.c:4795
-       shrink_many mm/vmscan.c:4856 [inline]
-       lru_gen_shrink_node mm/vmscan.c:4934 [inline]
-       shrink_node+0x3799/0x3de0 mm/vmscan.c:5914
-       kswapd_shrink_node mm/vmscan.c:6742 [inline]
-       balance_pgdat mm/vmscan.c:6934 [inline]
-       kswapd+0x1cbc/0x3720 mm/vmscan.c:7203
-       kthread+0x2f0/0x390 kernel/kthread.c:389
-       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-other info that might help us debug this:
-
-Chain exists of:
-  sb_internal#2 --> &ip->i_rw_mutex --> fs_reclaim
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(fs_reclaim);
-                               lock(&ip->i_rw_mutex);
-                               lock(fs_reclaim);
-  rlock(sb_internal#2);
-
- *** DEADLOCK ***
-
-2 locks held by kswapd0/78:
- #0: ffffffff8ea369a0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6821 [inline]
- #0: ffffffff8ea369a0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xbf1/0x3720 mm/vmscan.c:7203
- #1: ffff88801fe9a0e0 (&type->s_umount_key#47){.+.+}-{3:3}, at: super_trylock_shared fs/super.c:562 [inline]
- #1: ffff88801fe9a0e0 (&type->s_umount_key#47){.+.+}-{3:3}, at: super_cache_scan+0x94/0x4b0 fs/super.c:196
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 78 Comm: kswapd0 Not tainted 6.11.0-syzkaller-07462-g1868f9d0260e #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
- print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
- check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2203
- check_prev_add kernel/locking/lockdep.c:3158 [inline]
- check_prevs_add kernel/locking/lockdep.c:3277 [inline]
- validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3901
- __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5199
- lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
- percpu_down_read include/linux/percpu-rwsem.h:51 [inline]
- __sb_start_write include/linux/fs.h:1715 [inline]
- sb_start_intwrite include/linux/fs.h:1898 [inline]
- __gfs2_trans_begin+0x471/0x950 fs/gfs2/trans.c:76
- gfs2_trans_begin+0x71/0xe0 fs/gfs2/trans.c:118
- gfs2_dirty_inode+0x3e0/0x6b0 fs/gfs2/super.c:520
- __mark_inode_dirty+0x2ee/0xe90 fs/fs-writeback.c:2493
- mark_inode_dirty_sync include/linux/fs.h:2478 [inline]
- iput+0x1f1/0xa50 fs/inode.c:1906
- __dentry_kill+0x20d/0x630 fs/dcache.c:615
- shrink_kill+0xa9/0x2c0 fs/dcache.c:1060
- shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1087
- prune_dcache_sb+0x10f/0x180 fs/dcache.c:1168
- super_cache_scan+0x34f/0x4b0 fs/super.c:221
- do_shrink_slab+0x701/0x1160 mm/shrinker.c:435
- shrink_slab+0x1093/0x14d0 mm/shrinker.c:662
- shrink_one+0x43b/0x850 mm/vmscan.c:4795
- shrink_many mm/vmscan.c:4856 [inline]
- lru_gen_shrink_node mm/vmscan.c:4934 [inline]
- shrink_node+0x3799/0x3de0 mm/vmscan.c:5914
- kswapd_shrink_node mm/vmscan.c:6742 [inline]
- balance_pgdat mm/vmscan.c:6934 [inline]
- kswapd+0x1cbc/0x3720 mm/vmscan.c:7203
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
