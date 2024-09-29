@@ -1,133 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C10158851
-	for <gfs2@lists.linux.dev>; Thu, 26 Sep 2024 12:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9961AAD2F
+	for <gfs2@lists.linux.dev>; Sun, 29 Sep 2024 08:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727353114; cv=none; b=f+EWACNNpy1zSh/a+bnl7jjX8X/KHGbwjDM/HewhYgGFt3jZ9kSoik+hiVXPY2UZLk3sG0DTz1CdU8S5IYCXb+FwPoUvHzl7zUUoeY3/IHnBAiOw0Z1NoaCKKl318z7xENBeziF0tR6PvkEzmnC8HwDEL6yhJlccP2f3CRLc8Oo=
+	t=1727599946; cv=none; b=bficAZ/6fue18SplEmgB427YpAYKYY1CryNCQblqfwS8tnYJPFZ2qkbnyQcPIamtvPxUwo4qpQppvGh2tU9FNPe8FI9j3p8Qq+etwicYXdlzSuCWSjWKFMwIhG21A5yL1jexYzAEeteZlGXv6c+3LAI6wxmlpNQwXVYEirv61Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727353114; c=relaxed/simple;
-	bh=35IAnmg+Ou2ujyv8rNuH9+NG7P8dyPMLTV6ua36IzZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=Ett5PFnGzKlKS/KzsLODeInA6NALhlI7zghKAnovlHgBB/RPqRKNCJqjIFhmL9ECJuhTHrpjKtq5tTjd1HaXVeluv88TDNQoS5E+VZhhnmYaVUIbtqZNg+IYmtU5df7M5JmGCNdBJD75Ok0082FVMjb0/z9LtO8xl/eVv1RoDy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PjEnLDSj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PjEnLDSj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727353112;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9j5ulUBRF3RNc1/1PEm2eA9tpmRkg67InFO3B+cjLCg=;
-	b=PjEnLDSjSowX/kKuN8w3x1LU5HFe/nCHbzw5Qy2zlZQ0XskCaBcsG9VeT+FAhFxIXAGQc6
-	D5W+H/PAZ81xwWkul3/Y++Sm7cDAGmfUs0tT/tk/aw4Z6yn4KCaaONNZY45A8fEhPR3v3c
-	UMEjTrpTtYhAdI46gGNrSjhSgRiTjig=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-0uqwnRPDNEWziZWbAosgMA-1; Thu, 26 Sep 2024 08:18:30 -0400
-X-MC-Unique: 0uqwnRPDNEWziZWbAosgMA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-42cb5f6708aso5095435e9.2
-        for <gfs2@lists.linux.dev>; Thu, 26 Sep 2024 05:18:30 -0700 (PDT)
+	s=arc-20240116; t=1727599946; c=relaxed/simple;
+	bh=ChkYvA0tuIgKErcKET75lqb93hN0n/mf7qQqrbPKhtI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=s3GgEkktU773YNGOaslhgg51co8UlAOu3Wxh3hpfVY8zHwerQfgnb2sbOhP7LuXBKTmUx0EDb88LJt9p0QL0FYiHbheqfzab8DzIDBVICkNJG7nKFKt2g1KVpPnTRgH0UMi/LXXmZGM0dfi+9NPpbimNyNymfm/Io9pg8An9yqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a1a969fabfso43381575ab.0
+        for <gfs2@lists.linux.dev>; Sun, 29 Sep 2024 01:52:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727353109; x=1727957909;
-        h=content-transfer-encoding:in-reply-to:from:cc:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1727599944; x=1728204744;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9j5ulUBRF3RNc1/1PEm2eA9tpmRkg67InFO3B+cjLCg=;
-        b=MUtm0dNi+zlkxMm7Omp2hmPHN6nlJxGhK/kup2q+pAJWPrlLyx99mtCkSI0QPyyZmN
-         cd1zgQODGxIadcqUXy5wfyJtGgSpeJLWDPYBMk6yr/VLdpS1NQK/BkwTkhU66bR0iRDl
-         OT2HbdS+Z81YmU0DvCWbmNwjMHtK9WREMwW2YH3KpAURnI3F2jTTNVhUKPIlLTJ/bHoW
-         hX2drMNgWilbOlAOAFvj+JZI7BucF4opfZjUgmALOwJn717M6d7mJRKxSED4YQ1jWdtJ
-         6OZebKJf50mRsfnRraYdW3xntwipFEE7ac92ck3sa4LyXObV4UNhbJyHdM0IUYNSIY/H
-         MGAw==
-X-Gm-Message-State: AOJu0YzC0YRwVFo/3Lg+BmN+OXn5SsEd/taOvii+Z4Pq1i0ZqPPj12FO
-	7oC3yVL9hQPkqRjaLLGHXJ9fL4Lxyj+Gz5vkCpwln0TWZB04la6jgcJDEjRE5fOQLsLLFYZlDxQ
-	lH4BHbWO45xPjubEEgNc2ghhy7hPrTF1awTsCQq9u6hb2aoid28M=
-X-Received: by 2002:a7b:c5d9:0:b0:426:5440:8541 with SMTP id 5b1f17b1804b1-42e96ab6613mr37358205e9.27.1727353109625;
-        Thu, 26 Sep 2024 05:18:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbT+ecKbMK2RXsDY1KYO21bYyPZ/117U0dWaOhPELAXbC9v6rc2SuiDVoP9lUY23A7Qw1Aug==
-X-Received: by 2002:a7b:c5d9:0:b0:426:5440:8541 with SMTP id 5b1f17b1804b1-42e96ab6613mr37358015e9.27.1727353109261;
-        Thu, 26 Sep 2024 05:18:29 -0700 (PDT)
-Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969e18f7sm45674195e9.5.2024.09.26.05.18.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Sep 2024 05:18:28 -0700 (PDT)
-Message-ID: <524af8c6-62cd-4ae0-af8d-3d02102f9045@redhat.com>
-Date: Thu, 26 Sep 2024 13:18:27 +0100
+        bh=6rJW+wBIDOm7srUL8NiLF1TLwhXaEQu5U9OO94RJwrM=;
+        b=ilPGLjSf2BabyMIMVZnrqcips6tZ0u/Mp+Jb0NAHvz6mLb9PQmJmE5tcQP7QS0kMmg
+         O1Xh0Rw8/W3n/bCAT870iQARfS6hBPCCboYyA5LOb6PYWZ5El8ixtSGEfIvVTMTgjARP
+         Abc1Ttiy73VL5YYZpfBGu2gNuId8qWKUqH3id1CaP+UJf+pUCsd3DtAiytGtO8hazXnA
+         PV/PVHoOnte3o8hK46F7CpKenlHp29TDNT+Kfma5Hq/nGbjnnZMFgdql0kJm5EGeRqrU
+         kILO0/+/7BzyTejpMqICGOwT5y+uxDmoG+mDfmsSPufA2ioUDxe0R27t0cAoh5U4vxJb
+         RaMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBERDkPtW2M/QeDFpDN8aPt/UFlYHiVV+sWtbgluPPNi3lGk7QrGmqVxc/+x5ilIb8cva9@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYQKuk//xhvBmTzHRId570VBT4AwN4GKwWJ3PMiCB+KB8DFczU
+	BfkFg4qSOGvFCbak6PlOA+bHqaDYf0FxdxXHO19EZ/Pt+tgZYBYT/vOs7jnSgkk+lEraYiAo/H2
+	r+XVeqB/X5XozbSBM+HOxxDCcbhCiWZfHd3Xv/bqYsesnM/1lvNDM3xo=
+X-Google-Smtp-Source: AGHT+IHgjQdIHOg+ugAbgbxYA0w1puMXe5M14rxACCESNWIp2yKUc5V5z7vuq2cP2HSkmeVTXY8uLFc0Rl8oJNWWPswHtP0GcTMI
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] gfs2: unlinked inodes
-To: Andreas Gruenbacher <agruenba@redhat.com>
-References: <20240925220331.417856-1-agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev
-From: Andrew Price <anprice@redhat.com>
-In-Reply-To: <20240925220331.417856-1-agruenba@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:c56f:0:b0:3a0:5642:c78 with SMTP id
+ e9e14a558f8ab-3a3451738c8mr72535405ab.15.1727599943742; Sun, 29 Sep 2024
+ 01:52:23 -0700 (PDT)
+Date: Sun, 29 Sep 2024 01:52:23 -0700
+In-Reply-To: <000000000000aeb73d0621e8fa14@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66f91547.050a0220.aab67.0015.GAE@google.com>
+Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_assert_warn_i
+From: syzbot <syzbot+ffe01cefd437cbde362b@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 25/09/2024 23:03, Andreas Gruenbacher wrote:
-> We have recently run into cases where unlinked inodes end up
-> accumulating.  This should only happen as a result of cluster node
-> failures, and those unlinked inodes should be cleaned up during
-> allocations.  Sometimes, for some reason, neiter happened.
-> 
-> In turns out that this is mainly due to a bug in commit f0e56edc2ec7
-> ("gfs2: Split the two kinds of glock "delete" work"); see patch "gfs2:
-> Fix unlinked inode cleanup".
-> 
-> While going through the relevant parts of the code, I noticed a number
-> of additional minor problems which this patch set addresses as well.
-> 
-> Any thoughts?
+syzbot has found a reproducer for the following issue on:
 
-Looks reasonable to me, and I appreciate the code clarity improvements.
+HEAD commit:    3efc57369a0c Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13b1de80580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a4fcb065287cdb84
+dashboard link: https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1357f6a9980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1757f6a9980000
 
-Thanks,
-Andy
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-3efc5736.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d0988c372a39/vmlinux-3efc5736.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/8547f30d7e9d/bzImage-3efc5736.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/ff644c356076/mount_0.gz
 
-> 
-> Thanks,
-> Andreas
-> 
-> Andreas Gruenbacher (16):
->    gfs2: Rename GLF_VERIFY_EVICT to GLF_VERIFY_DELETE
->    gfs2: Initialize gl_no_formal_ino earlier
->    gfs2: Allow immediate GLF_VERIFY_DELETE work
->    gfs2: Fix unlinked inode cleanup
->    gfs2: Faster gfs2_upgrade_iopen_glock wakeups
->    gfs2: Rename GIF_{DEFERRED -> DEFER}_DELETE
->    gfs2: Rename dinode_demise to evict_behavior
->    gfs2: Return enum evict_behavior from gfs2_upgrade_iopen_glock
->    gfs2: Minor delete_work_func cleanup
->    gfs2: Clean up delete work processing
->    gfs2: Call gfs2_queue_verify_delete from gfs2_evict_inode
->    gfs2: Update to the evict / remote delete documentation
->    gfs2: Use mod_delayed_work in gfs2_queue_try_to_evict
->    gfs2: Randomize GLF_VERIFY_DELETE work delay
->    gfs2: Use get_random_u32 in gfs2_orlov_skip
->    gfs2: Make gfs2_inode_refresh static
-> 
->   fs/gfs2/glock.c  | 100 ++++++++++++++++-------------------------------
->   fs/gfs2/glock.h  |   7 ++++
->   fs/gfs2/glops.c  |  11 +++++-
->   fs/gfs2/incore.h |   4 +-
->   fs/gfs2/inode.c  |   1 +
->   fs/gfs2/inode.h  |   2 -
->   fs/gfs2/rgrp.c   |   6 +--
->   fs/gfs2/super.c  |  76 +++++++++++++++++++++--------------
->   8 files changed, 101 insertions(+), 106 deletions(-)
-> 
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ffe01cefd437cbde362b@syzkaller.appspotmail.com
 
+gfs2: fsid=syz:syz.0: Corruption found in quota_change0file: duplicate identifier in slot 82152
+gfs2: fsid=syz:syz.0: warning: assertion "!qd->qd_change" failed - function = gfs2_qd_dispose, file = fs/gfs2/quota.c, line = 129
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/util.c:414!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5093 Comm: syz-executor245 Not tainted 6.11.0-syzkaller-11993-g3efc57369a0c #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:gfs2_assert_warn_i+0x2df/0x2f0 fs/gfs2/util.c:414
+Code: fe 48 c7 c7 00 03 50 8c 48 89 ee 48 8b 54 24 08 48 8b 4c 24 10 4c 8b 44 24 18 44 8b 4c 24 04 e8 97 8b d4 07 e8 32 53 a7 fd 90 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 90 90 90 90 90
+RSP: 0018:ffffc90002c7f608 EFLAGS: 00010293
+RAX: ffffffff83ed92ee RBX: 0000000000000004 RCX: ffff88801aac2440
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
+RBP: ffff888011ff8000 R08: ffffffff83ed91a7 R09: 1ffff9200058fe5c
+R10: dffffc0000000000 R11: fffff5200058fe5d R12: ffff888011ff82bc
+R13: 00000000000003e8 R14: 1ffff110023ff057 R15: 0000000000002086
+FS:  000055557cbb8380(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc4c1c0e28 CR3: 000000003f704000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ gfs2_qd_dispose+0x4af/0x5b0 fs/gfs2/quota.c:129
+ gfs2_quota_init+0xd7b/0x1440 fs/gfs2/quota.c:1470
+ gfs2_make_fs_rw+0x43f/0x5e0 fs/gfs2/super.c:159
+ gfs2_fill_super+0x22a1/0x24d0 fs/gfs2/ops_fstype.c:1274
+ get_tree_bdev+0x3f7/0x570 fs/super.c:1635
+ gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1330
+ vfs_get_tree+0x90/0x2b0 fs/super.c:1800
+ do_new_mount+0x2be/0xb40 fs/namespace.c:3507
+ do_mount fs/namespace.c:3847 [inline]
+ __do_sys_mount fs/namespace.c:4055 [inline]
+ __se_sys_mount+0x2d6/0x3c0 fs/namespace.c:4032
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f707505d16a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 5e 04 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc87086d28 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007ffc87086d40 RCX: 00007f707505d16a
+RDX: 0000000020021140 RSI: 0000000020021180 RDI: 00007ffc87086d40
+RBP: 0000000000000004 R08: 00007ffc87086d80 R09: 0000000000021197
+R10: 000000000300c888 R11: 0000000000000282 R12: 000000000300c888
+R13: 00007ffc87086d80 R14: 0000000000000003 R15: 0000000001000000
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_assert_warn_i+0x2df/0x2f0 fs/gfs2/util.c:414
+Code: fe 48 c7 c7 00 03 50 8c 48 89 ee 48 8b 54 24 08 48 8b 4c 24 10 4c 8b 44 24 18 44 8b 4c 24 04 e8 97 8b d4 07 e8 32 53 a7 fd 90 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 90 90 90 90 90
+RSP: 0018:ffffc90002c7f608 EFLAGS: 00010293
+RAX: ffffffff83ed92ee RBX: 0000000000000004 RCX: ffff88801aac2440
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
+RBP: ffff888011ff8000 R08: ffffffff83ed91a7 R09: 1ffff9200058fe5c
+R10: dffffc0000000000 R11: fffff5200058fe5d R12: ffff888011ff82bc
+R13: 00000000000003e8 R14: 1ffff110023ff057 R15: 0000000000002086
+FS:  000055557cbb8380(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc4c1c0e28 CR3: 000000003f704000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
