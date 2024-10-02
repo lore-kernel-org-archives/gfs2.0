@@ -1,273 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553AA173
-	for <gfs2@lists.linux.dev>; Tue,  1 Oct 2024 00:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB63610C
+	for <gfs2@lists.linux.dev>; Wed,  2 Oct 2024 01:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727741377; cv=none; b=jp2Xp+mAMKoSJeZW5AawDeYVCFIdQDcgUPaxX3ox7MwDJb2Gm2wlG4KN4U9CKbeL1IlLnN6yvdpheD49RxxOhopVeQj9cooElQbn2B1SZIsNT5po3nqTIN6Ehf/tfme4r1S5tVQ1Ka5+//NNkB+tsmF8i+mHNvcdRGIBVGTYz1s=
+	t=1727832865; cv=none; b=gAVmftVL7wjnQ/sYcysnVj7f0mipjGfmwOy9ogIpLyY8L3+K0QVpmpHOzrd/pUI+Xy+vG1ksZVg5uD9CEsdyKMNxMQbLxjiVqSOTIdZg2OiOCXFjzekTHVYPyQkjOakWVC/oFyHAFRlo5KmEL4MIkgLoBitTfJl2uG1rX1nwaqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727741377; c=relaxed/simple;
-	bh=WF4UHcsBQQQGtG8XoiJEAw7KXBLW+DJUXSSekfDa2Aw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DCPmstIdFtyHj85I2YgFKhs0kEyRiIZfHEGi2vy8te+amzT6tozheyZtOwWOgW3BpKCeY64T1XmBdIPpDrAgz3CGxHGGwPsLY3fHJlLYhlYvcotsnRjSuCu3hFi5F7mP85Y9e9u+ccD6uGWfbWjWBYSsCA4Tj6Qg+BU0Iq2DIpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dZo/3Rhi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dZo/3Rhi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727741373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A1dfu9XorZM4ryDcem8zGUAOayEDNnDp9d6zeR4JweE=;
-	b=dZo/3Rhi8sr94Dh54VoWrSUpy6JpxqE7mpJbnb+oAif4omMT00586Tzt2Dxlg980sQJTcw
-	CZh1USitD9MBXUO7/fhiroi7QjiRNj/ibXy2+ofw6Tvro0mkJvHsMdBRSF0jeQyHZKbokH
-	SwjC4OYQKkW1tUVDx3KHG7ZQsvL+0OY=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-YzK2wwV5Pm2jNtoF7FRB6Q-1; Mon, 30 Sep 2024 20:09:32 -0400
-X-MC-Unique: YzK2wwV5Pm2jNtoF7FRB6Q-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2fabc7c9e69so22966551fa.3
-        for <gfs2@lists.linux.dev>; Mon, 30 Sep 2024 17:09:31 -0700 (PDT)
+	s=arc-20240116; t=1727832865; c=relaxed/simple;
+	bh=h1b3TPOxtsU1rkVURVLVF1xvIQpIhieQiBqgzQ0hMvo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=uhHyhHt4CsQH/ciq3PkP+FY17+y1eKXUzDNoowmSonsQ/msqWZZlX6rIzzkoWH2wnCZrmWPxnGsVg0ZeBpI+QdQZIMEuRT4xs0FdN/o2+Zm3o9cv3jRF6Pede5+0ttndZtfYUkx1hVFZ9AN9Qf+apOX44BXX2y+StocxQwE/CVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a1a2af837dso3856115ab.1
+        for <gfs2@lists.linux.dev>; Tue, 01 Oct 2024 18:34:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727741370; x=1728346170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A1dfu9XorZM4ryDcem8zGUAOayEDNnDp9d6zeR4JweE=;
-        b=pO2VOwQIBwq8St5eW8wDg5YKTbTNn90sueUkhHvhHQYjEVaM9mjMGJhsw54rCLihie
-         kYnlzvW4OwMBdDthQ+dMsTCZwtoAic+4k7tSYyBOXbuX9KREDmKRch2kYH1BaebvTOCA
-         qzheGZWKGz4zugGTaqXUNIC+we6d8XjrMOfR3J418hKdJYANPPBp38ElB2CCOw7T/3HE
-         ek+CgIuub0mp7ETVUksuei2sbpn7Hural5SGS9rijzj6sFJ0QfqFg5SIOsZr8ln9lC76
-         Ub7c/VlZNWrymGzdvxNW23pYvdPKNlfx+wlV35v74GGO12OluYjks+pBLNepa7fMpGTr
-         3xdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcal5vA5sjS7BNiJsr8/pBDinFj+rUhHjO/NgIst/DsviaIJ73OP9yuBp8l7jIJmfbfDOf@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxo58ogVK9txyDE2g2pttdLixG6grA7oJhh9ug4GHgYl1qzPoKc
-	crAH9dwyYBAm+9avmq6Dm+sLfc7fO/tsQ5KpXAzFQH5WyTggiqBmtZBacnRWxf3fXLRBAZLAULT
-	GUYigFHAHNJycPgi72+tZg7JHPcjVvkugDOAwboByEAzIuF+8gvTgTQXWN6BaBLYKTLanVh83MJ
-	TyDGNOJhrJWIxjgtKZgcwQhy5VPQ==
-X-Received: by 2002:a2e:b8ce:0:b0:2f3:f1ee:2256 with SMTP id 38308e7fff4ca-2f9d41a4eb4mr97165571fa.44.1727741370403;
-        Mon, 30 Sep 2024 17:09:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAcNC4y6SEhrnCgxe2rflhwoVRt5eNNwUxKVe6lm/QOKjgu/J0xJMsRT/ns1AHeaEbV17+L0+tU8r1y5LOUC8=
-X-Received: by 2002:a2e:b8ce:0:b0:2f3:f1ee:2256 with SMTP id
- 38308e7fff4ca-2f9d41a4eb4mr97165311fa.44.1727741369925; Mon, 30 Sep 2024
- 17:09:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727832862; x=1728437662;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=svV0C64KdfapKroNm/F5vMM5FHh3Dyd+/CtcEb1H6XI=;
+        b=kBu0NZ1D3DKpQjxqpjuVlygMRxZSmBQODiabxogiykehRxAJRX1WVPc9Dd9BCUtVOc
+         xl3vFM/u7eGBpGGxTgua+wJ6BIED1uPnZGGIs30Ok4ih+w0Vq+nNf5uCqXtg9kymi6Zo
+         xlBunpubFMprj1F5JBVNQzG9C8QZtD5YPcttsOBexh3rzLRiDdRS7IeN+wCs3wzAhnXT
+         iUr/DFYZBsb3BGAQxmRhkjDaScvlx4mk5fn5nUKQ9bfY35QQyJvXTBxxtSgYWMlnHpKH
+         RtzQ9WLeIJ7CxUIxWlP3NybyP9eykxLyw4lFLXR6ywyOHaiW/Is4sDG3hGG1zSndnwta
+         C07g==
+X-Forwarded-Encrypted: i=1; AJvYcCXT9bG5zTMjgPcwCmOpIzytQcnzmZo07w8yBeXjsa59xcm5zUoKVQWxt0sDt6CPmOUZgmyI@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3iuxMIiZ16Y9TfY+lej5lOncpW1V5vJW+giba2gKSjn+ubrMV
+	AhboMqeMDxB++VOI6Ypy1+GZNleSJMgt/bChR3TGa+VQ9QTF9bSeg9iGMtJeXGjjjVOgqD1m/sk
+	JFrdriL9dhNksmv9SLI5YVtUkLCWhJa0LSZ/YAlFrQSRDpeDR741h1gs=
+X-Google-Smtp-Source: AGHT+IFYbZOxogTtpIylgIptOk+VODMqRsNsoUuDu8O2yVYuQsXJJ+FXz5JDeXZlbP/goEXKZSEOTNexIH03qSSU/UzbZmWkAdFj
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240930201358.2638665-1-aahringo@redhat.com> <26363.3177.994264.260348@quad.stoffel.home>
-In-Reply-To: <26363.3177.994264.260348@quad.stoffel.home>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 30 Sep 2024 20:09:18 -0400
-Message-ID: <CAK-6q+iAp+sXrEyK858qL=HO2Os4=3-3y+iOQt3T1W=QpY6AXw@mail.gmail.com>
-Subject: Re: [PATCHv2 dlm/next 00/12] dlm: net-namespace functionality
-To: John Stoffel <john@stoffel.org>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, song@kernel.org, 
-	yukuai3@huawei.com, agruenba@redhat.com, mark@fasheh.com, jlbec@evilplan.org, 
-	joseph.qi@linux.alibaba.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-raid@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	netdev@vger.kernel.org, vvidic@valentin-vidic.from.hr, heming.zhao@suse.com, 
-	lucien.xin@gmail.com, donald.hunter@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6e02:160e:b0:39f:4e36:4b93 with SMTP id
+ e9e14a558f8ab-3a35eb0c614mr38152105ab.6.1727832862589; Tue, 01 Oct 2024
+ 18:34:22 -0700 (PDT)
+Date: Tue, 01 Oct 2024 18:34:22 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66fca31e.050a0220.f28ec.04e4.GAE@google.com>
+Subject: [syzbot] [gfs2?] KMSAN: uninit-value in inode_go_dump (5)
+From: syzbot <syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello,
 
-On Mon, Sep 30, 2024 at 4:49=E2=80=AFPM John Stoffel <john@stoffel.org> wro=
-te:
->
-> >>>>> "Alexander" =3D=3D Alexander Aring <aahringo@redhat.com> writes:
->
-> > Hi,
-> > this patch-series is huge but brings a lot of basic "fun" net-namespace
-> > functionality to DLM. Currently you need a couple of Linux kernel
->
-> Please spell out TLAs like DLM the first time you use them.  In this
-> case I'm suer you mean Distributed Lock Manager, right?
->
+syzbot found the following issue on:
 
-Yes, DLM stands for Distributed Lock Manager that lives currently in "fs/dl=
-m".
+HEAD commit:    ad46e8f95e93 Merge tag 'pm-6.12-rc1-2' of git://git.kernel..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=17908d9f980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=85d8f50d88ddf2a
+dashboard link: https://syzkaller.appspot.com/bug?extid=aa0730b0a42646eb1359
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10508d9f980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103a9e80580000
 
-> > instances running in e.g. Virtual Machines. With this patch-series I
-> > want to break out of this virtual machine world dealing with multiple
-> > kernels need to boot them all individually, etc. Now you can use DLM in
-> > only one Linux kernel instance and each "node" (previously represented
-> > by a virtual machine) is separate by a net-namespace. Why
-> > net-namespaces? It just fits to the DLM design for now, you need to hav=
-e
-> > them anyway because the internal DLM socket handling on a per node
-> > basis. What we do additionally is to separate the DLM lockspaces (the
-> > lockspace that is being registered) by net-namespaces as this represent=
-s
-> > a "network entity" (node). There might be reasons to introduce a
-> > complete new kind of namespaces (locking namespace?) but I don't want t=
-o
-> > do this step now and as I said net-namespaces are required anyway for
-> > the DLM sockets.
->
-> This section needs to be re-written to more clearly explain what
-> you're trying to accomplish here, and how this is different or better
-> than what went before.  I realize you probably have this knowledge all
-> internalized, but spelling it out in a clear and simple manner would
-> be helpful to everyone.
->
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/265feec46ffa/disk-ad46e8f9.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d0f41ea693d3/vmlinux-ad46e8f9.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/45082d33d192/bzImage-ad46e8f9.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/fcd037c3d108/mount_0.gz
 
-Okay, I'll try my best next time.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com
 
-Usually lockspaces are separated by a per node instance as a different
-"network entity" with net-namespaces. I separate them instead of
-building a different "network entity" as a virtual machine that runs a
-different Linux kernel instance.
+gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+gfs2: fsid=syz:syz.0: fatal: filesystem consistency error - inode = 1 19, function = gfs2_dinode_in, file = fs/gfs2/glops.c, line = 399
+gfs2: fsid=syz:syz.0: G:  s:SH n:2/13 f:aqobnN t:SH d:EX/0 a:0 v:0 r:2 m:20 p:1
+gfs2: fsid=syz:syz.0:  H: s:SH f:eEcH e:0 p:0 [(none)] init_inodes+0x125/0x510 fs/gfs2/ops_fstype.c:864
+=====================================================
+BUG: KMSAN: uninit-value in inode_go_dump+0x475/0x4b0 fs/gfs2/glops.c:541
+ inode_go_dump+0x475/0x4b0 fs/gfs2/glops.c:541
+ gfs2_dump_glock+0x221c/0x2340 fs/gfs2/glock.c:2436
+ gfs2_consist_inode_i+0x19f/0x230 fs/gfs2/util.c:457
+ gfs2_inode_refresh+0x12d7/0x1590 fs/gfs2/glops.c:482
+ inode_go_instantiate+0x6e/0xc0 fs/gfs2/glops.c:501
+ gfs2_instantiate+0x272/0x4c0 fs/gfs2/glock.c:468
+ gfs2_glock_holder_ready fs/gfs2/glock.c:1345 [inline]
+ gfs2_glock_wait+0x2a4/0x3e0 fs/gfs2/glock.c:1365
+ gfs2_glock_nq+0x2777/0x34b0 fs/gfs2/glock.c:1622
+ gfs2_glock_nq_init fs/gfs2/glock.h:238 [inline]
+ init_journal+0x12cc/0x3a40 fs/gfs2/ops_fstype.c:770
+ init_inodes+0x125/0x510 fs/gfs2/ops_fstype.c:864
+ gfs2_fill_super+0x3a8b/0x45a0 fs/gfs2/ops_fstype.c:1249
+ get_tree_bdev+0x684/0x890 fs/super.c:1635
+ gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1330
+ vfs_get_tree+0xb1/0x5a0 fs/super.c:1800
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3507
+ path_mount+0x742/0x1f10 fs/namespace.c:3834
+ do_mount fs/namespace.c:3847 [inline]
+ __do_sys_mount fs/namespace.c:4055 [inline]
+ __se_sys_mount+0x722/0x810 fs/namespace.c:4032
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:4032
+ x64_sys_call+0x255a/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-There might be a question if DLM lockspaces should be separated by
-net-namespace or yet another "locking" namespace can be introduced? I
-don't want to go this step yet as lockspaces are separated by a
-"network entity" anyway.
+Uninit was created at:
+ __alloc_pages_noprof+0x9d6/0xe70 mm/page_alloc.c:4756
+ alloc_pages_mpol_noprof+0x299/0x990 mm/mempolicy.c:2265
+ alloc_pages_noprof+0x1bf/0x1e0 mm/mempolicy.c:2345
+ alloc_slab_page mm/slub.c:2413 [inline]
+ allocate_slab+0x33a/0x1250 mm/slub.c:2579
+ new_slab mm/slub.c:2632 [inline]
+ ___slab_alloc+0x12ef/0x35e0 mm/slub.c:3819
+ __slab_alloc mm/slub.c:3909 [inline]
+ __slab_alloc_node mm/slub.c:3962 [inline]
+ slab_alloc_node mm/slub.c:4123 [inline]
+ kmem_cache_alloc_lru_noprof+0x584/0xb30 mm/slub.c:4154
+ gfs2_alloc_inode+0x66/0x210 fs/gfs2/super.c:1536
+ alloc_inode+0x86/0x460 fs/inode.c:263
+ iget5_locked+0xa9/0x1d0 fs/inode.c:1333
+ gfs2_inode_lookup+0xbe/0x1440 fs/gfs2/inode.c:124
+ gfs2_lookup_root fs/gfs2/ops_fstype.c:440 [inline]
+ init_sb+0xd71/0x1780 fs/gfs2/ops_fstype.c:507
+ gfs2_fill_super+0x33f2/0x45a0 fs/gfs2/ops_fstype.c:1216
+ get_tree_bdev+0x684/0x890 fs/super.c:1635
+ gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1330
+ vfs_get_tree+0xb1/0x5a0 fs/super.c:1800
+ do_new_mount+0x71f/0x15e0 fs/namespace.c:3507
+ path_mount+0x742/0x1f10 fs/namespace.c:3834
+ do_mount fs/namespace.c:3847 [inline]
+ __do_sys_mount fs/namespace.c:4055 [inline]
+ __se_sys_mount+0x722/0x810 fs/namespace.c:4032
+ __x64_sys_mount+0xe4/0x150 fs/namespace.c:4032
+ x64_sys_call+0x255a/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-> > You need some new user space tooling as a new netlink net-namespace
-> > aware UAPI is introduced (but can co-exist with configfs that operates
-> > on init_net only). See [0] for more steps, there is a copr repo for the
-> > new tooling and can be enabled by:
->
-> What the heck is a 'copr'?
->
+CPU: 1 UID: 0 PID: 5182 Comm: syz-executor574 Not tainted 6.11.0-syzkaller-11728-gad46e8f95e93 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+=====================================================
 
-That is just a binary repo for rpm packages. Some users may find it handy.
 
->
-> > $ dnf copr enable aring/nldlm
-> > $ dnf install nldlm
->
-> > or compile it yourself.
->
-> These steps really entirely ignore the _why_ you would do this.  And
-> assume RedHad based systems.
->
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-That is correct. I will mention that those steps are only for those
-specific systems.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-> > Then there is currently a very simple script [1] to show a 3 nodes clus=
-ter
->
-> nit: 3 node cluster
->
-> > using gfs2 on a multiple loop block devices on a shared loop block devi=
-ce
-> > image (sounds weird but I do something like that). There are currently
-> > some user space synchronization issues that I solve by simple sleeps,
-> > but they are only user space problems.
->
-> Can you give the example on how to do this setup?  Ideally in another
-> patch which updates the Documentation/??? file to in the kernel tree.
->
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-https://gitlab.com/netcoder/gfs2ns-examples/-/blob/main/three_nodes
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-As I quote with [1]. Okay, I will move them away from my separate
-repository and add them in Documentation/
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-> > To test it I recommend some virtual machine "but only one" and run the
->
-> I'm having a hard time parsing this, please be more careful with
-> singular or plural usage.  English is hard!  :-)
->
-> > [1] script. Afterwards you have in your executed net-namespace the 3
-> > mountpoints /cluster/node1, /cluster/node2/ and /cluster/node3. Any vfs
-> > operations on those mountpoints acts as a per node entity operation.
->
-> Which means what?  So if I write to /cluster/node1/foo, it shows up in
-> the other two mount points?  Or do I need to create a filesystem on
-> top?
->
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-Now we are at a point where I think nobody does it in such a way
-before. I create a "fake" shared block device with 3 block devices:
-/dev/loop1, /dev/loop2, /dev/loop3 and they all point to the same
-filesystem image. Then create only once the gfs2 filesystem on it.
-Afterwards you can call mount with each process context in the
-previously mentioned "network entity" for each block device in their
-"imagined" assigned network entity. The example script does a mount
-from each net-namespace in the executed net-namespace and you can
-access each per "network entity" mountpoint per /cluster/node1,
-/cluster/node2, /cluster/node3 on the executed net-namespace context.
-
-Yes when you call touch /cluster/node1/foo it should show up in the
-other mountpoints.
-
-> > We can use it for testing, development and also scale testing to have a
-> > large number of nodes joining a lockspace (which seems to be a problem
-> > right now). Instead of running 1000 vms, we can run 1000 net-namespaces
-> > in a more resource limited environment. For me it seems gfs2 can handle
-> > several mounts and still separate the resource according their global
-> > variables. Their data structures e.g. glock hash seems to have in their
-> > key a separation for that (fsid?). However this is still an experimenta=
-l
-> > feature we might run into issues that requires more separation related
-> > to net-namespaces. However basic testing seems to run just fine.
->
-> So is this all just to make testing and development easier so you
-> don't need 10 or 1000 nodes to do stress testing?  Would anyone use
-> this in real life?
->
-
-Stress testing maybe, development easier for sure. There are scaling
-issues with the recovery handling and handling about ~100 nodes
-related that DLM will stop all lockspace activity when nodes
-join/leave, that is something I want to look at when I hopefully have
-this patch series upstream.
-
-Another example is the DLM lock verifier [0], and I need to be careful
-with the name lock verifier. It verifies that only compatible lock
-modes can be in use at the same time on a per "network entity" basis.
-This is the fundamental mechanism of DLM, if this does not work DLM is
-broken. We can do that now because we know the whole cluster
-information. We can confirm on any payload that DLM works correctly.
-For me, this alone is worth having this feature.
-
-For example, we can introduce a new sort of cluster file system
-xfstests, touch /cluster/node1/foo and check if the file shows up in
-/cluster/node2/foo. That is an easy example, sometimes we need to
-synchronize vfs operations and check them on the other "network
-entity". With this feature we don't need to synchronize our "testing
-script" over the network anymore with other processes running on other
-"network entities".
-
-In real life there is maybe not an example yet. Maybe when people
-start to use DLM for user space locking on a container basis, but this
-requires net-namespace user space locking functionality that is a
-future step.
-
-> > Limitations
->
-> > I disable any functionality for the DLM character device that allow
-> > plock handling or do DLM locking from user space. Just don't use any
-> > plock locking in gfs2 for now. But basic vfs operations should work. Yo=
-u
-> > can even sniff DLM traffic on the created "dlmsw" virtual bridge.
->
-> So... what functionality is exposed by this patchset?  And Maybe add
-> in an "Advantages" section to explain why this is so good.
->
-
-Sure, it is important to mention that this net-namespace functionality
-is experimental. If you use DLM without changing the net-namespace
-process context it should work as before, in this case there are no
-limitations.
-
-- Alex
-
-[0] https://lore.kernel.org/gfs2/20240827180236.316946-1-aahringo@redhat.co=
-m/T/#t
-
+If you want to undo deduplication, reply with:
+#syz undup
