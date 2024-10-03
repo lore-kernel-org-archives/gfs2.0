@@ -1,96 +1,217 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC4012CD89
-	for <gfs2@lists.linux.dev>; Thu,  3 Oct 2024 09:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC919CD0B
+	for <gfs2@lists.linux.dev>; Thu,  3 Oct 2024 15:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727946208; cv=none; b=sxIFl1BYLxvs0yDbPcoKLEzOqgggDM5i6S5Tr28L7scR5w4e2aDVpw2m+Ws8ZAH7KSpLaS1dxpArr3hzG3isFBVkzxwCP0ZhorkutbgBz1uziaSFqWXiNdIQjyFvt0DEOCbD7WH+JiHfd2nvGWHkvJe/u/0Tmolo6bCXjcLl41Q=
+	t=1727968500; cv=none; b=oAwtdv43Nh9YP9Rlad+hOG0e+HvHfhUzl5lPteWhlpkDwk0nDKNaSR/dXZkNP4jkMOX9ZKQUgVWHtsZcRdnnPsfdF1gn3Rpw3X4kw91ttUHvFFMEDmLPT2DMYfvRsCmhoxMcHfescfmDabk0iH45ihPeDPWB6M1gp1fzRMFbKyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727946208; c=relaxed/simple;
-	bh=drR1l788D9mRPiNJFjzNSSN1fgY8nMeZhgMBUbGXkY4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dHPQcDlkks3K61qCWS55UCtdOWOC9eb5efrmKJAJJlFxH4U2iOaE0CwfwrMPX6hx3GbnnSlaqWPmDNDSTfXSaj7N/N8HOmyP2mEPW3l6H2+zWUgWcA84YrppqhDfyA+Idy4DIpAn5HnJM96TWOq/Dsy/Rg4TJcyL9KZL2TRD3no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a1a8a4174dso7482415ab.1
-        for <gfs2@lists.linux.dev>; Thu, 03 Oct 2024 02:03:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727946206; x=1728551006;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dU4a2t1oKs9S+lHM5kucxZWO5tZk9Ss5D5YXPR7ufkQ=;
-        b=qMO628XzM3AQ8rXJR+U1+087FiY2huYg+Ax4GWcmSiK4ir3KmuwFpFO1pMS0BAYX4N
-         QTSL4YsRF6n+qe0LGLbz5SVKplL8aA/PDUe67Gez2kkU7yNswLME5TeUatSaIou7iRf6
-         GSTIcwV3S6Sfwp+qBkf36G99p8iA6UdD8jOACg9UU4ZmK5EdaBWRdKKF25AGng6oAcIh
-         q3gm4b1J7GqJ7/33hOSP9r403XJWVtBibLC7CR/BI9dqQjq4Ht0jy0Rv6P1izHNsKpw/
-         jkC51dEeFlegwHSYp87Sr3yrtGUeqylIKX1J3Qp7lx4+4o1wRg7wtsdpKb/+o9JfgxXf
-         mc9w==
-X-Gm-Message-State: AOJu0Yw3mh8WhoBLflPxAqVyLOi/tdV2i5GmG3lCMdFjUUJiHwcuKmJq
-	PpMrU1+5pBAcqGaeUMYLh8J3l7Xtt/lxDioNmiByCEzA0mHLjkij7dONXpPWgkQ4sI4SlcHiviZ
-	MEkAMUao7TxsmF9U+ourT6HqkylmKTDdZJMKuEJ5X/OdJvuFEPITf3N0=
-X-Google-Smtp-Source: AGHT+IGWvTcNXXQvfvJJtLOAawQZqurErzp2lWk9ddQ+qYXfYmI0xMgOC25VglL86kXCErEuI6QnnwcUm0i8/B/ZRdiKdr1u8zMs
+	s=arc-20240116; t=1727968500; c=relaxed/simple;
+	bh=x7e6IA84Y6g/2IMVAFPlI1KZz8qVpAguY4Mb70GdZTU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m4l5Fqd0Yjh+dZCyUXb0oQWIfUrUpSZAseJq6UJjoqDsf+Er+Hj5sJFoKAq1uR/zIcPzrbkgx1aQAAsRz1wjQYp/aRSYu2IMAtba8/QKq1YbnGopC5Nt5hE3b1csWaBQaxNSRYKpSbRftf/0VxvdujgY9WJNOs1lKzyYJEbrel0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V72qORzn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V72qORzn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727968497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQhx9++kG+k1aQeYKn4epgOWGCe4SvtQMhjT//HHnyw=;
+	b=V72qORzn79ENZET25BJqQizrNygFWt96WC6pmkilq3yadkzW82VRvB6YquZN9qvXoI4pjc
+	sUvAznZA/j7pFgmCJbuk3VSaD8QeoG9zmLCyzMxh/PG1gZHbHiC03bYAw69X6QJcauOMgL
+	2PfDCJV6U/ewmjDDPHWbWOHC7+cASbA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-z9YEDdHKMECjWaCiFVKw9Q-1; Thu,
+ 03 Oct 2024 11:14:54 -0400
+X-MC-Unique: z9YEDdHKMECjWaCiFVKw9Q-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE83C19560BF;
+	Thu,  3 Oct 2024 15:14:52 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0D4D71955E8F;
+	Thu,  3 Oct 2024 15:14:50 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: trondmy@kernel.org
+Cc: anna@kernel.org,
+	bcodding@redhat.com,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	akpm@linux-foundation.org,
+	linux-nfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] kobject: add kset_type_create_and_add() helper
+Date: Thu,  3 Oct 2024 11:14:32 -0400
+Message-ID: <20241003151435.3753959-2-aahringo@redhat.com>
+In-Reply-To: <20241003151435.3753959-1-aahringo@redhat.com>
+References: <20241003151435.3753959-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a05:b0:3a0:9244:1916 with SMTP id
- e9e14a558f8ab-3a36592b8c9mr54055635ab.11.1727946206058; Thu, 03 Oct 2024
- 02:03:26 -0700 (PDT)
-Date: Thu, 03 Oct 2024 02:03:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <66fe5dde.050a0220.9ec68.0035.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Oct 2024)
-From: syzbot <syzbot+list989caf6985e8118d71b1@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hello gfs2 maintainers/developers,
+Currently there exists the kset_create_and_add() helper that does not
+allow to have a different ktype for the created kset kobject. To allow
+a different ktype this patch will introduce the function
+kset_type_create_and_add() that allows to set a different ktype instead
+of using the global default kset_ktype variable.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+In my example I need to separate the created kobject inside the kset by
+net-namespaces. This patch allows me to do that by providing a user
+defined kobj_type structure that implements the necessary namespace
+functionality.
 
-During the period, 4 new issues were detected and 0 were fixed.
-In total, 16 issues are still open and 32 have been fixed so far.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  544794  Yes   WARNING in __folio_mark_dirty (2)
-                   https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2>  15162   Yes   WARNING: locking bug in gfs2_fill_super
-                   https://syzkaller.appspot.com/bug?extid=ee157488ade46c021ef4
-<3>  1320    Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<4>  249     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<5>  104     Yes   kernel BUG in gfs2_withdraw
-                   https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-<6>  15      Yes   WARNING in gfs2_check_blk_type (2)
-                   https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
-<7>  15      Yes   WARNING in gfs2_ri_update (2)
-                   https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<8>  4       No    possible deadlock in gfs2_trans_begin
-                   https://syzkaller.appspot.com/bug?extid=5baab0d4d584f7b68982
-<9>  2       Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<10> 2       Yes   kernel BUG in gfs2_assert_warn_i
-                   https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ include/linux/kobject.h |  8 ++++--
+ lib/kobject.c           | 59 ++++++++++++++++++++++++++++++-----------
+ 2 files changed, 50 insertions(+), 17 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/include/linux/kobject.h b/include/linux/kobject.h
+index c8219505a79f..7504b7547ed2 100644
+--- a/include/linux/kobject.h
++++ b/include/linux/kobject.h
+@@ -175,8 +175,12 @@ struct kset {
+ void kset_init(struct kset *kset);
+ int __must_check kset_register(struct kset *kset);
+ void kset_unregister(struct kset *kset);
+-struct kset * __must_check kset_create_and_add(const char *name, const struct kset_uevent_ops *u,
+-					       struct kobject *parent_kobj);
++struct kset * __must_check
++kset_type_create_and_add(const char *name, const struct kset_uevent_ops *u,
++			 struct kobject *parent_kobj, const struct kobj_type *ktype);
++struct kset * __must_check
++kset_create_and_add(const char *name, const struct kset_uevent_ops *u,
++		    struct kobject *parent_kobj);
+ 
+ static inline struct kset *to_kset(struct kobject *kobj)
+ {
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 72fa20f405f1..09dd3d4c7f56 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -946,6 +946,7 @@ static const struct kobj_type kset_ktype = {
+  * @name: the name for the kset
+  * @uevent_ops: a struct kset_uevent_ops for the kset
+  * @parent_kobj: the parent kobject of this kset, if any.
++ * @ktype: a struct kobj_type for the kset
+  *
+  * This function creates a kset structure dynamically.  This structure can
+  * then be registered with the system and show up in sysfs with a call to
+@@ -957,7 +958,8 @@ static const struct kobj_type kset_ktype = {
+  */
+ static struct kset *kset_create(const char *name,
+ 				const struct kset_uevent_ops *uevent_ops,
+-				struct kobject *parent_kobj)
++				struct kobject *parent_kobj,
++				const struct kobj_type *ktype)
+ {
+ 	struct kset *kset;
+ 	int retval;
+@@ -973,39 +975,38 @@ static struct kset *kset_create(const char *name,
+ 	kset->uevent_ops = uevent_ops;
+ 	kset->kobj.parent = parent_kobj;
+ 
+-	/*
+-	 * The kobject of this kset will have a type of kset_ktype and belong to
+-	 * no kset itself.  That way we can properly free it when it is
+-	 * finished being used.
+-	 */
+-	kset->kobj.ktype = &kset_ktype;
++	kset->kobj.ktype = ktype;
+ 	kset->kobj.kset = NULL;
+ 
+ 	return kset;
+ }
+ 
+ /**
+- * kset_create_and_add() - Create a struct kset dynamically and add it to sysfs.
++ * kset_type_create_and_add() - Create a struct kset with kobj_type dynamically
++ *                              and add it to sysfs.
+  *
+  * @name: the name for the kset
+  * @uevent_ops: a struct kset_uevent_ops for the kset
+  * @parent_kobj: the parent kobject of this kset, if any.
++ * @ktype: a struct kobj_type for the kset
+  *
+- * This function creates a kset structure dynamically and registers it
+- * with sysfs.  When you are finished with this structure, call
++ * This function creates a kset structure with ktype structure dynamically and
++ * registers it with sysfs.  When you are finished with this structure, call
+  * kset_unregister() and the structure will be dynamically freed when it
+- * is no longer being used.
++ * is no longer being used. Works like kset_create_and_add() just with the
++ * possibility to assign kobj_type to the kset.
+  *
+  * If the kset was not able to be created, NULL will be returned.
+  */
+-struct kset *kset_create_and_add(const char *name,
+-				 const struct kset_uevent_ops *uevent_ops,
+-				 struct kobject *parent_kobj)
++struct kset *kset_type_create_and_add(const char *name,
++				      const struct kset_uevent_ops *uevent_ops,
++				      struct kobject *parent_kobj,
++				      const struct kobj_type *ktype)
+ {
+ 	struct kset *kset;
+ 	int error;
+ 
+-	kset = kset_create(name, uevent_ops, parent_kobj);
++	kset = kset_create(name, uevent_ops, parent_kobj, ktype);
+ 	if (!kset)
+ 		return NULL;
+ 	error = kset_register(kset);
+@@ -1015,6 +1016,34 @@ struct kset *kset_create_and_add(const char *name,
+ 	}
+ 	return kset;
+ }
++EXPORT_SYMBOL_GPL(kset_type_create_and_add);
++
++/**
++ * kset_create_and_add() - Create a struct kset dynamically and add it to sysfs.
++ *
++ * @name: the name for the kset
++ * @uevent_ops: a struct kset_uevent_ops for the kset
++ * @parent_kobj: the parent kobject of this kset, if any.
++ *
++ * This function creates a kset structure dynamically and registers it
++ * with sysfs.  When you are finished with this structure, call
++ * kset_unregister() and the structure will be dynamically freed when it
++ * is no longer being used.
++ *
++ * If the kset was not able to be created, NULL will be returned.
++ */
++struct kset *kset_create_and_add(const char *name,
++				 const struct kset_uevent_ops *uevent_ops,
++				 struct kobject *parent_kobj)
++{
++	/*
++	 * The kobject of this kset will have a type of kset_ktype and belong to
++	 * no kset itself.  That way we can properly free it when it is
++	 * finished being used.
++	 */
++	return kset_type_create_and_add(name, uevent_ops, parent_kobj,
++					&kset_ktype);
++}
+ EXPORT_SYMBOL_GPL(kset_create_and_add);
+ 
+ 
+-- 
+2.43.0
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
