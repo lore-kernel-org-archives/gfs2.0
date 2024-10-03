@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F71A2C06
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E87B1A08A9
 	for <gfs2@lists.linux.dev>; Thu,  3 Oct 2024 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727968502; cv=none; b=rTo8upyT9+vshPwnc24jNlCxAJNhMh49WyZqgnnFoU80jhOAuI1pJTQ0r0QO+tcI711h8Q25Nswm1WMe77qGAZtitc8Zxd3HS0JgaPQxFXRpANtk1z1pXqq/cR5fEm7cvF+iEgiSeNV5eEj4CsCvEHfdktC/IK79bHAlesDejT8=
+	t=1727968502; cv=none; b=mDkTqDdSEdM6Dk2PpIUO46OzgQQhi180BKluuOG4SIuMEghFvHzt+VbeKnA0t5MaJrmG/8HZGJWL7jzj+BNUDOyvPTNr9P7z7nNGaHbnE28q+vFBAxcRzfIPZ9vxfNm5d3lUFC32klNJRJdYsaecpEDKN4Jrew6GQ3lcfy1Pxow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727968502; c=relaxed/simple;
-	bh=/HOjq9X9X2KQMEsqDRneNuPn5l3Rhurp22TwSf3G5Sg=;
+	bh=2b/wY0DFbQYWHlbG0ppoXS9Fnj2qbZ+0XQWT2jrk4Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbT1kBxKoIg+jGEkDR1otoN9+eoDIUtuey9nYenoiLq0dt3ucH9PlIvT5a1BhZUvXjCIHITfkZfs6BUUWj1DdcoFrVtV3VGAzxW2JiCijOuRML9rsBXWQAw7as5JQTl6abZ/kGgZPBukShK5dLFT1ojlOyHEKq8HOCh+jZpZtMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bu+FNi6q; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=njeOH+xR+eH9rzpuTxHJ07DWYbt+/hpNS+ht+9VzJuTaVrP7MTBxQS/w5FkZZ5fLqjq6h51CyOip7Sz9lVhVuqsfZX+omW0gtbhYEYgnGfVUKH5oIzKw6UYUR4GwFWxgcL7RC8uK0+DT3Wsf1iAbhAiQIB8m+mvmMc/8Qoz0X7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MoEByp0k; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bu+FNi6q"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MoEByp0k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727968499;
+	s=mimecast20190719; t=1727968500;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qhdi0ZWmWYR0MqvX3gdvffJxUEfr+B4dJmnDyHHBiGU=;
-	b=Bu+FNi6qolxxaLXRSzWbRxH2+lmsfbUDPTDgP+K1F+CjtpYrmkp3OMpdt2pHGGmUcMPmJb
-	vVySfQpGv/4+fuRHpKvVhKHOD7m2YWMPcFv5CZ7epe5vTmmfMdZTLViY7PJclV2T6OpbVr
-	qmG4xpOtmG4xWn7vdoSYbd8VB7JKykY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=IlSbepF9atKbQ6z8jk2+CU+FBFUKIVhtlEKWxO1tf0E=;
+	b=MoEByp0kGiLcKpj1cMJHplsEjRDj0UsbAgSocmRx7YePToQAhXfYKMZeVL3lsSa4e4u943
+	hFDOF2mfHA/Ne/4PRuMK4L4hrsVMBKkuuNEPdX8B24LDnzmJioqSNrzRHcv5d3jzr+l8wZ
+	wm1akfGsXAQSXH5A9iyuD+mHXA7Kmzs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-OWZ8mrn_OIaGgW36qh4LDw-1; Thu,
- 03 Oct 2024 11:14:55 -0400
-X-MC-Unique: OWZ8mrn_OIaGgW36qh4LDw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-uzO0Hg9iPcOcbyQfpjYwJw-1; Thu,
+ 03 Oct 2024 11:14:58 -0400
+X-MC-Unique: uzO0Hg9iPcOcbyQfpjYwJw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 07A62195608A;
-	Thu,  3 Oct 2024 15:14:54 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CFCB19560BC;
+	Thu,  3 Oct 2024 15:14:57 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AACFC19560A3;
-	Thu,  3 Oct 2024 15:14:52 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C337B19560A3;
+	Thu,  3 Oct 2024 15:14:55 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: trondmy@kernel.org
 Cc: anna@kernel.org,
@@ -51,9 +51,9 @@ Cc: anna@kernel.org,
 	linux-nfs@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] kobject: export generic helper ops
-Date: Thu,  3 Oct 2024 11:14:33 -0400
-Message-ID: <20241003151435.3753959-3-aahringo@redhat.com>
+Subject: [PATCH 4/4] nfs: sysfs: use default get_ownership() callback
+Date: Thu,  3 Oct 2024 11:14:35 -0400
+Message-ID: <20241003151435.3753959-5-aahringo@redhat.com>
 In-Reply-To: <20241003151435.3753959-1-aahringo@redhat.com>
 References: <20241003151435.3753959-1-aahringo@redhat.com>
 Precedence: bulk
@@ -65,59 +65,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This patch exports generic helpers like kset_release() and
-kset_get_ownership() so users can use them in their own struct kobj_type
-implementation instead of implementing their own functions that do the
-same.
+Since commit 5f81880d5204 ("sysfs, kobject: allow creating kobject
+belonging to arbitrary users") it seems that there could be cases for
+kobjects belonging to arbitrary users. This callback is set by default
+when using kset_create_and_add() to allow creating kobjects with
+different ownerships according to its parent.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch will assign the default callback now for nfs kobjects for
+cases when the parent has different ownership than the default one.
+
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- include/linux/kobject.h | 2 ++
- lib/kobject.c           | 6 ++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ fs/nfs/sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/kobject.h b/include/linux/kobject.h
-index 7504b7547ed2..5fbc358e2be6 100644
---- a/include/linux/kobject.h
-+++ b/include/linux/kobject.h
-@@ -181,6 +181,8 @@ kset_type_create_and_add(const char *name, const struct kset_uevent_ops *u,
- struct kset * __must_check
- kset_create_and_add(const char *name, const struct kset_uevent_ops *u,
- 		    struct kobject *parent_kobj);
-+void kset_release(struct kobject *kobj);
-+void kset_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t *gid);
- 
- static inline struct kset *to_kset(struct kobject *kobj)
- {
-diff --git a/lib/kobject.c b/lib/kobject.c
-index 09dd3d4c7f56..ccd2f6282c81 100644
---- a/lib/kobject.c
-+++ b/lib/kobject.c
-@@ -920,19 +920,21 @@ struct kobject *kset_find_obj(struct kset *kset, const char *name)
+diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
+index a6584203b7ff..b5737464b892 100644
+--- a/fs/nfs/sysfs.c
++++ b/fs/nfs/sysfs.c
+@@ -27,6 +27,7 @@ static const struct kobj_ns_type_operations *nfs_netns_object_child_ns_type(
  }
- EXPORT_SYMBOL_GPL(kset_find_obj);
  
--static void kset_release(struct kobject *kobj)
-+void kset_release(struct kobject *kobj)
- {
- 	struct kset *kset = container_of(kobj, struct kset, kobj);
- 	pr_debug("'%s' (%p): %s\n",
- 		 kobject_name(kobj), kobj, __func__);
- 	kfree(kset);
- }
-+EXPORT_SYMBOL_GPL(kset_release);
- 
--static void kset_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t *gid)
-+void kset_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t *gid)
- {
- 	if (kobj->parent)
- 		kobject_get_ownership(kobj->parent, uid, gid);
- }
-+EXPORT_SYMBOL_GPL(kset_get_ownership);
- 
- static const struct kobj_type kset_ktype = {
- 	.sysfs_ops	= &kobj_sysfs_ops,
+ static struct kobj_type nfs_kset_type = {
++	.get_ownership = kset_get_ownership,
+ 	.release = kset_release,
+ 	.sysfs_ops = &kobj_sysfs_ops,
+ 	.child_ns_type = nfs_netns_object_child_ns_type,
 -- 
 2.43.0
 
