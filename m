@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993A31D9A60
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C731AA785
+	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728054834; cv=none; b=UzWlOELGXUcFQotZmQlhFUBIHUQjyHT0wgx3X9RiG//U+YbQDUV9PRA6A/+Q3HroNSqivPuufmt7DvlpQjYH1rzD+soDyjlU69CWh8wHWWQHp2cQl6sJ5iKqCrx8qZBz0mx+REjSYZTSYc+nWAEH3/2Bxqax1FA2RUQG7o66lTQ=
+	t=1728054834; cv=none; b=ChWhIsBs+s4VVBL43GggJi05IjknnKd+0seSsFVhzsoRM5VQeyZGAgIacrl13GMRYoyUM+e27XcRaEzZ+QS4zuJJqx4vUmQYapZ2zLDtFONdcVaOJ6Sdkgu3T4W35oEW5vhSyLBG2uM2ruyWsr+djAEtRONjGVRNUH8W7TQtiwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728054834; c=relaxed/simple;
-	bh=1N6+VTCri3RTU/B1u7V///ykb3jYlbpuLCHC0uEO5gg=;
+	bh=3blknSYDq/zZqIrl23PU5zPaxSOhsHKnOb982Kn5GQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PMymeTMKM+Z63ysnrwhRB1w7xjYM2ctjOxFtce4ssg/XcxaTxOm5WDvzG+VzCKdZKkY9GLqtQgJuswyOe+XCE+UOl6iRDJCxxcgkeq5sCxuJ407JMlnQxn0ZxtC5Rf6GeVZQ9zxocQB2MQMtQjiswWU9gHyaI22BuHWoCK92gkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FH+Swnq1; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=UqI0FK+0bUaSmk0uoH3NQm//AwghsVzU0aXKfheqdNYSRaPoGVa5GFQD4GirWiwLuhJYlKU2yIGhCbQa3LdX9QfPvIbcfi9psa2gjm3LZu7dP5mLMe6QgYgPdOYmFd//H99OpOuJB3y8Le5/D0W3RVEEJp9knszRIOADqpXEqMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JZ59Wgko; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FH+Swnq1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZ59Wgko"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728054831;
+	s=mimecast20190719; t=1728054832;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EM1/wUgmR5kOkfgqcx7i30KJLeQppHU2kA3889Q5bww=;
-	b=FH+Swnq1mzcEo7Y2HnDQ7oEfWvneTPXWxarIVHXwOzi5IDEhzjYgVibYNJgQHLf5UYVTK+
-	EovW+4wL+6YYNHBY+dnJAqzQDtvZYwYWyaATtCUb7K+M+D6eOVaWjgVIWiOrCjWUu6YpTP
-	FOTFci9SwC+lHZ1Bje0rahLDyKScNSA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=LziguoEGhlOHcgujwsXARihNwSMNZenuPmbp2mwjHSo=;
+	b=JZ59Wgko9n8CXOPT5PCtGm7dccq6RODB8zitBUDJ3s2+1/w8BZ8CP/npVkVL4F1PrzTzkb
+	ylt1LLRz72cGpqUhYX72vWzsT7X7LYz9v2DGv66W15CUFNVDkyNmsYEmuoY0fYIlEStkIg
+	Jwy4HP2lWZN/Zy1tyMZvHAROa9kJbfE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-jpJb76VNPUWFuVey25WGCQ-1; Fri,
- 04 Oct 2024 11:13:50 -0400
-X-MC-Unique: jpJb76VNPUWFuVey25WGCQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-dP8AlCONMYSCgT8c5L3KUg-1; Fri,
+ 04 Oct 2024 11:13:51 -0400
+X-MC-Unique: dP8AlCONMYSCgT8c5L3KUg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F3F11955EE6
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:49 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19ADD1955E77
+	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:50 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B86319560AE;
-	Fri,  4 Oct 2024 15:13:48 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 549DD19560AE;
+	Fri,  4 Oct 2024 15:13:49 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.12-rc1 3/7] dlm: disallow different configs nodeid storages
-Date: Fri,  4 Oct 2024 11:13:39 -0400
-Message-ID: <20241004151343.3952937-4-aahringo@redhat.com>
+Subject: [PATCH v6.12-rc1 4/7] dlm: handle port as __be16 network byte order
+Date: Fri,  4 Oct 2024 11:13:40 -0400
+Message-ID: <20241004151343.3952937-5-aahringo@redhat.com>
 In-Reply-To: <20241004151343.3952937-1-aahringo@redhat.com>
 References: <20241004151343.3952937-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,210 +62,160 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-The DLM configfs path has usually a nodeid in it's directory path and
-again a file to store the nodeid again in a separate storage. It is
-forced that the user space will set both (the directory name and nodeid
-file) storage to the same value if it doesn't do that we run in some
-kind of broken state.
-
-This patch will simply represent the file storage to it's upper
-directory nodeid name. It will force the user now to use a valid
-unsigned int as nodeid directory name and will ignore all nodeid writes
-in the nodeid file storage as this will now always represent the upper
-nodeid directory name.
+This patch handles the DLM listen port setting internally as byte order
+as it is a value that is used as network byte on the wire. The user
+space still sets this value as host byte order for configfs as we don't
+break UAPI here.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/config.c | 69 +++++++++++++++++++++++++++++++++----------------
- fs/dlm/config.h |  2 +-
- fs/dlm/member.c |  2 +-
- 3 files changed, 49 insertions(+), 24 deletions(-)
+ fs/dlm/config.c   | 55 +++++++++++++++++++++++++++++++++++------------
+ fs/dlm/config.h   |  2 +-
+ fs/dlm/lowcomms.c |  8 +++----
+ 3 files changed, 46 insertions(+), 19 deletions(-)
 
 diff --git a/fs/dlm/config.c b/fs/dlm/config.c
-index eac96f1c1d74..1980afaaa68c 100644
+index 1980afaaa68c..42dcf3f06668 100644
 --- a/fs/dlm/config.c
 +++ b/fs/dlm/config.c
-@@ -24,9 +24,9 @@
- #include "lowcomms.h"
+@@ -73,7 +73,7 @@ const struct rhashtable_params dlm_rhash_rsb_params = {
  
- /*
-- * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/nodeid
-+ * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/nodeid (refers to <node>)
-  * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/weight
-- * /config/dlm/<cluster>/comms/<comm>/nodeid
-+ * /config/dlm/<cluster>/comms/<comm>/nodeid (refers to <comm>)
-  * /config/dlm/<cluster>/comms/<comm>/local
-  * /config/dlm/<cluster>/comms/<comm>/addr      (write only)
-  * /config/dlm/<cluster>/comms/<comm>/addr_list (read only)
-@@ -517,6 +517,12 @@ static void release_space(struct config_item *i)
- static struct config_item *make_comm(struct config_group *g, const char *name)
- {
- 	struct dlm_comm *cm;
-+	unsigned int nodeid;
-+	int rv;
+ struct dlm_cluster {
+ 	struct config_group group;
+-	unsigned int cl_tcp_port;
++	__be16 cl_tcp_port;
+ 	unsigned int cl_buffer_size;
+ 	unsigned int cl_rsbtbl_size;
+ 	unsigned int cl_recover_timer;
+@@ -132,6 +132,45 @@ static ssize_t cluster_cluster_name_store(struct config_item *item,
+ 
+ CONFIGFS_ATTR(cluster_, cluster_name);
+ 
++static ssize_t cluster_tcp_port_show(struct config_item *item, char *buf)
++{
++	return sprintf(buf, "%u\n", be16_to_cpu(dlm_config.ci_tcp_port));
++}
 +
-+	rv = kstrtouint(name, 0, &nodeid);
-+	if (rv)
-+		return ERR_PTR(rv);
- 
- 	cm = kzalloc(sizeof(struct dlm_comm), GFP_NOFS);
- 	if (!cm)
-@@ -528,7 +534,7 @@ static struct config_item *make_comm(struct config_group *g, const char *name)
- 	if (!cm->seq)
- 		cm->seq = dlm_comm_count++;
- 
--	cm->nodeid = -1;
-+	cm->nodeid = nodeid;
- 	cm->local = 0;
- 	cm->addr_count = 0;
- 	cm->mark = 0;
-@@ -555,16 +561,25 @@ static void release_comm(struct config_item *i)
- static struct config_item *make_node(struct config_group *g, const char *name)
- {
- 	struct dlm_space *sp = config_item_to_space(g->cg_item.ci_parent);
-+	unsigned int nodeid;
- 	struct dlm_node *nd;
-+	uint32_t seq = 0;
-+	int rv;
++static int dlm_check_zero_and_dlm_running(unsigned int x)
++{
++	if (!x)
++		return -EINVAL;
 +
-+	rv = kstrtouint(name, 0, &nodeid);
-+	if (rv)
-+		return ERR_PTR(rv);
- 
- 	nd = kzalloc(sizeof(struct dlm_node), GFP_NOFS);
- 	if (!nd)
- 		return ERR_PTR(-ENOMEM);
- 
- 	config_item_init_type_name(&nd->item, name, &node_type);
--	nd->nodeid = -1;
-+	nd->nodeid = nodeid;
- 	nd->weight = 1;  /* default weight of 1 if none is set */
- 	nd->new = 1;     /* set to 0 once it's been read by dlm_nodeid_list() */
-+	dlm_comm_seq(nodeid, &seq, true);
-+	nd->comm_seq = seq;
- 
- 	mutex_lock(&sp->members_lock);
- 	list_add(&nd->list, &sp->members);
-@@ -622,16 +637,19 @@ void dlm_config_exit(void)
- 
- static ssize_t comm_nodeid_show(struct config_item *item, char *buf)
- {
--	return sprintf(buf, "%d\n", config_item_to_comm(item)->nodeid);
-+	unsigned int nodeid;
-+	int rv;
++	if (dlm_lowcomms_is_running())
++		return -EBUSY;
 +
-+	rv = kstrtouint(config_item_name(item), 0, &nodeid);
-+	if (WARN_ON(rv))
-+		return rv;
++	return 0;
++}
 +
-+	return sprintf(buf, "%u\n", nodeid);
- }
- 
- static ssize_t comm_nodeid_store(struct config_item *item, const char *buf,
- 				 size_t len)
- {
--	int rc = kstrtoint(buf, 0, &config_item_to_comm(item)->nodeid);
--
--	if (rc)
--		return rc;
- 	return len;
- }
- 
-@@ -772,20 +790,19 @@ static struct configfs_attribute *comm_attrs[] = {
- 
- static ssize_t node_nodeid_show(struct config_item *item, char *buf)
- {
--	return sprintf(buf, "%d\n", config_item_to_node(item)->nodeid);
-+	unsigned int nodeid;
-+	int rv;
++static ssize_t cluster_tcp_port_store(struct config_item *item,
++				      const char *buf, size_t len)
++{
++	int rc;
++	u16 x;
 +
-+	rv = kstrtouint(config_item_name(item), 0, &nodeid);
-+	if (WARN_ON(rv))
-+		return rv;
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
 +
-+	return sprintf(buf, "%u\n", nodeid);
- }
- 
- static ssize_t node_nodeid_store(struct config_item *item, const char *buf,
- 				 size_t len)
- {
--	struct dlm_node *nd = config_item_to_node(item);
--	uint32_t seq = 0;
--	int rc = kstrtoint(buf, 0, &nd->nodeid);
--
--	if (rc)
--		return rc;
--	dlm_comm_seq(nd->nodeid, &seq);
--	nd->comm_seq = seq;
- 	return len;
- }
- 
-@@ -845,7 +862,7 @@ static struct dlm_comm *get_comm(int nodeid)
- 	if (!comm_list)
- 		return NULL;
- 
--	mutex_lock(&clusters_root.subsys.su_mutex);
-+	WARN_ON_ONCE(!mutex_is_locked(&clusters_root.subsys.su_mutex));
- 
- 	list_for_each_entry(i, &comm_list->cg_children, ci_entry) {
- 		cm = config_item_to_comm(i);
-@@ -856,7 +873,6 @@ static struct dlm_comm *get_comm(int nodeid)
- 		config_item_get(i);
- 		break;
- 	}
--	mutex_unlock(&clusters_root.subsys.su_mutex);
- 
- 	if (!found)
- 		cm = NULL;
-@@ -916,11 +932,20 @@ int dlm_config_nodes(char *lsname, struct dlm_config_node **nodes_out,
- 	return rv;
- }
- 
--int dlm_comm_seq(int nodeid, uint32_t *seq)
-+int dlm_comm_seq(int nodeid, uint32_t *seq, bool locked)
- {
--	struct dlm_comm *cm = get_comm(nodeid);
-+	struct dlm_comm *cm;
++	rc = kstrtou16(buf, 0, &x);
++	if (rc)
++		return rc;
 +
-+	if (locked) {
-+		cm = get_comm(nodeid);
-+	} else {
-+		mutex_lock(&clusters_root.subsys.su_mutex);
-+		cm = get_comm(nodeid);
-+		mutex_unlock(&clusters_root.subsys.su_mutex);
-+	}
- 	if (!cm)
- 		return -EEXIST;
++	rc = dlm_check_zero_and_dlm_running(x);
++	if (rc)
++		return rc;
 +
- 	*seq = cm->seq;
- 	put_comm(cm);
++	dlm_config.ci_tcp_port = cpu_to_be16(x);
++	return len;
++}
++
++CONFIGFS_ATTR(cluster_, tcp_port);
++
+ static ssize_t cluster_set(struct dlm_cluster *cl, unsigned int *cl_field,
+ 			   int *info_field, int (*check_cb)(unsigned int x),
+ 			   const char *buf, size_t len)
+@@ -191,17 +230,6 @@ static int dlm_check_protocol_and_dlm_running(unsigned int x)
  	return 0;
+ }
+ 
+-static int dlm_check_zero_and_dlm_running(unsigned int x)
+-{
+-	if (!x)
+-		return -EINVAL;
+-
+-	if (dlm_lowcomms_is_running())
+-		return -EBUSY;
+-
+-	return 0;
+-}
+-
+ static int dlm_check_zero(unsigned int x)
+ {
+ 	if (!x)
+@@ -218,7 +246,6 @@ static int dlm_check_buffer_size(unsigned int x)
+ 	return 0;
+ }
+ 
+-CLUSTER_ATTR(tcp_port, dlm_check_zero_and_dlm_running);
+ CLUSTER_ATTR(buffer_size, dlm_check_buffer_size);
+ CLUSTER_ATTR(rsbtbl_size, dlm_check_zero);
+ CLUSTER_ATTR(recover_timer, dlm_check_zero);
+@@ -982,7 +1009,7 @@ int dlm_our_addr(struct sockaddr_storage *addr, int num)
+ #define DEFAULT_CLUSTER_NAME      ""
+ 
+ struct dlm_config_info dlm_config = {
+-	.ci_tcp_port = DEFAULT_TCP_PORT,
++	.ci_tcp_port = cpu_to_be16(DEFAULT_TCP_PORT),
+ 	.ci_buffer_size = DLM_MAX_SOCKET_BUFSIZE,
+ 	.ci_rsbtbl_size = DEFAULT_RSBTBL_SIZE,
+ 	.ci_recover_timer = DEFAULT_RECOVER_TIMER,
 diff --git a/fs/dlm/config.h b/fs/dlm/config.h
-index ed237d910208..8a14a6e95463 100644
+index 8a14a6e95463..2c5dcf5eaef1 100644
 --- a/fs/dlm/config.h
 +++ b/fs/dlm/config.h
-@@ -50,7 +50,7 @@ int dlm_config_init(void);
- void dlm_config_exit(void);
- int dlm_config_nodes(char *lsname, struct dlm_config_node **nodes_out,
- 		     int *count_out);
--int dlm_comm_seq(int nodeid, uint32_t *seq);
-+int dlm_comm_seq(int nodeid, uint32_t *seq, bool locked);
- int dlm_our_nodeid(void);
- int dlm_our_addr(struct sockaddr_storage *addr, int num);
+@@ -29,7 +29,7 @@ extern const struct rhashtable_params dlm_rhash_rsb_params;
+ #define DLM_PROTO_SCTP	1
  
-diff --git a/fs/dlm/member.c b/fs/dlm/member.c
-index c9661906568a..b0864c93230f 100644
---- a/fs/dlm/member.c
-+++ b/fs/dlm/member.c
-@@ -493,7 +493,7 @@ static void dlm_lsop_recover_slot(struct dlm_ls *ls, struct dlm_member *memb)
- 	   we consider the node to have failed (versus
- 	   being removed due to dlm_release_lockspace) */
+ struct dlm_config_info {
+-	int ci_tcp_port;
++	__be16 ci_tcp_port;
+ 	int ci_buffer_size;
+ 	int ci_rsbtbl_size;
+ 	int ci_recover_timer;
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index cb3a10b041c2..df40c3fd1070 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -660,18 +660,18 @@ static void add_sock(struct socket *sock, struct connection *con)
  
--	error = dlm_comm_seq(memb->nodeid, &seq);
-+	error = dlm_comm_seq(memb->nodeid, &seq, false);
- 
- 	if (!error && seq == memb->comm_seq)
- 		return;
+ /* Add the port number to an IPv6 or 4 sockaddr and return the address
+    length */
+-static void make_sockaddr(struct sockaddr_storage *saddr, uint16_t port,
++static void make_sockaddr(struct sockaddr_storage *saddr, __be16 port,
+ 			  int *addr_len)
+ {
+ 	saddr->ss_family =  dlm_local_addr[0].ss_family;
+ 	if (saddr->ss_family == AF_INET) {
+ 		struct sockaddr_in *in4_addr = (struct sockaddr_in *)saddr;
+-		in4_addr->sin_port = cpu_to_be16(port);
++		in4_addr->sin_port = port;
+ 		*addr_len = sizeof(struct sockaddr_in);
+ 		memset(&in4_addr->sin_zero, 0, sizeof(in4_addr->sin_zero));
+ 	} else {
+ 		struct sockaddr_in6 *in6_addr = (struct sockaddr_in6 *)saddr;
+-		in6_addr->sin6_port = cpu_to_be16(port);
++		in6_addr->sin6_port = port;
+ 		*addr_len = sizeof(struct sockaddr_in6);
+ 	}
+ 	memset((char *)saddr + *addr_len, 0, sizeof(struct sockaddr_storage) - *addr_len);
+@@ -1121,7 +1121,7 @@ static void writequeue_entry_complete(struct writequeue_entry *e, int completed)
+ /*
+  * sctp_bind_addrs - bind a SCTP socket to all our addresses
+  */
+-static int sctp_bind_addrs(struct socket *sock, uint16_t port)
++static int sctp_bind_addrs(struct socket *sock, __be16 port)
+ {
+ 	struct sockaddr_storage localaddr;
+ 	struct sockaddr *addr = (struct sockaddr *)&localaddr;
 -- 
 2.43.0
 
