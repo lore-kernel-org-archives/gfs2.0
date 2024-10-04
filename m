@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4F81AA78F
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F931AA785
+	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728054835; cv=none; b=mgE3516vcTlRgqdyYfpNVrq7VF+WWIHXyP4k5mlWjt+Cr8WZphoqS+NJGYbg3FSigGXyf2BjgWUhwKcUCxiod064R3mrqGv1C2WNObRndM9gXnl49lFfqAihBkdVQV/ztZxGr6CWof/dh/YFNEVO4NSul+f3T+K6Y3DIzyO/Cdk=
+	t=1728054837; cv=none; b=gpXG3z1BexfmLwCCS68Wz5yQL9CE8sCwNUFvQvU26Espj7k0+JIyqklkkyJL2bbAPfB5FooVVzVeQ0fcUETwFrLepFvQSLcEamnDw9BJZey4SJSxUTyeqKMlm+t0U6EN7MYYdh15WJB5K+RHu0Ip8DQV0T5brU/hi8/Y/ydg2j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728054835; c=relaxed/simple;
-	bh=rB0jAKvjrMa2rDj3u/WWlGfxv2tEU9uj27cDoDdTyoE=;
+	s=arc-20240116; t=1728054837; c=relaxed/simple;
+	bh=E0SrYPJ+fRqnC7FXR/hYXWFLYON5d7tGWxd6pSEODlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QFk94d+hrndQl7/DcUieJJz0Fbnk3oPDs6OkG8IDpMEcK/dl1+DLANfEVOvUkKadoGnANfxh8627x6ogtzC4PthtwHx9conNw9JubxsLAbis8rcuEe9R1jx5fKpIV+9a2fkNzXeEH/eJP4u35Uwm9uRrfCzxa3+xWUx0CBGKwcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ge8tsIP1; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=rZGJTPgKqG7tNseG5PcMh5de+dGGRumCIHPn6yE6kpSZOX1SxG9yErbdmBqr1xr8vx+EQvHfWaRz5ZQ7ErwAmEO5NnhANR4J2zCdEuJSFTMFRyjcEiLWfVSPegCbCuvFXiLu5oj2qS0jHe6djAa+VDhvLJ2WuHDos4qdJrQCFls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eX/DqwH8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ge8tsIP1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eX/DqwH8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728054833;
+	s=mimecast20190719; t=1728054834;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m2pA/RFRoxTDV5p36k4EBEWeTF1v2vGwyUlu3oNY5gE=;
-	b=Ge8tsIP1XnT8oxVNoGLw82QsY0wW5VbFOptCb6KjdsSeIvg3EOTTWJJqF57aqtLFkuSnjH
-	YA4oTj+jaD41WtYh8gsNW2SKu2WhgRt0yKrVrkMdo789jDu7AlkgWVdhlTijjWcV4ULLyQ
-	r2IVsFSl34vzzS0X6xSnO6kzfpxDVIY=
+	bh=9hsdDKwqAtISuTXRJDMDMPOj3KjFM7cN/s9SqhNZdkc=;
+	b=eX/DqwH8p1KX+DvsHlCmKuAxi7tb8QGMDrClcMH3R3eDo6d8ik/IiXoiMVxF3T8ewf66LU
+	03rqpT5KovIzxuxydoX7OXAXFnbTojvL9KI9FDLI2c2dMphjbud6W8/OGyqrbPtEa+rY7M
+	kV4klTkculeBzWXT9hCbvecwTIHnWII=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-EqL2uwn_Obe44m-FavbUAA-1; Fri,
- 04 Oct 2024 11:13:51 -0400
-X-MC-Unique: EqL2uwn_Obe44m-FavbUAA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-6AgQQ_tEPO2DtH8NfpNDxQ-1; Fri,
+ 04 Oct 2024 11:13:53 -0400
+X-MC-Unique: 6AgQQ_tEPO2DtH8NfpNDxQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E7FA419560BE
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:50 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1AD351956057
+	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:52 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4EB4519560AE;
-	Fri,  4 Oct 2024 15:13:50 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 28DF219560AE;
+	Fri,  4 Oct 2024 15:13:51 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.12-rc1 5/7] dlm: use dlm_config as only cluster configuration
-Date: Fri,  4 Oct 2024 11:13:41 -0400
-Message-ID: <20241004151343.3952937-6-aahringo@redhat.com>
+Subject: [PATCH v6.12-rc1 6/7] dlm: dlm_config_info config fields to unsigned int
+Date: Fri,  4 Oct 2024 11:13:42 -0400
+Message-ID: <20241004151343.3952937-7-aahringo@redhat.com>
 In-Reply-To: <20241004151343.3952937-1-aahringo@redhat.com>
 References: <20241004151343.3952937-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,121 +62,63 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-This patch removes the configfs storage fields from the dlm_cluster
-structure to store per cluster values. Those fields also exists for the
-dlm_config global variable and get stored in both when setting configfs
-values. To read values it will always be read out from the dlm_cluster
-configfs structure but this patch changes it to only use the global
-dlm_config variable. Storing them in two places makes no sense as both
-are able to be changed under certain conditions during DLM runtime.
+We are using kstrtouint() to parse common integer fields. This patch
+will switch to use unsigned int instead of int as we are parsing
+unsigned integer values.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/config.c | 47 +++++------------------------------------------
- 1 file changed, 5 insertions(+), 42 deletions(-)
+ fs/dlm/config.c |  3 ++-
+ fs/dlm/config.h | 22 +++++++++++-----------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/fs/dlm/config.c b/fs/dlm/config.c
-index 42dcf3f06668..ff18c7ace611 100644
+index ff18c7ace611..b2f21aa00719 100644
 --- a/fs/dlm/config.c
 +++ b/fs/dlm/config.c
-@@ -73,20 +73,6 @@ const struct rhashtable_params dlm_rhash_rsb_params = {
- 
- struct dlm_cluster {
- 	struct config_group group;
--	__be16 cl_tcp_port;
--	unsigned int cl_buffer_size;
--	unsigned int cl_rsbtbl_size;
--	unsigned int cl_recover_timer;
--	unsigned int cl_toss_secs;
--	unsigned int cl_scan_secs;
--	unsigned int cl_log_debug;
--	unsigned int cl_log_info;
--	unsigned int cl_protocol;
--	unsigned int cl_mark;
--	unsigned int cl_new_rsb_count;
--	unsigned int cl_recover_callbacks;
--	char cl_cluster_name[DLM_LOCKSPACE_LEN];
--
- 	struct dlm_spaces *sps;
- 	struct dlm_comms *cms;
- };
-@@ -115,18 +101,14 @@ enum {
- 
- static ssize_t cluster_cluster_name_show(struct config_item *item, char *buf)
- {
--	struct dlm_cluster *cl = config_item_to_cluster(item);
--	return sprintf(buf, "%s\n", cl->cl_cluster_name);
-+	return sprintf(buf, "%s\n", dlm_config.ci_cluster_name);
- }
- 
- static ssize_t cluster_cluster_name_store(struct config_item *item,
- 					  const char *buf, size_t len)
- {
--	struct dlm_cluster *cl = config_item_to_cluster(item);
--
- 	strscpy(dlm_config.ci_cluster_name, buf,
--				sizeof(dlm_config.ci_cluster_name));
--	strscpy(cl->cl_cluster_name, buf, sizeof(cl->cl_cluster_name));
-+		sizeof(dlm_config.ci_cluster_name));
- 	return len;
- }
- 
-@@ -171,8 +153,7 @@ static ssize_t cluster_tcp_port_store(struct config_item *item,
+@@ -153,7 +153,8 @@ static ssize_t cluster_tcp_port_store(struct config_item *item,
  
  CONFIGFS_ATTR(cluster_, tcp_port);
  
--static ssize_t cluster_set(struct dlm_cluster *cl, unsigned int *cl_field,
--			   int *info_field, int (*check_cb)(unsigned int x),
-+static ssize_t cluster_set(int *info_field, int (*check_cb)(unsigned int x),
+-static ssize_t cluster_set(int *info_field, int (*check_cb)(unsigned int x),
++static ssize_t cluster_set(unsigned int *info_field,
++			   int (*check_cb)(unsigned int x),
  			   const char *buf, size_t len)
  {
  	unsigned int x;
-@@ -190,7 +171,6 @@ static ssize_t cluster_set(struct dlm_cluster *cl, unsigned int *cl_field,
- 			return rc;
- 	}
+diff --git a/fs/dlm/config.h b/fs/dlm/config.h
+index 2c5dcf5eaef1..e48c4f9686d3 100644
+--- a/fs/dlm/config.h
++++ b/fs/dlm/config.h
+@@ -30,17 +30,17 @@ extern const struct rhashtable_params dlm_rhash_rsb_params;
  
--	*cl_field = x;
- 	*info_field = x;
+ struct dlm_config_info {
+ 	__be16 ci_tcp_port;
+-	int ci_buffer_size;
+-	int ci_rsbtbl_size;
+-	int ci_recover_timer;
+-	int ci_toss_secs;
+-	int ci_scan_secs;
+-	int ci_log_debug;
+-	int ci_log_info;
+-	int ci_protocol;
+-	int ci_mark;
+-	int ci_new_rsb_count;
+-	int ci_recover_callbacks;
++	unsigned int ci_buffer_size;
++	unsigned int ci_rsbtbl_size;
++	unsigned int ci_recover_timer;
++	unsigned int ci_toss_secs;
++	unsigned int ci_scan_secs;
++	unsigned int ci_log_debug;
++	unsigned int ci_log_info;
++	unsigned int ci_protocol;
++	unsigned int ci_mark;
++	unsigned int ci_new_rsb_count;
++	unsigned int ci_recover_callbacks;
+ 	char ci_cluster_name[DLM_LOCKSPACE_LEN];
+ };
  
- 	return len;
-@@ -200,14 +180,11 @@ static ssize_t cluster_set(struct dlm_cluster *cl, unsigned int *cl_field,
- static ssize_t cluster_##name##_store(struct config_item *item, \
- 		const char *buf, size_t len) \
- {                                                                             \
--	struct dlm_cluster *cl = config_item_to_cluster(item);		      \
--	return cluster_set(cl, &cl->cl_##name, &dlm_config.ci_##name,         \
--			   check_cb, buf, len);                               \
-+	return cluster_set(&dlm_config.ci_##name, check_cb, buf, len);        \
- }                                                                             \
- static ssize_t cluster_##name##_show(struct config_item *item, char *buf)     \
- {                                                                             \
--	struct dlm_cluster *cl = config_item_to_cluster(item);		      \
--	return snprintf(buf, PAGE_SIZE, "%u\n", cl->cl_##name);               \
-+	return snprintf(buf, PAGE_SIZE, "%u\n", dlm_config.ci_##name);        \
- }                                                                             \
- CONFIGFS_ATTR(cluster_, name);
- 
-@@ -450,20 +427,6 @@ static struct config_group *make_cluster(struct config_group *g,
- 	configfs_add_default_group(&sps->ss_group, &cl->group);
- 	configfs_add_default_group(&cms->cs_group, &cl->group);
- 
--	cl->cl_tcp_port = dlm_config.ci_tcp_port;
--	cl->cl_buffer_size = dlm_config.ci_buffer_size;
--	cl->cl_rsbtbl_size = dlm_config.ci_rsbtbl_size;
--	cl->cl_recover_timer = dlm_config.ci_recover_timer;
--	cl->cl_toss_secs = dlm_config.ci_toss_secs;
--	cl->cl_scan_secs = dlm_config.ci_scan_secs;
--	cl->cl_log_debug = dlm_config.ci_log_debug;
--	cl->cl_log_info = dlm_config.ci_log_info;
--	cl->cl_protocol = dlm_config.ci_protocol;
--	cl->cl_new_rsb_count = dlm_config.ci_new_rsb_count;
--	cl->cl_recover_callbacks = dlm_config.ci_recover_callbacks;
--	memcpy(cl->cl_cluster_name, dlm_config.ci_cluster_name,
--	       DLM_LOCKSPACE_LEN);
--
- 	space_list = &sps->ss_group;
- 	comm_list = &cms->cs_group;
- 	return &cl->group;
 -- 
 2.43.0
 
