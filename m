@@ -1,214 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688761AA78E
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159A93A8F0
+	for <gfs2@lists.linux.dev>; Sat,  5 Oct 2024 16:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728054838; cv=none; b=NEjohjWnZ2XAVIcxQNUyAvoOkUqMyZAhL2fUW51PYap/xaRHO1GNmQ0GRGr9CT2wFLTzJhXiFawn39sEtqPSvKLwGUAwMJ5a9DLDN7C5CkBkXstZV3TdZNvhPPhEJ/WuG2vrTJ+7WV5anA5S6XYFurKwHta3WpQtHy4W7laoCxY=
+	t=1728145051; cv=none; b=IF96v9DvOZjYS8bHcKZwEZMaJLV4oK52PTZH+zkNVGyJ7F+C4dExhdUxJr8qSu59hX0+SAaqyf65V6XfnmErfMO7lbh+ssnt60DVtS7phu7oqO3M+QlllZ40Fa84CipqGO/TmS7egqd+PZcDC6eK2ZOoU+RwAQcMQa1nja02iNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728054838; c=relaxed/simple;
-	bh=dp6JrRDc/H5ppcg8PN8meCJSwJPFa3zGF2Q3hO+QhEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=speV6F3sTPbguA5wHL5sRDWFdD5KisMQzcoIzLWUCZMAKfDgzWHSx90LpF3BeGH6w5JOS+UnwHjVYWLa3dsz5D2Jk3xw8YyJds5CIiIQT+OPJh5Yb8qq6K3rbOWRWFaV19K6WkmJeE8NDmlXXunY7CB9cCtPLMJHGieTUHHWY0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XXcVYz4M; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728145051; c=relaxed/simple;
+	bh=sHKoS3BN9fpfLGjHRiJ8ZrcURaLtFw0T+ToIiKx8rFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HfbfVuU4HW7j+pMkiuaPazUbYOMCNNtwZfvfdyChbjx6wiihf2WIDIbF3Qjt4Se+U+J7JC6KhtBliSNi3eK38BSaBD7WZjFpsbWEYsjnwjONOS2Vb9hjWyYBCbJrFlP/oLcSJxK9PmZ0FZc9JYR22o/l5+DHCSnEwGr6dCbojjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UrTA+Hn2; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XXcVYz4M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728054835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S76OAqFZSpwpe9rf+Cmr/P7Hh2/q6Z1IF2BUjqDK0EQ=;
-	b=XXcVYz4Mg8k00ubltSDMk4UCidMzhgXQcuQon1Mvo3ru91O4tilAeQ7lz2pI4Zts1nKwr2
-	MNb2I3xDe4GbwKejIZerDizvjA7J1kPH7XsP3RwlTQ4eQUMxxKwX7iAo7bFvARzbeTuBGg
-	nR/SjOTngAYUMtx3HkhuqKDBshkoR2Y=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-0gF8LW7qODqJtu5NT2VWMA-1; Fri,
- 04 Oct 2024 11:13:53 -0400
-X-MC-Unique: 0gF8LW7qODqJtu5NT2VWMA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1B2941955F43
-	for <gfs2@lists.linux.dev>; Fri,  4 Oct 2024 15:13:53 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 579AE19560AE;
-	Fri,  4 Oct 2024 15:13:52 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH v6.12-rc1 7/7] dlm: make add_to_waiters() that it can't fail
-Date: Fri,  4 Oct 2024 11:13:43 -0400
-Message-ID: <20241004151343.3952937-8-aahringo@redhat.com>
-In-Reply-To: <20241004151343.3952937-1-aahringo@redhat.com>
-References: <20241004151343.3952937-1-aahringo@redhat.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UrTA+Hn2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=sPRYKTUuN9x9SJKdTcc6P4AJdIR5+O0ksRXcbg9ijpY=;
+	b=UrTA+Hn2G0STLuNCz+V3K5dTG3yWuORr/sn6atCT1EHVsaWOilOGGD1S7wnjsE
+	+bba64MYg8F0wfCPb3QaUdm0YchsYNH/V1DJycrRGV8RpCuCDcQxEvBWX+iJDFdu
+	VyUHz+/DtHR0to07PfjEqUB08l1QaLNKIpiDJ1dWEP454=
+Received: from localhost (unknown [36.5.132.7])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3PyaKZgFn6Ll+BA--.29823S2;
+	Sun, 06 Oct 2024 00:17:15 +0800 (CST)
+Date: Sun, 6 Oct 2024 00:17:14 +0800
+From: Qianqiang Liu <qianqiang.liu@163.com>
+To: syzbot <syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com>
+Cc: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [gfs2?] KMSAN: uninit-value in inode_go_dump (5)
+Message-ID: <ZwFmiv0lqP02xPtq@fedora>
+References: <66fca31e.050a0220.f28ec.04e4.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66fca31e.050a0220.f28ec.04e4.GAE@google.com>
+X-CM-TRANSID:_____wD3PyaKZgFn6Ll+BA--.29823S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4REwZcDUUUU
+X-CM-SenderInfo: xtld01pldqwhxolxqiywtou0bp/1tbiRRdvamcBWa5-AQAAs4
 
-If add_to_waiters() fails we have a problem because the previous called
-functions such as validate_lock_args() or validate_unlock_args() sets
-specific lkb values that are set for a request, there exists no way back
-to revert those changes. When there is a pending lock request the
-original request arguments will be overwritten with unknown
-consequences.
+#syz test
 
-The good news are that I believe those cases that we fail in
-add_to_waiters() can't happen or very unlikely to happen (only if the DLM
-user does stupid API things), but if so we have the above mentioned
-problem.
-
-There are two conditions that will be removed here. The first one is the
--EINVAL case which contains is_overlap_unlock() or (is_overlap_cancel()
-and mstype == DLM_MSG_CANCEL).
-
-The is_overlap_unlock() is missing for the normal UNLOCK case which is
-moved to validate_unlock_args(). The is_overlap_cancel() already happens
-in validate_unlock_args() when DLM_LKF_CANCEL is set. In case of
-validate_lock_args() we check on is_overlap() when it is not a new request,
-on a new request the lkb is always new and does not have those values set.
-
-The -EBUSY check can't happen in case as for non new lock requests (when
-DLM_LKF_CONVERT is set) we already check in validate_lock_args() for
-lkb_wait_type and is_overlap(). Then there is only
-validate_unlock_args() that will never hit the default case because
-dlm_unlock() will produce DLM_MSG_UNLOCK and DLM_MSG_CANCEL messages.
-
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c | 43 ++++++++++++++-----------------------------
- 1 file changed, 14 insertions(+), 29 deletions(-)
-
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index dddedaef5e93..966a926c301b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1703,19 +1703,11 @@ static int msg_reply_type(int mstype)
- /* add/remove lkb from global waiters list of lkb's waiting for
-    a reply from a remote node */
- 
--static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
-+static void add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
- {
- 	struct dlm_ls *ls = lkb->lkb_resource->res_ls;
--	int error = 0;
- 
- 	spin_lock_bh(&ls->ls_waiters_lock);
--
--	if (is_overlap_unlock(lkb) ||
--	    (is_overlap_cancel(lkb) && (mstype == DLM_MSG_CANCEL))) {
--		error = -EINVAL;
--		goto out;
--	}
--
- 	if (lkb->lkb_wait_type || is_overlap_cancel(lkb)) {
- 		switch (mstype) {
- 		case DLM_MSG_UNLOCK:
-@@ -1725,7 +1717,11 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
- 			set_bit(DLM_IFL_OVERLAP_CANCEL_BIT, &lkb->lkb_iflags);
- 			break;
- 		default:
--			error = -EBUSY;
-+			/* should never happen as validate_lock_args() checks
-+			 * on lkb_wait_type and validate_unlock_args() only
-+			 * creates UNLOCK or CANCEL messages.
-+			 */
-+			WARN_ON_ONCE(1);
- 			goto out;
- 		}
- 		lkb->lkb_wait_count++;
-@@ -1747,12 +1743,7 @@ static int add_to_waiters(struct dlm_lkb *lkb, int mstype, int to_nodeid)
- 	hold_lkb(lkb);
- 	list_add(&lkb->lkb_wait_reply, &ls->ls_waiters);
-  out:
--	if (error)
--		log_error(ls, "addwait error %x %d flags %x %d %d %s",
--			  lkb->lkb_id, error, dlm_iflags_val(lkb), mstype,
--			  lkb->lkb_wait_type, lkb->lkb_resource->res_name);
- 	spin_unlock_bh(&ls->ls_waiters_lock);
--	return error;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6678060ed4d2..d60d53810bc1 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1537,11 +1537,13 @@ static struct inode *gfs2_alloc_inode(struct super_block *sb)
+ 	if (!ip)
+ 		return NULL;
+ 	ip->i_no_addr = 0;
++	ip->i_no_formal_ino = 0;
+ 	ip->i_flags = 0;
+ 	ip->i_gl = NULL;
+ 	gfs2_holder_mark_uninitialized(&ip->i_iopen_gh);
+ 	memset(&ip->i_res, 0, sizeof(ip->i_res));
+ 	RB_CLEAR_NODE(&ip->i_res.rs_node);
++	ip->i_diskflags = 0;
+ 	ip->i_rahead = 0;
+ 	return &ip->i_inode;
  }
- 
- /* We clear the RESEND flag because we might be taking an lkb off the waiters
-@@ -2926,13 +2917,16 @@ static int validate_unlock_args(struct dlm_lkb *lkb, struct dlm_args *args)
- 		goto out;
- 	}
- 
-+	if (is_overlap_unlock(lkb))
-+		goto out;
-+
- 	/* cancel not allowed with another cancel/unlock in progress */
- 
- 	if (args->flags & DLM_LKF_CANCEL) {
- 		if (lkb->lkb_exflags & DLM_LKF_CANCEL)
- 			goto out;
- 
--		if (is_overlap(lkb))
-+		if (is_overlap_cancel(lkb))
- 			goto out;
- 
- 		if (test_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags)) {
-@@ -2970,9 +2964,6 @@ static int validate_unlock_args(struct dlm_lkb *lkb, struct dlm_args *args)
- 		if (lkb->lkb_exflags & DLM_LKF_FORCEUNLOCK)
- 			goto out;
- 
--		if (is_overlap_unlock(lkb))
--			goto out;
--
- 		if (test_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags)) {
- 			set_bit(DLM_IFL_OVERLAP_UNLOCK_BIT, &lkb->lkb_iflags);
- 			rv = -EBUSY;
-@@ -3608,10 +3599,7 @@ static int send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
- 
- 	to_nodeid = r->res_nodeid;
- 
--	error = add_to_waiters(lkb, mstype, to_nodeid);
--	if (error)
--		return error;
--
-+	add_to_waiters(lkb, mstype, to_nodeid);
- 	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
- 	if (error)
- 		goto fail;
-@@ -3714,10 +3702,7 @@ static int send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- 	to_nodeid = dlm_dir_nodeid(r);
- 
--	error = add_to_waiters(lkb, DLM_MSG_LOOKUP, to_nodeid);
--	if (error)
--		return error;
--
-+	add_to_waiters(lkb, DLM_MSG_LOOKUP, to_nodeid);
- 	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh);
- 	if (error)
- 		goto fail;
-@@ -6342,8 +6327,8 @@ int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
- 	if (error)
- 		return error;
- 
--	error = add_to_waiters(lkb, mstype, to_nodeid);
-+	add_to_waiters(lkb, mstype, to_nodeid);
- 	dlm_put_lkb(lkb);
--	return error;
-+	return 0;
- }
- 
+
 -- 
-2.43.0
+Best,
+Qianqiang Liu
 
