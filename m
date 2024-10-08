@@ -1,116 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1919320ADC3
-	for <gfs2@lists.linux.dev>; Tue,  8 Oct 2024 17:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB05213EF6
+	for <gfs2@lists.linux.dev>; Tue,  8 Oct 2024 20:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728409019; cv=none; b=uG/Iuc3H55QCUQM92HfLamg7AI2eTOOgaWGrMhh8v764WclxnsosNcbNM27fI3O6X4bQ8A2UTzc+nrd2GOORw6BLBBOSegPvulEj6aw1fUvGENR8schWPpOdc6ibkZ0ljI5KS/RRBCe7N/dZS+q2Gmxc3yaEpEdFndRUO6fk44A=
+	t=1728418188; cv=none; b=LNcr1yy4m/o6WUeTjHQx8pwY2WlrQv++BA0dAJ7KUUpGB0v1OJZm+V8lkYnmz96xS/hGxmL7ibk/RX4aBJNEwjb5fh6TYrNgLvdhlcOjY+iDfxqMAgLf97BWL+kXYF25eCvKOloSRDdy2mg9QRqlYiTBGOuea/1yuQHJy/mkfYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728409019; c=relaxed/simple;
-	bh=MEAowTIs9B6ucEs2WWgxfjYvBWfoswPfIgFCG+Z+mJk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jgeakvN0T1QjbMMCkp9EGY93CIXhYt5mPxj7sATV7ta4D1Y7edsxvT5vmJtQNrYZaFlhgcroVC2YBXC5qeaXDbia2j+SmvFYxhEc35K7d12n9L0BEWMnN8S2Jl/GRE4qNhgIuqJ4bFJJBFc2UjyFL5DGOKsROpNGq35JGjuDElM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqS+sJ+X; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1728418188; c=relaxed/simple;
+	bh=BKvRzmG8zYQq/3wAB1De8TfUM2+YdFa4tVx6nY/GTt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y8NHmp8vtEwAl9VQVOUMdC0vt+BkIhag3cr6NTFg1bQUqpeRL1HMK30jcHb3d3faq4wdbpjjz+EHcUEzXUQbRdyFkqXJ+rVudY7vL27qN5DbCuENzscb9LPS3iHtHxWvOeb6NdJCHczUM9dTNV21WShuU2s2PVdcql202Q8pmJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bmS23MkC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqS+sJ+X"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bmS23MkC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728409017;
+	s=mimecast20190719; t=1728418186;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MEAowTIs9B6ucEs2WWgxfjYvBWfoswPfIgFCG+Z+mJk=;
-	b=fqS+sJ+X7S3dRbkdHrt9KrZ+/BxYM2NgY3ozwzqEQwyRqVXoBeV6BWVvxvkXNaQYkLAOsb
-	KB6QH0dEr+SXOWnVYMsEMZozQ3qICP1x65xO6IDyKxOhtZRFwe+cAXuMOi4PGAaz9eeF5J
-	EGDb3xb3Bu85RvJJKW72+KmEFn87wqU=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-9FXDQ0QrPUyTW8kHqc6uTg-1; Tue, 08 Oct 2024 13:36:55 -0400
-X-MC-Unique: 9FXDQ0QrPUyTW8kHqc6uTg-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2fad0f66e28so42013701fa.1
-        for <gfs2@lists.linux.dev>; Tue, 08 Oct 2024 10:36:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728409014; x=1729013814;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MEAowTIs9B6ucEs2WWgxfjYvBWfoswPfIgFCG+Z+mJk=;
-        b=q/TVPKPZ0ivAh+9dBSTeViQ8QRdVGCMSLLV/Rjhr8mIqszlIl1yO72j3sFHRu9Wps3
-         dI5bGeCGIyFwPlv0cy5Y4tG3OVcno9i1SI/sQRm2vekp4qYMfZf51q6iBk6cDLF2/2ub
-         +rSAN3a9pMMUqz+LWYKD0BWrhKF8d1PKDZ0Eo5UePrU2oHbnnLjIFktCRO0Mx8mHiAPm
-         RMDa4N5MHtOqvq00bXjgP8ntXcZQ0FcX8Kp/YmxMdZAEVSbg0m0zvDONNVXHmHIkFNWW
-         P8RVvG7TXTIRz80IaVFqGKjtcbYX7OrOr+j72u3XPJxv1NrgGb1RdMyfjwKWDrFcTsK5
-         7FUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCjnajwC0LEG5/oGDOaMnw7BO6KTw0GPza0blUzxMcI0kHY6nooq251zAeXyrZd2B1Gz7k@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8vq75IB1LgQzb0kLzjveVEkn2EU8JZTFuu27vgDI0F0l3s5uN
-	tPMmzm3wyn05GjAry6eDcRmE1nm1E0VHoTkhgJF692iUVWWxx0av9dbrpP3ULXJo3VPntRdbuEk
-	mO7FIEO3hCpUC2CytRxV2agOFqRVN+8Mz53cbytWqQMoklOAbUNfdyBCkYSWaxFax68h+Kqcbfd
-	gGHU9HxLLuvO1ga07SygN90ICXXQ==
-X-Received: by 2002:a05:651c:4cb:b0:2fb:51a:d22 with SMTP id 38308e7fff4ca-2fb051a0f84mr41785871fa.23.1728409014236;
-        Tue, 08 Oct 2024 10:36:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyxvYUsWDXwuq1qgj9KeuoeJvQZvdLhpB95VL+Hxq4QwXy+WT778qu25XObcmaxbqJ8/S99KWvEgS8Zzxmmi0=
-X-Received: by 2002:a05:651c:4cb:b0:2fb:51a:d22 with SMTP id
- 38308e7fff4ca-2fb051a0f84mr41785681fa.23.1728409013810; Tue, 08 Oct 2024
- 10:36:53 -0700 (PDT)
+	bh=y4IyMs3DYz1iO2v17yE6rwIhRPU2F8xvoKO1L4wkbIE=;
+	b=bmS23MkCkRkbqX9fNlvrvkHO+XWILaCdMtR0CfzENv5x06o+KiM8P4BXAySxOj7VjCduVY
+	26m1+Yk21qDDPRpotX9nMN8e23GVpXlxdx50Um3xRmAhmZhlF+K3Ur/AoKxFQxme/mQ0yq
+	Qx8/NLBdxSj9o0rET0mJQ2P6vgd1t4U=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-7sjfBCQAPgS8zdbSsAonwA-1; Tue,
+ 08 Oct 2024 16:09:43 -0400
+X-MC-Unique: 7sjfBCQAPgS8zdbSsAonwA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9722819560B1;
+	Tue,  8 Oct 2024 20:09:41 +0000 (UTC)
+Received: from [192.168.37.1] (unknown [10.22.48.10])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 895F719560A2;
+	Tue,  8 Oct 2024 20:09:39 +0000 (UTC)
+From: Benjamin Coddington <bcodding@redhat.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: trondmy@kernel.org, anna@kernel.org, gregkh@linuxfoundation.org,
+ rafael@kernel.org, akpm@linux-foundation.org, linux-nfs@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] nfs: sysfs: use default get_ownership() callback
+Date: Tue, 08 Oct 2024 16:09:37 -0400
+Message-ID: <ECD4A28B-9987-42BC-91DC-8DED8CAEED21@redhat.com>
+In-Reply-To: <20241003151435.3753959-5-aahringo@redhat.com>
+References: <20241003151435.3753959-1-aahringo@redhat.com>
+ <20241003151435.3753959-5-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241003151435.3753959-1-aahringo@redhat.com>
-In-Reply-To: <20241003151435.3753959-1-aahringo@redhat.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Tue, 8 Oct 2024 13:36:42 -0400
-Message-ID: <CAK-6q+imtq3=pcM-gEnAYyyA_uYZsBpPbirCOh5yiDs9fr326Q@mail.gmail.com>
-Subject: Re: [PATCH 0/4] nfs: kobject: use generic helpers and ownership
-To: trondmy@kernel.org
-Cc: anna@kernel.org, bcodding@redhat.com, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, akpm@linux-foundation.org, linux-nfs@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Dear nfs tree maintainers,
+On 3 Oct 2024, at 11:14, Alexander Aring wrote:
 
-On Thu, Oct 3, 2024 at 11:15=E2=80=AFAM Alexander Aring <aahringo@redhat.co=
-m> wrote:
+> Since commit 5f81880d5204 ("sysfs, kobject: allow creating kobject
+> belonging to arbitrary users") it seems that there could be cases for
+> kobjects belonging to arbitrary users. This callback is set by default
+> when using kset_create_and_add() to allow creating kobjects with
+> different ownerships according to its parent.
 >
-> Hi,
+> This patch will assign the default callback now for nfs kobjects for
+> cases when the parent has different ownership than the default one.
 >
-> I currently have pending patches for fs/dlm (Distributed Lock Manager)
-> subsystem to introduce some helpers to udev. However, it seems it takes
-> more time that I can bring those changes upstream. I put those out now
-> and already figured out that nfs can also take advantage of those changes=
-.
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> ---
+>  fs/nfs/sysfs.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> With this patch-series I try to try to reduce my patch-series for DLM
-> and already bring part of it upstream and nfs will be a user of it.
+> diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
+> index a6584203b7ff..b5737464b892 100644
+> --- a/fs/nfs/sysfs.c
+> +++ b/fs/nfs/sysfs.c
+> @@ -27,6 +27,7 @@ static const struct kobj_ns_type_operations *nfs_netn=
+s_object_child_ns_type(
+>  }
 >
-> The ownership callback, I think it should be set as the
-> kset_create_and_add() sets this callback as default. I never had any
-> issues with it, but there might be container corner cases that requires
-> those changes?
->
-> - Alex
->
+>  static struct kobj_type nfs_kset_type =3D {
+> +	.get_ownership =3D kset_get_ownership,
+>  	.release =3D kset_release,
+>  	.sysfs_ops =3D &kobj_sysfs_ops,
+>  	.child_ns_type =3D nfs_netns_object_child_ns_type,
+> -- =
 
-Can we have those patches applied to the nfs tree? According to the
-udev/kobject maintainer it is fine to take this in any tree that it
-needs to go through. [0]
-I made nfs as a first user of these new udev helpers functionality, so
-it should go through the nfs tree if there are no other issues with
-this series?
+> 2.43.0
 
-Thanks.
+Hi Alex, if I understand this correctly, this patch just punts the owners=
+hip
+callback up to fs_kobj, which, because it has no .get_ownership is just
+going to be the same result: root.
 
-- Alex
+Does this patch add value?
 
-[0] https://lore.kernel.org/gfs2/2024081519-caddy-monstrous-b37d@gregkh/
+Ben
 
