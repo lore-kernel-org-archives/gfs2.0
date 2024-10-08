@@ -1,57 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB05213EF6
-	for <gfs2@lists.linux.dev>; Tue,  8 Oct 2024 20:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B91E0DD6
+	for <gfs2@lists.linux.dev>; Tue,  8 Oct 2024 20:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728418188; cv=none; b=LNcr1yy4m/o6WUeTjHQx8pwY2WlrQv++BA0dAJ7KUUpGB0v1OJZm+V8lkYnmz96xS/hGxmL7ibk/RX4aBJNEwjb5fh6TYrNgLvdhlcOjY+iDfxqMAgLf97BWL+kXYF25eCvKOloSRDdy2mg9QRqlYiTBGOuea/1yuQHJy/mkfYU=
+	t=1728418371; cv=none; b=WMAHHIBgTTfUbHeEu5zVb/ieEnpcT86s/8JWllq+LdN9CurGP9IJsdQaEtL/kULB4koI7JnEOIGCt5pZJzSNofnypJScXFRir5DDHwJBEgctUYppTRPyZRIm4rrwcpznvlOsPZ5cXk+sIZBSiClywdgWPezqwR4VeQTJ2dG3tMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728418188; c=relaxed/simple;
-	bh=BKvRzmG8zYQq/3wAB1De8TfUM2+YdFa4tVx6nY/GTt4=;
+	s=arc-20240116; t=1728418371; c=relaxed/simple;
+	bh=Mmm1nsgSwusmWQIhbN6dtt9xmktOtOPWg/wMOr5raJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y8NHmp8vtEwAl9VQVOUMdC0vt+BkIhag3cr6NTFg1bQUqpeRL1HMK30jcHb3d3faq4wdbpjjz+EHcUEzXUQbRdyFkqXJ+rVudY7vL27qN5DbCuENzscb9LPS3iHtHxWvOeb6NdJCHczUM9dTNV21WShuU2s2PVdcql202Q8pmJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bmS23MkC; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=e8aChmOXMTu2i1DWsRq6qBeAgPWa3dnehMVQCJpQHA82XZkjQMg0NDUH/N7aYw/yZ4TFTaz03oKVrXTFKLlRMeDnDQMv5SUI/d5t67aNlQGCxyH4DZQ7+W9gakw0NzT8n5UvBEnHK75tXeiEl1KGzlaYdW5WVeh9wX6EkShtafg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EJLaElJy; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bmS23MkC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EJLaElJy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728418186;
+	s=mimecast20190719; t=1728418368;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y4IyMs3DYz1iO2v17yE6rwIhRPU2F8xvoKO1L4wkbIE=;
-	b=bmS23MkCkRkbqX9fNlvrvkHO+XWILaCdMtR0CfzENv5x06o+KiM8P4BXAySxOj7VjCduVY
-	26m1+Yk21qDDPRpotX9nMN8e23GVpXlxdx50Um3xRmAhmZhlF+K3Ur/AoKxFQxme/mQ0yq
-	Qx8/NLBdxSj9o0rET0mJQ2P6vgd1t4U=
+	bh=a1XdYdPRRThJf04ZH2f39aR/lmOxVlk4KOGPuZXe+cg=;
+	b=EJLaElJyLNZ6CVrr6VieO1W7bj3T7MeWC/NbmmTJ8Kx6NHGNXu82yKlodLchmwONJUjUpi
+	vV25JCtbaC6Y3PdVWAuO2rSPwbDN0/xqF570GpCahR4GanrfuCWyHhZScs7cfEB+cdiFak
+	SbUr4WVqBGgLQGYBPuFLoiPXf9v/dPU=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-7sjfBCQAPgS8zdbSsAonwA-1; Tue,
- 08 Oct 2024 16:09:43 -0400
-X-MC-Unique: 7sjfBCQAPgS8zdbSsAonwA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-l7TOBY8FMUyI7HXYjLT3lA-1; Tue,
+ 08 Oct 2024 16:12:44 -0400
+X-MC-Unique: l7TOBY8FMUyI7HXYjLT3lA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9722819560B1;
-	Tue,  8 Oct 2024 20:09:41 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5694719560B4;
+	Tue,  8 Oct 2024 20:12:43 +0000 (UTC)
 Received: from [192.168.37.1] (unknown [10.22.48.10])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 895F719560A2;
-	Tue,  8 Oct 2024 20:09:39 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0ACAE19560A3;
+	Tue,  8 Oct 2024 20:12:40 +0000 (UTC)
 From: Benjamin Coddington <bcodding@redhat.com>
 To: Alexander Aring <aahringo@redhat.com>
 Cc: trondmy@kernel.org, anna@kernel.org, gregkh@linuxfoundation.org,
  rafael@kernel.org, akpm@linux-foundation.org, linux-nfs@vger.kernel.org,
  gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] nfs: sysfs: use default get_ownership() callback
-Date: Tue, 08 Oct 2024 16:09:37 -0400
-Message-ID: <ECD4A28B-9987-42BC-91DC-8DED8CAEED21@redhat.com>
-In-Reply-To: <20241003151435.3753959-5-aahringo@redhat.com>
+Subject: Re: [PATCH 0/4] nfs: kobject: use generic helpers and ownership
+Date: Tue, 08 Oct 2024 16:12:38 -0400
+Message-ID: <A81234BC-0E6D-42AE-BA2B-AF6004DE3C79@redhat.com>
+In-Reply-To: <20241003151435.3753959-1-aahringo@redhat.com>
 References: <20241003151435.3753959-1-aahringo@redhat.com>
- <20241003151435.3753959-5-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -59,48 +57,45 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 On 3 Oct 2024, at 11:14, Alexander Aring wrote:
 
-> Since commit 5f81880d5204 ("sysfs, kobject: allow creating kobject
-> belonging to arbitrary users") it seems that there could be cases for
-> kobjects belonging to arbitrary users. This callback is set by default
-> when using kset_create_and_add() to allow creating kobjects with
-> different ownerships according to its parent.
+> Hi,
 >
-> This patch will assign the default callback now for nfs kobjects for
-> cases when the parent has different ownership than the default one.
+> I currently have pending patches for fs/dlm (Distributed Lock Manager)
+> subsystem to introduce some helpers to udev. However, it seems it takes
+> more time that I can bring those changes upstream. I put those out now
+> and already figured out that nfs can also take advantage of those changes.
 >
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/nfs/sysfs.c | 1 +
->  1 file changed, 1 insertion(+)
+> With this patch-series I try to try to reduce my patch-series for DLM
+> and already bring part of it upstream and nfs will be a user of it.
 >
-> diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-> index a6584203b7ff..b5737464b892 100644
-> --- a/fs/nfs/sysfs.c
-> +++ b/fs/nfs/sysfs.c
-> @@ -27,6 +27,7 @@ static const struct kobj_ns_type_operations *nfs_netn=
-s_object_child_ns_type(
->  }
+> The ownership callback, I think it should be set as the
+> kset_create_and_add() sets this callback as default. I never had any
+> issues with it, but there might be container corner cases that requires
+> those changes?
 >
->  static struct kobj_type nfs_kset_type =3D {
-> +	.get_ownership =3D kset_get_ownership,
->  	.release =3D kset_release,
->  	.sysfs_ops =3D &kobj_sysfs_ops,
->  	.child_ns_type =3D nfs_netns_object_child_ns_type,
-> -- =
-
+> - Alex
+>
+> Alexander Aring (4):
+>   kobject: add kset_type_create_and_add() helper
+>   kobject: export generic helper ops
+>   nfs: sysfs: use kset_type_create_and_add()
+>   nfs: sysfs: use default get_ownership() callback
+>
+>  fs/nfs/sysfs.c          | 30 +++----------------
+>  include/linux/kobject.h | 10 +++++--
+>  lib/kobject.c           | 65 ++++++++++++++++++++++++++++++-----------
+>  3 files changed, 60 insertions(+), 45 deletions(-)
+>
+> -- 
 > 2.43.0
 
-Hi Alex, if I understand this correctly, this patch just punts the owners=
-hip
-callback up to fs_kobj, which, because it has no .get_ownership is just
-going to be the same result: root.
+These look good to me, though patch 4/4 seems superfluous, I responded there.
 
-Does this patch add value?
+For the series:
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 
 Ben
 
