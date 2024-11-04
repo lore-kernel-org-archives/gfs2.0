@@ -1,94 +1,124 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23511ABEC1
-	for <gfs2@lists.linux.dev>; Mon,  4 Nov 2024 11:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DF51FDF81
+	for <gfs2@lists.linux.dev>; Mon,  4 Nov 2024 22:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730720076; cv=none; b=sZyRA2S27OSf/zYd2X/WPQZCQGGjz44v36lNMi/pnYX6unknwziStQn+q6W1Yd16PojcTEFn0NQrTDNnOXSYtqh6HUB1Xep4LfNm1G4cZL7CZ9wuMOCHW/zuQvPAYrmEJ1fb5fykanEW18opWK0MWuOWvYYOER6OAlp/QF6ihwk=
+	t=1730757864; cv=none; b=k+0zFLwzJjSLspg4EhZh9pAafvuz1NGJhmFiU1NXrvVO1jnLLy7Qk6h8tbw4TVk22OFAha2dtUguuVnaf2CdqQNU1QS6XsJJakOuWjyIo5t72fYDW3QYYjIxHmwj727RiK4j6XZMqE0joyyAokkxVNyRyVp+13cMVbCRTrM6rbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730720076; c=relaxed/simple;
-	bh=EGU6oYO/2MmO/vCVTzmBe/Wo/0jXPik4drz2LC5Ewuw=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nu2GJcQ/IaFLuUGjPyRILQx1yFzbn9IK1w+juaYWLL8ejgMQFnAAUoBBtx3z77FkMvvzaJxRs0xVQlJ2HoBUpCfwP2Nx0GopTFx6zttJzlAxY/+4Sw4Du2zG5T8m+KAvDC39/9TSruB6+SmKkv6DI/r65XHcsmSijwLhonDI678=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a3cb771556so42992325ab.3
-        for <gfs2@lists.linux.dev>; Mon, 04 Nov 2024 03:34:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730720074; x=1731324874;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kPMayGsCyf+eRwQewCQCBYCKs3I3CQrUaFGcmxlTBgY=;
-        b=JWC7BagEh8qk/pFl8cBajGkOegoS0XBx466X2RtEp4WlWTUJl79O9ngK2C2vQq57/J
-         jAins8dq4kobUg194ZFASvwEnLbODI1H+oMMMK53rKYWZxESHAQ0u8OLsvDQ9C/iA0rp
-         aFdr5rRVM+5ffTuW25YRQlPoZCbLq5CmDISni/lQrztPEahrv2Bt8TDOnmcQPBfLko+M
-         /BlrJcMB+TwQITeBAhCEXcDcNEYMmAgUMxUQOQsYxMnzwcht/SW8xK1JERmKARqEXCG9
-         7o8Eo55kY3hGEL2rfZ6s5ouyfv6NfZE9e37fYioB50HoBo0srrDr4X3GSpVWcZNN5IRV
-         /HWA==
-X-Gm-Message-State: AOJu0Yz9oRMDbffGHMD1gkwU3sgNFgJkjJR/zlkIsxl4k2ATAGeNIsdJ
-	oGhUVR40YhiVILajOZbkm3T/EnE6UCQx/rgn0VVA/3y1FnMST7S1q0n7wYCGpDu6sfojdepXPdj
-	+5g14PKeyEXxSrBrlzS7x5S7UAv+9eAQSGVGvrSUEaSqHzgaQARYp/3c=
-X-Google-Smtp-Source: AGHT+IG3QHI08aeIy0UQp8XNMIQcc2v76d5c5JJUyXYBUuVJXqYeDTOCSdupquyz88UOZfPfhek+zOLah11f05A1tJ8LhInomzn6
+	s=arc-20240116; t=1730757864; c=relaxed/simple;
+	bh=HeaW/QogAJkNCGhtL4qMQRg6ELIUxUJ09vd753dSS1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MrzB42WPh/aPjs41ocV692kCFhzsFc8LkXMDoWrzK5qcyBUr1tjAqv4qbFOc61s064zGAW/uN74wa1f4eJyVXWrxcW6oHT0bZQCiSaOR81a7/JLeXFIuOZlGmqmPtZ5rLUSmlfFr5r6PAwa3/TYXeLYEZqQG3nhqIj/3+cWX1YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UlFDp3Qa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UlFDp3Qa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730757861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gNpROon65EmRh7ptB4RpSLw3+gLBD5thhPwSCfRO1Q0=;
+	b=UlFDp3QacjbtBIagnUu/mcmRuKpHSzMAqqtjN6ZIbdOxEv3KiCpjmr+ZOuPZ5pe8dmb+Ns
+	n+D4NGPYncIbgRVZ71Vtx2NRatb4i9oF0Ujls6Ks7nrM9bIsVoP3KHjc2n6CfOFXUOtQVW
+	DWc9tev7Jd63hICMBozLuy/Ra6QwD7o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-1hTf-s9UPbCtJsSnWQdJ4A-1; Mon,
+ 04 Nov 2024 17:04:20 -0500
+X-MC-Unique: 1hTf-s9UPbCtJsSnWQdJ4A-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16B90195608C
+	for <gfs2@lists.linux.dev>; Mon,  4 Nov 2024 22:04:19 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6325819560A3;
+	Mon,  4 Nov 2024 22:04:18 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCH dlm/next 1/3] dlm: fix recover_conversion() if grmode is unknown
+Date: Mon,  4 Nov 2024 17:04:15 -0500
+Message-ID: <20241104220417.3883898-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a92:c544:0:b0:3a3:b5ba:bfba with SMTP id
- e9e14a558f8ab-3a6b02f1afbmr115274145ab.15.1730720073918; Mon, 04 Nov 2024
- 03:34:33 -0800 (PST)
-Date: Mon, 04 Nov 2024 03:34:33 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6728b149.050a0220.3c8d68.0b1d.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Nov 2024)
-From: syzbot <syzbot+lista60d58e68ff9564f78a2@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello gfs2 maintainers/developers,
+When a pending PR -> CW conversion is interrupted by a fence. While a
+fence happened the master lock node of the pending PR -> CW conversion
+was removed from the lockspace an recovery try to solve lock
+dependencies. A new master node will be elected and the original granted
+mode of the PR -> CW conversion cannot be determined anymore. In this
+case recovery will set lkb_grmode to lkb_rqmode, but this will leave the
+lkb in a invalid conversion state. Later on recovery will grant the
+recovered lock state and it can't move out the lkb out of the conversion
+queue to move it into the granted queue as the grmode is equal the
+rqmode. At the end the lkb ends in an invalid state with grmode set to
+DLM_LOCK_IV that can't handle future conversions.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+To avoid this case we need to set the grmode to something different than
+the rqmode. In the particular case we only run into PR <-> CW conversion.
+If the rqmode is PR the grmode should be CW and vice versa to signal a
+valid conversion on the conversion queue.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 14 issues are still open and 33 have been fixed so far.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 567559  Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 1323    Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<3> 317     Yes   kernel BUG in gfs2_withdraw
-                  https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-<4> 275     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                  https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<5> 118     Yes   INFO: task hung in __gfs2_lookup
-                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<6> 26      Yes   WARNING in gfs2_ri_update (2)
-                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<7> 17      Yes   WARNING in gfs2_check_blk_type (2)
-                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
-<8> 4       Yes   kernel BUG in gfs2_assert_warn_i
-                  https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
-<9> 3       Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                  https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/dlm/recover.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index 2e1169c81c6e..7f748b21f1fb 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -831,11 +831,31 @@ static void recover_conversion(struct dlm_rsb *r)
+ 		if (lkb->lkb_grmode != DLM_LOCK_IV)
+ 			continue;
+ 		if (grmode == -1) {
+-			log_debug(ls, "recover_conversion %x set gr to rq %d",
++			/* the information of rqmode was never lost, but
++			 * grmode was lost. The lkb is on the convertqueue
++			 * and requires that lkb_grmode is different than
++			 * lkb_rqmode to be granted later by
++			 * dlm_recover_grant(). The real grmode is unknown
++			 * but as the rqmode is either PR or CW we just
++			 * set grmode as the conversion queue indicates
++			 * contention because the lock mode was incompatible.
++			 */
++			switch (lkb->lkb_rqmode) {
++			case DLM_LOCK_PR:
++				lkb->lkb_grmode = DLM_LOCK_CW;
++				break;
++			case DLM_LOCK_CW:
++				lkb->lkb_grmode = DLM_LOCK_PR;
++				break;
++			default:
++				WARN_ON(1);
++				break;
++			}
++
++			log_debug(ls, "%s %x set gr to rq %d", __func__,
+ 				  lkb->lkb_id, lkb->lkb_rqmode);
+-			lkb->lkb_grmode = lkb->lkb_rqmode;
+ 		} else {
+-			log_debug(ls, "recover_conversion %x set gr %d",
++			log_debug(ls, "%s %x set gr %d", __func__,
+ 				  lkb->lkb_id, grmode);
+ 			lkb->lkb_grmode = grmode;
+ 		}
+-- 
+2.43.0
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
