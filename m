@@ -1,134 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CC32107
-	for <gfs2@lists.linux.dev>; Tue, 29 Oct 2024 17:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23511ABEC1
+	for <gfs2@lists.linux.dev>; Mon,  4 Nov 2024 11:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730222161; cv=none; b=CMKhhk3XhHl2uEG9C4BeJBD1uMlxvheKnwDDreLtfPj0JZ7wwQubuFcU/IMe9uzT5TFYlBFbWy3Dd9JEFsgVOYJsik8CV8jx016zCR7uvgBLaZSMiQ/j2fYVT8YGww0UtNdjghxhI8uqe2jJLCyy5XRYGoA9wgz35jP13PM2M6U=
+	t=1730720076; cv=none; b=sZyRA2S27OSf/zYd2X/WPQZCQGGjz44v36lNMi/pnYX6unknwziStQn+q6W1Yd16PojcTEFn0NQrTDNnOXSYtqh6HUB1Xep4LfNm1G4cZL7CZ9wuMOCHW/zuQvPAYrmEJ1fb5fykanEW18opWK0MWuOWvYYOER6OAlp/QF6ihwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730222161; c=relaxed/simple;
-	bh=TQfjGby1XEx+z6ISstrc4RduU00jErF4qLq2ozuCW+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HMvDXO0jGYF9G9W6x3kKYkr7423OOnj6dLvrD/OCOjRAbJpAMUDosEXElSA77Q0tvSWxMRXTKZf/FlUZUaYD8Jbj3Qb+fV6B9g28fPFj9S7mXeB46vhGsS52xRZtN5SRaNhsN/Lkh+LsNiza+TL1cWN9zrK09FjZdD/2Cd78BUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NM8CIsBC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NM8CIsBC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730222158;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jwtGffy4+UAQs92/ngPaqWQy9tfpjUUo41LWfNvy7XA=;
-	b=NM8CIsBCuEdOZW/jAWT3YFaWvCngQmM45iZrjGf1QdAdKHASuSz6rtp/uy5aS/4kN604S9
-	oJAW5YNbpiGIueqp8lk5yzT5BFGbxgsg9wHTJi/pYlDwfUI4FHgGsIionVXsYOu/OpRzNo
-	7v3Yx8LQ8U0Dek5NPMlt+oG55H/rLN8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-ir28sNceMaeWPmLfoGukGg-1; Tue,
- 29 Oct 2024 13:15:56 -0400
-X-MC-Unique: ir28sNceMaeWPmLfoGukGg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B59741955EB7
-	for <gfs2@lists.linux.dev>; Tue, 29 Oct 2024 17:15:55 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.39.194.114])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C111C300018D;
-	Tue, 29 Oct 2024 17:15:54 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH] gfs2: Simplify DLM_LKF_QUECVT use
-Date: Tue, 29 Oct 2024 18:15:53 +0100
-Message-ID: <20241029171553.408671-1-agruenba@redhat.com>
+	s=arc-20240116; t=1730720076; c=relaxed/simple;
+	bh=EGU6oYO/2MmO/vCVTzmBe/Wo/0jXPik4drz2LC5Ewuw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nu2GJcQ/IaFLuUGjPyRILQx1yFzbn9IK1w+juaYWLL8ejgMQFnAAUoBBtx3z77FkMvvzaJxRs0xVQlJ2HoBUpCfwP2Nx0GopTFx6zttJzlAxY/+4Sw4Du2zG5T8m+KAvDC39/9TSruB6+SmKkv6DI/r65XHcsmSijwLhonDI678=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a3cb771556so42992325ab.3
+        for <gfs2@lists.linux.dev>; Mon, 04 Nov 2024 03:34:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730720074; x=1731324874;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kPMayGsCyf+eRwQewCQCBYCKs3I3CQrUaFGcmxlTBgY=;
+        b=JWC7BagEh8qk/pFl8cBajGkOegoS0XBx466X2RtEp4WlWTUJl79O9ngK2C2vQq57/J
+         jAins8dq4kobUg194ZFASvwEnLbODI1H+oMMMK53rKYWZxESHAQ0u8OLsvDQ9C/iA0rp
+         aFdr5rRVM+5ffTuW25YRQlPoZCbLq5CmDISni/lQrztPEahrv2Bt8TDOnmcQPBfLko+M
+         /BlrJcMB+TwQITeBAhCEXcDcNEYMmAgUMxUQOQsYxMnzwcht/SW8xK1JERmKARqEXCG9
+         7o8Eo55kY3hGEL2rfZ6s5ouyfv6NfZE9e37fYioB50HoBo0srrDr4X3GSpVWcZNN5IRV
+         /HWA==
+X-Gm-Message-State: AOJu0Yz9oRMDbffGHMD1gkwU3sgNFgJkjJR/zlkIsxl4k2ATAGeNIsdJ
+	oGhUVR40YhiVILajOZbkm3T/EnE6UCQx/rgn0VVA/3y1FnMST7S1q0n7wYCGpDu6sfojdepXPdj
+	+5g14PKeyEXxSrBrlzS7x5S7UAv+9eAQSGVGvrSUEaSqHzgaQARYp/3c=
+X-Google-Smtp-Source: AGHT+IG3QHI08aeIy0UQp8XNMIQcc2v76d5c5JJUyXYBUuVJXqYeDTOCSdupquyz88UOZfPfhek+zOLah11f05A1tJ8LhInomzn6
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Received: by 2002:a92:c544:0:b0:3a3:b5ba:bfba with SMTP id
+ e9e14a558f8ab-3a6b02f1afbmr115274145ab.15.1730720073918; Mon, 04 Nov 2024
+ 03:34:33 -0800 (PST)
+Date: Mon, 04 Nov 2024 03:34:33 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6728b149.050a0220.3c8d68.0b1d.GAE@google.com>
+Subject: [syzbot] Monthly gfs2 report (Nov 2024)
+From: syzbot <syzbot+lista60d58e68ff9564f78a2@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The DLM_LKF_QUECVT flag needs to be set for "upward" lock conversions to
-ensure fairness, but setting it for "downward" lock conversions will
-lead to a failure.  The flag is currently set based on the GLF_BLOCKING
-flag, and it's not obvious why this is correct.  Simplify things by
-figuring out if a lock conversion is "upward" without relying on the
-GLF_BLOCKING flag.
+Hello gfs2 maintainers/developers,
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
+
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 14 issues are still open and 33 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 567559  Yes   WARNING in __folio_mark_dirty (2)
+                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
+<2> 1323    Yes   kernel BUG in gfs2_glock_nq (2)
+                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<3> 317     Yes   kernel BUG in gfs2_withdraw
+                  https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
+<4> 275     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
+                  https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
+<5> 118     Yes   INFO: task hung in __gfs2_lookup
+                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
+<6> 26      Yes   WARNING in gfs2_ri_update (2)
+                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
+<7> 17      Yes   WARNING in gfs2_check_blk_type (2)
+                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
+<8> 4       Yes   kernel BUG in gfs2_assert_warn_i
+                  https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
+<9> 3       Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
+                  https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
+
 ---
- fs/gfs2/lock_dlm.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index fa5134df985f..58aeeae7ed8c 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -224,8 +224,21 @@ static int make_mode(struct gfs2_sbd *sdp, const unsigned int lmstate)
- 	return -1;
- }
- 
-+/* Taken from fs/dlm/lock.c. */
-+
-+static bool middle_conversion(int cur, int req)
-+{
-+	return (cur == DLM_LOCK_PR && req == DLM_LOCK_CW) ||
-+	       (cur == DLM_LOCK_CW && req == DLM_LOCK_PR);
-+}
-+
-+static bool down_conversion(int cur, int req)
-+{
-+	return !middle_conversion(cur, req) && req < cur;
-+}
-+
- static u32 make_flags(struct gfs2_glock *gl, const unsigned int gfs_flags,
--		      const int req)
-+		      const int cur, const int req)
- {
- 	u32 lkf = 0;
- 
-@@ -251,7 +264,14 @@ static u32 make_flags(struct gfs2_glock *gl, const unsigned int gfs_flags,
- 
- 	if (!test_bit(GLF_INITIAL, &gl->gl_flags)) {
- 		lkf |= DLM_LKF_CONVERT;
--		if (test_bit(GLF_BLOCKING, &gl->gl_flags))
-+
-+		/*
-+		 * The DLM_LKF_QUECVT flag needs to be set for "first come,
-+		 * first served" semantics, but it must only be set for
-+		 * "upward" lock conversions or else DLM will reject the
-+		 * request as invalid.
-+		 */
-+		if (!down_conversion(cur, req))
- 			lkf |= DLM_LKF_QUECVT;
- 	}
- 
-@@ -271,13 +291,14 @@ static int gdlm_lock(struct gfs2_glock *gl, unsigned int req_state,
- 		     unsigned int flags)
- {
- 	struct lm_lockstruct *ls = &gl->gl_name.ln_sbd->sd_lockstruct;
--	int req;
-+	int cur, req;
- 	u32 lkf;
- 	char strname[GDLM_STRNAME_BYTES] = "";
- 	int error;
- 
-+	cur = make_mode(gl->gl_name.ln_sbd, gl->gl_state);
- 	req = make_mode(gl->gl_name.ln_sbd, req_state);
--	lkf = make_flags(gl, flags, req);
-+	lkf = make_flags(gl, flags, cur, req);
- 	gfs2_glstats_inc(gl, GFS2_LKS_DCOUNT);
- 	gfs2_sbstats_inc(gl, GFS2_LKS_DCOUNT);
- 	if (test_bit(GLF_INITIAL, &gl->gl_flags)) {
--- 
-2.46.2
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
