@@ -1,54 +1,54 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0D322E
-	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B25721830B
+	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731012393; cv=none; b=FLIFeEtYSv+8I4dPHf23Sym1XJ0/XZZvLgeMZa2GXfOC9o35vYvQlMHDHj6dJA1VJacmMItOcPHPFl7w1dVVjPh8gedxtL8KXeN39a8yl81mqv/DoxdeFvaeOAFJmzV4WLDgq28T+8Fh4CUqIDXZVlZw+pjwolWNTdkc661QnNk=
+	t=1731012395; cv=none; b=WS/PnwKgYMa9p/PDrISCVqbJsTtepgHbiKs1hWBp8JMUUJdR4hfpkhSTu+Y42V2omp+DTvRpWJd2U6S4xmUqcQfL5Evpv17Notuk8VieQrkHmPaF4tukgm+mHRdn4L0s9ilb2U0dG+DVPFgbF32WNzar4LPjnfKqpAf8radgSxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731012393; c=relaxed/simple;
-	bh=brpC7gd9iQs4pHaOm/0/rSQoxJG0I48e5AFgFdvWDzU=;
+	s=arc-20240116; t=1731012395; c=relaxed/simple;
+	bh=qkPYJJujX1ghdcHhf8Vh8FtqimEltRiCVBtTmy7o+NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyXoIBlm4GRJ/+iEoHl2W0rFHWgpjVMXuMTpAy8ry8M6wlvfYXiHfasy/qy7YcVXkLOI8hNUFq+pJxUokbmwUmwhB0eCkg0B1+J/R9o4X2n5GXgQCejPynZrJ/heXjzRj6FG6yHLa92i0rd4weOf8mXQXkbd2Ls8sf6eP9cN7W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JhQjQTKg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=G4Ns5B6klmA+dn14g0b9YhgVPguxzInCdAZuFW+dHhU097YoNPL+1C+wcPc211x48FiYY+rodQ9ZplbwX24+IrLBsNo0+mYKk83JvaXse6+ZZHg86S9PdnbiDyVzTCec9deY2CrQCXJu6KTpdXguFsrHt3KeLvNGDlxNq0xabXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DZ1gIWu/; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JhQjQTKg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DZ1gIWu/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731012390;
+	s=mimecast20190719; t=1731012392;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Te+azpKM47EWhNF5d02GZ57dXm/Hen7y7KtBYJojDPI=;
-	b=JhQjQTKg/sGqXFMw2MYAQdSSA684j64IH/s/BOuQL1615WmZZC9QLkLAHN+CjinpcyJgkn
-	Hakske7r8EPrxERuOEnRupHU1SxjSCNew/m5rlVp5MFk0HAJDTYzaYaucbo+lQ6KYb6rIv
-	LNq68tkRzzObc38o1KYaGaWHNOJVlL0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=85LuOGMgDQhfUvm1bsamSfQxWA6Ycle4RE0M7nvpLH4=;
+	b=DZ1gIWu/U/D/QcQZY18D1+WQ6hnSa+W9K1MsDu+hpDfLuxzMPtepyW2JKbuoBkSRuPlGxi
+	DNWyh+0SfTLDwvhkuhERtGMa+NLwv9sXLIOVjKo3hJxVEct0XJGDKvLhPUvO7KS/wovBEs
+	83+yHAvbiMC0wzTtfXE6rzasttY8YWQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-nZ-68I9iMpq1CxiCjoL2Wg-1; Thu,
- 07 Nov 2024 15:46:29 -0500
-X-MC-Unique: nZ-68I9iMpq1CxiCjoL2Wg-1
-X-Mimecast-MFC-AGG-ID: nZ-68I9iMpq1CxiCjoL2Wg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-HfTsu9p4NkOwJtAwOyo-iQ-1; Thu,
+ 07 Nov 2024 15:46:30 -0500
+X-MC-Unique: HfTsu9p4NkOwJtAwOyo-iQ-1
+X-Mimecast-MFC-AGG-ID: HfTsu9p4NkOwJtAwOyo-iQ
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D5741956048
-	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:28 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E6D00195419F
+	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:29 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92EC9300019E;
-	Thu,  7 Nov 2024 20:46:27 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5483530001A0;
+	Thu,  7 Nov 2024 20:46:29 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [RFC dlm/next 08/11] dlm: make send dlm message as non-failure
-Date: Thu,  7 Nov 2024 15:46:14 -0500
-Message-ID: <20241107204617.147842-9-aahringo@redhat.com>
+Subject: [RFC dlm/next 10/11] dlm: void convert, cancel and unlock requests
+Date: Thu,  7 Nov 2024 15:46:16 -0500
+Message-ID: <20241107204617.147842-11-aahringo@redhat.com>
 In-Reply-To: <20241107204617.147842-1-aahringo@redhat.com>
 References: <20241107204617.147842-1-aahringo@redhat.com>
 Precedence: bulk
@@ -59,535 +59,171 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GVIK2Ny7edL96x8GPDt0ww4tByNXJ_Q14PifvAlaHsE_1731012388
+X-Mimecast-MFC-PROC-ID: GwxaXCkTzHWOJplMJ6hFQOl0bYxiL0F9WDC3_qjOg_Q_1731012390
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-We cannot handle if any DLM message being send out fails so we change
-every send message as it cannot fail.
+Ad the new lkb refcount model does not require to evaluate the return
+value of request functions we can change those function to return no
+value. Before the return value was just always zeroed out if any of the
+non-zero return value was returned. This is not necessary anymore.
 
-There might be in future other ways to handle send failures internally
-but from a caller prospective it should never fail.
+The _request_lock() function need an additional handling as the user
+request functionality still needs to evaluate the return value.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c | 235 ++++++++++++++++++--------------------------------
- fs/dlm/lock.h |   4 +-
- fs/dlm/user.c |   5 +-
- 3 files changed, 86 insertions(+), 158 deletions(-)
+ fs/dlm/lock.c | 37 ++++++++++++-------------------------
+ 1 file changed, 12 insertions(+), 25 deletions(-)
 
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index f2060a9d78f3..9d2d3567bf9d 100644
+index 1de8598d7451..28c312410527 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -75,14 +75,14 @@
- #include "user.h"
- #include "config.h"
- 
--static int send_request(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_cancel(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode);
--static int send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb);
--static int send_remove(struct dlm_rsb *r);
-+static void send_request(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_cancel(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode);
-+static void send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void send_remove(struct dlm_rsb *r);
+@@ -84,7 +84,7 @@ static void send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode);
+ static void send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb);
+ static void send_remove(struct dlm_rsb *r);
  static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
- static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
+-static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
++static void _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
  static void __receive_convert_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
-@@ -1693,23 +1693,6 @@ static void move_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb, int sts)
- 	add_lkb_noref(r, lkb, sts);
- }
+ 				    const struct dlm_message *ms, bool local);
+ static int receive_extralen(const struct dlm_message *ms);
+@@ -3268,9 +3268,9 @@ static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
  
--static int msg_reply_type(int mstype)
--{
--	switch (mstype) {
--	case DLM_MSG_REQUEST:
--		return DLM_MSG_REQUEST_REPLY;
--	case DLM_MSG_CONVERT:
--		return DLM_MSG_CONVERT_REPLY;
--	case DLM_MSG_UNLOCK:
--		return DLM_MSG_UNLOCK_REPLY;
--	case DLM_MSG_CANCEL:
--		return DLM_MSG_CANCEL_REPLY;
--	case DLM_MSG_LOOKUP:
--		return DLM_MSG_LOOKUP_REPLY;
--	}
--	return -1;
--}
--
- /* add/remove lkb from global waiters list of lkb's waiting for
-    a reply from a remote node */
+ /* change some property of an existing lkb, e.g. mode */
  
-@@ -3194,7 +3177,7 @@ static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- 	if (is_remote(r)) {
- 		/* receive_request() calls do_request() on remote node */
--		error = send_request(r, lkb);
-+		send_request(r, lkb);
- 	} else {
- 		error = do_request(r, lkb);
- 		/* for remote locks the request_reply is sent
-@@ -3209,11 +3192,11 @@ static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	int error;
-+	int error = 0;
- 
- 	if (is_remote(r)) {
- 		/* receive_convert() calls do_convert() on remote node */
--		error = send_convert(r, lkb);
-+		send_convert(r, lkb);
- 	} else {
- 		error = do_convert(r, lkb);
- 		/* for remote locks the convert_reply is sent
-@@ -3228,11 +3211,11 @@ static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	int error;
-+	int error = 0;
- 
- 	if (is_remote(r)) {
- 		/* receive_unlock() calls do_unlock() on remote node */
--		error = send_unlock(r, lkb);
-+		send_unlock(r, lkb);
- 	} else {
- 		error = do_unlock(r, lkb);
- 		/* for remote locks the unlock_reply is sent
-@@ -3247,11 +3230,11 @@ static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	int error;
-+	int error = 0;
- 
- 	if (is_remote(r)) {
- 		/* receive_cancel() calls do_cancel() on remote node */
--		error = send_cancel(r, lkb);
-+		send_cancel(r, lkb);
- 	} else {
- 		error = do_cancel(r, lkb);
- 		/* for remote locks the cancel_reply is sent
-@@ -3489,10 +3472,10 @@ int dlm_unlock(dlm_lockspace_t *lockspace,
-  * receive_lookup_reply		send_lookup_reply
-  */
- 
--static int _create_message(struct dlm_ls *ls, int mb_len,
--			   int to_nodeid, int mstype,
--			   struct dlm_message **ms_ret,
--			   struct dlm_mhandle **mh_ret)
-+static void _create_message(struct dlm_ls *ls, int mb_len,
-+			    int to_nodeid, int mstype,
-+			    struct dlm_message **ms_ret,
-+			    struct dlm_mhandle **mh_ret)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
-@@ -3503,8 +3486,8 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
- 	   write our data into */
- 
- 	mh = dlm_midcomms_get_mhandle(to_nodeid, mb_len, &mb);
--	if (!mh)
--		return -ENOBUFS;
-+	if (WARN_ON(!mh))
-+		return;
- 
- 	ms = (struct dlm_message *) mb;
- 
-@@ -3518,13 +3501,12 @@ static int _create_message(struct dlm_ls *ls, int mb_len,
- 
- 	*mh_ret = mh;
- 	*ms_ret = ms;
--	return 0;
- }
- 
--static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
--			  int to_nodeid, int mstype,
--			  struct dlm_message **ms_ret,
--			  struct dlm_mhandle **mh_ret)
-+static void create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			   int to_nodeid, int mstype,
-+			   struct dlm_message **ms_ret,
-+			   struct dlm_mhandle **mh_ret)
- {
- 	int mb_len = sizeof(struct dlm_message);
- 
-@@ -3548,14 +3530,10 @@ static int create_message(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 			       ms_ret, mh_ret);
- }
- 
--/* further lowcomms enhancements or alternate implementations may make
--   the return value from this function useful at some point */
--
--static int send_message(struct dlm_mhandle *mh, struct dlm_message *ms,
--			const void *name, int namelen)
-+static void send_message(struct dlm_mhandle *mh, struct dlm_message *ms,
-+			 const void *name, int namelen)
- {
- 	dlm_midcomms_commit_mhandle(mh, name, namelen);
--	return 0;
- }
- 
- static void send_args(struct dlm_rsb *r, struct dlm_lkb *lkb,
-@@ -3602,216 +3580,173 @@ static void send_args(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 	}
- }
- 
--static int send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
-+static void send_common(struct dlm_rsb *r, struct dlm_lkb *lkb, int mstype)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = r->res_nodeid;
- 
- 	add_to_waiters(lkb, mstype, to_nodeid);
--	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
--	if (error)
--		goto fail;
-+	create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
- 
- 	send_args(r, lkb, ms);
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
--	if (error)
--		goto fail;
--	return 0;
--
-- fail:
--	remove_from_waiters(lkb, msg_reply_type(mstype));
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_request(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_request(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	return send_common(r, lkb, DLM_MSG_REQUEST);
-+	send_common(r, lkb, DLM_MSG_REQUEST);
- }
- 
--static int send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	int error;
--
--	error = send_common(r, lkb, DLM_MSG_CONVERT);
-+	send_common(r, lkb, DLM_MSG_CONVERT);
- 
- 	/* down conversions go without a reply from the master */
--	if (!error && down_conversion(lkb)) {
-+	if (down_conversion(lkb)) {
- 		remove_from_waiters(lkb, DLM_MSG_CONVERT_REPLY);
- 		r->res_ls->ls_local_ms.m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
- 		r->res_ls->ls_local_ms.m_result = 0;
- 		__receive_convert_reply(r, lkb, &r->res_ls->ls_local_ms, true);
- 	}
--
--	return error;
- }
- 
- /* FIXME: if this lkb is the only lock we hold on the rsb, then set
-    MASTER_UNCERTAIN to force the next request on the rsb to confirm
-    that the master is still correct. */
- 
--static int send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	return send_common(r, lkb, DLM_MSG_UNLOCK);
-+	send_common(r, lkb, DLM_MSG_UNLOCK);
- }
- 
--static int send_cancel(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_cancel(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	return send_common(r, lkb, DLM_MSG_CANCEL);
-+	send_common(r, lkb, DLM_MSG_CANCEL);
- }
- 
--static int send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh);
--	if (error)
--		goto out;
--
-+	create_message(r, lkb, to_nodeid, DLM_MSG_GRANT, &ms, &mh);
- 	send_args(r, lkb, ms);
- 
- 	ms->m_result = 0;
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
-- out:
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode)
-+static void send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh);
--	if (error)
--		goto out;
-+	create_message(r, NULL, to_nodeid, DLM_MSG_BAST, &ms, &mh);
- 
- 	send_args(r, lkb, ms);
- 
- 	ms->m_bastmode = cpu_to_le32(mode);
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
-- out:
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = dlm_dir_nodeid(r);
- 
- 	add_to_waiters(lkb, DLM_MSG_LOOKUP, to_nodeid);
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh);
--	if (error)
--		goto fail;
-+	create_message(r, NULL, to_nodeid, DLM_MSG_LOOKUP, &ms, &mh);
- 
- 	send_args(r, lkb, ms);
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
--	if (error)
--		goto fail;
--	return 0;
--
-- fail:
--	remove_from_waiters(lkb, DLM_MSG_LOOKUP_REPLY);
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_remove(struct dlm_rsb *r)
-+static void send_remove(struct dlm_rsb *r)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = dlm_dir_nodeid(r);
- 
--	error = create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh);
--	if (error)
--		goto out;
-+	create_message(r, NULL, to_nodeid, DLM_MSG_REMOVE, &ms, &mh);
- 
- 	memcpy(ms->m_extra, r->res_name, r->res_length);
- 	ms->m_hash = cpu_to_le32(r->res_hash);
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
-- out:
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_common_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
--			     int mstype, int rv)
-+static void send_common_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			      int mstype, int rv)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int to_nodeid, error;
-+	int to_nodeid;
- 
- 	to_nodeid = lkb->lkb_nodeid;
- 
--	error = create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
--	if (error)
--		goto out;
-+	create_message(r, lkb, to_nodeid, mstype, &ms, &mh);
- 
- 	send_args(r, lkb, ms);
- 
- 	ms->m_result = cpu_to_le32(to_dlm_errno(rv));
- 
--	error = send_message(mh, ms, r->res_name, r->res_length);
-- out:
--	return error;
-+	send_message(mh, ms, r->res_name, r->res_length);
- }
- 
--static int send_request_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
-+static void send_request_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
- {
--	return send_common_reply(r, lkb, DLM_MSG_REQUEST_REPLY, rv);
-+	send_common_reply(r, lkb, DLM_MSG_REQUEST_REPLY, rv);
- }
- 
--static int send_convert_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
-+static void send_convert_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
- {
--	return send_common_reply(r, lkb, DLM_MSG_CONVERT_REPLY, rv);
-+	send_common_reply(r, lkb, DLM_MSG_CONVERT_REPLY, rv);
- }
- 
--static int send_unlock_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
-+static void send_unlock_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
- {
--	return send_common_reply(r, lkb, DLM_MSG_UNLOCK_REPLY, rv);
-+	send_common_reply(r, lkb, DLM_MSG_UNLOCK_REPLY, rv);
- }
- 
--static int send_cancel_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
-+static void send_cancel_reply(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
- {
--	return send_common_reply(r, lkb, DLM_MSG_CANCEL_REPLY, rv);
-+	send_common_reply(r, lkb, DLM_MSG_CANCEL_REPLY, rv);
- }
- 
--static int send_lookup_reply(struct dlm_ls *ls,
--			     const struct dlm_message *ms_in, int ret_nodeid,
--			     int rv)
-+static void send_lookup_reply(struct dlm_ls *ls,
-+			      const struct dlm_message *ms_in, int ret_nodeid,
-+			      int rv)
- {
- 	struct dlm_rsb *r = &ls->ls_local_rsb;
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int error, nodeid = le32_to_cpu(ms_in->m_header.h_nodeid);
-+	int nodeid = le32_to_cpu(ms_in->m_header.h_nodeid);
- 
--	error = create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh);
--	if (error)
--		goto out;
-+	create_message(r, NULL, nodeid, DLM_MSG_LOOKUP_REPLY, &ms, &mh);
- 
- 	ms->m_lkid = ms_in->m_lkid;
- 	ms->m_result = cpu_to_le32(to_dlm_errno(rv));
- 	ms->m_nodeid = cpu_to_le32(ret_nodeid);
- 
--	error = send_message(mh, ms, ms_in->m_extra, receive_extralen(ms_in));
-- out:
--	return error;
-+	send_message(mh, ms, ms_in->m_extra, receive_extralen(ms_in));
- }
- 
- /* which args we save from a received message depends heavily on the type
-@@ -6258,29 +6193,24 @@ static void do_purge(struct dlm_ls *ls, int nodeid, int pid)
- 	spin_unlock_bh(&ls->ls_orphans_lock);
- }
- 
--static int send_purge(struct dlm_ls *ls, int nodeid, int pid)
-+static void send_purge(struct dlm_ls *ls, int nodeid, int pid)
- {
- 	struct dlm_message *ms;
- 	struct dlm_mhandle *mh;
--	int error;
- 
--	error = _create_message(ls, sizeof(struct dlm_message), nodeid,
--				DLM_MSG_PURGE, &ms, &mh);
--	if (error)
--		return error;
-+	_create_message(ls, sizeof(struct dlm_message), nodeid,
-+			DLM_MSG_PURGE, &ms, &mh);
- 	ms->m_nodeid = cpu_to_le32(nodeid);
- 	ms->m_pid = cpu_to_le32(pid);
- 
--	return send_message(mh, ms, NULL, 0);
-+	send_message(mh, ms, NULL, 0);
- }
- 
--int dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
--		   int nodeid, int pid)
-+void dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
-+		    int nodeid, int pid)
+-static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
++static void _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
  {
 -	int error = 0;
--
- 	if (nodeid && (nodeid != dlm_our_nodeid())) {
--		error = send_purge(ls, nodeid, pid);
-+		send_purge(ls, nodeid, pid);
- 	} else {
- 		dlm_lock_recovery(ls);
- 		if (pid == current->pid)
-@@ -6289,7 +6219,6 @@ int dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
- 			do_purge(ls, nodeid, pid);
- 		dlm_unlock_recovery(ls);
++	int error;
+ 
+ 	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
+ 
+@@ -3283,15 +3283,13 @@ static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 		   between do_convert and do_convert_effects */
+ 		do_convert_effects(r, lkb, error);
  	}
+-
 -	return error;
  }
  
- /* debug functionality */
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index b23d7b854ed4..45ffe149ae3b 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -55,8 +55,8 @@ int dlm_user_unlock(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 	uint32_t flags, uint32_t lkid, char *lvb_in);
- int dlm_user_cancel(struct dlm_ls *ls,  struct dlm_user_args *ua_tmp,
- 	uint32_t flags, uint32_t lkid);
--int dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
--	int nodeid, int pid);
-+void dlm_user_purge(struct dlm_ls *ls, struct dlm_user_proc *proc,
-+		    int nodeid, int pid);
- int dlm_user_deadlock(struct dlm_ls *ls, uint32_t flags, uint32_t lkid);
- void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc);
- int dlm_debug_add_lkb(struct dlm_ls *ls, uint32_t lkb_id, char *name, int len,
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index 5cb3896be826..4b1f5679907f 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -390,16 +390,15 @@ static int device_user_purge(struct dlm_user_proc *proc,
- 			     struct dlm_purge_params *params)
+ /* remove an existing lkb from the granted queue */
+ 
+-static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
++static void _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
  {
- 	struct dlm_ls *ls;
--	int error;
+-	int error = 0;
++	int error;
  
- 	ls = dlm_find_lockspace_local(proc->lockspace);
- 	if (!ls)
- 		return -ENOENT;
- 
--	error = dlm_user_purge(ls, proc, params->nodeid, params->pid);
-+	dlm_user_purge(ls, proc, params->nodeid, params->pid);
- 
- 	dlm_put_lockspace(ls);
+ 	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_REQUEST &&
+ 		lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
+@@ -3305,15 +3303,13 @@ static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 		   between do_unlock and do_unlock_effects */
+ 		do_unlock_effects(r, lkb, error);
+ 	}
+-
 -	return error;
-+	return 0;
  }
  
- static int device_create_lockspace(struct dlm_lspace_params *params)
+ /* remove an existing lkb from the convert or wait queue */
+ 
+-static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
++static void _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ {
+-	int error = 0;
++	int error;
+ 
+ 	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_REQUEST &&
+ 		lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
+@@ -3327,8 +3323,6 @@ static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 		   between do_cancel and do_cancel_effects */
+ 		do_cancel_effects(r, lkb, error);
+ 	}
+-
+-	return error;
+ }
+ 
+ /*
+@@ -3385,7 +3379,7 @@ static int convert_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
+ 
+-	error = _convert_lock(r, lkb);
++	_convert_lock(r, lkb);
+  out:
+ 	unlock_rsb(r);
+ 	put_rsb(r);
+@@ -3407,7 +3401,7 @@ static int unlock_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
+ 
+-	error = _unlock_lock(r, lkb);
++	_unlock_lock(r, lkb);
+  out:
+ 	unlock_rsb(r);
+ 	put_rsb(r);
+@@ -3429,7 +3423,7 @@ static int cancel_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	if (error)
+ 		goto out;
+ 
+-	error = _cancel_lock(r, lkb);
++	_cancel_lock(r, lkb);
+  out:
+ 	unlock_rsb(r);
+ 	put_rsb(r);
+@@ -3482,13 +3476,11 @@ int dlm_lock(dlm_lockspace_t *lockspace,
+ 	else
+ 		error = request_lock(ls, lkb, name, namelen, &args);
+ 
+-	if (error == -EINPROGRESS)
+-		error = 0;
+  out_put:
+ 	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, true);
+ 
+ 	__put_lkb(ls, lkb);
+-	if (error == -EAGAIN || error == -EDEADLK)
++	if (error == -EAGAIN || error == -EINPROGRESS)
+ 		error = 0;
+  out:
+ 	dlm_unlock_recovery(ls);
+@@ -3528,8 +3520,6 @@ int dlm_unlock(dlm_lockspace_t *lockspace,
+ 	else
+ 		error = unlock_lock(ls, lkb, &args);
+ 
+-	if (error == -DLM_EUNLOCK || error == -DLM_ECANCEL)
+-		error = 0;
+ 	if (error == -EBUSY && (flags & (DLM_LKF_CANCEL | DLM_LKF_FORCEUNLOCK)))
+ 		error = 0;
+  out_put:
+@@ -4497,7 +4487,6 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 			confirm_master(r, result);
+ 		} else {
+ 			_request_lock(r, lkb);
+-
+ 			if (r->res_master_nodeid == dlm_our_nodeid())
+ 				confirm_master(r, 0);
+ 		}
+@@ -5884,8 +5873,6 @@ int dlm_user_convert(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
+ 
+ 	error = convert_lock(ls, lkb, &args);
+ 
+-	if (error == -EINPROGRESS || error == -EAGAIN || error == -EDEADLK)
+-		error = 0;
+  out_put:
+ 	trace_dlm_lock_end(ls, lkb, NULL, 0, mode, flags, error, false);
+ 	dlm_put_lkb(lkb);
+@@ -6092,7 +6079,7 @@ int dlm_user_deadlock(struct dlm_ls *ls, uint32_t flags, uint32_t lkid)
+ 		goto out_r;
+ 	set_bit(DLM_IFL_DEADLOCK_CANCEL_BIT, &lkb->lkb_iflags);
+ 
+-	error = _cancel_lock(r, lkb);
++	_cancel_lock(r, lkb);
+  out_r:
+ 	unlock_rsb(r);
+ 	put_rsb(r);
 -- 
 2.43.0
 
