@@ -1,54 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2832194C92
-	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B84322E
+	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731012395; cv=none; b=UbmTMw2ZhteUk+I/eiAWbjtwrfCirQe6U7fYrTBg2I6KcDmfNfhtUl4ReHjeKThnS6xC18LY8uTLDwQnV+BqCXk/HYvbYDBlv/kYe0Pq3d1Vk4jec0ooVEocqMizHQLrULSVlf3kaPayzvZMW1QytvFPUb/vtbjyApRt/9IDHRw=
+	t=1731012396; cv=none; b=Z/hGvKWNvcjx6/faPMfZbvA4F3UI1X+6RdB7WTAsxY7GW7Xh0MFqfEanitoTPppk2pzwpGibGnre5ScSC1FW/pZHVFfD04miZhwK8cpU4/sl1UkDA0DGbruDpSdkISnBi1yKmRxo0Q9t7xsnPK9WWAGIRIfWmCuk9uGAj1K9lTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731012395; c=relaxed/simple;
-	bh=Ee+WJSUpDXPY5+fqcd/6Bb51V7VLe4YMi7LPs6z31+w=;
+	s=arc-20240116; t=1731012396; c=relaxed/simple;
+	bh=R+nlzACWdZpf8FTFSBFz7hG16F3RDf09XONmAcHh+kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ffujhbIQPHGhLRQrQ+Yjc5I/wIFyh7JRytSuA+LAWR7M0WTgsdktmtkABFgep2kq5Sf8i+QvwnhhRZQKp3vcZd3ToisINSYgqSGLJzov85BH4ucNI0YEZQGKriQzSzdfBfpPh+DsFdrllQCV/mhhZh7BIuyzKkDNWxF/UTyuLfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YcAIv9Os; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=q7MnxaycUHAClWz8ZyRRjfuYwkzTp1IhuRRAUN5tAMe93j3SBzP3M0DqBr+9i1Z/Ls+aHlMM6UR7iwXLe8aNn6P5251m9NURGuyFAj5rcPfcrUS6dEcwRGbpaH6PPFW4AWJWxD7j3D3jluUKLp+LmWWS/4SOh1Krw8zzeAKAJv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CpMZMnR0; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YcAIv9Os"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CpMZMnR0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731012392;
+	s=mimecast20190719; t=1731012393;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+dS5qIbk6i6lTGbg/Td4Wtrq8An2AssxBtAu1lat2js=;
-	b=YcAIv9Osz96416tY86bEx0qADM7JgK1MLiIR6+31BQTVxIWMYacGFfIUiNEpaCozwPfZ6w
-	oMQFC4mY+jU/aZFSxiO8De060Q9OKI1glWYgj7nS4eP4a0g5fK616y27ZWax+L45bd0i8w
-	jQwvDRoN0YAOGxWA6RLXCFmraGuRoMw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=jgsiCXo0EXLm1GUcn13v0DviYjhwpfzrm3mpl7oQIrA=;
+	b=CpMZMnR0NLZSgxT+0r+Pb6Ay2N01nkXdfEBRixtzdMjYW7uIo5fp4qDhMQ8/CWPtR3zu0f
+	oXFeyDL8G2SdGcOVErslYex6xiOLkcTykipTi2GkmJYAwxqbiBgpQFaPG8yTB+GOLR6uS0
+	dw4WJ08c55QoRA2WH5TNOPmkQYwMVA4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-siRTfZwHNAimpShChOH0Hg-1; Thu,
- 07 Nov 2024 15:46:31 -0500
-X-MC-Unique: siRTfZwHNAimpShChOH0Hg-1
-X-Mimecast-MFC-AGG-ID: siRTfZwHNAimpShChOH0Hg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-aXHx3tW0OqujyUKLDE5oNA-1; Thu,
+ 07 Nov 2024 15:46:29 -0500
+X-MC-Unique: aXHx3tW0OqujyUKLDE5oNA-1
+X-Mimecast-MFC-AGG-ID: aXHx3tW0OqujyUKLDE5oNA
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA7ED19560B2
-	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:30 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 205D219560B4
+	for <gfs2@lists.linux.dev>; Thu,  7 Nov 2024 20:46:29 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 26B0E300019E;
-	Thu,  7 Nov 2024 20:46:30 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8146B300019F;
+	Thu,  7 Nov 2024 20:46:28 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [RFC dlm/next 11/11] dlm: return void for _request_lock function
-Date: Thu,  7 Nov 2024 15:46:17 -0500
-Message-ID: <20241107204617.147842-12-aahringo@redhat.com>
+Subject: [RFC dlm/next 09/11] dlm: introduce new lkb refcount model
+Date: Thu,  7 Nov 2024 15:46:15 -0500
+Message-ID: <20241107204617.147842-10-aahringo@redhat.com>
 In-Reply-To: <20241107204617.147842-1-aahringo@redhat.com>
 References: <20241107204617.147842-1-aahringo@redhat.com>
 Precedence: bulk
@@ -59,180 +59,375 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: v5xiP7rAJbGJBhKgOzuJ06NnWGiuryUsNow77rCqeNA_1731012390
+X-Mimecast-MFC-PROC-ID: M_cxY_LocXl79fLbJTGC2PCOv74MzkgeYJvBSWu26eg_1731012389
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Change the _request_lock() function that it cannot fail as the recent
-changes to the lkb refcounting model does not require to evaluate the
-return value to may call a put.
+The current lkb refcount requires to evaluate return values from
+functions e.g. _request_lock(). We do that sometimes and we don't do
+that sometimes. If we don't do that the lkb referencing to a lock
+resource need to associated with a remote lock master. If this is the
+case or not requires a lot of thinking as recovery can also change
+states.
 
-For the dlm_user_request() function we still need to know if the result
--EAGAIN was happening as the lkb lifetime ends to not add the lkb to the
-ownqueue. This is the only user, we use a call-by-reference result
-parameter to allow the user to know if the lkb lifetime ended
-immediately on the lock request as dlm_user_request() requires.
+The new lkb refcount model drops all the necessarily evaluation of the
+return value as it introduce a lkb request state model. A lkb has a
+specific lifetime that is tight to an ast callback, depending on the lkb
+request state and the ast return value it signals when an lkb lifetime
+ends or not.
+
+This new model is more robust to being broken as we would notice more a
+missing ast callback than a missing return value check of e.g.
+_request_lock(). Additional we can check for invalid lkb request states
+over the lifetime or invalid ast result codes depending on this state.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c | 49 ++++++++++++++++++++++---------------------------
- 1 file changed, 22 insertions(+), 27 deletions(-)
+ fs/dlm/dlm_internal.h |  13 ++++
+ fs/dlm/lock.c         | 146 ++++++++++++++++++++++++++++++++++--------
+ 2 files changed, 132 insertions(+), 27 deletions(-)
 
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index d534a4bc162b..cd07077550c5 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -250,6 +250,17 @@ struct dlm_callback {
+ 	struct list_head	list;
+ };
+ 
++/* This enum values represents the LKB lifetime states.
++ * A lkb can be over the time in an initial request state,
++ * then only conversions as requests are allowed until the
++ * lifetime ends by calling unlock.
++ */
++enum dlm_lkb_rq_state {
++	DLM_LKB_RQ_STATE_REQUEST,
++	DLM_LKB_RQ_STATE_CONVERT,
++	DLM_LKB_RQ_STATE_UNLOCK,
++};
++
+ struct dlm_lkb {
+ 	struct dlm_rsb		*lkb_resource;	/* the rsb */
+ 	struct kref		lkb_ref;
+@@ -263,6 +274,8 @@ struct dlm_lkb {
+ 	unsigned long		lkb_iflags;	/* internal flags */
+ 	uint32_t		lkb_lvbseq;	/* lvb sequence number */
+ 
++	enum dlm_lkb_rq_state	lkb_rq_state;
++
+ 	int8_t			lkb_status;     /* granted, waiting, convert */
+ 	int8_t			lkb_rqmode;	/* requested lock mode */
+ 	int8_t			lkb_grmode;	/* granted lock mode */
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 28c312410527..10058c89c811 100644
+index 9d2d3567bf9d..1de8598d7451 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -83,7 +83,7 @@ static void send_grant(struct dlm_rsb *r, struct dlm_lkb *lkb);
- static void send_bast(struct dlm_rsb *r, struct dlm_lkb *lkb, int mode);
- static void send_lookup(struct dlm_rsb *r, struct dlm_lkb *lkb);
- static void send_remove(struct dlm_rsb *r);
--static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
-+static void _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb, int *result);
- static void _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb);
- static void __receive_convert_reply(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 				    const struct dlm_message *ms, bool local);
-@@ -2761,7 +2761,7 @@ static void process_lookup_list(struct dlm_rsb *r)
- 
- 	list_for_each_entry_safe(lkb, safe, &r->res_lookup, lkb_rsb_lookup) {
- 		list_del_init(&lkb->lkb_rsb_lookup);
--		_request_lock(r, lkb);
-+		_request_lock(r, lkb, NULL);
- 		dlm_put_lkb(lkb);
- 	}
+@@ -287,17 +287,99 @@ static inline int is_overlap(struct dlm_lkb *lkb)
+ 	       test_bit(DLM_IFL_OVERLAP_CANCEL_BIT, &lkb->lkb_iflags);
  }
-@@ -2796,7 +2796,7 @@ static void confirm_master(struct dlm_rsb *r, int error)
- 					 lkb_rsb_lookup);
- 			list_del_init(&lkb->lkb_rsb_lookup);
- 			r->res_first_lkid = lkb->lkb_id;
--			_request_lock(r, lkb);
-+			_request_lock(r, lkb, NULL);
+ 
+-static void queue_cast(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
++static void dlm_lkb_queue_cb_may_put(struct dlm_lkb *lkb, int status)
+ {
+-	if (is_master_copy(lkb))
+-		return;
++	switch (status) {
++	case 0:
++		switch (lkb->lkb_rq_state) {
++		case DLM_LKB_RQ_STATE_REQUEST:
++			lkb->lkb_rq_state = DLM_LKB_RQ_STATE_CONVERT;
++			break;
++		case DLM_LKB_RQ_STATE_CONVERT:
++			break;
++		default:
++			WARN_ON(1);
++			break;
++		}
+ 
+-	DLM_ASSERT(lkb->lkb_lksb, dlm_print_lkb(lkb););
++		break;
++	case -DLM_ECANCEL:
++		switch (lkb->lkb_rq_state) {
++		case DLM_LKB_RQ_STATE_REQUEST:
++			/* cancel on a request will end the lkb lifetime
++			 * as it is the initial lock request.
++			 */
++			dlm_put_lkb(lkb);
++			break;
++		case DLM_LKB_RQ_STATE_CONVERT:
++			break;
++		default:
++			WARN_ON(1);
++			break;
++		}
++
++		break;
++	case -EAGAIN:
++		switch (lkb->lkb_rq_state) {
++		case DLM_LKB_RQ_STATE_REQUEST:
++			/* -EAGAIN ends the lkb lifetime as the initial lock
++			 * request failed.
++			 */
++			dlm_put_lkb(lkb);
++			break;
++		case DLM_LKB_RQ_STATE_CONVERT:
++			break;
++		default:
++			WARN_ON(1);
++			break;
++		}
++
++		break;
++	case -EDEADLK:
++		switch (lkb->lkb_rq_state) {
++		case DLM_LKB_RQ_STATE_CONVERT:
++			break;
++		default:
++			WARN_ON(1);
++			break;
++		}
++
++		break;
++	case -DLM_EUNLOCK:
++		switch (lkb->lkb_rq_state) {
++		case DLM_LKB_RQ_STATE_REQUEST:
++			fallthrough;
++		case DLM_LKB_RQ_STATE_CONVERT:
++			lkb->lkb_rq_state = DLM_LKB_RQ_STATE_UNLOCK;
++			break;
++		default:
++			WARN_ON(1);
++			break;
++		}
++
++		/* for any case an unlock ends the lifetime of a lkb */
++		dlm_put_lkb(lkb);
++		break;
++	default:
++		/* something we should check */
++		WARN_ON(1);
++		break;
++	}
++}
+ 
++static void queue_cast(struct dlm_rsb *r, struct dlm_lkb *lkb, int rv)
++{
+ 	if (rv == -DLM_ECANCEL &&
+ 	    test_and_clear_bit(DLM_IFL_DEADLOCK_CANCEL_BIT, &lkb->lkb_iflags))
+ 		rv = -EDEADLK;
+ 
++	dlm_lkb_queue_cb_may_put(lkb, rv);
++
++	if (is_master_copy(lkb))
++		return;
++
++	DLM_ASSERT(lkb->lkb_lksb, dlm_print_lkb(lkb););
++
+ 	dlm_add_cb(lkb, DLM_CB_CAST, lkb->lkb_grmode, rv, dlm_sbflags_val(lkb));
+ }
+ 
+@@ -1495,6 +1577,8 @@ static int _create_lkb(struct dlm_ls *ls, struct dlm_lkb **lkb_ret,
+ 	if (!lkb)
+ 		return -ENOMEM;
+ 
++	/* every lkb starts with a request as init request state */
++	lkb->lkb_rq_state = DLM_LKB_RQ_STATE_REQUEST;
+ 	lkb->lkb_last_bast_cb_mode = DLM_LOCK_IV;
+ 	lkb->lkb_last_cast_cb_mode = DLM_LOCK_IV;
+ 	lkb->lkb_last_cb_mode = DLM_LOCK_IV;
+@@ -1982,9 +2066,6 @@ static void _remove_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ {
+ 	del_lkb(r, lkb);
+ 	lkb->lkb_grmode = DLM_LOCK_IV;
+-	/* this unhold undoes the original ref from create_lkb()
+-	   so this leads to the lkb being freed */
+-	unhold_lkb(lkb);
+ }
+ 
+ static void remove_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+@@ -2018,9 +2099,6 @@ static int revert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	case DLM_LKSTS_WAITING:
+ 		del_lkb(r, lkb);
+ 		lkb->lkb_grmode = DLM_LOCK_IV;
+-		/* this unhold undoes the original ref from create_lkb()
+-		   so this leads to the lkb being freed */
+-		unhold_lkb(lkb);
+ 		rv = -1;
+ 		break;
+ 	default:
+@@ -2070,6 +2148,7 @@ static void grant_lock_pending(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 	grant_lock(r, lkb);
+ 	if (is_master_copy(lkb))
+ 		send_grant(r, lkb);
++
+ 	queue_cast(r, lkb, 0);
+ }
+ 
+@@ -2888,7 +2967,6 @@ static int validate_unlock_args(struct dlm_lkb *lkb, struct dlm_args *args)
+ 			queue_cast(lkb->lkb_resource, lkb,
+ 				   args->flags & DLM_LKF_CANCEL ?
+ 				   -DLM_ECANCEL : -DLM_EUNLOCK);
+-			unhold_lkb(lkb); /* undoes create_lkb() */
+ 			/* for lkb_rsb_lookup */
  			dlm_put_lkb(lkb);
  		}
- 		break;
-@@ -3241,7 +3241,7 @@ static void do_cancel_effects(struct dlm_rsb *r, struct dlm_lkb *lkb,
- 
- /* add a new lkb to a possibly new rsb, called by requesting process */
- 
--static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+static void _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb, int *result)
+@@ -3194,6 +3272,8 @@ static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
  {
- 	int error;
+ 	int error = 0;
  
-@@ -3263,7 +3263,8 @@ static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 		do_request_effects(r, lkb, error);
- 	}
-  out:
--	return error;
-+	if (result)
-+		*result = error;
- }
- 
- /* change some property of an existing lkb, e.g. mode */
-@@ -3332,7 +3333,7 @@ static void _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 
- static int request_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 			const void *name, int len,
--			struct dlm_args *args)
-+			struct dlm_args *args, int *result)
++	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
++
+ 	if (is_remote(r)) {
+ 		/* receive_convert() calls do_convert() on remote node */
+ 		send_convert(r, lkb);
+@@ -3213,6 +3293,9 @@ static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
  {
- 	struct dlm_rsb *r;
- 	int error;
-@@ -3357,11 +3358,11 @@ static int request_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	int error = 0;
+ 
++	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_REQUEST &&
++		lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
++
+ 	if (is_remote(r)) {
+ 		/* receive_unlock() calls do_unlock() on remote node */
+ 		send_unlock(r, lkb);
+@@ -3232,6 +3315,9 @@ static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ {
+ 	int error = 0;
+ 
++	WARN_ON(lkb->lkb_rq_state != DLM_LKB_RQ_STATE_REQUEST &&
++		lkb->lkb_rq_state != DLM_LKB_RQ_STATE_CONVERT);
++
+ 	if (is_remote(r)) {
+ 		/* receive_cancel() calls do_cancel() on remote node */
+ 		send_cancel(r, lkb);
+@@ -3265,6 +3351,13 @@ static int request_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	if (error)
+ 		return error;
+ 
++	/* this reference is for the lkb lifetime that can
++	 * end on a ast callback, see dlm_lkb_queue_cb_may_put().
++	 *
++	 * at this point the request must return an ast callback.
++	 */
++	hold_lkb(lkb);
++
+ 	lock_rsb(r);
+ 
  	attach_lkb(r, lkb);
- 	lkb->lkb_lksb->sb_lkid = lkb->lkb_id;
- 
--	error = _request_lock(r, lkb);
-+	_request_lock(r, lkb, result);
- 
- 	unlock_rsb(r);
- 	put_rsb(r);
--	return error;
-+	return 0;
- }
- 
- static int convert_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
-@@ -3474,14 +3475,12 @@ int dlm_lock(dlm_lockspace_t *lockspace,
- 	if (convert)
- 		error = convert_lock(ls, lkb, &args);
- 	else
--		error = request_lock(ls, lkb, name, namelen, &args);
-+		error = request_lock(ls, lkb, name, namelen, &args, NULL);
- 
+@@ -3394,8 +3487,7 @@ int dlm_lock(dlm_lockspace_t *lockspace,
   out_put:
  	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, true);
  
- 	__put_lkb(ls, lkb);
--	if (error == -EAGAIN || error == -EINPROGRESS)
--		error = 0;
+-	if (convert || error)
+-		__put_lkb(ls, lkb);
++	__put_lkb(ls, lkb);
+ 	if (error == -EAGAIN || error == -EDEADLK)
+ 		error = 0;
   out:
- 	dlm_unlock_recovery(ls);
- 	dlm_put_lockspace(ls);
-@@ -4486,7 +4485,7 @@ static int receive_request_reply(struct dlm_ls *ls,
+@@ -3968,13 +4060,15 @@ static int receive_request(struct dlm_ls *ls, const struct dlm_message *ms)
+ 	send_request_reply(r, lkb, error);
+ 	do_request_effects(r, lkb, error);
+ 
++	/* no dlm_put_lkb() because the lkb is created and the request
++	 * is sent out. The answer cannot be handled yet because we
++	 * still hold the rsb lock. The initial refcount of 1 from
++	 * create_lkb() is the lkb lifetime refcount.
++	 */
++
+ 	unlock_rsb(r);
+ 	put_rsb(r);
+ 
+-	if (error == -EINPROGRESS)
+-		error = 0;
+-	if (error)
+-		dlm_put_lkb(lkb);
+ 	return 0;
+ 
+  fail:
+@@ -4363,7 +4457,6 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 		/* request would block (be queued) on remote master */
+ 		queue_cast(r, lkb, -EAGAIN);
+ 		confirm_master(r, -EAGAIN);
+-		unhold_lkb(lkb); /* undoes create_lkb() */
+ 		break;
+ 
+ 	case -EINPROGRESS:
+@@ -4402,7 +4495,6 @@ static int receive_request_reply(struct dlm_ls *ls,
+ 			/* we'll ignore error in cancel/unlock reply */
  			queue_cast_overlap(r, lkb);
  			confirm_master(r, result);
+-			unhold_lkb(lkb); /* undoes create_lkb() */
  		} else {
--			_request_lock(r, lkb);
-+			_request_lock(r, lkb, NULL);
- 			if (r->res_master_nodeid == dlm_our_nodeid())
- 				confirm_master(r, 0);
- 		}
-@@ -4772,7 +4771,7 @@ static void receive_lookup_reply(struct dlm_ls *ls,
+ 			_request_lock(r, lkb);
+ 
+@@ -4688,7 +4780,6 @@ static void receive_lookup_reply(struct dlm_ls *ls,
+ 		log_debug(ls, "receive_lookup_reply %x unlock %x",
+ 			  lkb->lkb_id, dlm_iflags_val(lkb));
+ 		queue_cast_overlap(r, lkb);
+-		unhold_lkb(lkb); /* undoes create_lkb() */
  		goto out_list;
  	}
  
--	_request_lock(r, lkb);
-+	_request_lock(r, lkb, NULL);
+@@ -5215,6 +5306,7 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
  
-  out_list:
- 	if (do_lookup_list)
-@@ -5328,7 +5327,7 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
- 			switch (mstype) {
- 			case DLM_MSG_LOOKUP:
+ 		/* Forcibly remove from waiters list */
+ 		spin_lock_bh(&ls->ls_waiters_lock);
++		/* above unhold_lkb() contains waiters list ref */
+ 		list_del_init(&lkb->lkb_wait_reply);
+ 		spin_unlock_bh(&ls->ls_waiters_lock);
+ 
+@@ -5231,7 +5323,6 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
  			case DLM_MSG_REQUEST:
--				_request_lock(r, lkb);
-+				_request_lock(r, lkb, NULL);
- 				if (r->res_nodeid != -1 && is_master(r))
- 					confirm_master(r, 0);
+ 				queue_cast(r, lkb, ou ? -DLM_EUNLOCK :
+ 							-DLM_ECANCEL);
+-				unhold_lkb(lkb); /* undoes create_lkb() */
  				break;
-@@ -5767,7 +5766,7 @@ int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
+ 			case DLM_MSG_CONVERT:
+ 				if (oc) {
+@@ -5268,6 +5359,7 @@ int dlm_recover_waiters_post(struct dlm_ls *ls)
+ 		}
+ 		unlock_rsb(r);
+ 		put_rsb(r);
++		/* for find_resend_waiter() */
+ 		dlm_put_lkb(lkb);
+ 	}
+ 
+@@ -5686,7 +5778,6 @@ int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
  {
  	struct dlm_lkb *lkb;
  	struct dlm_args args;
--	int error;
-+	int error, result;
+-	bool do_put = true;
+ 	int error;
  
  	dlm_lock_recovery(ls);
+@@ -5740,11 +5831,9 @@ int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
+ 	hold_lkb(lkb);
+ 	list_add_tail(&lkb->lkb_ownqueue, &ua->proc->locks);
+ 	spin_unlock_bh(&ua->proc->locks_spin);
+-	do_put = false;
+  out_put:
+ 	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, false);
+-	if (do_put)
+-		__put_lkb(ls, lkb);
++	__put_lkb(ls, lkb);
+  out:
+ 	dlm_unlock_recovery(ls);
+ 	return error;
+@@ -6062,8 +6151,11 @@ static int unlock_proc_lock(struct dlm_ls *ls, struct dlm_lkb *lkb)
+ }
  
-@@ -5800,20 +5799,16 @@ int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
- 	   When DLM_DFL_USER_BIT is set, the dlm knows that this is a userspace
- 	   lock and that lkb_astparam is the dlm_user_args structure. */
- 	set_bit(DLM_DFL_USER_BIT, &lkb->lkb_dflags);
--	error = request_lock(ls, lkb, name, namelen, &args);
-+	error = request_lock(ls, lkb, name, namelen, &args, &result);
-+	if (error)
-+		goto out_put;
+ /* We have to release clear_proc_locks mutex before calling unlock_proc_lock()
+-   (which does lock_rsb) due to deadlock with receiving a message that does
+-   lock_rsb followed by dlm_user_add_cb() */
++ * (which does lock_rsb) due to deadlock with receiving a message that does
++ * lock_rsb followed by dlm_user_add_cb()
++ *
++ * caller needs to call dlm_put_lkb() when lkb returns
++ */
  
--	switch (error) {
--	case 0:
--		break;
--	case -EINPROGRESS:
--		error = 0;
--		break;
--	case -EAGAIN:
--		error = 0;
--		fallthrough;
--	default:
-+	/* the lkb lifetime ended because request_lock() handled
-+	 * internally an -EAGAIN, so we don't add it to the
-+	 * ownqueue.
-+	 */
-+	if (result == -EAGAIN)
- 		goto out_put;
--	}
- 
- 	/* add this new lkb to the per-process list of locks */
- 	spin_lock_bh(&ua->proc->locks_spin);
+ static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
+ 				     struct dlm_user_proc *proc)
 -- 
 2.43.0
 
