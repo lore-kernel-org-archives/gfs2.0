@@ -1,28 +1,28 @@
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA96199FAC
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 11:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394801993B7
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 11:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731930319; cv=none; b=NybImm0KXoSRXabtv2ifsr0dbkzYPsj0pqJfwXzk2BOpVje2HTkyA4utY9gq4X7LhL9FD2mF5rf047yUY4St0eAFQYcWZeoYNjVPnyERB0IdvU6lqX/OTE7FT5K6ru4RYOugjZRKQhBfj58VWrS00kjClog7b/gBmPsfL8g+qTw=
+	t=1731930320; cv=none; b=phVzZjoBBKzSUIZdiDKeIXJ3ptbGSOSmoi1ZRSmDu/bEbN3PQ9lD3az6r5u03gnz8ngjTG1qnrNIvpAUO6w409AALV2YTrrd2icxSC6NpCeAk5Vp2udm5OOoWC5jM92KpAVdk2w10Zk6arcJiKMPAsVGlCz4rBoieGBLBSEPxf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731930319; c=relaxed/simple;
-	bh=lWSLPRuV+mb9jmNhM4FND2hrmaTWA3erZEgnMnmts00=;
+	s=arc-20240116; t=1731930320; c=relaxed/simple;
+	bh=0gvTj1u+Nh96S3z8U1HSnGFASw5nn0sz0706NVg2GlI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n/E/BON9Usr+PZKZ2BqaLpqyX7BheXHQQ9GIfZ/NF8qIlVJ/fyzizfynuzKAZxPKWbXAn+UZxe7dB7GrEIhvkAcOtQ4GSNXkXpCAxn3VGaw19W7CiiqH+JMjS8cz4Q/HPp2oRf5YF03/9cRJKr/muQp3t8Fq3ZZlCdry6TLwjmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+	 MIME-Version; b=C3uP9zBwFEfAzmaC79xf3mQpJy/d2yqZIwhCvPESXmWu/IqxKzVGdZMGGHrIWTXd1SKfee+0BfxXsGH8k5L2lO8gC11R0OpBKgL/f/9gbZgUi3Ssc8KWWFFa1n3wdVuGNCFGTWtOsbZfN/oHpV9VRoKdiH5FldkrdkC4CgotxNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
 Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XsQlq5Yxvz4f3jXv
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:44:55 +0800 (CST)
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XsQls0qpfz4f3jXv
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:44:57 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 366C11A0197
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:45:14 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 82B131A0196
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:45:15 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.101.107])
-	by APP4 (Coremail) with SMTP id gCh0CgCnzoLEKDtn3fCKCA--.48005S9;
-	Mon, 18 Nov 2024 19:45:13 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgCnzoLEKDtn3fCKCA--.48005S11;
+	Mon, 18 Nov 2024 19:45:15 +0800 (CST)
 From: Ye Bin <yebin@huaweicloud.com>
 To: viro@zeniv.linux.org.uk,
 	brauner@kernel.org,
@@ -41,9 +41,9 @@ To: viro@zeniv.linux.org.uk,
 	linux-security-module@vger.kernel.org
 Cc: yebin10@huawei.com,
 	zhangxiaoxu5@huawei.com
-Subject: [PATCH 05/11] fs: use sb_for_each_inodes_safe API
-Date: Mon, 18 Nov 2024 19:45:02 +0800
-Message-Id: <20241118114508.1405494-6-yebin@huaweicloud.com>
+Subject: [PATCH 07/11] quota: use sb_for_each_inodes API
+Date: Mon, 18 Nov 2024 19:45:04 +0800
+Message-Id: <20241118114508.1405494-8-yebin@huaweicloud.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241118114508.1405494-1-yebin@huaweicloud.com>
 References: <20241118114508.1405494-1-yebin@huaweicloud.com>
@@ -54,10 +54,10 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnzoLEKDtn3fCKCA--.48005S9
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFWkXr1xtFWUXw1fJryfXrb_yoWDCwb_Aa
-	43ZF95Kw4aq3sYkr4DtwsxXF909w1kGr13ury7tFW5trnFqas8XwsFyFyYvr48CF1Sg398
-	Ar1fXFyfGr4IgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+X-CM-TRANSID:gCh0CgCnzoLEKDtn3fCKCA--.48005S11
+X-Coremail-Antispam: 1UD129KBjvdXoWrtr1UWw13ZrW5tFy8CF4xXrb_yoWkAFX_CF
+	yfAr1UCr4fXrsagr4qyrsxXF9Y9ws5Ga1UWrW7tFnxAr1jqas5XF4Dtr98Zrn7Ca13K398
+	Crs7JFy3GFWfKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
 	9fnUUIcSsGvfJTRUUUbgxYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
 	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s
 	0DM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
@@ -76,35 +76,35 @@ X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
 
 From: Ye Bin <yebin10@huawei.com>
 
-Use sb_for_each_inodes_safe API foreach super_block->s_inodes.
+Use sb_for_each_inodes API foreach super_block->s_inodes.
 
 Signed-off-by: Ye Bin <yebin10@huawei.com>
 ---
- fs/inode.c | 4 ++--
+ fs/quota/dquot.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index e5a60084a7a9..dc966990bda6 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -861,7 +861,7 @@ void evict_inodes(struct super_block *sb)
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index b40410cd39af..414f92bb762c 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -1027,7 +1027,7 @@ static int add_dquot_ref(struct super_block *sb, int type)
+ 	int err = 0;
  
- again:
  	spin_lock(&sb->s_inode_list_lock);
--	list_for_each_entry_safe(inode, next, &sb->s_inodes, i_sb_list) {
-+	sb_for_each_inodes_safe(inode, next, &sb->s_inodes) {
- 		if (atomic_read(&inode->i_count))
- 			continue;
- 
-@@ -911,7 +911,7 @@ void invalidate_inodes(struct super_block *sb)
- 
- again:
- 	spin_lock(&sb->s_inode_list_lock);
--	list_for_each_entry_safe(inode, next, &sb->s_inodes, i_sb_list) {
-+	sb_for_each_inodes_safe(inode, next, &sb->s_inodes) {
+-	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++	sb_for_each_inodes(inode, &sb->s_inodes) {
  		spin_lock(&inode->i_lock);
- 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
- 			spin_unlock(&inode->i_lock);
+ 		if ((inode->i_state & (I_FREEING|I_WILL_FREE|I_NEW)) ||
+ 		    !atomic_read(&inode->i_writecount) ||
+@@ -1083,7 +1083,7 @@ static void remove_dquot_ref(struct super_block *sb, int type)
+ #endif
+ 
+ 	spin_lock(&sb->s_inode_list_lock);
+-	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
++	sb_for_each_inodes(inode, &sb->s_inodes) {
+ 		/*
+ 		 *  We have to scan also I_NEW inodes because they can already
+ 		 *  have quota pointer initialized. Luckily, we need to touch
 -- 
 2.34.1
 
