@@ -1,174 +1,89 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C915819A28D
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 11:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D19B4086A
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 16:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731930322; cv=none; b=LkYYecwIDVrn8wQAS7QkNO0WUUIrc3ZpahmuaUestjz6wCu7mGRTQkAgBhmZHXz5c+fssumhW2zjwK4pi+IWRlC3kR+kixcmSNpLDGsbNUtHoXlWOHHYJ5+938OGKHX02IVTSg9A65MLm0Rst01lDZmFMZvmFEcn+G3IB7wuC7E=
+	t=1731945721; cv=none; b=j7cmS7GHO3+LWVvt+mRcHpVX0XBA5PETp7/oAMQgRiW29fq+LOARrjxi2hS3IS8BqGeJ/e4sgrBcw1kkmVEAnSHXdPv7+1FgxSdhX80LanSbwqhvPD/sDR0BafJf/51Q+G8w6lQWr95MBpJTRS6vJUw3mgl0KZAru6urIfuVVog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731930322; c=relaxed/simple;
-	bh=5kGt5YdPzQR7JjnloKlub9ZvkTDiI38fa29tAWFwlR0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pttNn4bi4B6+4suQzKyyIjgu60BFLbSDYhCu0qahQwzRrjNv0yuMdCccV2l7pLDvWhb+Jxdo0InS47VRVvHRss3/KHTdQc5cGAFGfG8060eonnVq0vdzU20ysk9nIpSE7TFoYJFE/9THwSu08PjyrSZaj8pRbga4NkDmWFbElcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XsQm05bbsz4f3lXB
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:45:04 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 28BEA1A058E
-	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:45:18 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.101.107])
-	by APP4 (Coremail) with SMTP id gCh0CgCnzoLEKDtn3fCKCA--.48005S15;
-	Mon, 18 Nov 2024 19:45:17 +0800 (CST)
-From: Ye Bin <yebin@huaweicloud.com>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	axboe@kernel.dk,
-	linux-block@vger.kernel.org,
-	agruenba@redhat.com,
-	gfs2@lists.linux.dev,
-	amir73il@gmail.com,
-	mic@digikod.net,
-	gnoack@google.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Cc: yebin10@huawei.com,
-	zhangxiaoxu5@huawei.com
-Subject: [PATCH 11/11] fs: fix potential soft lockup when 'sb->s_inodes' has large number of inodes
-Date: Mon, 18 Nov 2024 19:45:08 +0800
-Message-Id: <20241118114508.1405494-12-yebin@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241118114508.1405494-1-yebin@huaweicloud.com>
-References: <20241118114508.1405494-1-yebin@huaweicloud.com>
+	s=arc-20240116; t=1731945721; c=relaxed/simple;
+	bh=xmfCxg7y0l4lx4QC5BNzaC81vd7epQ74qG5C2l9zObc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z6SHZUGX8MfAPHOayLi0nn144fneiz/WZo8lJYkoBl2yBsrUcmlAOVJoIHoXRFu8IKU2uNRGe+kwOo2ahlzvs4HIOOsU4+UNfR1LbfJDyAIdCkOICTuYczep+tx91JlKwV6Zvm5oWSZE05gZ45/KdgXBinRRXl+2/aa2Ktc7iN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vw1vZeeR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vw1vZeeR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731945718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M0kY7IpdB8DL/DBN9Loen+BQb/imNoLj9FcchEXEyBs=;
+	b=Vw1vZeeRqM2g8SfXCAWOZ5by9qG0RWIk0+ys3t4CcqCJ16r4aXO2BN0YMSo1n1Rg3eJOCS
+	uw0XMD1kWjKwJZ7x9sT8DB8l6t/OdCZ90J0YXGLvNubtqctEUgfS59sUx3VyJiZgCrpgMw
+	ruB6C00dO6mejPkrvOjcKWmdrfe4l4w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-hDO8tjYmO5W4Q3q6FiwjiQ-1; Mon,
+ 18 Nov 2024 11:01:56 -0500
+X-MC-Unique: hDO8tjYmO5W4Q3q6FiwjiQ-1
+X-Mimecast-MFC-AGG-ID: hDO8tjYmO5W4Q3q6FiwjiQ
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9C431955EA3
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 16:01:55 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DABA19560A3;
+	Mon, 18 Nov 2024 16:01:54 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	aahringo@redhat.com
+Subject: [PATCH dlm/next] dlm: fix dlm_recover_members refcount on error
+Date: Mon, 18 Nov 2024 11:01:49 -0500
+Message-ID: <20241118160149.734231-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Y5CxF_NjqqwxsdFo9WqUE209DwAnGI4z2Wf_SHm-GC4_1731945716
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnzoLEKDtn3fCKCA--.48005S15
-X-Coremail-Antispam: 1UD129KBjvJXoWxAw18GFWkWFyDXrWUuw47XFb_yoW5Cry7pF
-	nIgFW3Xw48KayFgw4ftF1kWrn3ta4v9r4xtryfCr9xAayjy343tF1UAr17XFWrKF47Zr90
-	qF48Cry3Ars3AwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPvb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
-	z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2
-	AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
-	x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6r
-	W5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF
-	7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuY
-	vjxUI-eODUUUU
-X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Ye Bin <yebin10@huawei.com>
+If dlm_recover_members() fails we don't drop the references of the
+previous created root_list that holds and keep all rsbs alive during the
+recovery. It might be not an unlikely event because ping_members() could
+run into an -EINTR if another recovery progress was triggered again.
 
-If the memory is sufficient, a large number of inodes that do not
-meet the conditions may exist in the 'sb->s_inodes' list when
-evict_inodes()/invalidate_inodes() traverse the 'sb->s_inodes' list.
-Then it maybe trigger soft lockup.
-To solve potential soft lockup, move need_resched() check from tail
-to head when traverse the 'sb->s_inodes' list.
-
-Signed-off-by: Ye Bin <yebin10@huawei.com>
+Fixes: 3a747f4a2ee8 ("dlm: move rsb root_list to ls_recover() stack")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/inode.c | 49 +++++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 24 deletions(-)
+ fs/dlm/recoverd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index b78895af8779..e865fc1f5a95 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -867,6 +867,21 @@ void evict_inodes(struct super_block *sb)
- again:
- 	spin_lock(&sb->s_inode_list_lock);
- 	sb_for_each_inodes_continue_safe(inode, next, &sb->s_inodes) {
-+		/*
-+		 * We can have a ton of inodes to evict at unmount time given
-+		 * enough memory, check to see if we need to go to sleep for a
-+		 * bit so we don't livelock.
-+		 */
-+		if (need_resched()) {
-+			list_del(&cursor.i_sb_list);
-+			list_add_tail(&cursor.i_sb_list, &inode->i_sb_list);
-+			inode = &cursor;
-+			spin_unlock(&sb->s_inode_list_lock);
-+			cond_resched();
-+			dispose_list(&dispose);
-+			goto again;
-+		}
-+
- 		if (atomic_read(&inode->i_count))
- 			continue;
+diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
+index 34f4f9f49a6c..12272a8f6d75 100644
+--- a/fs/dlm/recoverd.c
++++ b/fs/dlm/recoverd.c
+@@ -151,7 +151,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
+ 	error = dlm_recover_members(ls, rv, &neg);
+ 	if (error) {
+ 		log_rinfo(ls, "dlm_recover_members error %d", error);
+-		goto fail;
++		goto fail_root_list;
+ 	}
  
-@@ -884,21 +899,6 @@ void evict_inodes(struct super_block *sb)
- 		inode_lru_list_del(inode);
- 		spin_unlock(&inode->i_lock);
- 		list_add(&inode->i_lru, &dispose);
--
--		/*
--		 * We can have a ton of inodes to evict at unmount time given
--		 * enough memory, check to see if we need to go to sleep for a
--		 * bit so we don't livelock.
--		 */
--		if (need_resched()) {
--			list_del(&cursor.i_sb_list);
--			list_add(&cursor.i_sb_list, &inode->i_sb_list);
--			inode = &cursor;
--			spin_unlock(&sb->s_inode_list_lock);
--			cond_resched();
--			dispose_list(&dispose);
--			goto again;
--		}
- 	}
- 	list_del(&cursor.i_sb_list);
- 	spin_unlock(&sb->s_inode_list_lock);
-@@ -926,6 +926,16 @@ void invalidate_inodes(struct super_block *sb)
- again:
- 	spin_lock(&sb->s_inode_list_lock);
- 	sb_for_each_inodes_continue_safe(inode, next, &sb->s_inodes) {
-+		if (need_resched()) {
-+			list_del(&cursor.i_sb_list);
-+			list_add_tail(&cursor.i_sb_list, &inode->i_sb_list);
-+			inode = &cursor;
-+			spin_unlock(&sb->s_inode_list_lock);
-+			cond_resched();
-+			dispose_list(&dispose);
-+			goto again;
-+		}
-+
- 		spin_lock(&inode->i_lock);
- 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
- 			spin_unlock(&inode->i_lock);
-@@ -940,15 +950,6 @@ void invalidate_inodes(struct super_block *sb)
- 		inode_lru_list_del(inode);
- 		spin_unlock(&inode->i_lock);
- 		list_add(&inode->i_lru, &dispose);
--		if (need_resched()) {
--			list_del(&cursor.i_sb_list);
--			list_add(&cursor.i_sb_list, &inode->i_sb_list);
--			inode = &cursor;
--			spin_unlock(&sb->s_inode_list_lock);
--			cond_resched();
--			dispose_list(&dispose);
--			goto again;
--		}
- 	}
- 	list_del(&cursor.i_sb_list);
- 	spin_unlock(&sb->s_inode_list_lock);
+ 	dlm_recover_dir_nodeid(ls, &root_list);
 -- 
-2.34.1
+2.43.0
 
