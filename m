@@ -1,119 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24C14AD20
-	for <gfs2@lists.linux.dev>; Wed, 13 Nov 2024 16:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D82192B83
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 11:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731516423; cv=none; b=u6c11pH/WGb+Dqt1sGc6ywSlt7fVL+56odq9NmJYxdT9OQJ2dP1YDF1qhT86aWNaoO9TdOwftWyTNRw0g7XSJzjXwTmNhW8b+DtIX5vE4lu0whIk0slb+R9oLekcHaYHR2mTQWu8XPxtuXfZToA09fjEnB2LHYlkBJ0VYTSWLNg=
+	t=1731930315; cv=none; b=NErXecg0EOfTt0tSZKquqMWYtK2IH9ynm263vHnRvrzFlnsOh7opAW7aCTZg9wjAacvplD5M1O4AaQ970hqRTxRX+BtfWriEASL8zRF1ZjdEi3WjYWkXNolqmaGzJQeAevRakykrP+KySdx2XnLNMLEc9HwSB4Aqr8hMwSPt8v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731516423; c=relaxed/simple;
-	bh=PFWsrAKc0v9reYE+nGZLeDo+nLenJmvW58QvZVX62gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W9ZxY2xf16p3Rw7Xae6j+1ZYLf/c+CWnFi2Um3KXoqdRzywapRN8L3Ub2wm+UqhF/6EwNMITOLm28iE8Ehv78aRQJuzSToh99aO95p+HEdDWIR4u0g1rkcLyI0JOVn3j6YQCUi6GmEHTEgKvqEzGAf9t8JpGD2tFo1fbHacUdMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ViEjyjqV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ViEjyjqV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731516418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZmBn5Cw4GeCQ/A7h2Bwsi+8skdSTEASxH5QBPEj9FCI=;
-	b=ViEjyjqVnbuC01CaoUvn5dS3B2uiLWrZ70iuRO3ZbUN6tM7l8OzCaxpHu2TyQ0tMgsK9Bi
-	N0dEmE1wJ/vE73SghV/AcYeaGy9/YtZNaxZWXIN5IR41810v3nU1edhiD9u/LeqEQM6qj8
-	1u+kw4ldCLt/AjhgjWtlcWkpzcJpAuU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-HZYirynaO3OP9NPV7OGVMw-1; Wed,
- 13 Nov 2024 11:46:56 -0500
-X-MC-Unique: HZYirynaO3OP9NPV7OGVMw-1
-X-Mimecast-MFC-AGG-ID: HZYirynaO3OP9NPV7OGVMw
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7DADE1955F41
-	for <gfs2@lists.linux.dev>; Wed, 13 Nov 2024 16:46:54 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF1061955F40;
-	Wed, 13 Nov 2024 16:46:53 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH dlm/next 5/5] dlm: more debug info on invalid lock requests
-Date: Wed, 13 Nov 2024 11:46:43 -0500
-Message-ID: <20241113164643.464055-5-aahringo@redhat.com>
-In-Reply-To: <20241113164643.464055-1-aahringo@redhat.com>
-References: <20241113164643.464055-1-aahringo@redhat.com>
+	s=arc-20240116; t=1731930315; c=relaxed/simple;
+	bh=rcgFhFs++ejbghwtrVjfsT60p3rYlOkju6ZDDpb8mZg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L3sVYJAXZkRqX5n8AtN1jU2126urH5t7hI63RtKzP96CRSkGjABIx5bhiANaQ+kyKu7cyHehCKx4LQuxh5ipq44eNzUDG0fnJauA6Gx4kkKUysEH5uDPfPMbkjOpqu7uTv+DIz8Mul7XxzAbiK0s4JStHBihmATla3ysFjFS1RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XsQls45TPz4f3lX3
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:44:57 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E9CF31A018D
+	for <gfs2@lists.linux.dev>; Mon, 18 Nov 2024 19:45:10 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.101.107])
+	by APP4 (Coremail) with SMTP id gCh0CgCnzoLEKDtn3fCKCA--.48005S4;
+	Mon, 18 Nov 2024 19:45:10 +0800 (CST)
+From: Ye Bin <yebin@huaweicloud.com>
+To: viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	linux-fsdevel@vger.kernel.org,
+	axboe@kernel.dk,
+	linux-block@vger.kernel.org,
+	agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	amir73il@gmail.com,
+	mic@digikod.net,
+	gnoack@google.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-security-module@vger.kernel.org
+Cc: yebin10@huawei.com,
+	zhangxiaoxu5@huawei.com
+Subject: [PATCH 00/11] fix hungtask due to repeated traversal of inodes list
+Date: Mon, 18 Nov 2024 19:44:57 +0800
+Message-Id: <20241118114508.1405494-1-yebin@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lU8UqU4-iALCVUwywQ-LlM48z_s9poDbSM4tEK9aq_8_1731516414
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-CM-TRANSID:gCh0CgCnzoLEKDtn3fCKCA--.48005S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4fuF15Xr1DWw45ZFyDGFg_yoW8WrW8pF
+	43XFW3XF4UJry3Wr93Jw18Xw1Syan5GrWDJrW7tw13Xr45Aryayr4Iyw1YgFyDWFWrZw1Y
+	9r4UC3y7uF1DXrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
+	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU0s2-5UUUUU==
+X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
 
-Recently there was an issue coming up about an invalid lkb state when a
-convert was triggered. After investigation an recovery issue was the
-root of the problem. However we only saw it because QUECVT flag was
-being set that was leading DLM to return with -EINVAL on such invalid
-state. To cover also such case without QUECVT is set we introduce more
-conditions that are required to be checked before initial a DLM lock
-conversion.
+From: Ye Bin <yebin10@huawei.com>
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+As commit 04646aebd30b ("fs: avoid softlockups in s_inodes iterators")
+introduces the retry logic. In the problem environment, the 'i_count'
+of millions of files is not zero. As a result, the time slice for each
+traversal to the matching inode process is almost used up, and then the
+traversal is started from scratch. The worst-case scenario is that only
+one inode can be processed after each wakeup. Because this process holds
+a lock, other processes will be stuck for a long time, causing a series
+of problems.
+To solve the problem of repeated traversal from the beginning, each time
+the CPU needs to be freed, a cursor is inserted into the linked list, and
+the traversal continues from the cursor next time.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 1e809f591d1a..7217cc566175 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2830,6 +2830,11 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 		if (test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
- 			goto out;
- 
-+		/* sanity check to do a conversion on a invalid lkb state */
-+		if (lkb->lkb_grmode == DLM_LOCK_IV ||
-+		    lkb->lkb_status != DLM_LKSTS_GRANTED)
-+			goto out;
-+
- 		if (args->flags & DLM_LKF_QUECVT &&
- 		    !__quecvt_compat_matrix[lkb->lkb_grmode+1][args->mode+1])
- 			goto out;
-@@ -2852,14 +2857,16 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type);
-+			  lkb->lkb_status, lkb->lkb_wait_type,
-+			  lkb->lkb_rqmode, lkb->lkb_grmode);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type);
-+			  lkb->lkb_status, lkb->lkb_wait_type,
-+			  lkb->lkb_rqmode, lkb->lkb_grmode);
- 		break;
- 	}
- 
+Ye Bin (11):
+  fs: introduce I_CURSOR flag for inode
+  block: use sb_for_each_inodes API
+  fs: use sb_for_each_inodes API
+  gfs2: use sb_for_each_inodes API
+  fs: use sb_for_each_inodes_safe API
+  fsnotify: use sb_for_each_inodes API
+  quota: use sb_for_each_inodes API
+  fs/super.c: use sb_for_each_inodes API
+  landlock: use sb_for_each_inodes API
+  fs: fix hungtask due to repeated traversal of inodes list
+  fs: fix potential soft lockup when 'sb->s_inodes' has large number of
+    inodes
+
+ block/bdev.c           |  4 +--
+ fs/drop_caches.c       |  2 +-
+ fs/gfs2/ops_fstype.c   |  2 +-
+ fs/inode.c             | 59 ++++++++++++++++++++++++++++--------------
+ fs/notify/fsnotify.c   |  2 +-
+ fs/quota/dquot.c       |  4 +--
+ fs/super.c             |  2 +-
+ include/linux/fs.h     | 45 ++++++++++++++++++++++++++++++++
+ security/landlock/fs.c |  2 +-
+ 9 files changed, 93 insertions(+), 29 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
