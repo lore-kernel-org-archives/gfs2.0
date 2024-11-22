@@ -1,63 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251386CDBA;
-	Thu, 21 Nov 2024 18:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5F415CD60;
+	Fri, 22 Nov 2024 17:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732212322; cv=none; b=XfZjvtJOGyYIq+vm0by/LJcG51JMJLWise2DZ/rWBmnF0XY9V8Ka3cRQHUm0idi78Ly4z98/twwr17MExxd49Y/LI7za+I/7dzR2OBYhjG/9cXpBtD6piFez2AqWOTHDDA6r9bqGoPSlh27TKk2VTM7bvEv2CDGoZ5hPqLkR7UM=
+	t=1732296844; cv=none; b=H76Tb9ZiArVF9M0l3GpNBUXg/hl+cF5RG4DH7IW09pmzu2OPO5c0QP3pK37OlQ42rOeyui1yxGYMfJw5oB5ns/3SLCJou1qqDue3kkhY8qvsK7e3Agv0VL0qDePgwYuStqd0ov15U/lXC3tEa7DbeWz1D+g/v+Mw5xYVeqQZ1aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732212322; c=relaxed/simple;
-	bh=APuefoTykwddKXr/l4AfnPznJ6xTnjqoNmkxh3HvPfs=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=mr1T1o1wn+d3uqybY7BDCP+0/yW1maBWNpJ8UZXhCrrRla6LnAB2z0LhzBm9rge2mHQPHjFh7vlcAA5odPNxjIXawgC9gQ0K5WFUwlSyNgobyQzmqNIUkXCFafDOcq49SF/MLMB4jqjqSlk6VrxHvyhZUp1AQ4Kjn16/wRbTzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LyF9FxdA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732296844; c=relaxed/simple;
+	bh=2sHi/a+0wuB3fqVGPacRh7HtzqPdmGXg+wZjiwrdo48=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bvaw10jcD3LAl7PEgEDma21UWD0J8lrrRg13Rm3vLrY3SvGmXtQO6A4NjR/J+At0g8Yh6Mj+vwtY38ZJH2fV2aUrjyNWW5nXBL73AqUMEeghYZO8VG1C4y2ThgXSaJQu1V+OZPLBzZe+wXojlLQt/hL/I8ygxn3Vat7dO7vqZyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=CzKMkrcE; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LyF9FxdA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFD1C4CECC;
-	Thu, 21 Nov 2024 18:05:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732212321;
-	bh=APuefoTykwddKXr/l4AfnPznJ6xTnjqoNmkxh3HvPfs=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=LyF9FxdAPU1bgx7RG3iScyBe6VQfj/cY6PCV+9PEDMJxVQQcnB6L4yWgiux5WlZYK
-	 3L2injduz1loRbK8amWM69nM6Uf+cr8Qk4O/UHqemzN+I7qwfFfhMo5arUKjcihaM9
-	 4+e/hmARjXW55p7IL+LqJ/PZ5uLiT9rOmXtZbi0Iq9i2BM3t1iRNvcUrah65zpSxiJ
-	 Z7YaBckwFGorKrS7gU/7Rqpj8j9oBcVakRfn0aXmEoHFmR90eLR+cWpkOCYU21DEKC
-	 rLrdrGQIFgRRwMmcvHij6MUrNBhJnYIiYVo/vHfb+9z6ixyTRu+qQ/K07IflkewPZP
-	 +P9K9g1T5qCvw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADE83809A00;
-	Thu, 21 Nov 2024 18:05:34 +0000 (UTC)
-Subject: Re: [GIT PULL] dlm updates for 6.13
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <Zz9Zyoho_wbCImkJ@redhat.com>
-References: <Zz9Zyoho_wbCImkJ@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <Zz9Zyoho_wbCImkJ@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.13
-X-PR-Tracked-Commit-Id: 200b977ebbc313a59174ba971006a231b3533dc5
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6a550ae5560f7237c82dc9c0c128ba1d593c4dde
-Message-Id: <173221233364.2032550.7279137346088342561.pr-tracker-bot@kernel.org>
-Date: Thu, 21 Nov 2024 18:05:33 +0000
-To: David Teigland <teigland@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="CzKMkrcE"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EAE50403E9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1732296842; bh=mGnMSq8J7sgcF7jpZFZz2wdJr2vNucWms4i6GJBNlr4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CzKMkrcEB78tvbB+uNDHs6JKg5GQNVTEx1w2hx/9rV/OF9s318qZQFEzh5gEJ1i9J
+	 xeeISVRGAI/t9weGAbhP0Ih4vdiWsI3OQNtbv0PkabR36nFYYTZ3min3X8noudj0er
+	 E6wUPzaqmsNXvCisyLpCCgBExaBQ5BE6+X9TRVCF1ni2m5m3VD4HepkXeIfPZKagFu
+	 m4o+GWOf7ONpauAy6knmowpDQ/PF/cpFzMTK1GSnykkxdAe0kD2J4iS2vkLZWOoDFR
+	 eS1M66WYy2smr9XGJe+QJTZsrtUuHRsM8vMPeWwOBngiBaD9BgG+/2AStIeM1oC8tk
+	 4KHMwCrcC+tKg==
+Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id EAE50403E9;
+	Fri, 22 Nov 2024 17:34:01 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Ian Kent <raven@themaw.net>,
+ autofs@vger.kernel.org, Alexander Aring <aahringo@redhat.com>, David
+ Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, Eric Biggers
+ <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
+ fsverity@lists.linux.dev, Mark Fasheh <mark@fasheh.com>, Joel Becker
+ <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ ocfs2-devel@lists.linux.dev
+Subject: Re: [PATCH] Documentation: filesystems: update filename extensions
+In-Reply-To: <20241120055246.158368-1-rdunlap@infradead.org>
+References: <20241120055246.158368-1-rdunlap@infradead.org>
+Date: Fri, 22 Nov 2024 10:34:01 -0700
+Message-ID: <874j3z41h2.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-The pull request you sent on Thu, 21 Nov 2024 10:03:22 -0600:
+Randy Dunlap <rdunlap@infradead.org> writes:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.13
+> Update references to most txt files to rst files.
+> Update one reference to an md file to a rst file.
+> Update one file path to its current location.
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: Ian Kent <raven@themaw.net>
+> Cc: autofs@vger.kernel.org
+> Cc: Alexander Aring <aahringo@redhat.com>
+> Cc: David Teigland <teigland@redhat.com>
+> Cc: gfs2@lists.linux.dev
+> Cc: Eric Biggers <ebiggers@kernel.org>
+> Cc: Theodore Y. Ts'o <tytso@mit.edu>
+> Cc: fsverity@lists.linux.dev
+> Cc: Mark Fasheh <mark@fasheh.com>
+> Cc: Joel Becker <jlbec@evilplan.org>
+> Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
+> Cc: ocfs2-devel@lists.linux.dev
+> ---
+>  Documentation/filesystems/autofs.rst                 |    2 +-
+>  Documentation/filesystems/dlmfs.rst                  |    2 +-
+>  Documentation/filesystems/fsverity.rst               |    2 +-
+>  Documentation/filesystems/path-lookup.rst            |    2 +-
+>  Documentation/filesystems/path-lookup.txt            |    2 +-
+>  Documentation/filesystems/ramfs-rootfs-initramfs.rst |    2 +-
+>  6 files changed, 6 insertions(+), 6 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6a550ae5560f7237c82dc9c0c128ba1d593c4dde
+Applied, thanks.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+jon
