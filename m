@@ -1,96 +1,108 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5F415CD60;
-	Fri, 22 Nov 2024 17:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A4418A921;
+	Sun, 24 Nov 2024 13:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732296844; cv=none; b=H76Tb9ZiArVF9M0l3GpNBUXg/hl+cF5RG4DH7IW09pmzu2OPO5c0QP3pK37OlQ42rOeyui1yxGYMfJw5oB5ns/3SLCJou1qqDue3kkhY8qvsK7e3Agv0VL0qDePgwYuStqd0ov15U/lXC3tEa7DbeWz1D+g/v+Mw5xYVeqQZ1aU=
+	t=1732455227; cv=none; b=JdY6w///5KPybzscrw8Gq60w98yGfxmPE2PxVeta1C7iS3UktdQgbx0HOxRTEDrW6MGYnb1oitXfDJotV9EhJeyoCIRxjuYPcsNx+KL3+Byh6rw+f5ruNYn/uocu/4eACQZNPd+l6r78tREWIj571uGWTkRmMPdPVxxr0K0v8YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732296844; c=relaxed/simple;
-	bh=2sHi/a+0wuB3fqVGPacRh7HtzqPdmGXg+wZjiwrdo48=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bvaw10jcD3LAl7PEgEDma21UWD0J8lrrRg13Rm3vLrY3SvGmXtQO6A4NjR/J+At0g8Yh6Mj+vwtY38ZJH2fV2aUrjyNWW5nXBL73AqUMEeghYZO8VG1C4y2ThgXSaJQu1V+OZPLBzZe+wXojlLQt/hL/I8ygxn3Vat7dO7vqZyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=CzKMkrcE; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1732455227; c=relaxed/simple;
+	bh=j/EBlPHv7AaXJAE74y29GG/YwHsapybQ0+H1ZU8HR8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZE4S6bQ6NRP+H62ilICkz1y/KuMDT520Xfwmr5qqYKNTnrYw+SJfMmcTZAcSTVQn1b0tEzrdDFi3RkM5obBTVVRVIIvHSOYOYaBNjU/pz/lXx47rFjvk2N/IaDWn4vf3KV0Jg/qlZvp9S49ioZ+GJ9srU79U5B4Oic2OO6nBmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8NfbkSJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="CzKMkrcE"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EAE50403E9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1732296842; bh=mGnMSq8J7sgcF7jpZFZz2wdJr2vNucWms4i6GJBNlr4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CzKMkrcEB78tvbB+uNDHs6JKg5GQNVTEx1w2hx/9rV/OF9s318qZQFEzh5gEJ1i9J
-	 xeeISVRGAI/t9weGAbhP0Ih4vdiWsI3OQNtbv0PkabR36nFYYTZ3min3X8noudj0er
-	 E6wUPzaqmsNXvCisyLpCCgBExaBQ5BE6+X9TRVCF1ni2m5m3VD4HepkXeIfPZKagFu
-	 m4o+GWOf7ONpauAy6knmowpDQ/PF/cpFzMTK1GSnykkxdAe0kD2J4iS2vkLZWOoDFR
-	 eS1M66WYy2smr9XGJe+QJTZsrtUuHRsM8vMPeWwOBngiBaD9BgG+/2AStIeM1oC8tk
-	 4KHMwCrcC+tKg==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id EAE50403E9;
-	Fri, 22 Nov 2024 17:34:01 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, Ian Kent <raven@themaw.net>,
- autofs@vger.kernel.org, Alexander Aring <aahringo@redhat.com>, David
- Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, Eric Biggers
- <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
- fsverity@lists.linux.dev, Mark Fasheh <mark@fasheh.com>, Joel Becker
- <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- ocfs2-devel@lists.linux.dev
-Subject: Re: [PATCH] Documentation: filesystems: update filename extensions
-In-Reply-To: <20241120055246.158368-1-rdunlap@infradead.org>
-References: <20241120055246.158368-1-rdunlap@infradead.org>
-Date: Fri, 22 Nov 2024 10:34:01 -0700
-Message-ID: <874j3z41h2.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8NfbkSJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FE3C4CECC;
+	Sun, 24 Nov 2024 13:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732455226;
+	bh=j/EBlPHv7AaXJAE74y29GG/YwHsapybQ0+H1ZU8HR8M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=u8NfbkSJZx4GfedO3OF9NjTX1HleqZy+2chm+/JPRGx5Gp2lFHGMT1/wrMfbiXawH
+	 f54VfUKQC5QQCQPm4hLhpJgRQ61TlAFhu41p1DQ3CyTb45I7gAV+8W9ZOv1uA11Fgc
+	 ZXgRQJhEdn+bZ2pE8mvUsF6BTVJhileMyQJvWiCVK4NWtWKe+SCXcX/KNh9oXBjhMU
+	 YelC5MW2Q3GBGmstoz4DUaqfzGmfly5GZr1fTSQ4GbeXExiOPb45I+G3ma9yaWcY50
+	 MMHtayUxmpc43Rb7lODHXx4z4+xIsGsvn8tJyGqUooYWOXp3mjqV50mMp/yUMVVi7W
+	 I477KXk+NBx9w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	gfs2@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 020/107] dlm: fix possible lkb_resource null dereference
+Date: Sun, 24 Nov 2024 08:28:40 -0500
+Message-ID: <20241124133301.3341829-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
+References: <20241124133301.3341829-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
+Content-Transfer-Encoding: 8bit
 
-Randy Dunlap <rdunlap@infradead.org> writes:
+From: Alexander Aring <aahringo@redhat.com>
 
-> Update references to most txt files to rst files.
-> Update one reference to an md file to a rst file.
-> Update one file path to its current location.
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: Ian Kent <raven@themaw.net>
-> Cc: autofs@vger.kernel.org
-> Cc: Alexander Aring <aahringo@redhat.com>
-> Cc: David Teigland <teigland@redhat.com>
-> Cc: gfs2@lists.linux.dev
-> Cc: Eric Biggers <ebiggers@kernel.org>
-> Cc: Theodore Y. Ts'o <tytso@mit.edu>
-> Cc: fsverity@lists.linux.dev
-> Cc: Mark Fasheh <mark@fasheh.com>
-> Cc: Joel Becker <jlbec@evilplan.org>
-> Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
-> Cc: ocfs2-devel@lists.linux.dev
-> ---
->  Documentation/filesystems/autofs.rst                 |    2 +-
->  Documentation/filesystems/dlmfs.rst                  |    2 +-
->  Documentation/filesystems/fsverity.rst               |    2 +-
->  Documentation/filesystems/path-lookup.rst            |    2 +-
->  Documentation/filesystems/path-lookup.txt            |    2 +-
->  Documentation/filesystems/ramfs-rootfs-initramfs.rst |    2 +-
->  6 files changed, 6 insertions(+), 6 deletions(-)
+[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
 
-Applied, thanks.
+This patch fixes a possible null pointer dereference when this function is
+called from request_lock() as lkb->lkb_resource is not assigned yet,
+only after validate_lock_args() by calling attach_lkb(). Another issue
+is that a resource name could be a non printable bytearray and we cannot
+assume to be ASCII coded.
 
-jon
+The log functionality is probably never being hit when DLM is used in
+normal way and no debug logging is enabled. The null pointer dereference
+can only occur on a new created lkb that does not have the resource
+assigned yet, it probably never hits the null pointer dereference but we
+should be sure that other changes might not change this behaviour and we
+actually can hit the mentioned null pointer dereference.
+
+In this patch we just drop the printout of the resource name, the lkb id
+is enough to make a possible connection to a resource name if this
+exists.
+
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/dlm/lock.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 865dc70a9dfc4..dddedaef5e93d 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -2861,16 +2861,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	case -EINVAL:
+ 		/* annoy the user because dlm usage is wrong */
+ 		WARN_ON(1);
+-		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
++		log_error(ls, "%s %d %x %x %x %d %d", __func__,
+ 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
+-			  lkb->lkb_status, lkb->lkb_wait_type,
+-			  lkb->lkb_resource->res_name);
++			  lkb->lkb_status, lkb->lkb_wait_type);
+ 		break;
+ 	default:
+-		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
++		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
+ 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
+-			  lkb->lkb_status, lkb->lkb_wait_type,
+-			  lkb->lkb_resource->res_name);
++			  lkb->lkb_status, lkb->lkb_wait_type);
+ 		break;
+ 	}
+ 
+-- 
+2.43.0
+
