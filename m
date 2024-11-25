@@ -1,130 +1,96 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893F32AD17
-	for <gfs2@lists.linux.dev>; Mon, 25 Nov 2024 10:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A88193070
+	for <gfs2@lists.linux.dev>; Mon, 25 Nov 2024 10:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732530067; cv=none; b=ldmxsfRqRc1grA5egxblX8QbmAmqJ67ZttfOqWNMW+YFpQ/22OIsELd6Mg9Xjqvax5gLmDEMTbhvF1o8FQyhn5fr84Gwa3xopSvHqx99zfqsmQ+vS4UZm5OyI+18cyc2zyZ/3P7X+xcip9L3g6EWyOls3uT2TNYFHEtt7PNsVsw=
+	t=1732531236; cv=none; b=d9jAMcdDRllbyNrfXSLlq5kVxn6unkgXMjg3snoXz+WcPvDPiIUsWxbnXmZd/iKUeZJqSQXsHf+hPPZOcR6bzh74j0qfoeSD/HLIx40cc0MR20SU6PYd0pyj1srjicYmWJtBDFfYfNacldZMQDNR27wkOsFEg1LFiVUbNb+Pzac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732530067; c=relaxed/simple;
-	bh=xpvBYbkskz9nfzZeBeLFJGvW3z7Q9Lc5XNvoSkh4TFA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMn+qzBsbwtfuIsPGVG+WVQmzE5B50LT+717rdkmX24WZE937YYJRtJ5i6q+CokK2aTY0wwsGdwF+63jd6spxUJX3h2Qyjl6sJNqMY3WdIAS8bWUgRsjrzNuCzfH25yWWWBvvUCfP8Vh/OeyZMOovIAvNtNUt25vJgfeIj7JkHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oiw9Ba4b; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732531236; c=relaxed/simple;
+	bh=sqRRylGkLtbdHiY0aJnVCbtjNbB4VGS+linaOHS6NsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=plEmQVsB5TjNs9fC0Cl0DVpNumqsWcaRbIbfYtmc4tBeRni77atJEdWgaIObmFG0wQM5vAKxhHIen4K72Ddodkner2baq8U9aTAtIXJTaC85YDFyJe00BzOkmy7NzKPx6ymSHVhgG8uT2TO+S79dVIU5AbjY+xWqiBUq7abMzPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=htLbeYks; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oiw9Ba4b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732530063;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=n67Q0KoljJvBSt9cf1LGCKowbJla5BRsh7Nzu+TSZUQ=;
-	b=Oiw9Ba4b+P0n0H5tesbZtlhD+phJDqm+9ELxWrZNYL51gb0Tx9dp0e4CT8bXg/JoCnpEf0
-	0Vr2TpegYp+Zfy3GJ5S0zb19zIv6lWBTFnoK52rQI5crA4/yDFivlgN0W16nDSaaihKfvh
-	vqC9fjhrvma6M5Vuxa/r5YMy0+SAdGg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-nenB_5tyPBenD1nLgp1IkQ-1; Mon,
- 25 Nov 2024 05:21:01 -0500
-X-MC-Unique: nenB_5tyPBenD1nLgp1IkQ-1
-X-Mimecast-MFC-AGG-ID: nenB_5tyPBenD1nLgp1IkQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29BCC19560A1;
-	Mon, 25 Nov 2024 10:21:00 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.225.117])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8907E1956052;
-	Mon, 25 Nov 2024 10:20:58 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="htLbeYks"
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1732531232;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wEUm66qIu8PkMwOxCNnnSHqwyJubiCsERAs4lb+4vxc=;
+	b=htLbeYksaORg5/HvEg6PKAtZC4kv17t058Wj3CTukaT/twqcgszc31G/pliYnDXAeXwBbx
+	QMLvNRwy/9JY/gwAElTZUIR+VhYroro5VjcvBj36kROIgytwGOorYZM1uE3ah7VuglSwNJ
+	AJxkQfGe5n5pbNgcZ1Rwi9TZs8GGnAWKUcc1cdRJgOLc8JE647oNbHFT07b/NW6yQe/mw8
+	9LPEjY1zZnx1vLvmbV8hw3+OasVI71Nk4ieD3f9NOoxnejq/Anz920QM/DOTM6uO7hcHXU
+	5BCkR9dAKb3kUbIeYS+K2wGlLZ4Z+FtponRFMBmBu3IkMFi7cKP95/dBb8x2Cw==
+To: linux-security-module@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	linux-kernel@vger.kernel.org,
 	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] gfs2 changes for 6.13
-Date: Mon, 25 Nov 2024 11:20:56 +0100
-Message-ID: <20241125102057.1505150-1-agruenba@redhat.com>
+	cocci@inria.fr
+Subject: [PATCH 08/11] gfs2: reorder capability check last
+Date: Mon, 25 Nov 2024 11:40:00 +0100
+Message-ID: <20241125104011.36552-7-cgoettsche@seltendoof.de>
+In-Reply-To: <20241125104011.36552-1-cgoettsche@seltendoof.de>
+References: <20241125104011.36552-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Dear Linus,
+From: Christian Göttsche <cgzones@googlemail.com>
 
-please consider pulling the following gfs2 changes.
+capable() calls refer to enabled LSMs whether to permit or deny the
+request.  This is relevant in connection with SELinux, where a
+capability check results in a policy decision and by default a denial
+message on insufficient permission is issued.
+It can lead to three undesired cases:
+  1. A denial message is generated, even in case the operation was an
+     unprivileged one and thus the syscall succeeded, creating noise.
+  2. To avoid the noise from 1. the policy writer adds a rule to ignore
+     those denial messages, hiding future syscalls, where the task
+     performs an actual privileged operation, leading to hidden limited
+     functionality of that task.
+  3. To avoid the noise from 1. the policy writer adds a rule to permit
+     the task the requested capability, while it does not need it,
+     violating the principle of least privilege.
 
-The top two commits have only been added to for-next a couple of days ago; they
-fix a NULL pointer dereference in a previous patch in this pull request and an
-unlikely race in the same code.  These fixes have passed several days of heavy
-testing, so I hope you can agree to including them.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ fs/gfs2/quota.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-Andreas
-
-The following changes since commit 721068dec4ec3cc625d8737d4dfa0ff0aa795cd1:
-
-  Merge tag 'gfs2-v6.10-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2024-09-23 11:55:17 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.13
-
-for you to fetch changes up to ffd1cf0443a208b80e40100ed02892d2ec74c7e9:
-
-  gfs2: Prevent inode creation race (2024-11-19 13:05:41 +0100)
-
-----------------------------------------------------------------
-gfs2 changes
-
-- Fix the code that cleans up left-over unlinked files.  Various fixes
-  and minor improvements in deleting files cached or held open remotely.
-
-- Simplify the use of dlm's DLM_LKF_QUECVT flag.
-
-- A few other minor cleanups.
-
-----------------------------------------------------------------
-Andreas Gruenbacher (20):
-      gfs2: Rename GLF_VERIFY_EVICT to GLF_VERIFY_DELETE
-      gfs2: Initialize gl_no_formal_ino earlier
-      gfs2: Allow immediate GLF_VERIFY_DELETE work
-      gfs2: Fix unlinked inode cleanup
-      gfs2: Faster gfs2_upgrade_iopen_glock wakeups
-      gfs2: Rename GIF_{DEFERRED -> DEFER}_DELETE
-      gfs2: Rename dinode_demise to evict_behavior
-      gfs2: Return enum evict_behavior from gfs2_upgrade_iopen_glock
-      gfs2: Minor delete_work_func cleanup
-      gfs2: Clean up delete work processing
-      gfs2: Call gfs2_queue_verify_delete from gfs2_evict_inode
-      gfs2: Update to the evict / remote delete documentation
-      gfs2: Use mod_delayed_work in gfs2_queue_try_to_evict
-      gfs2: Randomize GLF_VERIFY_DELETE work delay
-      gfs2: Use get_random_u32 in gfs2_orlov_skip
-      gfs2: Make gfs2_inode_refresh static
-      gfs2: gfs2_evict_inode clarification
-      gfs2: Simplify DLM_LKF_QUECVT use
-      gfs2: Only defer deletes when we have an iopen glock
-      gfs2: Prevent inode creation race
-
-Qianqiang Liu (1):
-      KMSAN: uninit-value in inode_go_dump (5)
-
- fs/gfs2/glock.c    | 107 ++++++++++++++++++++---------------------------------
- fs/gfs2/glock.h    |   7 ++++
- fs/gfs2/glops.c    |  11 +++++-
- fs/gfs2/incore.h   |   4 +-
- fs/gfs2/inode.c    |   1 +
- fs/gfs2/inode.h    |   2 -
- fs/gfs2/lock_dlm.c |  29 +++++++++++++--
- fs/gfs2/rgrp.c     |   6 +--
- fs/gfs2/super.c    |  89 +++++++++++++++++++++++++++-----------------
- 9 files changed, 142 insertions(+), 114 deletions(-)
+diff --git a/fs/gfs2/quota.h b/fs/gfs2/quota.h
+index f462d9cb3087..988f38dc5b2c 100644
+--- a/fs/gfs2/quota.h
++++ b/fs/gfs2/quota.h
+@@ -44,8 +44,8 @@ static inline int gfs2_quota_lock_check(struct gfs2_inode *ip,
+ 	int ret;
+ 
+ 	ap->allowed = UINT_MAX; /* Assume we are permitted a whole lot */
+-	if (capable(CAP_SYS_RESOURCE) ||
+-	    sdp->sd_args.ar_quota == GFS2_QUOTA_OFF)
++	if (sdp->sd_args.ar_quota == GFS2_QUOTA_OFF ||
++	    capable(CAP_SYS_RESOURCE))
+ 		return 0;
+ 	ret = gfs2_quota_lock(ip, NO_UID_QUOTA_CHANGE, NO_GID_QUOTA_CHANGE);
+ 	if (ret)
+-- 
+2.45.2
 
