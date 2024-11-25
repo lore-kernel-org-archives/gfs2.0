@@ -1,108 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD821C19D;
-	Sun, 24 Nov 2024 13:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893F32AD17
+	for <gfs2@lists.linux.dev>; Mon, 25 Nov 2024 10:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456015; cv=none; b=FCYgP/ZnBbMje/7i5EiWbkE3OQ5BTLmrkN6eUeFCVYqyK5zOoLDLe9SIA2adgCMNVV4AI7UxbaHSKcAASSeLHr8R8Yossh8ysf3lw6/hGnS6mB5QIpEjvIyjf8DLSFpf5PCbGYsriX3gMtp4rQHSo1qYf2bONwx/dVrPP1vSX3g=
+	t=1732530067; cv=none; b=ldmxsfRqRc1grA5egxblX8QbmAmqJ67ZttfOqWNMW+YFpQ/22OIsELd6Mg9Xjqvax5gLmDEMTbhvF1o8FQyhn5fr84Gwa3xopSvHqx99zfqsmQ+vS4UZm5OyI+18cyc2zyZ/3P7X+xcip9L3g6EWyOls3uT2TNYFHEtt7PNsVsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456015; c=relaxed/simple;
-	bh=8eDtMxpYkuH4vxN5BukeO7RRsyiwytQ7TOglpbiabXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkXsADap/zsSX2h62EWIKXrxra//UDWzyFEM/ZkgzKydg5MpF9pFMGpjoul1/fbGX//r547rNqZJw6x5zd4Qr42Jgo+ksrHY37HqIum8dC0j1i5yMj18oiONlxpfmB2NpashWsd9N7YcA0Aa93qg7BTcAOwVrEk6N+TeoiZbtKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xv5qCoQI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732530067; c=relaxed/simple;
+	bh=xpvBYbkskz9nfzZeBeLFJGvW3z7Q9Lc5XNvoSkh4TFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMn+qzBsbwtfuIsPGVG+WVQmzE5B50LT+717rdkmX24WZE937YYJRtJ5i6q+CokK2aTY0wwsGdwF+63jd6spxUJX3h2Qyjl6sJNqMY3WdIAS8bWUgRsjrzNuCzfH25yWWWBvvUCfP8Vh/OeyZMOovIAvNtNUt25vJgfeIj7JkHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oiw9Ba4b; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xv5qCoQI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3367C4CED6;
-	Sun, 24 Nov 2024 13:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456014;
-	bh=8eDtMxpYkuH4vxN5BukeO7RRsyiwytQ7TOglpbiabXI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv5qCoQISjdkmQ4cCKh++JpICzZPttq55RAfqJGv0eJfcQnxF1q5yU7n1znTrDcmt
-	 bdIU4tzwHeMQttkKnDBhDQRyBIXgaTVKw06WPdu2/UnV2JrrzDkHa3FIgzhpaKR1QR
-	 zI+F0LlG7J2GWl1UURNH3X2+jdxbzPDxpDHTQoNNl/hnz9jcoKT3ZY/W5ftaACH5aw
-	 v488Hy9yP8hY3FDv5X5pMpYNtLOHlj2SP/FphAri/Ln9fg+azP5e4GQRmMP1o0TiW5
-	 EY7+BpgxPgqVQr0WsAQIOwMlCGSqgb659JAOahI05tdrBL2Ocl4IVuaeZuKaI+Fc65
-	 9JcqxQcKCL78g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 10/61] dlm: fix possible lkb_resource null dereference
-Date: Sun, 24 Nov 2024 08:44:45 -0500
-Message-ID: <20241124134637.3346391-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
-References: <20241124134637.3346391-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oiw9Ba4b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732530063;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=n67Q0KoljJvBSt9cf1LGCKowbJla5BRsh7Nzu+TSZUQ=;
+	b=Oiw9Ba4b+P0n0H5tesbZtlhD+phJDqm+9ELxWrZNYL51gb0Tx9dp0e4CT8bXg/JoCnpEf0
+	0Vr2TpegYp+Zfy3GJ5S0zb19zIv6lWBTFnoK52rQI5crA4/yDFivlgN0W16nDSaaihKfvh
+	vqC9fjhrvma6M5Vuxa/r5YMy0+SAdGg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-nenB_5tyPBenD1nLgp1IkQ-1; Mon,
+ 25 Nov 2024 05:21:01 -0500
+X-MC-Unique: nenB_5tyPBenD1nLgp1IkQ-1
+X-Mimecast-MFC-AGG-ID: nenB_5tyPBenD1nLgp1IkQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29BCC19560A1;
+	Mon, 25 Nov 2024 10:21:00 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.225.117])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8907E1956052;
+	Mon, 25 Nov 2024 10:20:58 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes for 6.13
+Date: Mon, 25 Nov 2024 11:20:56 +0100
+Message-ID: <20241125102057.1505150-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Alexander Aring <aahringo@redhat.com>
+Dear Linus,
 
-[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
+please consider pulling the following gfs2 changes.
 
-This patch fixes a possible null pointer dereference when this function is
-called from request_lock() as lkb->lkb_resource is not assigned yet,
-only after validate_lock_args() by calling attach_lkb(). Another issue
-is that a resource name could be a non printable bytearray and we cannot
-assume to be ASCII coded.
+The top two commits have only been added to for-next a couple of days ago; they
+fix a NULL pointer dereference in a previous patch in this pull request and an
+unlikely race in the same code.  These fixes have passed several days of heavy
+testing, so I hope you can agree to including them.
 
-The log functionality is probably never being hit when DLM is used in
-normal way and no debug logging is enabled. The null pointer dereference
-can only occur on a new created lkb that does not have the resource
-assigned yet, it probably never hits the null pointer dereference but we
-should be sure that other changes might not change this behaviour and we
-actually can hit the mentioned null pointer dereference.
+Thanks,
+Andreas
 
-In this patch we just drop the printout of the resource name, the lkb id
-is enough to make a possible connection to a resource name if this
-exists.
+The following changes since commit 721068dec4ec3cc625d8737d4dfa0ff0aa795cd1:
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/dlm/lock.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+  Merge tag 'gfs2-v6.10-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2024-09-23 11:55:17 -0700)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 652c51fbbf768..6712d733fc90b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2698,16 +2698,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	}
- 
--- 
-2.43.0
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.13
+
+for you to fetch changes up to ffd1cf0443a208b80e40100ed02892d2ec74c7e9:
+
+  gfs2: Prevent inode creation race (2024-11-19 13:05:41 +0100)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Fix the code that cleans up left-over unlinked files.  Various fixes
+  and minor improvements in deleting files cached or held open remotely.
+
+- Simplify the use of dlm's DLM_LKF_QUECVT flag.
+
+- A few other minor cleanups.
+
+----------------------------------------------------------------
+Andreas Gruenbacher (20):
+      gfs2: Rename GLF_VERIFY_EVICT to GLF_VERIFY_DELETE
+      gfs2: Initialize gl_no_formal_ino earlier
+      gfs2: Allow immediate GLF_VERIFY_DELETE work
+      gfs2: Fix unlinked inode cleanup
+      gfs2: Faster gfs2_upgrade_iopen_glock wakeups
+      gfs2: Rename GIF_{DEFERRED -> DEFER}_DELETE
+      gfs2: Rename dinode_demise to evict_behavior
+      gfs2: Return enum evict_behavior from gfs2_upgrade_iopen_glock
+      gfs2: Minor delete_work_func cleanup
+      gfs2: Clean up delete work processing
+      gfs2: Call gfs2_queue_verify_delete from gfs2_evict_inode
+      gfs2: Update to the evict / remote delete documentation
+      gfs2: Use mod_delayed_work in gfs2_queue_try_to_evict
+      gfs2: Randomize GLF_VERIFY_DELETE work delay
+      gfs2: Use get_random_u32 in gfs2_orlov_skip
+      gfs2: Make gfs2_inode_refresh static
+      gfs2: gfs2_evict_inode clarification
+      gfs2: Simplify DLM_LKF_QUECVT use
+      gfs2: Only defer deletes when we have an iopen glock
+      gfs2: Prevent inode creation race
+
+Qianqiang Liu (1):
+      KMSAN: uninit-value in inode_go_dump (5)
+
+ fs/gfs2/glock.c    | 107 ++++++++++++++++++++---------------------------------
+ fs/gfs2/glock.h    |   7 ++++
+ fs/gfs2/glops.c    |  11 +++++-
+ fs/gfs2/incore.h   |   4 +-
+ fs/gfs2/inode.c    |   1 +
+ fs/gfs2/inode.h    |   2 -
+ fs/gfs2/lock_dlm.c |  29 +++++++++++++--
+ fs/gfs2/rgrp.c     |   6 +--
+ fs/gfs2/super.c    |  89 +++++++++++++++++++++++++++-----------------
+ 9 files changed, 142 insertions(+), 114 deletions(-)
 
