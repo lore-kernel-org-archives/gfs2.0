@@ -1,155 +1,182 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A322A201253
-	for <gfs2@lists.linux.dev>; Wed, 27 Nov 2024 19:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D67D156F28
+	for <gfs2@lists.linux.dev>; Fri, 29 Nov 2024 09:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732735952; cv=none; b=O3Cu+p/aU2johe022QlfJCnlWP3cmvn+qCyt22Q6RAC7fySCechIZ17/BJWqws0wfQppkE7GgZVioAxnQkBoy3eHesSUoOgmd1TcK7i9F8VJvNVctMO3/l09cveni6mC9AqWvoghsvTU4CiVjy3hFNGBCCZ1wbbfzlWzlGKI/FI=
+	t=1732871923; cv=none; b=H66/Jnl1mvgWH/WeJ1nZCTEpu+4uQgiHYnMpNv+7SaUzFbNp0k2pnjqTOtGkPbFHM+VbOL6sWfCN7/BSJtrLjx4lGksUPJQpkdhkw896kyXJBcTAkcLlbRrAU2LgaaFyT32dj2XuiXVlz18sHhqpoXHHLjMTai5A2is2s1XRUqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732735952; c=relaxed/simple;
-	bh=RIGEfs9cNJ/9uv+5pAUE8pSQD4FYzRXcbgOfF0nVgqA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GmW5FBMaNwUWXMwRBRPIbfI7XsujllHQu8lfej75FfFw2wZ/HP3I+SBcYfKDOPAykxQIerPHOx4wYc9HL4bbxamKbsHFB1uJmQRTao9SDDxNWid5hJ8CykmL2bvvd/0kHcXX/gK88wuJ4IpUdewfPx3BPuT0xnGRQCs9gJdMKF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a768b62268so595375ab.0
-        for <gfs2@lists.linux.dev>; Wed, 27 Nov 2024 11:32:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732735950; x=1733340750;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4NFRVBAF5tccxDKcM9k5a2o73zbgAoDuTHDRA7ssiBA=;
-        b=clJPmKvPosrsbUmdmRBGgOtMMOhKiUhXTlMl9tBF2fZqRbK+2PSE/X4rKGw18bKWeF
-         nfDbS8lUp5CryhAXM732Uaq+c7bYwGnvJKn2ebQu0CqN3IXz0CMdeabqx2uUGlt+KDho
-         fVOhr2izPjuYbrEB6aiBuLfRjSdrx0/4nX+aCOKwGVUUGn0F+8uniEvXDO7ndSHLiO66
-         HLOF7IGT123JEQ5tXBouq36A61UYKJGKtUq06d1Oce+C4BKg+Wuik5FqH+okBjKS4cQJ
-         kicjaCa9v0k9EKLtlG1KHaZ2SmM53g2jX2LgGKq6EJcP3MDD7aCKF/BVI262V18jXsP7
-         f5+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVYgjsEegcTT4++kMXSUCdZjkXrf9rc04UbuQh4lgbcb6POQEz4VOq2i8qdTO++pBkUcxpA@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw8C5gGSWTyCVxM22Yov5jMK9DWVFFYOfkAi7kT3J4Ax+wAKMFW
-	SSbUdLRuTkpfspq3AXUZdxFnvJALoO7O8q3TOBOwfZjJm+RaTeOSfKuVcd/uSeYrK5IHzkDERfE
-	u0s4gnq4xabSmRiakBY1IC6VQL2ifh3eOlJmzXc+CIiZC5oyhQT3ZFAM=
-X-Google-Smtp-Source: AGHT+IGbZHRFmksDmqi20oW+VFs2UopXzQs78egsJs6/YZom6e5Wu2t+G1qo/c0uxnF9JbE1+f66IQz4Mxua0OWUY1bBUGJHzaqg
+	s=arc-20240116; t=1732871923; c=relaxed/simple;
+	bh=Y8aEBPbd5DgLbGNrhcKnY3kzlL+4aXBL2AZzYx1CWfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=URynJ0IfHIxXHJVz3mptBpVx7/ulV4pWh84IUmDVFtQ15xVXTGaOpNc9E+9NU4hhGwh2U+fJ3AsPEgBXAJH466kLKnBfLBZxRjLvd+gpEo7PLClEIjuohKlLzIFi64PMdse9A2x8+RgGmVamLtwsSEahomu9JKlgx7c21qNjiY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=lYx6s+0F; arc=none smtp.client-ip=178.154.239.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="lYx6s+0F"
+Received: from mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net [IPv6:2a02:6b8:c07:109:0:640:efe1:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 3E88A608F1;
+	Fri, 29 Nov 2024 12:18:31 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SIX747HOl0U0-5hvnaODk;
+	Fri, 29 Nov 2024 12:18:30 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1732871910; bh=kdFdHuC1AqlBdX5CGc+aFd6jDW3DJKCLcSvuBGlpCH0=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=lYx6s+0FBs+4JqO2TXjZfMfZ2FjGa4UgrZgCxoM/bgci7oCDLrwoeFktlbmGmzyQ1
+	 RQpb4sir7GvTSZc3WhkgljErIoOtOPyr0Wkjii1M+EVX7z41moEWQznV2EmOndfWPf
+	 y7CU0XFBHtThi3IbsXYzxBc2/yLAoF+m+GsEJvyI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Steven Whitehouse <swhiteho@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+9fb37b567267511a9e11@syzkaller.appspotmail.com
+Subject: [PATCH 1/2] gfs2: throw -EIO when attempting to access beyond end of device
+Date: Fri, 29 Nov 2024 12:03:54 +0300
+Message-ID: <20241129090355.365972-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:156f:b0:3a7:172f:1299 with SMTP id
- e9e14a558f8ab-3a7c5567d12mr44645235ab.12.1732735949811; Wed, 27 Nov 2024
- 11:32:29 -0800 (PST)
-Date: Wed, 27 Nov 2024 11:32:29 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674773cd.050a0220.21d33d.0027.GAE@google.com>
-Subject: [syzbot] [gfs2?] KMSAN: uninit-value in gfs2_quota_init (2)
-From: syzbot <syzbot+9fb37b567267511a9e11@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Syzbot has reported the following KMSAN splat:
 
-syzbot found the following issue on:
-
-HEAD commit:    9f16d5e6f220 Merge tag 'for-linus' of git://git.kernel.org..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=140fe530580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ce1e2eda2213557
-dashboard link: https://syzkaller.appspot.com/bug?extid=9fb37b567267511a9e11
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=120fe530580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=119ae778580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2fcdec73c0f3/disk-9f16d5e6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d4dc8d1847e1/vmlinux-9f16d5e6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/db0e04822d2c/bzImage-9f16d5e6.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/c42d45c3f3cb/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9fb37b567267511a9e11@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-syz-executor205: attempt to access beyond end of device
-loop0: rw=12288, sector=2251799813685248, nr_sectors = 8 limit=32768
-=====================================================
-BUG: KMSAN: uninit-value in gfs2_metatype_check_i fs/gfs2/util.h:125 [inline]
-BUG: KMSAN: uninit-value in gfs2_quota_init+0x22c4/0x2950 fs/gfs2/quota.c:1432
- gfs2_metatype_check_i fs/gfs2/util.h:125 [inline]
- gfs2_quota_init+0x22c4/0x2950 fs/gfs2/quota.c:1432
- gfs2_make_fs_rw+0x4cf/0x6a0 fs/gfs2/super.c:159
- gfs2_fill_super+0x43f5/0x45a0 fs/gfs2/ops_fstype.c:1274
- get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
- get_tree_bdev+0x37/0x50 fs/super.c:1659
- gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1330
- vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3507
- path_mount+0x742/0x1f10 fs/namespace.c:3834
- do_mount fs/namespace.c:3847 [inline]
- __do_sys_mount fs/namespace.c:4057 [inline]
- __se_sys_mount+0x722/0x810 fs/namespace.c:4034
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:4034
- x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+BUG: KMSAN: uninit-value in gfs2_quota_init+0x22c4/0x2950
+ gfs2_quota_init+0x22c4/0x2950
+ gfs2_make_fs_rw+0x4cf/0x6a0
+ gfs2_fill_super+0x43f5/0x45a0
+ get_tree_bdev_flags+0x6ee/0x910
+ get_tree_bdev+0x37/0x50
+ gfs2_get_tree+0x5c/0x340
+ vfs_get_tree+0xb3/0x5a0
+ do_new_mount+0x71f/0x15e0
+ path_mount+0x742/0x1f10
+ __se_sys_mount+0x722/0x810
+ __x64_sys_mount+0xe4/0x150
+ x64_sys_call+0x39bf/0x3c30
+ do_syscall_64+0xcd/0x1e0
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
 Uninit was created at:
- __alloc_pages_noprof+0x9a7/0xe00 mm/page_alloc.c:4774
- alloc_pages_mpol_noprof+0x299/0x990 mm/mempolicy.c:2265
- alloc_pages_noprof mm/mempolicy.c:2344 [inline]
- folio_alloc_noprof+0x1db/0x310 mm/mempolicy.c:2351
- filemap_alloc_folio_noprof+0xa6/0x440 mm/filemap.c:1009
- __filemap_get_folio+0xac4/0x1550 mm/filemap.c:1951
- gfs2_getbuf+0x23f/0xcd0 fs/gfs2/meta_io.c:142
- gfs2_meta_ra+0x17f/0x7b0 fs/gfs2/meta_io.c:532
- gfs2_quota_init+0x78d/0x2950 fs/gfs2/quota.c:1429
- gfs2_make_fs_rw+0x4cf/0x6a0 fs/gfs2/super.c:159
- gfs2_fill_super+0x43f5/0x45a0 fs/gfs2/ops_fstype.c:1274
- get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
- get_tree_bdev+0x37/0x50 fs/super.c:1659
- gfs2_get_tree+0x5c/0x340 fs/gfs2/ops_fstype.c:1330
- vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
- do_new_mount+0x71f/0x15e0 fs/namespace.c:3507
- path_mount+0x742/0x1f10 fs/namespace.c:3834
- do_mount fs/namespace.c:3847 [inline]
- __do_sys_mount fs/namespace.c:4057 [inline]
- __se_sys_mount+0x722/0x810 fs/namespace.c:4034
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:4034
- x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ __alloc_pages_noprof+0x9a7/0xe00
+ alloc_pages_mpol_noprof+0x299/0x990
+ folio_alloc_noprof+0x1db/0x310
+ filemap_alloc_folio_noprof+0xa6/0x440
+ __filemap_get_folio+0xac4/0x1550
+ gfs2_getbuf+0x23f/0xcd0
+ gfs2_meta_ra+0x17f/0x7b0
+ gfs2_quota_init+0x78d/0x2950
+ gfs2_make_fs_rw+0x4cf/0x6a0
+ gfs2_fill_super+0x43f5/0x45a0
+ get_tree_bdev_flags+0x6ee/0x910
+ get_tree_bdev+0x37/0x50
+ gfs2_get_tree+0x5c/0x340
+ vfs_get_tree+0xb3/0x5a0
+ do_new_mount+0x71f/0x15e0
+ path_mount+0x742/0x1f10
+ __se_sys_mount+0x722/0x810
+ __x64_sys_mount+0xe4/0x150
+ x64_sys_call+0x39bf/0x3c30
+ do_syscall_64+0xcd/0x1e0
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-CPU: 0 UID: 0 PID: 5797 Comm: syz-executor205 Not tainted 6.12.0-syzkaller-09073-g9f16d5e6f220 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-=====================================================
+On a specially crafted filesystem image with invalid on-disk inode data,
+'gfs2_meta_ra()' may trigger an attempt to access beyond end of device,
+and such an attempt is not detected after 'wait_on_buffer()'. Fix this
+by adding an extra 'buffer_uptodate()' check, throwing -EIO in case of
+error and adjusting all of the related users.
 
-
+Reported-by: syzbot+9fb37b567267511a9e11@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9fb37b567267511a9e11
+Fixes: 7276b3b0c771 ("[GFS2] Tidy up meta_io code")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/dir.c      | 4 ++++
+ fs/gfs2/meta_io.c  | 7 +++----
+ fs/gfs2/quota.c    | 4 +++-
+ fs/gfs2/recovery.c | 2 +-
+ 4 files changed, 11 insertions(+), 6 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index dbf1aede744c..85736135bcf5 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -299,6 +299,10 @@ static int gfs2_dir_read_data(struct gfs2_inode *ip, __be64 *buf,
+ 				goto fail;
+ 			BUG_ON(extlen < 1);
+ 			bh = gfs2_meta_ra(ip->i_gl, dblock, extlen);
++			if (IS_ERR(bh)) {
++				error = PTR_ERR(bh);
++				goto fail;
++			}
+ 		} else {
+ 			error = gfs2_meta_read(ip->i_gl, dblock, DIO_WAIT, 0, &bh);
+ 			if (error)
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index fea3efcc2f93..18957afed91a 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -532,7 +532,7 @@ struct buffer_head *gfs2_meta_ra(struct gfs2_glock *gl, u64 dblock, u32 extlen)
+ 	first_bh = gfs2_getbuf(gl, dblock, CREATE);
+ 
+ 	if (buffer_uptodate(first_bh))
+-		goto out;
++		return first_bh;
+ 	bh_read_nowait(first_bh, REQ_META | REQ_PRIO);
+ 
+ 	dblock++;
+@@ -546,11 +546,10 @@ struct buffer_head *gfs2_meta_ra(struct gfs2_glock *gl, u64 dblock, u32 extlen)
+ 		dblock++;
+ 		extlen--;
+ 		if (!buffer_locked(first_bh) && buffer_uptodate(first_bh))
+-			goto out;
++			return first_bh;
+ 	}
+ 
+ 	wait_on_buffer(first_bh);
+-out:
+-	return first_bh;
++	return buffer_uptodate(first_bh) ? first_bh : ERR_PTR(-EIO);
+ }
+ 
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 72b48f6f5561..d919edfb8dda 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1427,8 +1427,10 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 		}
+ 		error = -EIO;
+ 		bh = gfs2_meta_ra(ip->i_gl, dblock, extlen);
+-		if (!bh)
++		if (IS_ERR(bh)) {
++			error = PTR_ERR(bh);
+ 			goto fail;
++		}
+ 		if (gfs2_metatype_check(sdp, bh, GFS2_METATYPE_QC))
+ 			goto fail_brelse;
+ 
+diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
+index f4fe7039f725..527353c36aa5 100644
+--- a/fs/gfs2/recovery.c
++++ b/fs/gfs2/recovery.c
+@@ -49,7 +49,7 @@ int gfs2_replay_read_block(struct gfs2_jdesc *jd, unsigned int blk,
+ 
+ 	*bh = gfs2_meta_ra(gl, dblock, extlen);
+ 
+-	return error;
++	return IS_ERR(*bh) ? PTR_ERR(*bh) : 0;
+ }
+ 
+ int gfs2_revoke_add(struct gfs2_jdesc *jd, u64 blkno, unsigned int where)
+-- 
+2.47.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
