@@ -1,177 +1,184 @@
-Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [178.154.239.148])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10A2170A1A
-	for <gfs2@lists.linux.dev>; Fri, 29 Nov 2024 09:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7048205E37
+	for <gfs2@lists.linux.dev>; Mon,  2 Dec 2024 14:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732871924; cv=none; b=TyXmhUihOlLTwX+KGfH1XiWr+k0eqsqpPZQmJ81YP1Y73XFUxLzEraXd7QMRYyw9oDVb2dgOE/8RUKofKhdb73fseqgo4ymf1IWdJJWjGsNp/sv8xQNFupsfY17qXLFNk6lIxV4tbUBV7QU/5sMi43ACfmM7lxprO5UTjGDjRrI=
+	t=1733150496; cv=none; b=hc/oknMpwLASWUdAULBcue/Jzp69Wo4LOx0VgMvw1Fs/tSGIEzyvIToLUpkpqOtSRvcLvb5pSToD616uBvqposLnvy3c31HXxQ8DiiGJQp19v5r/Dh3M8hvZoPPfykddaI1DLCMUSoXKoIC3fTUadeq9dkPsw+9SfLqCxdjoCmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732871924; c=relaxed/simple;
-	bh=6Ofjd3lsBtR9sLdqVHv2uq0QaDdVeE4LdyhtDMLUz+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbyGCgEWaqBmmIaAYezbI2K+laCWxvb8SpQ+yWQ+rteX4rGILRS8Tas54x/2eLIbzExBoDRl7UEDcfiL5S91EJ8UxL3IzEYkXw7b/o6glVBvaAgyn+omlXNX/av/P8gwtOq9d/vAYfBuP6Y7Xf7KwbNUTvX7/i0eizNY37SjouU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=YFWw5uDm; arc=none smtp.client-ip=178.154.239.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1733150496; c=relaxed/simple;
+	bh=LC7a4IadXDSBG+FPlnSGhFh+gxKKCByBUescMabMaOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ws2We8fxoAHVc3fDCgdHJ3MNrb8mHNrJPN2mjJNYnPuJI4u8hxhIMkaNvh8hwhSEwcJy4SUyumNgXS1MGcx1tB+gIMlnVeZfz2wPopsVpketVv8XGyi14zd4FeAu866sdrq5NCI3Dq2ubHPdSLD4ohdMnEUDOW2644eymgq43rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y00ewntH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="YFWw5uDm"
-Received: from mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net [IPv6:2a02:6b8:c07:109:0:640:efe1:0])
-	by forward101b.mail.yandex.net (Yandex) with ESMTPS id F26E060E18;
-	Fri, 29 Nov 2024 12:18:31 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SIX747HOl0U0-puwfVSDK;
-	Fri, 29 Nov 2024 12:18:31 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1732871911; bh=ot2jlcBchNY/FjHrqVluTtlM6+/wbytJf+Jwus3KUAE=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=YFWw5uDmbvD03YHhHgXqjOBUiW9wz93xesWOwJpSNjWUPMPtTL+1I7CMuf5bo34W3
-	 BTrGLw3r32O1IU+8bRyPGtTVdbhPNs+RNu8PiGjWXUzi+008H64DOtJ34hPQEYZ2NL
-	 TGczrmaO5i21wAIJ9ubfsbvFrPiHkzjbsfJFsy74=
-Authentication-Results: mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Steven Whitehouse <swhiteho@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] gfs2: miscellaneous spelling fixes
-Date: Fri, 29 Nov 2024 12:03:55 +0300
-Message-ID: <20241129090355.365972-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241129090355.365972-1-dmantipov@yandex.ru>
-References: <20241129090355.365972-1-dmantipov@yandex.ru>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y00ewntH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733150493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lUvIdNYn/fqF9K6BoxsffOp47UHQFllLU+FnZQWOnJs=;
+	b=Y00ewntH7s4S5QP+PIEV3jrsF/fWwRrkL79yeMlzsx5MWfQlM/hSjLHLWfvlnCwTUMbcY3
+	LtFIJ0PTnSCCu+4uA94FGu2NKO2CdLh3XoIKNsuLf488nCcV54Zmzkv1JDcg1swLsJbark
+	2Zeeifzc+xu5LxuiKbj228Uaxkt7FxE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-dGxSDJsqNb6Lbe3LF1xgNQ-1; Mon,
+ 02 Dec 2024 09:41:30 -0500
+X-MC-Unique: dGxSDJsqNb6Lbe3LF1xgNQ-1
+X-Mimecast-MFC-AGG-ID: dGxSDJsqNb6Lbe3LF1xgNQ
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 746FC1954197;
+	Mon,  2 Dec 2024 14:41:28 +0000 (UTC)
+Received: from bfoster (unknown [10.22.65.140])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C601E30000DF;
+	Mon,  2 Dec 2024 14:41:26 +0000 (UTC)
+Date: Mon, 2 Dec 2024 09:43:13 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: syzbot <syzbot+af7e25f0384dc888e1bf@syzkaller.appspotmail.com>
+Cc: brauner@kernel.org, djwong@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com, gfs2@lists.linux.dev
+Subject: Re: [syzbot] [iomap?] WARNING in iomap_zero_iter
+Message-ID: <Z03HgRGByNi1spE0@bfoster>
+References: <674d11ec.050a0220.48a03.001c.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <674d11ec.050a0220.48a03.001c.GAE@google.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Fix spelling here and there as suggested by codespell.
+CC'd gfs2@lists.linux.dev.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- fs/gfs2/bmap.c       | 2 +-
- fs/gfs2/dir.c        | 2 +-
- fs/gfs2/lock_dlm.c   | 4 ++--
- fs/gfs2/quota.c      | 2 +-
- fs/gfs2/recovery.c   | 2 +-
- fs/gfs2/rgrp.c       | 4 ++--
- fs/gfs2/trace_gfs2.h | 2 +-
- 7 files changed, 9 insertions(+), 9 deletions(-)
+On Sun, Dec 01, 2024 at 05:48:28PM -0800, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    b86545e02e8c Merge tag 'acpi-6.13-rc1-2' of git://git.kern..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=107623c0580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=5f0b9d4913852126
+> dashboard link: https://syzkaller.appspot.com/bug?extid=af7e25f0384dc888e1bf
+> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-b86545e0.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/00ec87aaa7ee/vmlinux-b86545e0.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/fcc70e20d51b/bzImage-b86545e0.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+af7e25f0384dc888e1bf@syzkaller.appspotmail.com
+> 
+> loop0: detected capacity change from 0 to 32768
+> gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+> gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+> gfs2: fsid=syz:syz.0: journal 0 mapped with 1 extents in 0ms
+> gfs2: fsid=syz:syz.0: first mount done, others may mount
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 5341 at fs/iomap/buffered-io.c:1373 iomap_zero_iter+0x3b3/0x4c0 fs/iomap/buffered-io.c:1373
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 1795c4e8dbf6..100784403758 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -1194,7 +1194,7 @@ const struct iomap_ops gfs2_iomap_ops = {
-  * @inode: The inode
-  * @lblock: The logical block number
-  * @bh_map: The bh to be mapped
-- * @create: True if its ok to alloc blocks to satify the request
-+ * @create: True if its ok to alloc blocks to satisfy the request
-  *
-  * The size of the requested mapping is defined in bh_map->b_size.
-  *
-diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
-index 85736135bcf5..dc5879e055ab 100644
---- a/fs/gfs2/dir.c
-+++ b/fs/gfs2/dir.c
-@@ -1259,7 +1259,7 @@ static int compare_dents(const void *a, const void *b)
-  * @sort_start: index of the directory array to start our sort
-  * @copied: pointer to int that's non-zero if a entry has been copied out
-  *
-- * Jump through some hoops to make sure that if there are hash collsions,
-+ * Jump through some hoops to make sure that if there are hash collisions,
-  * they are read out at the beginning of a buffer.  We want to minimize
-  * the possibility that they will fall into different readdir buffers or
-  * that someone will want to seek to that location.
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 58aeeae7ed8c..e8099e293212 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -425,7 +425,7 @@ static void gdlm_cancel(struct gfs2_glock *gl)
-  * 10. gfs2_control sets control_lock lvb = new gen + bits for failed jids
-  * 12. gfs2_recover does journal recoveries for failed jids identified above
-  * 14. gfs2_control clears control_lock lvb bits for recovered jids
-- * 15. gfs2_control checks if recover_block == recover_start (step 3 occured
-+ * 15. gfs2_control checks if recover_block == recover_start (step 3 occurred
-  *     again) then do nothing, otherwise if recover_start > recover_block
-  *     then clear BLOCK_LOCKS.
-  *
-@@ -823,7 +823,7 @@ static void gfs2_control_func(struct work_struct *work)
- 
- 	/*
- 	 * No more jid bits set in lvb, all recovery is done, unblock locks
--	 * (unless a new recover_prep callback has occured blocking locks
-+	 * (unless a new recover_prep callback has occurred blocking locks
- 	 * again while working above)
- 	 */
- 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index d919edfb8dda..2989f5f3295e 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -11,7 +11,7 @@
-  * avoids the bottleneck of constantly touching the quota file, but introduces
-  * fuzziness in the current usage value of IDs that are being used on different
-  * nodes in the cluster simultaneously.  So, it is possible for a user on
-- * multiple nodes to overrun their quota, but that overrun is controlable.
-+ * multiple nodes to overrun their quota, but that overrun is controllable.
-  * Since quota tags are part of transactions, there is no need for a quota check
-  * program to be run on node crashes or anything like that.
-  *
-diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
-index 527353c36aa5..779db78f9c80 100644
---- a/fs/gfs2/recovery.c
-+++ b/fs/gfs2/recovery.c
-@@ -154,7 +154,7 @@ int __get_log_header(struct gfs2_sbd *sdp, const struct gfs2_log_header *lh,
-  * @blk: the block to look at
-  * @head: the log header to return
-  *
-- * Read the log header for a given segement in a given journal.  Do a few
-+ * Read the log header for a given segment in a given journal.  Do a few
-  * sanity checks on it.
-  *
-  * Returns: 0 on success,
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index b14e54b38ee8..a0aec705c5ee 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -1028,7 +1028,7 @@ static int gfs2_ri_update(struct gfs2_inode *ip)
-  * special file, which might have been updated if someone expanded the
-  * filesystem (via gfs2_grow utility), which adds new resource groups.
-  *
-- * Returns: 0 on succeess, error code otherwise
-+ * Returns: 0 on success, error code otherwise
-  */
- 
- int gfs2_rindex_update(struct gfs2_sbd *sdp)
-@@ -1912,7 +1912,7 @@ static void try_rgrp_unlink(struct gfs2_rgrpd *rgd, u64 *last_unlinked, u64 skip
-  * the lock for this rgrp's glock is significantly greater than the
-  * time taken for resource groups on average. We introduce a margin in
-  * the form of the variable @var which is computed as the sum of the two
-- * respective variences, and multiplied by a factor depending on @loops
-+ * respective variances, and multiplied by a factor depending on @loops
-  * and whether we have a lot of data to base the decision on. This is
-  * then tested against the square difference of the means in order to
-  * decide whether the result is statistically significant or not.
-diff --git a/fs/gfs2/trace_gfs2.h b/fs/gfs2/trace_gfs2.h
-index 8eae8d62a413..04535e07d090 100644
---- a/fs/gfs2/trace_gfs2.h
-+++ b/fs/gfs2/trace_gfs2.h
-@@ -429,7 +429,7 @@ TRACE_EVENT(gfs2_ail_flush,
-  * Objectives:
-  * Latency: Bmap request time
-  * Performance: Block allocator tracing
-- * Correctness: Test of disard generation vs. blocks allocated
-+ * Correctness: Test of discard generation vs. blocks allocated
-  */
- 
- /* Map an extent of blocks, possibly a new allocation */
--- 
-2.47.1
+This is the recently added warning for zeroing folios that start beyond
+i_size:
+
+	WARN_ON_ONCE(folio_pos(folio) > iter->inode->i_size);
+
+This was added because iomap zero range was somewhat recently changed to
+no longer update i_size, which means such writes are at risk of being
+thrown away. A quick look at the gfs2_fallocate() -> __gfs2_punch_hole()
+path below shows we make a couple zero range calls around block
+unaligned boundaries and immediately follow that with a flush of the
+entire range. If a portion of this starts beyond i_size then writeback
+will simply throw those folios away.
+
+I think the main question here is whether there is some known/legitimate
+use case for post-eof zeroing in GFS2 that requires behavior to be
+revisited on one side or the other, or otherwise if there is an issue
+with the warning check being racy and thus causing a false positive.
+
+GFS2 folks,
+
+Could you comment on the above wrt GFS2 and post-eof zeroing?
+
+If this isn't some obvious case, hopefully syzbot can spit out a
+reproducer soon to help get to the bottom of it. Thanks.
+
+Brian
+
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 5341 Comm: syz.0.0 Not tainted 6.12.0-syzkaller-10553-gb86545e02e8c #0
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> RIP: 0010:iomap_zero_iter+0x3b3/0x4c0 fs/iomap/buffered-io.c:1373
+> Code: 85 ff 49 bc 00 00 00 00 00 fc ff df 7e 56 49 01 dd e8 21 66 60 ff 48 8b 1c 24 48 8d 4c 24 60 e9 0b fe ff ff e8 0e 66 60 ff 90 <0f> 0b 90 e9 1b ff ff ff 48 8b 4c 24 10 80 e1 07 fe c1 38 c1 0f 8c
+> RSP: 0018:ffffc9000d27f3e0 EFLAGS: 00010283
+> RAX: ffffffff82357e72 RBX: 0000000000000000 RCX: 0000000000100000
+> RDX: ffffc9000e2fa000 RSI: 000000000000053d RDI: 000000000000053e
+> RBP: ffffc9000d27f4b0 R08: ffffffff82357d88 R09: 1ffffd40002a07d8
+> R10: dffffc0000000000 R11: fffff940002a07d9 R12: 0000000000008000
+> R13: 0000000000008000 R14: ffffea0001503ec0 R15: 0000000000000001
+> FS:  00007efeb79fe6c0(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007efeb81360e8 CR3: 00000000442d8000 CR4: 0000000000352ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Call Trace:
+>  <TASK>
+>  iomap_zero_range+0x69b/0x970 fs/iomap/buffered-io.c:1456
+>  gfs2_block_zero_range fs/gfs2/bmap.c:1303 [inline]
+>  __gfs2_punch_hole+0x311/0xb30 fs/gfs2/bmap.c:2420
+>  gfs2_fallocate+0x3a1/0x490 fs/gfs2/file.c:1399
+>  vfs_fallocate+0x569/0x6e0 fs/open.c:327
+>  do_vfs_ioctl+0x258c/0x2e40 fs/ioctl.c:885
+>  __do_sys_ioctl fs/ioctl.c:904 [inline]
+>  __se_sys_ioctl+0x80/0x170 fs/ioctl.c:892
+>  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7efeb7f80809
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007efeb79fe058 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007efeb8145fa0 RCX: 00007efeb7f80809
+> RDX: 0000000020000000 RSI: 0000000040305829 RDI: 0000000000000005
+> RBP: 00007efeb7ff393e R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 0000000000000000 R14: 00007efeb8145fa0 R15: 00007ffd994f7a38
+>  </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
+> 
 
