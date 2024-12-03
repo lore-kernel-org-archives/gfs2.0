@@ -1,92 +1,223 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8EE209F28
-	for <gfs2@lists.linux.dev>; Mon,  2 Dec 2024 15:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60FB1F7071
+	for <gfs2@lists.linux.dev>; Tue,  3 Dec 2024 15:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153216; cv=none; b=J3PWpzW7d5BJU42QScfeli3Lc4wLVJLk1F5j5dMxrzpKDwLTsnE6f5Lta5ew+7mAmcLJ9+FBa9WCXZ8600O62jEdMv64oCwa7y8avlfMqqonWwBT0uoCEdXeDU7LBaVU/q//Xz7COpk0k50AE7dS5J3a1aDEi/BixNlwLHYeW9Y=
+	t=1733238169; cv=none; b=rQB3YEosZS5d/2jckPOe5WEDo59RbmPcbbyZolCIL/Ihbpsh10pKOjwN+VfpNaGPUrn3xV80ENEP81gyokN+zc3Fd3L/mndcF9eNhUQTuDWG3jE/LGWtY+BpD7aj6NdpOTSixKkuSG5z7OlfFXX53Dd9RFNm1Hv6Q6XB2m3IV8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153216; c=relaxed/simple;
-	bh=ILXY3aNgGjCmV9htki2GbJbdJRSJ8z6lfRN850PHdwQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=ZU8/iajdVIP4z33sXsnHoXvMkcG7TpdHOvrFl3jSuBXLH5cEW4/laCoEkfCba7Rbhw6l1AdpKs1h/TPxdixocwXPJrsjs+UtdxTP8UxCYJapkaBdLQbEU4sy2M4ezOJJIf9WEAHeAzALY9Sg8pYfXnAD3yGMbhhrwbeO8/y7dfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZeYwYRt6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733238169; c=relaxed/simple;
+	bh=ShaZpfsVuba+wtb/lxe3PH06vr4NJGBf4eM6tEyRIgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=opxnaVzwCKNJjOunXhN4KPq90aDa4FS22BDc98zokkc/Zz5Wv+KswrcUSaBr/6Vnr1uYad7aSLJVJotwOMNppITPj17qs5BU1bF/74WlFdHHS7VHlRx2D3eMnIGhNOlIFVw/sbxMhqVVGPv8qol8F+u1zGvl3lxtd+OslOiKZRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PN2mBYLd; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eD+hWmAP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Qy7NIDGU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TQu7Ppb4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZeYwYRt6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733153214;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ISBeBTv6w3/6txvWl9K9Fatw/nH+0aNG0T7HTXOyD8c=;
-	b=ZeYwYRt63zJkIS1wSJHE2HuhXAECka4dW8LPl3cp0fbFozo2YOi7XeNHVS4YeY1aqDmsRM
-	y99sjv+yVv4xHYlDEj7+tmRVhyfrBa4mFtKkiSW58iz1flVczH6qSEppOF03qYXZeAwZHP
-	35+WyMkLHfsiNtQU1dTlkucf6nmJkco=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-FXzsyep8N7GhdzZpbwr8wQ-1; Mon,
- 02 Dec 2024 10:26:52 -0500
-X-MC-Unique: FXzsyep8N7GhdzZpbwr8wQ-1
-X-Mimecast-MFC-AGG-ID: FXzsyep8N7GhdzZpbwr8wQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PN2mBYLd";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eD+hWmAP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Qy7NIDGU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TQu7Ppb4"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D85D1955EB3
-	for <gfs2@lists.linux.dev>; Mon,  2 Dec 2024 15:26:52 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 75DE430000DF;
-	Mon,  2 Dec 2024 15:26:51 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH v6.13-rc1 5/5] dlm: return -ENOENT if no comm was found
-Date: Mon,  2 Dec 2024 10:26:41 -0500
-Message-ID: <20241202152641.3395369-5-aahringo@redhat.com>
-In-Reply-To: <20241202152641.3395369-1-aahringo@redhat.com>
-References: <20241202152641.3395369-1-aahringo@redhat.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C648F1F445;
+	Tue,  3 Dec 2024 15:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1733238166; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MUkusswEBb3CfTEuLbr6LUUXTNX8FstdWIkxUOrGnWI=;
+	b=PN2mBYLdikjMZe2J56vaJy1ACOsvBwQ9WmfLxmj0Ch6A5IMDU3SCkyKWCupk+AABySuS78
+	gmYuYlu5GDmwbhcbJrcEi093zM9lrmWyDt8lDmsd63dmMfyWyA4X+fpHCR5EXIffsBaXnd
+	xk4L61tJAfwWAy8Uxu++kIWF0FNrSlc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1733238166;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MUkusswEBb3CfTEuLbr6LUUXTNX8FstdWIkxUOrGnWI=;
+	b=eD+hWmAP2lNYgWfnIiU+pWep4vWf8Vb9Au3V039hXnlc3eG1RziLu9AMijOEhbuH0uNF+O
+	VvzgpYHCRz0BsODQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1733238164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MUkusswEBb3CfTEuLbr6LUUXTNX8FstdWIkxUOrGnWI=;
+	b=Qy7NIDGUl0s3M0VaRSQHGcCKwTee+zuJcb8XYEoX4R4YvGyv7YF40X8BOSYYRDs8/ZIxe8
+	4vHil2wjQQHrIhVCaKXn9HRLB/cNv1mccLQUPfyD9ztETeINfyM+IiEOyt9RqNwDTlpztO
+	zaWTtUJ8QI3MpVXPlgrbRX1xblTF3Pg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1733238164;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MUkusswEBb3CfTEuLbr6LUUXTNX8FstdWIkxUOrGnWI=;
+	b=TQu7Ppb407sBuJ4A+Klhr8YSDKcs5la5Tf2ayXsHIyrRZw/A3UvxtYi31BISvoTBUipTe3
+	cPuYHLAuItwwt2AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 99237139C2;
+	Tue,  3 Dec 2024 15:02:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q7FYJZQdT2cjPwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Dec 2024 15:02:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id CFFBCA08FB; Tue,  3 Dec 2024 16:02:39 +0100 (CET)
+Date: Tue, 3 Dec 2024 16:02:39 +0100
+From: Jan Kara <jack@suse.cz>
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: Tejun Heo <tj@kernel.org>, Andreas Gruenbacher <agruenba@redhat.com>,
+	syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com,
+	syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+	Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
+	Wu Fengguang <fengguang.wu@intel.com>,
+	Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
+Subject: Re: WARNING in __folio_mark_dirty (2)
+Message-ID: <20241203150239.6ibpyziqapxbeenm@quack3>
+References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
+ <20231213-drehen-einquartieren-56bbdda1177e@brauner>
+ <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
+ <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qC_M2RTt-TAoTbyEnLUpmlqO-bwWtZ2j9JTAyonj7R0_1733153212
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[e14d6cd6ec241f507ba7];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -2.30
+X-Spam-Flag: NO
 
-Currently if no comm can be found dlm_comm_seq() returns -EEXIST which
-means entry already exists for a lookup it makes no sense to return
--EEXIST. We change it to -ENOENT. There is no user that will evaluate
-the return value on a specific value so this should be fine.
+Hello,
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue 03-12-24 23:44:39, Tetsuo Handa wrote:
+> syzbot is hitting WARN_ON_ONCE() introduced by commit aaa2cacf8184 ("writeback:
+> add lockdep annotation to inode_to_wb()"). Since this warning can be triggered
+> without using crafted/corrupted filesystem image, I assume that either that
+> commit has missed something or gfs2 filesystem is doing something unusual.
+> 
+> Steps to reproduce this warning is shown below.
+> 
+>   # truncate -s 1G testfile.img
+>   # mkfs.gfs2 -p lock_nolock -t syz:syz testfile.img
+>   # mount -o loop testfile.img /mnt/
+>   # echo test > /mnt/file
+>   # sync
+> 
+> This warning goes away if I add "struct address_space *mapping" argument
+> to inode_to_wb() and change the lockdep annotation to check
+> mapping->i_pages.xa_lock instead of inode->i_mapping->i_pages.xa_lock .
+> 
+> Also, when this warning happens, inode->i_mapping != mapping is true and
+> it seems that inode->i_mapping points to the same address.
+> 
+> Question to start for Tejun is, how did you come to an expectation that
+> we should check inode->i_mapping rather than mapping ?
 
-diff --git a/fs/dlm/config.c b/fs/dlm/config.c
-index b2f21aa00719..cf9ba6fd7a28 100644
---- a/fs/dlm/config.c
-+++ b/fs/dlm/config.c
-@@ -935,7 +935,7 @@ int dlm_comm_seq(int nodeid, uint32_t *seq, bool locked)
- 		mutex_unlock(&clusters_root.subsys.su_mutex);
- 	}
- 	if (!cm)
--		return -EEXIST;
-+		return -ENOENT;
- 
- 	*seq = cm->seq;
- 	put_comm(cm);
+Well, mapping->host->i_mapping should better be equal to mapping, or weird
+things happen...  like this one :) But I do have a vague recollection that
+gfs2 breaks this assumption of VFS/MM layers and we've been already
+discussing that in the past. Andreas?
+
+									Honza
+
+> 
+> ----------
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index fcd4c1439cb9..d990a65f3253 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2721,6 +2721,19 @@ bool noop_dirty_folio(struct address_space *mapping, struct folio *folio)
+>  }
+>  EXPORT_SYMBOL(noop_dirty_folio);
+>  
+> +static inline struct bdi_writeback *inode_to_wb2(const struct inode *inode, struct address_space *mapping)
+> +{
+> +#ifdef CONFIG_LOCKDEP
+> +	if (inode->i_mapping != mapping)
+> +		printk("inode=%px inode->i_mapping=%px mapping=%px\n", inode, inode->i_mapping, mapping);
+> +	WARN_ON(debug_locks &&
+> +		(!lockdep_is_held(&inode->i_lock) &&
+> +		 !lockdep_is_held(&mapping->i_pages.xa_lock) && // <= replaced
+> +		 !lockdep_is_held(&inode->i_wb->list_lock)));
+> +#endif
+> +	return inode->i_wb;
+> +}
+> +
+>  /*
+>   * Helper function for set_page_dirty family.
+>   *
+> @@ -2740,7 +2753,7 @@ static void folio_account_dirtied(struct folio *folio,
+>  		long nr = folio_nr_pages(folio);
+>  
+>  		inode_attach_wb(inode, folio);
+> -		wb = inode_to_wb(inode);
+> +		wb = inode_to_wb2(inode, mapping);
+>  
+>  		__lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+> @@ -3085,7 +3098,7 @@ bool __folio_end_writeback(struct folio *folio)
+>  		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
+>  					PAGECACHE_TAG_WRITEBACK);
+>  		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
+> -			struct bdi_writeback *wb = inode_to_wb(inode);
+> +			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
+>  
+>  			wb_stat_mod(wb, WB_WRITEBACK, -nr);
+>  			__wb_writeout_add(wb, nr);
+> @@ -3134,7 +3147,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+>  
+>  		xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
+>  		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
+> -			struct bdi_writeback *wb = inode_to_wb(inode);
+> +			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
+>  
+>  			wb_stat_mod(wb, WB_WRITEBACK, nr);
+>  			if (!on_wblist)
+> 
+> [   85.160317] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50ad73abc0
+> [   85.161923] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621ab0
+> [   85.162644] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
+> [   85.163512] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
+> [   85.164439] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
+> [   85.167314] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
+> [   85.168533] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
+> [   85.169780] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
+> 
+> 
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
