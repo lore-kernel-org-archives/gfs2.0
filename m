@@ -1,141 +1,96 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047681DFE2A
-	for <gfs2@lists.linux.dev>; Tue,  3 Dec 2024 15:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CDC1E522
+	for <gfs2@lists.linux.dev>; Wed,  4 Dec 2024 07:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240848; cv=none; b=rpHPNspM6okjJhd5kcmapBQFKzfcwFFr2GbYhIjcmU0LQoIptp2isjiz1BBLfSuTaAzTsidlm0RoNiHb8ycxvhSqU0nBWc154buyA8eAZ84qArbSLhwSkaNS8m+JA224TKPp3wIF+0bprRUibAJ4EtcjPL0znhhT1kw79Qt284g=
+	t=1733295896; cv=none; b=QNt9czLWJaDtNcWLhoodhatD0jgcsJaocvb/pCgmO9V7mszncG7rAsCynz2VBKQJybucqRYoCj7jxGGcDLR683Q3AxNhLzabXECUpsDT9XJlEPxjcH9+zaJWQ10xB+jdBAdLo9sdt3RBLD8LslK5Kb27lQJo/yILlyijIC5eDyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240848; c=relaxed/simple;
-	bh=ygUD2fzdL15sN4Fj8rAk1iCMTU45pLJk1olVAxztOZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LD0cGbmmjQQMPbapjf9wv14lT4bIflH2CiLioV8e0FKDWhyRPUf4McM6ezFlZR49nVhwkum05nMA1B6mttjm+FeCuKPlvaLQM35+iO+Ho7JZ7NJAlngOVS/CkkvPKQ7UPzGLtolekAEhWV4qy2MBzIIGSme2gFegaxkm2gHlVFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 4B3EihRf086916;
-	Tue, 3 Dec 2024 23:44:43 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 4B3EigGR086913
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 3 Dec 2024 23:44:43 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
-Date: Tue, 3 Dec 2024 23:44:39 +0900
+	s=arc-20240116; t=1733295896; c=relaxed/simple;
+	bh=wycjbWviGcxBtS/Khs5H+zQOvPvEZf97xukRN0WJi80=;
+	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=j1oZ4S76d0EgCPbOKadsx7LKZYBdHf3OOJjys0LG+gRzBCdXVWqIDk8NIu36+jhwwTATgbRs2qU50hqzzm80BxWx0djuaoWdC9OOe0btXZ2F7vkQO5eQHaVOBrSDKITT4Wmb23m214mR6CIUEkEbrR6WaVqgDK0TwG3GbCNdsJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y37kf48mKz1jxpx;
+	Wed,  4 Dec 2024 15:02:34 +0800 (CST)
+Received: from kwepemd200022.china.huawei.com (unknown [7.221.188.232])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0C8691A016C;
+	Wed,  4 Dec 2024 15:04:51 +0800 (CST)
+Received: from [10.174.178.185] (10.174.178.185) by
+ kwepemd200022.china.huawei.com (7.221.188.232) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 4 Dec 2024 15:04:49 +0800
+Subject: Re: [PATCH 00/11] fix hungtask due to repeated traversal of inodes
+ list
+To: Ye Bin <yebin@huaweicloud.com>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <jack@suse.cz>, <linux-fsdevel@vger.kernel.org>,
+	<axboe@kernel.dk>, <linux-block@vger.kernel.org>, <agruenba@redhat.com>,
+	<gfs2@lists.linux.dev>, <amir73il@gmail.com>, <mic@digikod.net>,
+	<gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<serge@hallyn.com>, <linux-security-module@vger.kernel.org>
+References: <20241118114508.1405494-1-yebin@huaweicloud.com>
+CC: <zhangxiaoxu5@huawei.com>
+From: "yebin (H)" <yebin10@huawei.com>
+Message-ID: <674FFF03.9080403@huawei.com>
+Date: Wed, 4 Dec 2024 15:04:35 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING in __folio_mark_dirty (2)
-To: Tejun Heo <tj@kernel.org>, Andreas Gruenbacher <agruenba@redhat.com>
-Cc: syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
-        Wu Fengguang <fengguang.wu@intel.com>,
-        Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
-References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
- <20231213-drehen-einquartieren-56bbdda1177e@brauner>
- <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20241118114508.1405494-1-yebin@huaweicloud.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav404.rs.sakura.ne.jp
-X-Virus-Status: clean
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200022.china.huawei.com (7.221.188.232)
 
-Hello.
+Friendly ping...
 
-syzbot is hitting WARN_ON_ONCE() introduced by commit aaa2cacf8184 ("writeback:
-add lockdep annotation to inode_to_wb()"). Since this warning can be triggered
-without using crafted/corrupted filesystem image, I assume that either that
-commit has missed something or gfs2 filesystem is doing something unusual.
-
-Steps to reproduce this warning is shown below.
-
-  # truncate -s 1G testfile.img
-  # mkfs.gfs2 -p lock_nolock -t syz:syz testfile.img
-  # mount -o loop testfile.img /mnt/
-  # echo test > /mnt/file
-  # sync
-
-This warning goes away if I add "struct address_space *mapping" argument
-to inode_to_wb() and change the lockdep annotation to check
-mapping->i_pages.xa_lock instead of inode->i_mapping->i_pages.xa_lock .
-
-Also, when this warning happens, inode->i_mapping != mapping is true and
-it seems that inode->i_mapping points to the same address.
-
-Question to start for Tejun is, how did you come to an expectation that
-we should check inode->i_mapping rather than mapping ?
-
-----------
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index fcd4c1439cb9..d990a65f3253 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2721,6 +2721,19 @@ bool noop_dirty_folio(struct address_space *mapping, struct folio *folio)
- }
- EXPORT_SYMBOL(noop_dirty_folio);
- 
-+static inline struct bdi_writeback *inode_to_wb2(const struct inode *inode, struct address_space *mapping)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	if (inode->i_mapping != mapping)
-+		printk("inode=%px inode->i_mapping=%px mapping=%px\n", inode, inode->i_mapping, mapping);
-+	WARN_ON(debug_locks &&
-+		(!lockdep_is_held(&inode->i_lock) &&
-+		 !lockdep_is_held(&mapping->i_pages.xa_lock) && // <= replaced
-+		 !lockdep_is_held(&inode->i_wb->list_lock)));
-+#endif
-+	return inode->i_wb;
-+}
-+
- /*
-  * Helper function for set_page_dirty family.
-  *
-@@ -2740,7 +2753,7 @@ static void folio_account_dirtied(struct folio *folio,
- 		long nr = folio_nr_pages(folio);
- 
- 		inode_attach_wb(inode, folio);
--		wb = inode_to_wb(inode);
-+		wb = inode_to_wb2(inode, mapping);
- 
- 		__lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
- 		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
-@@ -3085,7 +3098,7 @@ bool __folio_end_writeback(struct folio *folio)
- 		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
- 					PAGECACHE_TAG_WRITEBACK);
- 		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
--			struct bdi_writeback *wb = inode_to_wb(inode);
-+			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
- 
- 			wb_stat_mod(wb, WB_WRITEBACK, -nr);
- 			__wb_writeout_add(wb, nr);
-@@ -3134,7 +3147,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
- 
- 		xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
- 		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
--			struct bdi_writeback *wb = inode_to_wb(inode);
-+			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
- 
- 			wb_stat_mod(wb, WB_WRITEBACK, nr);
- 			if (!on_wblist)
-
-[   85.160317] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50ad73abc0
-[   85.161923] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621ab0
-[   85.162644] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
-[   85.163512] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
-[   85.164439] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
-[   85.167314] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
-[   85.168533] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
-[   85.169780] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
-
+On 2024/11/18 19:44, Ye Bin wrote:
+> From: Ye Bin <yebin10@huawei.com>
+>
+> As commit 04646aebd30b ("fs: avoid softlockups in s_inodes iterators")
+> introduces the retry logic. In the problem environment, the 'i_count'
+> of millions of files is not zero. As a result, the time slice for each
+> traversal to the matching inode process is almost used up, and then the
+> traversal is started from scratch. The worst-case scenario is that only
+> one inode can be processed after each wakeup. Because this process holds
+> a lock, other processes will be stuck for a long time, causing a series
+> of problems.
+> To solve the problem of repeated traversal from the beginning, each time
+> the CPU needs to be freed, a cursor is inserted into the linked list, and
+> the traversal continues from the cursor next time.
+>
+> Ye Bin (11):
+>    fs: introduce I_CURSOR flag for inode
+>    block: use sb_for_each_inodes API
+>    fs: use sb_for_each_inodes API
+>    gfs2: use sb_for_each_inodes API
+>    fs: use sb_for_each_inodes_safe API
+>    fsnotify: use sb_for_each_inodes API
+>    quota: use sb_for_each_inodes API
+>    fs/super.c: use sb_for_each_inodes API
+>    landlock: use sb_for_each_inodes API
+>    fs: fix hungtask due to repeated traversal of inodes list
+>    fs: fix potential soft lockup when 'sb->s_inodes' has large number of
+>      inodes
+>
+>   block/bdev.c           |  4 +--
+>   fs/drop_caches.c       |  2 +-
+>   fs/gfs2/ops_fstype.c   |  2 +-
+>   fs/inode.c             | 59 ++++++++++++++++++++++++++++--------------
+>   fs/notify/fsnotify.c   |  2 +-
+>   fs/quota/dquot.c       |  4 +--
+>   fs/super.c             |  2 +-
+>   include/linux/fs.h     | 45 ++++++++++++++++++++++++++++++++
+>   security/landlock/fs.c |  2 +-
+>   9 files changed, 93 insertions(+), 29 deletions(-)
+>
 
