@@ -1,94 +1,257 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293A81401B
-	for <gfs2@lists.linux.dev>; Thu,  5 Dec 2024 09:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4341D5CD7
+	for <gfs2@lists.linux.dev>; Thu,  5 Dec 2024 13:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733389468; cv=none; b=K/ry+wY+PNPOau0xls8gz8E9uhnbMiKCTvfYW3gCsNToB+Fk9tqIkNL7iUDVwjhuutSQ5Iv2d5w8EIXOldnjr2rBq7BMOid2G43Lhf55109SpOKibldQRSN3X3KwwFO4mMhbDPR0v44s/DqEBaBQpAutSRma9rTl9FDNabRQAJY=
+	t=1733407152; cv=none; b=KwSzgHoeV0/B3XRXP/V84Au++QV1L+3CxF+GbMeHAN+YhIKJ10aLOv7HQmspC40xUaDB3IRF0g4SCSjybRa9HJxJ0EoGvAzToTbwUfcZR/xdXOMwrPRJUZHfFgPdMOsJcsFf5yUhvCG06G9wutiKl/nLlsUsJmWlehzd4/tKtrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733389468; c=relaxed/simple;
-	bh=UI6cxBtpoXhC6l8/5MMqqAEglAQv4gFY7nrgv5fIlp0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=qyNhv4mVkaPrS2P4XnBTq0w0wLqSzxgVKS5GkFHDc7tj8NRJ7UgOLhUrAEuWEvL7nPcUaVAOxgWZ9zP6GKmRQLvMWe13aaJVlWyJXDNPI82FLvctMdz4G4eHoGubTIowh2wXelTexhe4FjpdFKIlZiyCoSjiEYfAl3CPXay3KXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a7e0d7b804so6665665ab.0
-        for <gfs2@lists.linux.dev>; Thu, 05 Dec 2024 01:04:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733389466; x=1733994266;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ynnpAB+dKETSQS8JOngGO5ca8blmUDJ3fT2BlUIICa0=;
-        b=xKNYFDy5tMl+95zh1+piu0Zq5Af0kcW9M/MFKwhCf8s6q9OQz7sVewnixLFIZLxJSd
-         jWFy+EChaMCftHH2CyquMSVDdknStvwE//XHbT3fvEaUpGYqlPkwFVuUyf5y+EGue2uL
-         kqu09Pwe5cB3C5jzkmQKWxJK8YBR0trTkppXU2aS4USWyiXW/CMaJVzhpEYWUhQEBuNL
-         UMBevBCwJXuEn8SXtqEd/JySschD9aSnVmRLDA3OrHWJ4fHAvC5BiYdZju0JCOCzV4gx
-         CDmFnDKiLmjki9EOwvSWX4wsuDl5fGNTL0RivFHgzxhFbZQHKNwxrxoOJyPsfqycX5PH
-         tgUA==
-X-Gm-Message-State: AOJu0YwHkguGjhk95NlIlaKB6U86PxNMK9NzgDW72uNBBUtXB/9RHuuZ
-	a+yyKeLzYUaZlLKnizhVb2LDtKEHlANmW717quCNRhNbyZXygfvqx8fPgJuEke2vrQVi9aw+BmR
-	Syu7C5TaLqqO12mfat+A2+IZkXJsYzU6NK6RkTn7zdxBhPfy3hYKCBF4=
-X-Google-Smtp-Source: AGHT+IHTYALk19iTOYHvqLh69WaOXb8pJWPllGpUZ6TjP2weAiDByWBcsFqdj725Qpy4gAjYehGJHygM2snfPiRnOWkRYKIzrlsG
+	s=arc-20240116; t=1733407152; c=relaxed/simple;
+	bh=upXv39DcpzAnRR2m+Dy9MKh5yxeRBYKZHjbdCOTFt/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sb/gEAhf0QYlZvTgFDXK/O+qJF1hmUwOped1I9RAyD/9Anmv3dSDKlO6L9dhLsogd8g+Rx6Hy6jdJRwO0TyXD7dJmB6EAtl/KHro9K6GgXDZ6ZGEo2ZQnJll2+cDd4VrqjYFJzlRkjBeDxEHhdcl4Zn55xrxx0BWuOVH//1kMOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OwZiz3s7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OwZiz3s7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733407149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4ZRbeRfvgZdeTCHGebmg6ySPrk2ImCTx7xrraRS1AI=;
+	b=OwZiz3s7VUuaWFYV4zLmuURiRKec7kWDMJKfie/lBw3/pMP3qdPjfxHZWvEC7M9vO3mV1o
+	jFToquStJWnU0/vWQ0i5A+EfYyK0MqNkdQgZdHkTKmLZgLpvbpiKP9Luz/AbxLmvw80BKK
+	xCqDscevKN1QwZhlf7c3QNTDhqWg6Pw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-GZgOzY5-MKqqbg6onIdSBA-1; Thu,
+ 05 Dec 2024 08:59:05 -0500
+X-MC-Unique: GZgOzY5-MKqqbg6onIdSBA-1
+X-Mimecast-MFC-AGG-ID: GZgOzY5-MKqqbg6onIdSBA
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1B9A41955E80;
+	Thu,  5 Dec 2024 13:59:04 +0000 (UTC)
+Received: from bfoster (unknown [10.22.90.12])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77F0219560A2;
+	Thu,  5 Dec 2024 13:59:02 +0000 (UTC)
+Date: Thu, 5 Dec 2024 09:00:48 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: syzbot <syzbot+af7e25f0384dc888e1bf@syzkaller.appspotmail.com>,
+	brauner@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com, gfs2@lists.linux.dev
+Subject: Re: [syzbot] [iomap?] WARNING in iomap_zero_iter
+Message-ID: <Z1GyEOuIrb8GLirf@bfoster>
+References: <674d11ec.050a0220.48a03.001c.GAE@google.com>
+ <Z03HgRGByNi1spE0@bfoster>
+ <20241205070653.GE7837@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a81:b0:3a7:e67f:3c58 with SMTP id
- e9e14a558f8ab-3a7f9a2fb3emr132399265ab.3.1733389466353; Thu, 05 Dec 2024
- 01:04:26 -0800 (PST)
-Date: Thu, 05 Dec 2024 01:04:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67516c9a.050a0220.17bd51.008d.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Dec 2024)
-From: syzbot <syzbot+list00589e0ae5eac5469961@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205070653.GE7837@frogsfrogsfrogs>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hello gfs2 maintainers/developers,
+On Wed, Dec 04, 2024 at 11:06:53PM -0800, Darrick J. Wong wrote:
+> On Mon, Dec 02, 2024 at 09:43:13AM -0500, Brian Foster wrote:
+> > CC'd gfs2@lists.linux.dev.
+> > 
+> > On Sun, Dec 01, 2024 at 05:48:28PM -0800, syzbot wrote:
+> > > Hello,
+> > > 
+> > > syzbot found the following issue on:
+> > > 
+> > > HEAD commit:    b86545e02e8c Merge tag 'acpi-6.13-rc1-2' of git://git.kern..
+> > > git tree:       upstream
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=107623c0580000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=5f0b9d4913852126
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=af7e25f0384dc888e1bf
+> > > compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+> > > 
+> > > Unfortunately, I don't have any reproducer for this issue yet.
+> > > 
+> > > Downloadable assets:
+> > > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-b86545e0.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/00ec87aaa7ee/vmlinux-b86545e0.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/fcc70e20d51b/bzImage-b86545e0.xz
+> > > 
+> > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > Reported-by: syzbot+af7e25f0384dc888e1bf@syzkaller.appspotmail.com
+> > > 
+> > > loop0: detected capacity change from 0 to 32768
+> > > gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
+> > > gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
+> > > gfs2: fsid=syz:syz.0: journal 0 mapped with 1 extents in 0ms
+> > > gfs2: fsid=syz:syz.0: first mount done, others may mount
+> > > ------------[ cut here ]------------
+> > > WARNING: CPU: 0 PID: 5341 at fs/iomap/buffered-io.c:1373 iomap_zero_iter+0x3b3/0x4c0 fs/iomap/buffered-io.c:1373
+> > 
+> > This is the recently added warning for zeroing folios that start beyond
+> > i_size:
+> > 
+> > 	WARN_ON_ONCE(folio_pos(folio) > iter->inode->i_size);
+> > 
+> > This was added because iomap zero range was somewhat recently changed to
+> > no longer update i_size, which means such writes are at risk of being
+> > thrown away. A quick look at the gfs2_fallocate() -> __gfs2_punch_hole()
+> > path below shows we make a couple zero range calls around block
+> > unaligned boundaries and immediately follow that with a flush of the
+> > entire range. If a portion of this starts beyond i_size then writeback
+> > will simply throw those folios away.
+> > 
+> > I think the main question here is whether there is some known/legitimate
+> > use case for post-eof zeroing in GFS2 that requires behavior to be
+> > revisited on one side or the other, or otherwise if there is an issue
+> > with the warning check being racy and thus causing a false positive.
+> > 
+> > GFS2 folks,
+> > 
+> > Could you comment on the above wrt GFS2 and post-eof zeroing?
+> > 
+> > If this isn't some obvious case, hopefully syzbot can spit out a
+> > reproducer soon to help get to the bottom of it. Thanks.
+> 
+> I can't say much about gfs2, but rebasing the rtreflink patchset atop
+> 6.13-rc1 also triggered this.
+> 
+> The refcount code in xfs isn't designed to allowed shared unwritten
+> extents.  If the rt extent size is greater than 1 fsblock, that means
+> that FICLONE (after flushing and invalidating pagecache) write zeroes to
+> unwritten extents and changes the mapping to written.
+> 
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+Hm, Ok. I'm not familiar with the rt bits but it sounds like we have a
+situation where explicit zeroing is preferred over unwritten post-eof
+extents.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 16 issues are still open and 34 have already been fixed.
+> Unfortunately, if EOF happens to be in the middle of a shared rt extent,
+> the file will then have written mappings that start entirely beyond EOF.
+> If there's a dirty folio that spans EOF but doesn't cache the entire rt
+> extent and someone initiates a write well beyond EOF, the posteof
+> prezeroing will see the written mapping, allocate a new folio entirely
+> beyond EOF, and trip over this.
+> 
 
-Some of the still happening issues:
+Fun. So we have "zeroed but not unwritten" post-eof extents that trip
+this warning, but may not necessarily be problematic because the extents
+were already zeroed either way..?
 
-Ref Crashes Repro Title
-<1> 599473  Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 1328    Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<3> 604     Yes   kernel BUG in gfs2_withdraw
-                  https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-<4> 301     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                  https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<5> 124     Yes   INFO: task hung in __gfs2_lookup
-                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<6> 27      Yes   WARNING in gfs2_ri_update (2)
-                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<7> 17      Yes   WARNING in gfs2_check_blk_type (2)
-                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
-<8> 5       Yes   kernel BUG in gfs2_assert_warn_i
-                  https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
-<9> 3       Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                  https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
+> Seeing as writeback ignores totally posteof folios, the COW code will
+> probably have to do BMAPI_ZERO allocations to ensure that we've zeroed
+> out any stale data just in case they end up being used for a small file
+> extension.  I might have to make ->iomap_begin never return written
+> mappings that start after EOF, though I could just fix iomap to skip
+> post-EOF written mappings since pagecache doesn't service that anyway.
+> 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Hmm.. it kind of sounds like that would defeat the purpose of the
+warning..? I.e., iomap doesn't zero something the caller expected it to
+because iomap makes no assumptions about whether post-eof (written)
+extents are actually zero on disk.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+FWIW, a secondary reason for adding this warning was to grok whether
+users depended on historical behavior here. The first I brought this up
+was here [1], but TLDR is my sense is that this was a result of some
+combination of dueling bugfixes where between removing the i_size
+updates, changing XFS to convert post-eof delalloc, I'm not totally
+convinced this hasn't just replaced some known problems with different
+unknown ones. I'm kind of patiently waiting for somebody to discover how
+the latter can noticeably increase fragmentation on concurrent write
+workloads so I don't have to argue about it.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+Anyways, this is all to say.. I wonder at what point it would make more
+sense to pare back some of these changes rather than continue to
+compound on them. Would it be a problem for this rt use case if zero
+range just went back to updating i_size? I suppose a compromise could be
+to support an optional IOMAP_KEEPSIZE flag if there are callers who
+explicitly don't want size updates, but TBH I'd have to go back and read
+back through some of the original commit logs again to remember what the
+intent was and if there's any use to that at all..
 
-You may send multiple commands in a single email message.
+Brian
+
+[1] https://lore.kernel.org/linux-xfs/ZxkE93Vz3ZQaAFO1@bfoster/
+
+> <shrug>
+> 
+> --D
+> 
+> > Brian
+> > 
+> > > Modules linked in:
+> > > CPU: 0 UID: 0 PID: 5341 Comm: syz.0.0 Not tainted 6.12.0-syzkaller-10553-gb86545e02e8c #0
+> > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> > > RIP: 0010:iomap_zero_iter+0x3b3/0x4c0 fs/iomap/buffered-io.c:1373
+> > > Code: 85 ff 49 bc 00 00 00 00 00 fc ff df 7e 56 49 01 dd e8 21 66 60 ff 48 8b 1c 24 48 8d 4c 24 60 e9 0b fe ff ff e8 0e 66 60 ff 90 <0f> 0b 90 e9 1b ff ff ff 48 8b 4c 24 10 80 e1 07 fe c1 38 c1 0f 8c
+> > > RSP: 0018:ffffc9000d27f3e0 EFLAGS: 00010283
+> > > RAX: ffffffff82357e72 RBX: 0000000000000000 RCX: 0000000000100000
+> > > RDX: ffffc9000e2fa000 RSI: 000000000000053d RDI: 000000000000053e
+> > > RBP: ffffc9000d27f4b0 R08: ffffffff82357d88 R09: 1ffffd40002a07d8
+> > > R10: dffffc0000000000 R11: fffff940002a07d9 R12: 0000000000008000
+> > > R13: 0000000000008000 R14: ffffea0001503ec0 R15: 0000000000000001
+> > > FS:  00007efeb79fe6c0(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: 00007efeb81360e8 CR3: 00000000442d8000 CR4: 0000000000352ef0
+> > > DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> > > DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> > > Call Trace:
+> > >  <TASK>
+> > >  iomap_zero_range+0x69b/0x970 fs/iomap/buffered-io.c:1456
+> > >  gfs2_block_zero_range fs/gfs2/bmap.c:1303 [inline]
+> > >  __gfs2_punch_hole+0x311/0xb30 fs/gfs2/bmap.c:2420
+> > >  gfs2_fallocate+0x3a1/0x490 fs/gfs2/file.c:1399
+> > >  vfs_fallocate+0x569/0x6e0 fs/open.c:327
+> > >  do_vfs_ioctl+0x258c/0x2e40 fs/ioctl.c:885
+> > >  __do_sys_ioctl fs/ioctl.c:904 [inline]
+> > >  __se_sys_ioctl+0x80/0x170 fs/ioctl.c:892
+> > >  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+> > >  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+> > >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > > RIP: 0033:0x7efeb7f80809
+> > > Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> > > RSP: 002b:00007efeb79fe058 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> > > RAX: ffffffffffffffda RBX: 00007efeb8145fa0 RCX: 00007efeb7f80809
+> > > RDX: 0000000020000000 RSI: 0000000040305829 RDI: 0000000000000005
+> > > RBP: 00007efeb7ff393e R08: 0000000000000000 R09: 0000000000000000
+> > > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> > > R13: 0000000000000000 R14: 00007efeb8145fa0 R15: 00007ffd994f7a38
+> > >  </TASK>
+> > > 
+> > > 
+> > > ---
+> > > This report is generated by a bot. It may contain errors.
+> > > See https://goo.gl/tpsmEJ for more information about syzbot.
+> > > syzbot engineers can be reached at syzkaller@googlegroups.com.
+> > > 
+> > > syzbot will keep track of this issue. See:
+> > > https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> > > 
+> > > If the report is already addressed, let syzbot know by replying with:
+> > > #syz fix: exact-commit-title
+> > > 
+> > > If you want to overwrite report's subsystems, reply with:
+> > > #syz set subsystems: new-subsystem
+> > > (See the list of subsystem names on the web dashboard)
+> > > 
+> > > If the report is a duplicate of another one, reply with:
+> > > #syz dup: exact-subject-of-another-report
+> > > 
+> > > If you want to undo deduplication, reply with:
+> > > #syz undup
+> > > 
+> > 
+> > 
+> 
+
