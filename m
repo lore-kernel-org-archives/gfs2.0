@@ -1,127 +1,127 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA33145A03
-	for <gfs2@lists.linux.dev>; Mon,  6 Jan 2025 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040241B0F3D
+	for <gfs2@lists.linux.dev>; Mon,  6 Jan 2025 18:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736180092; cv=none; b=K3z0Y9eIxWYeRKKCFtZ8iGzPwYtogoS20N8sFzdHUTB2r4AfiA2gCqZUG04bGhan9NhjYzuQmGrOgp8vGn4O5Uad8akEKs5fUzkr57AKoI1SkH4NcIx61s3AmMLsyvlx/9qKCe9FFIDABJ4sK+eeRxbxTf5raomFOGt882IkpgY=
+	t=1736187085; cv=none; b=LmzaeiTZhnWAx5RPiNw3FENewMACsTXCRVpH8POtHlKC1uRPg4bbJJNvrlShavwWx3YVmYpPtgFfQIvZIy0MWX2qrBu+xnEuSeOX6pkF2zh/L7Jy506DFY6C3AYdcwptDnzaXjlHLgLC9beZSeko0J7pnNo/wDUEXjmM/KDzoFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736180092; c=relaxed/simple;
-	bh=4gH5vg5bB5wTfW1M64h2FddmzPq8PIpvlukgOc+ckoQ=;
+	s=arc-20240116; t=1736187085; c=relaxed/simple;
+	bh=q3eyF9REa+PyAqpMSOd4DliomoR+PYKyABUdBeR2JFY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HU5YuqRpuy5zs/rQU0wQ6EmhMAUFip78u7Q48FTLpS7fnD/zHr/J/Y3+tGhPajXuG/96Jt+iN78GHRgHRPEZVhUKXVUGRsY6DYp+tRJc4Ap0Nn11/iV7sETRh19uhXGuXx7hKoTDtAo3xZo1gJzKAG/T2ESq0j70bA1xYmqZIiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cx99+8tt; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=CSsMppjZyIr4bobxWQ38wjBjJ3/irV1rdN19DpiVELfcxvahmNA74RmZ+5JB0cshwat3I5f7h89M1blwwww3Pl1nZTuNnxJqLIXjSVcXk7fIKRDK4T2mpTOBV2+YLKGAAPV2chKj+SHOs8otZ1jXZFaDnokphinS6t00IBdNkHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ioVcJZMC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cx99+8tt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ioVcJZMC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736180089;
+	s=mimecast20190719; t=1736187082;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4gH5vg5bB5wTfW1M64h2FddmzPq8PIpvlukgOc+ckoQ=;
-	b=cx99+8ttRCJfvvwCp4x7xgkf+PM5wCzM29+f6N3WPB6AK3ICHelM45Mt3D0M9iZ1dPpqqf
-	RqdG7QIghgWVYCF5eHUjS5g/vGpq6jMg9VbgnnSBdhfGXaLa9cb4SpCiGYbc+phz95pAaJ
-	pTVtLYAWBMSsSgWRWHODSe2HZI67/Hc=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0npHfzIj3PyFNdwRJ6G+0svo3tEBqLJrMBbUsIOnbPE=;
+	b=ioVcJZMCmVhFjtyouppu9fUXFjq9zKVm/uWUixDfSgWUX8QuIdO94V21bkxzDgIXnO0h/v
+	6EG4to4/ueewsl6paNEaOux+DbkMNOwiISeMgyeT93k42vt9SgnHne/cFR8000GoSXb2o1
+	ht8HRj/SPy1Po27epljfA5DoRv3qXKo=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-ObFidHzTP2C2lAPbu3WEGA-1; Mon, 06 Jan 2025 11:14:48 -0500
-X-MC-Unique: ObFidHzTP2C2lAPbu3WEGA-1
-X-Mimecast-MFC-AGG-ID: ObFidHzTP2C2lAPbu3WEGA
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-30041b60c83so75818421fa.0
-        for <gfs2@lists.linux.dev>; Mon, 06 Jan 2025 08:14:48 -0800 (PST)
+ us-mta-263-26q4AEvnNjiUsz7IZ8eKng-1; Mon, 06 Jan 2025 13:11:20 -0500
+X-MC-Unique: 26q4AEvnNjiUsz7IZ8eKng-1
+X-Mimecast-MFC-AGG-ID: 26q4AEvnNjiUsz7IZ8eKng
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3021a3abd07so78287271fa.3
+        for <gfs2@lists.linux.dev>; Mon, 06 Jan 2025 10:11:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736180087; x=1736784887;
+        d=1e100.net; s=20230601; t=1736187079; x=1736791879;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4gH5vg5bB5wTfW1M64h2FddmzPq8PIpvlukgOc+ckoQ=;
-        b=YHqD+TdFVMxTI35+rRLiZmDNcQVuwrX1LlLbEnWhPizBNRxETBFLMwSNxvKeoeG77K
-         2RswjBR+6R37XZdOHTXjRC0Lds2gn201Sa3nBbmw5ZZZ71lNhNUKGyuuvEEz+oID53D6
-         5vskl9YKkGDrkckqgcSvgYUUgoiWNhkWp8031J2XXf0tDYk5EuBnTrtm7nVn90n3CZpy
-         d5Yg3JzDoVmijGkNBcAEsGJ3TFoZOp9pU37mZyA7mpZpig25hUinUcYV/yO5kDEc03Q0
-         EoaI6FEWHe+I4ak8c7YhPmD1NWEyjkIKuOIwI7RE7oD+khQ2WP8BQUNSCXooqufDQ6a+
-         VE3Q==
-X-Gm-Message-State: AOJu0YzIoci7C8bV7qQSysJtrTlgJxtU27FVa91vUEHhvCLul+mNlYRC
-	zMbTpjNTMBavBnyzAeVx/AqnmR9JRgKuWF5stwtnlAmbmJCVgOIeDaB8j1Bpqq8rVAhEoXHQIsp
-	nuP5beSraUxYJqzNEoA/6YU5Z7E6++xIJZD7DlT8mW17xTcgDIvgyNRi0+YgwaKmrloWUS2358E
-	v4Qwa85gLq0C4O0NSHzIeqNU7kDQ==
-X-Gm-Gg: ASbGnctvIPHJer+OEFN3Urs4pu21yj0gOfdSQKlsZGIAcfd/9zRTF0sIz8xfleYdfSX
-	+b3O9KaIIHNgvqwpleju4Kp2R1oJkj6LE429k6bwDnhDczJM8AgevsJ0BTzw2JpoVedvqR7Yf
-X-Received: by 2002:a05:651c:1a0a:b0:300:3a15:8f1f with SMTP id 38308e7fff4ca-304685c2ef9mr230346741fa.32.1736180086880;
-        Mon, 06 Jan 2025 08:14:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlUF5JEED51prd/SIzEeG1h4Gi82C+XcVG7Sam65NRHkSbEm9m0LL2aZKcyOnjlk0KXyuLbQxsxP9S8WAbxSg=
-X-Received: by 2002:a05:651c:1a0a:b0:300:3a15:8f1f with SMTP id
- 38308e7fff4ca-304685c2ef9mr230346651fa.32.1736180086499; Mon, 06 Jan 2025
- 08:14:46 -0800 (PST)
+        bh=0npHfzIj3PyFNdwRJ6G+0svo3tEBqLJrMBbUsIOnbPE=;
+        b=GCH/7aSE6bkdkfidGUmol0upegpWomqPpiJI2m4nu+PAuV1aQH35tcXLLVNonOBf3O
+         3NFPlDWlJS6NAdIVNc0NRWJDUg7exMj4NixYBGtHz7QC6qLXL+fbd7qe/R0cAnkfv6p/
+         ZTRtc9nm8s6GEX12DKf3FBMl956JvpY1mwOFcSM/eA2rm6q4fnmKdw3r97VT5kRe9Di4
+         +uPMupkYr/m981ShpSU+Tb1Vp9OT7w/p/bfZt/Wx3xWDioDL85e7YPR8gqq3pIiYEcjA
+         Nw8XYSOos35MtBh58XSZdS4pmyuwP+iyLnsc5nPEZ8cflDrs256rWgBnSRjZQvtDt/pD
+         XNNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMQ1GFq4gwt+80KmO0go7B5EfdJbflcruQ2TaA27fy7G6Wu6jeNVVEFAZLeh+SaEcbXqha@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGsiV5o4I31KPJOPoN7g5Z7G5FuCTrAXipL/52qC99sl8rkR3h
+	b5I32ZpmOBmmfYUszNkYyRf1yiwwRbXinzuqqaC/oYk+02Rglde2ZXvh5e+6akWMIKUuNnbei3v
+	5e/90AtBuN2H5G5O77dmJDoGLZ74dXkOTo7fmCnn8KP7/twREvzV+JWtImC8RxEgdAeQ+sgBi3R
+	K7AKV4zWgdb80vpFzatvKxlz7JVA==
+X-Gm-Gg: ASbGnctwQrR+EB1dD/vJEx570rJmJq+9dgSUIEdQN+XAxxvwO/43tYtor9R48MfQN0m
+	erXJC7eC/kkcUqGJthkInD/QcQRXe9q8HnI7wT/p3NoZgPJh9JvXrgdpjSXbdSNt4moHjdSJt
+X-Received: by 2002:a2e:bc09:0:b0:302:1c90:58ee with SMTP id 38308e7fff4ca-3046856ed2dmr196004391fa.18.1736187078995;
+        Mon, 06 Jan 2025 10:11:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFuRPXPdw3TNZ9gtOQ+gkxhMxoXSGqFwPMrh/SepmfYypvbULs4jypzP++wRAC/cDt9eGlNp0yEouVcQ1Q8R0o=
+X-Received: by 2002:a2e:bc09:0:b0:302:1c90:58ee with SMTP id
+ 38308e7fff4ca-3046856ed2dmr196004281fa.18.1736187078618; Mon, 06 Jan 2025
+ 10:11:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241220141913.1346301-1-cascardo@igalia.com>
-In-Reply-To: <20241220141913.1346301-1-cascardo@igalia.com>
+References: <20241224084241.13563-1-heming.zhao@suse.com> <20241224084241.13563-2-heming.zhao@suse.com>
+In-Reply-To: <20241224084241.13563-2-heming.zhao@suse.com>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 6 Jan 2025 11:14:35 -0500
-Message-ID: <CAK-6q+hV41=KuZfFUpmJgm8YX8GVxoWZKiA_gGNHWXopt2VpBA@mail.gmail.com>
-Subject: Re: [PATCH] dlm: prevent NPD when writing a positive value to event_done
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: gfs2@lists.linux.dev, David Teigland <teigland@redhat.com>, linux-kernel@vger.kernel.org, 
-	kernel-dev@igalia.com
+Date: Mon, 6 Jan 2025 13:11:07 -0500
+Message-ID: <CAK-6q+gbGg9rQKuKkpLyURN_nY1N+k87YPj1e8HqL_zTy0GgUw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dlm_controld: support corosync3/knet multi-link
+To: Heming Zhao <heming.zhao@suse.com>
+Cc: teigland@redhat.com, ccaulfie@redhat.com, jfriesse@redhat.com, 
+	nicholas.yang@suse.com, glass.su@suse.com, gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZqZS6ALudAvi2x0apk0gMqRcSHpj20rrDC-8UrLCBKo_1736180087
+X-Mimecast-MFC-PROC-ID: N2LuPk4StL8TU8iKhkNyTbhgmo1rTKrqU3F7EELatpY_1736187079
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Heming,
 
-On Fri, Dec 20, 2024 at 9:28=E2=80=AFAM Thadeu Lima de Souza Cascardo
-<cascardo@igalia.com> wrote:
+On Tue, Dec 24, 2024 at 3:42=E2=80=AFAM Heming Zhao <heming.zhao@suse.com> =
+wrote:
 >
-> do_uevent returns the value written to event_done. In case it is a positi=
-ve
-> value, new_lockspace would undo all the work, and lockspace would not be
-> set. __dlm_new_lockspace, however, would treat that positive value as a
-> success due to commit 8511a2728ab8 ("dlm: fix use count with multiple
-> joins").
+> The totem.rrp_mode config item was obsolete in corosync3. And
+> this patch gives dlm_controld the ability to detect multiple
+> links.
 >
-> Down the line, device_create_lockspace would pass that NULL lockspace to
-> dlm_find_lockspace_local, leading to a NULL pointer dereference:
+> The corosync and dlm network protocol relationship table:
 >
+>  -------------+-----------------------+---------------------
+>               | totem.transport=3Dudpu  | totem.transport=3Dudp
+>               +-----------------------+---------------------
+>  corosync 2.x |            |          |      multicast
+>               |   1-ring   | 2-ring   |---------------------
+>               |            |          |  default  | 2-ring
+>  -------------+------------+----------+---------------------
+>     dlm       |     tcp    | sctp     |   tcp     | sctp
+>  -------------+------------+----------+---------------------
+>
+>  -------------+----------------------------+----------------------
+>               | totem.transport =3D udpu/udp | totem.transport=3Dknet
+>  corosync 3.x |----------------------------+----------------------
+>               |      1-ring                | 1-link  | multi-links
+>  -------------+----------------------------+---------+-----------
+>     dlm       |       tcp                  |  tcp    | sctp
+>  -------------+----------------------------+---------+-----------
+>
+> At last, this patch should be work with updated kernel dlm module.
 
-This issue starts to be an issue since commit 4db41bf4f04f ("dlm:
-remove ls_local_handle from struct dlm_ls"). Before
-dlm_find_lockspace_local() was then returning NULL and
-device_create_lockspace() returned -ENOENT as it wasn't found a NULL
-lockspace handle, see [0].
-After the patch it dlm_find_lockspace_local() will end in a
-null-pointer dereference because we don't do this lookup of pointers
-when we already should have this pointer already.
-This behaviour is kind of weird (as it makes no sense to lookup NULL)
-and yes, I didn't see that when I wrote commit 4db41bf4f04f ("dlm:
-remove ls_local_handle from struct dlm_ls"). Just this commit signals
-us we do something stupid with the error handling.
+I am not getting why the network protocol configuration has anything
+to do with the corosync configuration.
+I know that we currently get the address configurations from corosync
+but with this patch we are forced to use SCTP when corosync provides
+more than one "ring" configuration?
 
-May I ask you which user space software do you use? As for
-dlm_controld I can't see that there is a positive number case for
-telling the event_done attribute. [1]
+Even with corosync3 it should be possible to use corosync in SCTP
+(multiple rings) and the kernel dlm using TCP only, would this not be
+possible with dlm_controld then?
 
-Your patch is fine anyway as a positive event_done should not be
-handled as an error (so far I can say that from the current DLM UAPI
-spec). We might need to review the whole error handling here again as
-the caller is only interested if it failed or not. Even kernel
-lockspaces clear positive error codes to zero whereas user space (our
-case) doesn't do that.
+Thanks.
 
 - Alex
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git/=
-tree/fs/dlm/user.c?h=3Ddlm-6.9#n431
-[1] https://pagure.io/dlm/blob/main/f/dlm_controld/cpg.c#_1811
 
