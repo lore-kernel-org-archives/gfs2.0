@@ -1,223 +1,283 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A1714F98
-	for <gfs2@lists.linux.dev>; Thu,  9 Jan 2025 15:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE2A206F06
+	for <gfs2@lists.linux.dev>; Fri, 10 Jan 2025 09:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736437137; cv=none; b=CRyniLTFYA4fSPfw4+DvJ3mC/zjhoKEOVY+JB/afNBgLpCxAV6uWbHQhpcG/sN8qljoRczWcpQyYFV4rClRIkZ9UfXIWN9lBc1+6vzAc0iASO0lUw+zqu4Ekb6lSe5/Rlyo67fte0sdyAZMeZ2ABW14CsOJ20EUdpOD6bwElI7A=
+	t=1736500140; cv=none; b=KRu0HnySEq4+mIPYYfdjUkPZQKEviSu8nMhYQYOvl0XD73xH3T7O1N6S2d/wugqr8wYw/xxx+q2kzLyQx8+yTis5HuQn8ybI5xrioiYwnd+Tne3hg5JqVp3/lFdd651TB7VQ4YE6d/NNraw1I3CE/xhQyWtfPvTHlZNf17UNxpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736437137; c=relaxed/simple;
-	bh=8+jyXzNK/KV3Fne5gAAj0WfCBT+RHRwrjmwaEb6eR1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MgghUNPFRYo5gwtuyywLc/0INq33L2IPmZc/Upq/eyYCJ1IzoKOj6UJtniEaGvmjx1RdMM4Jrqz5rmBWSPQw0AeHfLfSEFMqYg9wfuBR12gzg4MXihQbe2zVsOXhnRneLMg59lyzTU2ad0aIjiPVL3Ianvq2cHpvQOEvsy5LvW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DRJeh0fj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736500140; c=relaxed/simple;
+	bh=7ICl+UI4pC64VbEQnYyxGNzjeXiomMl3d6kHSKf/6tU=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=UNvfZjDwJiHZT+Ny7TF55es/9sZQeS2uzDc7GAltnKt3ISuyWIkGpOTyRiutN8yEKL/W5IQJB+rCi1f80zVCeaUJ7pzL5w9+5u8CUR2AJolS6/CgxAXi5jhJZuDLd/4Kr5JQ2JGjQ84RtF2mZPAcLrvZGaNc48gBvuRBIRgy3Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn; spf=pass smtp.mailfrom=m.fudan.edu.cn; dkim=pass (1024-bit key) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.b=Vrg5kilq; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.fudan.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DRJeh0fj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736437134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qqx+xDqbREkNbnQ9Gpqi5/5gi7dejZXeVIrtfIAIs5Y=;
-	b=DRJeh0fjFk/7fHCMU21QyOc/r2C9fO30WrToCA4DMeFPI6sk+00BGEDkCmqzgMgjeBKKjp
-	PcoV+t6WgPEJDh44WKCNe3EBHaj8MpkpCjjPpTaNxn7Ln611ZLdLzS/7xWAWFayO7F4Qq6
-	8MNgL69nIgHdVcXbc03t9TPEI9G3uXA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-104zvZqpPEmM0tHtfzeW3A-1; Thu, 09 Jan 2025 10:38:53 -0500
-X-MC-Unique: 104zvZqpPEmM0tHtfzeW3A-1
-X-Mimecast-MFC-AGG-ID: 104zvZqpPEmM0tHtfzeW3A
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43631d8d9c7so5352265e9.1
-        for <gfs2@lists.linux.dev>; Thu, 09 Jan 2025 07:38:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736437132; x=1737041932;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qqx+xDqbREkNbnQ9Gpqi5/5gi7dejZXeVIrtfIAIs5Y=;
-        b=hyq2XOwSGNxyEVK3K7mIcqBMeSjBNizl7wc89YfmwRK65OISIhZDhhNehsiZLiuRVa
-         PFv9ULKXsVnERzTcnVYVmMQu4lsk1Gz8z9FwWFvAjzpmBiRbToOs5FQOhQkm5Iw2Gewk
-         hwvRkReOhvb7NyB0YCL5xD/lVyGC4VPPqMbb1uuzN/e6fgwjCmOxpjEPWLIq60Glcs1+
-         N0HPPIr3tZJaPX+/YtVesbEgtTJZkY/z87/aZMsYzY3eUYset63Nw/OQIQHQKzIrh2wY
-         gjLVZnOUfRibzKigFlA1GFQDIBZuf+YcWPXGfNR1zD917/SRleWpZ2PF6N8KGEWP1xTC
-         G9Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQUISHqmX4pM06qzu/KJmrfVxhL9yjMr+pc3P6Bq9RK3eO9ovltlPTJlSJGeKn5kS3cFYJ@lists.linux.dev
-X-Gm-Message-State: AOJu0YzI8vbJVA+pF0gVqm2bKKqt3pSxS82klOmMmaCBlNB8PIdheEhN
-	KwMV+s4rhSP/o34AsiA/SM8fW+C4H9dydzcJlJ5w+VDdX3w9o725dux9nIqiFWBmjpGNBiCRtSK
-	jsco6FcSN40gWSERQamoojY87S2FY3toY5JP3AockRVbfKr3M1GE=
-X-Gm-Gg: ASbGncvJbXzRYTZ9wwb8AqkVdODVsSbI5J4Rvez8fbo/gdEp8jY56lohs1MEDRn0otl
-	nMNIUSHgWIfQ/buXGvQtX1yVp6N/4WChRy2LxUu6iWTYLuOxfnHsy25UFmBdYG2uFxNA4izy5A7
-	7rFqOqh6qWkPAcGQYdDprY2oz1HIFHHyOp8XJfKHkdrf8A1UGPqzVkijZSTqb3nqNyao1ZFnWjc
-	INBOsol2FCj+5UoxMCudONNkQgjiUOvgZQF24tO6UO5XLI4XKWFhvNpLzz2B/KnELXcDxbePPvJ
-	kELQnAwALBN3oiQd/GMuTEQ29K+up+CcMBQ0ambqsuoKBlAw
-X-Received: by 2002:a05:600c:5124:b0:434:ff08:202e with SMTP id 5b1f17b1804b1-436e9d748e8mr24321445e9.8.1736437131988;
-        Thu, 09 Jan 2025 07:38:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHBimefby0eZyto5qOvqpWEaCAZ70qAmuRyrBeOKZl2jVQDXbF8Ef4mSWZfRs7HykXsUJ/ckw==
-X-Received: by 2002:a05:600c:5124:b0:434:ff08:202e with SMTP id 5b1f17b1804b1-436e9d748e8mr24321245e9.8.1736437131529;
-        Thu, 09 Jan 2025 07:38:51 -0800 (PST)
-Received: from [192.168.1.44] (seac-27-b2-v4wan-169614-cust2769.vm25.cable.virginm.net. [81.99.250.210])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fc5csm24649795e9.2.2025.01.09.07.38.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 07:38:50 -0800 (PST)
-Message-ID: <f5caa22f-7b4b-4633-89c8-fb373508bf03@redhat.com>
-Date: Thu, 9 Jan 2025 15:38:49 +0000
+	dkim=pass (1024-bit key) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.b="Vrg5kilq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=m.fudan.edu.cn;
+	s=sorc2401; t=1736500100;
+	bh=RUYjVPA6LlbOBYe+npC3zXOy9xnuB1sat6XjZmixYv8=;
+	h=From:Mime-Version:Subject:Message-Id:Date:To;
+	b=Vrg5kilqc5z65uqwU527olD3MHvRchczk10MlBRvz4l+BmXN6OFpeDls1ybtw86dz
+	 BPTIdc3zKXLrlkPNTvc1nWkK4zpj7h3NFgzK0csgA21vKtEglvTJikvMTSXmuGzQKW
+	 921xzc3Di0MazrkUFfYTFGevphRrV8YkKK0i7nMk=
+X-QQ-mid: bizesmtpip3t1736500098t26fsr0
+X-QQ-Originating-IP: 7dJI7vIba/hWdBN0VeeBXcrJv8mjBFZIVTLqS5+qzD8=
+Received: from smtpclient.apple ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 10 Jan 2025 17:08:16 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 9950390689075430388
+From: Kun Hu <huk23@m.fudan.edu.cn>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dlm_controld: support corosync3/knet multi-link
-To: Alexander Aring <aahringo@redhat.com>, Heming Zhao <heming.zhao@suse.com>
-Cc: teigland@redhat.com, jfriesse@redhat.com, nicholas.yang@suse.com,
- glass.su@suse.com, gfs2@lists.linux.dev, Roger Zhou <ZZhou@suse.com>
-References: <20241224084241.13563-1-heming.zhao@suse.com>
- <20241224084241.13563-2-heming.zhao@suse.com>
- <CAK-6q+gbGg9rQKuKkpLyURN_nY1N+k87YPj1e8HqL_zTy0GgUw@mail.gmail.com>
- <efad042e-6035-4045-b4e8-7798055945a1@suse.com>
- <CAK-6q+g0YP+40yQ=8KVOSCcknCRmmn6-LfuvseDW1i4uFDqw5Q@mail.gmail.com>
- <f6062ed5-51aa-4c56-a211-87183e6eb853@suse.com>
- <CAK-6q+jRn+fXdby1tCQSoayO4HfpKKQkfUOH6SGJ75ujbNn1ug@mail.gmail.com>
-From: christine caulfield <ccaulfie@redhat.com>
-In-Reply-To: <CAK-6q+jRn+fXdby1tCQSoayO4HfpKKQkfUOH6SGJ75ujbNn1ug@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: M8KeVrD4akbFSz1hqLIz1wZBPRNcEXY_0o6q-CXYgv4_1736437132
-X-Mimecast-Originator: redhat.com
-Content-Language: en-GB
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Bug: INFO_task hung in gfs2_glock_nq
+Message-Id: <3BA254AB-CAA6-4D5D-8C1D-26C3B98682B1@m.fudan.edu.cn>
+Date: Fri, 10 Jan 2025 17:08:06 +0800
+Cc: "jjtan24@m.fudan.edu.cn" <jjtan24@m.fudan.edu.cn>,
+ gfs2@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+To: agruenba@redhat.com,
+ teigland@redhat.com,
+ swhiteho@redhat.com,
+ willy@infradead.org
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:m.fudan.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MHAMmLg4tmnVVPJlOkXezd6HVGZr/PzahW7IhwYv/5BjBi1GWhuVXhZa
+	fOyVtLGCfzGf0Wwr17tGUSPH+/dpOxXCilzwu4wyD2zIQL9q7T5VbdhQL/v4b4QJ1t7f4OX
+	P/SttayFAz2Of96UeWEYXIYn3PwEYE3vkwt/uYSa+9p80dZrAyUcBMt2c8/eG8PtOKXFwl8
+	yO7UsTXaJd0yFiKP/oyDpMXDtddZjYdiFruOHXMy2qACqgSDURI4Bc5tVBpnJrRU1WAO+PZ
+	ufQERVtk70H0JTbt/wt2kV4IfKgxyUIgyY0foOoFsE3F3KjWinMAmSG+5SgFL91g02M9HeY
+	xRcs0+gYdh8+4YSXPG+++g49En+al2CHUAz0/s/KUa8S8T7g1/rtLonamm/CK0+nfjc+KIU
+	Xx6T8+iHLOuPiNGiuQMKLJbF4WwHDa35gQmp2Cxg2JqerlzSdkENkaFU6SW2HGgLLaGTkFF
+	E9u7ZqXW9bo9hLzLkQo60EKIl15pIq2KttkUiXeW1j+bB9a8HPdjrBs8Qm3nthXYKurIKKE
+	GP6zSFA3hr4Aneccuc6drp2mV1i3ZI0HOHeRp6KN2fYdMQo2sra82L8kpDLzMYtE/2AoIo1
+	cWYwjBvVU2SKjgWJpRUtsvKSIwvApgLNYIeESPFCPxK0E7tpteWcluR+sUIDLu0ikWVmyrP
+	FO2ts5iVB3DrVI9jwvxD1GZ6MtSh+pvWYX+qH2WRcsPDKLKw4kDuZzyIOD720Ll0gwB2iSQ
+	7wYDeIrOwYNkzipOWooIg1VNuETdUsPBI4qd7XW2av/66dL8HqL1kNqdf4X0QBRlA1uM5/M
+	3rxUpiwl3sEpOk0xsbT34YJ61jUuPVH5oz0+Vlv5zmRagjeTzbE+yQyiX6aF8P7chsauOPD
+	eVBc36IWbAISY2Yvjw90HKcDXEwkwyVovvVMs7LBua1bhR6odsrGBECVW6G2zn5/BJhkcUH
+	FcgNKKRVMHlBDyaChw0FYCcs78HbNjTWa6TSZzgDqXzaB2fTnAl2RcmRrzJaOnGiyNERipi
+	S2EvmbukLNHp6x5qiI
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
+
+Hello,
+
+When using our customized fuzzer tool to fuzz the latest Linux kernel, =
+the following crash (40s)
+was triggered.
+
+HEAD commit: 9d89551994a430b50c4fffcb1e617a057fa76e20
+git tree: upstream
+Console output: =
+https://drive.google.com/file/d/15EBah7QQ03VRfHjEo5OXXlk5qWbVI4tf/view?usp=
+=3Dsharing
+Kernel config: =
+https://drive.google.com/file/d/1w49JIxvyeFZT7bqCXvZjozqpoLYLUvJH/view?usp=
+=3Dsharing
+C reproducer: =
+https://drive.google.com/file/d/1czqOOvilUQ72hWWV0EBqVmL1PFUWKw2k/view?usp=
+=3Dsharing
+Syzlang reproducer: =
+https://drive.google.com/file/d/1rF5bJCUHeBf_YBqI1E8yzEnrW8QdrSiR/view?usp=
+=3Dsharing
+New crash log: =
+https://drive.google.com/file/d/1reYrjFPhMMziRp2IEH5sMGRsGcZ8za65/view?usp=
+=3Dsharing
+
+We firstly encounter the crash in gfs2_aspace_writepages on 6.13-rc5, =
+but we failed to get the C and Syzlang reproducer. After that, we try to =
+obtain reproducers for multiple rounds of testing on 6.13-rc6, and found =
+that the location of this issue has varied to gfs2_glock_nq. I=E2=80=99m =
+not sure the above infomations whether is enough to locate the bug or =
+not? If you need more infos, please let me know.
+
+If you fix this issue, please add the following tag to the commit:
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin =
+<jjtan24@m.fudan.edu.cn>
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+INFO: task kworker/u17:2:56 blocked for more than 143 seconds.
+      Not tainted 6.13.0-rc5 #1
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this =
+message.
+task:kworker/u17:2   state:D stack:24424 pid:56    tgid:56    ppid:2     =
+ flags:0x00004000
+Workqueue: writeback wb_workfn (flush-7:1)
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5369 [inline]
+ __schedule+0xe60/0x4120 kernel/sched/core.c:6756
+ __schedule_loop kernel/sched/core.c:6833 [inline]
+ schedule+0xd4/0x210 kernel/sched/core.c:6848
+ io_schedule+0x1a/0x70 kernel/sched/core.c:7681
+ bit_wait_io+0x15/0xe0 kernel/sched/wait_bit.c:247
+ __wait_on_bit_lock+0x12d/0x1c0 kernel/sched/wait_bit.c:90
+ out_of_line_wait_on_bit_lock+0xd8/0x110 kernel/sched/wait_bit.c:117
+ wait_on_bit_lock_io include/linux/wait_bit.h:221 [inline]
+ __lock_buffer+0x66/0x70 fs/buffer.c:71
+ lock_buffer include/linux/buffer_head.h:426 [inline]
+ gfs2_aspace_write_folio fs/gfs2/meta_io.c:56 [inline]
+ gfs2_aspace_writepages+0x441/0x530 fs/gfs2/meta_io.c:96
+ do_writepages+0x19d/0x7d0 mm/page-writeback.c:2702
+ filemap_fdatawrite_wbc+0xe9/0x120 mm/filemap.c:397
+ __filemap_fdatawrite_range+0xc1/0x110 mm/filemap.c:430
+ gfs2_write_inode+0x2ec/0x450 fs/gfs2/super.c:463
+ write_inode fs/fs-writeback.c:1525 [inline]
+ __writeback_single_inode+0xb09/0x1010 fs/fs-writeback.c:1745
+ writeback_sb_inodes+0x5ee/0xf00 fs/fs-writeback.c:1976
+ wb_writeback+0x1a9/0xb50 fs/fs-writeback.c:2156
+ wb_do_writeback fs/fs-writeback.c:2303 [inline]
+ wb_workfn+0x134/0xe10 fs/fs-writeback.c:2343
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0x5ee/0x1ba0 kernel/workqueue.c:3310
+ worker_thread+0x59f/0xcf0 kernel/workqueue.c:3391
+ kthread+0x345/0x450 kernel/kthread.c:389
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+INFO: task syz.1.14:1738 blocked for more than 143 seconds.
+      Not tainted 6.13.0-rc5 #1
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this =
+message.
+task:syz.1.14        state:D stack:23744 pid:1738  tgid:1736  ppid:423   =
+ flags:0x00004004
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5369 [inline]
+ __schedule+0xe60/0x4120 kernel/sched/core.c:6756
+ __schedule_loop kernel/sched/core.c:6833 [inline]
+ schedule+0xd4/0x210 kernel/sched/core.c:6848
+ wb_wait_for_completion+0x187/0x240 fs/fs-writeback.c:216
+ __writeback_inodes_sb_nr+0x1d7/0x280 fs/fs-writeback.c:2735
+ sync_filesystem fs/sync.c:54 [inline]
+ sync_filesystem+0xba/0x2a0 fs/sync.c:30
+ gfs2_reconfigure+0xca/0xfc0 fs/gfs2/ops_fstype.c:1550
+ reconfigure_super+0x375/0xbe0 fs/super.c:1083
+ do_remount fs/namespace.c:3047 [inline]
+ path_mount+0x17f2/0x1d60 fs/namespace.c:3826
+ do_mount+0xf8/0x110 fs/namespace.c:3847
+ __do_sys_mount fs/namespace.c:4057 [inline]
+ __se_sys_mount fs/namespace.c:4034 [inline]
+ __x64_sys_mount+0x193/0x230 fs/namespace.c:4034
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xc3/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc80584d15e
+RSP: 002b:00007fc80449d9b8 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fc80584d15e
+RDX: 0000000020000f40 RSI: 0000000020000140 RDI: 0000000000000000
+RBP: 00007fc80449da50 R08: 00007fc80449da50 R09: 0000000001a4a438
+R10: 0000000001a4a438 R11: 0000000000000206 R12: 0000000020000f40
+R13: 0000000020000140 R14: 00007fc80449da10 R15: 00000000200008c0
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/45:
+ #0: ffffffff9631aea0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire =
+include/linux/rcupdate.h:337 [inline]
+ #0: ffffffff9631aea0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock =
+include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff9631aea0 (rcu_read_lock){....}-{1:3}, at: =
+debug_show_all_locks+0x75/0x340 kernel/locking/lockdep.c:6744
+2 locks held by kworker/u17:2/56:
+ #0: ff110000022f8948 ((wq_completion)writeback){+.+.}-{0:0}, at: =
+process_one_work kernel/workqueue.c:3204 [inline]
+ #0: ff110000022f8948 ((wq_completion)writeback){+.+.}-{0:0}, at: =
+process_scheduled_works+0x1175/0x1ba0 kernel/workqueue.c:3310
+ #1: ffa00000003d7d98 =
+((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: =
+process_one_work kernel/workqueue.c:3205 [inline]
+ #1: ffa00000003d7d98 =
+((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: =
+process_scheduled_works+0x52f/0x1ba0 kernel/workqueue.c:3310
+1 lock held by in:imklog/327:
+2 locks held by agetty/372:
+ #0: ff11000005fbf0a0 (&tty->ldisc_sem){++++}-{0:0}, at: =
+tty_ldisc_ref_wait+0x26/0x80 drivers/tty/tty_ldisc.c:243
+ #1: ffa00000034fb2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: =
+n_tty_read+0x44e/0x14c0 drivers/tty/n_tty.c:2211
+2 locks held by kworker/u17:5/738:
+ #0: ff1100006a23c458 (&rq->__lock){-.-.}-{2:2}, at: =
+raw_spin_rq_lock_nested+0x22/0x30 kernel/sched/core.c:598
+ #1: ffa000001411fd98 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, =
+at: process_one_work kernel/workqueue.c:3205 [inline]
+ #1: ffa000001411fd98 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, =
+at: process_scheduled_works+0x52f/0x1ba0 kernel/workqueue.c:3310
+1 lock held by syz.1.14/1738:
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+do_remount fs/namespace.c:3044 [inline]
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+path_mount+0x1340/0x1d60 fs/namespace.c:3826
+1 lock held by syz.4.104/3635:
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+__super_lock fs/super.c:58 [inline]
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+super_lock+0x17a/0x3e0 fs/super.c:120
+1 lock held by syz.9.725/6947:
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+__super_lock fs/super.c:58 [inline]
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+super_lock+0x17a/0x3e0 fs/super.c:120
+1 lock held by syz.0.908/7881:
+1 lock held by syz.8.911/7896:
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+__super_lock fs/super.c:58 [inline]
+ #0: ff1100000b9520e0 (&type->s_umount_key#80){++++}-{4:4}, at: =
+super_lock+0x17a/0x3e0 fs/super.c:120
+1 lock held by syz.1.925/7982:
+ #0: ffffffff963b1508 (event_mutex){+.+.}-{4:4}, at: =
+perf_trace_destroy+0x27/0x1c0 kernel/trace/trace_event_perf.c:239
+1 lock held by syz.6.932/8006:
+ #0: ffffffff963b1508 (event_mutex){+.+.}-{4:4}, at: =
+perf_trace_destroy+0x27/0x1c0 kernel/trace/trace_event_perf.c:239
+1 lock held by syz.4.930/8013:
+ #0: ffffffff963b1508 (event_mutex){+.+.}-{4:4}, at: =
+perf_trace_destroy+0x27/0x1c0 kernel/trace/trace_event_perf.c:239
+2 locks held by syz.0.933/8019:
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: srcu_lock_acquire =
+include/linux/srcu.h:158 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: srcu_read_lock =
+include/linux/srcu.h:249 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: perf_init_event =
+kernel/events/core.c:11987 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: perf_event_alloc =
+kernel/events/core.c:12309 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: =
+perf_event_alloc+0xe24/0x3ea0 kernel/events/core.c:12173
+ #1: ffffffff963b1508 (event_mutex){+.+.}-{4:4}, at: =
+perf_trace_init+0x4d/0x2f0 kernel/trace/trace_event_perf.c:221
+2 locks held by syz.2.934/8023:
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: srcu_lock_acquire =
+include/linux/srcu.h:158 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: srcu_read_lock =
+include/linux/srcu.h:249 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: perf_init_event =
+kernel/events/core.c:11987 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: perf_event_alloc =
+kernel/events/core.c:12309 [inline]
+ #0: ffffffffa1b03030 (&pmus_srcu){.+.+}-{0:0}, at: =
+perf_event_alloc+0xe24/0x3ea0 kernel/events/core.c:12173
+ #1: ffffffff963b1508 (event_mutex){+.+.}-{4:4}, at: =
+perf_trace_init+0x4d/0x2f0 kernel/trace/trace_event_perf.c:221
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
 
-
-On 09/01/2025 15:34, Alexander Aring wrote:
-> Hi Heming,
-> 
-> On Wed, Jan 8, 2025 at 9:26 PM Heming Zhao <heming.zhao@suse.com> wrote:
->>
->> On 1/8/25 23:54, Alexander Aring wrote:
->>> Hi,
->>>
->>> On Mon, Jan 6, 2025 at 11:59 PM Heming Zhao <heming.zhao@suse.com> wrote:
->>>>
->>>> On 1/7/25 02:11, Alexander Aring wrote:
->>>>> Hi Heming,
->>>>>
->>>>> On Tue, Dec 24, 2024 at 3:42 AM Heming Zhao <heming.zhao@suse.com> wrote:
->>>>>>
->>>>>> The totem.rrp_mode config item was obsolete in corosync3. And
->>>>>> this patch gives dlm_controld the ability to detect multiple
->>>>>> links.
->>>>>>
->>>>>> The corosync and dlm network protocol relationship table:
->>>>>>
->>>>>>     -------------+-----------------------+---------------------
->>>>>>                  | totem.transport=udpu  | totem.transport=udp
->>>>>>                  +-----------------------+---------------------
->>>>>>     corosync 2.x |            |          |      multicast
->>>>>>                  |   1-ring   | 2-ring   |---------------------
->>>>>>                  |            |          |  default  | 2-ring
->>>>>>     -------------+------------+----------+---------------------
->>>>>>        dlm       |     tcp    | sctp     |   tcp     | sctp
->>>>>>     -------------+------------+----------+---------------------
->>>>>>
->>>>>>     -------------+----------------------------+----------------------
->>>>>>                  | totem.transport = udpu/udp | totem.transport=knet
->>>>>>     corosync 3.x |----------------------------+----------------------
->>>>>>                  |      1-ring                | 1-link  | multi-links
->>>>>>     -------------+----------------------------+---------+-----------
->>>>>>        dlm       |       tcp                  |  tcp    | sctp
->>>>>>     -------------+----------------------------+---------+-----------
->>>>>>
->>>>>> At last, this patch should be work with updated kernel dlm module.
->>>>>
->>>>> I am not getting why the network protocol configuration has anything
->>>>> to do with the corosync configuration.
->>>>> I know that we currently get the address configurations from corosync
->>>>> but with this patch we are forced to use SCTP when corosync provides
->>>>> more than one "ring" configuration?
->>>>
->>>> Yes. this patch will force dlm to change to SCTP when corosync provides
->>>> more than one "ring".
->>>>
->>>> The reason:
->>>> (without this patch) When a user sets up multi-links on corosync3
->>>> and corosync.conf with an incorrect or missing rrp_mode,
->>>> dlm_tcp_listen_validate() will trigger 'dlm_local_count > 1' and report
->>>> an error.
->>>> Please note, rrp_mode is obsolete; the dlm_daemon will fail to read this
->>>> config item in the further. Therefore, the network protocol will
->>>> always be TCP.
->>>>
->>>>>
->>>>> Even with corosync3 it should be possible to use corosync in SCTP
->>>>> (multiple rings) and the kernel dlm using TCP only, would this not be
->>>>> possible with dlm_controld then?
->>>>
->>>> Only one case for above case: corosync3 on single-link.
->>>> A new patch is needed for dlm to work over TCP when corosync3 in SCTP
->>>> (multi-link mode). i.e. dlm_tcp_listen_validate() shouldn't return
->>>> -EINVAL when 'dlm_local_count > 1'.
->>>>
->>>
->>> I think we should change that condition then.
->>>
->>>> A key point for dlm is that there is no way to get the corosync version.
->>>> This patch is compatible with corosync2 env. In corosync2, the user must
->>>> correctly config rrp_mode when using 2-ring.
->>>>
->>>
->>> So far I looked into it, it is anyway for detecting a protocol
->>> according to some Corosync functionality it should still be possible
->>> to always force dlm_controld using a different protocol by setting the
->>> right config values/parameters.
->>
->> Yes, I forgot the config item 'protocol=[detect|tcp|sctp]', which can bypass
->> the detection phase when its value is "tcp|sctp". But in general, dlm.conf
->> is seldom used.
->>
->> Unfortunately, corosync doesn't provide the api.
->> ref: https://github.com/corosync/corosync/issues/771
-> 
-> I have the following scenario in my head with detect_protocol().
-> 
-> Currently, if somebody uses knet with UDP and has multiple
-
-
-Just a quick intervention here. If corosync is using knet, then it 
-doesn't matter if knet's protocol is UDP or SCTP, it can still provide 
-up to 8 links. There is no point in you checking that value (also, 
-different links can use different protocols).
-
-Yes, check corosync's transport: key for knet/udp/udpu - THAT will tell 
-you whether multi-link is available.
-
-
-So, the logic goes:
-
-multilink = false
-if totem.rrp_mode == 1 then multilink = true
-if totem.transport == 'knet' then multilink = true
-
-That should cover it.
-
-Chrissie
-
-
-
-> "nodelist.node.0.ring%d_addr" defined in Corosync but does not set
-> "totem.rrp_mode" and there is no "protocol" setting in dlm.conf or as
-> a parameter (it will use detect_protocol()"), then the DLM kernel will
-> use TCP.
-> 
-> After your patch the behaviour will be changed and the DLM kernel will
-> use SCTP with the same configuration as before?
-> 
-> - Alex
-> 
-
+---------------
+thanks,
+Kun Hu=
