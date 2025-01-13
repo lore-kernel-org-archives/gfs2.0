@@ -1,176 +1,188 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AC33DABF2
-	for <gfs2@lists.linux.dev>; Mon, 13 Jan 2025 09:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783981BF33F
+	for <gfs2@lists.linux.dev>; Mon, 13 Jan 2025 11:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736760931; cv=none; b=kAW5NAj9OL/YOmA/7olqwQw5cdLg7e74pDQx9buL404/+beCrNLWObVs5L8Z3nZjacgNXJZmG1/O+l7qHRCeXCMpOOr3FOtQKQh40dxzeTNakaZ24USLD7KVMu2skRczXJ8EU3QBieqVJDsEWBDjfs5Wj3ZAuiSjDD9oi3AS/ro=
+	t=1736769178; cv=none; b=bkWKP5wRDIeXBcfET0yqwhdxxsRK6Qr3PC9Ek1QRniR0yKHX0NyJWwB1TwaDu3qO6NimXe7mSmvo3oo1XAqONGonyKIijW+rmTfcLoE8M5iJjMJN4fnyrcmfYkJ6WWjTQn0iOuOiuG/qfuWQeoqO6GeMNBcz3E3YPpOVopgCdiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736760931; c=relaxed/simple;
-	bh=gY8o1pWtlJC+icfLXG2QcPmT9NfYWMeGj58rsz8sxk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZGMD7ps8vDaJK9VykqJ159oz9Cl9sZfcL2QJ+8dd/2cEt6afECZ0kspYnD1lVGxGnqOXD31S98BLvKrBGKMIce8vJOyG9e1rzclXnfhOfDMWLea8Pb2thRUQjUIw38KT6d8Iil5eLFQxbGFRaHWSQNkHd5v3UbP2q6ZGQ++q5mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 50D9Z2rc046244;
-	Mon, 13 Jan 2025 18:35:02 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 50D9Z2mr046240
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 13 Jan 2025 18:35:02 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <e346d089-7526-47ea-a64a-b75a578d2362@I-love.SAKURA.ne.jp>
-Date: Mon, 13 Jan 2025 18:35:02 +0900
+	s=arc-20240116; t=1736769178; c=relaxed/simple;
+	bh=moN1oqIzV2RfQytoXjnqEEI1M+48mJpOpaJX3vo4GjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gd4hmjGge7AfFPbcSx6X+HIC4W32RCJ6w8D3/Dcyq5TPNIB8rXutuVnpQdtqNxxduWabrR+beNTLT8OX0uiNp5NI1BhrpZXNSak2WGaKEXGqTdKgFml/huLUGlp0T5pBj0mrZ9nYi3Cev3JmG0cdSiQ2+9hRKAd6VApELL+N9C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NRtmyGbd; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uxdyA7Gi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NRtmyGbd; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uxdyA7Gi; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NRtmyGbd";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uxdyA7Gi";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NRtmyGbd";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uxdyA7Gi"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 64477210FA;
+	Mon, 13 Jan 2025 11:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736769173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C2sQZVCmCXQGt+5NS9bk2LJyTi8g+XPncU+k5GDb+0Y=;
+	b=NRtmyGbd4Ljs2a4LWhcqiCOO1zcoCncaE9XMZGrkYqilOWLET/NnVAXM8Hs4meGOHQMaGO
+	FTR1btKUJODL/ObFLx+YD3CYCWgrXZmDi0AM4wtMn5Ylt+dXgCWloTPhkIgKxJQmZKbR2y
+	X0BD3X1wd2nXnrH7uVtWURAhGhFGuh8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736769173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C2sQZVCmCXQGt+5NS9bk2LJyTi8g+XPncU+k5GDb+0Y=;
+	b=uxdyA7GiKUSjodTGWXGxrvfdJy8H+rAEfiUsWmjLtvx3bENqJzWRZ++ZVkonzcpc94MSFk
+	+28YUgWhcYtJpcBg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NRtmyGbd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uxdyA7Gi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736769173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C2sQZVCmCXQGt+5NS9bk2LJyTi8g+XPncU+k5GDb+0Y=;
+	b=NRtmyGbd4Ljs2a4LWhcqiCOO1zcoCncaE9XMZGrkYqilOWLET/NnVAXM8Hs4meGOHQMaGO
+	FTR1btKUJODL/ObFLx+YD3CYCWgrXZmDi0AM4wtMn5Ylt+dXgCWloTPhkIgKxJQmZKbR2y
+	X0BD3X1wd2nXnrH7uVtWURAhGhFGuh8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736769173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C2sQZVCmCXQGt+5NS9bk2LJyTi8g+XPncU+k5GDb+0Y=;
+	b=uxdyA7GiKUSjodTGWXGxrvfdJy8H+rAEfiUsWmjLtvx3bENqJzWRZ++ZVkonzcpc94MSFk
+	+28YUgWhcYtJpcBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5228813310;
+	Mon, 13 Jan 2025 11:52:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pHwKFJX+hGdpBgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 13 Jan 2025 11:52:53 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EB12AA08E0; Mon, 13 Jan 2025 12:52:44 +0100 (CET)
+Date: Mon, 13 Jan 2025 12:52:44 +0100
+From: Jan Kara <jack@suse.cz>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com, 
+	syzkaller-bugs <syzkaller-bugs@googlegroups.com>, Jens Axboe <axboe@kernel.dk>, 
+	Wu Fengguang <fengguang.wu@intel.com>, Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
+Subject: Re: WARNING in __folio_mark_dirty (2)
+Message-ID: <b3eojhlvvva7jhs5uv2ddf7cltx5ao4aay7p3p6uacdz7kt6ti@pup2xblqsd73>
+References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
+ <20231213-drehen-einquartieren-56bbdda1177e@brauner>
+ <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
+ <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
+ <20241203150239.6ibpyziqapxbeenm@quack3>
+ <e346d089-7526-47ea-a64a-b75a578d2362@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING in __folio_mark_dirty (2)
-To: Jan Kara <jack@suse.cz>
-Cc: Tejun Heo <tj@kernel.org>, Andreas Gruenbacher <agruenba@redhat.com>,
-        syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Jens Axboe <axboe@kernel.dk>, Wu Fengguang <fengguang.wu@intel.com>,
-        Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
-References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
- <20231213-drehen-einquartieren-56bbdda1177e@brauner>
- <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
- <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
- <20241203150239.6ibpyziqapxbeenm@quack3>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <20241203150239.6ibpyziqapxbeenm@quack3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav403.rs.sakura.ne.jp
-X-Virus-Status: clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e346d089-7526-47ea-a64a-b75a578d2362@I-love.SAKURA.ne.jp>
+X-Rspamd-Queue-Id: 64477210FA
+X-Spam-Score: -2.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[e14d6cd6ec241f507ba7];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-While no response from Andreas yet, I found that
+On Mon 13-01-25 18:35:02, Tetsuo Handa wrote:
+> While no response from Andreas yet, I found that
+> 
+> diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+> index 8e7af9a03b41..90038ec2cfa2 100644
+> --- a/include/linux/backing-dev.h
+> +++ b/include/linux/backing-dev.h
+> @@ -249,6 +249,7 @@ static inline struct bdi_writeback *inode_to_wb(const struct inode *inode)
+>  {
+>  #ifdef CONFIG_LOCKDEP
+>  	WARN_ON_ONCE(debug_locks &&
+> +		     !sb_is_blkdev_sb(inode->i_sb) &&
+>  		     (!lockdep_is_held(&inode->i_lock) &&
+>  		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+>  		      !lockdep_is_held(&inode->i_wb->list_lock)));
+> 
+> fixes this problem.
+> 
+> It seems to me that commit 692ebd17c290 ("bdi: Fix warnings in __mark_inode_dirty
+> for /dev/zero and friends") started special handling for inode_to_bdi(). Thus, I
+> still suspect that we need some special handling for inode_to_wb() as well. Who is
+> familiar with differences between normal filesystems and bdev filesystem?
 
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 8e7af9a03b41..90038ec2cfa2 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inode_to_wb(const struct inode *inode)
- {
+So I have refreshed my memory regarding the hacks gfs2 does with struct
+address_space. It has struct gfs2_glock_aspace which contains struct
+address_space which is attached to a glock (filesystem cluster lock). This
+address_space is setup in gfs2_glock_get() like:
+
+                mapping->a_ops = &gfs2_meta_aops;
+                mapping->host = s->s_bdev->bd_mapping->host;
+                mapping->flags = 0;
+                mapping_set_gfp_mask(mapping, GFP_NOFS);
+                mapping->i_private_data = NULL;
+                mapping->writeback_index = 0;
+
+Hence mapping->host->i_mapping != mapping as you've observed in your first
+email and this is what confuses writeback code. This also explains why your
+sb_is_blkdev_sb(inode->i_sb) check works because gfs2 uses bdev inode as a
+"stub" mapping host.
+
+Anyway, your suggestion brought me to an idea how this warning could be
+improved without having to mess with gfs2. Can you try modifying the WARN
+as:
+
  #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     !sb_is_blkdev_sb(inode->i_sb) &&
+- 	WARN_ON_ONCE(debug_locks &&
++	WARN_ON_ONCE(debug_locks && inode_cgwb_enabled(inode) &&
  		     (!lockdep_is_held(&inode->i_lock) &&
  		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
  		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
-fixes this problem.
+This should fix the warning and without cgroup writeback inode->i_wb should
+be stable and there's no need for locking around it.
 
-It seems to me that commit 692ebd17c290 ("bdi: Fix warnings in __mark_inode_dirty
-for /dev/zero and friends") started special handling for inode_to_bdi(). Thus, I
-still suspect that we need some special handling for inode_to_wb() as well. Who is
-familiar with differences between normal filesystems and bdev filesystem?
-
-On 2024/12/04 0:02, Jan Kara wrote:
-> Hello,
-> 
-> On Tue 03-12-24 23:44:39, Tetsuo Handa wrote:
->> syzbot is hitting WARN_ON_ONCE() introduced by commit aaa2cacf8184 ("writeback:
->> add lockdep annotation to inode_to_wb()"). Since this warning can be triggered
->> without using crafted/corrupted filesystem image, I assume that either that
->> commit has missed something or gfs2 filesystem is doing something unusual.
->>
->> Steps to reproduce this warning is shown below.
->>
->>   # truncate -s 1G testfile.img
->>   # mkfs.gfs2 -p lock_nolock -t syz:syz testfile.img
->>   # mount -o loop testfile.img /mnt/
->>   # echo test > /mnt/file
->>   # sync
->>
->> This warning goes away if I add "struct address_space *mapping" argument
->> to inode_to_wb() and change the lockdep annotation to check
->> mapping->i_pages.xa_lock instead of inode->i_mapping->i_pages.xa_lock .
->>
->> Also, when this warning happens, inode->i_mapping != mapping is true and
->> it seems that inode->i_mapping points to the same address.
->>
->> Question to start for Tejun is, how did you come to an expectation that
->> we should check inode->i_mapping rather than mapping ?
-> 
-> Well, mapping->host->i_mapping should better be equal to mapping, or weird
-> things happen...  like this one :) But I do have a vague recollection that
-> gfs2 breaks this assumption of VFS/MM layers and we've been already
-> discussing that in the past. Andreas?
-> 
-> 									Honza
-> 
->>
->> ----------
->> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
->> index fcd4c1439cb9..d990a65f3253 100644
->> --- a/mm/page-writeback.c
->> +++ b/mm/page-writeback.c
->> @@ -2721,6 +2721,19 @@ bool noop_dirty_folio(struct address_space *mapping, struct folio *folio)
->>  }
->>  EXPORT_SYMBOL(noop_dirty_folio);
->>  
->> +static inline struct bdi_writeback *inode_to_wb2(const struct inode *inode, struct address_space *mapping)
->> +{
->> +#ifdef CONFIG_LOCKDEP
->> +	if (inode->i_mapping != mapping)
->> +		printk("inode=%px inode->i_mapping=%px mapping=%px\n", inode, inode->i_mapping, mapping);
->> +	WARN_ON(debug_locks &&
->> +		(!lockdep_is_held(&inode->i_lock) &&
->> +		 !lockdep_is_held(&mapping->i_pages.xa_lock) && // <= replaced
->> +		 !lockdep_is_held(&inode->i_wb->list_lock)));
->> +#endif
->> +	return inode->i_wb;
->> +}
->> +
->>  /*
->>   * Helper function for set_page_dirty family.
->>   *
->> @@ -2740,7 +2753,7 @@ static void folio_account_dirtied(struct folio *folio,
->>  		long nr = folio_nr_pages(folio);
->>  
->>  		inode_attach_wb(inode, folio);
->> -		wb = inode_to_wb(inode);
->> +		wb = inode_to_wb2(inode, mapping);
->>  
->>  		__lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
->>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
->> @@ -3085,7 +3098,7 @@ bool __folio_end_writeback(struct folio *folio)
->>  		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
->>  					PAGECACHE_TAG_WRITEBACK);
->>  		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
->> -			struct bdi_writeback *wb = inode_to_wb(inode);
->> +			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
->>  
->>  			wb_stat_mod(wb, WB_WRITEBACK, -nr);
->>  			__wb_writeout_add(wb, nr);
->> @@ -3134,7 +3147,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
->>  
->>  		xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
->>  		if (bdi->capabilities & BDI_CAP_WRITEBACK_ACCT) {
->> -			struct bdi_writeback *wb = inode_to_wb(inode);
->> +			struct bdi_writeback *wb = inode_to_wb2(inode, mapping);
->>  
->>  			wb_stat_mod(wb, WB_WRITEBACK, nr);
->>  			if (!on_wblist)
->>
->> [   85.160317] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50ad73abc0
->> [   85.161923] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621ab0
->> [   85.162644] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
->> [   85.163512] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
->> [   85.164439] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
->> [   85.167314] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f5090621f80
->> [   85.168533] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
->> [   85.169780] inode=ffff9f508f3d8668 inode->i_mapping=ffff9f508f3d8888 mapping=ffff9f50b12c7af0
->>
->>
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
