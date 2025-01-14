@@ -1,123 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B9125760
-	for <gfs2@lists.linux.dev>; Mon, 13 Jan 2025 16:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3691ADC8E
+	for <gfs2@lists.linux.dev>; Tue, 14 Jan 2025 10:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736785508; cv=none; b=JX+N6Tjb7wKZNyBHjZ1g2hM322HwpSToYHmpSVBRSiW9cXOhIETkubcw3MeLkssSueprqOrrmGRLxQ+TmB2IybtkD5zKzygGOGGPCfb6+B0d2KwOJIgJgNWNXkb7WKFJVxRhFuE8TVvrX+b0Y3yTOemw0pp2nzkOEbkotIABaMs=
+	t=1736849224; cv=none; b=q13QYhHRzdGoWfjHksT5DVQaxDQrFlFUeRWbcdnC7F0spMSwb7znIFkRJCSQONtC8rk1HMfSEj5xTUS9YNn1CC/zGS4AZ8lgmkmbQL6Hn+mWY+1uIAtzHSxcoSK76Acnn3CuvEfFNq8Si0Rp+edjfkxrB4ZgQcm9vaDfQGN5UeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736785508; c=relaxed/simple;
-	bh=LWCUhE6qRac4v5NNdRon+8rEi7kvW+EoMeYL1gMCuK0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o8fa3F5sUdR9Nox7dmxcQpI8lVZNe0pZtHdxHpYbMUcFmB62965xvsPPhE8oJ/y0ZmtW9SRT8WzyLah9FIVb6OGr9GP+Pl/4qpKpRPsy9kWNHFbi+9gyATS/8TZN76v45a2p3nL3RA6F8pJPWQhaGFEGqMEuhB2j2COlfFKAmCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LU8eo0Ml; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1736849224; c=relaxed/simple;
+	bh=xFuZ+f+1IxFtKzyyrvsYGGe2whdFMQUnQNDU9ZfnJOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IFTcRGgDtwEECZXnz0EpCBcX3ZcOZBfKgfjhEqLBna5FQFdYuTmSCQMVeL9xTp9yG21c9Wtylm4/ni3LWkNJyFbpW5fE6byuik2j19wL29kcEwjBSCfFtRYpF9XqS36Xdn+HMLDzOzB6gCq07wcufreyTiJgr61iHG2CvxxHR6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pYpd8ATR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9T1PiGjR; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pYpd8ATR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9T1PiGjR; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LU8eo0Ml"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736785505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pYpd8ATR";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9T1PiGjR";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pYpd8ATR";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9T1PiGjR"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9258421137;
+	Tue, 14 Jan 2025 10:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736849220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LWCUhE6qRac4v5NNdRon+8rEi7kvW+EoMeYL1gMCuK0=;
-	b=LU8eo0MlrGPy2QwbVBYhbwuVZeKjiJlddvCqisc0jxqBiMlmoRiFBFkPB/gsXbnw3Gok6+
-	vgX0zc1GbbZwauo4lQjVKLHz6qNUpfeoJ4TkdCduAt31bQbggtFmuyqEKpIJRm8qx9yhCx
-	v0wPxxYpElAgh51ve0yPlr/hY3LEDjU=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-HTanvEhZPMO2_bG42MdxAg-1; Mon, 13 Jan 2025 11:25:04 -0500
-X-MC-Unique: HTanvEhZPMO2_bG42MdxAg-1
-X-Mimecast-MFC-AGG-ID: HTanvEhZPMO2_bG42MdxAg
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-21638389f63so53853725ad.1
-        for <gfs2@lists.linux.dev>; Mon, 13 Jan 2025 08:25:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736785503; x=1737390303;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LWCUhE6qRac4v5NNdRon+8rEi7kvW+EoMeYL1gMCuK0=;
-        b=idjYwabtsRVeGznJZikBdfuqRlzGQtLsSji94JtOX3frkgbvXj6sTXZnGSIL6pVOvP
-         RY3PN42QekCDc8qtoMkn5vfJ+p/udaesKuoCMY8hvxIUZsVWIIaS8wy5I7HekHlcrylj
-         D7nEL3nTv7YTXIm/S7F7AWP9zl6BGKC3HyMxFkmI/XqU+BoMDkD3BycSSp7BnDN2hS4Z
-         NusuJofmJDGHYu5Tq9ii6V5+c9uOghOlj99u21MYE9r+hu8cxHhDs4GO6bXvgfmsXzqh
-         LHC9JQK41pvkl6seRtqFwtjwAgLgTkT9QVCDW6PcINzIOWTMLUt7uMISTG/cSu1e6Sob
-         jUWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVx7Ifr6RCEuvrr0c7SFYbRxdHLP038hrpSzz25PAcbxssoH467Gk/lnh/AiB7HNUWwzGI/@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzf9njCtRzBlJIt1LMWDoleA/ywp+lbNmLoWms3hJsaAFb2ikcV
-	mw0Jol12FEYxhxmogPgt42PN3w3pvYqw1lEM+dRYkO6vxbcf/aMS7/N7IZrqfI+jwe+tyWNT6XF
-	CcnLjLgWOmdFx3X60yyyyDz8TEZM3pAqQOlA1rytDU7n3mii8f1s9xuxYKS/2xx3GzvPGszhr7u
-	qg1KVx0sKeUMluYJmLwe6jzrqFYw==
-X-Gm-Gg: ASbGncteQJw3IUl3jMxj/q1cy9ktSN2eZc1xh5qj+2b0Fx3qvATCpeFxXl/rGu3QBx5
-	Iw8HyOI2bqdIwd7Y+HTSAXhUgCie1RffrMuMw
-X-Received: by 2002:a17:902:ecc5:b0:215:7dbf:f3de with SMTP id d9443c01a7336-21a83f5e4e5mr326959795ad.28.1736785503240;
-        Mon, 13 Jan 2025 08:25:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0jUlx8LbipayI4T0xGE2BAcW+hI504rIz1zUuL1evo3KxMbXqucm99OrrMJgJ+Hjr+D71qSHHJbbelVmGJgA=
-X-Received: by 2002:a17:902:ecc5:b0:215:7dbf:f3de with SMTP id
- d9443c01a7336-21a83f5e4e5mr326959515ad.28.1736785502970; Mon, 13 Jan 2025
- 08:25:02 -0800 (PST)
+	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
+	b=pYpd8ATRm6/FTgMynv3RhvRdDpJ/1Vaj78rpQt2rJ9kuHH+CVE9LlN5A8NOFZWPjqEvB+f
+	YFyQnIa7yT1HLXL889G87SKB7nByR/cAjKWXTrL6AJKqFlo4PLwpNZZf/q2STrAMC4DUsX
+	h7+9fIn+QHdnPcpNXokcsU2okL16oNI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736849220;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
+	b=9T1PiGjRjDHgnnoeSTqU8oUPwvoxAKvtIB4BrD68E5HNo39Okmfs4Jb4HcSFkXzupKcniB
+	UPsg7SIW9h8WBUCA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pYpd8ATR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9T1PiGjR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736849220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
+	b=pYpd8ATRm6/FTgMynv3RhvRdDpJ/1Vaj78rpQt2rJ9kuHH+CVE9LlN5A8NOFZWPjqEvB+f
+	YFyQnIa7yT1HLXL889G87SKB7nByR/cAjKWXTrL6AJKqFlo4PLwpNZZf/q2STrAMC4DUsX
+	h7+9fIn+QHdnPcpNXokcsU2okL16oNI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736849220;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
+	b=9T1PiGjRjDHgnnoeSTqU8oUPwvoxAKvtIB4BrD68E5HNo39Okmfs4Jb4HcSFkXzupKcniB
+	UPsg7SIW9h8WBUCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 76DD21384C;
+	Tue, 14 Jan 2025 10:07:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iHMAHUQ3hmcqBgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 14 Jan 2025 10:07:00 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 256D2A08CD; Tue, 14 Jan 2025 11:06:56 +0100 (CET)
+Date: Tue, 14 Jan 2025 11:06:56 +0100
+From: Jan Kara <jack@suse.cz>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com, 
+	syzkaller-bugs <syzkaller-bugs@googlegroups.com>, Jens Axboe <axboe@kernel.dk>, 
+	Wu Fengguang <fengguang.wu@intel.com>, Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
+Subject: Re: WARNING in __folio_mark_dirty (2)
+Message-ID: <72dojflhsnr4abqgfyl2qzmqsifx4vcucaqlzkskspkmy76i76@cmk3em7ysnv3>
+References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
+ <20231213-drehen-einquartieren-56bbdda1177e@brauner>
+ <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
+ <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
+ <20241203150239.6ibpyziqapxbeenm@quack3>
+ <e346d089-7526-47ea-a64a-b75a578d2362@I-love.SAKURA.ne.jp>
+ <b3eojhlvvva7jhs5uv2ddf7cltx5ao4aay7p3p6uacdz7kt6ti@pup2xblqsd73>
+ <d34005db-9fe2-4b1e-acf6-54976e07d939@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <F0E0E5DD-572E-4F05-8016-46D36682C8BB@m.fudan.edu.cn>
- <brheoinx2gsmonf6uxobqicuxnqpxnsum26c3hcuroztmccl3m@lnmielvfe4v7>
- <5757218E-52F8-49C7-95F1-9051EB51A2F3@m.fudan.edu.cn> <6yd5s7fxnr7wtmluqa667lok54sphgtg4eppubntulelwidvca@ffyohkeovnyn>
- <31A10938-C36E-40A2-8A1D-180BD95528DD@m.fudan.edu.cn> <xqx6qkwti3ouotgkq5teay3adsja37ypjinrhur4m3wzagf5ia@ippcgcsvem5b>
- <86F5589E-BC3A-49E5-824F-0E840F75F46D@m.fudan.edu.cn> <CAHc6FU5YgChLiiUtEmS8pJGHUUhHAK3eYrrGd+FaNMDLti786g@mail.gmail.com>
-In-Reply-To: <CAHc6FU5YgChLiiUtEmS8pJGHUUhHAK3eYrrGd+FaNMDLti786g@mail.gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Mon, 13 Jan 2025 17:24:51 +0100
-X-Gm-Features: AbW1kvbcavtL6uBmJAkF4VNFZU3Xvdt54cbg-SQZf3tWJEbZi3OHIXZdU6LM7HY
-Message-ID: <CAHc6FU7Tng3OLB367Uo8aXRjPEfhCJiMOEUawhd3_bbHUPiVpw@mail.gmail.com>
-Subject: Re: Bug: slab-out-of-bounds Write in __bh_read
-To: Jan Kara <jack@suse.cz>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	"jjtan24@m.fudan.edu.cn" <jjtan24@m.fudan.edu.cn>, gfs2@lists.linux.dev, 
-	Kun Hu <huk23@m.fudan.edu.cn>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7cK3OZNQ_T8VTFPXgJLt96bzk4I4ByV8a3UmFYcIAlc_1736785503
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d34005db-9fe2-4b1e-acf6-54976e07d939@I-love.SAKURA.ne.jp>
+X-Rspamd-Queue-Id: 9258421137
+X-Spam-Score: -2.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[e14d6cd6ec241f507ba7];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Mon, Jan 13, 2025 at 4:41=E2=80=AFPM Andreas Gruenbacher <agruenba@redha=
-t.com> wrote:
-> Hi Jan,
->
-> Am Fr., 10. Jan. 2025 um 18:18 Uhr schrieb Kun Hu <huk23@m.fudan.edu.cn>:
-> > > Thanks. Based on the crash report and the reproducer it indeed looks =
-like
-> > > some mixing of iomap_folio_state and buffer heads attached to a folio
-> > > (iomap_folio_state is attached there but we end up calling
-> > > __block_write_begin_int() which expects buffer heads there) in GFS2. =
-GFS2
-> > > guys, care to have a look?
-> > >
-> >
-> > Thanks to Jan.
-> >
-> > Hi Andreas,
-> >
-> > It seems that iomap_write_begin is expected to handle I/O directly base=
-d on folio, rather than entering the buffer head path. Is it possible that =
-GFS2 incorrectly passes data related to buffer head to iomap_write_begin?
-> >
-> > Could you please help us to check the exact cause of the issue?
->
-> 32generated_program.c memory maps the filesystem image, mounts it, and
-> then modifies it through the memory map. It's those modifications that
-> cause gfs2 to crash, so the test case is invalid.
+On Mon 13-01-25 22:06:22, Tetsuo Handa wrote:
+> On 2025/01/13 20:52, Jan Kara wrote:
+> > Anyway, your suggestion brought me to an idea how this warning could be
+> > improved without having to mess with gfs2. Can you try modifying the WARN
+> > as:
+> > 
+> >  #ifdef CONFIG_LOCKDEP
+> > - 	WARN_ON_ONCE(debug_locks &&
+> > +	WARN_ON_ONCE(debug_locks && inode_cgwb_enabled(inode) &&
+> >  		     (!lockdep_is_held(&inode->i_lock) &&
+> >  		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+> >  		      !lockdep_is_held(&inode->i_wb->list_lock)));
+> > 
+> > This should fix the warning and without cgroup writeback inode->i_wb should
+> > be stable and there's no need for locking around it.
+> 
+> Unfortunately, this change did not stop this warning.
 
-Ah, I misread, the memory map is distinct from the filesystem. So
-forget about disabling CONFIG_BLK_DEV_WRITE_MOUNTED not working.
+Ah, right. bd_init_fs_context() sets SB_I_CGROUPWB on bdev superblock. But
+that also means that the warning is actually triggering properly because
+the bdev inode for the device under GFS2 filesystem can be moved between
+cgroups (thus mapping->host->i_wb changes) and GFS2 is prone to
+use-after-free issues for bdi_writeback structures (because different users
+don't synchronize properly on mapping->i_pages.xa_lock due to multiple
+mappings pointing to the same inode). So GFS2 really needs to be fixed and
+silencing the warning is just silencing the messenger of possible
+use-after-free issues.
 
-Thanks,
-Andreas
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
