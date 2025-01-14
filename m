@@ -1,164 +1,87 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3691ADC8E
-	for <gfs2@lists.linux.dev>; Tue, 14 Jan 2025 10:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C741FA8C2
+	for <gfs2@lists.linux.dev>; Tue, 14 Jan 2025 17:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736849224; cv=none; b=q13QYhHRzdGoWfjHksT5DVQaxDQrFlFUeRWbcdnC7F0spMSwb7znIFkRJCSQONtC8rk1HMfSEj5xTUS9YNn1CC/zGS4AZ8lgmkmbQL6Hn+mWY+1uIAtzHSxcoSK76Acnn3CuvEfFNq8Si0Rp+edjfkxrB4ZgQcm9vaDfQGN5UeI=
+	t=1736877597; cv=none; b=Oi5Xfhl0nPf5j69HFdFV4NnLMcoJCz8HezI0NOY8nezBKl+Q+45qiNVbIWtQ8PWZCd5UTKh6YHDomjvs+4ectjusfD1U9woyRfwHQ+1+gSkWKWwEHislZMh7viCp2XmHVR0W7BXwZqot2CPLUJ1pEfGEynRy4muYMwZAubvMT1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736849224; c=relaxed/simple;
-	bh=xFuZ+f+1IxFtKzyyrvsYGGe2whdFMQUnQNDU9ZfnJOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IFTcRGgDtwEECZXnz0EpCBcX3ZcOZBfKgfjhEqLBna5FQFdYuTmSCQMVeL9xTp9yG21c9Wtylm4/ni3LWkNJyFbpW5fE6byuik2j19wL29kcEwjBSCfFtRYpF9XqS36Xdn+HMLDzOzB6gCq07wcufreyTiJgr61iHG2CvxxHR6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pYpd8ATR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9T1PiGjR; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pYpd8ATR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9T1PiGjR; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1736877597; c=relaxed/simple;
+	bh=lfSLiHatBpPLoBPTrlv4lIadDzkUPAH0ISNNvQoN2TQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=CPjfjM22dViGCyZiwUSWgpNAq7tDTsHat3MHtqqJKNthMiATUzvqxgBtYFXLC51CJu9b6Znxm8otIfCcF8YtiNEm9BGFbHIT+zfggUXeUXMUNledSjQeB1oLuk7OC0wY8fpBzXLGQ4JhphU8KzfSEBHNlQDsSZWuG+lk2qq0v2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V3+2J3pl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pYpd8ATR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9T1PiGjR";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pYpd8ATR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9T1PiGjR"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V3+2J3pl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736877594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QshYZNEnKiLCTguz6Io+tV7Z4F1SXSh75UZLUI1/QPc=;
+	b=V3+2J3pluhAyR6zYWjhEJYJMFm4SGdWlB4flaYvh03vaQtPG+znDCvTmqr5oU8ZRkvXmfD
+	NVRqFX3jBMlbfN+qF4Td+dvCUmUIMuGuLQrtuDqh4TmuhQ3qYKWDuhzobv2NcYr6szGexv
+	BQdDsx9Xw0ND2OS5DqDGdwGao8y3HYM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-464-PFAAYLjnNQ-3dNRb87HqFg-1; Tue,
+ 14 Jan 2025 12:59:53 -0500
+X-MC-Unique: PFAAYLjnNQ-3dNRb87HqFg-1
+X-Mimecast-MFC-AGG-ID: PFAAYLjnNQ-3dNRb87HqFg
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9258421137;
-	Tue, 14 Jan 2025 10:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1736849220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
-	b=pYpd8ATRm6/FTgMynv3RhvRdDpJ/1Vaj78rpQt2rJ9kuHH+CVE9LlN5A8NOFZWPjqEvB+f
-	YFyQnIa7yT1HLXL889G87SKB7nByR/cAjKWXTrL6AJKqFlo4PLwpNZZf/q2STrAMC4DUsX
-	h7+9fIn+QHdnPcpNXokcsU2okL16oNI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1736849220;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
-	b=9T1PiGjRjDHgnnoeSTqU8oUPwvoxAKvtIB4BrD68E5HNo39Okmfs4Jb4HcSFkXzupKcniB
-	UPsg7SIW9h8WBUCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pYpd8ATR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9T1PiGjR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1736849220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
-	b=pYpd8ATRm6/FTgMynv3RhvRdDpJ/1Vaj78rpQt2rJ9kuHH+CVE9LlN5A8NOFZWPjqEvB+f
-	YFyQnIa7yT1HLXL889G87SKB7nByR/cAjKWXTrL6AJKqFlo4PLwpNZZf/q2STrAMC4DUsX
-	h7+9fIn+QHdnPcpNXokcsU2okL16oNI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1736849220;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k7wNQrZ0VxW3wn8ON/iq7R+kizMRw2L25k5kHmr/9/w=;
-	b=9T1PiGjRjDHgnnoeSTqU8oUPwvoxAKvtIB4BrD68E5HNo39Okmfs4Jb4HcSFkXzupKcniB
-	UPsg7SIW9h8WBUCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 76DD21384C;
-	Tue, 14 Jan 2025 10:07:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iHMAHUQ3hmcqBgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 14 Jan 2025 10:07:00 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 256D2A08CD; Tue, 14 Jan 2025 11:06:56 +0100 (CET)
-Date: Tue, 14 Jan 2025 11:06:56 +0100
-From: Jan Kara <jack@suse.cz>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, syzbot+e14d6cd6ec241f507ba7@syzkaller.appspotmail.com, 
-	syzkaller-bugs <syzkaller-bugs@googlegroups.com>, Jens Axboe <axboe@kernel.dk>, 
-	Wu Fengguang <fengguang.wu@intel.com>, Greg Thelen <gthelen@google.com>, gfs2@lists.linux.dev
-Subject: Re: WARNING in __folio_mark_dirty (2)
-Message-ID: <72dojflhsnr4abqgfyl2qzmqsifx4vcucaqlzkskspkmy76i76@cmk3em7ysnv3>
-References: <CABOYnLwGoNXXzvvn+YmCcjLu6ttAJGGTaN8+O_tNdPqcjHnfUA@mail.gmail.com>
- <20231213-drehen-einquartieren-56bbdda1177e@brauner>
- <CAHc6FU7R+mb3Eh11oOfvDVNg-Zsb-zE9CLEhr4yDKJKU5+ABHA@mail.gmail.com>
- <ebfe4024-f908-458d-9979-6ff2931c460d@I-love.SAKURA.ne.jp>
- <20241203150239.6ibpyziqapxbeenm@quack3>
- <e346d089-7526-47ea-a64a-b75a578d2362@I-love.SAKURA.ne.jp>
- <b3eojhlvvva7jhs5uv2ddf7cltx5ao4aay7p3p6uacdz7kt6ti@pup2xblqsd73>
- <d34005db-9fe2-4b1e-acf6-54976e07d939@I-love.SAKURA.ne.jp>
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E6111955DC8;
+	Tue, 14 Jan 2025 17:59:52 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.79])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD876195608A;
+	Tue, 14 Jan 2025 17:59:50 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Kun Hu <huk23@m.fudan.edu.cn>
+Subject: [PATCH] gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
+Date: Tue, 14 Jan 2025 18:59:49 +0100
+Message-ID: <20250114175949.1196275-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d34005db-9fe2-4b1e-acf6-54976e07d939@I-love.SAKURA.ne.jp>
-X-Rspamd-Queue-Id: 9258421137
-X-Spam-Score: -2.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[e14d6cd6ec241f507ba7];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: BctCDnZtugShpxJUPSk_42M2m8XS2g7_XfL1RUS-ChQ_1736877592
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon 13-01-25 22:06:22, Tetsuo Handa wrote:
-> On 2025/01/13 20:52, Jan Kara wrote:
-> > Anyway, your suggestion brought me to an idea how this warning could be
-> > improved without having to mess with gfs2. Can you try modifying the WARN
-> > as:
-> > 
-> >  #ifdef CONFIG_LOCKDEP
-> > - 	WARN_ON_ONCE(debug_locks &&
-> > +	WARN_ON_ONCE(debug_locks && inode_cgwb_enabled(inode) &&
-> >  		     (!lockdep_is_held(&inode->i_lock) &&
-> >  		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
-> >  		      !lockdep_is_held(&inode->i_wb->list_lock)));
-> > 
-> > This should fix the warning and without cgroup writeback inode->i_wb should
-> > be stable and there's no need for locking around it.
-> 
-> Unfortunately, this change did not stop this warning.
+Truncate an inode's address space when flipping the GFS2_DIF_JDATA flag:
+depending on that flag, the pages in the address space will either use
+buffer heads or iomap_folio_state structs, and we cannot mix the two.
 
-Ah, right. bd_init_fs_context() sets SB_I_CGROUPWB on bdev superblock. But
-that also means that the warning is actually triggering properly because
-the bdev inode for the device under GFS2 filesystem can be moved between
-cgroups (thus mapping->host->i_wb changes) and GFS2 is prone to
-use-after-free issues for bdi_writeback structures (because different users
-don't synchronize properly on mapping->i_pages.xa_lock due to multiple
-mappings pointing to the same inode). So GFS2 really needs to be fixed and
-silencing the warning is just silencing the messenger of possible
-use-after-free issues.
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+---
+ fs/gfs2/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-								Honza
+diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+index 1e73cf87ff88..c9bb3be21d2b 100644
+--- a/fs/gfs2/file.c
++++ b/fs/gfs2/file.c
+@@ -251,6 +251,7 @@ static int do_gfs2_set_flags(struct inode *inode, u32 reqflags, u32 mask)
+ 		error = filemap_fdatawait(inode->i_mapping);
+ 		if (error)
+ 			goto out;
++		truncate_inode_pages(inode->i_mapping, 0);
+ 		if (new_flags & GFS2_DIF_JDATA)
+ 			gfs2_ordered_del_inode(ip);
+ 	}
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.47.1
+
