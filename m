@@ -1,118 +1,103 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4522459AC
-	for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 13:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B1F2416B8
+	for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 13:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736948121; cv=none; b=rm2W9tgyCSLbFy/UfILNgji7OKteuMAqovZMt9sGjefhU3IwQKSK2ylW4T10rCFhgzv9N/Ip23P5jfwc/7e/YBZ6CPi436Uyf5ELMl/hCIvt6Ong1C5sThPTUOyESYt0feXIDDOpWRYfgkJWZHTfQnx3QNo/rl63i1Tn7D6xIx8=
+	t=1736948293; cv=none; b=AEDgZVEA25S2zDFHa1JX+F7IL8QeQPOo/UfKVPnm3udwQv2iYFb3097SUGhM3tMz90ncpY736xc56gGN8M8/p9gXWzoicUOGW4g7/e5ClamF14XdDqdfkGvn8Xn7F5R6Ge3Gr3Wwx3MhBwbOkLJaDcDlrG42UxlvR/ou4FvhtLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736948121; c=relaxed/simple;
-	bh=RIL+nwqLthbjx+M+EsQdph+tsv5s12wizfoAqsoo2lY=;
+	s=arc-20240116; t=1736948293; c=relaxed/simple;
+	bh=VjQa1OLpSyM90kBGecP1wvm0KvL1YkQqKm7jhQdDLdo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r6lcqRZ20coL8rg6KOUaqxwPjBhZaG9rOH9tChksUBQyOnvayu7p36My+1f4QcaT3pQkxSdR/vOxqTWnHXh6BS3kgiZ2NiydMHLQtSIELKQ+vXa4HbeHXqzsxiyCieuwkDXY22RwMeAyRkbLyoZt2ES1coTZ5f1nblOKA1e7iyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0WCYaQC; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=hZ7DA0loYiPOk4fh6s3Rel8zamXPQrtcsGln5YiLYv3EUff3LreDo8gdInAG1k77BDXiP6+Zt51PCSCA4EE/nwkmJRSFBMaHVYIeRqM0xMWhhRjx1OVRQN9/r6/oOmRCF5aTV9KOEBxpjsnaJc739NQq2Lgujupt77VtMEBHYmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ixQWwKBL; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0WCYaQC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ixQWwKBL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736948118;
+	s=mimecast20190719; t=1736948289;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EHMPieLiEBxInJQ6B0H0UcMOipXZzYAKvCo+eqZFwfU=;
-	b=M0WCYaQCEKWDtcykVOJyD28jtJsKG4ZrWV442+zinW8zxn+3ObqkKdjv9Nq2JBHTTX273o
-	7kIGSskESIMhccDwPC+1hExlu33hy9ZsBhCdTW2FjCQ7lH464NLJsYRbFjPnmpQWZmTiQh
-	XXWJydouPAr31rzpYWcIzVueF4BNA88=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VjQa1OLpSyM90kBGecP1wvm0KvL1YkQqKm7jhQdDLdo=;
+	b=ixQWwKBL8oO+v4WSu2U9s395xImpNBDyeikyxD1XwqFxYBoAxvqKkJx1Tor9iktN6P37ss
+	66DiaelZs4v8KE9vmxAqm5hv/ZmkxCJHFVnOOehCgZ4hBdikg+3Vs0A6Vr1ZwZuZPMQRf4
+	e0zlonr77sKugQVXGCrUR87gYy7TZ8A=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-Uv8SXqwGOmCfrj4qCQbS_w-1; Wed, 15 Jan 2025 08:35:16 -0500
-X-MC-Unique: Uv8SXqwGOmCfrj4qCQbS_w-1
-X-Mimecast-MFC-AGG-ID: Uv8SXqwGOmCfrj4qCQbS_w
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21648c8601cso113359315ad.2
-        for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 05:35:16 -0800 (PST)
+ us-mta-644--5uiPf71OpypG4xxtQyH2g-1; Wed, 15 Jan 2025 08:38:06 -0500
+X-MC-Unique: -5uiPf71OpypG4xxtQyH2g-1
+X-Mimecast-MFC-AGG-ID: -5uiPf71OpypG4xxtQyH2g
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-21650d4612eso177333745ad.2
+        for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 05:38:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736948115; x=1737552915;
+        d=1e100.net; s=20230601; t=1736948285; x=1737553085;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EHMPieLiEBxInJQ6B0H0UcMOipXZzYAKvCo+eqZFwfU=;
-        b=WuKf22jPMKIBFM71VOLyEXpgfpb2VrMQuoLoBTBbjMl5/sHl5B/e/tY5jI2BxtaRDW
-         LoaHXJYn0IPTnzy9eNkgjFSbUkWH3zwt3m9+M4ucNDbsm/dOd5KY77XAZCcg5WfZOSCo
-         HBZXk/R738PW4TFnNnx6kPywBG3P/9hM6XdoCHeXeOW5nSOLRPCz02OjQDJe69J6lG73
-         zun7nJLd2R86oYyob+uytWcJvZglrTw6ZnilwjKjiHq2HgiP98ItcPoczw4ZBUZ9AgbS
-         1n72W8nstOrt2xHcmHQ6oEBxLXRF36amS6XX3qJuLrwVbqgLzU4/U7kPDkxUhkbr7sEe
-         vEPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMi7WerOMdsroV/0gwL2dvMLzzacbVwnODSXe8YXdvE6aUx8FMBszCVWSjbA9Nqm/HYIkL@lists.linux.dev
-X-Gm-Message-State: AOJu0YxEDuhB7b9ntvUr3bNPr5EUlxYRziABdwpXdwW7mdT3cMPRHqsQ
-	lCNV/5EJKboZdb+5Yf88WwkGvnOmtTBOeb/CgQIcyglaTjFnknDnRgE17ddx/JsKpCmbJ9DucE+
-	gfiWAhu3A8szI40cmUxCP8PjnTh26hWJvPjGhoPpY/Un7tjZbAeqW6T8ZsOOMSTHNhTiw7m9Keh
-	dwHuoGn2hxIXt/XjTGtfhNeQ+5DQ==
-X-Gm-Gg: ASbGncvneeWG0JMzwkEkcWYUcKeTSmsZh7/V1nfb3WJqBVjFzkPl4JXLFLGx0db7qil
-	hbtvl1KD+nb6lAypR7TN3eK+iwo5HvGWPClnp
-X-Received: by 2002:a17:902:e548:b0:216:30f9:93d4 with SMTP id d9443c01a7336-21a83f3706amr390736925ad.8.1736948115362;
-        Wed, 15 Jan 2025 05:35:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4uFvmvU7kjxrhOu/tKhko5zsquSsHGxstfr2wyI0IDTeSXaYwdT9BokTtob0w3UYMJQDUxkbCE6bgd9fA2Go=
-X-Received: by 2002:a17:902:e548:b0:216:30f9:93d4 with SMTP id
- d9443c01a7336-21a83f3706amr390736605ad.8.1736948115070; Wed, 15 Jan 2025
- 05:35:15 -0800 (PST)
+        bh=VjQa1OLpSyM90kBGecP1wvm0KvL1YkQqKm7jhQdDLdo=;
+        b=ai1KqSuIWm8K/vSIPzPUTkgKlCIOszA9FsF+vqLv9r/4Px8tpqg0xydvF1i6ZzxKI4
+         VfA8Wkd7EEH2km7eazeO17mRWGpUeJZ+OIMbCTpCqwNxdGMM+wi+y7nzHPw+4emDbHZ/
+         nueQyHUTRwlxFxjW5Yk8643YB8oxfA+QvyiOO4vclO1joBq+DUGsWUyG56psXDaap/fz
+         NZkNPyakjjShPg8zrkQkQ9BTsjaezfBqppC1+AXvk23cNV5gTy7tZvzqGN6WiFinGdDN
+         TUIL2Bw5ZkAIW7VmITEH4qJXeAmwfKXzyoXnx7yqA5KOT7axMOlB+uLLSrX0VL67kbJF
+         Stzg==
+X-Forwarded-Encrypted: i=1; AJvYcCU57pBNvAHYyII7TJOkmhGnEMo8T7d5/PLn0IYqBwVhSLehx/k8X9/n8bai3gMd83PgA5Sw@lists.linux.dev
+X-Gm-Message-State: AOJu0YwoNKC4HXqD7G1mfhjaBMKHRWb++HKg19CVkRrpaCU6I3ReGBOI
+	74cYqhKDe+weyckQNgamqkwpei69hxlN51H1heZ/vZKGtmxbECcinZbx6rE0K3FBZxQWEOfsyHu
+	Piry1DpXrrIY1s00LcByKuIYR/bIxwlCWVQCpp2aatMwkZ4qJDXZQOkMvyXn6TyBfhWNglVlXxR
+	i52XCGKFZJvKPm//D4PFUKaJqxzw==
+X-Gm-Gg: ASbGncv7jaKG35HyjqmUwkUjtJuWMMRlps98KTgxRKLYaB8viLxAGLiJyLPV5kcVbfE
+	T4Ocz03InycjzOcORDxGB21md8aDTp/gfvtQK
+X-Received: by 2002:a17:902:ea03:b0:216:2d42:2e05 with SMTP id d9443c01a7336-21a83f6fa87mr555113785ad.22.1736948285227;
+        Wed, 15 Jan 2025 05:38:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErMQnmVTC/5MIwIzeYkaeNX5Ux0e7rhk5lUfGZ2fT2+jhaqfFmt9SGK4LAJYtpbYNeZW4dNZPKHk7XlcaxcZ8=
+X-Received: by 2002:a17:902:ea03:b0:216:2d42:2e05 with SMTP id
+ d9443c01a7336-21a83f6fa87mr555113515ad.22.1736948284976; Wed, 15 Jan 2025
+ 05:38:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250115094702.504610-1-hch@lst.de> <20250115094702.504610-9-hch@lst.de>
-In-Reply-To: <20250115094702.504610-9-hch@lst.de>
+References: <F0E0E5DD-572E-4F05-8016-46D36682C8BB@m.fudan.edu.cn>
+ <brheoinx2gsmonf6uxobqicuxnqpxnsum26c3hcuroztmccl3m@lnmielvfe4v7>
+ <5757218E-52F8-49C7-95F1-9051EB51A2F3@m.fudan.edu.cn> <6yd5s7fxnr7wtmluqa667lok54sphgtg4eppubntulelwidvca@ffyohkeovnyn>
+ <31A10938-C36E-40A2-8A1D-180BD95528DD@m.fudan.edu.cn> <xqx6qkwti3ouotgkq5teay3adsja37ypjinrhur4m3wzagf5ia@ippcgcsvem5b>
+ <86F5589E-BC3A-49E5-824F-0E840F75F46D@m.fudan.edu.cn> <CAHc6FU5YgChLiiUtEmS8pJGHUUhHAK3eYrrGd+FaNMDLti786g@mail.gmail.com>
+ <27DB604A-8C3B-4703-BB8A-CBC16B9C4969@m.fudan.edu.cn> <31f0da2e-4dd7-44eb-95ee-6d22d310a2d6@redhat.com>
+ <CAHc6FU63eqRqUnrPz0JHJdenfsCTWLgagX+2zywHNTcFoZA8XQ@mail.gmail.com> <958E28E8-3046-4030-963A-7A0789E8809C@m.fudan.edu.cn>
+In-Reply-To: <958E28E8-3046-4030-963A-7A0789E8809C@m.fudan.edu.cn>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 15 Jan 2025 14:35:03 +0100
-X-Gm-Features: AbW1kvauTrK99eaFRcWITgoY8moGa8lcIr8CyUarTCKymnr2mM79lYdYrNNq1Dk
-Message-ID: <CAHc6FU58eBO0i8er5+gK--eAMVHULCzHPnJ9H5oN12fr=AAnbg@mail.gmail.com>
-Subject: Re: [PATCH 8/8] gfs2: use lockref_init for qd_lockref
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, gfs2@lists.linux.dev
+Date: Wed, 15 Jan 2025 14:37:53 +0100
+X-Gm-Features: AbW1kvZhqaGG_k4tyej31nWk7IyisIppO7ylJG-0Gf9Pme9vzez2SCsYE1LPqCA
+Message-ID: <CAHc6FU7OjuDqTfdG+rAmEsfi_6LhNRcaAEYcdE+o+HXPywOYMg@mail.gmail.com>
+Subject: Re: Bug: slab-out-of-bounds Write in __bh_read
+To: Kun Hu <huk23@m.fudan.edu.cn>
+Cc: "jjtan24@m.fudan.edu.cn" <jjtan24@m.fudan.edu.cn>, Andrew Price <anprice@redhat.com>, Jan Kara <jack@suse.cz>, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0nFHBvwOoodAzNpclOhn4xlzg1vHvcCyukJiJLCDICA_1736948115
+X-Mimecast-MFC-PROC-ID: C217b6QxpsOQzQpOT7UUOp3iH1cxjz9Yxg7xVaAo87Q_1736948285
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 10:56=E2=80=AFAM Christoph Hellwig <hch@lst.de> wro=
-te:
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/gfs2/quota.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+On Wed, Jan 15, 2025 at 2:25=E2=80=AFPM Kun Hu <huk23@m.fudan.edu.cn> wrote=
+:
+> I've posted a fix and pushed it to for-next:
+> https://lore.kernel.org/gfs2/20250114175949.1196275-1-agruenba@redhat.com=
+/
 >
-> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> index 72b48f6f5561..58bc5013ca49 100644
-> --- a/fs/gfs2/quota.c
-> +++ b/fs/gfs2/quota.c
-> @@ -236,8 +236,7 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash=
-, struct gfs2_sbd *sdp, str
->                 return NULL;
->
->         qd->qd_sbd =3D sdp;
-> -       qd->qd_lockref.count =3D 0;
-> -       spin_lock_init(&qd->qd_lockref.lock);
-> +       lockref_init(&qd->qd_lockref, 0);
+> Thanks for your help,
+> Does the patch need us to test again?
 
-Hmm, initializing count to 0 seems to be the odd case and it's fairly
-simple to change gfs2 to work with an initial value of 1. I wonder if
-lockref_init() should really have a count argument.
+That surely wouldn't hurt, thanks.
 
->         qd->qd_id =3D qid;
->         qd->qd_slot =3D -1;
->         INIT_LIST_HEAD(&qd->qd_lru);
-> --
-> 2.45.2
-
-Thanks,
 Andreas
 
