@@ -1,58 +1,106 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059BE248171
-	for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 09:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948A6248BBD;
+	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736934583; cv=none; b=EHa4sjLNtTek1YFF6aWKEAJoW3bn/bFsnoGjQM/LOC33jyRUleU5JLXLNBwGcr0JBIdY2WUzJPEGJPX6uKmrX83iD+3akNu/RnmUguMf9wwjAOVgn0qjAXCQsNgeqozWWKVfQxH1+0jdOWoPa8Of+jvf7WXF7267/STXk94uhiM=
+	t=1736938275; cv=none; b=lOxxYNj3HvXOspjCF35poGJSDHPJRlU5b1whDaA5L68K5PBptxgUjiSdRz5QLN6t+cEJoVZc94xIt8+90OLPNSXr/LDfp1qfgpM7H58SGNyFWLOA86WUvjh4HJH/qdY1ZkTiQ64JHLelZcqTq3aNjDSEiSr6/85VmvMD/g3Xd38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736934583; c=relaxed/simple;
-	bh=aP/jyLm67IBTt8+C+kox9ul5wBpAnUnLPZmm0zKs5o4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pH4VQUroGo7ltAeoc7Dq+FuJl386i5VDUzL6awB6KKKCm0lA1kg70efxo86WvW3BwB71/V8SQMRwWQsqX8dWsd6HLb6t+Wzx1bQiOcNvtq3qfkbWDSRYtkLnqDuRqGiJ5QL6ueTkjboMVaytqgkRvwaa2TvqtSmUQ1s6lp82VMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KfmC+hAH; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1736938275; c=relaxed/simple;
+	bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CTwq3XMDPqccOlBtVOx2/azHBWCqLLLps4KV+szSw6NXG1gnNrLMSART1+ApanpyCrflVZOrRYzkhAPUA7sKjYVOzm3uQC6gQXDEXAp6Jf9x6NRVhJgPdZUzBRE/dUekfBlQs10GKn6KTkluQ9XcMuP7+bYEB03uEAU8dCgWooM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+eVJA1X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KfmC+hAH"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1736934572; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=aP/jyLm67IBTt8+C+kox9ul5wBpAnUnLPZmm0zKs5o4=;
-	b=KfmC+hAHCt+cTGzkrloNrR8JCsR4Ir5KCZfZgBcBf9kSbTpxXgzdPNpMbN0kU0LuU0YO4Y8r47WVwq6hGuGDGDImUSHzhCLsoo756ADl3Ngcu4HoIw5I46gW0vpoUomxFgxRA++j+bW+FQ1iSTRy7gyuD77mWlOL5VO/RKC2sj4=
-Received: from 30.221.130.98(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WNi52po_1736934569 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Jan 2025 17:49:30 +0800
-Message-ID: <cfdaa8ac-07f6-4474-94fd-a22426a7047c@linux.alibaba.com>
-Date: Wed, 15 Jan 2025 17:49:28 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+eVJA1X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ACAC4CEDF;
+	Wed, 15 Jan 2025 10:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736938275;
+	bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U+eVJA1Xn4mqvlKFvP3aAWpettlbCeZhVUJ+1W3ZBg1FQ6GZv8GlDyPR+CvimRp+k
+	 kFnD0VnvN/EJDx+Kt5RMDFsaN6bcEbTG+GcXFjD2s4zrOw67SdJz3z0YgYfyEbnFgC
+	 qoTraY202N3uCwZEc9/bnx6MOxRdOsiKx4c4QeubRZktd3tfEvu/KuTDuIe1pAJwSl
+	 zuyCMTlepI8A1Spi6F2p+Df7dEPnd5AKWcjf1+is20UHiQyEhnwOezEuhQfuqQE5ux
+	 nwyZMg/Gme+ODf/VOH3q68EfkpHxzxTwSrlROY6eWOzludGZrgrPJHDnsctWsiPVi3
+	 i7A6EHHBe7i/w==
+From: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org,
+	gfs2@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: lockref cleanups
+Date: Wed, 15 Jan 2025 11:50:52 +0100
+Message-ID: <20250115-pelzmantel-backen-53605f1b81d7@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250115094702.504610-1-hch@lst.de>
+References: <20250115094702.504610-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] erofs: use lockref_init for pcl->lockref
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Gao Xiang <xiang@kernel.org>, Chao Yu
- <chao@kernel.org>, Andreas Gruenbacher <agruenba@redhat.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, gfs2@lists.linux.dev
-References: <20250115094702.504610-1-hch@lst.de>
- <20250115094702.504610-8-hch@lst.de>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20250115094702.504610-8-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2048; i=brauner@kernel.org; h=from:subject:message-id; bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS3T5beILDixlmx47P6j027NGvJ/jyxN3vuTHbPt3quK JHQKm39qKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAi87kZ/pmfutv8qkHN2DUh 7aQx42Lbv1O+rryVyzWf/fEqVmkzfw+Gf8YzQs7/CjY/7Rb7YOFJF3W+F1GyUdPseh4ZfU91qZ0 5lxMA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
+On Wed, 15 Jan 2025 10:46:36 +0100, Christoph Hellwig wrote:
+> this series has a bunch of cosmetic cleanups for the lockref code I came up
+> with when reading the code in preparation of adding a new user of it.
+> 
+> Diffstat:
+>  fs/dcache.c             |    3 --
+>  fs/erofs/zdata.c        |    3 --
+>  fs/gfs2/quota.c         |    3 --
+>  include/linux/lockref.h |   26 ++++++++++++++------
+>  lib/lockref.c           |   60 ++++++++++++------------------------------------
+>  5 files changed, 36 insertions(+), 59 deletions(-)
+> 
+> [...]
 
+Looks good, thanks!
 
-On 2025/1/15 17:46, Christoph Hellwig wrote:
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
 
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Applied to the vfs-6.14.misc branch of the vfs/vfs.git tree.
+Patches in the vfs-6.14.misc branch should appear in linux-next soon.
 
-Thanks,
-Gao Xiang
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.14.misc
+
+[1/8] lockref: remove lockref_put_not_zero
+      https://git.kernel.org/vfs/vfs/c/74b5da771c89
+[2/8] lockref: improve the lockref_get_not_zero description
+      https://git.kernel.org/vfs/vfs/c/8c7568356d74
+[3/8] lockref: use bool for false/true returns
+      https://git.kernel.org/vfs/vfs/c/57bd981b2db7
+[4/8] lockref: drop superfluous externs
+      https://git.kernel.org/vfs/vfs/c/80e2823cbe59
+[5/8] lockref: add a lockref_init helper
+      https://git.kernel.org/vfs/vfs/c/5f0c395edf59
+[6/8] dcache: use lockref_init for d_lockref
+      https://git.kernel.org/vfs/vfs/c/24706068b7b6
+[7/8] erofs: use lockref_init for pcl->lockref
+      https://git.kernel.org/vfs/vfs/c/160a93170d53
+[8/8] gfs2: use lockref_init for qd_lockref
+      https://git.kernel.org/vfs/vfs/c/0ef3858b15e3
