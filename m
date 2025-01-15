@@ -1,106 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948A6248BBD;
-	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6842416AD
+	for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 13:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938275; cv=none; b=lOxxYNj3HvXOspjCF35poGJSDHPJRlU5b1whDaA5L68K5PBptxgUjiSdRz5QLN6t+cEJoVZc94xIt8+90OLPNSXr/LDfp1qfgpM7H58SGNyFWLOA86WUvjh4HJH/qdY1ZkTiQ64JHLelZcqTq3aNjDSEiSr6/85VmvMD/g3Xd38=
+	t=1736947734; cv=none; b=j4WigtMxDRpgfgrpncQNmyu7ZgobTgmUIeeh6v/U9YK9raZhrpOFFDXE84fN7MRSVdKlXPUUM+jAnbpUvL+7Pp22xrw+V8AXFohTrpg0wPrY8jBo4EOqGCYioVn452WfFsb+6u4ZQb1lIDKJzJDO+fd9P4txoslppkHqXW1rb2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938275; c=relaxed/simple;
-	bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CTwq3XMDPqccOlBtVOx2/azHBWCqLLLps4KV+szSw6NXG1gnNrLMSART1+ApanpyCrflVZOrRYzkhAPUA7sKjYVOzm3uQC6gQXDEXAp6Jf9x6NRVhJgPdZUzBRE/dUekfBlQs10GKn6KTkluQ9XcMuP7+bYEB03uEAU8dCgWooM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+eVJA1X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736947734; c=relaxed/simple;
+	bh=dRBtdBIsIBp/bcoo8ZihGHj8zYl9funD16dxlAiO2mA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aOg1D8nKpoxfNZyHkNLCf/pl31iMCcX9eDJl9etSwBbgrrGmAhWWtv4b/2mlzHJ6PVj4nL8EKMTCC0lrxl59M4G0aVaeQHql/TonxG4sXC3tNQgk5nTJVEhf9gtDgjmbn2JU+OwE1eX0sPEHBJ81lf8iMlPyJ+9ru7clYl9Y34k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GNLboc/M; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+eVJA1X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ACAC4CEDF;
-	Wed, 15 Jan 2025 10:51:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736938275;
-	bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+eVJA1Xn4mqvlKFvP3aAWpettlbCeZhVUJ+1W3ZBg1FQ6GZv8GlDyPR+CvimRp+k
-	 kFnD0VnvN/EJDx+Kt5RMDFsaN6bcEbTG+GcXFjD2s4zrOw67SdJz3z0YgYfyEbnFgC
-	 qoTraY202N3uCwZEc9/bnx6MOxRdOsiKx4c4QeubRZktd3tfEvu/KuTDuIe1pAJwSl
-	 zuyCMTlepI8A1Spi6F2p+Df7dEPnd5AKWcjf1+is20UHiQyEhnwOezEuhQfuqQE5ux
-	 nwyZMg/Gme+ODf/VOH3q68EfkpHxzxTwSrlROY6eWOzludGZrgrPJHDnsctWsiPVi3
-	 i7A6EHHBe7i/w==
-From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org,
-	gfs2@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: lockref cleanups
-Date: Wed, 15 Jan 2025 11:50:52 +0100
-Message-ID: <20250115-pelzmantel-backen-53605f1b81d7@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250115094702.504610-1-hch@lst.de>
-References: <20250115094702.504610-1-hch@lst.de>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GNLboc/M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736947730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nf/bRI9F8H3DG5UlQJaQACm8ygcBNuxPnrAMW4hnfts=;
+	b=GNLboc/MJh2lgPpW8vJ6UJ5QzQA0ds6PmQblZ1WPE42pdQgFZyplxeVgFcSfYBBAJGNTxV
+	37NzajXjsVTWnBnUNs5N93bBTJfwqg1kjpd6eJ3knl6VmuXZY0T8RtD/JFgvFI6CUluyw8
+	vNrq/Le7rKWHtKLCMVgTl92mO2duIp8=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-deNCebygP1mXbDVsULPeIA-1; Wed, 15 Jan 2025 08:28:49 -0500
+X-MC-Unique: deNCebygP1mXbDVsULPeIA-1
+X-Mimecast-MFC-AGG-ID: deNCebygP1mXbDVsULPeIA
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2178115051dso123135195ad.1
+        for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 05:28:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736947728; x=1737552528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Nf/bRI9F8H3DG5UlQJaQACm8ygcBNuxPnrAMW4hnfts=;
+        b=bxfDFa4JN15djEkL5Z4t3qtibgx900JUt1vv4k166Hm0SOnrwtk7FD+AyRveGactaw
+         FDrqz8+rFDZt4Oo94tlWzbT6Q8A1rBmidb9tn6W4mDRf9mFL2yp+3Mmd2296d23mHsMt
+         tHI98r9ctkW9GNHVYCV3ZY82dmj4JZ+1xdI/3eazQdTw+ojSpxHD22+ApB47fFzDi5O8
+         nsSKRVq2Bf3+Tm8CKt0WCuUQSXrx98FUJ27dOE+mA4KYYHhdtP5yGj02/5ij5szCGs5l
+         lvT9Hm9e49c4M2fThs/GP5QQbNakdAPcplffXvBo+/DETQuC4y9djLnqXLNiDLQV1teC
+         nrGw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3uD886yViOE3P/dvOQHyjThZoEtPpp34Mr3yoj5O4kR7mwF56yeM7J3+01M/4g0P6+AUK@lists.linux.dev
+X-Gm-Message-State: AOJu0YwplAZcs3LqgIyzsDdLWzU2tpCmvES0qWLL3joedj1aqY/OwJA1
+	HFprxJkNDAUl8wDdJnD8PY4KX5PqAh4axGOcG6ZsTKs1WRzERQFesHesOyDNbQgdvvN8sg0n8F9
+	Bt94rq9hedBDogHts9SNdllJlxsDtjq3WAdyhnPLD0RbQQNleoIwG3kwaKQnRyRMEz+iNFubfRp
+	Xl07IeISi/P8Hlhtvg11e+yXJFwA==
+X-Gm-Gg: ASbGncunksxOQlIZI1+OJlEGGMI3tmHG7L0jSzPpS/79raSHG7Io8bJY09GrvK6MoAg
+	MhZOE0b752Rx6l1bD6n569GuenneoufRPOXwF
+X-Received: by 2002:a17:902:ea07:b0:217:9172:2ce1 with SMTP id d9443c01a7336-21a83f5db69mr480494745ad.22.1736947728090;
+        Wed, 15 Jan 2025 05:28:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWkCFLrwayc2dPGspndw+hcfEp3QAcYd/bnIVRKhsGboPR86dXo/zwFq2qs4H+jDeTVaXTl/HFSSI3mVDNd2I=
+X-Received: by 2002:a17:902:ea07:b0:217:9172:2ce1 with SMTP id
+ d9443c01a7336-21a83f5db69mr480494425ad.22.1736947727803; Wed, 15 Jan 2025
+ 05:28:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2048; i=brauner@kernel.org; h=from:subject:message-id; bh=tkNahj98YF5Ew9ZYvQEGcyHo5n4Mx4vVJRfvbbR6VAw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS3T5beILDixlmx47P6j027NGvJ/jyxN3vuTHbPt3quK JHQKm39qKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAi87kZ/pmfutv8qkHN2DUh 7aQx42Lbv1O+rryVyzWf/fEqVmkzfw+Gf8YzQs7/CjY/7Rb7YOFJF3W+F1GyUdPseh4ZfU91qZ0 5lxMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20250115094702.504610-1-hch@lst.de> <20250115094702.504610-3-hch@lst.de>
+In-Reply-To: <20250115094702.504610-3-hch@lst.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Wed, 15 Jan 2025 14:28:36 +0100
+X-Gm-Features: AbW1kvY2TM4e6V0AysHtF1TdOa092YXLOMhimyjIhR1wLmk0-daNjTVYF4PhKBw
+Message-ID: <CAHc6FU6OyLot1pA1dH_wd10YyVzXfOEcqa+LKFghuTpfePDEpw@mail.gmail.com>
+Subject: Re: [PATCH 2/8] lockref: improve the lockref_get_not_zero description
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	linux-erofs@lists.ozlabs.org, gfs2 <gfs2@lists.linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: scl23ftmTlIb3meKyPU6NxL3dZfLBZ4bm4jIq4tzS3U_1736947728
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 15 Jan 2025 10:46:36 +0100, Christoph Hellwig wrote:
-> this series has a bunch of cosmetic cleanups for the lockref code I came up
-> with when reading the code in preparation of adding a new user of it.
-> 
-> Diffstat:
->  fs/dcache.c             |    3 --
->  fs/erofs/zdata.c        |    3 --
->  fs/gfs2/quota.c         |    3 --
->  include/linux/lockref.h |   26 ++++++++++++++------
->  lib/lockref.c           |   60 ++++++++++++------------------------------------
->  5 files changed, 36 insertions(+), 59 deletions(-)
-> 
-> [...]
+On Wed, Jan 15, 2025 at 10:56=E2=80=AFAM Christoph Hellwig <hch@lst.de> wro=
+te:
+> lockref_put_return returns exactly -1 and not "an error" when the lockref
+> is dead or locked.
 
-Looks good, thanks!
+The function name in the subject needs fixing.
 
----
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  lib/lockref.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/lockref.c b/lib/lockref.c
+> index a68192c979b3..b1b042a9a6c8 100644
+> --- a/lib/lockref.c
+> +++ b/lib/lockref.c
+> @@ -86,7 +86,7 @@ EXPORT_SYMBOL(lockref_get_not_zero);
+>   * @lockref: pointer to lockref structure
+>   *
+>   * Decrement the reference count and return the new value.
+> - * If the lockref was dead or locked, return an error.
+> + * If the lockref was dead or locked, return -1.
+>   */
+>  int lockref_put_return(struct lockref *lockref)
+>  {
+> --
+> 2.45.2
 
-Applied to the vfs-6.14.misc branch of the vfs/vfs.git tree.
-Patches in the vfs-6.14.misc branch should appear in linux-next soon.
+Thanks,
+Andreas
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.14.misc
-
-[1/8] lockref: remove lockref_put_not_zero
-      https://git.kernel.org/vfs/vfs/c/74b5da771c89
-[2/8] lockref: improve the lockref_get_not_zero description
-      https://git.kernel.org/vfs/vfs/c/8c7568356d74
-[3/8] lockref: use bool for false/true returns
-      https://git.kernel.org/vfs/vfs/c/57bd981b2db7
-[4/8] lockref: drop superfluous externs
-      https://git.kernel.org/vfs/vfs/c/80e2823cbe59
-[5/8] lockref: add a lockref_init helper
-      https://git.kernel.org/vfs/vfs/c/5f0c395edf59
-[6/8] dcache: use lockref_init for d_lockref
-      https://git.kernel.org/vfs/vfs/c/24706068b7b6
-[7/8] erofs: use lockref_init for pcl->lockref
-      https://git.kernel.org/vfs/vfs/c/160a93170d53
-[8/8] gfs2: use lockref_init for qd_lockref
-      https://git.kernel.org/vfs/vfs/c/0ef3858b15e3
