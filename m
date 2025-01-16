@@ -1,176 +1,207 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6757142E83
-	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 07:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96CB1DD0DC
+	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 10:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737014078; cv=none; b=I4+ih6lsfwj+2gZfHnuWmqZNXoiWKGQNzllroSuyJ/IOwG/D9IxkyB2WHhvmk2FSVPUU6mQCrfvV1ImohobI/TE/s7wpTVX+2W3RsRV0CqSyjugWLvR9jiPnrdwVTlzbrsnAiUoxKcQSitPEkdENHds6wZJsOZPP+75cd2D3quU=
+	t=1737024133; cv=none; b=D88ShaUgpDUVhc0nGhVxGgQzH4w7MGrC8cg0Ep6XbfAleJJSn1Z2nK2gLMg6aclV79TksjqBKmc+AAVrCJ8zsbId+DvgTR+5sm4zR3xaKFQzQ8ow0sD2oN7GdMZ7VBjFzQrfqsaZQaKyQs292yed4ccVbS0CxDowncjnOVcuF9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737014078; c=relaxed/simple;
-	bh=7M65RmMX3Ry4OaGybSFFVt26wFFfaatRGurZ9wLro+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZbJXaOBIb4G6Xi5MIXfY87JHPGDl4t1gT/KlJS4tW9F1POtM3gDR4wOXMdoYufCx/C+A8dek5FBE3R4g2SoxE11qLfPvU9A7AVW9Io/4XW2BoEDOF1ltwmFGcKG58rX1dL+hIAFgIO37sqYSN68+sqQ2C2FZ98AziSMl80GH5MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tYKhY-00075C-P9; Thu, 16 Jan 2025 08:54:04 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tYKhT-000DS2-0M;
-	Thu, 16 Jan 2025 08:53:59 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 165233A99BF;
-	Thu, 16 Jan 2025 07:53:43 +0000 (UTC)
-Date: Thu, 16 Jan 2025 08:53:42 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Kees Cook <kees@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, 
-	Cheng Xu <chengyou@linux.alibaba.com>, Kai Shen <kaishen@linux.alibaba.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Christian Benvenuti <benve@cisco.com>, Nelson Escobar <neescoba@cisco.com>, 
-	Bernard Metzler <bmt@zurich.ibm.com>, Karsten Keil <isdn@linux-pingi.de>, 
-	Michal Ostrowski <mostrows@earthlink.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, 
-	Chaitanya Kulkarni <kch@nvidia.com>, Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>, 
-	Mike Christie <michael.christie@oracle.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexander Aring <aahringo@redhat.com>, 
-	David Teigland <teigland@redhat.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Steve French <sfrench@samba.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Tom Talpey <tom@talpey.com>, Simon Horman <horms@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Neil Brown <neilb@suse.de>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, David Ahern <dsahern@kernel.org>, 
-	Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Oliver Hartkopp <socketcan@hartkopp.net>, Robin van der Gracht <robin@protonic.nl>, 
-	Oleksij Rempel <o.rempel@pengutronix.de>, Alexandra Winter <wintera@linux.ibm.com>, 
-	Thorsten Winkler <twinkler@linux.ibm.com>, James Chapman <jchapman@katalix.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	Remi Denis-Courmont <courmisch@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Allison Henderson <allison.henderson@oracle.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Xin Long <lucien.xin@gmail.com>, Wenjia Zhang <wenjia@linux.ibm.com>, 
-	Jan Karcher <jaka@linux.ibm.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
-	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Ying Xue <ying.xue@windriver.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	Martin Schiller <ms@dev.tdt.de>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Guillaume Nault <gnault@redhat.com>, 
-	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Wu Yunchuan <yunchuan@nfschina.com>, Max Gurtovoy <mgurtovoy@nvidia.com>, 
-	Maurizio Lombardi <mlombard@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Atte =?utf-8?B?SGVpa2tpbMOk?= <atteh.mailbox@gmail.com>, Vincent Duvert <vincent.ldev@duvert.net>, 
-	Denis Kirjanov <kirjanov@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Thomas Huth <thuth@redhat.com>, 
-	Andrew Waterman <waterman@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Andrej Shadura <andrew.shadura@collabora.co.uk>, Ying Hsu <yinghsu@chromium.org>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Tom Parkin <tparkin@katalix.com>, 
-	Jason Xing <kernelxing@tencent.com>, Dan Carpenter <error27@gmail.com>, Hyunwoo Kim <v4bel@theori.io>, 
-	Bernard Pidoux <f6bvp@free.fr>, Sangsoo Lee <constant.lee@samsung.com>, 
-	Doug Brown <doug@schmorgal.com>, Ignat Korchagin <ignat@cloudflare.com>, 
-	Gou Hao <gouhao@uniontech.com>, Mina Almasry <almasrymina@google.com>, 
-	Abhishek Chauhan <quic_abchauha@quicinc.com>, Yajun Deng <yajun.deng@linux.dev>, Michal Luczaj <mhal@rbox.co>, 
-	Jiri Pirko <jiri@resnulli.us>, syzbot <syzkaller@googlegroups.com>, 
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-nvme@lists.infradead.org, open-iscsi@googlegroups.com, 
-	linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org, target-devel@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	linux-cifs@vger.kernel.org, linux-hams@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-can@vger.kernel.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, 
-	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	virtualization@lists.linux.dev, linux-x25@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] net: Convert proto_ops::getname to sockaddr_storage
-Message-ID: <20250116-light-panda-of-reverence-2f5da8-mkl@pengutronix.de>
-References: <20241217023417.work.145-kees@kernel.org>
+	s=arc-20240116; t=1737024133; c=relaxed/simple;
+	bh=ljXBir+tkLebuBt+s45VSYcoQpH6xDCBYRxZiTZ+OFc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jU6gAosRg83h/xo36rHsbYvZ6K0+3ZNt+SSTjr28AusSCc9DLOdY/AEkLwgCSOebt94xDf/ruJkj6fEgTvv72d5QZA6svziuQyI/x6ticY+ci6kkyM43zecg/WCH2htG3CXTz9xKjco7hA55vhwccZN5h+kMJnApuRQmyu36fhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn; spf=pass smtp.mailfrom=m.fudan.edu.cn; dkim=pass (1024-bit key) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.b=HHoZjXrx; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.fudan.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.b="HHoZjXrx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=m.fudan.edu.cn;
+	s=sorc2401; t=1737024100;
+	bh=AEphY/1E0HRc4k+GBMGTxIDD2L00khOeccwQ8JjbQSM=;
+	h=Mime-Version:Subject:From:Date:Message-Id:To;
+	b=HHoZjXrxYND4wG52vjCgfopMJa5TX4Z4tAVEf2WDcs4aZL+mxf6x4jHrdJp13v0WT
+	 owEWm3HiNzRPD1iKd/l78y+cVq0WHYJ0KfmKsnOxk0CjU9OnoXm+HdqLg0vyPGgyjg
+	 51UQCO51ccZM2pMH+ns0T7+8z2KLxqcJwqDiT7J0=
+X-QQ-mid: bizesmtp86t1737024098t6lrccvf
+X-QQ-Originating-IP: BgU6dV1YvkbvRUVkEBEfVQE+oNOxQGxdHvWGJ35CHcw=
+Received: from smtpclient.apple ( [202.120.235.170])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 16 Jan 2025 18:41:36 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 8883258136914962534
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nbdyd5ky7ajuduf3"
-Content-Disposition: inline
-In-Reply-To: <20241217023417.work.145-kees@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: gfs2@lists.linux.dev
-
-
---nbdyd5ky7ajuduf3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: Bug: slab-out-of-bounds Write in __bh_read
+From: Kun Hu <huk23@m.fudan.edu.cn>
+In-Reply-To: <CAHc6FU63eqRqUnrPz0JHJdenfsCTWLgagX+2zywHNTcFoZA8XQ@mail.gmail.com>
+Date: Thu, 16 Jan 2025 18:41:26 +0800
+Cc: "jjtan24@m.fudan.edu.cn" <jjtan24@m.fudan.edu.cn>,
+ Andrew Price <anprice@redhat.com>,
+ viro@zeniv.linux.org.uk,
+ brauner@kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ gfs2@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] net: Convert proto_ops::getname to sockaddr_storage
-MIME-Version: 1.0
+Message-Id: <A184824F-B892-46D3-B086-556E9ACF4EA0@m.fudan.edu.cn>
+References: <F0E0E5DD-572E-4F05-8016-46D36682C8BB@m.fudan.edu.cn>
+ <brheoinx2gsmonf6uxobqicuxnqpxnsum26c3hcuroztmccl3m@lnmielvfe4v7>
+ <5757218E-52F8-49C7-95F1-9051EB51A2F3@m.fudan.edu.cn>
+ <6yd5s7fxnr7wtmluqa667lok54sphgtg4eppubntulelwidvca@ffyohkeovnyn>
+ <31A10938-C36E-40A2-8A1D-180BD95528DD@m.fudan.edu.cn>
+ <xqx6qkwti3ouotgkq5teay3adsja37ypjinrhur4m3wzagf5ia@ippcgcsvem5b>
+ <86F5589E-BC3A-49E5-824F-0E840F75F46D@m.fudan.edu.cn>
+ <CAHc6FU5YgChLiiUtEmS8pJGHUUhHAK3eYrrGd+FaNMDLti786g@mail.gmail.com>
+ <27DB604A-8C3B-4703-BB8A-CBC16B9C4969@m.fudan.edu.cn>
+ <31f0da2e-4dd7-44eb-95ee-6d22d310a2d6@redhat.com>
+ <CAHc6FU63eqRqUnrPz0JHJdenfsCTWLgagX+2zywHNTcFoZA8XQ@mail.gmail.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:m.fudan.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NKqGW3WLFcbJOFYTed2wCI7In8kFqDmSvnZFdINycmkc69HHDSurUUuP
+	asbZz5wn5UQzqoC1rppVqE/5w9vzvbzNGKptP1qVZKQvO1qsULZ0ULvj5Z7OwsO10zUueSG
+	fo0mj/Hr6xaIo1Jhb1pTKhM9qj3akCSFynut50y4LBiM3e3ogvcxgHJ1IEkc2AVeBRmofnw
+	+qyIp7jstQehuT2QuTuZX3LMuVlimm2AoX9/vUbkKa8T3jjjIKoixo3uWRzrf76oUjOL/pT
+	ZOW9Elv98ZjqxPFkVIc4cWUiaD7pM81/Y2HqvhZ4gBPtGCDz7RefeG9FlrQZhGxWkRdy3lM
+	XRx3ERRzqCSomZfJR71lQuCMSuZ/6G3LLWJRopOe4C29Yg/HCMzi243vlGOOY+2oCyuHmHL
+	v8lKHFlBr65TteYa52Jz5onzcKYc6E+ZHTZ2CCR6Rai1QpGn9EcgDaOIGOF3dEQw1kKSB04
+	YIn9kPkdPLv0/od4lx4/s8ZLFKznIAi0chN1zH3OeVyXxrJCZSOexv6mKCk1VlTT33vDb/J
+	49gPoPC0tUcHI/yl3PeoJDEELdGrbdRz00CqStMf6as4IKKdBUR6LNe1mSaQdSwqDvj5rAF
+	4lLkQL/fZzCAp1OIbnoYQUa9sWinz5IE91XM2R7A78GJ1fkobYoOnp9t8eOWf2PIa5SNFj8
+	2Vf6I5YneTmHNU+NywkM1YZPGbteO5CUi8dNfPTVPQdhHTvN8AU6Qw9d8SbN6bOlYBzlvw5
+	IsYs3dTbGpUkJ3alxkfCXEawv4C8XfRQdB6RjIlJZz5re3+8XHItHHsBVuUNtcRXi29ZWBc
+	tkdb01WGa2zOzL1F4qEOdR0cWwbDJrU3RQoXqfvEEaOOvwUegvr9IyENNpdq/bZBORnKWIY
+	SYOsfJwPuaNb7FP84ygPYRfstX5cHu3C4umXcBEFDybC/RkvrOi8ljaqjng2Rtwr9/JZnVY
+	/TqhLRnxtvT0sqvaiYCXKMkEy0azTl5duNpg0VxcvQoCEKv1Ivf5H6tPx
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-On 16.12.2024 18:34:28, Kees Cook wrote:
-> The proto_ops::getname callback was long ago backed by sockaddr_storage,
-> but the replacement of it for sockaddr was never done. Plumb it through
-> all the getname() callbacks, adjust prototypes, and fix casts.
+
+
+> 2025=E5=B9=B41=E6=9C=8815=E6=97=A5 02:05=EF=BC=8CAndreas Gruenbacher =
+<agruenba@redhat.com> =E5=86=99=E9=81=93=EF=BC=9A
 >=20
-> There are a few cases where the backing object is _not_ a sockaddr_storage
-> and converting it looks painful. In those cases, they use a cast to
-> struct sockaddr_storage. They appear well bounds-checked, so the risk
-> is no worse that we have currently.
+> On Mon, Jan 13, 2025 at 5:12=E2=80=AFPM Andrew Price =
+<anprice@redhat.com> wrote:
+>> On 13/01/2025 15:54, Kun Hu wrote:
+>>>=20
+>>>>=20
+>>>> 32generated_program.c memory maps the filesystem image, mounts it, =
+and
+>>>> then modifies it through the memory map. It's those modifications =
+that
+>>>> cause gfs2 to crash, so the test case is invalid.
+>>>>=20
+>>>> Is disabling CONFIG_BLK_DEV_WRITE_MOUNTED supposed to prevent that? =
+If
+>>>> so, then it doesn't seem to be working.
+>>>>=20
+>>>> Thanks,
+>>>> Andreas
+>>>=20
+>>>=20
+>>>>  We have reproduced the crash with CONFIG_BLK_DEV_WRITE_MOUNTED =
+disabled to obtain the same crash log. The new crash log, along with C =
+and Syzlang reproducers are provided below:
+>>>=20
+>>>> Crash log: =
+https://drive.google.com/file/d/1FiCgo05oPheAt4sDQzRYTQwl0-CY6rvi/view?usp=
+=3Dsharing
+>>>> C reproducer: =
+https://drive.google.com/file/d/1TTR9cquaJcMYER6vtYUGh3gOn_mROME4/view?usp=
+=3Dsharing
+>>>> Syzlang reproducer: =
+https://drive.google.com/file/d/1R9QDUP2r7MI4kYMiT_yn-tzm6NqmcEW-/view?usp=
+=3Dsharing
+>>>=20
+>>> Hi Andreas,
+>>>=20
+>>> As per Jan's suggestion, we=E2=80=99ve successfully reproduced the =
+crash with CONFIG_BLK_DEV_WRITE_MOUNTED disabled. Should you require us =
+to test this issue again, we are happy to do so.
+>>>=20
+>> FWIW the reproducer boils down to
+>>=20
+>>   #include <fcntl.h>
+>>   #include <unistd.h>
+>>   #include <sys/ioctl.h>
+>>   #include <linux/fs.h>
+>>=20
+>>   /*
+>>      mkfs.gfs2 -b 2048 -p lock_nolock $DEV
+>>      mount $DEV $MNT
+>>      cd $MNT
+>>      /path/to/this_test
+>>    */
+>>   int main(void)
+>>   {
+>>           unsigned flag =3D FS_JOURNAL_DATA_FL;
+>>           char buf[4102] =3D {0};
+>>           int fd;
+>>=20
+>>           /* Error checking omitted for clarity */
+>>           fd =3D open("f", O_CREAT|O_RDWR);
+>>           write(fd, buf, sizeof(buf));
+>>           ioctl(fd, FS_IOC_SETFLAGS, &flag);
+>>           write(fd, buf, sizeof(buf)); /* boom */
+>>           close(fd);
+>>           return 0;
+>>   }
+>>=20
+>> So it's switching the file to journaled data mode between two writes.
+>>=20
+>> The size of the writes seems to be relevant and the fs needs to be
+>> created with a 2K block size (I'm guessing it could reproduce with =
+other
+>> combinations).
+
+Hi Andy,
+
+Thanks for the reporting. I was unable to run the C reproducer you =
+provided. I still reproduced the issue using syscall reproducer provided =
+by syzkaller.
+
+Thanks,
+
 >=20
-> Other casts to sockaddr are removed, though to avoid spilling this
-> change into BPF (which becomes a much larger set of changes), cast the
-> sockaddr_storage instances there to sockaddr for the time being.
+> I've posted a fix and pushed it to for-next:
 >=20
-> In theory this could be split up into per-caller patches that add more
-> casts that all later get removed, but it seemed like there are few
-> enough callers that it seems feasible to do this in a single patch. Most
-> conversions are mechanical, so review should be fairly easy. (Famous
-> last words.)
+> =
+https://lore.kernel.org/gfs2/20250114175949.1196275-1-agruenba@redhat.com/=
+
 >=20
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
->  net/can/isotp.c                               |  3 +-
->  net/can/j1939/socket.c                        |  2 +-
->  net/can/raw.c                                 |  2 +-
+> Thanks for reporting!
+>=20
+> Andreas
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
+> Syzlang reproducer: =
+https://drive.google.com/file/d/1R9QDUP2r7MI4kYMiT_yn-tzm6NqmcEW-/view?usp=
+=3Dsharing
 
-regards,
-Marc
+Hi Andreas,
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Thank you for the patch. I tested it using the syscall reproducer and =
+was still able to reproduce the issue.
 
---nbdyd5ky7ajuduf3
-Content-Type: application/pgp-signature; name="signature.asc"
+Crash log: Link: =
+https://github.com/pghk13/Kernel-Bug/blob/main/0103_6.13rc5_%E6%9C%AA%E6%8=
+A%A5%E5%91%8A/%E5%AE%8C%E5%85%A8%E6%97%A0%E8%AE%B0%E5%BD%95/32-KASAN_%20sl=
+ab-out-of-bounds%20Write%20in%20__bh_read/crashlog_0116_rc7%2Bpatch.txt
 
------BEGIN PGP SIGNATURE-----
+Could you confirm if the patch is intended to fully resolve this issue, =
+or if additional changes might be required?
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmeIuv8ACgkQKDiiPnot
-vG/tCQgAnoYMQthE5qhN4islXZibYx3HOEVpQp20V/CdVVRH56MNpoQvsjN0F5I9
-Pe8FiGuyUR9fNqhHJPDV5qTZfzq6vRSoc7PpwLTwF9ReyzpbKcMrYcmv/Wkbso1k
-faQaG0U/F/5wp2/nsK1h/PUHRvlwFfLs41wCCmlXQDks5vvt1U+8F/0mUiM/L0yT
-SQG9iudLNDMEv22xlkR1e90s94ARgRIKcBcOZ9LudgYLwGmT8I3JAenyHET3Q8d2
-GWVaepqliLBxoq7pfWcJm1yFL8DFp2xSUy/gP7BqrfKIJoJhRqOR2EXGSgAZ6rek
-c/YmUBVaGDu2ZBkxhzlB6NKXFu9dBA==
-=LAEY
------END PGP SIGNATURE-----
+=E2=80=94=E2=80=94=E2=80=94
+Thanks,
+Kun Hu
 
---nbdyd5ky7ajuduf3--
+
