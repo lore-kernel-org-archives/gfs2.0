@@ -1,34 +1,81 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A77EC4
-	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 04:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF98B6A009
+	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 05:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737001954; cv=none; b=JyqJTiFaJpHVKYMLffZkTXK7oa5pbLfvkJMiEGqI6aWPySNlMYy9mfYbKzwrI++uxthRVpHQPGjn7zBy3KpabutV5rcVilVw1Yr9e8W4rxnEBG7qrKoC40R1YcsOjoi/67d9C5XNaUpKFpz4dJR/jCIklXVvEvm24zKXi4elDPA=
+	t=1737003837; cv=none; b=edCw7oebxVCQVid5o19Qa/9y4bBgeNHXskZ5Xdpa3PgxAORVH1Amq0C2uHDkGplbMBomGnrx105/k1AiSQbGkDxptCpxoo2z2bwmiZk17XQrJwny/gaLE8DRe8mK3YM89AdKzx8ZNiaTmCoWo84t/ucK1mWXJhT14OR5I2v7sJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737001954; c=relaxed/simple;
-	bh=QU+sI6fZ3PI0hcZl3OWlnHw+SfJVqZnNQDuQYSGwWac=;
+	s=arc-20240116; t=1737003837; c=relaxed/simple;
+	bh=wELArgmung28UVW6a1djIOqJloxqOE5PObrjaTGmt24=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j49JyoC1bTPAnXbypwvm+VQ/LU8V2XlgaBwlviRvZj+uK0uvjdnf4WqWm6oZD36i0Cf00p8AWT8Cv2gvFyWOrZ+qWfkJY5bIS5YpKbxKD/RLiNuk/heNVL0v3AA68Jp6kGQrP8zvBdRCT5YWoW2VejoXrsg68F9kPeziFGsEcbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 050CA68BEB; Thu, 16 Jan 2025 05:32:27 +0100 (CET)
-Date: Thu, 16 Jan 2025 05:32:26 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Andreas Gruenbacher <agruenba@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=daC9Hr+bjm/HdxR/HcRZ6fzPnai0h4QJbMZmDHK8PjiOZt2HnMdJCCkhOIIKbWO7jnsg/MexSQyLM1xwcvJN8t+MezzZWTgJWAtSRSxLiturx5RWpusV5/kx1t837UnNlIAVIH9+bjuzfz7Uerl+h4xLJMCpLB9k0vwoX8Anno4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=vZyJNRFa; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="vZyJNRFa"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2164b662090so7691685ad.1
+        for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 21:03:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1737003835; x=1737608635; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RQtwcz66cRpnEOfOa/HyiuZRqWSGLaKRKp3+zlxh6e0=;
+        b=vZyJNRFaI1ucJ01sJ2H16apgUdgR7I28/CPR8vAEVD5e55+MO1MgDOR5p5vNKuuFPF
+         zCEVYBzhNH1425IWUg/uWJjFuptx/1Prxa/FT+AX6LMlzbGaMwRLHrfPuIoSVRPJpyCj
+         z6du90riUSky9C/z9qQbAFtm+6Z3g9hoTPCuttzJmBA3i9dxxYa+8aeAwehAPv3/w8mS
+         qD5mib+kq6BNxOS6FlG/cbugRD0U4MQfG4MuKi/1l/j/68mWG6JJIAUJ+69aMYrqJf8S
+         9833bkUYqeC20CDS6OLX9ex6HpYwZComsysE+TrbpQ9pE/J1ArC1GeXHZ3UiCzym/h7c
+         NepQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737003835; x=1737608635;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RQtwcz66cRpnEOfOa/HyiuZRqWSGLaKRKp3+zlxh6e0=;
+        b=Jr89poJNwxIYpEPu5664zIBkLzs5wMZ5vATEoLWu0NnlzJQqsltaVISjBpZgbCcIuI
+         TJ3oM4JQGWv4hNlYHdYAUqson2S1ZFzsrNACke0upuO+ucnLAtjbQmVGc8LQ8auzguXj
+         HLu5xVxl25atvZejAkYKiVso2cPNwdw9DFFUKGY1FybaPm8h3gVTG5KMkhvytPEMx7D4
+         KXUXGtgF/n/gdJzdgdnekK8/TnLi2HRyZzLxEmixF+cegm2jVGOsMo4yGJDgKDY6fszP
+         XKsIJbn1W/3SP+Lo8/xAcMSDszIII12Z2BG5rYKevENKldxFykVBqPFsc4Nal8bZPFAh
+         gUSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRUKvg60EdJtsgL0/S8SB484BQzQHpq2KWjfpVzMsGg6aw5McNcZ5c/ITfj6FlI0FS9iUJ@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQd6/R2Pc9INAiUVg8er5P/hGJKeI7zThjLQ+NfIp2Y0COvitr
+	wQKogjDms2h1WHkuZMIk+tVCEgMmPx7Y0+PtWb1QA4GaSMb7W7oHcVR1IqhjZHo=
+X-Gm-Gg: ASbGncuTyTK/hFUKwS5LmaZ1dLO4tKnIbvaA5Q4o4QOAuUXoNFVyNQlAdBCfzH0xAz1
+	3fBN17+bnY+c0J7Oe6mKu/hrUmYfpTqWLy1OCNemSQdv+sFXf3+68rlnrHaTUzj/uDlY2O/KJi4
+	5z/0H9VqNSegKmIrcFFZpsj5CokbNr5Dn0eEzYf+pG23If9kEhCb1ZqwbKJZz1gndUrrdKWFDEb
+	oxUIUoF0sH88q32dxcFQCylfAlYVIR67WOyITL0RewoXwyaHtNVafBoQRgEj08toKxqph5CWqnM
+	/IEud+CTyqQ1XFx5eXr1GT8qnNcZsHwj
+X-Google-Smtp-Source: AGHT+IGNOhZ2CDB3dC9ypPRx2+QFrztyTh30xO+H1dvtRXfxPIdj2LE0KDNO2Mwf1ivGr5YrWG2u9A==
+X-Received: by 2002:a05:6a20:244d:b0:1d9:fbc:457c with SMTP id adf61e73a8af0-1e88d0a4771mr34957994637.36.1737003834927;
+        Wed, 15 Jan 2025 21:03:54 -0800 (PST)
+Received: from dread.disaster.area (pa49-186-89-135.pa.vic.optusnet.com.au. [49.186.89.135])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067f72dsm10406495b3a.145.2025.01.15.21.03.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 21:03:54 -0800 (PST)
+Received: from dave by dread.disaster.area with local (Exim 4.98)
+	(envelope-from <david@fromorbit.com>)
+	id 1tYI2p-00000006SjT-2V99;
+	Thu, 16 Jan 2025 16:03:51 +1100
+Date: Thu, 16 Jan 2025 16:03:51 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: Christoph Hellwig <hch@lst.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
 	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-erofs@lists.ozlabs.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 8/8] gfs2: use lockref_init for qd_lockref
-Message-ID: <20250116043226.GA23137@lst.de>
-References: <20250115094702.504610-1-hch@lst.de> <20250115094702.504610-9-hch@lst.de> <CAHc6FU58eBO0i8er5+gK--eAMVHULCzHPnJ9H5oN12fr=AAnbg@mail.gmail.com>
+Subject: Re: [PATCH 6/8] dcache: use lockref_init for d_lockref
+Message-ID: <Z4iTN86x2SsTVOIY@dread.disaster.area>
+References: <20250115094702.504610-1-hch@lst.de>
+ <20250115094702.504610-7-hch@lst.de>
+ <Z4gW4wFx__n6fu0e@dread.disaster.area>
+ <20250115203024.GB1977892@ZenIV>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -37,25 +84,35 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHc6FU58eBO0i8er5+gK--eAMVHULCzHPnJ9H5oN12fr=AAnbg@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20250115203024.GB1977892@ZenIV>
 
-On Wed, Jan 15, 2025 at 02:35:03PM +0100, Andreas Gruenbacher wrote:
-> > +++ b/fs/gfs2/quota.c
-> > @@ -236,8 +236,7 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, str
-> >                 return NULL;
-> >
-> >         qd->qd_sbd = sdp;
-> > -       qd->qd_lockref.count = 0;
-> > -       spin_lock_init(&qd->qd_lockref.lock);
-> > +       lockref_init(&qd->qd_lockref, 0);
+On Wed, Jan 15, 2025 at 08:30:24PM +0000, Al Viro wrote:
+> On Thu, Jan 16, 2025 at 07:13:23AM +1100, Dave Chinner wrote:
+> > On Wed, Jan 15, 2025 at 10:46:42AM +0100, Christoph Hellwig wrote:
+> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > > ---
+> > >  fs/dcache.c | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > 
+> > > diff --git a/fs/dcache.c b/fs/dcache.c
+> > > index b4d5e9e1e43d..1a01d7a6a7a9 100644
+> > > --- a/fs/dcache.c
+> > > +++ b/fs/dcache.c
+> > > @@ -1681,9 +1681,8 @@ static struct dentry *__d_alloc(struct super_block *sb, const struct qstr *name)
+> > >  	/* Make sure we always see the terminating NUL character */
+> > >  	smp_store_release(&dentry->d_name.name, dname); /* ^^^ */
+> > >  
+> > > -	dentry->d_lockref.count = 1;
+> > >  	dentry->d_flags = 0;
+> > > -	spin_lock_init(&dentry->d_lock);
+> > 
+> > Looks wrong -  dentry->d_lock is not part of dentry->d_lockref...
 > 
-> Hmm, initializing count to 0 seems to be the odd case and it's fairly
-> simple to change gfs2 to work with an initial value of 1. I wonder if
-> lockref_init() should really have a count argument.
+> include/linux/dcache.h:80:#define d_lock  d_lockref.lock
 
-Well, if you can fix it to start with 1 we could start out with 1
-as the default.  FYI, I also didn't touch the other gfs2 lockref
-because it initialize the lock in the slab init_once callback and
-the count on every initialization.
+Ah, I missed that subtlety (obviously). Carry on!
 
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
