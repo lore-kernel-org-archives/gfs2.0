@@ -1,118 +1,176 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF98B6A009
-	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 05:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6757142E83
+	for <gfs2@lists.linux.dev>; Thu, 16 Jan 2025 07:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737003837; cv=none; b=edCw7oebxVCQVid5o19Qa/9y4bBgeNHXskZ5Xdpa3PgxAORVH1Amq0C2uHDkGplbMBomGnrx105/k1AiSQbGkDxptCpxoo2z2bwmiZk17XQrJwny/gaLE8DRe8mK3YM89AdKzx8ZNiaTmCoWo84t/ucK1mWXJhT14OR5I2v7sJs=
+	t=1737014078; cv=none; b=I4+ih6lsfwj+2gZfHnuWmqZNXoiWKGQNzllroSuyJ/IOwG/D9IxkyB2WHhvmk2FSVPUU6mQCrfvV1ImohobI/TE/s7wpTVX+2W3RsRV0CqSyjugWLvR9jiPnrdwVTlzbrsnAiUoxKcQSitPEkdENHds6wZJsOZPP+75cd2D3quU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737003837; c=relaxed/simple;
-	bh=wELArgmung28UVW6a1djIOqJloxqOE5PObrjaTGmt24=;
+	s=arc-20240116; t=1737014078; c=relaxed/simple;
+	bh=7M65RmMX3Ry4OaGybSFFVt26wFFfaatRGurZ9wLro+M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=daC9Hr+bjm/HdxR/HcRZ6fzPnai0h4QJbMZmDHK8PjiOZt2HnMdJCCkhOIIKbWO7jnsg/MexSQyLM1xwcvJN8t+MezzZWTgJWAtSRSxLiturx5RWpusV5/kx1t837UnNlIAVIH9+bjuzfz7Uerl+h4xLJMCpLB9k0vwoX8Anno4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=vZyJNRFa; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="vZyJNRFa"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2164b662090so7691685ad.1
-        for <gfs2@lists.linux.dev>; Wed, 15 Jan 2025 21:03:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1737003835; x=1737608635; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQtwcz66cRpnEOfOa/HyiuZRqWSGLaKRKp3+zlxh6e0=;
-        b=vZyJNRFaI1ucJ01sJ2H16apgUdgR7I28/CPR8vAEVD5e55+MO1MgDOR5p5vNKuuFPF
-         zCEVYBzhNH1425IWUg/uWJjFuptx/1Prxa/FT+AX6LMlzbGaMwRLHrfPuIoSVRPJpyCj
-         z6du90riUSky9C/z9qQbAFtm+6Z3g9hoTPCuttzJmBA3i9dxxYa+8aeAwehAPv3/w8mS
-         qD5mib+kq6BNxOS6FlG/cbugRD0U4MQfG4MuKi/1l/j/68mWG6JJIAUJ+69aMYrqJf8S
-         9833bkUYqeC20CDS6OLX9ex6HpYwZComsysE+TrbpQ9pE/J1ArC1GeXHZ3UiCzym/h7c
-         NepQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737003835; x=1737608635;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RQtwcz66cRpnEOfOa/HyiuZRqWSGLaKRKp3+zlxh6e0=;
-        b=Jr89poJNwxIYpEPu5664zIBkLzs5wMZ5vATEoLWu0NnlzJQqsltaVISjBpZgbCcIuI
-         TJ3oM4JQGWv4hNlYHdYAUqson2S1ZFzsrNACke0upuO+ucnLAtjbQmVGc8LQ8auzguXj
-         HLu5xVxl25atvZejAkYKiVso2cPNwdw9DFFUKGY1FybaPm8h3gVTG5KMkhvytPEMx7D4
-         KXUXGtgF/n/gdJzdgdnekK8/TnLi2HRyZzLxEmixF+cegm2jVGOsMo4yGJDgKDY6fszP
-         XKsIJbn1W/3SP+Lo8/xAcMSDszIII12Z2BG5rYKevENKldxFykVBqPFsc4Nal8bZPFAh
-         gUSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRUKvg60EdJtsgL0/S8SB484BQzQHpq2KWjfpVzMsGg6aw5McNcZ5c/ITfj6FlI0FS9iUJ@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQd6/R2Pc9INAiUVg8er5P/hGJKeI7zThjLQ+NfIp2Y0COvitr
-	wQKogjDms2h1WHkuZMIk+tVCEgMmPx7Y0+PtWb1QA4GaSMb7W7oHcVR1IqhjZHo=
-X-Gm-Gg: ASbGncuTyTK/hFUKwS5LmaZ1dLO4tKnIbvaA5Q4o4QOAuUXoNFVyNQlAdBCfzH0xAz1
-	3fBN17+bnY+c0J7Oe6mKu/hrUmYfpTqWLy1OCNemSQdv+sFXf3+68rlnrHaTUzj/uDlY2O/KJi4
-	5z/0H9VqNSegKmIrcFFZpsj5CokbNr5Dn0eEzYf+pG23If9kEhCb1ZqwbKJZz1gndUrrdKWFDEb
-	oxUIUoF0sH88q32dxcFQCylfAlYVIR67WOyITL0RewoXwyaHtNVafBoQRgEj08toKxqph5CWqnM
-	/IEud+CTyqQ1XFx5eXr1GT8qnNcZsHwj
-X-Google-Smtp-Source: AGHT+IGNOhZ2CDB3dC9ypPRx2+QFrztyTh30xO+H1dvtRXfxPIdj2LE0KDNO2Mwf1ivGr5YrWG2u9A==
-X-Received: by 2002:a05:6a20:244d:b0:1d9:fbc:457c with SMTP id adf61e73a8af0-1e88d0a4771mr34957994637.36.1737003834927;
-        Wed, 15 Jan 2025 21:03:54 -0800 (PST)
-Received: from dread.disaster.area (pa49-186-89-135.pa.vic.optusnet.com.au. [49.186.89.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067f72dsm10406495b3a.145.2025.01.15.21.03.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 21:03:54 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.98)
-	(envelope-from <david@fromorbit.com>)
-	id 1tYI2p-00000006SjT-2V99;
-	Thu, 16 Jan 2025 16:03:51 +1100
-Date: Thu, 16 Jan 2025 16:03:51 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 6/8] dcache: use lockref_init for d_lockref
-Message-ID: <Z4iTN86x2SsTVOIY@dread.disaster.area>
-References: <20250115094702.504610-1-hch@lst.de>
- <20250115094702.504610-7-hch@lst.de>
- <Z4gW4wFx__n6fu0e@dread.disaster.area>
- <20250115203024.GB1977892@ZenIV>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbJXaOBIb4G6Xi5MIXfY87JHPGDl4t1gT/KlJS4tW9F1POtM3gDR4wOXMdoYufCx/C+A8dek5FBE3R4g2SoxE11qLfPvU9A7AVW9Io/4XW2BoEDOF1ltwmFGcKG58rX1dL+hIAFgIO37sqYSN68+sqQ2C2FZ98AziSMl80GH5MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tYKhY-00075C-P9; Thu, 16 Jan 2025 08:54:04 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tYKhT-000DS2-0M;
+	Thu, 16 Jan 2025 08:53:59 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 165233A99BF;
+	Thu, 16 Jan 2025 07:53:43 +0000 (UTC)
+Date: Thu, 16 Jan 2025 08:53:42 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Kees Cook <kees@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, 
+	Cheng Xu <chengyou@linux.alibaba.com>, Kai Shen <kaishen@linux.alibaba.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Christian Benvenuti <benve@cisco.com>, Nelson Escobar <neescoba@cisco.com>, 
+	Bernard Metzler <bmt@zurich.ibm.com>, Karsten Keil <isdn@linux-pingi.de>, 
+	Michal Ostrowski <mostrows@earthlink.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, 
+	Chaitanya Kulkarni <kch@nvidia.com>, Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>, 
+	Mike Christie <michael.christie@oracle.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexander Aring <aahringo@redhat.com>, 
+	David Teigland <teigland@redhat.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <sfrench@samba.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Tom Talpey <tom@talpey.com>, Simon Horman <horms@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Neil Brown <neilb@suse.de>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, David Ahern <dsahern@kernel.org>, 
+	Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Oliver Hartkopp <socketcan@hartkopp.net>, Robin van der Gracht <robin@protonic.nl>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Alexandra Winter <wintera@linux.ibm.com>, 
+	Thorsten Winkler <twinkler@linux.ibm.com>, James Chapman <jchapman@katalix.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	Remi Denis-Courmont <courmisch@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Allison Henderson <allison.henderson@oracle.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+	Xin Long <lucien.xin@gmail.com>, Wenjia Zhang <wenjia@linux.ibm.com>, 
+	Jan Karcher <jaka@linux.ibm.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
+	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, Jon Maloy <jmaloy@redhat.com>, 
+	Ying Xue <ying.xue@windriver.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	Martin Schiller <ms@dev.tdt.de>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Guillaume Nault <gnault@redhat.com>, 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Wu Yunchuan <yunchuan@nfschina.com>, Max Gurtovoy <mgurtovoy@nvidia.com>, 
+	Maurizio Lombardi <mlombard@redhat.com>, David Howells <dhowells@redhat.com>, 
+	Atte =?utf-8?B?SGVpa2tpbMOk?= <atteh.mailbox@gmail.com>, Vincent Duvert <vincent.ldev@duvert.net>, 
+	Denis Kirjanov <kirjanov@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Thomas Huth <thuth@redhat.com>, 
+	Andrew Waterman <waterman@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Andrej Shadura <andrew.shadura@collabora.co.uk>, Ying Hsu <yinghsu@chromium.org>, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Tom Parkin <tparkin@katalix.com>, 
+	Jason Xing <kernelxing@tencent.com>, Dan Carpenter <error27@gmail.com>, Hyunwoo Kim <v4bel@theori.io>, 
+	Bernard Pidoux <f6bvp@free.fr>, Sangsoo Lee <constant.lee@samsung.com>, 
+	Doug Brown <doug@schmorgal.com>, Ignat Korchagin <ignat@cloudflare.com>, 
+	Gou Hao <gouhao@uniontech.com>, Mina Almasry <almasrymina@google.com>, 
+	Abhishek Chauhan <quic_abchauha@quicinc.com>, Yajun Deng <yajun.deng@linux.dev>, Michal Luczaj <mhal@rbox.co>, 
+	Jiri Pirko <jiri@resnulli.us>, syzbot <syzkaller@googlegroups.com>, 
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-nvme@lists.infradead.org, open-iscsi@googlegroups.com, 
+	linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org, target-devel@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	linux-cifs@vger.kernel.org, linux-hams@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-can@vger.kernel.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, 
+	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	virtualization@lists.linux.dev, linux-x25@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] net: Convert proto_ops::getname to sockaddr_storage
+Message-ID: <20250116-light-panda-of-reverence-2f5da8-mkl@pengutronix.de>
+References: <20241217023417.work.145-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nbdyd5ky7ajuduf3"
 Content-Disposition: inline
-In-Reply-To: <20250115203024.GB1977892@ZenIV>
+In-Reply-To: <20241217023417.work.145-kees@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: gfs2@lists.linux.dev
 
-On Wed, Jan 15, 2025 at 08:30:24PM +0000, Al Viro wrote:
-> On Thu, Jan 16, 2025 at 07:13:23AM +1100, Dave Chinner wrote:
-> > On Wed, Jan 15, 2025 at 10:46:42AM +0100, Christoph Hellwig wrote:
-> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  fs/dcache.c | 3 +--
-> > >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > > 
-> > > diff --git a/fs/dcache.c b/fs/dcache.c
-> > > index b4d5e9e1e43d..1a01d7a6a7a9 100644
-> > > --- a/fs/dcache.c
-> > > +++ b/fs/dcache.c
-> > > @@ -1681,9 +1681,8 @@ static struct dentry *__d_alloc(struct super_block *sb, const struct qstr *name)
-> > >  	/* Make sure we always see the terminating NUL character */
-> > >  	smp_store_release(&dentry->d_name.name, dname); /* ^^^ */
-> > >  
-> > > -	dentry->d_lockref.count = 1;
-> > >  	dentry->d_flags = 0;
-> > > -	spin_lock_init(&dentry->d_lock);
-> > 
-> > Looks wrong -  dentry->d_lock is not part of dentry->d_lockref...
-> 
-> include/linux/dcache.h:80:#define d_lock  d_lockref.lock
 
-Ah, I missed that subtlety (obviously). Carry on!
+--nbdyd5ky7ajuduf3
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] net: Convert proto_ops::getname to sockaddr_storage
+MIME-Version: 1.0
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+On 16.12.2024 18:34:28, Kees Cook wrote:
+> The proto_ops::getname callback was long ago backed by sockaddr_storage,
+> but the replacement of it for sockaddr was never done. Plumb it through
+> all the getname() callbacks, adjust prototypes, and fix casts.
+>=20
+> There are a few cases where the backing object is _not_ a sockaddr_storage
+> and converting it looks painful. In those cases, they use a cast to
+> struct sockaddr_storage. They appear well bounds-checked, so the risk
+> is no worse that we have currently.
+>=20
+> Other casts to sockaddr are removed, though to avoid spilling this
+> change into BPF (which becomes a much larger set of changes), cast the
+> sockaddr_storage instances there to sockaddr for the time being.
+>=20
+> In theory this could be split up into per-caller patches that add more
+> casts that all later get removed, but it seemed like there are few
+> enough callers that it seems feasible to do this in a single patch. Most
+> conversions are mechanical, so review should be fairly easy. (Famous
+> last words.)
+>=20
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+>  net/can/isotp.c                               |  3 +-
+>  net/can/j1939/socket.c                        |  2 +-
+>  net/can/raw.c                                 |  2 +-
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--nbdyd5ky7ajuduf3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmeIuv8ACgkQKDiiPnot
+vG/tCQgAnoYMQthE5qhN4islXZibYx3HOEVpQp20V/CdVVRH56MNpoQvsjN0F5I9
+Pe8FiGuyUR9fNqhHJPDV5qTZfzq6vRSoc7PpwLTwF9ReyzpbKcMrYcmv/Wkbso1k
+faQaG0U/F/5wp2/nsK1h/PUHRvlwFfLs41wCCmlXQDks5vvt1U+8F/0mUiM/L0yT
+SQG9iudLNDMEv22xlkR1e90s94ARgRIKcBcOZ9LudgYLwGmT8I3JAenyHET3Q8d2
+GWVaepqliLBxoq7pfWcJm1yFL8DFp2xSUy/gP7BqrfKIJoJhRqOR2EXGSgAZ6rek
+c/YmUBVaGDu2ZBkxhzlB6NKXFu9dBA==
+=LAEY
+-----END PGP SIGNATURE-----
+
+--nbdyd5ky7ajuduf3--
