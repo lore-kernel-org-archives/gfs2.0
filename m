@@ -1,101 +1,87 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB451E0B86
-	for <gfs2@lists.linux.dev>; Wed, 29 Jan 2025 17:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7881BEF85
+	for <gfs2@lists.linux.dev>; Thu, 30 Jan 2025 13:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738171196; cv=none; b=TXVazOKCY+VUAyDCA8lf5XI/Mzm0tJBrHXBowJ6kudMpfelDVcoghcGram7R/5t4ZfCnbAgbgbQBPc9u3VBo+4XkCGaf8/C8J6iHm5rXc2cLCFC1sRMDANjaHgEpVixBZidItiv3iulMWq2hh8gVE8A7bdjCExcMfk0Lh4hIGTI=
+	t=1738245398; cv=none; b=cpUHuVkYdIjniep7Sk5qKKgurazp/tpNATj4U7O5V3Z5FGYY8Lbldic/r7qhYRNwZA8ChqH6Q7fhgvcdjbbnHyPOjezlS8iHHboe3Etu+COe865JBQAYazcCTiJGkHJIZk8ZT4IzHmsCYj65oClqReb9cCZul8UZpB1vh0hVe1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738171196; c=relaxed/simple;
-	bh=3iaxX73XD6lAe5qkay4u9FZLV/j1SD0tFzq+pKK1qKk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yg1dyCbyF9NG9sYwaU+8lh0VKGxxnj3147PBpLXHXdAqlN30edN9sQgzE/ciVx7B7tcf5T+9Fq3bjvQ++pLOhgh9BSzjtD4b3to9enisH5Jfuoiu62Ei9qAnlcOVlTvX23xmj1JReFt3FRChIyTxYp6qa2zFqUUfxk9SecaKZ2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=efwH6yIQ; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1738245398; c=relaxed/simple;
+	bh=bPoIq//z21qw6s1/O0ZRMVTIepzisSDoitAj8KYqC6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fqt8+leIu1nYqY2u8qmTmGI1bumVJiy1AmeSVRoweLhfXBDHAr1sFF06fvld0T9Nsyd9BYYgwBm0Cap/lzOtUFISZ7Mwct6IxyOJh6nYjnEo94a4GWgknZ5gd+BbxSJP+UsUavdBKZJaDWbqBAoONRQgUZvQrzXM4A6vsEK0IkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BzeUM9pu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="efwH6yIQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BzeUM9pu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738171193;
+	s=mimecast20190719; t=1738245395;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3iaxX73XD6lAe5qkay4u9FZLV/j1SD0tFzq+pKK1qKk=;
-	b=efwH6yIQ01B7OH+Pji7+DhzjEpl7/6Q5t777007qO73lUgCPgtwnY3HsQerPg/IoMO9bK6
-	hSYrFXjUhTIuAbEuEb+LCWNHPJ73JucyjGGS5WkfLnHSWq7e/tcdT7MN8G6nNShH5g6s4w
-	tQfyHxKYJ6AdWmxvcTIxz852Wq5cbz0=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-QTggjn-ePBi3dMxbHd3Xww-1; Wed, 29 Jan 2025 12:19:52 -0500
-X-MC-Unique: QTggjn-ePBi3dMxbHd3Xww-1
-X-Mimecast-MFC-AGG-ID: QTggjn-ePBi3dMxbHd3Xww
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-21655569152so144065835ad.2
-        for <gfs2@lists.linux.dev>; Wed, 29 Jan 2025 09:19:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738171191; x=1738775991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3iaxX73XD6lAe5qkay4u9FZLV/j1SD0tFzq+pKK1qKk=;
-        b=NzWY3MEuhHgasVgwyq2QHOXAO6bw0CPxCQjoW8MiAqWK8eQag483Aqx9X30Nm3QxEv
-         +q+jhwBE4fgTW7YHpPNHYGS1B3DhRtkJKnwWtQiQpzYr9NG+2bvMj+EBmF/mtf0NlFpK
-         1lkGRwzS11fDVo9+Ht5zBR++zDERPWL6YvwesR64ibR3d8Mykv9t5k25RLz0s/BNwkqV
-         KUEBXambMINOhVL2ozGOopz9anWxOnybLBxYYySypCI946k+4FO+SFi2DrRcBuEGnx2P
-         8qBwVIZsTdaCo401V1KOorAkiEI6q26lucUXI1BFnJF4iH9tM3NJlcCt5pVXkOTcvgtJ
-         1UEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxdXWrKpJBnMAFGuDpXgXcYmfysigAcp5QdMdGEkLvRDIGTeFcWxgVLLiM954aKUtzgqyB@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWNG+uRAnd83nPTxb6LT5oVbN8jOgxnnDiAXEbrMrq1tHVIXvV
-	gdgItah5/s4ejLRaNy2Dom4nM28o1xL1hnuLTnyaGYxw9DfVJx5PBefObQ1zfXK8Tqbx/0deyE3
-	JjIIlZzCI1UQ+kIJJpbufrEqeL1eYu1/aHK402Sx4IKD93OHH4zjOGMPjR08sDevPdwGlp+P3AI
-	raz3YAPlyMsATwADvb732XSQRlhQ==
-X-Gm-Gg: ASbGncsEmOJF4ua9xcB2a63jzddnybHFv8VxF2i9WlbztdeC7sEiTx/WpDbIA212HZY
-	L+bb6RVEwbtrbQt4mlh6hToC5frT6jwB+CPRqKMFoxIZvpIdbGwPjg2BJ0+KS
-X-Received: by 2002:a17:903:2343:b0:216:1ad4:d8fd with SMTP id d9443c01a7336-21dd7c4994amr48816455ad.8.1738171191603;
-        Wed, 29 Jan 2025 09:19:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFfABnFfbgeBzDXWCj85MsPaV0ByB2T2rXUb7QjeIORDiHfVnWfBRCYeARi2+5kL4J3zYcmv97e5BnDL5BYRu8=
-X-Received: by 2002:a17:903:2343:b0:216:1ad4:d8fd with SMTP id
- d9443c01a7336-21dd7c4994amr48816125ad.8.1738171191101; Wed, 29 Jan 2025
- 09:19:51 -0800 (PST)
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9g1rRnReI13fX6Jcb3HqPbz4o52VybxcfSlzB9roo5M=;
+	b=BzeUM9puMg7bl+ik1/4Lmb3BChNEVEkRyBCPKtCn9/vYecMXyWqQ4LTqgELIRCYrdr+Eo5
+	cpk2eEi3hfJnlKAuUULhuGg+2cUir1vLP5ludsWIZSY4iNGOsHKz49g/tzPzncanxO3UBG
+	51MqtI8alKrQruhvdzfcjMHmcZyX4Jc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-iSzbDDAZNHOl3fZQzt1bAQ-1; Thu,
+ 30 Jan 2025 08:56:32 -0500
+X-MC-Unique: iSzbDDAZNHOl3fZQzt1bAQ-1
+X-Mimecast-MFC-AGG-ID: iSzbDDAZNHOl3fZQzt1bAQ
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1238818009D9;
+	Thu, 30 Jan 2025 13:56:28 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.234])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C2D21800268;
+	Thu, 30 Jan 2025 13:56:25 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] further lockref cleanups
+Date: Thu, 30 Jan 2025 14:56:20 +0100
+Message-ID: <20250130135624.1899988-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250129143353.1892423-1-agruenba@redhat.com> <20250129143353.1892423-4-agruenba@redhat.com>
- <20250129154413.GD7369@lst.de>
-In-Reply-To: <20250129154413.GD7369@lst.de>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 29 Jan 2025 18:19:39 +0100
-X-Gm-Features: AWEUYZk_2Z3s2dY_kkWVLcQgmXKJk2VDezt4d-YIgTtz0UQr4V5Xf2wIXyjUrQM
-Message-ID: <CAHc6FU47ToGhxxO1MzcdyL=Mcqrf-E+Wh3dwMiuL365pXSfKsg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] lockref: remove count argument of lockref_init
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ty41kCOIavFyxriZDr-B4su_nWCVdXAX-dN8_lEiY40_1738171192
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Wed, Jan 29, 2025 at 4:44=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
-e:
-> Maybe the lockref_init kerneldoc now needs to say that it's initialized
-> to a hold count of 1?
+Here's an updated version with:
 
-I always feel a bit guilty when adding a comment like "Initializes
-@lockref->count to 1" and five lines further down in the code, it says
-'lockref->count =3D 1'. But okay.
+* An additional comment saying that lockref_init() initializes
+  count to 1.
 
-> Otherwise looks good:
->
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
->
+* Reviewed-by tags from Christoph.
 
 Thanks,
 Andreas
+
+Andreas Gruenbacher (3):
+  gfs2: use lockref_init for gl_lockref
+  gfs2: switch to lockref_init(..., 1)
+  lockref: remove count argument of lockref_init
+
+ fs/dcache.c             | 2 +-
+ fs/erofs/zdata.c        | 2 +-
+ fs/gfs2/glock.c         | 2 +-
+ fs/gfs2/main.c          | 1 -
+ fs/gfs2/quota.c         | 4 ++--
+ include/linux/lockref.h | 7 ++++---
+ 6 files changed, 9 insertions(+), 9 deletions(-)
+
+-- 
+2.48.1
 
