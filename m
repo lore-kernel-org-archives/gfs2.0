@@ -1,42 +1,42 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D7F22FF43;
-	Mon, 10 Feb 2025 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3722FF58;
+	Mon, 10 Feb 2025 13:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739194498; cv=none; b=ggPLBWEp3pUQpT8fcabFzvZG/qYPZfwAJDUfmDTilygkK6xCdNh+unN5JzlIoRvurl9366FO8wr8o683tNpJsydFZwx2Q9tHRflAK+DISmPXs3v+HjtcJtC/crSWSVi4k+j8tkteNE5/pAJYa2TVf0VQCqal2W+DySOCfuT56fg=
+	t=1739194500; cv=none; b=n2KdRCba2O9748BS/r7ybJgfDglgzJAcJBVordmm32tLlSrszNj7KKDRH0Qmu0BwKFN7qA5PClf6CjAm+1FG94jF6j7VJrHg+BvNm7WlCSMz2yFtQ3zGI28YVK+eJhEQ/USJdaT1yryqWP/qDzhx0+S6jKsRoBtwcQYG1cseZzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739194498; c=relaxed/simple;
-	bh=w7bxwAnZv/QEliC18ASKViHZm3n46+jYgCt/nHSde4w=;
+	s=arc-20240116; t=1739194500; c=relaxed/simple;
+	bh=6YUF1zzOk5DgkFBUw1J2J/Kvch++VLEn+3f4rK3YDIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5OQs3L6GvO0MPnS721xxIItTGylRAklgsk3nBVBnl2YUmrmcpndHpHshFqOWf+BpqVxaiIqVb3ulrn0HpdgdbHmZedmpbsrvWHIl2gE2MZKI99P7yyKqEAQkxjVyUZK4Zko0mWUBqevWpMXf7IDNH8gmBFxm0bc/xUcoQgTBW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HGb77Oi/; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=TcDdWw6r7lWqrWRWv5Jm1zpLGZQ9+9XlNj1bssUhcCuxbn1tVBInIOknBrjlIOB44zIxcSmVycVfxqPnVC/3sqAEjqLLIws7u+k/gp26m1EgOBWdb5MVjIArL9dGRNSzpY/5AuU5l23FGLOff3zlSEBajCvpLxG8+cPJANwGeIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Xz6jxeKF; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HGb77Oi/"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Xz6jxeKF"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=fyUQp+uL/ZgVZNc447UUj9/Z9HHRPY2gBHROD633lhM=; b=HGb77Oi/Q64MLlVu489bi6gLRT
-	OhVCXsFEqSguLZOKiqcpV8H872uQEbSLfd/JB/5LEUIrDWY3gsM+68UU+wdd/8HINk/XRFrO3+IIJ
-	h3NZHBBhCI6CV9Un0TtRjLSBhTABsApT4jsQtY6s+BjIYiJ+o5QLAQndEy87tx91kGqRkVrklSzly
-	7pWW+v9+7i3ZVEZU2EfCxc2Sfm6lzmuyDYTx4nIfss3dkmhulJriNwalJVToTGh/N709qDtvIu/DE
-	08vc24jhaWXOb4kf3e0Jy+E/BvRKyJJAMbVWzar3EnBF3Wm+cjRA7+lSQIV6vEDyudbwVelPcGhjE
-	Z/eVgJ7w==;
+	bh=6XmXVG2+oMaQiX+JohdVsei/y+eNiOuM15IHE+e0PcU=; b=Xz6jxeKFIH9ZE3GMg7YgZKmFyj
+	NRLqtPh5iEo+yW7HJJcPN2vQvNry12Ou0NNO3rFHqSjcScZwrp8RMR+qwMT69CQeGa+jhaE4J1VDd
+	t8+QJig0btcLvuDSW3CbCPV3j5FIwm7+BiYEY3TAH4r9gNTOKMEXfrTezApBiZ2o3LtfgY25DrK9W
+	3iQLRSR82zxCrNxRTMUMpY0W7b/no4ZsIlNsPpmwvHIqjKMYwBolNqub+W0olwWb9unQHFRPfqIza
+	8wNRltkyJo4CSX6xV8br/odvQ0e8uphmv0dQ9u4vToOh3b24q4Bn7sLvNOwCCEu2HDzQUFMWtpsCT
+	zFuoxb4w==;
 Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1thTw6-0000000FvZu-01mc;
-	Mon, 10 Feb 2025 13:34:54 +0000
+	id 1thTw5-0000000FvZq-3TT6;
+	Mon, 10 Feb 2025 13:34:53 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	gfs2@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 4/8] gfs2: Use b_folio in gfs2_check_magic()
-Date: Mon, 10 Feb 2025 13:34:42 +0000
-Message-ID: <20250210133448.3796209-5-willy@infradead.org>
+Subject: [PATCH 2/8] gfs2: Use b_folio in gfs2_trans_add_meta()
+Date: Mon, 10 Feb 2025 13:34:40 +0000
+Message-ID: <20250210133448.3796209-3-willy@infradead.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250210133448.3796209-1-willy@infradead.org>
 References: <20250210133448.3796209-1-willy@infradead.org>
@@ -48,36 +48,34 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We are preparing to remove bh->b_page.  Use kmap_local_folio() instead
-of kmap_local_page().
+The lock bit is maintained on the folio, not on the page.  Saves two
+calls to compound_head() as well as removing two references to
+bh->b_page.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/gfs2/lops.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/gfs2/trans.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index d27f34688ff5..4123bfc16680 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -615,15 +615,13 @@ static struct page *gfs2_get_log_desc(struct gfs2_sbd *sdp, u32 ld_type,
- 
- static void gfs2_check_magic(struct buffer_head *bh)
- {
--	void *kaddr;
- 	__be32 *ptr;
- 
- 	clear_buffer_escaped(bh);
--	kaddr = kmap_local_page(bh->b_page);
--	ptr = kaddr + bh_offset(bh);
-+	ptr = kmap_local_folio(bh->b_folio, bh_offset(bh));
- 	if (*ptr == cpu_to_be32(GFS2_MAGIC))
- 		set_buffer_escaped(bh);
--	kunmap_local(kaddr);
-+	kunmap_local(ptr);
- }
- 
- static int blocknr_cmp(void *priv, const struct list_head *a,
+diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
+index 192213c7359a..f8ae2c666fd6 100644
+--- a/fs/gfs2/trans.c
++++ b/fs/gfs2/trans.c
+@@ -246,12 +246,12 @@ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
+ 	if (bd == NULL) {
+ 		gfs2_log_unlock(sdp);
+ 		unlock_buffer(bh);
+-		lock_page(bh->b_page);
++		folio_lock(bh->b_folio);
+ 		if (bh->b_private == NULL)
+ 			bd = gfs2_alloc_bufdata(gl, bh);
+ 		else
+ 			bd = bh->b_private;
+-		unlock_page(bh->b_page);
++		folio_unlock(bh->b_folio);
+ 		lock_buffer(bh);
+ 		gfs2_log_lock(sdp);
+ 	}
 -- 
 2.47.2
 
