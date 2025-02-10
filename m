@@ -1,42 +1,45 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D01225A25;
-	Mon, 10 Feb 2025 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553CD230D30;
+	Mon, 10 Feb 2025 13:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739194497; cv=none; b=IkvxVQgBR+lPGV/TYrb5bwOvFLhxhH7lldH69o1SxxZqTrWVmaQDf8lJsbxnjaTv4lZlvVEZgYvbC0hBCnYAu3RsOE0QBexoE+O6YslfF1odMz6QkhvgTZ7xkTQnAE2e7pbMHg6MvQCrPSkBSfTPRxXhUAVCRPfOXzAXLnrt834=
+	t=1739194497; cv=none; b=payIVkv7ve+ixiplWX6ctejbLb+hXU0k/l2xHxRbTza2FwfDESN1LdocbIkY6xRa0VmpnXmIMQeeQrxOwTRbm5xZK7oeP3P4NdfNX3yXqxe/Qc5qm9BPlddFEdbQw44c5I5Z7yjAxouHBwvaojXZU5Jws6nEQmy4lkDxQmwkX/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739194497; c=relaxed/simple;
-	bh=ZPv/E2kQ5rsDl5eC30qVzIl7hp98x7UfyNieyYQNjwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dlGc/qM6adj0x1Q4+y5CC8FDZMwLeO6zvBjF5ndXZfZzlacZeJNoGUHf8zhk33H48zKRMRj2U4DjPD2Oxqi9BMI7NkMIC13uuz0+9lSOxhNjRXPMM5BWoIrM0UpIlpnH+A0R8Esjk/KajuX5nV+SEJg6RVe7Nm+9TEK1aviWRco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mfkG3AFE; arc=none smtp.client-ip=90.155.50.34
+	bh=jytbP/7CpqddLcMVzufHIC4HolRZQ1p9IdqKYMkBl10=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JGEBAoCgpRnELbpFX359gkFUIZfOTQjLKEwk8NXMYJsO5UqAr1D/COnqa+aCgSOoK/S4YdQ3GCFX2UkyqybRLZgn5PIYLYarVQAy6BEYFjJd9tYP0zltDm6KzW88OQZ0XuvKg51X5+4yb0X964b40JVsBKMaCiASwLB8N5TzaqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FH+pl9d0; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mfkG3AFE"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FH+pl9d0"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=PoNpukNrLHKByBh0E4RE3AdFZaWRSwZfgI3hxGdDr8c=; b=mfkG3AFE7dLUQ8IUbtufhzuDpY
-	17tgZFSb3NBFnE2IMsPqEGBelT+oiKxrz3zC+hRG9KGrpwatjeiz9NOJgVkr7BYhQAMvPUGLqhkaF
-	SOD5/6Dd/f0U3PbMkQMKqrCnp/n2buCoOeMNfWHd8b4dMHOTWqmsYvdMuOwfnLaNp8hQddggyjH+b
-	TPcnjnc7+HsqnT7AVgFV6OO9FKcXjyYrHFBokAFoO+RrvksqRmUmM8TLPGuCAbG8DfKZBRhytAUAh
-	KE0Ib4amHJ070fCaOQnSH+lbQcnKflIbQFtiZPKTL+STh0HT3/GxE+2E45xADVBkI+ICPp9zPLIHt
-	issW4EEw==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=3MHZxmUQgMb6Ftxk2klgrN+WeAlCYx13en5pr+i0su4=; b=FH+pl9d0O8QJOPsBGen7/isv4j
+	aZaaVytGw1zqa0OWz5EO/diTaUZcbLW8ONQ+if0oXnE32ESgpePR6ehAk6SZA95WuqWaXT0JuUoKK
+	FwMajDkYyvoaE7rp5cO/qG8HZblweOeDYzTrHwPsi2+9kAOMBu8AZqMHwLc/coDfUoQ0p8/QGckBM
+	snhfoZY9F/QW3fqmQ/Jkyl/4z30O/D/5venoIjGKMxq1Vs7RiNy1HiQ+VP2B/joDP4jXc1iH0YViu
+	5yoUv9BeOjlsFTUBOAUX/ze+p0pjNOtbimW3RvIwkuPUryzktdljToywoJboeeoM+GCyOpxZAEDN7
+	IpzPp8Lw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1thTw5-0000000FvZm-2jN7;
-	Mon, 10 Feb 2025 13:34:53 +0000
+	id 1thTw6-0000000FvaL-2BR3;
+	Mon, 10 Feb 2025 13:34:54 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	gfs2@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 0/8] More GFS2 folio conversions
-Date: Mon, 10 Feb 2025 13:34:38 +0000
-Message-ID: <20250210133448.3796209-1-willy@infradead.org>
+Subject: [PATCH 8/8] gfs2: Convert gfs2_meta_read_endio() to use a folio
+Date: Mon, 10 Feb 2025 13:34:46 +0000
+Message-ID: <20250210133448.3796209-9-willy@infradead.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250210133448.3796209-1-willy@infradead.org>
+References: <20250210133448.3796209-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -45,35 +48,40 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I think this may be the last batch of patches to gfs2 for folio
-conversions.  The only remaining references to struct page that I see are
-for filesystem metadata that isn't stored in the page cache, so those are
-fine to continue using struct page.  The only mild improvement would be if
-we could have different bio completion handlers for gfs2_end_log_write()
-when it's using mempool pages vs folio pages, but that may not even be
-feasible and I like the current solution well enough.
+Switch from bio_for_each_segment_all() to bio_for_each_folio_all()
+which removes a call to page_buffers().
 
-This all seems fairly straightforward to me, but as usual only
-compile-tested.  I don't anticipate the change to buffer_head.h to have
-any conflicts; removing the last user of page_buffers() is not on the
-cards for the next merge window.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/gfs2/meta_io.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-Matthew Wilcox (Oracle) (8):
-  gfs2: Use b_folio in gfs2_log_write_bh()
-  gfs2: Use b_folio in gfs2_trans_add_meta()
-  gfs2: Use b_folio in gfs2_submit_bhs()
-  gfs2: Use b_folio in gfs2_check_magic()
-  gfs2: Convert gfs2_jhead_pg_srch() to gfs2_jhead_folio_srch()
-  gfs2: Convert gfs2_find_jhead() to use a folio
-  gfs2: Convert gfs2_end_log_write_bh() to work on a folio
-  gfs2: Convert gfs2_meta_read_endio() to use a folio
-
- fs/gfs2/lops.c              | 69 ++++++++++++++++++-------------------
- fs/gfs2/meta_io.c           | 15 ++++----
- fs/gfs2/trans.c             |  4 +--
- include/linux/buffer_head.h |  1 -
- 4 files changed, 43 insertions(+), 46 deletions(-)
-
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 66db506a5f7f..198cc7056637 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -198,15 +198,14 @@ struct buffer_head *gfs2_meta_new(struct gfs2_glock *gl, u64 blkno)
+ 
+ static void gfs2_meta_read_endio(struct bio *bio)
+ {
+-	struct bio_vec *bvec;
+-	struct bvec_iter_all iter_all;
++	struct folio_iter fi;
+ 
+-	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		struct page *page = bvec->bv_page;
+-		struct buffer_head *bh = page_buffers(page);
+-		unsigned int len = bvec->bv_len;
++	bio_for_each_folio_all(fi, bio) {
++		struct folio *folio = fi.folio;
++		struct buffer_head *bh = folio_buffers(folio);
++		size_t len = fi.length;
+ 
+-		while (bh_offset(bh) < bvec->bv_offset)
++		while (bh_offset(bh) < fi.offset)
+ 			bh = bh->b_this_page;
+ 		do {
+ 			struct buffer_head *next = bh->b_this_page;
 -- 
 2.47.2
 
