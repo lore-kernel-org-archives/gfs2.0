@@ -1,71 +1,69 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azhn15011022.outbound.protection.outlook.com [52.102.138.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CD5198E9B
-	for <gfs2@lists.linux.dev>; Wed, 19 Feb 2025 04:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739938208; cv=none; b=TC33LSKEVj9qUUYc4Fwz/ylR7qdNbBdmpc8F0qDA2vT93DpAbD5RcRL3QZlhQof/Vyvcy8OpJDG194YATYviGuq3MfaAqoPDtnA8nWOs9+B7vmdANsbULduCeiTFLxl7SUxW/0rjVbjHZwqCPyJCLVhkZcewFFdXKAofCyTZEC8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739938208; c=relaxed/simple;
-	bh=ZOirXPpBpdNGB7ZgyOBcoKSNUIN5EKFgmGrgDMY+S7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AQINm2819fNQt2W0NjWQKtlSCcVlxEbfz8pxIPj8zLt2QRsiADal0lS4G8YK63VZoBjPCTWCDcSg6NbRA8Bmmh2GClgHqeJ8yxCS4rc2sZToToGHta6kWpcsaM8nhDbQ+LEKkYCdBPmBV250i++5bjf5xhn56bo4mw6Tknz4gXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b=hVjUfyHh; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F340385C5E
+	for <gfs2@lists.linux.dev>; Wed, 19 Feb 2025 15:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.138.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739978481; cv=fail; b=obedqRaDEu2uRS8qsnhksw0YDjdKyLwB0h+eDsUdeLwULZN9zLbIKNgVfWeGjobQ22Ov94a8F6jrKpnOf3ajL0nVxiGA4WcdAsGavfo+bJUklQoPRSEs3pN2GOe87/EP8IHHYb4PKemZjlvvbdauKz8aR9ZEoFSHmdIlkJE9m3c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739978481; c=relaxed/simple;
+	bh=yOkcMfFEo4WT55yYaLwOyZh97Bo7BykTkkKCGYHNzTM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BatR3JpQex7P0W/hSpk9t/edXDUW0Qtpv+zhz6qYkzUhBAloQkCzj/5AdOaH714iCVrq6fkuDhQ9SXEWdzKxAzgAysTxcYjlWY00WMZMjtxT7IK7SPDiHn1bNHHFhNf9wCiDTv7+1D2qzu9ggQrB7RvfizH/reZNSrvUEDTXiYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=cloud.com; spf=pass smtp.mailfrom=citrix.onmicrosoft.com; dkim=pass (1024-bit key) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.b=GpMWrvxL; arc=fail smtp.client-ip=52.102.138.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=cloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.onmicrosoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b="hVjUfyHh"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220c665ef4cso93133635ad.3
-        for <gfs2@lists.linux.dev>; Tue, 18 Feb 2025 20:10:06 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.b="GpMWrvxL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vaY+b/AUtiI7D7eZAipthJsQ6Mwh5tnh2RWCM/75pjx4d6HK5MG3NXKbtUq2hN+11dUUp3kBzlJeZVjOkek+aH0ytYYT/dGCGvgA5m+0o/7pCq6pBdbnbqb0i5u7hCJxFclHUgj9AzPWeoXaZpJzX2UiLUGyNa88mqhGaGp626pvXzsJQal+iWMb179Ei6G+fpPxh2g5BgNkpNGhJqTmS0h/SdBKvN41ufrL3w4V9snE6jr0+uQzLWwnY1eADD8RQKZcmn+dwGDGpoZQ+Sue5/IdA7iiL9JZWTQAHmmBzBTIURdhm7rb4Maqx2Z0RcwSGhWQZjCcVAN9Wr8faRwCng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yUnzs4sATVeIENknJp/2ssTBwZznsFgq3fejZPeiEWI=;
+ b=RLHtl+etndISqDn9CFKZQIcpiiP0OrD39rLHUN8MvCZZTUwnqF3T7hVO+cGCAdqZqsHDMn2uV7efg1yy8sWp219Afo4j7u3FIUYxKAl4RtHaNEdx9LUx8CK7iv5D0guiaYO9L4faIuzImobhUV7+tLQNmCFil5zgsZsLvaDNwaIxT3kRx7IF5k6j+dPI65hV4CUcGWhZBJm86eh2qeMFN8cdVzv0TMW3BxSfN787Qp3+mcqKDI34mK3UG40YU4j9hwwH1eV/EdGh5DCk212tNEvF9UBr/qI4jKbwkp4itVbpVcNgpB/Hhp94iVvlo7JSbDJE016X1eYyCr8qgFIJLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 34.145.164.155) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=cloud.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject header.from=cloud.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloud.com; s=cloud; t=1739938205; x=1740543005; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTKcTvnZS+L4I/Okb1EcSfxpGxRo5kjtPkphxD7WsUg=;
-        b=hVjUfyHhKPaCYG2n+5T1nGaxlemLjYor5vJLl8HmlTgK1Xvtweyb8W51KdWi2z6W7x
-         vpNfKYH0u45q2lUmHfWvG60c+WUpbagnhO+lyAwV2eI/6WhJkcLwjIi67iW86rQOpm1J
-         UHwPVstWpKsPQ2OHJpPoHcG6FHCBJs0dur5Wk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739938205; x=1740543005;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jTKcTvnZS+L4I/Okb1EcSfxpGxRo5kjtPkphxD7WsUg=;
-        b=UYczZrFol0VpnGXiP7pvB+z0tff8qwBLC/dB7XNiZtJbD7N7GfVH/v1V1xdRoZhW2f
-         D/rlcNBBihPN0YuwrLx6wiSBgQX018fGyA/Tj2v3VotqMx3BG5nme37c70Ocrj7m6dyq
-         JlX2lKqz4rpdeoILNDqkU1iK7KEE+IZDXowPaD4MeR3rZf+aIYVLKZWOq7/DAJzLz/xd
-         VXaAw1JzvyaXZMxa2u7HyzIG4ToPZxG67//L458KdN58DMFhvE/9YBQ5NfQpSl8aXsJ+
-         v5MSxK3tgrWFAd4/u6BNNxNvMmA/RX7frPgyCfe5VbMo0ak9cpT6v1e8stn5e2s9sifX
-         ipuw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwj2XOExXhm03ViwpkGTqsBs6PHE1KdD/JQZrst4RNp95kWVvLozXAFAVsLNl+cSBGGmEB@lists.linux.dev
-X-Gm-Message-State: AOJu0YyIBiAkDDGA4Slvt0C1KpI7q0X0MIIa9Ww8qMxoj9ihs/7W0pFS
-	/e/MzogpkrVF8shv5wXK8WCTaBS/Lu458eqkgObFx8WyIi8U+QCzdPXe2iwXgNE=
-X-Gm-Gg: ASbGncsJxqGpyIygn+vJvuATLJedj7WOwnE3nZcwn9RbN36GuJki8KMJMLeGRMnBZmt
-	Jms4piibUlh334TzROWqwNnwq8AiA9lighnJP6UyClsFYSv6X/eBOc99wRhSLgLKAd66qIjrxRp
-	hWkJfo1DkCCex1qEG4S0ivETVP11rlYy+7R09VrBMCaLN9mmSmpdDsFbjKodT2tie+xo4PtawxS
-	pXPoM/TB2jvRtOz9GowOHllJKjVw3l1GwLNGc/+CR2NzV6WYU2ql5dj290GGumuQC3nOPxZQcAn
-	UpjRQZwrPFDGL4E7DN7v4VPdHh2sqhbLNJ4+lQ==
-X-Google-Smtp-Source: AGHT+IE95oE8H0jpyiD4lMrH6AwDHLPJK4zW/l3ZyQjtTXz+PaOQkTdIX/VbUgxNkRLRLE6AUmBcOA==
-X-Received: by 2002:a05:6a00:18a4:b0:730:9446:4d75 with SMTP id d2e1a72fcca58-732618e4f34mr23223656b3a.17.1739938205439;
-        Tue, 18 Feb 2025 20:10:05 -0800 (PST)
-Received: from localhost.localdomain ([154.91.3.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73242546149sm10825772b3a.36.2025.02.18.20.10.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 20:10:04 -0800 (PST)
-From: Chunjie Zhu <chunjie.zhu@cloud.com>
-To: andreas.gruenbacher@gmail.com
-Cc: agruenba@redhat.com,
-	chunjie.zhu@cloud.com,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: Re: [PATCH] fix gfs2 umount timeout bug
-Date: Wed, 19 Feb 2025 04:08:54 +0000
-Message-Id: <20250219040854.46062-1-chunjie.zhu@cloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAHpGcMK0vez+c0NT-U40=JYy+_X-rtfR50KEZXiFXuA6E-tUmQ@mail.gmail.com>
-References: <CAHpGcMK0vez+c0NT-U40=JYy+_X-rtfR50KEZXiFXuA6E-tUmQ@mail.gmail.com>
+ d=citrix.onmicrosoft.com; s=selector2-citrix-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yUnzs4sATVeIENknJp/2ssTBwZznsFgq3fejZPeiEWI=;
+ b=GpMWrvxL94zb2xkV1tFO14Omk4MZIN4Tdwaaxxb7pqcPe6pzKuARWWix4Yt+JvKckKtrrxRPHTGg0Za8ZoWCwoDUirtyssUskkyQtpWRtTVOS1wIFCWh1Xd9w9WM7hN7LPbPbvNo4YV2b7wQKEc437dp2Krxt3sLEDu4XPT689Y=
+Received: from MW4PR04CA0387.namprd04.prod.outlook.com (2603:10b6:303:81::32)
+ by DS0PR03MB7202.namprd03.prod.outlook.com (2603:10b6:8:121::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Wed, 19 Feb
+ 2025 15:21:07 +0000
+Received: from SJ5PEPF000001CD.namprd05.prod.outlook.com
+ (2603:10b6:303:81:cafe::fc) by MW4PR04CA0387.outlook.office365.com
+ (2603:10b6:303:81::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.16 via Frontend Transport; Wed,
+ 19 Feb 2025 15:21:07 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 34.145.164.155) smtp.mailfrom=cloud.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=cloud.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ cloud.com discourages use of 34.145.164.155 as permitted sender)
+Received: from mail.citrix.com (34.145.164.155) by
+ SJ5PEPF000001CD.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8466.11 via Frontend Transport; Wed, 19 Feb 2025 15:21:07 +0000
+Received: from guepitiexch02.citrite.net (10.240.48.56) by
+ guepitiexch02.citrite.net (10.240.48.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Wed, 19 Feb 2025 15:21:05 +0000
+Received: from mewpvdipd1010.corp.cloud.com (10.113.40.31) by
+ smtprelay.citrix.com (10.240.48.56) with Microsoft SMTP Server id
+ 15.2.1258.12 via Frontend Transport; Wed, 19 Feb 2025 15:21:04 +0000
+From: Mark Syms <mark.syms@cloud.com>
+To: <gfs2@lists.linux.dev>
+CC: Mark Syms <mark.syms@cloud.com>
+Subject: [PATCH] gfs2_grow: Optionally allow not issuing discard requests
+Date: Wed, 19 Feb 2025 15:20:46 +0000
+Message-ID: <20250219152046.350786-1-mark.syms@cloud.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -73,118 +71,116 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CD:EE_|DS0PR03MB7202:EE_
+X-MS-Office365-Filtering-Correlation-Id: b481953b-a6f6-4aec-8f05-08dd50f90875
+X-MS-Exchange-SenderADCheck: 2
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35950700016|376014|61400799027|82310400026|48200799018|38500700025;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ApAlE2Riv9DO5muo5odKUiS8d3Rxr/nd776mDJva+mXsH24RQqqZQcULL7f6?=
+ =?us-ascii?Q?LhL02o8AwxQtc4eg0fCQOZ2scnfcGCtgbDnmb82rUiFWsjmlfQ0Zga0BVHDY?=
+ =?us-ascii?Q?wxpgqN+C36DXFVjFQlC08kl/ZoHSZrnDnXDAIBjgvSo8r+fcwt0s9imMuPx9?=
+ =?us-ascii?Q?I+8LURBUlPeW0mGWEWorWnCl7qxHi9ydBOwZGKGZUXiTZERCTtmlgl7kt5VY?=
+ =?us-ascii?Q?uE+Dxf/LIBhrFW2ytXZ9Bfzr6pontMn+WZoI06lNUh/4lsTIF4dt78IcCR5V?=
+ =?us-ascii?Q?/2eBfEnt/7wBoaTmAMNRRcJbw16lI/BDUobc5dvOn7ZJ7HxsOIsRlufX1kO5?=
+ =?us-ascii?Q?7VSPnI4y549a0UPB1HJLD1fuRxD+UMsiJhWNcNFI9fZvQalACUiwtetyyv+R?=
+ =?us-ascii?Q?jmCc2ANp5POkOB3xDeaE3DCROR/OQomayr3hbz9craV2ZCVxdh6T743QiYBk?=
+ =?us-ascii?Q?kq7iMjs1XanNk+LPjFK5sawezM81W2wC+fhwSEoP+K6Jacy2ChX5uCoTAF28?=
+ =?us-ascii?Q?eNSoSobA4T7BL36YSGqL2l/d0Wr8dwJxmG4m7rcv4m1iHMxBY+pz8y1MwhTp?=
+ =?us-ascii?Q?zMsWgJYy/pPVcMN4xhVkZty+eZoqFWeFJDX4K6kU6BsNnrmOt4UDiLJ+zqDA?=
+ =?us-ascii?Q?a1rjXgelgc4Km1ALXYWdPhmCkVSdR+6GzGLhQqiU3edcCoqUrAyKTDPSoLR0?=
+ =?us-ascii?Q?TBEKyTy+5wQTRZYnfpZmTTaS1ps3bIY9igQdTZpNrDVnF7dHj7N2pvHXRN0v?=
+ =?us-ascii?Q?sg2cX2q5ufeJyo0Dh2fi2Q4nLd5+hd/IXF74KMJsMimJ9kJSoZves6RcEPxu?=
+ =?us-ascii?Q?ngafn64eihQ7C/08jftGp/yA9y9PsqG4ReyG4g6rsdw+0MmL2BUWCUN/8o97?=
+ =?us-ascii?Q?soCyI7oVzvz2GDGuQUgic7gqhjF5wcyU1cI139rlJnT8jPPPKFmZiTSif8Yl?=
+ =?us-ascii?Q?zHhyZI59ixzrEaqJ8DxNiebJs+GbRqlH50bUwzg2rSkvbxZaZDrMIX3GJBK3?=
+ =?us-ascii?Q?3ztCQKuaKqmn7sjrgsU7xzvEOgaxNBLcqjTEOZftwgYbklSw61jtHbbUcfKb?=
+ =?us-ascii?Q?qXeL7ieg2YCYBlNTYNPrLW7gc9iVgCEuTltk0xMdMSvrjUQO0xd5iYtaxUkG?=
+ =?us-ascii?Q?t/qOa0B9KBbcdisD6t6c4m8fQTKM/iJWXrSYspMEWpwuOBHApZl/huKEPdUF?=
+ =?us-ascii?Q?mORDnUAd3tp1P0lHtw4xl/eBlVqpon57eDAOPe8OAvjiPDuDgRgoUyfqsEMv?=
+ =?us-ascii?Q?kdrdvfl6/fTE6sVm8TseRBs7dWzoMrGjiSUp1wFcRJVIkX435umhjTcsQGiG?=
+ =?us-ascii?Q?h2VzwB5abi87FWpd7+spzOL2JucOJge9VWuv/Boyx8acTt+Ad5Jnb4p5fg7A?=
+ =?us-ascii?Q?spHQRFYawvIRI4tK+bf3wFBuBxV+HuK3NnryDV+cDYepkVSDcXwo08uZv2WQ?=
+ =?us-ascii?Q?/v+AzNZ9gG0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:34.145.164.155;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.citrix.com;PTR:155.164.145.34.bc.googleusercontent.com;CAT:NONE;SFS:(13230040)(35950700016)(376014)(61400799027)(82310400026)(48200799018)(38500700025);DIR:OUT;SFP:1501;
+X-OriginatorOrg: citrix.onmicrosoft.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 15:21:07.4073
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b481953b-a6f6-4aec-8f05-08dd50f90875
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=335836de-42ef-43a2-b145-348c2ee9ca5b;Ip=[34.145.164.155];Helo=[mail.citrix.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CD.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR03MB7202
 
-The rapid response is much appreciated. Our kernel version is 6.6.22.
+mkfs.gfs2 supports a -K option which disables issuing discard requests
+for unused blocks on the LUN. gfs2_grow does not have an equivalent
+option so even if the filesystem was originally created with the -K
+option a subsequent grow operation will incur the, potentially high,
+cost of performing the discard.
 
-Our IO tests run on a 2-nodes GFS2 cluster. In our tests, there are lots of
-file deletion operations, this causes heavy exclusive lock contention inside
-the GFS2 cluster. At the umount time, we often see the following message
-reported by kernel hung task detector.
+Signed-off-by: Mark Syms <mark.syms@cloud.com>
+---
+ gfs2/mkfs/main_grow.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-After investigatin, I find that one or two iopen type glock instances are left
-behind at umount time.
+diff --git a/gfs2/mkfs/main_grow.c b/gfs2/mkfs/main_grow.c
+index e378a668..d2052604 100644
+--- a/gfs2/mkfs/main_grow.c
++++ b/gfs2/mkfs/main_grow.c
+@@ -31,6 +31,7 @@
+ static uint64_t override_device_size = 0;
+ static int test = 0;
+ static uint64_t fssize = 0, fsgrowth;
++static int skip_discard = 0;
+ int print_level = MSG_NOTICE;
+ 
+ extern int create_new_inode(struct lgfs2_sbd *sdp);
+@@ -72,6 +73,7 @@ static void usage(void)
+ 		"-T", NULL, _("Do everything except update file system"),
+ 		"-V", NULL, _("Display version information"),
+ 		"-v", NULL, _("Increase verbosity"),
++		"-K", NULL, _("Don't try to discard unused blocks"),
+ 		NULL, NULL, NULL /* Must be kept at the end */
+ 	};
+ 
+@@ -92,7 +94,7 @@ static void decode_arguments(int argc, char *argv[], struct lgfs2_sbd *sdp)
+ {
+ 	int opt;
+ 
+-	while ((opt = getopt(argc, argv, "VD:hqTv?")) != EOF) {
++	while ((opt = getopt(argc, argv, "VD:hqTv?K")) != EOF) {
+ 		switch (opt) {
+ 		case 'D':	/* This option is for testing only */
+ 			override_device_size = atoi(optarg);
+@@ -116,6 +118,9 @@ static void decode_arguments(int argc, char *argv[], struct lgfs2_sbd *sdp)
+ 		case 'v':
+ 			increase_verbosity();
+ 			break;
++		case 'K':
++			skip_discard = 1;
++            break;
+ 		case ':':
+ 		case '?':
+ 			/* Unknown flag */
+@@ -207,7 +212,9 @@ static unsigned initialize_new_portion(struct lgfs2_sbd *sdp, lgfs2_rgrps_t rgs)
+ 	unsigned rgcount = 0;
+ 	uint64_t rgaddr = fssize;
+ 
+-	discard_blocks(sdp->device_fd, rgaddr * sdp->sd_bsize, fsgrowth * sdp->sd_bsize);
++	if (skip_discard == 0)
++		discard_blocks(sdp->device_fd, rgaddr * sdp->sd_bsize, fsgrowth * sdp->sd_bsize);
++
+ 	/* Build the remaining resource groups */
+ 	while (1) {
+ 		int err = 0;
+-- 
+2.48.1
 
-See the time sequence graph in my commit message, due to heavy lock
-contention, node 1 DLM returns EAGAIN and then ECANCEL to GFS2 glock A lock
-request, then, node 1 instructs all GFS2 IO applications to exit, and umount
-follows up on node 1. During umount process, glock A is always in memory, we
-can see gfs2_glock_dq cannot free glock A because glock state machine cannot
-decrease the glock A refcount to be 0.
-
-INFO: task umount:75342 blocked for more than 483 seconds.
-      Not tainted 6.6.22+0 #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:umount          state:D stack:0     pid:75342 ppid:75335  flags:0x00004002
-Call Trace:
- <TASK>
- __schedule+0x3a0/0x1330
- ? srso_alias_return_thunk+0x5/0x7f
- ? srso_alias_return_thunk+0x5/0x7f
- schedule+0x53/0xc0
- schedule_timeout+0x76/0xf0
- ? __pfx_process_timeout+0x10/0x10
- gfs2_gl_hash_clear+0x135/0x140 [gfs2]
- ? __pfx_autoremove_wake_function+0x10/0x10
- gfs2_put_super+0x175/0x220 [gfs2]
- generic_shutdown_super+0x7e/0x170
- kill_block_super+0x16/0x40
- deactivate_locked_super+0x2f/0xa0
- cleanup_mnt+0xbd/0x150
- task_work_run+0x60/0xa0
- exit_to_user_mode_prepare+0x117/0x120
- syscall_exit_to_user_mode+0x22/0x40
- ? srso_alias_return_thunk+0x5/0x7f
- do_syscall_64+0x67/0x80
- ? srso_alias_return_thunk+0x5/0x7f
- ? syscall_exit_to_user_mode+0x27/0x40
- ? srso_alias_return_thunk+0x5/0x7f
- ? do_syscall_64+0x67/0x80
- ? srso_alias_return_thunk+0x5/0x7f
- ? syscall_exit_to_user_mode+0x27/0x40
- ? srso_alias_return_thunk+0x5/0x7f
- ? do_syscall_64+0x67/0x80
- ? syscall_exit_to_user_mode+0x27/0x40
- ? srso_alias_return_thunk+0x5/0x7f
- ? do_syscall_64+0x67/0x80
- ? do_syscall_64+0x67/0x80
- ? do_syscall_64+0x67/0x80
- ? exc_page_fault+0x72/0x130
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7fb0823ebeab
-RSP: 002b:00007ffcd0d45b68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007fb081257000 RCX: 00007fb0823ebeab
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007fb081219980
-RBP: 00007fb081257118 R08: 0000000000000073 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fb081219980 R14: 0000000000000000 R15: 00007fb081257000
- </TASK>
-
-> 
-> > Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
-> > ---
-> >  fs/gfs2/glock.c | 20 +++++++++++++++++++-
-> >  1 file changed, 19 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-> > index 4a280be229a6..bf2445f0afa9 100644
-> > --- a/fs/gfs2/glock.c
-> > +++ b/fs/gfs2/glock.c
-> > @@ -2120,6 +2120,23 @@ static void thaw_glock(struct gfs2_glock *gl)
-> >         gfs2_glock_queue_work(gl, 0);
-> >  }
-> >
-> > +/**
-> > + * IOPEN glock might be a zombie glock instance due to lock contention
-> > + * between nodes in the cluster during fs umount, then it causes umount
-> > + * timeout
-> > + */
-> > +
-> > +static int is_zombie_glock(struct gfs2_glock *gl)
-> > +{
-> > +       if (test_bit(GLF_LOCK, &gl->gl_flags) &&
-> > +               test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-> > +               test_bit(GLF_BLOCKING, &gl->gl_flags) &&
-> > +               (gl->gl_name.ln_type == LM_TYPE_IOPEN) &&
-> > +               list_empty(&gl->gl_holders))
-> > +               return 1;
-> > +       return 0;
-> > +}
-> > +
-> >  /**
-> >   * clear_glock - look at a glock and see if we can free it from glock cache
-> >   * @gl: the glock to look at
-> > @@ -2132,7 +2149,8 @@ static void clear_glock(struct gfs2_glock *gl)
-> >
-> >         spin_lock(&gl->gl_lockref.lock);
-> >         if (!__lockref_is_dead(&gl->gl_lockref)) {
-> > -               gl->gl_lockref.count++;
-> > +               if (!is_zombie_glock(gl))
-> > +                       gl->gl_lockref.count++;
-> >                 if (gl->gl_state != LM_ST_UNLOCKED)
-> >                         handle_callback(gl, LM_ST_UNLOCKED, 0, false);
-> >                 __gfs2_glock_queue_work(gl, 0);
-> > --
-> > 2.34.1
-> >
-> >
-> 
