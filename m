@@ -1,70 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7353FD4
-	for <gfs2@lists.linux.dev>; Wed, 19 Feb 2025 19:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A91E35958
+	for <gfs2@lists.linux.dev>; Thu, 20 Feb 2025 03:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739993215; cv=none; b=niFakMbmbk+fyHACsJgoQHmxIWJLs4deTaPd4gFh/bPd9sFk8IkGOrmq7COOm0tpctgrcAN2S5miU20wLpPiPL98NeHSlBhcfuPC1acKweiaOCCVCc9VS6p8OohgHKE91JsJM72zpIuPAm4ytx/al0my+vCFQyBNYZ893cldg14=
+	t=1740023803; cv=none; b=YbxBKFjLvFfqC2Es2pS9p5OZy+6RLpJKlV7YCsfSOLr5JIKsIFqfmvsyKRfyhcB9xgQLNeavLA4UD1C1E1lKcG7pPIlX7wsLGGlQYCq8BsEX2+T+6cgynB2bwe4eKzjM9kF7T5xg5oON7i3PlwsMqIz8PiTSuI/GYkq31HtohfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739993215; c=relaxed/simple;
-	bh=E4wp2g1JVJwQUig8w3PJtOhOGjrh4V3kXt2sNxV8qwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=ic6UCxNVaAH/id9eaFiaQx3EzkuYnkVwynEIUtPpMues6O27zOo6AXacS/u/kqbU1n2qTMeCh7y51aQVKz3xDeyaSw6a2NSekF9wxGmt9dYfXKRE7pdFst8accSWFKHCCEfn4DjLAWzTuvXtkfuoS8RFz6qZxFPHoS1VnyeBxJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dj5X1/lc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740023803; c=relaxed/simple;
+	bh=ZjuYGvVtbnuyXaMlHBp53kMTcTQvAQ/jCKYgBy5VHWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bNOGCOQQLTOEsHEsrBpA8IbEhCYDwaM+guw2wxAUq15Lbiunu5IlRuL6ayjGbnHzKPR5RJqzn75z+Yam0Rb0q4VcaQvukV7JChFusld/nAJjfZoqfnLuuKdf2AvPdAVXFKojKZr+13l/d+kELkz/B3lFxiwV1jXu42SOoyc+lNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aCAz14Qk; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dj5X1/lc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739993212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CbW9OPwWeon27bEX+5aszi0YISYRRhZ0398uatwbEJ8=;
-	b=Dj5X1/lcgVzVhw/p2otv2Mr9rPaMGy28Q8bejKFDZTKa3Z2dyBxzJKcMA9Ou5oDPyewiyJ
-	k0YteRMYVuWHGhxZoZaiqoHEBhLRHvu6GmLcmgAYyAp7NUMF8dbW0vwwWFtbJ0HGyEFYSR
-	eoleFP5t918SpihxAqplMhvtxt34iuI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-fifqbNr4OT2998tY1H0o9A-1; Wed, 19 Feb 2025 14:26:48 -0500
-X-MC-Unique: fifqbNr4OT2998tY1H0o9A-1
-X-Mimecast-MFC-AGG-ID: fifqbNr4OT2998tY1H0o9A_1739993207
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38f4c0c1738so142636f8f.1
-        for <gfs2@lists.linux.dev>; Wed, 19 Feb 2025 11:26:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aCAz14Qk"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43982cede30so678165e9.2
+        for <gfs2@lists.linux.dev>; Wed, 19 Feb 2025 19:56:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1740023799; x=1740628599; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q12SDHCkSIoKaeQoohFrmB4puu8Hpo7qSuNP9pqzRRg=;
+        b=aCAz14QkVSODYSWGLisdCNeaj7CGJmFpeA0cjgBgHlw95T4DN7Dx6d+edchubu4JzX
+         6A5FB8BgBs0bxVf3h9//tblUUwvzb2pJ0wgp49n8Ds/A4zP6Hn4DQj4bMwtQjkr8Qhwp
+         +P4eY1yX9HRm2oUMtiKGORtBV25XJ3AsMn8AFTsY9NUy6Si8Sc+rL0Gyi8cxqq46ikPW
+         fyRZ5SUG7Un2Zz+UL2mwbmzd3xh4tJh1aFN1BtiGvuywweDZUR/b2/uE+Qhv0/r5Pzs5
+         kQs2AQimFa8uVTuT6+sjeS5ELJFxP9aDxxBIeRhvrfCYsadJkblyliv3u/0b2Xmf1uOM
+         mafQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739993207; x=1740598007;
-        h=content-transfer-encoding:in-reply-to:from:cc:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1740023799; x=1740628599;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CbW9OPwWeon27bEX+5aszi0YISYRRhZ0398uatwbEJ8=;
-        b=v3afWhwv3aq/7As7ZRz+lX1hWGRhvz/STQ0gBd3YXEEJBbP8kP9AGvtFY/WqWB/mqJ
-         U9TXVk/idk4wInyBKIFOLCut7EbQnxtNJHNex2Sno7bi3mih1dBmmyTnyRt1hp1NUA+7
-         C21HQNA8AY+U0ldPsZAshGMhMqRq1afqGYt0rHttD1FFq+qT36ColgB5bTFiopd+YFt3
-         3YZsWazZq1KPsI16TdEQtgsRiHjfjjN9KRNv6TwemcN94jPurUYH3O1yuntHlq/dU/l1
-         EBinvMBX0hsSFPNZuC3zMyGLfbMCJ1UhBubneObLajORy+JlIvOuPZbVppnFjyTNKJBS
-         l+pg==
-X-Gm-Message-State: AOJu0YzCn5Go+KT8vYb+tKsD9hWP96UW+fPEo9uhtR3f6hopXB8riI1U
-	rM9toyLlpJlieu6BuKjW/ia+PL26u5bDG7B8+Z+qsKspJ7t2O1xE0SPBv9sQXG2iJBZ87JXN7LO
-	ATEEBlac/q+4vM/DO9765lSk1RsW45jABRSZCNtjkEWYT2VzgCpo=
-X-Gm-Gg: ASbGncuqMFDlh2cR1ya6WhJ22gMd+jFWoqD7UC0zXDiwuyrgmKUz+OzzKlYfwOFGWJv
-	bXmpEtWe/5+NhlXXJc2TWVpohPWE1hKXaeKsI0TqEE1RWbpFTGHl81+ovn7SE9NSAqClUPj3k2k
-	Ss0fhVYKlJU8F3RlnvLhkqTdd80xQ0+mzIAkRlUMtIECySL2ZJWEsDwne6tSfL3pFgFX/5aM/Zi
-	0kctWF+I/TFSfXCm+QU8p/0f4ogWl4eMCOxQ2pTmLoxaafWaX9h7ZuePHwgNtxCzXn2aw0ionr7
-	gSh7f6qg3GzeUuxVLLgnNtjFeob/v+3bp94osblADOdc1mufw2U6fLSkxR5T3iTU
-X-Received: by 2002:a05:6000:188d:b0:38d:bccf:f342 with SMTP id ffacd0b85a97d-38f587e16dbmr5144744f8f.43.1739993206719;
-        Wed, 19 Feb 2025 11:26:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHWusebGOt0iGIWgkMdFEtzuHiUZ8JS5hdIJkVYHWvWcNzzFT9PxsVv57+BawJtOMXd1J4GWQ==
-X-Received: by 2002:a05:6000:188d:b0:38d:bccf:f342 with SMTP id ffacd0b85a97d-38f587e16dbmr5144724f8f.43.1739993206336;
-        Wed, 19 Feb 2025 11:26:46 -0800 (PST)
-Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d8f1csm18847876f8f.69.2025.02.19.11.26.45
+        bh=Q12SDHCkSIoKaeQoohFrmB4puu8Hpo7qSuNP9pqzRRg=;
+        b=iB8lmUoTzkHhrSUy4p1adDcWrtQK4mYRJEuRqn7fIcAg+pGh/zG1vFH3Yum5K63tc5
+         089FXr+NYp6SAN3ht/whCMsV0rNKgwEclfoC7qRvswMuTZGzBjRbrU9SNY8yteNLXkYk
+         WOmXW9EjntJ/5VHTTKSz/5WTMHrvwUTOjNm24KUqB4duR+XoPPEg0DBkLLCIGdglWyB3
+         PGlQwIkv/ynCbFDrf2ko2UR8bjJPADnJcZnH6M1t8a7mastgxVhylHMCbzeaM+ih8CJO
+         0JNG3sOKlUd/awxrgpKGCcw/GN7R/t9agvPSVp10zFEZic7HRx9Lu7ZUnCQ/85osUsuN
+         WrwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7t1xJnjZ6Vl4OZq12+25VuxlmEOhH+3rDiFbBNEZkBajT1g5Eb2PFnOx38zgYbIM5IQFw@lists.linux.dev
+X-Gm-Message-State: AOJu0YxedH8mbuPYA2d+VeC3rrmskrGlh01GpyP/xfgf1ahA3hIwBTV3
+	CfidwcJuaRSOmnT/gM8R7/JuSGRUBemXa0dHMqmdP/i8b4xMG/AuIawa9O2fUC4=
+X-Gm-Gg: ASbGnctrQ6cEAwMvSAbrZD+z9xNdMO3CU7rgdIwyzhpEaPnUw6qsmM/fAkOJ24c3KDf
+	DxUq4Ldah+4vtcaDc9aBUVZe7wYM0noO6DWox4wc6mMYnQA3CjSoBvJQfnHAlHiFkcntcNLpEBM
+	lV2JRf46BOCbJX1R0xaYg6R2/IajGO8rb2WPnN8Do3OrqJYSo63o5RhYlZpsncCK4hmn3Hvld2H
+	ck85N6QaBnCA4yNDnIfEcXsV3/Cmgm7E2M7Ht6k5Qsg3qItn4KhTxK53JMfh2GBBBr5jZeZ3AgH
+	7/MjBekAtxkU95k5A4s=
+X-Google-Smtp-Source: AGHT+IES4tVBtTRbhEfqB9pNPX+zXsKFhI91pH3+f7qRH/6qTPj6h5Qk2xbdueeGGauBTBJuQWeshg==
+X-Received: by 2002:a5d:6c66:0:b0:38d:d99d:d20b with SMTP id ffacd0b85a97d-38f33f105cemr7090835f8f.1.1740023799148;
+        Wed, 19 Feb 2025 19:56:39 -0800 (PST)
+Received: from [10.202.32.28] ([202.127.77.110])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fc13ab0ff5sm12735929a91.3.2025.02.19.19.56.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 11:26:45 -0800 (PST)
-Message-ID: <9ed4afc3-c3ad-4411-8196-404a6063aeaf@redhat.com>
-Date: Wed, 19 Feb 2025 19:26:44 +0000
+        Wed, 19 Feb 2025 19:56:38 -0800 (PST)
+Message-ID: <17094325-6e08-4417-9647-77b8c6fd4390@suse.com>
+Date: Thu, 20 Feb 2025 11:56:34 +0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -72,109 +66,129 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] gfs2_grow: Optionally allow not issuing discard
- requests
-To: Mark Syms <mark.syms@cloud.com>
-References: <20250219162315.377253-1-mark.syms@cloud.com>
-Cc: gfs2@lists.linux.dev
-From: Andrew Price <anprice@redhat.com>
-In-Reply-To: <20250219162315.377253-1-mark.syms@cloud.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: cW6jYleJJyyY3u3BYZo9Bqe8NRm1WvJC9V_cb5sjvak_1739993207
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v2 1/1] dlm_controld: support corosync3/knet multi-link
+To: Alexander Aring <aahringo@redhat.com>
+Cc: christine caulfield <ccaulfie@redhat.com>, teigland@redhat.com,
+ jfriesse@redhat.com, nicholas.yang@suse.com, glass.su@suse.com,
+ gfs2@lists.linux.dev, Roger Zhou <ZZhou@suse.com>
+References: <20241224084241.13563-1-heming.zhao@suse.com>
+ <20241224084241.13563-2-heming.zhao@suse.com>
+ <CAK-6q+gbGg9rQKuKkpLyURN_nY1N+k87YPj1e8HqL_zTy0GgUw@mail.gmail.com>
+ <efad042e-6035-4045-b4e8-7798055945a1@suse.com>
+ <CAK-6q+g0YP+40yQ=8KVOSCcknCRmmn6-LfuvseDW1i4uFDqw5Q@mail.gmail.com>
+ <f6062ed5-51aa-4c56-a211-87183e6eb853@suse.com>
+ <CAK-6q+jRn+fXdby1tCQSoayO4HfpKKQkfUOH6SGJ75ujbNn1ug@mail.gmail.com>
+ <6e96fe53-869a-40b4-8c28-f7568f2987d5@suse.com>
+ <aaec163a-fadf-4c7d-a193-9b0eb97d584b@redhat.com>
+ <55a997d3-df7b-4ead-8ddd-d4819ca95cf0@suse.com>
+ <CAK-6q+grrJ5K7FTRnyFatZLTq726s5Y_S8CoKXWywedUTzp3rQ@mail.gmail.com>
+ <54d17bad-997e-4271-9d76-679a923b4ea8@redhat.com>
+ <ca9f2519-6dba-4927-b61b-6d5852473275@suse.com>
+ <CAK-6q+iw_rqmqt3w0ZwOZ4xiMwV6EZN-V0bqqyy3rAhTB8Oomg@mail.gmail.com>
 Content-Language: en-US
+From: Heming Zhao <heming.zhao@suse.com>
+In-Reply-To: <CAK-6q+iw_rqmqt3w0ZwOZ4xiMwV6EZN-V0bqqyy3rAhTB8Oomg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 19/02/2025 16:23, Mark Syms wrote:
-> mkfs.gfs2 supports a -K option which disables issuing discard requests
-> for unused blocks on the LUN. gfs2_grow does not have an equivalent
-> option so even if the filesystem was originally created with the -K
-> option a subsequent grow operation will incur the, potentially high,
-> cost of performing the discard.
+On 2/19/25 00:35, Alexander Aring wrote:
+> Hi,
 > 
-> Signed-off-by: Mark Syms <mark.syms@cloud.com>
+> On Tue, Feb 18, 2025 at 6:46 AM Heming Zhao <heming.zhao@suse.com> wrote:
+>>
+>> Hello Christine and Alexander,
+>>
+>> On 1/17/25 23:16, christine caulfield wrote:
+>>> On 17/01/2025 15:11, Alexander Aring wrote:
+>>>> Hi,
+>>>>
+>>>> On Sun, Jan 12, 2025 at 10:13 PM Heming Zhao <heming.zhao@suse.com> wrote:
+>>>> ...
+>>>>>
+>>>>> The current dlm code design doesn't allow reconfiguring the network
+>>>>> protocol on the fly. In the above scenario, the dlm will maintain the
+>>>>> TCP connection until the next dlm_deamon restart.
+>>>>>
+>>>>> In my view, it's not essential for dlm to follow the knet dynamically
+>>>>> multi-link style. if the user hasn't set the 'protocol' item in
+>>>>> dlm.conf, (with my patch, for knet env), dlm will detect the corosync
+>>>>> nodelist on startup, and set the appropriate protocol mode.
+>>>>>
+>>>>> If the user want to keep maintain a multi-link for dlm, they should
+>>>>> set protocl item in dlm.conf.
+>>>>>
+>>>>> On the other hand, if dlm needs to dynamically change the number of
+>>>>> links during runtime, it should always use the SCTP protocol.
+>>>>
+>>>> to move on here, I would at first apply/ack the patches for the static
+>>>> maximum address increase.
+>>>>
+>>>> I see no problems to do that as this is required by you.
+>>>>
+>>>> For the automatic protocol detection and corosync3, at least I need to
+>>>> doing some tests as I have currently 0 ideas how corosync informs the
+>>>> users about new/removed links during runtime.
+>>>>
+>>>
+>>> To be honest, it mostly doesn't - and it's maybe something we could look into, though I doubt it would be high priority as this is the first time it's been thought of :)
+>>>
+>>> Currently you can watch for the cmap key config.reload_in_progress and after that goes from 1 back to 0 re-read the new corosync.conf.
+>>>
+>>> Chrissie
+>>>
+>>>> - Alex
+>>>>
+>>>
+>>
+>> Sorry to raise this context.
+>>
+>> I suspect Chrissie misunderstood Alex's writing, Alex comment is about another
+>> patch [1], not this patch.
+>> In my view, it's not harmful to increase the address number in kernel space.
 > 
-> ---
-> v2:
->   * Fix indentation of break statement
-> v3:
->   * Update man page with the new option
-
-Applied, thanks.
-
-Andy
-
-> ---
->   gfs2/man/gfs2_grow.8  |  6 ++++++
->   gfs2/mkfs/main_grow.c | 11 +++++++++--
->   2 files changed, 15 insertions(+), 2 deletions(-)
+> good news, the patch is already upstream. [0] Yes it is indeed not
+> harmful to increase that value.
 > 
-> diff --git a/gfs2/man/gfs2_grow.8 b/gfs2/man/gfs2_grow.8
-> index f1ba5e4e..ed962dca 100644
-> --- a/gfs2/man/gfs2_grow.8
-> +++ b/gfs2/man/gfs2_grow.8
-> @@ -38,6 +38,12 @@ Prints out a short usage message and exits.
->   \fB-q\fP
->   Be quiet.  Don't print anything.
->   .TP
-> +\fB-K\fP
-> +Do not attempt to discard the block device contents. Issuing discards to the
-> +device allows some solid state devices and sparse or thin-provisioned storage
-> +devices to optimise free space. Other devices may emulate this behaviour by
-> +zeroing the device contents, which can be a slow process.
-> +.TP
->   \fB-T\fP
->   Test. Do all calculations, but do not write any data to the disk and do not
->   expand the filesystem. This is used to discover what the tool would have done
-> diff --git a/gfs2/mkfs/main_grow.c b/gfs2/mkfs/main_grow.c
-> index e378a668..2d74c3fa 100644
-> --- a/gfs2/mkfs/main_grow.c
-> +++ b/gfs2/mkfs/main_grow.c
-> @@ -31,6 +31,7 @@
->   static uint64_t override_device_size = 0;
->   static int test = 0;
->   static uint64_t fssize = 0, fsgrowth;
-> +static int skip_discard = 0;
->   int print_level = MSG_NOTICE;
->   
->   extern int create_new_inode(struct lgfs2_sbd *sdp);
-> @@ -72,6 +73,7 @@ static void usage(void)
->   		"-T", NULL, _("Do everything except update file system"),
->   		"-V", NULL, _("Display version information"),
->   		"-v", NULL, _("Increase verbosity"),
-> +		"-K", NULL, _("Don't try to discard unused blocks"),
->   		NULL, NULL, NULL /* Must be kept at the end */
->   	};
->   
-> @@ -92,7 +94,7 @@ static void decode_arguments(int argc, char *argv[], struct lgfs2_sbd *sdp)
->   {
->   	int opt;
->   
-> -	while ((opt = getopt(argc, argv, "VD:hqTv?")) != EOF) {
-> +	while ((opt = getopt(argc, argv, "VD:hqTv?K")) != EOF) {
->   		switch (opt) {
->   		case 'D':	/* This option is for testing only */
->   			override_device_size = atoi(optarg);
-> @@ -116,6 +118,9 @@ static void decode_arguments(int argc, char *argv[], struct lgfs2_sbd *sdp)
->   		case 'v':
->   			increase_verbosity();
->   			break;
-> +		case 'K':
-> +			skip_discard = 1;
-> +			break;
->   		case ':':
->   		case '?':
->   			/* Unknown flag */
-> @@ -207,7 +212,9 @@ static unsigned initialize_new_portion(struct lgfs2_sbd *sdp, lgfs2_rgrps_t rgs)
->   	unsigned rgcount = 0;
->   	uint64_t rgaddr = fssize;
->   
-> -	discard_blocks(sdp->device_fd, rgaddr * sdp->sd_bsize, fsgrowth * sdp->sd_bsize);
-> +	if (skip_discard == 0)
-> +		discard_blocks(sdp->device_fd, rgaddr * sdp->sd_bsize, fsgrowth * sdp->sd_bsize);
-> +
->   	/* Build the remaining resource groups */
->   	while (1) {
->   		int err = 0;
+> We need to test/discuss the user space changes with corosync v2 vs v3
+> related to detect_protocol()?
+
+Welcome to discuss.
+If we want to follow corosync/knet style to support dynamically network link changes,
+more code modifications will be necessary.
+
+> 
+> If you split this patch to have only the "MAX_NODE_ADDRESSES", then I
+
+zhm: I will send a split patch for 'MAX_NODE_ADDRESSES'.
+
+> can already apply this change. Btw: should it not be 9 (kernel 8) when
+> previously it was 4 (kernel 3)? I feel there might be a termination
+> entry at the end of the array?
+
+The macro used in both kernel-space and user-space play a termination role.
+However, in my view, both values are incorrect.
+The correct and workable values for Corosync 2 are:
+- DLM_MAX_ADDR_COUNT (kernel-space) should be 2, not 3
+- MAX_NODE_ADDRESSES (user-space) should be 2, not 4.
+
+The original author seems to use an enough number to accommodate potential
+future increases in network links.
+
+Regarding MAX_NODE_ADDRESSES, the dlm_controld process uses corosync_cfg_get_node_addrs() to request a maximum of four addresses.
+However, Corosync 2 only supports a two-ring network.
+
+Similarly, the current DLM kernel code can accept three sets of network addresses.
+
+I tested the modifications with DLM_MAX_ADDR_COUNT set to 2 and
+MAX_NODE_ADDRESSES also set to 2, and the cluster operated normally.
+
+So for my patches:
+- in kernel-space, I define DLM_MAX_ADDR_COUNT as 8 (not 9)
+- in user-space, I define MAX_NODE_ADDRESSES as 8 (not the kernel value plus 1)
+- I tested the code before sending both the v1 and v2 patches.
+
+If you very like the style of kernel value plus 1, I am OK to define
+MAX_NODE_ADDRESSES as 9.
+
+- Heming
 
