@@ -1,117 +1,142 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822732571CD
-	for <gfs2@lists.linux.dev>; Tue, 25 Feb 2025 07:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A526A1A0
+	for <gfs2@lists.linux.dev>; Tue, 25 Feb 2025 14:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740468896; cv=none; b=fXsTXHOW1ZkL5YyyLFdBCqf2XBdcCujHjhuz1xRIlT7mZxCtconssQFfYIM75wpEaHua3SYxwjffWsiITVJH7RYY9X8PKgE/cL/kX1w+gk2Lv+JY7vgUippwmWrbgxXvG8e3KZmWQVb7DhnFus4ECHVxiMwbhOM1GHNdHS9JJRo=
+	t=1740493178; cv=none; b=sN3XICRwuP30ppM2FSjLM4NYVgfHOi6nYu8iw1zpRvqegLSBmG6spTBXMGZQwb6SYuWcr6z8Jpk/R6DIBCEn/6km4CesfteHRTHSBzV+hugBe4AqeemYHTr18jPfxXOkJNxWvlidxOTSo68pCafzdCF/FYiibmPTeV+Wsz4Ys+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740468896; c=relaxed/simple;
-	bh=47tSG+PzESrZGT5JSe+KZ592PvEiUVWQDTE6sDTzR8E=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=oVLjjDeWrEHVwEfrOSXAtKTlCS9pyzOwFMKIi7d/TYGrrPtks5fMAs1bxY6dvl338LmuXsvLl/rGOwcojPgUBEc+ijr+png0QuiAJvJl1p2aysbxBKdxNr644AydN0fFhzUDrs8ZRMK+4nB7btEOrOnEJ7cwLgIbxvNsctCU/YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eHyqt9hW; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1740493178; c=relaxed/simple;
+	bh=EtxnZUOM0e6JZ/BRgdLYW/HVu2MeWnRkE801YzD7NXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R+lvMvuSTpxOKnhcKWbc/R/r2PpUaYbhW/1y2EECGaL0hw6thiexal08YVJrikJzHi2jbMYLRJB8guKkL8DP+4GWOx8heRmqHaHMOmGW4fKb/iv/ojGN2mKJEsgjRunPijNmyHnxWQdTcP6TbYV6SrtzCS3EX9wa2IzODFrBe7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R6WcXyb+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eHyqt9hW"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5dbf5fb2c39so870130a12.2
-        for <gfs2@lists.linux.dev>; Mon, 24 Feb 2025 23:34:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1740468893; x=1741073693; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Dllg/hUBVLh9Bc2V6k7MlCKYvnjpn0O3XeDRZ013oIU=;
-        b=eHyqt9hW2/qocSpYUBtIigpBEkryVUkpvKGhb1Y+QsFnvpZ6uIou0DWfJfwMLkeQ10
-         EVCMT2UqaJKZBFpyMkNesFIJxGT1fyVPv77Nu1qfy6rCVOWZ52JmiMZPWDcgf64twTR/
-         7f4+FY5F7Ko/U2uUH8GnKAaU4F4nHk5C3BlkLnv5H1vDFy0SSWdrKIU8/dejQAAE/4T9
-         WsbP5d+fuH/w65gojcc4TBAG1OLASsA8ePmDoanvwK7vAy8D3iLRl2nD8NrrEtT4ciqc
-         RW6sgCYKarLJs99RQAwvw6b6YhGALAYvZ2tr0roTFnjGH4Pdhv1EzqVwe24fYcLGzygw
-         YlgA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R6WcXyb+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740493173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtxnZUOM0e6JZ/BRgdLYW/HVu2MeWnRkE801YzD7NXw=;
+	b=R6WcXyb+w2dVodE7ecu70OcTh+2UsTfjGadtAHDN117D7uW/CLWgMPqTm7IEBnpqJ39KKd
+	6KJRhrxj6wkZa4JTPuUapKLAlOgkw9TCdh4S+KsKp8pF7Ww7tTMCjmmqfeqTtP/JizZmZI
+	su2XIu2MB4sFzbLMJmzycnv7js8qULQ=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-42-K32sh3tyOreAi5f3keKyNg-1; Tue, 25 Feb 2025 09:19:32 -0500
+X-MC-Unique: K32sh3tyOreAi5f3keKyNg-1
+X-Mimecast-MFC-AGG-ID: K32sh3tyOreAi5f3keKyNg_1740493170
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5462c601f4eso2840578e87.3
+        for <gfs2@lists.linux.dev>; Tue, 25 Feb 2025 06:19:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740468893; x=1741073693;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dllg/hUBVLh9Bc2V6k7MlCKYvnjpn0O3XeDRZ013oIU=;
-        b=elY13LfcIdQEDjI79ZAsFyjQK5AhMN+4zrYFaNZ97RPGFdeqVmx5Qvs9if9cD+SZDq
-         0x1CkpFhrpWSTWL37/BvJdWOn5KhGtTbUYEg8LnMVTLFKOOeRCjTxCxoms92YsJ1W/bb
-         R928XtgqBfJIpvXygHcsXA5cIow3Q+P904t8YXVdcaIJKcKYS6dHeGiP4IFm41u2Omi3
-         eyNCmxz+wgSl5eYcjozQcP5zJbr9V+OQD3o6tOEJO3XvxrwIQIBmqF3i0HJSAk+dUGXI
-         Kkzd0XUZiRQ2/MLO59yQ4XzvBRYkBIJ7cb/024RM3IZrhyGvzu83bUoc7eA6aatwPuIm
-         Vyyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgMfyRVews3yID5OonQYsuFIdf2pmz9yEYVeMCY4Gj5fGYLQm/FJxChtg25pxt3Th1TVsP@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywnhc8SHySlrAPsDU41bEHV9PeWA0rKOlqqTQoPbb4Wrs7WDpBV
-	ee62ZDLRORzTlVrhviMmYdFBrGWXUdvmaIz31wei3rhd3UMMLNOkrDDGgzAnbw8=
-X-Gm-Gg: ASbGncsaZ5U3XvBlmkdoieJsAQA0jLiatgKOd+a7w0OK5CrBtzdtjjiS2t0bmWVdhZ5
-	Th2iyKMzXUfEXKNYE6uSqKzG3f7wwbLL2LdcSk80FRFerkN/sv3kfsfWTY/w9CnjA5gtKgd54JX
-	2VgLjdsT8n9KhN+Ysy5s5PNFTO3lnOfqLMKxfGVc02haE8SXTnvweJRrbZTE3CQ4ewn6efpavyk
-	fo5fRc0+DW3UaKEyPRkowx0udSYx5m6aTlyIoD++MmoQ9KRd/1bZFH1vZ2juY6ZlhwY8C0/Z9hf
-	VBQvMHMXXeH/T/LV2AMQJFEGx+4ZlYs=
-X-Google-Smtp-Source: AGHT+IGMK9m+BvA37Ztfv/zSIaTJkB+2EOKZMM3poaqMrwWkOGHOegoTnfWVV1r9IWJ953YzzUO4jw==
-X-Received: by 2002:a05:6402:2112:b0:5de:dd27:540e with SMTP id 4fb4d7f45d1cf-5e0b7236f2emr6422094a12.8.1740468892679;
-        Mon, 24 Feb 2025 23:34:52 -0800 (PST)
-Received: from [10.202.32.28] ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a6ad30fsm829341b3a.27.2025.02.24.23.34.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Feb 2025 23:34:51 -0800 (PST)
-Message-ID: <3a8cbc24-c024-48ea-869f-687ea740ad7d@suse.com>
-Date: Tue, 25 Feb 2025 15:34:42 +0800
+        d=1e100.net; s=20230601; t=1740493170; x=1741097970;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EtxnZUOM0e6JZ/BRgdLYW/HVu2MeWnRkE801YzD7NXw=;
+        b=X96kWcJVsmZ+yoCisZ85KJZjBfPJ/gbdsSMSMNKV3hThtKC4+92RE58QxAO3h+bj9T
+         Gt+XhSIhuHPIk/0SuXGk5bUnfszn/32FMs7wFGDndBADe1lIcLZwbWy5T0+n19ZOwTCH
+         m1G6sl0T/JHwHyXxZGxCayjsLc7ppk2CsI8G3JJzDfb0AqGefG5sI72zqFNC4OZalZmA
+         tCV3p8k645RHEWCfsAHY6EqKB4Cj+x5Tu77IylRo+MKgwAE7t2cJ4uTcH8pZZC1khsyJ
+         9ZATf3CB0T/q5Exe/eHyhRhgYdXXi7U8RRaAVJVz4+CSOu5jhbjo1p4C5okzSG/WtW1L
+         aiWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8FprRojHpJSuypa5Ehuj7qeyQpEKDvYfrtlQc6ELBUJgUHDHUc7mhbJpYMTzi+t+tQTeC@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvtiEkXwmRvrV9/HHLHjTrGNb3tny8e9tki+ZsZ8sK+vbE3yDH
+	5uwZ6J3jpVXCIEFV93RJSH4tswaOa8NK6HeELLXX77ZTVuB+tcnbDwWRx4idljBIwzcup1H8A78
+	9g/pg8UThO5Cm81y1Ts9OASIsqN6q+BX5EJhY2u/MSlHUaRdLYjMYM5PPxjnpsfcLisDXvJm/3S
+	21e/cmELtIyBdJtDSTMvHWKpTFhA==
+X-Gm-Gg: ASbGncscdC4bXQtpgfAO2wZc33q6vWSEeZJbhTtd+6v60NWIkNOc6U3S9wKn2IzairG
+	oFuOEAFZ39iZSFABcN84ME2iSckewoEpeTBfDwzwhZ6DjzlczhONEiRM+vdAXpr5lYN/1JKByfh
+	v4OGDx8vSwATMZBQCe4iJCdOippLfxig==
+X-Received: by 2002:a05:6512:1305:b0:545:27af:f2d1 with SMTP id 2adb3069b0e04-54838f79525mr6999815e87.44.1740493170346;
+        Tue, 25 Feb 2025 06:19:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGnCPuep99B5vAAtIhRoT6nxQmzEXVkd6arHf4a+zFOJqttHMMlfALiuBEccG0eqdQ3u1Umc2/N90LfW2dutO8=
+X-Received: by 2002:a05:6512:1305:b0:545:27af:f2d1 with SMTP id
+ 2adb3069b0e04-54838f79525mr6999775e87.44.1740493169790; Tue, 25 Feb 2025
+ 06:19:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dlm_controld: Support for extended value of kernel
- DLM_MAX_ADDR_COUNT
-From: Heming Zhao <heming.zhao@suse.com>
-To: David Teigland <teigland@redhat.com>,
- Alexander Aring <aahringo@redhat.com>
-Cc: ccaulfie@redhat.com, jfriesse@redhat.com, nicholas.yang@suse.com,
- glass.su@suse.com, gfs2@lists.linux.dev, Roger Zhou <ZZhou@suse.com>
-References: <20250221150937.21642-1-heming.zhao@suse.com>
- <CAK-6q+iiMqW9eknqgVZiKjeUgSEAkL61Q-EbP8xwy_bayjS=fA@mail.gmail.com>
- <Z7zJ6OQIzC9Q20sG@redhat.com> <456aa9b1-a197-4de4-a062-2fe11bdaf179@suse.com>
-Content-Language: en-US
-In-Reply-To: <456aa9b1-a197-4de4-a062-2fe11bdaf179@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250221150937.21642-1-heming.zhao@suse.com> <CAK-6q+iiMqW9eknqgVZiKjeUgSEAkL61Q-EbP8xwy_bayjS=fA@mail.gmail.com>
+ <Z7zJ6OQIzC9Q20sG@redhat.com> <456aa9b1-a197-4de4-a062-2fe11bdaf179@suse.com> <3a8cbc24-c024-48ea-869f-687ea740ad7d@suse.com>
+In-Reply-To: <3a8cbc24-c024-48ea-869f-687ea740ad7d@suse.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Tue, 25 Feb 2025 09:19:18 -0500
+X-Gm-Features: AQ5f1JrB4PuYvTsdvMmzUVm-GhFG0uX_V6imz1r-O9sDQF_Z_fIGiRtd8_k8bxw
+Message-ID: <CAK-6q+g_bdNoptQ_bPUbzE9uL=strr6utQ3jM_1fxoMOpEjA7A@mail.gmail.com>
+Subject: Re: [PATCH] dlm_controld: Support for extended value of kernel DLM_MAX_ADDR_COUNT
+To: Heming Zhao <heming.zhao@suse.com>
+Cc: David Teigland <teigland@redhat.com>, ccaulfie@redhat.com, jfriesse@redhat.com, 
+	nicholas.yang@suse.com, glass.su@suse.com, gfs2@lists.linux.dev, 
+	Roger Zhou <ZZhou@suse.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: agk86wyOosNv2nCc2kSAKff2pWM5izNkpEz_-Eo1JD8_1740493170
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Dave,
+Hi,
 
-On 2/25/25 14:27, Heming Zhao wrote:
-> On 2/25/25 03:35, David Teigland wrote:
->> On Mon, Feb 24, 2025 at 10:27:04AM -0500, Alexander Aring wrote:
->>> What are we doing with the detect_protocol() change? You want to
->>> submit the current version again? I would like to test it with
->>> corosync 2 vs 3 with no configuration changes on an upgrade (if this
->>> is even possible).
->>
->> I suggest we stop trying to detect, and always use tcp unless protocol is
->> set to sctp.
->>
->> Dave
->>
-> 
-> That's fine with me
-> For corosync 3.x, there is a lot of work to support dynamic multi-link.
-> However, to support config mode, the current dlm code only requires a few modifications.
-> 
-> - Heming
+On Tue, Feb 25, 2025 at 2:34=E2=80=AFAM Heming Zhao <heming.zhao@suse.com> =
+wrote:
+>
+> Hello Dave,
+>
+> On 2/25/25 14:27, Heming Zhao wrote:
+> > On 2/25/25 03:35, David Teigland wrote:
+> >> On Mon, Feb 24, 2025 at 10:27:04AM -0500, Alexander Aring wrote:
+> >>> What are we doing with the detect_protocol() change? You want to
+> >>> submit the current version again? I would like to test it with
+> >>> corosync 2 vs 3 with no configuration changes on an upgrade (if this
+> >>> is even possible).
+> >>
+> >> I suggest we stop trying to detect, and always use tcp unless protocol=
+ is
+> >> set to sctp.
+> >>
+> >> Dave
+> >>
+> >
+> > That's fine with me
+> > For corosync 3.x, there is a lot of work to support dynamic multi-link.
+> > However, to support config mode, the current dlm code only requires a f=
+ew modifications.
+> >
+> > - Heming
+>
+> Following your idea, if TCP is used by default, what will happen when a u=
+ser
+> sets up multiple links in Corosync 3.x without changing config file?
+> The TCP mode of the current DLM only accepts one link. Therefore, in this
+> scenario, DLM will refuse to run and report an error.
+>
+> Do you think we need to invest effort in changing the TCP mode code to al=
+low
+> TCP to work when the Corosync layer sets up multiple links?
+> For example, to simplify the code, we could take only the first network l=
+ink
+> from the Corosync callback and ignore the others. Or we could keep the cu=
+rrent
+> behavior and prevent running in multi-link mode under TCP.
 
-Following your idea, if TCP is used by default, what will happen when a user
-sets up multiple links in Corosync 3.x without changing config file?
-The TCP mode of the current DLM only accepts one link. Therefore, in this
-scenario, DLM will refuse to run and report an error.
+I would ignore the others, there exists ways to run multipath TCP on
+top of multiple TCP sockets (similar to what mptcp is doing but mptcp
+might be overkill, lookup "mptcp redudant scheduler").
+This can be future work, existing code regarding sequence numbers of
+dlm messages can be reused.
 
-Do you think we need to invest effort in changing the TCP mode code to allow
-TCP to work when the Corosync layer sets up multiple links?
-For example, to simplify the code, we could take only the first network link
-from the Corosync callback and ignore the others. Or we could keep the current
-behavior and prevent running in multi-link mode under TCP.
+If somebody applies multiple links we assume any of them would work.
+Later additional handling as mentioned above could just begin to work
+in a magical way.
 
-- Heming
+- Alex
+
