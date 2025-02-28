@@ -1,53 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D605A1CAA64
-	for <gfs2@lists.linux.dev>; Fri, 28 Feb 2025 22:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72791CACF3
+	for <gfs2@lists.linux.dev>; Fri, 28 Feb 2025 22:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740782939; cv=none; b=dNz8wG+uMj6CL3oReTafyBrchdzeqFYuS+I2zMlv5eiYAQK88LCuexMLworD2Cz+KiS0/Ng2HNl9vzTHA5rpaVmKQNS2HQAJisWw9w2qJdvo0igYbxZ3pYhO7wqFu9Ny7+yGfYEdhqciiZ9lRg1MrunCvzUS3CJVKlDqKfeARUA=
+	t=1740782940; cv=none; b=t1cytOC6ubsIHOtG5P7xtdXi63l+6nEJbCWG5VtSeHSXW2aDNHucT8iFwtHQLVviq6X6uAdPSh8o/rwb8C0TKUnGKkMFPs4hXxGFx79ZBZYzF+jMN5iTISLKzHhlKR4fy/LFNNfRHKetOJYXxD+1Xm6RTo5tkeeZPXpiSNzKKbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740782939; c=relaxed/simple;
-	bh=O9U11jsP1m5FkLfi9oR3wO1iMsSRPM0EOQKLcuZFGxk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=udBh79jEdktK/1E7cqp/hBpk6mQ1v0KBbUSg1PrnspRHq5CwL0+5EV2baeyuUbLt82t6AYxJp6FFg5Z9p01sgyDVZPE6iSFlwMjVRQMDzaNxAQf95ahnalj9TuwbwPWsJvEpydKGlkPvQbLvwjp2Szr32GjZIcajboumtoq65xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SkT1fiIF; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1740782940; c=relaxed/simple;
+	bh=72ZwdZvQsIkCuua/Mv9fSv1JCKUq34c8y4GHGoEC8qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UCqS0s79MyAgSOuHCkxdhQC079MButri60dP1PLpEiUDp2KJZ5dFn73o4IfeuQL0Hx8nTPBxKjfRWCgRjfSt5DTnMTVCtV3iqqgaubHT1hg4WizY8d5u/2CdLXriWLg4IAkYMUKs83CP7qC6PivqdvLM1VmLHNCWIhlt/fIeM68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IP/NX5R3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SkT1fiIF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IP/NX5R3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740782936;
+	s=mimecast20190719; t=1740782937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JU11SJXLG3nR5zxtWokAMxQZEi8b7+ufo1e7gl/dKws=;
-	b=SkT1fiIFENxxvTxKvhq73I7It7ngxRPD53yiiAlxqUapuu3ttoHEct5ISrnAjpVqmubfLW
-	GbQOdspZzr2arDxAxOc7NNSnkyk2oJObVk57qlvEeExlSFxjpIhcvGMEW85B+DUP/tlPrp
-	xQB5GjLVexQeXqf/+Ux/6MSvAqQyHYg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wd0Gf1kz2NzoiwlbijbTr+huOwwGbqwTJ6g0bBZpj/0=;
+	b=IP/NX5R3tt5rVlNNaodR+BasXolEGMBTLt2QTSTVWVZx2iBBZRx9x8/90mWm94WdfCi3n9
+	gTyxGrY+TBUXX55ZKSx/rB/m8jbkXXf4Xizuz+wegVu8ntVBCHiuK00l3EyW/w9Cy708Wm
+	VsN0mvVM+PStsibuKdqY9ycwkNm793M=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-ue-46qApNs6KnIUvJZTbVw-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-p-hCOkotPJa888iBkhcyGA-1; Fri,
  28 Feb 2025 17:48:55 -0500
-X-MC-Unique: ue-46qApNs6KnIUvJZTbVw-1
-X-Mimecast-MFC-AGG-ID: ue-46qApNs6KnIUvJZTbVw_1740782934
+X-MC-Unique: p-hCOkotPJa888iBkhcyGA-1
+X-Mimecast-MFC-AGG-ID: p-hCOkotPJa888iBkhcyGA_1740782935
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06D2E1800373;
-	Fri, 28 Feb 2025 22:48:54 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14FB219373D7;
+	Fri, 28 Feb 2025 22:48:55 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1EB371800357;
-	Fri, 28 Feb 2025 22:48:52 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 40D9F1800357;
+	Fri, 28 Feb 2025 22:48:54 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: stable@vger.kernel.org,
 	gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH dlm/next 1/2] dlm: fix error if inactive rsb is not hashed
-Date: Fri, 28 Feb 2025 17:48:50 -0500
-Message-ID: <20250228224851.1283094-1-aahringo@redhat.com>
+Subject: [PATCH dlm/next 2/2] dlm: fix error if active rsb is not hashed
+Date: Fri, 28 Feb 2025 17:48:51 -0500
+Message-ID: <20250228224851.1283094-2-aahringo@redhat.com>
+In-Reply-To: <20250228224851.1283094-1-aahringo@redhat.com>
+References: <20250228224851.1283094-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -57,31 +61,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-If an inactive rsb is not hashed anymore and this could occur because we
-releases and acquired locks we need to signal the followed code that the
-lookup failed. Since the lookup was successful, but it isn't part of the
-rsb hash anymore we need to signal it by setting error to -EBADR as
+If an active rsb is not hashed anymore and this could occur because we
+releases and acquired locks we need to signal the followed code that
+the lookup failed. Since the lookup was successful, but it isn't part of
+the rsb hash anymore we need to signal it by setting error to -EBADR as
 dlm_search_rsb_tree() does it.
 
 Cc: stable@vger.kernel.org
-Fixes: 01fdeca1cc2d ("dlm: use rcu to avoid an extra rsb struct lookup")
+Fixes: 5be323b0c64d ("dlm: move dlm_search_rsb_tree() out of lock")
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
  fs/dlm/lock.c | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c8ff88f1cdcf..499fa999ae83 100644
+index 499fa999ae83..e01d5f29f4d2 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -784,6 +784,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 		}
- 	} else {
- 		write_unlock_bh(&ls->ls_rsbtbl_lock);
+@@ -741,6 +741,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 	read_lock_bh(&ls->ls_rsbtbl_lock);
+ 	if (!rsb_flag(r, RSB_HASHED)) {
+ 		read_unlock_bh(&ls->ls_rsbtbl_lock);
 +		error = -EBADR;
  		goto do_new;
  	}
- 
+ 	
 -- 
 2.43.0
 
