@@ -1,296 +1,252 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC8914601C
-	for <gfs2@lists.linux.dev>; Mon,  3 Mar 2025 03:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+Received: from hrbeu.edu.cn (mx1.hrbeu.edu.cn [202.118.176.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3051F3BA3
+	for <gfs2@lists.linux.dev>; Mon,  3 Mar 2025 14:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.118.176.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740971630; cv=none; b=H/qJZDH4ZprOKBWZSMzVAhYtZ0KyGbZuAEEz/AVwWJM1DmE82uEZTeWCUeTEEI1lIgX5PSZZudmniHdia8LTMoeGgZ1GvW40OW84v51KJFJ9fem6ahuUVkkVED3YGkDg2zrC6HwPXKtGbR3tatB3u/2cEckRN0FNnuCj/OYX/fk=
+	t=1741013664; cv=none; b=pAwwAzPqc2PrYvlRiQ+e5kNONdlnEe7Va7ZyNudEMg5EvcIkNWr1TREUfvi+EOibcJBJxrgfpITdcz/M1Qif0HZGH4mFmqmV76z2ZnVwKyzhXJyIWZk6NfpUK5Q1B1vFj9TqmYRe8e529iEwhsVqVjZs/wopGTmHeawdfV+NIZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740971630; c=relaxed/simple;
-	bh=dh+zvDo+UpHRFL8aNAFar08sWbyPZoOHGP/ADoUTqoM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=GzxOZ5BFKTzsgPsAbss21/bP0xbkg61vCmzUc+VnxpQ8NCWo5iuIJ6o3TKc9H63Ikj6Y47qIvu776qlCtIYxLrTEWcGkuQKnDXWwNBSdmVhwhJMMPrpS6ydEk1WYKgVfudco16LJ9uyMN0EUVUwStgonSWFF7WdeKqhaKZgdOY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cjOPNus2; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cjOPNus2"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2b8e26063e4so2279155fac.3
-        for <gfs2@lists.linux.dev>; Sun, 02 Mar 2025 19:13:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740971628; x=1741576428; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmBzVLQpIbiF2/DaQb/qslxPK9RqAOBu64Pk7zoDCaI=;
-        b=cjOPNus2huVdjhzHP+6HJqZ8cgycsVou9/UhuozKiVbgr93476NZKtO8ZkIrJQgH9x
-         3geqcgYlTEO8NsxiIZDR5GGsPl98TcRETr0bCWP6qMZL67g/FLxYbXuiVsYHy9YqZLVo
-         99LxBPKgUHBbQQVuQfNyJwhhvWkUi+K/s0hx4FwB4HhUPOpkAfrQaLa8OpFwSE364wzA
-         khcTMmEDn7izOGLSLGdMCR0jz7XIFlCLDmO9seQ7G47duFT5QJoukpSHWWWejVwU57Tv
-         lCBxtik1d4H6Czi8xlYa9qyEjjw14xxe6BiUB62E6hqGETO+YEpZtgKf35k3bFgimVGy
-         iWJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740971628; x=1741576428;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gmBzVLQpIbiF2/DaQb/qslxPK9RqAOBu64Pk7zoDCaI=;
-        b=LH0eG4FUeDjpSYBgP13CGHx2Gb+mVfcVWrK+2Mj1sj9T51Bc9RopABzFyIa78pukRn
-         jx2O63XaddPXOxWhk+oIkeJRRfHS1F5n4OCreGtePxKXgJRcaVHCgxdhwRFbgnlwTBFF
-         /CHhmCdQbrTyQ45cPVZ6IZuUpwzx7VyDu30uXPYni515btEcMOTPkWMzAdYoAQdxqSQm
-         mUX+yKdiBHsMxPpzFH+1AcvIAdno3v6bPUk8K5dkAk4uglaqtGHhc5rKgMBw/KsVosL3
-         NwCJIc04vW+E9iH/QAlk1IxMEeG3Q3PSz1uxMErou2O9SeMbn2K55LTu28UifhwfvHs6
-         CPpA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3Opyp/0uU3apUloFcUqlxXAAb0WLgpzjRU5Jg4BucGNlzTMqGcM1dQo/WKuzAv/4ifAJe@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOmVQ1BDnVhj6O0MAoBbMf8A75IcUL9/Yfs1EfLMLA8Yk/ycQx
-	b3Wcg2UChV3ljthj0Da92wWzCD3iLoN4irMeuNPKOLFvVIeONQ1zjVQeSXAPQyCSOdE2AAXQc9O
-	+nUyYUiZL/x2w8lYWyU6CWJ8mSMU=
-X-Gm-Gg: ASbGncvPwuyll95mPRxellwt4FPCJsx8NH/G+JJkpJ2ioqOU4gYFiit8xF1ndI8yDgo
-	CO18xb7O/U43w2TPQhPUTfVCKu/6Mg3BgaBXdiWkYPGHKDfvs6cGxZD1PlqohQs2I6jNDXZTpH0
-	EIscQFnicgO4s6d4jCBUDoY7kknw==
-X-Google-Smtp-Source: AGHT+IHF5JKbcSsLaGHljYDDj/qLKBX+f2vL9cCO+7cmNiI28pLNWgSIRuZV1rERv1oGZkt3YlLbAhmmshwYC0KkQIA=
-X-Received: by 2002:a05:6870:71cb:b0:29e:4985:fef with SMTP id
- 586e51a60fabf-2c178317c4cmr5148994fac.3.1740971628011; Sun, 02 Mar 2025
- 19:13:48 -0800 (PST)
+	s=arc-20240116; t=1741013664; c=relaxed/simple;
+	bh=lZSUkXtolBAFyKQwU7h3cLT8LnsUwUxp68+rF8xhmb0=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=eFQjMPkjf3n31o0E0HdvJUJEzue3ijZpKjT2i3b4DP3j1V6RhsdIF4QJIOsZtoXvqiSCY/7o/3FMOKCjSTsj7CBaecZBS6sZ7LA2sp+U3+0utUTan9dU3p7L8WMuXjApe8o0ZAmwR521BbZZq87i/WLSiOlBQg/Fvpmw4C49pPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn; spf=pass smtp.mailfrom=hrbeu.edu.cn; arc=none smtp.client-ip=202.118.176.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hrbeu.edu.cn
+Received: from baishuoran$hrbeu.edu.cn ( [172.83.159.137] ) by
+ ajax-webmail-Front (Coremail) ; Mon, 3 Mar 2025 22:54:17 +0800 (GMT+08:00)
+Date: Mon, 3 Mar 2025 22:54:17 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?55m954OB5YaJ?= <baishuoran@hrbeu.edu.cn>
+To: "Andreas Gruenbacher" <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+	"Kun Hu" <huk23@m.fudan.edu.cn>
+Subject: KASAN: slab-out-of-bounds Write in gfs2_pin
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.2-cmXT5 build
+ 20241202(ebbd5d74) Copyright (c) 2002-2025 www.mailtech.cn hrbeu.edu.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Strforexc yn <strforexc@gmail.com>
-Date: Mon, 3 Mar 2025 11:13:36 +0800
-X-Gm-Features: AQ5f1JqqijLs3bFWtevlXsuIBeA-xBAFw1elRj2Ktw5Lr2gMzu5MaeUY7OslC7k
-Message-ID: <CA+HokZq7F42iyusA4QYJA4N=q5SMVqvW0MnhejwDxagKhKFm_g@mail.gmail.com>
-Subject: =?UTF-8?B?S0FTQU46IHNsYWItdXNlLWFmdGVyLWZyZWUgUmVhZCBpbiBnZnMyX2Rpc2NhcmQg77yIIA==?=
-	=?UTF-8?B?djYuMTQtcmM0IGtlcm5lbO+8iQ==?=
-To: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <2649b4c1.1e0e.1955c802892.Coremail.baishuoran@hrbeu.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:CbB2ygAnZCGZwsVnYhAgAA--.4272W
+X-CM-SenderInfo: pedl2xpxrut0w6kuuvvxohv3gofq/1tbiAQIKCmfFJVAHmQABsL
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-I=E2=80=99ve encountered a KASAN-reported slab-use-after-free in the GFS2
-filesystem on Linux 6.14.0-rc4 during an unmount operation. Here are
-the details:
-
-Kernel commit: v6.14-rc4 (Commits on Feb 24, 2025)
-Kernel Config : https://github.com/Strforexc/LinuxKernelbug/blob/main/.conf=
-ig
-Kernel Log=EF=BC=9A https://github.com/Strforexc/LinuxKernelbug/blob/main/s=
-lab_uaf_read_gfs2_dis/log0
-Reproduce.c:  https://github.com/Strforexc/LinuxKernelbug/blob/main/slab_ua=
-f_read_gfs2_dis/repro.cprog
-
-KASAN detects a use-after-free read of size 8 at address
-ffff88802233e168 in list_empty (include/linux/list.h:373), called from
-gfs2_discard (fs/gfs2/aops.c:587). This occurs when discarding a
-buffer during filesystem shutdown.
-Location: The fault occurs in gfs2_discard at if
-(!list_empty(&bd->bd_list) && !buffer_pinned(bh)), accessing
-bd->bd_list.next after bd is freed.
-
-Cause: A struct gfs2_bufdata (bd) is freed in gfs2_log_flush during
-gfs2_quota_sync, but its buffer_head (bh->b_private) retains the
-pointer. Later, gfs2_discard dereferences it during inode eviction in
-gfs2_put_super.
-Context: Syzkaller=E2=80=99s unmount operation triggers this sequence,
-exposing a lifecycle mismatch between buffer data and inode pages.
-
-
-Could GFS2 maintainers investigate? Possible issues:
-1. bh->b_private not cleared after freeing bd in gfs2_log_flush.
-2. Race between gfs2_quota_sync freeing buffers and gfs2_put_super
-discarding them.
-
-Our knowledge of the kernel is somewhat limited, and we'd appreciate
-it if you could determine if there is such an issue. If this issue
-doesn't have an impact, please ignore it =E2=98=BA.
-
-If you fix this issue, please add the following tag to the commit:
-Reported-by: Zhizhuo Tang strforexctzzchange@foxmail.com, Jianzhou
-Zhao xnxc22xnxc22@qq.com, Haoran Liu <cherest_san@163.com>
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-BUG: KASAN: slab-use-after-free in list_empty include/linux/list.h:373 [inl=
-ine]
-BUG: KASAN: slab-use-after-free in gfs2_discard+0x2ed/0x360 fs/gfs2/aops.c:=
-587
-Read of size 8 at addr ffff88802233e168 by task syz-executor/13663
-
-CPU: 0 UID: 0 PID: 13663 Comm: syz-executor Not tainted 6.14.0-rc4 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/=
-2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
- print_address_description.constprop.0+0x2c/0x420 mm/kasan/report.c:408
- print_report+0xaa/0x270 mm/kasan/report.c:521
- kasan_report+0xbd/0x100 mm/kasan/report.c:634
- list_empty include/linux/list.h:373 [inline]
- gfs2_discard+0x2ed/0x360 fs/gfs2/aops.c:587
- gfs2_invalidate_folio+0x210/0x490 fs/gfs2/aops.c:625
- folio_invalidate mm/truncate.c:126 [inline]
- truncate_cleanup_folio+0x2ea/0x480 mm/truncate.c:146
- truncate_inode_pages_range+0x214/0xe20 mm/truncate.c:326
- gfs2_evict_inode+0x32b/0xcb0 fs/gfs2/super.c:1527
- evict+0x3f2/0x940 fs/inode.c:796
- iput_final+0x32e/0x4b0 fs/inode.c:1946
- iput+0x185/0x1c0 fs/inode.c:1972
- gfs2_put_super+0x2b5/0x750 fs/gfs2/super.c:629
- generic_shutdown_super+0x156/0x390 fs/super.c:642
- kill_block_super+0x3b/0x90 fs/super.c:1710
- gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
- deactivate_locked_super+0xbb/0x140 fs/super.c:473
- deactivate_super+0xb1/0xd0 fs/super.c:506
- cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
- task_work_run+0x16c/0x270 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f01c47b9fcb
-Code: a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 90 f3 0f 1e fa 31 f6
-e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8 a6 00 00 00 0f 05 <48> 3d
-00 f0 ff ff 77 05 c3 0f 1f 40 00 48 c7 c2 a8 ff ff ff f7 d8
-RSP: 002b:00007ffd1d416d58 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 0000000000000043 RCX: 00007f01c47b9fcb
-RDX: 00007f01c465ab30 RSI: 0000000000000009 RDI: 00007ffd1d416e10
-RBP: 00007ffd1d416e10 R08: 0000000000000000 R09: 00007ffd1d416be0
-R10: 000055555f553673 R11: 0000000000000246 R12: 00007f01c486a47d
-R13: 00007ffd1d417ee0 R14: 000055555f553600 R15: 00000000000260b1
- </TASK>
-
-Allocated by task 13663:
- kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
- kasan_save_track+0x14/0x40 mm/kasan/common.c:68
- unpoison_slab_object mm/kasan/common.c:319 [inline]
- __kasan_slab_alloc+0x97/0xa0 mm/kasan/common.c:345
- kasan_slab_alloc include/linux/kasan.h:250 [inline]
- slab_post_alloc_hook mm/slub.c:4115 [inline]
- slab_alloc_node mm/slub.c:4164 [inline]
- kmem_cache_alloc_noprof+0x167/0x400 mm/slub.c:4171
- gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
- gfs2_trans_add_data+0x4bf/0x800 fs/gfs2/trans.c:209
- gfs2_unstuffer_folio+0x1d5/0x930 fs/gfs2/bmap.c:81
- __gfs2_unstuff_inode+0x392/0x750 fs/gfs2/bmap.c:119
- gfs2_unstuff_dinode+0xb5/0x1b0 fs/gfs2/bmap.c:166
- gfs2_adjust_quota+0x10c/0xc00 fs/gfs2/quota.c:847
- do_sync+0xb17/0xe90 fs/gfs2/quota.c:961
- gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
- gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
- sync_filesystem+0x116/0x2a0 fs/sync.c:56
- generic_shutdown_super+0x74/0x390 fs/super.c:621
- kill_block_super+0x3b/0x90 fs/super.c:1710
- gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
- deactivate_locked_super+0xbb/0x140 fs/super.c:473
- deactivate_super+0xb1/0xd0 fs/super.c:506
- cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
- task_work_run+0x16c/0x270 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 13663:
- kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
- kasan_save_track+0x14/0x40 mm/kasan/common.c:68
- kasan_save_free_info+0x3b/0x80 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x54/0x80 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2353 [inline]
- slab_free mm/slub.c:4609 [inline]
- kmem_cache_free+0x134/0x400 mm/slub.c:4711
- trans_drain fs/gfs2/log.c:1020 [inline]
- gfs2_log_flush+0x1647/0x2990 fs/gfs2/log.c:1160
- do_sync+0x5cc/0xe90 fs/gfs2/quota.c:981
- gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
- gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
- sync_filesystem+0x116/0x2a0 fs/sync.c:56
- generic_shutdown_super+0x74/0x390 fs/super.c:621
- kill_block_super+0x3b/0x90 fs/super.c:1710
- gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
- deactivate_locked_super+0xbb/0x140 fs/super.c:473
- deactivate_super+0xb1/0xd0 fs/super.c:506
- cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
- task_work_run+0x16c/0x270 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The buggy address belongs to the object at ffff88802233e150
- which belongs to the cache gfs2_bufdata of size 80
-The buggy address is located 24 bytes inside of
- freed 80-byte region [ffff88802233e150, ffff88802233e1a0)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2233e
-flags: 0xfff00000000000(node=3D0|zone=3D1|lastcpupid=3D0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000000 ffff8880433c7b40 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000080240024 00000000f5000000 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask
-0x52c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 13663,
-tgid 13663 (syz-executor), ts 156080436640, free_ts 156046629654
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x1a3/0x1d0 mm/page_alloc.c:1551
- prep_new_page mm/page_alloc.c:1559 [inline]
- get_page_from_freelist+0x8a5/0xfa0 mm/page_alloc.c:3477
- __alloc_frozen_pages_noprof+0x1d8/0x3b0 mm/page_alloc.c:4739
- alloc_pages_mpol+0x1f2/0x550 mm/mempolicy.c:2270
- alloc_slab_page mm/slub.c:2423 [inline]
- allocate_slab+0x229/0x310 mm/slub.c:2587
- ___slab_alloc+0x7f3/0x12b0 mm/slub.c:3826
- __slab_alloc.constprop.0+0x56/0xc0 mm/slub.c:3916
- __slab_alloc_node mm/slub.c:3991 [inline]
- slab_alloc_node mm/slub.c:4152 [inline]
- kmem_cache_alloc_noprof+0x275/0x400 mm/slub.c:4171
- gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
- gfs2_trans_add_meta+0x863/0xce0 fs/gfs2/trans.c:251
- gfs2_alloc_extent fs/gfs2/rgrp.c:2237 [inline]
- gfs2_alloc_blocks+0x41b/0x1870 fs/gfs2/rgrp.c:2447
- __gfs2_unstuff_inode+0x33c/0x750 fs/gfs2/bmap.c:107
- gfs2_unstuff_dinode+0xb5/0x1b0 fs/gfs2/bmap.c:166
- gfs2_adjust_quota+0x10c/0xc00 fs/gfs2/quota.c:847
- do_sync+0xb17/0xe90 fs/gfs2/quota.c:961
- gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
- gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
-page last free pid 13238 tgid 13238 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1127 [inline]
- free_frozen_pages+0x71f/0xff0 mm/page_alloc.c:2660
- vfree+0x172/0x850 mm/vmalloc.c:3383
- delayed_vfree_work+0x57/0x70 mm/vmalloc.c:3303
- process_one_work+0x109d/0x18c0 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3317 [inline]
- worker_thread+0x677/0xe90 kernel/workqueue.c:3398
- kthread+0x3b3/0x760 kernel/kthread.c:464
- ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Memory state around the buggy address:
- ffff88802233e000: fa fb fb fb fb fb fb fb fb fb fc fc fc fc fa fb
- ffff88802233e080: fb fb fb fb fb fb fb fb fc fc fc fc fa fb fb fb
->ffff88802233e100: fb fb fb fb fb fb fc fc fc fc fa fb fb fb fb fb
-                                                          ^
- ffff88802233e180: fb fb fb fb fc fc fc fc fa fb fb fb fb fb fb fb
- ffff88802233e200: fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Regards,
-Zhizhuo Tang
+RGVhciBNYWludGFpbmVycywKCgpXaGVuIHVzaW5nIG91ciBjdXN0b21pemVkIFN5emthbGxlciB0
+byBmdXp6IHRoZSBsYXRlc3QgTGludXgga2VybmVsLCB0aGUgZm9sbG93aW5nIGNyYXNoICg2NnRo
+KXdhcyB0cmlnZ2VyZWQuCgoKSEVBRCBjb21taXQ6IDY1MzdjZmIzOTVmMzUyNzgyOTE4ZDhlZTdi
+N2YxMGJhMmNjM2NiZjIKZ2l0IHRyZWU6IHVwc3RyZWFtCk91dHB1dDogaHR0cHM6Ly9naXRodWIu
+Y29tL3BnaGsxMy9LZXJuZWwtQnVnL3RyZWUvbWFpbi8wMjE5XzYuMTNyYzdfdG9kby82Ni1LQVNB
+Tl8lMjBzbGFiLW91dC1vZi1ib3VuZHMlMjBXcml0ZSUyMGluJTIwZ2ZzMl9waW4KS2VybmVsIGNv
+bmZpZzogaHR0cHM6Ly9naXRodWIuY29tL3BnaGsxMy9LZXJuZWwtQnVnL2Jsb2IvbWFpbi8wMjE5
+XzYuMTNyYzdfdG9kby9jb25maWcudHh0CkMgcmVwcm9kdWNlcjpodHRwczovL2dpdGh1Yi5jb20v
+cGdoazEzL0tlcm5lbC1CdWcvYmxvYi9tYWluLzAyMTlfNi4xM3JjN190b2RvLzY2LUtBU0FOXyUy
+MHNsYWItb3V0LW9mLWJvdW5kcyUyMFdyaXRlJTIwaW4lMjBnZnMyX3Bpbi82NnJlcHJvLmMKU3l6
+bGFuZyByZXByb2R1Y2VyOiBodHRwczovL2dpdGh1Yi5jb20vcGdoazEzL0tlcm5lbC1CdWcvYmxv
+Yi9tYWluLzAyMTlfNi4xM3JjN190b2RvLzY2LUtBU0FOXyUyMHNsYWItb3V0LW9mLWJvdW5kcyUy
+MFdyaXRlJTIwaW4lMjBnZnMyX3Bpbi82NnJlcHJvLnR4dAoKT3VyIHJlcHJvZHVjZXIgdXNlcyBt
+b3VudHMgYSBjb25zdHJ1Y3RlZCBmaWxlc3lzdGVtIGltYWdlLiBUaGUgZmlsZSBpbWFnZXMgaW4g
+dGhlIHJlcHJvIGFyZSByYW5kb21seSBjb25zdHJ1Y3RlZCBieSBzeXprYWxsZXIuClRoZSBwb3Rl
+bnRpYWwgaXNzdWUgaW4gdGhlIGBnZnMyX3BpbmAgZnVuY3Rpb24gbWlnaHQgYmUgdGhlIGxpbmUg
+d2hlcmUgYGJkYCBpcyBhZGRlZCB0byB0aGUgbGlzdCB3aXRob3V0IHByb3BlciBpbml0aWFsaXph
+dGlvbi4gVGhpcyBjb3VsZCBsZWFkIHRvIGEgc2xhYi1vdXQtb2YtYm91bmRzIHdyaXRlLgpXZSBo
+YXZlIHJlcHJvZHVjZWQgdGhpcyBpc3N1ZSBzZXZlcmFsIHRpbWVzIG9uIDYuMTQtcmMzIGFnYWlu
+LCBidXQgd2UgZG9uJ3QgaGF2ZSB0b28gbXVjaCBrbm93bGVkZ2UgYWJvdXQgdGhpcyBhcmVhLCBj
+b3VsZCB3ZSB0cm91YmxlIHlvdSB0byBjaGVjayB0aGUgcm9vdCBjYXVzZS4KCklmIHRoaXMgaXNz
+dWUgZG9lc24ndCBoYXZlIGFuIGltcGFjdCwgcGxlYXNlIGlnbm9yZSBpdCDimLouCgoKSWYgeW91
+IGZpeCB0aGlzIGlzc3VlLCBwbGVhc2UgYWRkIHRoZSBmb2xsb3dpbmcgdGFnIHRvIHRoZSBjb21t
+aXQ6ClJlcG9ydGVkLWJ5OiBLdW4gSHUgPGh1azIzQG0uZnVkYW4uZWR1LmNuPiwgSmlhamkgUWlu
+IDxqanRhbjI0QG0uZnVkYW4uZWR1LmNuPiwgU2h1b3JhbiBCYWkgPGJhaXNodW9yYW5AaHJiZXUu
+ZWR1LmNuPgoKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09CkJVRzogS0FTQU46IHNsYWItb3V0LW9mLWJvdW5kcyBpbiBpbnN0
+cnVtZW50X2F0b21pY19yZWFkX3dyaXRlIGluY2x1ZGUvbGludXgvaW5zdHJ1bWVudGVkLmg6OTYg
+W2lubGluZV0KQlVHOiBLQVNBTjogc2xhYi1vdXQtb2YtYm91bmRzIGluIGF0b21pY19pbmMgaW5j
+bHVkZS9saW51eC9hdG9taWMvYXRvbWljLWluc3RydW1lbnRlZC5oOjQzNSBbaW5saW5lXQpCVUc6
+IEtBU0FOOiBzbGFiLW91dC1vZi1ib3VuZHMgaW4gZ2V0X2JoIGluY2x1ZGUvbGludXgvYnVmZmVy
+X2hlYWQuaDoyOTYgW2lubGluZV0KQlVHOiBLQVNBTjogc2xhYi1vdXQtb2YtYm91bmRzIGluIGdm
+czJfcGluKzB4MmY1LzB4NjYwIGZzL2dmczIvbG9wcy5jOjYxCldyaXRlIG9mIHNpemUgNCBhdCBh
+ZGRyIGZmMTEwMDAwMjJjMWVhNjAgYnkgdGFzayBzeXotZXhlY3V0b3IvOTYyMwoKCkNQVTogMCBV
+SUQ6IDAgUElEOiA5NjIzIENvbW06IHN5ei1leGVjdXRvciBOb3QgdGFpbnRlZCA2LjE0LXJjNSAj
+MQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwg
+QklPUyAxLjEzLjAtMXVidW50dTEuMSAwNC8wMS8yMDE0CkNhbGwgVHJhY2U6CiA8VEFTSz4KIF9f
+ZHVtcF9zdGFjayBsaWIvZHVtcF9zdGFjay5jOjk0IFtpbmxpbmVdCiBkdW1wX3N0YWNrX2x2bCsw
+eDExNi8weDFiMCBsaWIvZHVtcF9zdGFjay5jOjEyMAogcHJpbnRfYWRkcmVzc19kZXNjcmlwdGlv
+biBtbS9rYXNhbi9yZXBvcnQuYzozNzggW2lubGluZV0KIHByaW50X3JlcG9ydCsweGNmLzB4NWYw
+IG1tL2thc2FuL3JlcG9ydC5jOjQ4OQoga2FzYW5fcmVwb3J0KzB4OTMvMHhjMCBtbS9rYXNhbi9y
+ZXBvcnQuYzo2MDIKIGNoZWNrX3JlZ2lvbl9pbmxpbmUgbW0va2FzYW4vZ2VuZXJpYy5jOjE4MyBb
+aW5saW5lXQoga2FzYW5fY2hlY2tfcmFuZ2UrMHhmNi8weDFiMCBtbS9rYXNhbi9nZW5lcmljLmM6
+MTg5CiBpbnN0cnVtZW50X2F0b21pY19yZWFkX3dyaXRlIGluY2x1ZGUvbGludXgvaW5zdHJ1bWVu
+dGVkLmg6OTYgW2lubGluZV0KIGF0b21pY19pbmMgaW5jbHVkZS9saW51eC9hdG9taWMvYXRvbWlj
+LWluc3RydW1lbnRlZC5oOjQzNSBbaW5saW5lXQogZ2V0X2JoIGluY2x1ZGUvbGludXgvYnVmZmVy
+X2hlYWQuaDoyOTYgW2lubGluZV0KIGdmczJfcGluKzB4MmY1LzB4NjYwIGZzL2dmczIvbG9wcy5j
+OjYxCiBnZnMyX3RyYW5zX2FkZF9kYXRhKzB4MjhhLzB4NTYwIGZzL2dmczIvdHJhbnMuYzoyMjAK
+IGdmczJfd3JpdGVfYnVmX3RvX3BhZ2UrMHgzZTkvMHhiNzAgZnMvZ2ZzMi9xdW90YS5jOjc3MAog
+Z2ZzMl93cml0ZV9kaXNrX3F1b3RhIGZzL2dmczIvcXVvdGEuYzo4MTggW2lubGluZV0KIGdmczJf
+YWRqdXN0X3F1b3RhKzB4NjMyLzB4ODkwIGZzL2dmczIvcXVvdGEuYzo4ODEKIGRvX3N5bmMrMHg5
+ZWIvMHhkMTAgZnMvZ2ZzMi9xdW90YS5jOjk2MwogZ2ZzMl9xdW90YV9zeW5jKzB4MzAxLzB4NTAw
+IGZzL2dmczIvcXVvdGEuYzoxMzU5CiBnZnMyX3N5bmNfZnMrMHg0NC8weGIwIGZzL2dmczIvc3Vw
+ZXIuYzo2NzAKIHN5bmNfZmlsZXN5c3RlbSBmcy9zeW5jLmM6NTYgW2lubGluZV0KIHN5bmNfZmls
+ZXN5c3RlbSsweDExMC8weDJhMCBmcy9zeW5jLmM6MzAKIGdlbmVyaWNfc2h1dGRvd25fc3VwZXIr
+MHg3NC8weDM4MCBmcy9zdXBlci5jOjYyMQoga2lsbF9ibG9ja19zdXBlcisweDNiLzB4OTAgZnMv
+c3VwZXIuYzoxNzEwCiBnZnMyX2tpbGxfc2IrMHgzNzUvMHg0MjAgZnMvZ2ZzMi9vcHNfZnN0eXBl
+LmM6MTc5MwogZGVhY3RpdmF0ZV9sb2NrZWRfc3VwZXIrMHhiYi8weDEzMCBmcy9zdXBlci5jOjQ3
+MwogZGVhY3RpdmF0ZV9zdXBlciBmcy9zdXBlci5jOjUwNiBbaW5saW5lXQogZGVhY3RpdmF0ZV9z
+dXBlcisweGIxLzB4ZDAgZnMvc3VwZXIuYzo1MDIKIGNsZWFudXBfbW50KzB4Mzc4LzB4NTEwIGZz
+L25hbWVzcGFjZS5jOjEzNzMKIHRhc2tfd29ya19ydW4rMHgxNzMvMHgyODAga2VybmVsL3Rhc2tf
+d29yay5jOjIzOQogcmVzdW1lX3VzZXJfbW9kZV93b3JrIGluY2x1ZGUvbGludXgvcmVzdW1lX3Vz
+ZXJfbW9kZS5oOjUwIFtpbmxpbmVdCiBleGl0X3RvX3VzZXJfbW9kZV9sb29wIGtlcm5lbC9lbnRy
+eS9jb21tb24uYzoxMTQgW2lubGluZV0KIGV4aXRfdG9fdXNlcl9tb2RlX3ByZXBhcmUgaW5jbHVk
+ZS9saW51eC9lbnRyeS1jb21tb24uaDozMjkgW2lubGluZV0KIF9fc3lzY2FsbF9leGl0X3RvX3Vz
+ZXJfbW9kZV93b3JrIGtlcm5lbC9lbnRyeS9jb21tb24uYzoyMDcgW2lubGluZV0KIHN5c2NhbGxf
+ZXhpdF90b191c2VyX21vZGUrMHgyNjEvMHgyNzAga2VybmVsL2VudHJ5L2NvbW1vbi5jOjIxOAog
+ZG9fc3lzY2FsbF82NCsweGQwLzB4MWQwIGFyY2gveDg2L2VudHJ5L2NvbW1vbi5jOjg5CiBlbnRy
+eV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg3Ny8weDdmClJJUDogMDAzMzoweDdmNGMxNTM1
+NTA4YgpDb2RlOiBmZiBmZiBmZiBmNyBkOCA2NCA4OSAwMSA0OCA4MyBjOCBmZiBjMyA2NiA5MCBm
+MyAwZiAxZSBmYSAzMSBmNiBlOSAwNSAwMCAwMCAwMCAwZiAxZiA0NCAwMCAwMCBmMyAwZiAxZSBm
+YSBiOCBhNiAwMCAwMCAwMCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDczIDAxIGMzIDQ4IGM3
+IGMxIGIwIGZmIGZmIGZmIGY3IGQ4IDY0IDg5IDAxIDQ4ClJTUDogMDAyYjowMDAwN2ZmYzg3NWE3
+ZTQ4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwYTYKUkFYOiAwMDAw
+MDAwMDAwMDAwMDAwIFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IDAwMDA3ZjRjMTUzNTUwOGIK
+UkRYOiAwMDAwN2Y0YzE1MWVmYzUwIFJTSTogMDAwMDAwMDAwMDAwMDAwOSBSREk6IDAwMDA3ZmZj
+ODc1YTdmMTAKUkJQOiAwMDAwN2ZmYzg3NWE3ZjEwIFIwODogMDAwMDdmNGMxNTNjNzA5NSBSMDk6
+IDAwMDA3ZmZjODc1YTdjZDAKUjEwOiAwMDAwMDAwMGZmZmZmZmZiIFIxMTogMDAwMDAwMDAwMDAw
+MDI0NiBSMTI6IDAwMDA3ZjRjMTUzYzcwNzEKUjEzOiAwMDAwN2ZmYzg3NWE4ZmIwIFIxNDogMDAw
+MDU1NTU2MzYwOThmMCBSMTU6IDAwMDA3ZmZjODc1YThmZjAKIDwvVEFTSz4KCgpBbGxvY2F0ZWQg
+YnkgdGFzayA5NjIzOgoga2FzYW5fc2F2ZV9zdGFjaysweDI0LzB4NTAgbW0va2FzYW4vY29tbW9u
+LmM6NDcKIGthc2FuX3NhdmVfdHJhY2srMHgxNC8weDMwIG1tL2thc2FuL2NvbW1vbi5jOjY4CiBw
+b2lzb25fa21hbGxvY19yZWR6b25lIG1tL2thc2FuL2NvbW1vbi5jOjM3NyBbaW5saW5lXQogX19r
+YXNhbl9rbWFsbG9jKzB4YWEvMHhiMCBtbS9rYXNhbi9jb21tb24uYzozOTQKIGthc2FuX2ttYWxs
+b2MgaW5jbHVkZS9saW51eC9rYXNhbi5oOjI2MCBbaW5saW5lXQogX19kb19rbWFsbG9jX25vZGUg
+bW0vc2x1Yi5jOjQyOTggW2lubGluZV0KIF9fa21hbGxvY19ub3Byb2YrMHgxZWYvMHg1NzAgbW0v
+c2x1Yi5jOjQzMTAKIGttYWxsb2Nfbm9wcm9mIGluY2x1ZGUvbGludXgvc2xhYi5oOjkwNSBbaW5s
+aW5lXQoga3phbGxvY19ub3Byb2YgaW5jbHVkZS9saW51eC9zbGFiLmg6MTAzNyBbaW5saW5lXQog
+aWZzX2FsbG9jKzB4MWM5LzB4NDAwIGZzL2lvbWFwL2J1ZmZlcmVkLWlvLmM6MjAyCiBpb21hcF9k
+aXJ0eV9mb2xpbysweGViLzB4MTcwIGZzL2lvbWFwL2J1ZmZlcmVkLWlvLmM6NjUyCiBmb2xpb19t
+YXJrX2RpcnR5KzB4Y2YvMHgxNTAgbW0vcGFnZS13cml0ZWJhY2suYzoyOTIwCiBnZnMyX3Vuc3R1
+ZmZlcl9mb2xpbyBmcy9nZnMyL2JtYXAuYzo4MyBbaW5saW5lXQogX19nZnMyX3Vuc3R1ZmZfaW5v
+ZGUgZnMvZ2ZzMi9ibWFwLmM6MTE5IFtpbmxpbmVdCiBnZnMyX3Vuc3R1ZmZfZGlub2RlKzB4ZTdh
+LzB4MTU2MCBmcy9nZnMyL2JtYXAuYzoxNjYKIGdmczJfYWRqdXN0X3F1b3RhKzB4MTA0LzB4ODkw
+IGZzL2dmczIvcXVvdGEuYzo4NDkKIGRvX3N5bmMrMHg5ZWIvMHhkMTAgZnMvZ2ZzMi9xdW90YS5j
+Ojk2MwogZ2ZzMl9xdW90YV9zeW5jKzB4MzAxLzB4NTAwIGZzL2dmczIvcXVvdGEuYzoxMzU5CiBn
+ZnMyX3N5bmNfZnMrMHg0NC8weGIwIGZzL2dmczIvc3VwZXIuYzo2NzAKIHN5bmNfZmlsZXN5c3Rl
+bSBmcy9zeW5jLmM6NTYgW2lubGluZV0KIHN5bmNfZmlsZXN5c3RlbSsweDExMC8weDJhMCBmcy9z
+eW5jLmM6MzAKIGdlbmVyaWNfc2h1dGRvd25fc3VwZXIrMHg3NC8weDM4MCBmcy9zdXBlci5jOjYy
+MQoga2lsbF9ibG9ja19zdXBlcisweDNiLzB4OTAgZnMvc3VwZXIuYzoxNzEwCiBnZnMyX2tpbGxf
+c2IrMHgzNzUvMHg0MjAgZnMvZ2ZzMi9vcHNfZnN0eXBlLmM6MTc5MwogZGVhY3RpdmF0ZV9sb2Nr
+ZWRfc3VwZXIrMHhiYi8weDEzMCBmcy9zdXBlci5jOjQ3MwogZGVhY3RpdmF0ZV9zdXBlciBmcy9z
+dXBlci5jOjUwNiBbaW5saW5lXQogZGVhY3RpdmF0ZV9zdXBlcisweGIxLzB4ZDAgZnMvc3VwZXIu
+Yzo1MDIKIGNsZWFudXBfbW50KzB4Mzc4LzB4NTEwIGZzL25hbWVzcGFjZS5jOjEzNzMKIHRhc2tf
+d29ya19ydW4rMHgxNzMvMHgyODAga2VybmVsL3Rhc2tfd29yay5jOjIzOQogcmVzdW1lX3VzZXJf
+bW9kZV93b3JrIGluY2x1ZGUvbGludXgvcmVzdW1lX3VzZXJfbW9kZS5oOjUwIFtpbmxpbmVdCiBl
+eGl0X3RvX3VzZXJfbW9kZV9sb29wIGtlcm5lbC9lbnRyeS9jb21tb24uYzoxMTQgW2lubGluZV0K
+IGV4aXRfdG9fdXNlcl9tb2RlX3ByZXBhcmUgaW5jbHVkZS9saW51eC9lbnRyeS1jb21tb24uaDoz
+MjkgW2lubGluZV0KIF9fc3lzY2FsbF9leGl0X3RvX3VzZXJfbW9kZV93b3JrIGtlcm5lbC9lbnRy
+eS9jb21tb24uYzoyMDcgW2lubGluZV0KIHN5c2NhbGxfZXhpdF90b191c2VyX21vZGUrMHgyNjEv
+MHgyNzAga2VybmVsL2VudHJ5L2NvbW1vbi5jOjIxOAogZG9fc3lzY2FsbF82NCsweGQwLzB4MWQw
+IGFyY2gveDg2L2VudHJ5L2NvbW1vbi5jOjg5CiBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJh
+bWUrMHg3Ny8weDdmCgoKVGhlIGJ1Z2d5IGFkZHJlc3MgYmVsb25ncyB0byB0aGUgb2JqZWN0IGF0
+IGZmMTEwMDAwMjJjMWVhMDAKIHdoaWNoIGJlbG9uZ3MgdG8gdGhlIGNhY2hlIGttYWxsb2MtOTYg
+b2Ygc2l6ZSA5NgpUaGUgYnVnZ3kgYWRkcmVzcyBpcyBsb2NhdGVkIDE2IGJ5dGVzIHRvIHRoZSBy
+aWdodCBvZgogYWxsb2NhdGVkIDgwLWJ5dGUgcmVnaW9uIFtmZjExMDAwMDIyYzFlYTAwLCBmZjEx
+MDAwMDIyYzFlYTUwKQoKClRoZSBidWdneSBhZGRyZXNzIGJlbG9uZ3MgdG8gdGhlIHBoeXNpY2Fs
+IHBhZ2U6CnBhZ2U6IHJlZmNvdW50OjEgbWFwY291bnQ6MCBtYXBwaW5nOjAwMDAwMDAwMDAwMDAw
+MDAgaW5kZXg6MHgwIHBmbjoweDIyYzFlCmFub24gZmxhZ3M6IDB4MTAwMDAwMDAwMDAwMDAwKG5v
+ZGU9MHx6b25lPTEpCnBhZ2VfdHlwZTogZjUoc2xhYikKcmF3OiAwMTAwMDAwMDAwMDAwMDAwIGZm
+MTEwMDAwMDEwM2MyODAgZmZkNDAwMDAwMDg4YWIwMCBkZWFkMDAwMDAwMDAwMDA3CnJhdzogMDAw
+MDAwMDAwMDAwMDAwMCAwMDAwMDAwMDgwMjAwMDIwIDAwMDAwMDAxZjUwMDAwMDAgMDAwMDAwMDAw
+MDAwMDAwMApwYWdlIGR1bXBlZCBiZWNhdXNlOiBrYXNhbjogYmFkIGFjY2VzcyBkZXRlY3RlZAoK
+Ck1lbW9yeSBzdGF0ZSBhcm91bmQgdGhlIGJ1Z2d5IGFkZHJlc3M6CiBmZjExMDAwMDIyYzFlOTAw
+OiBmYSBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYiBmYyBmYyBmYyBmYwogZmYxMTAw
+MDAyMmMxZTk4MDogMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgZmMgZmMgZmMgZmMgZmMg
+ZmMKPmZmMTEwMDAwMjJjMWVhMDA6IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIGZjIGZj
+IGZjIGZjIGZjIGZjCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICBeCiBmZjExMDAwMDIyYzFlYTgwOiBmYSBmYiBmYiBmYiBmYiBmYiBmYiBmYiBm
+YiBmYiBmYiBmYiBmYyBmYyBmYyBmYwogZmYxMTAwMDAyMmMxZWIwMDogZmEgZmIgZmIgZmIgZmIg
+ZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmMgZmMgZmMgZmMKPT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ci0tLS0tLS0tLS0tLVsg
+Y3V0IGhlcmUgXS0tLS0tLS0tLS0tLQpXQVJOSU5HOiBDUFU6IDAgUElEOiA5NjIzIGF0IGZzL2lv
+bWFwL2J1ZmZlcmVkLWlvLmM6MTk5MiBpb21hcF93cml0ZXBhZ2VfbWFwIGZzL2lvbWFwL2J1ZmZl
+cmVkLWlvLmM6MTk5MiBbaW5saW5lXQpXQVJOSU5HOiBDUFU6IDAgUElEOiA5NjIzIGF0IGZzL2lv
+bWFwL2J1ZmZlcmVkLWlvLmM6MTk5MiBpb21hcF93cml0ZXBhZ2VzIGZzL2lvbWFwL2J1ZmZlcmVk
+LWlvLmM6MjA2MSBbaW5saW5lXQpXQVJOSU5HOiBDUFU6IDAgUElEOiA5NjIzIGF0IGZzL2lvbWFw
+L2J1ZmZlcmVkLWlvLmM6MTk5MiBpb21hcF93cml0ZXBhZ2VzKzB4MjU5ZS8weDJlNTAgZnMvaW9t
+YXAvYnVmZmVyZWQtaW8uYzoyMDQ0Ck1vZHVsZXMgbGlua2VkIGluOgpDUFU6IDAgVUlEOiAwIFBJ
+RDogOTYyMyBDb21tOiBzeXotZXhlY3V0b3IgVGFpbnRlZDogRyAgICBCICAgICAgICAgICAgICA2
+LjEzLjAtcmM3ICMxClRhaW50ZWQ6IFtCXT1CQURfUEFHRQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0
+YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEuMSAw
+NC8wMS8yMDE0ClJJUDogMDAxMDppb21hcF93cml0ZXBhZ2VfbWFwIGZzL2lvbWFwL2J1ZmZlcmVk
+LWlvLmM6MTk5MiBbaW5saW5lXQpSSVA6IDAwMTA6aW9tYXBfd3JpdGVwYWdlcyBmcy9pb21hcC9i
+dWZmZXJlZC1pby5jOjIwNjEgW2lubGluZV0KUklQOiAwMDEwOmlvbWFwX3dyaXRlcGFnZXMrMHgy
+NTllLzB4MmU1MCBmcy9pb21hcC9idWZmZXJlZC1pby5jOjIwNDQKQ29kZTogNDEgYmMgMDAgMTAg
+MDAgMDAgYmQgMDAgMTAgMDAgMDAgZTkgNjUgZjQgZmYgZmYgZTggZjcgZDIgOWUgZmYgOTAgMGYg
+MGIgOTAgNDEgYmMgZmIgZmYgZmYgZmYgZTkgOTUgZmUgZmYgZmYgZTggZTMgZDIgOWUgZmYgOTAg
+PDBmPiAwYiA5MCBlOSBiZCBlMCBmZiBmZiBlOCBkNSBkMiA5ZSBmZiA0OCA4YiA0NCAyNCAxMCA0
+OCA4ZCA3OCAzMApSU1A6IDAwMTg6ZmZhMDAwMDAwMzkwNzM4MCBFRkxBR1M6IDAwMDEwMjQ2ClJB
+WDogMDAwMDAwMDAwMjNlYzAwMCBSQlg6IGZmMTEwMDAwMjJjMWVhNDQgUkNYOiBmZmZmZmZmZjgy
+Y2FhOWRiClJEWDogMDAwMDAwMDBmZjExMDAwMCBSU0k6IGZmMTEwMDAwMmRmODQ2ODAgUkRJOiAw
+MDAwMDAwMDAwMDAwMDAyClJCUDogMDAwMDAwMDBmZjExMDAwMCBSMDg6IGZmZTIxYzAwMDIzZWMw
+MDAgUjA5OiBmZmUyMWMwMDA0NTgzZDQ5ClIxMDogZmZlMjFjMDAwNDU4M2Q0OCBSMTE6IGZmMTEw
+MDAwMjJjMWVhNDcgUjEyOiAwMDAwMDAwMDAwMDAwMDBhClIxMzogZmZkNDAwMDAwMDQ3ZDdjMCBS
+MTQ6IDAwMDAwMDAwMDAwMDAwMDAgUjE1OiBkZmZmZmMwMDAwMDAwMDAwCkZTOiAgMDAwMDU1NTU2
+MzVmNmEwMCgwMDAwKSBHUzpmZjExMDAwMDZhMjAwMDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAw
+MDAwMDAKQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMwpD
+UjI6IDAwMDA3Zjg3ZWQwYTIwYzAgQ1IzOiAwMDAwMDAwMDJjNzNlMDAxIENSNDogMDAwMDAwMDAw
+MDc3MWVmMApQS1JVOiAwMDAwMDAwMApDYWxsIFRyYWNlOgogPFRBU0s+CiBnZnMyX3dyaXRlcGFn
+ZXMrMHgxNTkvMHgyYTAgZnMvZ2ZzMi9hb3BzLmM6MTYxCiBkb193cml0ZXBhZ2VzKzB4MTlkLzB4
+N2QwIG1tL3BhZ2Utd3JpdGViYWNrLmM6MjcwMgogZmlsZW1hcF9mZGF0YXdyaXRlX3diYysweGU5
+LzB4MTIwIG1tL2ZpbGVtYXAuYzozODgKIF9fZmlsZW1hcF9mZGF0YXdyaXRlX3JhbmdlKzB4YzEv
+MHgxMTAgbW0vZmlsZW1hcC5jOjQyMQogZ2ZzMl9vcmRlcmVkX3dyaXRlIGZzL2dmczIvbG9nLmM6
+NzI4IFtpbmxpbmVdCiBnZnMyX2xvZ19mbHVzaCsweDc5YS8weDJjYzAgZnMvZ2ZzMi9sb2cuYzox
+MDk3CiBkb19zeW5jKzB4NTZhLzB4ZDEwIGZzL2dmczIvcXVvdGEuYzo5ODMKIGdmczJfcXVvdGFf
+c3luYysweDMwMS8weDUwMCBmcy9nZnMyL3F1b3RhLmM6MTM1OQogZ2ZzMl9zeW5jX2ZzKzB4NDQv
+MHhiMCBmcy9nZnMyL3N1cGVyLmM6NjcwCiBzeW5jX2ZpbGVzeXN0ZW0gZnMvc3luYy5jOjU2IFtp
+bmxpbmVdCiBzeW5jX2ZpbGVzeXN0ZW0rMHgxMTAvMHgyYTAgZnMvc3luYy5jOjMwCiBnZW5lcmlj
+X3NodXRkb3duX3N1cGVyKzB4NzQvMHgzODAgZnMvc3VwZXIuYzo2MjEKIGtpbGxfYmxvY2tfc3Vw
+ZXIrMHgzYi8weDkwIGZzL3N1cGVyLmM6MTcxMAogZ2ZzMl9raWxsX3NiKzB4Mzc1LzB4NDIwIGZz
+L2dmczIvb3BzX2ZzdHlwZS5jOjE3OTMKIGRlYWN0aXZhdGVfbG9ja2VkX3N1cGVyKzB4YmIvMHgx
+MzAgZnMvc3VwZXIuYzo0NzMKIGRlYWN0aXZhdGVfc3VwZXIgZnMvc3VwZXIuYzo1MDYgW2lubGlu
+ZV0KIGRlYWN0aXZhdGVfc3VwZXIrMHhiMS8weGQwIGZzL3N1cGVyLmM6NTAyCiBjbGVhbnVwX21u
+dCsweDM3OC8weDUxMCBmcy9uYW1lc3BhY2UuYzoxMzczCiB0YXNrX3dvcmtfcnVuKzB4MTczLzB4
+MjgwIGtlcm5lbC90YXNrX3dvcmsuYzoyMzkKIHJlc3VtZV91c2VyX21vZGVfd29yayBpbmNsdWRl
+L2xpbnV4L3Jlc3VtZV91c2VyX21vZGUuaDo1MCBbaW5saW5lXQogZXhpdF90b191c2VyX21vZGVf
+bG9vcCBrZXJuZWwvZW50cnkvY29tbW9uLmM6MTE0IFtpbmxpbmVdCiBleGl0X3RvX3VzZXJfbW9k
+ZV9wcmVwYXJlIGluY2x1ZGUvbGludXgvZW50cnktY29tbW9uLmg6MzI5IFtpbmxpbmVdCiBfX3N5
+c2NhbGxfZXhpdF90b191c2VyX21vZGVfd29yayBrZXJuZWwvZW50cnkvY29tbW9uLmM6MjA3IFtp
+bmxpbmVdCiBzeXNjYWxsX2V4aXRfdG9fdXNlcl9tb2RlKzB4MjYxLzB4MjcwIGtlcm5lbC9lbnRy
+eS9jb21tb24uYzoyMTgKIGRvX3N5c2NhbGxfNjQrMHhkMC8weDFkMCBhcmNoL3g4Ni9lbnRyeS9j
+b21tb24uYzo4OQogZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2ZyYW1lKzB4NzcvMHg3ZgpSSVA6
+IDAwMzM6MHg3ZjRjMTUzNTUwOGIKQ29kZTogZmYgZmYgZmYgZjcgZDggNjQgODkgMDEgNDggODMg
+YzggZmYgYzMgNjYgOTAgZjMgMGYgMWUgZmEgMzEgZjYgZTkgMDUgMDAgMDAgMDAgMGYgMWYgNDQg
+MDAgMDAgZjMgMGYgMWUgZmEgYjggYTYgMDAgMDAgMDAgMGYgMDUgPDQ4PiAzZCAwMSBmMCBmZiBm
+ZiA3MyAwMSBjMyA0OCBjNyBjMSBiMCBmZiBmZiBmZiBmNyBkOCA2NCA4OSAwMSA0OApSU1A6IDAw
+MmI6MDAwMDdmZmM4NzVhN2U0OCBFRkxBR1M6IDAwMDAwMjQ2IE9SSUdfUkFYOiAwMDAwMDAwMDAw
+MDAwMGE2ClJBWDogMDAwMDAwMDAwMDAwMDAwMCBSQlg6IDAwMDAwMDAwMDAwMDAwMDAgUkNYOiAw
+MDAwN2Y0YzE1MzU1MDhiClJEWDogMDAwMDdmNGMxNTFlZmM1MCBSU0k6IDAwMDAwMDAwMDAwMDAw
+MDkgUkRJOiAwMDAwN2ZmYzg3NWE3ZjEwClJCUDogMDAwMDdmZmM4NzVhN2YxMCBSMDg6IDAwMDA3
+ZjRjMTUzYzcwOTUgUjA5OiAwMDAwN2ZmYzg3NWE3Y2QwClIxMDogMDAwMDAwMDBmZmZmZmZmYiBS
+MTE6IDAwMDAwMDAwMDAwMDAyNDYgUjEyOiAwMDAwN2Y0YzE1M2M3MDcxClIxMzogMDAwMDdmZmM4
+NzVhOGZiMCBSMTQ6IDAwMDA1NTU1NjM2MDk4ZjAgUjE1OiAwMDAwN2ZmYzg3NWE4ZmYwCiA8L1RB
+U0s+CmlycSBldmVudCBzdGFtcDogMTQxOTE4NQpoYXJkaXJxcyBsYXN0ICBlbmFibGVkIGF0ICgx
+NDE5MTg1KTogWzxmZmZmZmZmZjhhMmQyODNiPl0gaXJxZW50cnlfZXhpdCsweDNiLzB4OTAga2Vy
+bmVsL2VudHJ5L2NvbW1vbi5jOjM1NwpoYXJkaXJxcyBsYXN0IGRpc2FibGVkIGF0ICgxNDE5MTg0
+KTogWzxmZmZmZmZmZjgyMzBmNmI0Pl0gaGFuZGxlX3NvZnRpcnFzKzB4NmE0LzB4ODcwIGtlcm5l
+bC9zb2Z0aXJxLmM6NTc2CnNvZnRpcnFzIGxhc3QgIGVuYWJsZWQgYXQgKDE0MTg5MTIpOiBbPGZm
+ZmZmZmZmODIzMGY1NTQ+XSBzb2Z0aXJxX2hhbmRsZV9lbmQga2VybmVsL3NvZnRpcnEuYzo0MDcg
+W2lubGluZV0Kc29mdGlycXMgbGFzdCAgZW5hYmxlZCBhdCAoMTQxODkxMik6IFs8ZmZmZmZmZmY4
+MjMwZjU1ND5dIGhhbmRsZV9zb2Z0aXJxcysweDU0NC8weDg3MCBrZXJuZWwvc29mdGlycS5jOjU4
+OQpzb2Z0aXJxcyBsYXN0IGRpc2FibGVkIGF0ICgxNDE4OTAzKTogWzxmZmZmZmZmZjgyMzExMjBl
+Pl0gX19kb19zb2Z0aXJxIGtlcm5lbC9zb2Z0aXJxLmM6NTk1IFtpbmxpbmVdCnNvZnRpcnFzIGxh
+c3QgZGlzYWJsZWQgYXQgKDE0MTg5MDMpOiBbPGZmZmZmZmZmODIzMTEyMGU+XSBpbnZva2Vfc29m
+dGlycSBrZXJuZWwvc29mdGlycS5jOjQzNSBbaW5saW5lXQpzb2Z0aXJxcyBsYXN0IGRpc2FibGVk
+IGF0ICgxNDE4OTAzKTogWzxmZmZmZmZmZjgyMzExMjBlPl0gX19pcnFfZXhpdF9yY3Uga2VybmVs
+L3NvZnRpcnEuYzo2NjIgW2lubGluZV0Kc29mdGlycXMgbGFzdCBkaXNhYmxlZCBhdCAoMTQxODkw
+Myk6IFs8ZmZmZmZmZmY4MjMxMTIwZT5dIGlycV9leGl0X3JjdSsweGVlLzB4MTQwIGtlcm5lbC9z
+b2Z0aXJxLmM6Njc4Ci0tLVsgZW5kIHRyYWNlIDAwMDAwMDAwMDAwMDAwMDAgXS0tLQoKCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp0aGFua3MsCkt1biBIdQoKCgo=
