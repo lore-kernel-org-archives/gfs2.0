@@ -1,91 +1,296 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72791CACF3
-	for <gfs2@lists.linux.dev>; Fri, 28 Feb 2025 22:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC8914601C
+	for <gfs2@lists.linux.dev>; Mon,  3 Mar 2025 03:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740782940; cv=none; b=t1cytOC6ubsIHOtG5P7xtdXi63l+6nEJbCWG5VtSeHSXW2aDNHucT8iFwtHQLVviq6X6uAdPSh8o/rwb8C0TKUnGKkMFPs4hXxGFx79ZBZYzF+jMN5iTISLKzHhlKR4fy/LFNNfRHKetOJYXxD+1Xm6RTo5tkeeZPXpiSNzKKbU=
+	t=1740971630; cv=none; b=H/qJZDH4ZprOKBWZSMzVAhYtZ0KyGbZuAEEz/AVwWJM1DmE82uEZTeWCUeTEEI1lIgX5PSZZudmniHdia8LTMoeGgZ1GvW40OW84v51KJFJ9fem6ahuUVkkVED3YGkDg2zrC6HwPXKtGbR3tatB3u/2cEckRN0FNnuCj/OYX/fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740782940; c=relaxed/simple;
-	bh=72ZwdZvQsIkCuua/Mv9fSv1JCKUq34c8y4GHGoEC8qw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCqS0s79MyAgSOuHCkxdhQC079MButri60dP1PLpEiUDp2KJZ5dFn73o4IfeuQL0Hx8nTPBxKjfRWCgRjfSt5DTnMTVCtV3iqqgaubHT1hg4WizY8d5u/2CdLXriWLg4IAkYMUKs83CP7qC6PivqdvLM1VmLHNCWIhlt/fIeM68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IP/NX5R3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740971630; c=relaxed/simple;
+	bh=dh+zvDo+UpHRFL8aNAFar08sWbyPZoOHGP/ADoUTqoM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=GzxOZ5BFKTzsgPsAbss21/bP0xbkg61vCmzUc+VnxpQ8NCWo5iuIJ6o3TKc9H63Ikj6Y47qIvu776qlCtIYxLrTEWcGkuQKnDXWwNBSdmVhwhJMMPrpS6ydEk1WYKgVfudco16LJ9uyMN0EUVUwStgonSWFF7WdeKqhaKZgdOY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cjOPNus2; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IP/NX5R3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740782937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wd0Gf1kz2NzoiwlbijbTr+huOwwGbqwTJ6g0bBZpj/0=;
-	b=IP/NX5R3tt5rVlNNaodR+BasXolEGMBTLt2QTSTVWVZx2iBBZRx9x8/90mWm94WdfCi3n9
-	gTyxGrY+TBUXX55ZKSx/rB/m8jbkXXf4Xizuz+wegVu8ntVBCHiuK00l3EyW/w9Cy708Wm
-	VsN0mvVM+PStsibuKdqY9ycwkNm793M=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-p-hCOkotPJa888iBkhcyGA-1; Fri,
- 28 Feb 2025 17:48:55 -0500
-X-MC-Unique: p-hCOkotPJa888iBkhcyGA-1
-X-Mimecast-MFC-AGG-ID: p-hCOkotPJa888iBkhcyGA_1740782935
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14FB219373D7;
-	Fri, 28 Feb 2025 22:48:55 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 40D9F1800357;
-	Fri, 28 Feb 2025 22:48:54 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: stable@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH dlm/next 2/2] dlm: fix error if active rsb is not hashed
-Date: Fri, 28 Feb 2025 17:48:51 -0500
-Message-ID: <20250228224851.1283094-2-aahringo@redhat.com>
-In-Reply-To: <20250228224851.1283094-1-aahringo@redhat.com>
-References: <20250228224851.1283094-1-aahringo@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cjOPNus2"
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2b8e26063e4so2279155fac.3
+        for <gfs2@lists.linux.dev>; Sun, 02 Mar 2025 19:13:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740971628; x=1741576428; darn=lists.linux.dev;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmBzVLQpIbiF2/DaQb/qslxPK9RqAOBu64Pk7zoDCaI=;
+        b=cjOPNus2huVdjhzHP+6HJqZ8cgycsVou9/UhuozKiVbgr93476NZKtO8ZkIrJQgH9x
+         3geqcgYlTEO8NsxiIZDR5GGsPl98TcRETr0bCWP6qMZL67g/FLxYbXuiVsYHy9YqZLVo
+         99LxBPKgUHBbQQVuQfNyJwhhvWkUi+K/s0hx4FwB4HhUPOpkAfrQaLa8OpFwSE364wzA
+         khcTMmEDn7izOGLSLGdMCR0jz7XIFlCLDmO9seQ7G47duFT5QJoukpSHWWWejVwU57Tv
+         lCBxtik1d4H6Czi8xlYa9qyEjjw14xxe6BiUB62E6hqGETO+YEpZtgKf35k3bFgimVGy
+         iWJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740971628; x=1741576428;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gmBzVLQpIbiF2/DaQb/qslxPK9RqAOBu64Pk7zoDCaI=;
+        b=LH0eG4FUeDjpSYBgP13CGHx2Gb+mVfcVWrK+2Mj1sj9T51Bc9RopABzFyIa78pukRn
+         jx2O63XaddPXOxWhk+oIkeJRRfHS1F5n4OCreGtePxKXgJRcaVHCgxdhwRFbgnlwTBFF
+         /CHhmCdQbrTyQ45cPVZ6IZuUpwzx7VyDu30uXPYni515btEcMOTPkWMzAdYoAQdxqSQm
+         mUX+yKdiBHsMxPpzFH+1AcvIAdno3v6bPUk8K5dkAk4uglaqtGHhc5rKgMBw/KsVosL3
+         NwCJIc04vW+E9iH/QAlk1IxMEeG3Q3PSz1uxMErou2O9SeMbn2K55LTu28UifhwfvHs6
+         CPpA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3Opyp/0uU3apUloFcUqlxXAAb0WLgpzjRU5Jg4BucGNlzTMqGcM1dQo/WKuzAv/4ifAJe@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOmVQ1BDnVhj6O0MAoBbMf8A75IcUL9/Yfs1EfLMLA8Yk/ycQx
+	b3Wcg2UChV3ljthj0Da92wWzCD3iLoN4irMeuNPKOLFvVIeONQ1zjVQeSXAPQyCSOdE2AAXQc9O
+	+nUyYUiZL/x2w8lYWyU6CWJ8mSMU=
+X-Gm-Gg: ASbGncvPwuyll95mPRxellwt4FPCJsx8NH/G+JJkpJ2ioqOU4gYFiit8xF1ndI8yDgo
+	CO18xb7O/U43w2TPQhPUTfVCKu/6Mg3BgaBXdiWkYPGHKDfvs6cGxZD1PlqohQs2I6jNDXZTpH0
+	EIscQFnicgO4s6d4jCBUDoY7kknw==
+X-Google-Smtp-Source: AGHT+IHF5JKbcSsLaGHljYDDj/qLKBX+f2vL9cCO+7cmNiI28pLNWgSIRuZV1rERv1oGZkt3YlLbAhmmshwYC0KkQIA=
+X-Received: by 2002:a05:6870:71cb:b0:29e:4985:fef with SMTP id
+ 586e51a60fabf-2c178317c4cmr5148994fac.3.1740971628011; Sun, 02 Mar 2025
+ 19:13:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+From: Strforexc yn <strforexc@gmail.com>
+Date: Mon, 3 Mar 2025 11:13:36 +0800
+X-Gm-Features: AQ5f1JqqijLs3bFWtevlXsuIBeA-xBAFw1elRj2Ktw5Lr2gMzu5MaeUY7OslC7k
+Message-ID: <CA+HokZq7F42iyusA4QYJA4N=q5SMVqvW0MnhejwDxagKhKFm_g@mail.gmail.com>
+Subject: =?UTF-8?B?S0FTQU46IHNsYWItdXNlLWFmdGVyLWZyZWUgUmVhZCBpbiBnZnMyX2Rpc2NhcmQg77yIIA==?=
+	=?UTF-8?B?djYuMTQtcmM0IGtlcm5lbO+8iQ==?=
+To: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If an active rsb is not hashed anymore and this could occur because we
-releases and acquired locks we need to signal the followed code that
-the lookup failed. Since the lookup was successful, but it isn't part of
-the rsb hash anymore we need to signal it by setting error to -EBADR as
-dlm_search_rsb_tree() does it.
+I=E2=80=99ve encountered a KASAN-reported slab-use-after-free in the GFS2
+filesystem on Linux 6.14.0-rc4 during an unmount operation. Here are
+the details:
 
-Cc: stable@vger.kernel.org
-Fixes: 5be323b0c64d ("dlm: move dlm_search_rsb_tree() out of lock")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c | 1 +
- 1 file changed, 1 insertion(+)
+Kernel commit: v6.14-rc4 (Commits on Feb 24, 2025)
+Kernel Config : https://github.com/Strforexc/LinuxKernelbug/blob/main/.conf=
+ig
+Kernel Log=EF=BC=9A https://github.com/Strforexc/LinuxKernelbug/blob/main/s=
+lab_uaf_read_gfs2_dis/log0
+Reproduce.c:  https://github.com/Strforexc/LinuxKernelbug/blob/main/slab_ua=
+f_read_gfs2_dis/repro.cprog
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 499fa999ae83..e01d5f29f4d2 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -741,6 +741,7 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 	read_lock_bh(&ls->ls_rsbtbl_lock);
- 	if (!rsb_flag(r, RSB_HASHED)) {
- 		read_unlock_bh(&ls->ls_rsbtbl_lock);
-+		error = -EBADR;
- 		goto do_new;
- 	}
- 	
--- 
-2.43.0
+KASAN detects a use-after-free read of size 8 at address
+ffff88802233e168 in list_empty (include/linux/list.h:373), called from
+gfs2_discard (fs/gfs2/aops.c:587). This occurs when discarding a
+buffer during filesystem shutdown.
+Location: The fault occurs in gfs2_discard at if
+(!list_empty(&bd->bd_list) && !buffer_pinned(bh)), accessing
+bd->bd_list.next after bd is freed.
 
+Cause: A struct gfs2_bufdata (bd) is freed in gfs2_log_flush during
+gfs2_quota_sync, but its buffer_head (bh->b_private) retains the
+pointer. Later, gfs2_discard dereferences it during inode eviction in
+gfs2_put_super.
+Context: Syzkaller=E2=80=99s unmount operation triggers this sequence,
+exposing a lifecycle mismatch between buffer data and inode pages.
+
+
+Could GFS2 maintainers investigate? Possible issues:
+1. bh->b_private not cleared after freeing bd in gfs2_log_flush.
+2. Race between gfs2_quota_sync freeing buffers and gfs2_put_super
+discarding them.
+
+Our knowledge of the kernel is somewhat limited, and we'd appreciate
+it if you could determine if there is such an issue. If this issue
+doesn't have an impact, please ignore it =E2=98=BA.
+
+If you fix this issue, please add the following tag to the commit:
+Reported-by: Zhizhuo Tang strforexctzzchange@foxmail.com, Jianzhou
+Zhao xnxc22xnxc22@qq.com, Haoran Liu <cherest_san@163.com>
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+BUG: KASAN: slab-use-after-free in list_empty include/linux/list.h:373 [inl=
+ine]
+BUG: KASAN: slab-use-after-free in gfs2_discard+0x2ed/0x360 fs/gfs2/aops.c:=
+587
+Read of size 8 at addr ffff88802233e168 by task syz-executor/13663
+
+CPU: 0 UID: 0 PID: 13663 Comm: syz-executor Not tainted 6.14.0-rc4 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/=
+2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+ print_address_description.constprop.0+0x2c/0x420 mm/kasan/report.c:408
+ print_report+0xaa/0x270 mm/kasan/report.c:521
+ kasan_report+0xbd/0x100 mm/kasan/report.c:634
+ list_empty include/linux/list.h:373 [inline]
+ gfs2_discard+0x2ed/0x360 fs/gfs2/aops.c:587
+ gfs2_invalidate_folio+0x210/0x490 fs/gfs2/aops.c:625
+ folio_invalidate mm/truncate.c:126 [inline]
+ truncate_cleanup_folio+0x2ea/0x480 mm/truncate.c:146
+ truncate_inode_pages_range+0x214/0xe20 mm/truncate.c:326
+ gfs2_evict_inode+0x32b/0xcb0 fs/gfs2/super.c:1527
+ evict+0x3f2/0x940 fs/inode.c:796
+ iput_final+0x32e/0x4b0 fs/inode.c:1946
+ iput+0x185/0x1c0 fs/inode.c:1972
+ gfs2_put_super+0x2b5/0x750 fs/gfs2/super.c:629
+ generic_shutdown_super+0x156/0x390 fs/super.c:642
+ kill_block_super+0x3b/0x90 fs/super.c:1710
+ gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
+ deactivate_locked_super+0xbb/0x140 fs/super.c:473
+ deactivate_super+0xb1/0xd0 fs/super.c:506
+ cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
+ task_work_run+0x16c/0x270 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f01c47b9fcb
+Code: a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 90 f3 0f 1e fa 31 f6
+e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8 a6 00 00 00 0f 05 <48> 3d
+00 f0 ff ff 77 05 c3 0f 1f 40 00 48 c7 c2 a8 ff ff ff f7 d8
+RSP: 002b:00007ffd1d416d58 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 0000000000000043 RCX: 00007f01c47b9fcb
+RDX: 00007f01c465ab30 RSI: 0000000000000009 RDI: 00007ffd1d416e10
+RBP: 00007ffd1d416e10 R08: 0000000000000000 R09: 00007ffd1d416be0
+R10: 000055555f553673 R11: 0000000000000246 R12: 00007f01c486a47d
+R13: 00007ffd1d417ee0 R14: 000055555f553600 R15: 00000000000260b1
+ </TASK>
+
+Allocated by task 13663:
+ kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:68
+ unpoison_slab_object mm/kasan/common.c:319 [inline]
+ __kasan_slab_alloc+0x97/0xa0 mm/kasan/common.c:345
+ kasan_slab_alloc include/linux/kasan.h:250 [inline]
+ slab_post_alloc_hook mm/slub.c:4115 [inline]
+ slab_alloc_node mm/slub.c:4164 [inline]
+ kmem_cache_alloc_noprof+0x167/0x400 mm/slub.c:4171
+ gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
+ gfs2_trans_add_data+0x4bf/0x800 fs/gfs2/trans.c:209
+ gfs2_unstuffer_folio+0x1d5/0x930 fs/gfs2/bmap.c:81
+ __gfs2_unstuff_inode+0x392/0x750 fs/gfs2/bmap.c:119
+ gfs2_unstuff_dinode+0xb5/0x1b0 fs/gfs2/bmap.c:166
+ gfs2_adjust_quota+0x10c/0xc00 fs/gfs2/quota.c:847
+ do_sync+0xb17/0xe90 fs/gfs2/quota.c:961
+ gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
+ gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
+ sync_filesystem+0x116/0x2a0 fs/sync.c:56
+ generic_shutdown_super+0x74/0x390 fs/super.c:621
+ kill_block_super+0x3b/0x90 fs/super.c:1710
+ gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
+ deactivate_locked_super+0xbb/0x140 fs/super.c:473
+ deactivate_super+0xb1/0xd0 fs/super.c:506
+ cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
+ task_work_run+0x16c/0x270 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 13663:
+ kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:68
+ kasan_save_free_info+0x3b/0x80 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x54/0x80 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4609 [inline]
+ kmem_cache_free+0x134/0x400 mm/slub.c:4711
+ trans_drain fs/gfs2/log.c:1020 [inline]
+ gfs2_log_flush+0x1647/0x2990 fs/gfs2/log.c:1160
+ do_sync+0x5cc/0xe90 fs/gfs2/quota.c:981
+ gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
+ gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
+ sync_filesystem+0x116/0x2a0 fs/sync.c:56
+ generic_shutdown_super+0x74/0x390 fs/super.c:621
+ kill_block_super+0x3b/0x90 fs/super.c:1710
+ gfs2_kill_sb+0x380/0x430 fs/gfs2/ops_fstype.c:1793
+ deactivate_locked_super+0xbb/0x140 fs/super.c:473
+ deactivate_super+0xb1/0xd0 fs/super.c:506
+ cleanup_mnt+0x2df/0x430 fs/namespace.c:1413
+ task_work_run+0x16c/0x270 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xd8/0x260 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88802233e150
+ which belongs to the cache gfs2_bufdata of size 80
+The buggy address is located 24 bytes inside of
+ freed 80-byte region [ffff88802233e150, ffff88802233e1a0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2233e
+flags: 0xfff00000000000(node=3D0|zone=3D1|lastcpupid=3D0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000000 ffff8880433c7b40 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000080240024 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask
+0x52c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 13663,
+tgid 13663 (syz-executor), ts 156080436640, free_ts 156046629654
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x1a3/0x1d0 mm/page_alloc.c:1551
+ prep_new_page mm/page_alloc.c:1559 [inline]
+ get_page_from_freelist+0x8a5/0xfa0 mm/page_alloc.c:3477
+ __alloc_frozen_pages_noprof+0x1d8/0x3b0 mm/page_alloc.c:4739
+ alloc_pages_mpol+0x1f2/0x550 mm/mempolicy.c:2270
+ alloc_slab_page mm/slub.c:2423 [inline]
+ allocate_slab+0x229/0x310 mm/slub.c:2587
+ ___slab_alloc+0x7f3/0x12b0 mm/slub.c:3826
+ __slab_alloc.constprop.0+0x56/0xc0 mm/slub.c:3916
+ __slab_alloc_node mm/slub.c:3991 [inline]
+ slab_alloc_node mm/slub.c:4152 [inline]
+ kmem_cache_alloc_noprof+0x275/0x400 mm/slub.c:4171
+ gfs2_alloc_bufdata fs/gfs2/trans.c:168 [inline]
+ gfs2_trans_add_meta+0x863/0xce0 fs/gfs2/trans.c:251
+ gfs2_alloc_extent fs/gfs2/rgrp.c:2237 [inline]
+ gfs2_alloc_blocks+0x41b/0x1870 fs/gfs2/rgrp.c:2447
+ __gfs2_unstuff_inode+0x33c/0x750 fs/gfs2/bmap.c:107
+ gfs2_unstuff_dinode+0xb5/0x1b0 fs/gfs2/bmap.c:166
+ gfs2_adjust_quota+0x10c/0xc00 fs/gfs2/quota.c:847
+ do_sync+0xb17/0xe90 fs/gfs2/quota.c:961
+ gfs2_quota_sync+0x31f/0x540 fs/gfs2/quota.c:1357
+ gfs2_sync_fs+0x44/0xc0 fs/gfs2/super.c:670
+page last free pid 13238 tgid 13238 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1127 [inline]
+ free_frozen_pages+0x71f/0xff0 mm/page_alloc.c:2660
+ vfree+0x172/0x850 mm/vmalloc.c:3383
+ delayed_vfree_work+0x57/0x70 mm/vmalloc.c:3303
+ process_one_work+0x109d/0x18c0 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3317 [inline]
+ worker_thread+0x677/0xe90 kernel/workqueue.c:3398
+ kthread+0x3b3/0x760 kernel/kthread.c:464
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Memory state around the buggy address:
+ ffff88802233e000: fa fb fb fb fb fb fb fb fb fb fc fc fc fc fa fb
+ ffff88802233e080: fb fb fb fb fb fb fb fb fc fc fc fc fa fb fb fb
+>ffff88802233e100: fb fb fb fb fb fb fc fc fc fc fa fb fb fb fb fb
+                                                          ^
+ ffff88802233e180: fb fb fb fb fc fc fc fc fa fb fb fb fb fb fb fb
+ ffff88802233e200: fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Regards,
+Zhizhuo Tang
