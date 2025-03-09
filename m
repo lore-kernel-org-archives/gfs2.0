@@ -1,206 +1,200 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540C52F2A;
-	Sun,  9 Mar 2025 15:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26CD1DEFDA
+	for <gfs2@lists.linux.dev>; Sun,  9 Mar 2025 17:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741534808; cv=none; b=NhllC7/o3iPaa+kM6crQN7eHcJqcmPfuGyCOt01LCwOe1lidQ73jxMwF4JFB/T2Ju2RjF71a/z7EfKPDqadMU7BAYNfqb6m9j9GEcUZ46d44h3ThijXVoGwzIyZ+8JwyPXU5M/Qqv3XlWY6cC54JMjf/89tzgn2Fjsw/LBIPjrU=
+	t=1741541632; cv=none; b=q3EGZGxrbKg8GYaE+Lz+0jFpcw6BsWy1Rl8GvT71FMafmtJ5pZSiH3sta/DitBFZwPmiYzKM8gUtPCyMg2PiiC37U4RybYWBfgQfW127Hrgxk5tXtIkDLYIBDdi1SZnbKpqUXRJBFHWo0NpK0FAyIHTLnVSDxd0s8YwJS2BBZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741534808; c=relaxed/simple;
-	bh=WwAgUg82lZpzPyQZQ++FccC8wn2G8XnNw5FLPTqJccs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FEacqYBgRS72goCK6vzMS8mOSpWtRMsmYkwSaxTxhivZP8pcKM22uCGGTDDoHj0C8/BBX2gIq4lycwH/YSpeIAcWlgu1kLTl0G1ehtIzCc1fDQwIcpvJSNP4xfZqb/WhH2LuxS9Nw2JyDWeQo6dTl1ug1WJDhBATLIPngdgsW3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNlI8t7u; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741541632; c=relaxed/simple;
+	bh=ksP0cXW8blsb4N3DQKO2j9P0hpNgct+vTqOK+wzNzc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b0awWnV5BGhKYAZRUZR4r0+U0Vkak5cl28pUHDA5ckQE6a/EngI+2ZOM8wH3Eybdjje5q7p6hT5VCwy94ByWxSFoJCYBspVlGoiZ3A9TdQe7i628Qhas9b+qULDGoXSzOZA/KNr6jvTfp//YztayPI9Ju+gQHKjmofSWMTwzljE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a5VQ+1C/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNlI8t7u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741534806; x=1773070806;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=WwAgUg82lZpzPyQZQ++FccC8wn2G8XnNw5FLPTqJccs=;
-  b=ZNlI8t7uNOnXenqj75yT+u/5A25FTqdaTnFVn+5kKYY052pdd9Fx6IlY
-   C4WUFiE6k/OK+UUjzwNOXhj6bgzR3HYgN5qDGE77pSXIBTpiPm1ccrOUt
-   DP/ZLfT03qTU6CNz5ui5OgZ1lc/85G5TymxdOPXReR9p2tqx0zaG5+AOF
-   5PgoZ1sZbz34b5XTcTCyjrVq5wtEr31yaDL5N1S1LwLw/KAlwodwIVHzA
-   b4uppUFOf94rVbuGrkOJ4tog3DSTUDf3kTD7VdRHVQtZLs3iq1OK0rajc
-   9kNqnpLx0PxUhuQPPn+UdoGzsN7jF/mD6igDi75RYrLvi5FGSFt2EZIkq
-   Q==;
-X-CSE-ConnectionGUID: oFM2f12ZSY2hMaFfbGDqGw==
-X-CSE-MsgGUID: Z7uujhNBS7ibzsw+hCnsgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="46312409"
-X-IronPort-AV: E=Sophos;i="6.14,234,1736841600"; 
-   d="scan'208";a="46312409"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2025 08:40:06 -0700
-X-CSE-ConnectionGUID: FgNERcacQiipUGfyLNvmyg==
-X-CSE-MsgGUID: AnQ6ODVwS1uW7/jcCYebQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="150718075"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 09 Mar 2025 08:40:04 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1trIkz-0003Ea-33;
-	Sun, 09 Mar 2025 15:40:01 +0000
-Date: Sun, 9 Mar 2025 23:39:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [gfs2:for-next 19/20] fs/ocfs2/refcounttree.c:2969:21: error:
- implicit declaration of function 'page_has_buffers'; did you mean
- 'inode_has_buffers'?
-Message-ID: <202503092318.ztc5Xu3P-lkp@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a5VQ+1C/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741541629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zeae9JjlVYfhzOaUnO+d6huNE0ieO5ZoDoGmXZOCzww=;
+	b=a5VQ+1C/4Uur6a7DZdJ9v7j2SwV8CH+DaDtxv42afQ+DTay//dfNF/zQ4Gq4YeRTdFkUsi
+	pbl9LNJUqE0wrs3nHqihUnZKVPaA8yHGD0F0oFl+t1IqApJCNbOjOgRDksUyTpziVln2th
+	rMUshwbJCbIzzblcM1Nsr39Qr/3Do1A=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-aKx_6HJYNvqq94CQqJWupA-1; Sun, 09 Mar 2025 13:33:48 -0400
+X-MC-Unique: aKx_6HJYNvqq94CQqJWupA-1
+X-Mimecast-MFC-AGG-ID: aKx_6HJYNvqq94CQqJWupA_1741541627
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-223f3357064so53545625ad.3
+        for <gfs2@lists.linux.dev>; Sun, 09 Mar 2025 10:33:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741541627; x=1742146427;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zeae9JjlVYfhzOaUnO+d6huNE0ieO5ZoDoGmXZOCzww=;
+        b=AOf+l/VO4XQ3eh6/vzxNzW3chfB+/5PwWiHXg/aKFhVGjQCnswGe0ed3Y9PHj7HxXH
+         2GekGX/WzkhdZyT4kEhvePrONo/c2lSSaaP1tHqKyig2X5RScP8ezc2/LrBnqsxisBTS
+         JuJwiTzk8qg2UUEa+Jp75CyVY+1lFkDtfgwzaulLeRcsFL8WylrWPWuBvx0b4h5CIv1j
+         B5iS1sg+IT3YhubpIYYdBdMPSEnEABXzBBhN4XJnrTmav3ZryERb0qgmHQLi6lIRtw8t
+         SR2lUvvcAt4clrCh6K9rwR5wXSnMVh8lw4RGWvGno1esJEzlhtUuHkFrSxxSvlPsPeCw
+         YCRQ==
+X-Gm-Message-State: AOJu0YyK6twvL8Un9a4/kFfA2VNJnI1WDRpVYHZlf915YLSe6l/lvG40
+	SIce6SvGmhkLSYRasCN9p5lvAqnCjQjYV3cNVIvsmbu4VfGo/vyR/VMAH6Z4RAbeUWn7tyIvD24
+	0vwzCWh4eG8232dls7gKX7nlRbYFwoCe0fX+r52x/6IRIBTFhxIlGv5jnfyZVH7shBSpijQ1Siq
+	7YrwcsmCtKGyr+kDQ5Q9pvoxCY9A==
+X-Gm-Gg: ASbGncuSiSWsThr8JJR3bSvqItmA5QiVMrvJ/7jsvh66xSLzZSMXpog16jjXvUY64kQ
+	jyY9JDbFk08Y36XCs8NuutY/txDPPdezblzZVvIAJ+vaNljy+8BkoLjv/djsJch64g3J206w=
+X-Received: by 2002:a17:902:ec91:b0:223:5e54:c521 with SMTP id d9443c01a7336-22428407e93mr160560605ad.0.1741541626935;
+        Sun, 09 Mar 2025 10:33:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGVeDJCNpU/bu5I9HyJljFTkBhxqx876qq4ego7LCzUKnkF4Lo6jqqGi8h0EorvxRQ+zWmeRpKHOCEFD82UudY=
+X-Received: by 2002:a17:902:ec91:b0:223:5e54:c521 with SMTP id
+ d9443c01a7336-22428407e93mr160560415ad.0.1741541626548; Sun, 09 Mar 2025
+ 10:33:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250210133448.3796209-1-willy@infradead.org> <20250210133448.3796209-8-willy@infradead.org>
+In-Reply-To: <20250210133448.3796209-8-willy@infradead.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Sun, 9 Mar 2025 18:33:34 +0100
+X-Gm-Features: AQ5f1JoErhymXT73WDCjWnMgsHtNHHCwZXK7ooTdMPlPz3zxsx8DcT30iEwSeZM
+Message-ID: <CAHc6FU5GrXSfxiRyrx_ShR7hJkCMaQD=k-mhTJ37CzbUMR68dQ@mail.gmail.com>
+Subject: Re: [PATCH 7/8] gfs2: Convert gfs2_end_log_write_bh() to work on a folio
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PjCxr7qHWihcOulgqtC1FMi2s5JY89gAX9l5s0xqEaY_1741541627
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git for-next
-head:   16abce10ad13ab3ee23754a81164aa8d0506d552
-commit: b3cbb48767a2c7a9348b13852b75ea01ed52017b [19/20] gfs2: Convert gfs2_end_log_write_bh() to work on a folio
-config: x86_64-buildonly-randconfig-002-20250309 (https://download.01.org/0day-ci/archive/20250309/202503092318.ztc5Xu3P-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250309/202503092318.ztc5Xu3P-lkp@intel.com/reproduce)
+On Mon, Feb 10, 2025 at 2:35=E2=80=AFPM Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+> gfs2_end_log_write() has to handle bios which consist of both pages
+> which belong to folios and pages which were allocated from a mempool and
+> do not belong to a folio.  It would be cleaner to have separate endio
+> handlers which handle each type, but it's not clear to me whether that's
+> even possible.
+>
+> This patch is slightly forward-looking in that page_folio() cannot
+> currently return NULL, but it will return NULL in the future for pages
+> which do not belong to a folio.
+>
+> This was the last user of page_has_buffers(), so remove it.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503092318.ztc5Xu3P-lkp@intel.com/
+Right now in for-next, ocfs2 is still using page_has_buffers(), so I'm
+going to skip this part.
 
-All errors (new ones prefixed by >>):
-
-   fs/ocfs2/refcounttree.c: In function 'ocfs2_duplicate_clusters_by_page':
->> fs/ocfs2/refcounttree.c:2969:21: error: implicit declaration of function 'page_has_buffers'; did you mean 'inode_has_buffers'? [-Werror=implicit-function-declaration]
-    2969 |                 if (page_has_buffers(page)) {
-         |                     ^~~~~~~~~~~~~~~~
-         |                     inode_has_buffers
-   cc1: some warnings being treated as errors
---
-   fs/ocfs2/aops.c: In function 'ocfs2_zero_new_buffers':
->> fs/ocfs2/aops.c:878:14: error: implicit declaration of function 'page_has_buffers'; did you mean 'inode_has_buffers'? [-Werror=implicit-function-declaration]
-     878 |         if (!page_has_buffers(page))
-         |              ^~~~~~~~~~~~~~~~
-         |              inode_has_buffers
-   cc1: some warnings being treated as errors
+Thanks,
+Andreas
 
 
-vim +2969 fs/ocfs2/refcounttree.c
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  fs/gfs2/lops.c              | 28 ++++++++++++++--------------
+>  include/linux/buffer_head.h |  1 -
+>  2 files changed, 14 insertions(+), 15 deletions(-)
+>
+> diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+> index 30597b0f7cc3..8b46bd01a448 100644
+> --- a/fs/gfs2/lops.c
+> +++ b/fs/gfs2/lops.c
+> @@ -157,7 +157,9 @@ u64 gfs2_log_bmap(struct gfs2_jdesc *jd, unsigned int=
+ lblock)
+>  /**
+>   * gfs2_end_log_write_bh - end log write of pagecache data with buffers
+>   * @sdp: The superblock
+> - * @bvec: The bio_vec
+> + * @folio: The folio
+> + * @offset: The first byte within the folio that completed
+> + * @size: The number of bytes that completed
+>   * @error: The i/o status
+>   *
+>   * This finds the relevant buffers and unlocks them and sets the
+> @@ -166,17 +168,13 @@ u64 gfs2_log_bmap(struct gfs2_jdesc *jd, unsigned i=
+nt lblock)
+>   * that is pinned in the pagecache.
+>   */
+>
+> -static void gfs2_end_log_write_bh(struct gfs2_sbd *sdp,
+> -                                 struct bio_vec *bvec,
+> -                                 blk_status_t error)
+> +static void gfs2_end_log_write_bh(struct gfs2_sbd *sdp, struct folio *fo=
+lio,
+> +               size_t offset, size_t size, blk_status_t error)
+>  {
+>         struct buffer_head *bh, *next;
+> -       struct page *page =3D bvec->bv_page;
+> -       unsigned size;
+>
+> -       bh =3D page_buffers(page);
+> -       size =3D bvec->bv_len;
+> -       while (bh_offset(bh) < bvec->bv_offset)
+> +       bh =3D folio_buffers(folio);
+> +       while (bh_offset(bh) < offset)
+>                 bh =3D bh->b_this_page;
+>         do {
+>                 if (error)
+> @@ -186,7 +184,7 @@ static void gfs2_end_log_write_bh(struct gfs2_sbd *sd=
+p,
+>                 size -=3D bh->b_size;
+>                 brelse(bh);
+>                 bh =3D next;
+> -       } while(bh && size);
+> +       } while (bh && size);
+>  }
+>
+>  /**
+> @@ -203,7 +201,6 @@ static void gfs2_end_log_write(struct bio *bio)
+>  {
+>         struct gfs2_sbd *sdp =3D bio->bi_private;
+>         struct bio_vec *bvec;
+> -       struct page *page;
+>         struct bvec_iter_all iter_all;
+>
+>         if (bio->bi_status) {
+> @@ -217,9 +214,12 @@ static void gfs2_end_log_write(struct bio *bio)
+>         }
+>
+>         bio_for_each_segment_all(bvec, bio, iter_all) {
+> -               page =3D bvec->bv_page;
+> -               if (page_has_buffers(page))
+> -                       gfs2_end_log_write_bh(sdp, bvec, bio->bi_status);
+> +               struct page *page =3D bvec->bv_page;
+> +               struct folio *folio =3D page_folio(page);
+> +
+> +               if (folio && folio_buffers(folio))
+> +                       gfs2_end_log_write_bh(sdp, folio, bvec->bv_offset=
+,
+> +                                       bvec->bv_len, bio->bi_status);
+>                 else
+>                         mempool_free(page, gfs2_page_pool);
+>         }
+> diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+> index 932139c5d46f..fab70b26e131 100644
+> --- a/include/linux/buffer_head.h
+> +++ b/include/linux/buffer_head.h
+> @@ -182,7 +182,6 @@ static inline unsigned long bh_offset(const struct bu=
+ffer_head *bh)
+>                 BUG_ON(!PagePrivate(page));                     \
+>                 ((struct buffer_head *)page_private(page));     \
+>         })
+> -#define page_has_buffers(page) PagePrivate(page)
+>  #define folio_buffers(folio)           folio_get_private(folio)
+>
+>  void buffer_check_dirty_writeback(struct folio *folio,
+> --
+> 2.47.2
+>
 
-6f70fa519976a37 Tao Ma                  2009-08-25  2896  
-3e19a25e0591a62 Tristan Ye              2011-05-24  2897  int ocfs2_duplicate_clusters_by_page(handle_t *handle,
-c7dd3392ad469e6 Tiger Yang              2013-08-13  2898  				     struct inode *inode,
-6f70fa519976a37 Tao Ma                  2009-08-25  2899  				     u32 cpos, u32 old_cluster,
-6f70fa519976a37 Tao Ma                  2009-08-25  2900  				     u32 new_cluster, u32 new_len)
-6f70fa519976a37 Tao Ma                  2009-08-25  2901  {
-6f70fa519976a37 Tao Ma                  2009-08-25  2902  	int ret = 0, partial;
-c7dd3392ad469e6 Tiger Yang              2013-08-13  2903  	struct super_block *sb = inode->i_sb;
-6f70fa519976a37 Tao Ma                  2009-08-25  2904  	u64 new_block = ocfs2_clusters_to_blocks(sb, new_cluster);
-6f70fa519976a37 Tao Ma                  2009-08-25  2905  	struct page *page;
-6f70fa519976a37 Tao Ma                  2009-08-25  2906  	pgoff_t page_index;
-262d8a8779e2459 Joseph Qi               2015-11-05  2907  	unsigned int from, to;
-6f70fa519976a37 Tao Ma                  2009-08-25  2908  	loff_t offset, end, map_end;
-3e19a25e0591a62 Tristan Ye              2011-05-24  2909  	struct address_space *mapping = inode->i_mapping;
-6f70fa519976a37 Tao Ma                  2009-08-25  2910  
-198aac283873169 Tao Ma                  2011-02-22  2911  	trace_ocfs2_duplicate_clusters_by_page(cpos, old_cluster,
-198aac283873169 Tao Ma                  2011-02-22  2912  					       new_cluster, new_len);
-6f70fa519976a37 Tao Ma                  2009-08-25  2913  
-6f70fa519976a37 Tao Ma                  2009-08-25  2914  	offset = ((loff_t)cpos) << OCFS2_SB(sb)->s_clustersize_bits;
-6f70fa519976a37 Tao Ma                  2009-08-25  2915  	end = offset + (new_len << OCFS2_SB(sb)->s_clustersize_bits);
-f5e27b6ddfbafdd Tao Ma                  2010-07-14  2916  	/*
-f5e27b6ddfbafdd Tao Ma                  2010-07-14  2917  	 * We only duplicate pages until we reach the page contains i_size - 1.
-f5e27b6ddfbafdd Tao Ma                  2010-07-14  2918  	 * So trim 'end' to i_size.
-f5e27b6ddfbafdd Tao Ma                  2010-07-14  2919  	 */
-3e19a25e0591a62 Tristan Ye              2011-05-24  2920  	if (end > i_size_read(inode))
-3e19a25e0591a62 Tristan Ye              2011-05-24  2921  		end = i_size_read(inode);
-6f70fa519976a37 Tao Ma                  2009-08-25  2922  
-6f70fa519976a37 Tao Ma                  2009-08-25  2923  	while (offset < end) {
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2924  		page_index = offset >> PAGE_SHIFT;
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2925  		map_end = ((loff_t)page_index + 1) << PAGE_SHIFT;
-6f70fa519976a37 Tao Ma                  2009-08-25  2926  		if (map_end > end)
-6f70fa519976a37 Tao Ma                  2009-08-25  2927  			map_end = end;
-6f70fa519976a37 Tao Ma                  2009-08-25  2928  
-6f70fa519976a37 Tao Ma                  2009-08-25  2929  		/* from, to is the offset within the page. */
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2930  		from = offset & (PAGE_SIZE - 1);
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2931  		to = PAGE_SIZE;
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2932  		if (map_end & (PAGE_SIZE - 1))
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2933  			to = map_end & (PAGE_SIZE - 1);
-6f70fa519976a37 Tao Ma                  2009-08-25  2934  
-69eb7765b9c6902 Larry Chen              2018-10-05  2935  retry:
-9b4c0ff32ccd87a Jan Kara                2010-08-24  2936  		page = find_or_create_page(mapping, page_index, GFP_NOFS);
-62c610460d73fcf Gu Zheng                2013-07-31  2937  		if (!page) {
-62c610460d73fcf Gu Zheng                2013-07-31  2938  			ret = -ENOMEM;
-62c610460d73fcf Gu Zheng                2013-07-31  2939  			mlog_errno(ret);
-62c610460d73fcf Gu Zheng                2013-07-31  2940  			break;
-62c610460d73fcf Gu Zheng                2013-07-31  2941  		}
-6f70fa519976a37 Tao Ma                  2009-08-25  2942  
-0a1ea437d87af83 Tao Ma                  2010-02-01  2943  		/*
-69eb7765b9c6902 Larry Chen              2018-10-05  2944  		 * In case PAGE_SIZE <= CLUSTER_SIZE, we do not expect a dirty
-69eb7765b9c6902 Larry Chen              2018-10-05  2945  		 * page, so write it back.
-0a1ea437d87af83 Tao Ma                  2010-02-01  2946  		 */
-69eb7765b9c6902 Larry Chen              2018-10-05  2947  		if (PAGE_SIZE <= OCFS2_SB(sb)->s_clustersize) {
-69eb7765b9c6902 Larry Chen              2018-10-05  2948  			if (PageDirty(page)) {
-8e4bfd136410df7 Christoph Hellwig       2023-01-18  2949  				unlock_page(page);
-8e4bfd136410df7 Christoph Hellwig       2023-01-18  2950  				put_page(page);
-8e4bfd136410df7 Christoph Hellwig       2023-01-18  2951  
-8e4bfd136410df7 Christoph Hellwig       2023-01-18  2952  				ret = filemap_write_and_wait_range(mapping,
-8e4bfd136410df7 Christoph Hellwig       2023-01-18  2953  						offset, map_end - 1);
-69eb7765b9c6902 Larry Chen              2018-10-05  2954  				goto retry;
-69eb7765b9c6902 Larry Chen              2018-10-05  2955  			}
-69eb7765b9c6902 Larry Chen              2018-10-05  2956  		}
-6f70fa519976a37 Tao Ma                  2009-08-25  2957  
-6f70fa519976a37 Tao Ma                  2009-08-25  2958  		if (!PageUptodate(page)) {
-2c69e2057962b6b Matthew Wilcox (Oracle  2022-04-29  2959) 			struct folio *folio = page_folio(page);
-2c69e2057962b6b Matthew Wilcox (Oracle  2022-04-29  2960) 
-2c69e2057962b6b Matthew Wilcox (Oracle  2022-04-29  2961) 			ret = block_read_full_folio(folio, ocfs2_get_block);
-6f70fa519976a37 Tao Ma                  2009-08-25  2962  			if (ret) {
-6f70fa519976a37 Tao Ma                  2009-08-25  2963  				mlog_errno(ret);
-6f70fa519976a37 Tao Ma                  2009-08-25  2964  				goto unlock;
-6f70fa519976a37 Tao Ma                  2009-08-25  2965  			}
-2c69e2057962b6b Matthew Wilcox (Oracle  2022-04-29  2966) 			folio_lock(folio);
-6f70fa519976a37 Tao Ma                  2009-08-25  2967  		}
-6f70fa519976a37 Tao Ma                  2009-08-25  2968  
-6f70fa519976a37 Tao Ma                  2009-08-25 @2969  		if (page_has_buffers(page)) {
-6f70fa519976a37 Tao Ma                  2009-08-25  2970  			ret = walk_page_buffers(handle, page_buffers(page),
-6f70fa519976a37 Tao Ma                  2009-08-25  2971  						from, to, &partial,
-6f70fa519976a37 Tao Ma                  2009-08-25  2972  						ocfs2_clear_cow_buffer);
-6f70fa519976a37 Tao Ma                  2009-08-25  2973  			if (ret) {
-6f70fa519976a37 Tao Ma                  2009-08-25  2974  				mlog_errno(ret);
-6f70fa519976a37 Tao Ma                  2009-08-25  2975  				goto unlock;
-6f70fa519976a37 Tao Ma                  2009-08-25  2976  			}
-6f70fa519976a37 Tao Ma                  2009-08-25  2977  		}
-6f70fa519976a37 Tao Ma                  2009-08-25  2978  
-c7dd3392ad469e6 Tiger Yang              2013-08-13  2979  		ocfs2_map_and_dirty_page(inode,
-c7dd3392ad469e6 Tiger Yang              2013-08-13  2980  					 handle, from, to,
-6f70fa519976a37 Tao Ma                  2009-08-25  2981  					 page, 0, &new_block);
-6f70fa519976a37 Tao Ma                  2009-08-25  2982  		mark_page_accessed(page);
-6f70fa519976a37 Tao Ma                  2009-08-25  2983  unlock:
-6f70fa519976a37 Tao Ma                  2009-08-25  2984  		unlock_page(page);
-09cbfeaf1a5a67b Kirill A. Shutemov      2016-04-01  2985  		put_page(page);
-6f70fa519976a37 Tao Ma                  2009-08-25  2986  		page = NULL;
-6f70fa519976a37 Tao Ma                  2009-08-25  2987  		offset = map_end;
-6f70fa519976a37 Tao Ma                  2009-08-25  2988  		if (ret)
-6f70fa519976a37 Tao Ma                  2009-08-25  2989  			break;
-6f70fa519976a37 Tao Ma                  2009-08-25  2990  	}
-6f70fa519976a37 Tao Ma                  2009-08-25  2991  
-6f70fa519976a37 Tao Ma                  2009-08-25  2992  	return ret;
-6f70fa519976a37 Tao Ma                  2009-08-25  2993  }
-6f70fa519976a37 Tao Ma                  2009-08-25  2994  
-
-:::::: The code at line 2969 was first introduced by commit
-:::::: 6f70fa519976a379d72781d927cf8e5f5b05ec86 ocfs2: Add CoW support.
-
-:::::: TO: Tao Ma <tao.ma@oracle.com>
-:::::: CC: Joel Becker <joel.becker@oracle.com>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
