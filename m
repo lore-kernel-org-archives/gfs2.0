@@ -1,145 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E39A233D99
-	for <gfs2@lists.linux.dev>; Mon, 10 Mar 2025 18:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E2120C472
+	for <gfs2@lists.linux.dev>; Wed, 12 Mar 2025 08:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741630516; cv=none; b=TBuPdVHWYwZSECDNi7fPVex2C3MtlGjZSPM9/3W3gmuhnJgQALq/1eTtmhowCWVFV2KyMBCUHo8L4TDyNiae5y8Cso6cPVd7B2eHCwQoBDY2dC3OXZJkbUQJjg9qjGoi/D0tSgwIObpPUqTdE2fgKjrIap9TZMQDFXZy2F2/y4Y=
+	t=1741768389; cv=none; b=UbIkuJ6tv9bWzpLZ79SS2s9Sx2E+UF4zBjgHTsKjSLK93EMkSYkA+ONMLEnyyoXWhO43n9FMM8RSB143fR0UU/44gQPw7N50jGNxC/1IAZTtEHtmGokUedeL9KJoCV/TGteVfL8aTWxD59Cm6cTn7UR/b/i3UhSGjVX7kiQwySA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741630516; c=relaxed/simple;
-	bh=SImQJADbpHTlvNCQBrZUtzCB2b/Tc0ig7xFDdyJ1a/U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ASzLeamjXedRY555OUNcZ3O3gHG6KzxkV4ptR6CnB8UVI35hdCdlqzGfK03/hDVa0i9Y0fClRqdtybMn24upGoZmn9uJ86CidrsMa9tRE2BhKAJ9dksiMgbGSSpPE1PElx5q3pKA4cL760u4EWiBPOkwG3aGYbu8PQN43ClsHS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=awgKyEr3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741768389; c=relaxed/simple;
+	bh=pSo5vTjN3OF9dYBlqCsRbrqAPdXDHi9h8WPbDq3JzfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QkYNghBwzAmg/yD8aOigqfstpMx5aJZXoLxzU5vOiuuFV8xGTHwoYjEaWYIuDASufs0I6PiemfcNnJ0X4BhxPg88YbGxcfEAAUgJTgzhW7MwogQHwCRxKJ4xCSRqypMZVWO18BtbqLtccd+RTY2rNj6ROrgo/e09lvpmt6bnyLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g6fK7tY/; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="awgKyEr3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741630513;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9pAe53a+t+jZXRC//+k31Dxd8ZsLFTZkf6JZER3Ffgc=;
-	b=awgKyEr3EUkFLnrK6nF0Acq1vd/p4+N/qnPja/ZOd97SnVArd77IyhQSzStcPtcg2z82Tx
-	fUBX8eQrWwjfMe/Qm5EzRmoa6fY5/aCdAfeqp5mqbgAy197Oqd7TD8AKQLBFDic3jan0Vg
-	AmDUiYCNInNri7BnyuA1V3Y7eNFpHig=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-XiEj_VpxNXij_43ElQLmQw-1; Mon, 10 Mar 2025 14:15:11 -0400
-X-MC-Unique: XiEj_VpxNXij_43ElQLmQw-1
-X-Mimecast-MFC-AGG-ID: XiEj_VpxNXij_43ElQLmQw_1741630510
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-224192ff68bso69154475ad.1
-        for <gfs2@lists.linux.dev>; Mon, 10 Mar 2025 11:15:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g6fK7tY/"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-390f5f48eafso3112030f8f.0
+        for <gfs2@lists.linux.dev>; Wed, 12 Mar 2025 01:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741768386; x=1742373186; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hk846ocqbbU4c/o0fjWpAAvlpyCOyvBrM2NRYSxeofk=;
+        b=g6fK7tY/bMkhHoZVwAV4gPwAdFlxOaJO5o7t3GRV7OGryQNdNZmQOAuRhRX1ikLfz/
+         DIMG1qJL5eqV8fx9rUjhfKBZbroc+d88BFtTOCLCPkolFYjPOkHqADLl9/ZFzqYLMhUD
+         eyGBbjPWTiIR34wzBuFdrZSmLHR5RzMd4sWdpgtwuWC9fQIo06dw10aGmYs2YgB2HbVE
+         1bmgflYrIJfvjKZ5klnVeodq0GpxQ3hQJeO0XKD++tldkkI1q3RcKhGT1wWXqmeR3dIx
+         RIwDxv7Re6PS/YI824H0//QgVqFJptuRmDYQBM7iywbfjZpfPub7CbHwWmKD+eX9Ks/m
+         hDNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741630510; x=1742235310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9pAe53a+t+jZXRC//+k31Dxd8ZsLFTZkf6JZER3Ffgc=;
-        b=D1IWoL4ULxypCj7kh/Fquknb2J8keANvthBpM9xXLk+7BUBBrHmbpmvKixMmgB+hZ8
-         q849eS408wxj4qQd/CVl/FGzH0QRZYR+w8NCSa8b+8SkV4UCvvQWvdVQHIQemxvKS5/A
-         WXNxSckRrye5osHlDO4dCOAH7Fr6hUJeMom3W8d+DhAQPEOty7D5ss/tLmpa5LZm2Wem
-         OY3JGMkrITOQ5oclsE0vU5bKOYcCvUXJBSJAx7jRER5MbmYJqX0qvJ1prBty4kTqjO9U
-         qeTclBSYdf3V9ahy4BVkx/HhUYsMO2fuwzRonvODnVAp7eZ+qFhQL1dPFYxjMLXXt+/3
-         fZcA==
-X-Gm-Message-State: AOJu0Yxg8dXTm7X5oDnFlKvvRIyBzMXf09Xry7WdnSxwlYMP2//hNiWH
-	vCXeKCoLhOSikvkfHiyL5i4nCf/LmQwI4s8RWA5fzwCrrULLAFJEPDr1e6fZQdSH5VrZdZMNytJ
-	p3bwg/isZwt5dgpphlPbvCqvtutB5Iy20Dnfdtr3GezUicnWke+3mMu2ZFjJrvCDCfsocdQn1jL
-	l7Fzrt3FSiMDUkJ+Q+2Cnj/QrIeA==
-X-Gm-Gg: ASbGncvHyxv5zC+O7W2NiNe5LbDQWLgEIHyzayPF3LbW4Pj6ouw681SiC11nc4HtiIY
-	J/Fb0v3wdQWEpnsiKTgWrbOqGMFs7f75NvdILlWh6xjqvqstTILuxBj8joJSLnCMt/HgRPFg=
-X-Received: by 2002:a17:903:2f86:b0:220:c63b:d93c with SMTP id d9443c01a7336-225931ad50bmr10249275ad.44.1741630510330;
-        Mon, 10 Mar 2025 11:15:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHv1DkG5rlbNPTvM2luEYDXZzmIPhJvZg4f0mJY+AucA7HhO7+60DKAkDW/BhCblf16viK2KTiWJh3F2wdWK44=
-X-Received: by 2002:a17:903:2f86:b0:220:c63b:d93c with SMTP id
- d9443c01a7336-225931ad50bmr10248985ad.44.1741630510020; Mon, 10 Mar 2025
- 11:15:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741768386; x=1742373186;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hk846ocqbbU4c/o0fjWpAAvlpyCOyvBrM2NRYSxeofk=;
+        b=qLFIk8w8g2ytIF+IIN0yK8lUul3fn4znK5IbiZdbtMPqxno1jDqifayIO7pvyu3LNb
+         o6i5F/RqZrwl5o3Cg62wC+j/C/feJOLITxh4H8BhktEJD0XSP3xIvK6iKk3EyVcVHPDg
+         pVNatF4cPkNdqiUq4neukoZ/i17Fh+PXxaXB3TcgqKYm6ObnKiBgLMgvMLx3k0c5M0ib
+         jw0Qoyb3uuEKYKaoJOnk5/FgF1APeRCjmgFUlyBlJJPZrxm2IdL2FoRO1nwAJiNl7nrv
+         29mhEJMDr36Cs1R+99ub9r0rcO95QMrllklM8nOeO8u4MxlDVwhvO190Q851PXdGjm8n
+         vupw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlr2Ajq66iIQ4NwSCyy3EMZpxGEMiL6BO31y5F3egSsbXYyf9xF7uc3CRt/X09JqCSDoXR@lists.linux.dev
+X-Gm-Message-State: AOJu0YxPjMkPYMdrQfreZluelBpN7//7T2Et6C5fijvSrKyXKLsEbHzz
+	Dh6C73MyxgzCA7XC7Brmsb8AtgxdQtaaLwr/q9RWB3oh1nfv8tIq7XOCtdiJkFY=
+X-Gm-Gg: ASbGnctaj4ShXxOruVD7YLRZlMa+1AG0CB+bjaC4KUQ0i3KXkvClbZyyoqrQhjfTUCl
+	DgBQr6VuisOAGWEBqBrniISqrn3fCrt8Tpg1e1w5Mpd0vBuvf3E3CSqlCYwFFCc1S3XDbSslBym
+	qydYb3wMKi7ujj6LQwrvnVLZIJIN5h+YJqawRQJa3ZhdRxqhW5C5DA2sp0GjQs7UO3oipth/dkX
+	7AULOwKAbFiIzwAjWnbMxHc9/L5rTqKYwHhhh1rtyc26x1lRexEOoJtGvGS4ijg5QcS7d+sq9bC
+	+B1roMfC2shEQJje8oOykZ4N9BUoJCtuGNHsOmNnp+s1/tzG4g==
+X-Google-Smtp-Source: AGHT+IH+soUGCO6EN3L3810VPuOet5YZmw+fbN4JVDjX2iJDlZI1jlgA7rGnGm4yrtxgN9st0ie6UQ==
+X-Received: by 2002:a05:6000:156e:b0:391:3d97:bd33 with SMTP id ffacd0b85a97d-3913d97be31mr13299968f8f.13.1741768386394;
+        Wed, 12 Mar 2025 01:33:06 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912bfdfde7sm20820827f8f.32.2025.03.12.01.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 01:33:05 -0700 (PDT)
+Date: Wed, 12 Mar 2025 11:33:03 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] gfs2: Fix a NULL vs IS_ERR() bug in gfs2_find_jhead()
+Message-ID: <ed5089eb-fb83-4c69-9835-dd64735b8a73@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250210133448.3796209-1-willy@infradead.org> <20250210133448.3796209-8-willy@infradead.org>
- <CAHc6FU5GrXSfxiRyrx_ShR7hJkCMaQD=k-mhTJ37CzbUMR68dQ@mail.gmail.com>
- <Z84Ay7gj2JQMUuRE@casper.infradead.org> <CAHc6FU5TcVWAOH+Yu1Q0v2j363NXnm8cd2cA0_ug14MmdTtzqw@mail.gmail.com>
- <Z85gf3GfqNX3enPs@casper.infradead.org>
-In-Reply-To: <Z85gf3GfqNX3enPs@casper.infradead.org>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Mon, 10 Mar 2025 19:14:58 +0100
-X-Gm-Features: AQ5f1JrB4RR5v156ID73ehkXOUBD7KfJ3QN8J_3DiPrwyJTjF8tKd9ZlAHWzC7w
-Message-ID: <CAHc6FU6JuOB0HZ84qqYuseH-CEEmw5o9bMNLzVWVs80NRmpT0g@mail.gmail.com>
-Subject: Re: [PATCH 7/8] gfs2: Convert gfs2_end_log_write_bh() to work on a folio
-To: Matthew Wilcox <willy@infradead.org>
-Cc: gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uM690RtOpIpxisfSf47cH1l1kjnSEUKzAhX0nKZYaAU_1741630510
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On Mon, Mar 10, 2025 at 4:46=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
-> On Sun, Mar 09, 2025 at 10:53:29PM +0100, Andreas Gruenbacher wrote:
-> > On Sun, Mar 9, 2025 at 9:57=E2=80=AFPM Matthew Wilcox <willy@infradead.=
-org> wrote:
-> > > On Sun, Mar 09, 2025 at 06:33:34PM +0100, Andreas Gruenbacher wrote:
-> > > > On Mon, Feb 10, 2025 at 2:35=E2=80=AFPM Matthew Wilcox (Oracle)
-> > > > <willy@infradead.org> wrote:
-> > > > > gfs2_end_log_write() has to handle bios which consist of both pag=
-es
-> > > > > which belong to folios and pages which were allocated from a memp=
-ool and
-> > > > > do not belong to a folio.  It would be cleaner to have separate e=
-ndio
-> > > > > handlers which handle each type, but it's not clear to me whether=
- that's
-> > > > > even possible.
-> > > > >
-> > > > > This patch is slightly forward-looking in that page_folio() canno=
-t
-> > > > > currently return NULL, but it will return NULL in the future for =
-pages
-> > > > > which do not belong to a folio.
-> > > > >
-> > > > > This was the last user of page_has_buffers(), so remove it.
-> > > >
-> > > > Right now in for-next, ocfs2 is still using page_has_buffers(), so =
-I'm
-> > > > going to skip this part.
-> > >
-> > > How odd.  I see it removed in 1b426db11ba8 ecee61651d8f 0fad0a824e5c
-> > > 414ae0a44033 and all of those commits are in 6.14-rc1.
-> > >
-> > > $ git show v6.14-rc1:fs/ocfs2/aops.c |grep page_has
-> > > (no output)
-> >
-> > Hmm, you're right, it's only that automatic test that's based on an
-> > older kernel. Sorry for the confusion.
->
-> Looks like your for-next doesn't include v6.14-rc1.
->
-> gfs2            104b4d597ff21b923b1e963c5793efcadeae047e
->
-> is the entry in SHA1s for next-20250307.  And:
->
-> $ git log v6.14-rc1 ^104b4d597ff21b923b1e963c5793efcadeae047e
-> shows quite a lot of commits (9847 of them).  So I think you didn't pull
-> from Linus before branching for the v6.15 merge window.
+The filemap_grab_folio() function doesn't return NULL, it returns error
+pointers.  Fix the check to match.
 
-Right, this is the point at which gfs2-for-6.14 was merged into mainline.
+Fixes: 40829760096d ("gfs2: Convert gfs2_find_jhead() to use a folio")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ fs/gfs2/lops.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->  Not sure how
-> you manage your trees and how you'd like to improve this situation
-> (do you rebase?  Do you want to bring in a merge commit of some -rc
-> version?  If so, which one?)
-
-I have rebased onto v6.14-rc1 now, so things should be fine.
-
-Thanks,
-Andreas
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index 3853c422040b..0fd3b5ec7d8c 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -530,8 +530,8 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head,
+ 			if (!folio) {
+ 				folio = filemap_grab_folio(mapping,
+ 						block >> shift);
+-				if (!folio) {
+-					ret = -ENOMEM;
++				if (IS_ERR(folio)) {
++					ret = PTR_ERR(folio);
+ 					done = true;
+ 					goto out;
+ 				}
+-- 
+2.47.2
 
