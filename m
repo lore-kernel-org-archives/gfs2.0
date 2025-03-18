@@ -1,107 +1,105 @@
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972C01DB124
-	for <gfs2@lists.linux.dev>; Wed, 12 Mar 2025 12:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD2A1F09A3
+	for <gfs2@lists.linux.dev>; Tue, 18 Mar 2025 07:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741781189; cv=none; b=kPLnK6WRlV3gRBznG3ukBVw7n06DTE23aBlN6NaJJG7WdNGlLtcoEOFyzykarNd8I3ggActAvs9zLTzXEJYSl9NQ/jQSXVrfD2z9is5pLuprO5cVR6QcqMQWgXb+KMwzw49La+XsdXcFEZPWM9aYdSqyDBGCyxmT6vYWmUTsgq0=
+	t=1742283322; cv=none; b=SS1vRkTifKVrZJOydkTeHwYGFn0AHYcKpQ1AmkqnPM3KHs8btNEwJxchK3Hi468Ru4iojPoRXcwXC5qh1mtoUMvP9a4w68eZgEB/ZOznk4Jzj+QDR0Oros6qqNAnP3dCcXoTs3dCoWB30s+VcU5X4Ez75b6sZ3sedMyAfAPblcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741781189; c=relaxed/simple;
-	bh=xypOKUIiqk37jy40fQBLrtEj4ywFYn2sLMjN0PvYc7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gMp6tnWbWP2C/QhgkPHyR/fdJ1CIawVwGfnshX/853A1lw+BNOx71WXEjREJXc0cj6tNn7v7/Pg8JgsHoDsRkWCMVpAbGRKmnWZYVT4dFxip7RI8kkPWUWsW3k3p2e3H9F9AmU0rBo9iT4OE2/EMnGet+zNj0e/ihVtBUpkBlf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpwylycg; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742283322; c=relaxed/simple;
+	bh=MjfasbkvLozAuDLUwKNcu2I7syMhRIXzhbBcoZ5SLlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WJ6ChbC3pqYNC3rfdJ5uuuwL5vY5FCdi+dBouJslA6tYqk3qqVaDlMA+qqkOHxzfJSL41/wGYKxnTf97i5lVwksszHLhQUWI+4OzldSUSzX2qW4ZpL+KKEvdB6PFMCzTGmCnQt2/svcAn3fJzY2aWYQIll8MaOb34IMKLQhnEhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LWUxykxZ; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpwylycg"
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-85b58d26336so228549139f.2
-        for <gfs2@lists.linux.dev>; Wed, 12 Mar 2025 05:06:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LWUxykxZ"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-390e0f7b272so721066f8f.0
+        for <gfs2@lists.linux.dev>; Tue, 18 Mar 2025 00:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741781186; x=1742385986; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=16gsqJtrWLlbGGVWtxUyKdKAGo91B2+znh+1e9ptq4Y=;
-        b=kpwylycg8arSkroWmbEhxrlOln5FXDNDeUKshYRBbXVPx5kXhFZQIPbQTPYOL+222d
-         AiVVEJwfOEL7ZpyR40khPEihGSdJAdTAa/f1YQM8mBZqefrXFBefzd0vwo4+h+hetALl
-         bu1OuW+4qIoyP5r8/NXA/0Dm9No1MCcKJrlFqZOsWnLG/zOFq/1AdNlJyF4ZwHezdfD8
-         ZIXANhNYk6biH2OWz54ddMppcyHEuhCBYYfGhgUY6LHS1vwrpukx2i2jEv1pfdxbnb0P
-         9UvHp7tTIT0vCNx5es6A/ATFJIdBz734wBbd7d5Ke0Rr4Sp4iowXm0PyYj8kvmqUgusk
-         S5aw==
+        d=suse.com; s=google; t=1742283318; x=1742888118; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=czBGFYowHo3rVYg0keX1Lh5CN93SOpTUvsuR1Oss0/w=;
+        b=LWUxykxZv0ZlxQbAtHEuBeG+FQsyD4E3Y+u44qSxtZmDqPX1a7RI1TiuZIeTWO1Nh2
+         tsk5IKKfyNErqfIfpUbiFYI0IdZK8Xz7Ro5LdzSibe+ik1WT2hUeufuvEcIb70V+f/BM
+         XxNgL+QIJDZjkSrt8N7gB/0+RWvlxxFUPl2ULi3H5wznrA4t8ZDGfQPL36OCxSQ/uF2n
+         Yop3KJORLAExZy5dUDgmcjYisjW4F74O02GQDA6ppkxO+gzlvaIDEgMM91tJHmlcAR/z
+         tlPS2J6a4OZ5TF9pEDQZVn3XSTfa9m04hmTCOiKKCT7M5m/pQHFX5QvAvCrC7dvGANrn
+         4SFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741781186; x=1742385986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=16gsqJtrWLlbGGVWtxUyKdKAGo91B2+znh+1e9ptq4Y=;
-        b=nu9LOfUTSQSwRGC838p6nt3Rn5xzchf5BupMrPJZpoyUxpChmKTMc3F/+hTQj4AMF8
-         s7LWUGskmAVagtbO0Fd9JdF/ohhs8vay6vyAXAiNUlFkMaGvPP6T3m/wUokZRWOiPd02
-         pYYOMp8uvcLHCoVLdDq9JwgXHheTLADEz7XLeMBKybui4/xI9clqTrxspfS4VUFhI08V
-         XfROJwrW289zKS1dJsOkTVcAvg+PNAYjyjpW6qLbKI6EVNLDo2r3lPHbwooi3YpY9giS
-         MyazTUX8B1FIpApifAKgIzjw++2v6+q7X9lkmUQMS1BuWU1ai1q+o1kf/uAY7aYLyk+D
-         9sGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvjK1bGwnjDFQak/43SG+xbuq7cbAh1MJrQkY7l5+PEovTJZCwKm8F5JHuYLOxO5audbBb@lists.linux.dev
-X-Gm-Message-State: AOJu0YzudWfFgKY3Tb/0GGWYzR+cNtJYInDthZehwD1M2Z7DQ/V51dQP
-	dS8rAUo0Gl3T/vAupKeEYiE1IQv/6CB2zbNJ6Ae8OyWZbJZUPPevVTfVBdh8PEvrt3Q49cWfkAo
-	Njhn6L0e+xHnIwOwNHC5KA2AuUlIILA==
-X-Gm-Gg: ASbGnctU3cmV8PRWRAhuEpW3anfiGJswxE139zHSiZurgLMqrRkRodJ1zBgo1xn1v5s
-	SWyPuPQpYS8DIppDeCY0L2F2Y6fDjRgSuCZRowiER8S4H5kfLCVkYoJwIuehqGvGNYW03umqYPh
-	TOvTN4p1EKdBT6ixjE8Wjb3wcR
-X-Google-Smtp-Source: AGHT+IGEsF+C5/vNm1H8T7WVPIYrmKDWuNPTJo1w2pmsEdpJ5Y2WsTAbWNetSHDpvj9YFbr4sOBl42eeBtR/jJ1a3Xg=
-X-Received: by 2002:a6b:f20b:0:b0:85b:35b1:53b4 with SMTP id
- ca18e2360f4ac-85b35b158fcmr1451553539f.12.1741781186554; Wed, 12 Mar 2025
- 05:06:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742283318; x=1742888118;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=czBGFYowHo3rVYg0keX1Lh5CN93SOpTUvsuR1Oss0/w=;
+        b=qyFFkFEQbRU+HlzY7Pnd1sL+rEavA2of1n+7SpyKEWWB5fFOb2K9uQ9O1q6q8zeXEy
+         mygPduLXoch6zZm7bbsXC6U6iYaUoEl1UyaTSRw0ayYKKcY+mIwHOk4EQ/aIt7qFayBx
+         3x+D0EfMXWaZ6Wk0Ds4hMtg6E96+pL8LKyDNV7VUUptW50yJrZPnSXiz10D9DkjndHQR
+         iAarFptdDdQR/yuUllzJUBr999JoskGlH0gpmQ0aBLH8H6YmNramLUsICoMYrA7xqwDe
+         8yj8DyOrhSIjiJ+JduZK6Tqt4Lfa+MT7E/nVT/qMooGCF8Y/j/vB3Xd1WBKAFxqDQxC2
+         fsCQ==
+X-Gm-Message-State: AOJu0Yz0ZnqUn5omDTWl1cH9WdHik5sDvS0cNF08D9dUTCn5D7svcVD4
+	mkXfQja1+KKVktF5METPuluCroyRPWmnP/H0CJW4R+3BoZZ54qrpmZ/bTX+RufM=
+X-Gm-Gg: ASbGnctsyUhfD3MSB9JG8bjd8kp+rdB61sswK0eje5v7/1xyqBXhnhD0Zp98j7+HJFa
+	E1auGQ1tI+Y3GH8LEViKWcDvqz6ZN0fDwNlflToVtyEKR804qmNcK6gxARuU8XihzfVG0PuK+Fz
+	Wqdr16AVUnQGfZ0ziXhz214OV9ZRwMCHq4v+SsntvMRu5FBZwIq0eHnZnczSso8iBKRC+8s2Gf6
+	/RJViQC0QsEiOX0Max/fyAPjpxUHzMAO83PRhBKmXMipNYPSCntogZvymPP55+NkmrashLvjQMH
+	Fm1YQdl1+QaktEky9eew9TEUz2OCoz5EuxTWIhAsu9iaLnboCsw=
+X-Google-Smtp-Source: AGHT+IHV3lCGc7uDd3jGV+Ctw1AXOpkIxOOnwFxeEB/NPC5g6b9R9qyqsg/J87rt4+g3CggtAfeDVA==
+X-Received: by 2002:a5d:5f92:0:b0:38f:27d3:1b44 with SMTP id ffacd0b85a97d-3971cf48debmr6223023f8f.2.1742283317926;
+        Tue, 18 Mar 2025 00:35:17 -0700 (PDT)
+Received: from [10.202.112.30] ([202.127.77.110])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56ea0511bsm8358365a12.45.2025.03.18.00.35.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Mar 2025 00:35:17 -0700 (PDT)
+Message-ID: <ec8715e5-5a0c-414d-b58e-07852cc683b2@suse.com>
+Date: Tue, 18 Mar 2025 15:35:13 +0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ed5089eb-fb83-4c69-9835-dd64735b8a73@stanley.mountain>
-In-Reply-To: <ed5089eb-fb83-4c69-9835-dd64735b8a73@stanley.mountain>
-From: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
-Date: Wed, 12 Mar 2025 13:06:13 +0100
-X-Gm-Features: AQ5f1JozYbhjkOmitxRJRrSxuAPTbJrtddEsFZS-Y5mUWrui6-xHADVYvGOMyYI
-Message-ID: <CAHpGcMJ4HTSRzqEWpVDDZi66Y86LRKCob9PAkMFfZBWdpUDU5w@mail.gmail.com>
-Subject: Re: [PATCH next] gfs2: Fix a NULL vs IS_ERR() bug in gfs2_find_jhead()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dlm_controld: remove 'detect' mode from config item
+ 'protocol'
+To: teigland@redhat.com, aahringo@redhat.com
+Cc: gfs2@lists.linux.dev, glass.su@suse.com, zzhou@suse.com
+References: <20250310073623.18607-1-heming.zhao@suse.com>
+From: Heming Zhao <heming.zhao@suse.com>
+Content-Language: en-US
+In-Reply-To: <20250310073623.18607-1-heming.zhao@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Am Mi., 12. M=C3=A4rz 2025 um 09:33 Uhr schrieb Dan Carpenter
-<dan.carpenter@linaro.org>:
-> The filemap_grab_folio() function doesn't return NULL, it returns error
-> pointers.  Fix the check to match.
->
-> Fixes: 40829760096d ("gfs2: Convert gfs2_find_jhead() to use a folio")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+ping...
+
+On 3/10/25 15:36, Heming Zhao wrote:
+> This patch removes the 'detect' mode for the configuration
+> item 'protocol'.
+> 
+> After this patch, dlm 'protocol' behaviors:
+> - TCP is now the default protocol.
+> - Stop trying to detect:
+>    - use dlm.conf or dlm_controld command line to switch from TCP
+>      to SCTP.
+>    - corosync.conf 'rrp_mode' is not supported in corosync 2.x env.
+> - TCP can work with multi-link, but uses only the first ip address
+>    from corosync.
+> - SCTP can support up to 8 ip addresses.
+> 
+> Note: This change requires a corresponding update to the dlm kernel
+> function dlm_tcp_listen_validate().
+> 
+> Signed-off-by: Heming Zhao <heming.zhao@suse.com>
 > ---
->  fs/gfs2/lops.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-> index 3853c422040b..0fd3b5ec7d8c 100644
-> --- a/fs/gfs2/lops.c
-> +++ b/fs/gfs2/lops.c
-> @@ -530,8 +530,8 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs=
-2_log_header_host *head,
->                         if (!folio) {
->                                 folio =3D filemap_grab_folio(mapping,
->                                                 block >> shift);
-> -                               if (!folio) {
-> -                                       ret =3D -ENOMEM;
-> +                               if (IS_ERR(folio)) {
-> +                                       ret =3D PTR_ERR(folio);
->                                         done =3D true;
->                                         goto out;
->                                 }
-> --
-> 2.47.2
-
-Applied, thanks.
-
-Andreas
+>   dlm_controld/action.c       | 39 ++++++-------------------------------
+>   dlm_controld/dlm.conf.5     | 11 ++++++++++-
+>   dlm_controld/dlm_controld.8 |  2 +-
+>   dlm_controld/main.c         |  4 ++--
+>   4 files changed, 19 insertions(+), 37 deletions(-)
+> 
