@@ -1,58 +1,138 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2F22AEE2
-	for <gfs2@lists.linux.dev>; Thu, 20 Mar 2025 05:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5016D36AF5
+	for <gfs2@lists.linux.dev>; Thu, 20 Mar 2025 20:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742448862; cv=none; b=W+E4goC0yUfGQYfkhgHDRWz3rPWi2m+ZsQYdhp+22p4/s8LMWmk79gENjP6vfkL27B5Cv81KwT/5Dqvr5IJXBaL3+aJSH7nEneTy9O2LZX6l6naJsPyPaD5ac8BJ0svUgL5AoADvqzXx6g87ORhdQ5qeMZe8C7gHP0jbBKLfrAI=
+	t=1742502660; cv=none; b=GcUGfp2cW6QP/VSwRq/LiCy2BCBzAI+qBUdooDrKM3RC39BroXFHfrSI+G+VbVY7FpTrrlWIKdfL7Flwrvmy9H/XzB55MDhmSN/MPH7HSwYE8uwYjc6rNsFXp9I433IDh5MSC2JsAHDa+nDnnpRgHYBU4fNsANbtT+KcYzL/OcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742448862; c=relaxed/simple;
-	bh=NXOA1i1mfLJj2eeNDdx1fCLit7TPef48eIRXWIGcF1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pg4B+NqkP72GPz9TTrOP9cKWEYcavhfnAGL7kPpMfJzVbIboUGJk8VPsBqeEXCbqF1vuLW1UPALn/N5zkzs7FmnFuBPIPTJuLHI3DqRaqKK1XFPBNxJ/rtwMsmXxsqM8VRmO4JOkrUFJad2I5JZksOtx6tXLsZcT4l85wmr5axw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 76D7968AA6; Thu, 20 Mar 2025 06:34:16 +0100 (CET)
-Date: Thu, 20 Mar 2025 06:34:16 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 3/8] lockref: use bool for false/true returns
-Message-ID: <20250320053416.GA12664@lst.de>
-References: <20250115094702.504610-1-hch@lst.de> <20250115094702.504610-4-hch@lst.de> <ptwb6urnzbov545jsndxa4d324ezvor5vutbcev64dwauibwaj@kammuj4pbi45> <CAGudoHEW=MmNLQSnvZ3MJy0KAnGuKKNGevOccd2LdiuUWcb0Yg@mail.gmail.com> <20250319062923.GA23686@lst.de> <CAGudoHHVd8twoP5VsZkkW_V45X+i7rrApZctW=HGakM9tcnyHA@mail.gmail.com>
+	s=arc-20240116; t=1742502660; c=relaxed/simple;
+	bh=3vKVUOAvupLA0mpNKXW+Sc1D/4ps/fG+Yq+Yl5TsQc0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9WAzokea0SXnxRguop4AijROnaW0TIhs5y3/tY6bYDZwQpMSPTfVUA/O2pS5BFaE2EhE2c4jZU8J9J+rmIrVKvLoeHLX4J7cC/nFRZC4GZCT5iMg4ph1bG7DH9aulW5QWCPhmTjGvJfOxLlPWmtWaHFbIzdaRrgadbatMmUHsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GyLPGMi4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GyLPGMi4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742502657;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Vp4d4//9B8RSPZQ7UNS+PFpi1LfeyB7WXn9sDdC7J8=;
+	b=GyLPGMi4Yrmel9aAkjpig6mEDcDH/vH5B22/gwD7teqD/mS1Bqz3iv6kKR48uPIARnGfe/
+	nDWS2L1/6JBLVg0Muk/IsZv43LZDnHpw85Hsrq6o9KySQyZITipm7WiCvB+AnjeIjoXL48
+	3OT/Rwwr+OZUwTUw7GqgdWrlSIJROeM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-1EvaqPrxOc-O1IUY13uENg-1; Thu,
+ 20 Mar 2025 16:30:53 -0400
+X-MC-Unique: 1EvaqPrxOc-O1IUY13uENg-1
+X-Mimecast-MFC-AGG-ID: 1EvaqPrxOc-O1IUY13uENg_1742502652
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F8CB19560BB;
+	Thu, 20 Mar 2025 20:30:52 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.15])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3953819560AF;
+	Thu, 20 Mar 2025 20:30:49 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes for 6.15
+Date: Thu, 20 Mar 2025 21:30:46 +0100
+Message-ID: <20250320203048.2483603-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGudoHHVd8twoP5VsZkkW_V45X+i7rrApZctW=HGakM9tcnyHA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Wed, Mar 19, 2025 at 01:04:14PM +0100, Mateusz Guzik wrote:
-> The change is cosmetic and has an unintended impact on code gen, which
-> imo already puts a question mark on it.
-> 
-> Neither the change itself nor the resulting impact are of note and in
-> that case I would err on just not including it for the time being, but
-> that's just my $0.03.
+Dear Linus,
 
-Im not sure how you came up with that opinion but as you might have
-guessed I don't agree at all.  Having the proper types is more than
-just cosmetic, on the other hand the code generation change you
-see can easily be argued as cosmetic.  You've also completely ignored
-the request to show any indication that it actually matters the
-slightest.
+please consider pulling the following gfs2 changes for 6.15.
+
+Thanks,
+Andreas
+
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
+
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.15
+
+for you to fetch changes up to 8cb70b91b20a591a543394a7ee1d792b830e2dac:
+
+  gfs2: some comment clarifications (2025-03-18 13:21:39 +0100)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Fix two bugs related to locking request cancelation (locking request
+  being retried instead of canceled; canceling the wrong locking
+  request).
+
+- Prevent a race between inode creation and deferred delete analogous
+  to commit ffd1cf0443a2 from 6.13.  This now allows to further simplify
+  gfs2_evict_inode() without introducing mysterious problems.
+
+- When in inode delete should be verified / retried "later" but that
+  isn't possible, skip the delete instead of carrying it out
+  immediately.  This broke in 6.13.
+
+- More folio conversions from Matthew Wilcox (plus a fix from Dan
+  Carpenter).
+
+- Various minor fixes and cleanups.
+
+----------------------------------------------------------------
+Andreas Gruenbacher (13):
+      gfs2: Decode missing glock flags in tracepoints
+      gfs2: Add GLF_PENDING_REPLY flag
+      gfs2: glock holder GL_NOPID fix
+      gfs2: Replace GIF_DEFER_DELETE with GLF_DEFER_DELETE
+      gfs2: Remove more dead code in add_to_queue
+      gfs2: Check for empty queue in run_queue
+      gfs2: Fix request cancelation bug
+      gfs2: Fix additional unlikely request cancelation race
+      gfs2: Prevent inode creation race (2)
+      gfs2: minor evict fix
+      gfs2: remove redundant warnings
+      gfs2: skip if we cannot defer delete
+      gfs2: some comment clarifications
+
+Dan Carpenter (1):
+      gfs2: Fix a NULL vs IS_ERR() bug in gfs2_find_jhead()
+
+Matthew Wilcox (Oracle) (8):
+      gfs2: Use b_folio in gfs2_log_write_bh()
+      gfs2: Use b_folio in gfs2_trans_add_meta()
+      gfs2: Use b_folio in gfs2_submit_bhs()
+      gfs2: Use b_folio in gfs2_check_magic()
+      gfs2: Convert gfs2_jhead_pg_srch() to gfs2_jhead_folio_search()
+      gfs2: Convert gfs2_find_jhead() to use a folio
+      gfs2: Convert gfs2_end_log_write_bh() to work on a folio
+      gfs2: Convert gfs2_meta_read_endio() to use a folio
+
+ fs/gfs2/file.c              |   8 +--
+ fs/gfs2/glock.c             | 124 +++++++++++++++++++++++---------------------
+ fs/gfs2/incore.h            |   4 +-
+ fs/gfs2/lops.c              |  78 ++++++++++++++--------------
+ fs/gfs2/meta_io.c           |  15 +++---
+ fs/gfs2/super.c             |  24 +++------
+ fs/gfs2/trace_gfs2.h        |  10 +++-
+ fs/gfs2/trans.c             |   4 +-
+ include/linux/buffer_head.h |   1 -
+ 9 files changed, 136 insertions(+), 132 deletions(-)
 
