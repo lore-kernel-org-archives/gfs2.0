@@ -1,129 +1,257 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6D61F8BBC
-	for <gfs2@lists.linux.dev>; Tue,  1 Apr 2025 11:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8344C259CAF
+	for <gfs2@lists.linux.dev>; Mon,  7 Apr 2025 18:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743507305; cv=none; b=GG4R2OCfJ4yUkqqXnSm7qZuweNkA3jziJaewiuldPkcZVr4JKy62P55CdB//6l4rj4Z0+TCvT9U5I4eaFi1+AunXB2Qy2ZuopUlp4WDp7mxPI/FvVpaTwL/kFpuiof0i6w0+zaKLWnhRGepd1Tta6CyJeByF4BZ58UHjKSPxkKk=
+	t=1744050080; cv=none; b=pAlqHQdXn+YflWXjQTLkQXxVARDlk4f+kderqBrbTLvfTFx08c+OhHKbIqvFIzzaQVbF1luWJGYbtbVNkkTHFCgbIELCFXqDxyeAWOYCgkv2fHXtEtIka2sZqFcKypnY4V+rJyUqYKRS1bP4Q6TbQ+xEXkZ0UTV3uPx2rk2y2Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743507305; c=relaxed/simple;
-	bh=lAEC+Pf5uytHLCbc/4PM5Z7g7tEIjr/2/EY3vxgSUVM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rrwXBA5h6T/WxWUU9tcKRqRwFb1dznyP7MFwC1OU7ofPaJ2Fa2pprGz0W4kI1obObgqlpYsbaCgDRKoVRGBxYOsgEXcMCVA6htFjrSrrUF9bkFLWsOf1EDaJBQx6GYgzY595s/GOE2r1UkgEFidUcFi8qS5m/mhuF8VAPJNfOJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YTn3EeX/; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1744050080; c=relaxed/simple;
+	bh=Fz/XDtdulRxQ3oKljNvKc4VMr4rk0YKdQk3hA5O+D7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ngkSrqpCKwy/zRcSBq76acaAUkryPbHe+QhoU76TVmub8z0ITcmzufP6eewzVlyslVkHmWweqqYIMeEg/VPM3MjWfWK0oOxr1NS6TUztcqDi1DLr3QOdDxQWMXbcKPp1Ca4RE/bUWB7Dm/KkgQVjWJnZFvO/jJnFBBTWz8yE1ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hZoS+mw6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YTn3EeX/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hZoS+mw6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743507302;
+	s=mimecast20190719; t=1744050076;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vF4YuDd97kbH9h4b0Huy41NC1nIWjQbGUIb1cXKzuDs=;
-	b=YTn3EeX/GWjNmfvd0G65lj3cjm4D81oGDPLogLVUi3qZYSFJI3HEBMxXa/rlEIyyJdX8B+
-	Uw8O64lc0MfT36c4bcd1UUItB8/KvVecfamFbd2NQ7KyzQUanIyKsD/gzyYc4d1U72QDu+
-	b3yfYduIeQcBYIaYOXznGeLXe+nKWyI=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-QtLTSWUsPWSTW-x7cqTiVw-1; Tue, 01 Apr 2025 07:35:01 -0400
-X-MC-Unique: QtLTSWUsPWSTW-x7cqTiVw-1
-X-Mimecast-MFC-AGG-ID: QtLTSWUsPWSTW-x7cqTiVw_1743507300
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-229668c8659so58085ad.3
-        for <gfs2@lists.linux.dev>; Tue, 01 Apr 2025 04:35:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743507300; x=1744112100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vF4YuDd97kbH9h4b0Huy41NC1nIWjQbGUIb1cXKzuDs=;
-        b=YplYUDGWnHlex7gAGihRwj4i5rk2x8watXjugZEJBkn05MgORaOJvAI7s6Pu98JdkZ
-         nD74RANJiLrD42RczI2Vw7VzpoYDt6TNgkUAvQ0LU1wGHNhHwG+IPK2f224ZWTZh3qzj
-         dVk27tRk79M2iiRWX31TsB+q4k7xqF5nsNCr4p+FX59SP0ka5QTd4clkbWNeufJu6Vx1
-         SYFFIsK2ltfQJS6t2IwXMleuNLumAz9EytZcZgZ5nafXP7+zq3mR0ZV+WR/VV0k5SlEA
-         OjkB1CBO/ppvXx1iDkJGQBU+Zgdv6AnvC7aHuXJn6tF5l7MR/PfXXwlnyNfF+ufFw+Dq
-         lHIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUw35SMcUFKYV8+7mk+E71/4npWUL811yjoHWFsctBlDf4bBOma10CKSqcs7ATR0n4ZIxN@lists.linux.dev
-X-Gm-Message-State: AOJu0YyD49zi49sw4fuR4XDyHS7qunaOHf0YScMkIDoUdyu5JBcxSpB/
-	a3RzHqKUMutJumZVyc+8VP+lvTQPhw7487+RAqRH3lNdKlg6z6AESv6Sye1u/21sZau9Bb4reyP
-	8lnoGlPKZ0ICRQLViiGdQjA3p4toVQXCRQFwN7TzSROT6rmSSzQYsZ6hoEcMQkDJoqIxseLjwUv
-	M2MZiGLoakyG43bOkalNbOPDO3dw==
-X-Gm-Gg: ASbGncu+pXOnyVKajO9bDkBMy+DyNPy0vciTqsWsX7BIthy2rw9sRcH5D3/RjEV2xlt
-	i1Wc2kNAHedWyRNEsYmxHX0K/1LWvfu9jHmvAx3WpTOR1G4Pr9fsvnKZfECoc46YGSSbX5G8=
-X-Received: by 2002:a17:903:2408:b0:21f:85af:4bbf with SMTP id d9443c01a7336-2292f95d1f0mr186006905ad.20.1743507299908;
-        Tue, 01 Apr 2025 04:34:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSn5uOt98uhKZMMDLL1PKULGJN4KlvJ0HGSMvnm2Gb0y4uBbgD4AVkvun+hnHid4h00atdlaLqTwOr5wiMPx0=
-X-Received: by 2002:a17:903:2408:b0:21f:85af:4bbf with SMTP id
- d9443c01a7336-2292f95d1f0mr186006645ad.20.1743507299575; Tue, 01 Apr 2025
- 04:34:59 -0700 (PDT)
+	bh=AKqSZoUpU0uzACYZM5pmj6GRgcBtXZsWwsDTZhVURtA=;
+	b=hZoS+mw6qzQDz0UtfzltnekLqv1XzBKrWGBhulqOvE9THWuvTDh0yc01TWxv9cYWlFud2L
+	jIsMPssydURxQ70sGQFoSlRqp+m9tEZU/EWPQr6/2K5U2WoEcIcD4uG5oR9nIJgtQ34pNV
+	e0m00wLrfIpe4sfY+XXReUOS+jZyZZY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-_jQ5k9ceMQ6hbE5jbl7neQ-1; Mon,
+ 07 Apr 2025 14:21:14 -0400
+X-MC-Unique: _jQ5k9ceMQ6hbE5jbl7neQ-1
+X-Mimecast-MFC-AGG-ID: _jQ5k9ceMQ6hbE5jbl7neQ_1744050073
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2EBA19560BC;
+	Mon,  7 Apr 2025 18:21:12 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.15])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 86B0D180A803;
+	Mon,  7 Apr 2025 18:21:09 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: cgroups@vger.kernel.org
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Jan Kara <jack@suse.cz>,
+	Rafael Aquini <aquini@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC 1/2] gfs2: replace sd_aspace with sd_inode
+Date: Mon,  7 Apr 2025 20:21:01 +0200
+Message-ID: <20250407182104.716631-2-agruenba@redhat.com>
+In-Reply-To: <20250407182104.716631-1-agruenba@redhat.com>
+References: <20250407182104.716631-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250331230324.1266587-1-aahringo@redhat.com>
-In-Reply-To: <20250331230324.1266587-1-aahringo@redhat.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 1 Apr 2025 13:34:48 +0200
-X-Gm-Features: AQ5f1JpDZFaI4ElGDN_h999frdCV6HsRsYbhA0HPvlCNr-3Y6fXIOT9mZSYMj88
-Message-ID: <CAHc6FU7ny9PZeg6sipLc36VwiRChAbw=MtyCveGnX3pXLTfVKQ@mail.gmail.com>
-Subject: Re: [PATCHv2 gfs2/for-next] gfs2: move msleep to sleepable context
-To: Alexander Aring <aahringo@redhat.com>
-Cc: stable@vger.kernel.org, gfs2@lists.linux.dev, david.laight.linux@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: djGa6WWKjvOGhfFi__FpO1XIGiEhT3DSN2PFo4ir3Is_1743507300
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Apr 1, 2025 at 1:03=E2=80=AFAM Alexander Aring <aahringo@redhat.com=
-> wrote:
-> This patch moves the msleep_interruptible() out of the non-sleepable
-> context by moving the ls->ls_recover_spin spinlock around so
-> msleep_interruptible() will be called in a sleepable context.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
-> Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
-> changes since v2:
->  - move the spinlock around to avoid schedule under spinlock
->
->  fs/gfs2/lock_dlm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-> index 58aeeae7ed8c..2c9172dd41e7 100644
-> --- a/fs/gfs2/lock_dlm.c
-> +++ b/fs/gfs2/lock_dlm.c
-> @@ -996,14 +996,15 @@ static int control_mount(struct gfs2_sbd *sdp)
->                 if (sdp->sd_args.ar_spectator) {
->                         fs_info(sdp, "Recovery is required. Waiting for a=
- "
->                                 "non-spectator to mount.\n");
-> +                       spin_unlock(&ls->ls_recover_spin);
->                         msleep_interruptible(1000);
->                 } else {
->                         fs_info(sdp, "control_mount wait1 block %u start =
-%u "
->                                 "mount %u lvb %u flags %lx\n", block_gen,
->                                 start_gen, mount_gen, lvb_gen,
->                                 ls->ls_recover_flags);
-> +                       spin_unlock(&ls->ls_recover_spin);
->                 }
-> -               spin_unlock(&ls->ls_recover_spin);
->                 goto restart;
->         }
->
-> --
-> 2.43.0
+Use a dummy inode as mapping->host of the address spaces for global as
+well as per-inode metadata.  The global metadata address space is now
+accessed as gfs2_aspace(sdp) instead of sdp->sd_aspace.  The per-inode
+metadata address spaces are still accessed as
+gfs2_glock2aspace(GFS2_I(inode)->i_gl).
 
-Pushed to for-next, thanks.
+Based on a previous version from Bob Peterson from several years ago.
 
-Andreas
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+---
+ fs/gfs2/glock.c      |  3 +--
+ fs/gfs2/glops.c      |  4 ++--
+ fs/gfs2/incore.h     |  9 ++++++++-
+ fs/gfs2/meta_io.c    |  2 +-
+ fs/gfs2/meta_io.h    |  4 +---
+ fs/gfs2/ops_fstype.c | 24 +++++++++++++-----------
+ fs/gfs2/super.c      |  2 +-
+ 7 files changed, 27 insertions(+), 21 deletions(-)
+
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index d7220a6fe8f5..ba25b884169e 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1166,7 +1166,6 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
+ 		   const struct gfs2_glock_operations *glops, int create,
+ 		   struct gfs2_glock **glp)
+ {
+-	struct super_block *s = sdp->sd_vfs;
+ 	struct lm_lockname name = { .ln_number = number,
+ 				    .ln_type = glops->go_type,
+ 				    .ln_sbd = sdp };
+@@ -1229,7 +1228,7 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
+ 	mapping = gfs2_glock2aspace(gl);
+ 	if (mapping) {
+                 mapping->a_ops = &gfs2_meta_aops;
+-		mapping->host = s->s_bdev->bd_mapping->host;
++		mapping->host = sdp->sd_inode;
+ 		mapping->flags = 0;
+ 		mapping_set_gfp_mask(mapping, GFP_NOFS);
+ 		mapping->i_private_data = NULL;
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index eb4714f299ef..116efe335c32 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -168,7 +168,7 @@ void gfs2_ail_flush(struct gfs2_glock *gl, bool fsync)
+ static int gfs2_rgrp_metasync(struct gfs2_glock *gl)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-	struct address_space *metamapping = &sdp->sd_aspace;
++	struct address_space *metamapping = gfs2_aspace(sdp);
+ 	struct gfs2_rgrpd *rgd = gfs2_glock2rgrp(gl);
+ 	const unsigned bsize = sdp->sd_sb.sb_bsize;
+ 	loff_t start = (rgd->rd_addr * bsize) & PAGE_MASK;
+@@ -225,7 +225,7 @@ static int rgrp_go_sync(struct gfs2_glock *gl)
+ static void rgrp_go_inval(struct gfs2_glock *gl, int flags)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-	struct address_space *mapping = &sdp->sd_aspace;
++	struct address_space *mapping = gfs2_aspace(sdp);
+ 	struct gfs2_rgrpd *rgd = gfs2_glock2rgrp(gl);
+ 	const unsigned bsize = sdp->sd_sb.sb_bsize;
+ 	loff_t start, end;
+diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
+index 74abbd4970f8..0a41c4e76b32 100644
+--- a/fs/gfs2/incore.h
++++ b/fs/gfs2/incore.h
+@@ -795,7 +795,7 @@ struct gfs2_sbd {
+ 
+ 	/* Log stuff */
+ 
+-	struct address_space sd_aspace;
++	struct inode *sd_inode;
+ 
+ 	spinlock_t sd_log_lock;
+ 
+@@ -851,6 +851,13 @@ struct gfs2_sbd {
+ 	unsigned long sd_glock_dqs_held;
+ };
+ 
++#define GFS2_BAD_INO 1
++
++static inline struct address_space *gfs2_aspace(struct gfs2_sbd *sdp)
++{
++	return sdp->sd_inode->i_mapping;
++}
++
+ static inline void gfs2_glstats_inc(struct gfs2_glock *gl, int which)
+ {
+ 	gl->gl_stats.stats[which]++;
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 198cc7056637..9dc8885c95d0 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -132,7 +132,7 @@ struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno, int create)
+ 	unsigned int bufnum;
+ 
+ 	if (mapping == NULL)
+-		mapping = &sdp->sd_aspace;
++		mapping = gfs2_aspace(sdp);
+ 
+ 	shift = PAGE_SHIFT - sdp->sd_sb.sb_bsize_shift;
+ 	index = blkno >> shift;             /* convert block to page */
+diff --git a/fs/gfs2/meta_io.h b/fs/gfs2/meta_io.h
+index 831d988c2ceb..b7c8a6684d02 100644
+--- a/fs/gfs2/meta_io.h
++++ b/fs/gfs2/meta_io.h
+@@ -44,9 +44,7 @@ static inline struct gfs2_sbd *gfs2_mapping2sbd(struct address_space *mapping)
+ 		struct gfs2_glock_aspace *gla =
+ 			container_of(mapping, struct gfs2_glock_aspace, mapping);
+ 		return gla->glock.gl_name.ln_sbd;
+-	} else if (mapping->a_ops == &gfs2_rgrp_aops)
+-		return container_of(mapping, struct gfs2_sbd, sd_aspace);
+-	else
++	} else
+ 		return inode->i_sb->s_fs_info;
+ }
+ 
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index e83d293c3614..ce6ee494ffc4 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -72,7 +72,6 @@ void free_sbd(struct gfs2_sbd *sdp)
+ static struct gfs2_sbd *init_sbd(struct super_block *sb)
+ {
+ 	struct gfs2_sbd *sdp;
+-	struct address_space *mapping;
+ 
+ 	sdp = kzalloc(sizeof(struct gfs2_sbd), GFP_KERNEL);
+ 	if (!sdp)
+@@ -109,16 +108,6 @@ static struct gfs2_sbd *init_sbd(struct super_block *sb)
+ 
+ 	INIT_LIST_HEAD(&sdp->sd_sc_inodes_list);
+ 
+-	mapping = &sdp->sd_aspace;
+-
+-	address_space_init_once(mapping);
+-	mapping->a_ops = &gfs2_rgrp_aops;
+-	mapping->host = sb->s_bdev->bd_mapping->host;
+-	mapping->flags = 0;
+-	mapping_set_gfp_mask(mapping, GFP_NOFS);
+-	mapping->i_private_data = NULL;
+-	mapping->writeback_index = 0;
+-
+ 	spin_lock_init(&sdp->sd_log_lock);
+ 	atomic_set(&sdp->sd_log_pinned, 0);
+ 	INIT_LIST_HEAD(&sdp->sd_log_revokes);
+@@ -1135,6 +1124,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	int silent = fc->sb_flags & SB_SILENT;
+ 	struct gfs2_sbd *sdp;
+ 	struct gfs2_holder mount_gh;
++	struct address_space *mapping;
+ 	int error;
+ 
+ 	sdp = init_sbd(sb);
+@@ -1156,6 +1146,18 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_flags |= SB_NOSEC;
+ 	sb->s_magic = GFS2_MAGIC;
+ 	sb->s_op = &gfs2_super_ops;
++
++	/* Set up an address space for metadata writes */
++	sdp->sd_inode = new_inode(sb);
++	if (!sdp->sd_inode)
++		goto fail_free;
++	sdp->sd_inode->i_ino = GFS2_BAD_INO;
++	sdp->sd_inode->i_size = OFFSET_MAX;
++
++	mapping = gfs2_aspace(sdp);
++	mapping->a_ops = &gfs2_rgrp_aops;
++	mapping_set_gfp_mask(mapping, GFP_NOFS);
++
+ 	sb->s_d_op = &gfs2_dops;
+ 	sb->s_export_op = &gfs2_export_ops;
+ 	sb->s_qcop = &gfs2_quotactl_ops;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 44e5658b896c..4529b7dda8ca 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -648,7 +648,7 @@ static void gfs2_put_super(struct super_block *sb)
+ 	gfs2_jindex_free(sdp);
+ 	/*  Take apart glock structures and buffer lists  */
+ 	gfs2_gl_hash_clear(sdp);
+-	truncate_inode_pages_final(&sdp->sd_aspace);
++	iput(sdp->sd_inode);
+ 	gfs2_delete_debugfs_file(sdp);
+ 
+ 	gfs2_sys_fs_del(sdp);
+-- 
+2.48.1
 
