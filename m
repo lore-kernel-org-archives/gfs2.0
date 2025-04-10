@@ -1,112 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1196E1F152E
-	for <gfs2@lists.linux.dev>; Thu, 10 Apr 2025 17:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10281293454
+	for <gfs2@lists.linux.dev>; Thu, 10 Apr 2025 19:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744307311; cv=none; b=ParvajoTqkAN22vGSsUij+y6Ehqc1DNAkekHbiJ+CEufhow1J15AppObXyOkJqdLueW8H0zFM4OP02kOYUWPZLiZFpdOfcNkeg2c9j3p3D7U3XMlRFfyh2LsUhyV3U/czgiYHnO6QmnsIye8CbmJJ31mGAS+MKwmboH1oIx2CjE=
+	t=1744312822; cv=none; b=dNbO8CpLtPF+xSDkdev6tGXAjhsKbCAuH+4mS1MmRK7pADUa52ZuFnjZyDeNbSqO3VdP/+0GaQIU+sGfGrBl7xDIn8S0QFy7yT4T2i2m7pa1QN0yBtMoF//bUOcE5yo4Z1JPB6HEM45hpHfeYxi2l4MwtaMZ7z37/RlGt7wGhgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744307311; c=relaxed/simple;
-	bh=9kFVBt0xmNJ1O3N7xNDOXpsY2sp5HC0wOX9IKhNyfoM=;
+	s=arc-20240116; t=1744312822; c=relaxed/simple;
+	bh=BUp6dVA/9/DIHAm8btLSsebQGLRoM6QqRKm/vQlyaG8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ay+OcxK4uRH2paj6HDrYTIXi3cW6PEXMyGg0PzB7WJcQlJRmO/PMErTyhFrqiypPbTHO7tDvJPy/TMzD4x/4fwWbBJ2wbfpbX4+02EOD2q0n1kid3omvbVteY1BGFgxknkmk8JoF1Im1U3YupFRO0vG3O2Wv6FoyBnN9l9L2z94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Igoq8XiO; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=BctU2WcqX6MAz966Qu/R5yH9qdoCqbB7HPeuxRjn4583dB0L6pT3XU3/PvZEIRtHIgUc+2vDCKlS06Ycqn6ZrHcd93Cj36oskCeug+kgAFcxceb+gKD29cp3R0Cv5NcLmPgXAXJEO8RXFATljho4dvSAXuElpdIq4B1vQZwjhNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+WwOThG; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Igoq8XiO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+WwOThG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744307309;
+	s=mimecast20190719; t=1744312819;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OqvPNxA7jww3BXXOwYN/gaN85wuxZPgfj7tUlo1Pygo=;
-	b=Igoq8XiOR2jq/FzPAumA9aWR2qErCcMAyz6s3JlB9EEI4xDcCXXp9FEdmEi/q0ByLxeCJ9
-	ugiRj3jejH0O45K8chmG0RU1PgDuCS6jq0OUWLSShyW2GQVerQADXPh9B7ZVd094OxVD4N
-	mMvEApChBM5BEhJlUHv+cNdLWwbPjvk=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=7qyuCy71sNM096ptCCI9TtV8xzN/TLmJLvM6k58//nE=;
+	b=Z+WwOThGgx4z4zWwd9z0btu8E8uRs06DUMENdvFe57l3vv+a3Lfi4S7VIBnXpUB3WHAvdJ
+	7uo5W0hM+mjB8c2iDYQ2oY0Qfp0RowLfnk5YyhBE2Vfq2+m0rbwg2bNcWWEibdeEheJBGK
+	KmANNOSr9P0DWXbtpuIfkwC/uaKpaS0=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-Pul3gvZYM2uAx1DrDXzXGA-1; Thu, 10 Apr 2025 13:48:27 -0400
-X-MC-Unique: Pul3gvZYM2uAx1DrDXzXGA-1
-X-Mimecast-MFC-AGG-ID: Pul3gvZYM2uAx1DrDXzXGA_1744307307
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2240a96112fso15554535ad.2
-        for <gfs2@lists.linux.dev>; Thu, 10 Apr 2025 10:48:27 -0700 (PDT)
+ us-mta-499-ROmlc5WAMEKvgb4eqRMaUA-1; Thu, 10 Apr 2025 15:20:17 -0400
+X-MC-Unique: ROmlc5WAMEKvgb4eqRMaUA-1
+X-Mimecast-MFC-AGG-ID: ROmlc5WAMEKvgb4eqRMaUA_1744312817
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2242ce15cc3so9320185ad.1
+        for <gfs2@lists.linux.dev>; Thu, 10 Apr 2025 12:20:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744307307; x=1744912107;
+        d=1e100.net; s=20230601; t=1744312815; x=1744917615;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OqvPNxA7jww3BXXOwYN/gaN85wuxZPgfj7tUlo1Pygo=;
-        b=pVAmrHIxmW1FuGvzVYFHg4wdzeMloMqNQpvnQVDGel5v10B9Juik7m+YTWeB0GajVO
-         wjx8GMD9fBHDQvS8KQHCIS9FRTbiZ4SgGT3GAiczzyVIY0n1YAvcU5zMnXBV+Qmb8SlF
-         UvfnkO/ujIz/BHzXKTHFW2re92veEkGfcqTEAoYXOXAJPVlbDY4B6f1gHvymbmvOSf1y
-         Fr4XZ1CGk+7lY3ErsK2liu/U0FT/+DSRf5tE7PIUQW+OweEfh6WijAzJx/PUu43YG74V
-         gh6F04tmGIhimpH4qv2PZjhtku2Qd7UFqIBs22EjDiJ8n32xTg3aL6X0kC+fV+ZQdVV9
-         oVzg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6K0d6/crGlqNQuqVgn8FFaXVfznykDQLXimZc+yJpWrpfnb9LAJb4jxjXAgm2imw7IQqZ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6+EGNE/p2OKiD/7o8Okz+zGhdtjR+rB3QzdoF+deFBDVv3XJu
-	79uhPu4AQ+ZOCHmNXzI2MTXyh7vcGLZ0Zkt/6iAbbO8PvMbm2QpeKIvfp3x9MxL8aYHG/MNSzi/
-	WFTz0iI3zHg1VhWousAVCK0gOXKgRBUqyrsGZ5fKpM8SQ6jq5zw+FiwdAG+9fMqkLl/K5oOssGo
-	fsHxFDrVIa+4o3zzdLYMBtiJzoXg==
-X-Gm-Gg: ASbGncu4PzUz94ylTThKyQ55GHf+SW3pp8xesaoTL72odRZtNgWyDDbhf3klvZyQuWI
-	snFCubBtBQZIQChHNog666ARoDqX1l34ECs/zi3PhT8MMoIVIQAhqegFTTGv5LTlMuws=
-X-Received: by 2002:a17:902:dac9:b0:224:1579:5e91 with SMTP id d9443c01a7336-22b42c5ac2amr51880235ad.47.1744307306898;
-        Thu, 10 Apr 2025 10:48:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUo1DbI1h9w9OLlDnjq5RZSX9CGytc55kczInpUMCnGZepk9T1FYX3YU4pw1A+DuQV82ASCx1d3eK2A6PEVwk=
-X-Received: by 2002:a17:902:dac9:b0:224:1579:5e91 with SMTP id
- d9443c01a7336-22b42c5ac2amr51879845ad.47.1744307306483; Thu, 10 Apr 2025
- 10:48:26 -0700 (PDT)
+        bh=7qyuCy71sNM096ptCCI9TtV8xzN/TLmJLvM6k58//nE=;
+        b=BC0/u9Y2ylBqSYEwpbke0TwZ5YK2xDo9gCZT3te5EOoS73XUu7JsTa9fkdueGubFqq
+         p+JZweOJmSmrubo9uZ3Z9bm3Ts5uZbvuDM9aK51w616a3uU8kYFeVozovFCswJaPzWmq
+         0TbmuwgHnPTLgyTIf1euSYZSQjHMlYTwQS85idy0bGUPaNx8A+CFTequjyO7+GHVaV7Q
+         YNe2hvz+Sdjx8p74SugSrIpEqoZEbIfVsbni++TondJSDibhasXI9AoHGFNpd/2dhfQr
+         U6eSL5OvOMZhEtz7SqFL2Xpjq70Rs+gIZ8rS/ZFMD5d+QytCHpnx+iO7tnWDj21cLFwh
+         GAAA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgMPntuAJ2D0i9w0zFRb7iuOZuR/CBM8vY3G3ttc88l1YdhEVnhLDbdIDpfZ0vZTpvvKMD@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6jdTlFX7H2BlK5ZLy5+W4tt0yZE1NL2PA2Vsg9iZAtjxvKZJq
+	BcqL9aWMwg4dr3b3EgWXRWnzs8ILY0V5knw3psQJynukp3C7TfLUBYA3dAUcQgNw5TdMiJBk307
+	kFV1IjD1OPMGsC0dQLdrc4cifx/M0CMUX2yl9vbGJeNb1nOoghh+UbXMu6iiuUd8Z2Gp5xTz7my
+	vk/vnHX3j44jbxcHewvriwz1q6nuns9G8PPIiR
+X-Gm-Gg: ASbGncv/itT+cRvDkDywHOGDcpq/Jm7H1vJHsc4gGAchPvmRWuFSZ+lqQsqiC+VJdvG
+	iMhREoGPBYhOTuCIiTYEq4AXyFdvexHOXFhCArBCM/ZvqGfnsQ86j2XYEIgXd2BlQ6bE=
+X-Received: by 2002:a17:902:e88f:b0:223:2aab:462c with SMTP id d9443c01a7336-22bea4ab85fmr71695ad.15.1744312815423;
+        Thu, 10 Apr 2025 12:20:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6DNynR3qAzVJ5oYYe87012HehD64MJOEbZmJ5Zs6nbMEMT14kmxUjgfXc/J/nlg5RXQ5jsTdGAdgJRpiy1tQ=
+X-Received: by 2002:a17:902:e88f:b0:223:2aab:462c with SMTP id
+ d9443c01a7336-22bea4ab85fmr71525ad.15.1744312815145; Thu, 10 Apr 2025
+ 12:20:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250407182104.716631-1-agruenba@redhat.com> <20250407182104.716631-3-agruenba@redhat.com>
- <Z_eGvBHssVtGKpty@infradead.org>
-In-Reply-To: <Z_eGvBHssVtGKpty@infradead.org>
+References: <20250407182104.716631-1-agruenba@redhat.com> <20250407182104.716631-2-agruenba@redhat.com>
+ <Z_eGVWwQ0zCo2aSR@infradead.org>
+In-Reply-To: <Z_eGVWwQ0zCo2aSR@infradead.org>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 10 Apr 2025 19:48:14 +0200
-X-Gm-Features: ATxdqUF2qSG62wdzI_CXx71qpQw7c7dGZziC1q7bbQkSEqifIFryfqrjJnWzITo
-Message-ID: <CAHc6FU6NHxG-Tn+5tn2zy3QJFVruOM6tG7DsDi1sF+vDw4Xr_g@mail.gmail.com>
-Subject: Re: [RFC 2/2] writeback: Fix false warning in inode_to_wb()
+Date: Thu, 10 Apr 2025 21:20:03 +0200
+X-Gm-Features: ATxdqUHNINlL-pUTFVGgFjmH-0Yv2T34SdJ_H6wPly98qpm7VaT0OlGqfhHJNig
+Message-ID: <CAHc6FU4J6MsEaUFUfp_ZpuYKyXRpZ=FTJE9T=iRQgbByQWZOFA@mail.gmail.com>
+Subject: Re: [RFC 1/2] gfs2: replace sd_aspace with sd_inode
 To: Christoph Hellwig <hch@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, cgroups@vger.kernel.org, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Rafael Aquini <aquini@redhat.com>, 
-	gfs2@lists.linux.dev, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+Cc: cgroups@vger.kernel.org, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, 
+	Jan Kara <jack@suse.cz>, Rafael Aquini <aquini@redhat.com>, gfs2@lists.linux.dev, 
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Pp7O1ymlMNOAQJMKOAGpLDLBXJ5CC6bsJsf_LuX_b98_1744307307
+X-Mimecast-MFC-PROC-ID: UFtl5ld_biI2_e05Ane_mnsBhiWO4ZlDWazKB9BJWxw_1744312817
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 10, 2025 at 10:52=E2=80=AFAM Christoph Hellwig <hch@infradead.o=
+On Thu, Apr 10, 2025 at 11:01=E2=80=AFAM Christoph Hellwig <hch@infradead.o=
 rg> wrote:
-> On Mon, Apr 07, 2025 at 08:21:02PM +0200, Andreas Gruenbacher wrote:
-> > -static inline struct bdi_writeback *inode_to_wb(const struct inode *in=
-ode)
-> > +static inline struct bdi_writeback *inode_to_wb(struct inode *inode)
-> >  {
-> >  #ifdef CONFIG_LOCKDEP
-> >       WARN_ON_ONCE(debug_locks &&
-> > +                  inode_cgwb_enabled(inode) &&
-> >                    (!lockdep_is_held(&inode->i_lock) &&
-> >                     !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock=
-) &&
-> >                     !lockdep_is_held(&inode->i_wb->list_lock)));
-> > --
+> On Mon, Apr 07, 2025 at 08:21:01PM +0200, Andreas Gruenbacher wrote:
+> > Use a dummy inode as mapping->host of the address spaces for global as
+> > well as per-inode metadata.  The global metadata address space is now
+> > accessed as gfs2_aspace(sdp) instead of sdp->sd_aspace.  The per-inode
+> > metadata address spaces are still accessed as
+> > gfs2_glock2aspace(GFS2_I(inode)->i_gl).
+> >
+> > Based on a previous version from Bob Peterson from several years ago.
 >
-> This means that even on cgroup aware file systems we now only get
-> the locking validation if cgroups are actually enabled for the file
-> system instance and thus hugely reducing coverage, which is rather
-> unfortunate.
+> Please explain why you are doing this, not just what.
 
-Right. Is checking for (inode->i_sb->s_iflags & SB_I_CGROUPWB) instead okay=
-?
+Right, I have this description now:
+
+    Currently, sdp->sd_aspace and the per-inode metadata address spaces use
+    sb->s_bdev->bd_mapping->host as their ->host.  Folios in those address
+    spaces will thus appear to be on "bdev" rather than on "gfs2"
+    filesystems.  Those "bdev" filesystems will have the SB_I_CGROUPWB flag
+    set to indicate cgroup writeback support.  In fact, gfs2 doesn't suppor=
+t
+    cgroup writeback, though.
+
+    To fix that, use a "dummy" gfs2 inode as ->host of those address spaces
+    instead.  This will then allow functions like inode_to_wb() to determin=
+e
+    that the folio belongs to a a filesystem without cgroup writeback
+    support.
+
 
 Thanks,
 Andreas
