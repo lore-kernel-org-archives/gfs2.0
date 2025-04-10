@@ -1,90 +1,65 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309B250C1C
-	for <gfs2@lists.linux.dev>; Wed,  9 Apr 2025 07:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D662620371C;
+	Thu, 10 Apr 2025 08:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744182691; cv=none; b=iGzSYcX5eKvV9CSeFUwyYwUUCKDEGTDHV6N/afRWKreHqD68HDUDQq0/or8MU6PcvqKQXP99s7cjLy9Sz8y+3sNEW9Yb9aV0Aq3mqN6GqE6xYSp6HGjlPuY2Bf2yTAjAEOotJVnfA4zs8Mg7REFDlLP+86JwGApIjMAXXx/sSvw=
+	t=1744275031; cv=none; b=VJ1MhoXWzpTvZ5bEL3eKcvjCGbCO2dmemNIQhwSwoi1qY3U6P6g1J1gqcA9YQ8jPkPg3iUFmyKtkfVs1+u6cII7nhU2NJz5hOUsDMMAEWsdPVCD11rsMSKFg7qSwV5QH8usbZLPkmLn2eMdTKfsmI1O7W9RCBJRz4EXiMTTcaZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744182691; c=relaxed/simple;
-	bh=8yo7qFNpGm3Iqpd2QETPNKVSb2u6qGnqeJKeQ5Rn31s=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=U1hG5+e/I7qepvR5+YTSO94sFw5k4WMQ5jDO86N2toY1aXzb4gDpgXWZf9iP07r92WhXNIZy+kuunRt0M+/BWStLGTxYz8/0m0zsmEFTkcJJnISGUP6oJMJvjEdHzEXPag6gyTWHcb/Qp2pMb3iPBBuCJG3wOVP4TfOdfXhhgFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so77832975ab.1
-        for <gfs2@lists.linux.dev>; Wed, 09 Apr 2025 00:11:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744182689; x=1744787489;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d50mdL1lyjkcjQSMJH4NMkC+s1DdDYxYW9Phgs2QdiI=;
-        b=pqnc6g5enjCcwlZx3jvzY89oKm8RhkgVcMerHDDz3rgSY4N9hvivveot2xArXUn7Jl
-         OqodmFjfquP7cCZOxNMjCIdSpZhtnYWXV+sWU4TTLQiUEa433Gor89nRl2MjzERHw25m
-         PXp70OuBUD2Wuh7iVhVHhF4LgKa24RqbaLNs5qpIUPf8ODWf2s+wSI5U/JFH6Bwq2VcS
-         TXib1E5WqhcFnyFLPDqhsRHZMWXYNRen2DU/6bgQURqQvKhRWfDgXKJg5B872Sd04+ot
-         wO3bLzpjsawHYT3V+H1qwP8/UCPRhvs0LFS6ROPxt51zZCYqKzjQmoMp2c+W4HfF+uW5
-         /2zg==
-X-Gm-Message-State: AOJu0YwEeVNQW22D8JFiRjN5W57eH6JLhKxtdscUvixoNfwJW9L2PBsF
-	Tn1Oey2N5D8XQnvT766JgfYkAUuVNhuVEeZY4OGNxYJkCC1QQefiS9UzD839Pjqe+d0aWliTQqD
-	Pc9JEWt4tzQ45pHsHlyn6YXCoVb6NbO1bj0hEsChNCbHDpaMwYIjZc3g=
-X-Google-Smtp-Source: AGHT+IGBawI2go2EuwHH7xkv31iYK/opqy2ZuAvFrsqEVpjodbKGgPhNHS8OhMVgPNqvoon6TV/A1fw4fM9vdTCbLz+ZnVoF3Dl+
+	s=arc-20240116; t=1744275031; c=relaxed/simple;
+	bh=T8jEW6Tu0rhckzJnDNtqWX7UlY4n2k5d/yabCD/iHsg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cGZkYo5ORRtZoEDfRRLMnIKv3Be1ijGacvSxCXqco5FJlWvlSkdKXv6EzRZ4/2FXypxeCNpBQcNbr5snjfy7UvpKKNv2dWgXBQjHhf2hZ5R+5pLuxIdHNv72R7qJFq9kzASL9cb6dztS2UbZuA9JRJ2r578NTZBKA9nqOtNXDdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=1LYIR2Bh; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="1LYIR2Bh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r1HPCRcWQ3mWERn6wLp9oiHne/42gET65G0EeDFgTNU=; b=1LYIR2BhtY+dJNfAJvxXmVQ4SG
+	6gfWJvAhb8lCEBPYYAcgbVrdKTKVlWWNRqZ4GBfEVURZldNskJ1LpU66au7qN0PswAPLNLWnJW+Ng
+	pU/OWFZ0PYMV+j2ow8ETvlq3c9EdVuWaP5z0S4vOIKq+ZWEjNmFJhPqy3dvNDlm91SIX3Ya5ZkxHm
+	y10hjCh+RrPS4kMIAmG4vCjjBTyvx6EGRg8GhciuqagzVVDm2ILcdHw2Wrq+DY1WxBNZbKAlwXSxc
+	r1ueFI7Sq0flJK9QcWLCTybUE8afIF74McqKWfPhqeBK62th+JC8MIBhC7TtKk81hm5wCTytt80/L
+	96qCmU+Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u2ncD-00000009oQq-0lLv;
+	Thu, 10 Apr 2025 08:50:29 +0000
+Date: Thu, 10 Apr 2025 01:50:29 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: cgroups@vger.kernel.org,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Jan Kara <jack@suse.cz>, Rafael Aquini <aquini@redhat.com>,
+	gfs2@lists.linux.dev, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC 1/2] gfs2: replace sd_aspace with sd_inode
+Message-ID: <Z_eGVWwQ0zCo2aSR@infradead.org>
+References: <20250407182104.716631-1-agruenba@redhat.com>
+ <20250407182104.716631-2-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1aa9:b0:3d3:d965:62c4 with SMTP id
- e9e14a558f8ab-3d776c9d282mr15578015ab.10.1744182689147; Wed, 09 Apr 2025
- 00:11:29 -0700 (PDT)
-Date: Wed, 09 Apr 2025 00:11:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67f61da1.050a0220.258fea.0015.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Apr 2025)
-From: syzbot <syzbot+listbb51bff7ac2e12debb8d@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407182104.716631-2-agruenba@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Hello gfs2 maintainers/developers,
+On Mon, Apr 07, 2025 at 08:21:01PM +0200, Andreas Gruenbacher wrote:
+> Use a dummy inode as mapping->host of the address spaces for global as
+> well as per-inode metadata.  The global metadata address space is now
+> accessed as gfs2_aspace(sdp) instead of sdp->sd_aspace.  The per-inode
+> metadata address spaces are still accessed as
+> gfs2_glock2aspace(GFS2_I(inode)->i_gl).
+> 
+> Based on a previous version from Bob Peterson from several years ago.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+Please explain why you are doing this, not just what.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 15 issues are still open and 34 have already been fixed.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 736500  Yes   WARNING in __folio_mark_dirty (2)
-                  https://syzkaller.appspot.com/bug?extid=e14d6cd6ec241f507ba7
-<2> 1714    Yes   kernel BUG in gfs2_withdraw
-                  https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-<3> 1365    Yes   kernel BUG in gfs2_glock_nq (2)
-                  https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<4> 30      Yes   WARNING in gfs2_ri_update (2)
-                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<5> 18      Yes   WARNING in gfs2_check_blk_type (2)
-                  https://syzkaller.appspot.com/bug?extid=26e96d7e92eed8a21405
-<6> 13      Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                  https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<7> 10      Yes   kernel BUG in gfs2_assert_warn_i
-                  https://syzkaller.appspot.com/bug?extid=ffe01cefd437cbde362b
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
