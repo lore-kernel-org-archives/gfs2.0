@@ -1,128 +1,112 @@
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85B3290BBB
-	for <gfs2@lists.linux.dev>; Fri, 11 Apr 2025 08:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3FA1F5833
+	for <gfs2@lists.linux.dev>; Fri, 11 Apr 2025 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744360116; cv=none; b=VGC4aW4bZ3KMsm8vlRo5Z5y/HlGRSq4H0c0Z8yuYQ6yuXRpoBV1N+EFKJxg1OS1PFpB3e36A2uP1rUbJLH1rcnI4koX7Ch0vnGTFHju6f3xWPBLLpCZRWWUq4GEtBDeJfAIJ/1I/GjqRdS46yNdmUfktjYeDFfvczj4J91//e3A=
+	t=1744384071; cv=none; b=eBjPxmepu/rW5wsSlmG191rlcRvAgmoIvXOXfUn/NQmSAwA032Oc0Jki24whhvdjCDSrnzA5CbrdymWnXrxGPp06Ow5eKR8bzv3A1EM78HldqqF/wIZIx8iCtvbVBnTHrGRMyA8dQ/p98S3YeQX0sdckkEoIcozfgYAI/EqZ9EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744360116; c=relaxed/simple;
-	bh=BdcRozpMh5XamS/3Rky22G9yMjXlMrX+TsooJQKwUKE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=RNHt7JO695cjUQ4epWQGtOfzhC7kopaQkj2xsxoU25IAp6Z5v69HNzttf2pJCXYWTCPDjrw/innm2C2syrBZoxQzax2A9FV82h2zAkVnJhbxIearo8IzW5PEEeXdhUaR/encHJiWywSL4X9F2RkrJhzV/6FQyE7HRnhuGC1QYUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3d44b221f0dso31336365ab.1
-        for <gfs2@lists.linux.dev>; Fri, 11 Apr 2025 01:28:34 -0700 (PDT)
+	s=arc-20240116; t=1744384071; c=relaxed/simple;
+	bh=nOqw3UCQNgkETNgENmxmP/upbcQxPunDT4ykImyo1N8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XD+Twy+PhyvjiFwavnbCbgYccEGz3Yp9ue4KdKunBHD30B8ymqLVawbDxsC55AEJUBEU+byNAQVbRGbX+ceK0PkN410OrNadnmISwBEonWTUFNWfQTkmnvEl5rkFbYkYeZLPlNsetP/mY1moOSJN9xuqSoMGQaSwmxn3Q46SJew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NNa8O/WV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NNa8O/WV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744384067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nOqw3UCQNgkETNgENmxmP/upbcQxPunDT4ykImyo1N8=;
+	b=NNa8O/WVEBRvG7g4ZCQFaHWf9/UT50qhWcLyX2UROCMid1An+CAN11T3w4l9sLaAxaJPX1
+	/tgW7fx0wrEqOwOOMdbSDiVXWopXf1CvLB/6B1oRV6UsuNjz6JP6YzX/GklOyj6uTPaGmO
+	vfBnd8JfxtRmaJGmJ5OU7tDXpMeul4E=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-6BR-U4T_OU6F5aZ2wKcMpQ-1; Fri, 11 Apr 2025 11:07:46 -0400
+X-MC-Unique: 6BR-U4T_OU6F5aZ2wKcMpQ-1
+X-Mimecast-MFC-AGG-ID: 6BR-U4T_OU6F5aZ2wKcMpQ_1744384065
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-229668c8659so16135225ad.3
+        for <gfs2@lists.linux.dev>; Fri, 11 Apr 2025 08:07:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744360114; x=1744964914;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mspE9D6zeHc2ZpttYDmZv4JvJy7d9xVAiCjmcyAGyWw=;
-        b=Ev+OH+vftUwJuVb/aJEoDvv7KLQcBwUVtIRj1bNy5NZhowlqlDEFXGP/6bNXXy2PGs
-         gqV5ryVOswrJ535UKcj6LJ4gmfJnFUN7awgTgWbnK92KcfhJ13IqAk+sO/+EHAs/SVDX
-         2HcTQGDGKIQ/Eyy65Sx8/BVEyaW5UlcfDaHC3wBOprEmfKQG3uHR1uHMtySGyJ44X08H
-         09QKbLF3L4thkPIHKFOOCeyLo7Je4JB1kZpVNm81VXnnLLli1eJsTG7QBqV2a0fSwEtf
-         xg+34qEg1GKngZCv3eUYd10OfZc5hvwPmzeddbLASds/d0vX3nubK3hpP19UX3pPOOBy
-         P0WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXv/MS61gY7Q11to1Z3ra+AtUqBWoBog2nZxoi0f+5AaRMld4cA9YcYMl3sYvds7ZUPR/Cs@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxku0QwXfsqXXCk6fFNynt+JM8iz8hA5iyB/fp4zKyF6DyditHH
-	wm2DtNv7FlTK6GXbPl81VHSvDc0e3iROSkW4z7iwGJDRHwjxzSUMTJBwrE/qSrAbNHBk2sMopJp
-	fBmuzTP79De/31vdZmGp3iqcxG9Ilqf8ayMTOwGeib/dUSnWMyL+EvVs=
-X-Google-Smtp-Source: AGHT+IH3+I5WCI3vqlNIRDjcsCj8Z19nQyPqROdXvLgFUOnL4Yc7EuzFFOs+PAdYTUCiRy2Qs5kdcTduBaYbImMJNvDCM9Cg3N3q
+        d=1e100.net; s=20230601; t=1744384064; x=1744988864;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nOqw3UCQNgkETNgENmxmP/upbcQxPunDT4ykImyo1N8=;
+        b=nH6NUFTojIdZV5YvNBU6R5Vl+OJbWibCE0zQ4EkKA0EbmuMP0ia6PHLVkckPjIu/Ie
+         KPQSzGCfHZxllp7YeVpcmp6Ay6gmFLoIhNHC1NUtkFZdHlBmnN0LcpOXLa/ro92UkzY9
+         8iEicVpV5SGPLhj0Le3MQs37xWNmHHtEYCOErJEyedoON4Xh10vDO1zDqUO0B3IyymDN
+         Cs2q0pt8VXcrXepjmgnOHTqF9HJjJSNbE7assTOG9zHuA+ZYG83yuav57g9QK0nTtLS3
+         OszB4Yb38naAtEyWCaAN9Px+V3J0agvSDEvAauWH/S1juSzdprAi8xAk6J0WGLCPHMWE
+         Cccg==
+X-Forwarded-Encrypted: i=1; AJvYcCWX2QAq0NSdGLuKT4QP6glmMo6UrORM9sBqh9ScTcMnOZ7vfPOHsXRaxizymFXoNaMOl5Xn@lists.linux.dev
+X-Gm-Message-State: AOJu0YwE0wHzB69+yjJwW025DICryMV+SbXe0xDZK13yFwcbYHe1BwLU
+	+WhpLQ7bzfdfpEciIPXF7JSBYPngBnJxMuIM19FfdKiRmIQ1e8uXCx8GjNe0j1S0ZbkRHXr15f+
+	8u69NJ+2SEoiHHRFX0sbd/tk43udmMwS/pH6sZCTDDsOIIfkQszIcc2BbXAMz/dWV9NxcpuD//z
+	0X8zAs+jKtcU/2gyVk5O/GlmcrmOsbwdnsEx3u
+X-Gm-Gg: ASbGncs9/Eghpl6O5zxa4q4EiMPj/D6BhF7nI2KNgwqJmqz6cFMamCe7qy80EOKYlRL
+	uhSysJI5OOkiQG+8XWmF7Orjzc3Wj7waneWk5Aq53ZcEW/a7w3NndCLZPzWO/6KdVLX0=
+X-Received: by 2002:a17:902:e947:b0:220:fb23:48df with SMTP id d9443c01a7336-22bea5013d9mr47679195ad.36.1744384063953;
+        Fri, 11 Apr 2025 08:07:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcyY0eGCvHI/gdDU7XNiZc6IWofGPi7vPYYYhj18wxtPn+ZObM4OBxwrLpEk3ZNRwlRvvdOslJtVL7ZRuw34Q=
+X-Received: by 2002:a17:902:e947:b0:220:fb23:48df with SMTP id
+ d9443c01a7336-22bea5013d9mr47678805ad.36.1744384063602; Fri, 11 Apr 2025
+ 08:07:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:339f:b0:3d3:dfa2:4642 with SMTP id
- e9e14a558f8ab-3d7ec229316mr19127035ab.13.1744360114107; Fri, 11 Apr 2025
- 01:28:34 -0700 (PDT)
-Date: Fri, 11 Apr 2025 01:28:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67f8d2b2.050a0220.355867.001c.GAE@google.com>
-Subject: [syzbot] [gfs2?] UBSAN: shift-out-of-bounds in gfs2_fill_super
-From: syzbot <syzbot+b0018b7468b2af33b4d5@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20250410035717.473207-1-bhe@redhat.com> <20250410035717.473207-2-bhe@redhat.com>
+ <20250410204338.4b2101afdf18d8898390ef58@linux-foundation.org> <Z/ipfCofBe99Ie+7@MiWiFi-R3L-srv>
+In-Reply-To: <Z/ipfCofBe99Ie+7@MiWiFi-R3L-srv>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Fri, 11 Apr 2025 17:07:32 +0200
+X-Gm-Features: ATxdqUHXErCdiRkEhF36CcQgwOHHQJ4vauPwTGL6_wmpxLHi-chD_wBZ4Y_HerY
+Message-ID: <CAHc6FU7B5ORy-97OegzZ939MjuZWdBicLjRxj_bYmG3Hm1mKSA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
+To: Baoquan He <bhe@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, gfs2@lists.linux.dev, linux-mm@kvack.org, 
+	david@redhat.com, osalvador@suse.de, yanjun.zhu@linux.dev, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: o8LoCpICf4RMgoOOu9KyjJNSwXbzTMATnJ8-FcW2SoM_1744384065
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Apr 11, 2025 at 7:32=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+> On 04/10/25 at 08:43pm, Andrew Morton wrote:
+> > On Thu, 10 Apr 2025 11:57:14 +0800 Baoquan He <bhe@redhat.com> wrote:
+> >
+> > > Not like fault_in_readable() or fault_in_writeable(), in
+> > > fault_in_safe_writeable() local variable 'start' is increased page
+> > > by page to loop till the whole address range is handled. However,
+> > > it mistakenly calcalates the size of handled range with 'uaddr - star=
+t'.
+> >
+> > What are the userspace-visible runtime effects of this change?
+>
+> I see it mainly affect gfs2_file_direct_read(). Not sure if GFS2 people
+> can sense any exceptional behaviour caused by this code bug.
 
-syzbot found the following issue on:
+Thanks for the heads up.
 
-HEAD commit:    a4cda136f021 Add linux-next specific files for 20250404
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15dc523f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8a257c454bb1afb7
-dashboard link: https://syzkaller.appspot.com/bug?extid=b0018b7468b2af33b4d5
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+In gfs2, fault_in_iov_iter_writeable() is used in
+gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
+affects buffered as well as direct reads. This bug could cause those
+gfs2 functions to spin in a loop.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Can this fix please be sent to Linus for inclusion into 6.15?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/59048bc9c206/disk-a4cda136.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ad2ba7306f20/vmlinux-a4cda136.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b3bef7acbf10/bzImage-a4cda136.xz
+Thanks,
+Andreas
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b0018b7468b2af33b4d5@syzkaller.appspotmail.com
-
-loop0: detected capacity change from 0 to 32768
-------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in fs/gfs2/ops_fstype.c:1172:19
-shift exponent 4294967287 is too large for 64-bit type 'unsigned long'
-CPU: 1 UID: 0 PID: 6127 Comm: syz.0.42 Not tainted 6.14.0-next-20250404-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_shift_out_of_bounds+0x3c8/0x420 lib/ubsan.c:492
- gfs2_fill_super+0x255e/0x27b0 fs/gfs2/ops_fstype.c:1172
- get_tree_bdev_flags+0x490/0x5c0 fs/super.c:1636
- gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1330
- vfs_get_tree+0x90/0x2b0 fs/super.c:1759
- do_new_mount+0x2cf/0xb70 fs/namespace.c:3879
- do_mount fs/namespace.c:4219 [inline]
- __do_sys_mount fs/namespace.c:4430 [inline]
- __se_sys_mount+0x38c/0x400 fs/namespace.c:4407
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb2fa18e90a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 1a 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fb2fafe2e68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007fb2fafe2ef0 RCX: 00007fb2fa18e90a
-RDX: 0000200000000400 RSI: 0000200000012500 RDI: 00007fb2fafe2eb0
-RBP: 0000200000000400 R08: 00007fb2fafe2ef0 R09: 0000000000000102
-R10: 0000000000000102 R11: 0000000000000246 R12: 0000200000012500
-R13: 00007fb2fafe2eb0 R14: 00000000000125bb R15: 00002000000004c0
- </TASK>
----[ end trace ]---
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
