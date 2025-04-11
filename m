@@ -1,102 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACB123AE60
-	for <gfs2@lists.linux.dev>; Fri, 11 Apr 2025 17:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC357224888;
+	Fri, 11 Apr 2025 23:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744393147; cv=none; b=dYLVSWIQIMA9UNRvBVdslZNGEhp8tEHi0PkBlN1hKU4Mu8affX6qWW8oa3sKDWaGXXqntKcdxhkOQ5ziVihkWJxjmwns01mEg7aweMMyJhyXp1xVjh4X+OHpeSh8bwKw8kh9bmNIneTIZOCsj+O+cF7d0a1krF3mI2CRYzxvxEU=
+	t=1744413737; cv=none; b=AFMBe1pl/ws7KhGrD2FTOYInhMWpoaDYNguiUmJ55yesnMgBd6R7jARBeDd9hO/4/sUGF3XGIa/OexVnmX7MPG0KuHsPTWm+6oy2PMAdoPHfN7LSzSTZTmyKnPNBbd2RNyGzVZje/pXklNUqc5t9uvZjS7YNWoXlzrj32o882sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744393147; c=relaxed/simple;
-	bh=zGJwNblsKqEOAKwEuDeH3u+zc5jfILger+41mjo0QGQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex9VA99KbIBIIEEOxDC0jKtbYhIp/yh+ZY9ZWDi2PGhAj7NLO1J9kHtenuU11/F2OSmNNLET3Wu3jrLOXArtRUOAqRFx4OyJuR/FUGO5VPX90t0i4e6BKjbfeipH4bNFZ1fHsTvECPdubBFtbmFeG3xKpH+ArkmXhcrwGctOvfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NveZwGbN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744413737; c=relaxed/simple;
+	bh=Kg4V7JTDbGQ8k0MN6Gx8IDG/j1PmIuvRAb8lOZUi3kA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=WPytesGwGkJ6Rp9j4FdV+Pu/Z+0CRX2G9OPP0Y2spD9EYjABMi4aTrWWQCdwcVaVaXob4xFftqtuIXliwjJWtCiTBKs/flwyndF0o1zmSijHAMh71k+kfohsbzu9Vy6T0N7otcqmyDO44mf48RHPazLOMT0YumD3tLxIezn/YPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sfZSCPs9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NveZwGbN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744393144;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dva4W/D+dzFw10w19z6EzVLC4AZPhczTeYs/RvqJzPQ=;
-	b=NveZwGbNsP9Eku/ItzQUnqtSGDcUZjLVjNEX+zuan+blz43f4OKqXJxqVgoJyPJYfwW2cg
-	o7Wdx6NMymWtfKqPAu53+g6TejtaT3ctfG2Sc0VzYxnGU2w8xvenSLrHDNmuVu8osaTfl8
-	my7YLnqoUBXKNmJVvcHxhSLrRCUyCJ8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-hn85JY29PSC-DeJZLdKDWg-1; Fri,
- 11 Apr 2025 13:39:02 -0400
-X-MC-Unique: hn85JY29PSC-DeJZLdKDWg-1
-X-Mimecast-MFC-AGG-ID: hn85JY29PSC-DeJZLdKDWg_1744393141
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 57B291800260;
-	Fri, 11 Apr 2025 17:39:01 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.37])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 28C8E1956094;
-	Fri, 11 Apr 2025 17:38:57 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: cgroups@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Rafael Aquini <aquini@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH v2 2/2] writeback: Fix false warning in inode_to_wb()
-Date: Fri, 11 Apr 2025 19:38:47 +0200
-Message-ID: <20250411173848.3755912-3-agruenba@redhat.com>
-In-Reply-To: <20250411173848.3755912-1-agruenba@redhat.com>
-References: <20250411173848.3755912-1-agruenba@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sfZSCPs9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E981AC4CEE2;
+	Fri, 11 Apr 2025 23:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744413736;
+	bh=Kg4V7JTDbGQ8k0MN6Gx8IDG/j1PmIuvRAb8lOZUi3kA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sfZSCPs9uLH9N+4F2U4AucI/33ysAyEyY5HRSuFxmSJQ4dDpbvUihY84qfdUqqmwP
+	 wsPAL8sdjfDt3QiOfBJl+Xw/39dlYdKfzQFIxnptOIMGaFOKVokafeh0blX9h93u0i
+	 N1UNE8G94iVhK2i5sc/h7GFzqdLG4M4lLFBTetZs=
+Date: Fri, 11 Apr 2025 16:22:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Baoquan He <bhe@redhat.com>, gfs2@lists.linux.dev, linux-mm@kvack.org,
+ david@redhat.com, osalvador@suse.de, yanjun.zhu@linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] mm/gup: fix wrongly calculated returned value in
+ fault_in_safe_writeable()
+Message-Id: <20250411162215.e7b102cf432e7de885b0eec7@linux-foundation.org>
+In-Reply-To: <CAHc6FU7B5ORy-97OegzZ939MjuZWdBicLjRxj_bYmG3Hm1mKSA@mail.gmail.com>
+References: <20250410035717.473207-1-bhe@redhat.com>
+	<20250410035717.473207-2-bhe@redhat.com>
+	<20250410204338.4b2101afdf18d8898390ef58@linux-foundation.org>
+	<Z/ipfCofBe99Ie+7@MiWiFi-R3L-srv>
+	<CAHc6FU7B5ORy-97OegzZ939MjuZWdBicLjRxj_bYmG3Hm1mKSA@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Jan Kara <jack@suse.cz>
+On Fri, 11 Apr 2025 17:07:32 +0200 Andreas Gruenbacher <agruenba@redhat.com> wrote:
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback. For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference. Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+> Can this fix please be sent to Linus for inclusion into 6.15?
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- include/linux/backing-dev.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 8e7af9a03b41..b503a9a4fa65 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -245,10 +245,11 @@ wb_get_create_current(struct backing_dev_info *bdi, gfp_t gfp)
-  * holding either @inode->i_lock, the i_pages lock, or the
-  * associated wb's list_lock.
-  */
--static inline struct bdi_writeback *inode_to_wb(const struct inode *inode)
-+static inline struct bdi_writeback *inode_to_wb(struct inode *inode)
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
--- 
-2.48.1
-
+Sure, I made the adjustments.
