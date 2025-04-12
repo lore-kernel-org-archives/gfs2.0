@@ -1,55 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC357224888;
-	Fri, 11 Apr 2025 23:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3663B1885A1
+	for <gfs2@lists.linux.dev>; Sat, 12 Apr 2025 05:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744413737; cv=none; b=AFMBe1pl/ws7KhGrD2FTOYInhMWpoaDYNguiUmJ55yesnMgBd6R7jARBeDd9hO/4/sUGF3XGIa/OexVnmX7MPG0KuHsPTWm+6oy2PMAdoPHfN7LSzSTZTmyKnPNBbd2RNyGzVZje/pXklNUqc5t9uvZjS7YNWoXlzrj32o882sI=
+	t=1744434837; cv=none; b=PbfjCAovfdzkaDyUOr1el+UJJ9NEaYh7tRaZyOe7QUJ2ziPYMa570un7ULxZ8QKsbGyXwArc+rw+omHt2WmcOP281spbJFT+RW5ONKO4vqDuxaIG9NaF20Cmm/z7moqqwHZZeJ61CaVoYwAofjMQRMxlxUkaq2N8amV0LRWJxao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744413737; c=relaxed/simple;
-	bh=Kg4V7JTDbGQ8k0MN6Gx8IDG/j1PmIuvRAb8lOZUi3kA=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=WPytesGwGkJ6Rp9j4FdV+Pu/Z+0CRX2G9OPP0Y2spD9EYjABMi4aTrWWQCdwcVaVaXob4xFftqtuIXliwjJWtCiTBKs/flwyndF0o1zmSijHAMh71k+kfohsbzu9Vy6T0N7otcqmyDO44mf48RHPazLOMT0YumD3tLxIezn/YPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sfZSCPs9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744434837; c=relaxed/simple;
+	bh=En1cesfzcC238AOzohjVszVo+z7+7ixM7UPjvNrn0iQ=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=OrEGM1yce1TRMsk4osFqHtlg34q5oN+oK6jOIQrtcXB1L0O0x0HELOZT9GQvlq7sjT6bc2ZYcCAaHpabWlpIu4FMdoEE8OQsSGesdBNsaZMhmQQ5+6pPkRQqxhebHFKCg+mFpi8u4bvUI+AS2dFW1jicqIw1ASa7w5gieB1rQYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Y2yQbcFV; arc=none smtp.client-ip=162.62.58.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sfZSCPs9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E981AC4CEE2;
-	Fri, 11 Apr 2025 23:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744413736;
-	bh=Kg4V7JTDbGQ8k0MN6Gx8IDG/j1PmIuvRAb8lOZUi3kA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sfZSCPs9uLH9N+4F2U4AucI/33ysAyEyY5HRSuFxmSJQ4dDpbvUihY84qfdUqqmwP
-	 wsPAL8sdjfDt3QiOfBJl+Xw/39dlYdKfzQFIxnptOIMGaFOKVokafeh0blX9h93u0i
-	 N1UNE8G94iVhK2i5sc/h7GFzqdLG4M4lLFBTetZs=
-Date: Fri, 11 Apr 2025 16:22:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Baoquan He <bhe@redhat.com>, gfs2@lists.linux.dev, linux-mm@kvack.org,
- david@redhat.com, osalvador@suse.de, yanjun.zhu@linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] mm/gup: fix wrongly calculated returned value in
- fault_in_safe_writeable()
-Message-Id: <20250411162215.e7b102cf432e7de885b0eec7@linux-foundation.org>
-In-Reply-To: <CAHc6FU7B5ORy-97OegzZ939MjuZWdBicLjRxj_bYmG3Hm1mKSA@mail.gmail.com>
-References: <20250410035717.473207-1-bhe@redhat.com>
-	<20250410035717.473207-2-bhe@redhat.com>
-	<20250410204338.4b2101afdf18d8898390ef58@linux-foundation.org>
-	<Z/ipfCofBe99Ie+7@MiWiFi-R3L-srv>
-	<CAHc6FU7B5ORy-97OegzZ939MjuZWdBicLjRxj_bYmG3Hm1mKSA@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Y2yQbcFV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1744434818; bh=PYgAf7sAo1Jbw1H8B3bk2ICdZQiMe/tWDsbOKTKUqlY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y2yQbcFVkP7TE0AIsXNZ0Ptoi7eo0aOwtnipr2vPesGsLJpj7VlwFRfjdh1MRiimA
+	 20V3QBwCEy3LnO0bITUCMilbIwnU72PH5GwWvdrJVUjZbMaS2LMORD+NS65/qb2PXK
+	 pyBdtN0AjXhEUrAiloImh+fcHdl+nW9wT2wc+VJc=
+Received: from pek-lxu-l1.wrs.com ([114.244.57.157])
+	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
+	id 1D2008E3; Sat, 12 Apr 2025 13:07:18 +0800
+X-QQ-mid: xmsmtpt1744434438typgg8jw5
+Message-ID: <tencent_C803BAF1BB47330C9E131B254B191B682508@qq.com>
+X-QQ-XMAILINFO: MiE+axgVDEQLnMD1kvjwy7aC9Q17sZk+V8RxyupaZ4znspS8nlIUYxWO7pb3re
+	 gg/m5+Tfv375RwOfHff12jZEMHWPpKTq9uLLnRhzeJAGiFv0vXYWyp4oDYvbSPYjBmggZ+M0W+PN
+	 rCzqCE4aCgZDbX4xv2EFp3+5UjSLZ2nVsKqsq3rWX9XbSlNC31Yvy8Nu/Vo1+G0uz/GoBvLSD0kC
+	 YH3/GhLHYjOkObVABwD12TjP39SlPH9bZ+Gs5NjFqm8uo9j+QBu5z8g0OH4Rn4g4/tw79S3cewSo
+	 n4XCWPDHg8VS9+NWL8uG6n/zfU19t3fvTwutEuCpxRFcCWtjRPaJBvgcCrGiB91YlRW/gBlt598/
+	 OVbWv4cUVqwRwv1HLxh85mkcoI7tEGFSKmP0D/kL4Lc3DMA76n3uQX6g4Jij/ZZVFun7I22fv4pr
+	 wRcvpJ5BG1wUXqMID4iULU+vGjDH+OF4Q9m6x8UaY0g6t/WE8b0ZSqglR50AnoeVm/ibp1GTighI
+	 ClhrQ23ldcryD2+0X36H/DY7TuVRk4Xgsl5OMfhRbSowb2tNuu5edFLsHMOwsSPRCMnb3XjAx6Ec
+	 K33/5LK9Z+//HUNjBq9XVUnTT1xRsbzhZG2OAg+0WMbuzN+geOKXZRKx0vHrsnGKOV9quPwSlBx8
+	 VWhECcVAfW5i1v//82F/eV8pdk/zFpYrgN09d2NYPfcXLks6RmGzt0wLHfsqfqk4RkzAVemiO/Vp
+	 7t2esH99j16ohk6hlQ5Ewuwb6RcCUd8csr21MDJq1Bvm6oW7pZVkPjUGjoI6QKY/PolQZfNh6Wkd
+	 mDko28RwsxWD60hywzOtbTBG4yH9GweSJupPUSPl8nuiZi1mRWu/A0G5G8fs4/Ald1+KH9bkxtoQ
+	 2WewMe5dI3APtCUHSavYcOH3+SRtFaIfJN3IkW41Mt
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+b0018b7468b2af33b4d5@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: [PATCH] gfs2: capture blocksize set failed
+Date: Sat, 12 Apr 2025 13:07:18 +0800
+X-OQ-MSGID: <20250412050717.3676047-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <67f8d2b2.050a0220.355867.001c.GAE@google.com>
+References: <67f8d2b2.050a0220.355867.001c.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 11 Apr 2025 17:07:32 +0200 Andreas Gruenbacher <agruenba@redhat.com> wrote:
+syzbot reported a oob in gfs2_fill_super. [1]
 
-> Can this fix please be sent to Linus for inclusion into 6.15?
+When setting blocksize fails, the s_blocksize_bits value is incorrect.
 
-Sure, I made the adjustments.
+[1]
+UBSAN: shift-out-of-bounds in fs/gfs2/ops_fstype.c:1172:19
+shift exponent 4294967287 is too large for 64-bit type 'unsigned long'
+CPU: 1 UID: 0 PID: 6127 Comm: syz.0.42 Not tainted 6.14.0-next-20250404-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_shift_out_of_bounds+0x3c8/0x420 lib/ubsan.c:492
+ gfs2_fill_super+0x255e/0x27b0 fs/gfs2/ops_fstype.c:1172
+ get_tree_bdev_flags+0x490/0x5c0 fs/super.c:1636
+ gfs2_get_tree+0x54/0x220 fs/gfs2/ops_fstype.c:1330
+ vfs_get_tree+0x90/0x2b0 fs/super.c:1759
+ do_new_mount+0x2cf/0xb70 fs/namespace.c:3879
+ do_mount fs/namespace.c:4219 [inline]
+ __do_sys_mount fs/namespace.c:4430 [inline]
+ __se_sys_mount+0x38c/0x400 fs/namespace.c:4407
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: syzbot+b0018b7468b2af33b4d5@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ fs/gfs2/ops_fstype.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index e83d293c3614..d5bc25164b89 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1167,6 +1167,10 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	/* Set up the buffer cache and fill in some fake block size values
+ 	   to allow us to read-in the on-disk superblock. */
+ 	sdp->sd_sb.sb_bsize = sb_min_blocksize(sb, 512);
++	if (!sdp->sd_sb.sb_bsize) {
++		error = -EINVAL;
++		goto fail_free;
++	}
+ 	sdp->sd_sb.sb_bsize_shift = sb->s_blocksize_bits;
+ 	sdp->sd_fsb2bb_shift = sdp->sd_sb.sb_bsize_shift - 9;
+ 	sdp->sd_fsb2bb = BIT(sdp->sd_fsb2bb_shift);
+-- 
+2.43.0
+
