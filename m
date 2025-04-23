@@ -1,97 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3279728BA8C
-	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 15:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44B128EB;
+	Wed, 23 Apr 2025 16:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422540; cv=none; b=tHtoAWtQGwgFN1jMAD6f4WSuCL8YUDxPICTfzS2+n0vhT26B4p6r2BN+YEBvPJlarx5SQk483RvWrCjLCwkD7nhgcEQRKwnsEnQ+0cIStrwb35A+txx97Gyt3q6VEyV/4aH2ShJcPW6oh2Jli3XVJdGFv9gTmPZIzXBGZjlAYSQ=
+	t=1745424462; cv=none; b=B2aJ9/giEHRXTTl6PrgRAPleOXzOyMjvZBdS8kzjQzt81CnEHtoTe58NSO/BKXpwDjY58Au363XN6zS1J+qs6S7PfQ+RQUo6vApx6m8p4Zr/ubTO+nxDJfFq1J/dqZLS0g7sP1nmmumFb//uUIOby9+Bh2e9tQZSBQP3Hl33Q+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422540; c=relaxed/simple;
-	bh=pfmMrPu0nzrNsD4InjIq7jrEfWwTbXNNUYLYujB0bTY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=B84iv+SQSItxBlJD2BcpHOWyqXoc5bfJVPqfTHBtXevNgmwUProfI9iXQwVDMWSvSOaCuIztbVOAAvTeM0u68jPv4z6Wu2zAADMLqCZ9sFWvWP2DECg7V05mFBs8hkcmybDiBUJPGHVxox+7efRCoPmSpGiyVLNbvYBfpazmxN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S+7/RO/D; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S+7/RO/D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745422536;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=73egXBpacwTeemc6EI3hJSxxV65hYhyvoGxv9s8KRUU=;
-	b=S+7/RO/Dwor+Sr0uH/vEJ2oGVFnC2dlbF75SNfz4snDV8Rqnnce7eov4T8OY2U48IcfWPq
-	Zoj+pijVi+DQGK1Dmcp43G4eXgRHw2eTe4pwMhOyQcAqRpjrWokPLN/JvL3ASXvM6qyH1s
-	RXKMvuyMcpyulwJBp4CGtqt5CDhtoxg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-3EDbS82mOM2IvZmElI3sug-1; Wed,
- 23 Apr 2025 11:35:34 -0400
-X-MC-Unique: 3EDbS82mOM2IvZmElI3sug-1
-X-Mimecast-MFC-AGG-ID: 3EDbS82mOM2IvZmElI3sug_1745422534
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06ACD1800374
-	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 15:35:34 +0000 (UTC)
-Received: from b.redhat.com (unknown [10.42.28.212])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A7C7195608D;
-	Wed, 23 Apr 2025 15:35:31 +0000 (UTC)
-From: Andrew Price <anprice@redhat.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev
-Subject: [PATCH] gfs2: Fix usage of bio->bi_status in gfs2_end_log_write
-Date: Wed, 23 Apr 2025 16:35:28 +0100
-Message-ID: <20250423153528.251736-1-anprice@redhat.com>
+	s=arc-20240116; t=1745424462; c=relaxed/simple;
+	bh=UCuGDx6I9M/13NqKuR5IYfWmkzxfzhqoFwLaSCBg7uo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h7onPghTMBDSQE0mQ0vuVH0wYChxnFH3AwebTsT0fT6K43afGhdHIGqH0caaWDuncteYXhDg20M6XdyEjYZniCy56/9YFnLXCf3bvFsY2PpeoX0Re9AQ4+PgGMqQWCuBwF8/MCHS2YujkAf32cM9LwFohE3H1yuWn/0B5xL8PFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 2017568C7B; Wed, 23 Apr 2025 18:07:34 +0200 (CEST)
+Date: Wed, 23 Apr 2025 18:07:33 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: add more bio helper
+Message-ID: <20250423160733.GA656@lst.de>
+References: <20250422142628.1553523-1-hch@lst.de> <jetduw7zshrmp4gl7zfpwqjweycwesxiod7xvtnxqwqekgtvdf@idwnvfzvhgik> <20250423093621.GA2578@lst.de> <sl4oibdxpjygqfpy6llq237zuckz7ym4fmzcfvxn2raofr37a5@hvevbcgm5trn>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZX5OWVAbSMt5tNOJOtu1Hnq1smjNKiaAr3lzeMbFdfc_1745422534
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sl4oibdxpjygqfpy6llq237zuckz7ym4fmzcfvxn2raofr37a5@hvevbcgm5trn>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-bio->bi_status is an index into the blk_errors array, not an errno. Its
-__bitwise tag is cast away here, resulting in a sparse warning:
+On Wed, Apr 23, 2025 at 06:37:41AM -0400, Kent Overstreet wrote:
+> > It also don't support bio chaining or error handling and requires a
+> > single bio that is guaranteed to fit the required number of vectors.
+> 
+> Why would bio chaining ever be required? The caller allocates both the
+> buf and the bio, I've never seen an instance where you'd want that; just
+> allocate a bio with the correct number of vecs, which your
+> bio_vmalloc_max_vecs() helps with.
 
-  fs/gfs2/lops.c:207:22: warning: cast from restricted blk_status_t
+If you go beyond 1MB I/O for vmalloc you need it because a single
+bio can't hold enough page size chunks.  That is unless you want
+to use your own allocation for it and call bio_init which has various
+other downsides.
 
-We could either add __force to the cast and continue logging bi_status
-in the error message, or we could look up the errno in the array and log
-that. As sdp->sd_log_error is used as an errno in all other cases, look
-up the errno here for consistency.
+> The "abstract over vmalloc and normal physically contigious allocations"
+> bit that bch2_bio_map() does is the important part.
+> 
+> It's not uncommon to prefer physically contiguous allocations but have a
+> vmalloc fallback; bcachefs does, and  xfs does with a clever "try the
+> big allocation if it's cheap, fall back to vmalloc to avoid waiting on
+> compaction" that I might steal.
+> 
+> is_vmalloc_addr() is also cheap, it's just a pointer comparison (and it
+> really should be changed to a static inline).
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
----
- fs/gfs2/lops.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+The problem with transparent vmalloc handling is that it's not possible.
+The magic handling for virtually indexed caches can be hidden on the
+submission side, but the completion side also needs to call
+invalidate_kernel_vmap_range for reads.  Requiring the caller to know
+they deal vmalloc is a way to at least keep that on the radar.
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 0fd3b5ec7d8cc..a1022635abc98 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -204,9 +204,11 @@ static void gfs2_end_log_write(struct bio *bio)
- 	struct bvec_iter_all iter_all;
- 
- 	if (bio->bi_status) {
--		if (!cmpxchg(&sdp->sd_log_error, 0, (int)bio->bi_status))
-+		int err = blk_status_to_errno(bio->bi_status);
-+
-+		if (!cmpxchg(&sdp->sd_log_error, 0, err))
- 			fs_err(sdp, "Error %d writing to journal, jid=%u\n",
--			       bio->bi_status, sdp->sd_jdesc->jd_jid);
-+			       err, sdp->sd_jdesc->jd_jid);
- 		gfs2_withdraw_delayed(sdp);
- 		/* prevent more writes to the journal */
- 		clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
--- 
-2.49.0
+The other benefit is that by forcing different calls it is much
+easier to pick the optimal number of bvecs (1) for the non-vmalloc
+path, although that is of course also possible without it.
 
+Not for a purely synchronous helper we could handle both, but so far
+I've not seen anything but the xfs log recovery code that needs it,
+and we'd probably get into needing to pass a bio_set to avoid
+deadlock when used deeper in the stack, etc.  I can look into that
+if we have more than a single user, but for now it doesn't seem
+worth it.
+
+Having a common helper for vmalloc and the kernel direct mapping
+is actually how I started, but then I ran into all the issues with
+it and with the extremely simple helpers for the direct mapping
+which are used a lot, and the more complicated version for vmalloc
+which just has a few users instead.
