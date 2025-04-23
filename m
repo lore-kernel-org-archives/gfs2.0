@@ -1,213 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0775019E966
-	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 16:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C2628B4F3
+	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 18:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745425647; cv=none; b=Z8abHFap9HQ3qy7aq8QLEG0Ifqv81yihPq0pmB+yZlRRoYLr0ERUtFSgeNogxXyRbMk9z0hFxgL9D5uhBuDZ4UZoz83LPszBxD5ix20J40eB6DwIHGYYsdZLGEoe79zZArI/ohlA6XZUAOQ2/LKqCAgfiQb3Kt1oszFq+XKyoFI=
+	t=1745431346; cv=none; b=QIpXAwbMntEHZGl0aZLZZqV9gMf3bu7JNRc+BTYrJp3WkvqmH9sypFRef6lClosJCRzlTEuW+BO3t2Q1cuMm0ITDFiZ7hUid9sq2T4CnXAvurrcslGl+TMb7xJiq/oDKMaFIghg+OrK06YJRtGSFGHFaobHL7bMGFhJoVDug/o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745425647; c=relaxed/simple;
-	bh=KEj0yvmfEiHS8h4Qxdb1qFaYvhl5brwHCPTcokkUbJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=lIaxSeNMIbIbjGDSplRvStRorAyN4R0T7eMJd7UVumpVLtQDmahxuZrW96ndUq576e1Nj28iqkPDxl7pJ1vafd2+M6vb7H6DEPzK8Q5itKJAb9CpGuFV2yRYmLoImPxPSV+w8pcjJ9xRjp6VpV3/IRYXWO6yBhnnoZFPMeHqUyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z5PLoCa7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1745431346; c=relaxed/simple;
+	bh=BSV2S5axVk3jR2Dj4hy0PRdYG9l3BhCOacRqX+is/5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ktfOyk9Sk9DU8az2Zb8LPHfq81jTbqGeRBT0FPM7E78ACd1TaO5Sk3iaYW2mVT5+OYx+SwmdCUqzZcKswEIZW5fkUmJ2ngNPX4SiWY4ml4PywC6gO0TL0Pek6H2TKpvdFQGOTgTgMy0CyKjysK/ez/5mEe81403V164WZ6RN8zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WKzXkeLy; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z5PLoCa7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745425643;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WKzXkeLy"
+Date: Wed, 23 Apr 2025 14:02:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1745431337;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=G+fbY4XlPBAIz39cOpiIp/X/3rJy0jj8uqnhp/HxA8g=;
-	b=Z5PLoCa7DcCDZyE0pUDjk1GnOehJD+ocdZCZraklKUeV6GFIsmWNfDoaK5k850gM9daAqJ
-	EycwxSa8vAkuk6d6+4rXqTV9NjiZMSCFOWnWVMOPuJfcA8FpzaFwT3gTBuxlHBQNiIa/or
-	OSvuzTkClKeltyR3I2ZpDeamBqjrRpI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-BP1uGXyzNhiIRRgYYD8c_g-1; Wed,
- 23 Apr 2025 12:27:21 -0400
-X-MC-Unique: BP1uGXyzNhiIRRgYYD8c_g-1
-X-Mimecast-MFC-AGG-ID: BP1uGXyzNhiIRRgYYD8c_g_1745425640
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65E5C1800263
-	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 16:27:20 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.40])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5F3B51800378;
-	Wed, 23 Apr 2025 16:27:19 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH v2 3/3] gfs2: deallocate inodes in gfs2_create_inode
-Date: Wed, 23 Apr 2025 18:27:17 +0200
-Message-ID: <20250423162717.1234285-1-agruenba@redhat.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=8BS6PilBZgvTDPZhVhVWu7ww97sBPTJLkhr1PmWiCpA=;
+	b=WKzXkeLyNYDwk/eCKuYZUCO+ERfNfkrsogpUfK8yviZk5KF8v/jUkJdnJU+r8oZr+ubgz5
+	x6V9oP+fLmYCwLsnSZd82pB9eEkKHjvuhiG4VRWZPCOzP6wYwxgwjmy1iiuNhSzk9iSRcj
+	k8plvwA+ho8NM7aL2D7SLNCO8wUepbA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>, Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>, 
+	Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, 
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, Carlos Maiolino <cem@kernel.org>, 
+	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
+	Johannes Thumshirn <jth@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: add more bio helper
+Message-ID: <q53k4x5nshvr2zatrgyhygxouv7ijyepe6cj2pfooemi6gbu4y@lpxxcvozazzu>
+References: <20250422142628.1553523-1-hch@lst.de>
+ <jetduw7zshrmp4gl7zfpwqjweycwesxiod7xvtnxqwqekgtvdf@idwnvfzvhgik>
+ <20250423093621.GA2578@lst.de>
+ <sl4oibdxpjygqfpy6llq237zuckz7ym4fmzcfvxn2raofr37a5@hvevbcgm5trn>
+ <20250423160733.GA656@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZnX7r25z6eYiGQx-GYXWiMvtiH54hM_jN71Imiq4o50_1745425640
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423160733.GA656@lst.de>
+X-Migadu-Flow: FLOW_OUT
 
-When creating and destroying inodes, we are relying on the inode hash
-table to make sure that for a given inode number, only a single inode
-will exist.  We then link that inode to its inode and iopen glock and
-let those glocks point back at the inode.  However, when iget_failed()
-is called, the inode is removed from the inode hash table before
-gfs_evict_inode() is called, and uniqueness is no longer guaranteed.
+On Wed, Apr 23, 2025 at 06:07:33PM +0200, Christoph Hellwig wrote:
+> On Wed, Apr 23, 2025 at 06:37:41AM -0400, Kent Overstreet wrote:
+> > > It also don't support bio chaining or error handling and requires a
+> > > single bio that is guaranteed to fit the required number of vectors.
+> > 
+> > Why would bio chaining ever be required? The caller allocates both the
+> > buf and the bio, I've never seen an instance where you'd want that; just
+> > allocate a bio with the correct number of vecs, which your
+> > bio_vmalloc_max_vecs() helps with.
+> 
+> If you go beyond 1MB I/O for vmalloc you need it because a single
+> bio can't hold enough page size chunks.  That is unless you want
+> to use your own allocation for it and call bio_init which has various
+> other downsides.
 
-Commit f1046a472b70 ("gfs2: gl_object races fix") was trying to work
-around that problem by detaching the inode glock from the inode before
-calling iget_failed(), but that broke the inode deallocation code in
-gfs_evict_inode().
+Allocating your own bio doesn't allow you to safely exceed the
+BIO_MAX_VECS limit - there's places in the io path that need to bounce,
+and they all use biosets.
 
-To fix that, deallocate partially created inodes in gfs2_create_inode()
-instead of relying on gfs_evict_inode() for doing that.
+That may be an issue even for non vmalloc bios, unless everything that
+bounces has been converted to bounce to a folio of the same order.
 
-This means that gfs2_evict_inode() and its helper functions will no
-longer see partially created inodes, and so some simplifications are
-possible there.
+> > The "abstract over vmalloc and normal physically contigious allocations"
+> > bit that bch2_bio_map() does is the important part.
+> > 
+> > It's not uncommon to prefer physically contiguous allocations but have a
+> > vmalloc fallback; bcachefs does, and  xfs does with a clever "try the
+> > big allocation if it's cheap, fall back to vmalloc to avoid waiting on
+> > compaction" that I might steal.
+> > 
+> > is_vmalloc_addr() is also cheap, it's just a pointer comparison (and it
+> > really should be changed to a static inline).
+> 
+> The problem with transparent vmalloc handling is that it's not possible.
+> The magic handling for virtually indexed caches can be hidden on the
+> submission side, but the completion side also needs to call
+> invalidate_kernel_vmap_range for reads.  Requiring the caller to know
+> they deal vmalloc is a way to at least keep that on the radar.
 
-Fixes: f1046a472b70 ("gfs2: gl_object races fix")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/inode.c | 23 +++++++++++++++--------
- fs/gfs2/super.c |  8 ++------
- fs/gfs2/super.h |  2 ++
- 3 files changed, 19 insertions(+), 14 deletions(-)
+yeesh, that's a landmine.
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 0b2d75106b1c..95c39798901b 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -697,10 +697,11 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	struct gfs2_inode *dip = GFS2_I(dir), *ip;
- 	struct gfs2_sbd *sdp = GFS2_SB(&dip->i_inode);
- 	struct gfs2_glock *io_gl;
--	int error;
-+	int error, error2;
- 	u32 aflags = 0;
- 	unsigned blocks = 1;
- 	struct gfs2_diradd da = { .bh = NULL, .save_loc = 1, };
-+	bool xattr_initialized = false;
- 
- 	if (!name->len || name->len > GFS2_FNAMESIZE)
- 		return -ENAMETOOLONG;
-@@ -813,11 +814,11 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 
- 	error = gfs2_glock_get(sdp, ip->i_no_addr, &gfs2_inode_glops, CREATE, &ip->i_gl);
- 	if (error)
--		goto fail_free_inode;
-+		goto fail_dealloc_inode;
- 
- 	error = gfs2_glock_get(sdp, ip->i_no_addr, &gfs2_iopen_glops, CREATE, &io_gl);
- 	if (error)
--		goto fail_free_inode;
-+		goto fail_dealloc_inode;
- 	gfs2_cancel_delete_work(io_gl);
- 	io_gl->gl_no_formal_ino = ip->i_no_formal_ino;
- 
-@@ -842,8 +843,10 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	if (error)
- 		goto fail_gunlock3;
- 
--	if (blocks > 1)
-+	if (blocks > 1) {
- 		gfs2_init_xattr(ip);
-+		xattr_initialized = true;
-+	}
- 	init_dinode(dip, ip, symname);
- 	gfs2_trans_end(sdp);
- 
-@@ -898,6 +901,14 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	gfs2_glock_dq_uninit(&ip->i_iopen_gh);
- fail_gunlock2:
- 	gfs2_glock_put(io_gl);
-+fail_dealloc_inode:
-+	set_bit(GIF_ALLOC_FAILED, &ip->i_flags);
-+	clear_nlink(inode);
-+	mark_inode_dirty(inode);
-+	error2 = evict_unlinked_inode(inode);
-+	if (error2)
-+		fs_warn(sdp, "%s: %d\n", __func__, error2);
-+	ip->i_no_addr = 0;
- fail_free_inode:
- 	if (ip->i_gl) {
- 		gfs2_glock_put(ip->i_gl);
-@@ -912,10 +923,6 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	gfs2_dir_no_add(&da);
- 	gfs2_glock_dq_uninit(&d_gh);
- 	if (!IS_ERR_OR_NULL(inode)) {
--		set_bit(GIF_ALLOC_FAILED, &ip->i_flags);
--		clear_nlink(inode);
--		if (ip->i_no_addr)
--			mark_inode_dirty(inode);
- 		if (inode->i_state & I_NEW)
- 			iget_failed(inode);
- 		else
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index e25a24ae2197..c154fc209816 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1258,9 +1258,6 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- 	struct gfs2_sbd *sdp = sb->s_fs_info;
- 	int ret;
- 
--	if (unlikely(test_bit(GIF_ALLOC_FAILED, &ip->i_flags)))
--		goto should_delete;
--
- 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
- 	    test_bit(GLF_DEFER_DELETE, &ip->i_iopen_gh.gh_gl->gl_flags))
- 		return EVICT_SHOULD_DEFER_DELETE;
-@@ -1290,7 +1287,6 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- 	if (inode->i_nlink)
- 		return EVICT_SHOULD_SKIP_DELETE;
- 
--should_delete:
- 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
- 	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags))
- 		return gfs2_upgrade_iopen_glock(inode);
-@@ -1301,7 +1297,7 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
-  * evict_unlinked_inode - delete the pieces of an unlinked evicted inode
-  * @inode: The inode to evict
-  */
--static int evict_unlinked_inode(struct inode *inode)
-+int evict_unlinked_inode(struct inode *inode)
- {
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	int ret;
-@@ -1314,7 +1310,7 @@ static int evict_unlinked_inode(struct inode *inode)
- 	}
- 
- 	if (ip->i_eattr) {
--		ret = gfs2_ea_dealloc(ip, !test_bit(GIF_ALLOC_FAILED, &ip->i_flags));
-+		ret = gfs2_ea_dealloc(ip, true);
- 		if (ret)
- 			goto out;
- 	}
-diff --git a/fs/gfs2/super.h b/fs/gfs2/super.h
-index b27a774d9580..46f32f66082b 100644
---- a/fs/gfs2/super.h
-+++ b/fs/gfs2/super.h
-@@ -15,6 +15,8 @@
- #define GFS2_FS_FORMAT_MIN (1801)
- #define GFS2_FS_FORMAT_MAX (1802)
- 
-+int evict_unlinked_inode(struct inode *inode);
-+
- void gfs2_lm_unmount(struct gfs2_sbd *sdp);
- 
- static inline unsigned int gfs2_jindex_size(struct gfs2_sbd *sdp)
--- 
-2.49.0
+having a separate bio_add_vmalloc as a hint is still a really bad
+"solution", unfortunately. And since this is something we don't have
+sanitizers or debug code for, and it only shows up on some archs -
+that's nasty.
 
+> The other benefit is that by forcing different calls it is much
+> easier to pick the optimal number of bvecs (1) for the non-vmalloc
+> path, although that is of course also possible without it.
+
+Your bio_vmalloc_max_vecs() could trivially handle both vmalloc and non
+vmalloc addresses.
+
+> Not for a purely synchronous helper we could handle both, but so far
+> I've not seen anything but the xfs log recovery code that needs it,
+> and we'd probably get into needing to pass a bio_set to avoid
+> deadlock when used deeper in the stack, etc.  I can look into that
+> if we have more than a single user, but for now it doesn't seem
+> worth it.
+
+bcache and bcachefs btree buffers can also be vmalloc backed. Possibly
+also the prio_set path in bcache, for reading/writing bucket gens, but
+I'd have to check.
+
+> Having a common helper for vmalloc and the kernel direct mapping
+> is actually how I started, but then I ran into all the issues with
+> it and with the extremely simple helpers for the direct mapping
+> which are used a lot, and the more complicated version for vmalloc
+> which just has a few users instead.
+
+*nod*
+
+What else did you run into? invalidate_kernel_vmap_range() seems like
+the only problematic one, given that is_vmalloc_addr() is cheap.
