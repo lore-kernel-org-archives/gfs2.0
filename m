@@ -1,128 +1,249 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C4222B586
-	for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 12:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE962147EA
+	for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 12:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745496101; cv=none; b=bvXlv3gpp/NjkipmAwDIajRgIQ8fv5pOHpWVnJ9V2K3Xmx9/cYks5hZIlOzeD15BXmTnS8sXb9S6Ag4WwuuDCtsrw7/4z4WbeTsShK27lLSFJFkSH9X6Ge+oG90drV3o69IFNqx1gN6GaANv0tD/vwjK/pFGbqBuJZZ4Nt4Gq/o=
+	t=1745496525; cv=none; b=OkMxxT9HizaKJ6ehVi9w+3HuC6HmqTCIVDrrLyYp0p4cSOJEE4VLtWg2k81TZZUIS2jBl9q5Vag6L8MsW6zzS2j+e0372yvBxp8dRWyQrJUp8QPL3C0jpfh0pM4lPasLuGmaSN/lSJ5iRWS/euPN4eqlDPEFH1WO6VZWHsGkTjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745496101; c=relaxed/simple;
-	bh=RDRKZeNKN55umrzQ5oGHsI+0KYc+ooDByqGf/CbRS4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lc1zBcB2D1DOIdzlnDPHK2wCBPMUXAvQNF/oQedRq+yXTxSUh7QSAYSJXfI0TveHvTh7sPlTfXIMBAevijd4COV66Nc71f8yQCu1opGGT4aATxAFlnUfWyjbo0nWI5ELHjnQvMaKTx9hac93WU8Q45caJEO13jFkoyEJuPzpsA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=u9gRpvYC; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1745496525; c=relaxed/simple;
+	bh=riKBxCMa3TXEufx7N0V3A1ztqyyIIrklchkK2hx520M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=SsrYkl23c5az9QYZ2YVgfrzZNq9SQehDBm+VIJlINjMMvKLSlZccrj/dgoXoJU9nqsePmTpph8QRyHb7LJ1RqXm53HrJii4hH/UXArH5MC5Ykp81mxpo0Ii3tk8hfwQi7hUxh9BXXIpPgbiYSonFXYdJDzpU0i9HwOHXASJF2H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U22y10YA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="u9gRpvYC"
-Date: Thu, 24 Apr 2025 08:01:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1745496087;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U22y10YA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745496522;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T2MMeEmusMY/E/i/SQKbyFaL7BU6CcGYmFZRFD2drdA=;
-	b=u9gRpvYCA7IkAb0B4poNcSjWcfnEIwKuPsuUltPGgb8dOqhtvOFUuqTpBE1musH7/BVP9b
-	38vbULDjl6NCX/pmhSnebe2rg3ejQKWdffXIWBn1CsORMSUQcA3dgQXk9yIE8/M4BAoo1k
-	1DBuUEL/zkkYq7EeqOTzQe9EbZUJZTQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
-	"Md. Haris Iqbal" <haris.iqbal@ionos.com>, Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>, 
-	Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, 
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Carlos Maiolino <cem@kernel.org>, 
-	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
-	Johannes Thumshirn <jth@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: add more bio helper
-Message-ID: <anc2qstnukiwtskc4pd3kqajfswm3dzljxwa3awrxjs7mzppoc@nziz3h4ilqpd>
-References: <20250422142628.1553523-1-hch@lst.de>
- <jetduw7zshrmp4gl7zfpwqjweycwesxiod7xvtnxqwqekgtvdf@idwnvfzvhgik>
- <20250423093621.GA2578@lst.de>
- <sl4oibdxpjygqfpy6llq237zuckz7ym4fmzcfvxn2raofr37a5@hvevbcgm5trn>
- <20250423160733.GA656@lst.de>
- <q53k4x5nshvr2zatrgyhygxouv7ijyepe6cj2pfooemi6gbu4y@lpxxcvozazzu>
- <20250424083740.GA24723@lst.de>
+	bh=OQJAOgjSijdH8q+PLtVdmnGnZJKEdp8GSZiELold8/M=;
+	b=U22y10YAVzLu1rx3KX2gqX5Tde3IRVhaCwj+Kchj75R8u7W3R7v8hjF1BKK480efhVDV/0
+	0fP4DAjVrSZMOEpU4ZbJPRYYfAMYRRESuwvEprXm1CjyJo+RSLiru4DSz87x8ldKT0y6NE
+	T5f2BiiqDobwvBQVOuCkhUB8RzRiFTA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-2ddTJcnCNAyJin6ED2-eyQ-1; Thu, 24 Apr 2025 08:08:40 -0400
+X-MC-Unique: 2ddTJcnCNAyJin6ED2-eyQ-1
+X-Mimecast-MFC-AGG-ID: 2ddTJcnCNAyJin6ED2-eyQ_1745496519
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3913aaf1e32so426852f8f.0
+        for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 05:08:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745496519; x=1746101319;
+        h=content-transfer-encoding:in-reply-to:from:cc:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OQJAOgjSijdH8q+PLtVdmnGnZJKEdp8GSZiELold8/M=;
+        b=FFfDGa/G+efk+l4umcwiA9wo+KiMaWA5OjFMiwEs4RHvAI9xoEvYHso7UWD37kw+uE
+         smNzd5lWl92bBD6Cj3l0TJXL8s3AGT3ExBnL5yXP6+O9n1z+P8rRX62b/bO6SCdzQGW6
+         Qj6PhAloiEiOxZveEcKk//DP0Li/6QRuIU1SnvVMI5yO5I3boGE4nYBwDpV0xyCjJp14
+         yvWnP0EVLhhjrmqohHSiIg5dpUn1hqwPPb+KcaKUxzs7vTUcmU4i0+Il6bn5HeZhMVUc
+         Huki4mn/DoLjq+p9tCj5Pwplq/gCPmgi7dC6gkZ5bTdKFqQOMvunsLBZLy2+YKzG/8xA
+         KMcQ==
+X-Gm-Message-State: AOJu0YwpTQhEyYGTjZfyJy5eQwXWIJzjEyfjXhUcqN6S04g4W/Ko7ZV+
+	oQqYooKYXqwSs17R3wFZ6JVaEIYOxn98Wn4CESMjd6PZgoNfhJxrkYrEGnpBf0eckDb8Y9T2STc
+	It6B4EQSlhJv3S7psBKyvTs3jRfH9lGectHQRIQwckS2lt5h6lAs=
+X-Gm-Gg: ASbGncvTUORtxbHHhGU0iKnCdrEKWoQCk3vcHEA/P1UZzENbOdvHnjNDGgzwtrsXkVI
+	HTcrotZuQaSoU+dWkkTlXWNiZyxERIivh1kLWSC9qqbfzSiJ5MOnaGb7LLnnXPOnmOuoxW/1XzS
+	fIgpQVRM2GMhb9aDsDnzsUBLI+aWla+vNHAzhW61tEsAVHvcNy0wwsStvu8Aqwdt2slN4l07BrK
+	Tl8sOoMGxAXuiNqJm4uM7jrn5TlQ1ZfJSJvkuSqA4yrIeq5Ur6rITxaSd1gb3nXy6zYBOCiUteP
+	THKLqQGo554CkUBH//QR6SrDenO/G0Cb/eEVa3A7hlS8OZFfzCOynWvvfek2n7rG/YNU768=
+X-Received: by 2002:a05:6000:420c:b0:391:2932:e67b with SMTP id ffacd0b85a97d-3a06cf639abmr1799046f8f.35.1745496519481;
+        Thu, 24 Apr 2025 05:08:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3Miu04m7FtRfb+BQvMSkE70IfLDMTYy4ogQJc2vcsVNUADU1m8/exPPRN+p4IdxlLyvpJAQ==
+X-Received: by 2002:a05:6000:420c:b0:391:2932:e67b with SMTP id ffacd0b85a97d-3a06cf639abmr1799023f8f.35.1745496519050;
+        Thu, 24 Apr 2025 05:08:39 -0700 (PDT)
+Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d4c30edsm1853528f8f.43.2025.04.24.05.08.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Apr 2025 05:08:38 -0700 (PDT)
+Message-ID: <e3af30f8-f777-487a-a0b1-9b2ac3bd546d@redhat.com>
+Date: Thu, 24 Apr 2025 13:08:37 +0100
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250424083740.GA24723@lst.de>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] gfs2: deallocate inodes in gfs2_create_inode
+To: Andreas Gruenbacher <agruenba@redhat.com>
+References: <20250423162717.1234285-1-agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <20250423162717.1234285-1-agruenba@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CQW5T7qERyyeutNdeg4lNDehNdyMvU2ppttLnlxsJPE_1745496519
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 24, 2025 at 10:37:40AM +0200, Christoph Hellwig wrote:
-> On Wed, Apr 23, 2025 at 02:02:11PM -0400, Kent Overstreet wrote:
-> > Allocating your own bio doesn't allow you to safely exceed the
-> > BIO_MAX_VECS limit - there's places in the io path that need to bounce,
-> > and they all use biosets.
+On 23/04/2025 17:27, Andreas Gruenbacher wrote:
+> When creating and destroying inodes, we are relying on the inode hash
+> table to make sure that for a given inode number, only a single inode
+> will exist.  We then link that inode to its inode and iopen glock and
+> let those glocks point back at the inode.  However, when iget_failed()
+> is called, the inode is removed from the inode hash table before
+> gfs_evict_inode() is called, and uniqueness is no longer guaranteed.
 > 
-> Yes.  Another reason not to do it, which I don't want to anyway.
+> Commit f1046a472b70 ("gfs2: gl_object races fix") was trying to work
+> around that problem by detaching the inode glock from the inode before
+> calling iget_failed(), but that broke the inode deallocation code in
+> gfs_evict_inode().
 > 
-> But we do have a few places that do it like squashs which we need to
-> weed out.  And/or finally kill the bounce bufferingreal, which is long
-> overdue.
+> To fix that, deallocate partially created inodes in gfs2_create_inode()
+> instead of relying on gfs_evict_inode() for doing that.
 > 
-> > That may be an issue even for non vmalloc bios, unless everything that
-> > bounces has been converted to bounce to a folio of the same order.
+> This means that gfs2_evict_inode() and its helper functions will no
+> longer see partially created inodes, and so some simplifications are
+> possible there.
 > 
-> Anything that actually hits the bounce buffering is going to
-> cause problems because it hasn't kept up with the evolution of
-> the block layer, and is basically not used for anything relevant.
-
-It's not just block/bounce.c that does bouncing, though.
-
-e.g. bcache has to bounce on a cache miss that will be written to the
-cache - we don't want to wait for the write to the backing device to
-complete before returning the read completion, and we can't write to the
-backing device with the original buffer if it was mapped to userspace.
-
-I'm pretty sure I've seen bouncing in dm and maybe md as well, but it's
-been years.
-
-> > > The problem with transparent vmalloc handling is that it's not possible.
-> > > The magic handling for virtually indexed caches can be hidden on the
-> > > submission side, but the completion side also needs to call
-> > > invalidate_kernel_vmap_range for reads.  Requiring the caller to know
-> > > they deal vmalloc is a way to at least keep that on the radar.
-> > 
-> > yeesh, that's a landmine.
-> > 
-> > having a separate bio_add_vmalloc as a hint is still a really bad
-> > "solution", unfortunately. And since this is something we don't have
-> > sanitizers or debug code for, and it only shows up on some archs -
-> > that's nasty.
+> Fixes: f1046a472b70 ("gfs2: gl_object races fix")
+> Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+> ---
+>   fs/gfs2/inode.c | 23 +++++++++++++++--------
+>   fs/gfs2/super.c |  8 ++------
+>   fs/gfs2/super.h |  2 ++
+>   3 files changed, 19 insertions(+), 14 deletions(-)
 > 
-> Well, we can't do it in the block stack because that doesn't have the
-> vmalloc address available.  So the caller has to do it, and having a
-> very visible sign is the best we can do.  Yes, signs aren't the
-> best cure for landmines, but they are better than nothing.
+> diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+> index 0b2d75106b1c..95c39798901b 100644
+> --- a/fs/gfs2/inode.c
+> +++ b/fs/gfs2/inode.c
+> @@ -697,10 +697,11 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+>   	struct gfs2_inode *dip = GFS2_I(dir), *ip;
+>   	struct gfs2_sbd *sdp = GFS2_SB(&dip->i_inode);
+>   	struct gfs2_glock *io_gl;
+> -	int error;
+> +	int error, error2;
+>   	u32 aflags = 0;
+>   	unsigned blocks = 1;
+>   	struct gfs2_diradd da = { .bh = NULL, .save_loc = 1, };
+> +	bool xattr_initialized = false;
 
-Given that only a few architectures need it, maybe sticking the vmalloc
-address in struct bio is something we should think about.
+This variable isn't used in this version.
 
-Obviously not worth it if only 2-3 codepaths need it, but if vmalloc
-fallbacks become more common it's something to think about.
+>   
+>   	if (!name->len || name->len > GFS2_FNAMESIZE)
+>   		return -ENAMETOOLONG;
+> @@ -813,11 +814,11 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+>   
+>   	error = gfs2_glock_get(sdp, ip->i_no_addr, &gfs2_inode_glops, CREATE, &ip->i_gl);
+>   	if (error)
+> -		goto fail_free_inode;
+> +		goto fail_dealloc_inode;
+>   
+>   	error = gfs2_glock_get(sdp, ip->i_no_addr, &gfs2_iopen_glops, CREATE, &io_gl);
+>   	if (error)
+> -		goto fail_free_inode;
+> +		goto fail_dealloc_inode;
+>   	gfs2_cancel_delete_work(io_gl);
+>   	io_gl->gl_no_formal_ino = ip->i_no_formal_ino;
+>   
+> @@ -842,8 +843,10 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+>   	if (error)
+>   		goto fail_gunlock3;
+>   
+> -	if (blocks > 1)
+> +	if (blocks > 1) {
+>   		gfs2_init_xattr(ip);
+> +		xattr_initialized = true;
+> +	}
+>   	init_dinode(dip, ip, symname);
+>   	gfs2_trans_end(sdp);
+>   
+> @@ -898,6 +901,14 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+>   	gfs2_glock_dq_uninit(&ip->i_iopen_gh);
+>   fail_gunlock2:
+>   	gfs2_glock_put(io_gl);
+> +fail_dealloc_inode:
+> +	set_bit(GIF_ALLOC_FAILED, &ip->i_flags);
+> +	clear_nlink(inode);
+> +	mark_inode_dirty(inode);
+> +	error2 = evict_unlinked_inode(inode);
 
-> > > Not for a purely synchronous helper we could handle both, but so far
-> > > I've not seen anything but the xfs log recovery code that needs it,
-> > > and we'd probably get into needing to pass a bio_set to avoid
-> > > deadlock when used deeper in the stack, etc.  I can look into that
-> > > if we have more than a single user, but for now it doesn't seem
-> > > worth it.
-> > 
-> > bcache and bcachefs btree buffers can also be vmalloc backed. Possibly
-> > also the prio_set path in bcache, for reading/writing bucket gens, but
-> > I'd have to check.
-> 
-> But do you do synchronous I/O, i.e. using sumit_bio_wait on them?
+So we're switching to only checking ip->i_eattr and calling 
+gfs2_ea_dealloc() indirectly with the initialized argument always true. 
+I don't think that's right as ip->i_eattr gets set much earlier than the 
+gfs2_init_xattr() call.
 
-Most btree node reads are synchronous, but not when we're prefetching.
+Andy
+
+> +	if (error2)
+> +		fs_warn(sdp, "%s: %d\n", __func__, error2);
+> +	ip->i_no_addr = 0;
+>   fail_free_inode:
+>   	if (ip->i_gl) {
+>   		gfs2_glock_put(ip->i_gl);
+> @@ -912,10 +923,6 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+>   	gfs2_dir_no_add(&da);
+>   	gfs2_glock_dq_uninit(&d_gh);
+>   	if (!IS_ERR_OR_NULL(inode)) {
+> -		set_bit(GIF_ALLOC_FAILED, &ip->i_flags);
+> -		clear_nlink(inode);
+> -		if (ip->i_no_addr)
+> -			mark_inode_dirty(inode);
+>   		if (inode->i_state & I_NEW)
+>   			iget_failed(inode);
+>   		else
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index e25a24ae2197..c154fc209816 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -1258,9 +1258,6 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
+>   	struct gfs2_sbd *sdp = sb->s_fs_info;
+>   	int ret;
+>   
+> -	if (unlikely(test_bit(GIF_ALLOC_FAILED, &ip->i_flags)))
+> -		goto should_delete;
+> -
+>   	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
+>   	    test_bit(GLF_DEFER_DELETE, &ip->i_iopen_gh.gh_gl->gl_flags))
+>   		return EVICT_SHOULD_DEFER_DELETE;
+> @@ -1290,7 +1287,6 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
+>   	if (inode->i_nlink)
+>   		return EVICT_SHOULD_SKIP_DELETE;
+>   
+> -should_delete:
+>   	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
+>   	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags))
+>   		return gfs2_upgrade_iopen_glock(inode);
+> @@ -1301,7 +1297,7 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
+>    * evict_unlinked_inode - delete the pieces of an unlinked evicted inode
+>    * @inode: The inode to evict
+>    */
+> -static int evict_unlinked_inode(struct inode *inode)
+> +int evict_unlinked_inode(struct inode *inode)
+>   {
+>   	struct gfs2_inode *ip = GFS2_I(inode);
+>   	int ret;
+> @@ -1314,7 +1310,7 @@ static int evict_unlinked_inode(struct inode *inode)
+>   	}
+>   
+>   	if (ip->i_eattr) {
+> -		ret = gfs2_ea_dealloc(ip, !test_bit(GIF_ALLOC_FAILED, &ip->i_flags));
+> +		ret = gfs2_ea_dealloc(ip, true);
+>   		if (ret)
+>   			goto out;
+>   	}
+> diff --git a/fs/gfs2/super.h b/fs/gfs2/super.h
+> index b27a774d9580..46f32f66082b 100644
+> --- a/fs/gfs2/super.h
+> +++ b/fs/gfs2/super.h
+> @@ -15,6 +15,8 @@
+>   #define GFS2_FS_FORMAT_MIN (1801)
+>   #define GFS2_FS_FORMAT_MAX (1802)
+>   
+> +int evict_unlinked_inode(struct inode *inode);
+> +
+>   void gfs2_lm_unmount(struct gfs2_sbd *sdp);
+>   
+>   static inline unsigned int gfs2_jindex_size(struct gfs2_sbd *sdp)
+
