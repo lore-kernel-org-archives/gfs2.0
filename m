@@ -1,124 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C31786344
-	for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 19:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147AE2701B8;
+	Thu, 24 Apr 2025 05:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745435738; cv=none; b=uP8kXyMoYy5I+FVkUfIUpCl+dpM0FR6+3PUSHnJWJ//rAOYwbZLhERV9nYErwY/QKFpmqVR+EVDlCx/xJN1BmvZwBRWE6R22qZ2qRRx7SeeWHT/3wTGfp226bEX7pkRweg7I63HRitLEFJ2cLGRmym5FS9XJp/l7sWzZFcDUbDU=
+	t=1745474168; cv=none; b=IW8aKDmO6D2zuN8L+3kPH9SuNSJS8+awnrva5rolkc63Eaq3dy6PGPnDKc2E80CZJmi7x03wzbGpILKCYlHWB6DWRQY7vXzkkTfwOVsfa35PPTd99k7GAey2Z61EF9UoRggG8AksDweq6/8BTc3RLY+xUWbzMZKLnjGRXNwi1yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745435738; c=relaxed/simple;
-	bh=eickxpp+U+TX/hCGMIUysoHKRlJLm+0sC+wt+DIQuu4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R1rRh51vNNfkDkCIZd3Eh/aO4v2eznJYXRjO2UCT0/U+gY3PBScVszN2eONRHMufRWemfdzJ1CXN0Y9R4YPbhg3fuQrw0n4mV28OXwhi5Vgy5bneUKhBiuwlmuLnkzNjDL3di7gH00l+5jTotuu8is/7DoxNCrWCW/Ib+2u/qd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GFClGIJx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1745474168; c=relaxed/simple;
+	bh=oZkKhqQBMZiuxEgfsDNa+7Jj1Ykre8OoNXuKqazZy5A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LImwnOK7j0dDVy1RCYFNIW9nJt7MgCPNH/xnnUGr9NEg49KdE3rw5XvzhkxyBYCUYxppYD09nXJ8QBdl177gFS40U7/6Pjv23J0jMhjBV9qBNbdSZoOUHCCK828DK2RTvibPpcINJLjI2gpe37IuCkbn1h+geVUOautjm7TASqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9UM6IWk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GFClGIJx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745435735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NsN5lkmU2hxjcVy5rQEw514KL16xc+u7bIhBtUpApIU=;
-	b=GFClGIJx58nYbHVf65viYewtypnWe4MZ3MUjhC2EE6zi8F1AqGz8m+rdrEGhLA/z6YpvtZ
-	bLP13XTJzK+mOLrG2V0kWVFEjdnvzoyaMnaJzSluJew1peucjwiYU/PPhfXg/ZR1btT6rX
-	b1JRx+Ul0NniEneWeJyhlUGU6Cm7wV8=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-ZXZBkB46N6mICD-hb_4Q3A-1; Wed, 23 Apr 2025 15:15:34 -0400
-X-MC-Unique: ZXZBkB46N6mICD-hb_4Q3A-1
-X-Mimecast-MFC-AGG-ID: ZXZBkB46N6mICD-hb_4Q3A_1745435733
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22651aca434so1424635ad.1
-        for <gfs2@lists.linux.dev>; Wed, 23 Apr 2025 12:15:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745435733; x=1746040533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NsN5lkmU2hxjcVy5rQEw514KL16xc+u7bIhBtUpApIU=;
-        b=pUyVM5dPm2VggFCZJdgrjb1+jpzAqar3BEVqOQdUD8KkE5KQ63PPbgpTO23xUOtYLA
-         W9QBq3eCgjpbVBT4gEgsN/q2cS8WC/gBw9J9RPK1Pm0RF0HoiHrwS2L8nNsNN1rSmxt5
-         QWSVsOt8zMYFK5T4EYYHWkLtk5A/VCKiW0ICuNCg/SjfBZzTMRVcmNOKoYqS5uh5MHel
-         Xum8Xc2Hh9jR4cwVuc3rFcsEzhE0Hx8KFvZk66+q1imnG7LOJM5ycLKpuMMPKxlsQ5Fu
-         rAuUAX/etDBdYXWoFMfkYuPLnwtaxJuIkQOYvN3raJY3U8W51Z8OfU8PtbZzvqA/KjHy
-         Ulxw==
-X-Gm-Message-State: AOJu0Yxd/ciEJ1mkHCT4L2ypkEVCkAvYxQacUO00F0AaLkKxKxF9ECAU
-	CaOHCaSG4XCAoXzUV+p0Hs7Ccs0HxnaolNudfU8C3uM+hhN9F0Lit0rH3thr39QcjvqzK/hPHcB
-	UYkAUk1U3qdlf6MhGue4ENUOvdlUx+/ECjAqyhC+4vUSmkZDL6VBZ+n3pcwKrEMpKET+ErmxFuK
-	zE1Mf5ogHH8ueIpilbnBV9KM626g==
-X-Gm-Gg: ASbGncsTkfkVRfVMsET6UWOHf8ugJXe5x1JkW/7MnXWXMT/X/k2U6iuW1dCdkU5MO+p
-	GZkPvBk+WSYdwFrCcpe/HjMsbLLKHaEgJkdjA28ZUOfmhdEsLX1hAD/pa2TOJrrhyaNM=
-X-Received: by 2002:a17:903:110c:b0:223:66bb:8993 with SMTP id d9443c01a7336-22c5362e04bmr319319245ad.43.1745435732992;
-        Wed, 23 Apr 2025 12:15:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAAFS26DKOMBitZyuK9X8fdqxlPh6t17mhHt6DJ7fRrV7XBYhBe+lT/z79OwJ1uTc+ljXTjpnq4zuPKthqMjw=
-X-Received: by 2002:a17:903:110c:b0:223:66bb:8993 with SMTP id
- d9443c01a7336-22c5362e04bmr319318965ad.43.1745435732663; Wed, 23 Apr 2025
- 12:15:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9UM6IWk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76836C4CEE3;
+	Thu, 24 Apr 2025 05:56:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745474167;
+	bh=oZkKhqQBMZiuxEgfsDNa+7Jj1Ykre8OoNXuKqazZy5A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C9UM6IWkGpHgQ+AreIBAsDT6ksEGQHQZZLCZsWdCyVQfO9nywdqHCUFjE4dnkjI4v
+	 XjwT4dxTcJefuR2CauB5szxf7RIwFHdXejZCq9gKa51uan+cutuS6QPoPKoMvfOfHX
+	 viTKKxlMSYuTjlkQQ8a4QM6r9dmCDn5wJHMxFffRBNFwPHC9ovp9rghiQ+n3rqG7w9
+	 /eOI2+NXP5UiKDmcT6ZE1Czqp5V/3OeE1UA4WvmhYaFaFL3055xw2vqszd2+WSXqeB
+	 rKr0QrvQGCT4XQyAacZPGEhSVzlCEVg6JPbxNn3WhZ7kwSC4rLnrK3Z10YXty5CqgI
+	 ddFLOfbA38xDA==
+Message-ID: <98fcbf51-b91c-4211-98d2-a987bdc09f49@kernel.org>
+Date: Thu, 24 Apr 2025 14:56:03 +0900
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250423153528.251736-1-anprice@redhat.com>
-In-Reply-To: <20250423153528.251736-1-anprice@redhat.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 23 Apr 2025 21:15:21 +0200
-X-Gm-Features: ATxdqUFWbgngWDBSUSToBnlSaizPwfUOkhr07JJzAo_cPGKCeSdQgE4W63vkCSo
-Message-ID: <CAHc6FU43no8JWgcw_TjCrkbdfBHVS0R7AkuX5kQQ5-A4O+kXUg@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: Fix usage of bio->bi_status in gfs2_end_log_write
-To: Andrew Price <anprice@redhat.com>
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 22O7lq5FfRYUf8CMo2YUz_j5XHXB4WYwURCKopCwHJw_1745435733
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/17] block: add a bio_add_virt_nofail helper
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+ Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>,
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+ David Sterba <dsterba@suse.com>, Andreas Gruenbacher <agruenba@redhat.com>,
+ Carlos Maiolino <cem@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
+ linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-pm@vger.kernel.org
+References: <20250422142628.1553523-1-hch@lst.de>
+ <20250422142628.1553523-2-hch@lst.de>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20250422142628.1553523-2-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 23, 2025 at 5:35=E2=80=AFPM Andrew Price <anprice@redhat.com> w=
-rote:
-> bio->bi_status is an index into the blk_errors array, not an errno. Its
-> __bitwise tag is cast away here, resulting in a sparse warning:
->
->   fs/gfs2/lops.c:207:22: warning: cast from restricted blk_status_t
->
-> We could either add __force to the cast and continue logging bi_status
-> in the error message, or we could look up the errno in the array and log
-> that. As sdp->sd_log_error is used as an errno in all other cases, look
-> up the errno here for consistency.
->
-> Signed-off-by: Andrew Price <anprice@redhat.com>
+On 4/22/25 23:26, Christoph Hellwig wrote:
+> Add a helper to add a directly mapped kernel virtual address to a
+> bio so that callers don't have to convert to pages or folios.
+> 
+> For now only the _nofail variant is provided as that is what all the
+> obvious callers want.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  fs/gfs2/lops.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-> index 0fd3b5ec7d8cc..a1022635abc98 100644
-> --- a/fs/gfs2/lops.c
-> +++ b/fs/gfs2/lops.c
-> @@ -204,9 +204,11 @@ static void gfs2_end_log_write(struct bio *bio)
->         struct bvec_iter_all iter_all;
->
->         if (bio->bi_status) {
-> -               if (!cmpxchg(&sdp->sd_log_error, 0, (int)bio->bi_status))
-> +               int err =3D blk_status_to_errno(bio->bi_status);
+>  include/linux/bio.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/include/linux/bio.h b/include/linux/bio.h
+> index cafc7c215de8..0678b67162ee 100644
+> --- a/include/linux/bio.h
+> +++ b/include/linux/bio.h
+> @@ -417,6 +417,23 @@ void __bio_add_page(struct bio *bio, struct page *page,
+>  		unsigned int len, unsigned int off);
+>  void bio_add_folio_nofail(struct bio *bio, struct folio *folio, size_t len,
+>  			  size_t off);
 > +
-> +               if (!cmpxchg(&sdp->sd_log_error, 0, err))
->                         fs_err(sdp, "Error %d writing to journal, jid=3D%=
-u\n",
-> -                              bio->bi_status, sdp->sd_jdesc->jd_jid);
-> +                              err, sdp->sd_jdesc->jd_jid);
->                 gfs2_withdraw_delayed(sdp);
->                 /* prevent more writes to the journal */
->                 clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
-> --
-> 2.49.0
+> +/**
+> + * bio_add_virt_nofail - add data in the diret kernel mapping to a bio
 
-Applied, thanks.
+s/diret/direct
 
-Andreas
+With that, looks good to me.
 
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+
+> + * @bio: destination bio
+> + * @vaddr: data to add
+> + * @len: length of the data to add, may cross pages
+> + *
+> + * Add the data at @vaddr to @bio.  The caller must have ensure a segment
+> + * is available for the added data.  No merging into an existing segment
+> + * will be performed.
+> + */
+> +static inline void bio_add_virt_nofail(struct bio *bio, void *vaddr,
+> +		unsigned len)
+> +{
+> +	__bio_add_page(bio, virt_to_page(vaddr), len, offset_in_page(vaddr));
+> +}
+> +
+>  int bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter);
+>  void bio_iov_bvec_set(struct bio *bio, const struct iov_iter *iter);
+>  void __bio_release_pages(struct bio *bio, bool mark_dirty);
+
+
+-- 
+Damien Le Moal
+Western Digital Research
