@@ -1,119 +1,167 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF2D1C84B9
-	for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 07:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA71E204F99
+	for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 08:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745478898; cv=none; b=Uo133PRamw+mE01EIO/F0hZVpX9UtOvDhzTbtJt6+9691qVKYdnCT6ReUOKtCrDk4RlJv2hgTU/jvgz53VrXusws5ePIPJNelQ7VKvQHZylr2fVyL7xmp5/H98eDEahbnhladsAuEPLUxQepPoTZQQ8k2NMsEEcZi7YE8wPfOjs=
+	t=1745482118; cv=none; b=TTBQOH/MKHtFvhhKtIH3GQcdO5LUURS68tBpAvOECXEBYdkDXfRMTMhwBGW+WulNRKT8GHXwkMjUtd+0gUKxlHAVunAPL2YmZSXcP2AlGQQYcakm9W1W1gYDdlG8sCqUgMQtIEw/RutkUd1kpjPZoSQFIwkIOaUO9fhiTUWuIxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745478898; c=relaxed/simple;
-	bh=6soEZQ4kJUtvIiqK5puOZE2rScJp6QCdTzCCiUGiRxg=;
+	s=arc-20240116; t=1745482118; c=relaxed/simple;
+	bh=7LSwA9/RC1GNwfG+lCcud3yw0cCVDeqP5nGelatoTRg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CJ6c/d/n4Xvd2tsKk1qxFjkQChR/clrGBJT8giJoFSOeWPUTNRZjDNFTvqH4sYU1JrUzxOWC70pwH02O/58sifU6cRwmTnX/hauPrPFVVtPXxwTM2Q5zF5z2zpYi3AAMGIKT0wSC8Rsy6qltWyXfljflM3Tb5r7T1ELsEqoq+z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=DZAg3xQq; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	 To:Cc:Content-Type; b=SwopFhXKyZi6hggECk3GhLHSWqvahpTqkg4CkGiYyQNy3fgtIIY0SR7KTG/rHNaskOl4UZS5IHBWlD5NFt6m4mbfMTHEpigWrbEz45PshiabDPYqiYJdUXhYvfVveY5IzIaZVRxUNMpdASRBziYJMov+zWtKELQePjP4fHAn/9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vwu8qYcv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="DZAg3xQq"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5ded500589aso111687a12.0
-        for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 00:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1745478894; x=1746083694; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o+B8Lq9RDCcRwOgfM91avCJcgWbWbGSMVAU80sQQPWI=;
-        b=DZAg3xQqbGPzC2av15BVYWseIHarLXHM/wlTrk9TrNtrGFZMH08/5xSgZqU8kOZd/i
-         Re+TUc1yQTPK6N2uWoftcr8s9INHebYT5oU/baf7XV2XJtdER9JbIZikrqMV0U83zsIP
-         OEFHH9nAb8Jj/2huDDDUQZcVfyG9HRvMfW7jX3kTrxi/LzUchQzCjGFZ3sTyqTdXPLK/
-         FPFf8UE5/ime5Zjv+jz60IVISzPtyM1rKiNrhLbCgeK+befNHq0U9Ac1S8ujavVnaWOl
-         JOPj8d/3vuA+f3ocmuCxjIH+G98Ak8H+1IfwTVzGO8vsUkWr+RJwIOj1NzHcXqLWcFbW
-         nz4w==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vwu8qYcv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745482115;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SIBcAPIsvRbbtPBYFtUV3aaspfe/f5XOnaHKo0o0ZIA=;
+	b=Vwu8qYcvBYvrUyibQMaTbHKxOV1Mzi8LH0GT2EkX2qtvwULT+BHaETXV896uySKf9fRMPa
+	os7UYLbjXXPw/KdYA5yAU3n5bo1YNnALcUxmTpweX3eUNUCjBZaLuAiwwx6+elHa+uLGMe
+	3Hds/HPlQ3mLuAFlzgi3a6z4UbP6VFA=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-ZXb90AF8MlucVAAxrsMmfA-1; Thu, 24 Apr 2025 04:08:32 -0400
+X-MC-Unique: ZXb90AF8MlucVAAxrsMmfA-1
+X-Mimecast-MFC-AGG-ID: ZXb90AF8MlucVAAxrsMmfA_1745482112
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2262051205aso5836315ad.3
+        for <gfs2@lists.linux.dev>; Thu, 24 Apr 2025 01:08:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745478894; x=1746083694;
+        d=1e100.net; s=20230601; t=1745482112; x=1746086912;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o+B8Lq9RDCcRwOgfM91avCJcgWbWbGSMVAU80sQQPWI=;
-        b=DROLm4mMd/u9xlOS8H85KUdf8bT4/uQp7aWFHoSKtYA5si4W+4b377t84hMPBOU+bI
-         7SlaBFM/nDAPtBJMulMDSfZx01HoGvzsUdv5FeAQCdyxKB28V+IoyAPTQ2hJPODH1r5z
-         kY00bJaEOJ2g8BxV0ENX86hOvW2D7v7Klw8PfjDK/Vp8owmj+8b0uW3NnUw/+vdquNpZ
-         6HXgJLvjurUkD2OtcaUu0MKYYEpSBLZWsj4ei0Ibl3REVkh6DWh6ehDo+ugiHTbgaSJh
-         f0bqN//8aNSUaSmteSCbhEIH8+st+bCrKUqBpn4DyWCQYPzXKabTuZ+f3nHrupbQRvtM
-         xPlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAq7C/S1lclMVEkttWk29Sg8lV4fe9g7XvKfLJlBo3gJnv90JZGFoLsDSsJNan3CswBIB8@lists.linux.dev
-X-Gm-Message-State: AOJu0YyP5/bNNpPqjUijWuJku6eZY06UapqDkclNKLAa7d7gHVrvf8t5
-	A0UAuHujtDJFyZEM5LO8BEoNUvzb0GHwA2WM8kOsGMNs0ezcsPPyhnyz4PgzGRdP4MLWmmi3Ntc
-	0xX/bBp7yyL2SN7Pi0/Vmp71/G/pmhiMc10TPdQ==
-X-Gm-Gg: ASbGnct2soeJDsVPHN16dmGTsEu5zRLyUFUe2ggZPNQ/dPoEn5o3rmS9Z4JMqqDp8CR
-	7WbeoR3MTDbnK5+U49uOpQbF3p8dmVEV9KOpVAriWhql2sKU1t2NM19k5C3mIsMENxgGSd0mqeZ
-	Y34Y/8E3DNNQGgUQUlzj9ApP3sq/76vEpcM3pp/Ae/GAlvvipA4KfX3qU=
-X-Google-Smtp-Source: AGHT+IEyAiUyJ2mt3265jGzrXL9ewNYPCotZUNj9QN43I8BqsNkYBnMDkmlm1PZ/N97S/0QtxYx3zQ6j0NbtPT1J4KM=
-X-Received: by 2002:a05:6402:35cd:b0:5ed:9811:dfdc with SMTP id
- 4fb4d7f45d1cf-5f6ddcf7f9emr548541a12.2.1745478894059; Thu, 24 Apr 2025
- 00:14:54 -0700 (PDT)
+        bh=SIBcAPIsvRbbtPBYFtUV3aaspfe/f5XOnaHKo0o0ZIA=;
+        b=W8pXuZAm30P8NLCIm0jGUmIVDWoySBoYgtCc+Xfx/jjqpjPmZYLMNeaSSxmCLviKMK
+         lR0iUF1JH4JBfqU6FZkVEg7nXrdbB4/Y+pKuWgOvqqG2CIdsrQynTspZKx6LHr43+QOP
+         wCvKpTWu1kXZw7qyoDcB3jF+KCahtwhKLV2RLfJ+795l3taGpw+kSX0SacieMKBu+MLh
+         mj/pHRRJh0FdaP0N5CbT4RMetOxqZnWcj+68/71NMJyKNeTbbTO/jGOc6KohGLSfuoQY
+         T1JBlLtJ5gXrwqQg1bLQh5c0z63CeH9KrsqLjYByZAhWjn362Eb+EBTnqW8Zbnv8rkhJ
+         kxZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbfnQFB8MUukHjB5XHsgTIPmBuHsV6DR1L0HoiDVZhuEppXqpzYl2LzrYR0ITnBKYi0ZYy@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+oqvk/O+CwBZw9TEQS3s1T42Mf8E6iv5UOKtzqiUliX3NZGdd
+	ifURR0t2FSUS2T7poZj36Np24yaFz7ZUT+JJUSviYcoTCILX522rf63QPL/7ykQ/qbeGYuE+D29
+	qfHFil1mZOyu/DQ4FYaLmmd/nzzVWlSMKEsgA8sD4eVcWfTheU3+R7T+AXZTImjkXyN70vGBU7A
+	T9gFK1eGNsub4PRauv3JXmG2N+Fw==
+X-Gm-Gg: ASbGnct8e+ldAGAPFmDQ8ViuDdh7buOdJ90yF424sJfOgaHXJwvsVus0tn1DR7YE7jx
+	v/HbodrZ6KDECLOUaUAa0wC9nQQbVWE3GMt+tc0XuFBif1UwjmTXg+fwphiyqEPckG8w=
+X-Received: by 2002:a17:903:238e:b0:224:1c1:4aba with SMTP id d9443c01a7336-22db3db0f63mr20382295ad.50.1745482111805;
+        Thu, 24 Apr 2025 01:08:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9QCt1+uWV0hbcvfKshe4MEvAT+8cYmunuoojCcFbrOrf3foAV6szwZqkcwyD4r4JChprCKBZyHc1ES6rtmRM=
+X-Received: by 2002:a17:903:238e:b0:224:1c1:4aba with SMTP id
+ d9443c01a7336-22db3db0f63mr20382045ad.50.1745482111469; Thu, 24 Apr 2025
+ 01:08:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250422142628.1553523-1-hch@lst.de> <20250422142628.1553523-11-hch@lst.de>
-In-Reply-To: <20250422142628.1553523-11-hch@lst.de>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Thu, 24 Apr 2025 09:14:43 +0200
-X-Gm-Features: ATxdqUFceKzqfCTaFW1t2hUyaQzIpI3Ey7xNjxMyLwpQpyjJSAnOh5Bm8Qq-E8M
-Message-ID: <CAMGffEmB1Y22T6JosV+aJrTf9NWAabuJqovy65+mMLsOcx1ktQ@mail.gmail.com>
-Subject: Re: [PATCH 10/17] rnbd-srv: use bio_add_virt_nofail
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
-	"Md. Haris Iqbal" <haris.iqbal@ionos.com>, Coly Li <colyli@kernel.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Mike Snitzer <snitzer@kernel.org>, 
-	Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
-	David Sterba <dsterba@suse.com>, Andreas Gruenbacher <agruenba@redhat.com>, Carlos Maiolino <cem@kernel.org>, 
-	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
+References: <20250422142628.1553523-1-hch@lst.de> <20250422142628.1553523-16-hch@lst.de>
+ <11b02dfa-9f71-48ac-9d20-ba5a6e44f289@kernel.org>
+In-Reply-To: <11b02dfa-9f71-48ac-9d20-ba5a6e44f289@kernel.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Thu, 24 Apr 2025 10:08:19 +0200
+X-Gm-Features: ATxdqUFTuhjv2n6cEKl2JrhrhPyh6bRjf4GKJQJ_KzadIMn25rxqpw5We26zq08
+Message-ID: <CAHc6FU7Y5QKGB1pFL8A0-3VOX2i5LY92d9AYhWqgHMzxL30m4A@mail.gmail.com>
+Subject: Re: [PATCH 15/17] gfs2: use bdev_rw_virt in gfs2_read_super
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, 
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>, Jack Wang <jinpu.wang@ionos.com>, 
+	Coly Li <colyli@kernel.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, 
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+	Carlos Maiolino <cem@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
 	Johannes Thumshirn <jth@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, 
 	linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
 	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
 	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, 
 	linux-pm@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DYb9FsxRfm5E-R0ZgZJl5efpgZgFwwFDZDV5TKcE4GA_1745482112
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2025 at 4:27=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
-e:
+On Thu, Apr 24, 2025 at 8:23=E2=80=AFAM Damien Le Moal <dlemoal@kernel.org>=
+ wrote:
+> On 4/22/25 23:26, Christoph Hellwig wrote:
+> > Switch gfs2_read_super to allocate the superblock buffer using kmalloc
+> > which falls back to the page allocator for PAGE_SIZE allocation but
+> > gives us a kernel virtual address and then use bdev_rw_virt to perform
+> > the synchronous read into it.
+> >
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
 >
-> Use the bio_add_virt_nofail to add a single kernel virtual address
-> to a bio as that can't fail.
+> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 >
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-> ---
->  drivers/block/rnbd/rnbd-srv.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+> One nit below.
 >
-> diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.=
-c
-> index 2ee6e9bd4e28..2df8941a6b14 100644
-> --- a/drivers/block/rnbd/rnbd-srv.c
-> +++ b/drivers/block/rnbd/rnbd-srv.c
-> @@ -147,12 +147,7 @@ static int process_rdma(struct rnbd_srv_session *srv=
-_sess,
+> > ---
+> >  fs/gfs2/ops_fstype.c | 24 +++++++++---------------
+> >  1 file changed, 9 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+> > index e83d293c3614..7c1014ba7ac7 100644
+> > --- a/fs/gfs2/ops_fstype.c
+> > +++ b/fs/gfs2/ops_fstype.c
+> > @@ -226,28 +226,22 @@ static void gfs2_sb_in(struct gfs2_sbd *sdp, cons=
+t struct gfs2_sb *str)
+> >
+> >  static int gfs2_read_super(struct gfs2_sbd *sdp, sector_t sector, int =
+silent)
+> >  {
+> > -     struct super_block *sb =3D sdp->sd_vfs;
+> > -     struct page *page;
+> > -     struct bio_vec bvec;
+> > -     struct bio bio;
+> > +     struct gfs2_sb *sb;
+> >       int err;
+> >
+> > -     page =3D alloc_page(GFP_KERNEL);
+> > -     if (unlikely(!page))
+> > +     sb =3D kmalloc(PAGE_SIZE, GFP_KERNEL);
+> > +     if (unlikely(!sb))
+> >               return -ENOMEM;
+> > -
+> > -     bio_init(&bio, sb->s_bdev, &bvec, 1, REQ_OP_READ | REQ_META);
+> > -     bio.bi_iter.bi_sector =3D sector * (sb->s_blocksize >> 9);
+> > -     __bio_add_page(&bio, page, PAGE_SIZE, 0);
+> > -
+> > -     err =3D submit_bio_wait(&bio);
+> > +     err =3D bdev_rw_virt(sdp->sd_vfs->s_bdev,
+> > +                     sector * (sdp->sd_vfs->s_blocksize >> 9), sb, PAG=
+E_SIZE,
 >
->         bio =3D bio_alloc(file_bdev(sess_dev->bdev_file), 1,
->                         rnbd_to_bio_flags(le32_to_cpu(msg->rw)), GFP_KERN=
-EL);
-> -       if (bio_add_page(bio, virt_to_page(data), datalen,
-> -                       offset_in_page(data)) !=3D datalen) {
-> -               rnbd_srv_err_rl(sess_dev, "Failed to map data to bio\n");
-> -               err =3D -EINVAL;
-> -               goto bio_put;
-> -       }
-> +       bio_add_virt_nofail(bio, data, datalen);
->
->         bio->bi_opf =3D rnbd_to_bio_flags(le32_to_cpu(msg->rw));
->         if (bio_has_data(bio) &&
-> --
-> 2.47.2
->
+> While at it, use SECTOR_SHIFT here ?
+
+This is hardcoded in several places; I can clean it up separately.
+
+> > +                     REQ_OP_READ | REQ_META);
+> >       if (err) {
+> >               pr_warn("error %d reading superblock\n", err);
+> > -             __free_page(page);
+> > +             kfree(sb);
+> >               return err;
+> >       }
+> > -     gfs2_sb_in(sdp, page_address(page));
+> > -     __free_page(page);
+> > +     gfs2_sb_in(sdp, sb);
+> > +     kfree(sb);
+> >       return gfs2_check_sb(sdp, silent);
+> >  }
+> >
+
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+
+Thanks,
+Andreas
+
