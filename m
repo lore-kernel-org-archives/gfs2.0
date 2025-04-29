@@ -1,103 +1,79 @@
-Received: from mail73.out.titan.email (mail73.out.titan.email [3.216.99.53])
+Received: from ssh247.corpemail.net (ssh247.corpemail.net [210.51.61.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E512571AD
-	for <gfs2@lists.linux.dev>; Tue, 29 Apr 2025 02:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.216.99.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917FC1922F4
+	for <gfs2@lists.linux.dev>; Tue, 29 Apr 2025 05:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745892978; cv=none; b=kbVSt+S8LZI/gSU7bUWl7X1n/vIMt7TIXgW8btzdJxfCpves45tRI3tYHihZWfW5azi2dbZNWGMf+Q0YFR7XoQOLwCbnujqzOMWNGuKj/O2tWa96yfemoux4dRCfNO07KZz2HOUqKtB2HbNzWa/l4N5Z7gvxo3l+bSGttbK+kY8=
+	t=1745905968; cv=none; b=qRAnLlAsFYlp+euQ7lcDmgQUUD0HYgCCmMOQx0WyQziUIFBgZSAKp7PTqoUj4QeYNhqa68pVNQyGmTEPHc7j/Y2wtcZ6IKmbaBOR6RvG9GPtvTq7HZdBoyVr09RhJJkMnrZgMR+tsU+j4PsTzt1ythGGN+Jc1pQL/m+zZiV9JOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745892978; c=relaxed/simple;
-	bh=gZAOuS44MYhz7NBYoj56A+0XayAShTo+iK6h4Wr0/zc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bO9bAV19cZH39bnTRJL/V6/X8gcQHZG5dqpAwCcJgryjd3i8KTBuNtI6z4vOsGuEquA3hPlUmUTTAZ/YiYONZR/FTOs0pq9qGN+0puDIaARQ3jUPsvY5szX/hUQNNw5Z713KuEsNxVGEDSqzX/NqQ5lTehRp0oENnSy3jZxE+J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coly.li; spf=pass smtp.mailfrom=coly.li; dkim=pass (1024-bit key) header.d=t12smtp-sign004.email header.i=@t12smtp-sign004.email header.b=mhiVYgSv; arc=none smtp.client-ip=3.216.99.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coly.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coly.li
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=t12smtp-sign004.email header.i=@t12smtp-sign004.email header.b="mhiVYgSv"
-Received: from localhost (localhost [127.0.0.1])
-	by smtp-out.flockmail.com (Postfix) with ESMTP id 3CEEE60472;
-	Tue, 29 Apr 2025 02:07:11 +0000 (UTC)
-DKIM-Signature: a=rsa-sha256; bh=gZAOuS44MYhz7NBYoj56A+0XayAShTo+iK6h4Wr0/zc=;
-	c=relaxed/relaxed; d=t12smtp-sign004.email;
-	h=message-id:references:mime-version:subject:date:from:in-reply-to:cc:to:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
-	q=dns/txt; s=titan1; t=1745892431; v=1;
-	b=mhiVYgSvo8a4gBeShc7PpourNwPH3KKLmy1CRTfFs7pFHZtO8r4reAKeYjhFEOnOaGJ9/shg
-	n+KcM5zpLmfFOqCYSdzWayLPVbbsCh7pnUwklQl0SVRGvlxRGF2ElPDf9nVEwRARBhWYlly4ok7
-	azd+pMZuRheeXmbqIhItRxxI=
-Received: from smtpclient.apple (tk2-118-59677.vs.sakura.ne.jp [153.121.56.181])
-	by smtp-out.flockmail.com (Postfix) with ESMTPA id 6FF7E60484;
-	Tue, 29 Apr 2025 02:07:03 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1745905968; c=relaxed/simple;
+	bh=+akeY5z7w1RyXiz6j2QAfwfh2W+sUGoBrjaV5TEkxNQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pqWoY/RrJh6kgp2LKJ1YLvahXdV2+QFmMZibaflFtMvbXNEjw6RX1f0VcrFw1520VJ1XvhTVUJ1ERTdkJaZgH/GLLQ4jOHOPHVq/Hr8vBtGUQPX2bGdU8vAbeV0LND0g4c485fYsouc0lnzvNdjLN/f+VfNjX3/s4xpx6f7vwPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
+Received: from jtjnmail201622.home.langchao.com
+        by ssh247.corpemail.net ((D)) with ASMTP (SSL) id 202504291351301089;
+        Tue, 29 Apr 2025 13:51:30 +0800
+Received: from localhost.localdomain (10.94.5.55) by
+ jtjnmail201622.home.langchao.com (10.100.2.22) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 29 Apr 2025 13:51:29 +0800
+From: Bo Liu <liubo03@inspur.com>
+To: <agruenba@redhat.com>
+CC: <gfs2@lists.linux.dev>, <linux-kernel@vger.kernel.org>, Bo Liu
+	<liubo03@inspur.com>
+Subject: [PATCH]  gfs2: Remove set but not used variable 'xattr_initialized'
+Date: Tue, 29 Apr 2025 01:49:16 -0400
+Message-ID: <20250429054916.2343-1-liubo03@inspur.com>
+X-Mailer: git-send-email 2.18.2
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH 07/17] bcache: use bio_add_virt_nofail
-Feedback-ID: :i@coly.li:coly.li:flockmailId
-From: Coly Li <i@coly.li>
-In-Reply-To: <227da5a0-c5fd-432a-8227-7a5d8883ca0d@kernel.org>
-Date: Tue, 29 Apr 2025 10:06:50 +0800
-Cc: Jens Axboe <axboe@kernel.dk>,
- linux-block@vger.kernel.org,
- "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
- Jack Wang <jinpu.wang@ionos.com>,
- Coly Li <colyli@kernel.org>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Mike Snitzer <snitzer@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>,
- Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>,
- David Sterba <dsterba@suse.com>,
- Andreas Gruenbacher <agruenba@redhat.com>,
- Carlos Maiolino <cem@kernel.org>,
- Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Pavel Machek <pavel@kernel.org>,
- linux-bcache@vger.kernel.org,
- dm-devel@lists.linux.dev,
- linux-btrfs@vger.kernel.org,
- gfs2@lists.linux.dev,
- linux-fsdevel@vger.kernel.org,
- linux-xfs@vger.kernel.org,
- linux-pm@vger.kernel.org,
- Damien Le Moal <dlemoal@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F6D90517-F3D2-4E32-85FE-53B20710E13D@coly.li>
-References: <20250422142628.1553523-1-hch@lst.de>
- <20250422142628.1553523-8-hch@lst.de>
- <227da5a0-c5fd-432a-8227-7a5d8883ca0d@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-F-Verdict: SPFVALID
-X-Titan-Src-Out: 1745892431077720643.5242.6730310602892018715@prod-use1-smtp-out1001.
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=fZxXy1QF c=1 sm=1 tr=0 ts=6810344f
-	a=hXS1xhdqaCDGgKeHTjTB6g==:117 a=hXS1xhdqaCDGgKeHTjTB6g==:17
-	a=IkcTkHD0fZMA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8
-	a=9MUAQWKrSuUz9z0uTEMA:9 a=QEXdDO2ut3YA:10
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: Jtjnmail201616.home.langchao.com (10.100.2.16) To
+ jtjnmail201622.home.langchao.com (10.100.2.22)
+tUid: 2025429135130a959781ce626ab25329c3b92bffbd5f4
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 
+The variable xattr_initialized is assigned and never used, so can be removed.
 
+Signed-off-by: Bo Liu <liubo03@inspur.com>
+---
+ fs/gfs2/inode.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-> 2025=E5=B9=B44=E6=9C=8824=E6=97=A5 14:14=EF=BC=8CDamien Le Moal =
-<dlemoal@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On 4/22/25 23:26, Christoph Hellwig wrote:
->> Convert the __bio_add_page(..., virt_to_page(), ...) pattern to the
->> bio_add_virt_nofail helper implementing it.
->>=20
->> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-For bcache part,
-
-Acked-by: Coly Li <colyli@kernel.org>
-
-Thanks.
-
-Coly Li
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 95c39798901b..f87f21b93b43 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -701,7 +701,6 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	u32 aflags = 0;
+ 	unsigned blocks = 1;
+ 	struct gfs2_diradd da = { .bh = NULL, .save_loc = 1, };
+-	bool xattr_initialized = false;
+ 
+ 	if (!name->len || name->len > GFS2_FNAMESIZE)
+ 		return -ENAMETOOLONG;
+@@ -843,10 +842,8 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	if (error)
+ 		goto fail_gunlock3;
+ 
+-	if (blocks > 1) {
++	if (blocks > 1)
+ 		gfs2_init_xattr(ip);
+-		xattr_initialized = true;
+-	}
+ 	init_dinode(dip, ip, symname);
+ 	gfs2_trans_end(sdp);
+ 
+-- 
+2.31.1
 
