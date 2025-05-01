@@ -1,176 +1,145 @@
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0482236FA
-	for <gfs2@lists.linux.dev>; Thu,  1 May 2025 19:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AB62144C9;
+	Thu,  1 May 2025 19:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126513; cv=none; b=Lx5ZX7qRYXb4xF3zSUHMevAxX4DcYCjMant71ssnpMJ6nv8awsz06oMcGrjOsut6hQadf2soPjDGtohMxTDWv6F/H58a8h6ZORweVAFbgVsGhD+nHNcPk3/aE2/hisb6cFplMWuJBH6euF14OGEAm4hX+pqwjNZh9xfiM0A3oLw=
+	t=1746129064; cv=none; b=ZNcGwwj9CItk70Olj+2j/qoV3CHi4AR9nzAjxzpWJGpKfQyoJLhbQYqeKmLkcLMYzuZ1jdN24HoPTWzOiwA/e3HSA/M2E/ymiQzV+dk/0BZ736hepBydJi6dm/AwT4XGhOykfOwgs+xsfqhaEmPrtPMsCLo0/V8K4cGIZ71Di40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126513; c=relaxed/simple;
-	bh=hRXMGmdX4sI8PQPsecBDBIMgkvQACYqlRhAyIet5RHE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=rgTJDvRHDY41lRxODSGFHQUaxFt0cIodHdknlgdF8c1Gh/eiX6WEXjUuXW9x4uPlUGmhXNf7k9/PyVHg7FPuDB4jbt6semhRajecHf/GrlWkrUP2bryax6BGJKukVep02vl7G9nuDtYSltbPjDBft9DhsuC38rfN/+w3vyhy6Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d443811ed2so18398435ab.3
-        for <gfs2@lists.linux.dev>; Thu, 01 May 2025 12:08:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746126511; x=1746731311;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FKP0lSrriF9M2Hik4O8+o4MWhOfGEa/NCauFRhbmwFo=;
-        b=LTknYG5uxUcUxCIp7iywGEF6onkxohQDRSUg9nQcBhBt2cBv5V4hoi4KxcvKW1SJD1
-         C0s/r4XA0MRLYFcP68sVv1yuT4dLjgFU0K847bbft2KsFN9flov3F0OrtUldTcSwVKOE
-         Dx8AaKERSCMPyE3TAuzDQ4004lTtq/gG9cUFG6XByB4MZ0PocG4W366EJe0uzAKWZE6/
-         SklgHpGojjYiATJl8/uZuveU4dEQDRTGTEG1xBMbpU/6pkgbPStm8r7djaBCqpTrhWPg
-         ReYZSeoSZW7QcXMqQPrNzwEzQCF/dPKg0y1Ob8rkTr87tB11NLaGiqq0jM6ab4B/2fVi
-         uXkw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNfUCV7+wLFwHpTsBPMyILwRjaStcydJkCN8EjDAu4M/1AutGfzZPd/5lKjCIYOOLpceV5@lists.linux.dev
-X-Gm-Message-State: AOJu0YzCwf00o8ipfJWvPcMXbcO2z4TxzDCB8KTxcAuDu09YUn5pWsBc
-	23CFdFqqFCZCXZD9VP9wXaDeRnguOTxcDfLAz7Ls5sY+ADjXwP7b8Fe3pmk6uq3DVURv/hL4l3/
-	KfACE0MYC1e2s7yQVIYCorjM3k2H7m1G1JU92IAkQNQQWIgolZZwq7S0=
-X-Google-Smtp-Source: AGHT+IEKiWNk1mXSSHpM3FyNvmEXp5QK823Fw7T2826WsGtZPwsVPjsueu214zge0quVLGWXKXz5EE1fPib6+7boPeWql/E6Kmq3
+	s=arc-20240116; t=1746129064; c=relaxed/simple;
+	bh=2TRZHURBJeTYr0ZgIhVGXPTqVaFa+GK5URzfaOJaUhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nZiwNcDHoo+QQmzl1hTgmmNlGWMM8eJ7i3x23hdejmrPcVgC/Yz7ptv72tnKYG2DKaLlXonrm1jMb+woWunXL+rWXCJmrtUKfOa/ebs1XaOslMy3tZGh6gS7tT+wHomzEmEyNcalsGLY5Rc+Dkuh4Dd5DrIH8yqcMcxMfvBRg7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llys9i9F; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llys9i9F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02E3C4CEE3;
+	Thu,  1 May 2025 19:51:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746129063;
+	bh=2TRZHURBJeTYr0ZgIhVGXPTqVaFa+GK5URzfaOJaUhg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=llys9i9FxQiQ3K+yejzzO5QU04hHAI1hSy40XuklJtjWPsSQpQpXh/YF+zY6RaWnK
+	 BC3AUIyn+Vqyid/kjSmZbJtt/SARYP1b9qbW9AS2QRja9BmUaQrBkycI7VPN130CY3
+	 20lg8yw8IPxmW0nkIe8mR/maye58XtQq7VRtN8bPBdJ4juG+7vjKZ5MY1jMXFCA5a4
+	 44AENXaaRBt2NNdM8Mrb/1EeHNxqImlraFFQDQqAWr892fNjFusnSCHxhz/xFBZ4Lz
+	 a9ramlG4s1qSgaz6OXfWN3RXM6B/E7aCyn9wpRbxjl1QYTQv3bRijN99dIN3mx1pfz
+	 uozYg6My1k6zg==
+Date: Thu, 1 May 2025 12:51:03 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, slava@dubeyko.com,
+	glaubitz@physik.fu-berlin.de, frank.li@vivo.com,
+	linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH 15/19] xfs: simplify xfs_buf_submit_bio
+Message-ID: <20250501195103.GD25675@frogsfrogsfrogs>
+References: <20250430212159.2865803-1-hch@lst.de>
+ <20250430212159.2865803-16-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:b46:b0:3d9:43fe:8e49 with SMTP id
- e9e14a558f8ab-3d97c1ade2bmr804945ab.8.1746126510880; Thu, 01 May 2025
- 12:08:30 -0700 (PDT)
-Date: Thu, 01 May 2025 12:08:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6813c6ae.050a0220.53db9.0001.GAE@google.com>
-Subject: [syzbot] [gfs2?] stack segment fault in gfs2_glock_dq
-From: syzbot <syzbot+e0dbe53de58ffe4a5f31@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250430212159.2865803-16-hch@lst.de>
 
-Hello,
+On Wed, Apr 30, 2025 at 04:21:45PM -0500, Christoph Hellwig wrote:
+> Convert the __bio_add_page(..., virt_to_page(), ...) pattern to the
+> bio_add_virt_nofail helper implementing it and use bio_add_vmalloc
+> to insulate xfs from the details of adding vmalloc memory to a bio.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  fs/xfs/xfs_buf.c | 43 ++++++++-----------------------------------
+>  1 file changed, 8 insertions(+), 35 deletions(-)
+> 
+> diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+> index 1a2b3f06fa71..f2d00774a84f 100644
+> --- a/fs/xfs/xfs_buf.c
+> +++ b/fs/xfs/xfs_buf.c
+> @@ -1333,45 +1333,18 @@ static void
+>  xfs_buf_submit_bio(
+>  	struct xfs_buf		*bp)
+>  {
+> +	unsigned int		len = BBTOB(bp->b_length);
+> +	unsigned int		nr_vecs = bio_add_max_vecs(bp->b_addr, len);
+>  	unsigned int		map = 0;
+>  	struct blk_plug		plug;
+>  	struct bio		*bio;
+>  
+> -	if (is_vmalloc_addr(bp->b_addr)) {
+> -		unsigned int	size = BBTOB(bp->b_length);
+> -		unsigned int	alloc_size = roundup(size, PAGE_SIZE);
+> -		void		*data = bp->b_addr;
+> -
+> -		bio = bio_alloc(bp->b_target->bt_bdev, alloc_size >> PAGE_SHIFT,
+> -				xfs_buf_bio_op(bp), GFP_NOIO);
+> -
+> -		do {
+> -			unsigned int	len = min(size, PAGE_SIZE);
+> -
+> -			ASSERT(offset_in_page(data) == 0);
+> -			__bio_add_page(bio, vmalloc_to_page(data), len, 0);
+> -			data += len;
+> -			size -= len;
+> -		} while (size);
+> -
+> -		flush_kernel_vmap_range(bp->b_addr, alloc_size);
+> -	} else {
+> -		/*
+> -		 * Single folio or slab allocation.  Must be contiguous and thus
+> -		 * only a single bvec is needed.
+> -		 *
+> -		 * This uses the page based bio add helper for now as that is
+> -		 * the lowest common denominator between folios and slab
+> -		 * allocations.  To be replaced with a better block layer
+> -		 * helper soon (hopefully).
+> -		 */
+> -		bio = bio_alloc(bp->b_target->bt_bdev, 1, xfs_buf_bio_op(bp),
+> -				GFP_NOIO);
+> -		__bio_add_page(bio, virt_to_page(bp->b_addr),
+> -				BBTOB(bp->b_length),
+> -				offset_in_page(bp->b_addr));
+> -	}
+> -
+> +	bio = bio_alloc(bp->b_target->bt_bdev, nr_vecs, xfs_buf_bio_op(bp),
+> +			GFP_NOIO);
+> +	if (is_vmalloc_addr(bp->b_addr))
+> +		bio_add_vmalloc(bio, bp->b_addr, len);
 
-syzbot found the following issue on:
+I wonder, do we need a debug assertion on the return value?  AFAICT,
+bio_add_max_vecs should result in a bio that's big enough to handle the
+vmalloc area, but those could be famous last words. :P
 
-HEAD commit:    5bc1018675ec Merge tag 'pci-v6.15-fixes-3' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17231270580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=90837c100b88a636
-dashboard link: https://syzkaller.appspot.com/bug?extid=e0dbe53de58ffe4a5f31
-compiler:       Debian clang version 20.1.2 (++20250402124445+58df0ef89dd6-1~exp1~20250402004600.97), Debian LLD 20.1.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17f34374580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10a31270580000
+Other than that, the code is much cleaner than before. :)
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-5bc10186.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3a2f39285e07/vmlinux-5bc10186.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2a37a55f34fb/bzImage-5bc10186.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/21cc0a3e6bd7/mount_0.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=13f34374580000)
+--D
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e0dbe53de58ffe4a5f31@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-gfs2: fsid=syz:syz.0: Error 10 writing to journal, jid=0
-Oops: stack segment: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5304 Comm: syz-executor172 Not tainted 6.15.0-rc3-syzkaller-00342-g5bc1018675ec #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:gfs2_glock_dq+0x60/0xb20 fs/gfs2/glock.c:1657
-Code: 4c 89 ff e8 12 2c 37 fe 4c 89 64 24 28 4c 89 7c 24 30 4d 8b 2f 4d 8d 7d 10 4c 89 fd 48 c1 ed 03 48 b8 00 00 00 00 00 fc ff df <80> 7c 05 00 00 74 08 4c 89 ff e8 e1 2b 37 fe 49 8b 45 10 48 89 44
-RSP: 0018:ffffc9000d357c20 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: dffffc0000000000 RCX: ffff88801e8a8000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffc9000d357d00
-RBP: 0000000000000002 R08: ffff888042107a3b R09: 1ffff11008420f47
-R10: dffffc0000000000 R11: ffffed1008420f48 R12: 1ffff92001a6afa2
-R13: 0000000000000000 R14: ffffc9000d357d00 R15: 0000000000000010
-FS:  00007feba52726c0(0000) GS:ffff88808d6cc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000003fd8e000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- gfs2_glock_dq_uninit+0x25/0xb0 fs/gfs2/glock.c:1723
- gfs2_seek_data+0x16c/0x240 fs/gfs2/inode.c:2133
- gfs2_llseek+0x1a4/0x240 fs/gfs2/file.c:75
- vfs_llseek fs/read_write.c:387 [inline]
- ksys_lseek fs/read_write.c:400 [inline]
- __do_sys_lseek fs/read_write.c:410 [inline]
- __se_sys_lseek fs/read_write.c:408 [inline]
- __x64_sys_lseek+0x14c/0x1e0 fs/read_write.c:408
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7feba52bd689
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 81 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007feba5272218 EFLAGS: 00000246 ORIG_RAX: 0000000000000008
-RAX: ffffffffffffffda RBX: 00007feba537c648 RCX: 00007feba52bd689
-RDX: 0000000000000003 RSI: 0000000002000005 RDI: 0000000000000008
-RBP: 00007feba537c640 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007feba5349028
-R13: 0031656c69662f2e R14: 0000200000000240 R15: 0000200000000140
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_glock_dq+0x60/0xb20 fs/gfs2/glock.c:1657
-Code: 4c 89 ff e8 12 2c 37 fe 4c 89 64 24 28 4c 89 7c 24 30 4d 8b 2f 4d 8d 7d 10 4c 89 fd 48 c1 ed 03 48 b8 00 00 00 00 00 fc ff df <80> 7c 05 00 00 74 08 4c 89 ff e8 e1 2b 37 fe 49 8b 45 10 48 89 44
-RSP: 0018:ffffc9000d357c20 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: dffffc0000000000 RCX: ffff88801e8a8000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffc9000d357d00
-RBP: 0000000000000002 R08: ffff888042107a3b R09: 1ffff11008420f47
-R10: dffffc0000000000 R11: ffffed1008420f48 R12: 1ffff92001a6afa2
-R13: 0000000000000000 R14: ffffc9000d357d00 R15: 0000000000000010
-FS:  00007feba52726c0(0000) GS:ffff88808d6cc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007feba52f9090 CR3: 000000003fd8e000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess):
-   0:	4c 89 ff             	mov    %r15,%rdi
-   3:	e8 12 2c 37 fe       	call   0xfe372c1a
-   8:	4c 89 64 24 28       	mov    %r12,0x28(%rsp)
-   d:	4c 89 7c 24 30       	mov    %r15,0x30(%rsp)
-  12:	4d 8b 2f             	mov    (%r15),%r13
-  15:	4d 8d 7d 10          	lea    0x10(%r13),%r15
-  19:	4c 89 fd             	mov    %r15,%rbp
-  1c:	48 c1 ed 03          	shr    $0x3,%rbp
-  20:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  27:	fc ff df
-* 2a:	80 7c 05 00 00       	cmpb   $0x0,0x0(%rbp,%rax,1) <-- trapping instruction
-  2f:	74 08                	je     0x39
-  31:	4c 89 ff             	mov    %r15,%rdi
-  34:	e8 e1 2b 37 fe       	call   0xfe372c1a
-  39:	49 8b 45 10          	mov    0x10(%r13),%rax
-  3d:	48                   	rex.W
-  3e:	89                   	.byte 0x89
-  3f:	44                   	rex.R
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> +	else
+> +		bio_add_virt_nofail(bio, bp->b_addr, len);
+>  	bio->bi_private = bp;
+>  	bio->bi_end_io = xfs_buf_bio_end_io;
+>  
+> -- 
+> 2.47.2
+> 
+> 
