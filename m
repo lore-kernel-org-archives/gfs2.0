@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B75437C748;
-	Mon,  5 May 2025 22:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4043A2EC884;
+	Mon,  5 May 2025 23:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485981; cv=none; b=br+yMdvdDj012joInAXotR0T9bE+De69Ic//asg88wL6dIHYSmFAvO4cdwaFatzLW1nkvA6tAQ/RcUNJQZXn/LDLJt71SRaSHESX9BFi2wUCr0spnOAqDexBWuBkoC/El/KbUx1UUkTFEEsxttZEAXH+ZzMZYAE+dHHElx99VBY=
+	t=1746486464; cv=none; b=hxoUoIassuuHm9L/v2LlEVEPlaV5Y9lWj4GXoyGERsmB3zjG0SigCzq23EGLVqypCKKpMLwRhDcW99qdGc3P/H3I2LPwBgdtu6t6LkQ1/P6fU4bRp/68GH14z4GSMAbybGoEbmvv6Vs/FpzsZq6vOGtTzHw/Y3+gC9+VhfZf1Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485981; c=relaxed/simple;
-	bh=o3QD/J3tU7Q74uHqCAl5L86/kt1bBA5NIb4E8urow+s=;
+	s=arc-20240116; t=1746486464; c=relaxed/simple;
+	bh=psd+1PmLx+7zLujSCIXwT2ZX+zUKu2xcXeApCRMrGqs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tKOpuvjyMGAnPzchUd7LO29gKPd57/7vwu1vnUcB4b90XLmDyRtrkXDV6pBITi3DNaNAgYOWBIuHRxnyCVTz3amJp/QACZSqxrx+M6EH2oLxSS8K1YadXOPTDQVYPOOEhyqJjTiCLl5lsCFoGWAsXWuJE15r4YXNvnWY554eVR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3/daiIJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=j8CIxidMdN84cVzNEczClTUbFPeTBKdw+HDpH9ppd4FlalWhGosmM7nhaOw3x2YoF0PmKA1+1SJ9s4iv6/mJlaYO4MZ33fjM1GGI02Iup3IHTBwX2+o6MAxjcbVDuY2dMvgGzngLa8p6lpJ0fKcZGzrPahuvD5WGyjXOnf49Hug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLkCqDBq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3/daiIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C85C4CEE4;
-	Mon,  5 May 2025 22:59:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLkCqDBq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F83FC4CEEE;
+	Mon,  5 May 2025 23:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485980;
-	bh=o3QD/J3tU7Q74uHqCAl5L86/kt1bBA5NIb4E8urow+s=;
+	s=k20201202; t=1746486463;
+	bh=psd+1PmLx+7zLujSCIXwT2ZX+zUKu2xcXeApCRMrGqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3/daiIJ5Fz+KBmlFivOqLRTva5RBTQnKxFqFEDpszsVLJZfCrF9T5/XkYrrD45h1
-	 8tqpvZS1Rgch2Um2fYAH0E4YNI9IXdLEmF3VXpDQwE+n5Og3Y4tCfWjccB0sFnXGhO
-	 jT/ANCst1r+WUZfKbAaYIkBI9wefOegNQVqVeRUt2qcT9sG3cfxytZf34yVieSUgSa
-	 4eK3RrksCRUdh++8E0NSEJUr2mqOy5ouNZLvwqRSu+dnajv5YoEjNPKdENdG9hAEcD
-	 JhnM2P1vmUq5JmMhi5GDpIotOJqwUjY1J4LCjbNYpOndJ3kDramC7vtaVgyOVdkoVv
-	 Xw/JaOlFMvDIQ==
+	b=LLkCqDBqEaFvGHIUQ7hjWhZG1MD246Xhs3b8rKmb+TPJhxQiug3yZrIca2b/uMEYI
+	 mthBNLvBFKqbUrMBiao7JlDj2+KoRtsQ54Q6VjEx0fjFAmd1vT4oLGJB9RygZLm5A4
+	 URnbZWudG29xVNysKjxlMT8hKvEIq3RqN6dqqgYyUp+csYcbodz5M475YzywlS1i/d
+	 0yu/+wO0VrNMqBlq8eox9aWdfTJ7Di4ugBRtrzep1QDWvE812gB2tka0t3MVCzJFMz
+	 F4T0zIdGCjQvjGcccOaWhmhUKBqm7Km87vJRxdvDY8mU3JD2N9augJmvP0z+c4inKy
+	 Wg7OLzIYQxzlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+Cc: Heming Zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
+	aahringo@redhat.com,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 096/294] gfs2: Check for empty queue in run_queue
-Date: Mon,  5 May 2025 18:53:16 -0400
-Message-Id: <20250505225634.2688578-96-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 043/212] dlm: make tcp still work in multi-link env
+Date: Mon,  5 May 2025 19:03:35 -0400
+Message-Id: <20250505230624.2692522-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
-References: <20250505225634.2688578-1-sashal@kernel.org>
+In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
+References: <20250505230624.2692522-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -46,65 +48,38 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.89
+X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit d838605fea6eabae3746a276fd448f6719eb3926 ]
+[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
 
-In run_queue(), check if the queue of pending requests is empty instead
-of blindly assuming that it won't be.
+This patch bypasses multi-link errors in TCP mode, allowing dlm
+to operate on the first tcp link.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/dlm/lowcomms.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 2c0908a302102..687670075d225 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -853,11 +853,12 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
- __releases(&gl->gl_lockref.lock)
- __acquires(&gl->gl_lockref.lock)
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 2c797eb519da9..51a641822d6c4 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1863,8 +1863,8 @@ static int dlm_tcp_listen_validate(void)
  {
--	struct gfs2_holder *gh = NULL;
-+	struct gfs2_holder *gh;
- 
- 	if (test_and_set_bit(GLF_LOCK, &gl->gl_flags))
- 		return;
- 
-+	/* While a demote is in progress, the GLF_LOCK flag must be set. */
- 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
- 
- 	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -869,18 +870,22 @@ __acquires(&gl->gl_lockref.lock)
- 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
- 		gl->gl_target = gl->gl_demote_state;
-+		do_xmote(gl, NULL, gl->gl_target);
-+		return;
- 	} else {
- 		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
- 			gfs2_demote_wake(gl);
- 		if (do_promote(gl))
- 			goto out_unlock;
- 		gh = find_first_waiter(gl);
-+		if (!gh)
-+			goto out_unlock;
- 		gl->gl_target = gh->gh_state;
- 		if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
- 			do_error(gl, 0); /* Fail queued try locks */
-+		do_xmote(gl, gh, gl->gl_target);
-+		return;
+ 	/* We don't support multi-homed hosts */
+ 	if (dlm_local_count > 1) {
+-		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
+-		return -EINVAL;
++		log_print("Detect multi-homed hosts but use only the first IP address.");
++		log_print("Try SCTP, if you want to enable multi-link.");
  	}
--	do_xmote(gl, gh, gl->gl_target);
--	return;
  
- out_sched:
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
+ 	return 0;
 -- 
 2.39.5
 
