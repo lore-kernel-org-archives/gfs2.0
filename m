@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14982ED094;
-	Mon,  5 May 2025 23:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EE535B948;
+	Mon,  5 May 2025 22:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486522; cv=none; b=Q86PzJyLX51qaHsdlLLcOxe4rL8C8StaAzBmTOgsW07IMpZGLvrtS/ZauEzcQYjF/n47+vky25KA7YCEsYgDK2x2MLpG3urKRr9q0FeGj0myhoDA9zJ5Hp7IM0RYdWDckGp+dJ96JoIxyzAGmN41ffWzcgLxvpkNHu0FvW/GT20=
+	t=1746485095; cv=none; b=o7xskNqJPmjahHh6AVa075niuQI5H6wU21EC+8MJbuemsfmBCfECLlgPO/sDQznJw+RkCgh0PvNsg9MoZv4JLcbykTkKYpZiI0615vTyV2BuzsMnsD1cPM1AcnF2sSEvZdbIZ3U+RSq8t2K4F4sEK1iA7Om2S6c8JLjfEw3LTys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486522; c=relaxed/simple;
-	bh=Qc8kUZMXipZTXxf3pFyZhAv0logpsqy6IX7EpbaAqNM=;
+	s=arc-20240116; t=1746485095; c=relaxed/simple;
+	bh=qTiixerpP4JVYjqht41+eGrpWIMH1nTcxBB/tX6CKfA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oNGo3Qqq5Ft5NZckv8ValKWwAZIK26KmOZTbArsz53lzPZvVXKI5PK33lFnZgZ/nD8RludB0j7O5UwibFGGhzaLQp2AtoAAvNvBv/swVq0nAb6psMhCcYvRAwESX3gi/+ZEz8njvSz4TdGFTAtmc+YJgeItmjHIFoCw6DhWMErc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqFL5das; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=UrogC467hX1+eKSF3ICDXms3PfLilafyIe2gaXF71MBaLuXOTD9VFrAE4KSJjUmR8nJok/houPdZHombeYf1B22E24o4MC6PBNcAqPm7ox/2n9WUmhB9QPBTB0bc9Faz2PiQ3MaR12jwYdNSUGyf1752EuixDlQuOy1NiAFUak4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYiszbRU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqFL5das"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB30C4CEEF;
-	Mon,  5 May 2025 23:08:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYiszbRU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFE7C4CEE4;
+	Mon,  5 May 2025 22:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486521;
-	bh=Qc8kUZMXipZTXxf3pFyZhAv0logpsqy6IX7EpbaAqNM=;
+	s=k20201202; t=1746485095;
+	bh=qTiixerpP4JVYjqht41+eGrpWIMH1nTcxBB/tX6CKfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqFL5dasOb7UH8fvITR+0e58eiwP1CR+gXvMczXy6xOpj6e6Xnq5H8Zw3iWgsEzoj
-	 vpwRZuJMQwVZ34sSyUj0Tx7aHbsD3nUCm5fI+8+sBgBN871K3Q9wOnW9yIF7cCkUtu
-	 ck7JRmi368NzKeL/NkXHV9TzK4nx7nIsiKT4yLBg9koqVAVAk7x5iny2Dinr7tMMDO
-	 RjdBQM8fWpqPSjN+wYG8IDT3acemc+kvtOtsaC4AIISyyvsT/tHkN53N6/wNqK/5wj
-	 ZiCuWabGDnhTClm4N0EC714YV+VyFDO5VDDaPZz/98ArKIpLZ7jxa/+nj1Y3BjkjN7
-	 PW/H5BTPqvCTg==
+	b=SYiszbRUhN4ArhXLlUK495sA80kAxgeMhBvhd9O+B06vfsVyrRKqZ5E85r/KLx+fU
+	 RSkWPERFjhu8YowD+lKEVt35iGzqETauV/eCUyLPGG3ZMZCzp6EYklPzDcFVXKp5sO
+	 UIHOFaF/Ur5BDX66jYrFEz0w2LpLR0JyOL0vY4p1HLcYr3TYxEj/zIzfzH/XRHf7KV
+	 kHJoPEyEpGReGxABviOI1A5f1YKUeTzwNRvsHp8xygMGyCCRZjui06HTvi9z24HcNM
+	 obAb7TXf1mIw/r10gySXZ0nMCktkeNSY6nv0Yfqx6HHqDFuqKOzHaqyqgJJxoCOzE4
+	 aXNzWAxTIooKA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 074/212] gfs2: Check for empty queue in run_queue
-Date: Mon,  5 May 2025 19:04:06 -0400
-Message-Id: <20250505230624.2692522-74-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 160/486] gfs2: Check for empty queue in run_queue
+Date: Mon,  5 May 2025 18:33:56 -0400
+Message-Id: <20250505223922.2682012-160-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
-References: <20250505230624.2692522-1-sashal@kernel.org>
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -46,7 +46,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.136
+X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
@@ -63,24 +63,25 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 6ba8460f53318..428c1db295fa1 100644
+index a51fe42732c4c..4f1eca99786b6 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -885,11 +885,12 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
+@@ -843,12 +843,13 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
  __releases(&gl->gl_lockref.lock)
  __acquires(&gl->gl_lockref.lock)
  {
 -	struct gfs2_holder *gh = NULL;
 +	struct gfs2_holder *gh;
  
- 	if (test_and_set_bit(GLF_LOCK, &gl->gl_flags))
+ 	if (test_bit(GLF_LOCK, &gl->gl_flags))
  		return;
+ 	set_bit(GLF_LOCK, &gl->gl_flags);
  
 +	/* While a demote is in progress, the GLF_LOCK flag must be set. */
  	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
  
  	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -901,18 +902,22 @@ __acquires(&gl->gl_lockref.lock)
+@@ -860,18 +861,22 @@ __acquires(&gl->gl_lockref.lock)
  		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
  		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
  		gl->gl_target = gl->gl_demote_state;
@@ -89,7 +90,7 @@ index 6ba8460f53318..428c1db295fa1 100644
  	} else {
  		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
  			gfs2_demote_wake(gl);
- 		if (do_promote(gl) == 0)
+ 		if (do_promote(gl))
  			goto out_unlock;
  		gh = find_first_waiter(gl);
 +		if (!gh)
