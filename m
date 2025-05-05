@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A443589F6;
-	Mon,  5 May 2025 22:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A2E3703CD;
+	Mon,  5 May 2025 22:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484941; cv=none; b=uq1mr6Qcbzf2Xp8p++VmOYJzVtjJc4ffjJpAlTNtJYnb9VClvlOBLdvJqNCOtbOfoGKuaS35nSXSGlyHgzCkf4j2xkqdDsovBQVMncLtrI1JV23qxWDNaPmBYkK6LxX9h0/ckFNQFQrg1bmayO63amu4PQNVmRLV0MFXWhAJfCc=
+	t=1746485896; cv=none; b=K1+oeCw+q4Se7KKZ6cVJm/ys1PBgdLnBVGxrCFeHovLt7VUaw+tr3CWGsmC5jSno5bjUXv4hfh9yWpLDADqjyj6X/9j6IXTP8XzZ8Q9uyUheMvG289xw3MKOwfgEjc+n5+6BtRV7reRx1oxQOpwwRn45w/WBLRSj5LiLsP/DkMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484941; c=relaxed/simple;
-	bh=wXNdFLzonYINIu4i6qQfk8fufoFk6RwZOIDwJfLI4DA=;
+	s=arc-20240116; t=1746485896; c=relaxed/simple;
+	bh=iS17x7C6Yv5Pzl69bAuVAl+QGDqZ/gO3MdHxIcG6fw8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O4LX0s7t858pxIAisjbfFBrdfId0AOMtmWl9jOTIPr7IaNhvJbu227eqUZQnKf/jnnMsc/duUaYm/Ne/+f9TW9y3fI/WLOo+OhdUhnJEp+x/PnzjmRu0j5d+NRQQsFwiExKIv5J3q9QkBmZHcYoeQBwdVMwUBHQNq9NFZBe8j7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHPzZqd8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=g9hzvHKbri0tMIBLKOum27mkaeZvWJhQJeIE0V4YI9wQ4vK2Bmx+/q7Bk8ZeZoLaecPLqz+yyE/16dVmxhrkivFkRpf7Q/v3tf94WKIOsv+Eg64wMczeW5VcbQocspHZJwqrlyTuupl6reayr5VX+9+Ar66nZJAWxCtLxlNrF1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tfCKhlns; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHPzZqd8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760DDC4CEE4;
-	Mon,  5 May 2025 22:42:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tfCKhlns"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4170C4CEED;
+	Mon,  5 May 2025 22:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484941;
-	bh=wXNdFLzonYINIu4i6qQfk8fufoFk6RwZOIDwJfLI4DA=;
+	s=k20201202; t=1746485895;
+	bh=iS17x7C6Yv5Pzl69bAuVAl+QGDqZ/gO3MdHxIcG6fw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHPzZqd80A44wJQoSZCv7ta7TxPE1xpDSNKw+TCGJhG2+080g7OmDdiAiaFdiGJtq
-	 0a0ky0j/kvo8sc4LAGDr+bB3E8PmKOWIvsTATWthdCppwXiHt+iMabaMWIAqL6Kmw4
-	 xNtaiG+me7NZmd09GTH1kkRaPUv8k5C0dHQ4QUNf3ENHzlIty+WTrhSJRSR+OJdnRR
-	 0NH2t3TaxkV8+PGA8aU+KEyVd9WC/C9qKJFJlA6rpwgYG0BIHtIcy0bATFsD7xoaJp
-	 z1Fvkxr4JrgCfUQHHZdmJ9cGhxXi8i62ijQdYyZY4u+b4Q2tNNGzG9AsqXX5JsRv+n
-	 u4B+wUlOpCzYg==
+	b=tfCKhlnsEEPICzsfpKVNqo+3893UZqvnBDNYktXrBBt5d1BO2GB711K4p5YH2Tun9
+	 bnf45VdSjA8YO2t8fYfF7TpQ+XLQ5nC6VeZ2tff7Nmep8RIJGxY2MO/M10U9/JSqJO
+	 ZxZuxU75zr6eRF0cvqbPRWT3o3NOif8uoi9QbMdGCELhWKEFsz3tXfCpFoedwMU9ol
+	 UB5ODqsGM3YB8Am05KmkP/FfPiWLZIfiDY+bGRPspVTR0tikrm5cuRPY3fjN6KyPj2
+	 t7XzcfIoLJgGVMxnmm4vMJJ1s7AaVJ/HNQgUQzsZUeeSEoAjMZvgddq6qvn6uyW/nc
+	 M22MZSafE36DA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -34,12 +34,12 @@ Cc: Heming Zhao <heming.zhao@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
 	aahringo@redhat.com,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 087/486] dlm: make tcp still work in multi-link env
-Date: Mon,  5 May 2025 18:32:43 -0400
-Message-Id: <20250505223922.2682012-87-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 053/294] dlm: make tcp still work in multi-link env
+Date: Mon,  5 May 2025 18:52:33 -0400
+Message-Id: <20250505225634.2688578-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
+X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
 From: Heming Zhao <heming.zhao@suse.com>
@@ -66,7 +66,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index f2d88a3581695..10461451185e8 100644
+index 0618af36f5506..3c9ab6461579c 100644
 --- a/fs/dlm/lowcomms.c
 +++ b/fs/dlm/lowcomms.c
 @@ -1826,8 +1826,8 @@ static int dlm_tcp_listen_validate(void)
