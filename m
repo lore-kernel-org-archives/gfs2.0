@@ -1,115 +1,151 @@
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295C9289348
-	for <gfs2@lists.linux.dev>; Wed,  7 May 2025 14:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB3728A71E
+	for <gfs2@lists.linux.dev>; Wed,  7 May 2025 14:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746626518; cv=none; b=toIr4gC1qx3vBEc/+xMPEXpf8+rURLMa2b9DtKrnsWK/TavdAER17EaY4dkrjaAB5DHoy4PGrfILSeXunBRz2IktGiW638x3aVtCEoiR03qJtlgAnVj4XnCZtoG70Zv3AnTct1GpicFdxJkzeoq5QNzPGF1K/uNAJmIJ7fDysoQ=
+	t=1746626556; cv=none; b=DJc3/9CgKAiKyB1cIYMu1xAUrcjlWwGY4PZ4qbkV9dZbDlIfLlGI88tBlU9XVB6+qiQ+KSOtduVIClrLLHZleJOp5Cy1bKCSn1hTt8xmNBnL0FGEL+vOCL1ZmlhqN7+MG6nXyHBta0Sshi6lnakjNvwaaN9J1DQC3CwhmZ73apA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746626518; c=relaxed/simple;
-	bh=riUohbe+nhSKSfWHET/Yt5mBIMTKqf2kkbHWdODQalU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ns+2Fa77F6W0X0ISPtujcUlNyX2RRbqARNZ7D1KENwhK70uNyMhNC8VMesNVGEHZerIsmn15w6JiaBt63DcoFJ2Kyxcgv/VKzaeO+OdJFMmBbflVEhpV3jiS5c7zpvCRsBctsyxxzQxbMN/MD4ScG3hq64wIy3TU/4pGLUWlmbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=YwydcJ81; arc=none smtp.client-ip=209.85.166.174
+	s=arc-20240116; t=1746626556; c=relaxed/simple;
+	bh=u1WvrSapMzjyS9qZrw1hKIGsBWOqDhnGPCP10gYW6Cg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=f9fTqDJlH0WNQ8rLUttBjOXjR/FG+1usXwWCkGb3ooZldeKpWVWXahTgRt6PpwNCRwIGlsEmtHOALQOBn5K9faeEsUhmIuxbYM+A4Q9l7hwUG8jNW2wOcH7Cdf9hwRRVyVsg+x78qlVH+bm/Mh/Ot6GJ3iNHlbI527tQBN+wvnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=2LnBJlK4; arc=none smtp.client-ip=209.85.166.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="YwydcJ81"
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3d9189e9a06so28736895ab.2
-        for <gfs2@lists.linux.dev>; Wed, 07 May 2025 07:01:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="2LnBJlK4"
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-867355d9c4eso48223939f.0
+        for <gfs2@lists.linux.dev>; Wed, 07 May 2025 07:02:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1746626515; x=1747231315; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=md71yFj7QjYOD6CmfKKjAp0TbUSgcGH/TtN+850EMGU=;
-        b=YwydcJ81/7SuEotddKqoGeLcipVFSCCR1PBPlDmrz9gsoWqy3fLjGQ34YoOL5JPG8r
-         l14+o4iM1yRtPfhCyAbbV7WeYpU59P6liw5Ar/Ezojp+FanlLO7krxJpdxZWBjNsp5l7
-         UqinZtjVPVULrADHkdmZNz1/lZXTw6Z8oNgQUpmcopQbhjIcxvyXFRJl3ZjOmBUCSP+5
-         eYJ2Bsx5Gp5jSUbRsH53aWbppRHFWzL/ruBXFVyw9QnLdkfZMKo4/3Yljjn2Y4a6+gp1
-         Nvc7Wml1RpaqRjHjA4IrGmt95cSM9GEuVXd1NEtObrRm3eeTR6PREf6ocF2K4fbhFi5L
-         XGew==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1746626553; x=1747231353; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/e69eX7rTdQU3DebRyniOro00nTR+2O7+QHGV+7EO0=;
+        b=2LnBJlK4bT8aIlSWgDTiSq2/M8OPZ55H+UH31h6vtjQhRJO1H+75L8CN+ldDexeTvf
+         vGIgwYlWcDestvqtuuK+F/KMzMgD7AV4bA9FlK9p5gjX27jrlzx8PEhWEE/kAwVEEmue
+         GkldGjRtBSMMd3DHIWsnGKcoo9R4bXUGmwqgtyVpXG4ATLCWx35M1/b9dvuztR9idtl1
+         gEzjVInUwmA+pqOnWtwq3ghA8MMprd73UJ+YdO2ialwgUs4SBRmN1tnB28/TNLB63QBq
+         BK2JUoWj5yOgdYOFJSLcgmfYjeSp5xGS087shs/CrJYy7uaB1Z9e8mh3M8NsP5Ypkn/n
+         2X4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746626515; x=1747231315;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=md71yFj7QjYOD6CmfKKjAp0TbUSgcGH/TtN+850EMGU=;
-        b=RETpdvb703UoW/ndoO9ZOHT4w37mH2sMPATbYJU0sgsB8CRIowAURuhmQOT1GRT44f
-         /Vv8nfL0gG+3P+6jc5e/M4eg2P8KrdK00TfYLgYlccAmgWtpw6sjaKKsdO9/kNKpeGen
-         4Lp2m4XwguH0T/UsQP5z5rPJe51OeOcSCGTsMhxckMQ3u5z97yWWSiVmgW2RFK8u7FLZ
-         7zEWlpZgivwgFOy9K/u6beucF7a8xxapq2w6fXl3as4FFUyM2pcotyqPGS0dS8Jbld4e
-         5lZ8IwkmpNiKxeMhct7uCDzyQVc0s867Uc/tlcmu/TZjB1A3Jfg+/BlZ60Kd5wDT4sJ/
-         QLxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqKgxkf2/yNN5F0Eyj/cxwgqtVVMK+2CBmWpCE7ZWJy5ZgCT8VTo/UwhQ3G3/Vt83IgCbr@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVH2m27hHS8PG31RZlsSSTIxRozVJ2ZDpBkRHm1zOjrFFEOZXF
-	AsQwnmGMNfH2ZcVfv17T62y8W4iF9E89/C1pWQQBdYi/aJIZHSHhjP8Z7r3tg9w=
-X-Gm-Gg: ASbGncsit2JwFzqNBonc7OkoHYtWx518jkwBj8kB4lDVB21G7n4gYx1H0+Ms+AFrjZ6
-	y7elMDex8uw2otk58V6SYI//GvKtxJPFLBuC2mMhR/2AgdWgBvhl2oj5bqgo3sGIdlOTghustkj
-	8JbBpLWAnHrwd2NMSOFg0yEl5S1TpMfbVWFsEQkTHeVLeX825Us72CiC6iUDcabZDJ6Ml7fg1Km
-	bPi15hY5AsRZdsFyZINst+U/R7ACsAr5GtwfDF4YDiXjPkJEmT0dEJ2qRtuAkpLaRlvBVdgIMXu
-	ODlXsY9MJ1XXWJWW//C7kxlZi282BjJ6h6DH
-X-Google-Smtp-Source: AGHT+IEPXkcUdjuoTWJKGESqgsxo1A4ob6I1ttYfFC6JrLgpCILRh6jZ2+LBOAWlTXtq2pbhrFyjbA==
-X-Received: by 2002:a05:6e02:1529:b0:3d4:36c3:7fe3 with SMTP id e9e14a558f8ab-3da738e562emr32326165ab.9.1746626515075;
-        Wed, 07 May 2025 07:01:55 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d975f6dd89sm31362225ab.66.2025.05.07.07.01.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 May 2025 07:01:54 -0700 (PDT)
-Message-ID: <a789a0bd-3eaf-46de-9349-f19a3712a37c@kernel.dk>
-Date: Wed, 7 May 2025 08:01:52 -0600
+        d=1e100.net; s=20230601; t=1746626553; x=1747231353;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n/e69eX7rTdQU3DebRyniOro00nTR+2O7+QHGV+7EO0=;
+        b=Mrs9gy+jgWEVT7kAFwyoBNXLfrDaPNdWgVo2JzPtmjWhQWaJTHyGWxQnz1u/k3xkX9
+         dgqM4zUC6fImE0vmhKYCI6YF+TtbrszX8v01NDJFG/yP9oo4ew5x+BPqnzWNZThdCI63
+         bFO2ApIcvmHxChP1sWUiS5pBnOctDWt46xRHkc9DuptJv0YwXt/RFYDcDK2kwGvj9jpn
+         1ti46TeFw0jbbBT9pUErsqq5bU2/Io6Y1V8v2VwKzSBJfwgIsx20dSZM6lAAR/HroKE2
+         17prGfpRjtZGJNsaTdlX3djYVWK9dlNr1jYQqOOQt0GHL0eCzAcbxdVpAb+UU1d/W/hV
+         RwJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeG9nmHbl+LkTnKwhmSIFQgovqIRmLmo5iW/HGuz8IOqD0qeWvOu2RrypdyoeMtpfjnhxo@lists.linux.dev
+X-Gm-Message-State: AOJu0YylorGqm6mX08cS8I0ztyywhROer1TVsUeH1j/8+/aqP6x9MjFq
+	Az5RdhxCeQwkdT5McauQKyo+7cGzZUHqKCiTCuvrpZQ9qrKzVzAz7fUw9LtZ2pE=
+X-Gm-Gg: ASbGncvA5uICnwKns+nWBK2bk0kRmOhLOuq0Kwx9DrshxtJKvwdIfPA2liw7K1sKRLb
+	DwwBqVx74n0UbRwWTQS0r/UdEzsVW/bmvPfPQyyEzfatpTcdWFODvQhu1ImVT/NNiSgjwvgelhp
+	otTy44grqvceegVndbLRabzle4TYSljdgwfeR/0aPZiQ7aKjzUguItmRC2+ECx7tVkK6jVANfuC
+	EC+VfTE7moquNiIjrhaouitEP9dyLYZa/Vzkvqa7V4owkX0qEszxysiVwQNsAmGf+7S+QQccyaj
+	6PbmtoCMyWVZXB2h7/XH1yO/PljUrgU=
+X-Google-Smtp-Source: AGHT+IFKzirCN+Eb4LryiVuePRi35iU9q8ScKrI1anbroM0TMHPbhux4iOi4irCSUABdP/WxjlqB7w==
+X-Received: by 2002:a05:6602:6d0e:b0:85b:505a:7e01 with SMTP id ca18e2360f4ac-8674727e70dmr348656939f.5.1746626544084;
+        Wed, 07 May 2025 07:02:24 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f9fc6bb606sm642485173.18.2025.05.07.07.02.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 07:02:23 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Christoph Hellwig <hch@lst.de>
+Cc: linux-block@vger.kernel.org, "Md. Haris Iqbal" <haris.iqbal@ionos.com>, 
+ Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>, 
+ Kent Overstreet <kent.overstreet@linux.dev>, 
+ Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+ Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+ Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ slava@dubeyko.com, glaubitz@physik.fu-berlin.de, frank.li@vivo.com, 
+ linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
+ linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+ linux-pm@vger.kernel.org
+In-Reply-To: <20250507120451.4000627-1-hch@lst.de>
+References: <20250507120451.4000627-1-hch@lst.de>
+Subject: Re: add more bio helpers v3
+Message-Id: <174662654265.1844963.5765833717643625363.b4-ty@kernel.dk>
+Date: Wed, 07 May 2025 08:02:22 -0600
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/19] block: add a bdev_rw_virt helper
-To: Christoph Hellwig <hch@lst.de>
-Cc: linux-block@vger.kernel.org, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
- Jack Wang <jinpu.wang@ionos.com>, Coly Li <colyli@kernel.org>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>,
- Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
- David Sterba <dsterba@suse.com>, Andreas Gruenbacher <agruenba@redhat.com>,
- Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>,
- Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- slava@dubeyko.com, glaubitz@physik.fu-berlin.de, frank.li@vivo.com,
- linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
- linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-pm@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
- Johannes Thumshirn <johannes.thumshirn@wdc.com>
-References: <20250507120451.4000627-1-hch@lst.de>
- <20250507120451.4000627-3-hch@lst.de>
-From: Jens Axboe <axboe@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <20250507120451.4000627-3-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-7b9b9
 
-On 5/7/25 6:04 AM, Christoph Hellwig wrote:
-> +/**
-> + * bdev_rw_virt - synchronously read into / write from kernel mapping
-> + * @bdev:	block device to access
-> + * @sector:	sector to access
-> + * @data:	data to read/write
-> + * @len:	length in byte to read/write
-> + * @op:		operation (e.g. REQ_OP_READ/REQ_OP_WRITE)
-> + *
-> + * Performs synchronous I/O to @bdev for @data/@len.  @data must be in
-> + * the kernel direct mapping and not a vmalloc address.
-> + */
-> +int bdev_rw_virt(struct block_device *bdev, sector_t sector, void *data,
-> +		size_t len, enum req_op op)
 
-I applied the series, but did notice a lot of these - I know some parts
-like to use the 2-tab approach, but I still very much like to line these
-up. Just a style note for future patches, let's please have it remain
-consistent and not drift towards that.
+On Wed, 07 May 2025 14:04:24 +0200, Christoph Hellwig wrote:
+> this series adds more block layer helpers to remove boilerplate code when
+> adding memory to a bio or to even do the entire synchronous I/O.
+> 
+> The main aim is to avoid having to convert to a struct page in the caller
+> when adding kernel direct mapping or vmalloc memory.
+> 
+> Changes since v2:
+>  - rebase on top of the latest block for-next branch to resolve
+>    conflicts with the bonuce buffering removal
+> 
+> [...]
 
+Applied, thanks!
+
+[01/19] block: add a bio_add_virt_nofail helper
+        commit: 850e210d5ad21b94b55b97d4d82b4cdeb0bb05df
+[02/19] block: add a bdev_rw_virt helper
+        commit: 10b1e59cdadabff16fc78eb2ca4c341b1502293c
+[03/19] block: add a bio_add_max_vecs helper
+        commit: 75f88659e47dc570bdebddf77d7a3cd5f0845612
+[04/19] block: add a bio_add_vmalloc helpers
+        commit: 8dd16f5e34693aa0aa6a4ed48427045008097e64
+[05/19] block: remove the q argument from blk_rq_map_kern
+        commit: af78428ed3f3eebad7be9d0463251046e9582cf6
+[06/19] block: pass the operation to bio_{map,copy}_kern
+        commit: fddbc51dc290f834f520ce89c00a0fce38260c16
+[07/19] block: simplify bio_map_kern
+        commit: 6ff54f456671415e101e671a7dfa1fe13a31bdb5
+[08/19] bcache: use bio_add_virt_nofail
+        commit: 23f5d69dfa993cb6d17e619fff5e623e76b9b17f
+[09/19] rnbd-srv: use bio_add_virt_nofail
+        commit: a216081323a1391991c9073fed2459265bfc7f5c
+[10/19] gfs2: use bdev_rw_virt in gfs2_read_super
+        commit: 65f8e62593e64f6991ece4f08ab9e147e62df488
+[11/19] zonefs: use bdev_rw_virt in zonefs_read_super
+        commit: b2f676efe601586360e5f7461f6d36981ac1e6c9
+[12/19] PM: hibernate: split and simplify hib_submit_io
+        commit: 0cb8c299f81591699e908d1a6ad2dba6df642e25
+[13/19] dm-bufio: use bio_add_virt_nofail
+        commit: 9134124ce1bac3d5228ee1b1fc7a879422ff74f6
+[14/19] dm-integrity: use bio_add_virt_nofail
+        commit: bd4e709b32ac932aee3b337969cbb1b57faf84bd
+[15/19] xfs: simplify xfs_buf_submit_bio
+        commit: 9dccf2aa6ed5fa6ee92c8d71868bf3762ae85bda
+[16/19] xfs: simplify xfs_rw_bdev
+        commit: d486bbecc90d86e0292071bd06322543f8f5f658
+[17/19] xfs: simplify building the bio in xlog_write_iclog
+        commit: 5ced480d4886b12e6a2058ac3ebd749b0ff14573
+[18/19] btrfs: use bdev_rw_virt in scrub_one_super
+        commit: 760aa1818b040c8ec6a1ee9cea1ea8cac0735ce3
+[19/19] hfsplus: use bdev_rw_virt in hfsplus_submit_bio
+        commit: 15c9d5f6235d66ebc130da9602b1cd7692bcf85d
+
+Best regards,
 -- 
 Jens Axboe
+
+
+
