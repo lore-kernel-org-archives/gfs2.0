@@ -1,54 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33482550BB
-	for <gfs2@lists.linux.dev>; Fri, 16 May 2025 21:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23C22DFF3
+	for <gfs2@lists.linux.dev>; Fri, 16 May 2025 21:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747432119; cv=none; b=bU6wt6Ad8UQW8iSigdaYnjnb6Y7rEeragiWCC9CsaPXUQ7sw1c+jVDoVwBK7Siqh8vLkcE7IdVcvX+v9cNZlXkJCYAm647RM1JbizLigF5qesoU7bjz1lJZZ7QUAHggtq8sPuiOkLx1zYhb+/FP6Ww8+uyyTXrT5wnAH1HMug4k=
+	t=1747432120; cv=none; b=hXbW2OxhsO1XC9ZtfpvP68Zj3KUsk3ql/UGequJ+zNG96yR8l8SGLBUILt/KCWo8CA20dEqEKOo8D3K4AMhLhZV/E7Gkkm9n6ft65PqiFO0OZ03d+Wq+5U7/vaVh3Gq5BROjRnjy/1Y6NMM6IzZ/Pjx7SmGVB7zLRXiBpM93xbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747432119; c=relaxed/simple;
-	bh=zWG4JyLCPKadEwtojGKC+KS2W9arKbsyFun/mYDtDFk=;
+	s=arc-20240116; t=1747432120; c=relaxed/simple;
+	bh=TO1GFJ/YJsduPUwM5AS+lo344GEU8TyLqOqEPvLci8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=lvTOPa/8+aquqGz6Zfkg9njq4GxJD7hv6e8AwKMgZ/8FydKUtVypAhMkbVrg0ypUlRqVUPunFcBCG7L65oOYgXIKN1wfteQq31M7NCEnCPluh+v+32RfbLX4Oorgcmyon50huFnBzv5T0UKbK0CdzAcW24YBFtzVslMZxLCLOZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjO1XjxI; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=XDk2fOTcGgBWM9g9uX9nBt5HHRGGRGF9t5S17k30hUrl3D2FVKvN1HI2P4nNULNjU+nGkN6k48GGbn0KaGXcWbke2GJihlzqZkebt6JMmYZS6iFG44aHkwWS6JJQFH+glJgcxwmYijUUJwpZ64wd03vWzdG2iXuGWLciTh2ksJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XHaNY5lx; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjO1XjxI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XHaNY5lx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1747432117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Qr3XzGDU6XmQkuRLKvdbUrxYclkjcd5/A2Pd/zQ278=;
-	b=TjO1XjxIdbKu5ojPrp2HTFCzk+f8IijyF7pmBjM2B8Hqy9VY0TrjNf2aijj8ItoFMu19QV
-	ijvVzQp0zaMVmpY3YQnyWRbmgXYmGJaXIANI/HdhNOmbJSjHV/g7JQMDAdidO39ZHkKAAw
-	IFumoKi/8QTJTQDBEcIpgSU5G7DbGS8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=rrXNpMf7iEAvA05zh3VVXbZ9WNV3qovtT7VT5KUL1BI=;
+	b=XHaNY5lxKEDTtcOHtgCHbT3FflKxuos6k5s01BPZ1ToWk23/yMgJuAVrdlBE5Fp1eO5Ra3
+	oZD5A3xx03EN3AkRFKduGLf0sCUXobrIoOVICdU33Qn839wVmyYpYI9gIuDFFFBCn5yqdi
+	kKu2Ww4guA+VFGWY7HSlWcfKZl6rq9o=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-XbRNeu4vPOqNTRFafoU2mA-1; Fri,
- 16 May 2025 17:48:33 -0400
-X-MC-Unique: XbRNeu4vPOqNTRFafoU2mA-1
-X-Mimecast-MFC-AGG-ID: XbRNeu4vPOqNTRFafoU2mA_1747432113
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-XtADGBs6NcCU9y-evNMfRA-1; Fri,
+ 16 May 2025 17:48:36 -0400
+X-MC-Unique: XtADGBs6NcCU9y-evNMfRA-1
+X-Mimecast-MFC-AGG-ID: XtADGBs6NcCU9y-evNMfRA_1747432115
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E723319560AE;
-	Fri, 16 May 2025 21:48:32 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DCC4618004AD;
+	Fri, 16 May 2025 21:48:34 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.234])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C706195608D;
-	Fri, 16 May 2025 21:48:31 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6BD28195608D;
+	Fri, 16 May 2025 21:48:33 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 2/3] gfs2: Move gfs2_trans_add_databufs
-Date: Fri, 16 May 2025 23:48:20 +0200
-Message-ID: <20250516214822.905056-4-agruenba@redhat.com>
+Subject: [PATCH 3/3] gfs2: Don't start unnecessary transactions during log flush
+Date: Fri, 16 May 2025 23:48:21 +0200
+Message-ID: <20250516214822.905056-5-agruenba@redhat.com>
 In-Reply-To: <20250516214822.905056-1-agruenba@redhat.com>
 References: <20250516214822.905056-1-agruenba@redhat.com>
 Precedence: bulk
@@ -59,135 +59,108 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wsQDn5VzM2sj_JI-Q8eh513bOuobPCSkokuVIefssMo_1747432113
+X-Mimecast-MFC-PROC-ID: GiFSsHtzUbPGeeeM6QbPKcqzOBL35qsf7bQ72TOrymQ_1747432115
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Move gfs2_trans_add_databufs() to trans.c.  Pass in a glock instead of
-a gfs2_inode.
+Commit 8d391972ae2d ("gfs2: Remove __gfs2_writepage()") changed the log
+flush code in gfs2_ail1_start_one() to call aops->writepages() instead
+of aops->writepage().  For jdata inodes, this means that we will now try
+to reserve log space and start a transaction before we can determine
+that the pages in question have already been journaled.  When this
+happens in the context of gfs2_logd(), it can now appear that not enough
+log space is available for freeing up log space, and we will lock up.
 
+Fix that by issuing journal writes directly instead of going through
+aops->writepages() in the log flush code.
+
+Fixes: 8d391972ae2d ("gfs2: Remove __gfs2_writepage()")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/aops.c  | 23 +----------------------
- fs/gfs2/aops.h  |  2 --
- fs/gfs2/bmap.c  |  3 ++-
- fs/gfs2/trans.c | 21 +++++++++++++++++++++
- fs/gfs2/trans.h |  2 ++
- 5 files changed, 26 insertions(+), 25 deletions(-)
+ fs/gfs2/aops.c | 31 +++++++++++++++++++++++++++++++
+ fs/gfs2/aops.h |  1 +
+ fs/gfs2/log.c  |  7 ++++++-
+ 3 files changed, 38 insertions(+), 1 deletion(-)
 
 diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index 66b0ad9f1f92..1a3a420316fa 100644
+index 1a3a420316fa..14f204cd5a82 100644
 --- a/fs/gfs2/aops.c
 +++ b/fs/gfs2/aops.c
-@@ -37,27 +37,6 @@
- #include "aops.h"
- 
- 
--void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
--			     size_t from, size_t len)
--{
--	struct buffer_head *head = folio_buffers(folio);
--	unsigned int bsize = head->b_size;
--	struct buffer_head *bh;
--	size_t to = from + len;
--	size_t start, end;
--
--	for (bh = head, start = 0; bh != head || !start;
--	     bh = bh->b_this_page, start = end) {
--		end = start + bsize;
--		if (end <= from)
--			continue;
--		if (start >= to)
--			break;
--		set_buffer_uptodate(bh);
--		gfs2_trans_add_data(ip->i_gl, bh);
--	}
--}
--
- /**
-  * gfs2_get_block_noalloc - Fills in a buffer head with details about a block
-  * @inode: The inode
-@@ -133,7 +112,7 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
- 					inode->i_sb->s_blocksize,
- 					BIT(BH_Dirty)|BIT(BH_Uptodate));
- 		}
--		gfs2_trans_add_databufs(ip, folio, 0, folio_size(folio));
-+		gfs2_trans_add_databufs(ip->i_gl, folio, 0, folio_size(folio));
- 	}
+@@ -117,6 +117,37 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
  	return gfs2_write_jdata_folio(folio, wbc);
  }
+ 
++/**
++ * gfs2_jdata_writeback - Write jdata folios to the log
++ * @mapping: The mapping to write
++ * @wbc: The writeback control
++ *
++ * Returns: errno
++ */
++int gfs2_jdata_writeback(struct address_space *mapping, struct writeback_control *wbc)
++{
++	struct inode *inode = mapping->host;
++	struct gfs2_inode *ip = GFS2_I(inode);
++	struct gfs2_sbd *sdp = GFS2_SB(mapping->host);
++	struct folio *folio = NULL;
++	int error;
++
++	BUG_ON(current->journal_info);
++	if (gfs2_assert_withdraw(sdp, ip->i_gl->gl_state == LM_ST_EXCLUSIVE))
++		return 0;
++
++	while ((folio = writeback_iter(mapping, wbc, folio, &error))) {
++		if (folio_test_checked(folio)) {
++			folio_redirty_for_writepage(wbc, folio);
++			folio_unlock(folio);
++			continue;
++		}
++		error = __gfs2_jdata_write_folio(folio, wbc);
++	}
++
++	return error;
++}
++
+ /**
+  * gfs2_writepages - Write a bunch of dirty pages back to disk
+  * @mapping: The mapping to write
 diff --git a/fs/gfs2/aops.h b/fs/gfs2/aops.h
-index a10c4334d248..f9fa41aaeaf4 100644
+index f9fa41aaeaf4..bf002522a782 100644
 --- a/fs/gfs2/aops.h
 +++ b/fs/gfs2/aops.h
-@@ -9,7 +9,5 @@
+@@ -9,5 +9,6 @@
  #include "incore.h"
  
  void adjust_fs_space(struct inode *inode);
--void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
--			     size_t from, size_t len);
++int gfs2_jdata_writeback(struct address_space *mapping, struct writeback_control *wbc);
  
  #endif /* __AOPS_DOT_H__ */
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 070905493f8f..7703d0471139 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -988,7 +988,8 @@ static void gfs2_iomap_put_folio(struct inode *inode, loff_t pos,
- 	struct gfs2_sbd *sdp = GFS2_SB(inode);
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index f9c5089783d2..115c4ac457e9 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -31,6 +31,7 @@
+ #include "dir.h"
+ #include "trace_gfs2.h"
+ #include "trans.h"
++#include "aops.h"
  
- 	if (!gfs2_is_stuffed(ip))
--		gfs2_trans_add_databufs(ip, folio, offset_in_folio(folio, pos),
-+		gfs2_trans_add_databufs(ip->i_gl, folio,
-+					offset_in_folio(folio, pos),
- 					copied);
+ static void gfs2_log_shutdown(struct gfs2_sbd *sdp);
  
- 	folio_unlock(folio);
-diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
-index f8ae2c666fd6..075f7e9abe47 100644
---- a/fs/gfs2/trans.c
-+++ b/fs/gfs2/trans.c
-@@ -226,6 +226,27 @@ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh)
- 	unlock_buffer(bh);
- }
- 
-+void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
-+			     size_t from, size_t len)
-+{
-+	struct buffer_head *head = folio_buffers(folio);
-+	unsigned int bsize = head->b_size;
-+	struct buffer_head *bh;
-+	size_t to = from + len;
-+	size_t start, end;
-+
-+	for (bh = head, start = 0; bh != head || !start;
-+	     bh = bh->b_this_page, start = end) {
-+		end = start + bsize;
-+		if (end <= from)
-+			continue;
-+		if (start >= to)
-+			break;
-+		set_buffer_uptodate(bh);
-+		gfs2_trans_add_data(gl, bh);
-+	}
-+}
-+
- void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
- {
- 
-diff --git a/fs/gfs2/trans.h b/fs/gfs2/trans.h
-index f8ce5302280d..790c55f59e61 100644
---- a/fs/gfs2/trans.h
-+++ b/fs/gfs2/trans.h
-@@ -42,6 +42,8 @@ int gfs2_trans_begin(struct gfs2_sbd *sdp, unsigned int blocks,
- 
- void gfs2_trans_end(struct gfs2_sbd *sdp);
- void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh);
-+void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
-+			     size_t from, size_t len);
- void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh);
- void gfs2_trans_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd);
- void gfs2_trans_remove_revoke(struct gfs2_sbd *sdp, u64 blkno, unsigned int len);
+@@ -131,7 +132,11 @@ __acquires(&sdp->sd_ail_lock)
+ 		if (!mapping)
+ 			continue;
+ 		spin_unlock(&sdp->sd_ail_lock);
+-		ret = mapping->a_ops->writepages(mapping, wbc);
++		BUG_ON(GFS2_SB(mapping->host) != sdp);
++		if (gfs2_is_jdata(GFS2_I(mapping->host)))
++			ret = gfs2_jdata_writeback(mapping, wbc);
++		else
++			ret = mapping->a_ops->writepages(mapping, wbc);
+ 		if (need_resched()) {
+ 			blk_finish_plug(plug);
+ 			cond_resched();
 -- 
 2.49.0
 
