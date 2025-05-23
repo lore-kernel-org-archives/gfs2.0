@@ -1,180 +1,162 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D506C1DFFC
-	for <gfs2@lists.linux.dev>; Mon, 19 May 2025 11:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C91FCFE2
+	for <gfs2@lists.linux.dev>; Fri, 23 May 2025 20:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747653563; cv=none; b=MKI00otMZRRIb6pfqNFSBlRCehvKsGaKuFgZ3amZXiLDlSUmcy7HkYgxajLYdAU6fZWmkeClYBSRgGlqef/IXXn9ft6KhZS5bSYUiseSeWEIqmGGjTyJkvlCfYdZvglV9I0lBqbQD7N31YNBls6Pjh/PeTmnJc72KmbFC3/u62g=
+	t=1748033494; cv=none; b=uU6F1g3m1oiCN4NdUiUa+KHDI/4Nc7juALRAlAHVju+lM7AbptCnxYNGsXabu+lvKG3E+mpyVAFsLp+sVdB/pI+24bObubLfj27ZSAXhhBvsl73ImVuZS6EPjjtc+ZB8nDErxu2MAlAP/skdxL9IwqQ9elM+/zeCXPMnwO3GqXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747653563; c=relaxed/simple;
-	bh=GPOsktgokXO/TH45HysB3+lfXqqaDVKqwkjgWwMHzZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=bHpO7iXPCsp2TiconOFUtgib1ufS2+kABzpsyICvVQ28QmIMyhGw8jX34N9qZwz2y7LM8tG5fQAC5/5kAwwjRxIs1T9wzmSc75YkzKiRoNWp/ZZp3aAWy8233X3MJmofiC6iWK2l2xneyt7ixE8h6aj5iLUAKay7SAcufaeSOjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AvjTgKYW; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1748033494; c=relaxed/simple;
+	bh=FOCe2QtzkFHytesx0PdwIEOXylumeOaR4MXRgnJN/jI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CKXhTxxFW/VSqrkakO2AhQuBll1SYIixpT/dLylcKI65KlMtG0DJzm2ob73/YNCfK/HUKi3/cbNcO2YmCfcg/RgUqFNVqiIZZgOUPas1O24IDww4y4X2mNXoCDnYmhuypeNdVh+BkWqrmUvREFqAbJX/KfCX3KBMCTQCUeqm0CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TxPHgZg5; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AvjTgKYW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TxPHgZg5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747653561;
+	s=mimecast20190719; t=1748033490;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YhG7WDiSvuMER9fWLlbi7RCxvak0c+4IwmyCvJczA4o=;
-	b=AvjTgKYWBhJPS1stK0O/+bOvEQQiwL0BOIUxar0SQYDxD52M3NxnA+gvl+NbxDrBb3d8r1
-	pZKPyRts5582/gwQwZrloz/Iz7+O9g/gD0WTDQRM43NuMSkIVWff1avpc3IGdU3Nxumvaq
-	r9BM38eNWuX/X+0VylgC1J6P+QmbmBQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r3tmG53e0wFq++pCF0XqqY430ke1LDloYB9/YCJmMx0=;
+	b=TxPHgZg5Q/budureKglYRWjxqJ1pdRPp9WebMR9ALrA/pDRzCIelzeZeWbEGd2V42l4/Qh
+	lDVoS3QUlSJTmX/ASfQWjfkCg/i87h9xsFVP+q7OiKd+5Tg9GQZ9X1FExfWPFE7RU5bXuA
+	1KNUTce0iPo3c7CzpREuUcjUgvmcv0c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-0crgYG-9PnCeqbaw4Owtaw-1; Mon,
- 19 May 2025 07:19:19 -0400
-X-MC-Unique: 0crgYG-9PnCeqbaw4Owtaw-1
-X-Mimecast-MFC-AGG-ID: 0crgYG-9PnCeqbaw4Owtaw_1747653558
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-r0uUXODJPNqgLqsykMw6wQ-1; Fri,
+ 23 May 2025 16:51:27 -0400
+X-MC-Unique: r0uUXODJPNqgLqsykMw6wQ-1
+X-Mimecast-MFC-AGG-ID: r0uUXODJPNqgLqsykMw6wQ_1748033486
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CFCB2195608C
-	for <gfs2@lists.linux.dev>; Mon, 19 May 2025 11:19:18 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 669D5180036E;
+	Fri, 23 May 2025 20:51:26 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.234])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A775218004A7;
-	Mon, 19 May 2025 11:19:17 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 833B51800DB9;
+	Fri, 23 May 2025 20:51:23 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6/6] gfs2: No more gfs2_find_jhead caching
-Date: Mon, 19 May 2025 13:19:05 +0200
-Message-ID: <20250519111906.1503215-7-agruenba@redhat.com>
-In-Reply-To: <20250519111906.1503215-1-agruenba@redhat.com>
-References: <20250519111906.1503215-1-agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes for 6.16
+Date: Fri, 23 May 2025 22:51:21 +0200
+Message-ID: <20250523205122.1783753-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EVp00iYa3vFKvVudFDIZRn2tUVfoNpuDdlYcUI4Dkuw_1747653558
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-We are no longer calling gfs2_find_jhead() on the same log twice, so
-there is no more reason for keeping the log contents cached across those
-calls.  In addition, log head lookup and log header writing didn't go
-through the same address space and so the caching wasn't even fully
-working, anyway.
+Dear Linus,
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/glops.c    | 2 +-
- fs/gfs2/lops.c     | 7 ++-----
- fs/gfs2/lops.h     | 2 +-
- fs/gfs2/recovery.c | 2 +-
- fs/gfs2/super.c    | 2 +-
- fs/gfs2/util.c     | 2 +-
- 6 files changed, 7 insertions(+), 10 deletions(-)
+please consider pulling the following gfs2 changes for 6.16.
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index e153db45bbd9..cebd66b22694 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -601,7 +601,7 @@ static int freeze_go_xmote_bh(struct gfs2_glock *gl)
- 	if (test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags)) {
- 		j_gl->gl_ops->go_inval(j_gl, DIO_METADATA);
- 
--		error = gfs2_find_jhead(sdp->sd_jdesc, &head, false);
-+		error = gfs2_find_jhead(sdp->sd_jdesc, &head);
- 		if (gfs2_assert_withdraw_delayed(sdp, !error))
- 			return error;
- 		if (gfs2_assert_withdraw_delayed(sdp, head.lh_flags &
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index ba97e97d3eee..9c8c305a75c4 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -496,15 +496,13 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
-  * gfs2_find_jhead - find the head of a log
-  * @jd: The journal descriptor
-  * @head: The log descriptor for the head of the log is returned here
-- * @keep_cache: If set inode pages will not be truncated
-  *
-  * Do a search of a journal by reading it in large chunks using bios and find
-  * the valid log entry with the highest sequence number.  (i.e. the log head)
-  *
-  * Returns: 0 on success, errno otherwise
-  */
--int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head,
--		    bool keep_cache)
-+int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- {
- 	struct gfs2_sbd *sdp = GFS2_SB(jd->jd_inode);
- 	struct address_space *mapping = jd->jd_inode->i_mapping;
-@@ -593,8 +591,7 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head,
- 	if (!ret)
- 		ret = filemap_check_wb_err(mapping, since);
- 
--	if (!keep_cache)
--		truncate_inode_pages(mapping, 0);
-+	truncate_inode_pages(mapping, 0);
- 
- 	return ret;
- }
-diff --git a/fs/gfs2/lops.h b/fs/gfs2/lops.h
-index 07890c7b145d..be740bf33666 100644
---- a/fs/gfs2/lops.h
-+++ b/fs/gfs2/lops.h
-@@ -20,7 +20,7 @@ void gfs2_log_write(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
- void gfs2_log_submit_bio(struct bio **biop, blk_opf_t opf);
- void gfs2_pin(struct gfs2_sbd *sdp, struct buffer_head *bh);
- int gfs2_find_jhead(struct gfs2_jdesc *jd,
--		    struct gfs2_log_header_host *head, bool keep_cache);
-+		    struct gfs2_log_header_host *head);
- void gfs2_drain_revokes(struct gfs2_sbd *sdp);
- 
- static inline unsigned int buf_limit(struct gfs2_sbd *sdp)
-diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
-index b3a11105df7c..24250478b085 100644
---- a/fs/gfs2/recovery.c
-+++ b/fs/gfs2/recovery.c
-@@ -454,7 +454,7 @@ void gfs2_recover_func(struct work_struct *work)
- 	if (error)
- 		goto fail_gunlock_ji;
- 
--	error = gfs2_find_jhead(jd, &head, true);
-+	error = gfs2_find_jhead(jd, &head);
- 	if (error)
- 		goto fail_gunlock_ji;
- 	t_jhd = ktime_get();
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index a9af02ef580d..dbc119f8c762 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -360,7 +360,7 @@ static int gfs2_lock_fs_check_clean(struct gfs2_sbd *sdp)
- 		error = gfs2_jdesc_check(jd);
- 		if (error)
- 			break;
--		error = gfs2_find_jhead(jd, &lh, false);
-+		error = gfs2_find_jhead(jd, &lh);
- 		if (error)
- 			break;
- 		if (!(lh.lh_flags & GFS2_LOG_HEAD_UNMOUNT)) {
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index 13be8d1d228b..d5a1e63fa257 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -73,7 +73,7 @@ int check_journal_clean(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
- 			       "mount.\n");
- 		goto out_unlock;
- 	}
--	error = gfs2_find_jhead(jd, &head, false);
-+	error = gfs2_find_jhead(jd, &head);
- 	if (error) {
- 		if (verbose)
- 			fs_err(sdp, "Error parsing journal for spectator "
--- 
-2.49.0
+Thanks,
+Andreas
+
+The following changes since commit 9c32cda43eb78f78c73aee4aa344b777714e259b:
+
+  Linux 6.15-rc3 (2025-04-20 13:43:47 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.16
+
+for you to fetch changes up to e320050eb75e914aa5e12de2a9ab830c9a2ce311:
+
+  gfs2: No more gfs2_find_jhead caching (2025-05-22 09:12:27 +0200)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Fix the long-standing warnings in inode_to_wb() when CONFIG_LOCKDEP is
+  enabled: gfs2 doesn't support cgroup writeback and so inode->i_wb will never
+  change.  This is the counterpart of commit 9e888998ea4d ("writeback: fix
+  false warning in inode_to_wb()").
+
+- Fix a hang introduced by commit 8d391972ae2d ("gfs2: Remove
+  __gfs2_writepage()"): prevent gfs2_logd from creating transactions for jdata
+  pages while trying to flush the log.
+
+- Fix a race between gfs2_create_inode() and gfs2_evict_inode() by deallocating
+  partially created inodes on the gfs2_create_inode() error path.
+
+- Fix a bug in the journal head lookup code that could cause mount to fail
+  after successful recovery.
+
+- Various smaller fixes and cleanups from various people.
+
+----------------------------------------------------------------
+Alexander Aring (2):
+      gfs2: move msleep to sleepable context
+      gfs2: only apply DLM_LKF_VALBLK if sb_lvbptr is not NULL
+
+Andreas Gruenbacher (16):
+      gfs2: replace sd_aspace with sd_inode
+      gfs2: gfs2_create_inode error handling fix
+      gfs2: Don't reread inodes unnecessarily
+      gfs2: Move gfs2_dinode_dealloc
+      gfs2: Move GIF_ALLOC_FAILED check out of gfs2_ea_dealloc
+      gfs2: deallocate inodes in gfs2_create_inode
+      gfs2: Do not call iomap_zero_range beyond eof
+      gfs2: Rename jdata_dirty_folio to gfs2_jdata_dirty_folio
+      gfs2: Move gfs2_trans_add_databufs
+      gfs2: Don't start unnecessary transactions during log flush
+      gfs2: Minor comments fix
+      gfs2: Move gfs2_log_pointers_init
+      gfs2: Simplify gfs2_log_pointers_init
+      gfs2: Simplify clean_journal
+      gfs2: Get rid of duplicate log head lookup
+      gfs2: No more gfs2_find_jhead caching
+
+Andrew Price (1):
+      gfs2: Fix usage of bio->bi_status in gfs2_end_log_write
+
+Chen Ni (1):
+      gfs2: Remove unnecessary NULL check before free_percpu()
+
+Christoph Hellwig (1):
+      gfs: don't check for AOP_WRITEPAGE_ACTIVATE in gfs2_write_jdata_batch
+
+Edward Adam Davis (1):
+      gfs2: check sb_min_blocksize return value
+
+Eric Biggers (1):
+      gfs2: avoid inefficient use of crc32_le_shift()
+
+ fs/gfs2/aops.c       | 86 +++++++++++++++++++++++----------------------
+ fs/gfs2/aops.h       |  3 +-
+ fs/gfs2/bmap.c       |  9 +++--
+ fs/gfs2/glock.c      |  3 +-
+ fs/gfs2/glops.c      |  9 +++--
+ fs/gfs2/incore.h     |  9 ++++-
+ fs/gfs2/inode.c      | 99 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ fs/gfs2/inode.h      |  1 +
+ fs/gfs2/lock_dlm.c   | 11 ++++--
+ fs/gfs2/log.c        |  7 +++-
+ fs/gfs2/log.h        | 11 ------
+ fs/gfs2/lops.c       | 17 +++++----
+ fs/gfs2/lops.h       |  2 +-
+ fs/gfs2/meta_io.c    |  2 +-
+ fs/gfs2/meta_io.h    |  4 +--
+ fs/gfs2/ops_fstype.c | 41 +++++++++++++---------
+ fs/gfs2/recovery.c   | 28 ++++++++++-----
+ fs/gfs2/recovery.h   |  2 ++
+ fs/gfs2/super.c      | 94 ++++---------------------------------------------
+ fs/gfs2/trans.c      | 21 +++++++++++
+ fs/gfs2/trans.h      |  2 ++
+ fs/gfs2/util.c       |  2 +-
+ fs/gfs2/xattr.c      | 11 +++---
+ fs/gfs2/xattr.h      |  2 +-
+ 24 files changed, 263 insertions(+), 213 deletions(-)
 
