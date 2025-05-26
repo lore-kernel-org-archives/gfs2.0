@@ -1,120 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD123C2F
-	for <gfs2@lists.linux.dev>; Mon, 26 May 2025 00:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C75E18871F
+	for <gfs2@lists.linux.dev>; Mon, 26 May 2025 11:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748218453; cv=none; b=BMf/22ZzF51EO0y9d9FjcVYUnqT3h3tjY5PFU8HKzJCCgyDtUX7ABOOYB322UGRbOMhsSNLdJgH6SQadWVfdkTezmvi+2Gs6rvxt0fOkJCr/ykKYBiIi6M+rHhnk3e4792EmO+PuoNJJcru0szGK0vKjVHrAsHfvtWigpW9Yuxo=
+	t=1748257415; cv=none; b=TJKXa9gmu8kIFn6x5vtiejNPDR3mvE1R0D75eIUaaljfCIvq21McPVG/HP+40lWgKkdqltMWitpFFJ4OpYIUUoIyskm/eCaTuxdYF2fAeJ7T196uWW32CDZ2QfKLkGYwYVikDLPa+K6L8B7yRyuIfBT7IwArxU2AwSOFB1UcF+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748218453; c=relaxed/simple;
-	bh=iDe4lZDbETTr6cH+2ajupIG1T+2mY+/63euX+PSeyeA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FhUL3GcbG1DXW+YyS0Tc8Bu298uBu4+i7tWQ+yE+i0NN7HQ7rwOS0GeIRpfwk5AbNUgm5aUoBbXDepeh+HjFtHb0qolRqw10J8Ifj2Zzza1oX3R/ZL96w+M3DoLtJRaOHnQpUBJeBVI8biZFeHQ59xt4if0Prt+QBw5YYkP8aP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PZ9IVZWN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PZ9IVZWN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748218450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eN3oaj49SxpTapfrR5Kx6feyOINmy5ifmldeIsI+GdE=;
-	b=PZ9IVZWN6RZbLn84cHlCwSQh6v2O+mzvI+YDLgqkcGc7t3Kpp4ov7JCHrAQOJmUqKgF9lZ
-	pjafF2t2gyX3E6wZ8BY+lOZGiVk/ocnTJCxGIzy7E+hd2ukKxjX+ywWCYFYASIZ4KAHk7Y
-	S+/ppUbtgXVppNL/EUfC4VsTaJXIO5w=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-tkKcFBFMMd6IHNexROpnVQ-1; Sun, 25 May 2025 20:14:09 -0400
-X-MC-Unique: tkKcFBFMMd6IHNexROpnVQ-1
-X-Mimecast-MFC-AGG-ID: tkKcFBFMMd6IHNexROpnVQ_1748218448
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-32813ff6168so13350111fa.1
-        for <gfs2@lists.linux.dev>; Sun, 25 May 2025 17:14:08 -0700 (PDT)
+	s=arc-20240116; t=1748257415; c=relaxed/simple;
+	bh=CBVeeS7glTvQC6dmqIUuLX52H6+6ul0PpYPDRtu9H5o=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ZKgIsF2kWsXhD6+atWRcy34gSSbtqN14fAdjGXg944syrwZhvd1RecK4oZli7tcbE5eSsY6BRZt8BbD393XlVAJuA7/g+KWTMeMAKfdejdunuKLk8xYvPWJ1got9P/JdoqV83Qrk7FZlrKUE5ytic3+02rhNnoU8dTUHrMWj3hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-85b3888569bso168706639f.1
+        for <gfs2@lists.linux.dev>; Mon, 26 May 2025 04:03:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748218447; x=1748823247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eN3oaj49SxpTapfrR5Kx6feyOINmy5ifmldeIsI+GdE=;
-        b=dTdBt7Fo2SCpk8wzRZZiGZavBdwwEjIBu4PAprKuP3PpmiiogyIT8+I2zenJfq4uB6
-         XHzarGDOOVWZV3iQic+Ut1SXZKwRsJqZjxhZTQaNWTWOTrNqpusyn5lgVd81rd43z/Kr
-         sQKRn6Xeg3eSoG2/xA6KUF2gD6bGgbFqdRRxzVWJ+o5vhTSXpoFabryB5HnZFn+br8x2
-         cVfX2nETz99CLclnIliNRs1uSez6gIQKukr5V4f3VTJt2yO+wpv2b0lqPGbte7/Xae2G
-         9jVnCEiB43IPh/TBnDXTKUEfJYgmoejVT5lXdIkMu3PL7o6g8geGMOCvIrqzM3yDkofV
-         4LNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXcA2DAdWw36SwUoZN7QLcbaFDafX5LKzyFkY/DA2WNwOZImDczBJB1TNXIDRgZ8zprl0ro@lists.linux.dev
-X-Gm-Message-State: AOJu0Yycg3nC1ZOlWCrCJaFc8u4eNMs/olp5qnj954SBshpk8XNXpmc3
-	9DMLya15gpknjwFkOgLjJHDndvHUDFhzftCWNwuo0tEu8pNFFKyMlRBlE4fJ4aUSEpcYHas68fh
-	Kbp2q1yIv5BZOfb2QMMRU2QeekMgBCbMdf5MAGLz97wfETEO2J2NDdNOhNmTAvwai2N2UMzRxpv
-	cw5BpBvjLQ3pZWAASPuAw90Ue8gI4CYw==
-X-Gm-Gg: ASbGncslza4AjbL4c2F4b8AFnEe2mKeBK6LuuTlDKj9scYHhooJ/QIfNeGA+LYMbQma
-	GtG+3rs5EmGhoMVjQgsFRJlpkBpC2dprUEUGyruS61Ht32X83NB65BM0M9Y86JOOywnr0KUkfJC
-	Umldz//wuy2AVZBvQcCRYQT0INe70=
-X-Received: by 2002:a2e:9a0d:0:b0:306:10d6:28b0 with SMTP id 38308e7fff4ca-3295b9abf5bmr19741111fa.1.1748218447441;
-        Sun, 25 May 2025 17:14:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYqd7DRtWr3jaLJFSDKEWBnLHgljTK2lxtoH5ZXpV4VmU21DbDCzjAl96FL+9zjwCpV7PWR8b4L3B3BLETJg4=
-X-Received: by 2002:a2e:9a0d:0:b0:306:10d6:28b0 with SMTP id
- 38308e7fff4ca-3295b9abf5bmr19741051fa.1.1748218447033; Sun, 25 May 2025
- 17:14:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748257412; x=1748862212;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DzlRudKs0/WU7tTKrz28vGcAaYQuWRxm9c4GmJrMWnk=;
+        b=kpW5JvvML6kweSKp/NjHYLjCWfLtJHh7wyMJK3a+NlR44S+g3J5guagPP29wb3BCFZ
+         1UqZx9TVC95qNnmTz2OTsQwxId31qPagckI7LEKaW5c0hbxnw+tBHbqQV8sv28ACL/ek
+         PxadeUz+SwQ+b/GolNxldWY4nvveAvHs1ka2TuWE5n6a6/JqTKogdN12P+pd3X2fQZnc
+         jrPg+YfryNCCMNn+jnHNlQMRTyXthgCK9xlrZCdOE7NL4BcrGC3WYM3EiISFNzIuaaf7
+         cfcbgGIq2XNnWZXzNKwhX31GIxZHpSsMd85g/zClh0kgnKfz+it9TVKXTC6lg4vwxlaq
+         e7Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3b3M10YqJI72y6pQeRqUgF5IJeQQVTiRmDj9hXFxWHSmQe0QP9/FBdS1MqPtWv9pBynUW@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhzJMczuUeaXR/ZcKqk/PnxQTnPzAr/jzbY8DyhkHbD2GWE7gt
+	7H9Saj5vEdFOf1OHkLwH0/WDGiYMEPHPrXK4V8Nr1nVJnEX3WIRgW4WJMxFNpMQ8q/lPsrY370x
+	VEM1CcJZu0XRvqPelSQqzys+a4fNANEL3cbCofATDkIUpOWdhTpdr1K1FjdQ=
+X-Google-Smtp-Source: AGHT+IESvahhBxYUK9kRHcmEf6chOXuOS2AtMtb4+uPOpNRysMHCWuXScZAprAKKIQ6yhYcGGSOCY7DZ1CsfZhaANaB/vwzRmW7k
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250522052453.GA42746@system.software.com> <20250522052806.GB42746@system.software.com>
-In-Reply-To: <20250522052806.GB42746@system.software.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Sun, 25 May 2025 20:13:55 -0400
-X-Gm-Features: AX0GCFtad-uSwrsrLSYZwA4ixTVDWUaEjIYDh7krVi0_0wqWeyR7j22VFo8HiVU
-Message-ID: <CAK-6q+hOCq8aksDp33utOGwfFngnTbJo-mY3+FiCJVPzwP-xsg@mail.gmail.com>
-Subject: Re: [RFC] DEPT(DEPendency Tracker) with DLM(Distributed Lock Manager)
-To: Byungchul Park <byungchul@sk.com>
-Cc: kernel_team@skhynix.com, linux-kernel@vger.kernel.org, 
-	gfs2 <gfs2@lists.linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dmun7siyBjAdFoqHGIHcvoi6KA6uAAw9ryZNKaoxLLo_1748218448
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6602:6d17:b0:85b:3ae9:da01 with SMTP id
+ ca18e2360f4ac-86cadd5ffbcmr1098803539f.4.1748257412437; Mon, 26 May 2025
+ 04:03:32 -0700 (PDT)
+Date: Mon, 26 May 2025 04:03:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68344a84.a70a0220.1765ec.0166.GAE@google.com>
+Subject: [syzbot] [gfs2?] KASAN: null-ptr-deref Read in gfs2_drop_inode
+From: syzbot <syzbot+b12826218502df019f9d@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello,
 
-On Thu, May 22, 2025 at 1:28=E2=80=AFAM Byungchul Park <byungchul@sk.com> w=
-rote:
->
-> On Thu, May 22, 2025 at 02:24:53PM +0900, Byungchul Park wrote:
-> > Hi Alexander,
-> >
-> > We briefly talked about dept with DLM in an external channel.  However,
-> > it'd be great to discuss what to aim and how to make it in more detail,
-> > in this mailing list.
-> >
-> > It's worth noting that dept doesn't track dependencies beyond different
-> > contexts to avoid adding false dependencies by any chance, which means
-> > though dept checks the dependency sanity *globally*, when it comes to
-> > creating dependencies, it happens only within e.g. each single system
-> > call context, each single irq context, each worker context, and so on,
-> > with its unique context id assigned to each independent context.
-> >
-> > In order for dept to work on DLM, we need a way to assign a unique
-> > context id to each interesting context in DLM's point of view, and let
-> > dept know the id.  Once making it done, I think dept can work on DLM
-> > perfectly.
->
-> Plus, we need a way to share the global dependency graph used by dept
-> between nodes too.
->
+syzbot found the following issue on:
 
-Having everything simulated and having nodes separated as
-net-namespaces in one Linux kernel instance is I think at first
-simpler to do and will show the "proof of concepts".
-Sharing data between nodes is then just some memory area that is not
-separated by per "struct net" context.
+HEAD commit:    176e917e010c Add linux-next specific files for 20250523
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=135065f4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e7902c752bef748
+dashboard link: https://syzkaller.appspot.com/bug?extid=b12826218502df019f9d
+compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=151759f4580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16b9c5f4580000
 
-- Alex
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/5f7692c642fa/disk-176e917e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/057a442d42d0/vmlinux-176e917e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/8f8ebdb4dd96/bzImage-176e917e.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/0e694bf0a04e/mount_0.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=16e42170580000)
 
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b12826218502df019f9d@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: null-ptr-deref in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: null-ptr-deref in gfs2_drop_inode+0x20c/0x3a0 fs/gfs2/super.c:1052
+Read of size 8 at addr 00000000000000a8 by task syz-executor628/5863
+
+CPU: 0 UID: 0 PID: 5863 Comm: syz-executor628 Not tainted 6.15.0-rc7-next-20250523-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ kasan_report+0x118/0x150 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:189
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ gfs2_drop_inode+0x20c/0x3a0 fs/gfs2/super.c:1052
+ iput_final fs/inode.c:1868 [inline]
+ iput+0x45d/0x9d0 fs/inode.c:1924
+ gfs2_fill_super+0x1418/0x2010 fs/gfs2/ops_fstype.c:1314
+ get_tree_bdev_flags+0x40b/0x4d0 fs/super.c:1679
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1333
+ vfs_get_tree+0x92/0x2b0 fs/super.c:1802
+ do_new_mount+0x24a/0xa40 fs/namespace.c:3869
+ do_mount fs/namespace.c:4206 [inline]
+ __do_sys_mount fs/namespace.c:4417 [inline]
+ __se_sys_mount+0x317/0x410 fs/namespace.c:4394
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f219bad284a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 6e 07 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdb657b2f8 EFLAGS: 00000282 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f219bad284a
+RDX: 0000200000021140 RSI: 0000200000021180 RDI: 00007ffdb657b350
+RBP: 0000000000000004 R08: 00007ffdb657b390 R09: 0000000000021135
+R10: 0000000000000000 R11: 0000000000000282 R12: 0000000001000000
+R13: 00007ffdb657b390 R14: 0000200000021180 R15: 0000000000000003
+ </TASK>
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
