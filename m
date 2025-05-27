@@ -1,63 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AF3242D69;
-	Mon, 26 May 2025 21:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592D81863E
+	for <gfs2@lists.linux.dev>; Tue, 27 May 2025 03:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748294378; cv=none; b=JsJYcnnfwgHuAt5GjTSLa4t43bQ0dV6qUMuNuTl+f4FfnU6TXHVyyonyQ4Fdh1e3G0XgqTUYNA9NROZOXwWmFAey5N9BjynNStCKbdqE44Tf0RB9DHIzWWB4XJwZc8ByXb/krZ4X4ubvlTa3R77Ia5NAEeh3c8Y5X53dRz2RuXs=
+	t=1748315945; cv=none; b=Q0Y+Z6PQWNiWSsEfyJvyyv4jzV0CFP8egOi9NegnIHO5gjQFdX38/LFzruKkxyFTEn6g+Rh66WnI7SZNY2i0BUhHdQ4851Ep6+lKW7lKivb1GQRQ/QKBuAxlwDB/ulfUZz/jvuKAOvVAvSknE50KiR2JmhniiFcJO/FW+5JTmrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748294378; c=relaxed/simple;
-	bh=SAllJ45hTY3udtl1fqt6/wd5ohSPsuns725LM+/YgYk=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=j8x1/auQQklpr7CPuhcRj5y3GmlRupnXO2V1TOUWT1BRbxi6Z/G1HV3ud280wh8cS588FRPeLNuay9st19EXnfEXXSCL/Zv5uesy8O/yCIfEvjBjnEoYvfmCW0Eon8W0aHI3YnLFUxnW3DjJs/uNQi/MI1XcHunsgmdGj6iy5YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6qfyDxa; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6qfyDxa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381C2C4CEF3;
-	Mon, 26 May 2025 21:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748294378;
-	bh=SAllJ45hTY3udtl1fqt6/wd5ohSPsuns725LM+/YgYk=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=L6qfyDxa0uEkLtRyMhd7m6I68Hkz2pEm+WQ+4v+YFC7Mphs2ihq8gDrMCXh73zLxD
-	 zGXRsM/EcYGOdyFuyq6OtZhwlENuU0OM7dKu2AvTCprO7zT38ZUgXH16DeAZTz7afx
-	 omI2AWNPrvhKMRdX787rtpvC86gRj6s03G2mEvLcyyDutjw7OYw0lN2KVUdo57Xu1n
-	 C7Xql3AsLiniRDBW9A4pYZWDBPhhZ79U5+9SdcV/P/cawrQFEDtS/h4unQCg6h8Qh8
-	 PyUa8fsijSSIznJOi3qvoQhQa49/l+CPIh4bxjj6Zh5MaYNwPRaZYAYAcUJBcOn0E4
-	 a4PQ7Osjf86Kw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB1E8380AAE2;
-	Mon, 26 May 2025 21:20:13 +0000 (UTC)
-Subject: Re: [GIT PULL] gfs2 changes for 6.16
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250523205122.1783753-1-agruenba@redhat.com>
-References: <20250523205122.1783753-1-agruenba@redhat.com>
-X-PR-Tracked-List-Id: <gfs2.lists.linux.dev>
-X-PR-Tracked-Message-Id: <20250523205122.1783753-1-agruenba@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.16
-X-PR-Tracked-Commit-Id: e320050eb75e914aa5e12de2a9ab830c9a2ce311
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8fdabcd9c01d9ac585d8109a921e0734a69479fb
-Message-Id: <174829441289.1051981.8038892790938571851.pr-tracker-bot@kernel.org>
-Date: Mon, 26 May 2025 21:20:12 +0000
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1748315945; c=relaxed/simple;
+	bh=NcowtDrjo/ZWpwUUom/pF1B5fkcdM48WWh1WZOS7MKA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=JRtFeBX08/MnL1RCrrVkJHbq/MsRx+RUzCpc8T2fQnSAuCTtKjlBekPcDOrRFhnxjWnrgpMuUYcdmBJvi7s053f7XJOG2uoLylkUvFJkB/RHUIjasVAtsUA1PpNGZ4pFW2j4ImEa4nqBUH7K+pGBeiQV7G86N5Xbbo+RG0kZOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3dc8ab0ac67so51204735ab.2
+        for <gfs2@lists.linux.dev>; Mon, 26 May 2025 20:19:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748315943; x=1748920743;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d3VWM+l99VWhmlvxmS2qwm2iGiY7UVcWGnyHjtXle+g=;
+        b=d2YYjO4rZ1MSsgHti9YG0kJ5t+oR63SPKQ+CR5jqwhIBKUskEyMWgKj6pzlhuvp2u2
+         V4820/0ifgJydrZooZgTLDtHTvlf5e8CMyD3pqPQ0L0BWP7I2lP7Jx9GTYJ7GMdD8pPJ
+         Jds8ZxhcP/OkL3dEmoOeYFsI1ZUORcXsMieG6eMxl1ooA0Z/dBBWuuN9P/mshDJgI9Sv
+         VChC8P/4ll/07k5Zwm954HqQIWxGzfRW3J1cyi0TbCAozXGoV156ASt7ofGCmAhO+oFB
+         1M2fxbR08bzXNffGzi8YrZKZYQ+dkhSDlWOXvvzSQKxpZsSJVEl3Y1d1vhQos/khzAVc
+         mtGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRH9bheWOJUFyJV+eqUNTkxkK6uLL+RZ1I0h2h9VamZknJ5pDLf3vpet0dlfs46wFU36nX@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJG5RZkS/P9NmV1ocWjBI9hX31MoLo9Tsirtw9OamF5GBr7JeE
+	8eAmN37pakuR2yed+kOuyVf4WT7XvTE8ehE/df6qwsFPs0rWjlpMpKjp/+2HFxHo4VpIJFO874K
+	lXoi/ARzCS2feSddZgudqhZIqPw8tE4rWgVnq/UHLKwjuwzSH8qfdkXITztc=
+X-Google-Smtp-Source: AGHT+IEPWmUjqbSTuVpfE0JkF4dnU42M3CfRXRvGzbsfMXNByWL1rCRcW5yqmJAsrF5DuFcPQdLlcmg6OUGGLY3tqCuKQ9hnCSuK
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:3803:b0:3db:877a:dff4 with SMTP id
+ e9e14a558f8ab-3dc9b734485mr93019485ab.14.1748315943392; Mon, 26 May 2025
+ 20:19:03 -0700 (PDT)
+Date: Mon, 26 May 2025 20:19:03 -0700
+In-Reply-To: <68344a84.a70a0220.1765ec.0166.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68352f27.a70a0220.253bc2.009f.GAE@google.com>
+Subject: Re: [syzbot] [gfs2?] KASAN: null-ptr-deref Read in gfs2_drop_inode
+From: syzbot <syzbot+b12826218502df019f9d@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The pull request you sent on Fri, 23 May 2025 22:51:21 +0200:
+syzbot has bisected this issue to:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.16
+commit ae9f3bd8259a0a8f67be2420e66bb05fbb95af48
+Author: Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Sat Apr 5 22:31:37 2025 +0000
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8fdabcd9c01d9ac585d8109a921e0734a69479fb
+    gfs2: replace sd_aspace with sd_inode
 
-Thank you!
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1042cdf4580000
+start commit:   176e917e010c Add linux-next specific files for 20250523
+git tree:       linux-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1242cdf4580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1442cdf4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e7902c752bef748
+dashboard link: https://syzkaller.appspot.com/bug?extid=b12826218502df019f9d
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=151759f4580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16b9c5f4580000
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Reported-by: syzbot+b12826218502df019f9d@syzkaller.appspotmail.com
+Fixes: ae9f3bd8259a ("gfs2: replace sd_aspace with sd_inode")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
