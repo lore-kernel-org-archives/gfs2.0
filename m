@@ -1,136 +1,81 @@
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBFF2475E3
-	for <gfs2@lists.linux.dev>; Tue, 27 May 2025 10:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5856727814B
+	for <gfs2@lists.linux.dev>; Tue, 27 May 2025 16:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748342555; cv=none; b=G6TMQf1Xh6UUpN11QYdEBAJjAxzOHQPlBVyLfzrUx7aWzaQ2xL246vk5yR9qS9v6ljYPimE8E1mlDFH3Y131ourkzFvguoecb5C+dNbqni6bTZMrRpfcZtnETBmXgSOxCoQ7db3QZ4O9HAqDDdhUi9BRWxr+Y7rzl6ka8MKLW7Y=
+	t=1748362360; cv=none; b=hu0E+PUp8A5u/nu2d8zT4FeRxF0FZM4oNFHu75qeFPjpnii0DkmhbBcKHMPIoBZe8Q4OlcgmxRo+DbdKGAFlVDKjCutbGtNlHvs0R/q7B+V8Pih70VscO+DceT7m0WYzt34Ruzcgu1g/xZzglHjRTGsObgU+hwrAsALwHa8by6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748342555; c=relaxed/simple;
-	bh=ylnWf94hRcWdF9suXgclvU2TBgd4dHED5ATVeOE78X8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ujl730QqSpjiBx0VWGWo4jtiaEXF5KJiXTyy1jsBCSyEsNMCfrxoxxjhR8c1GclXz2MgGrn/6+WJ7sRgCcRWrQIkus7/FAav7nPZbKecYPmMzF8SG+gqWypStj4paxKjGePTu0CzP9XGJpE5DgVHbhkU0Vd93vwtx7MeLcfg3nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3dd78bfeac0so16871985ab.2
-        for <gfs2@lists.linux.dev>; Tue, 27 May 2025 03:42:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748342553; x=1748947353;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GGIsTS2/wv6irS0gyfFOTsWPvGOReKGkibrvBLKqwiE=;
-        b=s8HIQTeo9ZTTv//7ccoXRTZFsCNN5RGQ3kaNQdFqQBL+NICLxSDxCymriOh8zQonfN
-         mAxw6AJ0w7gHFPRbyMFdsOUoBAN2R2XWm4+oKHRBvGbYGo1Q5Pv87SMZz8LSKS5NNYBr
-         TxR8SnEKJNwOJIlPSpEYD3gCEdK8y8LBbdCLaXy48orQcETTg5G8ZAtAvQlxg5BpEs5T
-         8jbz73BGVICcdKSjI2Og/+Zs31hMI3kaB1w1wD9lt+KzSF51AZWGo9UEuFkk1T5TvrR0
-         edqziYFL4qMBOplNsRbvSOEEfzzwN8lZyCJch7CP/ogo+dAu+Cslv5dQdkAnAHn6mwpQ
-         ZvIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ8EYPtA0D3J9bZcyB+kZOolSQ1xxz1xs+oG/JjFPENEJtbC0Hc98w6RbD9qegulxgPMAT@lists.linux.dev
-X-Gm-Message-State: AOJu0YwivLA9eOfmeGN9z8hpl37/CYjyRpeqSL2wWQu4qo08TGaHFcqF
-	FQng8CkhM4PNHLU2SJhWEe08IDrZQ6XLt/vHUzlafBhgG/0mpQwsQoKGkOm9o5v1Wp30FjN7O1T
-	2XRMkvsRiwQDfZ4zo3/vmJABalb8v+PyQrGWnkfy/zJ70lws5fENa/u27Do0=
-X-Google-Smtp-Source: AGHT+IFDCtCDx4Vqo4IhyglYRG3TOIGyhhy1uH3mWj6eEwwTD74jWnMD9gubSNOGF8mEm2mNVoBUPGCdtwfFJCxk3+BMxrMmJlRV
+	s=arc-20240116; t=1748362360; c=relaxed/simple;
+	bh=BEBcxwFtvoqv6iWW55Ogx6WZq6YFJFI6VteLEwocOHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AQjz7GMeaifBvHN6wDE6swohUivwz7Jqai/n34+w2vvT1H23FJXj8glHn+S6vx3YFGK3P+v0ET3JVKxQvbRI7BxRjN6nkzxcX6i9AL3v14E7BLCupjawJmEAjz0K31iMpfwBHOTc4XO1ebF0CeOuVICapU7L8xJm66xLg9MM2/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E2fRlQ8y; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E2fRlQ8y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748362357;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=t+ngdpG/h67ssDMHIohk94AFManYGXIDp6qk/0+bt4M=;
+	b=E2fRlQ8yG8RlIRfKEdkb0vFsEtlqvrkMRweAGQXJN7J/NWurM7mRur+/4mLcdOPF5gKQan
+	DlCA5m5dk+uiDFkQ1llO0YGZR2aaUn/KX6x5eZ1Sc4d9R1/cYM6/OO31kFgqFqLds8VE8F
+	WyekyImdSKQ8WnHH7guo06QtYzL46RA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-unnrHwMnO2K8nd5WqfZ-Qw-1; Tue,
+ 27 May 2025 12:12:33 -0400
+X-MC-Unique: unnrHwMnO2K8nd5WqfZ-Qw-1
+X-Mimecast-MFC-AGG-ID: unnrHwMnO2K8nd5WqfZ-Qw_1748362352
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5F4C119560AA;
+	Tue, 27 May 2025 16:12:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.89.242])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5AE818001DA;
+	Tue, 27 May 2025 16:12:30 +0000 (UTC)
+Date: Tue, 27 May 2025 11:12:28 -0500
+From: David Teigland <teigland@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: [GIT PULL] dlm updates for 6.16
+Message-ID: <aDXkbAcJfiMTixT2@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2221:b0:3dc:7d79:1a5c with SMTP id
- e9e14a558f8ab-3dc9b7097f0mr110772535ab.20.1748342553057; Tue, 27 May 2025
- 03:42:33 -0700 (PDT)
-Date: Tue, 27 May 2025 03:42:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68359719.a70a0220.253bc2.00ae.GAE@google.com>
-Subject: [syzbot] [gfs2?] WARNING in gfs2_put_super
-From: syzbot <syzbot+56182be23469e01affbc@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hello,
+Hi Linus,
 
-syzbot found the following issue on:
+Please pull dlm updates from tag:
 
-HEAD commit:    176e917e010c Add linux-next specific files for 20250523
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=14389170580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e7902c752bef748
-dashboard link: https://syzkaller.appspot.com/bug?extid=56182be23469e01affbc
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.16
 
-Unfortunately, I don't have any reproducer for this issue yet.
+This set fixes delays when shutting down SCTP connections, and updates
+dlm Kconfig for SCTP.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/5f7692c642fa/disk-176e917e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/057a442d42d0/vmlinux-176e917e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/8f8ebdb4dd96/bzImage-176e917e.xz
+Thanks,
+Dave
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+56182be23469e01affbc@syzkaller.appspotmail.com
+Alexander Aring (4):
+      dlm: mask sk_shutdown value
+      dlm: use SHUT_RDWR for SCTP shutdown
+      dlm: reject SCTP configuration if not enabled
+      dlm: drop SCTP Kconfig dependency
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 13525 at fs/gfs2/super.c:608 gfs2_put_super+0x912/0x950 fs/gfs2/super.c:608
-Modules linked in:
-CPU: 0 UID: 0 PID: 13525 Comm: syz-executor Not tainted 6.15.0-rc7-next-20250523-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-RIP: 0010:gfs2_put_super+0x912/0x950 fs/gfs2/super.c:608
-Code: ff e8 42 f2 f8 ff 4c 89 ff e8 5a 30 00 00 4c 89 ff 48 83 c4 38 5b 41 5c 41 5d 41 5e 41 5f 5d e9 44 1e fc ff e8 df 34 c8 fd 90 <0f> 0b 90 e9 4d fa ff ff e8 d1 34 c8 fd e9 9c f9 ff ff 44 89 f1 80
-RSP: 0018:ffffc90004e77cb0 EFLAGS: 00010293
-RAX: ffffffff83f80e51 RBX: 0000000000000000 RCX: ffff888029499e00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff888035c58818 R08: ffff888035c580af R09: 1ffff11006b8b015
-R10: dffffc0000000000 R11: ffffed1006b8b016 R12: ffff888035c580a8
-R13: ffff888035c58818 R14: 0000000000000800 R15: ffff888035c58000
-FS:  0000555586d88500(0000) GS:ffff888125c56000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8ca2c3f000 CR3: 0000000041d1c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 000000000000f978 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- generic_shutdown_super+0x135/0x2c0 fs/super.c:643
- kill_block_super+0x44/0x90 fs/super.c:1753
- deactivate_locked_super+0xb9/0x130 fs/super.c:474
- cleanup_mnt+0x425/0x4c0 fs/namespace.c:1417
- task_work_run+0x1d4/0x260 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:114
- exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9a3158fc97
-Code: a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 44 00 00 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 a8 ff ff ff f7 d8 64 89 02 b8
-RSP: 002b:00007ffdc6205458 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007f9a3161089d RCX: 00007f9a3158fc97
-RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffdc6205510
-RBP: 00007ffdc6205510 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffdc62065a0
-R13: 00007f9a3161089d R14: 0000000000109e74 R15: 00007ffdc62065e0
- </TASK>
+ fs/dlm/Kconfig    | 1 -
+ fs/dlm/config.c   | 3 +++
+ fs/dlm/lowcomms.c | 7 +++++--
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
