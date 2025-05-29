@@ -1,55 +1,55 @@
 Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDA11F7075
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E185022154E
 	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 11:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748518792; cv=none; b=XpguGM39ZISAitNsy0aWuk7A85K/EjeL8I087v4WmIMSxM8q0BdBDtE+523GbC2ONx43Kh28DAWIiZHFtoxQMxGDgKRVTqLqNmzR5d6wU9H5B+1JIODyTNw1iRj0YO1Md2pwoboQ6kOFH24Waeeo++z5eEDpG6JpejUivvoy5W4=
+	t=1748518792; cv=none; b=VsS0omVDOlNn2PaFJTLF083Y2WBJMVt/sKQJi5bXeNbDZ3gE9abG0SmWMjy//XIF7rmHpjJES/+9gtcc18eFvY3IWRTG3Kw9rXRic4ljWAHawmr2yQKfrO6KVVENLF4Z2c603roixTwsNEMwkhTgq+wscwVBrSll9Z5ImTdIRjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1748518792; c=relaxed/simple;
-	bh=oO2FLoDWg7GhwsTJf6QXxe3ypztozqPzBmmirGELpvE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=AU2ShoevS1e6StvYsZsGvyulZz6ZIoHS23PxHlX+pWpPiuGyUr6sj+NKzPrEBGiezc6cMRRkiFLycZkgsuIAmjZbtim8nrND+2nAx+t4pgegVFy6uQHBdeSPmZuSBcbY8222+ZPpP8u53+FNTRMJo9Hostimh2BMOMZoP0XbcyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YnrJd0et; arc=none smtp.client-ip=203.254.224.33
+	bh=r+7cLvWLpKwkyBVq0RA1W7mlNmI4XwvEjQKFwRuxUAU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=pVHLS4rm/76CntelZrBwL1jMvYsFtdnhui4nuM4e197gYw7y7ASBVaolNwxpaA0o4F3UBFyumxMcrivO6826gPExcbBm++mIHmk47HZHgkJvRt9+RIuGjJ/lpYuza8QxcBO6bRBc7DTt+MKIsvQRLWxSkncA/b9yC8oJMKxlEgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=IWzvH78S; arc=none smtp.client-ip=203.254.224.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YnrJd0et"
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20250529113332epoutp0313bac000eb42b1558290be0b3de944be~D-DthcuZO0578705787epoutp03c
-	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 11:33:32 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20250529113332epoutp0313bac000eb42b1558290be0b3de944be~D-DthcuZO0578705787epoutp03c
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="IWzvH78S"
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20250529113326epoutp0354a8bd23ab0e65b55970c307974817a8~D-Dn0r8820578705787epoutp03X
+	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 11:33:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20250529113326epoutp0354a8bd23ab0e65b55970c307974817a8~D-Dn0r8820578705787epoutp03X
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1748518412;
-	bh=ts9ngdqlLw2AEiZ86ZxN1Hs3ycwqqPPWcX97f26fAOg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnrJd0etJxSguxdAPqGpBHI+1IXq2by0WL4ZxyMtjbP4IWf3nWJgjZghWV4WjPBT2
-	 zvZfg+ds/JYe37o+0k/LNE7kYDu6ObRDBV1Hz/OsMMWTIW4U9oTQHfsy0OiBB4LFwU
-	 0QSTFVgc1D4FegqpAjhsPF1Lr1Qp+CfLS0gBB78s=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	s=mail20170921; t=1748518406;
+	bh=0BBOPh/1Je3me0LukkKrHkNdCa1/chw529Mw+ILY7AM=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=IWzvH78SF7qzQn/pWr7KEbtYNBmiy9GCBm4F1TQntNi3tDSGz1/QFS7nZLrLipOpN
+	 gJkLbItfAm9glffjxkV/yI0O5X7sKV5fD6n4e2lbrAbO8TMKBdDC+lC0H/0aLaAAx2
+	 chuMjm3PlDX4QuNwpszIJBdLE8HxNmyoqGAonJu4=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
 	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20250529113331epcas5p31117eefbd7821d886b55aa7d388289a5~D-Ds5oUNm3109531095epcas5p34;
-	Thu, 29 May 2025 11:33:31 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.183]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4b7PQ228rNz6B9m5; Thu, 29 May
-	2025 11:33:30 +0000 (GMT)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	20250529113325epcas5p3830c2f39e388a74a690d47b523499383~D-Dm0q5r70040000400epcas5p3P;
+	Thu, 29 May 2025 11:33:25 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.182]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4b7PPv4tyMz2SSKX; Thu, 29 May
+	2025 11:33:23 +0000 (GMT)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
 	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250529113224epcas5p2eea35fd0ebe445d8ad0471a144714b23~D-Ct71Fwq0469904699epcas5p2q;
-	Thu, 29 May 2025 11:32:24 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250529113224epsmtrp15931173685a255cae3a7376266154c4b~D-Ct6hjf02108121081epsmtrp1t;
-	Thu, 29 May 2025 11:32:24 +0000 (GMT)
-X-AuditID: b6c32a29-55afd7000000223e-0f-683845c7d353
+	20250529113215epcas5p2edd67e7b129621f386be005fdba53378~D-Cl_h9Q22517425174epcas5p2v;
+	Thu, 29 May 2025 11:32:15 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20250529113215epsmtrp24d38e9c495ac3d242ed907100353fa8f~D-Cl8Jy3Y3146431464epsmtrp2c;
+	Thu, 29 May 2025 11:32:15 +0000 (GMT)
+X-AuditID: b6c32a28-460ee70000001e8a-e5-683845bf1925
 Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	A7.D0.08766.7C548386; Thu, 29 May 2025 20:32:23 +0900 (KST)
+	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	B0.41.07818.FB548386; Thu, 29 May 2025 20:32:15 +0900 (KST)
 Received: from localhost.localdomain (unknown [107.99.41.245]) by
 	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250529113219epsmtip24a8a22fe2424d5c844ec10fe7a251a72~D-CqFFjwh0869408694epsmtip2r;
-	Thu, 29 May 2025 11:32:19 +0000 (GMT)
+	20250529113211epsmtip2df4f1dfd18c671ff59a420a522ae4244~D-CiJOJGk2207922079epsmtip2Z;
+	Thu, 29 May 2025 11:32:11 +0000 (GMT)
 From: Kundan Kumar <kundan.kumar@samsung.com>
 To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
 	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
@@ -60,14 +60,11 @@ To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
 	da.gomez@samsung.com
 Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
-	gost.dev@samsung.com, Kundan Kumar <kundan.kumar@samsung.com>, Anuj Gupta
-	<anuj20.g@samsung.com>
-Subject: [PATCH 02/13] writeback: add support to initialize and free
- multiple writeback ctxs
-Date: Thu, 29 May 2025 16:44:53 +0530
-Message-Id: <20250529111504.89912-3-kundan.kumar@samsung.com>
+	gost.dev@samsung.com, Kundan Kumar <kundan.kumar@samsung.com>
+Subject: [PATCH 00/13] Parallelizing filesystem writeback
+Date: Thu, 29 May 2025 16:44:51 +0530
+Message-Id: <20250529111504.89912-1-kundan.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250529111504.89912-1-kundan.kumar@samsung.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -75,213 +72,153 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBIsWRmVeSWpSXmKPExsWy7bCSvO5xV4sMg5vTLCy2rdvNbjFn/Ro2
-	iwvrVjNatO78z2LRNOEvs8Xqu/1sFq8Pf2K0OD31LJPFlkv2Fu8vb2OyWH1zDaPFlmP3GC0u
-	P+Gz2D39H6vFzQM7mSxWrj7KZDF7ejOTxZP1s5gttn75ympxaZG7xZ69J1ks7q35z2px4cBp
-	VosbE54yWjzbvZHZ4vPSFnaLg6c62C0+zQUacv7vcVaL3z/msDnIeZxaJOGxc9Zddo/NK7Q8
-	Lp8t9di0qpPNY9OnSeweJ2b8ZvF4sXkmo8fuBZ+ZPHbfbGDzOHexwuP9vqtsHn1bVjF6TJ1d
-	73FmwRF2jxXTLjIFCEVx2aSk5mSWpRbp2yVwZSy7dZexYLZ+xekv0xgbGM+odzFyckgImEjM
-	uTqDDcQWEtjNKHH0gxxEXEZi992drBC2sMTKf8/ZIWo+MkqsmRTdxcjBwSagK/GjKbSLkYtD
-	ROAms8S5s2fA6pkF/jFK7H6lA2ILC8RINHYfZgGxWQRUJRb9PgQ2h1fAVuLfhj3MEPPlJWZe
-	+g4W5xSwk1i05CsjxC5biaU317JA1AtKnJz5hAVivrxE89bZzBMYBWYhSc1CklrAyLSKUTK1
-	oDg3PbfYsMAwL7Vcrzgxt7g0L10vOT93EyM4MWhp7mDcvuqD3iFGJg7GQ4wSHMxKIrxN9mYZ
-	QrwpiZVVqUX58UWlOanFhxilOViUxHnFX/SmCAmkJ5akZqemFqQWwWSZODilGpgk3lzo8dvA
-	YsTVsvtRmXMuV0Vhd/ZOUzlbaaVZ1klcHhEpVx+eLC/JMW01Mgr78/z7reP9B64mfDqTtyE8
-	+Ljm1LZtqZus02a3C/pt3hWwcK+tU80Hv0rLrC/PE+fcqFzqwCfKssbrkGqvhu+iPPN5Z6Mm
-	LRH/vO1GbfSOrR+3nN/Qs8by8jnn79IFN9cu2rKL4ZUOw+z4KfM+aWqnno3xOihVumqLvML7
-	hkKfdY8cmY+WvzXVfTBn/YbSkwrHIp/Mr0+6+kXw+PML2l7/N6Yw7X38+HZswPv6mUmr/fQ5
-	LIIfXexZzWe9vllgf+2lSH+95pj3Wx603GTQCGcP4+A+dTDS46j+QyGbxbUr/2QpsRRnJBpq
-	MRcVJwIAj/csfXsDAAA=
-X-CMS-MailID: 20250529113224epcas5p2eea35fd0ebe445d8ad0471a144714b23
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrLIsWRmVeSWpSXmKPExsWy7bCSvO5+V4sMg2WbRCy2rdvNbjFn/Ro2
+	iwvrVjNatO78z2Kx+m4/m8Xrw58YLU5PPctkseWSvcX7y9uYLFbfXMNoseXYPUaLy0/4LHZP
+	/8dqcfPATiaLlauPMlnMnt7MZPFk/Sxmi61fvrJaXFrkbrFn70kWi3tr/rNaXDhwmtXixoSn
+	jBbPdm9ktvi8tIXd4uCpDnaLT3OBhpz/e5zV4vePOWwOsh6nFkl47Jx1l91j8wotj8tnSz02
+	repk89j0aRK7x4kZv1k8Xmyeyeixe8FnJo/dNxvYPM5drPB4v+8qm0ffllWMHlNn13ucWXCE
+	3WPFtItMAUJRXDYpqTmZZalF+nYJXBnH+/ayFNxSreh8uIq5gXGpbBcjB4eEgInErBOKXYxc
+	HEICuxklJk6Yxd7FyAkUl5HYfXcnK4QtLLHy33N2iKKPjBLfn+xjAWlmE9CV+NEUChIXEbjJ
+	LHHu7BlWEIdZ4CajxJzNq8EmCQtYSkxc8BpsEouAqsTbL69YQGxeAVuJBS+OMUNskJeYeek7
+	O0RcUOLkzCdgNcxA8eats5knMPLNQpKahSS1gJFpFaNkakFxbnpusmGBYV5quV5xYm5xaV66
+	XnJ+7iZGcIxraexgfPetSf8QIxMH4yFGCQ5mJRHeJnuzDCHelMTKqtSi/Pii0pzU4kOM0hws
+	SuK8Kw0j0oUE0hNLUrNTUwtSi2CyTBycUg1MPSVnXuydV7xnYaZRrR/b/N9OS/jErxavbJy6
+	iXOe0TWriZU5hQzi0l9kdhk4JPF7Xag8u/HlbwMXbk3fzQFf/0u8u2VTY1C9guMig37EvMzG
+	E9sPHrsqsJZRWfqkQYTxrsV/Lj+Y2ffu6xyJhQKRq08GrK2/rZXO+LBjd8YUj0LndfeeuAkE
+	iG3UviXQes2H30x0khvXgzrDzfc5S22PSSktnvpw6Z3ZT3j55SLXmorN2RVzOf6Zi45k2L+l
+	b6qVDO6sym5co6C1R+KMxWEHp+22NglPhO40lGT9cQi8+mvFinuWZ1dadFiGGdnWPD4X5134
+	Oy6lfPVuP+kZnd47Tx8/tWKCdNUd5pOBZwr8lViKMxINtZiLihMBvytCF2ADAAA=
+X-CMS-MailID: 20250529113215epcas5p2edd67e7b129621f386be005fdba53378
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: REQ_APPROVE
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-542,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250529113224epcas5p2eea35fd0ebe445d8ad0471a144714b23
-References: <20250529111504.89912-1-kundan.kumar@samsung.com>
-	<CGME20250529113224epcas5p2eea35fd0ebe445d8ad0471a144714b23@epcas5p2.samsung.com>
+X-CMS-RootMailID: 20250529113215epcas5p2edd67e7b129621f386be005fdba53378
+References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com>
 
-Introduce a new macro for_each_bdi_wb_ctx to iterate over multiple
-writeback ctxs. Added logic for allocation, init, free, registration
-and unregistration of multiple writeback contexts within a bdi.
+Currently, pagecache writeback is performed by a single thread. Inodes
+are added to a dirty list, and delayed writeback is triggered. The single
+writeback thread then iterates through the dirty inode list, and executes
+the writeback.
 
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
----
- include/linux/backing-dev.h |  4 ++
- mm/backing-dev.c            | 79 +++++++++++++++++++++++++++----------
- 2 files changed, 62 insertions(+), 21 deletions(-)
+This series parallelizes the writeback by allowing multiple writeback
+contexts per backing device (bdi). These writebacks contexts are executed
+as separate, independent threads, improving overall parallelism.
 
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 894968e98dd8..fbccb483e59c 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -148,6 +148,10 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
- 	return inode_to_bdi(mapping->host)->capabilities & BDI_CAP_WRITEBACK;
- }
- 
-+#define for_each_bdi_wb_ctx(bdi, wb_ctx) \
-+	for (int __i = 0; __i < (bdi)->nr_wb_ctx \
-+		&& ((wb_ctx) = (bdi)->wb_ctx_arr[__i]) != NULL; __i++)
-+
- static inline struct bdi_writeback_ctx *
- fetch_bdi_writeback_ctx(struct inode *inode)
- {
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 0efa9632011a..adf87b036827 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -836,16 +836,19 @@ struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
- static int cgwb_bdi_init(struct backing_dev_info *bdi)
- {
- 	int ret;
--	struct bdi_writeback_ctx *bdi_wb_ctx = bdi->wb_ctx_arr[0];
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
- 
--	INIT_RADIX_TREE(&bdi_wb_ctx->cgwb_tree, GFP_ATOMIC);
--	mutex_init(&bdi->cgwb_release_mutex);
--	init_rwsem(&bdi_wb_ctx->wb_switch_rwsem);
-+	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+		INIT_RADIX_TREE(&bdi_wb_ctx->cgwb_tree, GFP_ATOMIC);
-+		mutex_init(&bdi->cgwb_release_mutex);
-+		init_rwsem(&bdi_wb_ctx->wb_switch_rwsem);
- 
--	ret = wb_init(&bdi_wb_ctx->wb, bdi, GFP_KERNEL);
--	if (!ret) {
--		bdi_wb_ctx->wb.memcg_css = &root_mem_cgroup->css;
--		bdi_wb_ctx->wb.blkcg_css = blkcg_root_css;
-+		ret = wb_init(&bdi_wb_ctx->wb, bdi, GFP_KERNEL);
-+		if (!ret) {
-+			bdi_wb_ctx->wb.memcg_css = &root_mem_cgroup->css;
-+			bdi_wb_ctx->wb.blkcg_css = blkcg_root_css;
-+		} else
-+			return ret;
- 	}
- 	return ret;
- }
-@@ -992,7 +995,16 @@ subsys_initcall(cgwb_init);
- 
- static int cgwb_bdi_init(struct backing_dev_info *bdi)
- {
--	return wb_init(&bdi->wb_ctx_arr[0]->wb, bdi, GFP_KERNEL);
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
-+
-+	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+		int ret;
-+
-+		ret = wb_init(&bdi_wb_ctx->wb, bdi, GFP_KERNEL);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
- }
- 
- static void cgwb_bdi_unregister(struct backing_dev_info *bdi,
-@@ -1026,10 +1038,19 @@ int bdi_init(struct backing_dev_info *bdi)
- 				  sizeof(struct bdi_writeback_ctx *),
- 				  GFP_KERNEL);
- 	INIT_LIST_HEAD(&bdi->bdi_list);
--	bdi->wb_ctx_arr[0] = (struct bdi_writeback_ctx *)
--			kzalloc(sizeof(struct bdi_writeback_ctx), GFP_KERNEL);
--	INIT_LIST_HEAD(&bdi->wb_ctx_arr[0]->wb_list);
--	init_waitqueue_head(&bdi->wb_ctx_arr[0]->wb_waitq);
-+	for (int i = 0; i < bdi->nr_wb_ctx; i++) {
-+		bdi->wb_ctx_arr[i] = (struct bdi_writeback_ctx *)
-+			 kzalloc(sizeof(struct bdi_writeback_ctx), GFP_KERNEL);
-+		if (!bdi->wb_ctx_arr[i]) {
-+			pr_err("Failed to allocate %d", i);
-+			while (--i >= 0)
-+				kfree(bdi->wb_ctx_arr[i]);
-+			kfree(bdi->wb_ctx_arr);
-+			return -ENOMEM;
-+		}
-+		INIT_LIST_HEAD(&bdi->wb_ctx_arr[i]->wb_list);
-+		init_waitqueue_head(&bdi->wb_ctx_arr[i]->wb_waitq);
-+	}
- 	bdi->last_bdp_sleep = jiffies;
- 
- 	return cgwb_bdi_init(bdi);
-@@ -1038,13 +1059,16 @@ int bdi_init(struct backing_dev_info *bdi)
- struct backing_dev_info *bdi_alloc(int node_id)
- {
- 	struct backing_dev_info *bdi;
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
- 
- 	bdi = kzalloc_node(sizeof(*bdi), GFP_KERNEL, node_id);
- 	if (!bdi)
- 		return NULL;
- 
- 	if (bdi_init(bdi)) {
--		kfree(bdi->wb_ctx_arr[0]);
-+		for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+			kfree(bdi_wb_ctx);
-+		}
- 		kfree(bdi->wb_ctx_arr);
- 		kfree(bdi);
- 		return NULL;
-@@ -1109,6 +1133,7 @@ int bdi_register_va(struct backing_dev_info *bdi, const char *fmt, va_list args)
- {
- 	struct device *dev;
- 	struct rb_node *parent, **p;
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
- 
- 	if (bdi->dev)	/* The driver needs to use separate queues per device */
- 		return 0;
-@@ -1118,8 +1143,11 @@ int bdi_register_va(struct backing_dev_info *bdi, const char *fmt, va_list args)
- 	if (IS_ERR(dev))
- 		return PTR_ERR(dev);
- 
--	cgwb_bdi_register(bdi, bdi->wb_ctx_arr[0]);
--	set_bit(WB_registered, &bdi->wb_ctx_arr[0]->wb.state);
-+	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+		cgwb_bdi_register(bdi, bdi_wb_ctx);
-+		set_bit(WB_registered, &bdi_wb_ctx->wb.state);
-+	}
-+
- 	bdi->dev = dev;
- 
- 	bdi_debug_register(bdi, dev_name(dev));
-@@ -1174,12 +1202,17 @@ static void bdi_remove_from_list(struct backing_dev_info *bdi)
- 
- void bdi_unregister(struct backing_dev_info *bdi)
- {
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
-+
- 	timer_delete_sync(&bdi->laptop_mode_wb_timer);
- 
- 	/* make sure nobody finds us on the bdi_list anymore */
- 	bdi_remove_from_list(bdi);
--	wb_shutdown(&bdi->wb_ctx_arr[0]->wb);
--	cgwb_bdi_unregister(bdi, bdi->wb_ctx_arr[0]);
-+
-+	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+		wb_shutdown(&bdi_wb_ctx->wb);
-+		cgwb_bdi_unregister(bdi, bdi_wb_ctx);
-+	}
- 
- 	/*
- 	 * If this BDI's min ratio has been set, use bdi_set_min_ratio() to
-@@ -1205,11 +1238,15 @@ static void release_bdi(struct kref *ref)
- {
- 	struct backing_dev_info *bdi =
- 			container_of(ref, struct backing_dev_info, refcnt);
-+	struct bdi_writeback_ctx *bdi_wb_ctx;
- 
- 	WARN_ON_ONCE(bdi->dev);
--	WARN_ON_ONCE(test_bit(WB_registered, &bdi->wb_ctx_arr[0]->wb.state));
--	wb_exit(&bdi->wb_ctx_arr[0]->wb);
--	kfree(bdi->wb_ctx_arr[0]);
-+
-+	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
-+		WARN_ON_ONCE(test_bit(WB_registered, &bdi_wb_ctx->wb.state));
-+		wb_exit(&bdi_wb_ctx->wb);
-+		kfree(bdi_wb_ctx);
-+	}
- 	kfree(bdi->wb_ctx_arr);
- 	kfree(bdi);
- }
+Would love to hear feedback in-order to move this effort forward.
+
+Design Overview
+================
+Following Jan Kara's suggestion [1], we have introduced a new bdi
+writeback context within the backing_dev_info structure. Specifically,
+we have created a new structure, bdi_writeback_context, which contains
+its own set of members for each writeback context.
+
+struct bdi_writeback_ctx {
+        struct bdi_writeback wb;
+        struct list_head wb_list; /* list of all wbs */
+        struct radix_tree_root cgwb_tree;
+        struct rw_semaphore wb_switch_rwsem;
+        wait_queue_head_t wb_waitq;
+};
+
+There can be multiple writeback contexts in a bdi, which helps in
+achieving writeback parallelism.
+
+struct backing_dev_info {
+...
+        int nr_wb_ctx;
+        struct bdi_writeback_ctx **wb_ctx_arr;
+...
+};
+
+FS geometry and filesystem fragmentation
+========================================
+The community was concerned that parallelizing writeback would impact
+delayed allocation and increase filesystem fragmentation.
+Our analysis of XFS delayed allocation behavior showed that merging of
+extents occurs within a specific inode. Earlier experiments with multiple
+writeback contexts [2] resulted in increased fragmentation due to the
+same inode being processed by different threads.
+
+To address this, we now affine an inode to a specific writeback context
+ensuring that delayed allocation works effectively.
+
+Number of writeback contexts
+===========================
+The plan is to keep the nr_wb_ctx as 1, ensuring default single threaded
+behavior. However, we set the number of writeback contexts equal to
+number of CPUs in the current version. Later we will make it configurable
+using a mount option, allowing filesystems to choose the optimal number
+of writeback contexts.
+
+IOPS and throughput
+===================
+We see significant improvement in IOPS across several filesystem on both
+PMEM and NVMe devices.
+
+Performance gains:
+  - On PMEM:
+	Base XFS		: 544 MiB/s
+	Parallel Writeback XFS	: 1015 MiB/s  (+86%)
+	Base EXT4		: 536 MiB/s
+	Parallel Writeback EXT4	: 1047 MiB/s  (+95%)
+
+  - On NVMe:
+	Base XFS		: 651 MiB/s
+	Parallel Writeback XFS	: 808 MiB/s  (+24%)
+	Base EXT4		: 494 MiB/s
+	Parallel Writeback EXT4	: 797 MiB/s  (+61%)
+
+We also see that there is no increase in filesystem fragmentation
+# of extents:
+  - On XFS (on PMEM):
+	Base XFS		: 1964
+	Parallel Writeback XFS	: 1384
+
+  - On EXT4 (on PMEM):
+	Base EXT4		: 21
+	Parallel Writeback EXT4	: 11
+
+[1] Jan Kara suggestion :
+https://lore.kernel.org/all/gamxtewl5yzg4xwu7lpp7obhp44xh344swvvf7tmbiknvbd3ww@jowphz4h4zmb/
+[2] Writeback using unaffined N (# of CPUs) threads :
+https://lore.kernel.org/all/20250414102824.9901-1-kundan.kumar@samsung.com/
+
+Kundan Kumar (13):
+  writeback: add infra for parallel writeback
+  writeback: add support to initialize and free multiple writeback ctxs
+  writeback: link bdi_writeback to its corresponding bdi_writeback_ctx
+  writeback: affine inode to a writeback ctx within a bdi
+  writeback: modify bdi_writeback search logic to search across all wb
+    ctxs
+  writeback: invoke all writeback contexts for flusher and dirtytime
+    writeback
+  writeback: modify sync related functions to iterate over all writeback
+    contexts
+  writeback: add support to collect stats for all writeback ctxs
+  f2fs: add support in f2fs to handle multiple writeback contexts
+  fuse: add support for multiple writeback contexts in fuse
+  gfs2: add support in gfs2 to handle multiple writeback contexts
+  nfs: add support in nfs to handle multiple writeback contexts
+  writeback: set the num of writeback contexts to number of online cpus
+
+ fs/f2fs/node.c                   |  11 +-
+ fs/f2fs/segment.h                |   7 +-
+ fs/fs-writeback.c                | 146 +++++++++++++-------
+ fs/fuse/file.c                   |   9 +-
+ fs/gfs2/super.c                  |  11 +-
+ fs/nfs/internal.h                |   4 +-
+ fs/nfs/write.c                   |   5 +-
+ include/linux/backing-dev-defs.h |  32 +++--
+ include/linux/backing-dev.h      |  45 +++++--
+ include/linux/fs.h               |   1 -
+ mm/backing-dev.c                 | 225 ++++++++++++++++++++-----------
+ mm/page-writeback.c              |   5 +-
+ 12 files changed, 333 insertions(+), 168 deletions(-)
+
 -- 
 2.25.1
 
