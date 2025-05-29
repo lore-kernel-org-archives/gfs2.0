@@ -1,63 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556EE2206B5;
-	Wed, 28 May 2025 19:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A29C2459DE
+	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 07:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748461469; cv=none; b=db4tIeW5w5qb9iRDsKW+/eSftvuk6aOMmQWgbTq90v7UMcH2ZraLGJiXOhHEk35ueOQGlWAhd27N4vzkPCTyyCO7bjYDjtQfhRR5mpkEdsrlVU2JDGZCZ1QMIQ0L9LmoDeATHwTKrJUe+uIn0xBLIzgYu8q6hAuxEOtkvHMqDI4=
+	t=1748503331; cv=none; b=mEkdBnm9ClAEWTlfK07cPYRANWQiy6L7U+a88+fDJShDct73LZLdNcW9oa3aCfulLLKfhuBOMnClkavom7lC3GbizLlKUSUE/+wnV2KXJrNQSnz7M+pRpFMUJvolXIWaKExq1dr2ARy+Xrz2XXAvezZ83/o3/V9CG1JmQ5HSwNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748461469; c=relaxed/simple;
-	bh=gkJPuUEBmBa2T6rdVCbOWsZX40AzDjpo93A3cuUkLHc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=F615pLIQn/UztcZTROEHwbAbHoFBccZmssJYPkmpjVZJoyVXoDkG7T7+lTEbxUWnTKiVDbmW6fb1iu1GNB36AnP4R4wawc7HMStJnJJ7Z1EczAJSyg0+N20ddjJxVEns6caycl4a/8E9rQyc+64sb2vzzcHhKyeCQhU58caa8oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VR55tyDg; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VR55tyDg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384D4C4CEE3;
-	Wed, 28 May 2025 19:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748461469;
-	bh=gkJPuUEBmBa2T6rdVCbOWsZX40AzDjpo93A3cuUkLHc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=VR55tyDg8cJPCOkgla4sWmkS85gVbYeq2bGS/BL+MHLNJm9icHxKnoUnV4F4QlsMw
-	 NtroM1IyJyzruJTwND3MFGkKTd1ISP11iSIA3e4U+UJ0zW0kEMBOmSTf6lVx5mjOpS
-	 H5MU1LxHwYTPORtZc8s8vIkCPeZzeUz6AiOEYYr2pqUjB5r88hVZx5nhSqQzUDu6nT
-	 zL6qrBF8HoAGuWYIifnviEPddAVscLeZEzFBf2pJU+o2zWjUMEP6d7NnOSBjeKnpzY
-	 k714cRigrg15zpTlCt1NDChCUwLTZ3sqeCIFDe416f/BsMWudJgS5llI7LmOwK9xB5
-	 TX6H1Z6u5EoNQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D903822D1A;
-	Wed, 28 May 2025 19:45:04 +0000 (UTC)
-Subject: Re: [GIT PULL] dlm updates for 6.16
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aDXkbAcJfiMTixT2@redhat.com>
-References: <aDXkbAcJfiMTixT2@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aDXkbAcJfiMTixT2@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.16
-X-PR-Tracked-Commit-Id: 6f8b4788266c7df3b7cfc6c665f663b4c3d09aad
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b1fd8bd0cc18cd8572ac0da21418cce2ee45e04f
-Message-Id: <174846150291.2536722.1487916114814230281.pr-tracker-bot@kernel.org>
-Date: Wed, 28 May 2025 19:45:02 +0000
-To: David Teigland <teigland@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+	s=arc-20240116; t=1748503331; c=relaxed/simple;
+	bh=jfv+NTW0O3j/I++L+ykOCO1+n4We/JjtJonxd2ZQVMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u8LCSjBVFX0n5IwgcAy5ZHK+RKbcm0o6Vf/DGMhJrUkkRRkEPoVe3K8GboqDh19LO6R91tZkIsVZIiKhWm36uI0aiuDAPaX1V2j+0BPyEkMx5h+gRCy8QyMXAxg+5VmJcUfVInYw9oZPNz95gwSvvSt9IbRwmN5KqF/7MDmJ95U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-b5-68380b1fab6c
+Date: Thu, 29 May 2025 16:22:02 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: kernel_team@skhynix.com, linux-kernel@vger.kernel.org,
+	gfs2 <gfs2@lists.linux.dev>
+Subject: Re: [RFC] DEPT(DEPendency Tracker) with DLM(Distributed Lock Manager)
+Message-ID: <20250529072202.GA13739@system.software.com>
+References: <20250522052453.GA42746@system.software.com>
+ <20250522052806.GB42746@system.software.com>
+ <CAK-6q+hOCq8aksDp33utOGwfFngnTbJo-mY3+FiCJVPzwP-xsg@mail.gmail.com>
+ <CAK-6q+j3QJCB6XERbJfEkvro=Kucq0PQHrCyrZ+LxDq5yHx+=g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK-6q+j3QJCB6XERbJfEkvro=Kucq0PQHrCyrZ+LxDq5yHx+=g@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPLMWRmVeSWpSXmKPExsXC9ZZnoa48t0WGwf4uZYuv14Mtdk//x2px
+	edccNgdmjxebZzJ6vN93lc3j8ya5AOYoLpuU1JzMstQifbsEroyO3mnsBQ9lK/bemsfYwPhL
+	rIuRk0NCwESid+9ddhj7/KKzbCA2i4CqxIllT1lAbDYBdYkbN34yg9giApoSEy/1gNUzC0RI
+	/P59gqmLkYNDWMBPontRAEiYV8BC4s7Bk6xdjFwcQgJfGSW+zZzGApEQlDg58wkLRK+6xJ95
+	l5hBepkFpCWW/+OACMtLNG+dDbaKUyBQYs+CNrBVogLKEge2HWcCmSkhMIVNomkmRJGEgKTE
+	wRU3WCYwCs5CsmIWkhWzEFbMQrJiASPLKkahzLyy3MTMHBO9jMq8zAq95PzcTYzAYF5W+yd6
+	B+OnC8GHGAU4GJV4eE8wmmcIsSaWFVfmHmKU4GBWEuFtsjfLEOJNSaysSi3Kjy8qzUktPsQo
+	zcGiJM5r9K08RUggPbEkNTs1tSC1CCbLxMEp1cDI53D20q3Ouk5TjtrolVP25H1gkb0pzGYp
+	99toU83T7GYervUsxXWt15mYJ60yulla8iWvsfd1jdwvs29XLHJcEx9sfy/9Yn+u/ubZJ75F
+	hTrX1X/7O4tx4uqg5LWNssp311snSE/Rez/zwLpT+aIVkhFyQqLflxjPu+hsHDp18YfASQdl
+	F5gpsRRnJBpqMRcVJwIAT/AOvWICAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGLMWRmVeSWpSXmKPExsXC5WfdrCvPbZFh8OyJmMXX68EWu6f/Y7U4
+	PPckq8XlXXPYHFg8Xmyeyejxft9VNo/FLz4weXzeJBfAEsVlk5Kak1mWWqRvl8CV0dE7jb3g
+	oWzF3lvzGBsYf4l1MXJySAiYSJxfdJYNxGYRUJU4sewpC4jNJqAucePGT2YQW0RAU2LipR52
+	EJtZIELi9+8TTF2MHBzCAn4S3YsCQMK8AhYSdw6eZO1i5OIQEvjKKPFt5jQWiISgxMmZT1gg
+	etUl/sy7xAzSyywgLbH8HwdEWF6ieetssFWcAoESexa0ga0SFVCWOLDtONMERr5ZSCbNQjJp
+	FsKkWUgmLWBkWcUokplXlpuYmWOqV5ydUZmXWaGXnJ+7iREYmstq/0zcwfjlsvshRgEORiUe
+	3hOM5hlCrIllxZW5hxglOJiVRHib7M0yhHhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmk
+	J5akZqemFqQWwWSZODilGhgjg/dPYJ3+8oKLc7PL8ivc3vu4gk97K3Da3vb1KrPiKl0tsyRK
+	4+fCuo0tCkevSP79qf6M9eW++KY9SWs8bGY+9Ns9Z8k/g7+Hd2vUs0dFnP54+/WFxtv2h+++
+	YhFu4nZJCfXP/HPj20TFcrY26xm1R4rfbeP9x3q10Ct+Q3LBpSNPnSfPqxJTYinOSDTUYi4q
+	TgQA8R41ZkkCAAA=
+X-CFilter-Loop: Reflected
 
-The pull request you sent on Tue, 27 May 2025 11:12:28 -0500:
+On Wed, May 28, 2025 at 08:00:02AM -0400, Alexander Aring wrote:
+> Hi,
+> 
+> On Sun, May 25, 2025 at 8:13 PM Alexander Aring <aahringo@redhat.com> wrote:
+> >
+> > Hi,
+> >
+> > On Thu, May 22, 2025 at 1:28 AM Byungchul Park <byungchul@sk.com> wrote:
+> > >
+> > > On Thu, May 22, 2025 at 02:24:53PM +0900, Byungchul Park wrote:
+> > > > Hi Alexander,
+> > > >
+> > > > We briefly talked about dept with DLM in an external channel.  However,
+> > > > it'd be great to discuss what to aim and how to make it in more detail,
+> > > > in this mailing list.
+> > > >
+> > > > It's worth noting that dept doesn't track dependencies beyond different
+> > > > contexts to avoid adding false dependencies by any chance, which means
+> > > > though dept checks the dependency sanity *globally*, when it comes to
+> > > > creating dependencies, it happens only within e.g. each single system
+> > > > call context, each single irq context, each worker context, and so on,
+> > > > with its unique context id assigned to each independent context.
+> > > >
+> > > > In order for dept to work on DLM, we need a way to assign a unique
+> > > > context id to each interesting context in DLM's point of view, and let
+> > > > dept know the id.  Once making it done, I think dept can work on DLM
+> > > > perfectly.
+> > >
+> > > Plus, we need a way to share the global dependency graph used by dept
+> > > between nodes too.
+> > >
+> >
+> > Having everything simulated and having nodes separated as
+> > net-namespaces in one Linux kernel instance is I think at first
+> > simpler to do and will show the "proof of concepts".
+> > Sharing data between nodes is then just some memory area that is not
+> > separated by per "struct net" context.
+> 
+> Alternatively the master node of the lock (this node knows everything
+> about the lock operations being done including the nodes that are
+> waiting to get the lock granted) can be used to detect cycles, we
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.16
+Sounds good.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b1fd8bd0cc18cd8572ac0da21418cce2ee45e04f
+> already do that for some simple cases when converting locks directly
+> [0]. Maybe this is already enough to have all the information, but it
 
-Thank you!
+It seems that DLM already tries to detect a deadlock.  Can you provide
+an example scenario where the current detection logic doesn't work?
+It'd help me define what to do for better DLM and dept.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> is not just a "wait_event()" mechanism, there needs to be some other
+> API to use DEPT for this case?
+
+It'd be required to modify dept to work with isolated context ids - each
+id corresponding to each node, not simple kernel contexts e.g. system
+call or irq context.  Which is not that hard to implement I think.
+
+Answering to your question, We might need to add a few dept annotations.
+Even though I'm afraid I don't understand how DLM works enough, for
+example:
+
+   1. when recieving a lock(L1) request from a node(N1), that might wait,
+   
+      annotate dept_wait(L1, events that can wake up N1) for N1 context,
+      where events are all the events that can wake up N1 from waiting.
+
+   2. when recieving a lock(L1) request from a node(N1), that does not
+      involve wait but just tries,
+
+      no need to annotate.
+
+   3. when the request is granted,
+
+      annotate dept_request_event(L1) which means there might be waiters
+      for L1 to be released from now on.
+
+   4. when releasing the lock(L1) no matter who releases the lock - the
+      releaser doesn't have to be N1,
+
+      annotate dept_event(L1) for the releaser.
+
+Roughly, these annotations are needed, but again, it'd be helpful if you
+provide an example scenario where the current detection logic you have
+doesn't work, for better discussion.
+
+	Byungchul
+
+> 
+> - Alex
+> 
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/dlm/lock.c?h=v6.15#n2163
