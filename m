@@ -1,153 +1,150 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A29C2459DE
-	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 07:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C91521C16A
+	for <gfs2@lists.linux.dev>; Thu, 29 May 2025 09:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748503331; cv=none; b=mEkdBnm9ClAEWTlfK07cPYRANWQiy6L7U+a88+fDJShDct73LZLdNcW9oa3aCfulLLKfhuBOMnClkavom7lC3GbizLlKUSUE/+wnV2KXJrNQSnz7M+pRpFMUJvolXIWaKExq1dr2ARy+Xrz2XXAvezZ83/o3/V9CG1JmQ5HSwNU=
+	t=1748511197; cv=none; b=M5d3lNjtoblBvNXqGxdkCon0E61mUAnWKNE044aMCwnvaSty/U2uxefct8XfsKGKukFfxGyy7ZT4bX3zkLX44eIOkNniyFnStSbFE3cuyJzUSw/ccHExD++GT2+VIR8G6dzd3nozylvLtD+fctjYsKo3nsbLONtHnN7dXTzxp0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748503331; c=relaxed/simple;
-	bh=jfv+NTW0O3j/I++L+ykOCO1+n4We/JjtJonxd2ZQVMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u8LCSjBVFX0n5IwgcAy5ZHK+RKbcm0o6Vf/DGMhJrUkkRRkEPoVe3K8GboqDh19LO6R91tZkIsVZIiKhWm36uI0aiuDAPaX1V2j+0BPyEkMx5h+gRCy8QyMXAxg+5VmJcUfVInYw9oZPNz95gwSvvSt9IbRwmN5KqF/7MDmJ95U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-b5-68380b1fab6c
-Date: Thu, 29 May 2025 16:22:02 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: kernel_team@skhynix.com, linux-kernel@vger.kernel.org,
-	gfs2 <gfs2@lists.linux.dev>
-Subject: Re: [RFC] DEPT(DEPendency Tracker) with DLM(Distributed Lock Manager)
-Message-ID: <20250529072202.GA13739@system.software.com>
-References: <20250522052453.GA42746@system.software.com>
- <20250522052806.GB42746@system.software.com>
- <CAK-6q+hOCq8aksDp33utOGwfFngnTbJo-mY3+FiCJVPzwP-xsg@mail.gmail.com>
- <CAK-6q+j3QJCB6XERbJfEkvro=Kucq0PQHrCyrZ+LxDq5yHx+=g@mail.gmail.com>
+	s=arc-20240116; t=1748511197; c=relaxed/simple;
+	bh=FHrzivjelgW1YaMIYFcCeYmEkFrLISnEhXErpQBccUc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=qIVv7mCPSqi+Pagy18SAaA/9xm9NEjKvomeKr8XwjEpl/FiergmUKjOFx3meoGaFaAVnWuLdL9Mg5lQIwyfTknvunopHEP1mFhIKbz3/XaRsseKEDHf224pgpynrfXQIPjqfcQY1vRbQQr9126X0L+nYEdywIQWTcF6aD/obOOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NGUldi8X; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NGUldi8X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748511194;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=527ljAkexsagpGwYiYlvEBczn5yffazhdG6BiSCtuas=;
+	b=NGUldi8X3gVUtBroDN6J0rxdERv3UsX73rCzdwGszV73AZ9OAFySzeV7q9rrlY8AIepa91
+	nn1+Kluct+fGA76E/GdgfNVznZVhBj6TgjXV2idNfd3/8e2rNUhuX4qJhz7378rR/NszyS
+	e3sgNIV+rj7WhgNdPmAbpUw/hVIoH5g=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-Ii83f9udOD6zBf5gxHGLiA-1; Thu,
+ 29 May 2025 05:33:11 -0400
+X-MC-Unique: Ii83f9udOD6zBf5gxHGLiA-1
+X-Mimecast-MFC-AGG-ID: Ii83f9udOD6zBf5gxHGLiA_1748511190
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EFACC1956089;
+	Thu, 29 May 2025 09:33:09 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.167])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1CA3D18001DA;
+	Thu, 29 May 2025 09:33:07 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Andrew Price <anprice@redhat.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	syzbot+b12826218502df019f9d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] gfs2: Don't clear sb->s_fs_info in gfs2_sys_fs_add()
+Date: Thu, 29 May 2025 11:33:05 +0200
+Message-ID: <20250529093306.2049425-1-agruenba@redhat.com>
+In-Reply-To: <20250528150237.171254-1-anprice@redhat.com>
+References: <20250528150237.171254-1-anprice@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+j3QJCB6XERbJfEkvro=Kucq0PQHrCyrZ+LxDq5yHx+=g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPLMWRmVeSWpSXmKPExsXC9ZZnoa48t0WGwf4uZYuv14Mtdk//x2px
-	edccNgdmjxebZzJ6vN93lc3j8ya5AOYoLpuU1JzMstQifbsEroyO3mnsBQ9lK/bemsfYwPhL
-	rIuRk0NCwESid+9ddhj7/KKzbCA2i4CqxIllT1lAbDYBdYkbN34yg9giApoSEy/1gNUzC0RI
-	/P59gqmLkYNDWMBPontRAEiYV8BC4s7Bk6xdjFwcQgJfGSW+zZzGApEQlDg58wkLRK+6xJ95
-	l5hBepkFpCWW/+OACMtLNG+dDbaKUyBQYs+CNrBVogLKEge2HWcCmSkhMIVNomkmRJGEgKTE
-	wRU3WCYwCs5CsmIWkhWzEFbMQrJiASPLKkahzLyy3MTMHBO9jMq8zAq95PzcTYzAYF5W+yd6
-	B+OnC8GHGAU4GJV4eE8wmmcIsSaWFVfmHmKU4GBWEuFtsjfLEOJNSaysSi3Kjy8qzUktPsQo
-	zcGiJM5r9K08RUggPbEkNTs1tSC1CCbLxMEp1cDI53D20q3Ouk5TjtrolVP25H1gkb0pzGYp
-	99toU83T7GYervUsxXWt15mYJ60yulla8iWvsfd1jdwvs29XLHJcEx9sfy/9Yn+u/ubZJ75F
-	hTrX1X/7O4tx4uqg5LWNssp311snSE/Rez/zwLpT+aIVkhFyQqLflxjPu+hsHDp18YfASQdl
-	F5gpsRRnJBpqMRcVJwIAT/AOvWICAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGLMWRmVeSWpSXmKPExsXC5WfdrCvPbZFh8OyJmMXX68EWu6f/Y7U4
-	PPckq8XlXXPYHFg8Xmyeyejxft9VNo/FLz4weXzeJBfAEsVlk5Kak1mWWqRvl8CV0dE7jb3g
-	oWzF3lvzGBsYf4l1MXJySAiYSJxfdJYNxGYRUJU4sewpC4jNJqAucePGT2YQW0RAU2LipR52
-	EJtZIELi9+8TTF2MHBzCAn4S3YsCQMK8AhYSdw6eZO1i5OIQEvjKKPFt5jQWiISgxMmZT1gg
-	etUl/sy7xAzSyywgLbH8HwdEWF6ieetssFWcAoESexa0ga0SFVCWOLDtONMERr5ZSCbNQjJp
-	FsKkWUgmLWBkWcUokplXlpuYmWOqV5ydUZmXWaGXnJ+7iREYmstq/0zcwfjlsvshRgEORiUe
-	3hOM5hlCrIllxZW5hxglOJiVRHib7M0yhHhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmk
-	J5akZqemFqQWwWSZODilGhgjg/dPYJ3+8oKLc7PL8ivc3vu4gk97K3Da3vb1KrPiKl0tsyRK
-	4+fCuo0tCkevSP79qf6M9eW++KY9SWs8bGY+9Ns9Z8k/g7+Hd2vUs0dFnP54+/WFxtv2h+++
-	YhFu4nZJCfXP/HPj20TFcrY26xm1R4rfbeP9x3q10Ct+Q3LBpSNPnSfPqxJTYinOSDTUYi4q
-	TgQA8R41ZkkCAAA=
-X-CFilter-Loop: Reflected
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4Agz8RPPqn6DZibC_XtDwYm8WN9NWwjkUMtsaS6eFiU_1748511190
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: quoted-printable
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Wed, May 28, 2025 at 08:00:02AM -0400, Alexander Aring wrote:
-> Hi,
-> 
-> On Sun, May 25, 2025 at 8:13 PM Alexander Aring <aahringo@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > On Thu, May 22, 2025 at 1:28 AM Byungchul Park <byungchul@sk.com> wrote:
-> > >
-> > > On Thu, May 22, 2025 at 02:24:53PM +0900, Byungchul Park wrote:
-> > > > Hi Alexander,
-> > > >
-> > > > We briefly talked about dept with DLM in an external channel.  However,
-> > > > it'd be great to discuss what to aim and how to make it in more detail,
-> > > > in this mailing list.
-> > > >
-> > > > It's worth noting that dept doesn't track dependencies beyond different
-> > > > contexts to avoid adding false dependencies by any chance, which means
-> > > > though dept checks the dependency sanity *globally*, when it comes to
-> > > > creating dependencies, it happens only within e.g. each single system
-> > > > call context, each single irq context, each worker context, and so on,
-> > > > with its unique context id assigned to each independent context.
-> > > >
-> > > > In order for dept to work on DLM, we need a way to assign a unique
-> > > > context id to each interesting context in DLM's point of view, and let
-> > > > dept know the id.  Once making it done, I think dept can work on DLM
-> > > > perfectly.
-> > >
-> > > Plus, we need a way to share the global dependency graph used by dept
-> > > between nodes too.
-> > >
-> >
-> > Having everything simulated and having nodes separated as
-> > net-namespaces in one Linux kernel instance is I think at first
-> > simpler to do and will show the "proof of concepts".
-> > Sharing data between nodes is then just some memory area that is not
-> > separated by per "struct net" context.
-> 
-> Alternatively the master node of the lock (this node knows everything
-> about the lock operations being done including the nodes that are
-> waiting to get the lock granted) can be used to detect cycles, we
+Hi Andy,=0D
+=0D
+On Wed, May 28, 2025 at 5:02=E2=80=AFPM Andrew Price <anprice@redhat.com> w=
+rote:=0D
+> When gfs2_sys_fs_add() fails it sets sb->s_fs_info to NULL which results=
+=0D
+> in a NULL pointer deref in gfs2_drop_inode() when iput(sdp->sd_inode) is=
+=0D
+> called in the gfs2_fill_super() error path. Remove the NULL assignment=0D
+> from gfs2_sys_fs_add() and let gfs2_fill_super() deal with it instead,=0D
+> after the iput().=0D
+>=0D
+> Fixes: ae9f3bd8259a ("gfs2: replace sd_aspace with sd_inode")=0D
+> Reported-by: syzbot+b12826218502df019f9d@syzkaller.appspotmail.com=0D
+> Signed-off-by: Andrew Price <anprice@redhat.com>=0D
+> ---=0D
+>  fs/gfs2/sys.c | 1 -=0D
+>  1 file changed, 1 deletion(-)=0D
+>=0D
+> diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c=0D
+> index 748125653d6c..c3c8842920d2 100644=0D
+> --- a/fs/gfs2/sys.c=0D
+> +++ b/fs/gfs2/sys.c=0D
+> @@ -764,7 +764,6 @@ int gfs2_sys_fs_add(struct gfs2_sbd *sdp)=0D
+>         fs_err(sdp, "error %d adding sysfs files\n", error);=0D
+>         kobject_put(&sdp->sd_kobj);=0D
+>         wait_for_completion(&sdp->sd_kobj_unregister);=0D
+> -       sb->s_fs_info =3D NULL;=0D
+>         return error;=0D
+>  }=0D
+>=0D
+> --=0D
+> 2.49.0=0D
+>=0D
+=0D
+This is interesting, thank you. I've been puzzling over the same bug=0D
+report, but didn't get as far.=0D
+=0D
+Looking through history, this assignment was added in commit=0D
+0d515210b696 ("GFS2: Add kobject release method"), and it should=0D
+probably have been paired with the kfree() but not the kobject_put()=0D
+right then: the idea seems to be to clear sb->s_fs_info before freeing=0D
+the object sb->s_fs_info points to. The freeing is meanwhile done in=0D
+free_sbd(), so I'm wondering if we shouldn't clean things further, as=0D
+below.=0D
+=0D
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c=0D
+index 8a4cdd961e5f..a19d7e431c8e 100644=0D
+--- a/fs/gfs2/ops_fstype.c=0D
++++ b/fs/gfs2/ops_fstype.c=0D
+@@ -64,7 +64,10 @@ static void gfs2_tune_init(struct gfs2_tune *gt)=0D
+=20=0D
+ void free_sbd(struct gfs2_sbd *sdp)=0D
+ {=0D
++=09struct super_block *sb =3D sdp->sd_vfs;=0D
++=0D
+ =09free_percpu(sdp->sd_lkstats);=0D
++=09sb->s_fs_info =3D NULL;=0D
+ =09kfree(sdp);=0D
+ }=0D
+=20=0D
+@@ -1314,7 +1317,6 @@ static int gfs2_fill_super(struct super_block *sb, st=
+ruct fs_context *fc)=0D
+ =09iput(sdp->sd_inode);=0D
+ fail_free:=0D
+ =09free_sbd(sdp);=0D
+-=09sb->s_fs_info =3D NULL;=0D
+ =09return error;=0D
+ }=0D
+=20=0D
+diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c=0D
+index 748125653d6c..c3c8842920d2 100644=0D
+--- a/fs/gfs2/sys.c=0D
++++ b/fs/gfs2/sys.c=0D
+@@ -764,7 +764,6 @@ int gfs2_sys_fs_add(struct gfs2_sbd *sdp)=0D
+ =09fs_err(sdp, "error %d adding sysfs files\n", error);=0D
+ =09kobject_put(&sdp->sd_kobj);=0D
+ =09wait_for_completion(&sdp->sd_kobj_unregister);=0D
+-=09sb->s_fs_info =3D NULL;=0D
+ =09return error;=0D
+ }=0D
+=20=0D
 
-Sounds good.
-
-> already do that for some simple cases when converting locks directly
-> [0]. Maybe this is already enough to have all the information, but it
-
-It seems that DLM already tries to detect a deadlock.  Can you provide
-an example scenario where the current detection logic doesn't work?
-It'd help me define what to do for better DLM and dept.
-
-> is not just a "wait_event()" mechanism, there needs to be some other
-> API to use DEPT for this case?
-
-It'd be required to modify dept to work with isolated context ids - each
-id corresponding to each node, not simple kernel contexts e.g. system
-call or irq context.  Which is not that hard to implement I think.
-
-Answering to your question, We might need to add a few dept annotations.
-Even though I'm afraid I don't understand how DLM works enough, for
-example:
-
-   1. when recieving a lock(L1) request from a node(N1), that might wait,
-   
-      annotate dept_wait(L1, events that can wake up N1) for N1 context,
-      where events are all the events that can wake up N1 from waiting.
-
-   2. when recieving a lock(L1) request from a node(N1), that does not
-      involve wait but just tries,
-
-      no need to annotate.
-
-   3. when the request is granted,
-
-      annotate dept_request_event(L1) which means there might be waiters
-      for L1 to be released from now on.
-
-   4. when releasing the lock(L1) no matter who releases the lock - the
-      releaser doesn't have to be N1,
-
-      annotate dept_event(L1) for the releaser.
-
-Roughly, these annotations are needed, but again, it'd be helpful if you
-provide an example scenario where the current detection logic you have
-doesn't work, for better discussion.
-
-	Byungchul
-
-> 
-> - Alex
-> 
-> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/dlm/lock.c?h=v6.15#n2163
