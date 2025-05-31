@@ -1,149 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C2A9476;
-	Fri, 30 May 2025 03:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1318DF89
+	for <gfs2@lists.linux.dev>; Sat, 31 May 2025 22:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748576230; cv=none; b=S57Fsup3y2Lx4X32jqc/6mFH/qHTD9YhYkq4lBGXZusLF2OihlxJtKw/XWnvwH+Ppep8/wMRE8oj9Mh4/D4+QB2T8oRWVK0D3cMgYuXHjwIRzn3LVov51NceVMPPsG0j6R8xutLjwsjdCr9vdFxfP6nBVSu4YNN3FTsk2uWwmj0=
+	t=1748729318; cv=none; b=nype4zLP/0Xvz/v4iFk0KRJYslDjuReuuKSeOrKEzgZj85sPKjdhJTqn5SddvQhgqFAjvrBAEHeKWP94YCF6fiFi3JxXl/hMvsyBEJ6xBy4FxbJXriyW2+h/71l3GIJQj2gsfjzpWZJEZE1Rc2XAjRny8nyCf6oZeBm92fL7MPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748576230; c=relaxed/simple;
-	bh=OSG0k/shA7/oPeCkLIqhhJKa64IsPWc6byb8m63R2lg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=boxIIo4g0Tv7e11mPk3kSYppaucGrAPvCb/QpzMQ9Mp6ph/RO9xPxDJf6YiTldjgfMiFIOOPEmrUYwjHzoPwUnCd3cLT4C3I1Vwo9wDSUTOO75ykBoiODybY1+DTA1ceMX3+7c0agEqE7AmyOTCQnaZaGDTmF8IFYTIka/JbKDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uh6IdToS; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uh6IdToS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E1BC4CEE7;
-	Fri, 30 May 2025 03:37:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1748576229;
-	bh=OSG0k/shA7/oPeCkLIqhhJKa64IsPWc6byb8m63R2lg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uh6IdToSMXduPJ0LBRaOW7H0TbqSEGqbYCiuOrOx2biqC/urC9X8571G+b159WuzP
-	 B74SmCo4aL5ncirSXsWdGPWtts6XpLJpxUtR2AGvKAuDPsMDM+qhq00g5Enpi+aDKI
-	 Zyygr6GhtcZTYWAeHt7PJgJX93t5B4C4QvAJQFwA=
-Date: Thu, 29 May 2025 20:37:08 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
- brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
- trondmy@kernel.org, anna@kernel.org, willy@infradead.org,
- mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com,
- axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org,
- dave@stgolabs.net, p.raghav@samsung.com, da.gomez@samsung.com,
- linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
- gost.dev@samsung.com
-Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-Message-Id: <20250529203708.9afe27783b218ad2d2babb0c@linux-foundation.org>
-In-Reply-To: <20250529111504.89912-1-kundan.kumar@samsung.com>
-References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com>
-	<20250529111504.89912-1-kundan.kumar@samsung.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1748729318; c=relaxed/simple;
+	bh=WLa7oNWA5CDRx2xlWQIm6EZZcYZWiI5vRgs+5RpVfw8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=n5gATeOfIh7uWwkZtvoFvRHFZ5OK0SlrIaX/8c3fAV6kiqscmJkGdg6qcvEif27ffpyWeV6Sv0hZnXIvfheFPW7YspZQo2kf4zXDgpq5g1UirpcsUlzAxxr5fKD1oJfOEngWv9NOgnTYqpPCnU+Xz37rVLcXeB7Ar2E7Z3DyDyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-86cfaaf3a24so232100939f.2
+        for <gfs2@lists.linux.dev>; Sat, 31 May 2025 15:08:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748729315; x=1749334115;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kKSaKzHAhnlkIYbXowCmdw9SvU1FsOjCtk72zMGXAS0=;
+        b=rTCqTZDGH9uuUqvvov4Xqcb395dsLRYWL99Kgkd9RhMjZpUrqIyC8L6WyMHzt8Mg3U
+         sj3VRozbzWdqra8uG0gtq2w2Z8M4XSo4xqjGEfOeAgqOcdL2MBc430Cc+mA/uRQpqx7p
+         daGhZyOVan3nhi8uMgaOKRMKxIRJVse+2oZFFL3nBTw8aj5+E//+zY/cJ28cetvV50Sl
+         3846bEf9RyMs5bmrCgySjVBwe4qdjCjP12Hwf8QZc0sPMadZouFzOB/3C71Adshg2fR0
+         PBxrROmohAKNBXo0dao1g8FX4tUIxrDOksTkUtlBwbt/Fm+G5cpbpPNESUVoWzT+eDvj
+         /rbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdqsajPtDQM3JI6nDd4LLD979moxDtzdGNcNNHnACUirqEGbvz0XF9/su7N3mfksKh433h@lists.linux.dev
+X-Gm-Message-State: AOJu0YwB8ULSyIfx1rzLAYWqVqqpbzKASvSA11M4YvsYRUzvMMGX1BWT
+	KJDJ9LkIo1nEyTiRSzv0deMC78S0ebJWFs3WLSix28RSNUg3ZpFjMK6efexQxtjJ9VPkB5DQ6/p
+	Sm8Kq/UiY6vVYiIth4VYIQimk4ftsUsXjbTNIfSNBWJtaiMFVtTmRerRT8TE=
+X-Google-Smtp-Source: AGHT+IGpL9XtdpJc1/Py6FFAuxDrAYTnA5CrpSFy8fTQrN8POgaVaVlqK1xcse5w5kf3MIvuj/RB1CGbxBEytJeXnVrqo9g6FtKU
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Received: by 2002:a92:ca47:0:b0:3ce:4b12:fa17 with SMTP id
+ e9e14a558f8ab-3dd99c41659mr87207635ab.19.1748729315516; Sat, 31 May 2025
+ 15:08:35 -0700 (PDT)
+Date: Sat, 31 May 2025 15:08:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <683b7de3.a00a0220.d8eae.001e.GAE@google.com>
+Subject: [syzbot] [gfs2?] kernel BUG in gfs2_quota_cleanup (2)
+From: syzbot <syzbot+8f7c48186f31bbcfd78d@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 29 May 2025 16:44:51 +0530 Kundan Kumar <kundan.kumar@samsung.com> wrote:
+Hello,
 
-> Currently, pagecache writeback is performed by a single thread. Inodes
-> are added to a dirty list, and delayed writeback is triggered. The single
-> writeback thread then iterates through the dirty inode list, and executes
-> the writeback.
-> 
-> This series parallelizes the writeback by allowing multiple writeback
-> contexts per backing device (bdi). These writebacks contexts are executed
-> as separate, independent threads, improving overall parallelism.
-> 
-> Would love to hear feedback in-order to move this effort forward.
-> 
-> Design Overview
-> ================
-> Following Jan Kara's suggestion [1], we have introduced a new bdi
-> writeback context within the backing_dev_info structure. Specifically,
-> we have created a new structure, bdi_writeback_context, which contains
-> its own set of members for each writeback context.
-> 
-> struct bdi_writeback_ctx {
->         struct bdi_writeback wb;
->         struct list_head wb_list; /* list of all wbs */
->         struct radix_tree_root cgwb_tree;
->         struct rw_semaphore wb_switch_rwsem;
->         wait_queue_head_t wb_waitq;
-> };
-> 
-> There can be multiple writeback contexts in a bdi, which helps in
-> achieving writeback parallelism.
-> 
-> struct backing_dev_info {
-> ...
->         int nr_wb_ctx;
->         struct bdi_writeback_ctx **wb_ctx_arr;
+syzbot found the following issue on:
 
-I don't think the "_arr" adds value. bdi->wb_contexts[i]?
+HEAD commit:    914873bc7df9 Merge tag 'x86-build-2025-05-25' of git://git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13e80482580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=eeb82b5d1d67d535
+dashboard link: https://syzkaller.appspot.com/bug?extid=8f7c48186f31bbcfd78d
+compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
 
-> ...
-> };
-> 
-> FS geometry and filesystem fragmentation
-> ========================================
-> The community was concerned that parallelizing writeback would impact
-> delayed allocation and increase filesystem fragmentation.
-> Our analysis of XFS delayed allocation behavior showed that merging of
-> extents occurs within a specific inode. Earlier experiments with multiple
-> writeback contexts [2] resulted in increased fragmentation due to the
-> same inode being processed by different threads.
-> 
-> To address this, we now affine an inode to a specific writeback context
-> ensuring that delayed allocation works effectively.
-> 
-> Number of writeback contexts
-> ===========================
-> The plan is to keep the nr_wb_ctx as 1, ensuring default single threaded
-> behavior. However, we set the number of writeback contexts equal to
-> number of CPUs in the current version.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Makes sense.  It would be good to test this on a non-SMP machine, if
-you can find one ;)
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-914873bc.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b88f5c802da5/vmlinux-914873bc.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/2481c0fe9c9f/bzImage-914873bc.xz
 
-> Later we will make it configurable
-> using a mount option, allowing filesystems to choose the optimal number
-> of writeback contexts.
-> 
-> IOPS and throughput
-> ===================
-> We see significant improvement in IOPS across several filesystem on both
-> PMEM and NVMe devices.
-> 
-> Performance gains:
->   - On PMEM:
-> 	Base XFS		: 544 MiB/s
-> 	Parallel Writeback XFS	: 1015 MiB/s  (+86%)
-> 	Base EXT4		: 536 MiB/s
-> 	Parallel Writeback EXT4	: 1047 MiB/s  (+95%)
-> 
->   - On NVMe:
-> 	Base XFS		: 651 MiB/s
-> 	Parallel Writeback XFS	: 808 MiB/s  (+24%)
-> 	Base EXT4		: 494 MiB/s
-> 	Parallel Writeback EXT4	: 797 MiB/s  (+61%)
-> 
-> We also see that there is no increase in filesystem fragmentation
-> # of extents:
->   - On XFS (on PMEM):
-> 	Base XFS		: 1964
-> 	Parallel Writeback XFS	: 1384
-> 
->   - On EXT4 (on PMEM):
-> 	Base EXT4		: 21
-> 	Parallel Writeback EXT4	: 11
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8f7c48186f31bbcfd78d@syzkaller.appspotmail.com
 
-Please test the performance on spinning disks, and with more filesystems?
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 1
+CPU: 0 UID: 0 PID: 5313 Comm: syz.0.0 Not tainted 6.15.0-syzkaller-01972-g914873bc7df9 #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ fail_dump lib/fault-inject.c:73 [inline]
+ should_fail_ex+0x414/0x560 lib/fault-inject.c:174
+ should_failslab+0xa8/0x100 mm/failslab.c:46
+ slab_pre_alloc_hook mm/slub.c:4100 [inline]
+ slab_alloc_node mm/slub.c:4176 [inline]
+ kmem_cache_alloc_noprof+0x73/0x3c0 mm/slub.c:4203
+ qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
+ gfs2_quota_init+0x777/0x1230 fs/gfs2/quota.c:1448
+ gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
+ gfs2_reconfigure+0x617/0xb20 fs/gfs2/ops_fstype.c:1595
+ reconfigure_super+0x224/0x890 fs/super.c:1082
+ vfs_cmd_reconfigure fs/fsopen.c:262 [inline]
+ vfs_fsconfig_locked+0x171/0x320 fs/fsopen.c:291
+ __do_sys_fsconfig fs/fsopen.c:467 [inline]
+ __se_sys_fsconfig+0x78e/0x8d0 fs/fsopen.c:344
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf6/0x220 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f671238e969
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6713195038 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+RAX: ffffffffffffffda RBX: 00007f67125b6080 RCX: 00007f671238e969
+RDX: 0000000000000000 RSI: 0000000000000007 RDI: 0000000000000004
+RBP: 00007f6713195090 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 0000000000000001 R14: 00007f67125b6080 R15: 00007ffc65f837d8
+ </TASK>
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/quota.c:1520!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5313 Comm: syz.0.0 Not tainted 6.15.0-syzkaller-01972-g914873bc7df9 #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
+Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 b2 ac 2e fe e9 b5 fd ff ff e8 88 bf 69 07 e8 b3 cc cb fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc9000d23f9a0 EFLAGS: 00010293
+RAX: ffffffff83f407fd RBX: 0000000000000002 RCX: ffff888000634880
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
+RBP: ffffc9000d23fab0 R08: ffff8880342e80af R09: 1ffff1100685d015
+R10: dffffc0000000000 R11: ffffed100685d016 R12: 1ffff92001a47f38
+R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
+FS:  00007f67131956c0(0000) GS:ffff88808d291000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6713194fc8 CR3: 000000003f46f000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ gfs2_quota_init+0x10d8/0x1230 fs/gfs2/quota.c:1509
+ gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
+ gfs2_reconfigure+0x617/0xb20 fs/gfs2/ops_fstype.c:1595
+ reconfigure_super+0x224/0x890 fs/super.c:1082
+ vfs_cmd_reconfigure fs/fsopen.c:262 [inline]
+ vfs_fsconfig_locked+0x171/0x320 fs/fsopen.c:291
+ __do_sys_fsconfig fs/fsopen.c:467 [inline]
+ __se_sys_fsconfig+0x78e/0x8d0 fs/fsopen.c:344
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf6/0x220 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f671238e969
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6713195038 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+RAX: ffffffffffffffda RBX: 00007f67125b6080 RCX: 00007f671238e969
+RDX: 0000000000000000 RSI: 0000000000000007 RDI: 0000000000000004
+RBP: 00007f6713195090 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 0000000000000001 R14: 00007f67125b6080 R15: 00007ffc65f837d8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
+Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 b2 ac 2e fe e9 b5 fd ff ff e8 88 bf 69 07 e8 b3 cc cb fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc9000d23f9a0 EFLAGS: 00010293
+RAX: ffffffff83f407fd RBX: 0000000000000002 RCX: ffff888000634880
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
+RBP: ffffc9000d23fab0 R08: ffff8880342e80af R09: 1ffff1100685d015
+R10: dffffc0000000000 R11: ffffed100685d016 R12: 1ffff92001a47f38
+R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
+FS:  00007f67131956c0(0000) GS:ffff88808d291000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6713194fc8 CR3: 000000003f46f000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
