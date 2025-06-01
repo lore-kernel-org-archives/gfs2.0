@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E4228D8C4;
-	Sun,  1 Jun 2025 23:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6069D2BFC6F;
+	Sun,  1 Jun 2025 23:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748820661; cv=none; b=feMdwuPNQXP8VKjKzXx8R2ANAsKCzvHcXGWg82GSqywQsABGa+7AyHPKEt0guUjj4F8QwxA70FhYc3XJ3qdeY1WKVYm7+Broga4mSZ84IFagFgV0HkVyWUd+h4d5MtwLt9zxRCQHZdtasWElubopTXhciri+96xptCpxlQdywHI=
+	t=1748820920; cv=none; b=G23QSAM54szzCtqSTipRxbZZuVKfiBqjAf2Bl6e5D4K58CUDem7wAp+hM6bS9QPQyMeWOIh+C6uE8jaI2wduGmMY20Zsa2xZiZO5IBb+TtUmfD2Bem3jO+hqDdP1l+RsRzFYFYSLblIPGuxeLqOYvNXRpLJMHnqRbls22ApaTvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748820661; c=relaxed/simple;
-	bh=TLto0RxbMnRRa5lPrNxh/em4QAn4kW8P1T4XGKcs3gY=;
+	s=arc-20240116; t=1748820920; c=relaxed/simple;
+	bh=ht6KP3OyzNO28GKEO2SCq6g4GCBhGD+K2kWdbWTjol4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QbOK5/Z0m96oZGuE2orJwkzxAmzxss57KucG00I15Vbu9jfarhOYaJrcLf3Pz4tZCbxyiR47MEgE1lpd/7YvsiLQuehrTbvt5Dj2WYirteOIbltNzfEMdSgMdoMebhvDQLJ4yP3N4oV0ytnsT8kXN2fH2N5jkM3KZqB/+Q6bSn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXY1YJBm; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=exjNns6kYPrrIusTwSPCxkwzX4XuoFIFlWKdAnZeTNdJUY0WfWEDBz/p3A0S65gZY4jE88cUWboDqwcbYivCA0NMlPJsfltzndDYbaSW3gDlVrfpFLyvIoHz7bfgg8vmMUOj6bVz55OhWKgkhmZ1tJuNmLHJboOdwijup6P9lNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlZVCY3A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXY1YJBm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9248C4CEF2;
-	Sun,  1 Jun 2025 23:31:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlZVCY3A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58701C4CEE7;
+	Sun,  1 Jun 2025 23:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748820661;
-	bh=TLto0RxbMnRRa5lPrNxh/em4QAn4kW8P1T4XGKcs3gY=;
+	s=k20201202; t=1748820920;
+	bh=ht6KP3OyzNO28GKEO2SCq6g4GCBhGD+K2kWdbWTjol4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXY1YJBmtm08nYxmAxRLCXiQ8BWCUfw7+/YCCipWiV67nDMjO14Xgm/zydOhALX8j
-	 zLKEl6TJsuhwVxVGtiTTuAafalmPWOCkdi1bcwU7QfcJVAuTyRsU460ZHt9DKXRp8l
-	 LCudZLymfuQexIXIqk3UstuThTS79TbZTc1/C5bEBIhb6V3t0k4MZhOesurcdDTtuK
-	 Cd0xPbpY5xj+UcGbbViAepGueq5GGgZ9OTgmIb6/Py4ehZjeYtspkFWcIKAAMj44IS
-	 tVaba0MFiqSiD9opxfBTdxVNmvDnvysOOYBnPbMx+AkQsaFly9unh44T13faVZdBnO
-	 T5xUBk+I4F20g==
+	b=nlZVCY3AjrVN6he8AoWMhuO/vqk0GwK7EL+R5wA4w7rsvh85z+t2CPyMdXcqEKnr6
+	 xot2VFK3rQYJj7vFXKN7hI4NRXZlAfYIr0u3uAKHweZhRK7ig0iEKqK6GiCjXNWHaW
+	 1W0bMVK4JXpPac/2qQyVUZe4b7iTdCOCmoYlus+E7Xp8yNxJ8tOtMA64vn74Lx/ufX
+	 C8gXCHH2YGsW4FVn2de3bJ9mLwJJpuHlFACeaAyzKkIAL6XHTw6V8oWyr566VyzmRA
+	 n1+BMnPXN6V5ivNyCbxx2OlnNWjruKtb+0XTir/wYOW9uk7dD+gSEqn7AnAqaSEWkg
+	 zof0kk4IZAzuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -35,12 +35,12 @@ Cc: Alexander Aring <aahringo@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 032/102] dlm: use SHUT_RDWR for SCTP shutdown
-Date: Sun,  1 Jun 2025 19:28:24 -0400
-Message-Id: <20250601232937.3510379-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 30/93] dlm: use SHUT_RDWR for SCTP shutdown
+Date: Sun,  1 Jun 2025 19:32:57 -0400
+Message-Id: <20250601233402.3512823-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250601232937.3510379-1-sashal@kernel.org>
-References: <20250601232937.3510379-1-sashal@kernel.org>
+In-Reply-To: <20250601233402.3512823-1-sashal@kernel.org>
+References: <20250601233402.3512823-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -49,7 +49,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.9
+X-stable-base: Linux 6.12.31
 Content-Transfer-Encoding: 8bit
 
 From: Alexander Aring <aahringo@redhat.com>
@@ -125,7 +125,7 @@ leading to resource leaks and potentially affecting cluster operations.
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 70abd4da17a63..90abcd07f8898 100644
+index 10461451185e8..2827c57fc8aeb 100644
 --- a/fs/dlm/lowcomms.c
 +++ b/fs/dlm/lowcomms.c
 @@ -160,6 +160,7 @@ struct dlm_proto_ops {
