@@ -1,184 +1,166 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1318DF89
-	for <gfs2@lists.linux.dev>; Sat, 31 May 2025 22:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54F52638BF;
+	Sun,  1 Jun 2025 23:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748729318; cv=none; b=nype4zLP/0Xvz/v4iFk0KRJYslDjuReuuKSeOrKEzgZj85sPKjdhJTqn5SddvQhgqFAjvrBAEHeKWP94YCF6fiFi3JxXl/hMvsyBEJ6xBy4FxbJXriyW2+h/71l3GIJQj2gsfjzpWZJEZE1Rc2XAjRny8nyCf6oZeBm92fL7MPE=
+	t=1748820363; cv=none; b=kpFY+OazFNwZ4QZCScfHQPFBA+V07c4d7WvrUVmLpDJtV+Semb9O7aDk93TqJQ1DGk1s67kNICAr5t2zag+gelZsZLfc9H9kF8ZMiaEP46hIuGT4vwq8X+jyA17noZ+eEnLiL0jOfmV950+4mTaHLdEhGHNwJPfecNnEAa0phiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748729318; c=relaxed/simple;
-	bh=WLa7oNWA5CDRx2xlWQIm6EZZcYZWiI5vRgs+5RpVfw8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=n5gATeOfIh7uWwkZtvoFvRHFZ5OK0SlrIaX/8c3fAV6kiqscmJkGdg6qcvEif27ffpyWeV6Sv0hZnXIvfheFPW7YspZQo2kf4zXDgpq5g1UirpcsUlzAxxr5fKD1oJfOEngWv9NOgnTYqpPCnU+Xz37rVLcXeB7Ar2E7Z3DyDyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-86cfaaf3a24so232100939f.2
-        for <gfs2@lists.linux.dev>; Sat, 31 May 2025 15:08:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748729315; x=1749334115;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kKSaKzHAhnlkIYbXowCmdw9SvU1FsOjCtk72zMGXAS0=;
-        b=rTCqTZDGH9uuUqvvov4Xqcb395dsLRYWL99Kgkd9RhMjZpUrqIyC8L6WyMHzt8Mg3U
-         sj3VRozbzWdqra8uG0gtq2w2Z8M4XSo4xqjGEfOeAgqOcdL2MBc430Cc+mA/uRQpqx7p
-         daGhZyOVan3nhi8uMgaOKRMKxIRJVse+2oZFFL3nBTw8aj5+E//+zY/cJ28cetvV50Sl
-         3846bEf9RyMs5bmrCgySjVBwe4qdjCjP12Hwf8QZc0sPMadZouFzOB/3C71Adshg2fR0
-         PBxrROmohAKNBXo0dao1g8FX4tUIxrDOksTkUtlBwbt/Fm+G5cpbpPNESUVoWzT+eDvj
-         /rbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdqsajPtDQM3JI6nDd4LLD979moxDtzdGNcNNHnACUirqEGbvz0XF9/su7N3mfksKh433h@lists.linux.dev
-X-Gm-Message-State: AOJu0YwB8ULSyIfx1rzLAYWqVqqpbzKASvSA11M4YvsYRUzvMMGX1BWT
-	KJDJ9LkIo1nEyTiRSzv0deMC78S0ebJWFs3WLSix28RSNUg3ZpFjMK6efexQxtjJ9VPkB5DQ6/p
-	Sm8Kq/UiY6vVYiIth4VYIQimk4ftsUsXjbTNIfSNBWJtaiMFVtTmRerRT8TE=
-X-Google-Smtp-Source: AGHT+IGpL9XtdpJc1/Py6FFAuxDrAYTnA5CrpSFy8fTQrN8POgaVaVlqK1xcse5w5kf3MIvuj/RB1CGbxBEytJeXnVrqo9g6FtKU
+	s=arc-20240116; t=1748820363; c=relaxed/simple;
+	bh=TLto0RxbMnRRa5lPrNxh/em4QAn4kW8P1T4XGKcs3gY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=n4BDFpftsZ7uOZPpT49hyv3wJy3PMs+nfXlGI5LhlRfT0eMz/delGIly8HjtPGjj9Xf8Jki9C5I56v0e+/H1bOWsxY9XG2z2IUdOspqtm/2rtO/emRmpdz6nc75o5KZxkaSHgz+CJ5rmM9vW9GOcTh4OwITxdDdmaXF+aFqXuAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6MdrLwj; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6MdrLwj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BACDC4CEF2;
+	Sun,  1 Jun 2025 23:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748820363;
+	bh=TLto0RxbMnRRa5lPrNxh/em4QAn4kW8P1T4XGKcs3gY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S6MdrLwjEibSAjZOBT5qhEqWuGXN3d/jqNBdt+zXg03rcM00AbpSZHV0WIgAm+Fme
+	 ntlKCFCqx7Ju4j2arAS0zgvcHF9b8gEr8XDqx1NZuvgIMESUGr6O9ERfikxA0IcuCG
+	 gaZgmP3qClAr6mK1qo9P56TPF44EoyK9WnEzinLXj/SHu3EyFRIwoPMeZIDtLJi1EY
+	 +sxJmIxDAplUD1f7w3KJnFFU4nlKBwSsBEDIor03c8Azg4OBdCqJDTU/CVUckCH5rl
+	 ecsbdABfqLaYKfdP2lupdWd6PHOSSMKRjTzCEotJVmFlY5jwlg7sEcFWZ8Rx/NjusR
+	 fEbg++d4cbSWQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Alexander Aring <aahringo@redhat.com>,
+	Heming zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 033/110] dlm: use SHUT_RDWR for SCTP shutdown
+Date: Sun,  1 Jun 2025 19:23:15 -0400
+Message-Id: <20250601232435.3507697-33-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250601232435.3507697-1-sashal@kernel.org>
+References: <20250601232435.3507697-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a92:ca47:0:b0:3ce:4b12:fa17 with SMTP id
- e9e14a558f8ab-3dd99c41659mr87207635ab.19.1748729315516; Sat, 31 May 2025
- 15:08:35 -0700 (PDT)
-Date: Sat, 31 May 2025 15:08:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <683b7de3.a00a0220.d8eae.001e.GAE@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in gfs2_quota_cleanup (2)
-From: syzbot <syzbot+8f7c48186f31bbcfd78d@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Alexander Aring <aahringo@redhat.com>
 
-syzbot found the following issue on:
+[ Upstream commit 55612ddb62fc12437a7ff2f27b51a8981bc187a4 ]
 
-HEAD commit:    914873bc7df9 Merge tag 'x86-build-2025-05-25' of git://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13e80482580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=eeb82b5d1d67d535
-dashboard link: https://syzkaller.appspot.com/bug?extid=8f7c48186f31bbcfd78d
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+Currently SCTP shutdown() call gets stuck because there is no incoming
+EOF indicator on its socket. On the peer side the EOF indicator as
+recvmsg() returns 0 will be triggered as mechanism to flush the socket
+queue on the receive side. In SCTP recvmsg() function sctp_recvmsg() we
+can see that only if sk_shutdown has the bit RCV_SHUTDOWN set SCTP will
+recvmsg() will return EOF. The RCV_SHUTDOWN bit will only be set when
+shutdown with SHUT_RD is called. We use now SHUT_RDWR to also get a EOF
+indicator from recvmsg() call on the shutdown() initiator.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+SCTP does not support half closed sockets and the semantic of SHUT_WR is
+different here, it seems that calling SHUT_WR on sctp sockets keeps the
+socket open to have the possibility to do some specific SCTP operations on
+it that we don't do here.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-914873bc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b88f5c802da5/vmlinux-914873bc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2481c0fe9c9f/bzImage-914873bc.xz
+There exists still a difference in the limitations of TCP vs SCTP in
+case if we are required to have a half closed socket functionality. This
+was tried to archieve with DLM protocol changes in the past and
+hopefully we really don't require half closed socket functionality.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8f7c48186f31bbcfd78d@syzkaller.appspotmail.com
-
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 1
-CPU: 0 UID: 0 PID: 5313 Comm: syz.0.0 Not tainted 6.15.0-syzkaller-01972-g914873bc7df9 #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- fail_dump lib/fault-inject.c:73 [inline]
- should_fail_ex+0x414/0x560 lib/fault-inject.c:174
- should_failslab+0xa8/0x100 mm/failslab.c:46
- slab_pre_alloc_hook mm/slub.c:4100 [inline]
- slab_alloc_node mm/slub.c:4176 [inline]
- kmem_cache_alloc_noprof+0x73/0x3c0 mm/slub.c:4203
- qd_alloc+0x50/0x250 fs/gfs2/quota.c:234
- gfs2_quota_init+0x777/0x1230 fs/gfs2/quota.c:1448
- gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
- gfs2_reconfigure+0x617/0xb20 fs/gfs2/ops_fstype.c:1595
- reconfigure_super+0x224/0x890 fs/super.c:1082
- vfs_cmd_reconfigure fs/fsopen.c:262 [inline]
- vfs_fsconfig_locked+0x171/0x320 fs/fsopen.c:291
- __do_sys_fsconfig fs/fsopen.c:467 [inline]
- __se_sys_fsconfig+0x78e/0x8d0 fs/fsopen.c:344
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x220 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f671238e969
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6713195038 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-RAX: ffffffffffffffda RBX: 00007f67125b6080 RCX: 00007f671238e969
-RDX: 0000000000000000 RSI: 0000000000000007 RDI: 0000000000000004
-RBP: 00007f6713195090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 0000000000000001 R14: 00007f67125b6080 R15: 00007ffc65f837d8
- </TASK>
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/quota.c:1520!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5313 Comm: syz.0.0 Not tainted 6.15.0-syzkaller-01972-g914873bc7df9 #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
-Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 b2 ac 2e fe e9 b5 fd ff ff e8 88 bf 69 07 e8 b3 cc cb fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
-RSP: 0018:ffffc9000d23f9a0 EFLAGS: 00010293
-RAX: ffffffff83f407fd RBX: 0000000000000002 RCX: ffff888000634880
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000d23fab0 R08: ffff8880342e80af R09: 1ffff1100685d015
-R10: dffffc0000000000 R11: ffffed100685d016 R12: 1ffff92001a47f38
-R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
-FS:  00007f67131956c0(0000) GS:ffff88808d291000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6713194fc8 CR3: 000000003f46f000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- gfs2_quota_init+0x10d8/0x1230 fs/gfs2/quota.c:1509
- gfs2_make_fs_rw+0x181/0x2b0 fs/gfs2/super.c:149
- gfs2_reconfigure+0x617/0xb20 fs/gfs2/ops_fstype.c:1595
- reconfigure_super+0x224/0x890 fs/super.c:1082
- vfs_cmd_reconfigure fs/fsopen.c:262 [inline]
- vfs_fsconfig_locked+0x171/0x320 fs/fsopen.c:291
- __do_sys_fsconfig fs/fsopen.c:467 [inline]
- __se_sys_fsconfig+0x78e/0x8d0 fs/fsopen.c:344
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x220 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f671238e969
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6713195038 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-RAX: ffffffffffffffda RBX: 00007f67125b6080 RCX: 00007f671238e969
-RDX: 0000000000000000 RSI: 0000000000000007 RDI: 0000000000000004
-RBP: 00007f6713195090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 0000000000000001 R14: 00007f67125b6080 R15: 00007ffc65f837d8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
-Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 b2 ac 2e fe e9 b5 fd ff ff e8 88 bf 69 07 e8 b3 cc cb fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
-RSP: 0018:ffffc9000d23f9a0 EFLAGS: 00010293
-RAX: ffffffff83f407fd RBX: 0000000000000002 RCX: ffff888000634880
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000d23fab0 R08: ffff8880342e80af R09: 1ffff1100685d015
-R10: dffffc0000000000 R11: ffffed100685d016 R12: 1ffff92001a47f38
-R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
-FS:  00007f67131956c0(0000) GS:ffff88808d291000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6713194fc8 CR3: 000000003f46f000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Tested-by: Heming zhao <heming.zhao@suse.com>
+Reviewed-by: Heming zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Based on my analysis, here is my assessment: **YES** This commit should
+be backported to stable kernel trees. ## Analysis ### The Problem The
+commit addresses a critical functional issue in DLM (Distributed Lock
+Manager) when using SCTP protocol. The issue is that SCTP shutdown
+operations get stuck because there's no incoming EOF indicator on the
+socket, preventing proper connection cleanup. ### Root Cause Analysis
+from Code Changes 1. **Current behavior (before patch)**: DLM always
+uses `SHUT_WR` for both TCP and SCTP protocols in
+`kernel_sock_shutdown(con->sock, SHUT_WR)` at line 813 in the
+`shutdown_connection()` function. 2. **SCTP-specific problem**: Unlike
+TCP, SCTP requires both read and write shutdown (`SHUT_RDWR`) to
+properly trigger the EOF condition. The commit message explains that
+SCTP's `recvmsg()` function (`sctp_recvmsg()`) only returns EOF when
+`sk_shutdown` has the `RCV_SHUTDOWN` bit set, which only happens with
+`SHUT_RD` or `SHUT_RDWR`. 3. **The fix**: The patch introduces a new
+`how` field in the `dlm_proto_ops` structure and sets: - TCP: `SHUT_WR`
+(maintains existing behavior) - SCTP: `SHUT_RDWR` (fixes the EOF
+detection issue) ### Why This Should Be Backported 1. **Critical Bug
+Fix**: This fixes a fundamental functional issue where DLM connections
+using SCTP cannot properly shutdown, leading to stuck operations. 2.
+**Minimal and Contained Change**: - Adds only one new field to a
+protocol operations structure - Changes only the shutdown method
+parameter based on protocol - No architectural changes or new features
+3. **Clear Side Effects Assessment**: The change is protocol-specific
+and maintains backward compatibility. TCP behavior is unchanged, and
+SCTP behavior is fixed to work as intended. 4. **Follows Stable Tree
+Rules**: - Fixes an important bug affecting users of DLM with SCTP -
+Small, well-contained change with minimal regression risk - No
+introduction of new features 5. **Historical Context**: Looking at the
+git history, there have been multiple fixes for DLM shutdown handling,
+indicating this is an actively maintained and critical subsystem. This
+specific fix addresses a protocol-level compatibility issue that has
+likely affected users. 6. **Similar Backport Patterns**: This is similar
+to "Similar Commit #1" which was marked as YES - it's a contained fix
+for connection handling in DLM with clear problem scope and minimal code
+changes. The fix is essential for environments using DLM with SCTP
+protocol, as without it, proper connection shutdown is impossible,
+leading to resource leaks and potentially affecting cluster operations.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+ fs/dlm/lowcomms.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 70abd4da17a63..90abcd07f8898 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -160,6 +160,7 @@ struct dlm_proto_ops {
+ 	bool try_new_addr;
+ 	const char *name;
+ 	int proto;
++	int how;
+ 
+ 	void (*sockopts)(struct socket *sock);
+ 	int (*bind)(struct socket *sock);
+@@ -810,7 +811,7 @@ static void shutdown_connection(struct connection *con, bool and_other)
+ 		return;
+ 	}
+ 
+-	ret = kernel_sock_shutdown(con->sock, SHUT_WR);
++	ret = kernel_sock_shutdown(con->sock, dlm_proto_ops->how);
+ 	up_read(&con->sock_lock);
+ 	if (ret) {
+ 		log_print("Connection %p failed to shutdown: %d will force close",
+@@ -1858,6 +1859,7 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ static const struct dlm_proto_ops dlm_tcp_ops = {
+ 	.name = "TCP",
+ 	.proto = IPPROTO_TCP,
++	.how = SHUT_WR,
+ 	.sockopts = dlm_tcp_sockopts,
+ 	.bind = dlm_tcp_bind,
+ 	.listen_validate = dlm_tcp_listen_validate,
+@@ -1896,6 +1898,7 @@ static void dlm_sctp_sockopts(struct socket *sock)
+ static const struct dlm_proto_ops dlm_sctp_ops = {
+ 	.name = "SCTP",
+ 	.proto = IPPROTO_SCTP,
++	.how = SHUT_RDWR,
+ 	.try_new_addr = true,
+ 	.sockopts = dlm_sctp_sockopts,
+ 	.bind = dlm_sctp_bind,
+-- 
+2.39.5
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
