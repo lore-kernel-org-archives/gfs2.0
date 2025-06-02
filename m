@@ -1,160 +1,147 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10hn2238.outbound.protection.outlook.com [52.100.156.238])
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DEF1C6FE9
-	for <gfs2@lists.linux.dev>; Mon,  2 Jun 2025 15:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.100.156.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877746; cv=fail; b=SwBxcSSOJGmbFOoJe11Y0ToAKnxUqaokEMPm9pJnSholuyoLCdSGdw916cKPbixt80d2yPeZ2Zr7+QNPqfEQ+Ir8Jazg/Tid3Z7cp+JKSKV57XaHTR6jR4mrUnZ3GKtvCKHyMuEc02uEouAFmg+1iKt8pHqWQU0dhSfc/uRzphw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877746; c=relaxed/simple;
-	bh=+ybDULLznJAdKSSr8RGIUGw4/8D8FqU/+sVmcOaPo4c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A5Zj7i/wlqOku9KTWtfXO3FXyUxCMrqbPPn4pQjq0ywzknmb2bMmd46MMWv/IAPB9lw2tIjG+Cz2PMob3+ahCNsp+NCKg1uMN6Wbe5lsmHzXDVLA/5xolDuO/VgKfdMYZhn4M2oOkq2yGT6DZNWUgy+mkTrAZdl/3weBGzpjH9U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=cloud.com; spf=pass smtp.mailfrom=citrix.onmicrosoft.com; dkim=pass (1024-bit key) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.b=wfN2MQxr; arc=fail smtp.client-ip=52.100.156.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=cloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.onmicrosoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29901DA21
+	for <gfs2@lists.linux.dev>; Mon,  2 Jun 2025 15:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748879458; cv=none; b=F1MEc6/z7QEQI+cR5ZdiGko3CIZlkx2T+jeQ81CRNnw8j46hmqCPowqjtestzE0SXMT3yOw32H4kB7cA/SezwiIp9TL1OtB9sYyUb/LOG1HJoG1YJxE3RI6grzHZFSN1riy4AYOT8p1Z2xNleK1Y9Q2Fq2pscgrh6XQ5koiP97U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748879458; c=relaxed/simple;
+	bh=Q9CM5k4oJ/nmKWsQeroSA28ODbk+exz6kaRb+r2x7qI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kL/CtIMPpxwBgaNCyZhBLRDdcXOp5QQqPq6wey6jv49KVdZLG3BpzuXX57lGthoXdYgnncpE2GqRYmdPUBdM9XcBbk6/iiGVqnNnrwnSbJmy+hv2bRNFzTVP+NFkG+ZHt59psBeXDRHW1u0zeJBntX/lRRuy9MNOer9zYww4khM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=YCpnVtE0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qemG5lsW; arc=none smtp.client-ip=103.168.172.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.b="wfN2MQxr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fyx1HcLp9tPkKvVxp20iR1c3Gwac4I72FtPzJoihC3OTqMKS2Z5xDLynNsgbN3eGvjUQxKoVWmtnLjMYgw7/uYHTjER88bUp7QhgtvzafdqnLqOu/muwdocpMW6TGeufxBa8kt5Bj5ghc1pRlj4+KiL7fi/AUt11eQT/wcJ91xUZFhxnKoS3u8LSTxiKL2XAOIPMIh9t3h+XQTxOAVIix+K77BFe4gph/8opkoGbThiPyijLzBxv1DJk2dlr79qxS49IvnwcX2kVOBNKMpfaUyVvKzbltugrVvJFdxwK9iKFBByE3kK5+Okx1xcfcvR2SRahm8z0JvuhhyTB/UWdXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sUkVcPPGyNnivUaaH7BcenbTk/ebe30qQYmKsm9MIOA=;
- b=sxmOxUOIQUBFAAj/jwGDb/IhgBIzsLc3O1qATqM6+70NIrAvXsjT7SgzXl7iAi1xYITkFK5TDAd5oFJiQHfaIazHAL2LHXS+W0ZrjevupxKkzllSpR+fjtdR8Rymi32dqaFDWVyQlf85GIgR8hBfGmcqcfO3QFTaAlIIjvYJXjW/VPUNKpX0YrvjkXK+OZSR9w2UYjU8zjrndZj17zLIxm7znXVUZka1FhKpt6KES45sPj9rQkB1sexh7mKH2AHWXmjS/wVh5PRABrweRHqtoUOgHDbQYWQ+sZd2xYtodtnB+/rwRFrgh8AIzhrPhWsvgvIQApubWUFXUOhETBn2bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 34.145.164.155) smtp.rcpttodomain=redhat.com smtp.mailfrom=cloud.com;
- dmarc=fail (p=reject sp=reject pct=100) action=oreject header.from=cloud.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.onmicrosoft.com; s=selector2-citrix-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sUkVcPPGyNnivUaaH7BcenbTk/ebe30qQYmKsm9MIOA=;
- b=wfN2MQxrvnedTrzz2pzPaUm6jUP8lX9WQG2OE0xdXIpGGGQKYBATeX2jtqzd76Joh9b0/iYbVTDuXzvc1K6qwHC72gy1f9l6iEb1iLjuU7MR6GUKsFjUVRQfUNOre+/WMIWvFmDHfSRrb8Q2njkLeVwA77q78eK5uJ0/w01MM4c=
-Received: from ROAP284CA0269.BRAP284.PROD.OUTLOOK.COM (2603:10d6:10:f1::11) by
- PH0PR03MB6574.namprd03.prod.outlook.com (2603:10b6:510:b9::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8792.33; Mon, 2 Jun 2025 15:22:19 +0000
-Received: from BN3PEPF0000B076.namprd04.prod.outlook.com
- (2603:10d6:10:f1:cafe::a5) by ROAP284CA0269.outlook.office365.com
- (2603:10d6:10:f1::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.29 via Frontend Transport; Mon,
- 2 Jun 2025 15:22:18 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 34.145.164.155) smtp.mailfrom=cloud.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=cloud.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- cloud.com discourages use of 34.145.164.155 as permitted sender)
-Received: from mail.citrix.com (34.145.164.155) by
- BN3PEPF0000B076.mail.protection.outlook.com (10.167.243.121) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8792.29 via Frontend Transport; Mon, 2 Jun 2025 15:22:17 +0000
-Received: from guepitiexch02.citrite.net (10.240.48.56) by
- guepitiexch02.citrite.net (10.240.48.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.32; Mon, 2 Jun 2025 15:22:11 +0000
-Received: from mewpvdipd1010.corp.cloud.com (10.113.40.31) by
- smtprelay.citrix.com (10.240.48.56) with Microsoft SMTP Server id
- 15.2.1258.32 via Frontend Transport; Mon, 2 Jun 2025 15:22:10 +0000
-From: Mark Syms <mark.syms@cloud.com>
-To: <agruenba@redhat.com>
-CC: <gfs2@lists.linux.dev>, <ross.lagerwall@cloud.com>, Mark Syms
-	<mark.syms@cloud.com>
-Subject: [PATCH] CA-411820: add STATX_DIOALIGN support to GFS2
-Date: Mon, 2 Jun 2025 16:22:01 +0100
-Message-ID: <20250602152201.958425-1-mark.syms@cloud.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="YCpnVtE0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qemG5lsW"
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id BFAAC2005B9;
+	Mon,  2 Jun 2025 11:50:54 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 02 Jun 2025 11:50:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1748879454;
+	 x=1748886654; bh=ECtcKLbK8c4DaaUNIeCZvRoLrnqb0sjqKj+TVBnd5MM=; b=
+	YCpnVtE0/pyuTPAo2dUvlNHyIRQp7CHCmumKiV4wfwZrMpKynIqCRMi+p1/fH5ki
+	dj4E9tYR3TXOZPU5t4o4uq231s9oha8SLHh8CQyqQyBALR8a/A2n+Vx+H7X+Q9Sn
+	4ViHCvQ+jDpY1ADZJhYZOd0rga8bV2PNb5l8i5cQHJI++ZlV7jX97e503FVyTCD7
+	j9a5w/cvUwsafKwtV/zrt1Q3kf750UNmYz8ITYWJf+FB1ExoeN4skydEd3q7rxoR
+	feKziDyh97pABpZ5fLlQXcFoXsgxnfaICi7zMZ2D8toOxbS61HHSS6p8FLxbe4J6
+	MhejaeOuGfov8wiSRSgi0Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748879454; x=
+	1748886654; bh=ECtcKLbK8c4DaaUNIeCZvRoLrnqb0sjqKj+TVBnd5MM=; b=q
+	emG5lsW68M9FqVhhIEhFON2CaL0suvIwrG82ESHJpVIu1h3F/i191l9hV+Dbzq2K
+	6XbF2zYr9jTBC1UrwkB3ellb0/A+EYiudo0Eb/FvWwMOlm5klcdWq7LCWxNije/t
+	mxfhG+dmqTcPiclnja7pOoXEAWSEZbgBHjFyfwNoMVSgyHOQYgQmOOTE4O+oZgSC
+	laHY3LCBhpMnCsw39vPQujbi3SoZggk0SN27jw1FE2mQRTc2OH+q6fTfh9ZFVEEw
+	PFsDIa8JF1LBia8YhzqwxFRv9h09aCTenlxMHU+Kw1W4v5MBfwjJBsYThMYAC0if
+	jZoJMt5/e30D8q85LL4lQ==
+X-ME-Sender: <xms:Xcg9aHIhY2nO5lH8xSqkRB0qRpNVxH7F9H8X35iKjKkKv9e4592r1w>
+    <xme:Xcg9aLLFT-gsWHFts7phYKRLeyQKosLvuUeIxaQZ_Xex-ABQF9U31yE_HRiPWWPcW
+    -nVoJiQ67Rdu_Fb>
+X-ME-Received: <xmr:Xcg9aPtwDSmii5shQTEwaj3Hk_CD7B7Ab-NIrviAtjZQLJG7zOCUJoOst52df_3RcRkZAE_dehwWs0C34G-dT629jehro0BVCMfkBvgMgZFmAoHsjy29>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdefkedtjeculddtuddrgeefvddrtd
+    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfev
+    fhfhjggtgfesthejredttddvjeenucfhrhhomhepuegvrhhnugcuufgthhhusggvrhhtuc
+    eosggvrhhnugessghssggvrhhnugdrtghomheqnecuggftrfgrthhtvghrnhephefhjeeu
+    jeelhedtheetfedvgfdtleffuedujefhheegudefvdfhheeuveduueegnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggvrhhnugessghssggv
+    rhhnugdrtghomhdpnhgspghrtghpthhtohepfedupdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopehhtghhsehlshhtrdguvgdprhgtphhtthhopehkuhhnuggrnhdrkhhumhgr
+    rhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehjrggvghgvuhhksehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegthhgroheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    vhhirhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruh
+    hnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidp
+    rhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtoheprghgrh
+    huvghnsggrsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:Xcg9aAYJgqQmz_0i6NtyVbZeSTGQGdJbmubSjYWHEVPRSrWWEFEe6A>
+    <xmx:Xcg9aOb_RKHyzMZjYao8mke_FVbcL-v2Df80QDBAD9sHg1hMl_H62g>
+    <xmx:Xcg9aEA1OIXT30KKLzhLz1yXcjGGIsyU3yFQA4fZuvUdfeXXw9_nOg>
+    <xmx:Xcg9aMa9Y0JhTXQUDvr_vzbW0j29L6GR1gk9r4Y-9wRdu1Vgoir90A>
+    <xmx:Xsg9aFsYPtxDkjvPEIFtUlbaHsrqiDCTwy0xjaUHsIsFVgwYTdTJ-5lT>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Jun 2025 11:50:50 -0400 (EDT)
+Message-ID: <99f79383-479e-4df1-9650-61fa3c600171@bsbernd.com>
+Date: Mon, 2 Jun 2025 17:50:48 +0200
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B076:EE_|PH0PR03MB6574:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0819602a-6377-446b-97fb-08dda1e942c5
-X-MS-Exchange-SenderADCheck: 2
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35950700016|82310400026|376014|61400799027|48200799018|38500700031;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?umC8rcayMGYDAIKNd4lC9xxb+X9RD2eVmxrcw6dYNwc2aHTdeOHP4Tc15f5J?=
- =?us-ascii?Q?Mft/JooZvx14aBkK0id2DL/OJS38zfm1ZOV8KAvxvAxjYWzmU4CY9XaK/098?=
- =?us-ascii?Q?e97EEkgeQasFbQmFxaEEzT7miYBpGxVa4hL0YtducO0JygD+QCn70y6jG5Y6?=
- =?us-ascii?Q?F5/7IDWRfHwRMpNqc4cY33nvxThjgPOSScN52sFz+bo36K06C7mYOjc63+1I?=
- =?us-ascii?Q?sEMOieROkCV6IxS0UJJGPbvW1L6HO9Id7CncwpYsF3bqUf8AMRC5heRtcemK?=
- =?us-ascii?Q?C6trmEM7VgM+qpDy530SAS39hF7yY7eQtrrtibYJjx34Nv3eT/Y4zEbErY46?=
- =?us-ascii?Q?k57uV3TBJhFRx0DzeUN3kI2jgJeOvrF5U8Q15Xtt6szLzCRknYqaf4/QcaXF?=
- =?us-ascii?Q?TRTPApqDK1brTjHUIiLYweCw6+qLYDOdqL94mkK1kVFWYoPbxr0rS8bTr0pX?=
- =?us-ascii?Q?5U2G1M6f2RVx8lsHWeF9PcMFeWgCtwgDZLDYu6WmM/PnIlnph6EM6dU+XRMe?=
- =?us-ascii?Q?Rpn2fgRycBvbgUiridGZhkmEsy82VhrTW7NMXANvWJLVJKJFVRrH1Zxguk8l?=
- =?us-ascii?Q?tsZ67MYrCDGy4WiHLljesuJlcwn3yvqqESN97990iqy8qEZNuqm/PG+vJtM8?=
- =?us-ascii?Q?TobSfYdGdxXfA1ve7Q1RTxRGjDFb/eYrkYM6q4mfT0tBL1oJpamm1/bdu61q?=
- =?us-ascii?Q?4cMe453T63tP9+BqmmUewKolQCkszqs2XQ5mvIZootiuRLqfXQjaLjydzd16?=
- =?us-ascii?Q?ymukDTz3M0Iaanot6HrnoqNHvwHhrpwRX7wxtKS7x7+QJY2f2vIDukx92Qzi?=
- =?us-ascii?Q?/yTWquHK+HcaW/qGqCJTVkn4Wk7T7pDdLNYglshB2FkAhtET7M9htMp2UPdg?=
- =?us-ascii?Q?DTooHYHn/p1YU0NNLiXUcN0jvzLThRGRz7Xiq+lKg8b7+mSHK8ZSELtoTVgG?=
- =?us-ascii?Q?vh1yxCOxSXLTu4pdRGyfaB+vSSxkEPJdEW+E7OmSQ6rek8URzp8KEEfy4Ipl?=
- =?us-ascii?Q?hyQ4InUevhWrS4yy0fTNZLK0tu3hE66tQsElY+lh2f36OSGGhORoeO7PmmS2?=
- =?us-ascii?Q?gNpEgiAmGuxrT2eRQitxXTqwltV4+ribtXgnst8HKgNP64xB6YpM/wEcB0+A?=
- =?us-ascii?Q?Cfzbfqiem745drEsuUdER2V+0eXy/Dhym2+nuPmWMBD3jp+s20F6jVUqgJ3o?=
- =?us-ascii?Q?ShIJhwVnaG1PnUguyN3tKHonhZOts81T4jk72CDA+BjHvd1pm412Fd+iId7z?=
- =?us-ascii?Q?Ci7wE1KVrZ6kmi4bz7dOUPerY7M9RVM8cnskr071FyGAzUMaVyxCLUd4hMcO?=
- =?us-ascii?Q?nZXXMVExnC6zaYJNYhjYvOcb9AF0BiMjzshpyKJspqP3G8AQneuzQSrZn53c?=
- =?us-ascii?Q?KyZIHvagkZLf43r7coheFE5vZ96BHKKBC0uFJ/3fDMIPP4ZNNP1NFKNbSz1+?=
- =?us-ascii?Q?o4BD6I3V+o4JOcv46pLPubDa1mYgsU+xTpkmPvjfVNzFUfJ6OdlK7g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:34.145.164.155;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.citrix.com;PTR:155.164.145.34.bc.googleusercontent.com;CAT:NONE;SFS:(13230040)(35950700016)(82310400026)(376014)(61400799027)(48200799018)(38500700031);DIR:OUT;SFP:1501;
-X-OriginatorOrg: citrix.onmicrosoft.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 15:22:17.5924
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0819602a-6377-446b-97fb-08dda1e942c5
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=335836de-42ef-43a2-b145-348c2ee9ca5b;Ip=[34.145.164.155];Helo=[mail.citrix.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B076.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6574
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/13] fuse: add support for multiple writeback contexts
+ in fuse
+To: Christoph Hellwig <hch@lst.de>, Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
+ trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
+ willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+ amir73il@gmail.com, axboe@kernel.dk, ritesh.list@gmail.com,
+ djwong@kernel.org, dave@stgolabs.net, p.raghav@samsung.com,
+ da.gomez@samsung.com, linux-f2fs-devel@lists.sourceforge.net,
+ linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+ linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
+ Anuj Gupta <anuj20.g@samsung.com>, Joanne Koong <joannelkoong@gmail.com>
+References: <20250529111504.89912-1-kundan.kumar@samsung.com>
+ <CGME20250529113257epcas5p4dbaf9c8e2dc362767c8553399632c1ea@epcas5p4.samsung.com>
+ <20250529111504.89912-11-kundan.kumar@samsung.com>
+ <20250602142157.GC21996@lst.de>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: en-US, de-DE, fr
+In-Reply-To: <20250602142157.GC21996@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Inspiration taken from 8434ef1d8aa but in simplified form. 8434ef1d8aa
-makes the response conditional on the result from `ext4_dio_alignment`.
-It is not clear if similar discrimination needs to be performed for
-GFS2 or if the iomap defaults will be generally suitable. In tests
-performed with XenServer this does appear to be the case.
 
-Signed-off-by: Mark Syms <mark.syms@cloud.com>
----
- fs/gfs2/inode.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 187d789a8f1e..9310ecfe1f15 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -2172,6 +2172,19 @@ static int gfs2_getattr(struct mnt_idmap *idmap,
- 
- 	generic_fillattr(&nop_mnt_idmap, request_mask, inode, stat);
- 
-+	/*
-+	 * Return the DIO alignment restrictions if requested.  We only return
-+	 * this information when requested.
-+	 */
-+	if ((request_mask & STATX_DIOALIGN) && S_ISREG(inode->i_mode)) {
-+		struct block_device *bdev = inode->i_sb->s_bdev;
-+
-+		stat->result_mask |= STATX_DIOALIGN;
-+		/* iomap defaults */
-+		stat->dio_mem_align = bdev_dma_alignment(bdev) + 1;
-+		stat->dio_offset_align = bdev_logical_block_size(bdev);
-+	}
-+
- 	if (gfs2_holder_initialized(&gh))
- 		gfs2_glock_dq_uninit(&gh);
- 
--- 
-2.49.0
+On 6/2/25 16:21, Christoph Hellwig wrote:
+>>  static void fuse_writepage_finish_stat(struct inode *inode, struct folio *folio)
+>>  {
+>> -	struct backing_dev_info *bdi = inode_to_bdi(inode);
+>> +	struct bdi_writeback_ctx *bdi_wb_ctx = fetch_bdi_writeback_ctx(inode);
+>>  
+>> -	dec_wb_stat(&bdi->wb_ctx_arr[0]->wb, WB_WRITEBACK);
+>> +	dec_wb_stat(&bdi_wb_ctx->wb, WB_WRITEBACK);
+>>  	node_stat_sub_folio(folio, NR_WRITEBACK_TEMP);
+>> -	wb_writeout_inc(&bdi->wb_ctx_arr[0]->wb);
+>> +	wb_writeout_inc(&bdi_wb_ctx->wb);
+>>  }
+> 
+> There's nothing fuse-specific here except that nothing but fuse uses
+> NR_WRITEBACK_TEMP.  Can we try to move this into the core first so that
+> the patches don't have to touch file system code?
+> 
+>> -	inc_wb_stat(&inode_to_bdi(inode)->wb_ctx_arr[0]->wb, WB_WRITEBACK);
+>> +	inc_wb_stat(&bdi_wb_ctx->wb, WB_WRITEBACK);
+>>  	node_stat_add_folio(tmp_folio, NR_WRITEBACK_TEMP);
+> 
+> Same here.  On pattern is that fuse and nfs both touch the node stat
+> and the web stat, and having a common helper doing both would probably
+> also be very helpful.
+> 
+> 
 
+Note that Miklos' PR for 6.16 removes NR_WRITEBACK_TEMP through
+patches from Joanne, i.e. only 
+
+dec_wb_stat(&bdi->wb, WB_WRITEBACK);
+
+is left over.
+
+
+Thanks,
+Bernd
