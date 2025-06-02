@@ -1,65 +1,91 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121D1EDA0B
-	for <gfs2@lists.linux.dev>; Mon,  2 Jun 2025 15:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689921DF985
+	for <gfs2@lists.linux.dev>; Mon,  2 Jun 2025 16:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748879714; cv=none; b=IQlRn8HC3C7DZlyytsezYxPjieFaUwIMd7E3fWPcGElhTJjQqsB2CSr2C+Ka9UMHK2SNvhY3DhauHY8cozytrgIqnpEKmaXh6DUYiW7uqys0HpldVNkfgOJ14PCzYX6Mqz+/PIuC0CcQv6AueRz4gA7Ki7/mHxCoM32Loo0N3qA=
+	t=1748880773; cv=none; b=Fu7jDSSBp6pDzwSKmA7SpSpe9OjvZyZ1nftgpszlrpheJDOAtArV6DJjaqcFygpX88q8QC7bnP4NmbKVLbvBiVM4j/p4ajIkxTnVm5ayptMQyVsZxwdHHpPr9KpHh/SwaTdt3U0v9zj5ZibCBY+LQQZFBXzc7HoIE989x8PRbUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748879714; c=relaxed/simple;
-	bh=U9CVtds9r4vKRgqZ9DGijanSlfaOhZleFJNCwfqZfVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QlPnl2TvrSL5axXWx0XADGjndPlzskWYLM7Sf8rV5+M6wmSYO2aR6dhA3y0oll/m33yp0PghoPYbOeLF+y1+2gSUYoTXz/YsyKNN6s1GKOuYUpi1hgNaEp5bzhB+O3cx5P3p6VvzxeaeKCTk3111lmCctDybPPnZcAwaXIFTd9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 17D6168C7B; Mon,  2 Jun 2025 17:55:07 +0200 (CEST)
-Date: Mon, 2 Jun 2025 17:55:06 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Bernd Schubert <bernd@bsbernd.com>
-Cc: Christoph Hellwig <hch@lst.de>, Kundan Kumar <kundan.kumar@samsung.com>,
-	jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu,
-	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
-	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
-	clm@meta.com, david@fromorbit.com, amir73il@gmail.com,
-	axboe@kernel.dk, ritesh.list@gmail.com, djwong@kernel.org,
-	dave@stgolabs.net, p.raghav@samsung.com, da.gomez@samsung.com,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Joanne Koong <joannelkoong@gmail.com>
-Subject: Re: [PATCH 10/13] fuse: add support for multiple writeback
- contexts in fuse
-Message-ID: <20250602155506.GA29981@lst.de>
-References: <20250529111504.89912-1-kundan.kumar@samsung.com> <CGME20250529113257epcas5p4dbaf9c8e2dc362767c8553399632c1ea@epcas5p4.samsung.com> <20250529111504.89912-11-kundan.kumar@samsung.com> <20250602142157.GC21996@lst.de> <99f79383-479e-4df1-9650-61fa3c600171@bsbernd.com>
+	s=arc-20240116; t=1748880773; c=relaxed/simple;
+	bh=8jA/iA3+9deGnWlidOfDp7sR4o8DTWd+T6vtYC2cPI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KtKo5JiHhbECK8WqLFJWM5+Vi/e5ApklObzkTvx/pvB6vBkEQIXGqyfQCdVqBCj4fIpsErmlYeI7FEjAE6ClY7Dbznk0uM9pjH2EA6PPaLlepxDxDX/FEufdEvBCwCRFzOH7eC8y4jXGfdS4tSOi4wYdHEIqnDLrySgz/Kk21LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAtytaG9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAtytaG9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748880770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dIquVD0g8CqNKfp8Vq25V8Vb7bryIoVAcDuNtp/J3Dw=;
+	b=XAtytaG9kCwHwbbYIhlWS1Qn8ojYSmS7Wvt3qRxbROM6jUunLGrPDd9/xqXVDrlCZELD0h
+	JZstN//RgLlUfx9aiJRdqmR52xgTGLT6sX66jec51+vIRwhfZYTfB0qQWtYHJiA9ORoIn2
+	Ii9ljXjGTH3Edy3tYmK0EBWk5C7sbWs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-224-4MhuWx7RNHKOiLQ12ipNSA-1; Mon,
+ 02 Jun 2025 12:12:47 -0400
+X-MC-Unique: 4MhuWx7RNHKOiLQ12ipNSA-1
+X-Mimecast-MFC-AGG-ID: 4MhuWx7RNHKOiLQ12ipNSA_1748880766
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 33DCA19560AB;
+	Mon,  2 Jun 2025 16:12:46 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.167])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 75C761956095;
+	Mon,  2 Jun 2025 16:12:44 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] additional gfs2 fix for 6.16
+Date: Mon,  2 Jun 2025 18:12:41 +0200
+Message-ID: <20250602161242.2106610-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99f79383-479e-4df1-9650-61fa3c600171@bsbernd.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Jun 02, 2025 at 05:50:48PM +0200, Bernd Schubert wrote:
-> > Same here.  On pattern is that fuse and nfs both touch the node stat
-> > and the web stat, and having a common helper doing both would probably
-> > also be very helpful.
-> > 
-> > 
-> 
-> Note that Miklos' PR for 6.16 removes NR_WRITEBACK_TEMP through
-> patches from Joanne, i.e. only 
-> 
-> dec_wb_stat(&bdi->wb, WB_WRITEBACK);
-> 
-> is left over.
+Dear Linus,
 
-That'll make it even easier to consolidate with the NFS version.
+please consider pulling the following additional gfs2 fix for 6.16.
+
+Thanks,
+Andreas
+
+The following changes since commit 914873bc7df913db988284876c16257e6ab772c6:
+
+  Merge tag 'x86-build-2025-05-25' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip (2025-05-26 21:41:14 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.16-fix
+
+for you to fetch changes up to 9126d2754c5e5d1818765811a10af0a14cf1fa0a:
+
+  gfs2: Don't clear sb->s_fs_info in gfs2_sys_fs_add (2025-05-30 19:20:20 +0200)
+
+----------------------------------------------------------------
+additional gfs2 fix for 6.16
+
+- Fix a NULL pointer dereference reported by syzbot.
+
+----------------------------------------------------------------
+Andrew Price (1):
+      gfs2: Don't clear sb->s_fs_info in gfs2_sys_fs_add
+
+ fs/gfs2/ops_fstype.c | 4 +++-
+ fs/gfs2/sys.c        | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
