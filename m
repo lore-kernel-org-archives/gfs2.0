@@ -1,111 +1,161 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794EA3FE4
-	for <gfs2@lists.linux.dev>; Tue,  3 Jun 2025 04:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4E7230BD4
+	for <gfs2@lists.linux.dev>; Tue,  3 Jun 2025 13:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748923829; cv=none; b=OLuSYoiBYmk8R3EbPBsihIzrRs9GhMYvbACm6LkytDqLx+s7y3S1muHYYIy3ZTskvmIuI2ylb3W5lwhqwYDRRGmLMoPPX8cV9Y0n46E6jrr12zr9emgx/R79t56BdsgcWhZ10yuO82Mtx8J97UgZ3XlrgnsOkm9RzkhaRTkhiAM=
+	t=1748956751; cv=none; b=Ry4tXVaNP4IkcUu3K6PSqNz7AAiQjIFDoFZXtQGhiKzjzejSsRGZaxUCBWFUL7Ddejv6J2v4vqe6o2g6oQjLffCPC2SpyTMVYxZ7hVuFzNExnipwptcKZy4awHwUyYy8zh6njfUgJ2Zn24M9j3XnfzVogz1D6k+khwhkieUur34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748923829; c=relaxed/simple;
-	bh=mWKW1BZiWQdg5ZGyvvansCbXzzKjs6P+f7nmIjIRSFs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f/lQPKrcH+It6+aaFGMim8wraSjy/ZM0GPY3nn78/h/K7Su4rHVcxzFsNiGE/eEpjgcrmyssx5EuBsDw4loZoZcgQCWoaIOJnvmP1kn/UeK/U/0tE9Tu+XanvV5laC37WYHFv1O1vAplDLRUMZDlJThAJGcgEVSSevrTCGGrPwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=SsYuejeC; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1748956751; c=relaxed/simple;
+	bh=U6ppXNYUZiUNW8rzaToCHZVTK/Lsx7lg99NAwR5IA/U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=WqiGyqdmO7BgtJo2WAEbm72lQ5foLdVQMuP5ycIrJuYynGpk+YiBb3deq2aNhhu3Vk+xAlpsB1oxePwIQ331xKfjRC5E9uOPL9clOEpitPMk2iJOF0gIXseLxBLVzWoZtfNk6F6n5hLoCLFjyn0zC/aFXsIpGhPz+Ss6uPqlIio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WBSQ6lK9; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="SsYuejeC"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a4f379662cso3976245f8f.0
-        for <gfs2@lists.linux.dev>; Mon, 02 Jun 2025 21:10:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1748923825; x=1749528625; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vsip5heoQfOlVVanshNnzNCVpVKbPMgYCx8wxtCCQPY=;
-        b=SsYuejeCLpE4FuAtWpKo1uV9eU5PHc6O7b8m195xwo/22Fy1g54eWy/3AHIXGbG5TD
-         42YUyQ8QtvWC5HtAB9GwBiM9Z44iryZTvFJgV+Ulye9JFwEK0AkGX42TpV5PaQTRCO8J
-         8keij+nN/8Q5N918i7lD452A06RxG696drnFAZnt57ocXVMtOOcJLaFcvQ3P52qIcjNC
-         PFbDSEqgYvZZGFDbrSBcx08Rk8Wq/AIoX4P9I8rXQnmdK/0UF2ShQ1lTNZgJk+qGUw5h
-         +nAjn5jYxHuwiQad+eboMPbBsu1WDNduohvMUdpf4RIGi6IGy0MUwq8hfgHE+TjPpqBZ
-         kCnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748923825; x=1749528625;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vsip5heoQfOlVVanshNnzNCVpVKbPMgYCx8wxtCCQPY=;
-        b=pWroxZcc4JdQOwYxjhtEivng7XZztD/sQnJvvI7VnRQNvftSZiopazmSOWnpAyFM1v
-         ZnfQsmI6W/vS4b8+jYaxheQUrbHrhzyUPeqqcDMdbaMibycO46lYbU1I8eF/oCYsz3WM
-         rJvD+GCLVB3CCGP+U0LIdXpqcuOej3m0L4ZaQOiWb9M4oA7KJhPRy8Ach8yJALFaclo4
-         L4sxHTIGGxmMyYa2uroLPAioGgC7NlDMfZO3Q1yhZKJof8OPhQGuWrAk8jJJPNhzXQjd
-         cHTFxUkfw7GjNWLr0QtNVvWI2/kBe0UnZJQRYtzWt/xe8fakmKGrX1JY/C9Ts1PWgjMV
-         iwLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGcSuoYXF68FyqzBMlC5zxiJgNENhfcytVejb4vWejjd//oEhgDuWyPpSCQIfMWsrTtifT@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCE3h0DzfgIIuTfCeOvY5Mw4PdCXCp0fsTQ/36qy5Q93DEy2vj
-	zOvwp9MuxxO7jUlF1xSpZT157t6RfU30sIiz2uyeAoVy4CqtAnqONUDmNeuK0UsfFSo=
-X-Gm-Gg: ASbGncsC9s+P7F0y6U02BkToVcttJ4eJtEGbAVCP7coc65KGg7vG+hGSf6SrhFiYbLB
-	zn7EC2uobWA4xWjgTk3KzHK8SyBWHaeT5IFRV0ZgoXusp5TtCLX6jNHZhRjsZtq4iY/zoCX+tqI
-	s6YEQ3ublNAH3uqstZetKeWOBjOoSG7v39fT99WwNJlqIXDDbCN+SBc9nLpIMMhzvUdF9DW3ars
-	nUvwbzDIbt9Lqnd0LtQAoyXB/okWWIjalbkw1/yWR0yYAq3OaIg3IYR7YZGzSh+k1uS2Kl170bZ
-	xyZS/W+tThzFjBsWmEpr1tz7CGGP2R1YtfCd4v8ppOFNVsMf71k=
-X-Google-Smtp-Source: AGHT+IHXiNSm1xbktSoVTeEFqtz86yosyFGRGmS6MYGmA+3pl9em5SkbVzFGQnlHyudvGkSUlboU4g==
-X-Received: by 2002:a05:6000:1a85:b0:3a4:d367:c591 with SMTP id ffacd0b85a97d-3a4fe154d16mr8982375f8f.10.1748923824709;
-        Mon, 02 Jun 2025 21:10:24 -0700 (PDT)
-Received: from MacBookPro.lan ([5.255.111.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506cf47c0sm78297245ad.175.2025.06.02.21.10.19
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 02 Jun 2025 21:10:23 -0700 (PDT)
-From: Su Yue <glass.su@suse.com>
-To: fstests@vger.kernel.org
-Cc: l@damenly.org,
-	gfs2@lists.linux.dev,
-	Su Yue <glass.su@suse.com>
-Subject: [PATCH] common/quota: adjust _qmount_option for gfs2
-Date: Tue,  3 Jun 2025 12:10:09 +0800
-Message-Id: <20250603041009.59811-1-glass.su@suse.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WBSQ6lK9"
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250603131900epoutp0150331bc2660fc3a58f15c4c37246f43f~FiuOuVz311255912559epoutp01L
+	for <gfs2@lists.linux.dev>; Tue,  3 Jun 2025 13:19:00 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250603131900epoutp0150331bc2660fc3a58f15c4c37246f43f~FiuOuVz311255912559epoutp01L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1748956740;
+	bh=lhg+yoxzmSUI95r9m4I7c09Wc8JZvBjC2Fu14XUQZiQ=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=WBSQ6lK9EWDgjnVk2UCtHoWdiBqZlqtb8XsrOvFf6dvZb1mPriE1FWBFdCTIU+Omt
+	 sfXwfjHouTr1qc88PlriEG7dT8fdI458jv1zxM7KNQWgvhbWmx/vMIisreunoFO5cx
+	 LXs0VIUkGSuE72lyDrDiyTlCYGseOg1a61E2t5IQ=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250603131859epcas5p3adb125b08bbc9f901dde4353e77a8e0a~FiuNydMNP1272412724epcas5p3Q;
+	Tue,  3 Jun 2025 13:18:59 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.178]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4bBWWQ3Z6rz6B9m9; Tue,  3 Jun
+	2025 13:18:58 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20250603091626epcas5p3c6680e3a112b654ee64a2a45ee05c29c~Ffab6u3oY3154931549epcas5p3V;
+	Tue,  3 Jun 2025 09:16:26 +0000 (GMT)
+Received: from [107.122.10.194] (unknown [107.122.10.194]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250603091621epsmtip1b17ae68149000f4e610433391a5ab9c2~FfaXdde6I1152711527epsmtip1N;
+	Tue,  3 Jun 2025 09:16:21 +0000 (GMT)
+Message-ID: <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com>
+Date: Tue, 3 Jun 2025 14:46:20 +0530
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
+To: Christoph Hellwig <hch@lst.de>, Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+	amir73il@gmail.com, axboe@kernel.dk, ritesh.list@gmail.com,
+	djwong@kernel.org, dave@stgolabs.net, p.raghav@samsung.com,
+	da.gomez@samsung.com, linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
+	anuj1072538@gmail.com, kundanthebest@gmail.com
+Content-Language: en-US
+From: Anuj Gupta/Anuj Gupta <anuj20.g@samsung.com>
+In-Reply-To: <20250602141904.GA21996@lst.de>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250603091626epcas5p3c6680e3a112b654ee64a2a45ee05c29c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250529113215epcas5p2edd67e7b129621f386be005fdba53378
+References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com>
+	<20250529111504.89912-1-kundan.kumar@samsung.com>
+	<20250602141904.GA21996@lst.de>
 
-gfs2 supports mount options 'quota=[off/account/quiet/on]' but
-'usrquota' and 'grpquota' are unsupported.
-So in _qmount_option, transform $OPTS to 'quota=on' first.
+On 6/2/2025 7:49 PM, Christoph Hellwig wrote:
+> On Thu, May 29, 2025 at 04:44:51PM +0530, Kundan Kumar wrote:
+> Well, the proper thing would be to figure out a good default and not
+> just keep things as-is, no?
 
-Signed-off-by: Su Yue <glass.su@suse.com>
----
- common/quota | 7 +++++++
- 1 file changed, 7 insertions(+)
+We observed that some filesystems, such as Btrfs, don't benefit from
+this infra due to their distinct writeback architecture. To preserve
+current behavior and avoid unintended changes for such filesystems,
+we have kept nr_wb_ctx=1 as the default. Filesystems that can take
+advantage of parallel writeback (xfs, ext4) can opt-in via a mount
+option. Also we wanted to reduce risk during initial integration and
+hence kept it as opt-in.
 
-diff --git a/common/quota b/common/quota
-index a51386b1dd24..4b8052e07dde 100644
---- a/common/quota
-+++ b/common/quota
-@@ -283,6 +283,12 @@ _qmount_option()
- {
- 	OPTS=$1
- 
-+	if [[ "$FSTYP" == gfs2 ]]; then
-+		OPTS=`echo $OPTS \
-+		| sed   -e 's/usrquota/quota=on/g' \
-+			-e 's/grpquota/quota=on/g'`
-+	fi
-+
- 	# Replace any user defined quota options
- 	# with the quota option that we want.
- 	# Simplest to do this rather than delete existing ones first because
-@@ -300,6 +306,7 @@ _qmount_option()
- 		-e 's/\bpquota/QUOTA/g'    \
- 		-e 's/prjquota/QUOTA/g'    \
- 		-e 's/noquota/QUOTA/g'     \
-+		-e 's/quota=[^, ]*/QUOTA/g' \
- 		-e 's/quota/QUOTA/g'       \
- 		-e 's/uqnoenforce/QUOTA/g' \
- 		-e 's/gqnoenforce/QUOTA/g' \
--- 
-2.48.1
+> 
+>> IOPS and throughput
+>> ===================
+>> We see significant improvement in IOPS across several filesystem on both
+>> PMEM and NVMe devices.
+>>
+>> Performance gains:
+>>    - On PMEM:
+>> 	Base XFS		: 544 MiB/s
+>> 	Parallel Writeback XFS	: 1015 MiB/s  (+86%)
+>> 	Base EXT4		: 536 MiB/s
+>> 	Parallel Writeback EXT4	: 1047 MiB/s  (+95%)
+>>
+>>    - On NVMe:
+>> 	Base XFS		: 651 MiB/s
+>> 	Parallel Writeback XFS	: 808 MiB/s  (+24%)
+>> 	Base EXT4		: 494 MiB/s
+>> 	Parallel Writeback EXT4	: 797 MiB/s  (+61%)
+> 
+> What worksload was this?
 
+Number of CPUs = 12
+System RAM = 16G
+For XFS number of AGs = 4
+For EXT4 BG count = 28616
+Used PMEM of 6G and NVMe SSD of 3.84 TB
+
+fio command line :
+fio --directory=/mnt --name=test --bs=4k --iodepth=1024 --rw=randwrite 
+--ioengine=io_uring --time_based=1 -runtime=60 --numjobs=12 --size=450M 
+--direct=0  --eta-interval=1 --eta-newline=1 --group_reporting
+
+Will measure the write-amp and share.
+
+> 
+> How many CPU cores did the system have, how many AGs/BGs did the file
+> systems have?   What SSD/Pmem was this?  Did this change the write
+> amp as measure by the media writes on the NVMe SSD?
+> 
+> Also I'd be really curious to see numbers on hard drives.
+> 
+>> We also see that there is no increase in filesystem fragmentation
+>> # of extents:
+>>    - On XFS (on PMEM):
+>> 	Base XFS		: 1964
+>> 	Parallel Writeback XFS	: 1384
+>>
+>>    - On EXT4 (on PMEM):
+>> 	Base EXT4		: 21
+>> 	Parallel Writeback EXT4	: 11
+> 
+> How were the number of extents counts given that they look so wildly
+> different?
+> 
+> 
+
+Issued random write of 1G using fio with fallocate=none and then
+measured the number of extents, after a delay of 30 secs :
+fio --filename=/mnt/testfile --name=test --bs=4k --iodepth=1024 
+--rw=randwrite --ioengine=io_uring  --fallocate=none --numjobs=1 
+--size=1G --direct=0 --eta-interval=1 --eta-newline=1 --group_reporting
+
+For xfs used this command:
+xfs_io -c "stat" /mnt/testfile
+
+And for ext4 used this:
+filefrag /mnt/testfile
