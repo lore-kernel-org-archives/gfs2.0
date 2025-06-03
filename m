@@ -1,22 +1,22 @@
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9CF233707
-	for <gfs2@lists.linux.dev>; Tue,  3 Jun 2025 14:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394182C325E
+	for <gfs2@lists.linux.dev>; Tue,  3 Jun 2025 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748959492; cv=none; b=NBs4WJMf2wue8bJeL/KDn73ffYirXhB30eIyCgqppu51g2sI12OULtJeC0vmNcNB81uZbQT8CZWMcDnFkVBVm/8I31UeNmxyOi68cRdSynpxV8mMHwTcNKxz/qCHNbE2Bhv6vbOSlKfAti9MC4co93a/ZZ/RLq7fA9aSds5Q4XQ=
+	t=1748959519; cv=none; b=mKrnU4RpQBSnZpXJf3rDQpjGBk016t7Sdc89mYbExLRXvbyHAa6EJsM7HD1wyJgBu6h+3pDnfn1697doPCdKj0R6X91oOezFm8JPpCFQFyD1CfTu/Fy3VcJ3r58FnSLegUea7NiTZPcS8in+4TCUGJ0s9/pH6vDcK/aTb3XfGbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748959492; c=relaxed/simple;
-	bh=5QBnuiPhzjYB0sKEZkcAP5Cku3jQz7UexqyVVVNRdKw=;
+	s=arc-20240116; t=1748959519; c=relaxed/simple;
+	bh=/7gmfWPUUUH+3HZaLMCVF6p3MlsFHQNLtxEyr+1gqUo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WdWuo36ZTsntMQqElhy1EmIq/B/IkfyHSgmAn1u8fAQ/GVXL68hFg4MJKic5QGv/IkGCkWeY7AyLKZgSxOR+ZxafD4Pgf+/j16JdueEKHmaMK9cnjIA7LT9R1zQUIqrXAFBtzPcIGhRYpjGzW6SU5BJGRQxkgrnnl6fWNPn2fqk=
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQhief7L14vxFYImulvHhhymI+P4hLR/q1FM/IYAEUqJ2UOLpdzziZpdE5AB8HwfnCIS4jhiPtJOp2h1loj93q/vm3m3pVYFYUk2qRCzQ+B/btJjezamtMR1oZAgQvG/OTduxKlkM9AHELJEqZGnmJCTT99lBotiVnimSaHRzBg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 727C668D0F; Tue,  3 Jun 2025 16:04:45 +0200 (CEST)
-Date: Tue, 3 Jun 2025 16:04:45 +0200
+	id 9FB0A68D12; Tue,  3 Jun 2025 16:05:13 +0200 (CEST)
+Date: Tue, 3 Jun 2025 16:05:13 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Anuj gupta <anuj1072538@gmail.com>
 Cc: Christoph Hellwig <hch@lst.de>,
@@ -34,8 +34,8 @@ Cc: Christoph Hellwig <hch@lst.de>,
 	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
 	kundanthebest@gmail.com
 Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-Message-ID: <20250603140445.GA14351@lst.de>
-References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com> <20250529111504.89912-1-kundan.kumar@samsung.com> <20250602141904.GA21996@lst.de> <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com> <20250603132434.GA10865@lst.de> <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com>
+Message-ID: <20250603140513.GB14351@lst.de>
+References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com> <20250529111504.89912-1-kundan.kumar@samsung.com> <20250602141904.GA21996@lst.de> <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com> <20250603132434.GA10865@lst.de> <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com> <20250603140445.GA14351@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -45,21 +45,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com>
+In-Reply-To: <20250603140445.GA14351@lst.de>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Tue, Jun 03, 2025 at 07:22:18PM +0530, Anuj gupta wrote:
-> > A mount option is about the worst possible interface for behavior
-> > that depends on file system implementation and possibly hardware
-> > chacteristics.  This needs to be set by the file systems, possibly
-> > using generic helpers using hardware information.
+On Tue, Jun 03, 2025 at 04:04:45PM +0200, Christoph Hellwig wrote:
+> On Tue, Jun 03, 2025 at 07:22:18PM +0530, Anuj gupta wrote:
+> > > A mount option is about the worst possible interface for behavior
+> > > that depends on file system implementation and possibly hardware
+> > > chacteristics.  This needs to be set by the file systems, possibly
+> > > using generic helpers using hardware information.
+> > 
+> > Right, that makes sense. Instead of using a mount option, we can
+> > introduce generic helpers to initialize multiple writeback contexts
+> > based on underlying hardware characteristics — e.g., number of CPUs or
+> > NUMA topology. Filesystems like XFS and EXT4 can then call these helpers
+> > during mount to opt into parallel writeback in a controlled way.
 > 
-> Right, that makes sense. Instead of using a mount option, we can
-> introduce generic helpers to initialize multiple writeback contexts
-> based on underlying hardware characteristics — e.g., number of CPUs or
-> NUMA topology. Filesystems like XFS and EXT4 can then call these helpers
-> during mount to opt into parallel writeback in a controlled way.
+> Yes.  A mount option might still be useful to override this default,
+> but it should not be needed for the normal use case.
 
-Yes.  A mount option might still be useful to override this default,
-but it should not be needed for the normal use case.
-
+.. actually a sysfs file on the bdi is probably the better interface
+for the override than a mount option.
