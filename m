@@ -1,59 +1,58 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6BB23E33D
-	for <gfs2@lists.linux.dev>; Wed,  4 Jun 2025 09:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDBC381C4
+	for <gfs2@lists.linux.dev>; Fri,  6 Jun 2025 05:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749028969; cv=none; b=Amc1SbV11R9+KeV2XaW51YJ4fHSzWTepBu/FBbE0Vr0BYyMDaEP2tCHMxLHugR0oF5Mob9FuUkaIXbGbhpVf9+dbZSBeqJRsfq4sGf+5sUkN4qKAjhdQCOAlqTSzK/cnRHjRkuJNkYnohGGc/AroN7ujSQKsnuO3a4f/MVivANg=
+	t=1749186299; cv=none; b=LyPXUIMNlTk0eQpu5qSI9Yj95uBmTwziq4hJud8WRUzouLof2J8bPtIRMg/WIRBuzEc8aN1SmHfayQpWHPiaryyQQcoAdEVLaMl1jyWTXjyrFYGR5tRxHfcMz6XTh5VNz1tE+ipZ7RRS7ocQRTiJMwCXoZQ94C4xOBrla013RlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749028969; c=relaxed/simple;
-	bh=A+Hb+IYZVbIrHhgOikz8cYlE64YeroKilPbQiRKqru4=;
+	s=arc-20240116; t=1749186299; c=relaxed/simple;
+	bh=wuFSjTvFnRUQWOWKTNT3M4TMmiJd5ktGG1l+GZMxKYg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GSOhWiZv8ckkmt2dd5mAh81ein+UxSJvnbNVbuCVYBkohP40KyGlUa3tK3mUAT1PN4+M12jLzhU066uWC4gj6ausu8fR77bXzi41rIYx9+G9wZHEQ7yTkccpu9xm6bOrCfRhc/b6lq1Y3w4QsBFBjwO+B4JpWZIi3hDlB2JkmTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4ircQXi; arc=none smtp.client-ip=209.85.208.51
+	 To:Cc:Content-Type; b=r+2MzqQNBFSTVQZDXx2IgfTa9bDiFa0jjLwEpAbmnHyATv08S5UujO9QtDyWIaUMiPP0ADwSSrbIEZCsa7z7k8N+ZqRRs0ihZVRc8zVnE95EJVBX9hrEY5gGU8CXJfs9bKCuQD+mUOaofmeuYTFJS7xu5RBZnBPM7/vpy7STnjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KdWKzJuy; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4ircQXi"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-604b9c53f6fso2575386a12.2
-        for <gfs2@lists.linux.dev>; Wed, 04 Jun 2025 02:22:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdWKzJuy"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-60779962c00so376024a12.0
+        for <gfs2@lists.linux.dev>; Thu, 05 Jun 2025 22:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749028966; x=1749633766; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1749186296; x=1749791096; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kxD+BS5BNW9JlEJcYvio44SXpqyv8Wmatgad1UAi7lM=;
-        b=i4ircQXijL1trrHbzXZnxhOB4Mb3UHKk2ga2jc4SKEAlh+Cf8qiOVb5ZAX7te/38o8
-         t2ZDL71KsxQRy6Lr8x/rpo47Ty2cEG4/QqP/MTsd1zE2VSAF5WxVcZX1eBIoBWHhlssE
-         KNwl5zgV6je1uEn5/nIyGUOtDERrP4Gd7SIYPIEo51gz0C5tuk0Ntg8vijeTte+ovffm
-         52j540ujpM0zYKVifRBp8aU3KQHtmpDvNU9inwz+tJ0z/z0WokFah9pyNie3rAuteBd0
-         C+qcA/Wu89sx4/czmxZf7bIEV1wRMMMXurlKdEmugkRueUzirUa99JmfSd+uQnWQv280
-         JBXg==
+        bh=x7O9dSJB968DODyLuNRE+vyi9c088XkY9pghf6qlNoA=;
+        b=KdWKzJuyx978a2954LGSSGc9CDz21BpNELhps3RAkmJnk59t+tAIjmpTfdRH7v3oN5
+         sqDV8rjVsD/oHFTlGNF0/iA1Umly+Afgny+CNaU69U4on8o5kKJNycg0pRFA9ia4pzzR
+         g+132gXvdKrjTYe9SdW3YCLKGdELSOKLEHbPszUBbcKGg8DIavDhRIXnUHiyevqBLaWG
+         Z+nuAzlnWCEdteiiOpAFYyVu5fBGamkmZOTRtdld0ThsxAO/0sjpwOYGz4yo+amNbFLk
+         4+3TQPeCEmG19bWg6+0I3AA8XKhIQjoNZBmJg3flfTfDwTCGmW/yj4ZV4ceooE5OjaMK
+         xxcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749028966; x=1749633766;
+        d=1e100.net; s=20230601; t=1749186296; x=1749791096;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kxD+BS5BNW9JlEJcYvio44SXpqyv8Wmatgad1UAi7lM=;
-        b=YxiuhQ4XusTsKtLqmZMoboyT7NnoaIUYwzjpVs5ZHHp4lh1Ta+l3MZuBQVo0HX5gF9
-         0/mhQdDANDpDtkEmrAeMkOhSrpn6leotVnhs7hc7AYfqDKEejdHqeMf/0gg7iQIDkcjb
-         TDzUpMmp7y0I/KsyJlZxtsY05JExk2RTaoiPC819Pevd5tVEgzHA7xsoSrX2ZcqXxjqa
-         6LqbInHYopbBMOLsgMrqE0S69D3Yu+lawVSWjHu+ypuxcaXQ3ZnwoDT7FkPFjtecjJia
-         bXqxg1y+dSqw1Bxc/H/O28aasFCZCP96bM3VmlNTmVv5gNYW9dWMrVFYgGsNC0RH/4DC
-         uG7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWxIWzPdZfBUqqjQsEIxNdu0bIrcLZFQvTs3BpJrN6mEbrLLcutfmIzEd1bOJw1RI1YiCr9@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw++TpcICOKVstrSmo/ot8Yz9FhNwAorTzfdKtlRSqMmqX26qEv
-	J8LvftiO0vDp/saxEWvBW5YY+PS8OzTpXYR+dL6U5ZasiXg0LcWppGBgbw/kZopRjIVhGUlNaAs
-	vFV5FQy0S+Uz5eNrZpziLOBo4UyFoYGk=
-X-Gm-Gg: ASbGncsWk8eFRkO+nrkAHBxqjNsjnlsiThkYm9TGZ2Sh6UUtQ2A7KtM6hV6bNmxkrdG
-	XStosjqrEXaVFQYgDgofky5r8RyzG5qB3XybU1HAWwqus5uxG7hCX/esWpJ3JJqqRyrO93HzbV5
-	ijyqMY+9k91B7SzPjbeiFtj9156XRyuHUo5cxtkVM5cmmNrfDP8tJOEtX+s+0uYG69v4r+hNDbg
-	oS8
-X-Google-Smtp-Source: AGHT+IFtmWSVIfRymSX8p9O1DuQ9uGU3imVuqryH0lzpbx4dWpXx940NayRL5XU/iX+3A15SSf0ibjMq2HLSlqBsVEw=
-X-Received: by 2002:a17:906:a995:b0:add:fa4e:8a61 with SMTP id
- a640c23a62f3a-addfa4e8f2bmr123364566b.38.1749028965818; Wed, 04 Jun 2025
- 02:22:45 -0700 (PDT)
+        bh=x7O9dSJB968DODyLuNRE+vyi9c088XkY9pghf6qlNoA=;
+        b=UQbwg1YlNOTrwGG7AMPbMkU5NNaN0FH7TrPEQay+X0rNcdYVVujkexp4hhRVqqfoNY
+         I9ie23EGLNovRsjuTEv/cqUAWTO8EwR4r+ks72ZB1cyb81oiT89O/Wj3SaS9gExWIHsD
+         etm4xw1iQf1zgh6DuwgEhSsz5jo0irN13xB6Bf/k6Uc/2HeAIws7PsimuoSD2njJyv8Y
+         xMx64oqXVoh/m/9oowe9JctcNRIht7gZzHGhw/0bMK/Dkou0wZY9HpbUA6SfuBPqmJn8
+         J9lNPj5RvrQnhyaXtfrzWAfsiKg+Tq9N987YtgVmLpI4QiEwxtHUMosj0xSu/MG8ifMQ
+         DJ0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWb27KHSlTfgt0fxC0wZZ+mh2glNLjSXAIVN5WWf48jC89niewdV2en9/AueEZqRUKqEgCI@lists.linux.dev
+X-Gm-Message-State: AOJu0YzO04niUSg6luNAdkdC8sACFhScOXq1oNsM3jB2pF5mBDsSx3ce
+	mSsDnRbQ2iW4YzchIEwjGPVn1yxolLyGK3yB81d1enie3iNnHmh5gdoaso318SMqa4aOKTALZ5Z
+	eOFstasA9rJXXDhKsKlpRk61gnE2cYgg=
+X-Gm-Gg: ASbGncs81KT0xvHIbPqqTVPxwlM473ey2WId71e+DfY/Uu1OqLcUoTGZ0JJ6xazT73I
+	21/lhJu+LSeGxDhJZaW4p922B+vKHlQhziR8bvB0XZvtlLyYW8suhADJFsc+B6rwJK04NK4m1TB
+	5VhmOOfs/W95TCCo8MVTa/5lWI7yYpNbWMPXM2UPHBLyOfCDC9v7fqU2PzyRF8ceIbew==
+X-Google-Smtp-Source: AGHT+IEVXR9+wlONFFF0pVmQeCbZZqUlGtHJsfnQn89wNLFqjyadnVgDXduPX3FgpzRh4Sq2aUSNlvX2yGgw+9F0I/g=
+X-Received: by 2002:a17:907:940e:b0:ad8:932e:77ba with SMTP id
+ a640c23a62f3a-ade1aa06f9bmr166304966b.38.1749186295861; Thu, 05 Jun 2025
+ 22:04:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -64,14 +63,15 @@ References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2
  <20250529111504.89912-1-kundan.kumar@samsung.com> <20250602141904.GA21996@lst.de>
  <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com> <20250603132434.GA10865@lst.de>
  <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com>
-In-Reply-To: <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com>
+ <20250603140445.GA14351@lst.de> <20250603140513.GB14351@lst.de>
+In-Reply-To: <20250603140513.GB14351@lst.de>
 From: Kundan Kumar <kundanthebest@gmail.com>
-Date: Wed, 4 Jun 2025 14:52:34 +0530
-X-Gm-Features: AX0GCFsIp4hEknwUTt7cvxyvZfmfYSDQ8XVwMfEKcuya3JVRf5uqzsLfTt2zwvo
-Message-ID: <CALYkqXqVRYqq+5_5W4Sdeh07M8DyEYLvrsm3yqhhCQTY0pvU1g@mail.gmail.com>
+Date: Fri, 6 Jun 2025 10:34:42 +0530
+X-Gm-Features: AX0GCFtEIAaI-VeodZn7ESl9-Aw4m_sJDaXecGQwiyGHiN7UJTfm9c_uBk6SQ-Q
+Message-ID: <CALYkqXoAGHqGkX9WqEE+yiOftcWkap-ZGH3CSAeFk-cPg4q25A@mail.gmail.com>
 Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-To: Anuj gupta <anuj1072538@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>, "Anuj Gupta/Anuj Gupta" <anuj20.g@samsung.com>, 
+To: Christoph Hellwig <hch@lst.de>
+Cc: Anuj gupta <anuj1072538@gmail.com>, "Anuj Gupta/Anuj Gupta" <anuj20.g@samsung.com>, 
 	Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org, chao@kernel.org, 
 	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, 
 	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, 
@@ -85,43 +85,41 @@ Cc: Christoph Hellwig <hch@lst.de>, "Anuj Gupta/Anuj Gupta" <anuj20.g@samsung.co
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> > > For xfs used this command:
-> > > xfs_io -c "stat" /mnt/testfile
-> > > And for ext4 used this:
-> > > filefrag /mnt/testfile
-> >
-> > filefrag merges contiguous extents, and only counts up for discontiguou=
-s
-> > mappings, while fsxattr.nextents counts all extent even if they are
-> > contiguous.  So you probably want to use filefrag for both cases.
+On Tue, Jun 3, 2025 at 7:35=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrote=
+:
 >
-> Got it =E2=80=94 thanks for the clarification. We'll switch to using file=
-frag
-> and will share updated extent count numbers accordingly.
+> On Tue, Jun 03, 2025 at 04:04:45PM +0200, Christoph Hellwig wrote:
+> > On Tue, Jun 03, 2025 at 07:22:18PM +0530, Anuj gupta wrote:
+> > > > A mount option is about the worst possible interface for behavior
+> > > > that depends on file system implementation and possibly hardware
+> > > > chacteristics.  This needs to be set by the file systems, possibly
+> > > > using generic helpers using hardware information.
+> > >
+> > > Right, that makes sense. Instead of using a mount option, we can
+> > > introduce generic helpers to initialize multiple writeback contexts
+> > > based on underlying hardware characteristics =E2=80=94 e.g., number o=
+f CPUs or
+> > > NUMA topology. Filesystems like XFS and EXT4 can then call these help=
+ers
+> > > during mount to opt into parallel writeback in a controlled way.
+> >
+> > Yes.  A mount option might still be useful to override this default,
+> > but it should not be needed for the normal use case.
+>
+> .. actually a sysfs file on the bdi is probably the better interface
+> for the override than a mount option.
 
-Using filefrag, we recorded extent counts on xfs and ext4 at three
-stages:
-a. Just after a 1G random write,
-b. After a 30-second wait,
-c. After unmounting and remounting the filesystem,
+Hi Christoph,
 
-xfs
-Base
-a. 6251   b. 2526  c. 2526
-Parallel writeback
-a. 6183   b. 2326  c. 2326
+Thanks for the suggestion =E2=80=94 I agree the default should come from a
+filesystem-level helper, not a mount option.
 
-ext4
-Base
-a. 7080   b. 7080    c. 11
-Parallel writeback
-a. 5961   b. 5961    c. 11
+I looked into the sysfs override idea, but one challenge is that
+nr_wb_ctx must be finalized before any writes occur. That leaves only
+a narrow window =E2=80=94 after the bdi is registered but before any inodes
+are dirtied =E2=80=94 where changing it is safe.
 
-Used the same fio commandline as earlier:
-fio --filename=3D/mnt/testfile --name=3Dtest --bs=3D4k --iodepth=3D1024
---rw=3Drandwrite --ioengine=3Dio_uring  --fallocate=3Dnone --numjobs=3D1
---size=3D1G --direct=3D0 --eta-interval=3D1 --eta-newline=3D1
---group_reporting
-
-filefrag command:
-filefrag  /mnt/testfile
+This makes the sysfs knob a bit fragile unless we tightly guard it
+(e.g., mark it read-only after init). A mount option, even just as an
+override, feels simpler and more predictable, since it=E2=80=99s set before
+the FS becomes active.
