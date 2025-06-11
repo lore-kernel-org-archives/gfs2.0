@@ -1,72 +1,172 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD2A1F19A
-	for <gfs2@lists.linux.dev>; Mon,  9 Jun 2025 04:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AB127466C
+	for <gfs2@lists.linux.dev>; Wed, 11 Jun 2025 10:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749441664; cv=none; b=kFTB3umlVSnngAEq6FKRYrhusHh9nRlKITp7oDEM6dg55xdrHUEEygB+nyAC9jRpP7eQKbqZi4/CeFUwNDut3o6BB5bJcbTgj6LSWwicv5K0MkSbJ/tPwXEEdzcT/lAw//MW3+5Hqk7Us3L5mLlpv0RVXiINWo+orervwVQEsNY=
+	t=1749639334; cv=none; b=PpjpuQ39rYIJEhYYaCBwKydG57vxpRcrPSNmtn3Zl3sa3htwRegwevjAvrwcI/Bs8yjnp5hDKyzT/LOCJ7gw01SouRYiVbIThxo+Wj0kWRPTM+dut3eIUYI5Pe89QzZbe8G2gmuQktmaJzsSUI6WFVweTgE+6rOQ5HrGUi4JtUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749441664; c=relaxed/simple;
-	bh=MYaJ4/v+wAL52dUFMwiWFuCt2eoCt7JsNodSlWf6DJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvcfzVbVUmXG7PKaKuOC069RnWTFIINKkdKCd5cNf6VpHeYM0CQGMGBhRYCpjpoql14L90ygAXLnGl5AP2AZa8/2Q2tIIyvodMfTvixThjSj5te9FEIVhETWnDip9uMibFglUwt94I8hJZWNrGeJsTMlmliz9SIDXf6M019u4NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 4222168AFE; Mon,  9 Jun 2025 06:00:57 +0200 (CEST)
-Date: Mon, 9 Jun 2025 06:00:56 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Kundan Kumar <kundanthebest@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>, Anuj gupta <anuj1072538@gmail.com>,
-	Anuj Gupta/Anuj Gupta <anuj20.g@samsung.com>,
-	Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org,
-	chao@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
-	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
-	p.raghav@samsung.com, da.gomez@samsung.com,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com
-Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-Message-ID: <20250609040056.GA26101@lst.de>
-References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com> <20250529111504.89912-1-kundan.kumar@samsung.com> <20250602141904.GA21996@lst.de> <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com> <20250603132434.GA10865@lst.de> <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com> <20250603140445.GA14351@lst.de> <20250603140513.GB14351@lst.de> <CALYkqXoAGHqGkX9WqEE+yiOftcWkap-ZGH3CSAeFk-cPg4q25A@mail.gmail.com>
+	s=arc-20240116; t=1749639334; c=relaxed/simple;
+	bh=WhkgvwTsr33OhQCjeTO3H4p35RofHKmjwzGgOaOp9MA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BoAt+E/YmfrcoPzTdmpXQb3YFxsupoouzjxxVXuM0E0wVMmbF2EpBPdi+FHZl7Fya0TW/iIyIU0NbN3MEYlOUqaPXWuJIR+LbMrQD2PBpsWJbTuVL+n5+4a3rPnUVtQCSYdG4tvETHyt7tbTXOpe6rzIpNZhCC2TnAyLRS1W32Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3ddc5137992so86831435ab.2
+        for <gfs2@lists.linux.dev>; Wed, 11 Jun 2025 03:55:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749639332; x=1750244132;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UThetRNl7XelpSLp4obh0vyJJviwgFSRy5k79cZ4mUw=;
+        b=ZUSbmYECE/awzmbG5Q1clwjjpmHOZuJDaOeen0yQvaT6hN2Y21lDaEENqGJceiTRUy
+         lQXI2ly3KajRCiw0OMnBWYN/cKwU+ZubhPp+YD3yZBVFeHti6TlvqBt6Ri8dDMDYAHvZ
+         2c0LDXn8UwIkT0Pm0gQqdZQNxNYVtW47mvt2pdBQHSxqqAnVv91rXbNU/TRKuLZezPBG
+         Dxx/54tPXW9cFVt4/CkRUxBHyZVCSusSOeCEQGR2EiinCGVBuSP4zp+bJKx+BV1aqHSM
+         laZ56gkJunCWAJh1xdKldzeseocnXaNPJNWDhKmutnPSm7htRl4xp6AQPKra2JFlo0YL
+         7GWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaq0JIkSQ7GXuT5dtfdJvMq56pyo31x9BOkvkforswhZTaHVJ/do1v7gry01ObmQQwl+Fu@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+208XBzSJxbY9B6WCicVQ+7XlciisOec+2AHafpIQWJq0lkn3
+	kH/YhD5AfVuBMCGGu3bb7TVfJg1kBsvUt1/j0z1zah0DIG7cLc2RlsNaS6EwHwwDQAVWGvVW2P/
+	KGYsdhLOmqMRXybabL3n8rf3NzMH/QG0UwSVMdn77rmsbRD1KpV8zOyKdpJg=
+X-Google-Smtp-Source: AGHT+IEQsMySz54jHIwFpWCvPtXsaJnNd8qTM6XR/Nk0hHSiqo1G9I6aCQcIlZ5VR+NCJxYoix9IdZc2eqQkrAN2FaS8Vuk5ERYl
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALYkqXoAGHqGkX9WqEE+yiOftcWkap-ZGH3CSAeFk-cPg4q25A@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Received: by 2002:a05:6e02:1fec:b0:3dd:e7d7:3e1b with SMTP id
+ e9e14a558f8ab-3ddf42e2b6amr31914095ab.18.1749639331960; Wed, 11 Jun 2025
+ 03:55:31 -0700 (PDT)
+Date: Wed, 11 Jun 2025 03:55:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <684960a3.a70a0220.27c366.006e.GAE@google.com>
+Subject: [syzbot] [gfs2?] general protection fault in gfs2_remove_from_journal
+From: syzbot <syzbot+2b66905568f25219e457@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 06, 2025 at 10:34:42AM +0530, Kundan Kumar wrote:
-> Thanks for the suggestion — I agree the default should come from a
-> filesystem-level helper, not a mount option.
-> 
-> I looked into the sysfs override idea, but one challenge is that
-> nr_wb_ctx must be finalized before any writes occur. That leaves only
-> a narrow window — after the bdi is registered but before any inodes
-> are dirtied — where changing it is safe.
-> 
-> This makes the sysfs knob a bit fragile unless we tightly guard it
-> (e.g., mark it read-only after init). A mount option, even just as an
-> override, feels simpler and more predictable, since it’s set before
-> the FS becomes active.
+Hello,
 
-The mount option has a few issues:
+syzbot found the following issue on:
 
- - the common VFS code only support flags, not value options, so you'd
-   have to wire this up in every file system
- - some file system might not want to allow changing it
- - changing it at runtime is actuallyt quite useful
+HEAD commit:    8477ab143069 Merge tag 'iommu-updates-v6.16' of git://git...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11fd6970580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8a01551457d63a4b
+dashboard link: https://syzkaller.appspot.com/bug?extid=2b66905568f25219e457
+compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
 
-So you'll need to quiesce writeback or maybe even do a full fs freeze
-when changing it a runtime, but that seems ok for a change this invasive.
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2718334fb9f8/disk-8477ab14.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4216a14f373e/vmlinux-8477ab14.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9935c74b1923/bzImage-8477ab14.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2b66905568f25219e457@syzkaller.appspotmail.com
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+CPU: 1 UID: 0 PID: 5822 Comm: syz-executor Not tainted 6.15.0-syzkaller-09113-g8477ab143069 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+RIP: 0010:gfs2_remove_from_journal+0x3cc/0x6d0 fs/gfs2/meta_io.c:357
+Code: 3a 4c 89 e7 e8 e5 61 30 fe eb 30 e8 be 36 cd fd 48 8b 6c 24 10 4c 8d 65 2c 4c 89 e0 48 c1 e8 03 49 be 00 00 00 00 00 fc ff df <42> 0f b6 04 30 84 c0 4c 8b 3c 24 0f 85 aa 01 00 00 41 ff 04 24 48
+RSP: 0018:ffffc900041bf538 EFLAGS: 00010217
+RAX: 0000000000000005 RBX: ffff88807b341488 RCX: ffff88802f01da00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000000 R08: ffff88807f3d0c17 R09: 1ffff1100fe7a182
+R10: dffffc0000000000 R11: ffffed100fe7a183 R12: 000000000000002c
+R13: 0000000000000001 R14: dffffc0000000000 R15: ffff88802271f170
+FS:  0000555575d51500(0000) GS:ffff888125d65000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007feea2411000 CR3: 0000000056123000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ gfs2_discard fs/gfs2/aops.c:593 [inline]
+ gfs2_invalidate_folio+0x579/0x750 fs/gfs2/aops.c:627
+ folio_invalidate mm/truncate.c:140 [inline]
+ truncate_cleanup_folio+0x2d8/0x430 mm/truncate.c:160
+ truncate_inode_pages_range+0x233/0xda0 mm/truncate.c:379
+ gfs2_evict_inode+0x87a/0x1000 fs/gfs2/super.c:1441
+ evict+0x504/0x9c0 fs/inode.c:810
+ gfs2_put_super+0x42b/0x950 fs/gfs2/super.c:619
+ generic_shutdown_super+0x135/0x2c0 fs/super.c:643
+ kill_block_super+0x44/0x90 fs/super.c:1760
+ deactivate_locked_super+0xbc/0x130 fs/super.c:474
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1432
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:114
+ exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
+ do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7efff6d8fc97
+Code: a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 44 00 00 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 a8 ff ff ff f7 d8 64 89 02 b8
+RSP: 002b:00007ffe029d33d8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 00007efff6e1089d RCX: 00007efff6d8fc97
+RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffe029d3490
+RBP: 00007ffe029d3490 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffe029d4520
+R13: 00007efff6e1089d R14: 000000000007ddec R15: 00007ffe029d4560
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_remove_from_journal+0x3cc/0x6d0 fs/gfs2/meta_io.c:357
+Code: 3a 4c 89 e7 e8 e5 61 30 fe eb 30 e8 be 36 cd fd 48 8b 6c 24 10 4c 8d 65 2c 4c 89 e0 48 c1 e8 03 49 be 00 00 00 00 00 fc ff df <42> 0f b6 04 30 84 c0 4c 8b 3c 24 0f 85 aa 01 00 00 41 ff 04 24 48
+RSP: 0018:ffffc900041bf538 EFLAGS: 00010217
+RAX: 0000000000000005 RBX: ffff88807b341488 RCX: ffff88802f01da00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000000 R08: ffff88807f3d0c17 R09: 1ffff1100fe7a182
+R10: dffffc0000000000 R11: ffffed100fe7a183 R12: 000000000000002c
+R13: 0000000000000001 R14: dffffc0000000000 R15: ffff88802271f170
+FS:  0000555575d51500(0000) GS:ffff888125d65000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007feea2411000 CR3: 0000000056123000 CR4: 0000000000350ef0
+----------------
+Code disassembly (best guess):
+   0:	3a 4c 89 e7          	cmp    -0x19(%rcx,%rcx,4),%cl
+   4:	e8 e5 61 30 fe       	call   0xfe3061ee
+   9:	eb 30                	jmp    0x3b
+   b:	e8 be 36 cd fd       	call   0xfdcd36ce
+  10:	48 8b 6c 24 10       	mov    0x10(%rsp),%rbp
+  15:	4c 8d 65 2c          	lea    0x2c(%rbp),%r12
+  19:	4c 89 e0             	mov    %r12,%rax
+  1c:	48 c1 e8 03          	shr    $0x3,%rax
+  20:	49 be 00 00 00 00 00 	movabs $0xdffffc0000000000,%r14
+  27:	fc ff df
+* 2a:	42 0f b6 04 30       	movzbl (%rax,%r14,1),%eax <-- trapping instruction
+  2f:	84 c0                	test   %al,%al
+  31:	4c 8b 3c 24          	mov    (%rsp),%r15
+  35:	0f 85 aa 01 00 00    	jne    0x1e5
+  3b:	41 ff 04 24          	incl   (%r12)
+  3f:	48                   	rex.W
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
