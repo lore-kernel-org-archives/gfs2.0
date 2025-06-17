@@ -1,178 +1,122 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4E92E06D0;
-	Tue, 17 Jun 2025 10:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417D521D3F6
+	for <gfs2@lists.linux.dev>; Tue, 17 Jun 2025 17:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750157746; cv=none; b=NkxhnjNQebygMaWb53aHe3IbOT9fYD+oZEDWiEpE61YNzWlRDLEejZpkSS1oCPngdsmetZwa6YHc4GjQC78eYsvRkgdjyM8KzG7RtZmjxQKipEQiSi7venSxOKLly+biX+P1FHAuRvb3mYz/n4lOS/qTv9hGPOTgiEbHU1AgELo=
+	t=1750182880; cv=none; b=bl43Sj6b2OWm4sDfwaypYpmxCmrMn62jyygvi6OO1HRcAem1jE5/MGnYVLnUJb7SLuup3oCJA6R2PprCfJ/8ya4pT1B1C+PCRHjMNkMf68NT8eZgeinTi9gaT9SRAT9/1UELHlfaV4xrpjbwmeWTCKykPem/dVZNN7ozET4GX1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750157746; c=relaxed/simple;
-	bh=uwEwxEs8T9P4QihFLUaI6BH+wTj4vR9TchIamoPDhN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0XBbGOCZsbVCUd1oYxItNxXmpJ35evoK7rVbU9jMvjfQ993jKcyOHnROqhMEHIxDIkVbKQVkM9LU8PL7xIlTM+t9o9F2YtQCC1NB1MrzbOcbtfmAUaUgqqo6urFoGdVkKTSZgWJZLrA2cb9dYPi35zasFeDwGOO1Wtt19IzWsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Xra7ZPdn; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1750182880; c=relaxed/simple;
+	bh=bgxfn7vE3uVcZL4Z/4Xgrg5I++5k5UcZdX3exMfLzn4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BQ6XKglC8jKqBzjpWSDjVHh45/a9urkJ5Q9jvw8V577n0sqN5D2l4Zr7bqzDVha0OyVvBI/UrFN3dQgySxuyVaq+04NU+cxHL+bWDe85VvlO0MR/aNDdExGbFjr9Nd4mOYooKPZx6XE/cRXxvkQgVftrIkb4G+95UmfbPY1WOes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPXrfsiw; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Xra7ZPdn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=7cm9KylYv2ZdHzemgGqtbKhQl/Mx4XXZRlwkOYNwK8I=; b=Xra7ZPdn/3MCr052BTwOEPcuq4
-	YxNMat33XPmQW+A0Sdh4b9jzEiPT+m6DvRmT2El3WfXqCeklC8vwDS3folmdygFcFTuCztyGfHCJX
-	ZqAKtsy4rZv63No/nJgpVqQ3EHybbwWHRHVt/KzUe+o+0KsQSz/T0xPpoW1Mj6lbCPER1gQhGCf44
-	u9/bCejiCCepMKBq68x9DSWk3RYKhBbUbHUNlfRexU3bpf/VGZCCzmO7pNBmhWL2mDKyHS2LXADGe
-	HOglL2mDkgbg3hc4E+wdbZYnrphBM+Fge9RTf1nD+D/02PD/u2Y6HCqKHG1eFLlbGQdHRcILhvbjw
-	XNaWszzg==;
-Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRTyi-00000006yuL-1zE4;
-	Tue, 17 Jun 2025 10:55:45 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev
-Subject: [PATCH 11/11] iomap: add read_folio_range() handler for buffered writes
-Date: Tue, 17 Jun 2025 12:55:10 +0200
-Message-ID: <20250617105514.3393938-12-hch@lst.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250617105514.3393938-1-hch@lst.de>
-References: <20250617105514.3393938-1-hch@lst.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPXrfsiw"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-476a720e806so53785301cf.0
+        for <gfs2@lists.linux.dev>; Tue, 17 Jun 2025 10:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750182878; x=1750787678; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OTi4WuiI5rSn4d0VdM5D16B62aIH3ZTDCOZvLTT0owQ=;
+        b=fPXrfsiwJL7838As8quN8feV0yk1g3B/Jz2AZy2B84j+6MG6SeaFT+h1qTtRYxilP+
+         HOKh6oOAGEbn3iyRgMA74nNP+NYYHK18mO01UxKjau6/3Ph5mFVk/t+Zj+3XAszS64Gc
+         0YKON/5d4NyWSF8Sypn/xthaAv8azO/OMbPmqIeEHGkrpYjVPh55qF1OvHn59G9LU7W9
+         k1SCUj+RYE/gQAPEt+2siGr8S9dBQPj4UxFcNBqNDARgf0YJ7Icrrg293JKG9clL7br+
+         R5BzMm8zlNMT0SXxlCaq46yKk6S14/M6Hyb8ePZ12tGYghudbKLw8VfFBCOlSh0Di4CR
+         QYLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750182878; x=1750787678;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OTi4WuiI5rSn4d0VdM5D16B62aIH3ZTDCOZvLTT0owQ=;
+        b=APUIiz4wZRyQ9lE8caY5X5CKaB14mrsXY78xTKlpZYONM9JRbs8P3EOc/QcueLcB2D
+         xGoYsU+ypAu+eWzYzM2Dtk6gEWfqAIGDsy2muxg/OMV45C6BRwV48JM+Jsd6T776IOX5
+         7ZaGk+ZX1wZnftn+my2P964pTBTYqSEUYBewVhzZK4jGOk7I9gE8Id0YH86rf+b7P5mb
+         Quh1zF+GtXFYvm2oiksDwSNaeQL0GXF9V960VsVrYKPfHsHh9ErnyOGBLhEdPUn15AkY
+         nv1YDtzCDvru0llO04WHKYzNWH4yuxtbt1MA3b/HyN88h81fYC3JQEwN9e1/I8Su69c/
+         ROeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVEtWv3qUSmk98JnYK0UUXlpOsJN5PyB0pT/7vqs9/At6pJUpEmG3Sd+N2huLfzKubWt9Cd@lists.linux.dev
+X-Gm-Message-State: AOJu0YywkIxLLA3bv+IDt5L6ml93VjG+YsTSoaVuRGfGUaoAEi6oYt57
+	PzQ/G6pjvvh8Nm5FTbbz52TViKQzCV5DC+obhd5vhA++yyGlIBXpmjf848j75lw3CeeBaJrAinj
+	Drda4cafIqj1VyMXW6casQ7tp81QKUZg=
+X-Gm-Gg: ASbGnctYFnjElcws456jApu01lWru1YV3vkKoKk5GAHsgAD2Nexu3G2I7U3lvpbTfxU
+	T0nGrXnNBUPP7R+o8Bakka2+mTeEjws4b2jlcr9T3rPW6x42UqSnVPu5JHYeqnEAOiq6qSMOkyb
+	Gv4i9hq0HxXrBN2royWusOaWHM1V2pstOQ41e47PtU3maCUEf8iyNFe5xKrgUjTuDMBuRadw==
+X-Google-Smtp-Source: AGHT+IGex4UWv+HoV/9Li0Bva7BreKI2nwwf5CqKk1rUMlIevgG5vGMpxGPPINpdgZlO5LfDN26J5rEEDluUxSQJBGM=
+X-Received: by 2002:a05:622a:18a1:b0:476:7b0b:30fb with SMTP id
+ d75a77b69052e-4a73c560deamr198293591cf.22.1750182877938; Tue, 17 Jun 2025
+ 10:54:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-
+References: <20250617105514.3393938-1-hch@lst.de> <20250617105514.3393938-2-hch@lst.de>
+In-Reply-To: <20250617105514.3393938-2-hch@lst.de>
 From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 17 Jun 2025 10:54:26 -0700
+X-Gm-Features: AX0GCFsDdji5vutx2f9J16YcANLgGsyfwdscogvNs6WP3czKu7_D_i2PrHBn32E
+Message-ID: <CAJnrk1YZyuAX+OjuGdRWq1QpNj7R2BU5+Zx8mam6k+VfT9bULQ@mail.gmail.com>
+Subject: Re: [PATCH 01/11] iomap: pass more arguments using struct iomap_writepage_ctx
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a read_folio_range() handler for buffered writes that filesystems
-may pass in if they wish to provide a custom handler for synchronously
-reading in the contents of a folio.
+On Tue, Jun 17, 2025 at 3:55=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrot=
+e:
+>
+> Add inode and wpc fields to pass the inode and writeback context that
+> are needed in the entire writeback call chain, and let the callers
+> initialize all fields in the writeback context before calling
+> iomap_writepages to simplify the argument passing.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-[hch: renamed to read_folio_range, pass less arguments]
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- .../filesystems/iomap/operations.rst          |  6 +++++
- fs/iomap/buffered-io.c                        | 25 +++++++++++--------
- include/linux/iomap.h                         | 10 ++++++++
- 3 files changed, 31 insertions(+), 10 deletions(-)
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
 
-diff --git a/Documentation/filesystems/iomap/operations.rst b/Documentation/filesystems/iomap/operations.rst
-index 1f5732835567..813e26dbd21e 100644
---- a/Documentation/filesystems/iomap/operations.rst
-+++ b/Documentation/filesystems/iomap/operations.rst
-@@ -68,6 +68,8 @@ The following address space operations can be wrapped easily:
-      void (*put_folio)(struct inode *inode, loff_t pos, unsigned copied,
-                        struct folio *folio);
-      bool (*iomap_valid)(struct inode *inode, const struct iomap *iomap);
-+     int (*read_folio_range)(const struct iomap_iter *iter,
-+     			struct folio *folio, loff_t pos, size_t len);
-  };
- 
- iomap calls these functions:
-@@ -123,6 +125,10 @@ iomap calls these functions:
-     ``->iomap_valid``, then the iomap should considered stale and the
-     validation failed.
- 
-+  - ``read_folio_range``: Called to synchronously read in the range that will
-+    be written to. If this function is not provided, iomap will default to
-+    submitting a bio read request.
-+
- These ``struct kiocb`` flags are significant for buffered I/O with iomap:
- 
-  * ``IOCB_NOWAIT``: Turns on ``IOMAP_NOWAIT``.
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index f6e410c9ea7b..897a3ccea2df 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -667,22 +667,23 @@ iomap_write_failed(struct inode *inode, loff_t pos, unsigned len)
- 					 pos + len - 1);
- }
- 
--static int iomap_read_folio_sync(loff_t block_start, struct folio *folio,
--		size_t poff, size_t plen, const struct iomap *iomap)
-+static int iomap_read_folio_range(const struct iomap_iter *iter,
-+		struct folio *folio, loff_t pos, size_t len)
- {
-+	const struct iomap *srcmap = iomap_iter_srcmap(iter);
- 	struct bio_vec bvec;
- 	struct bio bio;
- 
--	bio_init(&bio, iomap->bdev, &bvec, 1, REQ_OP_READ);
--	bio.bi_iter.bi_sector = iomap_sector(iomap, block_start);
--	bio_add_folio_nofail(&bio, folio, plen, poff);
-+	bio_init(&bio, srcmap->bdev, &bvec, 1, REQ_OP_READ);
-+	bio.bi_iter.bi_sector = iomap_sector(srcmap, pos);
-+	bio_add_folio_nofail(&bio, folio, len, offset_in_folio(folio, pos));
- 	return submit_bio_wait(&bio);
- }
- 
--static int __iomap_write_begin(const struct iomap_iter *iter, size_t len,
-+static int __iomap_write_begin(const struct iomap_iter *iter,
-+		const struct iomap_write_ops *write_ops, size_t len,
- 		struct folio *folio)
- {
--	const struct iomap *srcmap = iomap_iter_srcmap(iter);
- 	struct iomap_folio_state *ifs;
- 	loff_t pos = iter->pos;
- 	loff_t block_size = i_blocksize(iter->inode);
-@@ -731,8 +732,12 @@ static int __iomap_write_begin(const struct iomap_iter *iter, size_t len,
- 			if (iter->flags & IOMAP_NOWAIT)
- 				return -EAGAIN;
- 
--			status = iomap_read_folio_sync(block_start, folio,
--					poff, plen, srcmap);
-+			if (write_ops && write_ops->read_folio_range)
-+				status = write_ops->read_folio_range(iter,
-+						folio, block_start, plen);
-+			else
-+				status = iomap_read_folio_range(iter,
-+						folio, block_start, plen);
- 			if (status)
- 				return status;
- 		}
-@@ -848,7 +853,7 @@ static int iomap_write_begin(struct iomap_iter *iter,
- 	else if (srcmap->flags & IOMAP_F_BUFFER_HEAD)
- 		status = __block_write_begin_int(folio, pos, len, NULL, srcmap);
- 	else
--		status = __iomap_write_begin(iter, len, folio);
-+		status = __iomap_write_begin(iter, write_ops, len, folio);
- 
- 	if (unlikely(status))
- 		goto out_unlock;
-diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 8d20a926b645..5ec651606c51 100644
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -166,6 +166,16 @@ struct iomap_write_ops {
- 	 * locked by the iomap code.
- 	 */
- 	bool (*iomap_valid)(struct inode *inode, const struct iomap *iomap);
-+
-+	/*
-+	 * Optional if the filesystem wishes to provide a custom handler for
-+	 * reading in the contents of a folio, otherwise iomap will default to
-+	 * submitting a bio read request.
-+	 *
-+	 * The read must be done synchronously.
-+	 */
-+	int (*read_folio_range)(const struct iomap_iter *iter,
-+			struct folio *folio, loff_t pos, size_t len);
- };
- 
- /*
--- 
-2.47.2
+> ---
+>  block/fops.c           |  8 +++++--
+>  fs/gfs2/aops.c         |  8 +++++--
+>  fs/iomap/buffered-io.c | 52 +++++++++++++++++++-----------------------
+>  fs/xfs/xfs_aops.c      | 24 +++++++++++++------
+>  fs/zonefs/file.c       |  8 +++++--
+>  include/linux/iomap.h  |  6 ++---
+>  6 files changed, 61 insertions(+), 45 deletions(-)
+>
+> diff --git a/block/fops.c b/block/fops.c
+> index 1309861d4c2c..3394263d942b 100644
+> --- a/block/fops.c
+> +++ b/block/fops.c
+> @@ -558,9 +558,13 @@ static const struct iomap_writeback_ops blkdev_write=
+back_ops =3D {
+>  static int blkdev_writepages(struct address_space *mapping,
+>                 struct writeback_control *wbc)
+>  {
+> -       struct iomap_writepage_ctx wpc =3D { };
+> +       struct iomap_writepage_ctx wpc =3D {
+> +               .inode          =3D mapping->host,
+> +               .wbc            =3D wbc,
+> +               .ops            =3D &blkdev_writeback_ops
 
+Would it be worth defining the writeback ops inside the wpc struct as
+well instead of having that be in a separate "static const struct
+iomap_writeback_ops" definition outside the function? imo it makes it
+easier to follow to just have everything listed in one place
+
+> +       };
+>
+> -       return iomap_writepages(mapping, wbc, &wpc, &blkdev_writeback_ops=
+);
+> +       return iomap_writepages(&wpc);
+>  }
