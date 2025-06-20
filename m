@@ -1,139 +1,161 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECB821FF58
-	for <gfs2@lists.linux.dev>; Fri, 20 Jun 2025 06:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76AC18E20
+	for <gfs2@lists.linux.dev>; Fri, 20 Jun 2025 17:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750401874; cv=none; b=k451bj+U/NsT9oDXf09il5rMWNh8OZ/XgVj3gP68VdvK5DeZIM7SxmkE5xDctdkfSk0B+ux5Wer7kOyKv0BI5fqSrAqLznfWVB46/trPFmyaW96e3GvlJqpN7ZQHrsr1PVZ5QrEWQUYG0YhFsqbxkd5hLDz73tAVAcZP7o6yf28=
+	t=1750441130; cv=none; b=gNCOjW68p6rQnsV116n1kKjbkWpDVomUeQI81Kxt/UiVpK1FDMFm4CJ07nn1BGC6GDFFu29YhqjCiSutM4jArUkyIGojH1f9GeLPTrlHLKnyH8qik5mETB7pLh57iq22VFTyECv3pvLTQ5LrIpsNVgNKLA1QFW2dUbHSF8GFz7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750401874; c=relaxed/simple;
-	bh=NrlKuBMWjGmAhAQY+i2cFjR5QEjGaiLQ0rjW6NpmjnY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=oTHCpDMCcVUfNAHjbHaAY879QN64gTcX94JXi0Q/tUm9lwHrRSYlnxcTmkj8RLCh0G2/GSCzh/Gd6horuYwWzyJdqRf3b0QlUJXmdXTHbM3NKA9fhOIyeuz8k45sVs1l/PIf0x741JiR5lQCPVPFXCH+OPMTAqmP4j2m9CrYfrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-875b6256041so107758839f.2
-        for <gfs2@lists.linux.dev>; Thu, 19 Jun 2025 23:44:32 -0700 (PDT)
+	s=arc-20240116; t=1750441130; c=relaxed/simple;
+	bh=lqEhx3Tq9ef6EiQT7yhsgJN26gh6j2b8+Vw+neK46lo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=ZfTDRc0g5DuM3Mc0fpuyrdAmV3HjJ9qfT+Xh2AkqOLWFFiG1NoqfNMQMPKRGGelypoUPAiDQukMoZmmGO2DxtkQHk9INswgK33rEDecX0Ug2FFSWViWDx+d0PIKAjR+gpxeWczyiWynGzCATEZOfyO4I6A1wj6xNvu/cngaV2Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hnbw2smk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hnbw2smk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750441127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JD47MP/D35rJlJK+W0fohHkbJdlRqA+G8YCEoRCkt9E=;
+	b=Hnbw2smkvmNN2WFgY8AXejosFLq6nmUSoNYrJV+Jn7oroxpPNpNE3ee+gCJKgasC3ZLGWx
+	VBFnrpE5MclvP7BuRRr5VksFr652k//m61wk9wTJjCifHKAy2iRz88wMlhXh8L12lYNHU7
+	DTCCyx3YG0y/cT9vXi9Ebfz/eH4Gmn4=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-e0CX2MiXM5-5UcjTnyILlA-1; Fri, 20 Jun 2025 13:38:46 -0400
+X-MC-Unique: e0CX2MiXM5-5UcjTnyILlA-1
+X-Mimecast-MFC-AGG-ID: e0CX2MiXM5-5UcjTnyILlA_1750441125
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b2eeff19115so2671795a12.0
+        for <gfs2@lists.linux.dev>; Fri, 20 Jun 2025 10:38:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750401872; x=1751006672;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z7kVO0N3msBAmWGMDRyGWAg4wAq++1TEknB8jPIDN7g=;
-        b=FMXv/rRNiVwNo8nRngNHaA+KfoH82hb9n6Nk+aYjuOR09nAfZ/SxQU7AoRER1vZ3kG
-         uOTPMGGz4YXITRMhJ5/MYuvWq2rz0oQAcZe0mIA8rfgdH4HXLGWJUSsBROEmfpaWzHFC
-         CbLpXUC+y/Itgnl5UcmI9bM45S5l4h0fnsIpc2vIN1Mxo9+jxCI+ZnyH34nM9nYW8GJ4
-         MOpALMHWc/hgEXGnO2KG8InwGX2fIjTDD5JTXTyO1iwn+2omZEGd4SZNsvArcr3qzbT2
-         rQU8RhM+p1ROl1nK+o89okP1xd4MQZubsj4avO4FYsV1OQH5DBMVpyaHPmtwuEbykIV7
-         gtmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVDiFLj2Zy7J3IdmHsBDbjtRqK7/7c8m0HK/mKnvPij9B6UkOeasmdMlbwNiDf6/4tu8TX@lists.linux.dev
-X-Gm-Message-State: AOJu0YwU0jzdLl4A9+ww9Yq/Ux7RKUe6Ygw3vfnrNt64V7AGhWnd+AAP
-	W3l+LkZk42b9tV0NaBQ3IK2iW4E0OK5uFAfv2umI9vmSXhUqqo8PYrNnxuM/c2UkjKXsxHfEAWM
-	3PQ8NGB48WMnLnHW6yuaAMjddjWxX7VZZ5tKJQbcf3V5p/uclerAEk/zDys4=
-X-Google-Smtp-Source: AGHT+IHYKCvDkixiXKMTqbr4Hg3Gc5Ydc5TjCY/lQ3TYf1HV/YlT8xjlNze8O+ktC7jjavEOoRXVMJCHH8wnCGOt5W70N6WDWjkL
+        d=1e100.net; s=20230601; t=1750441125; x=1751045925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JD47MP/D35rJlJK+W0fohHkbJdlRqA+G8YCEoRCkt9E=;
+        b=Ej8UCrbiAvoufiXJ+GhltO+HnGARVR9DbwQ+Ge4wliQHomFCwjNFIzaUX6SFDXnjFQ
+         xLQ1kVNC/FL7CeLlafY7muWhOEv8uTfX658kJJdsCYyCiexRCYsIdQIsVoaPYeJjGW4I
+         Ch0Bt6bhrMqtaEooLXwCFYY6OOV7Ttm5In+LUnSpSYKCsCl/iFUfRzqiOcgEPpBrKi6P
+         fzM6+yTy/DTiSt8g5jbrAeeBEdoSLyp2glwXJqr1c5ohpXQ1y72HKX4dXO0nmHeSItfw
+         IT6bm9VNh4tZS3KzxbtTtufUeWDDXGC9x89L34ZEOvA0mopAp/jhLTIcjc+/S6YfZltr
+         D+GA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSwOGKCd66v6r/e2w+lnMIl9WQMDu5On6jNO6U+FBM/D8dYKV2tH/9W4u01o5o36rkEsMR@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFM8BwvwPRX9RyP/uRitYABG6aNEL6fqJgdRaDnMdasgVVyo4n
+	jVvLIPyZEPTCFTwi+N9vDxz+P67LfaYC/mCZXKuYaLw+qP7JYC7oxMBfhB+mhKw2aX+vbJ0Vowk
+	DqYV+RLjaKqe2PVy+/Fp4HCWJnW1IKrtsELXKkfUn0zcunHAGD68ZjWC4ZsfOVxA=
+X-Gm-Gg: ASbGncv8hB5YFB/gOjAaR/SpzQAAgxrd1NQZbnok8PiPOgM30uPrWcnYwdGCw0Br7lA
+	2SZ2S88IkOQotoZP8gxf0n/NMfI0WQsdV4k9qMTZNf2Pwj1ZLf0mw4Re7ekpAdd2mo8gDnnCrWV
+	lJvxP30aOMkVZwdKqd07N9xSCvtrV16QcZTlriMFrD7FB6TjQzT8+KpLWjgdEIY504AT1jbb2Ui
+	toSe+jsDYalbYUSKccZxIVY4ssjWg0zPjhsgpvqceUVfkOkILgix8tnTHr22z0r4z7MY1HRvlGS
+	J1zKhUE/y3mv5nnSkfUVGvNl2AhiGl8QV+sbIMAXaqxlGVpvN1KoocI8gEoEXeE=
+X-Received: by 2002:a05:6a20:3d85:b0:215:e60b:3bd3 with SMTP id adf61e73a8af0-22026efe3f9mr7315809637.29.1750441125094;
+        Fri, 20 Jun 2025 10:38:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwH5975YRUAMegPcfvcHN9wY4KebcZODQS2JViA9DaMRD9UKcgm5r8yqrteNswGViEEnJNQA==
+X-Received: by 2002:a05:6a20:3d85:b0:215:e60b:3bd3 with SMTP id adf61e73a8af0-22026efe3f9mr7315774637.29.1750441124730;
+        Fri, 20 Jun 2025 10:38:44 -0700 (PDT)
+Received: from dell-per750-06-vm-08.rhts.eng.pek2.redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f12587fbsm2111744a12.62.2025.06.20.10.38.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 10:38:44 -0700 (PDT)
+Date: Sat, 21 Jun 2025 01:38:39 +0800
+From: Zorro Lang <zlang@redhat.com>
+To: Su Yue <glass.su@suse.com>
+Cc: fstests@vger.kernel.org, l@damenly.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH] common/quota: adjust _qmount_option for gfs2
+Message-ID: <20250620173839.q735lweoglone5cp@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
+References: <20250603041009.59811-1-glass.su@suse.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1b0b:b0:3dd:d18a:2d71 with SMTP id
- e9e14a558f8ab-3de38c15e8bmr17182145ab.2.1750401872049; Thu, 19 Jun 2025
- 23:44:32 -0700 (PDT)
-Date: Thu, 19 Jun 2025 23:44:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68550350.a00a0220.137b3.0032.GAE@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in __gfs2_glock_put (2)
-From: syzbot <syzbot+ef4ad020dc976d178975@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20250603041009.59811-1-glass.su@suse.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: X4i9xeImc1Tdo6vwL7-Q2FPXzhz_1t7yOn4UmZGdM_E_1750441125
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello,
+On Tue, Jun 03, 2025 at 12:10:09PM +0800, Su Yue wrote:
+> gfs2 supports mount options 'quota=[off/account/quiet/on]' but
+> 'usrquota' and 'grpquota' are unsupported.
+> So in _qmount_option, transform $OPTS to 'quota=on' first.
+> 
+> Signed-off-by: Su Yue <glass.su@suse.com>
+> ---
+>  common/quota | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/common/quota b/common/quota
+> index a51386b1dd24..4b8052e07dde 100644
+> --- a/common/quota
+> +++ b/common/quota
+> @@ -283,6 +283,12 @@ _qmount_option()
+>  {
+>  	OPTS=$1
+>  
+> +	if [[ "$FSTYP" == gfs2 ]]; then
+> +		OPTS=`echo $OPTS \
+> +		| sed   -e 's/usrquota/quota=on/g' \
+> +			-e 's/grpquota/quota=on/g'`
+> +	fi
 
-syzbot found the following issue on:
+There's not response from gfs list. I'm not familiar with gfs2, so I have to
+ask some questions about your patch...
 
-HEAD commit:    bc6e0ba6c9ba Add linux-next specific files for 20250613
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15cd6e82580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2f7a2e4d17ed458f
-dashboard link: https://syzkaller.appspot.com/bug?extid=ef4ad020dc976d178975
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+From the manual of gfs2:
+  quota=[off/account/on]
+  Turns quotas on or off for a filesystem. Setting the quotas to be in the "account" state causes the per UID/GID usage statistics to be correctly maintained by the filesystem, limit and warn values are ignored. The default value is "off".
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Looks like there's only one mount option "quota=..." for gfs2. And I didn't
+find a description about project quota, so
+1. What will gfs2 do if there's a "prjquota" or "pquota"?
+2. Do you need to replace "noquota" with "quota=off"?
+3. And "quota" to "quota=on" ?
+4. Have you tried your patch on gfs2, can all quota related generic cases pass/notrun
+   on gfs2?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2430bb0465cc/disk-bc6e0ba6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/436a39deef0a/vmlinux-bc6e0ba6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e314ca5b1eb3/bzImage-bc6e0ba6.xz
+BTW, in this function you can see:
+        # ext4 doesn't _do_ "-o pquota/prjquota" because reasons
+        # Switch it to "quota" to enable mkfs-time pquota
+        if [[ "$FSTYP" == ext[234] ]]; then
+                OPTS=`echo $OPTS \
+                | sed   -e 's/\bpquota/quota/g' \
+                        -e 's/prjquota/quota/g'`
+        # ocfs2 doesn't support "-o projquota"
+        elif [[ "$FSTYP" == ocfs2 ]]; then
+                OPTS=`echo $OPTS | sed -e 's/prjquota//g'`
+        fi
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ef4ad020dc976d178975@syzkaller.appspotmail.com
+please move your gfs2 specific codes here ^^, and give it enough comments.
 
-gfs2: fsid=syz:syz.0: G:  s:UN n:2/925 f:a t:UN d:EX/0 a:0 v:0 r:-128 m:20 p:1
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/glock.c:274!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 55 Comm: kworker/0:1H Not tainted 6.16.0-rc1-next-20250613-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: gfs2-glock/syz:syz glock_work_func
-RIP: 0010:__gfs2_glock_put+0x384/0x3e0 fs/gfs2/glock.c:274
-Code: 3f 48 89 de e8 ed 0e ff ff eb 26 e8 c6 43 cf fd e9 30 fe ff ff e8 bc 43 cf fd 31 ff 48 89 de ba 01 00 00 00 e8 9d de ff ff 90 <0f> 0b e8 a5 43 cf fd 31 f6 65 ff 0d 3c cc ac 0e 40 0f 94 c5 40 0f
-RSP: 0018:ffffc9000130fa48 EFLAGS: 00010246
-RAX: c5b932becee92b00 RBX: ffff8880572f5fb0 RCX: ffff88801b770000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffc9000130f307 R09: 1ffff92000261e60
-R10: dffffc0000000000 R11: fffff52000261e61 R12: dffffc0000000000
-R13: 1ffff1100a9dc815 R14: ffff888054ee4000 R15: ffff8880572f62a0
-FS:  0000000000000000(0000) GS:ffff888125c41000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555656fb5c8 CR3: 000000007604a000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- process_one_work kernel/workqueue.c:3235 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3318
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3399
- kthread+0x711/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__gfs2_glock_put+0x384/0x3e0 fs/gfs2/glock.c:274
-Code: 3f 48 89 de e8 ed 0e ff ff eb 26 e8 c6 43 cf fd e9 30 fe ff ff e8 bc 43 cf fd 31 ff 48 89 de ba 01 00 00 00 e8 9d de ff ff 90 <0f> 0b e8 a5 43 cf fd 31 f6 65 ff 0d 3c cc ac 0e 40 0f 94 c5 40 0f
-RSP: 0018:ffffc9000130fa48 EFLAGS: 00010246
-RAX: c5b932becee92b00 RBX: ffff8880572f5fb0 RCX: ffff88801b770000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffc9000130f307 R09: 1ffff92000261e60
-R10: dffffc0000000000 R11: fffff52000261e61 R12: dffffc0000000000
-R13: 1ffff1100a9dc815 R14: ffff888054ee4000 R15: ffff8880572f62a0
-FS:  0000000000000000(0000) GS:ffff888125c41000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555656fb5c8 CR3: 000000007604a000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> +
+>  	# Replace any user defined quota options
+>  	# with the quota option that we want.
+>  	# Simplest to do this rather than delete existing ones first because
+> @@ -300,6 +306,7 @@ _qmount_option()
+>  		-e 's/\bpquota/QUOTA/g'    \
+>  		-e 's/prjquota/QUOTA/g'    \
+>  		-e 's/noquota/QUOTA/g'     \
+> +		-e 's/quota=[^, ]*/QUOTA/g' \
 
+I think you might need a word boundary, e.g. "\bquota=..."
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks,
+Zorro
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>  		-e 's/quota/QUOTA/g'       \
+>  		-e 's/uqnoenforce/QUOTA/g' \
+>  		-e 's/gqnoenforce/QUOTA/g' \
+> -- 
+> 2.48.1
+> 
+> 
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
