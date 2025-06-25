@@ -1,117 +1,235 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE859946A;
-	Wed, 25 Jun 2025 17:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2DB2BDC00
+	for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 22:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750870989; cv=none; b=MdNjlUINSSPjhQC24zbLqAaoVlSpZrMLHIpZoEfPcaOGCcf6iSHyvoPRCfmErDm1DAmJJ3lRPhc765MvXxKfAnl1v+UGxlyctVwPBJ1CVka+Peu6j3sani4AvQuLJdwaqTaQXyY5kTinbntlzthI2JVT8nJmG2sPnzbRTm6Ao2s=
+	t=1750889753; cv=none; b=KkK9C46btnB2iXngT2CK/laYb8+wCfrWevlGPoCV2lcifF7HSRzUDq3SekyKahLqjAtuTyzmW8pSn7j+HMIGkwCjR9LNJIztvZY5s5ljTfuQOfQPYsGzbrHEzwFE0I9FsonGKD7aYRY31HGO0oNbj3jEAVK47GlSWmAmqhyuE/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750870989; c=relaxed/simple;
-	bh=0+ImX5Z5+yST+Npw31q/8a7InEoeRMTLz6Y4D6JHFtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JxU3e9j/0PZSAwl7LUBgyG1gcPJg44tY6emQ84Aa7q60jl1NvoGgUjtcLn03+R9Dxu1wU1cxDmGPZ0PwRVnaqOJIGfqE0WghSlLVeRY/UsRIrBYichap8wstFvWUOxTegIAGPE4mXYyQddZK7Fvae5JLG8y2KWTlA3BoCoVn1Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dLLPqjHW; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750889753; c=relaxed/simple;
+	bh=ylUWsqBdv7tvsvdpMfdW9ujSAH2BGmfxAz/cPhecY5Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Th1ZmsrnyDnhMxcdmm7uDMBwFQ2gvHK8rZP3A0dGtEtkJGccGIP6/uQOJ02GbQJCWoMTj/VwYLmaE22+piHRyxkdqKPH5qccHmKjpPI1MQq+45qDlz/CC+jHXZGL9srQUz7fpjxUngZNNsN3OYLXKYPZY4901yUZagiabI+KewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQUsgw2d; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dLLPqjHW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750870988; x=1782406988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0+ImX5Z5+yST+Npw31q/8a7InEoeRMTLz6Y4D6JHFtI=;
-  b=dLLPqjHWXaGqeSnjkuEa1a7bz8sbdqIX/773yiy+IXxJsinUJ/Jr3VqB
-   6VhcSuC6lSW8TeAjvBobWFu/At+rE/fNKhwhQdjfe0FNbHohs/D/WxMz+
-   a7GRfgLjqLjdwi3KKIT5M/biLWNss/AY0YA5giqTf7i+HOLuIdMDJKpIy
-   TPbNdudHtcOCiRqK5L4sqDl1tRqv/hZnMsK5rQ1UvEe/O3kER5asOx5Kk
-   l17++GzDo60pbDprtFPIV8uhdT1hCnM4rwkFY2iB5eQsSl9z7I06NL/bq
-   xgCQgA/nqeD1W7Vg+ISanyJm4zO9MGyauy4wOMTLN1nckR38ryqrNb8+Q
-   g==;
-X-CSE-ConnectionGUID: +/UISAehQdizLTD2aJZFpQ==
-X-CSE-MsgGUID: PZPyBZdVQCmLETDfWlcKnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="78581521"
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="78581521"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 10:03:07 -0700
-X-CSE-ConnectionGUID: gy67ZgwNTDKWcXsuBplZwg==
-X-CSE-MsgGUID: e9r7QM1LQyqQI9aTuVfkMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="157767066"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 25 Jun 2025 10:03:04 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUTWY-000TLm-0J;
-	Wed, 25 Jun 2025 17:03:02 +0000
-Date: Thu, 26 Jun 2025 01:02:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu,
-	brauner@kernel.org, djwong@kernel.org, anuj20.g@samsung.com,
-	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 14/16] fuse: use iomap for folio laundering
-Message-ID: <202506260003.qJL8KxcS-lkp@intel.com>
-References: <20250624022135.832899-15-joannelkoong@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQUsgw2d"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23636167afeso4355015ad.3
+        for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 15:15:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750889751; x=1751494551; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i1/PgKpNQEL4CZ/x5npolCmb2YPYwo+H2VVcT6JHico=;
+        b=bQUsgw2dKlDIY7AWTR2OJp9+NNiIVSAX4TtHWSIgJ50Pb/2nKUD/D5tdvwWFitzdPM
+         IIXbYkG5SMM0owXJWnFqWTX+XsVocY0mzuRRc865nkyFBQcAg4/tmkEL2c6wIw0L9UWH
+         KWthoj5dGIk6hjJf3fyRIV2pEVvhO1ibLM/VGcxjt6wLMkpbFbYrBJDPlby3tNGSM4B0
+         K98kzYEIkaVKEcMpQVMvDSCymUECMEw2LYcQcyEaZ1XqpTfJhGgnXnmJ/vV/gzl/JICm
+         Lb2cGDp6uax+dcDflxHH0W2b5pH/XuxRCdm25SVYLuziL61Z+P1aSIBq2FQhOiqGtxZH
+         geIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750889751; x=1751494551;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i1/PgKpNQEL4CZ/x5npolCmb2YPYwo+H2VVcT6JHico=;
+        b=NwFeM5ArO4tw9ukPPt4sV2TF6mwk+NpoicRPB5xRrYx5PC33553u1iXfgWsmhqY+Sl
+         CLgpPbAT4x3iBBxShAaN9mwHl/2hVzKwrElxZb1Nu8pygBb2duJRq4umUzi44zXOsFfC
+         vunualuriYfNO2RB8yshSFS9Z0NV1xJuq6jr9fpVLV+f9rbYxE0DTRRnwZRyu48HvGhZ
+         rlDvbFm9FPSjropxGXPS19DofLapLduZncHws8kwFO1gjcvjCDhZELQw0qiKwJNr5/Fw
+         ROJR7zu+/JU2rrNfH7Kq/SX+e+vB5UPdF7YLDNazkKeqyHr/4pogXQDLj4PPnMxm7p9i
+         4SXg==
+X-Gm-Message-State: AOJu0Yz+SrQla07AUc9wiZkpfUijJCObCNPmZg85gzz33GS0uAdN/0bJ
+	f6HZJqdb5PyItC2qsNXdrxZ7hPrzxntf1LPKqmk7JIei7w967wKlbzPkoWa2xQ==
+X-Gm-Gg: ASbGnctNncCgVMJd0y9OnxILUV9AWqAa6hBBjPY2CSwxmscwseGyKn+tpiaTawuQ7q3
+	POpb1sJ23hy+EiDdii+7PJ5UBGNW3sRKRHjaKCkj8s0K8rJeMBzbkzZXqMdxx06/F/vZLPZP5zm
+	w07/sPnwbXxonB9e8zs9rvi58/VdO1sor7wx27I78lMIFsCR7ev3m35KJNtlOVhrq++xQbyoa1S
+	77LTEiMp4InBIHc+5c6H8kWnvL4FGsTC9CpeoNQwDrI09vDBQD4FBNc0CjXj+HZrvYojuXQushP
+	wIoLQ7ivUqMJ46atjftLdjzt3BbaOcYL6ZT8BtIuJkQxNXYGfTO9xpCFcfZ3CQ0eskWVG5HO3V/
+	8tH0=
+X-Google-Smtp-Source: AGHT+IF447eXoeCPMZ9fSborn0oc0o77ApQohY3vn62RRe/f5MId9QjXnzTMTAtUShcwzCs4rGS+mw==
+X-Received: by 2002:a17:902:f684:b0:235:60e:3704 with SMTP id d9443c01a7336-23823fc3f99mr87140675ad.12.1750889751418;
+        Wed, 25 Jun 2025 15:15:51 -0700 (PDT)
+Received: from itsmeut.. ([103.215.237.70])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237f7579cddsm84397535ad.202.2025.06.25.15.15.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 15:15:50 -0700 (PDT)
+From: Utkarsh Singh <utkarsh.singh.em@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	Utkarsh Singh <utkarsh.singh.em@gmail.com>
+Subject: [PATCH] gfs2/sysfs: Replace sprintf/snprintf with sysfs_emit()
+Date: Thu, 26 Jun 2025 03:41:38 +0530
+Message-Id: <20250625221137.108313-1-utkarsh.singh.em@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624022135.832899-15-joannelkoong@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Joanne,
+Documentation/filesystems/sysfs.rst mentions that show() should only
+use sysfs_emit() or sysfs_emit_at() when formatting values returned
+to user space. This patch updates the GFS2 sysfs interface accordingly.
 
-kernel test robot noticed the following build errors:
+It replaces uses of sprintf() and snprintf() in all *_show() functions
+with sysfs_emit() to align with current kernel sysfs API best practices.
+It also updates the GFS2_SHOW_UINT macro to use sysfs_emit() instead
+of snprintf().
 
-[auto build test ERROR on brauner-vfs/vfs.all]
-[also build test ERROR on xfs-linux/for-next linus/master v6.16-rc3 next-20250625]
-[cannot apply to gfs2/for-next mszeredi-fuse/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Utkarsh Singh <utkarsh.singh.em@gmail.com>
+---
+ fs/gfs2/sys.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joanne-Koong/iomap-pass-more-arguments-using-struct-iomap_writepage_ctx/20250624-102709
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250624022135.832899-15-joannelkoong%40gmail.com
-patch subject: [PATCH v3 14/16] fuse: use iomap for folio laundering
-config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250626/202506260003.qJL8KxcS-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250626/202506260003.qJL8KxcS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506260003.qJL8KxcS-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepages':
-   file.c:(.text+0xbf0): undefined reference to `iomap_writepages'
-   file.c:(.text+0xbf0): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_writepages'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepage_finish':
-   file.c:(.text+0x1fd8): undefined reference to `iomap_finish_folio_write'
-   file.c:(.text+0x1fd8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_finish_folio_write'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_cache_write_iter':
-   file.c:(.text+0x888c): undefined reference to `iomap_file_buffered_write'
-   file.c:(.text+0x888c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_launder_folio':
->> file.c:(.text+0x8f74): undefined reference to `iomap_writeback_folio'
->> file.c:(.text+0x8f74): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_writeback_folio'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_iomap_writeback_range':
-   file.c:(.text+0x90d8): undefined reference to `iomap_start_folio_write'
-   file.c:(.text+0x90d8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_start_folio_write'
-   aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x370): undefined reference to `iomap_dirty_folio'
-   aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x3a0): undefined reference to `iomap_release_folio'
-
+diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c
+index c3c8842920d2..77bd35b2f594 100644
+--- a/fs/gfs2/sys.c
++++ b/fs/gfs2/sys.c
+@@ -59,7 +59,7 @@ static struct kset *gfs2_kset;
+ 
+ static ssize_t id_show(struct gfs2_sbd *sdp, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%u:%u\n",
++	return sysfs_emit(buf, "%u:%u\n",
+ 			MAJOR(sdp->sd_vfs->s_dev), MINOR(sdp->sd_vfs->s_dev));
+ }
+ 
+@@ -68,7 +68,7 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
+ 	unsigned long f = sdp->sd_flags;
+ 	ssize_t s;
+ 
+-	s = snprintf(buf, PAGE_SIZE,
++	s = sysfs_emit(buf,
+ 		     "Journal Checked:          %d\n"
+ 		     "Journal Live:             %d\n"
+ 		     "Journal ID:               %d\n"
+@@ -140,7 +140,7 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
+ 
+ static ssize_t fsname_show(struct gfs2_sbd *sdp, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%s\n", sdp->sd_fsname);
++	return sysfs_emit(buf, "%s\n", sdp->sd_fsname);
+ }
+ 
+ static ssize_t uuid_show(struct gfs2_sbd *sdp, char *buf)
+@@ -150,7 +150,7 @@ static ssize_t uuid_show(struct gfs2_sbd *sdp, char *buf)
+ 	buf[0] = '\0';
+ 	if (uuid_is_null(&s->s_uuid))
+ 		return 0;
+-	return snprintf(buf, PAGE_SIZE, "%pUB\n", &s->s_uuid);
++	return sysfs_emit(buf, "%pUB\n", &s->s_uuid);
+ }
+ 
+ static ssize_t freeze_show(struct gfs2_sbd *sdp, char *buf)
+@@ -158,7 +158,7 @@ static ssize_t freeze_show(struct gfs2_sbd *sdp, char *buf)
+ 	struct super_block *sb = sdp->sd_vfs;
+ 	int frozen = (sb->s_writers.frozen == SB_UNFROZEN) ? 0 : 1;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", frozen);
++	return sysfs_emit(buf, "%d\n", frozen);
+ }
+ 
+ static ssize_t freeze_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+@@ -194,7 +194,7 @@ static ssize_t freeze_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+ static ssize_t withdraw_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	unsigned int b = gfs2_withdrawing_or_withdrawn(sdp);
+-	return snprintf(buf, PAGE_SIZE, "%u\n", b);
++	return sysfs_emit(buf, "%u\n", b);
+ }
+ 
+ static ssize_t withdraw_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+@@ -397,7 +397,7 @@ static struct kobj_type gfs2_ktype = {
+ static ssize_t proto_name_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	const struct lm_lockops *ops = sdp->sd_lockstruct.ls_ops;
+-	return sprintf(buf, "%s\n", ops->lm_proto_name);
++	return sysfs_emit(buf, "%s\n", ops->lm_proto_name);
+ }
+ 
+ static ssize_t block_show(struct gfs2_sbd *sdp, char *buf)
+@@ -408,7 +408,7 @@ static ssize_t block_show(struct gfs2_sbd *sdp, char *buf)
+ 
+ 	if (test_bit(DFL_BLOCK_LOCKS, &ls->ls_recover_flags))
+ 		val = 1;
+-	ret = sprintf(buf, "%d\n", val);
++	ret = sysfs_emit(buf, "%d\n", val);
+ 	return ret;
+ }
+ 
+@@ -437,7 +437,7 @@ static ssize_t wdack_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	int val = completion_done(&sdp->sd_wdack) ? 1 : 0;
+ 
+-	return sprintf(buf, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t wdack_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+@@ -459,7 +459,7 @@ static ssize_t wdack_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+ static ssize_t lkfirst_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+-	return sprintf(buf, "%d\n", ls->ls_first);
++	return sysfs_emit(buf, "%d\n", ls->ls_first);
+ }
+ 
+ static ssize_t lkfirst_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+@@ -492,7 +492,7 @@ static ssize_t lkfirst_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+ static ssize_t first_done_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+-	return sprintf(buf, "%d\n", !!test_bit(DFL_FIRST_MOUNT_DONE, &ls->ls_recover_flags));
++	return sysfs_emit(buf, "%d\n", !!test_bit(DFL_FIRST_MOUNT_DONE, &ls->ls_recover_flags));
+ }
+ 
+ int gfs2_recover_set(struct gfs2_sbd *sdp, unsigned jid)
+@@ -550,18 +550,18 @@ static ssize_t recover_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+ static ssize_t recover_done_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+-	return sprintf(buf, "%d\n", ls->ls_recover_jid_done);
++	return sysfs_emit(buf, "%d\n", ls->ls_recover_jid_done);
+ }
+ 
+ static ssize_t recover_status_show(struct gfs2_sbd *sdp, char *buf)
+ {
+ 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+-	return sprintf(buf, "%d\n", ls->ls_recover_jid_status);
++	return sysfs_emit(buf, "%d\n", ls->ls_recover_jid_status);
+ }
+ 
+ static ssize_t jid_show(struct gfs2_sbd *sdp, char *buf)
+ {
+-	return sprintf(buf, "%d\n", sdp->sd_lockstruct.ls_jid);
++	return sysfs_emit(buf, "%d\n", sdp->sd_lockstruct.ls_jid);
+ }
+ 
+ static ssize_t jid_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
+@@ -626,7 +626,7 @@ static struct attribute *lock_module_attrs[] = {
+ 
+ static ssize_t quota_scale_show(struct gfs2_sbd *sdp, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%u %u\n",
++	return sysfs_emit(buf, "%u %u\n",
+ 			sdp->sd_tune.gt_quota_scale_num,
+ 			sdp->sd_tune.gt_quota_scale_den);
+ }
+@@ -679,7 +679,7 @@ static struct gfs2_attr tune_attr_##name = __ATTR(name, 0644, show, store)
+ #define TUNE_ATTR_2(name, store)                                              \
+ static ssize_t name##_show(struct gfs2_sbd *sdp, char *buf)                   \
+ {                                                                             \
+-	return snprintf(buf, PAGE_SIZE, "%u\n", sdp->sd_tune.gt_##name);      \
++	return sysfs_emit(buf, "%u\n", sdp->sd_tune.gt_##name);      \
+ }                                                                             \
+ TUNE_ATTR_3(name, name##_show, store)
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
