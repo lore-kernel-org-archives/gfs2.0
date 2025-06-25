@@ -1,106 +1,104 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37A922D785
-	for <gfs2@lists.linux.dev>; Tue, 24 Jun 2025 22:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723FD29E100;
+	Wed, 25 Jun 2025 11:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750802540; cv=none; b=Oxr21xsC1WFa3fx1TwvMgSpbSOk9FTFPH1JMTJMNK49Ef8p3Vxmiz7TEJoSqAx9z5sdE+Yz1TCV3CDps2BmrOJ55pJcenk6VITPDgpVN8Y32M+yJW+LhqPL+XiXDBtk9IDRfXXHGyNgY89R+Vif1oBjpcH5yEZKIaCmuFRu5X9c=
+	t=1750849893; cv=none; b=tyxRdoObzZ4K9WGdf45PfVEHoKgGnQLOu6em6YfHD7YnLj76X6ZtA8FBRfoCscN+CHTZSKoGWadIlSUxZPowA8s7BAckr+l/TeIxdG5+iyizUSp5FxFIDgqGtOzi+G0sznfxKaCdOlNdU+RY33H8Net/AXnlL/lE8JG58nODVUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750802540; c=relaxed/simple;
-	bh=KI6/XmV9em9yxZDWFEWy5ZAZI3Im1BUdkLJpbjnspMQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SFbAM2Tsd6McVMYxaZaskTSA1zt+QM+KSg5aOK9blb0BUpvEK/24sbskGEoaXCiEBTwIz+X5acH6AKHF/YqpQ4llm3HLfz7KGA17DqCEekN3g9EWURrZaiyS3qibUbklR6+CQEiOThphg29MvT8eL4BGM9alP/gY9BZS0zLpN7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gPH30wGE; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750849893; c=relaxed/simple;
+	bh=P4G3trloAWpcB1GNXQBtfIed3GuOFg6SZBVv40Mj4BI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AlQnTznTSvrQZY+WbNfDEOiBbUBXeRVbvatcuvAHHkjRK7JEd0DupLnbPEUrPZLsTPjB2oUb7KH6n4GBP+rMY1lA2vfALtIPQIb8vxmneSeH9MVjju2w2zLN+BdjWvXqSD9l0PCDXhwp4EyhCjvmggylU8ad8/ihAOmiRsKDV58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XXZYstL4; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gPH30wGE"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4a58f79d6e9so12589691cf.2
-        for <gfs2@lists.linux.dev>; Tue, 24 Jun 2025 15:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750802537; x=1751407337; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KI6/XmV9em9yxZDWFEWy5ZAZI3Im1BUdkLJpbjnspMQ=;
-        b=gPH30wGEvXgOvX/p/FHwAbevWDiHcKyY6Ek9SQIaaz3OYhIQQvgP7vTU5Vr9qTZS/3
-         ftbAidIc0B8JnxiAru1EEK++YnN8ipa5I7LaISG6Lm52KAumbNqX49H4zs0YTnpO187o
-         l+WwMR8hz6qGT9b1fO34lvdMGRClozzmSYBAfmIM4fdUvmCZj9CIijbkkTxD57+DD3tu
-         mrewhVoXxlhdhg8WEfEheSL6MEw1hLQ5pWj1dY4kdMH1lO5UQwGfBmd/s65Dap1A4mHl
-         O1lyVfsz8gwLMMImNOABdfMPN8zwRj+d0XJ3NvKnPBUyC2aqkWDAlRizLeOY50dVaoTv
-         YYXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750802537; x=1751407337;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KI6/XmV9em9yxZDWFEWy5ZAZI3Im1BUdkLJpbjnspMQ=;
-        b=eQYdX0nkBjN6CT/Yh2ajfTtIMEqlgv8uXhYfT66a4+4auU2YEq8TL0GbZRUzoQqpgD
-         dEkmwwuigNSHZhWoThIenjPhuipcRRJt3U+pACFFiNQVSyPOhFawA855qJOyw5lLkBK5
-         Cdz6zx4HUZXBZhZ1n60HKe+aePOR8sTVI9dD9EaXid81Btzhm4gQV7uahTNDTgUgeure
-         lG256mskwPM5gvBkf3ugDgVqQO6nsTVnFFmTgrwH8e1p8bJENub1CJzkRMwHflYKK3Yu
-         2D5Capg9fXSTXqshQ66RROoQ6EcfpUUm28kXlXz2J7TtHbBGU69HAM1UrAL9bybjJALs
-         em/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX2cFKPW1UyvGqksN/3pl4xBY33Cvv1cunj5e0yNXa7Dr8mxvVloM7S6ETYdJdDaZ71QR7z@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUUQa7SRmP+UKRR25tDRXPU1Ouvmy8hCtsxH+OpxSQDgE1te6a
-	yOh8VXf/UpvuaD0NsmJzXtZKWhUcTW1yp8sKMelItAA0r2C0RHwGzJAhB1kM+VAhyZZB/bBM14b
-	dop+5XsVBRH1NbPIDOdA9acFUj3R4b/c=
-X-Gm-Gg: ASbGnct+NQeKFUP/1riTOt4cO6u3FlR9oNe6ZfnivZBMS1Yfcqg+qs9hmFbFpK/PZwY
-	cMGX8fU8ZUkXgZYaoiewr2LsrEw3OC+rm2te/mB5y6Y9yZGOUcfcS+Lovy3+SeCYWdu012qHNb/
-	ibP8bVbz9iIe9QmEhzbWtgeINDz52mmlKvzR58yXLbx9MBoM0J8/VG5P+/d7c=
-X-Google-Smtp-Source: AGHT+IFApJK8qgHNiP15oAq3BEZlkrbkeLkCUqnNVjpYJuoZ4/jjmxsvBbUNxUSjqZ9kQuVJI4zok8KgKMGPbchiCDI=
-X-Received: by 2002:ac8:5905:0:b0:494:adff:7fe2 with SMTP id
- d75a77b69052e-4a7c0bbd8c8mr16752751cf.43.1750802537276; Tue, 24 Jun 2025
- 15:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XXZYstL4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750849891; x=1782385891;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P4G3trloAWpcB1GNXQBtfIed3GuOFg6SZBVv40Mj4BI=;
+  b=XXZYstL4wP9fomtTD4pW/hJdVp4vuRdn4SyvCYSKtPTWF5VAr+Bj6W/Q
+   5Slx0Z/lzwwers0VY9RON8vLYboXdMv7X17lhw757Q3zdH0QM4+axYGxk
+   aofx9Xo6mwhmpHRj34kaxMxI6D4RzSu5J3p1BSnbsh/JnZDlzQSKdF0Lw
+   eady/6X2SiqMI1EQLz8L5h7M53DCVYxbJarBXY2JkPpYhoDwKIBOYSaNO
+   0Y3Qu/lSPUZnxkzzkOkhlY5TiwWoRBWXh3UhKr/gVLUzPGhxkwdUZ21Nx
+   LskrMenKJC+QO/dKHmtc9PeG3El4D6uKOVTstHlGbkjOrwS6DSRR/eLy1
+   w==;
+X-CSE-ConnectionGUID: /MOEhadHSTSWqKDVFUuxeA==
+X-CSE-MsgGUID: xz/BLUT6QA2nFOSIb/WP+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53180220"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="53180220"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 04:11:31 -0700
+X-CSE-ConnectionGUID: 3E/jnHXVQRmZNSmNFnk2kQ==
+X-CSE-MsgGUID: zFE+wDJOSUGEa8J01jfj2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="152318891"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 25 Jun 2025 04:11:28 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uUO2I-000T2o-0E;
+	Wed, 25 Jun 2025 11:11:26 +0000
+Date: Wed, 25 Jun 2025 19:10:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu,
+	brauner@kernel.org, djwong@kernel.org, anuj20.g@samsung.com,
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 12/16] fuse: use iomap for buffered writes
+Message-ID: <202506251857.gt3y42uZ-lkp@intel.com>
+References: <20250624022135.832899-13-joannelkoong@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250624022135.832899-1-joannelkoong@gmail.com>
- <20250624022135.832899-2-joannelkoong@gmail.com> <783b0f0c-e39c-4f52-90e9-7f7e444d9e84@wdc.com>
-In-Reply-To: <783b0f0c-e39c-4f52-90e9-7f7e444d9e84@wdc.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 24 Jun 2025 15:02:06 -0700
-X-Gm-Features: AX0GCFsv1OYMTj4vzKRiFaHM3oOY5EQaLukCgNj950jARV6_mnnMOsZzOQUOErY
-Message-ID: <CAJnrk1ZQ=wVKmoQS12ixQHDuynMZNEkcu+Z0TgLvXxXRx++eEA@mail.gmail.com>
-Subject: Re: [PATCH v3 01/16] iomap: pass more arguments using struct iomap_writepage_ctx
-To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, hch <hch@lst.de>, 
-	"miklos@szeredi.hu" <miklos@szeredi.hu>, "brauner@kernel.org" <brauner@kernel.org>, 
-	"djwong@kernel.org" <djwong@kernel.org>, "anuj20.g@samsung.com" <anuj20.g@samsung.com>, 
-	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "gfs2@lists.linux.dev" <gfs2@lists.linux.dev>, 
-	"kernel-team@meta.com" <kernel-team@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624022135.832899-13-joannelkoong@gmail.com>
 
-On Mon, Jun 23, 2025 at 11:07=E2=80=AFPM Johannes Thumshirn
-<Johannes.Thumshirn@wdc.com> wrote:
->
-> On 24.06.25 04:23, Joanne Koong wrote:
-> > From: Christoph Hellwig <hch@lst.de>
-> >
-> > Add inode and wpc fields to pass the inode and writeback context that
-> > are needed in the entire writeback call chain, and let the callers
-> > initialize all fields in the writeback context before calling
-> > iomap_writepages to simplify the argument passing.
-> >
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
->
-> Looks good,
-> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
->
-> But IIRC it should also have Joanne's S-o-B as she's carrying it in her
-> tree.
+Hi Joanne,
 
-Hi Johannes,
+kernel test robot noticed the following build errors:
 
-I'll fix this up in v4 to include a signed-off-by line.
+[auto build test ERROR on brauner-vfs/vfs.all]
+[also build test ERROR on xfs-linux/for-next linus/master v6.16-rc3 next-20250625]
+[cannot apply to gfs2/for-next mszeredi-fuse/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks,
-Joanne
+url:    https://github.com/intel-lab-lkp/linux/commits/Joanne-Koong/iomap-pass-more-arguments-using-struct-iomap_writepage_ctx/20250624-102709
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
+patch link:    https://lore.kernel.org/r/20250624022135.832899-13-joannelkoong%40gmail.com
+patch subject: [PATCH v3 12/16] fuse: use iomap for buffered writes
+config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250625/202506251857.gt3y42uZ-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506251857.gt3y42uZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506251857.gt3y42uZ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_cache_write_iter':
+>> file.c:(.text+0x880c): undefined reference to `iomap_file_buffered_write'
+>> file.c:(.text+0x880c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
+>> aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x360): undefined reference to `iomap_release_folio'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
