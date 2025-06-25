@@ -1,114 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C4B16A956;
-	Wed, 25 Jun 2025 14:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B572229B20E
+	for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 15:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750861086; cv=none; b=Cngk1CP74o7NMnPbbVnz47GJm5b5RSwi441ZSlnuC7xxeV1Yg3WkM0hB6UmnRz1r5fct4CCCodT5RsNRtKKLblm6Mvndds6nKdPDfOEXi+HNh3YHQ1TyQ/sCCOuiqTELiRTbiLOC7Y5ADXrNT4JuAmj1aVxcDJBQQ/OlkmAJMgY=
+	t=1750866305; cv=none; b=MEgQvpVsgDS9kwqXykLPXF70iesG+9kboPTUazbObNiJ6Hc+x/AbPFYHECfGE1SlIIOXXY9EnW+PQD8uo30vIBkEzItEt+B1YsewzMwSK/LrK6siCqxuqyJSL4qzk6vAXa8EfIbcDtwrt/Qbpz+Sn9AOnmaz13cPqgZsETQt7lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750861086; c=relaxed/simple;
-	bh=M4G5XDxRuWGuM0Ue4i3Qt7POHiiyrCSIdxYPmlP+Yhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A9qW8bu9OCWQmV4rACzAO/JOMFdak89LD1ncNRXMaUsZDn1JPnOl1VwnH92o05x3qn0IwYcggih3a7GrRLx2db4YRYuXbXNaAUi1X7ac77CI6cFI2f/QsQ4nWquc0Pp5TiiA9aCsSvjwPoc6loIAJkZz6r0IhI+CjUtmXPrGlZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ow4JylV7; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750866305; c=relaxed/simple;
+	bh=hW/6m1/IVovvjQyrM0zoK+5rKyQCDSNy64NWdJi1Z+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lNcU5RByRR5XpT4StYkJSv+FQ+5pwNDjrc6WuLyM0VPh65EkD/LynJdxmrxxeMdYpvxld0XllNOim9z2lpkF9lr34OpIfmBB9XueHNOf73rZgCGj1GkxqNKp499y/tKDPlx5KsEpfwv4oEjawQppMrdc+0RKFJCOj/gTqc80SRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hywM/p2o; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ow4JylV7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750861084; x=1782397084;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M4G5XDxRuWGuM0Ue4i3Qt7POHiiyrCSIdxYPmlP+Yhk=;
-  b=Ow4JylV7E/MiEsVaJA4CZtIC/X3Kg6IjI49v+50CFJq4+WDhnzr5+Kpx
-   u+Ktp0o6iNCRttnc+HwYSxaZ0ynmEsBT/F7nM86/Qk/IoMjnq7U0X03hM
-   U+NlNhSNGq37YT5jAVJc+tFSnrJy6hTZuWdrANgJuLhvsODwbqm0zcYSk
-   Wv3mokhHxcwvt3qbekvs72Rrc6WNWhXe/GiZ74WwcSpKlkjW/nk9hmmzF
-   S34/XDAxoXsmZgRTprLVMxyDwifyCTV6BHHoRTu2OwnQsqSdYHnxjSCbI
-   Ojd8TWKBFygK+J9sYHq8uUmIK988RP7twpDKyXHa9fcePnh3ERFxAnD9u
-   A==;
-X-CSE-ConnectionGUID: IUTuWdPdQVqKGXkA+pV0Dg==
-X-CSE-MsgGUID: WvY6FZeoSceFY1urHwI1rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53197827"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="53197827"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 07:17:49 -0700
-X-CSE-ConnectionGUID: kltvbGmNTs2VqFyO5g4Z5w==
-X-CSE-MsgGUID: gGNfuW1XSeS7l+BDROKwjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="151658653"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 25 Jun 2025 07:17:45 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUQwZ-000TB8-1Q;
-	Wed, 25 Jun 2025 14:17:43 +0000
-Date: Wed, 25 Jun 2025 22:17:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu,
-	brauner@kernel.org, djwong@kernel.org, anuj20.g@samsung.com,
-	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 13/16] fuse: use iomap for writeback
-Message-ID: <202506252117.9V3HTO0i-lkp@intel.com>
-References: <20250624022135.832899-14-joannelkoong@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hywM/p2o"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ae0bc7aa21bso5594666b.2
+        for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 08:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750866302; x=1751471102; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iocf3xZEV33qVQt+76WbLL52e+K++YTQHmhfnQovIf0=;
+        b=hywM/p2oDIrQ2Yivfft2xq9DCaflPsRDFRE3adF2SQt4kEDOh0SFr/6L/Clc43dKkU
+         Y9DuIWJeeKr6llTRvRqVGNFyCcmga643U2COnI7WEo+A0mxXWeQg8oPaGC1/IM3r/88F
+         n5MN9u5RHiHU1lOJ1leDSvdsINXsy+ts/s4Jo4mF1bh4dKiVaZLC/UsxRw5iAvyXdnx0
+         FuIwb1hMBIDetwU1PBFgfc5GUXwtWl4862nYmFFelp+M+r7JgrbSFFa/IAzg7/Ej4TYi
+         gNxNq+WkGD2g0WnkKQPbO3y2kcq8wTZiD5k1oqI8KzrhBsaSwqzTmnm3T69LlDgRDEOT
+         fi2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750866302; x=1751471102;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iocf3xZEV33qVQt+76WbLL52e+K++YTQHmhfnQovIf0=;
+        b=b43yT9vwgVr68DWVqOs9jHYhQr+Dx9c3GEDSJ4bYDStOBDu5sqNmRckvwkYsrd7Co8
+         rUuSKA8dWi7GEO7Ii/iZqjN5UkGR8yjsoyaTW02gpor3eDSMioxNakFQ5gXsi58rskV/
+         FIJ45ytVmAPx7+fOtvx5QC1l+moKJI4mJnzpyUEhOXKoVhuiFk9VjglDpJAqJpkYkVMo
+         H80HK+nBTDRhjBUukMp6T5vmxTEiPuSJum6eRuz/iMyASoEc6Ore4VAgXzGR7ocaZUrA
+         41lTC61THvOmwZLetLawHSe+wr0b1N4yKLlgeI9Ea5n7mT0tzjephWX58a8oDTfBv3tf
+         UkmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNZfa9/XLWfcEU/pr04HVw5NLqe1MAppu4bDyCwPb8k4w5uBEKeI6tXP67t+ACmlVFPz56@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1oS3mj7fD5aWXg8AONs/cXG75pCW/8YpGXO2KAlldGi1bze4m
+	07EwfksuuVBln8ZqdmQkrHnLT2/kQCVuF/KF19LVXExSRXJ42Ktqm/F9A7iHcsmheVaaXQPuXOi
+	STzVkki5PLsZFn/5A3C56/YrHiF/cSBY=
+X-Gm-Gg: ASbGncum2VlYv5MdP9RZgLy/Pp78WXxxBScauGEqFuosY3V4gRBersrUDkes8+JL238
+	98nme2ji4p8RqlcLwMmJQsIjt5JSWOUoDHbf/woIpTTmYMqEOeE0CFR27T4+Zt2Tk6lk6MaM/J4
+	l/M2yILJedbV/s/KS+cHP43UNLVnfwqcDqiGmQU6mJGA0/
+X-Google-Smtp-Source: AGHT+IFs+V/EDFHaGKcJwU9/xkWCRRHAYQqa7LBSGKtKl48ykcDE4Nb840e4+FWhpIDCiq8jKWE842faRWDZOh7ThxM=
+X-Received: by 2002:a17:907:97cd:b0:ad8:8529:4f9b with SMTP id
+ a640c23a62f3a-ae0bed82d81mr354973966b.38.1750866301696; Wed, 25 Jun 2025
+ 08:45:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624022135.832899-14-joannelkoong@gmail.com>
+References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com>
+ <20250529111504.89912-1-kundan.kumar@samsung.com> <20250529203708.9afe27783b218ad2d2babb0c@linux-foundation.org>
+In-Reply-To: <20250529203708.9afe27783b218ad2d2babb0c@linux-foundation.org>
+From: Kundan Kumar <kundanthebest@gmail.com>
+Date: Wed, 25 Jun 2025 21:14:51 +0530
+X-Gm-Features: Ac12FXz-WfD7KDK7gS4t-j71iOt-puRRwIJfu8WaOkNNWXA_hJ1q0mugrvCoDS0
+Message-ID: <CALYkqXqs+mw3sqJg5X2K4wn8uo8dnr4uU0jcnnSTbKK9F4AiBA@mail.gmail.com>
+Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org, chao@kernel.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, 
+	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, willy@infradead.org, 
+	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com, 
+	axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org, 
+	dave@stgolabs.net, p.raghav@samsung.com, da.gomez@samsung.com, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
+	gost.dev@samsung.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Joanne,
+>
+> Makes sense.  It would be good to test this on a non-SMP machine, if
+> you can find one ;)
+>
 
-kernel test robot noticed the following build errors:
+Tested with kernel cmdline with maxcpus=1. The parallel writeback falls
+back to 1 thread behavior, showing nochange in BW.
 
-[auto build test ERROR on brauner-vfs/vfs.all]
-[also build test ERROR on xfs-linux/for-next linus/master v6.16-rc3 next-20250625]
-[cannot apply to gfs2/for-next mszeredi-fuse/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+  - On PMEM:
+    Base XFS        : 70.7 MiB/s
+    Parallel Writeback XFS    : 70.5 MiB/s
+    Base EXT4        : 137 MiB/s
+    Parallel Writeback EXT4    : 138 MiB/s
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joanne-Koong/iomap-pass-more-arguments-using-struct-iomap_writepage_ctx/20250624-102709
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250624022135.832899-14-joannelkoong%40gmail.com
-patch subject: [PATCH v3 13/16] fuse: use iomap for writeback
-config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/reproduce)
+  - On NVMe:
+    Base XFS        : 45.2 MiB/s
+    Parallel Writeback XFS    : 44.5 MiB/s
+    Base EXT4        : 81.2 MiB/s
+    Parallel Writeback EXT4    : 80.1 MiB/s
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506252117.9V3HTO0i-lkp@intel.com/
+>
+> Please test the performance on spinning disks, and with more filesystems?
+>
 
-All errors (new ones prefixed by >>):
+On a spinning disk, random IO bandwidth remains unchanged, while sequential
+IO performance declines. However, setting nr_wb_ctx = 1 via configurable
+writeback(planned in next version) eliminates the decline.
 
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepages':
->> file.c:(.text+0xa30): undefined reference to `iomap_writepages'
->> file.c:(.text+0xa30): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_writepages'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepage_finish':
->> file.c:(.text+0x1fd8): undefined reference to `iomap_finish_folio_write'
->> file.c:(.text+0x1fd8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_finish_folio_write'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_cache_write_iter':
-   file.c:(.text+0x888c): undefined reference to `iomap_file_buffered_write'
-   file.c:(.text+0x888c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
-   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_iomap_writeback_range':
->> file.c:(.text+0x9258): undefined reference to `iomap_start_folio_write'
->> file.c:(.text+0x9258): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_start_folio_write'
->> aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x370): undefined reference to `iomap_dirty_folio'
-   aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x3a0): undefined reference to `iomap_release_folio'
+echo 1 > /sys/class/bdi/8:16/nwritebacks
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+We can fetch the device queue's rotational property and allocate BDI with
+nr_wb_ctx = 1 for rotational disks. Hope this is a viable solution for
+spinning disks?
+
+  - Random IO
+    Base XFS        : 22.6 MiB/s
+    Parallel Writeback XFS    : 22.9 MiB/s
+    Base EXT4        : 22.5 MiB/s
+    Parallel Writeback EXT4    : 20.9 MiB/s
+
+  - Sequential IO
+    Base XFS        : 156 MiB/s
+    Parallel Writeback XFS    : 133 MiB/s (-14.7%)
+    Base EXT4        : 147 MiB/s
+    Parallel Writeback EXT4    : 124 MiB/s (-15.6%)
+
+-Kundan
