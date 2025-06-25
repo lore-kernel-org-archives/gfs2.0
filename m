@@ -1,53 +1,53 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723FD29E100;
-	Wed, 25 Jun 2025 11:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C4B16A956;
+	Wed, 25 Jun 2025 14:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750849893; cv=none; b=tyxRdoObzZ4K9WGdf45PfVEHoKgGnQLOu6em6YfHD7YnLj76X6ZtA8FBRfoCscN+CHTZSKoGWadIlSUxZPowA8s7BAckr+l/TeIxdG5+iyizUSp5FxFIDgqGtOzi+G0sznfxKaCdOlNdU+RY33H8Net/AXnlL/lE8JG58nODVUk=
+	t=1750861086; cv=none; b=Cngk1CP74o7NMnPbbVnz47GJm5b5RSwi441ZSlnuC7xxeV1Yg3WkM0hB6UmnRz1r5fct4CCCodT5RsNRtKKLblm6Mvndds6nKdPDfOEXi+HNh3YHQ1TyQ/sCCOuiqTELiRTbiLOC7Y5ADXrNT4JuAmj1aVxcDJBQQ/OlkmAJMgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750849893; c=relaxed/simple;
-	bh=P4G3trloAWpcB1GNXQBtfIed3GuOFg6SZBVv40Mj4BI=;
+	s=arc-20240116; t=1750861086; c=relaxed/simple;
+	bh=M4G5XDxRuWGuM0Ue4i3Qt7POHiiyrCSIdxYPmlP+Yhk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AlQnTznTSvrQZY+WbNfDEOiBbUBXeRVbvatcuvAHHkjRK7JEd0DupLnbPEUrPZLsTPjB2oUb7KH6n4GBP+rMY1lA2vfALtIPQIb8vxmneSeH9MVjju2w2zLN+BdjWvXqSD9l0PCDXhwp4EyhCjvmggylU8ad8/ihAOmiRsKDV58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XXZYstL4; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9qW8bu9OCWQmV4rACzAO/JOMFdak89LD1ncNRXMaUsZDn1JPnOl1VwnH92o05x3qn0IwYcggih3a7GrRLx2db4YRYuXbXNaAUi1X7ac77CI6cFI2f/QsQ4nWquc0Pp5TiiA9aCsSvjwPoc6loIAJkZz6r0IhI+CjUtmXPrGlZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ow4JylV7; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XXZYstL4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ow4JylV7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750849891; x=1782385891;
+  t=1750861084; x=1782397084;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=P4G3trloAWpcB1GNXQBtfIed3GuOFg6SZBVv40Mj4BI=;
-  b=XXZYstL4wP9fomtTD4pW/hJdVp4vuRdn4SyvCYSKtPTWF5VAr+Bj6W/Q
-   5Slx0Z/lzwwers0VY9RON8vLYboXdMv7X17lhw757Q3zdH0QM4+axYGxk
-   aofx9Xo6mwhmpHRj34kaxMxI6D4RzSu5J3p1BSnbsh/JnZDlzQSKdF0Lw
-   eady/6X2SiqMI1EQLz8L5h7M53DCVYxbJarBXY2JkPpYhoDwKIBOYSaNO
-   0Y3Qu/lSPUZnxkzzkOkhlY5TiwWoRBWXh3UhKr/gVLUzPGhxkwdUZ21Nx
-   LskrMenKJC+QO/dKHmtc9PeG3El4D6uKOVTstHlGbkjOrwS6DSRR/eLy1
-   w==;
-X-CSE-ConnectionGUID: /MOEhadHSTSWqKDVFUuxeA==
-X-CSE-MsgGUID: xz/BLUT6QA2nFOSIb/WP+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53180220"
+  bh=M4G5XDxRuWGuM0Ue4i3Qt7POHiiyrCSIdxYPmlP+Yhk=;
+  b=Ow4JylV7E/MiEsVaJA4CZtIC/X3Kg6IjI49v+50CFJq4+WDhnzr5+Kpx
+   u+Ktp0o6iNCRttnc+HwYSxaZ0ynmEsBT/F7nM86/Qk/IoMjnq7U0X03hM
+   U+NlNhSNGq37YT5jAVJc+tFSnrJy6hTZuWdrANgJuLhvsODwbqm0zcYSk
+   Wv3mokhHxcwvt3qbekvs72Rrc6WNWhXe/GiZ74WwcSpKlkjW/nk9hmmzF
+   S34/XDAxoXsmZgRTprLVMxyDwifyCTV6BHHoRTu2OwnQsqSdYHnxjSCbI
+   Ojd8TWKBFygK+J9sYHq8uUmIK988RP7twpDKyXHa9fcePnh3ERFxAnD9u
+   A==;
+X-CSE-ConnectionGUID: IUTuWdPdQVqKGXkA+pV0Dg==
+X-CSE-MsgGUID: WvY6FZeoSceFY1urHwI1rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53197827"
 X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="53180220"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 04:11:31 -0700
-X-CSE-ConnectionGUID: 3E/jnHXVQRmZNSmNFnk2kQ==
-X-CSE-MsgGUID: zFE+wDJOSUGEa8J01jfj2g==
+   d="scan'208";a="53197827"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 07:17:49 -0700
+X-CSE-ConnectionGUID: kltvbGmNTs2VqFyO5g4Z5w==
+X-CSE-MsgGUID: gGNfuW1XSeS7l+BDROKwjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="152318891"
+   d="scan'208";a="151658653"
 Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 25 Jun 2025 04:11:28 -0700
+  by orviesa010.jf.intel.com with ESMTP; 25 Jun 2025 07:17:45 -0700
 Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1uUO2I-000T2o-0E;
-	Wed, 25 Jun 2025 11:11:26 +0000
-Date: Wed, 25 Jun 2025 19:10:31 +0800
+	id 1uUQwZ-000TB8-1Q;
+	Wed, 25 Jun 2025 14:17:43 +0000
+Date: Wed, 25 Jun 2025 22:17:42 +0800
 From: kernel test robot <lkp@intel.com>
 To: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org
 Cc: oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu,
@@ -55,9 +55,9 @@ Cc: oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu,
 	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
 	kernel-team@meta.com
-Subject: Re: [PATCH v3 12/16] fuse: use iomap for buffered writes
-Message-ID: <202506251857.gt3y42uZ-lkp@intel.com>
-References: <20250624022135.832899-13-joannelkoong@gmail.com>
+Subject: Re: [PATCH v3 13/16] fuse: use iomap for writeback
+Message-ID: <202506252117.9V3HTO0i-lkp@intel.com>
+References: <20250624022135.832899-14-joannelkoong@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250624022135.832899-13-joannelkoong@gmail.com>
+In-Reply-To: <20250624022135.832899-14-joannelkoong@gmail.com>
 
 Hi Joanne,
 
@@ -81,23 +81,33 @@ https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Joanne-Koong/iomap-pass-more-arguments-using-struct-iomap_writepage_ctx/20250624-102709
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250624022135.832899-13-joannelkoong%40gmail.com
-patch subject: [PATCH v3 12/16] fuse: use iomap for buffered writes
-config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250625/202506251857.gt3y42uZ-lkp@intel.com/config)
+patch link:    https://lore.kernel.org/r/20250624022135.832899-14-joannelkoong%40gmail.com
+patch subject: [PATCH v3 13/16] fuse: use iomap for writeback
+config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/config)
 compiler: aarch64-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506251857.gt3y42uZ-lkp@intel.com/reproduce)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506251857.gt3y42uZ-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506252117.9V3HTO0i-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
+   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepages':
+>> file.c:(.text+0xa30): undefined reference to `iomap_writepages'
+>> file.c:(.text+0xa30): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_writepages'
+   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepage_finish':
+>> file.c:(.text+0x1fd8): undefined reference to `iomap_finish_folio_write'
+>> file.c:(.text+0x1fd8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_finish_folio_write'
    aarch64-linux-ld: fs/fuse/file.o: in function `fuse_cache_write_iter':
->> file.c:(.text+0x880c): undefined reference to `iomap_file_buffered_write'
->> file.c:(.text+0x880c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
->> aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x360): undefined reference to `iomap_release_folio'
+   file.c:(.text+0x888c): undefined reference to `iomap_file_buffered_write'
+   file.c:(.text+0x888c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
+   aarch64-linux-ld: fs/fuse/file.o: in function `fuse_iomap_writeback_range':
+>> file.c:(.text+0x9258): undefined reference to `iomap_start_folio_write'
+>> file.c:(.text+0x9258): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_start_folio_write'
+>> aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x370): undefined reference to `iomap_dirty_folio'
+   aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x3a0): undefined reference to `iomap_release_folio'
 
 -- 
 0-DAY CI Kernel Test Service
