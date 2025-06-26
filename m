@@ -1,235 +1,143 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2DB2BDC00
-	for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 22:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA202EE289
+	for <gfs2@lists.linux.dev>; Thu, 26 Jun 2025 15:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750889753; cv=none; b=KkK9C46btnB2iXngT2CK/laYb8+wCfrWevlGPoCV2lcifF7HSRzUDq3SekyKahLqjAtuTyzmW8pSn7j+HMIGkwCjR9LNJIztvZY5s5ljTfuQOfQPYsGzbrHEzwFE0I9FsonGKD7aYRY31HGO0oNbj3jEAVK47GlSWmAmqhyuE/M=
+	t=1750950002; cv=none; b=QCIAIME4RXtO19y3MHxosEF/Zv5uvP0wSfw1r8W4epMge9QobNSp7KLWwJmeLBtVEOmBsMMrzpvQ9Jox0bk3ekBj8LspnmEF2iiCOfP86rFmvNVbO3SZARysLTS3iCyH/HzaLEPqK3UScRheN6McBiOEtZIsn2YurC56HGtwiqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750889753; c=relaxed/simple;
-	bh=ylUWsqBdv7tvsvdpMfdW9ujSAH2BGmfxAz/cPhecY5Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Th1ZmsrnyDnhMxcdmm7uDMBwFQ2gvHK8rZP3A0dGtEtkJGccGIP6/uQOJ02GbQJCWoMTj/VwYLmaE22+piHRyxkdqKPH5qccHmKjpPI1MQq+45qDlz/CC+jHXZGL9srQUz7fpjxUngZNNsN3OYLXKYPZY4901yUZagiabI+KewU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQUsgw2d; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750950002; c=relaxed/simple;
+	bh=Rd9MfG2wYsIuZWNKGti3XIqY5TapE2MeUv/fqmZbSYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dsk0yfwqHnERoajT+YUKaeLYJa3MwvqkuXXsha2awdeZU9eCSSffcY4YB/7QJMAA2s63V9U6ADfH57TKAPWqEZcGTxHrO3N2HKs9M8kEh7ueulmzmF0ctC+tMCDIg4NbCBw+4/3W1WuRmBSPFDSJH2xXHS1ze91tcN2Pq2RD528=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dMb1yLMn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQUsgw2d"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23636167afeso4355015ad.3
-        for <gfs2@lists.linux.dev>; Wed, 25 Jun 2025 15:15:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750889751; x=1751494551; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i1/PgKpNQEL4CZ/x5npolCmb2YPYwo+H2VVcT6JHico=;
-        b=bQUsgw2dKlDIY7AWTR2OJp9+NNiIVSAX4TtHWSIgJ50Pb/2nKUD/D5tdvwWFitzdPM
-         IIXbYkG5SMM0owXJWnFqWTX+XsVocY0mzuRRc865nkyFBQcAg4/tmkEL2c6wIw0L9UWH
-         KWthoj5dGIk6hjJf3fyRIV2pEVvhO1ibLM/VGcxjt6wLMkpbFbYrBJDPlby3tNGSM4B0
-         K98kzYEIkaVKEcMpQVMvDSCymUECMEw2LYcQcyEaZ1XqpTfJhGgnXnmJ/vV/gzl/JICm
-         Lb2cGDp6uax+dcDflxHH0W2b5pH/XuxRCdm25SVYLuziL61Z+P1aSIBq2FQhOiqGtxZH
-         geIQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dMb1yLMn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750949999;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=66pjXQOOoZM9w58+iyhucNXBgUjwx6ikLbfG097QrC4=;
+	b=dMb1yLMncHwG5X1rxETKMdqR9IqZcwxwctxC7PH8FyR90q/O1hbZANo0E+SkaK3rYHpzHj
+	nWfSu79V661MN6F14LmaKQG4FLUD7WKR8b4d0OKGRXoLQ/q5tw8NaNMUw2XRu87Cr1LEjS
+	EY2F9ufBG3MqXfNyAwnGKaGrxcmxnJw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-5h5oSd9bNpe50Kz8v0dQMQ-1; Thu, 26 Jun 2025 10:59:58 -0400
+X-MC-Unique: 5h5oSd9bNpe50Kz8v0dQMQ-1
+X-Mimecast-MFC-AGG-ID: 5h5oSd9bNpe50Kz8v0dQMQ_1750949997
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4532514dee8so8214065e9.0
+        for <gfs2@lists.linux.dev>; Thu, 26 Jun 2025 07:59:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750889751; x=1751494551;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i1/PgKpNQEL4CZ/x5npolCmb2YPYwo+H2VVcT6JHico=;
-        b=NwFeM5ArO4tw9ukPPt4sV2TF6mwk+NpoicRPB5xRrYx5PC33553u1iXfgWsmhqY+Sl
-         CLgpPbAT4x3iBBxShAaN9mwHl/2hVzKwrElxZb1Nu8pygBb2duJRq4umUzi44zXOsFfC
-         vunualuriYfNO2RB8yshSFS9Z0NV1xJuq6jr9fpVLV+f9rbYxE0DTRRnwZRyu48HvGhZ
-         rlDvbFm9FPSjropxGXPS19DofLapLduZncHws8kwFO1gjcvjCDhZELQw0qiKwJNr5/Fw
-         ROJR7zu+/JU2rrNfH7Kq/SX+e+vB5UPdF7YLDNazkKeqyHr/4pogXQDLj4PPnMxm7p9i
-         4SXg==
-X-Gm-Message-State: AOJu0Yz+SrQla07AUc9wiZkpfUijJCObCNPmZg85gzz33GS0uAdN/0bJ
-	f6HZJqdb5PyItC2qsNXdrxZ7hPrzxntf1LPKqmk7JIei7w967wKlbzPkoWa2xQ==
-X-Gm-Gg: ASbGnctNncCgVMJd0y9OnxILUV9AWqAa6hBBjPY2CSwxmscwseGyKn+tpiaTawuQ7q3
-	POpb1sJ23hy+EiDdii+7PJ5UBGNW3sRKRHjaKCkj8s0K8rJeMBzbkzZXqMdxx06/F/vZLPZP5zm
-	w07/sPnwbXxonB9e8zs9rvi58/VdO1sor7wx27I78lMIFsCR7ev3m35KJNtlOVhrq++xQbyoa1S
-	77LTEiMp4InBIHc+5c6H8kWnvL4FGsTC9CpeoNQwDrI09vDBQD4FBNc0CjXj+HZrvYojuXQushP
-	wIoLQ7ivUqMJ46atjftLdjzt3BbaOcYL6ZT8BtIuJkQxNXYGfTO9xpCFcfZ3CQ0eskWVG5HO3V/
-	8tH0=
-X-Google-Smtp-Source: AGHT+IF447eXoeCPMZ9fSborn0oc0o77ApQohY3vn62RRe/f5MId9QjXnzTMTAtUShcwzCs4rGS+mw==
-X-Received: by 2002:a17:902:f684:b0:235:60e:3704 with SMTP id d9443c01a7336-23823fc3f99mr87140675ad.12.1750889751418;
-        Wed, 25 Jun 2025 15:15:51 -0700 (PDT)
-Received: from itsmeut.. ([103.215.237.70])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237f7579cddsm84397535ad.202.2025.06.25.15.15.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 15:15:50 -0700 (PDT)
-From: Utkarsh Singh <utkarsh.singh.em@gmail.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Utkarsh Singh <utkarsh.singh.em@gmail.com>
-Subject: [PATCH] gfs2/sysfs: Replace sprintf/snprintf with sysfs_emit()
-Date: Thu, 26 Jun 2025 03:41:38 +0530
-Message-Id: <20250625221137.108313-1-utkarsh.singh.em@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1750949996; x=1751554796;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=66pjXQOOoZM9w58+iyhucNXBgUjwx6ikLbfG097QrC4=;
+        b=HRa19k1soO+iobOyzItfZnFvl8xylJ4D8XAI6amiAO9/JtAgwx8PWJhOeoXsHcADzA
+         iJbSnQigaH3jyBQ2lw/VWBMVp5C6QvsBL8b1fMWbs2lSw4EJGblAJs6B6gAZlak3/bg5
+         P41YmIcCS5+a/UJYcwuPvzbQEf5Fu6N/pK8ePEl9EFmIqetAYdM8SaRjIyK2vYmfEveY
+         CKKsvZaFx0v3/D9HFZzSsQloZPtGF+oJ0UdhfZ9Jzkedi9yvfLDSJ2yfXtuJeiVo8PVs
+         uivDogTyJafQ2n84Hj2A7ET3WvEpJI1Ap/Qhre1H/KZeHTIz/KsGAGVlnbHfjFfmOh4w
+         JIgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcH7KrS/3GfVl1fYSWtyNhxIlMvA9pgyFQffvns+7thyaybGSARnWXM3JqY9IGlj1hqG6f@lists.linux.dev
+X-Gm-Message-State: AOJu0YyiLwI5/mLipUBTyO7Dgz1TN9vpb2SV0/AulYtrcY34mcJ7TKLp
+	AAuwiLWdHZDp4AimJQ3Qp4rt5vXcnTickSXTxy29VCJu/+oEQIsWkShWNGVVOWe06zBDcgRxjpj
+	eRtyUGl33Y/OojyYKcEBr1swsw+kS0R1i5ZmnHIv5jkxUYBzV5iPBhIE=
+X-Gm-Gg: ASbGncujiKXaFnhr7JvG7WfI5xHR4ekYv4H6p7NSwseXBNjWV1xKa9PuilP5hNctYHZ
+	yorvKw9mYxanGyDP78gSMdj9ke1xulofLHosrDBL4zxi7DgLKjljMX6jQRLQCHP+vgzWD4ufBCJ
+	CfhIUPL/ryMFC8DCUcXl11JeSXxE2tVzf5hdgXqeuHa2pg4jbx4046b1S08//GP/qaOjsCe7PMa
+	NJ3g6CD98R6MhDADBC1FlaQ+/wG5yj1itrByMgZUSi7e/7dHB6tirM6b1juEvGl4wHuPkCfIA8S
+	G+nR15FKKAcHRT0WRvgHHaYjWS6LRgapyrZJzMUhtykcqYapQL5lcpYAypDZT2vNCmKEQ04UgM2
+	Yf59cFQ==
+X-Received: by 2002:a05:600c:3e86:b0:43c:ed61:2c26 with SMTP id 5b1f17b1804b1-4538ea96e0dmr203695e9.17.1750949996525;
+        Thu, 26 Jun 2025 07:59:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZrdudCYO4vZ84TfNYGyCpPy5SlZtMrr64Qy5kZRI78irHoQkU46UWTcPsRtqX+quq7nWPLg==
+X-Received: by 2002:a05:600c:3e86:b0:43c:ed61:2c26 with SMTP id 5b1f17b1804b1-4538ea96e0dmr203335e9.17.1750949996055;
+        Thu, 26 Jun 2025 07:59:56 -0700 (PDT)
+Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7fab6esm137284f8f.31.2025.06.26.07.59.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 07:59:55 -0700 (PDT)
+Message-ID: <07ef2fd5-d4cb-4fc3-8917-4bd6f06501d0@redhat.com>
+Date: Thu, 26 Jun 2025 15:59:54 +0100
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: refactor the iomap writeback code v2
+To: Christoph Hellwig <hch@lst.de>
+Cc: linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+ Andreas Gruenbacher <agruenba@redhat.com>
+References: <20250617105514.3393938-1-hch@lst.de>
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <20250617105514.3393938-1-hch@lst.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 73gMc6DBOAOY96Nqg59cSRfos72QJUP-dpg5tvp8qKU_1750949997
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Documentation/filesystems/sysfs.rst mentions that show() should only
-use sysfs_emit() or sysfs_emit_at() when formatting values returned
-to user space. This patch updates the GFS2 sysfs interface accordingly.
+On 17/06/2025 11:54, Christoph Hellwig wrote:
+> Hi all,
+> 
+> this is an alternative approach to the writeback part of the
+> "fuse: use iomap for buffered writes + writeback" series from Joanne.
+> It doesn't try to make the code build without CONFIG_BLOCK yet.
+> 
+> The big difference compared to Joanne's version is that I hope the
+> split between the generic and ioend/bio based writeback code is a bit
+> cleaner here.  We have two methods that define the split between the
+> generic writeback code, and the implemementation of it, and all knowledge
+> of ioends and bios now sits below that layer.
+> 
+> This version passes basic testing on xfs, and gets as far as mainline
+> for gfs2 (crashes in generic/361).
 
-It replaces uses of sprintf() and snprintf() in all *_show() functions
-with sysfs_emit() to align with current kernel sysfs API best practices.
-It also updates the GFS2_SHOW_UINT macro to use sysfs_emit() instead
-of snprintf().
+I can't get generic/361 to crash per se, but it does fail as it detects the new warning about the missing ->migrate_folio for the gfs2_{rgrp,meta}_aops, which I'm looking at now.
 
-Signed-off-by: Utkarsh Singh <utkarsh.singh.em@gmail.com>
----
- fs/gfs2/sys.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+If you have different results to this, please let me know more about the crash and your test environment.
 
-diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c
-index c3c8842920d2..77bd35b2f594 100644
---- a/fs/gfs2/sys.c
-+++ b/fs/gfs2/sys.c
-@@ -59,7 +59,7 @@ static struct kset *gfs2_kset;
- 
- static ssize_t id_show(struct gfs2_sbd *sdp, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%u:%u\n",
-+	return sysfs_emit(buf, "%u:%u\n",
- 			MAJOR(sdp->sd_vfs->s_dev), MINOR(sdp->sd_vfs->s_dev));
- }
- 
-@@ -68,7 +68,7 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
- 	unsigned long f = sdp->sd_flags;
- 	ssize_t s;
- 
--	s = snprintf(buf, PAGE_SIZE,
-+	s = sysfs_emit(buf,
- 		     "Journal Checked:          %d\n"
- 		     "Journal Live:             %d\n"
- 		     "Journal ID:               %d\n"
-@@ -140,7 +140,7 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
- 
- static ssize_t fsname_show(struct gfs2_sbd *sdp, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%s\n", sdp->sd_fsname);
-+	return sysfs_emit(buf, "%s\n", sdp->sd_fsname);
- }
- 
- static ssize_t uuid_show(struct gfs2_sbd *sdp, char *buf)
-@@ -150,7 +150,7 @@ static ssize_t uuid_show(struct gfs2_sbd *sdp, char *buf)
- 	buf[0] = '\0';
- 	if (uuid_is_null(&s->s_uuid))
- 		return 0;
--	return snprintf(buf, PAGE_SIZE, "%pUB\n", &s->s_uuid);
-+	return sysfs_emit(buf, "%pUB\n", &s->s_uuid);
- }
- 
- static ssize_t freeze_show(struct gfs2_sbd *sdp, char *buf)
-@@ -158,7 +158,7 @@ static ssize_t freeze_show(struct gfs2_sbd *sdp, char *buf)
- 	struct super_block *sb = sdp->sd_vfs;
- 	int frozen = (sb->s_writers.frozen == SB_UNFROZEN) ? 0 : 1;
- 
--	return snprintf(buf, PAGE_SIZE, "%d\n", frozen);
-+	return sysfs_emit(buf, "%d\n", frozen);
- }
- 
- static ssize_t freeze_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
-@@ -194,7 +194,7 @@ static ssize_t freeze_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
- static ssize_t withdraw_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	unsigned int b = gfs2_withdrawing_or_withdrawn(sdp);
--	return snprintf(buf, PAGE_SIZE, "%u\n", b);
-+	return sysfs_emit(buf, "%u\n", b);
- }
- 
- static ssize_t withdraw_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
-@@ -397,7 +397,7 @@ static struct kobj_type gfs2_ktype = {
- static ssize_t proto_name_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	const struct lm_lockops *ops = sdp->sd_lockstruct.ls_ops;
--	return sprintf(buf, "%s\n", ops->lm_proto_name);
-+	return sysfs_emit(buf, "%s\n", ops->lm_proto_name);
- }
- 
- static ssize_t block_show(struct gfs2_sbd *sdp, char *buf)
-@@ -408,7 +408,7 @@ static ssize_t block_show(struct gfs2_sbd *sdp, char *buf)
- 
- 	if (test_bit(DFL_BLOCK_LOCKS, &ls->ls_recover_flags))
- 		val = 1;
--	ret = sprintf(buf, "%d\n", val);
-+	ret = sysfs_emit(buf, "%d\n", val);
- 	return ret;
- }
- 
-@@ -437,7 +437,7 @@ static ssize_t wdack_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	int val = completion_done(&sdp->sd_wdack) ? 1 : 0;
- 
--	return sprintf(buf, "%d\n", val);
-+	return sysfs_emit(buf, "%d\n", val);
- }
- 
- static ssize_t wdack_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
-@@ -459,7 +459,7 @@ static ssize_t wdack_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
- static ssize_t lkfirst_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
--	return sprintf(buf, "%d\n", ls->ls_first);
-+	return sysfs_emit(buf, "%d\n", ls->ls_first);
- }
- 
- static ssize_t lkfirst_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
-@@ -492,7 +492,7 @@ static ssize_t lkfirst_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
- static ssize_t first_done_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
--	return sprintf(buf, "%d\n", !!test_bit(DFL_FIRST_MOUNT_DONE, &ls->ls_recover_flags));
-+	return sysfs_emit(buf, "%d\n", !!test_bit(DFL_FIRST_MOUNT_DONE, &ls->ls_recover_flags));
- }
- 
- int gfs2_recover_set(struct gfs2_sbd *sdp, unsigned jid)
-@@ -550,18 +550,18 @@ static ssize_t recover_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
- static ssize_t recover_done_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
--	return sprintf(buf, "%d\n", ls->ls_recover_jid_done);
-+	return sysfs_emit(buf, "%d\n", ls->ls_recover_jid_done);
- }
- 
- static ssize_t recover_status_show(struct gfs2_sbd *sdp, char *buf)
- {
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
--	return sprintf(buf, "%d\n", ls->ls_recover_jid_status);
-+	return sysfs_emit(buf, "%d\n", ls->ls_recover_jid_status);
- }
- 
- static ssize_t jid_show(struct gfs2_sbd *sdp, char *buf)
- {
--	return sprintf(buf, "%d\n", sdp->sd_lockstruct.ls_jid);
-+	return sysfs_emit(buf, "%d\n", sdp->sd_lockstruct.ls_jid);
- }
- 
- static ssize_t jid_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
-@@ -626,7 +626,7 @@ static struct attribute *lock_module_attrs[] = {
- 
- static ssize_t quota_scale_show(struct gfs2_sbd *sdp, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%u %u\n",
-+	return sysfs_emit(buf, "%u %u\n",
- 			sdp->sd_tune.gt_quota_scale_num,
- 			sdp->sd_tune.gt_quota_scale_den);
- }
-@@ -679,7 +679,7 @@ static struct gfs2_attr tune_attr_##name = __ATTR(name, 0644, show, store)
- #define TUNE_ATTR_2(name, store)                                              \
- static ssize_t name##_show(struct gfs2_sbd *sdp, char *buf)                   \
- {                                                                             \
--	return snprintf(buf, PAGE_SIZE, "%u\n", sdp->sd_tune.gt_##name);      \
-+	return sysfs_emit(buf, "%u\n", sdp->sd_tune.gt_##name);      \
- }                                                                             \
- TUNE_ATTR_3(name, name##_show, store)
- 
--- 
-2.34.1
+Thanks,
+Andy
+
+> 
+> Changes since v1:
+>   - fix iomap reuse in block/zonefs/gfs2
+>   - catch too large return value from ->writeback_range
+>   - mention the correct file name in a commit log
+>   - add patches for folio laundering
+>   - add patches for read/modify write in the generic write helpers
+> 
+> Diffstat:
+>   Documentation/filesystems/iomap/design.rst     |    3
+>   Documentation/filesystems/iomap/operations.rst |   51 --
+>   block/fops.c                                   |   37 +-
+>   fs/gfs2/aops.c                                 |    8
+>   fs/gfs2/bmap.c                                 |   48 +-
+>   fs/gfs2/bmap.h                                 |    1
+>   fs/gfs2/file.c                                 |    3
+>   fs/iomap/buffered-io.c                         |  438 ++++++-------------------
+>   fs/iomap/internal.h                            |    1
+>   fs/iomap/ioend.c                               |  220 ++++++++++++
+>   fs/iomap/trace.h                               |    2
+>   fs/xfs/xfs_aops.c                              |  238 +++++++------
+>   fs/xfs/xfs_file.c                              |    6
+>   fs/xfs/xfs_iomap.c                             |   12
+>   fs/xfs/xfs_iomap.h                             |    1
+>   fs/xfs/xfs_reflink.c                           |    3
+>   fs/zonefs/file.c                               |   40 +-
+>   include/linux/iomap.h                          |   81 ++--
+>   18 files changed, 630 insertions(+), 563 deletions(-)
+> 
 
