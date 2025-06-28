@@ -1,198 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C2720D4E3
-	for <gfs2@lists.linux.dev>; Fri, 27 Jun 2025 19:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BB02B9BF;
+	Sat, 28 Jun 2025 03:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751051709; cv=none; b=Y4UgkmnjqhRpuUWIWwJQrOsuxNlOtR/AxFXEIp8vU9bVy/b/NlOW4KVsiObpMZTBauF9BnBxf2DT1c5yKZob6SrNh333xawjJJJ+ht+06OCC3amhRLCHbR7ExY5kJN+nL2q1rLmeyXmGdJoKYyNvXcEsuIjMvjv3eInvlcWhmu4=
+	t=1751080207; cv=none; b=suXx4kJnPT6eLdB9pWHK4idsz9A+U/jOS9xhtJMRXWCVYkA7Y5MGZ7RCqLslknJoTBHh8/PukxV/msDNjB5pirixgsgPgXeN8m71PwvHoJ45p/u7IIadd/qD8Us/jKNzRFVnCBspXSUzT+BwddvZXhpmemvGerOq2jQIjiARPiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751051709; c=relaxed/simple;
-	bh=SY70xkPa6mJlmsfKBvrjeQYhdfFQN5MBR1J/QFlBzTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IHJ0FSTudxpzOgzlIZWZpdOHL6G0MEyf1NlcGXOSU00Duy2C3hPDyEz5H04TwEV13IPAtOH7Gaf6vq/vPY5ZFUlOz5IaQjlw3F4EJ7X+6/zOzcqNO9xmJTaOUIZVyHSETqZ+fqwjsRbA1YxzO/Oj580iy+ohr1x4DcQXL0eLxFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A4ku7dH6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751080207; c=relaxed/simple;
+	bh=b8+mJwRFpF5IfFwWI/Tw+nTCKCMhnZyvQe3VieW9Gao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dT0j5W24GDqPCmsUsk2JFoXker6/ZF4JjZIdLLmc5czsaTypBMyTuP5hM74ue0czrgnOsEdBKde8iPDmDJoYYS33P6Ex9z1wtLRkSCkgnnTl9DXH80edgYdsrOurRSBBJTH1fDb0wkvQQuNyRYc42xv5ZZtTSIS19Wt8o1f448A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OEGU7Qfw; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A4ku7dH6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751051706;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CYSrLAo09ExIjtjKGHrLSh/0TiMV2cB4z2DIrI0u/xE=;
-	b=A4ku7dH6wECQEO9DpkF3hiWB+ugLDHpEM+Rwv7i7aEXRPKX2bp9lxQETn1tODc/H4Di/b7
-	va8gFg72kQ2WwSERUot+ZjSzKeQy7aVorxWJ/Fd/C5JuqHoYFfWaQjlIjVvgWZP117uOtk
-	ZviCEXQbCjdvfXLvsb9mAEL7xkCt05Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-CMyhJzmuMdSDIRomBQcwvA-1; Fri,
- 27 Jun 2025 15:15:03 -0400
-X-MC-Unique: CMyhJzmuMdSDIRomBQcwvA-1
-X-Mimecast-MFC-AGG-ID: CMyhJzmuMdSDIRomBQcwvA_1751051701
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C9D851809C8A;
-	Fri, 27 Jun 2025 19:15:00 +0000 (UTC)
-Received: from bfoster (unknown [10.22.64.142])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2DBA1180045C;
-	Fri, 27 Jun 2025 19:14:58 +0000 (UTC)
-Date: Fri, 27 Jun 2025 15:18:36 -0400
-From: Brian Foster <bfoster@redhat.com>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 11/12] iomap: add read_folio_range() handler for buffered
- writes
-Message-ID: <aF7ujFij4GmYuYPu@bfoster>
-References: <20250627070328.975394-1-hch@lst.de>
- <20250627070328.975394-12-hch@lst.de>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OEGU7Qfw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=229+pb3c1kGk60BjjntDQ84g1jSuhYq7vWg2i21vlZg=; b=OEGU7Qfwp6pr7Q/MLT/iINjvn9
+	r9wDB8tQGs2iDEFZdYx/++rPO99UXRjmACqfAUX1J5+K4Htn09lmteRsf2ES8N/PdvKpcGf8S8St3
+	gv7vKQEbKMLVFtr7BHMBzvUwjwoTG2uFZmKcNl/ra/ZDYVc17Gz6Vu0aGG5tTsjf6aN3n2i0gx22K
+	z1pkwpk3AV93GXamQBrmugHmCaaXYiWHbLkuKu1xMFkJs+bK1JOhLy0gsFXte+TX/2aJPfdqXOmsA
+	lR2e74fZFQSdm9lUQ64oJihy8SpLG6yp1jjv4+zrtcC8koqf5CW2GOUzVb+TrjiNdGCR9SUJGJqG0
+	FKwHwZ/Q==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uVLx0-0000000FaFQ-2Jy1;
+	Sat, 28 Jun 2025 03:09:58 +0000
+Message-ID: <4edd9243-38f5-4522-b168-c7c71916d297@infradead.org>
+Date: Fri, 27 Jun 2025 20:09:55 -0700
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627070328.975394-12-hch@lst.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/12] iomap: hide ioends from the generic writeback code
+To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+ Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-block@vger.kernel.org, gfs2@lists.linux.dev
+References: <20250627070328.975394-1-hch@lst.de>
+ <20250627070328.975394-5-hch@lst.de>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250627070328.975394-5-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 27, 2025 at 09:02:44AM +0200, Christoph Hellwig wrote:
-> From: Joanne Koong <joannelkoong@gmail.com>
+
+
+On 6/27/25 12:02 AM, Christoph Hellwig wrote:
+> Replace the ioend pointer in iomap_writeback_ctx with a void *wb_ctx
+> one to facilitate non-block, non-ioend writeback for use.  Rename
+> the submit_ioend method to writeback_submit and make it mandatory so
+> that the generic writeback code stops seeing ioends and bios.
 > 
-> Add a read_folio_range() handler for buffered writes that filesystems
-> may pass in if they wish to provide a custom handler for synchronously
-> reading in the contents of a folio.
-> 
+> Co-developed-by: Joanne Koong <joannelkoong@gmail.com>
 > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> [hch: renamed to read_folio_range, pass less arguments]
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  .../filesystems/iomap/operations.rst          |  6 +++++
->  fs/iomap/buffered-io.c                        | 25 +++++++++++--------
->  include/linux/iomap.h                         | 10 ++++++++
->  3 files changed, 31 insertions(+), 10 deletions(-)
+>  .../filesystems/iomap/operations.rst          | 16 +---
+>  block/fops.c                                  |  1 +
+>  fs/gfs2/bmap.c                                |  1 +
+>  fs/iomap/buffered-io.c                        | 91 ++++++++++---------
+>  fs/xfs/xfs_aops.c                             | 60 ++++++------
+>  fs/zonefs/file.c                              |  1 +
+>  include/linux/iomap.h                         | 19 ++--
+>  7 files changed, 93 insertions(+), 96 deletions(-)
 > 
 > diff --git a/Documentation/filesystems/iomap/operations.rst b/Documentation/filesystems/iomap/operations.rst
-> index 167d3ca7819c..04432f40e7a2 100644
+> index 3c7989ee84ff..7073c1a3ede3 100644
 > --- a/Documentation/filesystems/iomap/operations.rst
 > +++ b/Documentation/filesystems/iomap/operations.rst
-> @@ -68,6 +68,8 @@ The following address space operations can be wrapped easily:
->       void (*put_folio)(struct inode *inode, loff_t pos, unsigned copied,
->                         struct folio *folio);
->       bool (*iomap_valid)(struct inode *inode, const struct iomap *iomap);
-> +     int (*read_folio_range)(const struct iomap_iter *iter,
-> +     			struct folio *folio, loff_t pos, size_t len);
-
-Whitespace ^
-
+> @@ -285,7 +285,7 @@ The ``ops`` structure must be specified and is as follows:
+>   struct iomap_writeback_ops {
+>      int (*writeback_range)(struct iomap_writeback_ctx *wpc,
+>      		struct folio *folio, u64 pos, unsigned int len, u64 end_pos);
+> -    int (*submit_ioend)(struct iomap_writeback_ctx *wpc, int status);
+> +    int (*writeback_submit)(struct iomap_writeback_ctx *wpc, int error);
 >   };
 >  
->  iomap calls these functions:
-...
+>  The fields are as follows:
+> @@ -307,13 +307,7 @@ The fields are as follows:
+>      purpose.
+>      This function must be supplied by the filesystem.
+>  
+> -  - ``submit_ioend``: Allows the file systems to hook into writeback bio
+> -    submission.
+> -    This might include pre-write space accounting updates, or installing
+> -    a custom ``->bi_end_io`` function for internal purposes, such as
+> -    deferring the ioend completion to a workqueue to run metadata update
+> -    transactions from process context before submitting the bio.
+> -    This function is optional.
+> +  - ``writeback_submit``: Submit the previous built writeback context.
+
+                                        previously
+
+>  
+>  Pagecache Writeback Completion
+>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index a77686977a2e..1a9ade77aeeb 100644
+> index a54b14817cd0..a72ab487c8ab 100644
 > --- a/fs/iomap/buffered-io.c
 > +++ b/fs/iomap/buffered-io.c
-> @@ -667,22 +667,23 @@ iomap_write_failed(struct inode *inode, loff_t pos, unsigned len)
->  					 pos + len - 1);
->  }
->  
-> -static int iomap_read_folio_sync(loff_t block_start, struct folio *folio,
-> -		size_t poff, size_t plen, const struct iomap *iomap)
-> +static int iomap_read_folio_range(const struct iomap_iter *iter,
-> +		struct folio *folio, loff_t pos, size_t len)
->  {
-> +	const struct iomap *srcmap = iomap_iter_srcmap(iter);
->  	struct bio_vec bvec;
->  	struct bio bio;
->  
-> -	bio_init(&bio, iomap->bdev, &bvec, 1, REQ_OP_READ);
-> -	bio.bi_iter.bi_sector = iomap_sector(iomap, block_start);
-> -	bio_add_folio_nofail(&bio, folio, plen, poff);
-> +	bio_init(&bio, srcmap->bdev, &bvec, 1, REQ_OP_READ);
-> +	bio.bi_iter.bi_sector = iomap_sector(srcmap, pos);
-> +	bio_add_folio_nofail(&bio, folio, len, offset_in_folio(folio, pos));
->  	return submit_bio_wait(&bio);
->  }
 
-Hmm, so this kind of makes my brain hurt... pos here is now the old
-block_start and len is the old plen. We used to pass poff to the
-add_folio_nofail() call, and now that is dropped and instead we use
-offset_in_folio(..., pos). The old poff is an output of the previous
-iomap_adjust_read_range() call, which is initially set to
-offset_in_folio(folio, *pos), of which *pos is block_start and is bumped
-in that function in the same places that poff is. Therefore old poff and
-new offset_in_folio(folio, pos) are logically equivalent. Am I following
-that correctly?
 
-Brian
 
+> @@ -1956,6 +1947,18 @@ iomap_writepages(struct iomap_writeback_ctx *wpc)
 >  
-> -static int __iomap_write_begin(const struct iomap_iter *iter, size_t len,
-> +static int __iomap_write_begin(const struct iomap_iter *iter,
-> +		const struct iomap_write_ops *write_ops, size_t len,
->  		struct folio *folio)
->  {
-> -	const struct iomap *srcmap = iomap_iter_srcmap(iter);
->  	struct iomap_folio_state *ifs;
->  	loff_t pos = iter->pos;
->  	loff_t block_size = i_blocksize(iter->inode);
-> @@ -731,8 +732,12 @@ static int __iomap_write_begin(const struct iomap_iter *iter, size_t len,
->  			if (iter->flags & IOMAP_NOWAIT)
->  				return -EAGAIN;
->  
-> -			status = iomap_read_folio_sync(block_start, folio,
-> -					poff, plen, srcmap);
-> +			if (write_ops && write_ops->read_folio_range)
-> +				status = write_ops->read_folio_range(iter,
-> +						folio, block_start, plen);
-> +			else
-> +				status = iomap_read_folio_range(iter,
-> +						folio, block_start, plen);
->  			if (status)
->  				return status;
->  		}
-> @@ -848,7 +853,7 @@ static int iomap_write_begin(struct iomap_iter *iter,
->  	else if (srcmap->flags & IOMAP_F_BUFFER_HEAD)
->  		status = __block_write_begin_int(folio, pos, len, NULL, srcmap);
->  	else
-> -		status = __iomap_write_begin(iter, len, folio);
-> +		status = __iomap_write_begin(iter, write_ops, len, folio);
->  
->  	if (unlikely(status))
->  		goto out_unlock;
-> diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-> index 482787013ff7..b3588dd43105 100644
-> --- a/include/linux/iomap.h
-> +++ b/include/linux/iomap.h
-> @@ -166,6 +166,16 @@ struct iomap_write_ops {
->  	 * locked by the iomap code.
->  	 */
->  	bool (*iomap_valid)(struct inode *inode, const struct iomap *iomap);
+>  	while ((folio = writeback_iter(mapping, wpc->wbc, folio, &error)))
+>  		error = iomap_writepage_map(wpc, folio);
+> -	return iomap_submit_ioend(wpc, error);
 > +
 > +	/*
-> +	 * Optional if the filesystem wishes to provide a custom handler for
-> +	 * reading in the contents of a folio, otherwise iomap will default to
-> +	 * submitting a bio read request.
+> +	 * If @error is non-zero, it means that we have a situation where some
+> +	 * part of the submission process has failed after we've marked pages
+> +	 * for writeback.
 > +	 *
-> +	 * The read must be done synchronously.
+> +	 * We cannot cancel the writeback directly in that case, so always call
+> +	 * ->writeback_submit to run the I/O completion handler to clear the
+> +	 * writeback bit and let the file system proess the errors.
+
+	                                         process
+
 > +	 */
-> +	int (*read_folio_range)(const struct iomap_iter *iter,
-> +			struct folio *folio, loff_t pos, size_t len);
->  };
->  
->  /*
-> -- 
-> 2.47.2
-> 
-> 
+> +	if (wpc->wb_ctx)
+> +		return wpc->ops->writeback_submit(wpc, error);
+> +	return error;
+>  }
+>  EXPORT_SYMBOL_GPL(iomap_writepages);
+
+
+-- 
+~Randy
 
