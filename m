@@ -1,144 +1,58 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BB02B9BF;
-	Sat, 28 Jun 2025 03:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089CC19D07A
+	for <gfs2@lists.linux.dev>; Mon, 30 Jun 2025 05:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751080207; cv=none; b=suXx4kJnPT6eLdB9pWHK4idsz9A+U/jOS9xhtJMRXWCVYkA7Y5MGZ7RCqLslknJoTBHh8/PukxV/msDNjB5pirixgsgPgXeN8m71PwvHoJ45p/u7IIadd/qD8Us/jKNzRFVnCBspXSUzT+BwddvZXhpmemvGerOq2jQIjiARPiU=
+	t=1751262160; cv=none; b=Trl9/hQUQRn1Z2pEPjFHHHJsr9IKv45xGPILSMkgDw/7Qn207S4jniLogh545AC52LS5Hj3sc7ewDRY/Fs4Mv9rYurgwiqsTZLoDG55qOjb2cUkuSmw6U1ulItlzGtnb+qvyns6GENA/COt1so3WhIwBH+jNJO0t95Zjx99RAFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751080207; c=relaxed/simple;
-	bh=b8+mJwRFpF5IfFwWI/Tw+nTCKCMhnZyvQe3VieW9Gao=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dT0j5W24GDqPCmsUsk2JFoXker6/ZF4JjZIdLLmc5czsaTypBMyTuP5hM74ue0czrgnOsEdBKde8iPDmDJoYYS33P6Ex9z1wtLRkSCkgnnTl9DXH80edgYdsrOurRSBBJTH1fDb0wkvQQuNyRYc42xv5ZZtTSIS19Wt8o1f448A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OEGU7Qfw; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OEGU7Qfw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=229+pb3c1kGk60BjjntDQ84g1jSuhYq7vWg2i21vlZg=; b=OEGU7Qfwp6pr7Q/MLT/iINjvn9
-	r9wDB8tQGs2iDEFZdYx/++rPO99UXRjmACqfAUX1J5+K4Htn09lmteRsf2ES8N/PdvKpcGf8S8St3
-	gv7vKQEbKMLVFtr7BHMBzvUwjwoTG2uFZmKcNl/ra/ZDYVc17Gz6Vu0aGG5tTsjf6aN3n2i0gx22K
-	z1pkwpk3AV93GXamQBrmugHmCaaXYiWHbLkuKu1xMFkJs+bK1JOhLy0gsFXte+TX/2aJPfdqXOmsA
-	lR2e74fZFQSdm9lUQ64oJihy8SpLG6yp1jjv4+zrtcC8koqf5CW2GOUzVb+TrjiNdGCR9SUJGJqG0
-	FKwHwZ/Q==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uVLx0-0000000FaFQ-2Jy1;
-	Sat, 28 Jun 2025 03:09:58 +0000
-Message-ID: <4edd9243-38f5-4522-b168-c7c71916d297@infradead.org>
-Date: Fri, 27 Jun 2025 20:09:55 -0700
+	s=arc-20240116; t=1751262160; c=relaxed/simple;
+	bh=GIWsfrtYwse+E8YsX2pJzplYbDDPWA/UFNRpnR2b96Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARUFHBbUcf8yDMxcqSXwVeoc8eBYBiEVPZtK2eFKjt59jwyP76DFgOrylg4BStyhhut7b42l2YElD+Jk2dr1i+9rgWe00/vyKfPGqf8+vj5XpUgMxiw5MCgikyIvctvJTLECZimTUlSaiYU2ZOewzFKiJU4Ogx/INRsocQ+R9/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 9C87468AA6; Mon, 30 Jun 2025 07:42:33 +0200 (CEST)
+Date: Mon, 30 Jun 2025 07:42:33 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Brian Foster <bfoster@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH 03/12] iomap: refactor the writeback interface
+Message-ID: <20250630054233.GA28532@lst.de>
+References: <20250627070328.975394-1-hch@lst.de> <20250627070328.975394-4-hch@lst.de> <aF61PZEb5ndROI6z@bfoster>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/12] iomap: hide ioends from the generic writeback code
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
- Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-block@vger.kernel.org, gfs2@lists.linux.dev
-References: <20250627070328.975394-1-hch@lst.de>
- <20250627070328.975394-5-hch@lst.de>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250627070328.975394-5-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aF61PZEb5ndROI6z@bfoster>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-
-
-On 6/27/25 12:02 AM, Christoph Hellwig wrote:
-> Replace the ioend pointer in iomap_writeback_ctx with a void *wb_ctx
-> one to facilitate non-block, non-ioend writeback for use.  Rename
-> the submit_ioend method to writeback_submit and make it mandatory so
-> that the generic writeback code stops seeing ioends and bios.
+On Fri, Jun 27, 2025 at 11:14:05AM -0400, Brian Foster wrote:
+> >   struct iomap_writeback_ops {
+> > -     int (*map_blocks)(struct iomap_writeback_ctx *wpc, struct inode *inode,
+> > -                       loff_t offset, unsigned len);
+> > -     int (*submit_ioend)(struct iomap_writeback_ctx *wpc, int status);
+> > -     void (*discard_folio)(struct folio *folio, loff_t pos);
+> > +    int (*writeback_range)(struct iomap_writeback_ctx *wpc,
+> > +    		struct folio *folio, u64 pos, unsigned int len, u64 end_pos);
 > 
-> Co-developed-by: Joanne Koong <joannelkoong@gmail.com>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  .../filesystems/iomap/operations.rst          | 16 +---
->  block/fops.c                                  |  1 +
->  fs/gfs2/bmap.c                                |  1 +
->  fs/iomap/buffered-io.c                        | 91 ++++++++++---------
->  fs/xfs/xfs_aops.c                             | 60 ++++++------
->  fs/zonefs/file.c                              |  1 +
->  include/linux/iomap.h                         | 19 ++--
->  7 files changed, 93 insertions(+), 96 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/iomap/operations.rst b/Documentation/filesystems/iomap/operations.rst
-> index 3c7989ee84ff..7073c1a3ede3 100644
-> --- a/Documentation/filesystems/iomap/operations.rst
-> +++ b/Documentation/filesystems/iomap/operations.rst
-> @@ -285,7 +285,7 @@ The ``ops`` structure must be specified and is as follows:
->   struct iomap_writeback_ops {
->      int (*writeback_range)(struct iomap_writeback_ctx *wpc,
->      		struct folio *folio, u64 pos, unsigned int len, u64 end_pos);
-> -    int (*submit_ioend)(struct iomap_writeback_ctx *wpc, int status);
-> +    int (*writeback_submit)(struct iomap_writeback_ctx *wpc, int error);
->   };
->  
->  The fields are as follows:
-> @@ -307,13 +307,7 @@ The fields are as follows:
->      purpose.
->      This function must be supplied by the filesystem.
->  
-> -  - ``submit_ioend``: Allows the file systems to hook into writeback bio
-> -    submission.
-> -    This might include pre-write space accounting updates, or installing
-> -    a custom ``->bi_end_io`` function for internal purposes, such as
-> -    deferring the ioend completion to a workqueue to run metadata update
-> -    transactions from process context before submitting the bio.
-> -    This function is optional.
-> +  - ``writeback_submit``: Submit the previous built writeback context.
+> Whitespace damage on the above line.
 
-                                        previously
-
->  
->  Pagecache Writeback Completion
->  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index a54b14817cd0..a72ab487c8ab 100644
-> --- a/fs/iomap/buffered-io.c
-> +++ b/fs/iomap/buffered-io.c
-
-
-
-> @@ -1956,6 +1947,18 @@ iomap_writepages(struct iomap_writeback_ctx *wpc)
->  
->  	while ((folio = writeback_iter(mapping, wpc->wbc, folio, &error)))
->  		error = iomap_writepage_map(wpc, folio);
-> -	return iomap_submit_ioend(wpc, error);
-> +
-> +	/*
-> +	 * If @error is non-zero, it means that we have a situation where some
-> +	 * part of the submission process has failed after we've marked pages
-> +	 * for writeback.
-> +	 *
-> +	 * We cannot cancel the writeback directly in that case, so always call
-> +	 * ->writeback_submit to run the I/O completion handler to clear the
-> +	 * writeback bit and let the file system proess the errors.
-
-	                                         process
-
-> +	 */
-> +	if (wpc->wb_ctx)
-> +		return wpc->ops->writeback_submit(wpc, error);
-> +	return error;
->  }
->  EXPORT_SYMBOL_GPL(iomap_writepages);
-
-
--- 
-~Randy
+Without this the vim syntax highlighting is confused for the rest of the
+file unfortunately.  Not sure how to deal with it, the RST formatting
+keeps driving me crazy.  As does this document, which really should
+not duplicate the type information, but folks really wanted this
+annoyingly redundant information that is a huge pain to maintain for no
+gain at all :(
 
