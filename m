@@ -1,33 +1,60 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7D02629C
-	for <gfs2@lists.linux.dev>; Mon, 30 Jun 2025 05:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8425283FF0
+	for <gfs2@lists.linux.dev>; Mon, 30 Jun 2025 12:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751262431; cv=none; b=DI26BqlX3B3BNzrFExIMvquCwigs+wEgsb8ULVA9kHu7lfHN7s5tjCdHSH4WWZB34IJbuOozNmA9eGkZiZjGT3UmPDh08GhkbVXA1g1bxRuRlapE/a/MsT7n3SiA0pnJ+eVP7tmIhS0BWr3zekfsNw2FOsI+PtYMpwfd8biew3g=
+	t=1751286949; cv=none; b=rlb1KgC9L3iTIxaOkQR8Qd8uiGgMh99WnD/h1eEXubYpEtWV/LsKdY2Xtl69bDuHO3fv8Re/cBaFmHJQG1XdwBbZrTHwqvFVK7WtHeku+KPB/ZLE88aK6TbKESqoi9PZqv5GjxXW8A7gFMbOCRohvNMBdmo/4pk+GK+5Q8rNC4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751262431; c=relaxed/simple;
-	bh=/SL0iq4l3TZFas29WAYUOA1z9JLbjzzThbe4Zec6Gik=;
+	s=arc-20240116; t=1751286949; c=relaxed/simple;
+	bh=26sNKR6wEfMyhROW4BBekBUidJAz8jHJII1OVvImDkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E728dJguCosHXx9QM/b0/6uPJtQ2fIVDT279EADP0g3jC/uLBW5DTpOyJ0ScaWLGX3klFOJLWXju8k2N/IJRTCpwmbWlW45vu+MqqkGGYxkKbfyne/i8xns+IzLGPk/mOlS0/Tlikfi31IgTA+A3yX4398fIjRSHf0D7ApFyqpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 367AA68AA6; Mon, 30 Jun 2025 07:47:06 +0200 (CEST)
-Date: Mon, 30 Jun 2025 07:47:05 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Brian Foster <bfoster@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=QnO8ojZgclx6RQeP2XX0WVnsFMsi8Onobq4s0qam1km+x9DTLOqlHwpntrOOSKuolJLwq4t7JcsmEMqPqZMRVB5LyFnY5ZmFMypT8W/bAM/Z3+QauabTnRXc2nfLR0VDYL5S4OxgGVNgKa+mhant9Oedplz5sC0jJ37W4K3fpao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b3VlHKsl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b3VlHKsl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751286946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bTnzgPM0dpIXyHgyu+1irqiMxmekrJg7dmLLPllBDn8=;
+	b=b3VlHKslmwePB4qzube0Wolo7Vt1UwWeIpDiy1NnU2JZkgwyb0IXlhz5rGVdd3NDfNIud2
+	OFJkRw//zEHtmc30odJQgWpLrmNYdEzTDUbGHbWcmy1CieJQOeOWAKpjBgNiDdTVlS05DI
+	7nk7kfGlyssUaWbep7iGGDTSUZ6r6nU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-uo3GGbkSOge3oIcb_1vwTQ-1; Mon,
+ 30 Jun 2025 08:35:42 -0400
+X-MC-Unique: uo3GGbkSOge3oIcb_1vwTQ-1
+X-Mimecast-MFC-AGG-ID: uo3GGbkSOge3oIcb_1vwTQ_1751286941
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B468B180120B;
+	Mon, 30 Jun 2025 12:35:40 +0000 (UTC)
+Received: from bfoster (unknown [10.22.64.142])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F023118003FC;
+	Mon, 30 Jun 2025 12:35:38 +0000 (UTC)
+Date: Mon, 30 Jun 2025 08:39:16 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-block@vger.kernel.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 11/12] iomap: add read_folio_range() handler for
- buffered writes
-Message-ID: <20250630054705.GF28532@lst.de>
-References: <20250627070328.975394-1-hch@lst.de> <20250627070328.975394-12-hch@lst.de> <aF7ujFij4GmYuYPu@bfoster>
+Subject: Re: [PATCH 03/12] iomap: refactor the writeback interface
+Message-ID: <aGKFdAagQFimoiXx@bfoster>
+References: <20250627070328.975394-1-hch@lst.de>
+ <20250627070328.975394-4-hch@lst.de>
+ <aF61PZEb5ndROI6z@bfoster>
+ <20250630054233.GA28532@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -36,36 +63,30 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aF7ujFij4GmYuYPu@bfoster>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20250630054233.GA28532@lst.de>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Fri, Jun 27, 2025 at 03:18:36PM -0400, Brian Foster wrote:
-> > +static int iomap_read_folio_range(const struct iomap_iter *iter,
-> > +		struct folio *folio, loff_t pos, size_t len)
-> >  {
-> > +	const struct iomap *srcmap = iomap_iter_srcmap(iter);
-> >  	struct bio_vec bvec;
-> >  	struct bio bio;
-> >  
-> > -	bio_init(&bio, iomap->bdev, &bvec, 1, REQ_OP_READ);
-> > -	bio.bi_iter.bi_sector = iomap_sector(iomap, block_start);
-> > -	bio_add_folio_nofail(&bio, folio, plen, poff);
-> > +	bio_init(&bio, srcmap->bdev, &bvec, 1, REQ_OP_READ);
-> > +	bio.bi_iter.bi_sector = iomap_sector(srcmap, pos);
-> > +	bio_add_folio_nofail(&bio, folio, len, offset_in_folio(folio, pos));
-> >  	return submit_bio_wait(&bio);
-> >  }
+On Mon, Jun 30, 2025 at 07:42:33AM +0200, Christoph Hellwig wrote:
+> On Fri, Jun 27, 2025 at 11:14:05AM -0400, Brian Foster wrote:
+> > >   struct iomap_writeback_ops {
+> > > -     int (*map_blocks)(struct iomap_writeback_ctx *wpc, struct inode *inode,
+> > > -                       loff_t offset, unsigned len);
+> > > -     int (*submit_ioend)(struct iomap_writeback_ctx *wpc, int status);
+> > > -     void (*discard_folio)(struct folio *folio, loff_t pos);
+> > > +    int (*writeback_range)(struct iomap_writeback_ctx *wpc,
+> > > +    		struct folio *folio, u64 pos, unsigned int len, u64 end_pos);
+> > 
+> > Whitespace damage on the above line.
 > 
-> Hmm, so this kind of makes my brain hurt... pos here is now the old
-> block_start and len is the old plen. We used to pass poff to the
-> add_folio_nofail() call, and now that is dropped and instead we use
-> offset_in_folio(..., pos). The old poff is an output of the previous
-> iomap_adjust_read_range() call, which is initially set to
-> offset_in_folio(folio, *pos), of which *pos is block_start and is bumped
-> in that function in the same places that poff is. Therefore old poff and
-> new offset_in_folio(folio, pos) are logically equivalent. Am I following
-> that correctly?
+> Without this the vim syntax highlighting is confused for the rest of the
+> file unfortunately.  Not sure how to deal with it, the RST formatting
+> keeps driving me crazy.  As does this document, which really should
+> not duplicate the type information, but folks really wanted this
+> annoyingly redundant information that is a huge pain to maintain for no
+> gain at all :(
+> 
 
-You are, but given that you had to ask mean this should probably
-be better documented ant/or be split into a separate patch.
+Ok NBD, just pointing out the tab/whitespace mix.
+
+Brian
 
