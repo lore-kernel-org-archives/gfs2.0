@@ -1,211 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2249F2F7CE0;
-	Wed,  2 Jul 2025 18:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6591940A2
+	for <gfs2@lists.linux.dev>; Wed,  2 Jul 2025 22:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751481880; cv=none; b=XifEW05IV7EoDI4gqK3nycWs9h/eav7RbIsAo+zz38ID4NeTmLPDuIsyKbGX+Sq9PgWCptDxvkE0SzwP9gWC97GFwnOT0jxQ/JGSc+LjVPjmyeo5vIcT2US8pfY7UnXHUmq7nNqaCS6jemk/DVKl+nvoEKpY/APjZwD7L14REHc=
+	t=1751493656; cv=none; b=K+6zyzVhjIZ7FmgT5xhbw21F/Fe4jN8LqPBQ7ByxGJcMDCTWQI36WrnGUsxbVaG3pmKRN2FQdjS6CetKxhMvqMF1Bv3ldgvkRTGm1hLLBuJrxdoRLlV821dox8sq53CyQfzQ4iv6pZ5Q4xnRrwa2q6AhwhgIbINS7zZhChZ3qrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751481880; c=relaxed/simple;
-	bh=/IZPd8KlF1Rfpn2HYXRQXoTSPYc958DcN74ujLHkxLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYnZHQG/9rkx3aPJEUN5D21kChn+1P2qXLmfFPdQ9nccaKBIAEgjM4jR36v/o4E/5cIcl3QRgiYKIGbslESu60b5y7Mjs+MV69idIMRirC68nss7WsiSyY1J4AXLyW+x0usMm7h74Zg/1os+r0qATPCDtQyhc7MMn16HuyhrA50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTe3GXWS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751493656; c=relaxed/simple;
+	bh=I2HXhl9/BOzIBeeYz0x5dYvcHignO7fdSMD8M+8Zvhg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L8JBF70xzOoeNo8CGfxnkWHr4O6pz94ggo+7wCfFNWP3sYGNRAfYtlkOjWBy4XE/lxusJJMTCEsX3zXZt9qPlS1IGT+MR4wRTlIrmuwXw/nvG6pTX3hXMaYn5kpgcw+oj7PAhAJbh8gM92hOvNs9BBrdyUuZwC/qDUluCBK/xB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+zhJBf7; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTe3GXWS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929F6C4CEE7;
-	Wed,  2 Jul 2025 18:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751481879;
-	bh=/IZPd8KlF1Rfpn2HYXRQXoTSPYc958DcN74ujLHkxLA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LTe3GXWS6Db++/57WYwVc3keMIXhJgZR4AR38dxLEyuCPmELgp+zbrl4ZBaRTSrU4
-	 cgOdmtJoRoq6XVoUNDgzn32O8s8Ldv6Pbr/j0mTPm9x7Mxon1GryHW7d6k+VR1ijtU
-	 t1OYIydDucFAbmJfRvfrYndlpUrRnTA9hd13CAMdlypcg68bIpUIWIAP/1m00NoYtA
-	 8XFp30voETMfh7A6fJYAWNQhqcRn2jGAXGyHs8Od9eYjLFYQUhrApNqoCCQ6UzPGVE
-	 oN+Nv/SqIH5Kf8azSfXJ3hTAd2J26JhN2KGNL0kDLqFTjs3ox+gZrC/ARaA6Wws7Jc
-	 sGmv0XhJNxFIA==
-Date: Wed, 2 Jul 2025 11:44:39 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Kundan Kumar <kundanthebest@gmail.com>
-Cc: Anuj gupta <anuj1072538@gmail.com>, Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta/Anuj Gupta <anuj20.g@samsung.com>,
-	Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org,
-	chao@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
-	ritesh.list@gmail.com, dave@stgolabs.net, p.raghav@samsung.com,
-	da.gomez@samsung.com, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com
-Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-Message-ID: <20250702184439.GD9991@frogsfrogsfrogs>
-References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com>
- <20250529111504.89912-1-kundan.kumar@samsung.com>
- <20250602141904.GA21996@lst.de>
- <c029d791-20ca-4f2e-926d-91856ba9d515@samsung.com>
- <20250603132434.GA10865@lst.de>
- <CACzX3AuBVsdEUy09W+L+xRAGLsUD0S9+J2AO8nSguA2nX5d8GQ@mail.gmail.com>
- <CALYkqXqVRYqq+5_5W4Sdeh07M8DyEYLvrsm3yqhhCQTY0pvU1g@mail.gmail.com>
- <20250611155144.GD6138@frogsfrogsfrogs>
- <CALYkqXpOBb1Ak2kEKWbO2Kc5NaGwb4XsX1q4eEaNWmO_4SQq9w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+zhJBf7"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4a752944794so83493551cf.3
+        for <gfs2@lists.linux.dev>; Wed, 02 Jul 2025 15:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751493653; x=1752098453; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=THoCMbnlktwyHzz2kQcX/L8gGaM+8iyGu2w9om/iuLU=;
+        b=g+zhJBf7teQjacmMHfLBJu9W0G458aDY+tK2Py9uOVq034zv0QwwPbv9TfrtnLYj6z
+         tC5cOfZv2MqQ01oVzdEsn3/4PF25m/bb7TrMGNioelPcMRsooZpu6P0USXIZmTr/D2ho
+         3mBnmahKDU8zMHoKEbNATKqD9TcVNEiBBwnyJccubn5XPnatnMzSvHSCyPwW3w/ndffS
+         oxvhRSyqTm5BGHnZqyo47qqeTvWI0r/RTHUVsnkD+tewZs8mM7mC2wFSN/rL6y3ZkcDB
+         MVOwNkSqrXGRuyAgCKRO5wroiBeAAGNPvR1iI/gUTaZhXws5kKb15i4XXfBVZDrRqidB
+         iPaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751493653; x=1752098453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=THoCMbnlktwyHzz2kQcX/L8gGaM+8iyGu2w9om/iuLU=;
+        b=UQBYXoaedsgLiVLXKVwNbAs1nSOOimwBvjBMnyGQxsv0ntdZExDlE2XJNmM/A1mdK/
+         i5eMS/zY3p8+cT2585dd+cx3qb+myhl1j8sSQuJ9mKjuSTQmTJSahidqYu/9MEVwyNnW
+         8WLA0lVelCTNM5azyKa4K3MODfHNiSZ0nLQl9fieKitQP76y//sfM1sb3CmxQ4Gfr9IQ
+         kLTfg9DhX3NpZ+1yJdYGFK+MyVV194Gv8loDkbAyFdjoqeEk8lrM69X2dDcW7xG7n9AW
+         weP5aaO2g0avEbS4SWSIqV3zUQ/qW6/BoM8U3hCOt/ZCEd3irfz3lXVRMXXjUtHx012d
+         owGA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5cjaC39A63eE5n5eE87VUJtRjnYpjUD536mru5n4K4DahduD9D5KMBxtxdtFsjPcvGLn5@lists.linux.dev
+X-Gm-Message-State: AOJu0YxiKjVqNn3rPt9IpkJRCICnk8AOuOG+hro/1t3ib6axlb93vUwv
+	SaDKkk8Qkw7b8jBpCTwCPcGgl6wgcDsT4CxH0KBGhMjRY+fuNgKjKT8Wec0QcnSLfCIklQuE6kE
+	hVZjHgPqTbRemSvxd9JDr36jbmbgczZw=
+X-Gm-Gg: ASbGncsBLvfOSio6wjDes5tSHOmNopunhcT7JE2JS4xLzeprx5G1Zcb5/OuluBCSLDo
+	A0IcSYFmnKZ0e9W7o69Q1e+dXWuPNcwucK0WrPcd1pXzJoE9VNGlGClXNlPE5G+oMoACQJ5GQqa
+	//YG6RBXc+AjHbipKdlR5yf8/yyrB3bzxQyPpqmmREjAHA5R074M0ijXfrLZY+EDU6KjtcQw==
+X-Google-Smtp-Source: AGHT+IGzkbGoHx67gm7//UOl9sXu9mntq0NbD7/FRK8AZGQcb3YRbyxMFYTrfA3GEzYiBVHJ4SFBTIK7amTWCmVYjGc=
+X-Received: by 2002:a05:622a:4c14:b0:48e:5cda:d04e with SMTP id
+ d75a77b69052e-4a976a53cb0mr67294621cf.36.1751493653206; Wed, 02 Jul 2025
+ 15:00:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALYkqXpOBb1Ak2kEKWbO2Kc5NaGwb4XsX1q4eEaNWmO_4SQq9w@mail.gmail.com>
+References: <20250627070328.975394-1-hch@lst.de> <20250627070328.975394-2-hch@lst.de>
+ <aF601H1HVkw-g_Gk@bfoster> <20250630054407.GC28532@lst.de>
+ <aGKF6Tfg4M94U3iA@bfoster> <20250702181847.GL10009@frogsfrogsfrogs>
+In-Reply-To: <20250702181847.GL10009@frogsfrogsfrogs>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 2 Jul 2025 15:00:42 -0700
+X-Gm-Features: Ac12FXyiBAM5F056BsVQ_D-n0BsEnWC_2Lt1EQ3hTmWssFKMH3Kv25uDtBPegLc
+Message-ID: <CAJnrk1YWjSO-FmnzHGRerBP6r6rPSAAm3MgUKfkr_AYjDJjUxA@mail.gmail.com>
+Subject: Re: [PATCH 01/12] iomap: pass more arguments using the iomap
+ writeback context
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Brian Foster <bfoster@redhat.com>, Christoph Hellwig <hch@lst.de>, 
+	Christian Brauner <brauner@kernel.org>, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev, 
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 24, 2025 at 11:29:28AM +0530, Kundan Kumar wrote:
-> On Wed, Jun 11, 2025 at 9:21 PM Darrick J. Wong <djwong@kernel.org> wrote:
-> >
-> > On Wed, Jun 04, 2025 at 02:52:34PM +0530, Kundan Kumar wrote:
-> > > > > > For xfs used this command:
-> > > > > > xfs_io -c "stat" /mnt/testfile
-> > > > > > And for ext4 used this:
-> > > > > > filefrag /mnt/testfile
-> > > > >
-> > > > > filefrag merges contiguous extents, and only counts up for discontiguous
-> > > > > mappings, while fsxattr.nextents counts all extent even if they are
-> > > > > contiguous.  So you probably want to use filefrag for both cases.
-> > > >
-> > > > Got it — thanks for the clarification. We'll switch to using filefrag
-> > > > and will share updated extent count numbers accordingly.
+On Wed, Jul 2, 2025 at 11:18=E2=80=AFAM Darrick J. Wong <djwong@kernel.org>=
+ wrote:
+>
+> On Mon, Jun 30, 2025 at 08:41:13AM -0400, Brian Foster wrote:
+> > On Mon, Jun 30, 2025 at 07:44:07AM +0200, Christoph Hellwig wrote:
+> > > On Fri, Jun 27, 2025 at 11:12:20AM -0400, Brian Foster wrote:
+> > > > I find it slightly annoying that the struct name now implies 'wbc,'
+> > > > which is obviously used by the writeback_control inside it. It woul=
+d be
+> > > > nice to eventually rename wpc to something more useful, but that's =
+for
+> > > > another patch:
 > > >
-> > > Using filefrag, we recorded extent counts on xfs and ext4 at three
-> > > stages:
-> > > a. Just after a 1G random write,
-> > > b. After a 30-second wait,
-> > > c. After unmounting and remounting the filesystem,
+> > > True, but wbc is already taken by the writeback_control structure.
+> > > Maybe I should just drop the renaming for now?
 > > >
-> > > xfs
-> > > Base
-> > > a. 6251   b. 2526  c. 2526
-> > > Parallel writeback
-> > > a. 6183   b. 2326  c. 2326
 > >
-> > Interesting that the mapping record count goes down...
+> > Yeah, that's what makes it confusing IMO. writeback_ctx looks like it
+> > would be wbc, but it's actually wpc and wbc is something internal. But =
+I
+> > dunno.. it's not like the original struct name is great either.
 > >
-> > I wonder, you said the xfs filesystem has 4 AGs and 12 cores, so I guess
-> > wb_ctx_arr[] is 12?  I wonder, do you see a knee point in writeback
-> > throughput when the # of wb contexts exceeds the AG count?
-> >
-> > Though I guess for the (hopefully common) case of pure overwrites, we
-> > don't have to do any metadata updates so we wouldn't really hit a
-> > scaling limit due to ag count or log contention or whatever.  Does that
-> > square with what you see?
-> >
-> 
-> Hi Darrick,
-> 
-> We analyzed AG count vs. number of writeback contexts to identify any
-> knee point. Earlier, wb_ctx_arr[] was fixed at 12; now we varied nr_wb_ctx
-> and measured the impact.
-> 
-> We implemented a configurable number of writeback contexts to measure
-> throughput more easily. This feature will be exposed in the next series.
-> To configure, used: echo <nr_wb_ctx> > /sys/class/bdi/259:2/nwritebacks.
-> 
-> In our test, writing 1G across 12 directories showed improved bandwidth up
-> to the number of allocation groups (AGs), mostly a knee point, but gains
-> tapered off beyond that. Also, we see a good increase in bandwidth of about
-> 16 times from base to nr_wb_ctx = 6.
-> 
->     Base (single threaded)                :  9799KiB/s
->     Parallel Writeback (nr_wb_ctx = 1)    :  9727KiB/s
->     Parallel Writeback (nr_wb_ctx = 2)    :  18.1MiB/s
->     Parallel Writeback (nr_wb_ctx = 3)    :  46.4MiB/s
->     Parallel Writeback (nr_wb_ctx = 4)    :  135MiB/s
->     Parallel Writeback (nr_wb_ctx = 5)    :  160MiB/s
->     Parallel Writeback (nr_wb_ctx = 6)    :  163MiB/s
+> > I was thinking maybe rename the wpc variable name to something like
+> > wbctx (or maybe wbctx and wbctl? *shrug*). Not to say that is elegant b=
+y
+> > any stretch, but just to better differentiate from wbc/wpc and make the
+> > code a little easier to read going forward. I don't really have a stron=
+g
+> > opinion wrt this series so I don't want to bikeshed too much. Whatever
+> > you want to go with is fine by me.
+>
+> I'd have gone with iwc or iwbc, but I don't really care that much. :)
+>
+> Now I'm confused because I've now seen the same patch from joanne and
+> hch and don't know which one is going forward.  Maybe I should just wait
+> for a combined megaseries...
 
-Heh, nice!
+Christoph's is the main source of truth and mine is just pulling his
+patches and putting the fuse changes on top of that :) For the v3 fuse
+iomap patchset [1], the iomap patches in that were taken verbatim from
+his "refactor the iomap writeback code v2" patchset [2].
 
->     Parallel Writeback (nr_wb_ctx = 7)    :  162MiB/s
->     Parallel Writeback (nr_wb_ctx = 8)    :  154MiB/s
->     Parallel Writeback (nr_wb_ctx = 9)    :  152MiB/s
->     Parallel Writeback (nr_wb_ctx = 10)   :  145MiB/s
->     Parallel Writeback (nr_wb_ctx = 11)   :  145MiB/s
->     Parallel Writeback (nr_wb_ctx = 12)   :  138MiB/s
-> 
-> 
-> System config
-> ===========
-> Number of CPUs = 12
-> System RAM = 9G
-> For XFS number of AGs = 4
-> Used NVMe SSD of 3.84 TB (Enterprise SSD PM1733a)
-> 
-> Script
-> =====
-> mkfs.xfs -f /dev/nvme0n1
-> mount /dev/nvme0n1 /mnt
-> echo <num_wb_ctx> > /sys/class/bdi/259:2/nwritebacks
-> sync
-> echo 3 > /proc/sys/vm/drop_caches
-> 
-> for i in {1..12}; do
->   mkdir -p /mnt/dir$i
-> done
-> 
-> fio job_nvme.fio
-> 
-> umount /mnt
-> echo 3 > /proc/sys/vm/drop_caches
-> sync
-> 
-> fio job
-> =====
-> [global]
-> bs=4k
-> iodepth=1
-> rw=randwrite
-> ioengine=io_uring
-> nrfiles=12
-> numjobs=1                # Each job writes to a different file
-> size=1g
-> direct=0                 # Buffered I/O to trigger writeback
-> group_reporting=1
-> create_on_open=1
-> name=test
-> 
-> [job1]
-> directory=/mnt/dir1
-> 
-> [job2]
-> directory=/mnt/dir2
-> ...
-> ...
-> [job12]
-> directory=/mnt/dir1
-> 
-> > > ext4
-> > > Base
-> > > a. 7080   b. 7080    c. 11
-> > > Parallel writeback
-> > > a. 5961   b. 5961    c. 11
+
+[1] https://lore.kernel.org/linux-fsdevel/20250624022135.832899-1-joannelko=
+ong@gmail.com/
+[2] https://lore.kernel.org/linux-fsdevel/20250617105514.3393938-1-hch@lst.=
+de/
+
+>
+> --D
+>
+> > Brian
 > >
-> > Hum, that's particularly ... interesting.  I wonder what the mapping
-> > count behaviors are when you turn off delayed allocation?
 > >
-> > --D
-> >
-> 
-> I attempted to disable delayed allocation by setting allocsize=4096
-> during mount (mount -o allocsize=4096 /dev/pmem0 /mnt), but still
-> observed a reduction in file fragments after a delay. Is there something
-> I'm overlooking?
-
-Not that I know of.  Maybe we should just take the win. :)
-
---D
-
-> -Kundan
-> 
