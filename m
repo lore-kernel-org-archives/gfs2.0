@@ -1,113 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50AD8821;
-	Tue,  1 Jul 2025 11:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2C32E03EC
+	for <gfs2@lists.linux.dev>; Wed,  2 Jul 2025 15:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751369694; cv=none; b=JDcX40NMtMHPgFgT7cvukmiGznVQzHWX8PlEDPTCqHM7OQysqfql/z+uNKSnieIGiOwWbmptTX76FRKcdwJtBlS/JOtf6jmy6YT9hwcCctNYrQq983RisfAz3T7eaz0e80fT2Nuv8QiotM5zhPtGa+iDjKoAXNfBUoRjPrdPA9Q=
+	t=1751469945; cv=none; b=my68lKh0y7BKFKv0j7Z8Y6lTRZwxRZwSPLMtDdkJkaLOCDQzzAUfX1cNVuZhhPSjdTzgZ3Kt3EjC76nWYXigXWvZtx/Qbg14KsqMZU+GcfqomSMSMI38toWBgveHP7F2vR/hBlAw+oItBQGoJy8TR+pYBXRfosBRpFIi5vGYhzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751369694; c=relaxed/simple;
-	bh=ivvvymmSfinokPA9qi1LGV8jWib2h8DV4cJuLS0xY2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f6poiBbmtdfzI0Hfb2P89bH+e94a6Ccts5EYpD4MpDUPfsCEz+urJQUVjo7I1DRLcOfegHt9pbq7N9XAuzSSecB0sOXLz2+O1VT3XgK5Wu0rb2zIUdOPrLsORvVOcvaIqb+uGLqrB25QRdq+RqeXkfl/hutwCAwUANtYnlwwUq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=on5fa/N7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751469945; c=relaxed/simple;
+	bh=C2IJao2Tnjg+i4piyln6L3mS9UHnN4VqKHjd8QXo6X8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=iwRkXEwNU1OKoup6B2Q72LELF/ifUbJTuYhdVA8Ul/3WuuXKdW72mDyfCwdwuV9OgAxH256q0ql+8sLBdBmpuDjxpuM7II1x7IC2nmoHu5Zvk7ahbvNFBlLLRlHOx0yNDhV6XvRgtPDvq68y0aVHNJcqJM2sAbiBhDVoy37soW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HCux4q4I; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="on5fa/N7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25244C4CEEB;
-	Tue,  1 Jul 2025 11:34:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751369693;
-	bh=ivvvymmSfinokPA9qi1LGV8jWib2h8DV4cJuLS0xY2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=on5fa/N7993Xiu8R8CmxLBfvJ25rLsGHcos0mtPx5h7O+Uf8PnRwRziavn1ZNk3qD
-	 dTlslotJxMgwQgJdXVemlWpk547OoKF09nmdwOK8mjg9Dw3s1arKSEV7tTpFEdh6CL
-	 NPKTxPzuKGG96E1Io5mCVhQJcuVdbIQr7g2WAtZWHqBLqFkVGUgpLGBnnyKZqHp0Vb
-	 SyfLuqjRiNIcavAZo9eM7r4tSbw+tiGx6AdcIMvQ+ypA9/f+T8O/0PhvLXdKbUnh9n
-	 wRC++Hv0QndQB4NIsjh8/mPRVtWo7RD9dV/TsgFK2FYIkOWjAQtc3iDsqfTq8TepTW
-	 55NYlUn9KniJQ==
-Date: Tue, 1 Jul 2025 13:34:47 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, linux-fsdevel@vger.kernel.org, 
-	oe-kbuild-all@lists.linux.dev, hch@lst.de, miklos@szeredi.hu, djwong@kernel.org, 
-	anuj20.g@samsung.com, linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v3 13/16] fuse: use iomap for writeback
-Message-ID: <20250701-duktus-weitverbreitet-fb6b177ba0d8@brauner>
-References: <20250624022135.832899-14-joannelkoong@gmail.com>
- <202506252117.9V3HTO0i-lkp@intel.com>
- <CAJnrk1Z5NZ0_f=OMMam9hf0xJwM=SsmgFpyfbnKE7MT_i_kZMQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HCux4q4I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751469942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=05PXZoGBAaqtqYL5Wnzgl+dcn+PwX3dTBMMHvtZA7VM=;
+	b=HCux4q4IKR9VhLO2S+ZOlNJ/Eelxxpq8pfiyl1kTAK+cKBy7C0PVFTGpC5dR9zyPi7c359
+	oT19JUI+v0ZIzMqAUsR2QlT8Ulhm3BLfHv3v9Xv3JnJHAHAqtS8QtRCpiKJtR7myedN1BX
+	9dF6Y/eTsi04ulvfZYzIrOdo909+3uA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-F3154nwoMWWlTooyWPJoxg-1; Wed,
+ 02 Jul 2025 11:25:41 -0400
+X-MC-Unique: F3154nwoMWWlTooyWPJoxg-1
+X-Mimecast-MFC-AGG-ID: F3154nwoMWWlTooyWPJoxg_1751469940
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 368101808993
+	for <gfs2@lists.linux.dev>; Wed,  2 Jul 2025 15:25:40 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.210])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 243451956087;
+	Wed,  2 Jul 2025 15:25:38 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 0/3] some minor glock improvements
+Date: Wed,  2 Jul 2025 17:25:33 +0200
+Message-ID: <20250702152537.21742-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0kROlKq-cDZ6O0DEiTE8weR_WERLEBxdQs9mZmDwgDc_1751469940
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1Z5NZ0_f=OMMam9hf0xJwM=SsmgFpyfbnKE7MT_i_kZMQ@mail.gmail.com>
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Wed, Jun 25, 2025 at 09:48:15AM -0700, Joanne Koong wrote:
-> On Wed, Jun 25, 2025 at 7:18 AM kernel test robot <lkp@intel.com> wrote:
-> >
-> > Hi Joanne,
-> >
-> > kernel test robot noticed the following build errors:
-> >
-> > [auto build test ERROR on brauner-vfs/vfs.all]
-> > [also build test ERROR on xfs-linux/for-next linus/master v6.16-rc3 next-20250625]
-> > [cannot apply to gfs2/for-next mszeredi-fuse/for-next]
-> > [If your patch is applied to the wrong git tree, kindly drop us a note.
-> > And when submitting patch, we suggest to use '--base' as documented in
-> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> >
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Joanne-Koong/iomap-pass-more-arguments-using-struct-iomap_writepage_ctx/20250624-102709
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-> > patch link:    https://lore.kernel.org/r/20250624022135.832899-14-joannelkoong%40gmail.com
-> > patch subject: [PATCH v3 13/16] fuse: use iomap for writeback
-> > config: arm64-randconfig-003-20250625 (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/config)
-> > compiler: aarch64-linux-gcc (GCC) 12.3.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506252117.9V3HTO0i-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202506252117.9V3HTO0i-lkp@intel.com/
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepages':
-> > >> file.c:(.text+0xa30): undefined reference to `iomap_writepages'
-> > >> file.c:(.text+0xa30): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_writepages'
-> >    aarch64-linux-ld: fs/fuse/file.o: in function `fuse_writepage_finish':
-> > >> file.c:(.text+0x1fd8): undefined reference to `iomap_finish_folio_write'
-> > >> file.c:(.text+0x1fd8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_finish_folio_write'
-> >    aarch64-linux-ld: fs/fuse/file.o: in function `fuse_cache_write_iter':
-> >    file.c:(.text+0x888c): undefined reference to `iomap_file_buffered_write'
-> >    file.c:(.text+0x888c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_file_buffered_write'
-> >    aarch64-linux-ld: fs/fuse/file.o: in function `fuse_iomap_writeback_range':
-> > >> file.c:(.text+0x9258): undefined reference to `iomap_start_folio_write'
-> > >> file.c:(.text+0x9258): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `iomap_start_folio_write'
-> > >> aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x370): undefined reference to `iomap_dirty_folio'
-> >    aarch64-linux-ld: fs/fuse/file.o:(.rodata+0x3a0): undefined reference to `iomap_release_folio'
-> >
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
-> 
-> As noted in the cover letter [1]
-> 
->    Please note the following:
->    * this patchset version temporarily drops the CONFIG_BLOCK iomap refactoring
->      patches that will be needed to merge in the series. As of now, this breaks
->      compilation for environments where CONFIG_BLOCK is not set, but the
->      CONFIG_BLOCK iomap changes will be re-added back in once the core changes
->      in this patchset are ready to go.
-> 
-> 
-> These errors will be fixed in later versions when the CONFIG_BLOCK
-> patches get added in.
+Here are some minor glock improvements I came up with while trying to
+figure out a customer problem in this area.  Please review.
 
-Ok, sounds good. Main thing is I can merge it all in one go.
+Thanks,
+Andreas
+
+Andreas Gruenbacher (3):
+  gfs2: sanitize the gdlm_ast -> finish_xmote interface
+  gfs2: simplify finish_xmote
+  gfs2: a minor finish_xmote cleanup
+
+ fs/gfs2/glock.c    | 42 ++++++++++++++++++++----------------------
+ fs/gfs2/glock.h    | 10 ++++++++++
+ fs/gfs2/lock_dlm.c |  9 ++++++---
+ 3 files changed, 36 insertions(+), 25 deletions(-)
+
+-- 
+2.50.0
+
