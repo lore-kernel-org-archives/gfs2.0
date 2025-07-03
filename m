@@ -1,39 +1,45 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F53C2AF19
-	for <gfs2@lists.linux.dev>; Thu,  3 Jul 2025 13:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9E233DF;
+	Thu,  3 Jul 2025 16:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751547908; cv=none; b=ehCsanavCyHVl+gRiUoTCYHQExphzNinp/5Th7b26X4+QmzgqPvta8smV9lLKpqb6JMmoRutGNxS0VxOBZzm/+XJiHGwO3QtBHCk7MI0XOjmyVbGb9ep1sbaJZFprBFjkLc8d3ANdi0JpShENtT9Ptm/CKaFO2/hkhJ8iPTW8/w=
+	t=1751561479; cv=none; b=n0B68CATdkms+cWeKiq1NIwUg7a8lmsjxfRTWN8qwEGvaClhaZDmMyDYoqf4t6oP0NONnHuiP6ilu3ry8SUtR4kU0nyZLaKTDHCvg3cBZkCxzslfArpabUTZfEijT3wJiPzm3UTluffBw06aJazbZEmgpkEDsHpeIwXAqhjLmsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751547908; c=relaxed/simple;
-	bh=riu/oMZ4j8xMs0NKvk5hrwihCj5mHKuM//UsRwhQRF0=;
+	s=arc-20240116; t=1751561479; c=relaxed/simple;
+	bh=KgNWAEPsvGLZYpBhpkLVwDOSCjtLzdipdUOgdEkAzQc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nCd/eeFEVJCZmsMgLjOctZ+G3RFjA2B3UgASMQfkDBoPpOtnmnLds6K1PZJckLZV2VRofXd96TYQKk8Fo6k8mOp4IFjufTUCPVuqdG2W5Uug5+8eLKfktPCKFvhGDqnH9XOEsTFNEFCo6ZqRZPulqu/8xHGgbvgN4apJdp9rNDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5035468BFE; Thu,  3 Jul 2025 15:05:00 +0200 (CEST)
-Date: Thu, 3 Jul 2025 15:05:00 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Kundan Kumar <kundanthebest@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org,
-	chao@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, willy@infradead.org,
-	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
-	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de,
-	ritesh.list@gmail.com, dave@stgolabs.net, p.raghav@samsung.com,
-	da.gomez@samsung.com, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com
-Subject: Re: [PATCH 00/13] Parallelizing filesystem writeback
-Message-ID: <20250703130500.GA23864@lst.de>
-References: <CGME20250529113215epcas5p2edd67e7b129621f386be005fdba53378@epcas5p2.samsung.com> <20250529111504.89912-1-kundan.kumar@samsung.com> <20250529203708.9afe27783b218ad2d2babb0c@linux-foundation.org> <CALYkqXqs+mw3sqJg5X2K4wn8uo8dnr4uU0jcnnSTbKK9F4AiBA@mail.gmail.com> <20250702184312.GC9991@frogsfrogsfrogs>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gl8Jcl9ugglozNN0k53kEkGf7GivQfVVdeI54ibBaSyt5Q0ZT8JjHYg7sPOudPKdNS64OoST4IW/DdsYuXUa0XWuuYB+A9WCwQQWQm3htsSGq/EljDO+OR6PTu1qXKblG3ppzjowVVnfE+C1DA+dt9mwbLiBWqU15/I4AkelXUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCyLAN9U; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCyLAN9U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CFCC4CEE3;
+	Thu,  3 Jul 2025 16:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751561478;
+	bh=KgNWAEPsvGLZYpBhpkLVwDOSCjtLzdipdUOgdEkAzQc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QCyLAN9UKompBN/Txlb0N5sKTjycQuUVbNWq4uLmWMH+EOFlkomwkRhux+XdKcStW
+	 C74wJfVSHPKYVez5me2dCemHJjc2S9KvtOszihXM/VZ/cw+mW3PrFJP3gmDL69LCvZ
+	 PjqOKJRdOFzlptOQn54UQPBwAB8Uvx9SF2aSgnH8/+meQiHY0sXkJ+tdWEZ2QHNKrl
+	 3VH6OjTGPBVP6ZVeCL9ImVd3UWXM2igfFdg6OmWh35wXgCuE2LEzYVguBxZ+0vmxn/
+	 WnpiGFITbqBAASKYir2sRwlPWv9ZxmxqZKMXEHM+PxBAj8PUUNpXQ14xAGY5ggACOb
+	 cJbuiF4zwJ3nA==
+Date: Thu, 3 Jul 2025 09:51:17 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org,
+	miklos@szeredi.hu, brauner@kernel.org, anuj20.g@samsung.com,
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 03/16] iomap: refactor the writeback interface
+Message-ID: <20250703165117.GA2672049@frogsfrogsfrogs>
+References: <20250624022135.832899-1-joannelkoong@gmail.com>
+ <20250624022135.832899-4-joannelkoong@gmail.com>
+ <20250702171353.GW10009@frogsfrogsfrogs>
+ <20250703121654.GA19114@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -42,42 +48,65 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250702184312.GC9991@frogsfrogsfrogs>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20250703121654.GA19114@lst.de>
 
-On Wed, Jul 02, 2025 at 11:43:12AM -0700, Darrick J. Wong wrote:
-> > On a spinning disk, random IO bandwidth remains unchanged, while sequential
-> > IO performance declines. However, setting nr_wb_ctx = 1 via configurable
-> > writeback(planned in next version) eliminates the decline.
+On Thu, Jul 03, 2025 at 02:16:54PM +0200, Christoph Hellwig wrote:
+> On Wed, Jul 02, 2025 at 10:13:53AM -0700, Darrick J. Wong wrote:
+> > > +    int (*writeback_range)(struct iomap_writepage_ctx *wpc,
+> > > +    		struct folio *folio, u64 pos, unsigned int len, u64 end_pos);
 > > 
-> > echo 1 > /sys/class/bdi/8:16/nwritebacks
+> > Why does @pos change from loff_t to u64 here?  Are we expecting
+> > filesystems that set FOP_UNSIGNED_OFFSET?
+> 
+> It doesn't really change, it matches what iomap_writepage_map_blocks
+> was doing.  I guess it simply doesn't fix the existing inconsistency.
+> 
+> > > +    int (*submit_ioend)(struct iomap_writepage_ctx *wpc, int status);
 > > 
-> > We can fetch the device queue's rotational property and allocate BDI with
-> > nr_wb_ctx = 1 for rotational disks. Hope this is a viable solution for
-> > spinning disks?
+> > Nit:   ^^ indenting change here.
 > 
-> Sounds good to me, spinning rust isn't known for iops.
+> Yeah, RST formatting is a mess unfortunately.   I think the problem is
+> that the exiting code uses 4 space indents.  I wonder if that's required
+> by %##% RST?
+
+It's a code block, so it's not going to make the rst parser choke.
+However it will result in an weirdly indented output:
+
+ struct iomap_writeback_ops {
+     int (*map_blocks)(struct iomap_writepage_ctx *wpc, struct inode *inode,
+                       loff_t offset, unsigned len);
+     int (*submit_ioend)(struct iomap_writepage_ctx *wpc, int status);
+    void (*discard_folio)(struct folio *folio, loff_t pos);
+ };
+
+is what I got when I removed an indentation space from discard_folio.
+Hilariously it actually makes the "(" line up which appeals to my column
+aligning brain and actually looks better. :P
+
+So having now seriously undercut my own point, I'll relax to "meh do
+whatever".
+
+> > > +		if (wpc->iomap.type != IOMAP_HOLE)
+> > > +			*wb_pending = true;
+> > 
+> > /me wonders if this should be an outparam of ->writeback_range to signal
+> > that it actually added the folio to the writeback ioend chain?  Or maybe
+> > just a boolean in iomap_writepage_ctx that we clear before calling
+> > ->writeback_range and iomap_add_to_ioend can set it as appropriate?
 > 
-> Though: What about a raid0 of spinning rust?  Do you see the same
-> declines for sequential IO?
+> What's the benefit of that?  A hole pretty clearly signal there is
+> no writeback here.
 
-Well, even for a raid0 multiple I/O streams will degrade performance
-on a disk.  Of course many real life workloads will have multiple
-I/O streams anyway.
+Fair enough.  In my head it was "the code that actually sets up the
+ioend should set this flag" but I guess we can detect it from the
+mapping after the fact instead of passing things around.
 
-I think the important part is to have:
+> > Should this jump label should be named add_to_ioend or something?  We
+> > already mapped the blocks.  The same applies to the zoned version of
+> > this function.
+> 
+> The newer version already uses a map_blocks helper for both again.
 
- a) sane defaults
- b) an easy way for the file system and/or user to override the default
+Ah, so it does.
 
-For a) a single thread for rotational is a good default.  For file system
-that driver multiple spindles independently or do compression multiple
-threads might still make sense.
-
-For b) one big issue is that right now the whole writeback handling is
-per-bdi and not per superblock.  So maybe the first step needs to be
-to move the writeback to the superblock instead of bdi?  If someone
-uses partitions and multiple file systems on spinning rusts these
-days reducing the number of writeback threads isn't really going to
-save their day either.
-
+--D
