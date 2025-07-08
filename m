@@ -1,93 +1,91 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580642248AC
-	for <gfs2@lists.linux.dev>; Tue,  8 Jul 2025 21:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769D3241661
+	for <gfs2@lists.linux.dev>; Tue,  8 Jul 2025 21:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752009176; cv=none; b=cK18jIMPuXgB/dJAt6xlqOdmjRObsXQQrW6mPfOfACmFsOTxvC3nFJu5uF9zTFC+HBTOkSifVayL9FrmIF/51i1OzuPYG7v5U8GEgA0q6OnQ84pCCOGS1khSwyOOwSQfU11/DN3SL+p07FlAkekdgKig7w8EAzAbBkct3bZcDqI=
+	t=1752009852; cv=none; b=XJMcxpJYA2/J7vPIO6YFVZMTuOYyxjHS8nb9hVHQ5Gu2GjppUas7tLOy774DiJXmDc2ZP/Oo3KUdNjIpB6amfOil3ESVFCEmXtZJt83rpUfBTg1oTXR4z44PUzLenvs01jHhMlJELsy7O5kwjKkNzyjjdaZjwJzOAPnVqX0vx/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752009176; c=relaxed/simple;
-	bh=WHPQ1X00dK/NL0Zwe5X897Rr/QyO2GlGUXdGHCynPQQ=;
+	s=arc-20240116; t=1752009852; c=relaxed/simple;
+	bh=TAarUlwoipeJdtGaBy0q0huqZ06XrAcygU/VwbsqJ5U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZpPMzrNFSxPPX8d8WlB3Zsl6Cl0qlUzOkq23jX4S4WRkQdVgwShIBFGIk3NVY6sifbosGhKYHCMlK7rA4fteEHw2IF8ctYqrbUe+sSmgb+Xd5qGpqOM4yHMCl+abC0RzfuJyzEQGJ5c/b1XSsR6KQZbUoblgKT2t27vXD09BJgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYLJf+pc; arc=none smtp.client-ip=209.85.160.173
+	 To:Cc:Content-Type; b=bM7sWb8UsMM7hfuQTRoMIFmekT3+wNLBdsbTepK6RqMwiIH6i39dXURQqWaA5OJvUXtobmBXoxmH7KDR7DKf3pQE41Mi7q4FOsCdEyAB8u1TXVfW8FhSNtl7ENG7HxnCz5LdsK8KPrT9Pep5USD2ZWb7nOLwhBMc/9oaS9I7yzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ShYLyhZX; arc=none smtp.client-ip=209.85.160.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYLJf+pc"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a98208fa69so3450101cf.1
-        for <gfs2@lists.linux.dev>; Tue, 08 Jul 2025 14:12:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ShYLyhZX"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a7f61ea32aso97730561cf.3
+        for <gfs2@lists.linux.dev>; Tue, 08 Jul 2025 14:24:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752009173; x=1752613973; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1752009849; x=1752614649; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f2oGPkj1+e6ZzCV+BwunmQ0FgWNvFRc97SBF/zT2kb4=;
-        b=MYLJf+pcDUSsCilKLQZy/7hnepg+CNCpRYNa0LW576CFpM4pn1AOeh2PgE5/caiBJd
-         5dPUz4lnvpzljfwolbaEmSxFziKUoPXT9MRz9upEW3cVZg/deyjYKIYAqKE9Ae5KnoJ2
-         hfuUMLBZKZWLaFB5wQtPbA+m9vNQYe3LBnYNrsKMQSPiRjPZl22Ll8OBM0sTq+TwvlQr
-         ERig3J/uqyi60jbmUqo/azSlaKzQNQKGZnC2alNGRa01KK4fR4EOWP2LJ5Mh+n3b9GbP
-         1ScksVhm2ghkpGstjqN7g5hCFGsAjLLV/b2CmHDgD2daxjOLmGm6w4dvQfJH8CAZYdRF
-         rIBg==
+        bh=Lb1DWyul4+z//HafPpBpv8sBo6GJaLU8G6uUisvGiGs=;
+        b=ShYLyhZX2v+iJXpLac2cQ4R8ZkPyFCoUCtDmsc2A9nwPG0RFXJ6UnEeO2OolljFu2g
+         KaIoSlpa8sMyKICeKA+wwa/DwZ1QGZf/uuw1/q+zysz7UrLT3fI+5G3+Gs1YPqyL99CD
+         WXgBNRa7ymlg5WO1BEe8FtK5YsDY7e+lQI1QpIaA6jzNOAXa/MPPPUToQqGmZMElZtaZ
+         E0fZnCzC471yncigVa6WCVv/EAt8LmZBuEJUFnQuWHSIi+HliM0Qvey6jHmKRtK9syOg
+         5HH/8AE2m3VokvgYekptrC4Pg2xe1XqQLNy6sQIfqjk5ex7XV2EeoAEoWLSX3LuxBbvn
+         G1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752009173; x=1752613973;
+        d=1e100.net; s=20230601; t=1752009849; x=1752614649;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f2oGPkj1+e6ZzCV+BwunmQ0FgWNvFRc97SBF/zT2kb4=;
-        b=AtY6r54CrEeImEM26WtqYGO434qEgQWSkUAb5L+ldWFzEAAZZgBhbuOPL88s63W8kq
-         RqcnD/En1We64d2hnTIFF3zCYtWg+TSm8sIuBcYYYdw6RBNRZMjgvaY81N/iK60i98wp
-         +KdaMZtePET1Yf+zky0GC6mr/HnlM4Wv2JcZ7qKjVpKq7TzUtQK4zudJmSbkQZcPiBMS
-         46+2tQZfCRSvkbo749ZKFfbGV4HvdzMlbsazmCGqvGMIK6YcrfGMw97fEYLvBn5DogdC
-         YJe+oEkGUQ+7cItFRR1an2w1eFquYaKGLktPQFjP0XQ5C8g92AunmJYVkLh8mr/RcUan
-         lLrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJpp8b9HEz4ZI+3sMBmBmpdlarEYkw0lUL9268T5p19yXTYv9zAqSs1tsKuKBki/GOd13t@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVLc/srPxLZPNg5x2un/6gcZCa806VVXKDOEd+ZnucDCqFoU7a
-	5/H7iPmyQaoT0X+0udyDYcUR9sPlJeLn3KNOnOxot3c5fsOPzAQzZnXUBr5/A7oIXJG1HDOPLN3
-	qY3ROLNJV76tro97BxIYxCFzJsUwee/E=
-X-Gm-Gg: ASbGncs+q3UEpRtYAktrhRYlbdIWueIzq71KgCqO49Nq7+McK8Tv23zR0++jkqE1xsf
-	7ON8UuGgOutdto8ETnNMXuGb52JSoNurXxB+AuftWcArWb/jE1zyGVMtn+JqQ5VS+SshXcAwqY6
-	r9H+3WeZ4vhyLtW+aH/vwm7yUaE5BVQje05M4Rw4PCIWU=
-X-Google-Smtp-Source: AGHT+IGxCVJpLD1WN9FUxd+61MwdovAd25GfBDp2pHqBMaA+5eKnsXsWYlx+E2Xzp3tgOraZ0J9J7jqGMceu4pZJfJ4=
-X-Received: by 2002:a05:622a:350:b0:4a6:f0d0:d4af with SMTP id
- d75a77b69052e-4a9dc2735c4mr18050411cf.16.1752009173068; Tue, 08 Jul 2025
- 14:12:53 -0700 (PDT)
+        bh=Lb1DWyul4+z//HafPpBpv8sBo6GJaLU8G6uUisvGiGs=;
+        b=irNc8mIgWXfHwQ0SRou6fjDvNTo3IZV1ut7B8CRnIRVDzO+VRbudif5l8ICJGz5IBJ
+         kQ+i2HCSukvR/yMU0DbcE12oGFqU7wzTVvwJAi2Xvdyn5BfnwbFo2UGL2R90iYLsJZBo
+         /NvMO7gYtbrU4Uam5MTHBaBBEbNkfYQGp1Nvz/bqj/+NEHydbEWcZh/WxCEUs/NWRwQB
+         lA5JVdgrhdP8JBWJyiiPmZJfD83U8oGn5gFYpxNqlyt/lH1rfcJ4fnX+5pWU/Qcp7NUx
+         dT5VTSwfSzSxkGGjP4D/nLI+mI1UfcR/9d0ouE3GK3F5kpergbVb81di1Y4Hcv+DQgu5
+         rkEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ6S+hT+v7I7cfbKctYiiuln4dHW1dXKr88eq0I2tpFP9oSwZVd+Av08gePh82LJnn2brr@lists.linux.dev
+X-Gm-Message-State: AOJu0YwfQzP2YZ4iAlutZNtcoBtCBEMCVvFghtl42t2cERuP+Lks/Rmv
+	p8CnWD4bkpobO3Syvy5dYBM4j/2xLNfgxxteOoZPD8OR+dfQoYSvPcvF4P8NpUF/fBEX2BpEzGt
+	YCcmIX0ktgtfW2jr5XtjH61Srv8Eduhw=
+X-Gm-Gg: ASbGncs3PMSxC6LDrAa5AGCZounZ1BCeTNMeWoYcUb9aYrm03ROL5spMt5kNH4UvIXY
+	NJ+jsaOQl2Blof48VTzjvXObzsSMpNtmRQcdgLgS7HCltqW4pYdBZnHsn6eRjwVzx2Y8UTlWzXL
+	vCqA6sal0zwAkmwQYQAP2yyI5+q+/v5T8XfQVALDn1T5E=
+X-Google-Smtp-Source: AGHT+IFMTz6SH0zhjDTLZOgfQJaIbPlc/Q7hBu5Jk+gXOKsGzS+9pZssAMoKgD3aM67ZjEkpBcgMRTo0DP2oOJg2FHU=
+X-Received: by 2002:a05:622a:15cb:b0:4a6:f6e6:7693 with SMTP id
+ d75a77b69052e-4a9dd212a82mr11067851cf.6.1752009849424; Tue, 08 Jul 2025
+ 14:24:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250708135132.3347932-1-hch@lst.de> <20250708135132.3347932-9-hch@lst.de>
-In-Reply-To: <20250708135132.3347932-9-hch@lst.de>
+References: <20250708135132.3347932-1-hch@lst.de> <20250708135132.3347932-13-hch@lst.de>
+In-Reply-To: <20250708135132.3347932-13-hch@lst.de>
 From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 8 Jul 2025 14:12:42 -0700
-X-Gm-Features: Ac12FXzEh3jhezVsM9Yn9RD9LsQJ1pCxI4nlbDq2cmHUqPFOjSkqphPTgXPwTCg
-Message-ID: <CAJnrk1acMOb=0EQe6FZwzn_3tw8g-0HrDMjR1OrCBEQsZXyt7g@mail.gmail.com>
-Subject: Re: [PATCH 08/14] iomap: rename iomap_writepage_map to iomap_writeback_folio
+Date: Tue, 8 Jul 2025 14:23:58 -0700
+X-Gm-Features: Ac12FXxgJU6oVRwVQoF3qI9wrV1DgytPuRVdvsm-iLn1Wf05V3VDBvGeBQNSiQI
+Message-ID: <CAJnrk1bqfEH3E19x67P8Ciq+8Tp-K7WusDPyzJGt5G7BFyhQHg@mail.gmail.com>
+Subject: Re: [PATCH 12/14] iomap: improve argument passing to iomap_read_folio_sync
 To: Christoph Hellwig <hch@lst.de>
 Cc: Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev, 
-	Brian Foster <bfoster@redhat.com>
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jul 8, 2025 at 6:52=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
 :
 >
-> ->writepage is gone, and our naming wasn't always that great to start
-> with.
+> Pass the iomap_iter and derive the map inside iomap_read_folio_sync
+> instead of in the caller, and use the more descriptive srcmap name for
+> the source iomap.  Stop passing the offset into folio argument as it
+> can be derived from the folio and the file offset.  Rename the
+> variables for the offset into the file and the length to be more
+> descriptive and match the rest of the code.
+>
+> Rename the function itself to iomap_read_folio_range to make the use
+> more clear.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Brian Foster <bfoster@redhat.com>
-> Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
 Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-
-> ---
->  fs/iomap/buffered-io.c | 10 +++++-----
->  fs/iomap/trace.h       |  2 +-
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
