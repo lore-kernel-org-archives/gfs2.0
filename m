@@ -1,149 +1,161 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78431799F
-	for <gfs2@lists.linux.dev>; Tue,  8 Jul 2025 21:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2835280CEA;
+	Wed,  9 Jul 2025 09:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752010265; cv=none; b=aGyRtOFsSpFQmBtfHDe305lpfChgnJjwTXY0FxTGs4OjIhCFvCqJLlxp0s0GQk8yvYjJ6Wme8NXdWmP/ZVXDDCdHtLOgTNCP6rNiaAUsWWRuh1VQd5AkOVC19hjWnfh2S9OoObFjSTlxshJfJjUbri2AAtQ8YjjNcTQ/AGXYtvQ=
+	t=1752052211; cv=none; b=NLrTLLSLR5E2p3qJ9Pnt9GCseieRJiqQesEmuIxkvZqb/F1HRHJ4h4MbyfxUGAOZZBQderHCdz1x4ufJzuVV9K185KgKKNjWyWmt3BAbt5CD9A88M9lbOC+g0FYh3uY0puT5T80RaowmubNcNkXMfJJqhq+CBEGX0yaKha3zzC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752010265; c=relaxed/simple;
-	bh=pHbIZYR/cPjhqgkSQJwswTCukX1J3YAVEComlN6LLFM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=as0JiPskw7RXb+Vqy/L0KhPCFIjmTesDWwp6D3IRMtSwEbnNV86UmBi2X2sPRb0+W9cm6dku/fa9NWAnLO8gYtp4Q4TroTOkdudB8HUBbfro77JmG5rgyO3f6o2goJQ5EoLPaQ5cpf1UgTpknCoTQSMmsVCRB8IBLadO5+IHP14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyUYWP0L; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752052211; c=relaxed/simple;
+	bh=IJjJgM4OeRcDQZbbuj3g79bHehoQC7+ut1sOtWZkbZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=okCDQxW0jI0GlMzkSwtRKb/4YIxvVjCkHOgRTNhSJkCYQxOfRKcPm74CtVU9zOrlR4Qaq33QftQC72GcaIkXnSlNQ7egGxy5OkePpioXJvzOSq/WhDB0uGb2/yzGdbIcNsm2lC3rEbdG6vkFAr1PYzHY7+oiyRqrsw5OKtSXJZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QzW535K+; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyUYWP0L"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7d7cf6efc2fso288371085a.3
-        for <gfs2@lists.linux.dev>; Tue, 08 Jul 2025 14:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752010263; x=1752615063; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZUU5TRDaN6ALyyrygW/6RzwmiAYhH4pOYiMcpic0/PY=;
-        b=GyUYWP0LOkEW6qlC7egqwgPXLj6Ps6TmEZH0ZfMenEnILBkQKBxn9NV43tqhX7JTQA
-         TUiefivef/XB7cS74VBFDoNiTqh+ctdZoWXh+ZzcW8Yqrrdkg3DtrQEIqUS6J+tvSKHv
-         wZqILIsNEdcDe9biWdC84V43ZqElWIhNRYxFTvMRRMc2GVOl7GiqFW+zUpVrcICz4D0Q
-         4yfbVFUUT4RkfYjelL+sXBSpRxYCEvm750VOKNkLeGh+n77MyZXd+gL08ZyS8WVMcmvs
-         bz4UDL+wwzsy5LfJW1+ctvVw4nPimL9uB04el0bisJZPcktAimiFAAiKtdW0NUXWmj+0
-         FR2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752010263; x=1752615063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZUU5TRDaN6ALyyrygW/6RzwmiAYhH4pOYiMcpic0/PY=;
-        b=P4fBt4qF/Y47qsKP51RiP5P2hHCnupusz0IYJNfrAAdAinCB6aCI7yy7OCOhfNP6me
-         1Kuidm+Ya7fvxbvd+kBlEhCmGSOeHMbdB2uVexwGnYuE+/Zb0PJiXWrBXOWoV+p5wWtu
-         OEMmxV2prpqeLamZ1jAfLzHrybxEDH4aM42gDi8w1JHto4dLP2XLRoZkuB902WpqkXk9
-         XNdx3lrUEKGrJu2FVdFlYXC+Iif+2pxX0DtXXcHO9kPC+qH19Q+MvnUD5yGR2SUl5ux5
-         n+0GYFJa9xDwZJ6GHRudngyl0fZ80X1bZX2lHjz4Qp7wgMPapIb5gNfot1qTC5/xNEtD
-         +rHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcInp0E1WCLyMInwcgYt9xDpJupCfs6hnAAADn+ARgFvtRTbmu7Oe5A0cRjH+VbASbuX/r@lists.linux.dev
-X-Gm-Message-State: AOJu0YzA8EB9bDKKsPm0ZCO6YRt2pjR+EcpY6HqiIBemo7SrR+aNs/xk
-	/aTz9BKv7jYCvx/EnxICWpmKb+b3XO9i5UFfKsIxfwBgUKc+KeAaIH1TrNT9IHhMcpHWHLUAH+I
-	W98jIhfmXlpCMpCa0RlouvXJ8s70xQm0=
-X-Gm-Gg: ASbGncsKUoGAyev3DuC8xgQ3rMLlZfeBfUxzJam+3h+juldIEE5Eihzju003pUweZRX
-	qSaga+tzdZIypSaxoctLuS8oHYo7H+uqsTl2CYXu99QiR5Dw2r9nJ8y9jfdd0gLNVMwtrt7kFvL
-	0aT+FGDpYW34vdGkiWdwQYyG1jZgQ56XbaCdZc7OZpRmA=
-X-Google-Smtp-Source: AGHT+IH0d/vk43vmyXPKIpP94pCK3w1qCzYdnwJNVDW8qW5d8MHocQso6Lt/gQSIfRkmy6R/U41ZJn66Xk4Bv0SJdK0=
-X-Received: by 2002:a05:620a:2544:b0:7d5:d0a1:c907 with SMTP id
- af79cd13be357-7db7cfa32f5mr45846185a.30.1752010262414; Tue, 08 Jul 2025
- 14:31:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QzW535K+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752052210; x=1783588210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IJjJgM4OeRcDQZbbuj3g79bHehoQC7+ut1sOtWZkbZs=;
+  b=QzW535K+xfDaHCNexMYzWVCUvLjy2T+RkUb3NyQa1550zSztnkeh8TGn
+   3fcICDvc3vbCF+6xYGyvQGBgYzYoVOI9PP6ESL8LO3hDHCo5YwzGvs7OJ
+   7fcQgL3hDjE75xmurGu/xxBtPWRqaSaAyTEtgc+VMHFldojTxmPiEGWoa
+   yhhGpS50Odmqhp43lnSVi0r/Sap4pEMGgw3oNZLGDAoSPEXiCal4/kU3i
+   eeS5Wj8y07Kve6GR/OHwOJjOje6DUT5mYnXzq42Dey2nOG21OqjO7plJP
+   j/YW1PXgd3dfgDzYpnNyNeOvdZ3+PI+JIgyNDLNtd8Y6hn3W0njQXSsEy
+   Q==;
+X-CSE-ConnectionGUID: sPmb+GX2Rtan+BpeJxqSyQ==
+X-CSE-MsgGUID: Kvw8NGh2QWGK4srzO0xVNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54163376"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="54163376"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 02:10:09 -0700
+X-CSE-ConnectionGUID: 3G6X9a/9QZGs4/E1Nu1G6A==
+X-CSE-MsgGUID: 8VeCwGwHRoyx12QvGTKIaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="155458330"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 09 Jul 2025 02:10:07 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZQoW-0003Kz-1d;
+	Wed, 09 Jul 2025 09:10:04 +0000
+Date: Wed, 9 Jul 2025 17:09:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH 01/14] iomap: header diet
+Message-ID: <202507091656.dMTKUTBY-lkp@intel.com>
+References: <20250708135132.3347932-2-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250708135132.3347932-1-hch@lst.de>
-In-Reply-To: <20250708135132.3347932-1-hch@lst.de>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 8 Jul 2025 14:30:51 -0700
-X-Gm-Features: Ac12FXwa5YtLizBFDxdywhwayE5_QcC1_suEMiJs_748sHEtc47znVbUJrRxab8
-Message-ID: <CAJnrk1byAutqR6A1fyqKHvoAisK=MfrfD1p778dPqZDBPsp+Wg@mail.gmail.com>
-Subject: Re: refactor the iomap writeback code v4
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250708135132.3347932-2-hch@lst.de>
 
-On Tue, Jul 8, 2025 at 6:51=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
-:
->
-> Hi all,
->
-> this is an alternative approach to the writeback part of the
-> "fuse: use iomap for buffered writes + writeback" series from Joanne.
-> It doesn't try to make the code build without CONFIG_BLOCK yet.
->
-> The big difference compared to Joanne's version is that I hope the
-> split between the generic and ioend/bio based writeback code is a bit
-> cleaner here.  We have two methods that define the split between the
-> generic writeback code, and the implemementation of it, and all knowledge
-> of ioends and bios now sits below that layer.
->
-> This version passes testing on xfs, and gets as far as mainline for
-> gfs2 (crashes in generic/361).
->
-> Changes since v3:
->  - add a patch to drop unused includes
->  - drop the iomap_writepage_ctx renaming - we should do this separately a=
-nd
->    including the variable names if desired
->  - add a comment about special casing of holes in iomap_writeback_range
->  - split the cleanups to iomap_read_folio_sync into a separate prep patch
->  - explain the IOMAP_HOLE check in xfs_iomap_valid
->  - explain the iomap_writeback_folio later folio unlock vs dropbehind
->  - some cargo culting for the #$W# RST formatting
->  - "improve" the documentation coverage a bit
->
-> Changes since v2:
->  - rename iomap_writepage_ctx to iomap_writeback_ctx
->  - keep local map_blocks helpers in XFS
->  - allow buildinging the writeback and write code for !CONFIG_BLOCK
->
-> Changes since v1:
->  - fix iomap reuse in block/zonefs/gfs2
->  - catch too large return value from ->writeback_range
->  - mention the correct file name in a commit log
->  - add patches for folio laundering
->  - add patches for read/modify write in the generic write helpers
->
-> Diffstat:
->  Documentation/filesystems/iomap/design.rst     |    3
->  Documentation/filesystems/iomap/operations.rst |   57 +-
->  block/fops.c                                   |   37 +
->  fs/gfs2/aops.c                                 |    8
->  fs/gfs2/bmap.c                                 |   48 +-
->  fs/gfs2/bmap.h                                 |    1
->  fs/gfs2/file.c                                 |    3
->  fs/iomap/Makefile                              |    6
->  fs/iomap/buffered-io.c                         |  554 +++++++-----------=
--------
->  fs/iomap/direct-io.c                           |    5
->  fs/iomap/fiemap.c                              |    3
->  fs/iomap/internal.h                            |    1
->  fs/iomap/ioend.c                               |  220 +++++++++
->  fs/iomap/iter.c                                |    1
->  fs/iomap/seek.c                                |    4
->  fs/iomap/swapfile.c                            |    3
->  fs/iomap/trace.c                               |    1
->  fs/iomap/trace.h                               |    4
->  fs/xfs/xfs_aops.c                              |  212 +++++----
->  fs/xfs/xfs_file.c                              |    6
->  fs/xfs/xfs_iomap.c                             |   12
->  fs/xfs/xfs_iomap.h                             |    1
->  fs/xfs/xfs_reflink.c                           |    3
->  fs/zonefs/file.c                               |   40 +
->  include/linux/iomap.h                          |   82 ++-
->  25 files changed, 705 insertions(+), 610 deletions(-)
+Hi Christoph,
 
-Thanks Christoph for all your work on this. I'll pull this and put v4
-of the fuse iomap changes on top of this. I'll send that out this
-week.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on brauner-vfs/vfs.all]
+[also build test ERROR on xfs-linux/for-next gfs2/for-next linus/master v6.16-rc5 next-20250708]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Christoph-Hellwig/iomap-pass-more-arguments-using-the-iomap-writeback-context/20250708-225155
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
+patch link:    https://lore.kernel.org/r/20250708135132.3347932-2-hch%40lst.de
+patch subject: [PATCH 01/14] iomap: header diet
+config: arc-randconfig-001-20250709 (https://download.01.org/0day-ci/archive/20250709/202507091656.dMTKUTBY-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250709/202507091656.dMTKUTBY-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507091656.dMTKUTBY-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   fs/iomap/buffered-io.c: In function 'iomap_dirty_folio':
+>> fs/iomap/buffered-io.c:642:9: error: implicit declaration of function 'filemap_dirty_folio'; did you mean 'iomap_dirty_folio'? [-Werror=implicit-function-declaration]
+     return filemap_dirty_folio(mapping, folio);
+            ^~~~~~~~~~~~~~~~~~~
+            iomap_dirty_folio
+   fs/iomap/buffered-io.c: In function 'iomap_write_iter':
+>> fs/iomap/buffered-io.c:930:58: error: 'BDP_ASYNC' undeclared (first use in this function); did you mean 'I_SYNC'?
+     unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
+                                                             ^~~~~~~~~
+                                                             I_SYNC
+   fs/iomap/buffered-io.c:930:58: note: each undeclared identifier is reported only once for each function it appears in
+>> fs/iomap/buffered-io.c:945:12: error: implicit declaration of function 'balance_dirty_pages_ratelimited_flags' [-Werror=implicit-function-declaration]
+      status = balance_dirty_pages_ratelimited_flags(mapping,
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   fs/iomap/buffered-io.c: In function 'iomap_unshare_iter':
+>> fs/iomap/buffered-io.c:1309:3: error: implicit declaration of function 'balance_dirty_pages_ratelimited'; did you mean 'pr_alert_ratelimited'? [-Werror=implicit-function-declaration]
+      balance_dirty_pages_ratelimited(iter->inode->i_mapping);
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      pr_alert_ratelimited
+   fs/iomap/buffered-io.c: In function 'iomap_zero_iter':
+>> fs/iomap/buffered-io.c:1376:3: error: implicit declaration of function 'folio_mark_accessed'; did you mean 'folio_wait_locked'? [-Werror=implicit-function-declaration]
+      folio_mark_accessed(folio);
+      ^~~~~~~~~~~~~~~~~~~
+      folio_wait_locked
+   fs/iomap/buffered-io.c: In function 'iomap_alloc_ioend':
+   fs/iomap/buffered-io.c:1624:26: error: implicit declaration of function 'wbc_to_write_flags'; did you mean 'do_pipe_flags'? [-Werror=implicit-function-declaration]
+              REQ_OP_WRITE | wbc_to_write_flags(wbc),
+                             ^~~~~~~~~~~~~~~~~~
+                             do_pipe_flags
+   fs/iomap/buffered-io.c:1629:2: error: implicit declaration of function 'wbc_init_bio'; did you mean 'arc_init_IRQ'? [-Werror=implicit-function-declaration]
+     wbc_init_bio(wbc, bio);
+     ^~~~~~~~~~~~
+     arc_init_IRQ
+   fs/iomap/buffered-io.c: In function 'iomap_add_to_ioend':
+   fs/iomap/buffered-io.c:1748:2: error: implicit declaration of function 'wbc_account_cgroup_owner'; did you mean 'pr_cont_cgroup_name'? [-Werror=implicit-function-declaration]
+     wbc_account_cgroup_owner(wbc, folio, len);
+     ^~~~~~~~~~~~~~~~~~~~~~~~
+     pr_cont_cgroup_name
+   fs/iomap/buffered-io.c: In function 'iomap_writepages':
+>> fs/iomap/buffered-io.c:1965:18: error: implicit declaration of function 'writeback_iter'; did you mean 'write_lock_irq'? [-Werror=implicit-function-declaration]
+     while ((folio = writeback_iter(mapping, wbc, folio, &error)))
+                     ^~~~~~~~~~~~~~
+                     write_lock_irq
+>> fs/iomap/buffered-io.c:1965:16: warning: assignment to 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     while ((folio = writeback_iter(mapping, wbc, folio, &error)))
+                   ^
+   cc1: some warnings being treated as errors
+
+
+vim +642 fs/iomap/buffered-io.c
+
+8306a5f5630552 Matthew Wilcox (Oracle  2021-04-28  634) 
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  635) bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio)
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  636) {
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  637) 	struct inode *inode = mapping->host;
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  638) 	size_t len = folio_size(folio);
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  639) 
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  640) 	ifs_alloc(inode, folio, 0);
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  641) 	iomap_set_range_dirty(folio, 0, len);
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10 @642) 	return filemap_dirty_folio(mapping, folio);
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  643) }
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  644) EXPORT_SYMBOL_GPL(iomap_dirty_folio);
+4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  645) 
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
