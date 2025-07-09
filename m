@@ -1,161 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2835280CEA;
-	Wed,  9 Jul 2025 09:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DB23D2AF;
+	Wed,  9 Jul 2025 17:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752052211; cv=none; b=NLrTLLSLR5E2p3qJ9Pnt9GCseieRJiqQesEmuIxkvZqb/F1HRHJ4h4MbyfxUGAOZZBQderHCdz1x4ufJzuVV9K185KgKKNjWyWmt3BAbt5CD9A88M9lbOC+g0FYh3uY0puT5T80RaowmubNcNkXMfJJqhq+CBEGX0yaKha3zzC8=
+	t=1752083600; cv=none; b=dJYyzus06jbI1kUA7UKKOfK7cHhBefI5l1D18QTVaMN8esq0g9yBsdzq2hCL4YwijPKx8ecj9ODDR9AgZ9c4DdLmTvPvyYh3X2tqqnoACHKb7h/pVoa1PE0KM3Q9LCfWRWovce7zwQKhMqkbD0d68z7cBSVmf05COid5aROZHX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752052211; c=relaxed/simple;
-	bh=IJjJgM4OeRcDQZbbuj3g79bHehoQC7+ut1sOtWZkbZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okCDQxW0jI0GlMzkSwtRKb/4YIxvVjCkHOgRTNhSJkCYQxOfRKcPm74CtVU9zOrlR4Qaq33QftQC72GcaIkXnSlNQ7egGxy5OkePpioXJvzOSq/WhDB0uGb2/yzGdbIcNsm2lC3rEbdG6vkFAr1PYzHY7+oiyRqrsw5OKtSXJZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QzW535K+; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752083600; c=relaxed/simple;
+	bh=cZHhkkKoQxfdiwhShrVfsLlYDQveqtG/P5pJwSmN728=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g7sn5h8kAZ9R7yZ4bmWibN3RS84GRyXIzmXi7h67lfkZPt/OZAohNOBljyejWumrSRQNQzqCLJUwrL6qy3V78+gmgxxloWCU2qdxHyQ40qys933s+bumtofz/PJihp8+e7K1mmx301WHyD6FXvhy6i1XfJkbvMMXZ5PDpJ6qfl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/EaL7p6; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QzW535K+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752052210; x=1783588210;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IJjJgM4OeRcDQZbbuj3g79bHehoQC7+ut1sOtWZkbZs=;
-  b=QzW535K+xfDaHCNexMYzWVCUvLjy2T+RkUb3NyQa1550zSztnkeh8TGn
-   3fcICDvc3vbCF+6xYGyvQGBgYzYoVOI9PP6ESL8LO3hDHCo5YwzGvs7OJ
-   7fcQgL3hDjE75xmurGu/xxBtPWRqaSaAyTEtgc+VMHFldojTxmPiEGWoa
-   yhhGpS50Odmqhp43lnSVi0r/Sap4pEMGgw3oNZLGDAoSPEXiCal4/kU3i
-   eeS5Wj8y07Kve6GR/OHwOJjOje6DUT5mYnXzq42Dey2nOG21OqjO7plJP
-   j/YW1PXgd3dfgDzYpnNyNeOvdZ3+PI+JIgyNDLNtd8Y6hn3W0njQXSsEy
-   Q==;
-X-CSE-ConnectionGUID: sPmb+GX2Rtan+BpeJxqSyQ==
-X-CSE-MsgGUID: Kvw8NGh2QWGK4srzO0xVNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54163376"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54163376"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 02:10:09 -0700
-X-CSE-ConnectionGUID: 3G6X9a/9QZGs4/E1Nu1G6A==
-X-CSE-MsgGUID: 8VeCwGwHRoyx12QvGTKIaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="155458330"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 09 Jul 2025 02:10:07 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZQoW-0003Kz-1d;
-	Wed, 09 Jul 2025 09:10:04 +0000
-Date: Wed, 9 Jul 2025 17:09:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
-	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH 01/14] iomap: header diet
-Message-ID: <202507091656.dMTKUTBY-lkp@intel.com>
-References: <20250708135132.3347932-2-hch@lst.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/EaL7p6"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4a4312b4849so2072801cf.1;
+        Wed, 09 Jul 2025 10:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752083597; x=1752688397; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=chdWduo0xuyTSA7hGxJ9MzGIosMpOq6sLEcgGmEUqho=;
+        b=c/EaL7p6/C0ppKTelN0z3jlm0/ycgntKazEbAY2N8sDM2Z2zINTTr+8V+yHvS2FqR8
+         jpE17DXIhlBSXuiwDv0bIExyTUjxwROgrREWK5NTPjH0YzeLuWW7QwuJHp6bwUb0B9Rm
+         Z7sRMAdHJ1tua8xeiPAInvFRlfQ+/57OVHXgY5gU/P34435/hgBhP1b5Ir2lrzcHHC+R
+         9FQHiaHeD+bI+BhC1t1eXEMH7wIa5fN6Gc3soARezjdv+SWmfDK5te40oc1ebBvWI7Gf
+         H+xB+m4WgGdawLGoTDA2wy7gWm1myIjmn+tLBpOUtvbC5b0RxEkxDpMwZ32yROGiFW0Z
+         ISzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752083597; x=1752688397;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=chdWduo0xuyTSA7hGxJ9MzGIosMpOq6sLEcgGmEUqho=;
+        b=Grypm/fRpX9Nr/uqmEewrdbAeaFYplyyPrB8DXfAtTwd4ayATq0CJ9l3yRrxsaoIZ6
+         wcFtxzdbRNnrdj/2HQsKn5k8X6vrF+NK+A7sxKdsCekWQzIAo6OdxZ6x5YBzy5t1ACih
+         HELiZI5zZTD0KkqvXfQzB2a9TnT1AKmpPIaru4MOuecdBKWOuibH2b6U3p2mDyI+NtoH
+         3UXskWQxY1kvB1L3IKTC4+s4ThrvKqGOqg9BM3StR8mqw6YQavsyLwR/KzpBsnuN39TA
+         tvbZ6qjVrklAEOrNR368xw6Gbb9zJDnDQdoJwi4UYbSGW5tVMItmqHPc++pt0aBQQfAB
+         k7sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ0jsCfktUG3L7Ys0IxS2bnZWJiwPLBtHMB4XB2F1fTBZ0wT99ekYSvZPeaHNMPkFgrMfOYwgkEzUNNCy1aw==@lists.linux.dev, AJvYcCXKo1HOmV7YYyjWZShqFnot4EkT7EhaiLw/tInOSRgPCTp9xurTBvqr1cY99d1QjmBXqMks@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTUieihTJHx11GHWFlXXCYRzzoJphZ11mOzIj+b9ME6spnOpJ2
+	7QAt1wZvgoXOy/sGh+BJy3Px1wdTzAhS2YSKPDxuG505FediqHyeDYNJ/eBU4IMnZ6Y++wUevtc
+	yCofiEkY+RjtqO1D2DFugU0vu71ZQRdY8OMwylAo=
+X-Gm-Gg: ASbGncsEBFITvY9etttonhRhC+QlbLQA8PwyVjJi9IkWP/L5RVxgDP30HQPPfyo5UQP
+	dB35ywH8GZSalrNpg+XQPkaMdBK2ZAzg2HpNZRhFtxpfJFVncTatHvpeDjHRlNKJoDpwY4Q+enl
+	X/OoxodntbA4w+ttHtty3lcHeOJoAbeO4Wmr7sHI5RkVc=
+X-Google-Smtp-Source: AGHT+IGkscAnB4QMpdxgxygggoSbOo5Dbwl3HdhbBvnA4GtflSqoDUUggCyQ2Ui8pU012OkwACWTD3Kn2ubKI0WOy04=
+X-Received: by 2002:ac8:5756:0:b0:472:1d98:c6df with SMTP id
+ d75a77b69052e-4a9ded485d6mr51084801cf.52.1752083596844; Wed, 09 Jul 2025
+ 10:53:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708135132.3347932-2-hch@lst.de>
+References: <20250708135132.3347932-2-hch@lst.de> <202507091656.dMTKUTBY-lkp@intel.com>
+In-Reply-To: <202507091656.dMTKUTBY-lkp@intel.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 9 Jul 2025 10:53:06 -0700
+X-Gm-Features: Ac12FXzmT0rdR0DNiEi-ua93g95fceSTbfERwsHSYCOm31aBpdD657n_w-OLo_M
+Message-ID: <CAJnrk1ajT+OdZiSPOQ5Bv1HdtWqpjz773t8Q5=Om7zcroVXaGg@mail.gmail.com>
+Subject: Re: [PATCH 01/14] iomap: header diet
+To: kernel test robot <lkp@intel.com>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>, oe-kbuild-all@lists.linux.dev, 
+	"Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Christoph,
+On Wed, Jul 9, 2025 at 2:10=E2=80=AFAM kernel test robot <lkp@intel.com> wr=
+ote:
+>
+> Hi Christoph,
+>
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on brauner-vfs/vfs.all]
+> [also build test ERROR on xfs-linux/for-next gfs2/for-next linus/master v=
+6.16-rc5 next-20250708]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Christoph-Hellwig/=
+iomap-pass-more-arguments-using-the-iomap-writeback-context/20250708-225155
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.a=
+ll
+> patch link:    https://lore.kernel.org/r/20250708135132.3347932-2-hch%40l=
+st.de
+> patch subject: [PATCH 01/14] iomap: header diet
+> config: arc-randconfig-001-20250709 (https://download.01.org/0day-ci/arch=
+ive/20250709/202507091656.dMTKUTBY-lkp@intel.com/config)
+> compiler: arc-linux-gcc (GCC) 8.5.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20250709/202507091656.dMTKUTBY-lkp@intel.com/reproduce)
+>
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on brauner-vfs/vfs.all]
-[also build test ERROR on xfs-linux/for-next gfs2/for-next linus/master v6.16-rc5 next-20250708]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Christoph-Hellwig/iomap-pass-more-arguments-using-the-iomap-writeback-context/20250708-225155
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250708135132.3347932-2-hch%40lst.de
-patch subject: [PATCH 01/14] iomap: header diet
-config: arc-randconfig-001-20250709 (https://download.01.org/0day-ci/archive/20250709/202507091656.dMTKUTBY-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250709/202507091656.dMTKUTBY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507091656.dMTKUTBY-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   fs/iomap/buffered-io.c: In function 'iomap_dirty_folio':
->> fs/iomap/buffered-io.c:642:9: error: implicit declaration of function 'filemap_dirty_folio'; did you mean 'iomap_dirty_folio'? [-Werror=implicit-function-declaration]
-     return filemap_dirty_folio(mapping, folio);
-            ^~~~~~~~~~~~~~~~~~~
-            iomap_dirty_folio
-   fs/iomap/buffered-io.c: In function 'iomap_write_iter':
->> fs/iomap/buffered-io.c:930:58: error: 'BDP_ASYNC' undeclared (first use in this function); did you mean 'I_SYNC'?
-     unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-                                                             ^~~~~~~~~
-                                                             I_SYNC
-   fs/iomap/buffered-io.c:930:58: note: each undeclared identifier is reported only once for each function it appears in
->> fs/iomap/buffered-io.c:945:12: error: implicit declaration of function 'balance_dirty_pages_ratelimited_flags' [-Werror=implicit-function-declaration]
-      status = balance_dirty_pages_ratelimited_flags(mapping,
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   fs/iomap/buffered-io.c: In function 'iomap_unshare_iter':
->> fs/iomap/buffered-io.c:1309:3: error: implicit declaration of function 'balance_dirty_pages_ratelimited'; did you mean 'pr_alert_ratelimited'? [-Werror=implicit-function-declaration]
-      balance_dirty_pages_ratelimited(iter->inode->i_mapping);
-      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      pr_alert_ratelimited
-   fs/iomap/buffered-io.c: In function 'iomap_zero_iter':
->> fs/iomap/buffered-io.c:1376:3: error: implicit declaration of function 'folio_mark_accessed'; did you mean 'folio_wait_locked'? [-Werror=implicit-function-declaration]
-      folio_mark_accessed(folio);
-      ^~~~~~~~~~~~~~~~~~~
-      folio_wait_locked
-   fs/iomap/buffered-io.c: In function 'iomap_alloc_ioend':
-   fs/iomap/buffered-io.c:1624:26: error: implicit declaration of function 'wbc_to_write_flags'; did you mean 'do_pipe_flags'? [-Werror=implicit-function-declaration]
-              REQ_OP_WRITE | wbc_to_write_flags(wbc),
-                             ^~~~~~~~~~~~~~~~~~
-                             do_pipe_flags
-   fs/iomap/buffered-io.c:1629:2: error: implicit declaration of function 'wbc_init_bio'; did you mean 'arc_init_IRQ'? [-Werror=implicit-function-declaration]
-     wbc_init_bio(wbc, bio);
-     ^~~~~~~~~~~~
-     arc_init_IRQ
-   fs/iomap/buffered-io.c: In function 'iomap_add_to_ioend':
-   fs/iomap/buffered-io.c:1748:2: error: implicit declaration of function 'wbc_account_cgroup_owner'; did you mean 'pr_cont_cgroup_name'? [-Werror=implicit-function-declaration]
-     wbc_account_cgroup_owner(wbc, folio, len);
-     ^~~~~~~~~~~~~~~~~~~~~~~~
-     pr_cont_cgroup_name
-   fs/iomap/buffered-io.c: In function 'iomap_writepages':
->> fs/iomap/buffered-io.c:1965:18: error: implicit declaration of function 'writeback_iter'; did you mean 'write_lock_irq'? [-Werror=implicit-function-declaration]
-     while ((folio = writeback_iter(mapping, wbc, folio, &error)))
-                     ^~~~~~~~~~~~~~
-                     write_lock_irq
->> fs/iomap/buffered-io.c:1965:16: warning: assignment to 'struct folio *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     while ((folio = writeback_iter(mapping, wbc, folio, &error)))
-                   ^
-   cc1: some warnings being treated as errors
-
-
-vim +642 fs/iomap/buffered-io.c
-
-8306a5f5630552 Matthew Wilcox (Oracle  2021-04-28  634) 
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  635) bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio)
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  636) {
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  637) 	struct inode *inode = mapping->host;
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  638) 	size_t len = folio_size(folio);
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  639) 
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  640) 	ifs_alloc(inode, folio, 0);
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  641) 	iomap_set_range_dirty(folio, 0, len);
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10 @642) 	return filemap_dirty_folio(mapping, folio);
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  643) }
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  644) EXPORT_SYMBOL_GPL(iomap_dirty_folio);
-4ce02c67972211 Ritesh Harjani (IBM     2023-07-10  645) 
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Adding #include <linux/writeback.h> and #include <linux/swap.h> (for
+folio_mark_accessed()) back to buffered-io.c fixes it for this config.
