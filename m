@@ -1,106 +1,122 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DB23D2AF;
-	Wed,  9 Jul 2025 17:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31EF258CFF;
+	Thu, 10 Jul 2025 13:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752083600; cv=none; b=dJYyzus06jbI1kUA7UKKOfK7cHhBefI5l1D18QTVaMN8esq0g9yBsdzq2hCL4YwijPKx8ecj9ODDR9AgZ9c4DdLmTvPvyYh3X2tqqnoACHKb7h/pVoa1PE0KM3Q9LCfWRWovce7zwQKhMqkbD0d68z7cBSVmf05COid5aROZHX8=
+	t=1752154433; cv=none; b=uy3n5+vIdubIykSEVlsJEsL8lb5e6q5ZpZ3bbshhjdNMCqnlcrXuXqYhc7/M7trZyCojgY1EaGdtRZ4ItzRH9kZ9IMj4Q3xgA8IjYrHazmAVVRzvkPheteOxShpq8BL/orCARO1WAA0bqtxxWxtC5ueVWX6Z/isOup9vG90Rlxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752083600; c=relaxed/simple;
-	bh=cZHhkkKoQxfdiwhShrVfsLlYDQveqtG/P5pJwSmN728=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g7sn5h8kAZ9R7yZ4bmWibN3RS84GRyXIzmXi7h67lfkZPt/OZAohNOBljyejWumrSRQNQzqCLJUwrL6qy3V78+gmgxxloWCU2qdxHyQ40qys933s+bumtofz/PJihp8+e7K1mmx301WHyD6FXvhy6i1XfJkbvMMXZ5PDpJ6qfl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/EaL7p6; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752154433; c=relaxed/simple;
+	bh=MWn5XlCdAjB+sK9dSdXIVMPxxACg3YrERKdTXwshHVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WVrQFUzvVoFYGvCCQA24UldrNluyjfDCrC/zDc6hZNRL8pgSkM5AjeP7rLBRaVFlXD8K+8VVTZW1fBl/sbUrh3LiDn8W9aF9yeKtR1GuTYJ+3rqlhWpvOUdzYp8QbIKodd5ctWNbYXKbCCHt3IpWlM1+/s+I4S/XiXS/Z7KBRAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=1oem0Rlo; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/EaL7p6"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4a4312b4849so2072801cf.1;
-        Wed, 09 Jul 2025 10:53:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752083597; x=1752688397; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=chdWduo0xuyTSA7hGxJ9MzGIosMpOq6sLEcgGmEUqho=;
-        b=c/EaL7p6/C0ppKTelN0z3jlm0/ycgntKazEbAY2N8sDM2Z2zINTTr+8V+yHvS2FqR8
-         jpE17DXIhlBSXuiwDv0bIExyTUjxwROgrREWK5NTPjH0YzeLuWW7QwuJHp6bwUb0B9Rm
-         Z7sRMAdHJ1tua8xeiPAInvFRlfQ+/57OVHXgY5gU/P34435/hgBhP1b5Ir2lrzcHHC+R
-         9FQHiaHeD+bI+BhC1t1eXEMH7wIa5fN6Gc3soARezjdv+SWmfDK5te40oc1ebBvWI7Gf
-         H+xB+m4WgGdawLGoTDA2wy7gWm1myIjmn+tLBpOUtvbC5b0RxEkxDpMwZ32yROGiFW0Z
-         ISzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752083597; x=1752688397;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=chdWduo0xuyTSA7hGxJ9MzGIosMpOq6sLEcgGmEUqho=;
-        b=Grypm/fRpX9Nr/uqmEewrdbAeaFYplyyPrB8DXfAtTwd4ayATq0CJ9l3yRrxsaoIZ6
-         wcFtxzdbRNnrdj/2HQsKn5k8X6vrF+NK+A7sxKdsCekWQzIAo6OdxZ6x5YBzy5t1ACih
-         HELiZI5zZTD0KkqvXfQzB2a9TnT1AKmpPIaru4MOuecdBKWOuibH2b6U3p2mDyI+NtoH
-         3UXskWQxY1kvB1L3IKTC4+s4ThrvKqGOqg9BM3StR8mqw6YQavsyLwR/KzpBsnuN39TA
-         tvbZ6qjVrklAEOrNR368xw6Gbb9zJDnDQdoJwi4UYbSGW5tVMItmqHPc++pt0aBQQfAB
-         k7sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ0jsCfktUG3L7Ys0IxS2bnZWJiwPLBtHMB4XB2F1fTBZ0wT99ekYSvZPeaHNMPkFgrMfOYwgkEzUNNCy1aw==@lists.linux.dev, AJvYcCXKo1HOmV7YYyjWZShqFnot4EkT7EhaiLw/tInOSRgPCTp9xurTBvqr1cY99d1QjmBXqMks@lists.linux.dev
-X-Gm-Message-State: AOJu0YzTUieihTJHx11GHWFlXXCYRzzoJphZ11mOzIj+b9ME6spnOpJ2
-	7QAt1wZvgoXOy/sGh+BJy3Px1wdTzAhS2YSKPDxuG505FediqHyeDYNJ/eBU4IMnZ6Y++wUevtc
-	yCofiEkY+RjtqO1D2DFugU0vu71ZQRdY8OMwylAo=
-X-Gm-Gg: ASbGncsEBFITvY9etttonhRhC+QlbLQA8PwyVjJi9IkWP/L5RVxgDP30HQPPfyo5UQP
-	dB35ywH8GZSalrNpg+XQPkaMdBK2ZAzg2HpNZRhFtxpfJFVncTatHvpeDjHRlNKJoDpwY4Q+enl
-	X/OoxodntbA4w+ttHtty3lcHeOJoAbeO4Wmr7sHI5RkVc=
-X-Google-Smtp-Source: AGHT+IGkscAnB4QMpdxgxygggoSbOo5Dbwl3HdhbBvnA4GtflSqoDUUggCyQ2Ui8pU012OkwACWTD3Kn2ubKI0WOy04=
-X-Received: by 2002:ac8:5756:0:b0:472:1d98:c6df with SMTP id
- d75a77b69052e-4a9ded485d6mr51084801cf.52.1752083596844; Wed, 09 Jul 2025
- 10:53:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="1oem0Rlo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=tetkzlCfenrpH7MgGkZct/9GsLBQFBzGpcaOg7hONcs=; b=1oem0RlogcLMNVqqMJ4Y/EJTeP
+	cWLlfzX7BH8XzjU0z7Bcx7TTQLlM1R8QHpcxv5YT+5NnGw0i0cr7gYVkUflo8bojjqInu3ThiRRXZ
+	XIxmKal8isykNv6LnYb5G05wRnujmp2EjhdOPBdjaZ7xQJUrroEi52bQ/+YEHrVgSW6j2VRa4821U
+	dZtcl0/n91f5q4TuChnxrkunFYm57HDRxsv8g64cYxrVGa8O6gud9V22PvGNz/QEQgB4SrplM7hjK
+	8op6FfnX32uYJqWPGBg6/gUhee9M8rVq2hKIITyi4Vys7sIMcFGDe9A/YfNSMRNLHOHNgXQv94m0h
+	p48NlWgg==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uZrPI-0000000BwQQ-2Dbk;
+	Thu, 10 Jul 2025 13:33:48 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	gfs2@lists.linux.dev
+Subject: refactor the iomap writeback code v5
+Date: Thu, 10 Jul 2025 15:33:24 +0200
+Message-ID: <20250710133343.399917-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250708135132.3347932-2-hch@lst.de> <202507091656.dMTKUTBY-lkp@intel.com>
-In-Reply-To: <202507091656.dMTKUTBY-lkp@intel.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 9 Jul 2025 10:53:06 -0700
-X-Gm-Features: Ac12FXzmT0rdR0DNiEi-ua93g95fceSTbfERwsHSYCOm31aBpdD657n_w-OLo_M
-Message-ID: <CAJnrk1ajT+OdZiSPOQ5Bv1HdtWqpjz773t8Q5=Om7zcroVXaGg@mail.gmail.com>
-Subject: Re: [PATCH 01/14] iomap: header diet
-To: kernel test robot <lkp@intel.com>
-Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>, oe-kbuild-all@lists.linux.dev, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, Jul 9, 2025 at 2:10=E2=80=AFAM kernel test robot <lkp@intel.com> wr=
-ote:
->
-> Hi Christoph,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on brauner-vfs/vfs.all]
-> [also build test ERROR on xfs-linux/for-next gfs2/for-next linus/master v=
-6.16-rc5 next-20250708]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Christoph-Hellwig/=
-iomap-pass-more-arguments-using-the-iomap-writeback-context/20250708-225155
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.a=
-ll
-> patch link:    https://lore.kernel.org/r/20250708135132.3347932-2-hch%40l=
-st.de
-> patch subject: [PATCH 01/14] iomap: header diet
-> config: arc-randconfig-001-20250709 (https://download.01.org/0day-ci/arch=
-ive/20250709/202507091656.dMTKUTBY-lkp@intel.com/config)
-> compiler: arc-linux-gcc (GCC) 8.5.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20250709/202507091656.dMTKUTBY-lkp@intel.com/reproduce)
->
+Hi all,
 
-Adding #include <linux/writeback.h> and #include <linux/swap.h> (for
-folio_mark_accessed()) back to buffered-io.c fixes it for this config.
+this is an alternative approach to the writeback part of the
+"fuse: use iomap for buffered writes + writeback" series from Joanne.
+It doesn't try to make the code build without CONFIG_BLOCK yet.
+
+The big difference compared to Joanne's version is that I hope the
+split between the generic and ioend/bio based writeback code is a bit
+cleaner here.  We have two methods that define the split between the
+generic writeback code, and the implemementation of it, and all knowledge
+of ioends and bios now sits below that layer.
+
+This version passes testing on xfs, and gets as far as mainline for
+gfs2 (crashes in generic/361).
+
+Changes since v4:
+ - add back includes needed in some configs
+ - drop an include not needed after a code move
+
+Changes since v3:
+ - add a patch to drop unused includes
+ - drop the iomap_writepage_ctx renaming - we should do this separately and
+   including the variable names if desired
+ - add a comment about special casing of holes in iomap_writeback_range
+ - split the cleanups to iomap_read_folio_sync into a separate prep patch
+ - explain the IOMAP_HOLE check in xfs_iomap_valid
+ - explain the iomap_writeback_folio later folio unlock vs dropbehind
+ - some cargo culting for the #$W# RST formatting
+ - "improve" the documentation coverage a bit
+
+Changes since v2:
+ - rename iomap_writepage_ctx to iomap_writeback_ctx
+ - keep local map_blocks helpers in XFS
+ - allow buildinging the writeback and write code for !CONFIG_BLOCK
+
+Changes since v1:
+ - fix iomap reuse in block/zonefs/gfs2 
+ - catch too large return value from ->writeback_range
+ - mention the correct file name in a commit log
+ - add patches for folio laundering
+ - add patches for read/modify write in the generic write helpers
+
+Diffstat:
+ Documentation/filesystems/iomap/design.rst     |    3 
+ Documentation/filesystems/iomap/operations.rst |   57 +-
+ block/fops.c                                   |   37 +
+ fs/gfs2/aops.c                                 |    8 
+ fs/gfs2/bmap.c                                 |   48 +-
+ fs/gfs2/bmap.h                                 |    1 
+ fs/gfs2/file.c                                 |    3 
+ fs/iomap/Makefile                              |    6 
+ fs/iomap/buffered-io.c                         |  553 +++++++------------------
+ fs/iomap/direct-io.c                           |    5 
+ fs/iomap/fiemap.c                              |    3 
+ fs/iomap/internal.h                            |    1 
+ fs/iomap/ioend.c                               |  220 +++++++++
+ fs/iomap/iter.c                                |    1 
+ fs/iomap/seek.c                                |    4 
+ fs/iomap/swapfile.c                            |    3 
+ fs/iomap/trace.c                               |    1 
+ fs/iomap/trace.h                               |    4 
+ fs/xfs/xfs_aops.c                              |  212 +++++----
+ fs/xfs/xfs_file.c                              |    6 
+ fs/xfs/xfs_iomap.c                             |   12 
+ fs/xfs/xfs_iomap.h                             |    1 
+ fs/xfs/xfs_reflink.c                           |    3 
+ fs/zonefs/file.c                               |   40 +
+ include/linux/iomap.h                          |   82 ++-
+ 25 files changed, 705 insertions(+), 609 deletions(-)
