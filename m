@@ -1,56 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E8C27D781;
-	Fri, 11 Jul 2025 09:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762619AD8C
+	for <gfs2@lists.linux.dev>; Fri, 11 Jul 2025 11:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752227427; cv=none; b=BuoH0rwZuvB6UFWjtpJJ7tl+AkajJ2UGFOdP18jUwwLEJmDzeI67/OWRs4ymo0uY3i2KOWgtILGafYTvcsdOXMCKSmKnnhK3ZLHzU3drDkgrva3DvlQ7a48ikQZ+HAd0AAzyRfcW+BD0urhOxBmygJ+IzEwakuDcGoh2xlYBYk4=
+	t=1752232828; cv=none; b=RBTSYgIh1qMTWApMroO0fBGLy2HPz+E9QRF+I/Il8gKkPDl/EccGEwTbo9lMK51EYsSWSb9nifvkb0/g2PuV1N/AaH2vaTNh0UZh2qV3jQQwlOeG+7ZeKoHFaE1FpOoMd3IyUGld4Pg1RfTrfN0l8CD4ddVfSZawuagRmszPcl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752227427; c=relaxed/simple;
-	bh=S68Sdm3hdWr54+bPb5x8Y8IVtYlBfiSa2mWJPoASf20=;
+	s=arc-20240116; t=1752232828; c=relaxed/simple;
+	bh=wlP3/M2M4/F3Ll9L0tiVoF9qkFIfVU+4huPD1wTAU1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKVBOzo4xAeGwxPQUXP46KnY74Wfe/RGft7GFynJTez38NuMEv7F5hKoeS8nqCtMLh1BztQ/1JTYln9tzfYEHhG1OlEodvsA9RGeniWC80222YCly1Us5YhUEpyCF/bgIOylWj8wQaqWyckiclETC8RkNir9QXyL6sCs6xXTONY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeDPm+Zr; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeDPm+Zr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93771C4CEED;
-	Fri, 11 Jul 2025 09:50:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752227426;
-	bh=S68Sdm3hdWr54+bPb5x8Y8IVtYlBfiSa2mWJPoASf20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NeDPm+ZrFrTcdefpS7XvoMofuc20g1V4u+g04xPrAMaMqlNolELtQgO7XCkbKbBlE
-	 aX2+hZi57GYv0uXAfwg7W6hkynfftmQEvHO0nMx5ZQZDaF5GMJ6mDHmHfmpvwooVRf
-	 KawJBQ3F0dhHNmH7DTm5LRm8xcyMQ06BjxYkT0Nq7wfsFPX1H4+K7ccAbO2HVZd82o
-	 Qa4a9ZyNbVsYBQ174vRSHeY8hqcjZeMLLHjGgDDMjMLmAr2YCLL6pCdbFEvnaLIDS3
-	 Ws3Ao9qi6y3Ky2KtcfInoiOv9oO3U0PJYH/Vi/NFhGz0hMcagF+kW6EbyJO5MwA+pn
-	 gg5X0I+tb7dCA==
-Date: Fri, 11 Jul 2025 11:50:22 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, 
-	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-block@vger.kernel.org, gfs2@lists.linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=iOhI5sQPkyJoG0q/dAzdVkCygCZ+qzo1leXXFqpeua1HJMvOtTPTf7qxgBIyT36M+ArPbKBXBj06zsb2AhhpddR+d/SFx3RDOmz2k/DKw4IB8v5ERph1dsXM2lVIYM2QmaMOiQ+TLla1caqNqtRhbdEPecViv8Wy1p4YoOUpluw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 4EE0668C4E; Fri, 11 Jul 2025 13:20:22 +0200 (CEST)
+Date: Fri, 11 Jul 2025 13:20:22 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev
 Subject: Re: refactor the iomap writeback code v5
-Message-ID: <20250711-arten-randlage-1a867323e2ce@brauner>
-References: <20250710133343.399917-1-hch@lst.de>
+Message-ID: <20250711112022.GA16329@lst.de>
+References: <20250710133343.399917-1-hch@lst.de> <20250711-arten-randlage-1a867323e2ce@brauner>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710133343.399917-1-hch@lst.de>
+In-Reply-To: <20250711-arten-randlage-1a867323e2ce@brauner>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Thu, Jul 10, 2025 at 03:33:24PM +0200, Christoph Hellwig wrote:
-> Hi all,
+On Fri, Jul 11, 2025 at 11:50:22AM +0200, Christian Brauner wrote:
+> On Thu, Jul 10, 2025 at 03:33:24PM +0200, Christoph Hellwig wrote:
+> > Hi all,
+> > 
+> > this is an alternative approach to the writeback part of the
+> > "fuse: use iomap for buffered writes + writeback" series from Joanne.
+> > It doesn't try to make the code build without CONFIG_BLOCK yet.
 > 
-> this is an alternative approach to the writeback part of the
-> "fuse: use iomap for buffered writes + writeback" series from Joanne.
-> It doesn't try to make the code build without CONFIG_BLOCK yet.
+> I'm confused, the last commit in the series makes the code built with
+> !CONFIG_BLOCK? So this is ready to go?
 
-I'm confused, the last commit in the series makes the code built with
-!CONFIG_BLOCK? So this is ready to go?
+It's ready.  That last sentence should have been dropped a few iterations
+ago.
+
