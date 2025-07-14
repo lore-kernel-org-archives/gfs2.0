@@ -1,96 +1,114 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4C1233701
-	for <gfs2@lists.linux.dev>; Mon, 14 Jul 2025 07:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619202E3718;
+	Mon, 14 Jul 2025 08:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752477816; cv=none; b=fHLAetDpN8WZl28LtPPoADt1Va1DP6jjexeEI6g4RHWpNUHzX6EzNuhj7ghefALtMKBHMUgX4QxflBDRQvLPFzCNU1NxLchDN4sZflA/L58f7JG3X+/wE5a1dZUYhkmOCl0Okzy72j86/50pitwburrM0BcPMomSXx6Wzhu576Q=
+	t=1752483158; cv=none; b=WN/BRM14KxLWEgmJ7Fvvp1LO4jZMAPH3xbm3Lco5fFXmEb1yxXPw0PJswjjWHvgH1O7jb8Dc0gYBnfh6SbG7sXrteb1Vuq8CtXONw42Aqb3leOI5+5qFFnsg2i2EaPz3aaxNS93cCWB/TU/im4uUffrydahw2rv+5/nJCZLf9G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752477816; c=relaxed/simple;
-	bh=ayW077Gk2pvt3Hw6dVG5Yg2VKry/Kayw1iHiNu51UC8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=YKTOJqd0/JRE7HOLhEQgVHJJbGixViyk9XRUWctSWzZm0I0LdCxm3cLDd7d1IFzmMD7N7i4Ui9IZm9KaLDzhExMBx2XUOwLC8B1wwm3qMX15ls0BIywKgIyjgonM5hRkMw/TETMhBVB0X9IgvTV8fcfUw2tp9iWTrkhQIXc8Yxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3ddbec809acso48221935ab.2
-        for <gfs2@lists.linux.dev>; Mon, 14 Jul 2025 00:23:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752477814; x=1753082614;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BnrSjNkG3/uaXhOO/o2sQgdxidCRv7vVZ1X52wDBqS8=;
-        b=PiirdzyR/aHq7H2UghT6yzp7adwb4eqafLKl8sul1H9LOYRpq911n6gJ6qdRRy9ds0
-         8tDP2zWoA2gXaMXJjktV9qYTdK0ZGrL7pctcrwxN+QZ4drwK8iABNh7zrp2k3fpTa774
-         15+lz4tDrLvghsVi8wl2cCCB3YC+v2dLxMOVdJVwNKvQDI5quHulzeZlFTx2eDOEM5x/
-         X4/gxslrgFyLz1pl+3d202Ma8IdH492+ZEQH/V1/V3QTKTD5+AqPGBuAibokDiHjZDev
-         M6AV0aHrzF/D39kXosiNw24Y82FCaRw41iQ1EGFJjXZoPuFgrJNAlEaAovGY2Ic7Hq3D
-         C+ig==
-X-Gm-Message-State: AOJu0Yz+diTbzM2flMBDtSR46geaReJBFIyqE8eQb0YaJtQof5HzM8ku
-	K/CHIYMUfyPY5y1NXkUxG1wTxCEvxMixRWWCcQmqbW81YMIcUXtYvlZZLd0Eh8HPw7pBpX9NXOy
-	wNDFK19+IqcemqFG7xyzwTD4odhAphcWvvqxJwZJn/CQn6VEus1PsS8rv7Lg=
-X-Google-Smtp-Source: AGHT+IGdCHUa+pREzYVT/fJ+UZ5bQW6X7dVgoNVel3kmofbNf92QjDptPa5wKag7BTHjheHNeD9l03cafOladEMcDE89kl8gUKrW
+	s=arc-20240116; t=1752483158; c=relaxed/simple;
+	bh=FMNrS1Z1UilPJzSrb1Ap/6lM+9eqZRJQR6eXPg4Hlxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h/ikDVFWF9WYB4VUQG5xqWMs7KGGTw2ZlXHAlVAMxAriqYAQ+kH3EpGzzouRlinYqQz0PC1rrk3ihSdacQpCU7hOY5ASkikNJ2lR0tsFhYx+oy1rooB8qSOGAPqUBRtlieGxBMYdQQ+Z7UGAA5IUd1du1WJIuj/bAzgNqAgricY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=py0ZCIOV; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="py0ZCIOV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADABC4CEED;
+	Mon, 14 Jul 2025 08:52:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752483157;
+	bh=FMNrS1Z1UilPJzSrb1Ap/6lM+9eqZRJQR6eXPg4Hlxc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=py0ZCIOVIui3LKHdgAy9ffVUUf72EMbd0ZoWs6qMQc2905RrwGDd3SySm0k4zeV/l
+	 NMki8OSXEU5962IcQn3u40q6UCo3C2xF6m864tCZzZTf3z6PQ48dxn7cXOhEw01cmi
+	 B75+cIeYMA4/CKIua3oKVducjyMaVsP64oLLhDmyRqKzuATzVHYbkZynhndSh+Eg3L
+	 nnJYtIIagI+IrtdRCmAuaEIgCMq+QaHm2iyuu77M70pGLk6g4GQrVHfkpVHvgjH120
+	 SJFimMnKDu8XjxbkK8V75lMKw83KFmzLsDBOG1iNKYfYtRwl32YWf7TCoKDLdwcPm+
+	 FTNDDbDfzwLsg==
+From: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	gfs2@lists.linux.dev
+Subject: Re: refactor the iomap writeback code v5
+Date: Mon, 14 Jul 2025 10:52:07 +0200
+Message-ID: <20250714-untiefen-zonen-36da5ea68518@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250710133343.399917-1-hch@lst.de>
+References: <20250710133343.399917-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2166:b0:3de:12ba:7d6c with SMTP id
- e9e14a558f8ab-3e2532799e5mr145101745ab.8.1752477813853; Mon, 14 Jul 2025
- 00:23:33 -0700 (PDT)
-Date: Mon, 14 Jul 2025 00:23:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6874b075.a70a0220.3b380f.004d.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Jul 2025)
-From: syzbot <syzbot+list034a5bbd793492eeb988@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2905; i=brauner@kernel.org; h=from:subject:message-id; bh=y7lmWAifSLj+7kxdAkI5hCPYWKy8/kHG+/dQ0pKC5Ng=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSUHLWMDzx/1DbrLcs/fYvVr+JmNb9wXp2xZpHfdx1mu ffP22VFO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbyfyXD/5Bp7mwzLG9JHP6a zZ6yo/HyIRetWytumgfsn/rJoH72rUyG/6kTG3cF/J+8KeWV/54Zj5SaPQT8XVo5ku2PTT2Xc9R 4CzcA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hello gfs2 maintainers/developers,
+On Thu, 10 Jul 2025 15:33:24 +0200, Christoph Hellwig wrote:
+> this is an alternative approach to the writeback part of the
+> "fuse: use iomap for buffered writes + writeback" series from Joanne.
+> It doesn't try to make the code build without CONFIG_BLOCK yet.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+I dropped that sentence from the merge commit.
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 21 issues are still open and 37 have already been fixed.
+> 
+> The big difference compared to Joanne's version is that I hope the
+> split between the generic and ioend/bio based writeback code is a bit
+> cleaner here.  We have two methods that define the split between the
+> generic writeback code, and the implemementation of it, and all knowledge
+> of ioends and bios now sits below that layer.
+> 
+> [...]
 
-Some of the still happening issues:
+Applied to the vfs-6.17.iomap branch of the vfs/vfs.git tree.
+Patches in the vfs-6.17.iomap branch should appear in linux-next soon.
 
-Ref  Crashes Repro Title
-<1>  2518    Yes   kernel BUG in gfs2_withdraw
-                   https://syzkaller.appspot.com/bug?extid=ed42f17ebcb58526788c
-<2>  1392    Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<3>  357     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<4>  288     Yes   INFO: task hung in __gfs2_lookup
-                   https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<5>  98      No    kernel BUG in __gfs2_glock_put (2)
-                   https://syzkaller.appspot.com/bug?extid=ef4ad020dc976d178975
-<6>  44      Yes   KASAN: slab-use-after-free Read in folio_evictable (3)
-                   https://syzkaller.appspot.com/bug?extid=4c7590f1cee06597e43a
-<7>  41      No    WARNING in gfs2_put_super
-                   https://syzkaller.appspot.com/bug?extid=56182be23469e01affbc
-<8>  32      Yes   WARNING in gfs2_ri_update (2)
-                   https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<9>  31      Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<10> 29      Yes   INFO: task hung in gfs2_glock_nq
-                   https://syzkaller.appspot.com/bug?extid=dbb72d38131e90dc1f66
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.17.iomap
 
-You may send multiple commands in a single email message.
+[01/14] iomap: header diet
+        https://git.kernel.org/vfs/vfs/c/8cd0a39cab56
+[02/14] iomap: pass more arguments using the iomap writeback context
+        https://git.kernel.org/vfs/vfs/c/67fd9615a782
+[03/14] iomap: cleanup the pending writeback tracking in iomap_writepage_map_blocks
+        https://git.kernel.org/vfs/vfs/c/40368a6acb95
+[04/14] iomap: refactor the writeback interface
+        https://git.kernel.org/vfs/vfs/c/fb7399cf2d0b
+[05/14] iomap: hide ioends from the generic writeback code
+        https://git.kernel.org/vfs/vfs/c/f4fa7981fa26
+[06/14] iomap: add public helpers for uptodate state manipulation
+        https://git.kernel.org/vfs/vfs/c/9caf1ea80ced
+[07/14] iomap: move all ioend handling to ioend.c
+        https://git.kernel.org/vfs/vfs/c/8f02cecd80b9
+[08/14] iomap: rename iomap_writepage_map to iomap_writeback_folio
+        https://git.kernel.org/vfs/vfs/c/58f0d5a30427
+[09/14] iomap: move folio_unlock out of iomap_writeback_folio
+        https://git.kernel.org/vfs/vfs/c/f8b6a94a4cca
+[10/14] iomap: export iomap_writeback_folio
+        https://git.kernel.org/vfs/vfs/c/8b217cf779cb
+[11/14] iomap: replace iomap_folio_ops with iomap_write_ops
+        https://git.kernel.org/vfs/vfs/c/2a5574fc57d1
+[12/14] iomap: improve argument passing to iomap_read_folio_sync
+        https://git.kernel.org/vfs/vfs/c/e6caf01d3f57
+[13/14] iomap: add read_folio_range() handler for buffered writes
+        https://git.kernel.org/vfs/vfs/c/c5690dd01978
+[14/14] iomap: build the writeback code without CONFIG_BLOCK
+        https://git.kernel.org/vfs/vfs/c/5699b7e21d20
