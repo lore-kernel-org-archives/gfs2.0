@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3438F2F508E
-	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF502BD595
+	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753284128; cv=none; b=BTJkcxmoM9VoSPwSIONY5bNsn1YzgwFGz+385XXp6Sdfmob6BnqK0kU9bOQR/h6fDjaGWS+dbhAhiwvfKyRyfCR0eos/ErpamUQ0y94VmYo+Bs8T8gJddbv/I4UowWsjp/jTYnO+TdIL+Nrnhyv2ucnQ5P15B/mXkGf/B9Ya0E4=
+	t=1753284130; cv=none; b=s2DAMuxAzO9aQJg5ZXxfoZKT0Aolhh/Ss5VOU53NHG6BiDquXYV6YDw7uskGOVGLbpITRhDptTiAmxBpEfjwKvhcgGSZuDMb6tklYECTJvgucN79oDYECKYOU65MHntHkou9DKH+ZjvbfcyF0rlTC9nroqqLSbGNv15530Ibw8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753284128; c=relaxed/simple;
-	bh=3rewIFtZkAWkk0I7iII+X3mTN5jLPrvHyDEB3DU7/Lc=;
+	s=arc-20240116; t=1753284130; c=relaxed/simple;
+	bh=9UeuQ0iNYwcSm0tFInIX01NyOTliGZ66vNPQYwYCnjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=SniOaHYCMChFMBrlQQxHqcbkdO6Hp9D8uthGMuomlqQFoy4WcHRhQo3cOJ8bNLK4Ez0eMV4go3u5HBKv6JvPGOBS72wocBnv7xtstp9iGZzcCnwaBttBv3M2DTqtyv79raZB9U1+PEP87wLc0VdfWqrkTcwxuUC/JF8wYE6VLF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GMZ7qHEC; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=MO8/rIhkXfLlzKX8SHnYxOE9i2CXNgjq5cEGgSVr6Ab8t/0zj1AWNnt4mjBVUHZ8AN8JwjDgQ8FuF0bVQ6DnjMLl5IKXQv8okO/Wkjrd5ccOgyPM3QvlOBbzpQYR8gVi9FIodSVlV8vXAZYFy95v2ffVAvzqqgF11Z4Yy/KJwc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iwKdWGOF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GMZ7qHEC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iwKdWGOF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753284125;
+	s=mimecast20190719; t=1753284127;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Mw5HJiIdIntHEOO5MRekrMALEj3/gG4DZTeLgRN5JbA=;
-	b=GMZ7qHECoQmatK2yA/dOvOzFl5EjI/vKqIwnq8vCbATR0Y9Uu+nCDjG+7Q7G2v1zAySbpK
-	MmBdhiELWtreyDtfsyB095HiSnfw4NJMnHyrbL6g2od2aPXdSGMmGype4y3RuQYsFqJNTq
-	l6kIBnvk3qXvHYoj2/ZrnLOky/Vd7Yc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=AEHM0P61QDIEN0JB9NUyS9USGDIFvdTU2bZsrx+stzM=;
+	b=iwKdWGOFUdGVr+EkRtdRjJKypEmRmozhA6B0zhqi4upchgfM7ytzSr87cg9Dtint5HCzTw
+	cUcJqYQJjd5t7ipyavn9ZOjKNpK4LCD6LEbjs5Gru5fLXapw03rBmdGfQpf7Yu+4aXr6XE
+	aJiqGiWeBhIM40NikYeqdfHcXo0fFJQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-cH3cSyl0OFaCTh9hiLRdCA-1; Wed,
- 23 Jul 2025 11:22:02 -0400
-X-MC-Unique: cH3cSyl0OFaCTh9hiLRdCA-1
-X-Mimecast-MFC-AGG-ID: cH3cSyl0OFaCTh9hiLRdCA_1753284121
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-_GgoSX0mNQegBm9pu2PUUw-1; Wed,
+ 23 Jul 2025 11:22:05 -0400
+X-MC-Unique: _GgoSX0mNQegBm9pu2PUUw-1
+X-Mimecast-MFC-AGG-ID: _GgoSX0mNQegBm9pu2PUUw_1753284125
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38F421956088
-	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:01 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D2B511977310
+	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:04 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 643E0195608D;
-	Wed, 23 Jul 2025 15:22:00 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3B2D31955F57;
+	Wed, 23 Jul 2025 15:22:02 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: agruenba@redhat.com,
 	gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.16-rc7 2/5] dlm: introduce release parameter defines
-Date: Wed, 23 Jul 2025 11:21:53 -0400
-Message-ID: <20250723152156.2988833-3-aahringo@redhat.com>
+Subject: [PATCH v6.16-rc7 4/5] dlm: add lockspace member configfs release_recover
+Date: Wed, 23 Jul 2025 11:21:55 -0400
+Message-ID: <20250723152156.2988833-5-aahringo@redhat.com>
 In-Reply-To: <20250723152156.2988833-1-aahringo@redhat.com>
 References: <20250723152156.2988833-1-aahringo@redhat.com>
 Precedence: bulk
@@ -60,226 +60,219 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: O_1WKDYUxbU7SH8tO8lrrsKDuNjb5LYOuO4_eKKl2h4_1753284121
+X-Mimecast-MFC-PROC-ID: 0Kx5wmi59JccQc040QcOM2s35z4nKRVr-L6891ZUbg8_1753284125
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-The current force parameter of dlm_release_lockspace() has several
-meanings and no defines for each value and renames it as option. This
-patch introduces defines for each option value. Some values are only
-there for checking lockspace states and return -EBUSY if necessary,
-others values do special handling to report the release way (or not)
-to the cluster manager in user space.
+This patch adds a new configfs entry to add an optional additional
+attribute when a lockspace member was being removed by rmdir of its
+directory.
 
-Let all upstream DLM users use those defines.
+As configfs does not allow additional attributes to rmdir() we need to set
+such value before calling rmdir() to tell an additional attribute for
+the rmdir operation. In this case its release_recover that can be used
+later for additional handling.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- drivers/md/md-cluster.c |  4 ++--
- fs/dlm/lockspace.c      | 20 +++++++++-----------
- fs/dlm/user.c           |  6 +++---
- fs/gfs2/lock_dlm.c      |  4 ++--
- fs/ocfs2/stack_user.c   |  2 +-
- include/linux/dlm.h     | 26 +++++++++++++++++++++++++-
- 6 files changed, 42 insertions(+), 20 deletions(-)
+ fs/dlm/config.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++--
+ fs/dlm/config.h |  2 ++
+ fs/dlm/member.c |  7 ++++--
+ 3 files changed, 69 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-index 94221d964d4fd..05359bf7944d8 100644
---- a/drivers/md/md-cluster.c
-+++ b/drivers/md/md-cluster.c
-@@ -979,7 +979,7 @@ static int join(struct mddev *mddev, int nodes)
- 	lockres_free(cinfo->resync_lockres);
- 	lockres_free(cinfo->bitmap_lockres);
- 	if (cinfo->lockspace)
--		dlm_release_lockspace(cinfo->lockspace, 2);
-+		dlm_release_lockspace(cinfo->lockspace, DLM_RELEASE_NORMAL);
- 	mddev->cluster_info = NULL;
- 	kfree(cinfo);
- 	return ret;
-@@ -1042,7 +1042,7 @@ static int leave(struct mddev *mddev)
- 	lockres_free(cinfo->resync_lockres);
- 	lockres_free(cinfo->bitmap_lockres);
- 	unlock_all_bitmaps(mddev);
--	dlm_release_lockspace(cinfo->lockspace, 2);
-+	dlm_release_lockspace(cinfo->lockspace, DLM_RELEASE_NORMAL);
- 	kfree(cinfo);
- 	return 0;
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index a23fd524a6ee3..a0d75b5c83c63 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -26,6 +26,7 @@
+ /*
+  * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/nodeid (refers to <node>)
+  * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/weight
++ * /config/dlm/<cluster>/spaces/<space>/nodes/<node>/release_recover
+  * /config/dlm/<cluster>/comms/<comm>/nodeid (refers to <comm>)
+  * /config/dlm/<cluster>/comms/<comm>/local
+  * /config/dlm/<cluster>/comms/<comm>/addr      (write only)
+@@ -267,6 +268,7 @@ enum {
+ enum {
+ 	NODE_ATTR_NODEID = 0,
+ 	NODE_ATTR_WEIGHT,
++	NODE_ATTR_RELEASE_RECOVER,
+ };
+ 
+ struct dlm_clusters {
+@@ -280,6 +282,8 @@ struct dlm_spaces {
+ struct dlm_space {
+ 	struct config_group group;
+ 	struct list_head members;
++	struct list_head members_gone;
++	int members_gone_count;
+ 	struct mutex members_lock;
+ 	int members_count;
+ 	struct dlm_nodes *nds;
+@@ -310,6 +314,14 @@ struct dlm_node {
+ 	int weight;
+ 	int new;
+ 	int comm_seq; /* copy of cm->seq when nd->nodeid is set */
++	unsigned int release_recover;
++};
++
++struct dlm_member_gone {
++	int nodeid;
++	unsigned int release_recover;
++
++	struct list_head list; /* space->members_gone */
+ };
+ 
+ static struct configfs_group_operations clusters_ops = {
+@@ -480,6 +492,7 @@ static struct config_group *make_space(struct config_group *g, const char *name)
+ 	configfs_add_default_group(&nds->ns_group, &sp->group);
+ 
+ 	INIT_LIST_HEAD(&sp->members);
++	INIT_LIST_HEAD(&sp->members_gone);
+ 	mutex_init(&sp->members_lock);
+ 	sp->members_count = 0;
+ 	sp->nds = nds;
+@@ -587,10 +600,20 @@ static void drop_node(struct config_group *g, struct config_item *i)
+ {
+ 	struct dlm_space *sp = config_item_to_space(g->cg_item.ci_parent);
+ 	struct dlm_node *nd = config_item_to_node(i);
++	struct dlm_member_gone *mb_gone;
++
++	mb_gone = kzalloc(sizeof(*mb_gone), GFP_KERNEL);
++	if (!mb_gone)
++		return;
+ 
+ 	mutex_lock(&sp->members_lock);
+ 	list_del(&nd->list);
+ 	sp->members_count--;
++
++	mb_gone->nodeid = nd->nodeid;
++	mb_gone->release_recover = nd->release_recover;
++	list_add(&mb_gone->list, &sp->members_gone);
++	sp->members_gone_count++;
+ 	mutex_unlock(&sp->members_lock);
+ 
+ 	config_item_put(i);
+@@ -815,12 +838,34 @@ static ssize_t node_weight_store(struct config_item *item, const char *buf,
+ 	return len;
  }
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index ee11a70def92d..be8dbf4822295 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -671,19 +671,20 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
-    This is because there may be LKBs queued as ASTs that have been unlinked
-    from their RSBs and are pending deletion once the AST has been delivered */
  
--static int lockspace_busy(struct dlm_ls *ls, int force)
-+static int lockspace_busy(struct dlm_ls *ls, int release_option)
++static ssize_t node_release_recover_show(struct config_item *item, char *buf)
++{
++	struct dlm_node *n = config_item_to_node(item);
++
++	return sprintf(buf, "%u\n", n->release_recover);
++}
++
++static ssize_t node_release_recover_store(struct config_item *item,
++					  const char *buf, size_t len)
++{
++	struct dlm_node *n = config_item_to_node(item);
++	int rc;
++
++	rc = kstrtouint(buf, 0, &n->release_recover);
++	if (rc)
++		return rc;
++
++	return len;
++}
++
+ CONFIGFS_ATTR(node_, nodeid);
+ CONFIGFS_ATTR(node_, weight);
++CONFIGFS_ATTR(node_, release_recover);
+ 
+ static struct configfs_attribute *node_attrs[] = {
+ 	[NODE_ATTR_NODEID] = &node_attr_nodeid,
+ 	[NODE_ATTR_WEIGHT] = &node_attr_weight,
++	[NODE_ATTR_RELEASE_RECOVER] = &node_attr_release_recover,
+ 	NULL,
+ };
+ 
+@@ -882,9 +927,10 @@ static void put_comm(struct dlm_comm *cm)
+ int dlm_config_nodes(char *lsname, struct dlm_config_node **nodes_out,
+ 		     int *count_out)
  {
- 	struct dlm_lkb *lkb;
- 	unsigned long id;
- 	int rv = 0;
++	struct dlm_member_gone *mb_gone, *mb_safe;
++	struct dlm_config_node *nodes, *node;
+ 	struct dlm_space *sp;
+ 	struct dlm_node *nd;
+-	struct dlm_config_node *nodes, *node;
+ 	int rv, count;
  
- 	read_lock_bh(&ls->ls_lkbxa_lock);
--	if (force == 0) {
-+	if (release_option == DLM_RELEASE_NO_LOCKS) {
- 		xa_for_each(&ls->ls_lkbxa, id, lkb) {
- 			rv = 1;
- 			break;
- 		}
--	} else if (force == 1) {
-+	} else if (release_option == DLM_RELEASE_UNUSED) {
-+		/* TODO: handle this UNUSED option as NO_LOCKS in later patch */
- 		xa_for_each(&ls->ls_lkbxa, id, lkb) {
- 			if (lkb->lkb_nodeid == 0 &&
- 			    lkb->lkb_grmode != DLM_LOCK_IV) {
-@@ -698,11 +699,11 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
- 	return rv;
- }
- 
--static int release_lockspace(struct dlm_ls *ls, int force)
-+static int release_lockspace(struct dlm_ls *ls, int release_option)
- {
- 	int busy, rv;
- 
--	busy = lockspace_busy(ls, force);
-+	busy = lockspace_busy(ls, release_option);
- 
- 	spin_lock_bh(&lslist_lock);
- 	if (ls->ls_create_count == 1) {
-@@ -730,7 +731,8 @@ static int release_lockspace(struct dlm_ls *ls, int force)
- 
- 	dlm_device_deregister(ls);
- 
--	if (force != 3 && dlm_user_daemon_available())
-+	if (release_option != DLM_RELEASE_NO_EVENT &&
-+	    dlm_user_daemon_available())
- 		do_uevent(ls, 0);
- 
- 	dlm_recoverd_stop(ls);
-@@ -782,11 +784,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
-  * lockspace must continue to function as usual, participating in recoveries,
-  * until this returns.
-  *
-- * Force has 4 possible values:
-- * 0 - don't destroy lockspace if it has any LKBs
-- * 1 - destroy lockspace if it has remote LKBs but not if it has local LKBs
-- * 2 - destroy lockspace regardless of LKBs
-- * 3 - destroy lockspace as part of a forced shutdown
-+ * See DLM_RELEASE defines for release_option values and their meaning.
-  */
- 
- int dlm_release_lockspace(void *lockspace, int force)
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index 5cb3896be8260..51daf4acbe318 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -425,7 +425,7 @@ static int device_create_lockspace(struct dlm_lspace_params *params)
- 	dlm_put_lockspace(ls);
- 
- 	if (error)
--		dlm_release_lockspace(lockspace, 0);
-+		dlm_release_lockspace(lockspace, DLM_RELEASE_NO_LOCKS);
- 	else
- 		error = ls->ls_device.minor;
- 
-@@ -436,7 +436,7 @@ static int device_remove_lockspace(struct dlm_lspace_params *params)
- {
- 	dlm_lockspace_t *lockspace;
- 	struct dlm_ls *ls;
--	int error, force = 0;
-+	int error, force = DLM_RELEASE_NO_LOCKS;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -446,7 +446,7 @@ static int device_remove_lockspace(struct dlm_lspace_params *params)
- 		return -ENOENT;
- 
- 	if (params->flags & DLM_USER_LSFLG_FORCEFREE)
--		force = 2;
-+		force = DLM_RELEASE_NORMAL;
- 
- 	lockspace = ls;
- 	dlm_put_lockspace(ls);
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 7cb9d216d8bb9..082385a2e776b 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -1397,7 +1397,7 @@ static int gdlm_mount(struct gfs2_sbd *sdp, const char *table)
- 	return 0;
- 
- fail_release:
--	dlm_release_lockspace(ls->ls_dlm, 2);
-+	dlm_release_lockspace(ls->ls_dlm, DLM_RELEASE_NORMAL);
- fail_free:
- 	free_recover_size(ls);
- fail:
-@@ -1434,7 +1434,7 @@ static void gdlm_unmount(struct gfs2_sbd *sdp)
- 	/* mounted_lock and control_lock will be purged in dlm recovery */
- release:
- 	if (ls->ls_dlm) {
--		dlm_release_lockspace(ls->ls_dlm, 2);
-+		dlm_release_lockspace(ls->ls_dlm, DLM_RELEASE_NORMAL);
- 		ls->ls_dlm = NULL;
+ 	sp = get_space(lsname);
+@@ -898,7 +944,7 @@ int dlm_config_nodes(char *lsname, struct dlm_config_node **nodes_out,
+ 		goto out;
  	}
  
-diff --git a/fs/ocfs2/stack_user.c b/fs/ocfs2/stack_user.c
-index 77edcd70f72c2..fe3224cc6e0b0 100644
---- a/fs/ocfs2/stack_user.c
-+++ b/fs/ocfs2/stack_user.c
-@@ -959,7 +959,7 @@ static const struct dlm_lockspace_ops ocfs2_ls_ops = {
- static int user_cluster_disconnect(struct ocfs2_cluster_connection *conn)
- {
- 	version_unlock(conn);
--	dlm_release_lockspace(conn->cc_lockspace, 2);
-+	dlm_release_lockspace(conn->cc_lockspace, DLM_RELEASE_NORMAL);
- 	conn->cc_lockspace = NULL;
- 	ocfs2_live_connection_drop(conn->cc_private);
- 	conn->cc_private = NULL;
-diff --git a/include/linux/dlm.h b/include/linux/dlm.h
-index bacda9898f2b6..cc7a36244893d 100644
---- a/include/linux/dlm.h
-+++ b/include/linux/dlm.h
-@@ -87,13 +87,37 @@ int dlm_new_lockspace(const char *name, const char *cluster,
- 		      const struct dlm_lockspace_ops *ops, void *ops_arg,
- 		      int *ops_result, dlm_lockspace_t **lockspace);
+-	count = sp->members_count;
++	count = sp->members_count + sp->members_gone_count;
  
-+/*
-+ * dlm_release_lockspace() release_option values:
-+ *
-+ * DLM_RELEASE_NO_LOCKS returns -EBUSY if any locks (lkb's)
-+ *   exist in the local lockspace.
-+ *
-+ * DLM_RELEASE_UNUSED previous value that is no longer used.
-+ *
-+ * DLM_RELEASE_NORMAL releases the lockspace regardless of any
-+ *   locks managed in the local lockspace.
-+ *
-+ * DLM_RELEASE_NO_EVENT release the lockspace regardless of any
-+ *   locks managed in the local lockspace, and does not submit
-+ *   a leave event to the cluster manager, so other nodes will
-+ *   not be notified that the node should be removed from the
-+ *   list of lockspace members.
-+ */
-+#define DLM_RELEASE_NO_LOCKS		0
-+#define DLM_RELEASE_UNUSED		1
-+#define DLM_RELEASE_NORMAL		2
-+#define DLM_RELEASE_NO_EVENT		3
+ 	nodes = kcalloc(count, sizeof(struct dlm_config_node), GFP_NOFS);
+ 	if (!nodes) {
+@@ -917,6 +963,20 @@ int dlm_config_nodes(char *lsname, struct dlm_config_node **nodes_out,
+ 		nd->new = 0;
+ 	}
+ 
++	/* we delay the remove on nodes until here as configfs does
++	 * not support addtional attributes for rmdir().
++	 */
++	list_for_each_entry_safe(mb_gone, mb_safe, &sp->members_gone, list) {
++		node->nodeid = mb_gone->nodeid;
++		node->release_recover = mb_gone->release_recover;
++		node->gone = true;
++		node++;
 +
- /*
-  * dlm_release_lockspace
-  *
-  * Stop a lockspace.
-+ *
-+ * release_option: see DLM_RELEASE values above.
-  */
++		list_del(&mb_gone->list);
++		sp->members_gone_count--;
++		kfree(mb_gone);
++	}
++
+ 	*count_out = count;
+ 	*nodes_out = nodes;
+ 	rv = 0;
+diff --git a/fs/dlm/config.h b/fs/dlm/config.h
+index 13a3d0b261942..4ebd45f752762 100644
+--- a/fs/dlm/config.h
++++ b/fs/dlm/config.h
+@@ -17,8 +17,10 @@
+ struct dlm_config_node {
+ 	int nodeid;
+ 	int weight;
++	bool gone;
+ 	int new;
+ 	uint32_t comm_seq;
++	unsigned int release_recover;
+ };
  
--int dlm_release_lockspace(dlm_lockspace_t *lockspace, int force);
-+int dlm_release_lockspace(dlm_lockspace_t *lockspace, int release_option);
+ extern const struct rhashtable_params dlm_rhash_rsb_params;
+diff --git a/fs/dlm/member.c b/fs/dlm/member.c
+index b0864c93230f5..152d2cb16f591 100644
+--- a/fs/dlm/member.c
++++ b/fs/dlm/member.c
+@@ -569,10 +569,10 @@ int dlm_recover_members(struct dlm_ls *ls, struct dlm_recover *rv, int *neg_out)
  
- /*
-  * dlm_lock
+ 	list_for_each_entry_safe(memb, safe, &ls->ls_nodes, list) {
+ 		node = find_config_node(rv, memb->nodeid);
+-		if (node && !node->new)
++		if (node && !node->new && !node->gone)
+ 			continue;
+ 
+-		if (!node) {
++		if (node->gone) {
+ 			log_rinfo(ls, "remove member %d", memb->nodeid);
+ 		} else {
+ 			/* removed and re-added */
+@@ -591,6 +591,9 @@ int dlm_recover_members(struct dlm_ls *ls, struct dlm_recover *rv, int *neg_out)
+ 
+ 	for (i = 0; i < rv->nodes_count; i++) {
+ 		node = &rv->nodes[i];
++		if (node->gone)
++			continue;
++
+ 		if (dlm_is_member(ls, node->nodeid))
+ 			continue;
+ 		error = dlm_add_member(ls, node);
 -- 
 2.43.0
 
