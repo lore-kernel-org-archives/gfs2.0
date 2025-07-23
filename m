@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394F62F5323
-	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F942EE97A
+	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753284126; cv=none; b=NT1ZTF6Dif6wUZ9QO483mcQnG5cCNABlQni0rduqSPtpD56AqULgccy3LIdGVflj390bZvNFyZAe7XDsjNSxGzpRS/OSftpTshneYbPWXKh1dl0wINSovC31K2oaeGqVKKTmdkE5OG2ugaoiGJAOioYmORK0tMia+Y6jEMY2aw4=
+	t=1753284128; cv=none; b=OY/Lse/LSmW1OpFwbgC4SFtSGdE24sQ2TNL7NStHTHtqk3/6sejlp+Hz3yCPp4fNlPuSkHb4GAcUlDbP2k5bl1i6Qgm38/v39r78ttvOsvI26jjeHFTmUCR6OzHWRYedIbRcnfQvfwXSs5gFD2Nz7+ZgszGODkNReqU8dSotkTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753284126; c=relaxed/simple;
-	bh=GJtOlf0TCvR0KKGiU6Owa6Xk0u/tzuAaWfVtjjG/BWI=;
+	s=arc-20240116; t=1753284128; c=relaxed/simple;
+	bh=ZMa21gX//TbbqM1ffZSngCMkK7mJaveE6U8FGgeQJQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=O/xm/dSQ5+/UDzDbw8G9beHMhMJAZexP9rpF8MUdLOx8plHHyP2yABcnyAd1H94PiY1spwvdh4xNtK/i6dgHBL81E9WyoXBJtWiNK39wFZIEcGCdP97AZMYi2yd3o7QmImZ6HA/wteB5pRvc6569gTTgglNAONjVrVsHcQm58PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DJnQlKdp; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=M17p+FzwKj90Tr80IaNY6b8DJIVL6g/V5lNHlfq6RvAGRhfTYKPffsn1+1inNp3hpwwTz/aInMeoKL/3GZjJmGNrLuzFB2bKtR9pNbEY5Kmt80zRWkVlSX+ki0PoVEO4SnU5w09cjwF82lNFactta+EMPt7T/IVkoL2eTWN/VFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aLo6R37F; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DJnQlKdp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aLo6R37F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753284122;
+	s=mimecast20190719; t=1753284124;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ywEwX7dcfw6en2gXL945+hArcHieMDPM85+ENJzjkhw=;
-	b=DJnQlKdpNtpafnD1CjGv5dYBO/gwtNMrRjfHCMZsyGM3f6iHs3el++FMVtxm5mgphLCgT+
-	0J59l724GiBCPEF/f3PwbgQLwLrTtFe0HBUhHqPD4TRfaO0XEOQs0xKhenvX3Gjnha1g8d
-	ay4dUlMb0OwbwB70EAn6EVDsVMPmmWI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=dkbEbZpoWQDYLUTJkPwZOGW815iriUB27ZtYagVuEcQ=;
+	b=aLo6R37F35VSKuRTRx+NI8/NZv06M0b4+lVQPxooimo+tJXM2EeL1u6v/pY4RB2MmGzzvm
+	MYjF95mtrqLrcXo2xNXHkUkpY/B9VnxR0OOBdw1NF8e8tdtZhrmMWtgRhPCipJAbOf4UZQ
+	jGQTTetfzGuI/7mh5ONOaZwbl3Z9wiY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-lZT5mmBGMSG-BKt3u1km8g-1; Wed,
- 23 Jul 2025 11:22:01 -0400
-X-MC-Unique: lZT5mmBGMSG-BKt3u1km8g-1
-X-Mimecast-MFC-AGG-ID: lZT5mmBGMSG-BKt3u1km8g_1753284120
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-ywZMEjzyOR6EuD91UtF8kA-1; Wed,
+ 23 Jul 2025 11:22:03 -0400
+X-MC-Unique: ywZMEjzyOR6EuD91UtF8kA-1
+X-Mimecast-MFC-AGG-ID: ywZMEjzyOR6EuD91UtF8kA_1753284122
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E08D1955F45
-	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:00 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61CBA1800A33
+	for <gfs2@lists.linux.dev>; Wed, 23 Jul 2025 15:22:02 +0000 (UTC)
 Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4C4B51955F4A;
-	Wed, 23 Jul 2025 15:21:59 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9A2181955F6B;
+	Wed, 23 Jul 2025 15:22:01 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: agruenba@redhat.com,
 	gfs2@lists.linux.dev,
 	aahringo@redhat.com
-Subject: [PATCH v6.16-rc7 1/5] dlm: check on unequal 3 to allow more values
-Date: Wed, 23 Jul 2025 11:21:52 -0400
-Message-ID: <20250723152156.2988833-2-aahringo@redhat.com>
+Subject: [PATCH v6.16-rc7 3/5] dlm: add release recover attribute for leaving event
+Date: Wed, 23 Jul 2025 11:21:54 -0400
+Message-ID: <20250723152156.2988833-4-aahringo@redhat.com>
 In-Reply-To: <20250723152156.2988833-1-aahringo@redhat.com>
 References: <20250723152156.2988833-1-aahringo@redhat.com>
 Precedence: bulk
@@ -60,34 +60,73 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kh3VNxZ2E0j33GLQnrz_Y0MG_TahD8HRBGn3h2wmH4k_1753284120
+X-Mimecast-MFC-PROC-ID: D-OhOtyJF5TylV5zOZrKt1Bu0shdCxPxibTvSqSXVPA_1753284122
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Currently everything that is above 3 as dlm_lockspace_release()
-parameter is recognized to do everything what 3 does. Currently there is
-no defined value above 3 to introduce a new value that does send a uevent
-to the user space and adds this value as uevent attribute.
+We add a attribute to the leaving lockspace event to tell the user space
+about an option when doing the lockspace release. Later when we
+introduce a new release option it can use this feature to set such option.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lockspace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/dlm/lockspace.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 1929327ffbe1c..ee11a70def92d 100644
+index be8dbf4822295..6ff666a511c7a 100644
 --- a/fs/dlm/lockspace.c
 +++ b/fs/dlm/lockspace.c
-@@ -730,7 +730,7 @@ static int release_lockspace(struct dlm_ls *ls, int force)
+@@ -186,12 +186,17 @@ static struct kobj_type dlm_ktype = {
  
- 	dlm_device_deregister(ls);
+ static struct kset *dlm_kset;
  
--	if (force < 3 && dlm_user_daemon_available())
-+	if (force != 3 && dlm_user_daemon_available())
- 		do_uevent(ls, 0);
+-static int do_uevent(struct dlm_ls *ls, int in)
++static int do_uevent(struct dlm_ls *ls, int in, unsigned int release_recover)
+ {
+-	if (in)
++	char message[512] = {};
++	char *envp[] = { message, NULL };
++
++	if (in) {
+ 		kobject_uevent(&ls->ls_kobj, KOBJ_ONLINE);
+-	else
+-		kobject_uevent(&ls->ls_kobj, KOBJ_OFFLINE);
++	} else {
++		snprintf(message, 511, "RELEASE_RECOVER=%u", release_recover);
++		kobject_uevent_env(&ls->ls_kobj, KOBJ_OFFLINE, envp);
++	}
+ 
+ 	log_rinfo(ls, "%s the lockspace group...", in ? "joining" : "leaving");
+ 
+@@ -575,7 +580,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	   current lockspace members are (via configfs) and then tells the
+ 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
+ 
+-	error = do_uevent(ls, 1);
++	error = do_uevent(ls, 1, 0);
+ 	if (error < 0)
+ 		goto out_recoverd;
+ 
+@@ -592,7 +597,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	return 0;
+ 
+  out_members:
+-	do_uevent(ls, 0);
++	do_uevent(ls, 0, 0);
+ 	dlm_clear_members(ls);
+ 	kfree(ls->ls_node_array);
+  out_recoverd:
+@@ -733,7 +738,7 @@ static int release_lockspace(struct dlm_ls *ls, int release_option)
+ 
+ 	if (release_option != DLM_RELEASE_NO_EVENT &&
+ 	    dlm_user_daemon_available())
+-		do_uevent(ls, 0);
++		do_uevent(ls, 0, 0);
  
  	dlm_recoverd_stop(ls);
+ 
 -- 
 2.43.0
 
