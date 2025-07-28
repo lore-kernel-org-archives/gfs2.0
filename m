@@ -1,121 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E37525D53B
-	for <gfs2@lists.linux.dev>; Mon, 28 Jul 2025 14:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D5E23507F;
+	Mon, 28 Jul 2025 23:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753713527; cv=none; b=Fz3ahbQYf7FiuuWvCGivpY5Jm0MOKgqOvwYUQcCupkb3ZvoymI/h3ySRFFhGH+lR/b8S80NDthxRsVrbl5ibs20EYzYRjOH359tvgDMyKpXkxrwtffH0iSU4gG/ufq4ollbs3IGNqFmG4fM+K5ghAbqQY87V/MGl+hKHtLoElE4=
+	t=1753746062; cv=none; b=W27kCfp8zDH0Hz7hncwaaPUMW65w+VX7FnCaXnfBA8W3+jUyctiGoNJotYwH+mhbnU6FSejBow9q3Oi17ib8Hk8mYyXmISDuM3ECvt6dWI4Kr7tBiScZuOaLyzbrPE25mfoYk5Ru65UNDH6vCmpa5R50QZFyH3OsVUpLNISMZr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753713527; c=relaxed/simple;
-	bh=o70mPU2wQuff4uxJtxViiEC625nYOHrn+5MWzkmwLT0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JUNARm2EAZkoFEjA9obEMMVoPs6N1SMced53TUW+l5zSeAsk1bOEHKp3yWfG82GeVkKPGj2r91qXdz+q8RNqDCgeKGAHQSyWFVG2y42E9XmY++nuK0WqdCx1xUWxh0zcfDUYs3+IWIFzyKYVJjaYdpsaxjgpSHplnMxhRBhA72A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NgC9sEf2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753746062; c=relaxed/simple;
+	bh=ifXug7yhRRlmqTnJ+wsAx2wn/EA+T4qe9kmhWaXBcuA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ndq/JI8qYMxMbhD8y4PNb77cpjxD2xdHo6KlwIldlTaZFwYVCry6ZefZWfUadGdEZdnjVhMV4kAoeJjc7aZuBt4EryBQiUQZoAB7OhL2+DViX1l68ifepBmaTdankfaHpx/VoyjSgj7dautvGpQNgWoIhlUjQKKbkZmfCOl/mUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRC3aYnM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NgC9sEf2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753713525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1ddnsUptmbXKH7BOwm60SQvszd1IlPxjs6pIoKDn5Ag=;
-	b=NgC9sEf20z+8f71KyRUvsuaxa5UTADXrCrD1EyZgePgwiNhtFmslj3bqBNAmnkV60N/qB3
-	Q7oY40ouNWL8lRO1M9PjqSlrQIGYy+HQAs5LvFERMRwYrcpu/d6l+TyzrGQqqadkHlwqIC
-	JdkWD9R01HFFRj/RZPe0dVrlbUIHhQc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-zBmuHSNaMjqVQswNAbsYWg-1; Mon,
- 28 Jul 2025 10:38:41 -0400
-X-MC-Unique: zBmuHSNaMjqVQswNAbsYWg-1
-X-Mimecast-MFC-AGG-ID: zBmuHSNaMjqVQswNAbsYWg_1753713520
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F2F518003FC;
-	Mon, 28 Jul 2025 14:38:40 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.225.226])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EDA77180035E;
-	Mon, 28 Jul 2025 14:38:38 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] gfs2 changes for 6.17
-Date: Mon, 28 Jul 2025 16:38:35 +0200
-Message-ID: <20250728143837.137302-1-agruenba@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRC3aYnM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BCDC4CEE7;
+	Mon, 28 Jul 2025 23:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753746061;
+	bh=ifXug7yhRRlmqTnJ+wsAx2wn/EA+T4qe9kmhWaXBcuA=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=LRC3aYnMbfv3KPmymSXq9/LZZoHwUBEXGa/Av0ADlLCcxH2skxDHiZIPVtidSr7pc
+	 dRZBUDALqRWkRFLOwAvRlm1pOdJU6JlRrTbSgv9uuhK6RhcbHHV6db0OUtEtbsJW71
+	 4kNPh/iYRCKK6JxE3CPYwWEf7uF58bvUTDKUoZcZf76If00pX/P70kHhvM7c6mAw8A
+	 l9BssMJ5KkqtzdQltX/y7mMxIK57PjwYBhAs2SmgvmcPSOzO8Cfbnz6yFfKpNGhPhi
+	 dnsp9Ty541XlzoAJg945LSEQqX730W3cCoMA5gYoQXZ6uAR4frbPJJ+y/y485pttD3
+	 2xPAViLtsHmGg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF5E383BF5F;
+	Mon, 28 Jul 2025 23:41:19 +0000 (UTC)
+Subject: Re: [GIT PULL] gfs2 changes for 6.17
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250728143837.137302-1-agruenba@redhat.com>
+References: <20250728143837.137302-1-agruenba@redhat.com>
+X-PR-Tracked-List-Id: <gfs2.lists.linux.dev>
+X-PR-Tracked-Message-Id: <20250728143837.137302-1-agruenba@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.17
+X-PR-Tracked-Commit-Id: deb016c1669002e48c431d6fd32ea1c20ef41756
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a90f1b6ad6649d553c9d76f50a42e4ba5783164b
+Message-Id: <175374607837.885311.5912375172971075300.pr-tracker-bot@kernel.org>
+Date: Mon, 28 Jul 2025 23:41:18 +0000
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Dear Linus,
+The pull request you sent on Mon, 28 Jul 2025 16:38:35 +0200:
 
-please consider pulling the following gfs2 changes for 6.17.
+> git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.17
 
-Thanks,
-Andreas
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a90f1b6ad6649d553c9d76f50a42e4ba5783164b
 
-The following changes since commit d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af:
+Thank you!
 
-  Linux 6.16-rc4 (2025-06-29 13:09:04 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.17
-
-for you to fetch changes up to deb016c1669002e48c431d6fd32ea1c20ef41756:
-
-  gfs2: No more self recovery (2025-07-16 23:30:32 +0200)
-
-----------------------------------------------------------------
-gfs2 changes
-
-- Prevent cluster nodes from trying to recover their own filesystems
-  during a withdraw.
-
-- Add two missing migrate_folio aops and an additional exhash directory
-  consistency check (both triggered by syzbot bug reports).
-
-- Sanitize how dlm results are processed and clean up a few quirks in
-  the glock code.
-
-- Minor stuff: Get rid of the GIF_ALLOC_FAILED flag; use SECTOR_SIZE and
-  SECTOR_SHIFT.
-
-----------------------------------------------------------------
-Andreas Gruenbacher (7):
-      gfs2: Use SECTOR_SIZE and SECTOR_SHIFT
-      gfs2: Remove GIF_ALLOC_FAILED flag
-      gfs2: Minor do_xmote cancelation fix
-      gfs2: sanitize the gdlm_ast -> finish_xmote interface
-      gfs2: simplify finish_xmote
-      gfs2: a minor finish_xmote cleanup
-      gfs2: No more self recovery
-
-Andrew Price (2):
-      gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
-      gfs2: Validate i_depth for exhash directories
-
- fs/gfs2/dir.c        |  6 ++----
- fs/gfs2/glock.c      | 43 +++++++++++++++++++++----------------------
- fs/gfs2/glock.h      | 10 ++++++++++
- fs/gfs2/glops.c      |  6 ++++++
- fs/gfs2/incore.h     |  1 -
- fs/gfs2/inode.c      |  7 ++-----
- fs/gfs2/inode.h      |  6 +++---
- fs/gfs2/lock_dlm.c   |  9 ++++++---
- fs/gfs2/meta_io.c    | 10 +++++-----
- fs/gfs2/ops_fstype.c | 12 ++++++------
- fs/gfs2/super.c      |  6 ++----
- fs/gfs2/util.c       | 31 +++++++++++--------------------
- 12 files changed, 74 insertions(+), 73 deletions(-)
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
