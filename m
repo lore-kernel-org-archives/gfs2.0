@@ -1,147 +1,103 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C5A262FD0
-	for <gfs2@lists.linux.dev>; Thu, 31 Jul 2025 18:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF8F23AD
+	for <gfs2@lists.linux.dev>; Fri,  1 Aug 2025 04:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753985437; cv=none; b=oZOY3ZP/+jDMbWCVhRf7CE0HmN3dApmg0ewkxBA0luY+If+DXYb9kBvNjl21IRN8JlL+Xo7oqEJccAQkGB6bJBl5jfyM3ZQllnjBsRHzzuGjLY2t8h06QizDW5ziyZ+OJUzbaTVi8N248oyscu5wm2MCop27T9YXZ9lFcpWarB0=
+	t=1754021544; cv=none; b=S8qSD9TnQ9XQkjtbXpkyEPjocBM0b+bPYIclpEmXJDJt2sYm/TCxbibH2mPGvCJvQDQzVPOys78x9rQ59/OPsqhHBEdnK6KzT74PDrKnttYzblBCHe3drCcPdbUAby72RyUVH/MSgat4ROmmvEeQHjCazNU8qUrC74Ik6t2snV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753985437; c=relaxed/simple;
-	bh=dVkBO3Blw1M7u/7Gq83ObY/d8JaJg/9LtVb3rBuN+lQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ccKm6gvJkbQskVtL4FXS+z3TsDsqmIZYXNrKrKwe52GQUaUvwQz5EbkB60/6JDD6Ob7MTaZ5yuP7QLQ362wAS65BfRVKgdk6neAWphODi2ehsjaOc9w7CM9BsxwIrodeEasR/HptErCgThk9MZCqGDIiJCH7pRtvRaQxJcWr0F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-87c752fb0f7so193658739f.1
-        for <gfs2@lists.linux.dev>; Thu, 31 Jul 2025 11:10:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753985435; x=1754590235;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qmaWcuuZImYl0mDQkAhmt3J0oJceGWUZsbJrDUdOmRI=;
-        b=w3yJRASzbUIsrPjVAQe8/kSe5I4DfuvaDc6p53DazADbcdDqpv5Qd/6nWiKzO3mAsF
-         7hFL539QpClJuoDjvyHBfnI5dNaXuxci++Y2sG79S4Ub8g1BZj0wkkxeN4CGXTRZE+tj
-         0ZrCwV6mlldy1UlXAgDsSkZ83D4KV5ol4JiyGyE/NI5Ln/viuGf/GSrO96ThqHXRJ1Za
-         mApwaaMvR1fcsu4TyONIYiaY98SXRCcfOEctLUHzkgYSB3cJssjWEFBYThOsX77V9i5j
-         SUX8foh7IA9DoDMOpD33BVBRP7xXBWe2PUh24+Wf9Xb8tDiyn49L99/2IoafChQyJhA7
-         Zg/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXwh6N/R0+rnZW51/arGNaFVh+f0tX5dnkKNRkRiVHUO/9yasVHNG4QJu679/s/VhHSTdYe@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw47fa7Jl/K9erC0ZIGM/DHPLUslM9ka2FytRqvASnzENLrNmI3
-	xhFjx1Y99E+XEwuvBzzfIRBlsm3P3N0gm/Kn+Uo2G1lrA5f/kJ0LntEa3Myi5gEGdPCwoKgO9cB
-	TwVgG91waKDPXmBS9fE3j4wgZFl0ZOYeFoW+pxJfEhgtxBauL9k6XDBOz2yY=
-X-Google-Smtp-Source: AGHT+IEXmvUatQyVhy/YGEy7yRAt/lp31If6wd15LX6kOtPlI3I6kPoVqwc/kgGrCMKOzIQ1dJPqHkusCeulkRT2NwX4/w5aKf9u
+	s=arc-20240116; t=1754021544; c=relaxed/simple;
+	bh=X3ZW+CVKJDBje2ybWlF2jbyXBI+zp4eKl0l0NYGEUg0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PwwP2TdPpplOQ5pRRVuuxnbghG+vxmKIGWVlH5xfGVafUQ4ApOjZke8Om2BboI/4QEuREB6udxYh4Cak+xvsDeEiIotfoPFwqfwgZxuG/UUGLAijl46pvO8uMTGJso9jQiam6TI7xib1lSb2zE3V6vBPLywSJ7sH+p2Qxm4WQH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.8/8.18.1.8) with ESMTP id 5712kxa93018683;
+	Thu, 31 Jul 2025 21:12:20 -0700
+Received: from ala-exchng02.corp.ad.wrs.com ([128.224.246.37])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4888hggs5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 31 Jul 2025 21:12:19 -0700 (PDT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.57; Thu, 31 Jul 2025 21:12:19 -0700
+Received: from pek-lpd-ccm6.wrs.com (10.11.232.110) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
+ 15.1.2507.57 via Frontend Transport; Thu, 31 Jul 2025 21:12:18 -0700
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <syzbot+f2b9fe431c853e793948@syzkaller.appspotmail.com>
+CC: <agruenba@redhat.com>, <gfs2@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <syzkaller-bugs@googlegroups.com>
+Subject: [PATCH] gfs2: Correct use of trans
+Date: Fri, 1 Aug 2025 12:12:17 +0800
+Message-ID: <20250801041217.2797470-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <688bb19a.a00a0220.26d0e1.004d.GAE@google.com>
+References: <688bb19a.a00a0220.26d0e1.004d.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:8318:b0:87c:31ad:abe2 with SMTP id
- ca18e2360f4ac-881375dac67mr918287139f.5.1753985434824; Thu, 31 Jul 2025
- 11:10:34 -0700 (PDT)
-Date: Thu, 31 Jul 2025 11:10:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <688bb19a.a00a0220.26d0e1.004d.GAE@google.com>
-Subject: [syzbot] [gfs2?] KASAN: null-ptr-deref Write in gfs2_trans_add_revoke
-From: syzbot <syzbot+f2b9fe431c853e793948@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: 6AKnE0Qre4-fFrcLAatfJWU3Tj02qJaq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDAyNyBTYWx0ZWRfX/hcqcDqSj9Bb
+ D/Nfj0I5PrXHq7jbISUncjCKw+X1RdtYRhUxa1hrpfvUax37LJe5sGz07jf3qW8WwtPbryxAiTK
+ BgQ+aYw2xDRRb8EiLC1zwhLm0D6t1QiDcrXySG1k7ZHUNDtaOnTe6PDohHO8eyzm8P6TLvvU3OY
+ w6i8yeAFgck+EsMd6Zk4OXGqJMqox/QRc4HXWZipIcesxHRrmVch3AEVhDcu4TcaTSBczhyGFLq
+ yCdxnovsWEf2p1B2bqaidY5tLB96JfnKMi1TrWxUDsYwZiNoY7TJfEGkqi4EEOJm+XK8IIrfWWF
+ +o4lxg6eETJyDNNuC1WiJQHRTBm5McbsOFlu42B6eyi4exxIbJrmfHR4mdlQTHr0j77ApIXFbqD
+ C2x0ou4z
+X-Proofpoint-GUID: 6AKnE0Qre4-fFrcLAatfJWU3Tj02qJaq
+X-Authority-Analysis: v=2.4 cv=SreQ6OO0 c=1 sm=1 tr=0 ts=688c3ea4 cx=c_pps
+ a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
+ a=Wb1JkmetP80A:10 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
+ a=syFJ5H-42f-uVwpxyO0A:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-31_04,2025-07-31_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1011 impostorscore=0 priorityscore=1501 spamscore=0
+ bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.22.0-2507210000 definitions=main-2507310086
 
-Hello,
+There are too many factors interfering with current->journal_info(for
+example: dirty inode, write jdata batch, etc.). When trans begins, the
+current->journal_info is set to a new value, but when trans ends, it is
+set to NULL.
 
-syzbot found the following issue on:
+When revoking a trans, use the trans in bufdata directly.
 
-HEAD commit:    260f6f4fda93 Merge tag 'drm-next-2025-07-30' of https://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1436e9bc580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3e6923811cbcd88f
-dashboard link: https://syzkaller.appspot.com/bug?extid=f2b9fe431c853e793948
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10a93ca2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12089ca2580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-260f6f4f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/28b1dc006a89/vmlinux-260f6f4f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dcbc50612705/bzImage-260f6f4f.xz
-mounted in repro #1: https://storage.googleapis.com/syzbot-assets/f2243f65af89/mount_0.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=10089ca2580000)
-mounted in repro #2: https://storage.googleapis.com/syzbot-assets/c6557c77eded/mount_8.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=169dc834580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Fixes: 75f2b879aeb3 ("GFS2: Merge revoke adding functions")
 Reported-by: syzbot+f2b9fe431c853e793948@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-==================================================================
-BUG: KASAN: null-ptr-deref in instrument_atomic_write include/linux/instrumented.h:82 [inline]
-BUG: KASAN: null-ptr-deref in set_bit include/asm-generic/bitops/instrumented-atomic.h:28 [inline]
-BUG: KASAN: null-ptr-deref in gfs2_trans_add_revoke+0x8c/0xe0 fs/gfs2/trans.c:321
-Write of size 8 at addr 0000000000000018 by task syz.0.17/5566
-
-CPU: 0 UID: 0 PID: 5566 Comm: syz.0.17 Not tainted 6.16.0-syzkaller-08685-g260f6f4fda93 #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:189
- instrument_atomic_write include/linux/instrumented.h:82 [inline]
- set_bit include/asm-generic/bitops/instrumented-atomic.h:28 [inline]
- gfs2_trans_add_revoke+0x8c/0xe0 fs/gfs2/trans.c:321
- gfs2_remove_from_journal+0x43e/0x6d0 fs/gfs2/meta_io.c:366
- gfs2_discard fs/gfs2/aops.c:597 [inline]
- gfs2_invalidate_folio+0x579/0x750 fs/gfs2/aops.c:631
- folio_invalidate mm/truncate.c:140 [inline]
- truncate_cleanup_folio+0x2d5/0x430 mm/truncate.c:160
- truncate_inode_pages_range+0x233/0xda0 mm/truncate.c:379
- do_gfs2_set_flags fs/gfs2/file.c:254 [inline]
- gfs2_fileattr_set+0x80a/0x9b0 fs/gfs2/file.c:311
- vfs_fileattr_set+0x92f/0xb90 fs/file_attr.c:298
- ioctl_setflags+0x17b/0x200 fs/file_attr.c:336
- do_vfs_ioctl+0x8ed/0x1430 fs/ioctl.c:561
- __do_sys_ioctl fs/ioctl.c:596 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:584
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f55c3b8eb69
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffea6c68328 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f55c3db5fa0 RCX: 00007f55c3b8eb69
-RDX: 0000200000000000 RSI: 0000000040086602 RDI: 0000000000000005
-RBP: 00007f55c3c11df1 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f55c3db5fa0 R14: 00007f55c3db5fa0 R15: 0000000000000003
- </TASK>
-==================================================================
-
-
+Closes: https://syzkaller.appspot.com/bug?extid=f2b9fe431c853e793948
+Tested-by: syzbot+f2b9fe431c853e793948@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/trans.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
+index 075f7e9abe47..d1a34f928a18 100644
+--- a/fs/gfs2/trans.c
++++ b/fs/gfs2/trans.c
+@@ -314,7 +314,7 @@ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
+ 
+ void gfs2_trans_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd)
+ {
+-	struct gfs2_trans *tr = current->journal_info;
++	struct gfs2_trans *tr = bd->bd_tr;
+ 
+ 	BUG_ON(!list_empty(&bd->bd_list));
+ 	gfs2_add_revoke(sdp, bd);
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
