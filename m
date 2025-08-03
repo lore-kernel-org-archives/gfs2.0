@@ -1,144 +1,191 @@
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CB32101B3
-	for <gfs2@lists.linux.dev>; Sat,  2 Aug 2025 22:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568D5204592;
+	Sun,  3 Aug 2025 21:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754173170; cv=none; b=Z3IUqEG1vzXZrcSOihog3A11lQI68bBoxMt6z4oC8vvFucSRA57FBOGdVsyzLYOBYFDTCAtC/XpA/aAHNydiZBer8QQYTEFDObhjXpy067OT0I98M5WIvQxVw8GM+jcrshgRMaCWbgJXQkJyiZmu+5jQClGznpzIeXTDxd0pTJY=
+	t=1754255897; cv=none; b=nfVKV2JyqGaTwXY9toXsLTb5Juq7BtgG79yGIc5ny2AEy6KHHhjfwis/zeczakJUwN9N9U/sHltJot21h0lDADfcCKElzNj5OZseNSG72PwyDFehduZ/XJGv5CH1NMxRetd7kT8ErAfAi8Di8Sr0/neeMz6sv0NL+lg9WNNsT0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754173170; c=relaxed/simple;
-	bh=ik20PhQNU3HAmeJCWDDz2I5g0wdvQSto3QBrL3pbE+U=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=sbaeJELdZ1DCDIexc8mwhDF06HBMlNAlO2dh5tYBm1qzfAK46l9qqsJcDpAQ/Q3aNM9B59GseSlDkCTp6tHuLawj46Gn9MXcHH5hN4HA+C00LRlu2pAxU5UIptPIhkf1XtB/F3GVTaE5S/K4bc3x+DMtWCOUb5UQom2LY83ijGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e3f5d36dc9so29407285ab.0
-        for <gfs2@lists.linux.dev>; Sat, 02 Aug 2025 15:19:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754173168; x=1754777968;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7bQTpZXbu//7x+4wmyUFm6Wxctv7jk4X1m/pJIBHUI=;
-        b=Kp7+zX9pFVpvQuglF9sCnRmNDMt2jUE/6AHdUqfVRV8Nz8JL28/vY8l5Q4WyWUhUxi
-         lJ/BL6HsbViKPGGrFsInBNxC3IlJIlyQbUDF5D43pnpaMUvI2lMcupksaOctSihzapvh
-         gR0U7pVJVluJshoix65W9bdTdjzs99cv3h4X1JVZNKl3NA4j0kwteoVWKYtgzBsx2ym9
-         af7GpWslFDgDEHIhpeW+NNiu1U9KklhgJWxDu2WU5xwO2v1GRmF+rfwEeYrRwdXjoDGE
-         FlPHDSY8kxPAzBNLZfOxCEKbGvb+YpwjtqO0W4w7tLzJA85vQB+eHPUDVByGyj3EkAmd
-         z7SA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNElAfgTtlslQrmVn7XqgVAQ1OKGWEtJ6hvVxfYrK5VsIKq1t9F2Exvj/ryJ9EoDay44t+@lists.linux.dev
-X-Gm-Message-State: AOJu0YzNYaHeKBfrGSDutk8wHnkESBiDxOkbnBbTHTkPPLQIALAxNwzp
-	BViwar1nTRCpoCtw4nVFazV+RTchvwNe+mmJoMC7K8DjSdQdpAPlJUWhEPaeUqlVdxOThobbGla
-	5BMl10AO4g8SqWajxPZb5MD4nBsKQZPsLjKrbVSwTcLaM0lJgsI+lmRTY0kQ=
-X-Google-Smtp-Source: AGHT+IGaaJMxXme2sTcpZbIFu0BKFYMoVUrXJ5eurk6w/mAhehGptwgqJxhLB+qU8I3c+YoZenSYX8hIckkkzoe8WoPQW/jUql/x
+	s=arc-20240116; t=1754255897; c=relaxed/simple;
+	bh=ex/qT52nmo8K1ZOzhag0ITfuNv+leDHDJPSIrJ6wgKc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ECEbNHk82uKLQ5BYVM8V+nshYvoDYSKI3OCoHLPOdSgMmVIWiICpqX7PMsdrzF6ZyC1mxw2+yc3nTupNILU+FcMsWZMiDj1mXbFD0pk+UWkSagSDwuWT8a2DqX401rKNWGJbCPt/OU8yNtvqYOTledtcUDB7fAl5GvbU/9P5F6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uyv0FuBc; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uyv0FuBc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45BBC4CEF8;
+	Sun,  3 Aug 2025 21:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754255897;
+	bh=ex/qT52nmo8K1ZOzhag0ITfuNv+leDHDJPSIrJ6wgKc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Uyv0FuBcawZj0pFC8kNYv7E2c5DWlZvddLTGOSYbcJjju7OAJeYB3nQD4Z38fXokU
+	 2SfZAMHNWAtB3g8WfrYA6lnJzbcU6C9E+5auPvYLw/0jTZ+Gtf6JwtsDLVMqNl7gbp
+	 FqIbjowIF6/EPQQxbyzaFlFPh1gUGLqiHHvymVUug1F2byFI/rMxoYw0OOvD6UaXgW
+	 HdEJVp2s6C0T1eS8O4nzfYprZImselAJMs3aXDXHvt5t696gCTKF2EN1h88zFQPZqa
+	 OPkLHRsFl5m7hUly5y//7IF4yu1+jP7hCeY+uLYaitZLzoowbJr5LJCDTkHdwK71wH
+	 cNZjge/p3TYXA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Andrew Price <anprice@redhat.com>,
+	syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	gfs2@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.16 16/35] gfs2: Validate i_depth for exhash directories
+Date: Sun,  3 Aug 2025 17:17:16 -0400
+Message-Id: <20250803211736.3545028-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250803211736.3545028-1-sashal@kernel.org>
+References: <20250803211736.3545028-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2302:b0:3e2:91bb:c075 with SMTP id
- e9e14a558f8ab-3e4161990d4mr76743745ab.22.1754173168358; Sat, 02 Aug 2025
- 15:19:28 -0700 (PDT)
-Date: Sat, 02 Aug 2025 15:19:28 -0700
-In-Reply-To: <683e2b6d.a00a0220.d8eae.005b.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <688e8ef0.050a0220.f0410.0144.GAE@google.com>
-Subject: Re: [syzbot] [gfs2?] kernel BUG in do_qc
-From: syzbot <syzbot+bad65435361712796381@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
+From: Andrew Price <anprice@redhat.com>
 
-HEAD commit:    eacf91b0c78a Merge tag 'fbdev-for-6.17-rc1' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=162a3834580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bbdefbf39cb79f7e
-dashboard link: https://syzkaller.appspot.com/bug?extid=bad65435361712796381
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10c03cf0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=112a3834580000
+[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-eacf91b0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/51416a3bb992/vmlinux-eacf91b0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/aa2684a00ab0/bzImage-eacf91b0.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/d4ede27f2613/mount_1.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=151c7f82580000)
+A fuzzer test introduced corruption that ends up with a depth of 0 in
+dir_e_read(), causing an undefined shift by 32 at:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+bad65435361712796381@syzkaller.appspotmail.com
+  index = hash >> (32 - dip->i_depth);
 
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-gfs2: fsid=syz:syz.0: found 1 quota changes
-gfs2: fsid=syz:syz.0: fatal assertion failed
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/quota.c:320!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5780 Comm: syz.0.38 Not tainted 6.16.0-syzkaller-11129-geacf91b0c78a #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__qd_hold fs/gfs2/quota.c:320 [inline]
-RIP: 0010:do_qc+0x5c1/0x5e0 fs/gfs2/quota.c:705
-Code: 00 00 00 00 00 fc ff df 48 8b 0c 24 80 3c 01 00 74 0a 48 8b 7c 24 10 e8 bd fd 28 fe 48 8b 44 24 10 48 8b 38 e8 70 e2 2e fd 90 <0f> 0b e8 f8 2b c4 fd 48 8b 7c 24 10 e8 5e e2 2e fd 90 0f 0b 66 66
-RSP: 0018:ffffc9000d68f348 EFLAGS: 00010246
-RAX: 000000000000002c RBX: 1ffff1100860680e RCX: 05e99f5eed550400
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffc9000d68f067 R09: 1ffff92001ad1e0c
-R10: dffffc0000000000 R11: fffff52001ad1e0d R12: ffff888043034000
-R13: ffff888043034070 R14: ffff888043034090 R15: 0000000000000000
-FS:  00007faa59d406c0(0000) GS:ffff88808d21f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb33a2f7000 CR3: 000000003f713000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- gfs2_quota_change+0x394/0x800 fs/gfs2/quota.c:1304
- gfs2_alloc_blocks+0x18bc/0x2080 fs/gfs2/rgrp.c:2494
- alloc_dinode+0x258/0x550 fs/gfs2/inode.c:422
- gfs2_create_inode+0xbbc/0x1560 fs/gfs2/inode.c:807
- gfs2_atomic_open+0xd2/0x220 fs/gfs2/inode.c:1395
- atomic_open fs/namei.c:3568 [inline]
- lookup_open fs/namei.c:3679 [inline]
- open_last_lookups fs/namei.c:3807 [inline]
- path_openat+0xf63/0x3830 fs/namei.c:4043
- do_filp_open+0x1fa/0x410 fs/namei.c:4073
- do_sys_openat2+0x121/0x1c0 fs/open.c:1435
- do_sys_open fs/open.c:1450 [inline]
- __do_sys_openat fs/open.c:1466 [inline]
- __se_sys_openat fs/open.c:1461 [inline]
- __x64_sys_openat+0x138/0x170 fs/open.c:1461
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faa58f8eb69
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007faa59d40038 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007faa591b5fa0 RCX: 00007faa58f8eb69
-RDX: 0000000000105042 RSI: 0000200000000080 RDI: ffffffffffffff9c
-RBP: 00007faa59011df1 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000000001ff R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007faa591b5fa0 R15: 00007ffdf5ca1658
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__qd_hold fs/gfs2/quota.c:320 [inline]
-RIP: 0010:do_qc+0x5c1/0x5e0 fs/gfs2/quota.c:705
-Code: 00 00 00 00 00 fc ff df 48 8b 0c 24 80 3c 01 00 74 0a 48 8b 7c 24 10 e8 bd fd 28 fe 48 8b 44 24 10 48 8b 38 e8 70 e2 2e fd 90 <0f> 0b e8 f8 2b c4 fd 48 8b 7c 24 10 e8 5e e2 2e fd 90 0f 0b 66 66
-RSP: 0018:ffffc9000d68f348 EFLAGS: 00010246
-RAX: 000000000000002c RBX: 1ffff1100860680e RCX: 05e99f5eed550400
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffc9000d68f067 R09: 1ffff92001ad1e0c
-R10: dffffc0000000000 R11: fffff52001ad1e0d R12: ffff888043034000
-R13: ffff888043034070 R14: ffff888043034090 R15: 0000000000000000
-FS:  00007faa59d406c0(0000) GS:ffff88808d21f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb33a2f7000 CR3: 000000003f713000 CR4: 0000000000352ef0
+As calculated in an open-coded way in dir_make_exhash(), the minimum
+depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
+invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
 
+So we can avoid the undefined behaviour by checking for depth values
+lower than the minimum in gfs2_dinode_in(). Values greater than the
+maximum are already being checked for there.
 
+Also switch the calculation in dir_make_exhash() to use ilog2() to
+clarify how the depth is calculated.
+
+Tested with the syzkaller repro.c and xfstests '-g quick'.
+
+Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+
+LLM Generated explanations, may be completely bogus:
+
+**Backport Status: YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+1. **Fixes a Critical Security Bug**: The commit fixes an undefined
+   behavior caused by an invalid shift operation (`index = hash >> (32 -
+   dip->i_depth)`) when `i_depth` is 0. This results in a shift by 32,
+   which is undefined behavior in C and can lead to unpredictable
+   results or crashes.
+
+2. **Reported by Syzbot**: The bug was discovered by syzbot (Google's
+   kernel fuzzer), indicating it's a real issue that can be triggered,
+   not just theoretical. The commit message includes `Reported-by:
+   syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com`.
+
+3. **Small and Contained Fix**: The changes are minimal and focused:
+   - In `fs/gfs2/dir.c`: Simply replaces an open-coded calculation with
+     `ilog2()` for clarity
+   - In `fs/gfs2/glops.c`: Adds a validation check for `i_depth` to
+     ensure it's not less than the minimum valid value
+
+4. **Clear Boundary Checking**: The fix adds proper validation in
+   `gfs2_dinode_in()`:
+  ```c
+  if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
+  depth < ilog2(sdp->sd_hash_ptrs)) {
+  gfs2_consist_inode(ip);
+  return -EIO;
+  }
+  ```
+  This ensures exhash directories have a valid minimum depth based on
+  the hash pointer count.
+
+5. **No Feature Changes**: The commit doesn't introduce new features or
+   change the filesystem behavior - it only adds validation to prevent
+   corruption from causing undefined behavior.
+
+
+7. **Tested**: The commit message indicates it was tested with both the
+   syzkaller reproducer and xfstests, providing confidence in the fix.
+
+The fix prevents filesystem corruption from causing undefined behavior
+that could lead to crashes or security issues, making it an excellent
+candidate for stable backporting according to stable tree rules.
+
+ fs/gfs2/dir.c   | 6 ++----
+ fs/gfs2/glops.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index dbf1aede744c..509e2f0d97e7 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -60,6 +60,7 @@
+ #include <linux/crc32.h>
+ #include <linux/vmalloc.h>
+ #include <linux/bio.h>
++#include <linux/log2.h>
+ 
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -912,7 +913,6 @@ static int dir_make_exhash(struct inode *inode)
+ 	struct qstr args;
+ 	struct buffer_head *bh, *dibh;
+ 	struct gfs2_leaf *leaf;
+-	int y;
+ 	u32 x;
+ 	__be64 *lp;
+ 	u64 bn;
+@@ -979,9 +979,7 @@ static int dir_make_exhash(struct inode *inode)
+ 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
+ 	gfs2_add_inode_blocks(&dip->i_inode, 1);
+ 	dip->i_diskflags |= GFS2_DIF_EXHASH;
+-
+-	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
+-	dip->i_depth = y;
++	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
+ 
+ 	gfs2_dinode_out(dip, dibh->b_data);
+ 
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index cebd66b22694..fe0faad4892f 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -11,6 +11,7 @@
+ #include <linux/bio.h>
+ #include <linux/posix_acl.h>
+ #include <linux/security.h>
++#include <linux/log2.h>
+ 
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -450,6 +451,11 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+ 	}
++	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
++	    depth < ilog2(sdp->sd_hash_ptrs)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-- 
+2.39.5
+
