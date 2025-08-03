@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C5B1D5CC6;
-	Sun,  3 Aug 2025 21:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8942B2040A8;
+	Sun,  3 Aug 2025 21:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754256012; cv=none; b=Np0kT6cuqU5Iitl1DHXiKIEXzVDJML1nS/K4ikSZz4qYptW7EsMxK0l41X/K/fCsJIGWm4Yg1D2L57mLP0thZ2a1o8MhB1xPBtOTTPrXjQFVATJsTXV/Vhg7JnMyVSyvEA80vJx0wQHhNgT26hqZhQSSN7A9C2Gqmiy5DITRYBE=
+	t=1754256054; cv=none; b=I/E2NVqgWQPQsK6Jck55UKj3kGo3pg6RZUr6P4ggZmLbvtRJ3rxJOSoqivuJtfUqlS28p+wILnpD4ZRcHFrWQpiZt/LroCwKApYVjs+/SO70nwoe+JhhH4A2roOTxB/IDpV9OZ9GSQCvG7kb6pVa+EiMrwXtbgIjFEhWA9Ywm/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754256012; c=relaxed/simple;
-	bh=JZsFyGYZ8Vevilu4nisLCtIzBBy74dSzOuFlO41YO00=;
+	s=arc-20240116; t=1754256054; c=relaxed/simple;
+	bh=beJ0Qhf0+x95UbSfUbqVN/0QATm5+ul+IfAg+UFf1HY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CWe7Gz+eJkJkkFZZ/T5Z6N/FpkiF3umfZVsFxrd4UpGqt9oNBGlRi2KXWHqMeRQPSRvbGXyBGKJZpmZH1ZNWyue0KGB8F90hU5M9cbrFnvBWwFc/9dfia2+r6GNRMYyHLUFbxuGsWewY9VTVmQ3Iy9tZiF67kgQCh06HkanUnEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmfBfw1q; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=md58g1+Lvu3UFQ/D7RE8G1YmSuHeTmMWdEZI0/KyEv0tkltyVcCYwTpdvduIfIrAz7lbCd9LSbyOG1e1WmD/jCFjcpOLm6lPTVT2RAm1ToDYkRdd6XBMAZ4QzNAMa7m+eNY4KNGSUBYhUWd+p7E9XuHlG6lXBnalaDbYbsB2G38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAzAl8SI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmfBfw1q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7128C4CEEB;
-	Sun,  3 Aug 2025 21:20:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAzAl8SI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E921C4CEF8;
+	Sun,  3 Aug 2025 21:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754256012;
-	bh=JZsFyGYZ8Vevilu4nisLCtIzBBy74dSzOuFlO41YO00=;
+	s=k20201202; t=1754256054;
+	bh=beJ0Qhf0+x95UbSfUbqVN/0QATm5+ul+IfAg+UFf1HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmfBfw1q5d8Qa7CeNBdo+RNPFRmhbYthUhIYB+I6u2/px2TzbKK3KIk9X4j059BQt
-	 K1EdxR0OMgo8B8iSClqL0LTdBz386sPoAEdj4aW2jQyJclALp5vEJX0ztap3Mot0Ih
-	 OP0C52hMUmsR9FpXeio245zbb5CWOo1Z/Cz5BWf7b5cYTPFRUU2vC53zWzvaSgnkOT
-	 Dp/xcHDYg/N+WjWYPagavzpjrkp/cqXsVH84P6ZDwhNMX9GKNBhlBf6grde8oqdoH0
-	 AU58zCPzuw8eoh5vfvwafqDeVP0/VOGYhFwfqVwGCJzEzfhlSAcv81xPO5KM3iSfbT
-	 baDTU0uxRfYFQ==
+	b=DAzAl8SIwCgFTvGPAr+iLTUoCaf7lR2u6dI07KhLc0nXSnOqGZO7GQ3oiCajIAnQA
+	 K7Tc9nKLuDAku7MI/LrIEVITqEY90DSByImB18WichiFVNpv5SXne0yq5kOoW4w++X
+	 dWgee9eDB70/hxARFv4VmgYkqG0Ic0sONujChnzP7RQEMCF117zpR2edHeMnKbcLUq
+	 trVbTdh9jyzGkio/TpoC540MyB2ETeyB3sn4fcQR/NPpCw7z1BQcw3eWIN3cs6lFKg
+	 i2Rvgi5COoFZJK2TWXi5/mOMJ9dyDozYASfLz5HBcIPpFPcqxZgaoiJbd9WxrK8UXh
+	 codZa1GcofTQg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -33,12 +33,12 @@ Cc: Andrew Price <anprice@redhat.com>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 14/31] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
-Date: Sun,  3 Aug 2025 17:19:17 -0400
-Message-Id: <20250803211935.3547048-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 09/23] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
+Date: Sun,  3 Aug 2025 17:20:16 -0400
+Message-Id: <20250803212031.3547641-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250803211935.3547048-1-sashal@kernel.org>
-References: <20250803211935.3547048-1-sashal@kernel.org>
+In-Reply-To: <20250803212031.3547641-1-sashal@kernel.org>
+References: <20250803212031.3547641-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.41
+X-stable-base: Linux 6.6.101
 Content-Transfer-Encoding: 8bit
 
 From: Andrew Price <anprice@redhat.com>
@@ -110,20 +110,20 @@ tests on GFS2 filesystems.
  1 file changed, 2 insertions(+)
 
 diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index 960d6afcdfad..b795ca7765cd 100644
+index 1f42eae112fb..b1a368fc089f 100644
 --- a/fs/gfs2/meta_io.c
 +++ b/fs/gfs2/meta_io.c
-@@ -103,6 +103,7 @@ const struct address_space_operations gfs2_meta_aops = {
+@@ -93,6 +93,7 @@ const struct address_space_operations gfs2_meta_aops = {
  	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
+ 	.writepage = gfs2_aspace_writepage,
  	.release_folio = gfs2_release_folio,
 +	.migrate_folio = buffer_migrate_folio_norefs,
  };
  
  const struct address_space_operations gfs2_rgrp_aops = {
-@@ -110,6 +111,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
+@@ -100,6 +101,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
  	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
+ 	.writepage = gfs2_aspace_writepage,
  	.release_folio = gfs2_release_folio,
 +	.migrate_folio = buffer_migrate_folio_norefs,
  };
