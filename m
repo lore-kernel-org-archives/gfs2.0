@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F2C1D5CC6;
-	Sun,  3 Aug 2025 21:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654711D5CC6;
+	Sun,  3 Aug 2025 21:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754255957; cv=none; b=c3mQC/jGZSz5FpAyi1LxeV0T2KXxGFZUi/74DpRAjxWy1oQf0WdYg85+ZG8t2mnSJ0bXKT2CG6NsfQFPbqctqGsJZD+M7OcB7YHH3ABh8zFhHuO5NdmtQmizeliWwoVXgrmLwcVNyUkN0Y+4GumXcOI5z2KAEStT/aRzi0o8JNU=
+	t=1754256010; cv=none; b=XR9dK622DflJWtXZ4v5B/lQ1q3HfPWacBuewJoSmF0d7H8s6nR4v4E/hfPXuuzWqg1zsidu55oiqkFQOcRMYafPbrXDddkuKn4ByRR72aJpPzKo9zsdENm5jUyNWiP8fR0HG924/lomto6XVoe8KYxPAfFpOMhkyiwuFIrychKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754255957; c=relaxed/simple;
-	bh=ERkAB5s4LEH7jUU633ii/4C4onNEvkXOHOoJNkER+Pc=;
+	s=arc-20240116; t=1754256010; c=relaxed/simple;
+	bh=/UrUI4XQ2djlXt2UaUC471gfyjZ3vwAugIGJCFv5QrE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uZgnjaOdfrociC5e9F06NIapOSfSzypolflpON5NyfWP8xznkdrQOY9I8iS09URLb8HCkarSc/bMipNVaxtQWH65Xb4xxwcZoWcdQ1McIDFI/Bz3jgFDm8jPurAdwky25zMwfRtUz0TTYoxrvR7X2VfZjD/AZh4MRpCwLlQikw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS3PrNaS; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=YhVU0fdNa4blCSU8673lR6gLA+rASc55eLr5CRdhlJHnnIheSuGZhO+glxX1sJjNL8G0w0BTJMbrQpKI+h28ATptmMprRXIIp/U1rOQZz8z6We3hIQ+XAGizanUKtMqpdoS2aCoaGeiDWtptpxdobWhB1TEMwZAn32KwmwiYHFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pSeXOqU7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS3PrNaS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ABAC4CEF8;
-	Sun,  3 Aug 2025 21:19:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pSeXOqU7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98C6C4CEF0;
+	Sun,  3 Aug 2025 21:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754255957;
-	bh=ERkAB5s4LEH7jUU633ii/4C4onNEvkXOHOoJNkER+Pc=;
+	s=k20201202; t=1754256010;
+	bh=/UrUI4XQ2djlXt2UaUC471gfyjZ3vwAugIGJCFv5QrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bS3PrNaSNMs59o4sG3WqrT6Wo+xf54OuKB5F2xvpJ2fK1jw2Ztqv2G3hu6sY8pqOL
-	 9b1P12vxiR27vUwnBpTeaUae+TQQFo8DiXbWQZ4zG0Gfyyp3BE0eXdtIM/4soKebjM
-	 yqlyKu41rnf17tsM0QKicUzYVSFtWhGq2tV/LWubp5/Dh6BR6hv3z937q0rBwLp/ml
-	 CJTg4W1hGogmA5w7haAODxuRn1yKMGY7FRISnN7bE30S1BKPmwJtP7SBMS80x2hFxs
-	 zEWUs6PFoE2dk1V1Vm46FFMg2StmV8p3xBG11PSS3r4ndfu/OmnuwEVq+9jcpb0nho
-	 J7nsx/AcJlPyw==
+	b=pSeXOqU7DWhGoPEoR49e6h2NJaRL8mLJZuXN51sHiRhiqWONcdtIWT5JDW9Ai18gc
+	 J5zcofonudYz+UzmmifEHzzViykWT18bRNePSBXgrC20VdT4BrS6sjUe+FXwrd6zDY
+	 4rzas0jts1NVMtn5//hXuAa5bkje6jbyLsRvxPWzJt14uM83EysZcZaT7/LoptMbC8
+	 6bTnbaz0D7b+sUHN22KhIZFdpnPgQCMCoE+rahhyD6UK/lhem/WN46reCHnZ94ETXS
+	 d+bGYE87G1GQz4blEbkhbw6G7tdgk4DMCS2uuLdRk+xwRQD4ZYG4POgQ7m3fUMRUsb
+	 Ti+vtMX9plsYA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Andrew Price <anprice@redhat.com>,
+	syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.15 16/34] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
-Date: Sun,  3 Aug 2025 17:18:18 -0400
-Message-Id: <20250803211836.3546094-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 13/31] gfs2: Validate i_depth for exhash directories
+Date: Sun,  3 Aug 2025 17:19:16 -0400
+Message-Id: <20250803211935.3547048-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250803211836.3546094-1-sashal@kernel.org>
-References: <20250803211836.3546094-1-sashal@kernel.org>
+In-Reply-To: <20250803211935.3547048-1-sashal@kernel.org>
+References: <20250803211935.3547048-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,20 +48,32 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.15.9
+X-stable-base: Linux 6.12.41
 Content-Transfer-Encoding: 8bit
 
 From: Andrew Price <anprice@redhat.com>
 
-[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
+[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
 
-Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
-->writepage") that occurs in various xfstests, causing "something found
-in dmesg" failures.
+A fuzzer test introduced corruption that ends up with a depth of 0 in
+dir_e_read(), causing an undefined shift by 32 at:
 
-[  341.136573] gfs2_meta_aops does not implement migrate_folio
-[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
+  index = hash >> (32 - dip->i_depth);
 
+As calculated in an open-coded way in dir_make_exhash(), the minimum
+depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
+invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
+
+So we can avoid the undefined behaviour by checking for depth values
+lower than the minimum in gfs2_dinode_in(). Values greater than the
+maximum are already being checked for there.
+
+Also switch the calculation in dir_make_exhash() to use ilog2() to
+clarify how the depth is calculated.
+
+Tested with the syzkaller repro.c and xfstests '-g quick'.
+
+Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
 Signed-off-by: Andrew Price <anprice@redhat.com>
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -68,67 +81,111 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis, I can now provide my assessment:
-
-**YES**
+**Backport Status: YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Fixes a real bug**: The commit fixes a warning that appears in
-   xfstests runs where GFS2 filesystems trigger a WARN_ONCE in
-   mm/migrate.c:944 because the gfs2_meta_aops and gfs2_rgrp_aops
-   address space operations don't implement the migrate_folio callback.
+1. **Fixes a Critical Security Bug**: The commit fixes an undefined
+   behavior caused by an invalid shift operation (`index = hash >> (32 -
+   dip->i_depth)`) when `i_depth` is 0. This results in a shift by 32,
+   which is undefined behavior in C and can lead to unpredictable
+   results or crashes.
 
-2. **Small and contained fix**: The change is minimal - it only adds two
-   lines setting `.migrate_folio = buffer_migrate_folio_norefs,` to two
-   address_space_operations structures in fs/gfs2/meta_io.c. This is a
-   very low-risk change.
+2. **Reported by Syzbot**: The bug was discovered by syzbot (Google's
+   kernel fuzzer), indicating it's a real issue that can be triggered,
+   not just theoretical. The commit message includes `Reported-by:
+   syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com`.
 
-3. **Prevents test failures**: Without this fix, xfstests fail with
-   "something found in dmesg" errors due to the warning, which affects
-   testing infrastructure and CI systems.
+3. **Small and Contained Fix**: The changes are minimal and focused:
+   - In `fs/gfs2/dir.c`: Simply replaces an open-coded calculation with
+     `ilog2()` for clarity
+   - In `fs/gfs2/glops.c`: Adds a validation check for `i_depth` to
+     ensure it's not less than the minimum valid value
 
-4. **Follows established pattern**: The fix uses
-   `buffer_migrate_folio_norefs`, which is the standard migration
-   function for filesystems that use buffer heads without additional
-   reference counting requirements. This same function is already used
-   by ext4, nilfs2, and block device operations.
+4. **Clear Boundary Checking**: The fix adds proper validation in
+   `gfs2_dinode_in()`:
+  ```c
+  if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
+  depth < ilog2(sdp->sd_hash_ptrs)) {
+  gfs2_consist_inode(ip);
+  return -EIO;
+  }
+  ```
+  This ensures exhash directories have a valid minimum depth based on
+  the hash pointer count.
 
-5. **Regression from upstream change**: The warning was introduced by
-   commit 7ee3647243e5 ("migrate: Remove call to ->writepage"), which
-   enforces that filesystems must implement migrate_folio. This makes
-   the fix necessary for proper operation with newer kernels.
+5. **No Feature Changes**: The commit doesn't introduce new features or
+   change the filesystem behavior - it only adds validation to prevent
+   corruption from causing undefined behavior.
 
 
-The fix is a classic stable tree candidate: it addresses a specific bug,
-has minimal code changes, doesn't introduce new features or
-architectural changes, and fixes a regression that affects users running
-tests on GFS2 filesystems.
+7. **Tested**: The commit message indicates it was tested with both the
+   syzkaller reproducer and xfstests, providing confidence in the fix.
 
- fs/gfs2/meta_io.c | 2 ++
- 1 file changed, 2 insertions(+)
+The fix prevents filesystem corruption from causing undefined behavior
+that could lead to crashes or security issues, making it an excellent
+candidate for stable backporting according to stable tree rules.
 
-diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index 9dc8885c95d0..66ee10929736 100644
---- a/fs/gfs2/meta_io.c
-+++ b/fs/gfs2/meta_io.c
-@@ -103,6 +103,7 @@ const struct address_space_operations gfs2_meta_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+ fs/gfs2/dir.c   | 6 ++----
+ fs/gfs2/glops.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index dbf1aede744c..509e2f0d97e7 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -60,6 +60,7 @@
+ #include <linux/crc32.h>
+ #include <linux/vmalloc.h>
+ #include <linux/bio.h>
++#include <linux/log2.h>
  
- const struct address_space_operations gfs2_rgrp_aops = {
-@@ -110,6 +111,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -912,7 +913,6 @@ static int dir_make_exhash(struct inode *inode)
+ 	struct qstr args;
+ 	struct buffer_head *bh, *dibh;
+ 	struct gfs2_leaf *leaf;
+-	int y;
+ 	u32 x;
+ 	__be64 *lp;
+ 	u64 bn;
+@@ -979,9 +979,7 @@ static int dir_make_exhash(struct inode *inode)
+ 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
+ 	gfs2_add_inode_blocks(&dip->i_inode, 1);
+ 	dip->i_diskflags |= GFS2_DIF_EXHASH;
+-
+-	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
+-	dip->i_depth = y;
++	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
  
- /**
+ 	gfs2_dinode_out(dip, dibh->b_data);
+ 
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 4b6b23c638e2..1ed42f0e6ec7 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -11,6 +11,7 @@
+ #include <linux/bio.h>
+ #include <linux/posix_acl.h>
+ #include <linux/security.h>
++#include <linux/log2.h>
+ 
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -450,6 +451,11 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+ 	}
++	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
++	    depth < ilog2(sdp->sd_hash_ptrs)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
 -- 
 2.39.5
 
