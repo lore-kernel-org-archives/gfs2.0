@@ -1,329 +1,289 @@
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+Received: from sonic.asd.mail.yahoo.com (sonic301-21.consmr.mail.sg3.yahoo.com [106.10.242.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F702192F4
-	for <gfs2@lists.linux.dev>; Mon,  4 Aug 2025 16:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B837E2E3719
+	for <gfs2@lists.linux.dev>; Tue,  5 Aug 2025 20:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.242.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754326291; cv=none; b=tfDgmsR0L7wjNzbUrSvr3dAby3Xe1U6i7LvE7eypTlqNNKHj586D8VpC5LZSEo2J64rTAcCyf/jpOL0PQYts4Tobegh58MBhIjwidmqLFFMeVmy0yOQHqloWnYrKsIfLkEcFtCw1zMAR5Q16g6ZN6hyc28AeFZ9RYSdD7tk7Spw=
+	t=1754424641; cv=none; b=YT+RrXKecjuQhBLSxws883bGhHKnXk1sDlp/a72u84BuIHgqnSbrlwK0gmaBsC2XWvJeq55JSNdq+o8ixgkjOVbMtGkWu+8HqzdW9YFgWHGbA67sK5KLpg0PnwyUXSA4jOr6a4VDx3EohOm+FBMEKjKVO0RPEmkVT/Zm8gdqLXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754326291; c=relaxed/simple;
-	bh=Bn33jBXxpWfWRllfCJra5+TUT89vsBbx9wXN3S8f6+c=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dX2W3PVDsrxbXTrlpwEzcQIsOii2uGY5mEC9g/wJa2pls9ic4SAZn45t1EhFt3Y5DIyrLjG2mJAxhgdqpA3QtoPezMACBDyttNcf4ZCj9zWSsywcA+nLm1QbAZVeR6nJPjQB2ovZeJHdacyIZvYdPYDHsGx3CYGFRZzr8DQLtWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-88177d99827so152789039f.3
-        for <gfs2@lists.linux.dev>; Mon, 04 Aug 2025 09:51:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754326289; x=1754931089;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T+SWqhnRSwH3R1CzBxQyfEv4bNSSoW82skBpvyoxCSc=;
-        b=svlygzsz6O0ZynfVLpEAafC21YUFAk3Rcs37xlotfSteQCDKnv6Dfavb/J1b1DrETl
-         4LwYBLVlWHc3jXlCGImH4dV/04eomFADeKebeIEl9mnPCETNhSnCzCfTcbRVmJyHBqjI
-         OcrShmEd+yK7LgIY+XERlODcKf3wL+ezcnm0RCFklzQUpD5zNf2o1eEMaI3JHza9bo3/
-         hJyiDIWJa63I3yobxLhsBnv3+9lMuCSNriF06Jt7KmJocmzcFRfpixcKjI5rh64LtedJ
-         Vn88eOeFCofe8bYmTTRnDc/o3Rcn0yUKY+oBHs/HmqYaVE1lno3GlrQkFSa+Wx70mXNn
-         Zn+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWSfpwBs9p4kLmlL9WcmYuqeslotaqHA2hCvAIyLgWq96Y4R0scMSz49WOhlaanaG4BO5cD@lists.linux.dev
-X-Gm-Message-State: AOJu0YwPJztR5VuTNA54xORtmbYZ6lpSLi6izNI1125crP18RAdbi9rR
-	B4gf4rVKuLClaJpldukoGFn+H5M1jyJ+koWzlysTw/CjOHWuV2RqwcaRUnvVvCum8OOab4dmWnr
-	Na3LcOD+SKWzo5Xt8OkkW6d2Tu7x1FFyF38QJvwRUdHE/vVIclRm+OF4Qebc=
-X-Google-Smtp-Source: AGHT+IH04Bq8MVGpwIUoBtycOOr7vPMxx24HVA0oKBXHAheqzKXH3rbQlrqpS7k9as0bBK2jRst+SxKgq4Sy8a4NND7+3pAMIAuf
+	s=arc-20240116; t=1754424641; c=relaxed/simple;
+	bh=ajefu/XpiABW3hLAC6IZOz6zrZrUpYBpFvddSuDg7o4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=D7lBgDZO4pAeximSBrsLinuoo04235jDIBB4Lh9vRYY/kd68dDBDHmMAuCpvN/88HhGSwut0vfifC4ptz6NFWLhJkHVaKhN8xRUqckCIDGSb0MPG9oJVaNC5omsWW+BHlVm5Wh+NoHsmzJN3y+2rkrXT4XxscrfAY4uP0FnDo4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Ydi9lbFo; arc=none smtp.client-ip=106.10.242.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ydi9lbFo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754424637; bh=+MODNQyYtZacIV3M94jpCN5VGFvspUT3n/gFK38eANc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=Ydi9lbFomlVKvsNkGtIuPwQpbWi5rn+yX6J8VRXTRrUDDbcmeX3m9D8gdqlZpfXEdRiOMxxu6ODmvIUGTMhb/OCqBqJpgWKgUd4sGe8mb+i+t33KdmZsGrpcjY+Nn2FXWpDOe8EjRV9vKQy7rf/3TAzUdAmi7xB5Cu0DeZEio3JshqKesdSlyUHYssrzJENz6L5RvGM7UcyLNinsBUj7SsP+vAfxvA7vlDciy7PhS4xQU/iWC+YVyXJmMQobClKR5JW1bq0sdxN+ENe3O2eyCs1Fjgu5PQckSlMdDse5PCKOcOma+Ddof7B9qUw/ZKJSct/2wmic3mT4gB+m7471jA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754424637; bh=vDo8SYGUrbflkiXFB0Wsagk5h3+JiAcbFJWHey2gnf8=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=di9xOEtmtcP0r+rI5T5Qnul18Jf6KD+2yKhIA3jO2WawoY8OLd178UUjjNT0K8TyKQYQ3kPsHe1dilVI3F3INpIOWbeCXwhtUfil4pnCj3EqmftUYzxaAFQj4SM4E4oFEMfxtyFd0nyvxUVlV2Q/LB0D2sNO3xbgH0K35GksL4oaVhmE69XTz2Cjx5LlB0jUYcMzx2DxD99EIxwz5JwwjexUFfuO08KHyd1Bg5F3D/58IiJrFQ+Bt3kzor5J1LxX423unGH2fnq5b6TXmfI/SJcEjibogIPXKQfMMlicDhQvScBE33i9Lezvwi0UHRFCJHw5j8DUH1klLOtRUe3lLw==
+X-YMail-OSG: lbh.FcEVM1kwGVRa6plSVmx5SyRcOda_HdGGIl_9QhbT5ZGqT4DmHJJjbbHMCi3
+ DqS6hBc8yb.CRixsQNTPXHzdGtzUPgWvVrFnO7ikqj.i32TzSTQ0TX_JIzGKk_TOY1zM3jFI4.ly
+ qQBr34HnjJx09rfgRjG.aXs2lMk6KINUd._dYwYMnp_9O5Q.Y6qdD2QO6.PsfpY5peAgxZVAYfHD
+ vMDSHbtwEgQ8vSrBSoBK.AaXZmsxOm19l6oMpjtP1GUXEeS_zdqUFiJ0e0rn4Gd5RtZ_utthTUMy
+ F98LzuPPfOvPABiXFS_TD8DMXnUOyaX8hDPn04dBftx5uRG.TsFG1Uz8hmd9bjocPgB79WrNvAMh
+ YoZj1enFuTEuvAyq3nDI2ogIDH9v9XvCwOMNFfogAl8RKTObqv2ayU_3yqnVYqN.c2v5vkrdXqZl
+ XPXMUv2KS9QGUSVy6JT5fd_IM1dWjAzEwD7rXIcmN6hvAP47ZlOgGmgvrSDss.yVEmfFXNmfTT5x
+ _Wr9FKs0KgLSr_anJ5DtgcHqyDiEbQ3TiTSyK_k7650lad5l_QjrrkezlXwdw.HzlyPm_5C31Fq_
+ Y1.Ro8uQhd5zDuReZrBeS3idofBxkItcUvg76zjoU5ANlFvWHVi3iyGC79pHHI2RZOL36Bm7FPmg
+ L_Mi6Clf2V4jyD_RxrON.JQlAbmao0brAWU_M429c.rbM2FjrkgNIauhLva2mKCvKi4Jka5TKQOq
+ RcsRQ.kX9lckI_a5u3T3kLZ4g75AKb06uuldPnf4JAMG3t3LBBMaYtUz3U69PB5jnlGTCptqAXdZ
+ duTOQ85C197MMZJySYeILqJs.QyvAZ2p5WvIuTp8fpgCMU.AZGK6QmEtoXPOoiw7CTlHl0GC7wDE
+ mrqU7v.3LRjdKw6KIt2DuD.CSODcaJJnZ7hw6QcrRmcsyDaB2RYYaPhKiv4.eBUzcOq6HtDmcKas
+ NEvDM8ttHpuqEO0RC2Jn_h2k3pOmIS4plFlXiI6JQme62HIKrFQLijsUsltJ5nFpYC1WM_ePvuG0
+ mkyDHb5A8HedBAs2biRr.KNfxEkFmzFfYSAXfMaUaSepkKv5ZBlsGxwEDTM85Z.gu_JMn1jNjzNp
+ Bo3HjYgSCgmL9p8pNavUkyZOC1jqNX8d3OsvqeVVjNNjYFzmW3uAemAGsSvf5XiNCQCtS8tjV_R6
+ KcpwxCD46rvPGgekwJEU1oWaY6ngBZHLgk280.Y_TKGgQnS8HCG00oa87t7DLRQObsIzhE2fM8N9
+ 7MkxwVc2CgDVlBhR3OdUUDNT6SWjujbeES51SoeDx6JhJSBgkpgjqhRHxaMO5_pEs9NTH8eixP5b
+ OcORJvHGVUjKaXZ78u_Ee8FWIm5Nm5bgF1aKr6nJdda8HvZ0kYAr1zLmL500bJyrbqy2fTv2mDpN
+ AXF6uGhra97Eg98zzrYpgBStiwZPM.rYE381XOd8srFoBU5T9LNYltLP8uy8cEL8JfdIQiYNZrQk
+ 0Eu3SEaTM4RtEhY7qbZiXljPk8rdePvnZxoeNNAFYHkybvNPaUcKypYU83_b1gmqY9KLHNNTAD79
+ 4UQZhByk.rCNz4ylDgh4BjB6PN9RIKRvZ.YUoyf87wq7nrHjDh_y_oUc4FumPvp6d9uGoSzwmxzN
+ jj7fO_hlYmdvBRRZAmcsFvg9IiqAdoTzK.hE9.rEMsPm4GhpPJfleMJAdNuD.Ds2Q0_KZGGnrjER
+ iHoPqCQ0eiEUfgTWxx11ujkkyzXx1UTjRY0LTV.kYdKeHHm4CIQWIKwrLyWbpo2bfj9EUS0OS.OZ
+ CLcZGJ4nI3hgIfvMKcxoHUNkt8NahgiNE5bGix7gnwjeHhPqx_Ij.glcl8.dZRq7r6MVGyKjG.nP
+ yDsyZowLuAL20ijrE0GheEvA4vvd5NQ_Dwl4.dS9RLvOx2zvYGTr.XmQIfsxRfVj8SKS5n4TmupY
+ _ir6VzRBK2mPZf4eCAvFYWLzLqm2AZFcNwcWCjUa.mZpDyxnz9prxxH33WqTqDkBy6ItcVtLOpYK
+ HYqMfGqgXrVWV5LAE.Ht0f6QeNQTz2nw0tKKMyqg9IA_WVgAThJzuUbeaWvGM7HbjU40LB__vI4J
+ csNg1THGZ4bIVk_sAxrB8C4zm4Rf0bsYsHEkilhcOW.yXSmzcXK_GdNFcYvydgi2U75Ymp.B.01c
+ 39cx659epNtUn3AL68cbhneNmt.Yi6_AzQNRMZ2f1djojSwImPxM3Y3BO33BA8aTKc2.Q56lnYiO
+ 0JCwmwKeP6C6_93qQlbPbF3vSkZV2kh76rdNI7Hocw_eVTky0MXtLXl.Qh12WHQSsdRoEOjZ0XSO
+ kPwkPSs8xqHczLw.TdBwbohmBEKX7yI9gQcfHGg--
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: 138cfcb2-21cd-401b-983d-d750719ac2a1
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.sg3.yahoo.com with HTTP; Tue, 5 Aug 2025 20:10:37 +0000
+Received: by hermes--production-ne1-9495dc4d7-27szc (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6c357f7640c1af4f723f6a091515b028;
+          Tue, 05 Aug 2025 19:40:09 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: rpeterso@redhat.com,
+	agruenba@redhat.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 6.6] gfs2: replace sd_aspace with sd_inode
+Date: Tue,  5 Aug 2025 14:40:04 -0500
+Message-ID: <20250805194005.327445-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:26ca:b0:87c:1d65:3aeb with SMTP id
- ca18e2360f4ac-88168318805mr2137993739f.2.1754326288731; Mon, 04 Aug 2025
- 09:51:28 -0700 (PDT)
-Date: Mon, 04 Aug 2025 09:51:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6890e510.050a0220.1fc43d.000e.GAE@google.com>
-Subject: [syzbot] [mm?] [gfs2?] KASAN: slab-use-after-free Read in lru_add (2)
-From: syzbot <syzbot+8921d5debffa05b33b27@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, baohua@kernel.org, bhe@redhat.com, 
-	chrisl@kernel.org, gfs2@lists.linux.dev, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+References: <20250805194005.327445-1-sumanth.gavini.ref@yahoo.com>
 
-Hello,
+commit ae9f3bd8259a0a8f67be2420e66bb05fbb95af48 upstream.
 
-syzbot found the following issue on:
+Currently, sdp->sd_aspace and the per-inode metadata address spaces use
+sb->s_bdev->bd_mapping->host as their ->host; folios in those address
+spaces will thus appear to be on bdev rather than on gfs2 filesystems.
+This is a problem because gfs2 doesn't support cgroup writeback
+(SB_I_CGROUPWB), but bdev does.
 
-HEAD commit:    5c5a10f0be96 Add linux-next specific files for 20250804
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=12ce82f0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f4ccbd076877954b
-dashboard link: https://syzkaller.appspot.com/bug?extid=8921d5debffa05b33b27
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e0c042580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16ce82f0580000
+Fix that by using a "dummy" gfs2 inode as ->host in those address
+spaces.  When coming from a folio, folio->mapping->host->i_sb will then
+be a gfs2 super block and the SB_I_CGROUPWB flag will not be set in
+sb->s_iflags.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/cb2134de7be8/disk-5c5a10f0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/fe8a36605e0c/vmlinux-5c5a10f0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/12df22603d55/bzImage-5c5a10f0.xz
-mounted in repro #1: https://storage.googleapis.com/syzbot-assets/9e49622389fe/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=14ce82f0580000)
-mounted in repro #2: https://storage.googleapis.com/syzbot-assets/c35702228966/mount_1.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=12e0c042580000)
+Based on a previous version from Bob Peterson from several years ago.
+Thanks to Tetsuo Handa, Jan Kara, and Rafael Aquini for helping figure
+this out.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8921d5debffa05b33b27@syzkaller.appspotmail.com
-
-R10: 0000000000200001 R11: 0000000000000246 R12: 0000200000000400
-R13: 00007ffd8687be00 R14: 00000000000125bb R15: 0000200000000180
- </TASK>
-gfs2: fsid=norecovery.s: Error checking journal for spectator mount.
-==================================================================
-BUG: KASAN: slab-use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-BUG: KASAN: slab-use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: slab-use-after-free in mapping_unevictable include/linux/pagemap.h:270 [inline]
-BUG: KASAN: slab-use-after-free in folio_evictable mm/internal.h:499 [inline]
-BUG: KASAN: slab-use-after-free in lru_add+0x25f/0xd80 mm/swap.c:136
-Read of size 8 at addr ffff88807e517898 by task syz-executor240/5932
-
-CPU: 0 UID: 0 PID: 5932 Comm: syz-executor240 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x240 mm/kasan/report.c:482
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:189
- instrument_atomic_read include/linux/instrumented.h:68 [inline]
- _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
- mapping_unevictable include/linux/pagemap.h:270 [inline]
- folio_evictable mm/internal.h:499 [inline]
- lru_add+0x25f/0xd80 mm/swap.c:136
- folio_batch_move_lru+0x21b/0x3a0 mm/swap.c:168
- lru_add_drain_cpu+0x119/0x880 mm/swap.c:647
- lru_add_drain+0x122/0x3e0 mm/swap.c:735
- __folio_batch_release+0x48/0x90 mm/swap.c:1054
- folio_batch_release include/linux/pagevec.h:101 [inline]
- shmem_undo_range+0x49e/0x14b0 mm/shmem.c:1157
- shmem_truncate_range mm/shmem.c:1269 [inline]
- shmem_evict_inode+0x272/0xa70 mm/shmem.c:1397
- evict+0x504/0x9c0 fs/inode.c:810
- __dentry_kill+0x209/0x660 fs/dcache.c:669
- dput+0x19f/0x2b0 fs/dcache.c:911
- __fput+0x68e/0xa70 fs/file_table.c:476
- task_work_run+0x1d4/0x260 kernel/task_work.c:227
- ptrace_notify+0x281/0x2c0 kernel/signal.c:2520
- ptrace_report_syscall include/linux/ptrace.h:415 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
- syscall_exit_work+0xc6/0x1d0 kernel/entry/syscall-common.c:111
- syscall_exit_to_user_mode_work include/linux/entry-common.h:173 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x2ad/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f575cc3f840
-Code: ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 80 3d 41 d8 09 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-RSP: 002b:00007ffd8687bd78 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-RAX: 0000000000000000 RBX: 0000000000000005 RCX: 00007f575cc3f840
-RDX: 0000000000000000 RSI: 0000000000004c01 RDI: 0000000000000003
-RBP: 0000000000000003 R08: 00007ffd8687be00 R09: 00007ffd8687be00
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000200000000400
-R13: 00007ffd8687be00 R14: 00000000000125bb R15: 0000200000000180
- </TASK>
-
-Allocated by task 5932:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- unpoison_slab_object mm/kasan/common.c:330 [inline]
- __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:356
- kasan_slab_alloc include/linux/kasan.h:250 [inline]
- slab_post_alloc_hook mm/slub.c:4180 [inline]
- slab_alloc_node mm/slub.c:4229 [inline]
- kmem_cache_alloc_noprof+0x1c1/0x3c0 mm/slub.c:4236
- gfs2_glock_get+0x263/0xec0 fs/gfs2/glock.c:1182
- gfs2_inode_lookup+0x215/0xb10 fs/gfs2/inode.c:135
- gfs2_dir_search+0x168/0x220 fs/gfs2/dir.c:1665
- gfs2_lookupi+0x3d9/0x5a0 fs/gfs2/inode.c:340
- gfs2_jindex_hold fs/gfs2/ops_fstype.c:574 [inline]
- init_journal+0x54a/0x2260 fs/gfs2/ops_fstype.c:716
- init_inodes+0xdb/0x320 fs/gfs2/ops_fstype.c:851
- gfs2_fill_super+0x1923/0x20d0 fs/gfs2/ops_fstype.c:1253
- get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
- gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1335
- vfs_get_tree+0x92/0x2b0 fs/super.c:1815
- do_new_mount+0x2a2/0x9e0 fs/namespace.c:3805
- do_mount fs/namespace.c:4133 [inline]
- __do_sys_mount fs/namespace.c:4344 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4321
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 0:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2417 [inline]
- slab_free mm/slub.c:4680 [inline]
- kmem_cache_free+0x18f/0x400 mm/slub.c:4782
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-
-Last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
- __call_rcu_common kernel/rcu/tree.c:3123 [inline]
- call_rcu+0x157/0x9c0 kernel/rcu/tree.c:3243
- __gfs2_glock_free+0xb44/0xc90 fs/gfs2/glock.c:172
- gfs2_glock_free+0x3c/0xa0 fs/gfs2/glock.c:178
- gfs2_glock_put_eventually fs/gfs2/super.c:1183 [inline]
- gfs2_evict_inode+0xae7/0x1000 fs/gfs2/super.c:1458
- evict+0x504/0x9c0 fs/inode.c:810
- gfs2_jindex_free+0x39c/0x440 fs/gfs2/super.c:79
- init_journal+0x8f1/0x2260 fs/gfs2/ops_fstype.c:833
- init_inodes+0xdb/0x320 fs/gfs2/ops_fstype.c:851
- gfs2_fill_super+0x1923/0x20d0 fs/gfs2/ops_fstype.c:1253
- get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
- gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1335
- vfs_get_tree+0x92/0x2b0 fs/super.c:1815
- do_new_mount+0x2a2/0x9e0 fs/namespace.c:3805
- do_mount fs/namespace.c:4133 [inline]
- __do_sys_mount fs/namespace.c:4344 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4321
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Second to last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
- insert_work+0x3d/0x330 kernel/workqueue.c:2184
- __queue_work+0xcd2/0xfb0 kernel/workqueue.c:2339
- queue_delayed_work_on+0x18b/0x280 kernel/workqueue.c:2559
- queue_delayed_work include/linux/workqueue.h:684 [inline]
- gfs2_glock_queue_work fs/gfs2/glock.c:250 [inline]
- do_xmote+0xce0/0x1260 fs/gfs2/glock.c:838
- glock_work_func+0x2a8/0x580 fs/gfs2/glock.c:1095
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-The buggy address belongs to the object at ffff88807e5174d0
- which belongs to the cache gfs2_glock(aspace) of size 1224
-The buggy address is located 968 bytes inside of
- freed 1224-byte region [ffff88807e5174d0, ffff88807e517998)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x7e514
-head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff888140b3b500 dead000000000122 0000000000000000
-raw: 0000000000000000 00000000800c000c 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff888140b3b500 dead000000000122 0000000000000000
-head: 0000000000000000 00000000800c000c 00000000f5000000 0000000000000000
-head: 00fff00000000002 ffffea0001f94501 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5927, tgid 5927 (syz-executor240), ts 116383259321, free_ts 115796234787
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
- prep_new_page mm/page_alloc.c:1859 [inline]
- get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
- __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5148
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- alloc_slab_page mm/slub.c:2487 [inline]
- allocate_slab+0x8a/0x370 mm/slub.c:2655
- new_slab mm/slub.c:2709 [inline]
- ___slab_alloc+0xbeb/0x1410 mm/slub.c:3891
- __slab_alloc mm/slub.c:3981 [inline]
- __slab_alloc_node mm/slub.c:4056 [inline]
- slab_alloc_node mm/slub.c:4217 [inline]
- kmem_cache_alloc_noprof+0x283/0x3c0 mm/slub.c:4236
- gfs2_glock_get+0x263/0xec0 fs/gfs2/glock.c:1182
- gfs2_inode_lookup+0x215/0xb10 fs/gfs2/inode.c:135
- gfs2_dir_search+0x168/0x220 fs/gfs2/dir.c:1665
- gfs2_lookupi+0x3d9/0x5a0 fs/gfs2/inode.c:340
- gfs2_lookup_meta+0xa7/0x170 fs/gfs2/inode.c:280
- init_statfs fs/gfs2/ops_fstype.c:617 [inline]
- init_journal+0x10cd/0x2260 fs/gfs2/ops_fstype.c:783
- init_inodes+0xdb/0x320 fs/gfs2/ops_fstype.c:851
- gfs2_fill_super+0x1923/0x20d0 fs/gfs2/ops_fstype.c:1253
- get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1692
-page last free pid 5868 tgid 5868 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1395 [inline]
- __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2895
- __slab_free+0x303/0x3c0 mm/slub.c:4591
- qlink_free mm/kasan/quarantine.c:163 [inline]
- qlist_free_all+0x97/0x140 mm/kasan/quarantine.c:179
- kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
- __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:340
- kasan_slab_alloc include/linux/kasan.h:250 [inline]
- slab_post_alloc_hook mm/slub.c:4180 [inline]
- slab_alloc_node mm/slub.c:4229 [inline]
- kmem_cache_alloc_noprof+0x1c1/0x3c0 mm/slub.c:4236
- getname_flags+0xb8/0x540 fs/namei.c:146
- getname include/linux/fs.h:2918 [inline]
- do_sys_openat2+0xbc/0x1c0 fs/open.c:1429
- do_sys_open fs/open.c:1450 [inline]
- __do_sys_openat fs/open.c:1466 [inline]
- __se_sys_openat fs/open.c:1461 [inline]
- __x64_sys_openat+0x138/0x170 fs/open.c:1461
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Memory state around the buggy address:
- ffff88807e517780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88807e517800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff88807e517880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                            ^
- ffff88807e517900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88807e517980: fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/glock.c      |  3 +--
+ fs/gfs2/glops.c      |  4 ++--
+ fs/gfs2/incore.h     |  9 ++++++++-
+ fs/gfs2/meta_io.c    |  2 +-
+ fs/gfs2/meta_io.h    |  4 +---
+ fs/gfs2/ops_fstype.c | 28 ++++++++++++++++------------
+ fs/gfs2/super.c      |  2 +-
+ 7 files changed, 30 insertions(+), 22 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 4a280be229a6..7ab1b4dac0bb 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1146,7 +1146,6 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
+ 		   const struct gfs2_glock_operations *glops, int create,
+ 		   struct gfs2_glock **glp)
+ {
+-	struct super_block *s = sdp->sd_vfs;
+ 	struct lm_lockname name = { .ln_number = number,
+ 				    .ln_type = glops->go_type,
+ 				    .ln_sbd = sdp };
+@@ -1210,7 +1209,7 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
+ 	mapping = gfs2_glock2aspace(gl);
+ 	if (mapping) {
+                 mapping->a_ops = &gfs2_meta_aops;
+-		mapping->host = s->s_bdev->bd_inode;
++		mapping->host = sdp->sd_inode;
+ 		mapping->flags = 0;
+ 		mapping_set_gfp_mask(mapping, GFP_NOFS);
+ 		mapping->private_data = NULL;
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index f41ca89d216b..5877afdb11c5 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -165,7 +165,7 @@ void gfs2_ail_flush(struct gfs2_glock *gl, bool fsync)
+ static int gfs2_rgrp_metasync(struct gfs2_glock *gl)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-	struct address_space *metamapping = &sdp->sd_aspace;
++	struct address_space *metamapping = gfs2_aspace(sdp);
+ 	struct gfs2_rgrpd *rgd = gfs2_glock2rgrp(gl);
+ 	const unsigned bsize = sdp->sd_sb.sb_bsize;
+ 	loff_t start = (rgd->rd_addr * bsize) & PAGE_MASK;
+@@ -222,7 +222,7 @@ static int rgrp_go_sync(struct gfs2_glock *gl)
+ static void rgrp_go_inval(struct gfs2_glock *gl, int flags)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+-	struct address_space *mapping = &sdp->sd_aspace;
++	struct address_space *mapping = gfs2_aspace(sdp);
+ 	struct gfs2_rgrpd *rgd = gfs2_glock2rgrp(gl);
+ 	const unsigned bsize = sdp->sd_sb.sb_bsize;
+ 	loff_t start, end;
+diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
+index a8c95c5293c6..52712ec33d91 100644
+--- a/fs/gfs2/incore.h
++++ b/fs/gfs2/incore.h
+@@ -795,7 +795,7 @@ struct gfs2_sbd {
+ 
+ 	/* Log stuff */
+ 
+-	struct address_space sd_aspace;
++	struct inode *sd_inode;
+ 
+ 	spinlock_t sd_log_lock;
+ 
+@@ -850,6 +850,13 @@ struct gfs2_sbd {
+ 	unsigned long sd_glock_dqs_held;
+ };
+ 
++#define GFS2_BAD_INO 1
++
++static inline struct address_space *gfs2_aspace(struct gfs2_sbd *sdp)
++{
++	return sdp->sd_inode->i_mapping;
++}
++
+ static inline void gfs2_glstats_inc(struct gfs2_glock *gl, int which)
+ {
+ 	gl->gl_stats.stats[which]++;
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 924361fa510b..fca8ea2f4504 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -122,7 +122,7 @@ struct buffer_head *gfs2_getbuf(struct gfs2_glock *gl, u64 blkno, int create)
+ 	unsigned int bufnum;
+ 
+ 	if (mapping == NULL)
+-		mapping = &sdp->sd_aspace;
++		mapping = gfs2_aspace(sdp);
+ 
+ 	shift = PAGE_SHIFT - sdp->sd_sb.sb_bsize_shift;
+ 	index = blkno >> shift;             /* convert block to page */
+diff --git a/fs/gfs2/meta_io.h b/fs/gfs2/meta_io.h
+index d0a58cdd433a..a4c3865137d4 100644
+--- a/fs/gfs2/meta_io.h
++++ b/fs/gfs2/meta_io.h
+@@ -44,9 +44,7 @@ static inline struct gfs2_sbd *gfs2_mapping2sbd(struct address_space *mapping)
+ 		struct gfs2_glock_aspace *gla =
+ 			container_of(mapping, struct gfs2_glock_aspace, mapping);
+ 		return gla->glock.gl_name.ln_sbd;
+-	} else if (mapping->a_ops == &gfs2_rgrp_aops)
+-		return container_of(mapping, struct gfs2_sbd, sd_aspace);
+-	else
++    } else
+ 		return inode->i_sb->s_fs_info;
+ }
+ 
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index 33ca04733e93..9933c7328dcb 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -72,7 +72,6 @@ void free_sbd(struct gfs2_sbd *sdp)
+ static struct gfs2_sbd *init_sbd(struct super_block *sb)
+ {
+ 	struct gfs2_sbd *sdp;
+-	struct address_space *mapping;
+ 
+ 	sdp = kzalloc(sizeof(struct gfs2_sbd), GFP_KERNEL);
+ 	if (!sdp)
+@@ -110,16 +109,6 @@ static struct gfs2_sbd *init_sbd(struct super_block *sb)
+ 
+ 	INIT_LIST_HEAD(&sdp->sd_sc_inodes_list);
+ 
+-	mapping = &sdp->sd_aspace;
+-
+-	address_space_init_once(mapping);
+-	mapping->a_ops = &gfs2_rgrp_aops;
+-	mapping->host = sb->s_bdev->bd_inode;
+-	mapping->flags = 0;
+-	mapping_set_gfp_mask(mapping, GFP_NOFS);
+-	mapping->private_data = NULL;
+-	mapping->writeback_index = 0;
+-
+ 	spin_lock_init(&sdp->sd_log_lock);
+ 	atomic_set(&sdp->sd_log_pinned, 0);
+ 	INIT_LIST_HEAD(&sdp->sd_log_revokes);
+@@ -1159,6 +1148,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	int silent = fc->sb_flags & SB_SILENT;
+ 	struct gfs2_sbd *sdp;
+ 	struct gfs2_holder mount_gh;
++	struct address_space *mapping;
+ 	int error;
+ 
+ 	sdp = init_sbd(sb);
+@@ -1206,9 +1196,21 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		sdp->sd_tune.gt_statfs_quantum = 30;
+ 	}
+ 
++	/* Set up an address space for metadata writes */
++	sdp->sd_inode = new_inode(sb);
++	error = -ENOMEM;
++	if (!sdp->sd_inode)
++		goto fail_free;
++	sdp->sd_inode->i_ino = GFS2_BAD_INO;
++	sdp->sd_inode->i_size = OFFSET_MAX;
++
++	mapping = gfs2_aspace(sdp);
++	mapping->a_ops = &gfs2_rgrp_aops;
++	mapping_set_gfp_mask(mapping, GFP_NOFS);
++
+ 	error = init_names(sdp, silent);
+ 	if (error)
+-		goto fail_free;
++		goto fail_iput;
+ 
+ 	snprintf(sdp->sd_fsname, sizeof(sdp->sd_fsname), "%s", sdp->sd_table_name);
+ 
+@@ -1327,6 +1329,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	gfs2_sys_fs_del(sdp);
+ fail_delete_wq:
+ 	destroy_workqueue(sdp->sd_delete_wq);
++fail_iput:
++	iput(sdp->sd_inode);
+ fail_free:
+ 	free_sbd(sdp);
+ 	sb->s_fs_info = NULL;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 02d93da21b2b..47e0b5c96d1c 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -642,7 +642,7 @@ static void gfs2_put_super(struct super_block *sb)
+ 	gfs2_jindex_free(sdp);
+ 	/*  Take apart glock structures and buffer lists  */
+ 	gfs2_gl_hash_clear(sdp);
+-	truncate_inode_pages_final(&sdp->sd_aspace);
++	iput(sdp->sd_inode);
+ 	gfs2_delete_debugfs_file(sdp);
+ 	/*  Unmount the locking protocol  */
+ 	gfs2_lm_unmount(sdp);
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
