@@ -1,247 +1,175 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5DA18CC13
-	for <gfs2@lists.linux.dev>; Mon, 11 Aug 2025 03:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC642BEFEF;
+	Tue, 12 Aug 2025 05:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754882018; cv=none; b=GCW6Ciu3gnEisBuLVPdryS2eKzTY5dcAr004q8wugxLapIizZsCrEN6q8NrgE67a3A9Fs9zXERhM8/yXOb1C9vXog07+2FdeXBTIpuqeXwpncM+UZHE7vGrG94vkYkZO23i93aQNq3NgzWDHOTv+ektS0oPIFYp5cCyDIJ82vX8=
+	t=1754977176; cv=none; b=c3Zh/6nujrNAeIcrL5CAu3NMd1Me4lmJeBng6GuPAwtWH2xn+fgYE6/QiwM87A629CJlAwR0q83mW6OmUiwDc636GaolpihWLnXZ9eXqqHTZwc02HaRupX9bX5MviE1bt/1wNK6UgwQiIk9GxME/3TUo9CAo30dCH1k3XNqcNII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754882018; c=relaxed/simple;
-	bh=1ldSvqLpow780r0Wpa5mYBvA0pVNW4ZUOtDrrBaahF8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=joKEuqFhC/zbcXbLJeC+xF6k8skFvsvaKYi7RLHKPZwDflsVetAueTpSQUC4lwQ8pQM/kbmUkw8nd/xLBTLOOb3CvW7mwVI4mk3p4zgESVNzMX+ViE03p2umgcWOpefDHE/NXrTZh4iF+aJdyQh2mGpexGy+W0kh2BXF0BAnsl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-881855cd566so420983839f.2
-        for <gfs2@lists.linux.dev>; Sun, 10 Aug 2025 20:13:36 -0700 (PDT)
+	s=arc-20240116; t=1754977176; c=relaxed/simple;
+	bh=/wJPXLKXi/hjlkjVzhdSQNzsofLYxwRHhB2lewtlAsw=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Mw4FDABlkEO1n+NrzZvOHQf45dLgKHyZQMAzXhIjLzDZRT+RgyhfIo5Fh4SHzJaTmUNQxNQhh91YR9gTbbrGvnvRvAeAY1HnDLmoPcjXz7Tu/lI8obcQSLkBDsjA2Zr4k0ao8N28rsI2ApiBMFyBs7FmCFk/kPBFTnUtp/S/0M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32130f6cfbbso854657a91.0;
+        Mon, 11 Aug 2025 22:39:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754882015; x=1755486815;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/BEJ6HI0E3GfV7j1qKxNTbLrJfQPDuSQLOAPXJ0Gx9s=;
-        b=EkH5EKmHBPhL0bzLhdw5ENWnZyd6+cPEeru6NuI6V1AD4BNT8Z+yKCHlba/NtJ2RIG
-         N+E3F1i9xdOCYyf+yT7DgAoI4c57QNo6HXsXVqQ6E3yRx+eequId4uFEreHmJgJZc29c
-         wgF/11xe8N/BErT9aCCCqMrb5qLyMMiD+fnhZU/DTxE0SoOwKFw5vS1WF6En2+sOQDOY
-         h6jyHw9DPtWsFeBdeaAa/mqau3AFrTw1cF/nFJBL4XHcr/d1J6d+Q99RpbcTRpcT0uhT
-         6lYdSzyaY3KxmiA++/PWZxcU71kf7z5oJdkWcZyvOnjjhzr8LSVGgikvfhexYjLBxBS2
-         zJSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWnwUUH0rZ2X2nyps4fZG62ltAs2Geft2VpG5NeKL81nEtwh9fesronnCmxWeyHOCOW5Nh@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz5spXfPU8pvZ6+mjVyJ2LvO1wj0JGlH6E5mMk1PaEWjovZqweE
-	Juq8k3IFKM++98RXksvbUXBz620NPoGQZrD3D3aIrQlppAomRJhFButX1PoO3+OO1kL3zyozylW
-	+jUGz7ccMVqGnDbCdjc0RtXFV4ELwUxaiRx5u/kBlj5u9yEE69+JG5lemkBI=
-X-Google-Smtp-Source: AGHT+IFXt+FHNOJszidktyYeWqw9KTMULIreDIvwaBR2mOR4+bumOfCMP5rRfLoJDWJtm6HOnBsFMwltPgxLJ/i2Iul588AejbLj
+        d=1e100.net; s=20230601; t=1754977174; x=1755581974;
+        h=content-transfer-encoding:subject:cc:to:organization:from
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V+nYesaofewjTOWrYiEbyiHj4letDKw4MCbW6PRIKeA=;
+        b=AWDSAyXoUrwNPGPAiY+eYWOi4JVTUtvSWSqmYP5rj31xGdMesQMauqi/ygp131VP2O
+         XBwYLnHibrxGqxW9iSjqQZQJPVHeR6krxYhJQXxalMAx5GokubaZ25okP11C9k5J2AoE
+         YeDdXkoycHSAdmWrJGmqb6rFsrE/WgwxMzEsw71EIcM/zWHYJC/BqdNGGfs5b++NQG9Z
+         ozJAWGVLdWo1D9xyeFPkepCXiDokHOLqjvdMDqe8nF0Y6bKqW8+ObThQg4glbLg/a2TA
+         +3+fL0j4mFLS8FKhI5KFXwfgXhMoEgw2ItWRVoo0FyhAPXk4WDgaLmKKTU5wg0hAxq8k
+         hAlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWR/pqGc4x9dcJQoFGWAgAyTF5c3nfmmvIzO08RFZ8JHnj2/koub/cjIByLetKNgT7EIcfo@lists.linux.dev, AJvYcCXout2GJCtfKppU4XCTWvWH1/oiRT/fwSlx1EsSWxQBYPkE+620oKF883XB65reXywVzfNufGI2XzQhbPclJ6A=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz2YdybFbnJ0YFPq8c3dmnCw8n/ubqHUNuPyetQqwyjOreGkAdc
+	k4r2xzOhmstcCqcY5kDBTT3/Hqs65r00WWYy6Gn5OAbJiw0ZEPNkq2El
+X-Gm-Gg: ASbGncth2RHwiClwKM5ZxYJ7K9ODYCKpPO/I/hNC2JsW0tJBBg1YMPpQ2/1XlDECcIG
+	sgedORqzFD20q/w6jXfNXRh+lyPIQ4//ToMabdCPw+ntJLaw2I5RGr+ZNa6SMHLXQYuPadY7i89
+	eOB0ah7So57RbzqXzMXhbjZ9Vx6MZzxQJE2FWOBPKDFCDY56o6wqY7+6rLqIDUgEIw/UC/IsExa
+	NUHJFaXljZxK9czFk/Lm+3oz3Wikmv2LiHAawDDw8Vf0Q/4ehMK9H5yHk1cGr5VwUkbcQ4OIgf8
+	QahRquLmk5QjsjVdbOjlp7vG60geUfAoZ+lyZp7P34ALI1Oy83PCiet/9rgXjRzgOZ0nPsLuMJG
+	3Oz1rD8orrNBVOnj+IiUFgc1Tbmni2ykO
+X-Google-Smtp-Source: AGHT+IHWl9tLgoI5Lw90OM/vTjnQgJaEThUvIsnVfUSsqMko19oF+Bh6EyLcsgm84GWQWAA/nOHT1w==
+X-Received: by 2002:a05:6a00:2283:b0:72a:a7a4:99ca with SMTP id d2e1a72fcca58-76e16abcba6mr204829b3a.2.1754977173611;
+        Mon, 11 Aug 2025 22:39:33 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c6f0c862fsm6028283b3a.115.2025.08.11.22.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 22:39:33 -0700 (PDT)
+Message-ID: <7a68c944-0199-468e-a0f2-ae2a9f21225b@kzalloc.com>
+Date: Tue, 12 Aug 2025 14:39:29 +0900
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:628a:b0:87c:2540:2338 with SMTP id
- ca18e2360f4ac-883f11af054mr1985074739f.2.1754882015560; Sun, 10 Aug 2025
- 20:13:35 -0700 (PDT)
-Date: Sun, 10 Aug 2025 20:13:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68995fdf.050a0220.7f033.00e8.GAE@google.com>
-Subject: [syzbot] [gfs2?] INFO: task hung in block_invalidate_folio (2)
-From: syzbot <syzbot+85194ada5aabdfff265b@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Yunseong Kim <ysk@kzalloc.com>
+Organization: kzalloc
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>, gfs2@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ syzkaller@googlegroups.com, Austin Kim <austindh.kim@gmail.com>
+Subject: [BUG] gfs2: sleeping lock in gfs2_quota_init() with preempt disabled
+ on PREEMPT_RT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+While testing with PREEMPT_RT enabled, I encountered a potential issue in
+gfs2_quota_init() where preemption is disabled via bit_spin_lock(), but a
+subsequent call eventually reaches a sleepable lock.
 
-syzbot found the following issue on:
+Below is the simplified call flow:
+[PREEMPT_RT]
 
-HEAD commit:    479058002c32 Merge tag 'ata-6.17-rc1-fixes' of git://git.k..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=16b7d6a2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=75e522434dc68cb9
-dashboard link: https://syzkaller.appspot.com/bug?extid=85194ada5aabdfff265b
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14641042580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15eda434580000
+gfs2_quota_init()
+   |
+   v
+  spin_lock_bucket()
+   |-- bit_spin_lock()
+   |     |
+   |     +--> preempt_disable()   [Preemption disabled]
+   v
+  gfs2_qd_search_bucket()
+       |
+       v
+     lockref_get_not_dead()
+          |
+          v
+        spin_lock(&lockref->lock)   [Sleepable: sleeping in preemption disabled]
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/1650700d2cd2/disk-47905800.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/83bf9b805048/vmlinux-47905800.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/9cae2a559c08/bzImage-47905800.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/6d12a3c13c7b/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=169362f0580000)
+[NON-PREEMPT_RT]
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+85194ada5aabdfff265b@syzkaller.appspotmail.com
+gfs2_quota_init()
+   |
+   v
+  spin_lock_bucket()
+   |-- bit_spin_lock()
+   |     |
+   |     +--> preempt_disable()   [Preemption disabled]
+   v
+  gfs2_qd_search_bucket()
+       |
+       v
+     lockref_get_not_dead()
+          |
+          v
+        spin_lock(&lockref->lock)   [Non-sleeping spinlock]
 
-INFO: task kworker/1:1H:95 blocked for more than 143 seconds.
-      Not tainted 6.16.0-syzkaller-11852-g479058002c32 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:1H    state:D stack:27176 pid:95    tgid:95    ppid:2      task_flags:0x4208060 flags:0x00004000
-Workqueue: gfs2-glock/syz:syz glock_work_func
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
- __schedule_loop kernel/sched/core.c:7043 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:7058
- io_schedule+0x80/0xd0 kernel/sched/core.c:7903
- bit_wait_io+0x11/0xd0 kernel/sched/wait_bit.c:250
- __wait_on_bit_lock+0xec/0x4f0 kernel/sched/wait_bit.c:93
- out_of_line_wait_on_bit_lock+0x123/0x170 kernel/sched/wait_bit.c:120
- wait_on_bit_lock_io include/linux/wait_bit.h:221 [inline]
- __lock_buffer fs/buffer.c:71 [inline]
- lock_buffer include/linux/buffer_head.h:432 [inline]
- discard_buffer fs/buffer.c:1606 [inline]
- block_invalidate_folio+0x376/0x730 fs/buffer.c:1663
- folio_invalidate mm/truncate.c:140 [inline]
- truncate_cleanup_folio+0x2d8/0x430 mm/truncate.c:160
- truncate_inode_pages_range+0x233/0xda0 mm/truncate.c:379
- do_xmote+0x6e7/0x1260 fs/gfs2/glock.c:757
- glock_work_func+0x2a8/0x580 fs/gfs2/glock.c:1095
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: task syz-executor410:5883 blocked for more than 143 seconds.
-      Not tainted 6.16.0-syzkaller-11852-g479058002c32 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor410 state:D stack:25128 pid:5883  tgid:5883  ppid:5880   task_flags:0x400100 flags:0x00004002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
- __schedule_loop kernel/sched/core.c:7043 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:7058
- schedule_timeout+0x9a/0x270 kernel/time/sleep_timeout.c:75
- do_wait_for_common kernel/sched/completion.c:100 [inline]
- __wait_for_common kernel/sched/completion.c:121 [inline]
- wait_for_common kernel/sched/completion.c:132 [inline]
- wait_for_completion+0x2bf/0x5d0 kernel/sched/completion.c:153
- __flush_work+0x9b9/0xbc0 kernel/workqueue.c:4244
- flush_work kernel/workqueue.c:4265 [inline]
- flush_delayed_work+0x13e/0x190 kernel/workqueue.c:4287
- gfs2_clear_rgrpd+0xd7/0x690 fs/gfs2/rgrp.c:731
- gfs2_put_super+0x8a7/0x950 fs/gfs2/super.c:635
- generic_shutdown_super+0x135/0x2c0 fs/super.c:643
- kill_block_super+0x44/0x90 fs/super.c:1766
- deactivate_locked_super+0xbc/0x130 fs/super.c:474
- cleanup_mnt+0x425/0x4c0 fs/namespace.c:1378
- task_work_run+0x1d4/0x260 kernel/task_work.c:227
- ptrace_notify+0x281/0x2c0 kernel/signal.c:2520
- ptrace_report_syscall include/linux/ptrace.h:415 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
- syscall_exit_work+0xc6/0x1d0 kernel/entry/syscall-common.c:111
- syscall_exit_to_user_mode_work include/linux/entry-common.h:173 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x2ad/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc361d61587
-RSP: 002b:00007ffef83329e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 0000555584179338 RCX: 00007fc361d61587
-RDX: 00000000000108d0 RSI: 0000000000000009 RDI: 00007ffef8333b90
-RBP: 0000000000000064 R08: 0000555584182773 R09: 0000000000000000
-R10: 0000000000000100 R11: 0000000000000246 R12: 00007ffef8333b90
-R13: 0000555584182700 R14: 431bde82d7b634db R15: 00007ffef8334c20
- </TASK>
-
-Showing all locks held in the system:
-1 lock held by khungtaskd/31:
- #0: ffffffff8e139ee0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #0: ffffffff8e139ee0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
- #0: ffffffff8e139ee0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6775
-5 locks held by kworker/u8:2/36:
-2 locks held by kworker/1:1H/95:
- #0: ffff88807c887548 ((wq_completion)gfs2-glock/syz:syz){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3211 [inline]
- #0: ffff88807c887548 ((wq_completion)gfs2-glock/syz:syz){+.+.}-{0:0}, at: process_scheduled_works+0x9b4/0x17b0 kernel/workqueue.c:3319
- #1: ffffc900025dfbc0 ((work_completion)(&(&gl->gl_work)->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3212 [inline]
- #1: ffffc900025dfbc0 ((work_completion)(&(&gl->gl_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x9ef/0x17b0 kernel/workqueue.c:3319
-2 locks held by getty/5617:
- #0: ffff8880336520a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc900036c32f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x43e/0x1400 drivers/tty/n_tty.c:2222
-1 lock held by syz-executor410/5883:
- #0: ffff88807c9340e0 (&type->s_umount_key#42){+.+.}-{4:4}, at: __super_lock fs/super.c:57 [inline]
- #0: ffff88807c9340e0 (&type->s_umount_key#42){+.+.}-{4:4}, at: __super_lock_excl fs/super.c:72 [inline]
- #0: ffff88807c9340e0 (&type->s_umount_key#42){+.+.}-{4:4}, at: deactivate_super+0xa9/0xe0 fs/super.c:506
-
-=============================================
-
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted 6.16.0-syzkaller-11852-g479058002c32 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x39e/0x3d0 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x17a/0x300 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:160 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:328 [inline]
- watchdog+0xf93/0xfe0 kernel/hung_task.c:491
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 36 Comm: kworker/u8:2 Not tainted 6.16.0-syzkaller-11852-g479058002c32 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: events_unbound toggle_allocation_gate
-RIP: 0010:mark_held_locks kernel/locking/lockdep.c:4313 [inline]
-RIP: 0010:__trace_hardirqs_on_caller kernel/locking/lockdep.c:4351 [inline]
-RIP: 0010:lockdep_hardirqs_on_prepare+0x155/0x2a0 kernel/locking/lockdep.c:4410
-Code: 75 bc eb 79 48 c7 c7 d0 ac 00 8e 4c 89 fe e8 d2 4f 61 03 eb c2 85 c0 7e 64 83 bb d0 0a 00 00 00 74 5b 45 31 ff eb 13 49 ff c7 <48> 63 83 e8 0a 00 00 49 83 c6 28 49 39 c7 7d 43 49 83 ff 31 73 2c
-RSP: 0018:ffffc90000ac7680 EFLAGS: 00000002
-RAX: 0000000000000001 RBX: ffff8881416f9e00 RCX: ffffffff93492018
-RDX: 0000000000000006 RSI: ffff8881416fa8f0 RDI: ffff8881416f9e00
-RBP: ffffc90000ac7810 R08: ffffffff8fa34137 R09: 1ffffffff1f46826
-R10: dffffc0000000000 R11: fffffbfff1f46827 R12: ffff8881416faa08
-R13: ffff88801a46e558 R14: ffff8881416fa8f0 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff888125d24000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055feacc3c660 CR3: 000000000df36000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- trace_hardirqs_on+0x28/0x40 kernel/trace/trace_preemptirq.c:78
- __text_poke+0x748/0xa10 arch/x86/kernel/alternative.c:2527
- text_poke arch/x86/kernel/alternative.c:2552 [inline]
- smp_text_poke_batch_finish+0x90a/0x1130 arch/x86/kernel/alternative.c:2885
- arch_jump_label_transform_apply+0x1c/0x30 arch/x86/kernel/jump_label.c:146
- static_key_enable_cpuslocked+0x128/0x250 kernel/jump_label.c:210
- static_key_enable+0x1a/0x20 kernel/jump_label.c:223
- toggle_allocation_gate+0xad/0x240 mm/kfence/core.c:850
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 1.546 msecs
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 15311, name: syz.6.947
+preempt_count: 1, expected: 0
+RCU nest depth: 1, expected: 1
+Preemption disabled at:
+[<ffff800081fa916c>] bit_spin_lock include/linux/bit_spinlock.h:25 [inline]
+[<ffff800081fa916c>] hlist_bl_lock include/linux/list_bl.h:148 [inline]
+[<ffff800081fa916c>] spin_lock_bucket+0x60/0x190 fs/gfs2/quota.c:98
+CPU: 2 UID: 0 PID: 15311 Comm: syz.6.947 Not tainted 6.16.0-rc1-rt1-dirty #12 PREEMPT_RT 
+Hardware name: QEMU KVM Virtual Machine, BIOS 2025.02-8 05/13/2025
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0x148/0x1d8 lib/dump_stack.c:120
+ dump_stack+0x1c/0x3c lib/dump_stack.c:129
+ __might_resched+0x2e4/0x52c kernel/sched/core.c:8800
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xa8/0x1bc kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:44 [inline]
+ lockref_get_not_dead+0x30/0xd0 lib/lockref.c:155
+ gfs2_qd_search_bucket fs/gfs2/quota.c:269 [inline]
+ gfs2_quota_init+0x778/0x1114 fs/gfs2/quota.c:1460
+ gfs2_make_fs_rw+0x144/0x26c fs/gfs2/super.c:149
+ gfs2_fill_super+0x1448/0x1a38 fs/gfs2/ops_fstype.c:1278
+ get_tree_bdev_flags+0x360/0x414 fs/super.c:1679
+ get_tree_bdev+0x2c/0x3c fs/super.c:1702
+ gfs2_get_tree+0x54/0x1b4 fs/gfs2/ops_fstype.c:1335
+ vfs_get_tree+0x90/0x28c fs/super.c:1802
+ do_new_mount+0x228/0x814 fs/namespace.c:3885
+ path_mount+0x574/0xd64 fs/namespace.c:4209
+ do_mount fs/namespace.c:4222 [inline]
+ __do_sys_mount fs/namespace.c:4433 [inline]
+ __se_sys_mount fs/namespace.c:4410 [inline]
+ __arm64_sys_mount+0x3e8/0x468 fs/namespace.c:4410
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x40/0x13c arch/arm64/kernel/entry-common.c:767
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
+ el0t_64_sync+0x1ac/0x1b0 arch/arm64/kernel/entry.S:600
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On non-RT kernels this is fine because spin_lock() is non-sleeping, but
+on PREEMPT_RT many spinlocks map to sleepable locks, which causes sleeping
+while preemption disabled.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+At the moment, two possible approaches come to mind:
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+1. Avoid using the bit-spinlock in this path entirely
+ - Rework the bucket protection so we do not call into code that may sleep
+   while preemption is disabled.
+ - no sleeping while preemption-disabled.
+ - May require reworking bucket protection/race re-check logic.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+2. Replace the inner lock with a non-sleeping primitive
+ - (e.g., use a raw_spinlock_t for lockref->lock) so it can be taken while
+   preemption is disabled.
+ - Since lockref does not currently support raw_spinlock_t, this would require
+   additional rework of the lockref structure.
+ - Minimal structural change; avoids sleeping in the problematic context.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+I can help test patches for this on both PREEMPT_RT and NON-RT kernels.
 
-If you want to undo deduplication, reply with:
-#syz undup
+
+Thanks,
+Yunseong Kim
