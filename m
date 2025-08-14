@@ -1,37 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCEF2EB5C3;
-	Tue, 12 Aug 2025 10:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4608F266B46
+	for <gfs2@lists.linux.dev>; Thu, 14 Aug 2025 07:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754995830; cv=none; b=AmKmZEQkYwcnagjPo7hehOFDqgPH2FtrYAnQWS6Y7gc0zHSFvXLXF/ZAx/jaqCj3VEs2NTDxxYHjgRkEs7rc8+85Yuacgr8k7UpwqTRmsLoYNIZXx+kG0wYnylF1Fo8tl53VJwCDMuqRXawGcU00HwjgNSMOxQimsOu8OAilep8=
+	t=1755157178; cv=none; b=ShoPX2lKiahq0a7po4f4Z4SSR5qm6ykwjD1wKgcQTp4Jkj/2E5tp3EUcdkPPjeK7a9bmiaklyiiU0ybGswlnNpiH0FlZDx94q7YZjH1a+5ujjMDIaQ6iAI13Bgtu3fuTccrhL6iAyWV6T7YUXLtfOomliZWlP+/b72xYWDlsoiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754995830; c=relaxed/simple;
-	bh=u9Nsd/HGEybF6jnWhLv2pKeQYGpCtZn/AueJ3h0v2vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UDjo2FkOy6qG6llxo5w+PjLJa6WwQSgscLaSfhnC0Lx6pLmsvIg8r+QEDtCvyrgaOvBM/ExK7uCWB9uXiNYKNSS0f+egj2DUEWHuaO8ynnsXh4OXuoSt1xreIz8nypkRmkffiK9NbG1WnS5xUfspX2P5YjOtOaEqrR0GEwZZspM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOIYbuTi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755157178; c=relaxed/simple;
+	bh=ALEyWB/YvSIOqNT/FqLWvuSL26cPS6ygVKdATykF3Po=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=a/6PJooSJngwm/sfOtLfMbdNObqGWJG3KKHgVF9YvJ2iCrCvkzn221N3tz1lPpfsT4eVCqDkfOtpQ0N9lLzlkz1S8TgBvbmUzDrD37b5yaeiu3le0wkQjQXMcE0zUZhulVQiaPJsjtfFGG92N3Xm+wdNNFS15BzXBzidMhjaDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nR1xhUJf; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOIYbuTi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D287C4CEF0;
-	Tue, 12 Aug 2025 10:50:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754995829;
-	bh=u9Nsd/HGEybF6jnWhLv2pKeQYGpCtZn/AueJ3h0v2vc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wOIYbuTicuNXav3fej090zi1elsZMFRPlVDhOS9xlB3x8SpVVZhj0iN8j2fwHu2zD
-	 vKwbIGkK4UhRCoMhk6OUpPh76By/G7W+JDm5O5ItAcR1uI/YG38ldgYTWMZLH4s1Ah
-	 JFgeInpfbmWYnMx8EygWz3yslC6QDad3mCIFCGB0=
-Date: Tue, 12 Aug 2025 12:50:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Cc: rpeterso@redhat.com, agruenba@redhat.com, gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6] gfs2: replace sd_aspace with sd_inode
-Message-ID: <2025081207-thermos-secret-ce3a@gregkh>
-References: <20250805194005.327445-1-sumanth.gavini.ref@yahoo.com>
- <20250805194005.327445-1-sumanth.gavini@yahoo.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nR1xhUJf"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b9e4106460so470767f8f.2
+        for <gfs2@lists.linux.dev>; Thu, 14 Aug 2025 00:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755157174; x=1755761974; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3j3o/uM6s00VZXsZJJ6rbfxvmzIgHukCm/updFmGtnU=;
+        b=nR1xhUJfMBvPSRjVdn7nkiD8hvX1nmVMcLe/+eRSQwZtGL9FiyClA/5/59NCyycb4n
+         BFuLMgjBMrq5cMZ+guUvJmG0pq1t7MSLOFLLIJqi/bGuhx/azdtMOEP1fD6/D168APFD
+         mcZl8KMlfILdXXU7i+IWrs5lMeraZuRHK751RJp5oeSwG57hHpO2Wj/gTouDHdIObz1U
+         QoRBJDnLlup8mnpqdEcaoGgsaifrFIH2gVN2NNqj/nfgxrlMyT7JZCxtT+gCavFwSCBV
+         E1YjjjKPDUt8q5Fb1Un8R8mLLIoiTA1u0t1bVL+D7dvTyXslVSiy1jWIn0OEpXAehhQl
+         GuMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755157174; x=1755761974;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3j3o/uM6s00VZXsZJJ6rbfxvmzIgHukCm/updFmGtnU=;
+        b=MWQeMh/HonIjA0GZgco5jH7fdLfigsG1/zZlwxgQ/IY+mb78tPP2qVKO3A8Tg1wQd/
+         xCfmhq8uFfQMFpyc9ZUFbRgon9kW41EioNTA6PCYOIb9daWcC9mI/mIQChwixk1M0A7w
+         EoXqG1hGF6jfZKP4K66V/wNsXSrSdHoyPVDKlzmLQkBfcN1y/Bh2eV6SBhH72bVLbZBw
+         YhxNWwOArXwkCM0NvKI/ngbZwk3gnmsClE84z92edcw7C5Vnqe2ae9WgRcGk466geh9e
+         dsr7+HmIuljSPYSVyZIRkxbH69DuyVmMR0cYdgHiDdJbthbNqi4xL30gKFzo6vu/Rin2
+         eKMA==
+X-Gm-Message-State: AOJu0Yy4VrqpWs0HzVOHG8U1WHTHci9T9TpKxTzDt52KBwG2Hsm9SauV
+	iae0QtGjI4IS5Y2xRNrmwi3+mVchs+aRsSUvcNyjbLvO/ZXYF4AVc0I49cKM1VLPxbYAT6tk7N+
+	dKJJm
+X-Gm-Gg: ASbGnctGrrUs18yoViTxWJpQA7PXkb/iqzbHX+2CSSti7lLMOu1BGrEjPsN/4WvIHTK
+	iNG3SoL6C70B5BaItQo/KP5f/F01VwyEzp/8n4zFnFU595nFdbU/ygSEUs/6/2DNhZhcLfYhugF
+	i5CamGbJoCQRWln8dFuvgjM9uQL2bPfdWZCaWOz60DisMnquq+OMGcrEy8WGOd+bgdNkQARwiVY
+	HELLX6KhblQ4M758aYzjrzMs9T1ksx5A05mrai6Uz6304jXcMoCSbnxM8WytWxxC0FICX+GNXhk
+	HfgTT56mHUjz32YsYBA7zYW2vtSCxK/b+irTnf/z5L94HJpRpZh2vCqKtZXhbXfdRqnofRcNCaF
+	M2aivNCW9h6Tq7QEuN3XMr/o/i3o=
+X-Google-Smtp-Source: AGHT+IE9saZjPrYP/p9QurYbQuy1T1+blYUUgAAzKXrXDPbeMdnK6KscxIidmyjE8F5upzBXwPqgkg==
+X-Received: by 2002:a5d:5f53:0:b0:3b9:1443:aba with SMTP id ffacd0b85a97d-3b9e4159f7fmr1657137f8f.9.1755157173953;
+        Thu, 14 Aug 2025 00:39:33 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b8fc28a830sm26152157f8f.16.2025.08.14.00.39.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 00:39:33 -0700 (PDT)
+Date: Thu, 14 Aug 2025 10:39:30 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: gfs2@lists.linux.dev
+Subject: [bug report] dlm: add new configfs entry release_recover for
+ lockspace members
+Message-ID: <aJ2Ssuh8xlsTutrA@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -40,36 +71,60 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250805194005.327445-1-sumanth.gavini@yahoo.com>
 
-On Tue, Aug 05, 2025 at 02:40:04PM -0500, Sumanth Gavini wrote:
-> commit ae9f3bd8259a0a8f67be2420e66bb05fbb95af48 upstream.
-> 
-> Currently, sdp->sd_aspace and the per-inode metadata address spaces use
-> sb->s_bdev->bd_mapping->host as their ->host; folios in those address
-> spaces will thus appear to be on bdev rather than on gfs2 filesystems.
-> This is a problem because gfs2 doesn't support cgroup writeback
-> (SB_I_CGROUPWB), but bdev does.
-> 
-> Fix that by using a "dummy" gfs2 inode as ->host in those address
-> spaces.  When coming from a folio, folio->mapping->host->i_sb will then
-> be a gfs2 super block and the SB_I_CGROUPWB flag will not be set in
-> sb->s_iflags.
-> 
-> Based on a previous version from Bob Peterson from several years ago.
-> Thanks to Tetsuo Handa, Jan Kara, and Rafael Aquini for helping figure
-> this out.
-> 
-> Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-> Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-> Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
-> ---
+Hello Alexander Aring,
 
-This is very different from the original commit and you did not document
-that :(
+Commit de7b4869b4ec ("dlm: add new configfs entry release_recover for
+lockspace members") from Jul 23, 2025 (linux-next), leads to the
+following Smatch static checker warning:
 
-Please fix up and resend.
+	fs/dlm/member.c:579 dlm_recover_members()
+	error: we previously assumed 'node' could be null (see line 574)
 
-thanks,
+fs/dlm/member.c
+    551 int dlm_recover_members(struct dlm_ls *ls, struct dlm_recover *rv, int *neg_out)
+    552 {
+    553         struct dlm_member *memb, *safe;
+    554         struct dlm_config_node *node;
+    555         int i, error, neg = 0, low = -1;
+    556         unsigned int release_recover;
+    557 
+    558         /* previously removed members that we've not finished removing need to
+    559          * count as a negative change so the "neg" recovery steps will happen
+    560          *
+    561          * This functionality must report all member changes to lsops or
+    562          * midcomms layer and must never return before.
+    563          */
+    564 
+    565         list_for_each_entry(memb, &ls->ls_nodes_gone, list) {
+    566                 log_rinfo(ls, "prev removed member %d", memb->nodeid);
+    567                 neg++;
+    568         }
+    569 
+    570         /* move departed members from ls_nodes to ls_nodes_gone */
+    571 
+    572         list_for_each_entry_safe(memb, safe, &ls->ls_nodes, list) {
+    573                 node = find_config_node(rv, memb->nodeid);
+    574                 if (node && !node->new && !node->gone)
+                            ^^^^
+So "node" can be NULL
 
-greg k-h
+    575                         continue;
+    576 
+    577                 release_recover = 0;
+    578 
+--> 579                 if (node->gone) {
+                            ^^^^^^^^^^
+unchecked dereference
+
+    580                         release_recover = node->release_recover;
+    581                         log_rinfo(ls, "remove member %d%s", memb->nodeid,
+    582                                   release_recover ? " (release_recover)" : "");
+    583                 } else {
+    584                         /* removed and re-added */
+    585                         log_rinfo(ls, "remove member %d comm_seq %u %u",
+    586                                   memb->nodeid, memb->comm_seq, node->comm_seq);
+    587                 }
+
+regards,
+dan carpenter
