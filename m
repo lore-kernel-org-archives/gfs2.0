@@ -1,83 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D540221554;
-	Tue, 19 Aug 2025 15:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E9155A30
+	for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 23:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755618003; cv=none; b=oPdxQ3GVCk1Gy3ATlOM3eV2NE30o2hCcwKQPsVjOebKs0rQf0jdW6dmQRzCQPF/k555AIqRivMkPwUfGi92Zds89nslfBXkNJiKz3lkbxAFmJWZy8Qwns/o2ZiHFmH/l66rhvhQ5WGvn0uOfEmO0eKsKK2E9bIbIxXYZ8ddvKFw=
+	t=1755733839; cv=none; b=upH//AAB/KUMGtPsZmtCnFCIjqGOfXZDNOjyhgfSIWKuX2oqWz+8Gwh+X+wJqS0H/ERSws7j4KoFL7LZjBpba3ZS8mcJg9AYK6VzJAbBP5D1bIBeSnTL5DAzkyLEGZlyak5hyywKwg0TQBdkRgj7xnG+vWL8WsQ5C7LS2UbMiZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755618003; c=relaxed/simple;
-	bh=9pUWyFteY2nnPC2aHmLrc8AjDMqad0OxDHJPM0fCnmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QWKLQQor3LZfnrR2oOqHoci6pBsXfAkGQpqXoHxcDDFT5q40gmib8BkmVUsIbRqvGiiC3hauc6/xoq8rVmVrHccS2BnzxTdwcH2aswq08TdQiQ4aovm5RJk5jdffk+ZUFHMj8v7QbOgK615rWHmINrNRC6mwCBKoK7Wb2mWs0Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LRi/itzH; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LRi/itzH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755618002; x=1787154002;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=9pUWyFteY2nnPC2aHmLrc8AjDMqad0OxDHJPM0fCnmI=;
-  b=LRi/itzHwPm9f9sNxTI5WpBzsSmILjCidizQz8p4dDkSmpkEXJi0ME2O
-   B32aQKCvKHecaivnzUnhUvvKj01pWuK5ERyAqdGEwd5gQ6vorEeB3YAXU
-   lW7kxsPyYas+p3PdzbpdznZIhh32kDHqePtu0aduH/htgnOW40CHxCVp2
-   bDitO0DkdtZYQBU9liZQv/55JpGbuc6nHJ0Nv93vsz7JOWo+FHhSG30jI
-   cqbYB3+Sd9hpkvxwJ2oqVCuMhKPbFubbpR0JwEKdi+B9KFOVG7d9caKxx
-   B2o1yxXdTEFGQ0zrQrfrgC4B/797rIGxsvLYFvesM/Ggd6C5CUhKhjVrX
-   A==;
-X-CSE-ConnectionGUID: tMTKcSA3Snq0o435mz7yeA==
-X-CSE-MsgGUID: ZGA0ZTv3QKOWtUzAAJaASQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57820385"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="57820385"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 08:40:02 -0700
-X-CSE-ConnectionGUID: RwoSPPE+SsGErMfhjRmS7g==
-X-CSE-MsgGUID: phGiBBDmRRCN0JZL/yfvkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="172115078"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 19 Aug 2025 08:40:00 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uoORJ-000H4X-29;
-	Tue, 19 Aug 2025 15:39:57 +0000
-Date: Tue, 19 Aug 2025 23:39:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev
-Subject: [gfs2:withdraw 41/41] Warning: fs/gfs2/util.c:177 function parameter
- 'sdp' not described in 'gfs2_offline_uevent'
-Message-ID: <202508192353.eNviihQb-lkp@intel.com>
+	s=arc-20240116; t=1755733839; c=relaxed/simple;
+	bh=+3KoXlNx3WrWJ/5JsMCHdKN2i6P9n/O4aCtS23ojPU8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=npU6f18Qzfabhj++ulyApgzN/jIVSZcD+Bid8Klxbet1aSb+KNtNujK3HPt9wnF230PhCv5kyrqEJ8hnXiFQ5H/skfyZ+Uz/USzz6wWtVHZIN7UOew/KT4Fzxp5urLu49uzzh1jXeC10QWuYjgC4rcS07Kyw7+55We3XMAc2k+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3e6649d783bso8148085ab.3
+        for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 16:50:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755733836; x=1756338636;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D086v0Rs3v+RLCz3bkRMPpZaf+JhG94433lHZdw/Rts=;
+        b=r7piSyFQzjIqiEjPuN6KoDdaiq9iN3migl86Nb33uoWK5eE/ROcIoaoPcG2aLwokCy
+         ruQEogb3wwHXPDfcnmWpvf1f6G76ED86zid66MPbzvFb9EZV0PhvQw/BrfI7vWfBhJb7
+         nExqxwLI48kfdYitCRVpYeIxX4+1IwBNpL+yeffuMBm2CZciI43V4hlrGcCy83EDxcWg
+         WT54mwh0749Y0bLDI+tzh0R2XQ2u8rDyZiS5klEeKqyx404GxqWkGFLT4yGgaDZRbB9y
+         D7Lt2hCupP06B0KS7LttzHMWEVej2FU8V1yfLOHI27OgLAKyhCGUKKgp+2x4Qexs+uGN
+         r9lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlhYG0pMm+q4hXRchkyd8Pj5sf1sILgJg8gh9rQRzu7LRL/QVjQ7rhf5RNblgezHYxgTLe@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZglC52I3yQU7TaNopRkRzd5fwH2VJ5Dq13dVlSRHmkIX74kSy
+	HCb7H5ueXx+W9XPdDcnZj72pwsYYVScM+Ne0E0FQRPazbpoBxBp16da0EHLebNrkidjKHG56o+q
+	Wbpd6NX42JyDd2qdo9SRoLAXE10xfynZGd5f1SzkSa+490HFBPhqJk2bn5fc=
+X-Google-Smtp-Source: AGHT+IEol/67olrEtfvGrg4UJl8gG4giFewisK5YgIL16sHEbuUOlPsTM4sjoEl1wJKuqaDR6qQEVAU25iyh8ZzTgJ+xBBS2bSV9
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Received: by 2002:a05:6e02:3e89:b0:3e5:6313:4562 with SMTP id
+ e9e14a558f8ab-3e6d69d9a48mr7400695ab.14.1755733835907; Wed, 20 Aug 2025
+ 16:50:35 -0700 (PDT)
+Date: Wed, 20 Aug 2025 16:50:35 -0700
+In-Reply-To: <684c0d76.050a0220.be214.029f.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68a65f4b.050a0220.3d78fd.000f.GAE@google.com>
+Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_jindex_free (2)
+From: syzbot <syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git withdraw
-head:   802303d527a0ea007b50ec4b807c3043e6f1ae5e
-commit: 802303d527a0ea007b50ec4b807c3043e6f1ae5e [41/41] gfs2: New gfs2_withdraw_helper
-config: sh-randconfig-002-20250819 (https://download.01.org/0day-ci/archive/20250819/202508192353.eNviihQb-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250819/202508192353.eNviihQb-lkp@intel.com/reproduce)
+syzbot has found a reproducer for the following issue on:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508192353.eNviihQb-lkp@intel.com/
+HEAD commit:    5303936d609e Add linux-next specific files for 20250820
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=16775442580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4602df3fd8f406ec
+dashboard link: https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17e597a2580000
 
-All warnings (new ones prefixed by >>):
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/57c3527e418a/disk-5303936d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7f1e146ea30f/vmlinux-5303936d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/55bebb5dd947/bzImage-5303936d.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/5e2270ee146f/mount_0.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=159c16f0580000)
 
->> Warning: fs/gfs2/util.c:177 function parameter 'sdp' not described in 'gfs2_offline_uevent'
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/super.c:76!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 7296 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
+Code: cc cc cc cc cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 22 e7 25 fe e9 e0 fd ff ff e8 88 e4 7f 07 e8 b3 1f c2 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc9000b737a40 EFLAGS: 00010293
+RAX: ffffffff83fda7cd RBX: dead000000000122 RCX: ffff88802c6c9e00
+RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
+RBP: ffffc9000b737b00 R08: ffff888078520de7 R09: 1ffff1100f0a41bc
+R10: dffffc0000000000 R11: ffffed100f0a41bd R12: ffff8880785208b0
+R13: dffffc0000000000 R14: ffff888033122800 R15: ffff888033122878
+FS:  0000000000000000(0000) GS:ffff888125a05000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff329e51000 CR3: 0000000030646000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ gfs2_put_super+0x8af/0x950 fs/gfs2/super.c:636
+ generic_shutdown_super+0x132/0x2c0 fs/super.c:643
+ kill_block_super+0x44/0x90 fs/super.c:1723
+ deactivate_locked_super+0xbc/0x130 fs/super.c:474
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1375
+ task_work_run+0x1d1/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6b5/0x2300 kernel/exit.c:961
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1102
+ __do_sys_exit_group kernel/exit.c:1113 [inline]
+ __se_sys_exit_group kernel/exit.c:1111 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1111
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fed18f8ebe9
+Code: Unable to access opcode bytes at 0x7fed18f8ebbf.
+RSP: 002b:00007ffc2c3ee178 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007fed19011c2a RCX: 00007fed18f8ebe9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000005 R08: 00007ffc2c3ebf17 R09: 00007ffc2c3ef3d0
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc2c3ef3d0
+R13: 00007fed19011c05 R14: 0000000000053df0 R15: 00007ffc2c3ef410
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
+Code: cc cc cc cc cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 22 e7 25 fe e9 e0 fd ff ff e8 88 e4 7f 07 e8 b3 1f c2 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc9000b737a40 EFLAGS: 00010293
+RAX: ffffffff83fda7cd RBX: dead000000000122 RCX: ffff88802c6c9e00
+RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
+RBP: ffffc9000b737b00 R08: ffff888078520de7 R09: 1ffff1100f0a41bc
+R10: dffffc0000000000 R11: ffffed100f0a41bd R12: ffff8880785208b0
+R13: dffffc0000000000 R14: ffff888033122800 R15: ffff888033122878
+FS:  0000000000000000(0000) GS:ffff888125b05000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fece4332000 CR3: 00000000584a4000 CR4: 00000000003526f0
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
