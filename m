@@ -1,136 +1,163 @@
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E9155A30
-	for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 23:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7792E093A
+	for <gfs2@lists.linux.dev>; Thu, 21 Aug 2025 06:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755733839; cv=none; b=upH//AAB/KUMGtPsZmtCnFCIjqGOfXZDNOjyhgfSIWKuX2oqWz+8Gwh+X+wJqS0H/ERSws7j4KoFL7LZjBpba3ZS8mcJg9AYK6VzJAbBP5D1bIBeSnTL5DAzkyLEGZlyak5hyywKwg0TQBdkRgj7xnG+vWL8WsQ5C7LS2UbMiZE=
+	t=1755759033; cv=none; b=G2wARJk9erYgBcHA8KDEVs9zFIKR0eyMNnTfbr3ExkTMBuUwCmgMoJtjcUKr2E0kcvgiSy6CnI/x4ZTeOi5qWPev4+mCCTfdHmYeJp1hyuAu/KWO1BAMOuSW1vmYytHEArOb2oBUFsqpxTJBG6JJ/9BUYpNC4GM/XVxBgdo6/w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755733839; c=relaxed/simple;
-	bh=+3KoXlNx3WrWJ/5JsMCHdKN2i6P9n/O4aCtS23ojPU8=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=npU6f18Qzfabhj++ulyApgzN/jIVSZcD+Bid8Klxbet1aSb+KNtNujK3HPt9wnF230PhCv5kyrqEJ8hnXiFQ5H/skfyZ+Uz/USzz6wWtVHZIN7UOew/KT4Fzxp5urLu49uzzh1jXeC10QWuYjgC4rcS07Kyw7+55We3XMAc2k+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+	s=arc-20240116; t=1755759033; c=relaxed/simple;
+	bh=dz1ZJ6uOLu2/0c7unCj77MdFjzGZM123WhwxBmWltSs=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DDatN09d5o8H8cl+r6bCA2+sjGsGiuBly7rM/5Eh6wnhs6bQcdU2BSMASD6hYXlOy159+L2aFliTyCivqzWQ5+dlmxqaDBIrz34zEhN2Rmt05kfdQdYfMUM0zsDIgn5X6w5kJQc+Ch7q5USf9E62kACG/m8j0wcfsxNCMGKAsOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3e6649d783bso8148085ab.3
-        for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 16:50:36 -0700 (PDT)
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e57003d5f3so20176135ab.3
+        for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 23:50:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755733836; x=1756338636;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D086v0Rs3v+RLCz3bkRMPpZaf+JhG94433lHZdw/Rts=;
-        b=r7piSyFQzjIqiEjPuN6KoDdaiq9iN3migl86Nb33uoWK5eE/ROcIoaoPcG2aLwokCy
-         ruQEogb3wwHXPDfcnmWpvf1f6G76ED86zid66MPbzvFb9EZV0PhvQw/BrfI7vWfBhJb7
-         nExqxwLI48kfdYitCRVpYeIxX4+1IwBNpL+yeffuMBm2CZciI43V4hlrGcCy83EDxcWg
-         WT54mwh0749Y0bLDI+tzh0R2XQ2u8rDyZiS5klEeKqyx404GxqWkGFLT4yGgaDZRbB9y
-         D7Lt2hCupP06B0KS7LttzHMWEVej2FU8V1yfLOHI27OgLAKyhCGUKKgp+2x4Qexs+uGN
-         r9lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlhYG0pMm+q4hXRchkyd8Pj5sf1sILgJg8gh9rQRzu7LRL/QVjQ7rhf5RNblgezHYxgTLe@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZglC52I3yQU7TaNopRkRzd5fwH2VJ5Dq13dVlSRHmkIX74kSy
-	HCb7H5ueXx+W9XPdDcnZj72pwsYYVScM+Ne0E0FQRPazbpoBxBp16da0EHLebNrkidjKHG56o+q
-	Wbpd6NX42JyDd2qdo9SRoLAXE10xfynZGd5f1SzkSa+490HFBPhqJk2bn5fc=
-X-Google-Smtp-Source: AGHT+IEol/67olrEtfvGrg4UJl8gG4giFewisK5YgIL16sHEbuUOlPsTM4sjoEl1wJKuqaDR6qQEVAU25iyh8ZzTgJ+xBBS2bSV9
+        d=1e100.net; s=20230601; t=1755759030; x=1756363830;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JiTmGrCkZOrMVCLRVi6dRmqYhMo1ykO1wC7h+UBgH5E=;
+        b=V248ObN3DgQjjGXlDYiXHxXewevvO7DGKW+lQlG1GaBZ54T+lR6kEMgP1m7taQPRpy
+         JzC6MZjyTbWwDqnjBYRoNMYxa+DBYYMYnk2RP+BF3YBzXmZ1UxfwwXlFOti3izCCgin1
+         eeNUGgL4GQ9hEWtndibro6ZBKi1ICvJFL8njnJVchmlJL76KalCfXPw/fPHzhNTjD+su
+         yEOHBOiZt8bx5GksRINZ1ohyXlRAnWRBHsHnQ7qAlozKMc9wGIbzrygebSYHma6Fre6r
+         zAr/S7yAUh0oxeCAtpaaUqMTpWlGi9AD/EviZVP8ncuwXWxJ16b5PLNBLc5x2soTCmf3
+         1HiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpl6EH3fF324iOe+3vp/p2yifKHYfH0+otklAiRYT+Z/EeXDoWHWrC7IwohxNS0LJwnMWR@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoA9IZSOm2ElNK5snME8vYDBuRfoQh7OmDxv8/5ls9yFVFn/9L
+	VUOO4pL9T6mT0pY6NgCGrid5ShdrNTpXaoKrAiPLWT5laaX1DE4FMPMsqrexa765jvuGrj2cDor
+	UM2c2Ef/grMz2UU7a6/wP/OSsFJ2bVmD6cl9GAae7jdYXjHhOLUO8B8SCfbc=
+X-Google-Smtp-Source: AGHT+IHBUeYbsI0remU4+VvN/3+ewC/D/Cx+HfpuUot1F8ZDSkzWxe7j5Vj+UhDo3TmebHyUJaxQ1e5XmwAJ3zNCq9pypKjwYcvM
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3e89:b0:3e5:6313:4562 with SMTP id
- e9e14a558f8ab-3e6d69d9a48mr7400695ab.14.1755733835907; Wed, 20 Aug 2025
- 16:50:35 -0700 (PDT)
-Date: Wed, 20 Aug 2025 16:50:35 -0700
-In-Reply-To: <684c0d76.050a0220.be214.029f.GAE@google.com>
+X-Received: by 2002:a05:6e02:1789:b0:3e6:7d65:97c0 with SMTP id
+ e9e14a558f8ab-3e6d3b7f534mr26572925ab.1.1755759030601; Wed, 20 Aug 2025
+ 23:50:30 -0700 (PDT)
+Date: Wed, 20 Aug 2025 23:50:30 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a65f4b.050a0220.3d78fd.000f.GAE@google.com>
-Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_jindex_free (2)
-From: syzbot <syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com>
+Message-ID: <68a6c1b6.050a0220.3d78fd.001b.GAE@google.com>
+Subject: [syzbot] [gfs2?] general protection fault in __gfs2_trans_begin
+From: syzbot <syzbot+a3a4e5eee651210c6887@syzkaller.appspotmail.com>
 To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot has found a reproducer for the following issue on:
+Hello,
+
+syzbot found the following issue on:
 
 HEAD commit:    5303936d609e Add linux-next specific files for 20250820
 git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=16775442580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a957a2580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=4602df3fd8f406ec
-dashboard link: https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
+dashboard link: https://syzkaller.appspot.com/bug?extid=a3a4e5eee651210c6887
 compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17e597a2580000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11718fa2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=165f16f0580000
 
 Downloadable assets:
 disk image: https://storage.googleapis.com/syzbot-assets/57c3527e418a/disk-5303936d.raw.xz
 vmlinux: https://storage.googleapis.com/syzbot-assets/7f1e146ea30f/vmlinux-5303936d.xz
 kernel image: https://storage.googleapis.com/syzbot-assets/55bebb5dd947/bzImage-5303936d.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/5e2270ee146f/mount_0.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=159c16f0580000)
+mounted in repro: https://storage.googleapis.com/syzbot-assets/b60fdd2027e2/mount_0.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=12a1d442580000)
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com
+Reported-by: syzbot+a3a4e5eee651210c6887@syzkaller.appspotmail.com
 
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/super.c:76!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 7296 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000011: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000088-0x000000000000008f]
+CPU: 0 UID: 0 PID: 96 Comm: kworker/0:1H Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
-Code: cc cc cc cc cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 22 e7 25 fe e9 e0 fd ff ff e8 88 e4 7f 07 e8 b3 1f c2 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
-RSP: 0018:ffffc9000b737a40 EFLAGS: 00010293
-RAX: ffffffff83fda7cd RBX: dead000000000122 RCX: ffff88802c6c9e00
-RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
-RBP: ffffc9000b737b00 R08: ffff888078520de7 R09: 1ffff1100f0a41bc
-R10: dffffc0000000000 R11: ffffed100f0a41bd R12: ffff8880785208b0
-R13: dffffc0000000000 R14: ffff888033122800 R15: ffff888033122878
+Workqueue: gfs2-glock/syz:syz glock_work_func
+RIP: 0010:__gfs2_trans_begin+0x3a6/0x890 fs/gfs2/trans.c:73
+Code: 09 00 00 4c 89 e8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ef e8 bb 1b 25 fe 41 bf 8c 00 00 00 4d 03 7d 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 03 04 00 00 45 8b 3f 89 df 44 89 fe e8
+RSP: 0018:ffffc900025e76c0 EFLAGS: 00010207
+RAX: 0000000000000011 RBX: 0000000000000004 RCX: ffff88801e361e00
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffffc900025e7878
+RBP: ffffc900025e77b0 R08: ffff8880580780af R09: 1ffff1100b00f015
+R10: dffffc0000000000 R11: ffffed100b00f016 R12: dffffc0000000000
+R13: ffff888058078998 R14: ffffc900025e7800 R15: 000000000000008c
 FS:  0000000000000000(0000) GS:ffff888125a05000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff329e51000 CR3: 0000000030646000 CR4: 00000000003526f0
+CR2: 00007f97a2c23f98 CR3: 000000003368e000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- gfs2_put_super+0x8af/0x950 fs/gfs2/super.c:636
- generic_shutdown_super+0x132/0x2c0 fs/super.c:643
- kill_block_super+0x44/0x90 fs/super.c:1723
- deactivate_locked_super+0xbc/0x130 fs/super.c:474
- cleanup_mnt+0x425/0x4c0 fs/namespace.c:1375
- task_work_run+0x1d1/0x260 kernel/task_work.c:227
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0x6b5/0x2300 kernel/exit.c:961
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1102
- __do_sys_exit_group kernel/exit.c:1113 [inline]
- __se_sys_exit_group kernel/exit.c:1111 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1111
- x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fed18f8ebe9
-Code: Unable to access opcode bytes at 0x7fed18f8ebbf.
-RSP: 002b:00007ffc2c3ee178 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007fed19011c2a RCX: 00007fed18f8ebe9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
-RBP: 0000000000000005 R08: 00007ffc2c3ebf17 R09: 00007ffc2c3ef3d0
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc2c3ef3d0
-R13: 00007fed19011c05 R14: 0000000000053df0 R15: 00007ffc2c3ef410
+ gfs2_ail_empty_gl+0x12b/0x2f0 fs/gfs2/glops.c:130
+ inode_go_sync+0x462/0x5d0 fs/gfs2/glops.c:336
+ do_xmote+0x322/0x1060 fs/gfs2/glock.c:704
+ glock_work_func+0x2a8/0x580 fs/gfs2/glock.c:1080
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
  </TASK>
 Modules linked in:
 ---[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
-Code: cc cc cc cc cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 22 e7 25 fe e9 e0 fd ff ff e8 88 e4 7f 07 e8 b3 1f c2 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
-RSP: 0018:ffffc9000b737a40 EFLAGS: 00010293
-RAX: ffffffff83fda7cd RBX: dead000000000122 RCX: ffff88802c6c9e00
-RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
-RBP: ffffc9000b737b00 R08: ffff888078520de7 R09: 1ffff1100f0a41bc
-R10: dffffc0000000000 R11: ffffed100f0a41bd R12: ffff8880785208b0
-R13: dffffc0000000000 R14: ffff888033122800 R15: ffff888033122878
-FS:  0000000000000000(0000) GS:ffff888125b05000(0000) knlGS:0000000000000000
+RIP: 0010:__gfs2_trans_begin+0x3a6/0x890 fs/gfs2/trans.c:73
+Code: 09 00 00 4c 89 e8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ef e8 bb 1b 25 fe 41 bf 8c 00 00 00 4d 03 7d 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 03 04 00 00 45 8b 3f 89 df 44 89 fe e8
+RSP: 0018:ffffc900025e76c0 EFLAGS: 00010207
+RAX: 0000000000000011 RBX: 0000000000000004 RCX: ffff88801e361e00
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffffc900025e7878
+RBP: ffffc900025e77b0 R08: ffff8880580780af R09: 1ffff1100b00f015
+R10: dffffc0000000000 R11: ffffed100b00f016 R12: dffffc0000000000
+R13: ffff888058078998 R14: ffffc900025e7800 R15: 000000000000008c
+FS:  0000000000000000(0000) GS:ffff888125a05000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fece4332000 CR3: 00000000584a4000 CR4: 00000000003526f0
+CR2: 00007f97a2c23f98 CR3: 000000007c81c000 CR4: 00000000003526f0
+----------------
+Code disassembly (best guess):
+   0:	09 00                	or     %eax,(%rax)
+   2:	00 4c 89 e8          	add    %cl,-0x18(%rcx,%rcx,4)
+   6:	48 c1 e8 03          	shr    $0x3,%rax
+   a:	42 80 3c 20 00       	cmpb   $0x0,(%rax,%r12,1)
+   f:	74 08                	je     0x19
+  11:	4c 89 ef             	mov    %r13,%rdi
+  14:	e8 bb 1b 25 fe       	call   0xfe251bd4
+  19:	41 bf 8c 00 00 00    	mov    $0x8c,%r15d
+  1f:	4d 03 7d 00          	add    0x0(%r13),%r15
+  23:	4c 89 f8             	mov    %r15,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 0f b6 04 20       	movzbl (%rax,%r12,1),%eax <-- trapping instruction
+  2f:	84 c0                	test   %al,%al
+  31:	0f 85 03 04 00 00    	jne    0x43a
+  37:	45 8b 3f             	mov    (%r15),%r15d
+  3a:	89 df                	mov    %ebx,%edi
+  3c:	44 89 fe             	mov    %r15d,%esi
+  3f:	e8                   	.byte 0xe8
 
 
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
 If you want syzbot to run the reproducer, reply with:
 #syz test: git://repo/address.git branch-or-commit-hash
 If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
