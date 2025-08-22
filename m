@@ -1,163 +1,91 @@
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7792E093A
-	for <gfs2@lists.linux.dev>; Thu, 21 Aug 2025 06:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083B02EE61C
+	for <gfs2@lists.linux.dev>; Fri, 22 Aug 2025 09:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755759033; cv=none; b=G2wARJk9erYgBcHA8KDEVs9zFIKR0eyMNnTfbr3ExkTMBuUwCmgMoJtjcUKr2E0kcvgiSy6CnI/x4ZTeOi5qWPev4+mCCTfdHmYeJp1hyuAu/KWO1BAMOuSW1vmYytHEArOb2oBUFsqpxTJBG6JJ/9BUYpNC4GM/XVxBgdo6/w4=
+	t=1755856275; cv=none; b=Qt7fLe41KRmXX7dMy+/zHfAAPV1n3se+Gfwgi4Zu2nkA1erlmXe0Fwt6YtajHNtV1KDlLvhqP4pZJHXwiF6oJk/W/IWDUlh1V0ZOSvDd8sf4Hyc+T3sHB7MzNOn4MLaDE+sEQksBp8BYjUeaT94Ya3cthDCD++FLoYdRxgvP4mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755759033; c=relaxed/simple;
-	bh=dz1ZJ6uOLu2/0c7unCj77MdFjzGZM123WhwxBmWltSs=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DDatN09d5o8H8cl+r6bCA2+sjGsGiuBly7rM/5Eh6wnhs6bQcdU2BSMASD6hYXlOy159+L2aFliTyCivqzWQ5+dlmxqaDBIrz34zEhN2Rmt05kfdQdYfMUM0zsDIgn5X6w5kJQc+Ch7q5USf9E62kACG/m8j0wcfsxNCMGKAsOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e57003d5f3so20176135ab.3
-        for <gfs2@lists.linux.dev>; Wed, 20 Aug 2025 23:50:31 -0700 (PDT)
+	s=arc-20240116; t=1755856275; c=relaxed/simple;
+	bh=xOBM7ju3LdH6fgM98uUbXo3mj/L+KLYzI6HGxA0Nrjg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=jhLjaU4tEbYbvYaa9c1/rSC4dc0kLdi0URQAn06u2H7HovnpYu5bUGFVT12fhbf7J7AZUSDnN2kC12R9fV8SyJPfd0EIgkAorihpwjqTNkgKn27HxlicgATNJZVyGTSpt3Is+SnzFZZDG3j0vGsjHq6KbKnrZqodOn1Hn7BsAbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b=NaIM+wfg; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b="NaIM+wfg"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b7532f3so3385058a12.2
+        for <gfs2@lists.linux.dev>; Fri, 22 Aug 2025 02:51:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloud.com; s=cloud; t=1755856271; x=1756461071; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xOBM7ju3LdH6fgM98uUbXo3mj/L+KLYzI6HGxA0Nrjg=;
+        b=NaIM+wfgjCCf9Nhq0G40jIgs8YkB+MmL80q80ZSMpz/JcIvLXmFHFR0/wwKajanqSU
+         tVcPgpnY1TXDLyAS1sdaP2PYRy6M/b+e0mVE6JU4sBzEf3GPKb9EvrIHdZY25N1DmBxW
+         4PjRtQkqJUpvFh9bUzJ/xpJOuo1wmUxrGsb8A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755759030; x=1756363830;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        d=1e100.net; s=20230601; t=1755856271; x=1756461071;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JiTmGrCkZOrMVCLRVi6dRmqYhMo1ykO1wC7h+UBgH5E=;
-        b=V248ObN3DgQjjGXlDYiXHxXewevvO7DGKW+lQlG1GaBZ54T+lR6kEMgP1m7taQPRpy
-         JzC6MZjyTbWwDqnjBYRoNMYxa+DBYYMYnk2RP+BF3YBzXmZ1UxfwwXlFOti3izCCgin1
-         eeNUGgL4GQ9hEWtndibro6ZBKi1ICvJFL8njnJVchmlJL76KalCfXPw/fPHzhNTjD+su
-         yEOHBOiZt8bx5GksRINZ1ohyXlRAnWRBHsHnQ7qAlozKMc9wGIbzrygebSYHma6Fre6r
-         zAr/S7yAUh0oxeCAtpaaUqMTpWlGi9AD/EviZVP8ncuwXWxJ16b5PLNBLc5x2soTCmf3
-         1HiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpl6EH3fF324iOe+3vp/p2yifKHYfH0+otklAiRYT+Z/EeXDoWHWrC7IwohxNS0LJwnMWR@lists.linux.dev
-X-Gm-Message-State: AOJu0YxoA9IZSOm2ElNK5snME8vYDBuRfoQh7OmDxv8/5ls9yFVFn/9L
-	VUOO4pL9T6mT0pY6NgCGrid5ShdrNTpXaoKrAiPLWT5laaX1DE4FMPMsqrexa765jvuGrj2cDor
-	UM2c2Ef/grMz2UU7a6/wP/OSsFJ2bVmD6cl9GAae7jdYXjHhOLUO8B8SCfbc=
-X-Google-Smtp-Source: AGHT+IHBUeYbsI0remU4+VvN/3+ewC/D/Cx+HfpuUot1F8ZDSkzWxe7j5Vj+UhDo3TmebHyUJaxQ1e5XmwAJ3zNCq9pypKjwYcvM
+        bh=xOBM7ju3LdH6fgM98uUbXo3mj/L+KLYzI6HGxA0Nrjg=;
+        b=WhkgicB45KslePQ/kd7IV36JotDi2d/rLHOBVGw76pl/4zK7IwHzmoTqrOKn3FU6GY
+         i54xyCWL9uJzKO91rLn+VZiIU/+KsM2zrOzZeTfyaQGCv/H2DlWrplelLb6bpQziglqM
+         0c7UFoZbWd1DiWouo3bqW5YXPHeoBgXsMuZ6JuYhhcb177Kyeg33D791PW/zASJeBtBd
+         +IaiL3tWq4Nx51EMbzN0O1ucVk3unUyZwEh6e6Zr53cjqP4tr6RgaCIAUlmne5AJjW73
+         gFxVmsxsEZ/vrg8a7pvpIK/x5/rREt/xxNwrx558JpAOi6RmroUxjS+0V+ApPv52GX85
+         uNFA==
+X-Gm-Message-State: AOJu0YxylAY5jAKz+Hz+zAdDtNSbHbW+R7qAFX0eAs2ZFOpr40hFmLnU
+	A/SgF1TsQZDSnF1Eeg9sgZ422QdsiuLyYbO/SC/uNkmsXt5q+Dr54wsks8WeDRtM7lAovp8U7P5
+	ashR6KiAgzuEFdUWsJQAR3m++luxkOHt6cu3kZoi0ukzOoO3/dRKHFsw=
+X-Gm-Gg: ASbGncvAUDMB5AZaiaqaWYkKVE3ef+WqBRoXMOyd9A/lVWt9cD6lBX8nOYqXWslkIx5
+	4RQwd6KFiSgT9CoqNMhXa/HkNAL4sDWQun2vYCvDMoXZa+UdWeJOunocmIoKR2hp7cWzdPUwROe
+	Tkec1OUL5+7KGnLX+GCZWtOjCXF/W6pS5tQ9ILcw5ULTGiQ6smBqRalH2+54S1iVBDo6C3YDpP6
+	AiqU2vP
+X-Google-Smtp-Source: AGHT+IE726x9AQf/4iMVWB32Mc82pS1Z5dcSKNRQQzHrYV35l/8Jf9Ntq1R2i+0/2tv+t3JNMGy6ibtWoqC21eiDmqQ=
+X-Received: by 2002:a17:906:4784:b0:af9:3f90:12a0 with SMTP id
+ a640c23a62f3a-afe28fd3967mr226645666b.16.1755856270771; Fri, 22 Aug 2025
+ 02:51:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1789:b0:3e6:7d65:97c0 with SMTP id
- e9e14a558f8ab-3e6d3b7f534mr26572925ab.1.1755759030601; Wed, 20 Aug 2025
- 23:50:30 -0700 (PDT)
-Date: Wed, 20 Aug 2025 23:50:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a6c1b6.050a0220.3d78fd.001b.GAE@google.com>
-Subject: [syzbot] [gfs2?] general protection fault in __gfs2_trans_begin
-From: syzbot <syzbot+a3a4e5eee651210c6887@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+From: Mark Syms <mark.syms@cloud.com>
+Date: Fri, 22 Aug 2025 10:50:59 +0100
+X-Gm-Features: Ac12FXym1nPBXy0VyXotnkcF0PFSDNCbHxZbsqEbZJ7qdcugAbrX6vhCrn85uWM
+Message-ID: <CAPYKksUjLP-tNuUCC2Vg7uZ9btE6yMkAQQ-7X332522s-jOXOQ@mail.gmail.com>
+Subject: Resource group glock granularity
+To: gfs2@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Hi all,
 
-syzbot found the following issue on:
+Sometime back I seem to recall a bit of discussion around modifying
+how the glocks for resource groups are managed, basically with the
+primary objective of making the glocks control node to node
+interaction and deferring node local collaboration to some form of
+more local, and thus less expensive mechanism. Did this ever go
+anywhere?
 
-HEAD commit:    5303936d609e Add linux-next specific files for 20250820
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=11a957a2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4602df3fd8f406ec
-dashboard link: https://syzkaller.appspot.com/bug?extid=a3a4e5eee651210c6887
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11718fa2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=165f16f0580000
+I think we in XenServer would probably be quite interested in an
+approach of this form. We see a number of things, which are at least
+partially, related to our workloads being a bit atypical. We have a
+number of VMs on each host all accessing r/w one or more files
+containing their virtual disk data on the GFS2. As these files grow
+dynamically (they're qcow2) we can hit contention in block allocation
+under some scenarios like start of day VM start up. Being able to
+acquire access to a resource group that is being used on the current
+node without a full demote and data flush would likely contribute some
+useful performance and contention reduction improvements in this area.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/57c3527e418a/disk-5303936d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7f1e146ea30f/vmlinux-5303936d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/55bebb5dd947/bzImage-5303936d.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/b60fdd2027e2/mount_0.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=12a1d442580000)
+Anything you can point me at would be great.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a3a4e5eee651210c6887@syzkaller.appspotmail.com
+Thanks,
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000011: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000088-0x000000000000008f]
-CPU: 0 UID: 0 PID: 96 Comm: kworker/0:1H Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: gfs2-glock/syz:syz glock_work_func
-RIP: 0010:__gfs2_trans_begin+0x3a6/0x890 fs/gfs2/trans.c:73
-Code: 09 00 00 4c 89 e8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ef e8 bb 1b 25 fe 41 bf 8c 00 00 00 4d 03 7d 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 03 04 00 00 45 8b 3f 89 df 44 89 fe e8
-RSP: 0018:ffffc900025e76c0 EFLAGS: 00010207
-RAX: 0000000000000011 RBX: 0000000000000004 RCX: ffff88801e361e00
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffffc900025e7878
-RBP: ffffc900025e77b0 R08: ffff8880580780af R09: 1ffff1100b00f015
-R10: dffffc0000000000 R11: ffffed100b00f016 R12: dffffc0000000000
-R13: ffff888058078998 R14: ffffc900025e7800 R15: 000000000000008c
-FS:  0000000000000000(0000) GS:ffff888125a05000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f97a2c23f98 CR3: 000000003368e000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- gfs2_ail_empty_gl+0x12b/0x2f0 fs/gfs2/glops.c:130
- inode_go_sync+0x462/0x5d0 fs/gfs2/glops.c:336
- do_xmote+0x322/0x1060 fs/gfs2/glock.c:704
- glock_work_func+0x2a8/0x580 fs/gfs2/glock.c:1080
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__gfs2_trans_begin+0x3a6/0x890 fs/gfs2/trans.c:73
-Code: 09 00 00 4c 89 e8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ef e8 bb 1b 25 fe 41 bf 8c 00 00 00 4d 03 7d 00 4c 89 f8 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 03 04 00 00 45 8b 3f 89 df 44 89 fe e8
-RSP: 0018:ffffc900025e76c0 EFLAGS: 00010207
-RAX: 0000000000000011 RBX: 0000000000000004 RCX: ffff88801e361e00
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffffc900025e7878
-RBP: ffffc900025e77b0 R08: ffff8880580780af R09: 1ffff1100b00f015
-R10: dffffc0000000000 R11: ffffed100b00f016 R12: dffffc0000000000
-R13: ffff888058078998 R14: ffffc900025e7800 R15: 000000000000008c
-FS:  0000000000000000(0000) GS:ffff888125a05000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f97a2c23f98 CR3: 000000007c81c000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	09 00                	or     %eax,(%rax)
-   2:	00 4c 89 e8          	add    %cl,-0x18(%rcx,%rcx,4)
-   6:	48 c1 e8 03          	shr    $0x3,%rax
-   a:	42 80 3c 20 00       	cmpb   $0x0,(%rax,%r12,1)
-   f:	74 08                	je     0x19
-  11:	4c 89 ef             	mov    %r13,%rdi
-  14:	e8 bb 1b 25 fe       	call   0xfe251bd4
-  19:	41 bf 8c 00 00 00    	mov    $0x8c,%r15d
-  1f:	4d 03 7d 00          	add    0x0(%r13),%r15
-  23:	4c 89 f8             	mov    %r15,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 0f b6 04 20       	movzbl (%rax,%r12,1),%eax <-- trapping instruction
-  2f:	84 c0                	test   %al,%al
-  31:	0f 85 03 04 00 00    	jne    0x43a
-  37:	45 8b 3f             	mov    (%r15),%r15d
-  3a:	89 df                	mov    %ebx,%edi
-  3c:	44 89 fe             	mov    %r15d,%esi
-  3f:	e8                   	.byte 0xe8
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Mark Syms
+Lead Software Engineer
+XenServer Storage
+Cambridge, UK
