@@ -1,187 +1,147 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2374236A73
-	for <gfs2@lists.linux.dev>; Tue, 26 Aug 2025 02:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A2F2ECE95
+	for <gfs2@lists.linux.dev>; Tue, 26 Aug 2025 05:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756175970; cv=none; b=gi6znU9K8qDJ0r8IVitskI290qNIsfTh2Y8HnMh6uuq8j8qbD+k3VV9XvC9r+VMhTBfe1J3G0j5WhfwbalBl5W914UxEZ9O+9S+Vb50XYVMjdwjU8rIlCWJGbNe2eIhaH+NOqGh3pCRubYtAXAn6PbTaIf/b/Ryo8DxbS+vNiBI=
+	t=1756186053; cv=none; b=qTsvkU2ACX4SNflygmGLWGZSX93+rM4l9H0cV34R8zx1KcWdk97A6rllKm/+JjDo6V75F6yb/n+lB8xM5lCX7LPnE140mu1xcgplbqfG5DC2Tc+DdoBSUnX40kpx45ZWIFPdxT/89hPTIS3fEhyfPx3Urhxqkk16mrkUKb3WqCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756175970; c=relaxed/simple;
-	bh=xHs+l2pfnza2uc+5614jN3sm82wrUYBarOeH9qm4DmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/+BHHhd5KmnxMiM1RCW4CyfuLbvJr9eZVGekVrUY4/2hvc2iMzsGNrFaQmJRiI4ZWGboDtJdGFFpnVvoduu+aLuHBxpS01HrJkyDFq4E7iqwXhNny9GMgpmw4wdYGuwgYCiO5XKLbgZ656+0WS+5b8GwksvyeKmRKLEa8IV7go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIa/gmC7; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIa/gmC7"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-246fc803b90so10926485ad.3
-        for <gfs2@lists.linux.dev>; Mon, 25 Aug 2025 19:39:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756175968; x=1756780768; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GQynW9QiNkC8m7UhwgLmWwZBf8g2MjsE/2KafsbAG70=;
-        b=FIa/gmC77OuFYo02FMU/o45aPrazpHmL4uEtlPWXY3azfBmfXkWjkXrqfw+3cO4h9a
-         RPwvvyfTYKWVnDN5TvUMWJHJLqdoDQ9wA6/ILdnYLdrPOfFHa5GW9Lfg5BAifmLrhztO
-         sMQXSK1hSgRkORyzcKN7m1U3xvHJEo3MlNZawlOn+1nMAoWTvnGUW1ogiksROm0cAJZA
-         r004SaUGBxZzI+Vv7j4Tj+dI2ZQveb/tX7P+L6fWXtt3NRJtax35eNhokYbNJN4HD61V
-         pq7IH87GSRmGKYMzwm5/zrnx/mQzQyIeBoPQmqPvB9/7uI/iVL+MU/dNdyKmSi4zwEvY
-         Jnvg==
+	s=arc-20240116; t=1756186053; c=relaxed/simple;
+	bh=wC170smjIex9ZF7b1zSltTZJ8Hd35+Sge1x77JT6lis=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=kLzD+7EK7KNCwsoMINiRvFNCPR9GzmpXtVGT4dVtxVioksWAraJ4/0M5MXEJ5ZlGowb4swE8AXMk9W2sYS4vspIXtZDE/Lj4hF57qqM3ZJdie86BFBEpHCMUWPisYeSgoAxckFzWt4NLWeD70/75gRhVkHAfoSlComhOFLkg7Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3e7172deaedso52335875ab.1
+        for <gfs2@lists.linux.dev>; Mon, 25 Aug 2025 22:27:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756175968; x=1756780768;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GQynW9QiNkC8m7UhwgLmWwZBf8g2MjsE/2KafsbAG70=;
-        b=wFTEFNwh/K3y+L12L18LE6MqRSrW2tLNu0TK4y6HZ3+DZZUFXvhRiZyFMi/6rWswdV
-         DYwozbGK+sfLxCD7A6LiCdawBG+BdE9i7W6Uu0Xbi5iIe4+3ZBradbFdI6Yy1GqiaO/a
-         IdfijeRczyYZYuTTIqvJMlxLnh3hmHHqWRaOmWtTmASOCaa0LeG31FbuHo1B5JKsS9KX
-         C+rssdHN78CL1jUxfv5jAOkwd67OwoQ7vUE7aaIWGxNmlTKydk7ZrVp248bCgPQl+gFz
-         ij8Ffh7dyx3sYh3SkltbFWSoV7UsYdLZTYQZkmygpona4XKoOXgdnXv9FigbTHmDp0Wr
-         fDqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoUMANZJaAh1V0BEY+f/dRxJeGww1sY8vV2orJLCNUaasYnmL3JLnmVQN3SvQsikWQ9aNC@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBIEppZ8dF/kzmrU3ZsKK2o6u30Yx/nWhP2XRLuTj1OzT128a0
-	J/TXkceObwCU6Aqvhfi+wtLjYcoao9Up1I37GOmSXM+g2q3VqM6TCnVj
-X-Gm-Gg: ASbGncv5/Xbk/l2fRTP3sYeTKKkiNDmM8T+BMLrtlhvAachTkIKjc6pTYtQ9f0G0LX1
-	/DtDgNezPalbYMOcYoUP3cNHXQ/JNUkJeYcPc3x/n96N8DgCjAw+qnJZLbIYOZP1MiTA/LEenUW
-	nM0dNnfbpHNME0vQttUhP++DayKZoP1bLER/9C82zNOVrYFYVNxyBciXUvOFulVOKMlOi1vEo96
-	zH/QoJVBsaUe7oBUFREXD0XPPSEzaVjvFcRMkOXP4fkP8sSOeTOdPTy/H6MGVDPeXmM24myZMF3
-	iZBkeOI6D6/Z3p8QcFvYGVIUmTJMlspaOcx8XigcoUrD0C/y0G0hH3HgfNvhvtp+dghAZDHJTgz
-	QsVFE2jR3wIAfQB3mFbGx8SxNvZXCofLW
-X-Google-Smtp-Source: AGHT+IHmEMMHHRcOtgYg4LZPSqkm+z1dB2t0mOOt5Ny373ENmShez272ct4ZPtzZLFkpespJvpgnXw==
-X-Received: by 2002:a17:903:40c5:b0:246:cc19:17eb with SMTP id d9443c01a7336-246cc19229dmr84410505ad.19.1756175967819;
-        Mon, 25 Aug 2025 19:39:27 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246688645e1sm81074495ad.79.2025.08.25.19.39.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 19:39:27 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id F1D89424E25B; Tue, 26 Aug 2025 09:39:24 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux GFS2 <gfs2@lists.linux.dev>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	James Morse <james.morse@arm.com>
-Subject: [PATCH] Documentation: gfs2: Consolidate GFS2 docs into its own subdirectory
-Date: Tue, 26 Aug 2025 09:39:13 +0700
-Message-ID: <20250826023913.14888-1-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1756186051; x=1756790851;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rLMIt7cjsjEQe4jvLvyfMSwRYCWcqxa6uKclOUcmSPk=;
+        b=KofmQeXvYMYceKxesGXGxj/IVngeJwzlWSqdon0TL/DZ58WtvResvb+LDtquqz5gvu
+         B4SSVu8sfcYXsCzIdfsiBacyZBVgxURFTCwPvVzSs4YTy1+PdolOF0uBvAYivxhuXkFy
+         e57vAIc/Mb9UXamfXVnDpW082KC10pz7oq2z/KiGkU8yf2sq2BeKIn//oHOfYnj5Eb8F
+         JexmBoqnzObxdvOWLAYqYL+eKouN9JvOhPH0IiASzWpWhgKZxlE/pzPrk5h5YNrykRO5
+         iHcRtgGwO8yr8d/FBvNxi+wKtxUO+WzRkyp8fTu2oQR6c9QH0NStVzkrBUNEoW5j+AK5
+         FeDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWwhNDchhHV5Va8i2aIDTQRMnxVsIuhkqWsSK4ekjbTxOzDCXZa5lM2T7ky3ZmV4iCKqeX@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbbzbA42NZtAZuVMns/klA9XS3ed/dEe6457iOWnPfgyQIOD22
+	2aBXOQtsu3dKfqYFwe35tzJti2ol+ItaozPyWji82dhcVeElxftCylqAA/pDQSD4Z9lW9szysfd
+	eEBqvmsRAHTG1UmfU1vUDMZt/f9TYNLtmRU2wAIbMzMRdajfrm0vwHR9pOsQ=
+X-Google-Smtp-Source: AGHT+IHl/QP/4MkKXKeeDQ3sTZsXP8WwsbUCuLz/zjk7+Zz1hCH3vaCNFxlM2mCJu2LmNwVGTmUHP+Lbwm5t+VIOXfessRytRtMc
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3546; i=bagasdotme@gmail.com; h=from:subject; bh=xHs+l2pfnza2uc+5614jN3sm82wrUYBarOeH9qm4DmQ=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBlrpc+b6eVttHk4QULvlVNuZ8DC2+fO26vuzpz3WOHPu 3nM6mZ6HaUsDGJcDLJiiiyTEvmaTu8yErnQvtYRZg4rE8gQBi5OAZjIE26G/8GMYY3fpk2Ikrjl 8Fm9ni3414OjBUtvaHLs1Dq/+setVXcZGV6pcTkd2HVnS7nYYlbDKZdWaVaHvn8UuU/wP/PptsZ b01kB
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1807:b0:3e9:e1fd:2fa with SMTP id
+ e9e14a558f8ab-3e9e1fd23efmr177757595ab.30.1756186051193; Mon, 25 Aug 2025
+ 22:27:31 -0700 (PDT)
+Date: Mon, 25 Aug 2025 22:27:31 -0700
+In-Reply-To: <68a2184c.050a0220.e29e5.0070.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68ad45c3.050a0220.37038e.00a6.GAE@google.com>
+Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_withdraw (2)
+From: syzbot <syzbot+901524eae72170197041@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, anprice@redhat.com, gfs2@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Documentation for GFS2 is scattered in three docs that are in
-Documentation/filesystems/ directory. As these docs are standing out as
-a group, move them into separate gfs2/ subdirectory.
+syzbot has found a reproducer for the following issue on:
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+HEAD commit:    b6add54ba618 Merge tag 'pinctrl-v6.17-2' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=174cf862580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a7016efe6aaa498c
+dashboard link: https://syzkaller.appspot.com/bug?extid=901524eae72170197041
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12dc8634580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16dc8634580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-b6add54b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a6e94bac86a3/vmlinux-b6add54b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0c9cbb4d239d/bzImage-b6add54b.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/df6a4ddf7d5b/mount_0.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=13dcc462580000)
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+901524eae72170197041@syzkaller.appspotmail.com
+
+gfs2: fsid=syz:syz.s: fatal: invalid metadata block - bh = 19 (type: exp=4, found=1), function = gfs2_meta_buffer, file = fs/gfs2/meta_io.c, line = 499
+gfs2: fsid=syz:syz.s: about to withdraw this file system
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/util.c:331!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5528 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:gfs2_withdraw+0x137b/0x1430 fs/gfs2/util.c:331
+Code: ff ff 48 8b 4c 24 18 80 e1 07 80 c1 03 38 c1 0f 8c 55 fb ff ff 48 8b 7c 24 18 e8 90 56 25 fe e9 46 fb ff ff e8 06 6a c0 fd 90 <0f> 0b 48 8b 4c 24 18 80 e1 07 80 c1 03 38 c1 0f 8c ab fb ff ff 48
+RSP: 0018:ffffc90002bff2a0 EFLAGS: 00010293
+RAX: ffffffff83ff513a RBX: ffffc90002bff360 RCX: ffff8880003f2440
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
+RBP: ffffc90002bff430 R08: ffff88801fc24253 R09: 1ffff11003f8484a
+R10: dffffc0000000000 R11: ffffed1003f8484b R12: dffffc0000000000
+R13: 1ffff9200057fe68 R14: 1ffff110066ba015 R15: 0000000000000004
+FS:  0000555589e6b500(0000) GS:ffff88808d210000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa802461000 CR3: 00000000346f0000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ gfs2_metatype_check_ii+0x78/0x90 fs/gfs2/util.c:514
+ gfs2_metatype_check_i fs/gfs2/util.h:129 [inline]
+ gfs2_meta_buffer+0x25e/0x300 fs/gfs2/meta_io.c:499
+ gfs2_meta_inode_buffer fs/gfs2/meta_io.h:70 [inline]
+ gfs2_inode_refresh fs/gfs2/glops.c:484 [inline]
+ inode_go_instantiate+0xdf/0x1260 fs/gfs2/glops.c:509
+ gfs2_instantiate+0x165/0x220 fs/gfs2/glock.c:468
+ gfs2_glock_holder_ready fs/gfs2/glock.c:1332 [inline]
+ gfs2_glock_wait+0x1d4/0x2a0 fs/gfs2/glock.c:1352
+ gfs2_glock_nq_init fs/gfs2/glock.h:248 [inline]
+ check_journal_clean+0x11c/0x310 fs/gfs2/util.c:61
+ init_journal+0x17f8/0x2260 fs/gfs2/ops_fstype.c:793
+ init_inodes+0xdb/0x320 fs/gfs2/ops_fstype.c:851
+ gfs2_fill_super+0x1923/0x20d0 fs/gfs2/ops_fstype.c:1253
+ get_tree_bdev_flags+0x40b/0x4d0 fs/super.c:1692
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1335
+ vfs_get_tree+0x92/0x2b0 fs/super.c:1815
+ do_new_mount+0x2a2/0x9e0 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x317/0x410 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbbb439038a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 1a 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffccc5a4b98 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007ffccc5a4c20 RCX: 00007fbbb439038a
+RDX: 0000200000000400 RSI: 0000200000012500 RDI: 00007ffccc5a4be0
+RBP: 0000200000000400 R08: 00007ffccc5a4c20 R09: 0000000000200000
+R10: 0000000000200000 R11: 0000000000000246 R12: 0000200000012500
+R13: 00007ffccc5a4be0 R14: 00000000000125bb R15: 0000200000000f40
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_withdraw+0x137b/0x1430 fs/gfs2/util.c:331
+Code: ff ff 48 8b 4c 24 18 80 e1 07 80 c1 03 38 c1 0f 8c 55 fb ff ff 48 8b 7c 24 18 e8 90 56 25 fe e9 46 fb ff ff e8 06 6a c0 fd 90 <0f> 0b 48 8b 4c 24 18 80 e1 07 80 c1 03 38 c1 0f 8c ab fb ff ff 48
+RSP: 0018:ffffc90002bff2a0 EFLAGS: 00010293
+RAX: ffffffff83ff513a RBX: ffffc90002bff360 RCX: ffff8880003f2440
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000000
+RBP: ffffc90002bff430 R08: ffff88801fc24253 R09: 1ffff11003f8484a
+R10: dffffc0000000000 R11: ffffed1003f8484b R12: dffffc0000000000
+R13: 1ffff9200057fe68 R14: 1ffff110066ba015 R15: 0000000000000004
+FS:  0000555589e6b500(0000) GS:ffff88808d210000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc5ba20d000 CR3: 00000000346f0000 CR4: 0000000000352ef0
+
+
 ---
- Documentation/filesystems/{ => gfs2}/gfs2-glocks.rst |  0
- .../filesystems/{ => gfs2}/gfs2-uevents.rst          |  0
- Documentation/filesystems/{ => gfs2}/gfs2.rst        |  6 +++---
- Documentation/filesystems/gfs2/index.rst             | 12 ++++++++++++
- Documentation/filesystems/index.rst                  |  4 +---
- MAINTAINERS                                          |  2 +-
- 6 files changed, 17 insertions(+), 7 deletions(-)
- rename Documentation/filesystems/{ => gfs2}/gfs2-glocks.rst (100%)
- rename Documentation/filesystems/{ => gfs2}/gfs2-uevents.rst (100%)
- rename Documentation/filesystems/{ => gfs2}/gfs2.rst (96%)
- create mode 100644 Documentation/filesystems/gfs2/index.rst
-
-diff --git a/Documentation/filesystems/gfs2-glocks.rst b/Documentation/filesystems/gfs2/gfs2-glocks.rst
-similarity index 100%
-rename from Documentation/filesystems/gfs2-glocks.rst
-rename to Documentation/filesystems/gfs2/gfs2-glocks.rst
-diff --git a/Documentation/filesystems/gfs2-uevents.rst b/Documentation/filesystems/gfs2/gfs2-uevents.rst
-similarity index 100%
-rename from Documentation/filesystems/gfs2-uevents.rst
-rename to Documentation/filesystems/gfs2/gfs2-uevents.rst
-diff --git a/Documentation/filesystems/gfs2.rst b/Documentation/filesystems/gfs2/gfs2.rst
-similarity index 96%
-rename from Documentation/filesystems/gfs2.rst
-rename to Documentation/filesystems/gfs2/gfs2.rst
-index 1bc48a13430c1c..f971353d23611c 100644
---- a/Documentation/filesystems/gfs2.rst
-+++ b/Documentation/filesystems/gfs2/gfs2.rst
-@@ -1,8 +1,8 @@
- .. SPDX-License-Identifier: GPL-2.0
- 
--====================
--Global File System 2
--====================
-+=============
-+GFS2 Overview
-+=============
- 
- GFS2 is a cluster file system. It allows a cluster of computers to
- simultaneously use a block device that is shared between them (with FC,
-diff --git a/Documentation/filesystems/gfs2/index.rst b/Documentation/filesystems/gfs2/index.rst
-new file mode 100644
-index 00000000000000..3875b9e1bb5cd7
---- /dev/null
-+++ b/Documentation/filesystems/gfs2/index.rst
-@@ -0,0 +1,12 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================
-+Global File System 2
-+====================
-+
-+.. toctree::
-+   :maxdepth: 1
-+
-+   gfs2
-+   gfs2-glocks
-+   gfs2-uevents
-diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
-index 11a599387266a4..897eabaa30d65d 100644
---- a/Documentation/filesystems/index.rst
-+++ b/Documentation/filesystems/index.rst
-@@ -90,9 +90,7 @@ Documentation for filesystem implementations.
-    ext3
-    ext4/index
-    f2fs
--   gfs2
--   gfs2-uevents
--   gfs2-glocks
-+   gfs2/index
-    hfs
-    hfsplus
-    hpfs
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dafc1171254406..c685140f78c4e9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10335,7 +10335,7 @@ L:	gfs2@lists.linux.dev
- S:	Supported
- B:	https://bugzilla.kernel.org/enter_bug.cgi?product=File%20System&component=gfs2
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
--F:	Documentation/filesystems/gfs2*
-+F:	Documentation/filesystems/gfs2/*
- F:	fs/gfs2/
- F:	include/uapi/linux/gfs2_ondisk.h
- 
-
-base-commit: ee9a6691935490dc39605882b41b9452844d5e4e
--- 
-An old man doll... just what I always wanted! - Clara
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
