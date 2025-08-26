@@ -1,123 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F351CD15
-	for <gfs2@lists.linux.dev>; Fri, 22 Aug 2025 12:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2374236A73
+	for <gfs2@lists.linux.dev>; Tue, 26 Aug 2025 02:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755865174; cv=none; b=qJcnpZpB3LHDxWSU3agAeRO7EtpvAJuV9DMpPONGFUkW0qxqNmxetm7yuvcjW0jXHmU1x6fN7dTh7/LCEWFQF5B44c8CXII6UUDIkzOgFZpbL0ynOS8trB1EqO8Be5JthjC/zytqQNfd2pGZMaBNYAKog+R+PSaK1UpBczU4OMg=
+	t=1756175970; cv=none; b=gi6znU9K8qDJ0r8IVitskI290qNIsfTh2Y8HnMh6uuq8j8qbD+k3VV9XvC9r+VMhTBfe1J3G0j5WhfwbalBl5W914UxEZ9O+9S+Vb50XYVMjdwjU8rIlCWJGbNe2eIhaH+NOqGh3pCRubYtAXAn6PbTaIf/b/Ryo8DxbS+vNiBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755865174; c=relaxed/simple;
-	bh=AHo6zHMKJprCnAHqLp3w9k1VmmN+kLymmxtojJkG1aI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FHcKKjWHaZWySi05KIc6PHRXyOBcz3qZtTSCu3Dax68/6OYsEyuMfsfS7EioGtkQrmWbjYQ/LJbKbgGhDpFuOd6VBrRbtdwrVC2zHxnTi+GJxDj2f9uzpR0oCz89ZFBdoxsKbmeIiQJWtbTqys7VckzJXIekZBDqIsWDdGwQ/0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jma2PRnk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756175970; c=relaxed/simple;
+	bh=xHs+l2pfnza2uc+5614jN3sm82wrUYBarOeH9qm4DmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/+BHHhd5KmnxMiM1RCW4CyfuLbvJr9eZVGekVrUY4/2hvc2iMzsGNrFaQmJRiI4ZWGboDtJdGFFpnVvoduu+aLuHBxpS01HrJkyDFq4E7iqwXhNny9GMgpmw4wdYGuwgYCiO5XKLbgZ656+0WS+5b8GwksvyeKmRKLEa8IV7go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIa/gmC7; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jma2PRnk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755865170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AHo6zHMKJprCnAHqLp3w9k1VmmN+kLymmxtojJkG1aI=;
-	b=Jma2PRnkM7o3Ln2/g1wyXuuXte69SRbrQK2W0eFiby3RJdU//Cc45g4L+RxCbvEXQ3sdj1
-	d6rjpvvKXu/BzvFTaffMAkyY1kRGbqjjq7ccmC6mjoHdnwQScb6ydqdJwPRqcJeag06wZE
-	FWbQ0I6C4q7ockRUZ47gHyi+hZQm6Bo=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-avT_mDQmO4-2u7FSxXaVHQ-1; Fri, 22 Aug 2025 08:19:28 -0400
-X-MC-Unique: avT_mDQmO4-2u7FSxXaVHQ-1
-X-Mimecast-MFC-AGG-ID: avT_mDQmO4-2u7FSxXaVHQ_1755865168
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2445805d386so26236855ad.1
-        for <gfs2@lists.linux.dev>; Fri, 22 Aug 2025 05:19:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIa/gmC7"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-246fc803b90so10926485ad.3
+        for <gfs2@lists.linux.dev>; Mon, 25 Aug 2025 19:39:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756175968; x=1756780768; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GQynW9QiNkC8m7UhwgLmWwZBf8g2MjsE/2KafsbAG70=;
+        b=FIa/gmC77OuFYo02FMU/o45aPrazpHmL4uEtlPWXY3azfBmfXkWjkXrqfw+3cO4h9a
+         RPwvvyfTYKWVnDN5TvUMWJHJLqdoDQ9wA6/ILdnYLdrPOfFHa5GW9Lfg5BAifmLrhztO
+         sMQXSK1hSgRkORyzcKN7m1U3xvHJEo3MlNZawlOn+1nMAoWTvnGUW1ogiksROm0cAJZA
+         r004SaUGBxZzI+Vv7j4Tj+dI2ZQveb/tX7P+L6fWXtt3NRJtax35eNhokYbNJN4HD61V
+         pq7IH87GSRmGKYMzwm5/zrnx/mQzQyIeBoPQmqPvB9/7uI/iVL+MU/dNdyKmSi4zwEvY
+         Jnvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755865168; x=1756469968;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AHo6zHMKJprCnAHqLp3w9k1VmmN+kLymmxtojJkG1aI=;
-        b=cfFqiKRm6jHn8cSHJQG2gZKJiOoudRgw3ur9Ln2RQ7XtPTF9iBDNMsh/E8YdH+Xnm8
-         A8Z20BDPJq6MOvP0DzXKn4sXBOPdPqiciggcY4e7+L2XJahtGkblyRiJ1YNFX4rN91s7
-         MtA6Px2dTOwOaE8ZnBduTXDYF8GeJQ6KKR5dsNdfaWKC0QFdrLiNTewisJg/18Zgc0QL
-         pnHxV+a5nN13yLvsxzJrP/sZkQldxAuH/XlyzitfCEZiop9GbjIina/EakPozwn9yW7+
-         yHR0LzXGlk/VxEkOtxre12CUoDYwZ9+nqW+os1IFOzCDhssUmA0qiEzncj88fsYJLCbr
-         C8tw==
-X-Gm-Message-State: AOJu0Yw8vmhOUh/wB+JmxS++vBcQc7MicopvUTxa00DFZwlYlfTo2t/8
-	52MIY/iDbdTjEreW/ZkeBsekxGGFiTMu8TxhHi2akOaMGj4fDhua2cfzsoZ32t2jh7eheBAu9SQ
-	bjuyQM111OL9thCahrcEVLvBcYnyGbKkCPkVFA/opkqJJOuewRbbF9s8fzoyHZzgTUzfXCjk1Cj
-	jhqx/cbIs5YFTvn/serb0ShMjkYLQOvA==
-X-Gm-Gg: ASbGnctI+CDgNU3bvbZ/4/UPrwUrTycCBJMU4+cBPoxNm8j/B4NAf6oEtbFi+ESqTEf
-	LHZw9pLNB4Z1vPODaaSNMbZG5axGCDZnQMldvIZHvFHLdzkYK1WKGjh6hmaAcsJm/zLFpSQ9hu+
-	NKM18z7txw4To1yCAo9Ak=
-X-Received: by 2002:a17:902:f68f:b0:240:5c75:4d47 with SMTP id d9443c01a7336-2462eb38003mr44147505ad.0.1755865167611;
-        Fri, 22 Aug 2025 05:19:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGltbwVY9rGHjNKK/ksNupWiaO+yYsYdcI6TnLU5vttZmQ+Va1/nvZW4dJUtIf4GuTRs/6KYaAz0AtXNie8hGk=
-X-Received: by 2002:a17:902:f68f:b0:240:5c75:4d47 with SMTP id
- d9443c01a7336-2462eb38003mr44147195ad.0.1755865167218; Fri, 22 Aug 2025
- 05:19:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756175968; x=1756780768;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GQynW9QiNkC8m7UhwgLmWwZBf8g2MjsE/2KafsbAG70=;
+        b=wFTEFNwh/K3y+L12L18LE6MqRSrW2tLNu0TK4y6HZ3+DZZUFXvhRiZyFMi/6rWswdV
+         DYwozbGK+sfLxCD7A6LiCdawBG+BdE9i7W6Uu0Xbi5iIe4+3ZBradbFdI6Yy1GqiaO/a
+         IdfijeRczyYZYuTTIqvJMlxLnh3hmHHqWRaOmWtTmASOCaa0LeG31FbuHo1B5JKsS9KX
+         C+rssdHN78CL1jUxfv5jAOkwd67OwoQ7vUE7aaIWGxNmlTKydk7ZrVp248bCgPQl+gFz
+         ij8Ffh7dyx3sYh3SkltbFWSoV7UsYdLZTYQZkmygpona4XKoOXgdnXv9FigbTHmDp0Wr
+         fDqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoUMANZJaAh1V0BEY+f/dRxJeGww1sY8vV2orJLCNUaasYnmL3JLnmVQN3SvQsikWQ9aNC@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBIEppZ8dF/kzmrU3ZsKK2o6u30Yx/nWhP2XRLuTj1OzT128a0
+	J/TXkceObwCU6Aqvhfi+wtLjYcoao9Up1I37GOmSXM+g2q3VqM6TCnVj
+X-Gm-Gg: ASbGncv5/Xbk/l2fRTP3sYeTKKkiNDmM8T+BMLrtlhvAachTkIKjc6pTYtQ9f0G0LX1
+	/DtDgNezPalbYMOcYoUP3cNHXQ/JNUkJeYcPc3x/n96N8DgCjAw+qnJZLbIYOZP1MiTA/LEenUW
+	nM0dNnfbpHNME0vQttUhP++DayKZoP1bLER/9C82zNOVrYFYVNxyBciXUvOFulVOKMlOi1vEo96
+	zH/QoJVBsaUe7oBUFREXD0XPPSEzaVjvFcRMkOXP4fkP8sSOeTOdPTy/H6MGVDPeXmM24myZMF3
+	iZBkeOI6D6/Z3p8QcFvYGVIUmTJMlspaOcx8XigcoUrD0C/y0G0hH3HgfNvhvtp+dghAZDHJTgz
+	QsVFE2jR3wIAfQB3mFbGx8SxNvZXCofLW
+X-Google-Smtp-Source: AGHT+IHmEMMHHRcOtgYg4LZPSqkm+z1dB2t0mOOt5Ny373ENmShez272ct4ZPtzZLFkpespJvpgnXw==
+X-Received: by 2002:a17:903:40c5:b0:246:cc19:17eb with SMTP id d9443c01a7336-246cc19229dmr84410505ad.19.1756175967819;
+        Mon, 25 Aug 2025 19:39:27 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246688645e1sm81074495ad.79.2025.08.25.19.39.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 19:39:27 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id F1D89424E25B; Tue, 26 Aug 2025 09:39:24 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux GFS2 <gfs2@lists.linux.dev>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Chen Linxuan <chenlinxuan@uniontech.com>,
+	James Morse <james.morse@arm.com>
+Subject: [PATCH] Documentation: gfs2: Consolidate GFS2 docs into its own subdirectory
+Date: Tue, 26 Aug 2025 09:39:13 +0700
+Message-ID: <20250826023913.14888-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAPYKksUjLP-tNuUCC2Vg7uZ9btE6yMkAQQ-7X332522s-jOXOQ@mail.gmail.com>
-In-Reply-To: <CAPYKksUjLP-tNuUCC2Vg7uZ9btE6yMkAQQ-7X332522s-jOXOQ@mail.gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 22 Aug 2025 14:19:14 +0200
-X-Gm-Features: Ac12FXwt5Y9VW3GNZfjszomz11LcTqVwkh5SQW8rlqo2DUtA9vPw-EHYMaTXB5Y
-Message-ID: <CAHc6FU5L8k+BurgqNkb_eCB2av+Te-VS9sabcB7ffbZCKLNmxQ@mail.gmail.com>
-Subject: Re: Resource group glock granularity
-To: Mark Syms <mark.syms@cloud.com>
-Cc: gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FcBPkuLvMthJWuO5ETXQ7T50gtRqWhQs6rOJGI-plhg_1755865168
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3546; i=bagasdotme@gmail.com; h=from:subject; bh=xHs+l2pfnza2uc+5614jN3sm82wrUYBarOeH9qm4DmQ=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBlrpc+b6eVttHk4QULvlVNuZ8DC2+fO26vuzpz3WOHPu 3nM6mZ6HaUsDGJcDLJiiiyTEvmaTu8yErnQvtYRZg4rE8gQBi5OAZjIE26G/8GMYY3fpk2Ikrjl 8Fm9ni3414OjBUtvaHLs1Dq/+setVXcZGV6pcTkd2HVnS7nYYlbDKZdWaVaHvn8UuU/wP/PptsZ b01kB
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 22, 2025 at 12:46=E2=80=AFPM Mark Syms <mark.syms@cloud.com> wr=
-ote:
-> Hi all,
->
-> Sometime back I seem to recall a bit of discussion around modifying
-> how the glocks for resource groups are managed, basically with the
-> primary objective of making the glocks control node to node
-> interaction and deferring node local collaboration to some form of
-> more local, and thus less expensive mechanism. Did this ever go
-> anywhere?
+Documentation for GFS2 is scattered in three docs that are in
+Documentation/filesystems/ directory. As these docs are standing out as
+a group, move them into separate gfs2/ subdirectory.
 
-Yes, we've got the LM_FLAG_NODE_SCOPE flag. That's used for resource
-groups, together with
-rgrp_lock_local() ... rgrp_unlock_local() for local exclusive access.
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ Documentation/filesystems/{ => gfs2}/gfs2-glocks.rst |  0
+ .../filesystems/{ => gfs2}/gfs2-uevents.rst          |  0
+ Documentation/filesystems/{ => gfs2}/gfs2.rst        |  6 +++---
+ Documentation/filesystems/gfs2/index.rst             | 12 ++++++++++++
+ Documentation/filesystems/index.rst                  |  4 +---
+ MAINTAINERS                                          |  2 +-
+ 6 files changed, 17 insertions(+), 7 deletions(-)
+ rename Documentation/filesystems/{ => gfs2}/gfs2-glocks.rst (100%)
+ rename Documentation/filesystems/{ => gfs2}/gfs2-uevents.rst (100%)
+ rename Documentation/filesystems/{ => gfs2}/gfs2.rst (96%)
+ create mode 100644 Documentation/filesystems/gfs2/index.rst
 
-> I think we in XenServer would probably be quite interested in an
-> approach of this form. We see a number of things, which are at least
-> partially, related to our workloads being a bit atypical. We have a
-> number of VMs on each host all accessing r/w one or more files
-> containing their virtual disk data on the GFS2. As these files grow
-> dynamically (they're qcow2) we can hit contention in block allocation
-> under some scenarios like start of day VM start up. Being able to
-> acquire access to a resource group that is being used on the current
-> node without a full demote and data flush would likely contribute some
-> useful performance and contention reduction improvements in this area.
+diff --git a/Documentation/filesystems/gfs2-glocks.rst b/Documentation/filesystems/gfs2/gfs2-glocks.rst
+similarity index 100%
+rename from Documentation/filesystems/gfs2-glocks.rst
+rename to Documentation/filesystems/gfs2/gfs2-glocks.rst
+diff --git a/Documentation/filesystems/gfs2-uevents.rst b/Documentation/filesystems/gfs2/gfs2-uevents.rst
+similarity index 100%
+rename from Documentation/filesystems/gfs2-uevents.rst
+rename to Documentation/filesystems/gfs2/gfs2-uevents.rst
+diff --git a/Documentation/filesystems/gfs2.rst b/Documentation/filesystems/gfs2/gfs2.rst
+similarity index 96%
+rename from Documentation/filesystems/gfs2.rst
+rename to Documentation/filesystems/gfs2/gfs2.rst
+index 1bc48a13430c1c..f971353d23611c 100644
+--- a/Documentation/filesystems/gfs2.rst
++++ b/Documentation/filesystems/gfs2/gfs2.rst
+@@ -1,8 +1,8 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-====================
+-Global File System 2
+-====================
++=============
++GFS2 Overview
++=============
+ 
+ GFS2 is a cluster file system. It allows a cluster of computers to
+ simultaneously use a block device that is shared between them (with FC,
+diff --git a/Documentation/filesystems/gfs2/index.rst b/Documentation/filesystems/gfs2/index.rst
+new file mode 100644
+index 00000000000000..3875b9e1bb5cd7
+--- /dev/null
++++ b/Documentation/filesystems/gfs2/index.rst
+@@ -0,0 +1,12 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++====================
++Global File System 2
++====================
++
++.. toctree::
++   :maxdepth: 1
++
++   gfs2
++   gfs2-glocks
++   gfs2-uevents
+diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
+index 11a599387266a4..897eabaa30d65d 100644
+--- a/Documentation/filesystems/index.rst
++++ b/Documentation/filesystems/index.rst
+@@ -90,9 +90,7 @@ Documentation for filesystem implementations.
+    ext3
+    ext4/index
+    f2fs
+-   gfs2
+-   gfs2-uevents
+-   gfs2-glocks
++   gfs2/index
+    hfs
+    hfsplus
+    hpfs
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dafc1171254406..c685140f78c4e9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10335,7 +10335,7 @@ L:	gfs2@lists.linux.dev
+ S:	Supported
+ B:	https://bugzilla.kernel.org/enter_bug.cgi?product=File%20System&component=gfs2
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
+-F:	Documentation/filesystems/gfs2*
++F:	Documentation/filesystems/gfs2/*
+ F:	fs/gfs2/
+ F:	include/uapi/linux/gfs2_ondisk.h
+ 
 
-You would see resource group demotes if multiple nodes contend for the
-same resource group, and no amount of per-node cleverness will fix
-that. But if the qcow files are spread out nicely across resource
-groups and there are enough resource groups overall, there shouldn't
-be too much contention.
-
-Have you looked at the block allocation patterns you are getting?
-
-Have you looked into "chattr +T" for directories which causes inodes
-created inside those directories to be spread out across resource
-groups?
-
-Thanks,
-Andreas
+base-commit: ee9a6691935490dc39605882b41b9452844d5e4e
+-- 
+An old man doll... just what I always wanted! - Clara
 
