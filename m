@@ -1,180 +1,95 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600A1D9346;
-	Wed, 27 Aug 2025 03:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90D2D4817
+	for <gfs2@lists.linux.dev>; Thu, 28 Aug 2025 08:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756264742; cv=none; b=kTw3LOg7uMkbDn1r1S2bvWz+qsGYdDXmOpUTD9J0yIFwQw05KUwDaUdnEQVWNslhgiGYW4nfIDJ2VXpkfAl0WklVzqcwccJdQq5CSCas8OgmI0/VkyCzZ9cEzn4q5qFkAEmiQV9pJd4CJiiH+jfcKakvjMwUG4H8stziSW01e60=
+	t=1756370024; cv=none; b=grvuRSkH62PDpmYcI4v3Wo2n/zWzRpe//D67V62R6tXVK4XeB1mPZn24vfqZIh5fED12wo8b6PPX+FGNHE4MkBzt2A/xdIltmab6nvyj6wx+nKRJs3LDOzvH29fMGFRyFjtVrJAD0lkWjTyaXSexth2X8BVeRure7CGg+8LylJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756264742; c=relaxed/simple;
-	bh=WUWwy5nccQxrS8HQfczhlbKuioAv23XjXIVasA3CJQ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l1+71Qt8ncQoeJIoNiCYdy63ydFpjE7ZvF3YeKwdKmUlmkp6/XzUtZiSBN64LljzjDNLSOkIODjsrx0pJmaott0kGIAkGaTG4nDqYKBOb9jzkBNuWibvETMRBm7NXHIb5t1dWoLHlkTZz3zDG+qRdb5Ag2Jsg/IOtEGvfHczenU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CAyCF73v; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CAyCF73v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=A+VnN3ce19ePBWAKL69GvyEbLz34iHfiJ7S4nl+bquc=; b=CAyCF73vjin/UU8OsCA3Ysf206
-	48hv7838JxCqoFmQuyqmmkSHuIxoQj2ehVeg/TDFlUZKyLXouyYX9zCcL+kfYJGGHfE/GQpPXQzMW
-	gqjw2wz4OexYYa8engqNDwwpqabINISV2wvYXpcN7mLcjTOxBWpFiykL4k+gt4nEt0j77WbGnKCz3
-	s9ZktHD8g1481fGBhWLkQ2uvo6iMRV9m6OwPZMmjyW4OQ+Fk9Q2ScLgn/cJNJDbfR9qw7QMoNAsID
-	+xnBktlOpl/zQMgv4/Hi0O5Yq8AzC62sbUwxJ4N6AMXKmJke+GkfiUgubsBsSin//5QspdpBJBKuM
-	OIVfJQuQ==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ur6gc-0000000DowB-0HmH;
-	Wed, 27 Aug 2025 03:18:58 +0000
-Message-ID: <8696a6c8-c555-4523-b8dc-b41ab14b4380@infradead.org>
-Date: Tue, 26 Aug 2025 20:18:57 -0700
+	s=arc-20240116; t=1756370024; c=relaxed/simple;
+	bh=TnIt2UUbf6chkHr/n4NxkJT+mOsIrHHSY0GyJLIdbk4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hZmDsOnxgxR63R+gGksPEqiaJID+oF8k0uViTSDQ6sx1cMDRzyRjvRZcdyZbBadRfAcSuWPAxljBMO8HSSyljzT+7yMZDk6i8bfZB2r94SHyTjOkf0ccih3g/dObRwWyyPqyYiRanuADISbgKH9WmY0aqwxXNsFW2qm/cjFGnrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: a7e4876e83e911f0b29709d653e92f7d-20250828
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR
+	SN_UNTRUSTED, SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:37059b13-93ad-469e-b21a-39ca1299dcbe,IP:10,
+	URL:0,TC:0,Content:0,EDM:-25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-20
+X-CID-INFO: VERSION:1.1.45,REQID:37059b13-93ad-469e-b21a-39ca1299dcbe,IP:10,UR
+	L:0,TC:0,Content:0,EDM:-25,RT:0,SF:-5,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTI
+	ON:release,TS:-20
+X-CID-META: VersionHash:6493067,CLOUDID:7982bef487c24e9de1a0c001ba5c3d46,BulkI
+	D:250828163333U604VCAT,BulkQuantity:0,Recheck:0,SF:19|24|44|66|72|78|102|8
+	50,TC:nil,Content:0|50,EDM:1,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,B
+	EC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: a7e4876e83e911f0b29709d653e92f7d-20250828
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1765091486; Thu, 28 Aug 2025 16:33:21 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: aahringo@redhat.com,
+	teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH] dlm: use KMEM_CACHE in dlm_memory_init
+Date: Thu, 28 Aug 2025 16:32:35 +0800
+Message-Id: <20250828083235.46347-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Documentation: gfs2: Consolidate GFS2 docs into its
- own subdirectory
-To: Bagas Sanjaya <bagasdotme@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Documentation <linux-doc@vger.kernel.org>,
- Linux GFS2 <gfs2@lists.linux.dev>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Andreas Gruenbacher <agruenba@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, "Darrick J. Wong" <djwong@kernel.org>,
- Jeff Layton <jlayton@kernel.org>, Miklos Szeredi <mszeredi@redhat.com>,
- Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>,
- Chen Linxuan <chenlinxuan@uniontech.com>, James Morse <james.morse@arm.com>,
- Bernd Schubert <bschubert@ddn.com>, Matthew Wilcox <willy@infradead.org>
-References: <20250827022122.12132-1-bagasdotme@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250827022122.12132-1-bagasdotme@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Using KMEM_CACHE() macro makes the code more concise and easy to read.
 
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+---
+ fs/dlm/memory.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-On 8/26/25 7:21 PM, Bagas Sanjaya wrote:
-> Documentation for GFS2 is scattered in three docs that are in
-> Documentation/filesystems/ directory. As these docs are standing out as
-> a group, move them into separate gfs2/ subdirectory.
-> 
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
->  Changes since v1 [1]:
-> 
->    * Strip gfs2- prefix (Matthew)
-> 
->  [1]: https://lore.kernel.org/linux-doc/20250826023913.14888-1-bagasdotme@gmail.com/
-> 
->  .../filesystems/{gfs2-glocks.rst => gfs2/glocks.rst} |  0
->  Documentation/filesystems/gfs2/index.rst             | 12 ++++++++++++
->  .../filesystems/{gfs2.rst => gfs2/overview.rst}      |  6 +++---
->  .../{gfs2-uevents.rst => gfs2/uevents.rst}           |  0
->  Documentation/filesystems/index.rst                  |  4 +---
->  MAINTAINERS                                          |  2 +-
->  6 files changed, 17 insertions(+), 7 deletions(-)
->  rename Documentation/filesystems/{gfs2-glocks.rst => gfs2/glocks.rst} (100%)
->  create mode 100644 Documentation/filesystems/gfs2/index.rst
->  rename Documentation/filesystems/{gfs2.rst => gfs2/overview.rst} (96%)
->  rename Documentation/filesystems/{gfs2-uevents.rst => gfs2/uevents.rst} (100%)
-> 
-> diff --git a/Documentation/filesystems/gfs2-glocks.rst b/Documentation/filesystems/gfs2/glocks.rst
-> similarity index 100%
-> rename from Documentation/filesystems/gfs2-glocks.rst
-> rename to Documentation/filesystems/gfs2/glocks.rst
-> diff --git a/Documentation/filesystems/gfs2/index.rst b/Documentation/filesystems/gfs2/index.rst
-> new file mode 100644
-> index 00000000000000..9d9ca84d45a7ae
-> --- /dev/null
-> +++ b/Documentation/filesystems/gfs2/index.rst
-> @@ -0,0 +1,12 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +====================
-> +Global File System 2
-> +====================
-> +
-> +.. toctree::
-> +   :maxdepth: 1
-> +
-> +   overview
-> +   glocks
-> +   uevents
-> diff --git a/Documentation/filesystems/gfs2.rst b/Documentation/filesystems/gfs2/overview.rst
-> similarity index 96%
-> rename from Documentation/filesystems/gfs2.rst
-> rename to Documentation/filesystems/gfs2/overview.rst
-> index 1bc48a13430c1c..f971353d23611c 100644
-> --- a/Documentation/filesystems/gfs2.rst
-> +++ b/Documentation/filesystems/gfs2/overview.rst
-> @@ -1,8 +1,8 @@
->  .. SPDX-License-Identifier: GPL-2.0
->  
-> -====================
-> -Global File System 2
-> -====================
-> +=============
-> +GFS2 Overview
-> +=============
->  
->  GFS2 is a cluster file system. It allows a cluster of computers to
->  simultaneously use a block device that is shared between them (with FC,
-> diff --git a/Documentation/filesystems/gfs2-uevents.rst b/Documentation/filesystems/gfs2/uevents.rst
-> similarity index 100%
-> rename from Documentation/filesystems/gfs2-uevents.rst
-> rename to Documentation/filesystems/gfs2/uevents.rst
-> diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
-> index 11a599387266a4..897eabaa30d65d 100644
-> --- a/Documentation/filesystems/index.rst
-> +++ b/Documentation/filesystems/index.rst
-> @@ -90,9 +90,7 @@ Documentation for filesystem implementations.
->     ext3
->     ext4/index
->     f2fs
-> -   gfs2
-> -   gfs2-uevents
-> -   gfs2-glocks
-> +   gfs2/index
->     hfs
->     hfsplus
->     hpfs
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index dafc1171254406..c685140f78c4e9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10335,7 +10335,7 @@ L:	gfs2@lists.linux.dev
->  S:	Supported
->  B:	https://bugzilla.kernel.org/enter_bug.cgi?product=File%20System&component=gfs2
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
-> -F:	Documentation/filesystems/gfs2*
-> +F:	Documentation/filesystems/gfs2/*
-
-I think this should be:
-
-F:	Documentation/filesystems/gfs2/
-
-without the trailing '*'.
-
-See the explanation for F: near the top of the MAINTAINERS file.
-
->  F:	fs/gfs2/
->  F:	include/uapi/linux/gfs2_ondisk.h
->  
-> 
-> base-commit: ee9a6691935490dc39605882b41b9452844d5e4e
-
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
-thanks.
-
+diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
+index 5c35cc67aca4..124b370d1571 100644
+--- a/fs/dlm/memory.c
++++ b/fs/dlm/memory.c
+@@ -34,8 +34,7 @@ int __init dlm_memory_init(void)
+ 	if (!mhandle_cache)
+ 		goto mhandle;
+ 
+-	lkb_cache = kmem_cache_create("dlm_lkb", sizeof(struct dlm_lkb),
+-				__alignof__(struct dlm_lkb), 0, NULL);
++	lkb_cache = KMEM_CACHE(dlm_lkb, 0);
+ 	if (!lkb_cache)
+ 		goto lkb;
+ 
+@@ -43,8 +42,7 @@ int __init dlm_memory_init(void)
+ 	if (!msg_cache)
+ 		goto msg;
+ 
+-	rsb_cache = kmem_cache_create("dlm_rsb", sizeof(struct dlm_rsb),
+-				__alignof__(struct dlm_rsb), 0, NULL);
++	rsb_cache = KMEM_CACHE(dlm_rsb, 0);
+ 	if (!rsb_cache)
+ 		goto rsb;
+ 
 -- 
-~Randy
+2.25.1
+
