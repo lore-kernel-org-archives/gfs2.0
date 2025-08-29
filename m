@@ -1,114 +1,78 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736FC334708
-	for <gfs2@lists.linux.dev>; Fri, 29 Aug 2025 17:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C466334713
+	for <gfs2@lists.linux.dev>; Fri, 29 Aug 2025 18:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756488094; cv=none; b=AIEHFIr/bGff6e/Nx5xHuWp/4DegApobpZbdSEMCoee7BeAor+z/TAn/s9u91ErUfiIy2DqGabxldpA6GnaCc15dyqwF70i9aiGkRKwaVRVKfhEyrHD4kmjXLf9ywD5ZeKtq5Zn6jypZYYuXkDxJmkoSNgs2DjyrenkTZhAei6U=
+	t=1756490752; cv=none; b=H4NeKKOCtKgUVLrYrhI0xENykEra7vngLNRaoSntpMxkpOHPlwAxJadiZW9zIbFa/GVbXQdBQnQwDNVYz6YntX/AliGeM/kz0ZHteKwT9KgJA9OTGy/z8Q2he0rM39shkLkcCuPAyZYOLQ2LCdfME2T/e8gdl4iBSERxIgzDETg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756488094; c=relaxed/simple;
-	bh=S+/QrEGldts39ESs0/DwWP+mBsUDlC0D9Re5hs3PyJw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dc4nKr1y8MGUNDXNQ6pZmnptBTB5SJfcXjclg2+LcweFLGv0wKiOfw7faEnAkV542caaZG483rONkriWvyGR7YVa/GW8MkvBVj/BoTPyjhWY04zl01Yw2SOXAcroK8Ghgi8eyGMPj1Iv0He1p9av+lKyQBac93ugVswzriwOtgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YL5Kc7CA; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1756490752; c=relaxed/simple;
+	bh=u1e2LALm18nas0vKQ6sCc9bRuEFbXQoI3oI+CSc9GUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SA8VBeCJnhlFCVG/a9LUxmFZl+ezFq/1dwh8vibVQG1zKpdomtXkvNRGCZITdOCQZ486mxOFNyg23kajZZJDbeLWIjL5VeFY7S5L3z0Amh6HdEIADoJGNcqoEETBCU/O5xvKB2pG0YqTlYNWAg6/uZmvGO63epBRpJVbMJARjX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h/pjhV6e; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YL5Kc7CA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h/pjhV6e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756488091;
+	s=mimecast20190719; t=1756490750;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKyYLWaMs/pGKmOyFZdqr2YDBvHsZW8PlQ57jr7m0Oc=;
-	b=YL5Kc7CAVk0OW2xdmVYG3nE3d0mcI96nuVMLC620OInt+BooJapgsF0A/zRgoWFUHD/BWr
-	LkZNM5rry9oGit+gcRyTnO3i2uFnJTaS1WNBOmJeKTjgO7K5Xg454DZmCY32LuXzbJ3RaX
-	godGnJizyrdD1yc49zT2fw11467ziiQ=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-pQfiJFqnPdWyM-ocSLUGxQ-1; Fri, 29 Aug 2025 13:17:19 -0400
-X-MC-Unique: pQfiJFqnPdWyM-ocSLUGxQ-1
-X-Mimecast-MFC-AGG-ID: pQfiJFqnPdWyM-ocSLUGxQ_1756487837
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-333f903e1cfso10970841fa.2
-        for <gfs2@lists.linux.dev>; Fri, 29 Aug 2025 10:17:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756487837; x=1757092637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yKyYLWaMs/pGKmOyFZdqr2YDBvHsZW8PlQ57jr7m0Oc=;
-        b=OV2uxtkpNMehijxY4gMZDAowybUu6769VDzPf08oWil0rk15ZhC+7ZcE14Ve1GFJGE
-         Ef3SF4q3O8ofQNGQanWEQDbqQzBV3d03VbN2O2d5a7TKHdilU4nZhHl4TQfDoFT5LEBC
-         x0h7/tXow2w/7Hom5L591cW9XmQ5uJ0ILwSNmgCb9w3dgSxcrDslMp5XFtcLFnVsDMoH
-         wY5uLQ/Gj6H6odfo5w8OsI0JIj4NygBiVA1vIJbQZN0bP1rVN6PsgfuDnwOt+gAIO7q2
-         bdrzXIICnwV8Hea9Fu4NJN9O8sERaDV4XcqQ0xXimdi3RfDNaj/pa+CZVYLn+ZrKljt/
-         KwGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/sUPCaV+zqe6JClGV+qtrHNz14+TWfkBxfvI5S9NU76jxbaz9DxbdThIJOqNqVgGZQYSu@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyp+UFo+RZTCmSJjqElgk9US6Ft3Ja/mTAWYfpNNEkFzwrXcDLW
-	Y/EX5xZEl5jR0JVKcFekWqENf49I2jt275vcCcgOXB/tuI0WStaQmxHtJtb/s7URB2qkx47ZI60
-	U2ce3FcUmOFyEJntm9Xv1ZduirUagBcW0ywL/M4iTNGAfAMPwkkSmhI6QX0CvQT8Pxc1l4yM/W+
-	EPl5DF4MdM6D0nNMdYsycg6KmH9Rk4vw==
-X-Gm-Gg: ASbGncsCDxpf2gGHGoWqqgipraH7l1e+qiJd5Z+4HWpLE/5egx9f9lRY6j0MSbe1Rl1
-	8KFtUTCMeMwhMlGwBic/UKLlMxTxkUaJ4+D0bnrNEWClKMJoQ9jaklans2ntjVqshZEb0/nhfvr
-	l6NAGfFniMrvyOB2pvv95nBntrpYfTA0H5dnrX1xmPIxLIPziFhghu2SA=
-X-Received: by 2002:a05:651c:23c5:10b0:336:b79e:6a7 with SMTP id 38308e7fff4ca-336b79e0d2amr8676091fa.7.1756487837375;
-        Fri, 29 Aug 2025 10:17:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIeEdduEcyLzbX/DHy6adyDRRHg7LppkqwFQ3o6vXFiB2gBUJqkpvoCsrihHBGKZT3zE1Q0Zidc0k2I86ZhOw=
-X-Received: by 2002:a05:651c:23c5:10b0:336:b79e:6a7 with SMTP id
- 38308e7fff4ca-336b79e0d2amr8675991fa.7.1756487836917; Fri, 29 Aug 2025
- 10:17:16 -0700 (PDT)
+	bh=8/50SATT95Ds6BvNgK0T9SUh3zNyDh5/nmD6Y6LNzh8=;
+	b=h/pjhV6eUydcyN2ZQEuQrA3St8Azz46Du1NGY2HfKKqoWQeYDu2lvHDgNKIgnYVHhn3EC3
+	+uQQXko/gezz2L5gzQ37eAu8YvsKJBVrKNbr2UbXdTaa/wXUW6rC7z+Sl2Pgr/r2wFxSUF
+	cx/6VFuuQgfkMBb8jSNyXaYD0Uwsp0Q=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-aPTk7qcCP-Gtn3kBaEHZ_Q-1; Fri,
+ 29 Aug 2025 14:05:46 -0400
+X-MC-Unique: aPTk7qcCP-Gtn3kBaEHZ_Q-1
+X-Mimecast-MFC-AGG-ID: aPTk7qcCP-Gtn3kBaEHZ_Q_1756490745
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 87BDC180035B;
+	Fri, 29 Aug 2025 18:05:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.89.196])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 939801800280;
+	Fri, 29 Aug 2025 18:05:44 +0000 (UTC)
+Date: Fri, 29 Aug 2025 13:05:42 -0500
+From: David Teigland <teigland@redhat.com>
+To: Alessio Attilio <alessio.attilio.dev@gmail.com>
+Cc: Alexander Aring <aahringo@redhat.com>, gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fix(dlm): handle unlock/cancel during deferred lock
+ messages
+Message-ID: <aLHr5VAuXQZE0bBd@redhat.com>
+References: <20250829110749.500571-1-226562783+SigAttilio@users.noreply.github.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250829110749.500571-1-226562783+SigAttilio@users.noreply.github.com>
- <CAK-6q+js0y9Pnubg0ev3_GXs8Fa4KYU=nNP5r=FBatuEAUhJkw@mail.gmail.com>
- <CACsb0NhQ8BBzcUtR0awMu6AbP-xwLvkUotDAAg-LbUV_LxwiNA@mail.gmail.com>
- <CAK-6q+gQOQsg5uE2-KioKBip5agCV5AjhXbxgwqngvg8ct=vVQ@mail.gmail.com> <CACsb0Nh0B5F51H-_bxM+wR4JzD3dJFRfRx_fHGorU=fRYzxPzg@mail.gmail.com>
-In-Reply-To: <CACsb0Nh0B5F51H-_bxM+wR4JzD3dJFRfRx_fHGorU=fRYzxPzg@mail.gmail.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Fri, 29 Aug 2025 13:17:05 -0400
-X-Gm-Features: Ac12FXzvBhq07YLkMb47kWNVSX_qr62WFvHfJETbiVaaR9Zvkkj6hmNZGneD9g4
-Message-ID: <CAK-6q+jV6yo79H6KJoGXL0k=dBndSh1pLTEh34-uOTsG98jGJg@mail.gmail.com>
-Subject: Re: [PATCH] fix(dlm): handle unlock/cancel during deferred lock messages
-To: Alessio Attilio <alessio.attilio.dev@gmail.com>
-Cc: David Teigland <teigland@redhat.com>, gfs2 <gfs2@lists.linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QK0BhYxlsUDkzXCRAcf3X1ZoA2zVlTAVmA0TMXe4XoU_1756487837
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250829110749.500571-1-226562783+SigAttilio@users.noreply.github.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi,
+On Fri, Aug 29, 2025 at 01:07:49PM +0200, Alessio Attilio wrote:
+> ---
+>  fs/dlm/lock.c | 8067 ++++++++++++++++++++++++-------------------------
+>  1 file changed, 3944 insertions(+), 4123 deletions(-)
 
-On Fri, Aug 29, 2025 at 12:21=E2=80=AFPM Alessio Attilio
-<alessio.attilio.dev@gmail.com> wrote:
->
-> When I say =E2=80=9Cdeferred lock message,=E2=80=9D I=E2=80=99m referring=
- to a lock request that gets queued up because the lock resource isn=E2=80=
-=99t immediately available usually while dlm_master_lookup is still figurin=
-g out who owns the lock.
-> During that time, if an unlock or cancel comes in, it can race with the d=
-eferred message and cause some pretty nasty issues.
->
-> In my case, I ran into this under load in a real setup. I don=E2=80=99t h=
-ave a clean reproducer yet, but I=E2=80=99m digging into it with a debug ke=
-rnel to catch a solid stacktrace.
->
->  I=E2=80=99ll share it as soon as I have something useful.
->
-> The patch is meant to make sure that unlock and cancel operations don=E2=
-=80=99t step on anything that=E2=80=99s still mid-resolution or worse, alre=
-ady freed. It=E2=80=99s a bit of a corner case, but when it hits, it=E2=80=
-=99s messy.
->
+Thanks for working on this, lock cancel has always been sketchy, and I'd
+be happy to see that improved.  An 8000 line patch is going to be
+difficult to review, though!  It looks like diff may just be moving a lot
+of lines around, and perhaps splitting this up could avoid some of that?
+Also, I'm not seeing which upstream commit the patch is against.
 
-Please make sure you use a recent kernel to reproduce it.
+Thanks,
+Dave
 
-- Alex
 
