@@ -1,995 +1,289 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0B42609FD
-	for <gfs2@lists.linux.dev>; Sat, 30 Aug 2025 10:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756548878; cv=none; b=IdGIdWGJpqN9pVcShzzkXbq32+BaGYXUyKTDpRkVqBhitLfmdTogD3lTLH+Sl7QvNoCov8Ij0kS3lP9AUyM+7D7qS6tuJ2P58OIVMQyQpKpa5X+pnfCqqAYSCoxGPAvVv+EZoFarKnMyOQ5EOLvGORCrnIqTXfh7ot5Rgg/p+Qw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756548878; c=relaxed/simple;
-	bh=CcXEfUMRf2cQmxE0ag5UkElhUyi/j25Pbg/E3TkcvIA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRnZuIZnyPmTaVwmbBl63l3QsUInZwaavbrBNPf8JOpqiEwAAAXjEpwIrNjlQ1GNaWj7Nkybo54SoNFJyqWA26KrIS68WsoBYA9ZMxAXX3eDLk8xAzQ8JjeotYvgClTvl/Tp+kyOR9Hhw1di3Ib0jrCxTGiTsPx3RJYGINCWuZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VyLAHQt7; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323E72FD1D0
+	for <gfs2@lists.linux.dev>; Tue,  2 Sep 2025 11:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756814032; cv=fail; b=PFsyscfUAbSf3vvMXpSwcRk9gfTT5vpZOvaYlvTVpOs5quB9ojKs0KerfDdtM62iAtgcEOXMQdHZiQYwfDfr5vczBLfOl8er+o8dt2/mxUbKrxsUEjWmCxlyeP+2xE/tc1KcxtyEyeLnV7r+2dZiRecm60mjNTFagzQe1ewcV38=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756814032; c=relaxed/simple;
+	bh=qZoJWB6f5W2Y7QJVeX+JGngH98EkP0++DMEIJBHGSu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DKapJV6Vre2pM8Nn2D+VZW2+lzlXUg70gMTnOa1Aev26R1o07UrMRPkldKt0nms43zF5I7WQEU51enQWooB2XHNKP2IzEagH4H/Mt0BqNfLkaEVwN7iHR8AVEZSj1zn59CDgfWoX4Mh0nNt02U800QrHW7FmskyPIhTqsfguHMo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=qbezXFAe; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=RgoWYoB7; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VyLAHQt7"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45b86157e18so1483955e9.0
-        for <gfs2@lists.linux.dev>; Sat, 30 Aug 2025 03:14:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="qbezXFAe";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="RgoWYoB7"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582ANhDf005309;
+	Tue, 2 Sep 2025 11:53:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=RiLtJrx+xDz0gFzW
+	y2zGTF8v4OVbuqBvHd5p4Z7b17s=; b=qbezXFAe/vJmr2IdcnjK/aMElUHGk/IL
+	nmNgdj2CYL1nUW3SbsoSd0PYX6Mgx22QdbkKR3mZ9zYNICG8G5pxHnEvym4dNU1A
+	kmY52pVff9kDijGz4xJcbOfmLvBLikV5dGYGGv078XYBsNMALoNAyw2JWMGnC4pu
+	cRZOE47pRLL2Xf2Rk1kKiLi1JDgeY6ztl77PToqXHpTpmYwpAnQFStlD4pPqFFb/
+	Eo5qY8XGIKHz8luysaIHaIu5J4P0zsU7ns3ZECN60x/AWXv1tcZ8YmF2rxI9coZP
+	R8rHKmhx0Mlw6wfN+0BZI/PAqd/5bZlLqd/W/UpH+tP8VSv3QO0PNg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ushguv0c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 02 Sep 2025 11:53:48 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 582BqDFh030968;
+	Tue, 2 Sep 2025 11:53:47 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqr92dyy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 02 Sep 2025 11:53:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RhDA7N+oNjP93Ekf9VulYPvkwgeVtY8jpsMZDDJoF2dt8jsByMrpkaU2eKT5beaTAq9Zvk/wltVOpAeGqQhE9bKzSRNoEARihEUKQT8TXwV2bIAZmzPspyHEerMwfqyVGk9C1T/Lutx1vylkI9Sxw2mYc28sCNgNjdZ8NgvRvShrTnB8UPeYYWSr9Sz38kEyOPlH0W6xn9HegFyRU/+9GINL/0Id6Xbs8bAlAKQBq05Ohtct5KHfZGhg+iksJ4Oj15QtuAsUzFF61kMv2h+92XvOdp+jj1FPVdz+lD4SdHOhbysjTy/QTa1Jji9IxTSHqkA2q/S1Ttg4PWmOIm7lyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RiLtJrx+xDz0gFzWy2zGTF8v4OVbuqBvHd5p4Z7b17s=;
+ b=CpMWyllQ2ju8YbLR4jPQhEOsyahBBBMYhQ0CiNXdUSUf30226TOvX0vxh4LsZEvo9lgQIoYKC1MwmD0TFzZbXANVdRbP+RNxw4YB+aO7sMyWCB/sxGYaKUkCmXTHXsqXGNNqSTVZxKgJ0XUGNJa8oIaIaRqxW3UV23wUptRMTr3eCeEtZdWtAk11FC/id0wM/JAP8lV5REpJxZBrfbywq4CPS0glKYpH0ZP97hqB26gMiOv3LA0cAUq4PGGML55o2y+MhgDjZh5N3IwB/tCQiaS+QFgwboeFJlbgtq8uJjIKPmWYhZXwITD/UODKkDhJ96IjeZzOw6Vuj7jl15U4jA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756548871; x=1757153671; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QoQFPVbxejJ6set8ozL+F6n6HL//jQi4uJHuOtJvdWQ=;
-        b=VyLAHQt7GDwu7NZ38z6m+XACU9Ma1QYnUqSomGks3MtuLrnJKbCrGP0G9gQ/JgmVdr
-         Qfd+NuLEoDko8r7gqUez/01/YrvFcaswro4MGVOWR0iU6NQ6msBxKy2+3Uiz9ZXf0qVV
-         8B0woRSV+HhYe5/d+JaVhTKqq5f+SJXqURHeYzm/bAukKIewfXxo3x0UIo14DHISkUrM
-         S9lUrUIkWB1QbdSYsNb+9VvTbOwZUb+/dIyYUZfqhvLmvx6Hu78hPMJ+OLPNzFGpW8ge
-         felqvhU6CyT2YHG/1RyQlZizkBP4i9snMub8j9n1dvXAp4RLk7slcmvutIhPCyrnDSmK
-         8ZeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756548871; x=1757153671;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QoQFPVbxejJ6set8ozL+F6n6HL//jQi4uJHuOtJvdWQ=;
-        b=Lj/6vFvlLbZCMQbxfBaiwbrCT7Kt7puHxqTB/Y05TcWPfGbTmpyA4XPnTS7kG+Y5/D
-         XOkmfUQ3lOLL0HFI5ncNkkiB8qGTi3qKjkPsxnIQEFVBPOwE7aRnN2cWfuibtPiKnoIp
-         uHMhzo+s8oPovaL6+IFwjwmTk+PD+9FzcXlkTD9gXSRgB6NFiM8+7tg3Lp/JM90JbHXg
-         cWSB7EcHYlNkkuhvWs4/zV+/xAcN2L0RvRflr5vSGzCLRESt2qihq3Jl46FbNs75+Uwa
-         LR687wpIC7P+Jluwon3woqFwaI9YS10+4URNKZF9yAPQK589KAToiMu1tJyjMp39TpQE
-         AEvw==
-X-Gm-Message-State: AOJu0YxEhP3er8/KA1lN8MRPMOx8cVfik5q8q1BLk29rT82p4cWWsoH0
-	qVoorEHLxPskDnV64u4vb4oWtR0vJ2JQ8Sf2KmH0Y1l6yTY3o/Z4G52mqx0Iaa5vMbU=
-X-Gm-Gg: ASbGncsII9iZGvLhdvcMkBGKFrPEt8Hc5nWH1W5c7R+l9H9q5+dNwadFMq0ikijbOBy
-	h+i2J3+8b7OIFCyd7B6FA+w3NoVnN3MXX8c1vu/8uQSsfkzd73kueYqwTZYQyN9KZ0jmO4axgX8
-	2tdE4HlqD9wOlMidX0Q/E6V3qbNGZMs7UJl6JzdNBZs0QW+LiLMMqsdb6FfJMgRBcy2jeKqS/4M
-	AcsEY8oOocP2Ex37UYz+AhCR8UBSVdP4eArjEw6qFh3QuQGdwg/7247+dKJOT+G05xw0+QQE066
-	4D9zU3IdUpejQeAMSDmK8IrqbFA+LcrxHLULBVvluqAm+bPw0cZptOpR6mh8oMu6QhuM444KQQA
-	9ojMDktHsxVrDKrFThK/C9AEmcmxfZGHlgYzi3UnApLG0kxgnC7RttwJzqKfN/0SQ8YGpzp/LwP
-	/GpvD6bn+MzygiWUkqq/hK5YzTs5Y7yyQdec/udrto3mRm4kNVuUoBPJOU9Wf7A8C+iid5C79ba
-	seF016Rx7grT5XMo0uRF4WqchC7SA==
-X-Google-Smtp-Source: AGHT+IGGKVHMfjYrT0CqkPkXERIOl4WjRjGpCs0RJwAXxrP4wIPqf7w4uiEQzD91iM4RJuHfeX/XJA==
-X-Received: by 2002:a05:600c:4705:b0:45b:74fc:d6ec with SMTP id 5b1f17b1804b1-45b8553f1e8mr14089425e9.8.1756548870328;
-        Sat, 30 Aug 2025 03:14:30 -0700 (PDT)
-Received: from local.station (net-93-148-93-71.cust.dsl.teletu.it. [93.148.93.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf275d2717sm6758790f8f.15.2025.08.30.03.14.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 03:14:29 -0700 (PDT)
-From: Alessio Attilio <alessio.attilio.dev@gmail.com>
-X-Google-Original-From: Alessio Attilio <226562783+SigAttilio@users.noreply.github.com>
-To: gfs2@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	aahringo@redhat.com,
-	teigland@redhat.com,
-	Alessio Attilio <226562783+SigAttilio@users.noreply.github.com>
-Subject: [PATCH 11/12] fix: improve lkb struct
-Date: Sat, 30 Aug 2025 12:14:12 +0200
-Message-ID: <20250830101413.602637-11-226562783+SigAttilio@users.noreply.github.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250830101413.602637-1-226562783+SigAttilio@users.noreply.github.com>
-References: <20250830101413.602637-1-226562783+SigAttilio@users.noreply.github.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RiLtJrx+xDz0gFzWy2zGTF8v4OVbuqBvHd5p4Z7b17s=;
+ b=RgoWYoB75zOPcX0C/NgaP8dssUwGtfE1QN0p8v5A68CPDWcqOG6Ao7RRrKN/3VFJDmxd9ny96SFNlwrP+pW5EWzGwg3+7dVG/h5rqQVRrBlQQECuYJPdOrhmzRFSgqk+QPzXkW/zBppJl55UTnrIgIvPn6JKdPF54C2mvzaDaZA=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DS0PR10MB6248.namprd10.prod.outlook.com (2603:10b6:8:d0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.24; Tue, 2 Sep
+ 2025 11:53:45 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
+ 11:53:45 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.com>,
+        gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] gfs2, udf: update to use mmap_prepare
+Date: Tue,  2 Sep 2025 12:53:41 +0100
+Message-ID: <20250902115341.292100-1-lorenzo.stoakes@oracle.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P123CA0174.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18a::17) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB6248:EE_
+X-MS-Office365-Filtering-Correlation-Id: 113e4cff-2250-4093-1312-08ddea175ee3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bfOCuKPjmbWuK1IAuncrjDE2V0V1DRzYUxwwN5ehPlP4+tzzixvcM2YcfjhP?=
+ =?us-ascii?Q?lNY5valL4ZTciDUkd779Fo7rRvoFPyv2YPhU7wRpwGL1YGk2u7C/b+Q5N8a9?=
+ =?us-ascii?Q?vQJ6HysEN+8rw4Ze51QTYTA7loxYm/Zaq213/qmKb01CEIlPepVkSpcRKXDq?=
+ =?us-ascii?Q?SHZZCKrKlNhQdy1Re+FQCId/CF1NwgB8/5VOycpFDTwWc/YlBFpa1eOJFOdG?=
+ =?us-ascii?Q?BEn/jBVoMxWYJV/k8PJ4dZi65xqZcyrVKrPkmQcbMBy/O8jeQFkIKI8epfWD?=
+ =?us-ascii?Q?+y68OuwUs5/3QbTiIRirti1nkquukFMXB9pBaT7BrhgVMRPWICPYgbk7qlHB?=
+ =?us-ascii?Q?zJ8lZ8FPT5U/vB69Xt0bqELoUZXLCCoGc52GRqhIt3jK9U2ajSlxGibUlVwC?=
+ =?us-ascii?Q?EJhTSdDNibpJ+FthOJytMtVvacXrGvKXNZxTz7JhTVeSNSzjnDnHnHD1yNfd?=
+ =?us-ascii?Q?6VNp/YeyTRktnkZiK/Pth5VLaivGR5b+GwEOzFzvDozu/VQMHJ3Mgfahq5vG?=
+ =?us-ascii?Q?WSRRwcGq4npIOJfiedUJ3E0p5WYMOrL8ueA4CFBwA6QJJlg7ZQ9Y3IEWxSCE?=
+ =?us-ascii?Q?GgqZ7Mo8bqms0W2wxcNVpLzOHwhTvKFY86ImrMWQY/08uPZKleZ2PDHGoQjI?=
+ =?us-ascii?Q?sDdb4BqbDmkGq13iu0/WQ7qQKEt67qdzywbmpscO/qMN7JwJwptrqRXnmgbf?=
+ =?us-ascii?Q?oEMncPTImnxPmuPa0TXk0aDQ/fLzWgcJjqyEurrwU+vkcuY+55k4zbDBIU3I?=
+ =?us-ascii?Q?Wr9V2gNJMTMQm4RsB4QNFe8H8LXF6ZzCQ356rziJnLwd8EyHQOOTmoq6dZOx?=
+ =?us-ascii?Q?8iXmfQyxho/W4SQ5CmADOg/9AI0xbtEISbfn+pcMjahyMImjsYQI1pngmtdk?=
+ =?us-ascii?Q?uhR/P6sBONA/kMRduNRPQDxl0bZWF53918pHTeAByRHwBItPfx9S30fwZbZB?=
+ =?us-ascii?Q?8snrQjsc8WoxG72K5e/JSQ0JGH7DJrH+aX8RsOUz8ZXFFEmOTGJOiGSYF1S3?=
+ =?us-ascii?Q?Acf4o3UL3DBzkMGZL/dz55oiYx8rR6Lgqc40yRCxbIDkcHd4PSDEqCyViBgo?=
+ =?us-ascii?Q?nHGyh7rTBtLgtvDW40e8U8gIS8DrixY2UU3LaFA9wv98z8zTY4kOCfxIuyU0?=
+ =?us-ascii?Q?Y/gEqQ57PIY8LPpMZlj9SBqI4JnTNdSbJMOKmqZy+GnkrupbNsliJ98B9QoY?=
+ =?us-ascii?Q?4xsKY/vI22iqIWP9ifyiSb3eN0xTye72RYMRkL1PUFbxZqOY4MZrLAskBVxL?=
+ =?us-ascii?Q?kBkoteAKDDmWNafFDMH0YzQnIkEtb4W4kupqv4rI7G+HBr3iFwHmb5Cx+IsH?=
+ =?us-ascii?Q?GUOriavFNyaj95X8KNBdT3x5PbX5T0WCvwoSyd7+btRzCiB3Uud23q1hPj66?=
+ =?us-ascii?Q?01NljNO8zfCxt65d6aUIUvrA4ztvWjVqWenjUYdEfy0TtpuyGM8GZVKCi10g?=
+ =?us-ascii?Q?9GEorzwVJ3U=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gXwBXUjXCM/4gPmgMD1ShKtnpOW7Ss5bVf8nzpLbFOautYxXI6OMfUgCCfNB?=
+ =?us-ascii?Q?LlB0n7SiJPoFyUjzmW1XASpn+JR9WmA5XEVtE+eRqVxju/heNg8XXmLIbVXe?=
+ =?us-ascii?Q?q4s7Vc67vKVAF+wzmYyBUlSFyKU6mNlQJka0cibGeMG12/VhPE3qUIac2bIR?=
+ =?us-ascii?Q?XiW/zMxoLbWYgHzllSWAAOcZj2OoMqhqAxIFyT/1f2/k7OkPlxZgl02jvxZx?=
+ =?us-ascii?Q?AP0Wj6ZSziRaTIryl4PUZGpMp7V4YXr8ogL7EqQwCmNVJ3keq/HbSbfXiEjk?=
+ =?us-ascii?Q?8mwGrV32bErxcXugVU/rBNwYbNL7AACWDlNb82vwHNp4gD3K713sSQ/cNTm8?=
+ =?us-ascii?Q?WITaEAoW35uGzjNriSSQghTYlfJKjg45lF1Zgd3c564ohBSjFd2otnzneBpp?=
+ =?us-ascii?Q?b8+SqgS/LM9gZ3i1mDaIbhT/rb1s95wVUcsJ/AFmSKiQkhIQglvOI1ibgU4t?=
+ =?us-ascii?Q?030MyCbHwA6mfadGKMXHOzYAkPdNhv1Dx+1kqYrSgZY1Rd/mqW8lsMnDJVl0?=
+ =?us-ascii?Q?35AD1TBXsl6XzaX+lE5V4GO9DQBPkvZggu0g4lnE8VboLFwuHFKBN87FvkC1?=
+ =?us-ascii?Q?PDnajM1peaXg4RLqfiJu8MrGc5ikejbFuHkjbMkPTbypIEhJ2//y1/siVkW3?=
+ =?us-ascii?Q?FdBEBnTsD1ViZhxwxOxfm5PsDT6OqJjfEiZy1SbQYSb0FKHNfsOfDG5kOgUj?=
+ =?us-ascii?Q?Uz7oZNIZc6ZOnLfaOqmv9DFEf1LYvAUxs4af5zWqv/NsGWMgDagdEfdGBHA9?=
+ =?us-ascii?Q?nEjI8SL2IWG+Fyd8JwwfhaPjmovuwZziLv4t5hbRlGQHRuA2XbJ2J2ZQ20Qa?=
+ =?us-ascii?Q?I5n88RzjabmsdDpTX1yDNGgGsncwm4qy2KGpu48wlM2DgEXDXyB9bAmotTyC?=
+ =?us-ascii?Q?lZeUC0AZKhPesgnSYNmZyDQeG7FfQrOj1T7WedffXPjP90s35g76MrFSh/v7?=
+ =?us-ascii?Q?ZfdXjS70ZsfAeEj3qbwWW6i/qo49xO8ESjqS/flqyGZfeoGrH5waP60gD6OK?=
+ =?us-ascii?Q?UA5F8ladrCP1CbufV3hYtDqgTamm8QBGbslT6yty3x6v3USYL3jRXIB6J+26?=
+ =?us-ascii?Q?Qhn4l35VGF9GBxeO0zjRSHyR1szJLGSyom/QgPuBijXDb7n1DDJQQxj8bAbA?=
+ =?us-ascii?Q?UU7HZb/bK8iOwTAWozw+VbhBLF0AmJHEbm+JJArf7+0L0R01ehKEXTE6lGsl?=
+ =?us-ascii?Q?6ileb8G1/uRC4zUCTQb9npXghtMhZ/vak9CWxtH+w305uRGyFOxecvDkvkb7?=
+ =?us-ascii?Q?MVLOJ9+Q0IAQD4IOCE85oE6ZH5CyEryYuTlAhm6xP443UKFf29PcPZ2IKPRH?=
+ =?us-ascii?Q?zxmOJ0Qo6Vd4WEtcAwwR2/iCHqPwKJsUhrESMMMDW1dMcwHEdmfZBgDby7ZH?=
+ =?us-ascii?Q?pEdZRB8nv4KmgSUE+VsFDwZet+ZGS0jDlYPRfQNh1GLBZz7thK+Bqs/b4zZz?=
+ =?us-ascii?Q?IOog1Qz3jFmrEacmhnPIw9hjMJ4EGTEcK3QRVQx/6TAM1LwrpWUsEGtALk9a?=
+ =?us-ascii?Q?5TN9fSYerS1IZcZhURscEOsqFB5d1gNLpqFq6l0eElE6lHBhbY5/lyoLV5HO?=
+ =?us-ascii?Q?a9Oj8NMAsqSaeDfB490ixB8m1KuGTUTScrSrhuY/nxwAPR48pHRkpwsoNKVO?=
+ =?us-ascii?Q?rA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	ywLcbuJQTP6EXIK3NLvcn8G9nPXHs+ezDyJXM4R1hlYG/OsCzYaef+05yrc5rG0v+pOEjivmLpgYkOE6OlCv+dOBZW2+J8mTa+YmgSj3dUz5qCUn/j6DhVV37/tpC8qIbrRTFGuKinswkrw4GTmXnB105df1gt4oQg96KCS3yBMuHBTAyHulEe9SuOtBlhszaJin1IDRk+A6Sy3MZVZDyxfCTnHfVreYwgK/8pcd0Lm0RDZ6jIfBSGAla/lh71y7pgxKRe3H4O25purf1nXV6ShjcZxKSgq4XQO1YWjpdNlrOkH2JSMjqEAPxQ2/MZdrTIONNEEPv8ogC8eE5MiZJLWYAVZmTbbiVJg9TT1un1ASouTcCRdv8SjHZwG/Nvg69AatI16RpOwztLY/UE7LqGM0i/xxd4oTTggFewFvJUJOs0PgCbwtD19wZStHHl1KDZM8gURnVmF6cxGGLQxIbon3isV6GsG+dYibKnf6kkhgOlc/IApFricNbQRXZxUAox437pHOD/TssGf9T0OT2bwFVSDKNIGOuutC4cXN/hUpGVlwtgn42JQGd0pCA1n+DiasSsvWCY1pBgHBX8oxjyWyUIERjzO97bwgiNisTtE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 113e4cff-2250-4093-1312-08ddea175ee3
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 11:53:45.4115
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n0zt0wXl3HDmPAcpIo99+EfeMx7iCSoQXsaxNExfPZ8uj2Izu/IcxC1kiYDn+hSIB3YJkmz6b9N7PYfj+98fx/kAkykd4ew/B619/PknBGs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6248
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_04,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509020117
+X-Proofpoint-ORIG-GUID: y4YEq9Se4uYgfVUUt4G128ELjTs3gT4E
+X-Authority-Analysis: v=2.4 cv=YKifyQGx c=1 sm=1 tr=0 ts=68b6dacc b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10
+ a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=-4aon9W6glDlnRVGX_UA:9 cc=ntf
+ awl=host:13602
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfXw5x+x0E6YhvR
+ rP+X+HHjVeBfYZ8EzlG67UlCb5wFcqL/CwKxlcjAi3Zpba6JAWgOzcq/mDcLtYdyaqy0Gaw9Z1b
+ 7VPNsjKFeSh4WRaa3D7YugeVQG1kezb6+8yKKu7LpAl6UlFOZTJQLONFeJGgqbvbbQCko8lzkbO
+ ZCG5ulgf7rW6j5tDz9sveWpqTKL7PsELkDlToe8H7YRI6+ELDU5XP+0tD04AS/tAHaBI5U4ujyb
+ vsZtda+Js9azHlMRDNtmhxBBX41xA2IoLYXO7zbSMCOYv9zkTL5lYHVDH4zn04abS1TQOnydazf
+ xtAcr0yA6tjat6CY/pJtFxjTf574IG07XAA4wqPGsrlTosnpQ3T19AWhj6f6u1FRnvuY0TfyLxC
+ 17a0vgKtfSw2F6Dp4mQFDUFnN6+org==
+X-Proofpoint-GUID: y4YEq9Se4uYgfVUUt4G128ELjTs3gT4E
 
+The f_op->mmap() callback is deprecated, and we are in the process of
+slowly converting users to f_op->mmap_prepare().
+
+While some filesystems require additional work to be done before they can
+be converted, the gfs2 and udf filesystems (like most) are simple and can
+simply be replaced right away.
+
+This patch adapts them to do so.
+
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- fs/dlm/lock.c | 752 +++++++++++++++++++++++---------------------------
- 1 file changed, 346 insertions(+), 406 deletions(-)
+ fs/gfs2/file.c | 12 ++++++------
+ fs/udf/file.c  |  8 +++++---
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 4236b38aae94..6b0ab9e1bfcc 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -5023,555 +5023,495 @@ static int validate_unlock_args(struct dlm_lkb *lkb, struct dlm_args *args)
-  * from the central locking logic.
+diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+index bc67fa058c84..c28ff8786238 100644
+--- a/fs/gfs2/file.c
++++ b/fs/gfs2/file.c
+@@ -577,7 +577,7 @@ static const struct vm_operations_struct gfs2_vm_ops = {
+ };
+ 
+ /**
+- * gfs2_mmap
++ * gfs2_mmap_prepare
+  * @file: The file to map
+  * @vma: The VMA which described the mapping
+  *
+@@ -588,8 +588,9 @@ static const struct vm_operations_struct gfs2_vm_ops = {
+  * Returns: 0
   */
  
--			/* this put should free the lkb */
--			if (!dlm_put_lkb(lkb))
--				log_error(ls, "purged dead lkb not released");
-+static int do_request(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+{
-+	int error = 0;
- 
--			rsb_set_flag(r, RSB_RECOVER_GRANT);
-+	if (can_be_granted(r, lkb, 1, 0, NULL)) {
-+		grant_lock(r, lkb);
-+		queue_cast(r, lkb, 0);
-+		goto out;
-+	}
- 
--			(*count)++;
--		}
-+	if (can_be_queued(lkb)) {
-+		error = -EINPROGRESS;
-+		add_lkb(r, lkb, DLM_LKSTS_WAITING);
-+		goto out;
- 	}
-+
-+	error = -EAGAIN;
-+	queue_cast(r, lkb, -EAGAIN);
-+ out:
-+	return error;
- }
- 
--/* Get rid of locks held by nodes that are gone. */
-+static void do_request_effects(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			       int error)
-+{
-+	switch (error) {
-+	case -EAGAIN:
-+		if (force_blocking_asts(lkb))
-+			send_blocking_asts_all(r, lkb);
-+		break;
-+	case -EINPROGRESS:
-+		send_blocking_asts(r, lkb);
-+		break;
-+	}
-+}
- 
--void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list)
-+static int do_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
+-static int gfs2_mmap(struct file *file, struct vm_area_struct *vma)
++static int gfs2_mmap_prepare(struct vm_area_desc *desc)
  {
--	struct dlm_rsb *r;
--	struct dlm_member *memb;
--	int nodes_count = 0;
--	int nodeid_gone = 0;
--	unsigned int lkb_count = 0;
-+	int error = 0;
-+	int deadlk = 0;
++	struct file *file = desc->file;
+ 	struct gfs2_inode *ip = GFS2_I(file->f_mapping->host);
  
--	/* cache one removed nodeid to optimize the common
--	   case of a single node removed */
-+	/* changing an existing lock may allow others to be granted */
- 
--	list_for_each_entry(memb, &ls->ls_nodes_gone, list) {
--		nodes_count++;
--		nodeid_gone = memb->nodeid;
-+	if (can_be_granted(r, lkb, 1, 0, &deadlk)) {
-+		grant_lock(r, lkb);
-+		queue_cast(r, lkb, 0);
-+		goto out;
+ 	if (!(file->f_flags & O_NOATIME) &&
+@@ -605,7 +606,7 @@ static int gfs2_mmap(struct file *file, struct vm_area_struct *vma)
+ 		gfs2_glock_dq_uninit(&i_gh);
+ 		file_accessed(file);
  	}
+-	vma->vm_ops = &gfs2_vm_ops;
++	desc->vm_ops = &gfs2_vm_ops;
  
--	if (!nodes_count)
--		return;
-+	/* can_be_granted() detected that this lock would block in a conversion
-+	   deadlock, so we leave it on the granted queue and return EDEADLK in
-+	   the ast for the convert. */
-+
-+	if (deadlk && !(lkb->lkb_exflags & DLM_LKF_NODLCKWT)) {
-+		/* it's left on the granted queue */
-+		revert_lock(r, lkb);
-+		queue_cast(r, lkb, -EDEADLK);
-+		error = -EDEADLK;
-+		goto out;
-+	}
- 
--	list_for_each_entry(r, root_list, res_root_list) {
--		lock_rsb(r);
--		if (r->res_nodeid != -1 && is_master(r)) {
--			purge_dead_list(ls, r, &r->res_grantqueue,
--					nodeid_gone, &lkb_count);
--			purge_dead_list(ls, r, &r->res_convertqueue,
--					nodeid_gone, &lkb_count);
--			purge_dead_list(ls, r, &r->res_waitqueue,
--					nodeid_gone, &lkb_count);
-+	/* is_demoted() means the can_be_granted() above set the grmode
-+	   to NL, and left us on the granted queue.  This auto-demotion
-+	   (due to CONVDEADLK) might mean other locks, and/or this lock, are
-+	   now grantable.  We have to try to grant other converting locks
-+	   before we try again to grant this one. */
-+
-+	if (is_demoted(lkb)) {
-+		grant_pending_convert(r, DLM_LOCK_IV, NULL, NULL);
-+		if (_can_be_granted(r, lkb, 1, 0)) {
-+			grant_lock(r, lkb);
-+			queue_cast(r, lkb, 0);
-+			goto out;
- 		}
--		unlock_rsb(r);
-+		/* else fall through and move to convert queue */
-+	}
- 
--		cond_resched();
-+	if (can_be_queued(lkb)) {
-+		error = -EINPROGRESS;
-+		del_lkb(r, lkb);
-+		add_lkb(r, lkb, DLM_LKSTS_CONVERT);
-+		goto out;
- 	}
- 
--	if (lkb_count)
--		log_rinfo(ls, "dlm_recover_purge %u locks for %u nodes",
--			  lkb_count, nodes_count);
-+	error = -EAGAIN;
-+	queue_cast(r, lkb, -EAGAIN);
-+ out:
-+	return error;
+ 	return 0;
+ }
+@@ -1585,7 +1586,7 @@ const struct file_operations gfs2_file_fops = {
+ 	.iopoll		= iocb_bio_iopoll,
+ 	.unlocked_ioctl	= gfs2_ioctl,
+ 	.compat_ioctl	= gfs2_compat_ioctl,
+-	.mmap		= gfs2_mmap,
++	.mmap_prepare	= gfs2_mmap,
+ 	.open		= gfs2_open,
+ 	.release	= gfs2_release,
+ 	.fsync		= gfs2_fsync,
+@@ -1620,7 +1621,7 @@ const struct file_operations gfs2_file_fops_nolock = {
+ 	.iopoll		= iocb_bio_iopoll,
+ 	.unlocked_ioctl	= gfs2_ioctl,
+ 	.compat_ioctl	= gfs2_compat_ioctl,
+-	.mmap		= gfs2_mmap,
++	.mmap_prepare	= gfs2_mmap_prepare,
+ 	.open		= gfs2_open,
+ 	.release	= gfs2_release,
+ 	.fsync		= gfs2_fsync,
+@@ -1639,4 +1640,3 @@ const struct file_operations gfs2_dir_fops_nolock = {
+ 	.fsync		= gfs2_fsync,
+ 	.llseek		= default_llseek,
+ };
+-
+diff --git a/fs/udf/file.c b/fs/udf/file.c
+index 0d76c4f37b3e..fbb2d6ba8ca2 100644
+--- a/fs/udf/file.c
++++ b/fs/udf/file.c
+@@ -189,10 +189,12 @@ static int udf_release_file(struct inode *inode, struct file *filp)
+ 	return 0;
  }
  
--static struct dlm_rsb *find_grant_rsb(struct dlm_ls *ls)
-+static void do_convert_effects(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			       int error)
+-static int udf_file_mmap(struct file *file, struct vm_area_struct *vma)
++static int udf_file_mmap_prepare(struct vm_area_desc *desc)
  {
--	struct dlm_rsb *r;
-+	switch (error) {
-+	case 0:
-+		grant_pending_locks(r, NULL);
-+		/* grant_pending_locks also sends basts */
-+		break;
-+	case -EAGAIN:
-+		if (force_blocking_asts(lkb))
-+			send_blocking_asts_all(r, lkb);
-+		break;
-+	case -EINPROGRESS:
-+		send_blocking_asts(r, lkb);
-+		break;
-+	}
-+}
++	struct file *file = desc->file;
++
+ 	file_accessed(file);
+-	vma->vm_ops = &udf_file_vm_ops;
++	desc->vm_ops = &udf_file_vm_ops;
  
--	read_lock_bh(&ls->ls_rsbtbl_lock);
--	list_for_each_entry(r, &ls->ls_slow_active, res_slow_list) {
--		if (!rsb_flag(r, RSB_RECOVER_GRANT))
--			continue;
--		if (!is_master(r)) {
--			rsb_clear_flag(r, RSB_RECOVER_GRANT);
--			continue;
--		}
--		hold_rsb(r);
--		read_unlock_bh(&ls->ls_rsbtbl_lock);
--		return r;
-+static int do_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+{
-+	remove_lock(r, lkb);
-+	queue_cast(r, lkb, -DLM_EUNLOCK);
-+	return -DLM_EUNLOCK;
-+}
-+
-+static void do_unlock_effects(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			      int error)
-+{
-+	grant_pending_locks(r, NULL);
-+}
-+
-+/* returns: 0 did nothing, -DLM_ECANCEL canceled lock */
-+
-+static int do_cancel(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+{
-+	int error;
-+
-+	error = revert_lock(r, lkb);
-+	if (error) {
-+		queue_cast(r, lkb, -DLM_ECANCEL);
-+		return -DLM_ECANCEL;
- 	}
--	read_unlock_bh(&ls->ls_rsbtbl_lock);
--	return NULL;
-+	return 0;
-+}
-+
-+static void do_cancel_effects(struct dlm_rsb *r, struct dlm_lkb *lkb,
-+			      int error)
-+{
-+	if (error)
-+		grant_pending_locks(r, NULL);
+ 	return 0;
  }
- 
- /*
-- * Attempt to grant locks on resources that we are the master of.
-- * Locks may have become grantable during recovery because locks
-- * from departed nodes have been purged (or not rebuilt), allowing
-- * previously blocked locks to now be granted.  The subset of rsb's
-- * we are interested in are those with lkb's on either the convert or
-- * waiting queues.
-- *
-- * Simplest would be to go through each master rsb and check for non-empty
-- * convert or waiting queues, and attempt to grant on those rsbs.
-- * Checking the queues requires lock_rsb, though, for which we'd need
-- * to release the rsbtbl lock.  This would make iterating through all
-- * rsb's very inefficient.  So, we rely on earlier recovery routines
-- * to set RECOVER_GRANT on any rsb's that we should attempt to grant
-- * locks for.
-+ * Four stage 3 varieties:
-+ * _request_lock(), _convert_lock(), _unlock_lock(), _cancel_lock()
-  */
- 
--void dlm_recover_grant(struct dlm_ls *ls)
-+/* add a new lkb to a possibly new rsb, called by requesting process */
-+
-+static int _request_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	struct dlm_rsb *r;
--	unsigned int count = 0;
--	unsigned int rsb_count = 0;
--	unsigned int lkb_count = 0;
-+	int error;
- 
--	while (1) {
--		r = find_grant_rsb(ls);
--		if (!r)
--			break;
-+	/* set_master: sets lkb nodeid from r */
- 
--		rsb_count++;
--		count = 0;
--		lock_rsb(r);
--		/* the RECOVER_GRANT flag is checked in the grant path */
--		grant_pending_locks(r, &count);
--		rsb_clear_flag(r, RSB_RECOVER_GRANT);
--		lkb_count += count;
--		confirm_master(r, 0);
--		unlock_rsb(r);
--		put_rsb(r);
--		cond_resched();
-+	error = set_master(r, lkb);
-+	if (error < 0)
-+		goto out;
-+	if (error) {
-+		error = 0;
-+		goto out;
- 	}
- 
--	if (lkb_count)
--		log_rinfo(ls, "dlm_recover_grant %u locks on %u resources",
--			  lkb_count, rsb_count);
-+	if (is_remote(r)) {
-+		/* receive_request() calls do_request() on remote node */
-+		error = send_request(r, lkb);
-+	} else {
-+		error = do_request(r, lkb);
-+		/* for remote locks the request_reply is sent
-+		   between do_request and do_request_effects */
-+		do_request_effects(r, lkb, error);
-+	}
-+ out:
-+	return error;
- }
- 
--static struct dlm_lkb *search_remid_list(struct list_head *head, int nodeid,
--					 uint32_t remid)
-+/* change some property of an existing lkb, e.g. mode */
-+
-+static int _convert_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	struct dlm_lkb *lkb;
-+	int error;
- 
--	list_for_each_entry(lkb, head, lkb_statequeue) {
--		if (lkb->lkb_nodeid == nodeid && lkb->lkb_remid == remid)
--			return lkb;
-+	if (is_remote(r)) {
-+		/* receive_convert() calls do_convert() on remote node */
-+		error = send_convert(r, lkb);
-+	} else {
-+		error = do_convert(r, lkb);
-+		/* for remote locks the convert_reply is sent
-+		   between do_convert and do_convert_effects */
-+		do_convert_effects(r, lkb, error);
- 	}
--	return NULL;
-+
-+	return error;
- }
- 
--static struct dlm_lkb *search_remid(struct dlm_rsb *r, int nodeid,
--				    uint32_t remid)
-+/* remove an existing lkb from the granted queue */
-+
-+static int _unlock_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
--	struct dlm_lkb *lkb;
-+	int error;
- 
--	lkb = search_remid_list(&r->res_grantqueue, nodeid, remid);
--	if (lkb)
--		return lkb;
--	lkb = search_remid_list(&r->res_convertqueue, nodeid, remid);
--	if (lkb)
--		return lkb;
--	lkb = search_remid_list(&r->res_waitqueue, nodeid, remid);
--	if (lkb)
--		return lkb;
--	return NULL;
--}
--
--/* needs at least dlm_rcom + rcom_lock */
--static int receive_rcom_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
--				  struct dlm_rsb *r, const struct dlm_rcom *rc)
--{
--	struct rcom_lock *rl = (struct rcom_lock *) rc->rc_buf;
--
--	lkb->lkb_nodeid = le32_to_cpu(rc->rc_header.h_nodeid);
--	lkb->lkb_ownpid = le32_to_cpu(rl->rl_ownpid);
--	lkb->lkb_remid = le32_to_cpu(rl->rl_lkid);
--	lkb->lkb_exflags = le32_to_cpu(rl->rl_exflags);
--	dlm_set_dflags_val(lkb, le32_to_cpu(rl->rl_flags));
--	set_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags);
--	lkb->lkb_lvbseq = le32_to_cpu(rl->rl_lvbseq);
--	lkb->lkb_rqmode = rl->rl_rqmode;
--	lkb->lkb_grmode = rl->rl_grmode;
--	/* don't set lkb_status because add_lkb wants to itself */
--
--	lkb->lkb_bastfn = (rl->rl_asts & DLM_CB_BAST) ? &fake_bastfn : NULL;
--	lkb->lkb_astfn = (rl->rl_asts & DLM_CB_CAST) ? &fake_astfn : NULL;
--
--	if (lkb->lkb_exflags & DLM_LKF_VALBLK) {
--		int lvblen = le16_to_cpu(rc->rc_header.h_length) -
--			sizeof(struct dlm_rcom) - sizeof(struct rcom_lock);
--		if (lvblen > ls->ls_lvblen)
--			return -EINVAL;
--		lkb->lkb_lvbptr = dlm_allocate_lvb(ls);
--		if (!lkb->lkb_lvbptr)
--			return -ENOMEM;
--		memcpy(lkb->lkb_lvbptr, rl->rl_lvb, lvblen);
-+	if (is_remote(r)) {
-+		/* receive_unlock() calls do_unlock() on remote node */
-+		error = send_unlock(r, lkb);
-+	} else {
-+		error = do_unlock(r, lkb);
-+		/* for remote locks the unlock_reply is sent
-+		   between do_unlock and do_unlock_effects */
-+		do_unlock_effects(r, lkb, error);
- 	}
- 
--	/* Conversions between PR and CW (middle modes) need special handling.
--	   The real granted mode of these converting locks cannot be determined
--	   until all locks have been rebuilt on the rsb (recover_conversion) */
-+	return error;
-+}
-+
-+/* remove an existing lkb from the convert or wait queue */
- 
--	if (rl->rl_status == DLM_LKSTS_CONVERT && middle_conversion(lkb)) {
--		/* We may need to adjust grmode depending on other granted locks. */
--		log_limit(ls, "%s %x middle convert gr %d rq %d remote %d %x",
--			  __func__, lkb->lkb_id, lkb->lkb_grmode,
--			  lkb->lkb_rqmode, lkb->lkb_nodeid, lkb->lkb_remid);
--		rsb_set_flag(r, RSB_RECOVER_CONVERT);
-+static int _cancel_lock(struct dlm_rsb *r, struct dlm_lkb *lkb)
-+{
-+	int error;
-+
-+	if (is_remote(r)) {
-+		/* receive_cancel() calls do_cancel() on remote node */
-+		error = send_cancel(r, lkb);
-+	} else {
-+		error = do_cancel(r, lkb);
-+		/* for remote locks the cancel_reply is sent
-+		   between do_cancel and do_cancel_effects */
-+		do_cancel_effects(r, lkb, error);
- 	}
- 
--	return 0;
-+	return error;
- }
- 
--/* This lkb may have been recovered in a previous aborted recovery so we need
--   to check if the rsb already has an lkb with the given remote nodeid/lkid.
--   If so we just send back a standard reply.  If not, we create a new lkb with
--   the given values and send back our lkid.  We send back our lkid by sending
--   back the rcom_lock struct we got but with the remid field filled in. */
-+/*
-+ * Four stage 2 varieties:
-+ * request_lock(), convert_lock(), unlock_lock(), cancel_lock()
-+ */
- 
--/* needs at least dlm_rcom + rcom_lock */
--int dlm_recover_master_copy(struct dlm_ls *ls, const struct dlm_rcom *rc,
--			    __le32 *rl_remid, __le32 *rl_result)
-+static int request_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
-+			const void *name, int len,
-+			struct dlm_args *args)
- {
--	struct rcom_lock *rl = (struct rcom_lock *) rc->rc_buf;
- 	struct dlm_rsb *r;
--	struct dlm_lkb *lkb;
--	uint32_t remid = 0;
--	int from_nodeid = le32_to_cpu(rc->rc_header.h_nodeid);
- 	int error;
- 
--	/* init rl_remid with rcom lock rl_remid */
--	*rl_remid = rl->rl_remid;
-+	error = validate_lock_args(ls, lkb, args);
-+	if (error)
-+		return error;
- 
--	if (rl->rl_parent_lkid) {
--		error = -EOPNOTSUPP;
--		goto out;
--	}
-+	error = find_rsb(ls, name, len, 0, R_REQUEST, &r);
-+	if (error)
-+		return error;
- 
--	remid = le32_to_cpu(rl->rl_lkid);
-+	lock_rsb(r);
- 
--	/* In general we expect the rsb returned to be R_MASTER, but we don't
--	   have to require it.  Recovery of masters on one node can overlap
--	   recovery of locks on another node, so one node can send us MSTCPY
--	   locks before we've made ourselves master of this rsb.  We can still
--	   add new MSTCPY locks that we receive here without any harm; when
--	   we make ourselves master, dlm_recover_masters() won't touch the
--	   MSTCPY locks we've received early. */
-+	attach_lkb(r, lkb);
-+	lkb->lkb_lksb->sb_lkid = lkb->lkb_id;
- 
--	error = find_rsb(ls, rl->rl_name, le16_to_cpu(rl->rl_namelen),
--			 from_nodeid, R_RECEIVE_RECOVER, &r);
--	if (error)
--		goto out;
-+	error = _request_lock(r, lkb);
- 
--	lock_rsb(r);
-+	unlock_rsb(r);
-+	put_rsb(r);
-+	return error;
-+}
- 
--	if (dlm_no_directory(ls) && (dlm_dir_nodeid(r) != dlm_our_nodeid())) {
--		log_error(ls, "dlm_recover_master_copy remote %d %x not dir",
--			  from_nodeid, remid);
--		error = -EBADR;
--		goto out_unlock;
--	}
-+static int convert_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
-+			struct dlm_args *args)
-+{
-+	struct dlm_rsb *r;
-+	int error;
- 
--	lkb = search_remid(r, from_nodeid, remid);
--	if (lkb) {
--		error = -EEXIST;
--		goto out_remid;
--	}
-+	r = lkb->lkb_resource;
-+
-+	hold_rsb(r);
-+	lock_rsb(r);
- 
--	error = create_lkb(ls, &lkb);
-+	error = validate_lock_args(ls, lkb, args);
- 	if (error)
--		goto out_unlock;
-+		goto out;
- 
--	error = receive_rcom_lock_args(ls, lkb, r, rc);
--	if (error) {
--		__put_lkb(ls, lkb);
--		goto out_unlock;
--	}
-+	error = _convert_lock(r, lkb);
-+ out:
-+	unlock_rsb(r);
-+	put_rsb(r);
-+	return error;
-+}
- 
--	attach_lkb(r, lkb);
--	add_lkb(r, lkb, rl->rl_status);
--	ls->ls_recover_locks_in++;
-+static int unlock_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
-+		       struct dlm_args *args)
-+{
-+	struct dlm_rsb *r;
-+	int error;
- 
--	if (!list_empty(&r->res_waitqueue) || !list_empty(&r->res_convertqueue))
--		rsb_set_flag(r, RSB_RECOVER_GRANT);
-+	r = lkb->lkb_resource;
- 
-- out_remid:
--	/* this is the new value returned to the lock holder for
--	   saving in its process-copy lkb */
--	*rl_remid = cpu_to_le32(lkb->lkb_id);
-+	hold_rsb(r);
-+	lock_rsb(r);
- 
--	lkb->lkb_recover_seq = ls->ls_recover_seq;
-+	error = validate_unlock_args(lkb, args);
-+	if (error)
-+		goto out;
- 
-- out_unlock:
-+	error = _unlock_lock(r, lkb);
-+ out:
- 	unlock_rsb(r);
- 	put_rsb(r);
-- out:
--	if (error && error != -EEXIST)
--		log_rinfo(ls, "dlm_recover_master_copy remote %d %x error %d",
--			  from_nodeid, remid, error);
--	*rl_result = cpu_to_le32(error);
- 	return error;
- }
- 
--/* needs at least dlm_rcom + rcom_lock */
--int dlm_recover_process_copy(struct dlm_ls *ls, const struct dlm_rcom *rc,
--			     uint64_t seq)
-+static int cancel_lock(struct dlm_ls *ls, struct dlm_lkb *lkb,
-+		       struct dlm_args *args)
- {
--	struct rcom_lock *rl = (struct rcom_lock *) rc->rc_buf;
- 	struct dlm_rsb *r;
--	struct dlm_lkb *lkb;
--	uint32_t lkid, remid;
--	int error, result;
--
--	lkid = le32_to_cpu(rl->rl_lkid);
--	remid = le32_to_cpu(rl->rl_remid);
--	result = le32_to_cpu(rl->rl_result);
--
--	error = find_lkb(ls, lkid, &lkb);
--	if (error) {
--		log_error(ls, "dlm_recover_process_copy no %x remote %d %x %d",
--			  lkid, le32_to_cpu(rc->rc_header.h_nodeid), remid,
--			  result);
--		return error;
--	}
-+	int error;
- 
- 	r = lkb->lkb_resource;
-+
- 	hold_rsb(r);
- 	lock_rsb(r);
- 
--	if (!is_process_copy(lkb)) {
--		log_error(ls, "dlm_recover_process_copy bad %x remote %d %x %d",
--			  lkid, le32_to_cpu(rc->rc_header.h_nodeid), remid,
--			  result);
--		dlm_dump_rsb(r);
--		unlock_rsb(r);
--		put_rsb(r);
--		dlm_put_lkb(lkb);
--		return -EINVAL;
--	}
--
--	switch (result) {
--	case -EBADR:
--		/* There's a chance the new master received our lock before
--		   dlm_recover_master_reply(), this wouldn't happen if we did
--		   a barrier between recover_masters and recover_locks. */
--
--		log_debug(ls, "dlm_recover_process_copy %x remote %d %x %d",
--			  lkid, le32_to_cpu(rc->rc_header.h_nodeid), remid,
--			  result);
--	
--		dlm_send_rcom_lock(r, lkb, seq);
-+	error = validate_unlock_args(lkb, args);
-+	if (error)
- 		goto out;
--	case -EEXIST:
--	case 0:
--		lkb->lkb_remid = remid;
--		break;
--	default:
--		log_error(ls, "dlm_recover_process_copy %x remote %d %x %d unk",
--			  lkid, le32_to_cpu(rc->rc_header.h_nodeid), remid,
--			  result);
--	}
- 
--	/* an ack for dlm_recover_locks() which waits for replies from
--	   all the locks it sends to new masters */
--	dlm_recovered_lock(r);
-+	error = _cancel_lock(r, lkb);
-  out:
- 	unlock_rsb(r);
- 	put_rsb(r);
--	dlm_put_lkb(lkb);
--
--	return 0;
-+	return error;
- }
- 
--int dlm_user_request(struct dlm_ls *ls, struct dlm_user_args *ua,
--		     int mode, uint32_t flags, void *name, unsigned int namelen)
--{
-+/*
-+ * Two stage 1 varieties:  dlm_lock() and dlm_unlock()
-+ */
-+
-+int dlm_lock(dlm_lockspace_t *lockspace,
-+	     int mode,
-+	     struct dlm_lksb *lksb,
-+	     uint32_t flags,
-+	     const void *name,
-+	     unsigned int namelen,
-+	     uint32_t parent_lkid,
-+	     void (*ast) (void *astarg),
-+	     void *astarg,
-+	     void (*bast) (void *astarg, int mode))
-+{
-+	struct dlm_ls *ls;
- 	struct dlm_lkb *lkb;
- 	struct dlm_args args;
--	bool do_put = true;
--	int error;
-+	int error, convert = flags & DLM_LKF_CONVERT;
-+
-+	ls = dlm_find_lockspace_local(lockspace);
-+	if (!ls)
-+		return -EINVAL;
- 
- 	dlm_lock_recovery(ls);
- 
--	error = create_lkb(ls, &lkb);
--	if (error) {
--		kfree(ua);
-+	if (convert)
-+		error = find_lkb(ls, lksb->sb_lkid, &lkb);
-+	else
-+		error = create_lkb(ls, &lkb);
-+
-+	if (error)
- 		goto out;
--	}
- 
- 	trace_dlm_lock_start(ls, lkb, name, namelen, mode, flags);
- 
--	if (flags & DLM_LKF_VALBLK) {
--		ua->lksb.sb_lvbptr = kzalloc(DLM_USER_LVB_LEN, GFP_NOFS);
--		if (!ua->lksb.sb_lvbptr) {
--			kfree(ua);
--			error = -ENOMEM;
--			goto out_put;
--		}
--	}
--	error = set_lock_args(mode, &ua->lksb, flags, namelen, fake_astfn, ua,
--			      fake_bastfn, &args);
--	if (error) {
--		kfree(ua->lksb.sb_lvbptr);
--		ua->lksb.sb_lvbptr = NULL;
--		kfree(ua);
-+	error = set_lock_args(mode, lksb, flags, namelen, ast, astarg, bast,
-+			      &args);
-+	if (error)
- 		goto out_put;
--	}
- 
--	/* After ua is attached to lkb it will be freed by dlm_free_lkb().
--	   When DLM_DFL_USER_BIT is set, the dlm knows that this is a userspace
--	   lock and that lkb_astparam is the dlm_user_args structure. */
--	set_bit(DLM_DFL_USER_BIT, &lkb->lkb_dflags);
--	error = request_lock(ls, lkb, name, namelen, &args);
-+	if (convert)
-+		error = convert_lock(ls, lkb, &args);
-+	else
-+		error = request_lock(ls, lkb, name, namelen, &args);
- 
--	switch (error) {
--	case 0:
--		break;
--	case -EINPROGRESS:
-+	if (error == -EINPROGRESS)
- 		error = 0;
--		break;
--	case -EAGAIN:
--		error = 0;
--		fallthrough;
--	default:
--		goto out_put;
--	}
--
--	/* add this new lkb to the per-process list of locks */
--	spin_lock_bh(&ua->proc->locks_spin);
--	hold_lkb(lkb);
--	list_add_tail(&lkb->lkb_ownqueue, &ua->proc->locks);
--	spin_unlock_bh(&ua->proc->locks_spin);
--	do_put = false;
-  out_put:
--	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, false);
--	if (do_put)
-+	trace_dlm_lock_end(ls, lkb, name, namelen, mode, flags, error, true);
-+
-+	if (convert || error)
- 		__put_lkb(ls, lkb);
-+	if (error == -EAGAIN || error == -EDEADLK)
-+		error = 0;
-  out:
- 	dlm_unlock_recovery(ls);
-+	dlm_put_lockspace(ls);
- 	return error;
- }
- 
--int dlm_user_convert(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
--		     int mode, uint32_t flags, uint32_t lkid, char *lvb_in)
-+int dlm_unlock(dlm_lockspace_t *lockspace,
-+	       uint32_t lkid,
-+	       uint32_t flags,
-+	       struct dlm_lksb *lksb,
-+	       void *astarg)
- {
-+	struct dlm_ls *ls;
- 	struct dlm_lkb *lkb;
- 	struct dlm_args args;
--	struct dlm_user_args *ua;
- 	int error;
- 
-+	ls = dlm_find_lockspace_local(lockspace);
-+	if (!ls)
-+		return -EINVAL;
-+
- 	dlm_lock_recovery(ls);
- 
- 	error = find_lkb(ls, lkid, &lkb);
- 	if (error)
- 		goto out;
- 
--	trace_dlm_lock_start(ls, lkb, NULL, 0, mode, flags);
--
--	/* user can change the params on its lock when it converts it, or
--	   add an lvb that didn't exist before */
--
--	ua = lkb->lkb_ua;
--
--	if (flags & DLM_LKF_VALBLK && !ua->lksb.sb_lvbptr) {
--		ua->lksb.sb_lvbptr = kzalloc(DLM_USER_LVB_LEN, GFP_NOFS);
--		if (!ua->lksb.sb_lvbptr) {
--			error = -ENOMEM;
--			goto out_put;
--		}
--	}
--	if (lvb_in && ua->lksb.sb_lvbptr)
--		memcpy(ua->lksb.sb_lvbptr, lvb_in, DLM_USER_LVB_LEN);
--
--	ua->xid = ua_tmp->xid;
--	ua->castparam = ua_tmp->castparam;
--	ua->castaddr = ua_tmp->castaddr;
--	ua->bastparam = ua_tmp->bastparam;
--	ua->bastaddr = ua_tmp->bastaddr;
--	ua->user_lksb = ua_tmp->user_lksb;
-+	trace_dlm_unlock_start(ls, lkb, flags);
- 
--	error = set_lock_args(mode, &ua->lksb, flags, 0, fake_astfn, ua,
--			      fake_bastfn, &args);
-+	error = set_unlock_args(flags, astarg, &args);
- 	if (error)
- 		goto out_put;
- 
--	error = convert_lock(ls, lkb, &args);
-+	if (flags & DLM_LKF_CANCEL)
-+		error = cancel_lock(ls, lkb, &args);
-+	else
-+		error = unlock_lock(ls, lkb, &args);
- 
--	if (error == -EINPROGRESS || error == -EAGAIN || error == -EDEADLK)
-+	if (error == -DLM_EUNLOCK || error == -DLM_ECANCEL)
-+		error = 0;
-+	if (error == -EBUSY && (flags & (DLM_LKF_CANCEL | DLM_LKF_FORCEUNLOCK)))
- 		error = 0;
-  out_put:
--	trace_dlm_lock_end(ls, lkb, NULL, 0, mode, flags, error, false);
-+	trace_dlm_unlock_end(ls, lkb, flags, error);
-+
- 	dlm_put_lkb(lkb);
-  out:
- 	dlm_unlock_recovery(ls);
--	kfree(ua_tmp);
-+	dlm_put_lockspace(ls);
- 	return error;
- }
- 
--/*
-- * The caller asks for an orphan lock on a given resource with a given mode.
-- * If a matching lock exists, it's moved to the owner's list of locks and
-- * the lkid is returned.
-- */
--
--int dlm_user_adopt_orphan(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
--		     int mode, uint32_t flags, void *name, unsigned int namelen,
--		     uint32_t *lkid)
-+static void purge_mstcpy_list(struct dlm_ls *ls, struct dlm_rsb *r,
-+			      struct list_head *list)
- {
--	struct dlm_lkb *lkb = NULL, *iter;
--	struct dlm_user_args *ua;
--	int found_other_mode = 0;
--	int rv = 0;
-+	struct dlm_lkb *lkb, *safe;
- 
--	spin_lock_bh(&ls->ls_orphans_lock);
--	list_for_each_entry(iter, &ls->ls_orphans, lkb_ownqueue) {
--		if (iter->lkb_resource->res_length != namelen)
--			continue;
--		if (memcmp(iter->lkb_resource->res_name, name, namelen))
-+	list_for_each_entry_safe(lkb, safe, list, lkb_statequeue) {
-+		if (!is_master_copy(lkb))
- 			continue;
--		if (iter->lkb_grmode != mode) {
--			found_other_mode = 1;
-+
-+		/* don't purge lkbs we've added in recover_master_copy for
-+		   the current recovery seq */
-+
-+		if (lkb->lkb_recover_seq == ls->ls_recover_seq)
- 			continue;
--		}
- 
--		lkb = iter;
--		list_del_init(&iter->lkb_ownqueue);
--		clear_bit(DLM_DFL_ORPHAN_BIT, &iter->lkb_dflags);
--		*lkid = iter->lkb_id;
--		break;
--	}
--	spin_unlock_bh(&ls->ls_orphans_lock);
-+		del_lkb(r, lkb);
- 
--	if (!lkb && found_other_mode) {
--		rv = -EAGAIN;
--		goto out;
-+		/* this put should free the lkb */
-+		if (!dlm_put_lkb(lkb))
-+			log_error(ls, "purged mstcpy lkb not released");
- 	}
-+}
- 
--	if (!lkb) {
--		rv = -ENOENT;
--		goto out;
--	}
-+void dlm_purge_mstcpy_locks(struct dlm_rsb *r)
-+{
-+	struct dlm_ls *ls = r->res_ls;
- 
--	lkb->lkb_exflags = flags;
--	lkb->lkb_ownpid = (int) current->pid;
-+	purge_mstcpy_list(ls, r, &r->res_grantqueue);
-+	purge_mstcpy_list(ls, r, &r->res_convertqueue);
-+	purge_mstcpy_list(ls, r, &r->res_waitqueue);
-+}
- 
--	ua = lkb->lkb_ua;
-+static void purge_dead_list(struct dlm_ls *ls, struct dlm_rsb *r,
-+			    struct list_head *list,
-+			    int nodeid_gone, unsigned int *count)
-+{
-+	struct dlm_lkb *lkb, *safe;
- 
--	ua->proc = ua_tmp->proc;
--	ua->xid = ua_tmp->xid;
--	ua->castparam = ua_tmp->castparam;
--	ua->castaddr = ua_tmp->castaddr;
--	ua->bastparam = ua_tmp->bastparam;
--	ua->bastaddr = ua_tmp->bastaddr;
--	ua->user_lksb = ua_tmp->user_lksb;
-+	list_for_each_entry_safe(lkb, safe, list, lkb_statequeue) {
-+		if (!is_master_copy(lkb))
-+			continue;
- 
--	/*
--	 * The lkb reference from the ls_orphans list was not
--	 * removed above, and is now considered the reference
--	 * for the proc locks list.
--	 */
-+		if ((lkb->lkb_nodeid == nodeid_gone) ||
-+		    dlm_is_removed(ls, lkb->lkb_nodeid)) {
- 
--	spin_lock_bh(&ua->proc->locks_spin);
--	list_add_tail(&lkb->lkb_ownqueue, &ua->proc->locks);
--	spin_unlock_bh(&ua->proc->locks_spin);
-- out:
--	kfree(ua_tmp);
--	return rv;
--}
-+			/* tell recover_lvb to invalidate the lvb
-+			   because a node holding EX/PW failed */
-+			if ((lkb->lkb_exflags & DLM_LKF_VALBLK) &&
-+			    (lkb->lkb_grmode >= DLM_LOCK_PW)) {
-+				rsb_set_flag(r, RSB_RECOVER_LVB_INVAL);
-+			}
- 
- int dlm_user_unlock(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
- 		    uint32_t flags, uint32_t lkid, char *lvb_in)
+@@ -201,7 +203,7 @@ const struct file_operations udf_file_operations = {
+ 	.read_iter		= generic_file_read_iter,
+ 	.unlocked_ioctl		= udf_ioctl,
+ 	.open			= generic_file_open,
+-	.mmap			= udf_file_mmap,
++	.mmap_prepare		= udf_file_mmap_prepare,
+ 	.write_iter		= udf_file_write_iter,
+ 	.release		= udf_release_file,
+ 	.fsync			= generic_file_fsync,
 -- 
-2.48.1
+2.50.1
 
