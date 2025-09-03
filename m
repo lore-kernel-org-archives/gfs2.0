@@ -1,85 +1,62 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F0730C340
-	for <gfs2@lists.linux.dev>; Tue,  2 Sep 2025 13:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B7D1DFE09;
+	Wed,  3 Sep 2025 03:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819800; cv=none; b=Ogy5r/8+aCQXaLcuk+E3eo5RgH+wl7tbytPv81uR7NmWnfhVqj2r3gJPctrSK2ZWN9JtwE5z3joCXnoyBqExTDv7nLvJxrsgd/Ur8XcTIIWZSIHQoAPpEH/0aAP4xDasaDl/6E+x0aHkLMEcrVIfuUFbpheVxoB7msimnuYzTzY=
+	t=1756871007; cv=none; b=YIzTMqjL166YZ33o9Z+6vatvp9pjldoYosd2R1TVVL2DpzBQ17Vmj+eueKlPUYu5SvMPHgJoanAXf0BTCCABMZv8NlExsIKzvJ+abNoVErNym42Wz60ro8MUiX6z2T4YaqFJPHkH7e5hZ3iEUPLhjq/1x/ttXZRoOx0cANLDtjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819800; c=relaxed/simple;
-	bh=E3yq5cRtyiSNLEiQnKoURmT3ZY/cEWvKXre66KYTGz4=;
+	s=arc-20240116; t=1756871007; c=relaxed/simple;
+	bh=3/H3D++jBOi0YL40SQsDdbNfj63iF0hF6QE19mQ6O/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NZaUmVQG7KJ3dQbaAs1ur1Exn3NNsSESmle/f9zm6FMQCdlXS0+jq/nxngTt/ZE+0yw5fF6CZVirwedoQ+TXiE7XMl8U+bJzhbBmeaJzQONjs22z2EgaW+2xePf/1ZTyhAyBpvqkGaW18G0q++KWt5jhBct+BOzfMPrKP1XChUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=muldPbKB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=8VB8ShqV; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mDAQki4D; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fa0yyIJo; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=AJi+VMhHSZ+oJFhrS/8F0He0orh+471lMmVfExp19k5AMgAEzCaTpUr0WRyEACLpSC6VYIkRc3zgWyJN6i0BO/yTDjd8YR+IkfHSw1aZd2E1SZHSWEEOPhazgPgU2SBa+49aTJ3kw8+cUJeTfIZc/2/wQncLv3qOACC4Tsdm5Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PoaXdbBI; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="muldPbKB";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="8VB8ShqV";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mDAQki4D";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fa0yyIJo"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DEBA0211A1;
-	Tue,  2 Sep 2025 13:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756819797; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e+tmHzc4JszRWN9Uk+IedaTWn5QYqC9HOR77ygGDmZQ=;
-	b=muldPbKBoJrxHtg03AISKTJnQwNg8sWhaa5P3098MK8jgq7T1SDlICG4zkyjoKBdi+PAnG
-	u/4EAg/MIfwd/mYWzcrhDvsxX0pMRrSUOl5drrjyn5TjVlCSkmMZ9G1ICpjpCFcF+wiJJG
-	SSQ28eCH/rv4tCJjHDA8gFfDY7wFl7M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756819797;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e+tmHzc4JszRWN9Uk+IedaTWn5QYqC9HOR77ygGDmZQ=;
-	b=8VB8ShqVPRCkUe6K/aSJWNQgSbpBaFTlMKNuDchDCbUfN9h5g5zJfoPZ1lTeujPBbs04MQ
-	LVDH7uWVvRAF6SBw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mDAQki4D;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fa0yyIJo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756819796; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e+tmHzc4JszRWN9Uk+IedaTWn5QYqC9HOR77ygGDmZQ=;
-	b=mDAQki4DW0gfkRf9PN/SMdVzR+/9JmNe5xaQV7D59VpZksxXABFEnnuGtpzOhI5h1X0+h5
-	zqiNEuZTDH3ZyQYQgRYJG284H5XgeqkDJfsgIjYBfWOpf/OvY2y+67MBGolT/1JDCuNWTl
-	qBeFrHiwvpAgawQ0q2c7Gesk38VQfpw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756819796;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e+tmHzc4JszRWN9Uk+IedaTWn5QYqC9HOR77ygGDmZQ=;
-	b=fa0yyIJoLYpQ9jwIcEAx1dkCGSzY+aF++vgpvpqKjgicxWylzxnUDw+ggc4MQOYuV2yUtx
-	msM5ny4BpEQnw7CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C077213882;
-	Tue,  2 Sep 2025 13:29:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LyejLlTxtmiKXAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 02 Sep 2025 13:29:56 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 59571A0A9F; Tue,  2 Sep 2025 15:29:56 +0200 (CEST)
-Date: Tue, 2 Sep 2025 15:29:56 +0200
-From: Jan Kara <jack@suse.cz>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Christian Brauner <christian@brauner.io>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.com>, gfs2@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PoaXdbBI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756871006; x=1788407006;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3/H3D++jBOi0YL40SQsDdbNfj63iF0hF6QE19mQ6O/Y=;
+  b=PoaXdbBI9XXTga4jXc/S36C879w1/80kMdrtGBrPtzIeyWDLsmUNDc+s
+   Q/3U9tl53VI8wAxUotqvhFkvkh92HKdMJJ/Jkgy9sqinGniqUDPXul1S0
+   Ww133wlN2UkXpd6h+BJotQmPjO1EpBXcMNZjcoP5rUV+3f0eu9C7Lxpi9
+   4TNnD2jcRD1iMZhpn4wcmFOZusJ8xxypDe7fAjN7wVu4QjgGZQSZuIEQw
+   1nRKFu009JJ9IyS/h7NWM0EBo3+u9JbUF2zMVg4vkvLFWjywGQthpOHi6
+   Um9AICbK73HEVc3GgcMTo0+T+I+zgIsqo/ESpTqprlgXrcsPaYCJl96F1
+   Q==;
+X-CSE-ConnectionGUID: 1V+2UUtDTM2kWViwU/wwhw==
+X-CSE-MsgGUID: xC8hfO4eQuO34XRyoZIOZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="59239521"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="59239521"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 20:43:25 -0700
+X-CSE-ConnectionGUID: BNOKFyPcQhSe/ezBefGvdA==
+X-CSE-MsgGUID: LOBuq2HDTz6A7jRiIA9b6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="170749413"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 02 Sep 2025 20:43:23 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uteP2-0003KP-2H;
+	Wed, 03 Sep 2025 03:43:20 +0000
+Date: Wed, 3 Sep 2025 11:43:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Christian Brauner <christian@brauner.io>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.com>,
+	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] gfs2, udf: update to use mmap_prepare
-Message-ID: <kjcvzhgyiucsdcgsrbyglf3c2cybelhzggns5rh6tslvzstw3n@c7gyqtxnvzgt>
+Message-ID: <202509031109.QugeBzTq-lkp@intel.com>
 References: <20250902115341.292100-1-lorenzo.stoakes@oracle.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
@@ -90,148 +67,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250902115341.292100-1-lorenzo.stoakes@oracle.com>
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: DEBA0211A1
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
 
-On Tue 02-09-25 12:53:41, Lorenzo Stoakes wrote:
-> The f_op->mmap() callback is deprecated, and we are in the process of
-> slowly converting users to f_op->mmap_prepare().
-> 
-> While some filesystems require additional work to be done before they can
-> be converted, the gfs2 and udf filesystems (like most) are simple and can
-> simply be replaced right away.
-> 
-> This patch adapts them to do so.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Hi Lorenzo,
 
-Looks good to me. Feel free to add:
+kernel test robot noticed the following build warnings:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+[auto build test WARNING on brauner-vfs/vfs.all]
+[also build test WARNING on gfs2/for-next linus/master v6.17-rc4 next-20250902]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-								Honza
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/gfs2-udf-update-to-use-mmap_prepare/20250902-200024
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
+patch link:    https://lore.kernel.org/r/20250902115341.292100-1-lorenzo.stoakes%40oracle.com
+patch subject: [PATCH] gfs2, udf: update to use mmap_prepare
+config: x86_64-randconfig-004-20250903 (https://download.01.org/0day-ci/archive/20250903/202509031109.QugeBzTq-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509031109.QugeBzTq-lkp@intel.com/reproduce)
 
-> ---
->  fs/gfs2/file.c | 12 ++++++------
->  fs/udf/file.c  |  8 +++++---
->  2 files changed, 11 insertions(+), 9 deletions(-)
-> 
-> diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
-> index bc67fa058c84..c28ff8786238 100644
-> --- a/fs/gfs2/file.c
-> +++ b/fs/gfs2/file.c
-> @@ -577,7 +577,7 @@ static const struct vm_operations_struct gfs2_vm_ops = {
->  };
->  
->  /**
-> - * gfs2_mmap
-> + * gfs2_mmap_prepare
->   * @file: The file to map
->   * @vma: The VMA which described the mapping
->   *
-> @@ -588,8 +588,9 @@ static const struct vm_operations_struct gfs2_vm_ops = {
->   * Returns: 0
->   */
->  
-> -static int gfs2_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int gfs2_mmap_prepare(struct vm_area_desc *desc)
->  {
-> +	struct file *file = desc->file;
->  	struct gfs2_inode *ip = GFS2_I(file->f_mapping->host);
->  
->  	if (!(file->f_flags & O_NOATIME) &&
-> @@ -605,7 +606,7 @@ static int gfs2_mmap(struct file *file, struct vm_area_struct *vma)
->  		gfs2_glock_dq_uninit(&i_gh);
->  		file_accessed(file);
->  	}
-> -	vma->vm_ops = &gfs2_vm_ops;
-> +	desc->vm_ops = &gfs2_vm_ops;
->  
->  	return 0;
->  }
-> @@ -1585,7 +1586,7 @@ const struct file_operations gfs2_file_fops = {
->  	.iopoll		= iocb_bio_iopoll,
->  	.unlocked_ioctl	= gfs2_ioctl,
->  	.compat_ioctl	= gfs2_compat_ioctl,
-> -	.mmap		= gfs2_mmap,
-> +	.mmap_prepare	= gfs2_mmap,
->  	.open		= gfs2_open,
->  	.release	= gfs2_release,
->  	.fsync		= gfs2_fsync,
-> @@ -1620,7 +1621,7 @@ const struct file_operations gfs2_file_fops_nolock = {
->  	.iopoll		= iocb_bio_iopoll,
->  	.unlocked_ioctl	= gfs2_ioctl,
->  	.compat_ioctl	= gfs2_compat_ioctl,
-> -	.mmap		= gfs2_mmap,
-> +	.mmap_prepare	= gfs2_mmap_prepare,
->  	.open		= gfs2_open,
->  	.release	= gfs2_release,
->  	.fsync		= gfs2_fsync,
-> @@ -1639,4 +1640,3 @@ const struct file_operations gfs2_dir_fops_nolock = {
->  	.fsync		= gfs2_fsync,
->  	.llseek		= default_llseek,
->  };
-> -
-> diff --git a/fs/udf/file.c b/fs/udf/file.c
-> index 0d76c4f37b3e..fbb2d6ba8ca2 100644
-> --- a/fs/udf/file.c
-> +++ b/fs/udf/file.c
-> @@ -189,10 +189,12 @@ static int udf_release_file(struct inode *inode, struct file *filp)
->  	return 0;
->  }
->  
-> -static int udf_file_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int udf_file_mmap_prepare(struct vm_area_desc *desc)
->  {
-> +	struct file *file = desc->file;
-> +
->  	file_accessed(file);
-> -	vma->vm_ops = &udf_file_vm_ops;
-> +	desc->vm_ops = &udf_file_vm_ops;
->  
->  	return 0;
->  }
-> @@ -201,7 +203,7 @@ const struct file_operations udf_file_operations = {
->  	.read_iter		= generic_file_read_iter,
->  	.unlocked_ioctl		= udf_ioctl,
->  	.open			= generic_file_open,
-> -	.mmap			= udf_file_mmap,
-> +	.mmap_prepare		= udf_file_mmap_prepare,
->  	.write_iter		= udf_file_write_iter,
->  	.release		= udf_release_file,
->  	.fsync			= generic_file_fsync,
-> -- 
-> 2.50.1
-> 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509031109.QugeBzTq-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: fs/gfs2/file.c:591 function parameter 'desc' not described in 'gfs2_mmap_prepare'
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
