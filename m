@@ -1,215 +1,130 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B062FB08C
-	for <gfs2@lists.linux.dev>; Fri,  5 Sep 2025 16:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAD2235044;
+	Sat,  6 Sep 2025 11:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757088359; cv=none; b=D8QtZjImaZGKEqnYfqOQx1U/3lgOfukOnuO7sXP3rv7cJbQdVv3DZsBwMoo52MouyHXFA4kbxoFwzA0AYgkzbVp+mnJlj3WWi8QC8WHBmSbcXMmWVaBRvWOGRoOLi3/+FWVJC8JsS46jzbvcpSn6NQ4xWr+LqwPSqglRujfNy+k=
+	t=1757156733; cv=none; b=bvfbCHgsq+OhqAoHc9i2IiLaNMjkZKkiDyOBLnv+Dg/TjRDjbk4RgYf/VpTZdSoYQ+NYfx8QoIVlZrYOklzXa849pX69bvy2T2A7HleiXUwObbRW71myorh6ITbQp15rWi4DMJNmrODm6OVF2iOw9jm8lrF3T+n7lOXTvY8Y4fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757088359; c=relaxed/simple;
-	bh=DpH1spyQc2BwKZX8QWGF5X6Bgoy/8T1ImVR1qDJ5dpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LQkp1lV2ZTgeGMEjFBWvQZt00SK57JjunjkUW5ilWiQtMtAS5UdU7QCtM0+HgF2DQopSkQPhRrnG7ToQSsbxz5Hvd0D2aycyKjeYTU+b2FiXEctxy1W2FTwcHXIWHHK3mSU2dwC5elTCEh1j2scSO2VvY3OScQCy3NOSpe2YXVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YjSJ1GBh; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757156733; c=relaxed/simple;
+	bh=iC/IQbMtS3ZhK4Pb9e1I1ljSdAmStO2a+MVILIrYT8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HetwwAKdnuZ01A8dBqR4uAJtUGkzBFSf8uEY2ULa3FC9O8inbAUK2WiFv6w5z+4U5d4MTceiFd54Vu2Y7wyUrnjfmRTfMYBkLdZb1PRlDMDWatYp8939nB8pFF50DEBbc+o4syMa7joglvXa2UeQZDaW6D6Nn8dVHj9nIYBN1io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzxO7G8j; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YjSJ1GBh"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-621b8b0893bso1344706a12.2
-        for <gfs2@lists.linux.dev>; Fri, 05 Sep 2025 09:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757088356; x=1757693156; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x2jF6CAli7KAHOTpVDwWFWeNvgtTN0tRc+2eH+xWVhY=;
-        b=YjSJ1GBhwlwismEEOJsG1nga3opOzLGyOiJEBcpNzBMRfQua/Rn0qF4zxd8yCDAuSe
-         5K2h7WCj+bIrf9a3eWNbAQKqsI9xzJQm12YlxAYP4uf+byRrWH8Wwk4494XuIPyWuSlM
-         JN9jK/LlBTmmqbRcbiCgXrhzg5Z/TzftCk93KdFAcDHR8DBHYDOv7McuMSoQf3GbOZWu
-         I+Gq7mzXjFIFTNrVpoOEiVI/CRzSZmIp1JY54bzU7YWjMpbzLL+8wcBnfmAmi4OIzZ94
-         4A7juGps7lOxu2vYyYuf7FIaCAI2TF/DlzdEfxxMd21Mz7sVVHDAR4+F8/KCzy+EyASB
-         /FEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757088356; x=1757693156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x2jF6CAli7KAHOTpVDwWFWeNvgtTN0tRc+2eH+xWVhY=;
-        b=XRcxj9NGgEZLyUe1IMnSAa0s/zeiBgNqUi58Ld1GR3GgCs19ZFpoh163NTvc0pVitJ
-         LMxP+GB7cCARI3pLZOOAuN282CRceWRz5SRbrogeuQyXuLe+B9QGLvrAKJt+vrOsPz6M
-         LT5DyHscT2cUdlN6EnGOm9dSWPS4t1e3vSbcvXBo4CF6aXtvD42SnTztM/YObCWnvGQ5
-         +4bATz7xCBkpowgWq8FS0GIIZBbNmdvdAmRj9t+tOU2Tae6fFHPo1/r46LtGuZli8gnt
-         cUSl9+7gJ6Vi/OIxTgYUyBR7BfNn4q//pGtri3chWsvoLkqZSx9/H3kUlkN3HCP6GmzH
-         91KQ==
-X-Gm-Message-State: AOJu0YxMW3RJsbzCKbmIWrKTwlHZfPi4M5uz9TpgOowk02xue9+qz9k5
-	nswYWfksEDl4mP0h3i+LkGaiB5F86YzVq8RguOMKiwVTnl4D+ER4PyedQxZW6T5RgmQ=
-X-Gm-Gg: ASbGncvwraub99ePlyg+e7R9Vvb/ivH5vDfA76w2wBmIPnp9TPGqaGazzzcqF2VrHRg
-	JAKulwUIcozdp3tzkhx5JJRUv+RuH+E0tl4Fg3mY2aycRFJ2krU+BUHAbM+q6o1ud2xrhYm7nqs
-	odGrU12PShBNsuo/J48XovbbKuZNyqJpJ/bVAHIQHR3pvEzbR6d9uUY7+QVh6dw2WLAKsGc9eY2
-	oobHXI37yFr0xFROfcBaJpVl2xd6LCA7eGQ/tLoCXi+jh1doKrGMT/PMpM4JA11nGDaePYfV6rl
-	+KsTHFsLrCwjDP2AVFrbfmg5a/RcijHKDVBVGqY294Id3VTEAAoqjF2MS5UHLEh9EX5A/nA1V6d
-	py8xMzxSQghiYXgoZ/Ff5ZGKPpjawdPVG16LV2RTIIMKZhufjTu0q1FiYnYXu1IJyk5KLC0Fw4V
-	OAPXjTw5h1wT4Z5UeFQZCWKKzymCLBt4iKxc0mpIVN3YdyDQWCofrnyuVQQYaGY8aOe8dBbdU=
-X-Google-Smtp-Source: AGHT+IEQKOL2cDeCeyz7GsXf0xOGnUm4pZGUH7eFeY7Hn/xgYOpbaxtnkhVjJRD5BvrCb03pNODkyw==
-X-Received: by 2002:a17:906:dc8f:b0:b04:1edf:a42b with SMTP id a640c23a62f3a-b041edfac8bmr1953165566b.11.1757088355649;
-        Fri, 05 Sep 2025 09:05:55 -0700 (PDT)
-Received: from local.station (net-93-148-93-71.cust.vodafonedsl.it. [93.148.93.71])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aff138a8c1dsm1725812666b.99.2025.09.05.09.05.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 09:05:55 -0700 (PDT)
-From: Alessio Attilio <alessio.attilio.dev@gmail.com>
-To: gfs2@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	aahringo@redhat.com,
-	teigland@redhat.com,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzxO7G8j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757156730; x=1788692730;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iC/IQbMtS3ZhK4Pb9e1I1ljSdAmStO2a+MVILIrYT8A=;
+  b=YzxO7G8jNMntH58h4gPaY+4e+KACp9ughiOXiX1Yo+rbppItmGf5DBng
+   YnTvtCNc5rF84qmhPMyBMMUTO3eP56NsJ0ptQAlFWO4Ig+k4JyeS54qBF
+   o/NFpK4x6bSv0XxRYQyKrXjsnvfEIvxamPYCSW9GhAZszVyiAiTKCno0T
+   Ht6afzTxC7UGEVoarA/qpQfYJmxRiOPvypCX9GU/c24M2vatgdorkuLJZ
+   c/qwK4MeMyOhTomTn1vOOofVLJ4lwfy//3akyPueT/MABEWkDaBWhN/yw
+   ynEGjPzwul6OBlRZ6stMy0KDs2/5zkWAwcCQOX/bwudjva3ZcwMkgTqrP
+   g==;
+X-CSE-ConnectionGUID: 1X256UMbRl6NmIgFkPCPHg==
+X-CSE-MsgGUID: l1gf0TFXQSKuBJX3oLyD4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11544"; a="84922460"
+X-IronPort-AV: E=Sophos;i="6.18,244,1751266800"; 
+   d="scan'208";a="84922460"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2025 04:05:29 -0700
+X-CSE-ConnectionGUID: qf3FtedCS9WIb4YPd2xb+A==
+X-CSE-MsgGUID: PlnIjXl7S12LfQNVauwp9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,244,1751266800"; 
+   d="scan'208";a="176448240"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 06 Sep 2025 04:05:27 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uuqjV-0001NP-1K;
+	Sat, 06 Sep 2025 11:05:25 +0000
+Date: Sat, 6 Sep 2025 19:04:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alessio Attilio <alessio.attilio.dev@gmail.com>, gfs2@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	aahringo@redhat.com, teigland@redhat.com,
 	Alessio Attilio <alessio.attilio.dev@gmail.com>
-Subject: [PATCH] dlm: improve lock management and concurrency control
-Date: Fri,  5 Sep 2025 18:05:52 +0200
-Message-ID: <20250905160552.496879-1-alessio.attilio.dev@gmail.com>
-X-Mailer: git-send-email 2.48.1
+Subject: Re: [PATCH] dlm: improve lock management and concurrency control
+Message-ID: <202509061809.348XSVqi-lkp@intel.com>
+References: <20250905160552.496879-1-alessio.attilio.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250905160552.496879-1-alessio.attilio.dev@gmail.com>
 
-This patch introduces several improvements to lock handling in the DLM
-subsystem, focusing on thread safety, correctness, and code clarity.
+Hi Alessio,
 
-- Added explicit locking (spin_lock_bh/spin_unlock_bh) around accesses
-  to proc->locks and proc->asts in dlm_clear_proc_locks, ensuring safe
-  concurrent operations during lock cleanup.
-- Replaced del_proc_lock with direct, lock-protected list operations
-  for improved clarity and correctness.
-- Updated send_unlock to set RSB_MASTER_UNCERTAIN only when releasing
-  the last lock on an rsb, ensuring proper master confirmation.
-- Improved handling of persistent and non-persistent locks by setting
-  appropriate flags (DLM_DFL_ORPHAN_BIT or DLM_IFL_DEAD_BIT) before
-  orphaning or unlocking.
-- Removed outdated comments related to mutex protection and serialization
-  assumptions, reflecting the updated concurrency model.
+kernel test robot noticed the following build warnings:
 
-Signed-off-by: Alessio Attilio <alessio.attilio.dev@gmail.com>
----
- fs/dlm/lock.c | 68 +++++++++++++++++++++++++++++++++------------------
- 1 file changed, 44 insertions(+), 24 deletions(-)
+[auto build test WARNING on teigland-dlm/next]
+[also build test WARNING on linus/master v6.17-rc4 next-20250905]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 6dd3a524cd35..bde62c991cfc 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -3654,12 +3654,33 @@ static int send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 	return error;
- }
- 
--/* FIXME: if this lkb is the only lock we hold on the rsb, then set
--   MASTER_UNCERTAIN to force the next request on the rsb to confirm
--   that the master is still correct. */
--
- static int send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
-+	struct dlm_lkb *tmp;
-+	int count = 0;
-+
-+	list_for_each_entry(tmp, &r->res_grantqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+	list_for_each_entry(tmp, &r->res_convertqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+	list_for_each_entry(tmp, &r->res_waitqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+
-+	/*
-+	 * When releasing the last lock on the rsb, we mark the master as uncertain.
-+ 	 * This ensures that the next lock request will verify the master node,
-+ 	 * maintaining consistency across the cluster.
-+ 	 */
-+
-+	if (count == 1)
-+		rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
-+
- 	return send_common(r, lkb, DLM_MSG_UNLOCK);
- }
- 
-@@ -6150,16 +6171,6 @@ static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
- 	return lkb;
- }
- 
--/* The ls_clear_proc_locks mutex protects against dlm_user_add_cb() which
--   1) references lkb->ua which we free here and 2) adds lkbs to proc->asts,
--   which we clear here. */
--
--/* proc CLOSING flag is set so no more device_reads should look at proc->asts
--   list, and no more device_writes should add lkb's to proc->locks list; so we
--   shouldn't need to take asts_spin or locks_spin here.  this assumes that
--   device reads/writes/closes are serialized -- FIXME: we may need to serialize
--   them ourself. */
--
- void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- {
- 	struct dlm_callback *cb, *cb_safe;
-@@ -6168,36 +6179,45 @@ void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- 	dlm_lock_recovery(ls);
- 
- 	while (1) {
--		lkb = del_proc_lock(ls, proc);
-+		lkb = NULL;
-+		spin_lock_bh(&proc->locks_spin);
-+		if (!list_empty(&proc->locks)) {
-+			lkb = list_entry(proc->locks.next, struct dlm_lkb,
-+					 lkb_ownqueue);
-+			list_del_init(&lkb->lkb_ownqueue);
-+		}
-+		spin_unlock_bh(&proc->locks_spin);
-+
- 		if (!lkb)
- 			break;
--		if (lkb->lkb_exflags & DLM_LKF_PERSISTENT)
-+
-+		if (lkb->lkb_exflags & DLM_LKF_PERSISTENT) {
-+			set_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags);
- 			orphan_proc_lock(ls, lkb);
--		else
-+		} else {
-+			set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
- 			unlock_proc_lock(ls, lkb);
--
--		/* this removes the reference for the proc->locks list
--		   added by dlm_user_request, it may result in the lkb
--		   being freed */
-+		}
- 
- 		dlm_put_lkb(lkb);
- 	}
- 
--	spin_lock_bh(&ls->ls_clear_proc_locks);
--
-+	spin_lock_bh(&proc->locks_spin);
- 	/* in-progress unlocks */
- 	list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
- 		list_del_init(&lkb->lkb_ownqueue);
- 		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
- 		dlm_put_lkb(lkb);
- 	}
-+	spin_unlock_bh(&proc->locks_spin);
- 
-+	spin_lock_bh(&proc->asts_spin);
- 	list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
- 		list_del(&cb->list);
- 		dlm_free_cb(cb);
- 	}
-+	spin_unlock_bh(&proc->asts_spin);
- 
--	spin_unlock_bh(&ls->ls_clear_proc_locks);
- 	dlm_unlock_recovery(ls);
- }
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Alessio-Attilio/dlm-improve-lock-management-and-concurrency-control/20250906-000819
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git next
+patch link:    https://lore.kernel.org/r/20250905160552.496879-1-alessio.attilio.dev%40gmail.com
+patch subject: [PATCH] dlm: improve lock management and concurrency control
+config: sh-randconfig-r071-20250906 (https://download.01.org/0day-ci/archive/20250906/202509061809.348XSVqi-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250906/202509061809.348XSVqi-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509061809.348XSVqi-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> fs/dlm/lock.c:6153:24: warning: 'del_proc_lock' defined but not used [-Wunused-function]
+    6153 | static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
+         |                        ^~~~~~~~~~~~~
+
+
+vim +/del_proc_lock +6153 fs/dlm/lock.c
+
+597d0cae0f99f6 David Teigland  2006-07-12  6148  
+ef0c2bb05f40f9 David Teigland  2007-03-28  6149  /* We have to release clear_proc_locks mutex before calling unlock_proc_lock()
+ef0c2bb05f40f9 David Teigland  2007-03-28  6150     (which does lock_rsb) due to deadlock with receiving a message that does
+23e8e1aaacb10d David Teigland  2011-04-05  6151     lock_rsb followed by dlm_user_add_cb() */
+ef0c2bb05f40f9 David Teigland  2007-03-28  6152  
+ef0c2bb05f40f9 David Teigland  2007-03-28 @6153  static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
+ef0c2bb05f40f9 David Teigland  2007-03-28  6154  				     struct dlm_user_proc *proc)
+ef0c2bb05f40f9 David Teigland  2007-03-28  6155  {
+ef0c2bb05f40f9 David Teigland  2007-03-28  6156  	struct dlm_lkb *lkb = NULL;
+ef0c2bb05f40f9 David Teigland  2007-03-28  6157  
+578acf9a87a875 Alexander Aring 2024-04-02  6158  	spin_lock_bh(&ls->ls_clear_proc_locks);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6159  	if (list_empty(&proc->locks))
+ef0c2bb05f40f9 David Teigland  2007-03-28  6160  		goto out;
+ef0c2bb05f40f9 David Teigland  2007-03-28  6161  
+ef0c2bb05f40f9 David Teigland  2007-03-28  6162  	lkb = list_entry(proc->locks.next, struct dlm_lkb, lkb_ownqueue);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6163  	list_del_init(&lkb->lkb_ownqueue);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6164  
+ef0c2bb05f40f9 David Teigland  2007-03-28  6165  	if (lkb->lkb_exflags & DLM_LKF_PERSISTENT)
+8a39dcd9c32dd3 Alexander Aring 2023-03-06  6166  		set_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6167  	else
+e1af8728f600f6 Alexander Aring 2023-03-06  6168  		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6169   out:
+578acf9a87a875 Alexander Aring 2024-04-02  6170  	spin_unlock_bh(&ls->ls_clear_proc_locks);
+ef0c2bb05f40f9 David Teigland  2007-03-28  6171  	return lkb;
+ef0c2bb05f40f9 David Teigland  2007-03-28  6172  }
+ef0c2bb05f40f9 David Teigland  2007-03-28  6173  
+
 -- 
-2.48.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
