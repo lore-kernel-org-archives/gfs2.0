@@ -1,205 +1,137 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C281242935
-	for <gfs2@lists.linux.dev>; Tue,  9 Sep 2025 23:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AC328640E
+	for <gfs2@lists.linux.dev>; Tue,  9 Sep 2025 23:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757460117; cv=none; b=Hqya7UiATr1Tn+nHxWkqbXIv/mUfABzraNGgdE4Lz3d3OucBSiHzc0Fao/DfBIkRAKC1+XuHf05GQd6sNFbMGzvgiJPl8ApD6bHqdM6OeE2VMOjoEAUgvyCt3WEBhJa95WpnaUuCkgiVuVFOY2HHqpOTLrh02KnxAvmhS2Ak6mQ=
+	t=1757460212; cv=none; b=rOpo4Km/UbKLVpOsl3Adea9epzAXN5+HE1SJUg3qS3fVhHue6sjxup6aw7je2/8cdN6Ve85NmG6hUYVMP7avFKCgTYRn2R7u2vVvbndeMsPYj/PkX7lG6/ckbwAh2EJRDdLExMWf6ccHL2CkPVgaKaD6J9ljX6JOyTgpgba6wNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757460117; c=relaxed/simple;
-	bh=eibTRJ7HE0lU2R0MPS4mUJGOox1jCETS8teAgOrwFjk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=atd4ZrDZJra3EXMB0/jBsLI196kGrhcA43L6ZPerfxn051KeFJakJF1/iG88X1uervcX2swZN6U+o1WKsZg7Y6q1NFaTnSeVgZgZBWY/VRgPuuEqVNuTquNpDtZaOj1YXfMaxn2BSOiVZFWqB+8bZq2A6I5y0MFMyNauPfjdvZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wXnbFwfA; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wXnbFwfA"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757460110; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=108KB8TcIdTBZlziMq4PiXlySytzFGUVDHJv6u8P/ss=;
-	b=wXnbFwfAzv/LidCVZ8/U8296g++8KU3IJXma8z9avo0lRQs+AxnmIQFJnaxhTEB4QRDnTOgG2hnmVh947cIIGjEpxFZctzfsP0sDMewVnnSRhhmFCaX1MljDqgqy1LBMyvTiiaixx5nDNr0fDSFsSmuOAUzzS+U03GbrKsHvY0M=
-Received: from 30.180.0.242(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WnfVsA3_1757460109 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 10 Sep 2025 07:21:50 +0800
-Message-ID: <488d246b-13c7-4e36-9510-8ae2de450647@linux.alibaba.com>
-Date: Wed, 10 Sep 2025 07:21:48 +0800
+	s=arc-20240116; t=1757460212; c=relaxed/simple;
+	bh=M5GUi+UFBwWm+EXf6sxOo83N1GRYMBNV4Yu3+UGUlJU=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=h7Y/kShY3Jn0XqXpgUo6RfYsIZkUQ3ws1YtAEZSIg+Foog1zaOqKKb+wkC0nU6LT6aubnEj4H/nQxOtZLxWZjb4HOTbhnWP3bnvsyD57Z1Sl6FRY9QoguN3+uIDkX4y6X2PUugYv4CONhTQAqcxFnEcKkJb0fvFzZvxJXrBlUZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-4020e59b735so101312145ab.1
+        for <gfs2@lists.linux.dev>; Tue, 09 Sep 2025 16:23:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757460210; x=1758065010;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eXRzNXovbvKhfHPl7AbaXleDD01AmnIrCau7uI7AOJI=;
+        b=AdBHmnXD77y7FkRcG7z2jNO78JJSz/3zu5Gum5nw/Y2x7yBauKy9aSR3aTJzr224UM
+         NNpcFWSSoD5dgOEOIzePlKfK2Z0FPJBfGBbjtgOOfhqKeXt6zC13pLjkfNcgW2ZT7O3k
+         OFIj+/cXARAlcQrC47OpJQCC21OxO8/U6nYgIC2qJ2Z03oYXPdgAopHEs4nmYW7WSTh+
+         4wwDgFvcOQ/qq7cK5oRQSACwar0Iw75lYodW9NIkzqoH6GgLwU+M+zl4k2VxKz/ZOFYG
+         jk3JCHV60IfQPCcC7KNNX9IGMfhCj3va6DEgiG/wgt8XYzhHNkYkBF33HfbGLhgjEcRe
+         w1xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKLhgLiR5E8ULkTA+ejflImZIrjWhLTP9YC5wbePO0opzH/un5oFfgOJtA8vf17KYY6DEP@lists.linux.dev
+X-Gm-Message-State: AOJu0YxndXOAqyDfI5ixOmZFVMf+0jtilACW6BdVxQyIcHSGZpUpMfrD
+	SI/0jS7olOfr7oluWaXsQ4UZ4xAHZ7LB34VcFo1ayUx0sqlAjHUlkKV19M9nvDg2SU+xIIcOYkV
+	C/6mae6jRoepjt4c7W2VAoiardHBe7lSqYUFHJJosqpnUMfClg6EyW254rNY=
+X-Google-Smtp-Source: AGHT+IFvCVHOScOi1V4fP34N4FyO6fyiAJKqjUpEEcDIuwwx8hBXeKenax2RAZr0ypfGlZNKySYb4PvwnUH7a4//b70QmsG4/c34
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/16] iomap: add caller-provided callbacks for read
- and readahead
-To: Joanne Koong <joannelkoong@gmail.com>, djwong@kernel.org,
- hch@infradead.org, brauner@kernel.org, miklos@szeredi.hu,
- linux-block@vger.kernel.org, gfs2@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
- linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20250908185122.3199171-1-joannelkoong@gmail.com>
- <20250908185122.3199171-12-joannelkoong@gmail.com> <aL9xb5Jw8tvIRMcQ@debian>
- <CAJnrk1YPpNs811dwWo+ts1xwFi-57OgWvSO4_8WLL_3fJgzrFw@mail.gmail.com>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <CAJnrk1YPpNs811dwWo+ts1xwFi-57OgWvSO4_8WLL_3fJgzrFw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:4417:10b0:402:b8e3:c9f6 with SMTP id
+ e9e14a558f8ab-402b8e3cfbcmr156221175ab.25.1757460209872; Tue, 09 Sep 2025
+ 16:23:29 -0700 (PDT)
+Date: Tue, 09 Sep 2025 16:23:29 -0700
+In-Reply-To: <684c0d76.050a0220.be214.029f.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68c0b6f1.050a0220.3c6139.0014.GAE@google.com>
+Subject: Re: [syzbot] [gfs2?] kernel BUG in gfs2_jindex_free (2)
+From: syzbot <syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Joanne,
+syzbot has found a reproducer for the following issue on:
 
-On 2025/9/9 23:24, Joanne Koong wrote:
-> On Mon, Sep 8, 2025 at 8:14 PM Gao Xiang <xiang@kernel.org> wrote:
->>
->> Hi Joanne,
->>
->> On Mon, Sep 08, 2025 at 11:51:17AM -0700, Joanne Koong wrote:
->>> Add caller-provided callbacks for read and readahead so that it can be
->>> used generically, especially by filesystems that are not block-based.
->>>
->>> In particular, this:
->>> * Modifies the read and readahead interface to take in a
->>>    struct iomap_read_folio_ctx that is publicly defined as:
->>>
->>>    struct iomap_read_folio_ctx {
->>>        const struct iomap_read_ops *ops;
->>>        struct folio *cur_folio;
->>>        struct readahead_control *rac;
->>>        void *private;
->>>    };
->>>
->>>    where struct iomap_read_ops is defined as:
->>>
->>>    struct iomap_read_ops {
->>>        int (*read_folio_range)(const struct iomap_iter *iter,
->>>                               struct iomap_read_folio_ctx *ctx,
->>>                               loff_t pos, size_t len);
->>>        int (*read_submit)(struct iomap_read_folio_ctx *ctx);
->>>    };
->>>
->>
->> No, I don't think `struct iomap_read_folio_ctx` has another
->> `.private` makes any sense, because:
->>
->>   - `struct iomap_iter *iter` already has `.private` and I think
->>     it's mainly used for per-request usage; and your new
->>     `.read_folio_range` already passes
->>      `const struct iomap_iter *iter` which has `.private`
->>     I don't think some read-specific `.private` is useful in any
->>     case, also below.
->>
->>   - `struct iomap_read_folio_ctx` cannot be accessed by previous
->>     .iomap_{begin,end} helpers, which means `struct iomap_read_ops`
->>     is only useful for FUSE read iter/submit logic.
->>
->> Also after my change, the prototype will be:
->>
->> int iomap_read_folio(const struct iomap_ops *ops,
->>                       struct iomap_read_folio_ctx *ctx, void *private2);
->> void iomap_readahead(const struct iomap_ops *ops,
->>                       struct iomap_read_folio_ctx *ctx, void *private2);
->>
->> Is it pretty weird due to `.iomap_{begin,end}` in principle can
->> only use `struct iomap_iter *` but have no way to access
->> ` struct iomap_read_folio_ctx` to get more enough content for
->> read requests.
-> 
-> Hi Gao,
-> 
-> imo I don't think it makes sense to, if I'm understanding what you're
-> proposing correctly, have one shared data pointer between iomap
-> read/readahead and the iomap_{begin,end} helpers because
+HEAD commit:    9dd1835ecda5 Merge tag 'dma-mapping-6.17-2025-09-09' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1580c934580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c7f605fd273c8220
+dashboard link: https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10472642580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10b94b12580000
 
-My main concern is two `private` naming here: I would like to add
-`private` to iomap_read/readahead() much like __iomap_dio_rw() at
-least to make our new feature work efficiently.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9dd1835e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4657190ff75d/vmlinux-9dd1835e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/2c21590a37de/bzImage-9dd1835e.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/4e71338bb0fc/mount_0.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=138ab562580000)
 
-> 
-> a) I don't think it's guaranteed that the data needed by
-> read/readahead and iomap_{begin,end} is the same.  I guess we could
-> combine the data each needs altogether into one struct, but it seems
-> simpler and cleaner to me to just have the two be separate.
-> 
-> b) I'm not sure about the erofs use case, but at least for what I'm
-> seeing for fuse and the block-based filesystems currently using iomap,
-> the data needed by iomap read/readahead (eg bios, the fuse
-> fuse_fill_read_data) is irrelevant for iomap_{begin/end} and it seems
-> unclean to expose that extraneous info. (btw I don't think it's true
-> that iomap_iter is mainly used for per-request usage - for readahead
-> for example, iomap_{begin,end} is called before and after we service
-> the entire readahead, not called per request, whereas
-> .read_folio_range() is called per request).
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+150563285f78ac3e9bd4@syzkaller.appspotmail.com
 
-I said `per-request` meant a single sync read or readahead request,
-which is triggered by vfs or mm for example.
-
-> 
-> c) imo iomap_{begin,end} is meant to be a more generic interface and I
-> don't think it makes sense to tie read-specific data to it. For
-> example, some filesystems (eg gfs2) use the same iomap_ops across
-> different file operations (eg buffered writes, direct io, reads, bmap,
-> etc).
-
-Previously `.iomap_{begin,end}` participates in buffer read and write
-I/O paths (except for page writeback of course) as you said, in
-principle users only need to care about fields in `struct iomap_iter`.
-
-`struct iomap_readpage_ctx` is currently used as an internal structure
-which is completely invisible to filesystems (IOWs, filesystems don't
-need to care or specify any of that).
-
-After your proposal, new renamed `struct iomap_read_folio_ctx` will be
-exposed to individual filesystems too, but that makes two external
-context structures for the buffer I/O reads (`struct iomap_iter` and
-`struct iomap_read_folio_ctx`) instead of one.
-
-I'm not saying your proposal doesn't work, but:
-
-  - which is unlike `struct iomap_writepage_ctx` because writeback path
-    doesn't have `struct iomap_iter` involved, and it has only that
-    exact one `struct iomap_writepage_ctx` context and all callbacks
-    use that only;
-
-  - take a look at `iomap_dio_rw` and `iomap_dio_ops`, I think it's
-    somewhat similiar to the new `struct iomap_read_ops` in some
-    extent, but dio currently also exposes the exact one context
-    (`struct iomap_iter`) to users.
-
-  - take a look at `iomap_write_ops`, it also exposes
-    `struct iomap_iter` only. you may say `folio`, `pos`, `len` can be
-    wrapped as another `struct iomap_write_ctx` if needed, but that is
-    not designed to be exposed to be specfied by write_iter (e.g.
-    fuse_cache_write_iter)
-
-In short, traditionally the buffered read/write external context is
-the only unique one `struct iomap_iter` (`struct iomap_readpage_ctx`
-is only for iomap internal use), after your proposal there will be
-two external contexts specified by users (.read_folio and .readahead)
-but `.iomap_{begin,end}` is unable to get one of them, which is
-unlike the current writeback and direct i/o paths (they uses one
-external context too.)
-
-Seperate into two contexts works for your use case, but it may
-cause issues since future developers have to decide where to
-place those new context fields for buffer I/O paths (
-`struct iomap_iter` or `struct iomap_read_folio_ctx`), it's still
-possible but may cause further churn on the codebase perspective.
-
-That is my minor concern, but my main concern is still `private`
-naming.
-
-Thanks,
-Gao Xiang
+------------[ cut here ]------------
+kernel BUG at fs/gfs2/super.c:76!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5487 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
+Code: c8 85 80 07 cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 42 39 26 fe e9 e0 fd ff ff e8 b8 a0 7d 07 e8 53 48 c1 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc90002a8fa40 EFLAGS: 00010293
+RAX: ffffffff83fe763d RBX: dead000000000122 RCX: ffff888034610000
+RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
+RBP: ffffc90002a8fb00 R08: ffff888050e74d4f R09: 1ffff1100a1ce9a9
+R10: dffffc0000000000 R11: ffffed100a1ce9aa R12: ffff888050e74818
+R13: dffffc0000000000 R14: ffff888040184200 R15: ffff888040184278
+FS:  0000000000000000(0000) GS:ffff88808d20c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c0021090f0 CR3: 0000000043def000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ gfs2_put_super+0x8af/0x950 fs/gfs2/super.c:636
+ generic_shutdown_super+0x135/0x2c0 fs/super.c:643
+ kill_block_super+0x44/0x90 fs/super.c:1766
+ deactivate_locked_super+0xb9/0x130 fs/super.c:474
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1375
+ task_work_run+0x1d1/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6b5/0x2300 kernel/exit.c:961
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1102
+ __do_sys_exit_group kernel/exit.c:1113 [inline]
+ __se_sys_exit_group kernel/exit.c:1111 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1111
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f235d18eba9
+Code: Unable to access opcode bytes at 0x7f235d18eb7f.
+RSP: 002b:00007fff8ebd2df8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007f235d211c2a RCX: 00007f235d18eba9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000005 R08: 00007fff8ebd0b97 R09: 00007fff8ebd4050
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8ebd4050
+R13: 00007f235d211c05 R14: 0000000000018b8b R15: 00007fff8ebd4090
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:gfs2_jindex_free+0x43e/0x440 fs/gfs2/super.c:76
+Code: c8 85 80 07 cc 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ea fd ff ff e8 42 39 26 fe e9 e0 fd ff ff e8 b8 a0 7d 07 e8 53 48 c1 fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00
+RSP: 0018:ffffc90002a8fa40 EFLAGS: 00010293
+RAX: ffffffff83fe763d RBX: dead000000000122 RCX: ffff888034610000
+RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000ffffffff
+RBP: ffffc90002a8fb00 R08: ffff888050e74d4f R09: 1ffff1100a1ce9a9
+R10: dffffc0000000000 R11: ffffed100a1ce9aa R12: ffff888050e74818
+R13: dffffc0000000000 R14: ffff888040184200 R15: ffff888040184278
+FS:  0000000000000000(0000) GS:ffff88808d20c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c0021090f0 CR3: 000000003380a000 CR4: 0000000000352ef0
 
 
-> 
-> 
-> Thanks,
-> Joanne
-> 
->>
->> Thanks,
->> Gao Xiang
-
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
