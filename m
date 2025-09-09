@@ -1,195 +1,236 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E43D6F
-	for <gfs2@lists.linux.dev>; Tue,  9 Sep 2025 01:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC05315A848
+	for <gfs2@lists.linux.dev>; Tue,  9 Sep 2025 02:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757382380; cv=none; b=B5ngLD32giVpj/sto6ZeUawMQ3EBrztah/SyxpVNgNx+iv/POKKKAFLyntWjNK6J5kfP+6ZAe7eZThFi6ieS1YlIAXke3BorYU9P1aFciu/ywYD4VIAfspUjg6LdlaEjTltY0iBKfPj+GbM4Mdet7XIhxXkO2/Pi8TMZf1+kmmY=
+	t=1757384094; cv=none; b=t1XKEr8bEG/+9SFQUnv3zW2heWZ8F4imcYHYHehkK+hkKdKu4BC88LoLPstiM9dfUpLDlGf5HrkIvWi6BoYjT/dnoYEpneELlbc3I3FJwnfYNs7yXeIILTKHkqiTrUZwW4MYTw0k0hVoF8r2jtdml63KOnzqhqlpJplU6V55knI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757382380; c=relaxed/simple;
-	bh=Mgm/f/dyyNj+1Olh/CY02O9anr2CSratmtmw7/rayiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxbT2eXYulDXF6tOr1U/h8UsuVUIfrb9HVkbDDOiGu2lQ9hDvVepiL3ixw7xy/o9MsMsz0D10krIX7OmxLeHk1TIlm3eEolja2UiPdKQMNrGCdhwJ5NzPtDD9GbiNIJosF6EMqctnjzIdpv5KwScNJS6eGl12FAfzVVg9YuCcoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FyLL68kq; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757384094; c=relaxed/simple;
+	bh=Wps+OyxWaCXOFIIUN8fH/RJaPXux108yrkDeCKzXcLs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HMugKBcXJKSWDlL/N12KZhVMI2YmgPVXQP4ixk0rzJaCl2o5DcK1LCc6ZBzonqd64mGNcauuwnJbYCi9Lp9AkfoUHndkZ9O9r5gYYgKHZievz4VJGzeZ3Yp94deWDATeMSSAm1tmXjQLkQ30VAyWUSiQO9VfM0W1CFTqvuK9xyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nTJlb2v7; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FyLL68kq"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24456ce0b96so54699725ad.0
-        for <gfs2@lists.linux.dev>; Mon, 08 Sep 2025 18:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757382377; x=1757987177; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KuiOo15AG4OXtbWW33TbGP3QjJoF6Rgu6PmjoTlWNs0=;
-        b=FyLL68kq6iF3ly+Vkv1Cw2aBvH/mvmesJtSzNgaD1FSozg6xv/bWHZ3iJ3ukerYQAI
-         KHbrhJBH+u4QicyU6lcQDNdOvuwRtGQqmQKfHIjbEXkoh1sg2sqXkqhh0zmlaKfpE754
-         o+20YpU+x3NlqukTf5A+1+EnWP0soCdOTlG0sw9dUTT5QsPg4MlEqD6AbH2xcUI8zniE
-         pP7SsOAbMOL5qohF37MqThHm4eWg1sqF2MK6y7tj2+xwFGAFJucSPRd3f83v/NlWFWBf
-         l0g0L+CHoCpSZ6W+6eMbQcTN59QekZJbm0+YBzCZ8UkEw8Ofeho6wPbtM8Sx4iVRGQmM
-         okBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757382377; x=1757987177;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KuiOo15AG4OXtbWW33TbGP3QjJoF6Rgu6PmjoTlWNs0=;
-        b=bxDSm8fx+pJ5syIiEfGyAhJ0QwojT7pdoAh306r0nCuKVPLca5FNTllQXlnojBXNlF
-         gfWqTQfCVPNTcC+3c6OXSnuzCV3dlZ/cKVsuB4bNyCq/zpJXsbrV1ihas1DKYCN/4jSi
-         K0Rh4cd/UycO4sRujLBw18koALnWpshZeEWXYJTog4yXsZiXnH5FmSyG2MUKyPs43Ztu
-         Lg07T3l5e82FkmgnR0uLUK1/1vpO0SPE8uo6rJeqGLPAyIQ9Dkw1SnaSSYNlL+ADaQyw
-         aoxWoQKP107F1SgSZCSk3YGI8L9eM0PFqIKxkd/TSg9ZNa3qcDYbEQ5KMo+zaaBxKM+b
-         JvPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWLWvUjTQTKbrZN0M5a9yTsRdCVDedSsCokeSzyXZelgtaVKvES/rHTtUJSIDVdGQt9+NUR@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz5y9WIZOXN9jiAmLbmVx4y83kBNO5cPhPiDW/eWMu7WWAYMiN/
-	8f/tNdgpJVWeW2JV5MKP4NsdaC7Q44I0+eFJQmuVSpcrI5ajFUVsYm/g
-X-Gm-Gg: ASbGncvWRbmJHHLA3S8VNhd+fvmYBA6VfWfH6EVfkOJeqgzo5NF435ZAxMsWxtL133q
-	T/kjHBLkDtuYXjdoqusWO7y8lhsNMViH0VE7lBhNFnDPqFoDaacmxSxanN9Eayq2SSfeX+qJWW3
-	bsbRdsbLJ0XSjqZiNANpQbRVFRsQ17Cp3ESwRqJgGYzg4p626pdTPvrW6cCq6/oRNA8Sk9m4+iB
-	XzQeW4290XMfjm3yh7YVDSYMbFFpsfZuEcTY0SYzKrX/BKrjiHD4PytVHdaWoXzUwl1NcBdlW7c
-	41HijYDI77ODXSCsCb1zsMVLChxOEM31A+q+Sh3frFnuHp4Rc4ebiaLAlSncsRDe8uuB+KCYzFa
-	laDizb4bsCWNIeURo1ciueuNVxA==
-X-Google-Smtp-Source: AGHT+IGXoxvJ02bO5wRwlNWwxniZMYMlgSaFXoJXpCTp4h8dPraKosEMNBMembTfFIeOUDc1sptulw==
-X-Received: by 2002:a17:903:2f92:b0:249:37b2:8629 with SMTP id d9443c01a7336-251759a97e4mr123230625ad.9.1757382377180;
-        Mon, 08 Sep 2025 18:46:17 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b11448a5asm189941315ad.54.2025.09.08.18.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 18:46:16 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 54E17420A80B; Tue, 09 Sep 2025 08:46:14 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux GFS2 <gfs2@lists.linux.dev>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v3] Documentation: gfs2: Consolidate GFS2 docs into its own subdirectory
-Date: Tue,  9 Sep 2025 08:46:06 +0700
-Message-ID: <20250909014606.15043-1-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nTJlb2v7"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1757384088; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=v43zf9nWVT3sBkS/OER5LVhm/vl5yYsnxYjb37stWRA=;
+	b=nTJlb2v7nbOAU0oaKcJ6TytcnMoTV8E4A03xSOuZAjUpBuajgzuy+p4tZzpN9cotbz5IsYzc9vLl4R4Z6HGY7BDZqtAyaybDuiIZEw/NIaDn9CECK8PjWzM31CjuV4O9CSG5ETqdWdVW932vVtEksPp0s519RDMhGBzIeELzaMc=
+Received: from 30.221.131.27(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WnbpmUx_1757384086 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 09 Sep 2025 10:14:47 +0800
+Message-ID: <a1529c0f-1f1a-477a-aeeb-a4f108aab26b@linux.alibaba.com>
+Date: Tue, 9 Sep 2025 10:14:46 +0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3807; i=bagasdotme@gmail.com; h=from:subject; bh=Mgm/f/dyyNj+1Olh/CY02O9anr2CSratmtmw7/rayiA=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBn72wI3PP566pbttS3uO5jZTBQ+Tv034/xDNfcOiWzZK MdnScESHaUsDGJcDLJiiiyTEvmaTu8yErnQvtYRZg4rE8gQBi5OAZjI4xaG/77Cn2t6OVh1V+lu /a0jvWYBX2PxlwcLpt65wj3txWemGWsY/tkmGz3coi12z2FhY/IEjXtc+x7dEfbK3Grup5jSfar 2HBsA
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 13/16] iomap: move read/readahead logic out of
+ CONFIG_BLOCK guard
+To: Joanne Koong <joannelkoong@gmail.com>, brauner@kernel.org,
+ miklos@szeredi.hu
+Cc: hch@infradead.org, djwong@kernel.org, linux-block@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+ linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20250908185122.3199171-1-joannelkoong@gmail.com>
+ <20250908185122.3199171-14-joannelkoong@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20250908185122.3199171-14-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Documentation for GFS2 is scattered in three docs that are in
-Documentation/filesystems/ directory. As these docs are standing out as
-a group, move them into separate gfs2/ subdirectory.
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
-Changes since v2 [1]:
 
-  * Do not use wildcard on MAINTAINERS file entry and add review tag (Randy)
+On 2025/9/9 02:51, Joanne Koong wrote:
+> There is no longer a dependency on CONFIG_BLOCK in the iomap read and
+> readahead logic. Move this logic out of the CONFIG_BLOCK guard. This
+> allows non-block-based filesystems to use iomap for reads/readahead.
+> 
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>   fs/iomap/buffered-io.c | 151 +++++++++++++++++++++--------------------
+>   1 file changed, 76 insertions(+), 75 deletions(-)
+> 
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index f673e03f4ffb..c424e8c157dd 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -358,81 +358,6 @@ void iomap_finish_folio_read(struct folio *folio, size_t off, size_t len,
+>   }
+>   EXPORT_SYMBOL_GPL(iomap_finish_folio_read);
+>   
+> -#ifdef CONFIG_BLOCK
+> -static void iomap_read_end_io(struct bio *bio)
+> -{
+> -	int error = blk_status_to_errno(bio->bi_status);
+> -	struct folio_iter fi;
+> -
+> -	bio_for_each_folio_all(fi, bio)
+> -		iomap_finish_folio_read(fi.folio, fi.offset, fi.length, error);
+> -	bio_put(bio);
+> -}
+> -
+> -static int iomap_submit_read_bio(struct iomap_read_folio_ctx *ctx)
+> -{
+> -	struct bio *bio = ctx->private;
+> -
+> -	if (bio)
+> -		submit_bio(bio);
+> -
+> -	return 0;
+> -}
+> -
+> -/**
+> - * Read in a folio range asynchronously through bios.
+> - *
+> - * This should only be used for read/readahead, not for buffered writes.
+> - * Buffered writes must read in the folio synchronously.
+> - */
+> -static int iomap_read_folio_range_bio_async(const struct iomap_iter *iter,
+> -		struct iomap_read_folio_ctx *ctx, loff_t pos, size_t plen)
+> -{
+> -	struct folio *folio = ctx->cur_folio;
+> -	const struct iomap *iomap = &iter->iomap;
+> -	size_t poff = offset_in_folio(folio, pos);
+> -	loff_t length = iomap_length(iter);
+> -	sector_t sector;
+> -	struct bio *bio = ctx->private;
+> -
+> -	iomap_start_folio_read(folio, plen);
+> -
+> -	sector = iomap_sector(iomap, pos);
+> -	if (!bio || bio_end_sector(bio) != sector ||
+> -	    !bio_add_folio(bio, folio, plen, poff)) {
+> -		gfp_t gfp = mapping_gfp_constraint(folio->mapping, GFP_KERNEL);
+> -		gfp_t orig_gfp = gfp;
+> -		unsigned int nr_vecs = DIV_ROUND_UP(length, PAGE_SIZE);
+> -
+> -		iomap_submit_read_bio(ctx);
+> -
+> -		if (ctx->rac) /* same as readahead_gfp_mask */
+> -			gfp |= __GFP_NORETRY | __GFP_NOWARN;
+> -		bio = bio_alloc(iomap->bdev, bio_max_segs(nr_vecs),
+> -				     REQ_OP_READ, gfp);
+> -		/*
+> -		 * If the bio_alloc fails, try it again for a single page to
+> -		 * avoid having to deal with partial page reads.  This emulates
+> -		 * what do_mpage_read_folio does.
+> -		 */
+> -		if (!bio)
+> -			bio = bio_alloc(iomap->bdev, 1, REQ_OP_READ, orig_gfp);
+> -		if (ctx->rac)
+> -			bio->bi_opf |= REQ_RAHEAD;
+> -		bio->bi_iter.bi_sector = sector;
+> -		bio->bi_end_io = iomap_read_end_io;
+> -		bio_add_folio_nofail(bio, folio, plen, poff);
+> -		ctx->private = bio;
+> -	}
+> -	return 0;
+> -}
+> -
+> -const struct iomap_read_ops iomap_read_bios_ops = {
+> -	.read_folio_range = iomap_read_folio_range_bio_async,
+> -	.read_submit = iomap_submit_read_bio,
+> -};
+> -EXPORT_SYMBOL_GPL(iomap_read_bios_ops);
+> -
+>   static int iomap_read_folio_iter(struct iomap_iter *iter,
+>   		struct iomap_read_folio_ctx *ctx, bool *cur_folio_owned)
+>   {
+> @@ -601,6 +526,82 @@ void iomap_readahead(const struct iomap_ops *ops,
+>   }
+>   EXPORT_SYMBOL_GPL(iomap_readahead);
+>   
+> +#ifdef CONFIG_BLOCK
+> +static void iomap_read_end_io(struct bio *bio)
+> +{
+> +	int error = blk_status_to_errno(bio->bi_status);
+> +	struct folio_iter fi;
+> +
+> +	bio_for_each_folio_all(fi, bio)
+> +		iomap_finish_folio_read(fi.folio, fi.offset, fi.length, error);
+> +	bio_put(bio);
+> +}
+> +
+> +static int iomap_submit_read_bio(struct iomap_read_folio_ctx *ctx)
+> +{
+> +	struct bio *bio = ctx->private;
+> +
+> +	if (bio)
+> +		submit_bio(bio);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * Read in a folio range asynchronously through bios.
+> + *
+> + * This should only be used for read/readahead, not for buffered writes.
+> + * Buffered writes must read in the folio synchronously.
+> + */
+> +static int iomap_read_folio_range_bio_async(const struct iomap_iter *iter,
+> +		struct iomap_read_folio_ctx *ctx, loff_t pos, size_t plen)
+> +{
+> +	struct folio *folio = ctx->cur_folio;
+> +	const struct iomap *iomap = &iter->iomap;
+> +	size_t poff = offset_in_folio(folio, pos);
+> +	loff_t length = iomap_length(iter);
+> +	sector_t sector;
+> +	struct bio *bio = ctx->private;
+> +
+> +	iomap_start_folio_read(folio, plen);
+> +
+> +	sector = iomap_sector(iomap, pos);
+> +	if (!bio || bio_end_sector(bio) != sector ||
+> +	    !bio_add_folio(bio, folio, plen, poff)) {
+> +		gfp_t gfp = mapping_gfp_constraint(folio->mapping, GFP_KERNEL);
+> +		gfp_t orig_gfp = gfp;
+> +		unsigned int nr_vecs = DIV_ROUND_UP(length, PAGE_SIZE);
+> +
+> +		if (bio)
+> +			submit_bio(bio);
+> +
+> +		if (ctx->rac) /* same as readahead_gfp_mask */
+> +			gfp |= __GFP_NORETRY | __GFP_NOWARN;
+> +		bio = bio_alloc(iomap->bdev, bio_max_segs(nr_vecs),
+> +				     REQ_OP_READ, gfp);
+> +		/*
+> +		 * If the bio_alloc fails, try it again for a single page to
+> +		 * avoid having to deal with partial page reads.  This emulates
+> +		 * what do_mpage_read_folio does.
+> +		 */
+> +		if (!bio)
+> +			bio = bio_alloc(iomap->bdev, 1, REQ_OP_READ, orig_gfp);
+> +		if (ctx->rac)
+> +			bio->bi_opf |= REQ_RAHEAD;
+> +		bio->bi_iter.bi_sector = sector;
+> +		bio->bi_end_io = iomap_read_end_io;
+> +		bio_add_folio_nofail(bio, folio, plen, poff);
+> +		ctx->private = bio;
 
-[1]: https://lore.kernel.org/linux-doc/20250827022122.12132-1-bagasdotme@gmail.com/
+Yes, I understand some way is needed to isolate bio from non-bio
+based filesystems, and I also agree `bio` shouldn't be stashed
+into `iter->private` since it's just an abuse usage as mentioned
+in:
+https://lore.kernel.org/r/20250903203031.GM1587915@frogsfrogsfrogs
+https://lore.kernel.org/r/aLkskcgl3Z91oIVB@infradead.org
 
- .../filesystems/{gfs2-glocks.rst => gfs2/glocks.rst} |  0
- Documentation/filesystems/gfs2/index.rst             | 12 ++++++++++++
- .../filesystems/{gfs2.rst => gfs2/overview.rst}      |  6 +++---
- .../{gfs2-uevents.rst => gfs2/uevents.rst}           |  0
- Documentation/filesystems/index.rst                  |  4 +---
- MAINTAINERS                                          |  2 +-
- 6 files changed, 17 insertions(+), 7 deletions(-)
- rename Documentation/filesystems/{gfs2-glocks.rst => gfs2/glocks.rst} (100%)
- create mode 100644 Documentation/filesystems/gfs2/index.rst
- rename Documentation/filesystems/{gfs2.rst => gfs2/overview.rst} (96%)
- rename Documentation/filesystems/{gfs2-uevents.rst => gfs2/uevents.rst} (100%)
+However, the naming of `(struct iomap_read_folio_ctx)->private`
+really makes me feel confused because the `private` name in
+`read_folio_ctx` is much like a filesystem read context instead
+of just be used as `bio` internally in iomap for block-based
+filesystems.
 
-diff --git a/Documentation/filesystems/gfs2-glocks.rst b/Documentation/filesystems/gfs2/glocks.rst
-similarity index 100%
-rename from Documentation/filesystems/gfs2-glocks.rst
-rename to Documentation/filesystems/gfs2/glocks.rst
-diff --git a/Documentation/filesystems/gfs2/index.rst b/Documentation/filesystems/gfs2/index.rst
-new file mode 100644
-index 00000000000000..9d9ca84d45a7ae
---- /dev/null
-+++ b/Documentation/filesystems/gfs2/index.rst
-@@ -0,0 +1,12 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================
-+Global File System 2
-+====================
-+
-+.. toctree::
-+   :maxdepth: 1
-+
-+   overview
-+   glocks
-+   uevents
-diff --git a/Documentation/filesystems/gfs2.rst b/Documentation/filesystems/gfs2/overview.rst
-similarity index 96%
-rename from Documentation/filesystems/gfs2.rst
-rename to Documentation/filesystems/gfs2/overview.rst
-index 1bc48a13430c1c..f971353d23611c 100644
---- a/Documentation/filesystems/gfs2.rst
-+++ b/Documentation/filesystems/gfs2/overview.rst
-@@ -1,8 +1,8 @@
- .. SPDX-License-Identifier: GPL-2.0
- 
--====================
--Global File System 2
--====================
-+=============
-+GFS2 Overview
-+=============
- 
- GFS2 is a cluster file system. It allows a cluster of computers to
- simultaneously use a block device that is shared between them (with FC,
-diff --git a/Documentation/filesystems/gfs2-uevents.rst b/Documentation/filesystems/gfs2/uevents.rst
-similarity index 100%
-rename from Documentation/filesystems/gfs2-uevents.rst
-rename to Documentation/filesystems/gfs2/uevents.rst
-diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
-index 11a599387266a4..897eabaa30d65d 100644
---- a/Documentation/filesystems/index.rst
-+++ b/Documentation/filesystems/index.rst
-@@ -90,9 +90,7 @@ Documentation for filesystem implementations.
-    ext3
-    ext4/index
-    f2fs
--   gfs2
--   gfs2-uevents
--   gfs2-glocks
-+   gfs2/index
-    hfs
-    hfsplus
-    hpfs
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ef87548b8f88c6..1b19137f50a6b7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10336,7 +10336,7 @@ L:	gfs2@lists.linux.dev
- S:	Supported
- B:	https://bugzilla.kernel.org/enter_bug.cgi?product=File%20System&component=gfs2
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
--F:	Documentation/filesystems/gfs2*
-+F:	Documentation/filesystems/gfs2/
- F:	fs/gfs2/
- F:	include/uapi/linux/gfs2_ondisk.h
- 
+also the existing of `iter->private` makes the naming of
+`ctx->private` more confusing at least in my view.
 
-base-commit: 7e5a0fe4e8ae2eb341f8ebbee2b24231a58fc28b
--- 
-An old man doll... just what I always wanted! - Clara
-
+Thanks,
+Gao Xiang
