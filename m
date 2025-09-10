@@ -1,252 +1,261 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495162797A1
-	for <gfs2@lists.linux.dev>; Wed, 10 Sep 2025 17:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD526E712
+	for <gfs2@lists.linux.dev>; Wed, 10 Sep 2025 17:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757524989; cv=none; b=BwQsZl0PCfIjtARDQzsRPrPg/ZWSxGPjcvBd5/TsLW0ySk1nH6qINgsw983TYTCftz2oWiIXVJiY5PZ40bKZRgt/+AISkt/tJjr7o3by7V6dZOY43Ze8v1jfrAszMu1ZX7GbwHbPwa+ifOK3G3ozmYptLkW8HIq/PkseG3xiXKA=
+	t=1757526102; cv=none; b=V7swCt8GkagcMWuuk2hNK0xQQWQdZirG2OKY+S1Jc7Clb8EItoBsU30z65BmmrKuLr8NaMft+3vvc6TJRVVKBJHy3doS418aVoCtfFtUoMCgO3lad+4a1ebbsT6awONe03Yt4r0o7nP2sfdWnZCh155LKOOM4oQikgMQFQczM/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757524989; c=relaxed/simple;
-	bh=U/Bw0oFJjYkILogoteFC2JraE5vzOSx4DuQGpJ23rt8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=psFqMgHMU7uMOS+C3Ne6a96jA9W6wKMtgVQt6F5Q3OXmRSen5r7iTomidGE8hOcoilYgfGjSymZy4xABplbmaDbxNOGzh7N2ZHhMNVkjVFSVKdC3dEifCInXGL1RAKBuAQyyERfP94lgxWjK98qjjB4O0Bhz3Ern+rjkaC0ZI+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bDbvrclX; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1757526102; c=relaxed/simple;
+	bh=ya3nCeHXX4cIOcVB3zT+qGwqtNq6bvInaVnCb1Wx2VE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eWdgUUP9pyBd7Vns7Kozr1r0OFfx2AW0B0pMGFuD0iszgr7L3WOl7Gn7YO91juRCEU/5kl3DGEWdm0KwwbdXdwqxzZkHEqX7D76AOtaZMr/SzDthJKd1OQbnKWMMcyTk7Qn4L3Lxtjz72O7fIqRaSdBop+92arIHbdNf8Uza87Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vd2AwYZe; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDbvrclX"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7322da8so1330858266b.0
-        for <gfs2@lists.linux.dev>; Wed, 10 Sep 2025 10:23:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vd2AwYZe"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b5e4fc9b4fso40301201cf.2
+        for <gfs2@lists.linux.dev>; Wed, 10 Sep 2025 10:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757524985; x=1758129785; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPbSGL+wh5oLzTDoSZB7hbuuAk8K+GQPqz1VxG3+o6k=;
-        b=bDbvrclXqcy4rERECz0hsEbUvLog0tfU0/i2Y+T3EM4tG+aayuKm5sbInW+4Obqlcl
-         F1bEnasW0VUFMq4An9paSLHx3dUmPqsCRqZPdfqXaB1NnWJb+TvnuL9mxHpHOhvAhgb6
-         yagdSagatp9enlPTlHIzBSJVNkv1ne+Vj722wEYbwy88N5Tj6oDuBK91voxwzzUgSM/C
-         F/bKb5kHaxrqh29Xe4b8n2KiYMPgf0Frii/NVHGDDXdc4GdweZ8gYcSvq+1Vok0asnGs
-         wYYHbc2aYgdnEpkEppyh1DNBS9miFCz1ChVDpm8Zvzh55AyB/XMV78DQeoEoL/UR/5Z+
-         /H7g==
+        d=gmail.com; s=20230601; t=1757526099; x=1758130899; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qHT+u2S9m3RVDHyPVmpZb2IEdtnx3gNXVCQQWQ1AuyM=;
+        b=Vd2AwYZee8MJ/9AUCa595Tzh5Npzkh3+IpiIdcA5GdrkVrcvgy5qW9ESmZxvPC6mLr
+         YdK/ZBVppkdLD2n5FwWKqEbWPmTo6U6pSz/Dnqgrf5+XuyL5kjtyZmEm9nrA6KjmFGUL
+         Pn90FJTzKdzFFksjH8u8RkcCw2Eanw+9+ZaMj75qB4rb1qlFvIOXb7da6XNPKxSXoR5K
+         WQE13bdq2GuLxC5ODlEQK4rFx+HRLa3R0d9MwuWXSH1fI2aPty4zdvtjbCoY8aXDceE3
+         XkKmzCATOESbqFT7nYgFtDBIlHw4kAMXovJkIbdZ0ohCCIDmEpTs9UVIEhwCwnxyqxbj
+         CKQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757524985; x=1758129785;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VPbSGL+wh5oLzTDoSZB7hbuuAk8K+GQPqz1VxG3+o6k=;
-        b=lWVPMuphxiHEw9NaLIOE+U01cJuyT++MWDJVxX+428dGkmfY9B782c/U/D0q3lB8vN
-         g2elIqj4OVLvs8zbK6Ji4WzpiCbdHV0FU+7faOUgIFlQanuXIjf24az60g75TefuTlS6
-         t0NETeyIw48Y05CbYTp2vr7U24wMSg7hO6SDMcvYQxl2sefbOzbnX+HxpNUKStg9EY31
-         QbVgHkEVa8PgGqHg9Lh/T2m9H4TzPhGSJuR8ZjMrfcrga4Q/eKVTj6WYNhkbmKLNP4M+
-         ea89BqAoG9ibfG2A9x0hocmRJUSXo1cKw3FcfbJHsWu2rqNITV9vXwvVjD+rdBjpLjib
-         wvHA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8KxaAwM9JfcWv2moRVL0ZduHu2lpxcraI6+uDi66fwBdBL83vF10rFT8eLAqhEcgtw6B7@lists.linux.dev
-X-Gm-Message-State: AOJu0YyoR3LY/X3K+N+rKJpiAQ56fZeEeKv0fEPgHviFMT2lwsShq12J
-	SsRuA5cOXc4L7Za4BXuqSDXrlPLiOm+gyumO3AHh5W0idv0lhsEsgJ9wBH696ccT
-X-Gm-Gg: ASbGncsKbPG1yyZv3yO7lRP5DWrednEK8o5UQvw8Wuqf5kPgGqphVpoh21cWTBoUEKb
-	8CoZ3vJOV9pCO3ILHXsp7klJrnOFG3l7ku8YFTeGY5LTw/U8dEc2TUOl1VFrFf/4cTD6QRshlEt
-	rgpz1z9wjJpFQzjCYh9uo68WgyxanurG7YTgI/WgnOzrr2I4Em8kLBsw1QWcS6GbFooOd2KOkDQ
-	LBS/a0bLyr8JBrEWhN0q3BcGwKwOYjzLPeL+M/liJJvJi4dsQ64wm+6irWhMMUQ0LhcbWWPPQL1
-	IZROAOe9Tog9b0EZJKIRb+a2b0Jrcmjv81nwQNpnnaYu1k2KT5J3CLo6FwflJUHAIVZYGpvtRez
-	cix93f9+l1lnh3z+djz52eAvDl4Q9XxoZzOZDXFP/G+552lfI3VUoSKxTN8F51Hhj0c7OhvH2Iw
-	QAwS2l5quZZp/VfoDbwoxmy0BLJGRoRRW5KVLXbxhRO9sgHDOStI/mQKLZHK3MxWvovT3C5Q==
-X-Google-Smtp-Source: AGHT+IFUk1dDOuaOT329tP4Uhn2J0sm2O7Oj9XL3NsIFiXqJhDbLfm76/tPWMehVqhL/HSTbSP0NRg==
-X-Received: by 2002:a17:907:3da9:b0:b04:4d7a:84ef with SMTP id a640c23a62f3a-b04b13fe1e9mr1471789366b.6.1757524985317;
-        Wed, 10 Sep 2025 10:23:05 -0700 (PDT)
-Received: from local.station (net-93-148-99-27.cust.dsl.teletu.it. [93.148.99.27])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b078334db1esm203495566b.65.2025.09.10.10.23.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 10:23:04 -0700 (PDT)
-From: Alessio Attilio <alessio.attilio.dev@gmail.com>
-To: aahringo@redhat.com
-Cc: teigland@redhat.com,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Alessio Attilio <alessio.attilio@engineer.com>,
-	Alessio Attilio <alessio.attilio.dev@gmail.com>
-Subject: [PATCH] * dlm: improve lock management and concurrency control
-Date: Wed, 10 Sep 2025 19:17:06 +0200
-Message-ID: <20250910171706.173976-1-alessio.attilio.dev@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        d=1e100.net; s=20230601; t=1757526099; x=1758130899;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qHT+u2S9m3RVDHyPVmpZb2IEdtnx3gNXVCQQWQ1AuyM=;
+        b=funoiwzYNUDscxuoVBN0NJM5+oPMow+4eFHKp9RtkrlqJv5GAGQNRpkLScCrYHrdd/
+         KbX7QTZlD9H3ziimf/NUHjWzat1mYbx7sSk1KRzTthU/IbruwOv6/ICK5viSKKvOuIp2
+         QpsAFIvTW0ZEcDkL4cIkZFWAV9Bcni39j8+G0mU2eddrlJzINAAVRR/ATXu4tr7aurw1
+         KqmXfRKA6gEuZRvV3yk6zk8h58/Ire+E+LbjOqIzF1ieKVDOqtEGkmuSA8t+G5ecSesV
+         jqrVerzh8mdx0LkYZaEOWIoo5jcSVd3w0lZ/c8EAo2j5LijjQE2l8TQOhjtkF+9cSsTW
+         NBSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIuFyKDhVjGXBrxPk/hIOrrMpoKHapwRtGLJr1jkbmTE+7CngVmpJ5dG4IFayMxxKHmpKI@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXzSzYq6to/OaxeM5dC59v6fjr5BoPxnLL8N4lglLJSgK2+ORK
+	Bx20ez0YBOr+0ObYYIr4mlwJ1mFCfiHrrGMfhbyBN6N4zU9uB2//WJtESA/I10e/JACP1jiZq59
+	wUP973kSHTzPqOIc0ihUY8GChEcgptIw=
+X-Gm-Gg: ASbGncuzhJ2Nt9mFUb3Nkh8w2+PZEVONMPBgJPfE6PI07/n3uaNRyDjz1JR5AOfV7ZE
+	+6bLXIvC+Qa0DkGJl518N8WdigAmR/0ZH0GdgAesrCyPOJS6IzqZMOg8QDCCEJOzJeeelzCDyIt
+	cZVCXc3r4CH1Dm9RR8HA/JbBQ77O3QzVdxN7/Y2HW0Qh2T5jh5iqzUDPL8qlXeep/+2JC5AkilG
+	jWj7riit7Pq3LzP8baRoYS8y4dqItpltg==
+X-Google-Smtp-Source: AGHT+IGM4v8CCbZik1kELSMXAYG/GKBchBBFALBliyv/onlKWZFY2W1P7n4z7sWDqXgSFcqrmLLSXIe+ROn9OwqKnI0=
+X-Received: by 2002:ac8:5f14:0:b0:4b3:50b0:d7f with SMTP id
+ d75a77b69052e-4b5f8464d8amr161064711cf.61.1757526099174; Wed, 10 Sep 2025
+ 10:41:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250908185122.3199171-1-joannelkoong@gmail.com>
+ <20250908185122.3199171-12-joannelkoong@gmail.com> <aL9xb5Jw8tvIRMcQ@debian>
+ <CAJnrk1YPpNs811dwWo+ts1xwFi-57OgWvSO4_8WLL_3fJgzrFw@mail.gmail.com> <488d246b-13c7-4e36-9510-8ae2de450647@linux.alibaba.com>
+In-Reply-To: <488d246b-13c7-4e36-9510-8ae2de450647@linux.alibaba.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 10 Sep 2025 13:41:25 -0400
+X-Gm-Features: Ac12FXx3f2gw2O3qOKT1Xmh_ecXNa2Ke7YGwp9bTrR6B-OHcqgL5c7RB1qg35NQ
+Message-ID: <CAJnrk1a5af-BMPUM3HfGwKZ=zoN4bcmbViLBWMtLao1KfK2gww@mail.gmail.com>
+Subject: Re: [PATCH v2 11/16] iomap: add caller-provided callbacks for read
+ and readahead
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: djwong@kernel.org, hch@infradead.org, brauner@kernel.org, 
+	miklos@szeredi.hu, linux-block@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alessio Attilio <alessio.attilio@engineer.com>
+On Tue, Sep 9, 2025 at 7:21=E2=80=AFPM Gao Xiang <hsiangkao@linux.alibaba.c=
+om> wrote:
+>
+> Hi Joanne,
+>
+> On 2025/9/9 23:24, Joanne Koong wrote:
+> > On Mon, Sep 8, 2025 at 8:14=E2=80=AFPM Gao Xiang <xiang@kernel.org> wro=
+te:
+> >>
+> >> Hi Joanne,
+> >>
+> >> On Mon, Sep 08, 2025 at 11:51:17AM -0700, Joanne Koong wrote:
+> >>> Add caller-provided callbacks for read and readahead so that it can b=
+e
+> >>> used generically, especially by filesystems that are not block-based.
+> >>>
+> >>> In particular, this:
+> >>> * Modifies the read and readahead interface to take in a
+> >>>    struct iomap_read_folio_ctx that is publicly defined as:
+> >>>
+> >>>    struct iomap_read_folio_ctx {
+> >>>        const struct iomap_read_ops *ops;
+> >>>        struct folio *cur_folio;
+> >>>        struct readahead_control *rac;
+> >>>        void *private;
+> >>>    };
+> >>>
+> >>>    where struct iomap_read_ops is defined as:
+> >>>
+> >>>    struct iomap_read_ops {
+> >>>        int (*read_folio_range)(const struct iomap_iter *iter,
+> >>>                               struct iomap_read_folio_ctx *ctx,
+> >>>                               loff_t pos, size_t len);
+> >>>        int (*read_submit)(struct iomap_read_folio_ctx *ctx);
+> >>>    };
+> >>>
+> >>
+> >> No, I don't think `struct iomap_read_folio_ctx` has another
+> >> `.private` makes any sense, because:
+> >>
+> >>   - `struct iomap_iter *iter` already has `.private` and I think
+> >>     it's mainly used for per-request usage; and your new
+> >>     `.read_folio_range` already passes
+> >>      `const struct iomap_iter *iter` which has `.private`
+> >>     I don't think some read-specific `.private` is useful in any
+> >>     case, also below.
+> >>
+> >>   - `struct iomap_read_folio_ctx` cannot be accessed by previous
+> >>     .iomap_{begin,end} helpers, which means `struct iomap_read_ops`
+> >>     is only useful for FUSE read iter/submit logic.
+> >>
+> >> Also after my change, the prototype will be:
+> >>
+> >> int iomap_read_folio(const struct iomap_ops *ops,
+> >>                       struct iomap_read_folio_ctx *ctx, void *private2=
+);
+> >> void iomap_readahead(const struct iomap_ops *ops,
+> >>                       struct iomap_read_folio_ctx *ctx, void *private2=
+);
+> >>
+> >> Is it pretty weird due to `.iomap_{begin,end}` in principle can
+> >> only use `struct iomap_iter *` but have no way to access
+> >> ` struct iomap_read_folio_ctx` to get more enough content for
+> >> read requests.
+> >
+> > Hi Gao,
+> >
+> > imo I don't think it makes sense to, if I'm understanding what you're
+> > proposing correctly, have one shared data pointer between iomap
+> > read/readahead and the iomap_{begin,end} helpers because
+>
+> My main concern is two `private` naming here: I would like to add
+> `private` to iomap_read/readahead() much like __iomap_dio_rw() at
+> least to make our new feature work efficiently.
+>
+> >
+> > a) I don't think it's guaranteed that the data needed by
+> > read/readahead and iomap_{begin,end} is the same.  I guess we could
+> > combine the data each needs altogether into one struct, but it seems
+> > simpler and cleaner to me to just have the two be separate.
+> >
+> > b) I'm not sure about the erofs use case, but at least for what I'm
+> > seeing for fuse and the block-based filesystems currently using iomap,
+> > the data needed by iomap read/readahead (eg bios, the fuse
+> > fuse_fill_read_data) is irrelevant for iomap_{begin/end} and it seems
+> > unclean to expose that extraneous info. (btw I don't think it's true
+> > that iomap_iter is mainly used for per-request usage - for readahead
+> > for example, iomap_{begin,end} is called before and after we service
+> > the entire readahead, not called per request, whereas
+> > .read_folio_range() is called per request).
+>
+> I said `per-request` meant a single sync read or readahead request,
+> which is triggered by vfs or mm for example.
+>
+> >
+> > c) imo iomap_{begin,end} is meant to be a more generic interface and I
+> > don't think it makes sense to tie read-specific data to it. For
+> > example, some filesystems (eg gfs2) use the same iomap_ops across
+> > different file operations (eg buffered writes, direct io, reads, bmap,
+> > etc).
+>
+> Previously `.iomap_{begin,end}` participates in buffer read and write
+> I/O paths (except for page writeback of course) as you said, in
+> principle users only need to care about fields in `struct iomap_iter`.
+>
+> `struct iomap_readpage_ctx` is currently used as an internal structure
+> which is completely invisible to filesystems (IOWs, filesystems don't
+> need to care or specify any of that).
+>
+> After your proposal, new renamed `struct iomap_read_folio_ctx` will be
+> exposed to individual filesystems too, but that makes two external
+> context structures for the buffer I/O reads (`struct iomap_iter` and
+> `struct iomap_read_folio_ctx`) instead of one.
+>
+> I'm not saying your proposal doesn't work, but:
+>
+>   - which is unlike `struct iomap_writepage_ctx` because writeback path
+>     doesn't have `struct iomap_iter` involved, and it has only that
+>     exact one `struct iomap_writepage_ctx` context and all callbacks
+>     use that only;
+>
+>   - take a look at `iomap_dio_rw` and `iomap_dio_ops`, I think it's
+>     somewhat similiar to the new `struct iomap_read_ops` in some
+>     extent, but dio currently also exposes the exact one context
+>     (`struct iomap_iter`) to users.
+>
+>   - take a look at `iomap_write_ops`, it also exposes
+>     `struct iomap_iter` only. you may say `folio`, `pos`, `len` can be
+>     wrapped as another `struct iomap_write_ctx` if needed, but that is
+>     not designed to be exposed to be specfied by write_iter (e.g.
+>     fuse_cache_write_iter)
+>
+> In short, traditionally the buffered read/write external context is
+> the only unique one `struct iomap_iter` (`struct iomap_readpage_ctx`
+> is only for iomap internal use), after your proposal there will be
+> two external contexts specified by users (.read_folio and .readahead)
+> but `.iomap_{begin,end}` is unable to get one of them, which is
+> unlike the current writeback and direct i/o paths (they uses one
+> external context too.)
+>
+> Seperate into two contexts works for your use case, but it may
+> cause issues since future developers have to decide where to
+> place those new context fields for buffer I/O paths (
+> `struct iomap_iter` or `struct iomap_read_folio_ctx`), it's still
+> possible but may cause further churn on the codebase perspective.
+>
+> That is my minor concern, but my main concern is still `private`
+> naming.
 
-This patch introduces several improvements to lock handling in the DLM
-subsystem, focusing on thread safety, correctness, and code clarity.
+Hi Gao,
 
-- Added explicit locking (spin_lock_bh/spin_unlock_bh) around accesses
-  to proc->locks and proc->asts in dlm_clear_proc_locks, ensuring safe
-  concurrent operations during lock cleanup.
-- Replaced del_proc_lock with direct, lock-protected list operations
-  for improved clarity and correctness.
-- Updated send_unlock to set RSB_MASTER_UNCERTAIN only when releasing
-  the last lock on an rsb, ensuring proper master confirmation.
-- Improved handling of persistent and non-persistent locks by setting
-  appropriate flags (DLM_DFL_ORPHAN_BIT or DLM_IFL_DEAD_BIT) before
-  orphaning or unlocking.
-- Removed outdated comments related to mutex protection and serialization
-  assumptions, reflecting the updated concurrency model.
+In my mind, the big question is whether or not the data the
+filesystems pass in is logically shared by both iomap_begin/end and
+buffered reads/writes/dio callbacks, or whether the data needed by
+both are basically separate entities but have to be frankensteined
+together so that it can be passed in through iter->private. My sense
+of the read/readahead code is that the data needed by iomap begin/end
+vs buffered reads are basically logically separate entities. I see
+your point about how the existing code for buffered writes and dio in
+iomap have them combined into one, but imo, if the iomap_iter data is
+a separate entity from the data needed in the callbacks, then those
+pointers should be separate.
 
-Signed-off-by: Alessio Attilio <alessio.attilio.dev@gmail.com>
----
- fs/dlm/lock.c | 99 ++++++++++++++++++++++++---------------------------
- 1 file changed, 46 insertions(+), 53 deletions(-)
+But I also am happy to change this back to having it the way it was
+for v1 where everything just went through iter->private. I don't feel
+strongly about this decision, I'm happy with whichever way we go with.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 6dd3a524cd35..9170b5c09823 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -3654,12 +3654,33 @@ static int send_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
- 	return error;
- }
- 
--/* FIXME: if this lkb is the only lock we hold on the rsb, then set
--   MASTER_UNCERTAIN to force the next request on the rsb to confirm
--   that the master is still correct. */
--
- static int send_unlock(struct dlm_rsb *r, struct dlm_lkb *lkb)
- {
-+	struct dlm_lkb *tmp;
-+	int count = 0;
-+
-+	list_for_each_entry(tmp, &r->res_grantqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+	list_for_each_entry(tmp, &r->res_convertqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+	list_for_each_entry(tmp, &r->res_waitqueue, lkb_statequeue) {
-+		if (is_process_copy(tmp))
-+			count++;
-+	}
-+
-+/*
-+ * When releasing the last lock on the rsb, we mark the master as uncertain.
-+ * This ensures that the next lock request will verify the master node,
-+ * maintaining consistency across the cluster.
-+ */
-+
-+	if (count == 1)
-+		rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
-+
- 	return send_common(r, lkb, DLM_MSG_UNLOCK);
- }
- 
-@@ -6125,79 +6146,52 @@ static int unlock_proc_lock(struct dlm_ls *ls, struct dlm_lkb *lkb)
- 	return error;
- }
- 
--/* We have to release clear_proc_locks mutex before calling unlock_proc_lock()
--   (which does lock_rsb) due to deadlock with receiving a message that does
--   lock_rsb followed by dlm_user_add_cb() */
--
--static struct dlm_lkb *del_proc_lock(struct dlm_ls *ls,
--				     struct dlm_user_proc *proc)
--{
--	struct dlm_lkb *lkb = NULL;
--
--	spin_lock_bh(&ls->ls_clear_proc_locks);
--	if (list_empty(&proc->locks))
--		goto out;
--
--	lkb = list_entry(proc->locks.next, struct dlm_lkb, lkb_ownqueue);
--	list_del_init(&lkb->lkb_ownqueue);
--
--	if (lkb->lkb_exflags & DLM_LKF_PERSISTENT)
--		set_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags);
--	else
--		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
-- out:
--	spin_unlock_bh(&ls->ls_clear_proc_locks);
--	return lkb;
--}
--
--/* The ls_clear_proc_locks mutex protects against dlm_user_add_cb() which
--   1) references lkb->ua which we free here and 2) adds lkbs to proc->asts,
--   which we clear here. */
--
--/* proc CLOSING flag is set so no more device_reads should look at proc->asts
--   list, and no more device_writes should add lkb's to proc->locks list; so we
--   shouldn't need to take asts_spin or locks_spin here.  this assumes that
--   device reads/writes/closes are serialized -- FIXME: we may need to serialize
--   them ourself. */
--
--void dlm_clear_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
-+static void clean_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
- {
--	struct dlm_callback *cb, *cb_safe;
--	struct dlm_lkb *lkb, *safe;
-+	struct dlm_lkb *lkb;
- 
- 	dlm_lock_recovery(ls);
- 
- 	while (1) {
--		lkb = del_proc_lock(ls, proc);
-+		lkb = NULL;
-+		spin_lock_bh(&proc->locks_spin);
-+		if (!list_empty(&proc->locks)) {
-+			lkb = list_entry(proc->locks.next, struct dlm_lkb,
-+					 lkb_ownqueue);
-+			list_del_init(&lkb->lkb_ownqueue);
-+		}
-+		spin_unlock_bh(&proc->locks_spin);
-+
- 		if (!lkb)
- 			break;
--		if (lkb->lkb_exflags & DLM_LKF_PERSISTENT)
-+
-+		if (lkb->lkb_exflags & DLM_LKF_PERSISTENT) {
-+			set_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags);
- 			orphan_proc_lock(ls, lkb);
--		else
-+		} else {
-+			set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
- 			unlock_proc_lock(ls, lkb);
--
--		/* this removes the reference for the proc->locks list
--		   added by dlm_user_request, it may result in the lkb
--		   being freed */
-+		}
- 
- 		dlm_put_lkb(lkb);
- 	}
- 
--	spin_lock_bh(&ls->ls_clear_proc_locks);
--
-+	spin_lock_bh(&proc->locks_spin);
- 	/* in-progress unlocks */
- 	list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
- 		list_del_init(&lkb->lkb_ownqueue);
- 		set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
- 		dlm_put_lkb(lkb);
- 	}
-+	spin_unlock_bh(&proc->locks_spin);
- 
-+	spin_lock_bh(&proc->asts_spin);
- 	list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
- 		list_del(&cb->list);
- 		dlm_free_cb(cb);
- 	}
-+	spin_unlock_bh(&proc->asts_spin);
- 
--	spin_unlock_bh(&ls->ls_clear_proc_locks);
- 	dlm_unlock_recovery(ls);
- }
- 
-@@ -6351,4 +6345,3 @@ int dlm_debug_add_lkb_to_waiters(struct dlm_ls *ls, uint32_t lkb_id,
- 	dlm_put_lkb(lkb);
- 	return 0;
- }
--
--- 
-2.48.1
+Thanks,
+Joanne
 
+>
+> Thanks,
+> Gao Xiang
+>
+> > Thanks,
+> > Joanne
+> >
+> >>
+> >> Thanks,
+> >> Gao Xiang
+>
