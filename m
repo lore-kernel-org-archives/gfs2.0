@@ -1,142 +1,107 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAAC321F24
-	for <gfs2@lists.linux.dev>; Thu, 11 Sep 2025 12:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024E27F747
+	for <gfs2@lists.linux.dev>; Thu, 11 Sep 2025 13:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757593773; cv=none; b=YHftBgFNfIgdfH86dZVOohMiap1YTpaprK5V7oS/dbrzdVFOh6YeQgsjfBCE58xb04Ee0YHpSpPiQullJFKU67sjaPVUaZtlA6mZ+D3VAzMDKOfYmh2mak9Q1driKHT5hSkcnn2EV6JhBOSOaaQIrlpF57CPtGbQnzeznfxN+/4=
+	t=1757599053; cv=none; b=TyH/+z+IManjFu0lqO+sCRCXeNg4troyBh5x0Y/OmnSsdpPCKQvHTn2RkTvIRT8H+LzXxkthNRn/Puw/GpVA9qfgMb+YSHLZxJdJA+dyq4OqyB3GIYNc9GA7VozJLzVqKD+OOx26YgyWL8LKaa92X9CheKZrxBb96A3q30uOrKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757593773; c=relaxed/simple;
-	bh=bN322DPwaOeYhQjptNnHiEdxrT5VPto/SbVF/Os+afs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZNazPkrgKda5E6WfzhnF7UPB/Z4YyPX/hjIam+ErJoHlq212AlMevkdOyYrFodlmChzQmSdW39Yk7jsoR/cScM7A9lSQzbjZRScPdEW64kjjNk2klYywm7gCa8w5/Wk4yH/hfyAVnpnEzb4qXOQqPmfgF0WIw4rzbQu/7okFftA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GPMutLoP; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1757599053; c=relaxed/simple;
+	bh=5IVd5n609lEtKZCuFtLJ07/aJP+dW78/UO0pn8YhSFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=jgJwENi/4J73Pa/b6OZlvj1dpgUGWqH3dQC2m72WdJU7RO9/rUnezCrjkIz98opIs99wySSxl2YapOrU+QEiRtoA1IVvbShmcUd9VJn39un8UbFdUZBKFcOyXQ/gwBarioLpPxcQ0HAo5oq9C/y1H8eSb+meJ3hwKTloyOT69UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W8zVJl9Y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GPMutLoP"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757593761; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=CQwEV9u7fDKUXrr0f6do4Mzfl1lSNw8kMkmnJlwx09s=;
-	b=GPMutLoP0V8tblYsE03jCw4ib6QRGmLOWZISzM6zq9DlCVPvqv7zuO8hFtF/ObPnU2FlXKqyO349GF8eWMwOeu7HpOJe5IE4jcEiOck85fPX0YrcXzJKY+t4f11f8KMxNJOz3JszdF/Hc2s3nECQ4kWSnPKZT93Iqphp0JzB/9I=
-Received: from 30.180.0.242(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WnmHWCN_1757593759 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Sep 2025 20:29:21 +0800
-Message-ID: <9c104881-f09e-4594-9e41-0b6f75a5308c@linux.alibaba.com>
-Date: Thu, 11 Sep 2025 20:29:17 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W8zVJl9Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757599050;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=E1JP/ikpjwG67RK57N4dqArDkk4nZT01ZSQopz3DFpY=;
+	b=W8zVJl9YpA2EBPHAxF+02eC42hwfFTrNPop5+5KsDx+A+lkrHTNRwougYCusrMmlWIELNR
+	0Sl9+YQ6jFcYyN40NDxvb31qPqPq7JnJ2QfPTYUbRmM7l6kymHv0Vmx4i2NoRBeR6qzSOb
+	aH+GMht2/kmFzlU7NcgKrcgImD7o28Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-bKdtnsY6OTKNy9MKaXeMMA-1; Thu,
+ 11 Sep 2025 09:57:29 -0400
+X-MC-Unique: bKdtnsY6OTKNy9MKaXeMMA-1
+X-Mimecast-MFC-AGG-ID: bKdtnsY6OTKNy9MKaXeMMA_1757599049
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA8D91800378
+	for <gfs2@lists.linux.dev>; Thu, 11 Sep 2025 13:57:28 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.31])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9F33419560BD;
+	Thu, 11 Sep 2025 13:57:27 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 00/20] gfs2 patches on for-next
+Date: Thu, 11 Sep 2025 15:57:05 +0200
+Message-ID: <20250911135726.657575-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/16] iomap: move read/readahead logic out of
- CONFIG_BLOCK guard
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, brauner@kernel.org,
- miklos@szeredi.hu, djwong@kernel.org, linux-block@vger.kernel.org,
- gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
- linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20250908185122.3199171-1-joannelkoong@gmail.com>
- <20250908185122.3199171-14-joannelkoong@gmail.com>
- <a1529c0f-1f1a-477a-aeeb-a4f108aab26b@linux.alibaba.com>
- <CAJnrk1aCCqoOAgcPUpr+Z09DhJ5BAYoSho5dveGQKB9zincYSQ@mail.gmail.com>
- <0b33ab17-2fc0-438f-95aa-56a1d20edb38@linux.alibaba.com>
- <aMK0lC5iwM0GWKHq@infradead.org>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <aMK0lC5iwM0GWKHq@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ClNQNAqeNTamCrFE0mGk5JJbIitm4L75UOSfkGLVmQE_1757599049
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Christoph,
+Hello,
 
-On 2025/9/11 19:37, Christoph Hellwig wrote:
-> On Wed, Sep 10, 2025 at 12:59:41PM +0800, Gao Xiang wrote:
->> At least it sounds better on my side, but anyway it's just
->> my own overall thought.  If other folks have different idea,
->> I don't have strong opinion, I just need something for my own
->> as previous said.
-> 
-> I already dropped my two suggestions on the earlier patch.  Not totally
-> happy about either my suggestions or data, but in full agreement that
-> it should be something else than private.
-
-To just quote your previous comment and try to discuss here:
-
-```
-On Wed, Sep 10, 2025 at 01:41:25PM -0400, Joanne Koong wrote:
-> In my mind, the big question is whether or not the data the
-> filesystems pass in is logically shared by both iomap_begin/end and
-> buffered reads/writes/dio callbacks, or whether the data needed by
-> both are basically separate entities
-
-They are separate entities.
-```
-
-I try to push this again because I'm still not quite sure it's
-a good idea, let's take this FUSE iomap-read proposal (but sorry
-honestly I not fully look into the whole series.)
-
-```
-  struct fuse_fill_read_data {
-  	struct file *file;
-+
-+	/*
-+	 * Fields below are used if sending the read request
-+	 * asynchronously.
-+	 */
-+	struct fuse_conn *fc;
-+	struct fuse_io_args *ia;
-+	unsigned int nr_bytes;
-  };
-```
-
-which is just a new FUSE-only-specific context for
-`struct iomap_read_folio_ctx`, it's not used by .iomap_{begin,end}
-is that basically FUSE _currently_ doesn't have logical-to-physical
-mapping requirement (except for another fuse_iomap_begin in dax.c):
-```
-static int fuse_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
-                             unsigned int flags, struct iomap *iomap,
-                             struct iomap *srcmap)
-{
-         iomap->type = IOMAP_MAPPED;
-         iomap->length = length;
-         iomap->offset = offset;
-         return 0;
-}
-```
-
-But if FUSE or some other fs later needs to request L2P information
-in their .iomap_begin() and need to send L2P requests to userspace
-daemon to confirm where to get the physical data (maybe somewhat
-like Darrick's work but I don't have extra time to dig into that
-either) rather than just something totally bypass iomap-L2P logic
-as above, then I'm not sure the current `iomap_iter->private` is
-quite seperate to `struct iomap_read_folio_ctx->private`, it seems
-both needs fs-specific extra contexts for the same I/O flow.
-
-I think the reason why `struct iomap_read_folio_ctx->private` is
-introduced is basically previous iomap filesystems are all
-bio-based, and they shares `bio` concept in common but
-`iter->private` was not designed for this usage.
-
-But fuse `struct iomap_read_folio_ctx` and
-`struct fuse_fill_read_data` are too FUSE-specific, I cannot
-see it could be shared by other filesystems in the near future,
-which is much like a single-filesystem specific concept, and
-unlike to `bio` at all.
-
-I've already racked my brains on this but I have no better
-idea on the current callback-hook model (so I don't want to argue
-more). Anyway, I really think it should be carefully designed
-(because the current FUSE .iomap_{begin,end} are just like no-op
-but that is just fuse-specific).  If folks really think Joanne's
-work is already best or we can live with that, I'm totally fine.
+the following patches have accumulated on for-next and will be part of
+the next pull request.  (Colin Ian King's patch has gone through the
+list already.)  Please review.
 
 Thanks,
-Gao Xiang
+Andreas
+
+Andreas Gruenbacher (19):
+  gfs2: Remove unused GIF_FREE_VFS_INODE flag
+  gfs2: Remove unused sd_withdraw_wait field
+  gfs2: do_xmote cleanup
+  gfs2: Simplify refcounting in do_xmote
+  gfs2: Partially revert "gfs2: do_xmote fixes"
+  gfs2: Turn gfs2_withdraw into a void function
+  gfs2: Sanitize gfs2_meta_check, gfs2_metatype_check, gfs2_io_error
+  gfs2: Do not use atomic operations unnecessarily
+  gfs2: Further sanitize lock_dlm.c
+  gfs2: Remove DLM_LKF_ALTCW / DLM_LKF_ALTPR code
+  gfs2: Fix LM_FLAG_TRY* logic in add_to_queue
+  gfs2: Remove duplicate check in do_xmote
+  gfs2: Fix GLF_INVALIDATE_IN_PROGRESS flag clearing in do_xmote
+  gfs2: Get rid of GLF_INVALIDATE_IN_PROGRESS
+  gfs2: Simplify do_promote
+  gfs2: run_queue cleanup
+  gfs2: Minor run_queue fixes
+  gfs2: Add proper lockspace locking
+  gfs2: Fix unlikely race in gdlm_put_lock
+
+Colin Ian King (1):
+  gfs2: Remove space before newline
+
+ fs/gfs2/file.c       |  23 ++++--
+ fs/gfs2/glock.c      | 185 ++++++++++++++++++++-----------------------
+ fs/gfs2/glock.h      |   4 +
+ fs/gfs2/incore.h     |   5 +-
+ fs/gfs2/lock_dlm.c   | 100 +++++++++++++----------
+ fs/gfs2/trace_gfs2.h |   1 -
+ fs/gfs2/util.c       |  38 +++------
+ fs/gfs2/util.h       |  36 +++++----
+ 8 files changed, 199 insertions(+), 193 deletions(-)
+
+-- 
+2.51.0
 
