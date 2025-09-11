@@ -1,300 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78B152F88;
-	Thu, 11 Sep 2025 14:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9D23469E4
+	for <gfs2@lists.linux.dev>; Thu, 11 Sep 2025 15:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757602419; cv=none; b=Qxs8GrvROa0FwVY21sdSXtWngTNouQJjBV9sHomSch+glWPLnwr2p+JQ/C9uSMBmZDxSLo/QWIIWULWHGLZPMryHFfVck/NujDKWKGqMgY4+RA67kFGbsG6A7sajFvjlz0iWNkYS1La0haEEuB5llVkzToFoAxjn+u6dQccQans=
+	t=1757603406; cv=none; b=l3CUOMFY1UMl1O1+VfiFy8lrCUHD67N6gWM3bj9/jF6lHT3KgKW6v3OIwo8SRUzJoy0MnkSwNo7yGQ0G/CPW1+xfJbCjqh4hpJPwOBbxip4At//hfCpkRq2sgzzqipIEUQ/9JwU764SdQShpUUS5NCAEazFyZr7eK/E1iiSnSGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757602419; c=relaxed/simple;
-	bh=1LuM3D5ANUA0j8puYdxNj4ZLt5FzLtMTMa0RmH9A2SE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gymh2O2Tp4YluNcZo7G8wAp5hXl8pSKlm1MRPpT47xtsshz3JCP1k8o741E77ZyOM6yBpfXKx6D94IjeheA8T5A7cPeM3athJAO5lQblCBk13Q6HokS2JnWOkaREayuuQfu2E18+QiDdcxdac/MjhGICWr0j2Lh9S90sYC685KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SEFj+iOD; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757603406; c=relaxed/simple;
+	bh=N4W+8pquFoP92G+o8lJbiWfNxJJ0800TLeK2Y3vt3LQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=YgZFlTMDsS180W9rCoo+iWI/KYPadMhzcIQtM5faLf1/JH2JUNUseyZn1RCcco9BOXYTZbffIyPW3qumOy+TJSlJzK03TMftsr2rqTgQ3wLPy2GRzimcKhICmxs+UHFFsITS8pnXiNG7Xbl1jGCZL2suXXw25h1/6g0rNkPhivk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZaLUKen1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SEFj+iOD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757602417; x=1789138417;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1LuM3D5ANUA0j8puYdxNj4ZLt5FzLtMTMa0RmH9A2SE=;
-  b=SEFj+iODHADr2PM8IcjCfQC8oYzbMkm0FCvs2mbTkJ8wsFa+yB2JBfSz
-   fMrObm1zOLhcIzwxav0/szyI5u4Rc4K/fcr2cAd8FXp8mdP90cJ7kcmqc
-   /S1YWDvUHAd8/9NVj/yyz/fD8BgG2Ml96mKHYGpqXzm7sqLAyJ3tGSzpp
-   FbfKQVPiiRpEkQF9tiluTEeb1y3iYZu3hKcg30OT2OfUPYXUpR0rhrYEb
-   iyFeqTmXN18NOSSBfKF29AtQM6490Ksa0GkfOZ4qa524KfDywLHWYL8+K
-   pYSPepSp3kYW3PWBhGu4+pjYuvwW0MB04d/V3peF653A/wshCqZWbOogO
-   Q==;
-X-CSE-ConnectionGUID: fYhDDxPMRZKAycJ8LytdUw==
-X-CSE-MsgGUID: 5ww5WkQOSQaMmoFULWYTSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="77392843"
-X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
-   d="scan'208";a="77392843"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 07:53:34 -0700
-X-CSE-ConnectionGUID: Osz4Vj5sQM2CxaeUJVgxcw==
-X-CSE-MsgGUID: 0ziyHY8OTv6yuMkbHoivrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
-   d="scan'208";a="173615826"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 11 Sep 2025 07:53:29 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uwifr-0000OW-11;
-	Thu, 11 Sep 2025 14:53:24 +0000
-Date: Thu, 11 Sep 2025 22:52:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alessio Attilio <alessio.attilio.dev@gmail.com>, aahringo@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, teigland@redhat.com,
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Alessio Attilio <alessio.attilio@engineer.com>
-Subject: Re: [PATCH] * dlm: improve lock management and concurrency control
-Message-ID: <202509112200.zlSc9HkB-lkp@intel.com>
-References: <20250910171706.173976-1-alessio.attilio.dev@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZaLUKen1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757603398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFzVYLmGxzy94wwH+ayr9v5omMBRq3s2fenGntFifFo=;
+	b=ZaLUKen1PdwMv0KDxddjjShRwd13m3zRshFwUVrcXUY6Yhz4QaDq4IejMwARsNS3I5QmeG
+	a3CoHX+npVBQ7XSQUm4VB6YHKj6pSo1drPoZx5XdMN3gvgqBM7LEWuHaBjGgsqd0adenyr
+	rUtrSXxzkvAXpVTpEl92gDWZeOhR+94=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-lU3tlSK8N821C6Em9GISXQ-1; Thu, 11 Sep 2025 11:09:51 -0400
+X-MC-Unique: lU3tlSK8N821C6Em9GISXQ-1
+X-Mimecast-MFC-AGG-ID: lU3tlSK8N821C6Em9GISXQ_1757603383
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3e424a186fcso511035f8f.0
+        for <gfs2@lists.linux.dev>; Thu, 11 Sep 2025 08:09:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757603383; x=1758208183;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zFzVYLmGxzy94wwH+ayr9v5omMBRq3s2fenGntFifFo=;
+        b=T0SXC6V9uDBxDglO+S7ylseA5Jk5l6xFP7VAI+SuqvmId6MT27IBp6oqNXIWNfvEt9
+         yvnzjkpJXdnbaO5Z/QzXKOjwDmaLHdcMWttfR6xNqAHXtTbnE6S6gCQumHNVJ2a1yKrq
+         MO95zPfnrnpW0X9svri8VNB5WJQx1A+h4Clj3AVr6C5zuIQQyoAbod6M+g60JcuuYVj/
+         mqULaXuHzJCxVF+dh5if4y/3kJTMF6aTUqLtlR3zsLogaJkTHApaRX3ouvyGPOvF0/kl
+         AMNxHYQGO35XKj5g1y+cTr6W0U+cLITSIBN0DRZpEV7KHD0zYNVbeIdN94JKjkkTfWcN
+         MaNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUczkWvsQdZiPQ+6tLi7R9DEOWzJHZvB9E5ogeZZjKNU8CeMqYiZsIRHkFIbTirw2GXBn5r@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXD4Or4dB2G/pJ8fAb9Oe/A6LEdiIz4qpDNA3tyS375i+ETBNi
+	G1SvcOnBi2wUd5C6BajzjpOjj6HqCSFlpUNA5ACk1FtYbddQoDyiT6gXxoSfj5lfiAAJXXPOyVF
+	x5DCLiJeV/KvjLvbi5PxJeO5rQ7/2zhs+5pyosLpqKI9NpgKZWU9TZSgI8H1ltEA=
+X-Gm-Gg: ASbGnctaORSSUCh1p8HH3634v4+oigwu54uFDwSkGV8hFA1tvSGyp+Fa4cV6GvhLke5
+	X9iiLiNnde0l/rLwiJ8+d5RO49oNtZzpjATckUbOrBCurgDosbNu80KRuxWOgYyrlTlZU72edn0
+	CnFw599SxAyKKMCI7bWsLcwczysuhUoC/KZJIirx6FJgFn7IEw7/IncH4q2qjjq2VyomW0Jn+ny
+	8QvUlBtH3HOxc9X5CoVtFe8ltuIDd2Pm9LvqMp3eeSx2ruZPtuRxfdbwpq7DfIzE5a1wuZpYHUc
+	pu5ut3RX1oXTEZVDbrqJYmEl7foNJIrys0przo4hw6xjaQyjS8uzEHww9fQtR8sPnKtCCOz9vlo
+	+W/qlnYQ31+JntrskmzNQb8Hn
+X-Received: by 2002:a05:6000:3113:b0:3de:c4dd:9e58 with SMTP id ffacd0b85a97d-3e643ff86f2mr13999343f8f.50.1757603383072;
+        Thu, 11 Sep 2025 08:09:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESs8cItJdShISssk8/C8MKCstSe3Dj3sBddZJnEmweN0BSgor2szU/wYKkf+NBghlacDjfaA==
+X-Received: by 2002:a05:6000:3113:b0:3de:c4dd:9e58 with SMTP id ffacd0b85a97d-3e643ff86f2mr13999322f8f.50.1757603382602;
+        Thu, 11 Sep 2025 08:09:42 -0700 (PDT)
+Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e037c4490sm26733825e9.19.2025.09.11.08.09.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 08:09:42 -0700 (PDT)
+Message-ID: <0b03f419-eb0a-4be3-b8b0-b95d0f2ebcab@redhat.com>
+Date: Thu, 11 Sep 2025 16:09:41 +0100
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910171706.173976-1-alessio.attilio.dev@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/20] gfs2 patches on for-next
+To: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
+References: <20250911135726.657575-1-agruenba@redhat.com>
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <20250911135726.657575-1-agruenba@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VuEpMyTFnNNtgGn1tGv2yePUYJ372OCUimEQXID1dSM_1757603383
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Alessio,
+On 11/09/2025 14:57, Andreas Gruenbacher wrote:
+> Hello,
+> 
+> the following patches have accumulated on for-next and will be part of
+> the next pull request.  (Colin Ian King's patch has gone through the
+> list already.)  Please review.
 
-kernel test robot noticed the following build warnings:
+Looks good to me.
 
-[auto build test WARNING on teigland-dlm/next]
-[also build test WARNING on linus/master v6.17-rc5 next-20250911]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+For the series (optional):
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alessio-Attilio/dlm-improve-lock-management-and-concurrency-control/20250911-012449
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git next
-patch link:    https://lore.kernel.org/r/20250910171706.173976-1-alessio.attilio.dev%40gmail.com
-patch subject: [PATCH] * dlm: improve lock management and concurrency control
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20250911/202509112200.zlSc9HkB-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250911/202509112200.zlSc9HkB-lkp@intel.com/reproduce)
+Reviewed-by: Andrew Price <anprice@redhat.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509112200.zlSc9HkB-lkp@intel.com/
+Andy
 
-All warnings (new ones prefixed by >>):
+> Andreas Gruenbacher (19):
+>   gfs2: Remove unused GIF_FREE_VFS_INODE flag
+>   gfs2: Remove unused sd_withdraw_wait field
+>   gfs2: do_xmote cleanup
+>   gfs2: Simplify refcounting in do_xmote
+>   gfs2: Partially revert "gfs2: do_xmote fixes"
+>   gfs2: Turn gfs2_withdraw into a void function
+>   gfs2: Sanitize gfs2_meta_check, gfs2_metatype_check, gfs2_io_error
+>   gfs2: Do not use atomic operations unnecessarily
+>   gfs2: Further sanitize lock_dlm.c
+>   gfs2: Remove DLM_LKF_ALTCW / DLM_LKF_ALTPR code
+>   gfs2: Fix LM_FLAG_TRY* logic in add_to_queue
+>   gfs2: Remove duplicate check in do_xmote
+>   gfs2: Fix GLF_INVALIDATE_IN_PROGRESS flag clearing in do_xmote
+>   gfs2: Get rid of GLF_INVALIDATE_IN_PROGRESS
+>   gfs2: Simplify do_promote
+>   gfs2: run_queue cleanup
+>   gfs2: Minor run_queue fixes
+>   gfs2: Add proper lockspace locking
+>   gfs2: Fix unlikely race in gdlm_put_lock
+> 
+> Colin Ian King (1):
+>   gfs2: Remove space before newline
+> 
+>  fs/gfs2/file.c       |  23 ++++--
+>  fs/gfs2/glock.c      | 185 ++++++++++++++++++++-----------------------
+>  fs/gfs2/glock.h      |   4 +
+>  fs/gfs2/incore.h     |   5 +-
+>  fs/gfs2/lock_dlm.c   | 100 +++++++++++++----------
+>  fs/gfs2/trace_gfs2.h |   1 -
+>  fs/gfs2/util.c       |  38 +++------
+>  fs/gfs2/util.h       |  36 +++++----
+>  8 files changed, 199 insertions(+), 193 deletions(-)
+> 
 
-   In file included from include/linux/smp.h:12,
-                    from include/linux/tracepoint.h:15,
-                    from include/trace/events/dlm.h:11,
-                    from fs/dlm/lock.c:56:
-   fs/dlm/lock.c: In function 'clean_proc_locks':
-   fs/dlm/lock.c:6181:39: error: 'safe' undeclared (first use in this function)
-    6181 |         list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-         |                                       ^~~~
-   include/linux/list.h:858:17: note: in definition of macro 'list_for_each_entry_safe'
-     858 |                 n = list_next_entry(pos, member);                       \
-         |                 ^
-   fs/dlm/lock.c:6181:39: note: each undeclared identifier is reported only once for each function it appears in
-    6181 |         list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-         |                                       ^~~~
-   include/linux/list.h:858:17: note: in definition of macro 'list_for_each_entry_safe'
-     858 |                 n = list_next_entry(pos, member);                       \
-         |                 ^
-   In file included from include/linux/container_of.h:5,
-                    from include/linux/list.h:5:
-   include/linux/compiler_types.h:507:27: error: expression in static assertion is not an integer
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:601:9: note: in expansion of macro 'container_of'
-     601 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:645:9: note: in expansion of macro 'list_entry'
-     645 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:860:27: note: in expansion of macro 'list_next_entry'
-     860 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6181:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6181 |         list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
->> include/linux/list.h:860:21: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-     860 |              pos = n, n = list_next_entry(n, member))
-         |                     ^
-   fs/dlm/lock.c:6181:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6181 |         list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6189:34: error: 'cb' undeclared (first use in this function); did you mean 'mb'?
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |                                  ^~
-   include/linux/list.h:857:14: note: in definition of macro 'list_for_each_entry_safe'
-     857 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |              ^~~
-   include/linux/compiler_types.h:507:27: error: expression in static assertion is not an integer
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:601:9: note: in expansion of macro 'container_of'
-     601 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:612:9: note: in expansion of macro 'list_entry'
-     612 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:857:20: note: in expansion of macro 'list_first_entry'
-     857 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6189:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6189:38: error: 'cb_safe' undeclared (first use in this function)
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |                                      ^~~~~~~
-   include/linux/list.h:858:17: note: in definition of macro 'list_for_each_entry_safe'
-     858 |                 n = list_next_entry(pos, member);                       \
-         |                 ^
-   include/linux/compiler_types.h:507:27: error: expression in static assertion is not an integer
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:601:9: note: in expansion of macro 'container_of'
-     601 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:645:9: note: in expansion of macro 'list_entry'
-     645 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:858:21: note: in expansion of macro 'list_next_entry'
-     858 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6189:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/list.h:857:64: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-     857 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                                                                ^
-   fs/dlm/lock.c:6189:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:507:27: error: expression in static assertion is not an integer
-     507 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:601:9: note: in expansion of macro 'container_of'
-     601 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:645:9: note: in expansion of macro 'list_entry'
-     645 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:860:27: note: in expansion of macro 'list_next_entry'
-     860 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   fs/dlm/lock.c:6189:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
->> include/linux/list.h:860:21: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-     860 |              pos = n, n = list_next_entry(n, member))
-         |                     ^
-   fs/dlm/lock.c:6189:9: note: in expansion of macro 'list_for_each_entry_safe'
-    6189 |         list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   fs/dlm/lock.c: At top level:
->> fs/dlm/lock.c:6149:13: warning: 'clean_proc_locks' defined but not used [-Wunused-function]
-    6149 | static void clean_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
-         |             ^~~~~~~~~~~~~~~~
-
-
-vim +/clean_proc_locks +6149 fs/dlm/lock.c
-
-  6148	
-> 6149	static void clean_proc_locks(struct dlm_ls *ls, struct dlm_user_proc *proc)
-  6150	{
-  6151		struct dlm_lkb *lkb;
-  6152	
-  6153		dlm_lock_recovery(ls);
-  6154	
-  6155		while (1) {
-  6156			lkb = NULL;
-  6157			spin_lock_bh(&proc->locks_spin);
-  6158			if (!list_empty(&proc->locks)) {
-  6159				lkb = list_entry(proc->locks.next, struct dlm_lkb,
-  6160						 lkb_ownqueue);
-  6161				list_del_init(&lkb->lkb_ownqueue);
-  6162			}
-  6163			spin_unlock_bh(&proc->locks_spin);
-  6164	
-  6165			if (!lkb)
-  6166				break;
-  6167	
-  6168			if (lkb->lkb_exflags & DLM_LKF_PERSISTENT) {
-  6169				set_bit(DLM_DFL_ORPHAN_BIT, &lkb->lkb_dflags);
-  6170				orphan_proc_lock(ls, lkb);
-  6171			} else {
-  6172				set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
-  6173				unlock_proc_lock(ls, lkb);
-  6174			}
-  6175	
-  6176			dlm_put_lkb(lkb);
-  6177		}
-  6178	
-  6179		spin_lock_bh(&proc->locks_spin);
-  6180		/* in-progress unlocks */
-  6181		list_for_each_entry_safe(lkb, safe, &proc->unlocking, lkb_ownqueue) {
-  6182			list_del_init(&lkb->lkb_ownqueue);
-  6183			set_bit(DLM_IFL_DEAD_BIT, &lkb->lkb_iflags);
-  6184			dlm_put_lkb(lkb);
-  6185		}
-  6186		spin_unlock_bh(&proc->locks_spin);
-  6187	
-  6188		spin_lock_bh(&proc->asts_spin);
-  6189		list_for_each_entry_safe(cb, cb_safe, &proc->asts, list) {
-  6190			list_del(&cb->list);
-  6191			dlm_free_cb(cb);
-  6192		}
-  6193		spin_unlock_bh(&proc->asts_spin);
-  6194	
-  6195		dlm_unlock_recovery(ls);
-  6196	}
-  6197	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
