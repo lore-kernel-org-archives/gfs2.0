@@ -1,59 +1,59 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B66C1F8BD6
-	for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 17:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9E2848B0
+	for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 19:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757698591; cv=none; b=VRZNRU0/DpRk3X8La4OKt+FLbgGbKDKpiXf2d4rpKCCL+yM8TjMB8jtZUSK8Qu32bJSXtTz8QwsTemw6jCkEOmaovRrEUud8q6+1gerfPgUjx0/eo5g9RS2nys8Os5F/jxNcShO8IAG41Ex6XoRE1ODTGDHBnJLp+dmuFTEb2cM=
+	t=1757707021; cv=none; b=KK2YkVHNRDuKPzOE6CkiFKmjINIZ5RfJoUpWedKY6sM63viWhR/nJUj82nUApzfZ4yY7wfXZe4de7/GsPf+9EV2Vw3QST1Sl/rYIJZZDeMRD876nuUqIzz+Ist9kSyPeU0UoEVhCL6WM1fhW6l4xFvwArtLjVOxZCWb1De5r37U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757698591; c=relaxed/simple;
-	bh=yK0tz6ECng/GkzGWo1PQRHtl9PMBAN4W2lEev0pJQG8=;
+	s=arc-20240116; t=1757707021; c=relaxed/simple;
+	bh=9974JDRogo0n+ndu39jG/pTKJ9xOsQJxVIFhpq5cF2w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K9nCHtpNHWaqP64+Nfh+dJvBWkWWPrzWgFdBqXrz5cPKjwKqB3hVN1KyKhpG88THT0XSxQ1okA6KleFhvOvvr6s9jVLhPQwiGTNVKiFG3Acv//ztEJdgsbTzo747ZOh5MkCQYALqHyriTC8CMkZ6O3vi/8zTLq9aU/Y9xpHlfE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0DjAzVw; arc=none smtp.client-ip=209.85.160.177
+	 To:Cc:Content-Type; b=Th6Tef1kJRPNrGXIlbpQDR4d6o4rf/E4LCJJUjLNd2UA077jL0Kp1Lv5epInbEPUX52uTpNOY+z9wflgERENHzffAPi4qN6OWVNNZTBRcihJj8j1FTHMrrUBc44pi8VZV9vsbKSudqAIcSTPOPY1MWGQ6sF25QvhKTkazxyFRjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YItXEcny; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0DjAzVw"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b61161c32eso26604051cf.3
-        for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 10:36:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YItXEcny"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b38d4de61aso7959051cf.0
+        for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 12:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757698589; x=1758303389; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1757707018; x=1758311818; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iaoWmn122bkATHsMm2TW6koAeUnmN4wL024VSWi/QfE=;
-        b=D0DjAzVwIBJ/aWiZuuIW14nrNj7drs5kGZbDpzX+bNhreZpHw7SBoEjtWKQbS/yptE
-         bE0fboLR0TSoT5YmoyoGz32LgQO4wfmrjRSjdSJPRBjLpfCGgGYhzqeaiRzdKjs3BtdP
-         9bvwfgNNzMUzA4SAYfjhf4ZswzpmmBSixXf/hZlxSlBaCyQn0hY9rHjK9fFWAfyRltql
-         hIVz/J3jTvIRtEy0/3+ZmkGQ3i7TuPo827kzTM63yQsE0tfEyjyIkocC1XgvHSZcsQlR
-         oyaXDAS5KrGstmZNYg5W67IxHkaOiRo64yRYXCEMtR/w6AVqNroFOUMCrDY2IgxirnxT
-         xgXA==
+        bh=N7xSd4hkSOJN4rFdOkhQDgdYqByzYvKS04ghFhqMINA=;
+        b=YItXEcnyz51Y9e9QLv1bT78KAbhhkj1Ban2smqxmaPppVdu6uu6RSDWCCxK5XuOAZA
+         AjplAT0UhV7HSlJ1gAgELy+Bsw6V/cv1+QuILMWO9cvhxnKU43MYQiOf1UuD9GiWVKGX
+         H1MYJLzzyogJ0WXo4T7ENqzfx3uM4S7BzVTvKuGW1UNjdT1Vl1ASlSOxTqg23yAdvNLp
+         5OpMQaYq2wvZDc+9EWSyXPSvwAJiX6tzB/juwMRhz1lmxZUkUTBXPcA7iCdNvJ3CJAqf
+         UnnoHo9N1LV39OREEZfENMc9TSPcHwaKAcMXN4xjpcRibvhRGqzSNr0hJSb9ORur4+du
+         BJDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757698589; x=1758303389;
+        d=1e100.net; s=20230601; t=1757707018; x=1758311818;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iaoWmn122bkATHsMm2TW6koAeUnmN4wL024VSWi/QfE=;
-        b=GCD3NS4XuFPSBr7wgqKOTlX/jMpEbECwRi6SOewEtCrIChKQSVDOp+9efvlItn/FBW
-         qlUATKZvF9mBlb0qX6mUk1XwgdH3rDP0FMD94zuaDxRQdlnA/IhqkyWspe4j57q91Rop
-         VZgTeHT4aSOkmOsoJJn8H/iPpcP2KjIaiAoj2LcTjoQHiTXG7zXlbD4ajj4hlq23OC6z
-         C9ummUX8/FZAN/PvW9RS2QEbN2AM4NOED4LYzACQ2T5AUcxBIZ3596evZ9seMjSOI/BO
-         ry7WLAdIGnWDbzBfYFYTT8P+HpNVjM3Q+98V/j/+b9BV9izefLb3zSL22oGUc5laSlg2
-         dhQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUazIrhAYsgO0lmR0JqmttCLkeYFimX/Z1avbFkDz9UATNhVMAc7/y+UUzolDY/bexso0Yv@lists.linux.dev
-X-Gm-Message-State: AOJu0YwfJsqQJewXDCz9o3DYygJ/y59ziXDffPXbH+18QRGJyur8j6Gb
-	d1i4xWuh0d9JRP1W6C1So/7QmqoqOoAf+ZY0ufGl1ebFcrkahEEUUX/ADh6f5fzcFrGXfN86oZl
-	Pb4sbvmLcFzeAHScagMzDILQeg6cA/Yo=
-X-Gm-Gg: ASbGnctlpVfX/H8UJnrzt/pTw3sFBrjcch/rTb6KBBbU+Hr9erHAhwQHuYNSkBW7Zgf
-	/TAOqthzdt2OsNT/Dj4tXr3QamFR5BHyMuo93qJTX8QlxWMfppV3msBUvCJX2jkVnJj59NhqE9I
-	e+UVsTW03ZYIYEJh7U/MvF8pG2fIWD+tCxudZX9A7nEhBpjWmoEbqFYkZR+gBPQRneL2r5lkVSl
-	5ybgu+fsrrD+sysT7bs95SspKyY6j7kKVXAewZSNmIn8lLsuqAZ
-X-Google-Smtp-Source: AGHT+IH7GMrBmyVYd7mK7Xmpyd9r7k7cyb03zWtnoaxVf5aKJ9xehKSBV/1hqSTeEYXKWJdrlpEgvVzc7a+DG2b03cg=
-X-Received: by 2002:a05:622a:581a:b0:4b5:4874:4f92 with SMTP id
- d75a77b69052e-4b77d0137b3mr62431321cf.13.1757698588919; Fri, 12 Sep 2025
- 10:36:28 -0700 (PDT)
+        bh=N7xSd4hkSOJN4rFdOkhQDgdYqByzYvKS04ghFhqMINA=;
+        b=dyO7vtNiCn7sf22glv+bHy4KEYTidae0DSXm0PCXSzc935mC/D/RY+fam+z0I+Ks3D
+         hdmbrRlNljpb3eUSHxWE/0o9hqHB0j+jOpmBK/2RowWvHgk30ilN8JIfQ8hXgDVE9rsN
+         3SPX3bjBfw3DiXAObtmkqoRpRiv9CXxlK/2Vd5KfyXjQ2RRvh9tzBX2S51dEq1x9WqAy
+         ndjYdVGkALlxxmhHfU3agpe8800mTBrMzD3nsGXXRihztuHbdQOjB3y96DrgeP9axBk/
+         h7JVlh7lx7s3AKJO58a7KIlM+qnypIPe36nRIe/KDCUEuueYl10iq0kI3EFq2xJUL84g
+         Z46Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUyd6EOdaEmWPqVqHfk3vZ9ImcjrlA3iieYSrDGYk41wG9TfQ8mCqIbDWv8+3agBSuClR50@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw16z6YmVgMNL6dbl9qbWCo33jhGSGaIiqEOnF0Xx/kd9rdwBPp
+	f0WlJ6NSFGvifBW+fPJDLdBNIuZGPaLGOkRevwJsdAO4Yv5gMn1RgerFGZi8whKnN50NJKFJI7o
+	B+xEb1funf58qT9lQA/G82B7e3+db9AU=
+X-Gm-Gg: ASbGncvnuiGBjGaPyWERpxctQIFpPNORBEgoZjqbnVH6mKqJx0ho9Q/VCc6xkuW2oQ7
+	FDeNIcq9bahpMOsRq6HmvIMzWTlGtHdVGFm0nw6+Q4bc9pIPLzF4ZnNm9KNJnOR57GJkGh2+ghX
+	dHCZCtrvN8wu0kkFxguok0RDp6lTFxPVzH6HNXUxZ0eeBTVtOSUmBUBRWSApJL3t15RYxpsikpc
+	ntgEPlTaI/4g1oy4HDZBiaAQA3jM8bDaZhtImw=
+X-Google-Smtp-Source: AGHT+IE3Y9XDwSZ6E3ZQ8y5m+QPR+XrZ1uYBV4d8HA3U7M3Ul8GuqClPn48kHtz+IzOKrwCRkzgnQWFjtBYbq5kbM+g=
+X-Received: by 2002:a05:622a:189f:b0:4b3:4d9d:940 with SMTP id
+ d75a77b69052e-4b77d03ee10mr52771801cf.54.1757707017920; Fri, 12 Sep 2025
+ 12:56:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -61,76 +61,185 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250908185122.3199171-1-joannelkoong@gmail.com>
- <20250908185122.3199171-12-joannelkoong@gmail.com> <aMKx23I3oh5fN-F8@infradead.org>
-In-Reply-To: <aMKx23I3oh5fN-F8@infradead.org>
+ <20250908185122.3199171-14-joannelkoong@gmail.com> <a1529c0f-1f1a-477a-aeeb-a4f108aab26b@linux.alibaba.com>
+ <CAJnrk1aCCqoOAgcPUpr+Z09DhJ5BAYoSho5dveGQKB9zincYSQ@mail.gmail.com>
+ <0b33ab17-2fc0-438f-95aa-56a1d20edb38@linux.alibaba.com> <aMK0lC5iwM0GWKHq@infradead.org>
+ <9c104881-f09e-4594-9e41-0b6f75a5308c@linux.alibaba.com> <CAJnrk1b2_XGfMuK-UAej31TtCAAg5Aq8PFS_36yyGg8NerA97g@mail.gmail.com>
+ <6609e444-5210-42aa-b655-8ed8309aae75@linux.alibaba.com> <66971d07-2c1a-4632-bc9e-e0fc0ae2bd04@linux.alibaba.com>
+ <267abd34-2337-4ae3-ae95-5126e9f9b51c@linux.alibaba.com>
+In-Reply-To: <267abd34-2337-4ae3-ae95-5126e9f9b51c@linux.alibaba.com>
 From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 12 Sep 2025 13:36:18 -0400
-X-Gm-Features: Ac12FXza_WwHTwR6ZN8SwpAjhAiC4oowkVj8eON9gC8viGDNCKpw6hOW6Wr675M
-Message-ID: <CAJnrk1aKiKSTB3+c8BRbt+h9L5eq_Yy2y143fPUcUM04VTjd_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 11/16] iomap: add caller-provided callbacks for read
- and readahead
-To: Christoph Hellwig <hch@infradead.org>
-Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org, 
-	hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
+Date: Fri, 12 Sep 2025 15:56:46 -0400
+X-Gm-Features: Ac12FXxsIfEqXTl7vZDqTv3N2Skfu1ouhD6pDB74GYzRtEBggDV7bqVgW104mes
+Message-ID: <CAJnrk1Y31b-Yr03rN8SXPmUA7D6HW8OhnkfFOebn56z57egDOw@mail.gmail.com>
+Subject: Re: [PATCH v2 13/16] iomap: move read/readahead logic out of
+ CONFIG_BLOCK guard
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: Christoph Hellwig <hch@infradead.org>, brauner@kernel.org, miklos@szeredi.hu, 
+	djwong@kernel.org, linux-block@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
 	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 11, 2025 at 7:26=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
-g> wrote:
+On Thu, Sep 11, 2025 at 9:11=E2=80=AFPM Gao Xiang <hsiangkao@linux.alibaba.=
+com> wrote:
 >
-> On Mon, Sep 08, 2025 at 11:51:17AM -0700, Joanne Koong wrote:
-> > +  - ``read_folio_range``: Called to read in the range (read can be don=
+> On 2025/9/12 09:09, Gao Xiang wrote:
+> >
+> >
+> > On 2025/9/12 08:06, Gao Xiang wrote:
+> >>
+> >>
+> >> On 2025/9/12 03:45, Joanne Koong wrote:
+> >>> On Thu, Sep 11, 2025 at 8:29=E2=80=AFAM Gao Xiang <hsiangkao@linux.al=
+ibaba.com> wrote:
+> >>
+> >>>> But if FUSE or some other fs later needs to request L2P information
+> >>>> in their .iomap_begin() and need to send L2P requests to userspace
+> >>>> daemon to confirm where to get the physical data (maybe somewhat
+> >>>> like Darrick's work but I don't have extra time to dig into that
+> >>>> either) rather than just something totally bypass iomap-L2P logic
+> >>>> as above, then I'm not sure the current `iomap_iter->private` is
+> >>>> quite seperate to `struct iomap_read_folio_ctx->private`, it seems
+> >>>
+> >>> If in the future this case arises, the L2P mapping info is accessible
+> >>> by the read callback in the current design. `.read_folio_range()`
+> >>> passes the iomap iter to the filesystem and they can access
+> >>> iter->private to get the L2P mapping data they need.
+> >>
+> >> The question is what exposes to `iter->private` then, take
+> >> an example:
+> >>
+> >> ```
+> >> struct file *file;
+> >> ```
+> >>
+> >> your .read_folio_range() needs `file->private_data` to get
+> >> `struct fuse_file` so `file` is kept into
+> >> `struct iomap_read_folio_ctx`.
+> >>
+> >> If `file->private_data` will be used for `.iomap_begin()`
+> >> as well, what's your proposal then?
+> >>
+> >> Duplicate the same `file` pointer in both
+> >> `struct iomap_read_folio_ctx` and `iter->private` context?
+> >
+> > It's just an not-so-appropriate example because
+> > `struct file *` and `struct fuse_file *` are widely used
+> > in the (buffer/direct) read/write flow but Darrick's work
+> > doesn't use `file` in .iomap_{begin/end}.
+> >
+> > But you may find out `file` pointer is already used for
+> > both FUSE buffer write and your proposal, e.g.
+> >
+> > buffer write:
+> >   /*
+> >    * Use iomap so that we can do granular uptodate reads
+> >    * and granular dirty tracking for large folios.
+> >    */
+> >   written =3D iomap_file_buffered_write(iocb, from,
+> >                                       &fuse_iomap_ops,
+> >                                       &fuse_iomap_write_ops,
+> >                                       file);
+>
+> And your buffer write per-fs context seems just use
+> `iter->private` entirely instead to keep `file`.
+>
+
+I don=E2=80=99t think the iomap buffered writes interface is good to use as=
+ a
+model. I looked a bit at some of the other iomap file operations and I
+think we should just pass operation-specific data through an
+operation-specific context for those too, eg for buffered writes and
+dio modifying the interface from
+
+ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter
+*from, const struct iomap_ops *ops, const struct iomap_write_ops
+*write_ops, void *private);
+ssize_t iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter, const
+struct iomap_ops *ops, const struct iomap_dio_ops *dops, unsigned int
+dio_flags, void *private, size_t done_before);
+
+to something like
+
+ssize_t iomap_file_buffered_write(const struct iomap_ops *ops, struct
+iomap_write_folio_ctx *ctx);
+ssize_t iomap_dio_rw(const struct iomap_ops *ops, struct iomap_dio_ctx *ctx=
+);
+
+There=E2=80=99s one filesystem besides fuse that uses =E2=80=9Citer->privat=
+e=E2=80=9D and
+that=E2=80=99s for xfs zoned inodes (xfs_zoned_buffered_write_iomap_begin()=
+),
+which passes the  struct xfs_zone_alloc_ctx*  through iter->private,
+and it's used afaict for tracking block reservations. imo that's what
+iter->private should be used for, to track the more high level
+metadata stuff and then the lower-level details that are
+operation-specific go through the ctx->data fields. That seems the
+cleanest design to me. I think we should rename the iter->private
+field to something like "iter->metadata" to make that delineation more
+clear.  I'm not sure what the iomap maintainers think, but that is my
+opinion.
+
+I think if in the future there is a case/feature which needs something
+previously in one of the operation-specific ctxes, it seems fine to me
+to have both iter->private and ctx->data point to the same thing.
+
+
+Thanks,
+Joanne
+
+> >
+> >
+> > I just try to say if there is a case/feature which needs
+> > something previously in `struct iomap_read_folio_ctx` to
+> > be available in .iomap_{begin,end} too, you have to either:
+> >   - duplicate this in `iter->private` as well;
+> >   - move this to `iter->private` entirely.
+> >
+> > The problem is that both `iter->private` and
+> > `struct iomap_read_folio_ctx` are filesystem-specific,
+> > I can only see there is no clear boundary to leave something
+> > in which one.  It seems just like an artificial choice.
+> >
+> > Thanks,
+> > Gao Xiang
+> >
+> >>
+> >>
+> >>>
+> >>>> both needs fs-specific extra contexts for the same I/O flow.
+> >>>>
+> >>>> I think the reason why `struct iomap_read_folio_ctx->private` is
+> >>>> introduced is basically previous iomap filesystems are all
+> >>>> bio-based, and they shares `bio` concept in common but
+> >>>> `iter->private` was not designed for this usage.
+> >>>>
+> >>>> But fuse `struct iomap_read_folio_ctx` and
+> >>>> `struct fuse_fill_read_data` are too FUSE-specific, I cannot
+> >>>> see it could be shared by other filesystems in the near future,
+> >>>> which is much like a single-filesystem specific concept, and
+> >>>> unlike to `bio` at all.
+> >>>
+> >>> Currently fuse is the only non-block-based filesystem using iomap but
+> >>> I don't see why there wouldn't be more in the future. For example,
+> >>> while looking at some of the netfs code, a lot of the core
+> >>> functionality looks the same between that and iomap and I think it
+> >>> might be a good idea to have netfs in the future use iomap's interfac=
 e
-> > +    synchronously or asynchronously). This must be provided by the cal=
-ler.
->
-> As far as I can tell, the interface is always based on an asynchronous
-> operation, but doesn't preclude completing it right away.  So the above
-> is a little misleading.
->
-> > +     struct iomap_read_folio_ctx ctx =3D {
-> > +             .ops =3D &iomap_read_bios_ops,
-> > +             .cur_folio =3D folio,
-> > +     };
+> >>> so that it can get the large folio dirty/uptodate tracking stuff and
+> >>> any other large folio stuff like more granular writeback stats
+> >>> accounting for free.
+> >>
+> >> I think you need to ask David on this idea, I've told him to
+> >> switch fscache to use iomap in 2022 before netfs is fully out [1],
+> >> but I don't see it will happen.
+> >>
+> >> [1] https://lore.kernel.org/linux-fsdevel/YfivxC9S52FlyKoL@B-P7TQMD6M-=
+0146/
+> >>
+> >> Thanks,
+> >> Gao Xiang
 > >
-> > +     return iomap_read_folio(&blkdev_iomap_ops, &ctx);
->
-> > +     struct iomap_read_folio_ctx ctx =3D {
-> > +             .ops =3D &iomap_read_bios_ops,
-> > +             .rac =3D rac,
-> > +     };
-> > +
-> > +     iomap_readahead(&blkdev_iomap_ops, &ctx);
->
-> Can you add iomap_bio_read_folio and iomap_bio_readahead inline helpers
-> to reduce this boilerplate code duplicated in various file systems?
->
-> > -static void iomap_submit_read_bio(struct iomap_read_folio_ctx *ctx)
-> > +static int iomap_submit_read_bio(struct iomap_read_folio_ctx *ctx)
-> >  {
-> >       struct bio *bio =3D ctx->private;
-> >
-> >       if (bio)
-> >               submit_bio(bio);
-> > +
-> > +     return 0;
->
-> Submission interfaces that can return errors both synchronously and
-> asynchronously are extremely error probe. I'd be much happier if this
-> interface could not return errors.
-
-Sounds great, I will make these changes you suggested here and in your
-comments on the other patches too.
-
-Thank you for reviewing this patchset.
-
->
-> > +const struct iomap_read_ops iomap_read_bios_ops =3D {
-> > +     .read_folio_range =3D iomap_read_folio_range_bio_async,
-> > +     .read_submit =3D iomap_submit_read_bio,
-> > +};
->
-> Please use tabs to align struct initializers before the '=3D'.
 >
