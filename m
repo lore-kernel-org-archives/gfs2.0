@@ -1,59 +1,59 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C1C30C60D
-	for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 16:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA5530E839
+	for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 16:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757692893; cv=none; b=SQH3YVi6Uy4O8A+V2xm3IngbLnBoxJGoN+YgtZUrTYzxr8EM9SrTtxwcuhkG3sB03trLGo6RzskqmM27ZNUAl9UNd2prY4cF24VqbKD7tp3ZZLtKBNW4N3rnpTEWXcpz62hd5uwcZGF1LO92yeWPKro+K+Fwh0H6b0e6CPyuiF4=
+	t=1757693448; cv=none; b=sjAjvd6QKLDH+LEvpTYDctT0Qee0oakIW0I9jDtNtyOIuFu5HF+BT43E0J1+Nzsc6ZPvGOy6G4CQmiyDvDJRO2OYGuwh09rlEO8jt8Q/mJZjGEZb/TBmhF6DVDuxOaRkVYHeX7nIVKhczggh9GHW8fUUethaO1Ml2sFBW/VbdNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757692893; c=relaxed/simple;
-	bh=MRVkhyLhBzuYU060K/KA1IS9FmS+Zv1ZvikNViDB1i8=;
+	s=arc-20240116; t=1757693448; c=relaxed/simple;
+	bh=0RHe6bpoJIZwIozT53G/9zPYXo1UJgO60j6sIrqFoa0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eEARs53PouCsW/1RbOEPO3orL94T2TNmWtzWu2XUN7xLPKDLAabIhJrNjGzCm1c3RP9lRMDUJhvqwC/aDdkUAP44fyEL7Vmslq9X6LTqC6Wp7ppkWySD+k2B2Lf+nvIjoJWp4KgH6o0Vty1rwWK3rf4eYv4N+ENC+N5ParQk1hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GquYWEEs; arc=none smtp.client-ip=209.85.160.181
+	 To:Cc:Content-Type; b=RNVUY2rA424kQsfSMkTKp/WfiYsODpdbRoplBQHXytOmeoZqjkRbcM2oMdekGKx/3wnlhDn/S0FPj5x950nnpTNKqXZJBL/E96vWgH2nA6V3b60Ckj7FP/Oqzii1DCwJJRQ+dHhubc5lSnoOhDpDg88crRhOulx5Z1r8s3fiWJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4RSzqtO; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GquYWEEs"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b60144fc74so23317451cf.2
-        for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 09:01:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4RSzqtO"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-723c971b63bso16462166d6.1
+        for <gfs2@lists.linux.dev>; Fri, 12 Sep 2025 09:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757692891; x=1758297691; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1757693446; x=1758298246; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KOTrb4IXV8TTdWYoR9Od+Zkf9J1Lc0eHO5aRXijaq2Y=;
-        b=GquYWEEsiZXecH3kporkHS2IoiVH+RlPhm2r43z+pgUjuB+bzRTf+FSEE0ALzMMmPx
-         3NTw4UtWbSjAQc8YKHXtaQVRCNXCVP7oBybWvzIrhVeYzG852vapdii/MgdSkN1AqyWL
-         zwt9CtyXp8Phksd+OomzrG+zwFfB0tlZUMLoCJPJCk6kSUdewDK31whPzQGQlWmWgQuy
-         DDnJ0oIx6zUpwyi0eTOH9l5+RRy1Kt+7sVhFrvchL2fXqZScmUr32Rdkl8Y9v1t4v2od
-         tSmM06iKYP5sgPFUgej4L+LVFRH6ofYpb6JeKYwAgRW8DTOSaA+H6IDlh4vna+8uQNBL
-         tkWA==
+        bh=Xwq/iCyIzHWorLG2Ir1bUT1FcNPCbVi//QRArwuSAcc=;
+        b=S4RSzqtONkfRUlO/hoTZv3VvxaXE6hEfDLKUuNAB/ML8J8xvt/+cbw+oNjtktKJ8SO
+         LrW6ldnwPiihi3/b896KrtHXy2xLL6+iWOK9JrulTYJ/hAyPgnfJE9ooKNOvNxpJlbT7
+         s79Wk6PiaSEMgbJcjQ4XwUPA64wTqvYNySI1tDMR6g2Gr+Tj25pFR4CNfLIuMRJJN7Uo
+         XTt4Af8KGeqg/VRtUTcLZbu1VGiTxIswYfdlq71qt+LYKppmXe6ZwYYei1CEu+tBCvPT
+         G6WjoM5N6ow9N04DJXEqdFgahj3QXtqabatlmcqIOcU4D9AgrKQkh1eEcIoUKVeRSepp
+         YBHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757692891; x=1758297691;
+        d=1e100.net; s=20230601; t=1757693446; x=1758298246;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KOTrb4IXV8TTdWYoR9Od+Zkf9J1Lc0eHO5aRXijaq2Y=;
-        b=bJ8Lw1ICewHGClGwpv0AZOBhvY6B/KDZ1Y6286hEiqHfZDGmNj6zqRd8zCMF6PwXt6
-         3R0alcYg1kKEYzAlWpdllwyhM10et1r1HKt7gMpLKC9jDBZE90NNU525RRz3npCVH0dG
-         DYKq0TcL+pL72Y1kVOg4c58WFWYl+tYNIaJzJlh9Ah5BBrVDXexpSmTotn7NKJFUawDJ
-         zj0iQPkE0XQkRCTL0IPJydOrxtoLZ4GhnV6NkrJXQD7vcTTmGtIiYWGTIiCplxAX/Snx
-         w7bgE/o3fUEmVFmqNo/jHLp1JGNpHtK5gSJAj1kMVJFClnmKKFyqWp4E4enn9MOSGDRe
-         V3JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpKJqfuBampwyUp/zuHYCB4WDImlr+30Uh+uAWKWCZlH5Uafgkcj9oVIDG/7bNHcof5WL1@lists.linux.dev
-X-Gm-Message-State: AOJu0YwDxLvDbm3Agwf4ISm2F6aKvpVw8ryTIcl0eMsU17QVqQE6qN8y
-	Gv8i4fIN39zAVmZEORiRkGkue+DxiEic/aKvXUwtg0RrL/mhax0r/rvgXybzuCoIy8yjShTADae
-	RsTVRKnEW+3sYMqL2f2YpYYFN6gYmQJ8=
-X-Gm-Gg: ASbGnctfA2AJY5vum1H0Ij2UDUv3ClWMF6i2erAgD4gilCYvPOWyWGbxJorMhg/EWsP
-	0GNp4fwfOaprD/pZG0NB4faowoNCwrJgC2c9Z4EqAzfmA10LDSSl9H30ivUdjlNrvLIayhNR84A
-	Ejw00RQqN9TamaIh+IZGZoZqaycD4uF4T94Zl3fIflaR3IMfRE8LC4+s7euWYvDJ3X9KOgUZxL3
-	wfbBl5zg9ALRiNiqxxHl8sN7VVr3xa9dfe3e+Gk/wTO4YL3ZOrr
-X-Google-Smtp-Source: AGHT+IFpEJeHHGMR/+rANXvYCLHGXODc/LHx0ut1LxSgKOWEZt2yvx1hw4BgafRJMV62S+17la7+3LzfUFy0mc1meoE=
-X-Received: by 2002:a05:622a:4244:b0:4b5:da13:3b70 with SMTP id
- d75a77b69052e-4b77cfab1a5mr44965001cf.10.1757692890378; Fri, 12 Sep 2025
- 09:01:30 -0700 (PDT)
+        bh=Xwq/iCyIzHWorLG2Ir1bUT1FcNPCbVi//QRArwuSAcc=;
+        b=uaanAY9jg692D9VOEJtVyj7KV+GLYClYDTHNafJcUKDF2/Q9RA9H6h8nHCE6p5HOea
+         L9NzNGXUPCgZ9Ec0TWvicz0O0BGNGOrxm26EjxkXEFJyop2NKh/Eo2qEBStTjLDX3D4d
+         hOm5Lg+UuToYwVl7l3cN+3jLnmHXzzGbaLt0yqqPLACgTiM2ZjAQyZzO7ALo0bu2PoUz
+         rvpCza7TPLTp97ydOrPHu7lJQVTQJ/fIrvyCz5ZcHL1GrufgXk57NvzXiuawnLKNFcXq
+         re6NkKLSztQ15Tkphp9iWGAArJy5JsiWkODA+eskMKIInxKIfHpRVUkFAqk8bmi1CbWN
+         Qxyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBCsPRflzFdDy2dyvU+nSmzgOPFwIYWgycoyEAFF/lAs407VBqgwGQeM4+8mxv+qJWDTp+@lists.linux.dev
+X-Gm-Message-State: AOJu0YyzQrfhNweXwrkmuAdCy46BNDzpBLgAxZUbprXmHZ+xtoF8PhtW
+	ED1m+WZcIUIIUC3RXaenzvJ0fJhuPqAFY/Wz7lEEZwkL40aMyl0wYA6poe4leGGSeMzXsbFxPC+
+	NbGTDQl3b0VqCWPHn/M7UTiHknCG1e/M=
+X-Gm-Gg: ASbGncs/O36rBOppwJeJFxYgVpM86lDn1asxFOLN3S0Ax+FU1Kkk9OxucFm6kH+7Oko
+	/cz0PafFe+idAg8wy4FxyUTeC0+mJlST8vHZ2BQRBBhKlys2hpcopChJMtSfRen47Lr/K/kweDO
+	l82/2PFPTRE8iFZSNldDivPCTbWdohFpz/ja2LAH99SaGeOeeIBwQ+PodBp5UBnKNmrT7GpIFgq
+	PL/u4Qgotd3zatEfOGZqWescONLhYKUN+ecGTbADmUrNysMIW8u
+X-Google-Smtp-Source: AGHT+IEW7Q+2d2hor5P3hr9ksasgPpy8ttcb/zSz69+p8aktjcDEYkFuq3rxTSdGTnR+6WW44n0sCoS+JUh7Itaiy9s=
+X-Received: by 2002:a05:622a:4cb:b0:4b2:eeed:6a17 with SMTP id
+ d75a77b69052e-4b77d12a30bmr47218771cf.46.1757693446130; Fri, 12 Sep 2025
+ 09:10:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -61,13 +61,13 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250908185122.3199171-1-joannelkoong@gmail.com>
- <20250908185122.3199171-2-joannelkoong@gmail.com> <aMKt52YxKi1Wrw4y@infradead.org>
-In-Reply-To: <aMKt52YxKi1Wrw4y@infradead.org>
+ <20250908185122.3199171-5-joannelkoong@gmail.com> <aMKudxVnwafaoqmm@infradead.org>
+In-Reply-To: <aMKudxVnwafaoqmm@infradead.org>
 From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 12 Sep 2025 12:01:19 -0400
-X-Gm-Features: Ac12FXyzQBWaHPsdA5p-aXewM42KENc2X1_esV-qMD6PmHLNB3vND9MBVb-40GM
-Message-ID: <CAJnrk1bFQTKKBzU=2=nUFZ=-CH_Pc5VAj8JCJoG0hgNszMp2ag@mail.gmail.com>
-Subject: Re: [PATCH v2 01/16] iomap: move async bio read logic into helper function
+Date: Fri, 12 Sep 2025 12:10:34 -0400
+X-Gm-Features: Ac12FXytydEpN3AbZfB7NDTCU5MSfYzu7GMuXUcwO8TmZQQa1qHB0P4yWy0TUqQ
+Message-ID: <CAJnrk1Y6VZUA0g8223cPvmO_FjnKmemVGQck0_9DVcZkw-yGxg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/16] iomap: store read/readahead bio generically
 To: Christoph Hellwig <hch@infradead.org>
 Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org, 
 	hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org, 
@@ -76,39 +76,17 @@ Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 11, 2025 at 7:13=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+On Thu, Sep 11, 2025 at 7:11=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
 g> wrote:
 >
-> > +static void iomap_read_folio_range_bio_async(const struct iomap_iter *=
-iter,
-> > +             struct iomap_readpage_ctx *ctx, loff_t pos, size_t plen)
+> > +     void                    *private;
 >
-> The _async here feels very misplaced, because pretty much everyting in
-> the area except for the odd write_begin helper is async, and the postfix
-> does not match the method name.
->
-> Also as a general discussion for naming, having common prefixed for sets
-> of related helpers is nice.  Maybe use iomap_bio_* for all the bio
-> helpers were're adding here?  We can then fix the direct I/O code to
-> match that later.
-
-Great point, I'll change this to "iomap_bio_read_folio_range()" for
-the async version and then "iomap_bio_read_folio_range_sync()" for the
-synchronous version.
->
-> >  {
-> > +     struct folio *folio =3D ctx->cur_folio;
-> >       const struct iomap *iomap =3D &iter->iomap;
-> > -     loff_t pos =3D iter->pos;
->
-> Looking at the caller, it seems we should not need the pos argument if
-> we adjust pos just after calculating count at the beginning of the loop.
-> I think that would be a much better interface.
+> private is always a bit annoying to grep for.  Maybe fsprivate or
+> read_ctx instead?
 >
 
-Sounds good, in that case I think we should do the same for the the
-buffered writes ->read_folio_range() api later too then to have it
-match
+I'll change this to read_ctx. It'll match the "wb_ctx" in struct
+iomap_writepage_ctx.
 
 Thanks,
 Joanne
