@@ -1,95 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DD1246BAA
-	for <gfs2@lists.linux.dev>; Wed, 17 Sep 2025 10:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F5A2797A5
+	for <gfs2@lists.linux.dev>; Wed, 17 Sep 2025 19:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758105253; cv=none; b=T2nOtczyyxvnQASJd2Cj6xoPSKOtXo9SdeQL1WWLrl6Mo1b2agtc3oGcfr0u6esAl79KdbfE0IvJEkVz2+yx9k8HMtLcC92ScLuriLE3wORmfmYsGKFSBFSTTdCxAywhcqeOxyHWphz6nvbw6qnf/752qi+lBwSMcjJYKxjZ4rY=
+	t=1758139179; cv=none; b=P+1eq43+pZmR0rV8E8vg5L1LmU0u00lAqz52n5uGC0+Ry160f9mUbQah2vk/8UqjR5Ck7ShKv1bj949hsmSKUrBEeQY1LXisdKRWxd+PU//dyMZAKTlpZniocSEZ4zdSLYAbxrbqLoHGnPXDyNNwCAoUf9i+GjWq8LqSOGklZT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758105253; c=relaxed/simple;
-	bh=1cBxv1xbY8Fpy8oQcvISFXu2Gvy5Sux1+zhD/ZCpP5Q=;
+	s=arc-20240116; t=1758139179; c=relaxed/simple;
+	bh=lT+6fz4hGzB3x5TxZKL3rSaWn/F8+CECdWOTuWodsnQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LIwh8Ug+qsNFLgkaPAy1V2iqW1wsoWV80/oj+skgG9WasUIIUGeV4IxGKTmGI5+skM/EqqfbhRtTz/GefNE9byn8jlCkiDCNhHw0N4qRrY8+wH3DG/ufbbKf/PLz9t7XFnfjkw+8mY+KqiuWQfOcQItKt+dOm35CRikvE80L5Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=diiuz67A; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=fcGF3ef2ddDC0JCZZ7q4+1Cqwx4ijkvD2RVHADlyNwXr7oe0NsBsIW/81Brr15Swmei9tvQtrXZBarVVcr8Fd8kdm0i0ifjCtmFeJqEqY21YOWuh9ItsIvHLxD/JT33ZpXS6IQtUM+dCA0qgDURtS08YugM30aEmOIthfWjdf20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2K9klTt; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="diiuz67A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758105250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1cBxv1xbY8Fpy8oQcvISFXu2Gvy5Sux1+zhD/ZCpP5Q=;
-	b=diiuz67A3GAhUt1E2g79iZE8lvTIdYx7A1I6OA4JVsiobHXvIsxzu/YLDK3niOc0YfBOtR
-	FfuU7wb1L18YEDVerkoeCMhz5es6hwbp5ahq1nwQyA4z5l1iSnGeiz8T7gxJV/vtkhQaGj
-	6iS0E7dpB8a9YqhPdbZqu4+/nPwgtGc=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-M0VHAbazN0eiM95xLxIM2g-1; Wed, 17 Sep 2025 06:34:09 -0400
-X-MC-Unique: M0VHAbazN0eiM95xLxIM2g-1
-X-Mimecast-MFC-AGG-ID: M0VHAbazN0eiM95xLxIM2g_1758105248
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2681642efd9so4436975ad.2
-        for <gfs2@lists.linux.dev>; Wed, 17 Sep 2025 03:34:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2K9klTt"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b79773a389so2212801cf.1
+        for <gfs2@lists.linux.dev>; Wed, 17 Sep 2025 12:59:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758139176; x=1758743976; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lT+6fz4hGzB3x5TxZKL3rSaWn/F8+CECdWOTuWodsnQ=;
+        b=L2K9klTtaYyanFHDUOlG/auzSjIFdgfzi/ehGV97EpqZTh4+9gSzewjzjvz4XfEWfd
+         FQ2CcTRFKgO4Kwsm/33dcFv8sSuqnPRbubznRyFUVosR7m7BCqhnRSNFvHuyF4DkCd4n
+         FIhFcNIWWuQqWP6UsTq/A5X98OqOufJJtqiVntJQ0AF37k9yHYUZDzgDqMLRXasikk0Y
+         8BALo8raw650GAZUheO+blopeCA2yvDzwVlT8GVrlpwznn81u6W5FXpbAB+5U8vZfuzt
+         PBbw+kB4hgoG+Yng+u1Y3HtslWGFjAAkenNtLrZJmNwzbr9vOu2tNDpgZanO94agE0/B
+         nogA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758105248; x=1758710048;
+        d=1e100.net; s=20230601; t=1758139176; x=1758743976;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1cBxv1xbY8Fpy8oQcvISFXu2Gvy5Sux1+zhD/ZCpP5Q=;
-        b=fx0scnpilI0B1Y1n9o0RSt8ubhxrzxQC5UhzXBtlcUg6r7uv59He+mucJ+69ZbfViZ
-         YMxOaLgvIzJfjjb8GtOZyl2oqJM0YvAJBOuZjyE9cbzuvqb08kDB3P5VypTri4/yc1xk
-         qxUoe+lpzevNLRAFgZnsgG7aHQ5u77SGI5s+1blfka7a7t5GDOKUqjhRVJhyQ8ErQXQ9
-         ScR8OlLHGyZiVISVNPr/8zaU2QNznJNzRKoDyqYhR7mmyZILGU4ZaCNZ32wFr1KMF9ZJ
-         GROyqvAZGk9pLFwCjt7x7/su1FNCp+hLEe/K+OxaQpigQZWNHNBc/tTwcpVxm1t0V7j8
-         sCIw==
-X-Gm-Message-State: AOJu0YxuWwfq1FeNYoSzMVEXJdCJhY1vFLipNyQmNRMqZ3nTmOHTe2w7
-	h9iffsc5y2i5tc/1K2rgGHGzDwnf3n4wiAO3o31gKe3STqLFWDUV2VyvR4eJeId3jnRZYvkwcSm
-	6PdBbMX28EdGx2/S9FFVDNdLVLLuLavJmeQ8X+xqtBzlEPj8Zrw3EBVqCo98TnRv8KxnG6hqKon
-	pwU4NaNX/Qs7JiKObeCECxYSaZWG1HPQ==
-X-Gm-Gg: ASbGnctV1Ou0MNgvNvhDv+iryIJH4DylLiWqBYs0yevEX/1BFuczRZYmaUfOS0eWihV
-	xtc123bxPkS6k1LuKBZM/Y5Ch5mgPzYjAu9ojUzLMQfkjwSnRxuPPFDHsBPCd0lmEe0po3RUiYz
-	K2vhji26xCJAlg49RyzPk=
-X-Received: by 2002:a17:902:c408:b0:246:76ed:e25d with SMTP id d9443c01a7336-26813bf0c6bmr21731705ad.50.1758105248318;
-        Wed, 17 Sep 2025 03:34:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2YzbN/E+UopYldHCixM+VVbcJJcmpQWL8AhaVK43uVZhoyGaM4rEdKN7JZb5lpF619POQOSbhM/3uAXXs2eU=
-X-Received: by 2002:a17:902:c408:b0:246:76ed:e25d with SMTP id
- d9443c01a7336-26813bf0c6bmr21731485ad.50.1758105247999; Wed, 17 Sep 2025
- 03:34:07 -0700 (PDT)
+        bh=lT+6fz4hGzB3x5TxZKL3rSaWn/F8+CECdWOTuWodsnQ=;
+        b=Ftedz18dFweHO7locZVJPhj40MSfZkOQm/hfjC56WfQhXNTxK/jZqqQkj2maCwZyLI
+         xP5uf4eXCqiLd7wdXlQWOqpbGUiwnS8s5s7datFi8g0SC9zWrp602MqjHJKAJz2rtSvR
+         jlaNdCrniEt0h+Xd8KtFQqWJwrqRahys4FnjjFAETOa4rsurAFx9yhLhvU+PyxOrUhm+
+         gcxxLosJOWg/zPcx/RKO+pjyKr9gVRYypU4e7dAF3eEK8a1Tbyx+2CgScpAB6CWumOtC
+         Itn0Rln4rutg8cwtuGk6ziZB5IWU5HQ1qZA4M5Fma2XrEKsdsgY4o2652T33eLQQZ55n
+         5HeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUw3K9Kr3ne0PmDXfFql5lFXO3dSHMskB4oVZkjXhgooJfAgqYoSloNVVf9Q3hGBGOFni1B@lists.linux.dev
+X-Gm-Message-State: AOJu0YyxReNRxJEDX6wUoWTPowIpJPAoQ1AmPjzBnkEKNGsAPjAC8auR
+	iEnpzmXeSg+pk89JZyJA+qIzvYZThhNPH8+ptmbLEuGyT7vO9c+3ZDPPYlgzCvM7yvLRESPvfFD
+	+RIB/bDg/k3qpqqaq2ZlKfsLDK+vIwdg=
+X-Gm-Gg: ASbGncsT9tXFR3JXy5ilk2+avCYcinS/9FGZ6fARS/APYWHHcLcvDj4+aynxK8GElRZ
+	ud+j0nt61R6Yv1e2wv5eSgBDvLSWST4UWuca2NoagZIKc/+9bNFqoeyPgvpsOXhHWX7JFEHjLnt
+	l4CtyDkhzWDDWv5OVtD96fun5LOOmMMYfe3ILgSA7IeP+jZ5N7D4whFwnWWCkS/fyf4JM4lvFaE
+	aowyxZgLy7BV8gtn1lX8Q7Y6k9rD1pwTHwSPjxk97GIemAyiDIhkiwAu04=
+X-Google-Smtp-Source: AGHT+IGMvsb9hFrlxwdIt/gNCY+ZXtdov7G+eqQ0YehxgnuYGPrrjhUsF8j6K/mIV15UQttqUMf4NVIbg9l0zFWT/EU=
+X-Received: by 2002:ac8:5a03:0:b0:4b3:10f0:15ba with SMTP id
+ d75a77b69052e-4ba6a20181amr52761081cf.39.1758139176357; Wed, 17 Sep 2025
+ 12:59:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250916211108.1243390-1-kriish.sharma2006@gmail.com>
-In-Reply-To: <20250916211108.1243390-1-kriish.sharma2006@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 17 Sep 2025 12:33:56 +0200
-X-Gm-Features: AS18NWD1T2FGHwQjVZMQL6NQNbpFLaeIpEjOA39LSJoQzn1UTtglxZVkhl6gbdQ
-Message-ID: <CAHc6FU5qWAY=aUjZ+YwwjteWCanNYFZW_xpDbWHkJV99qo=W=g@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: avoid %pS in pr_err() fallback to prevent vsnprintf crash
-To: Kriish Sharma <kriish.sharma2006@gmail.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+fa7122891ab9e0bbc6a7@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DZNVLVcb14Ge7Fi9h2V4ZFEa63VxusaWKI2OQ041e8k_1758105248
-X-Mimecast-Originator: redhat.com
+References: <20250916234425.1274735-1-joannelkoong@gmail.com> <68ca71bd.050a0220.2ff435.04fc.GAE@google.com>
+In-Reply-To: <68ca71bd.050a0220.2ff435.04fc.GAE@google.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 17 Sep 2025 12:59:25 -0700
+X-Gm-Features: AS18NWC14gUDKzQcBj3qPbZdYHs2cE9cQhtC5cBOuvB6NHeNGl3mJTY7LRXGD5w
+Message-ID: <CAJnrk1YKPWkaBXe7D2mftN2DMEBqFow80reUGE=2_U8oVFc1tQ@mail.gmail.com>
+Subject: Re: [syzbot ci] Re: fuse: use iomap for buffered reads + readahead
+To: syzbot ci <syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com>, 
+	syzbot <syzkaller@googlegroups.com>
+Cc: brauner@kernel.org, djwong@kernel.org, gfs2@lists.linux.dev, 
+	hch@infradead.org, hch@lst.de, hsiangkao@linux.alibaba.com, 
+	kernel-team@meta.com, linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, miklos@szeredi.hu, 
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 16, 2025 at 11:12=E2=80=AFPM Kriish Sharma
-<kriish.sharma2006@gmail.com> wrote:
-> While debugging a syzbot report, I found that the %pS format in
-> dump_holder() can trigger a crash when we end up in the pr_err()
-> fallback path. This happens because %pS goes through symbol resolution
-> inside vsnprintf, and in this case that isn=E2=80=99t always safe.
-
-I'm unconvinced -- when and why is %pS not safe to use?
+On Wed, Sep 17, 2025 at 1:37=E2=80=AFAM syzbot ci
+<syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com> wrote:
+>
+> syzbot ci has tested the following series
+>
+> [v3] fuse: use iomap for buffered reads + readahead
+> https://lore.kernel.org/all/20250916234425.1274735-1-joannelkoong@gmail.c=
+om
+> * [PATCH v3 01/15] iomap: move bio read logic into helper function
+> * [PATCH v3 02/15] iomap: move read/readahead bio submission logic into h=
+elper function
+> * [PATCH v3 03/15] iomap: store read/readahead bio generically
+> * [PATCH v3 04/15] iomap: iterate over entire folio in iomap_readpage_ite=
+r()
+> * [PATCH v3 05/15] iomap: rename iomap_readpage_iter() to iomap_read_foli=
+o_iter()
+> * [PATCH v3 06/15] iomap: rename iomap_readpage_ctx struct to iomap_read_=
+folio_ctx
+> * [PATCH v3 07/15] iomap: track read/readahead folio ownership internally
+> * [PATCH v3 08/15] iomap: add public start/finish folio read helpers
+> * [PATCH v3 09/15] iomap: add caller-provided callbacks for read and read=
+ahead
+> * [PATCH v3 10/15] iomap: add bias for async read requests
+> * [PATCH v3 11/15] iomap: move buffered io bio logic into new file
+> * [PATCH v3 12/15] iomap: make iomap_read_folio() a void return
+> * [PATCH v3 13/15] fuse: use iomap for read_folio
+> * [PATCH v3 14/15] fuse: use iomap for readahead
+> * [PATCH v3 15/15] fuse: remove fc->blkbits workaround for partial writes
+>
+> and found the following issues:
+> * WARNING in iomap_iter_advance
+> * WARNING in iomap_readahead
+> * kernel BUG in folio_end_read
+>
+> Full report is available here:
+> https://ci.syzbot.org/series/6845596a-1ec9-4396-b9c4-48bddc606bef
+>
+> ***
+>
+Thanks. Do you get run on every patchset that is sent upstream or is
+it random? Trying to figure out if this means v2 is right and i just
+messed up v3 or if you just didn't run on v2.
 
 Thanks,
-Andreas
-
+Joanne
