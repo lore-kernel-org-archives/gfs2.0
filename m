@@ -1,147 +1,121 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7CA30DECA
-	for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 15:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E836D528
+	for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 20:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758210522; cv=none; b=A61Nw93Cf/CZiQ4rTLtzqX2QCPzryGXgb5mUZJ/3DGRqEkZpQpHh14aY2ba9iZYaETlvGF0Iq08C/T3YqhL1/5/ymTA126H7Ja1qOPspzRteQC0roPbipjr4573NthTCOJ51PI7PhnRLGfG69SFCE6tTISNPddiRVn6NKOLVdrk=
+	t=1758228536; cv=none; b=l1yP1yTdbjCajc6oB5tvlBBhllTd1S0lpWobu/Jq8kLAOaI65FXgvkMfcHtCPRo96OS9W4pT4a4+bNa4QVIUclDTI2MQXPFVNz+W2n43M8of0zmb3foG0NIrnfHJkwZKZaAvnDj4vsXCRCLy3XcSMmy78L7q7o2BSE3m1tctN5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758210522; c=relaxed/simple;
-	bh=3fuPAHF2wqUzCF+Ih+V96s2Pa8BfHBVrf909ozzJYxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iXe0IaSVURIvi4B17lGVddLRKKebGqp5YdfZblnJTdoTn1Chh5PxiKs7hG/9iBXWsu5FgltetAAuPd8kgN9gwx5ua3kFz77d4xSxBAiZYjqtOZs9Uhe0HNP1gTtjOdHKg/M67Zb4DehyDgsQTIVD2CJABQkslyiJt9Rt/c0zwKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xYIKjKnf; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1758228536; c=relaxed/simple;
+	bh=R8VdHAizxiIZiX4FLFq7J/L0lVxWiWwNMZ7Ks/nE3G0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uXu44zoiZAgsjQOKL6s5e5Ipa7q4uERliHnyC98/0G5pl4pTRq6x4Lhia4vRjZTJXzumSRzdCiNUuhjNmaC7HOmKk2vjuDDW5XsLVHsTHdL6zj/510qtI/o9f1sf+mYRdnJzYJeH4tptPCC0HEaexamt9MQY46KTji7GLbrjTn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJECGoDS; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xYIKjKnf"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-621b965a114so598589eaf.1
-        for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 08:48:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJECGoDS"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-268107d8662so13328755ad.2
+        for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 13:48:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210520; x=1758815320; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3fuPAHF2wqUzCF+Ih+V96s2Pa8BfHBVrf909ozzJYxs=;
-        b=xYIKjKnflkMRbR+wm+14XTYMyNRdTwmhhCZtHjlYrw44gIoY9fWL1bnfOwkEaF3wu4
-         TWt1X0WjkEo+fxFGNo3XZ6Qq1fwT2mQYyIgychrSvjsqSBqHJzJx2+jx9+vDnI3OwzQC
-         FLS1eriMgUxshm8+lM/vItu/VT7XjbQI7UOsS0gbftJVScrk9b6qXnyVpjVwayD1HjfH
-         34FYTRJPPSilCQ0vmr3ccivSvgLKuBgHsDJUadEOvCvS8cwhjXNlVSEsbBD/4lTc+kdg
-         5TJcZEJa9FJ8jJFf3jVc472s247Jbr5RJTvLau7d2rQbgYMs5fYO3L8cKcvp1oE7mLJ+
-         wYaw==
+        d=gmail.com; s=20230601; t=1758228534; x=1758833334; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RWvpfkXVsTXpCF10bCqC7yVTYFDAtVdXNdJBDL/F03g=;
+        b=FJECGoDS93XwSdfOfm4SFSBKcvXUP98mDyqfE+TbnfBtuF1BhvVLyPlej6JfavFFLK
+         cP8V0Rkl/QS2aGZ9rqWZ4wHSQv8sDVb5w/iqTR5iyIFtFm28sZThPYryaWTwK2cU6d55
+         NVJx/K8mKrkpM+mcUq/N6+fQ6G66fgAu3+sPia4jFPgCxXiE7DtNDf9y9hcL3q2sSg2K
+         7apfc1coA0OXE7mA+Y+rk+lN1RqT0IgS+dOAhqQIyGTVFbCkvbNN4SeOknl0ZFxh9KtO
+         ZwFVbTzwBeJJ0AWoVpeguytJYKRVavvwzZnPEPeR2BE7CPK6ix0dldvWwyq56FxJcDk0
+         4lYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210520; x=1758815320;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3fuPAHF2wqUzCF+Ih+V96s2Pa8BfHBVrf909ozzJYxs=;
-        b=jWcPF0dagqf6dB52JqYOz7dBbXjJfAFqNHOfmi0XnAn0mmHba2Njbdk+4SxtH7H5g5
-         1I0jr6w10Pu3VsKeSVe+BHQU+Wo4s8754q3A6nXfZLB9fwOYA0yPADbjW2TRP1B+zJZ8
-         JPvqGvOh+TDhyn8S06q1eJ9mujNYayCc3ciDiUNady3e7uAjZ5yBhb6/gPcDzML2D1Rp
-         ttRoMkdjRhzT6u5KQecPn0PJzWxRqzWSozWHmYmXmXRT6elnUXSWKqNYptzxI1dcwD36
-         3eR+J/CXv91wkhXcoTeT4aIhJjKikTgmOs5KmmSSZVcY1FdHeG2KQSrC6TmHkttxVRnK
-         wT3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVvvzoguORTZiJO0SLS6TYeT2QrZgkk7qlTvcUFuysJqWhrR7lT0sTVD+AjhpuHITCq3pG1@lists.linux.dev
-X-Gm-Message-State: AOJu0YyYOVNd+1dNp/BkZHp3GdVEpHZPlXa9l9bRSsQejAY24sXrqFRX
-	zFTkAhXiEdUsEV4ZaF5xxY61oY2omYFcaKN/7DN9hgc4JN5LqTK79DKSW8mxITnh7m17teTThxO
-	AYXIBwuaw3LyPHuXVzD4XOxAwqUVkNPism4rjcpV6
-X-Gm-Gg: ASbGncv+V6fueRTgLznaM8iVvIArNggdN5LuYGaecbuWjual8FTL5kefIIVsiQ90GMV
-	ZNDCuQ6DWVP0AZZ3nHTs/BIxcuG3n8pK1ZSCyxxL//t/DxHBy4btQS65y5neCS4sQwuuYHojfYW
-	83V9dRFW7aQoi/i6yl3mFTujkOrBTTgeG2eHghHx22nI8rykv3HyJiR1ev1ILGmwGr5h0uy5wak
-	9CT4MpdrpbSMtGFvtViipqzYp7PwCpNuyO1uyXfnk4lVSsVr/reQA21As/h/G8=
-X-Google-Smtp-Source: AGHT+IGZQIGtkvyQ7wUbXbPktQnaEGHmteV66ZUVON5NljKX83ZF9JtYWo+pN7TerpN49zbUut8goBymhFyWExBBTaQ=
-X-Received: by 2002:a05:6820:c006:b0:624:abae:b650 with SMTP id
- 006d021491bc7-624abaeb894mr2040726eaf.0.1758210519920; Thu, 18 Sep 2025
- 08:48:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758228534; x=1758833334;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RWvpfkXVsTXpCF10bCqC7yVTYFDAtVdXNdJBDL/F03g=;
+        b=O78steFRctnrJZ+qKj8I9p3FD0M2cRDWU80anEzZ4maYiECtYTcmYAiyVXl9Nk5k+g
+         AIbLxnwsWcTbVuPpCxDNhp/HSSUDPlTl3IB/DK4z3WoMtef3PmqfSV2tvjCZ+oXWsKTF
+         +N2ygiOSWt1G5vd1SMHAklj784xZkcd9Mgsv2C0XTqEbS06/XJwIBfbRO3E8/jXwjoN5
+         6194xBPOPW/PoPX/ULy69k9LWPesT8AzAFrv9ZhyB+8OrrRYVyKr6e6eLx0xgqz9USbW
+         M40Hpr4pE3t2uq2KoEv1NdgYHVrXrO1dXQOaAX1KDrbfDF8IhXWRM/99Oj7tICfcg07I
+         klQQ==
+X-Gm-Message-State: AOJu0YwtJxMxH18zXTadLko7dBl6QRSTKOoF+YG9r4BNWb5oWNFAU+ua
+	fsgBgm2Jichv+rIl/6+Y6cjC0l68yA/uvS1kARFumwIqqX5RaDVAwIhH
+X-Gm-Gg: ASbGnctoMUyQLYrhDfCWIakGvr4Xibn1YllRbNpqhkWyQUVDVHzv9dyX4lwHgJryQwN
+	dX2DOTqDUvkCv6l9eOaYCZ6ohx9QM+q5sdjI9GMjtQGXXghqRtnwwoilkt5M4P+9ENHUPb4UgMe
+	nfO2yMrMVMBBQWdIBf1yIdzFUOIdywf4bJeaw86c8+cshqXqc04QTLKzBReA/V6oQPwazUzWsev
+	1+wbmsgkFE1WP9P3s2mXoxNo6pZWptoCtZtmWSeofmj6tggwVmvkInhnfg8+5sTIFWa7TpggyUl
+	mvlEMHBzcxihXxmmEqSVCaMVD0UM5MDj4tgHaKUVL2UlO/OCErHLyiY4FCygqYlC8eq7qmDYnjR
+	KUWjgkJFTtWNT4ETJUpWV5yB6s8HHgBaopktmEmSr6rvqyGUqGZgU62NK1HUZZUk0Wv8v45mL4r
+	MZ8dbvUJjYlUeOa2hujmfpmQ/Ff2z4OaCIGmv9/4Cw4DtW
+X-Google-Smtp-Source: AGHT+IGvApn9NcuvVzGprdBHvz9fgjbBfoh2S7GiEqj/2hx5hOyGCmpC/rOdk8KdIWmY96AzPPcNKQ==
+X-Received: by 2002:a17:903:2ecf:b0:267:776b:a31a with SMTP id d9443c01a7336-269ba517048mr11002435ad.29.1758228534309;
+        Thu, 18 Sep 2025 13:48:54 -0700 (PDT)
+Received: from crl-3.node2.local ([125.63.65.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26980368ef4sm34486625ad.149.2025.09.18.13.48.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 13:48:53 -0700 (PDT)
+From: Kriish Sharma <kriish.sharma2006@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	linux-kernel-mentees@lists.linux.dev,
+	Kriish Sharma <kriish.sharma2006@gmail.com>,
+	syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: add bounds check for rd_length in compute_bitstructs()
+Date: Thu, 18 Sep 2025 20:48:30 +0000
+Message-Id: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250916234425.1274735-1-joannelkoong@gmail.com>
- <68ca71bd.050a0220.2ff435.04fc.GAE@google.com> <CAJnrk1YKPWkaBXe7D2mftN2DMEBqFow80reUGE=2_U8oVFc1tQ@mail.gmail.com>
-In-Reply-To: <CAJnrk1YKPWkaBXe7D2mftN2DMEBqFow80reUGE=2_U8oVFc1tQ@mail.gmail.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Thu, 18 Sep 2025 17:48:28 +0200
-X-Gm-Features: AS18NWAU9uKKLdv_CQUnITI5tezk67S_wzRhWyVluYMjy37dGuE_05c1-3Y9NYc
-Message-ID: <CANp29Y5Y8iO+UbKHtDEc=0d+76WxbWJK1asLaux++_n+Pr+d5g@mail.gmail.com>
-Subject: Re: [syzbot ci] Re: fuse: use iomap for buffered reads + readahead
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: syzbot ci <syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com>, 
-	syzbot <syzkaller@googlegroups.com>, brauner@kernel.org, djwong@kernel.org, 
-	gfs2@lists.linux.dev, hch@infradead.org, hch@lst.de, 
-	hsiangkao@linux.alibaba.com, kernel-team@meta.com, 
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, miklos@szeredi.hu, 
-	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Joanne,
+compute_bitstructs() allocates an array of gfs2_bitmap structures
+using kcalloc(). The function only checked for length == 0 but did not
+guard against excessively large length values.
 
-On Wed, Sep 17, 2025 at 9:59=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
->
-> On Wed, Sep 17, 2025 at 1:37=E2=80=AFAM syzbot ci
-> <syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com> wrote:
-> >
-> > syzbot ci has tested the following series
-> >
-> > [v3] fuse: use iomap for buffered reads + readahead
-> > https://lore.kernel.org/all/20250916234425.1274735-1-joannelkoong@gmail=
-.com
-> > * [PATCH v3 01/15] iomap: move bio read logic into helper function
-> > * [PATCH v3 02/15] iomap: move read/readahead bio submission logic into=
- helper function
-> > * [PATCH v3 03/15] iomap: store read/readahead bio generically
-> > * [PATCH v3 04/15] iomap: iterate over entire folio in iomap_readpage_i=
-ter()
-> > * [PATCH v3 05/15] iomap: rename iomap_readpage_iter() to iomap_read_fo=
-lio_iter()
-> > * [PATCH v3 06/15] iomap: rename iomap_readpage_ctx struct to iomap_rea=
-d_folio_ctx
-> > * [PATCH v3 07/15] iomap: track read/readahead folio ownership internal=
-ly
-> > * [PATCH v3 08/15] iomap: add public start/finish folio read helpers
-> > * [PATCH v3 09/15] iomap: add caller-provided callbacks for read and re=
-adahead
-> > * [PATCH v3 10/15] iomap: add bias for async read requests
-> > * [PATCH v3 11/15] iomap: move buffered io bio logic into new file
-> > * [PATCH v3 12/15] iomap: make iomap_read_folio() a void return
-> > * [PATCH v3 13/15] fuse: use iomap for read_folio
-> > * [PATCH v3 14/15] fuse: use iomap for readahead
-> > * [PATCH v3 15/15] fuse: remove fc->blkbits workaround for partial writ=
-es
-> >
-> > and found the following issues:
-> > * WARNING in iomap_iter_advance
-> > * WARNING in iomap_readahead
-> > * kernel BUG in folio_end_read
-> >
-> > Full report is available here:
-> > https://ci.syzbot.org/series/6845596a-1ec9-4396-b9c4-48bddc606bef
-> >
-> > ***
-> >
-> Thanks. Do you get run on every patchset that is sent upstream or is
-> it random? Trying to figure out if this means v2 is right and i just
-> messed up v3 or if you just didn't run on v2.
+If rd_length is too large, the multiplication inside
+kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS) can exceed
+KMALLOC_MAX_SIZE. This leads to the allocator calculating an order
+greater than MAX_ORDER when calling get_order(), which is invalid.
+As a result, __alloc_pages() warns about the bad request.
 
-The intent is to run on every patchset, but since the system is
-currently still in the experimental state, some of the series are
-skipped due to various reasons. E.g. syzbot tried to process v2, but
-failed to find the kernel tree to which the series applies without
-problems: https://ci.syzbot.org/series/7085b21e-ae1e-4bf9-b486-24a82ea9b37d
+This patch adds an explicit check that rd_length is not only non-zero
+but also within the maximum safe limit for kmalloc_array():
+    length <= KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap)
 
-In the original email, there are links to the C reproducers, so these
-can be used locally to determine if v1/v2 were affected.
+This ensures that get_order() is only ever called with a valid size,
+resulting in an allocation order within MAX_ORDER
 
---=20
-Aleksandr
+Fixes: b9158815de52 ("Merge tag 'char-misc-6.9-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc")
+Reported-by: syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
 
->
-> Thanks,
-> Joanne
->
+Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
+---
+ fs/gfs2/rgrp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 26d6c1eea559..a879e8030568 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -760,7 +760,7 @@ static int compute_bitstructs(struct gfs2_rgrpd *rgd)
+ 	u32 bytes_left, bytes;
+ 	int x;
+ 
+-	if (!length)
++	if (!length || length > KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap))
+ 		return -EINVAL;
+ 
+ 	rgd->rd_bits = kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS);
+-- 
+2.34.1
+
