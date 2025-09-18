@@ -1,121 +1,178 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E836D528
-	for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 20:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E7F2F83C3
+	for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 21:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758228536; cv=none; b=l1yP1yTdbjCajc6oB5tvlBBhllTd1S0lpWobu/Jq8kLAOaI65FXgvkMfcHtCPRo96OS9W4pT4a4+bNa4QVIUclDTI2MQXPFVNz+W2n43M8of0zmb3foG0NIrnfHJkwZKZaAvnDj4vsXCRCLy3XcSMmy78L7q7o2BSE3m1tctN5Q=
+	t=1758230124; cv=none; b=mv0mT+5ZG91av0Rc2TXlxm1YNMMH+42SY/gpxDw2KVDgVtheamSZCLr/D6oYGJHHQt8klejNPargl14PWYRgvQdSuLcVV98oEKp4GSJqeYndTOGaG6Fjv9Gnc0gDx/XBtEU7as3dgOxG869o6qgsDubEcAy5xkLz5AaQQ7IOdCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758228536; c=relaxed/simple;
-	bh=R8VdHAizxiIZiX4FLFq7J/L0lVxWiWwNMZ7Ks/nE3G0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uXu44zoiZAgsjQOKL6s5e5Ipa7q4uERliHnyC98/0G5pl4pTRq6x4Lhia4vRjZTJXzumSRzdCiNUuhjNmaC7HOmKk2vjuDDW5XsLVHsTHdL6zj/510qtI/o9f1sf+mYRdnJzYJeH4tptPCC0HEaexamt9MQY46KTji7GLbrjTn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJECGoDS; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1758230124; c=relaxed/simple;
+	bh=RaI2L9RdbXMIdZ8my9qE4bHZaQCWyJPQv2GrnjvFkWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RCApRRq6DVRzJEkBjQpgiw/zOk2REkc3bRc1trHBdpOeU4qNiwe57DEdoFRbtBtHO2eUDAAY4htw42Yi2PH2PIwtIRFVF+2oJusgWTDunGZukX0Dpo74SfQtB2tEY6K0M25NBC/jLlQkdUBm4+JYdEbOy++DZe7+5sun0L1W05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PdkpyuUa; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJECGoDS"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-268107d8662so13328755ad.2
-        for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 13:48:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PdkpyuUa"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b7a8ceaad3so13593911cf.2
+        for <gfs2@lists.linux.dev>; Thu, 18 Sep 2025 14:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758228534; x=1758833334; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RWvpfkXVsTXpCF10bCqC7yVTYFDAtVdXNdJBDL/F03g=;
-        b=FJECGoDS93XwSdfOfm4SFSBKcvXUP98mDyqfE+TbnfBtuF1BhvVLyPlej6JfavFFLK
-         cP8V0Rkl/QS2aGZ9rqWZ4wHSQv8sDVb5w/iqTR5iyIFtFm28sZThPYryaWTwK2cU6d55
-         NVJx/K8mKrkpM+mcUq/N6+fQ6G66fgAu3+sPia4jFPgCxXiE7DtNDf9y9hcL3q2sSg2K
-         7apfc1coA0OXE7mA+Y+rk+lN1RqT0IgS+dOAhqQIyGTVFbCkvbNN4SeOknl0ZFxh9KtO
-         ZwFVbTzwBeJJ0AWoVpeguytJYKRVavvwzZnPEPeR2BE7CPK6ix0dldvWwyq56FxJcDk0
-         4lYA==
+        d=gmail.com; s=20230601; t=1758230121; x=1758834921; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cM+YHWLgcfrX2pJyuserQevvZDQvGGhtYKBReggAxHU=;
+        b=PdkpyuUaHY6l3HPcLl0jD9hoVEGnuxRay9t8q3NXquUTSebJOgAc5KUz+OW6Ivg5KZ
+         r/7BHWUPR6+1777ih3SIBYrosNjmpCr7UUs82nxh0D6i24xppD6veX9dE2glZ19CIxfI
+         LaHekMsr4HBhbwIadojET2kynWp/0zbMfZRnZmb8Ojw8NbdY39HWCRxNa9sXwRtkLXk/
+         S3nrHJnA84nCv5U5Aep000IoPZezErVb0l19iVsQ+qdwCiriVPyVPfR6vj/vdM+I+dc1
+         9+zOTz9mWFIsS85pzHiQIwyYrMsPSIYBZCjWfZHO72p19kyjACcEInacOtwBj9dvnLga
+         yIJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758228534; x=1758833334;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RWvpfkXVsTXpCF10bCqC7yVTYFDAtVdXNdJBDL/F03g=;
-        b=O78steFRctnrJZ+qKj8I9p3FD0M2cRDWU80anEzZ4maYiECtYTcmYAiyVXl9Nk5k+g
-         AIbLxnwsWcTbVuPpCxDNhp/HSSUDPlTl3IB/DK4z3WoMtef3PmqfSV2tvjCZ+oXWsKTF
-         +N2ygiOSWt1G5vd1SMHAklj784xZkcd9Mgsv2C0XTqEbS06/XJwIBfbRO3E8/jXwjoN5
-         6194xBPOPW/PoPX/ULy69k9LWPesT8AzAFrv9ZhyB+8OrrRYVyKr6e6eLx0xgqz9USbW
-         M40Hpr4pE3t2uq2KoEv1NdgYHVrXrO1dXQOaAX1KDrbfDF8IhXWRM/99Oj7tICfcg07I
-         klQQ==
-X-Gm-Message-State: AOJu0YwtJxMxH18zXTadLko7dBl6QRSTKOoF+YG9r4BNWb5oWNFAU+ua
-	fsgBgm2Jichv+rIl/6+Y6cjC0l68yA/uvS1kARFumwIqqX5RaDVAwIhH
-X-Gm-Gg: ASbGnctoMUyQLYrhDfCWIakGvr4Xibn1YllRbNpqhkWyQUVDVHzv9dyX4lwHgJryQwN
-	dX2DOTqDUvkCv6l9eOaYCZ6ohx9QM+q5sdjI9GMjtQGXXghqRtnwwoilkt5M4P+9ENHUPb4UgMe
-	nfO2yMrMVMBBQWdIBf1yIdzFUOIdywf4bJeaw86c8+cshqXqc04QTLKzBReA/V6oQPwazUzWsev
-	1+wbmsgkFE1WP9P3s2mXoxNo6pZWptoCtZtmWSeofmj6tggwVmvkInhnfg8+5sTIFWa7TpggyUl
-	mvlEMHBzcxihXxmmEqSVCaMVD0UM5MDj4tgHaKUVL2UlO/OCErHLyiY4FCygqYlC8eq7qmDYnjR
-	KUWjgkJFTtWNT4ETJUpWV5yB6s8HHgBaopktmEmSr6rvqyGUqGZgU62NK1HUZZUk0Wv8v45mL4r
-	MZ8dbvUJjYlUeOa2hujmfpmQ/Ff2z4OaCIGmv9/4Cw4DtW
-X-Google-Smtp-Source: AGHT+IGvApn9NcuvVzGprdBHvz9fgjbBfoh2S7GiEqj/2hx5hOyGCmpC/rOdk8KdIWmY96AzPPcNKQ==
-X-Received: by 2002:a17:903:2ecf:b0:267:776b:a31a with SMTP id d9443c01a7336-269ba517048mr11002435ad.29.1758228534309;
-        Thu, 18 Sep 2025 13:48:54 -0700 (PDT)
-Received: from crl-3.node2.local ([125.63.65.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26980368ef4sm34486625ad.149.2025.09.18.13.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 13:48:53 -0700 (PDT)
-From: Kriish Sharma <kriish.sharma2006@gmail.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	linux-kernel-mentees@lists.linux.dev,
-	Kriish Sharma <kriish.sharma2006@gmail.com>,
-	syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
-Subject: [PATCH] gfs2: add bounds check for rd_length in compute_bitstructs()
-Date: Thu, 18 Sep 2025 20:48:30 +0000
-Message-Id: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1758230121; x=1758834921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cM+YHWLgcfrX2pJyuserQevvZDQvGGhtYKBReggAxHU=;
+        b=riAoW2E/ujA1zPRqJGZXK4gmbAOk0PdhhQx3FVzECSmMTrKX7o55+RHonOjuGRnwq9
+         Xc1pmY+U+AQJU1e8bvwMFhFP+TqTRSOTpj9Wby6OalMFUHMenN1n7r3cBUlpveGq87cP
+         P2OyBocS5/v4SKwFlvLjpVvBuyJlmNreyXldalp+L8Le72NBr5mA+HrsODSg5f0Wd5O7
+         ExHkaQfpY3iSBLj7RUoC4qiy2m1dDUH/mo7uHz/QHvCv/DVbbnesTPLKBUoDXkCq/2pV
+         DdoJzzXVQo//ZbUWze4T97AW+GwRcSPJXBdT1M5EjwICU3oVueMJvQi4oH9aPmxqEyJ4
+         fMEw==
+X-Forwarded-Encrypted: i=1; AJvYcCVa5dfJPrfjJB0ygnII5w0+i3k4lbbwZdFn1lPlXQ8OZ2CBUIi0uVX42i+yH+dfv1YJRXtX@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBQeUWLvwWfK24SLwAlseZG8UkYq/JGpM6r2nitUEhYacc1uao
+	wsfzyKkn6fYKb/0zvQJDUBls2O77w6/OZPNoqsm42QCT3Wf72OgXMIi9caeO9Gj6no2RkLy61wC
+	bFGVPFZwbf3ESyy3TSteS4u+3z0JWvDQ=
+X-Gm-Gg: ASbGncvG1Vqi78vrT5vcxxzX1csftFbo51WLn7t4Vm7cb0FT0FFX1RYYgitmNHjPRII
+	Cp2MWA1Fn9BW6f1Z2STzh1CZNwfpYtWYXZn7MnlzyUgp307/dcONKnsnGvWvMXo/hiu4upgmJeg
+	uWjry2eCz5PK+aKtE3mXPfRwdLDmAg0SvXIo7M0qIu10EgXb3IyQYlMIDrv0yfvpJJgvdXQMfHE
+	MfhshIYgVdy9pz6G9a2nFKqewS7m2KxdUi+56W11B/Q06yLQTW0r3YZXqA=
+X-Google-Smtp-Source: AGHT+IENnJnb3dOErqnQxPgYvvOMddbQUomvAJmVK+/jzuciOpfm2bNbgO9KFGmfHctVnC6IAniWk5k5xhaWY0DXQaM=
+X-Received: by 2002:a05:622a:148b:b0:4b7:94b9:fe1b with SMTP id
+ d75a77b69052e-4c0718f62fbmr9962571cf.48.1758230120820; Thu, 18 Sep 2025
+ 14:15:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250916234425.1274735-1-joannelkoong@gmail.com>
+ <68ca71bd.050a0220.2ff435.04fc.GAE@google.com> <CAJnrk1YKPWkaBXe7D2mftN2DMEBqFow80reUGE=2_U8oVFc1tQ@mail.gmail.com>
+ <CANp29Y5Y8iO+UbKHtDEc=0d+76WxbWJK1asLaux++_n+Pr+d5g@mail.gmail.com>
+In-Reply-To: <CANp29Y5Y8iO+UbKHtDEc=0d+76WxbWJK1asLaux++_n+Pr+d5g@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 18 Sep 2025 14:15:09 -0700
+X-Gm-Features: AS18NWAE3sS7zFPUslchx1UJiBdBhfRC3MEiRx5b3wVMklQfkVIIsy4mxxEA2dA
+Message-ID: <CAJnrk1Z1vApTkcBzKwCJ3Q6K4Uh6ugOXN8CDSRrXsLE7L3nBHw@mail.gmail.com>
+Subject: Re: [syzbot ci] Re: fuse: use iomap for buffered reads + readahead
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: syzbot ci <syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com>, 
+	syzbot <syzkaller@googlegroups.com>, brauner@kernel.org, djwong@kernel.org, 
+	gfs2@lists.linux.dev, hch@infradead.org, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, kernel-team@meta.com, 
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, miklos@szeredi.hu, 
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-compute_bitstructs() allocates an array of gfs2_bitmap structures
-using kcalloc(). The function only checked for length == 0 but did not
-guard against excessively large length values.
+On Thu, Sep 18, 2025 at 8:48=E2=80=AFAM Aleksandr Nogikh <nogikh@google.com=
+> wrote:
+>
+> Hi Joanne,
+>
+> On Wed, Sep 17, 2025 at 9:59=E2=80=AFPM Joanne Koong <joannelkoong@gmail.=
+com> wrote:
+> >
+> > On Wed, Sep 17, 2025 at 1:37=E2=80=AFAM syzbot ci
+> > <syzbot+ci9b5a486340e6bcdf@syzkaller.appspotmail.com> wrote:
+> > >
+> > > syzbot ci has tested the following series
+> > >
+> > > [v3] fuse: use iomap for buffered reads + readahead
+> > > https://lore.kernel.org/all/20250916234425.1274735-1-joannelkoong@gma=
+il.com
+> > > * [PATCH v3 01/15] iomap: move bio read logic into helper function
+> > > * [PATCH v3 02/15] iomap: move read/readahead bio submission logic in=
+to helper function
+> > > * [PATCH v3 03/15] iomap: store read/readahead bio generically
+> > > * [PATCH v3 04/15] iomap: iterate over entire folio in iomap_readpage=
+_iter()
+> > > * [PATCH v3 05/15] iomap: rename iomap_readpage_iter() to iomap_read_=
+folio_iter()
+> > > * [PATCH v3 06/15] iomap: rename iomap_readpage_ctx struct to iomap_r=
+ead_folio_ctx
+> > > * [PATCH v3 07/15] iomap: track read/readahead folio ownership intern=
+ally
+> > > * [PATCH v3 08/15] iomap: add public start/finish folio read helpers
+> > > * [PATCH v3 09/15] iomap: add caller-provided callbacks for read and =
+readahead
+> > > * [PATCH v3 10/15] iomap: add bias for async read requests
+> > > * [PATCH v3 11/15] iomap: move buffered io bio logic into new file
+> > > * [PATCH v3 12/15] iomap: make iomap_read_folio() a void return
+> > > * [PATCH v3 13/15] fuse: use iomap for read_folio
+> > > * [PATCH v3 14/15] fuse: use iomap for readahead
+> > > * [PATCH v3 15/15] fuse: remove fc->blkbits workaround for partial wr=
+ites
+> > >
+> > > and found the following issues:
+> > > * WARNING in iomap_iter_advance
+> > > * WARNING in iomap_readahead
+> > > * kernel BUG in folio_end_read
+> > >
+> > > Full report is available here:
+> > > https://ci.syzbot.org/series/6845596a-1ec9-4396-b9c4-48bddc606bef
+> > >
+> > > ***
+> > >
+> > Thanks. Do you get run on every patchset that is sent upstream or is
+> > it random? Trying to figure out if this means v2 is right and i just
+> > messed up v3 or if you just didn't run on v2.
+>
+> The intent is to run on every patchset, but since the system is
+> currently still in the experimental state, some of the series are
+> skipped due to various reasons. E.g. syzbot tried to process v2, but
+> failed to find the kernel tree to which the series applies without
+> problems: https://ci.syzbot.org/series/7085b21e-ae1e-4bf9-b486-24a82ea9b3=
+7d
+>
+> In the original email, there are links to the C reproducers, so these
+> can be used locally to determine if v1/v2 were affected.
 
-If rd_length is too large, the multiplication inside
-kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS) can exceed
-KMALLOC_MAX_SIZE. This leads to the allocator calculating an order
-greater than MAX_ORDER when calling get_order(), which is invalid.
-As a result, __alloc_pages() warns about the bad request.
+Thanks, I was able to repro it using the syz-executor.
 
-This patch adds an explicit check that rd_length is not only non-zero
-but also within the maximum safe limit for kmalloc_array():
-    length <= KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap)
+It turns out the bug is in the upstream code. It's because
+iomap_adjust_read_range() assumes the position and length passed in
+are always block-aligned, so uptodate blocks get skipped by block-size
+granularity, but in the case of non-block-aligned positions and
+lengths, this can underflow the returned length and "overflow" the
+returned position (return a position that's beyond the size of the
+folio).
 
-This ensures that get_order() is only ever called with a valid size,
-resulting in an allocation order within MAX_ORDER
+The warning never showed up upstream because the underflowed plen and
+overflowed pos offset each other in the calculation:
+   length =3D pos - iter->pos + plen;
+   return iomap_iter_advance(iter, &length);
 
-Fixes: b9158815de52 ("Merge tag 'char-misc-6.9-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc")
-Reported-by: syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
+but now in this patchset, iter gets advanced first by "pos -
+iter->pos" and then by "plen", which surfaces the warning.
 
-Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
----
- fs/gfs2/rgrp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll submit a fix for this separately and then resend this fuse iomap
+patchset rebased on top of that.
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 26d6c1eea559..a879e8030568 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -760,7 +760,7 @@ static int compute_bitstructs(struct gfs2_rgrpd *rgd)
- 	u32 bytes_left, bytes;
- 	int x;
- 
--	if (!length)
-+	if (!length || length > KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap))
- 		return -EINVAL;
- 
- 	rgd->rd_bits = kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS);
--- 
-2.34.1
 
+Thanks,
+Joanne
+
+>
+> --
+> Aleksandr
+>
+> >
+> > Thanks,
+> > Joanne
+> >
