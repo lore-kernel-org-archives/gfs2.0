@@ -1,44 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A478BEE;
-	Thu, 18 Sep 2025 22:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1190313E30;
+	Fri, 19 Sep 2025 15:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758234942; cv=none; b=ukyEcPPwyCjg4OmeDxnBVXLAYfW3ZDI4Bv3Q6fTV8e9xfPjUXdwuceqvVByuBkzPr3Y6U7aE1uXJYyhWULYSxSzrRajYWeyHM2cPOFrdkH4nNpS1/EQyRLi+/0ucfwVKDkozE3hV3E1ogxVU45qJa/1f66wGyosQ6CdxhAWCj1E=
+	t=1758294259; cv=none; b=HbJJN1e4FAWDVuPVGmtsjHeBKze2uc38mQEZjDdULlKvcg27QIWgSFyDmNLc9wE8xG+9B5vqIABHmApgpb0L79GPilybwax/I3pgiZMCV6uyyJrCAYiBTwfhgzzQ2nuUgS2QOfDdCZggbLFPQTW6AhUOmVYlw1HJughU9z18zCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758234942; c=relaxed/simple;
-	bh=e/b85KMA9IEr5mWBMqN3kAA+ZPj41wquStIM9LSDZk4=;
+	s=arc-20240116; t=1758294259; c=relaxed/simple;
+	bh=42isF/WZsmBh5ZmpcnOp7XXD2OgHyQsMKCD1TyuRvOQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AsqQT08Zq/ZPGHtUvzr5Uh3sh64kccdQCUd3w10B+rn2Op+3Xkonc82vsZ9sF7h5HgbEkNXhlNLyzayeSuk0qJZkMv2lhNHf8p+53ZNRl9/BgPnrEzL44rC1wmCoo5KcurNxoT+dJli5YQHuSK2gdXNdKABqZmNDtEdz8vLPtkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbK03NQI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VN2/+oin6ofIldrpAiYtGYcPdcwVv17KAAB1x9vKXxfMye6NXwdieJg23jCYoGhvt0lD9Sirnj5DDZDw4gtU0llwVAizZwKIkPrYwKSTJj0XqcMMJ/ocvfcwSf0i920n+lLALAQP2hR/XEmWIQ8WiHxVkfiUOjWiEsA48U9z650=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=xE58bSsG; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbK03NQI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD28C4CEE7;
-	Thu, 18 Sep 2025 22:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758234941;
-	bh=e/b85KMA9IEr5mWBMqN3kAA+ZPj41wquStIM9LSDZk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bbK03NQIk5j0WPXeFpQwmfse0lHyNOUvTVl8vzwkscCIwSc8d+irM0Tx6iDcwC5sN
-	 mBLHQF4xx12FhEHR78Ia/HlzqIFKeqOnMF6UXX75LwLxFp1H0xFGrK80HQoMVKHKZ6
-	 1wSNdHdrn/1EOLDksVNooCWTj1XoWuCkR4meISrfZr3dvJrmAiqtK/d4aQEnX19Lef
-	 UBFHCC8mrytjxEI+yFHeJ/49CxVbHneOXCBdtwFD9c96d8KoyRtRKpTpjCgZMIgWIl
-	 +EDSOi/fLUkrtXWIkeho2jda9VKAbmbYuta1l413/6g3uWfKe3RB8W338CJipXML4U
-	 K/5EsuPpbyERg==
-Date: Thu, 18 Sep 2025 15:35:41 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="xE58bSsG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ci6GUzt/zBUPg8YgjcIKFzIGceTJiYQmoDw0F7XTobs=; b=xE58bSsGEbJk8MPAMD2lNBwyCj
+	6iZDmXZHma806PABiz8+4MZk6xBVmBkKSUKOwwfbK0ZW9i6LG426urRxZlRNnhY10U3rOXkAcNtDi
+	AnQslLXWyOblSLTibCbCBDIdT843nD8KmiyaqkmSbCSkHfIf+NtOCQcuLSf20gUL/5vCE1TNo8qqS
+	Mj0jufB8Upbl+JOjMcvKD8I0RT+1Mve9xDgfwXEIhde+lBkSDWYFu676ISkAOFj0DAPZZJ1SMZHxh
+	nZ4qTK4qwLekk3aqpg4TqBAkSM9X8M4W8dJhuIGyhg+dNTAstEzapteJc9jV5iGN2VjgpqYY51pwx
+	O/l+KiBg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uzcel-00000003G5z-2STi;
+	Fri, 19 Sep 2025 15:04:15 +0000
+Date: Fri, 19 Sep 2025 08:04:15 -0700
+From: Christoph Hellwig <hch@infradead.org>
 To: Joanne Koong <joannelkoong@gmail.com>
-Cc: brauner@kernel.org, miklos@szeredi.hu, hch@infradead.org,
-	hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	kernel-team@meta.com, linux-xfs@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 15/15] fuse: remove fc->blkbits workaround for partial
- writes
-Message-ID: <20250918223541.GB1587915@frogsfrogsfrogs>
-References: <20250916234425.1274735-1-joannelkoong@gmail.com>
- <20250916234425.1274735-16-joannelkoong@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>, brauner@kernel.org,
+	miklos@szeredi.hu, djwong@kernel.org, hsiangkao@linux.alibaba.com,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 12/16] iomap: add bias for async read requests
+Message-ID: <aM1w77aJZrQPq8Hw@infradead.org>
+References: <20250908185122.3199171-1-joannelkoong@gmail.com>
+ <20250908185122.3199171-13-joannelkoong@gmail.com>
+ <aMKzG3NUGsQijvEg@infradead.org>
+ <CAJnrk1Z2JwUKKoaqExh2gPDxtjRbzSPxzHi3YdBWXKvygGuGFA@mail.gmail.com>
+ <CAJnrk1YmxMbT-z9SLxrnrEwagLeyT=bDMzaONYAO6VgQyFHJOQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,98 +52,38 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250916234425.1274735-16-joannelkoong@gmail.com>
+In-Reply-To: <CAJnrk1YmxMbT-z9SLxrnrEwagLeyT=bDMzaONYAO6VgQyFHJOQ@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Sep 16, 2025 at 04:44:25PM -0700, Joanne Koong wrote:
-> Now that fuse is integrated with iomap for read/readahead, we can remove
-> the workaround that was added in commit bd24d2108e9c ("fuse: fix fuseblk
-> i_blkbits for iomap partial writes"), which was previously needed to
-> avoid a race condition where an iomap partial write may be overwritten
-> by a read if blocksize < PAGE_SIZE. Now that fuse does iomap
-> read/readahead, this is protected against since there is granular
-> uptodate tracking of blocks, which means this workaround can be removed.
+On Tue, Sep 16, 2025 at 12:14:05PM -0700, Joanne Koong wrote:
+> > I think you're right, this is probably clearer without trying to share
+> > the function.
+> >
+> > I think maybe we can make this even simpler. Right now we mark the
+> > bitmap uptodate every time a range is read in but I think instead we
+> > can just do one bitmap uptodate operation for the entire folio when
+> > the read has completely finished.  If we do this, then we can make
+> > "ifs->read_bytes_pending" back to an atomic_t since we don't save one
+> > atomic operation from doing it through a spinlock anymore (eg what
+> > commit f45b494e2a "iomap: protect read_bytes_pending with the
+> > state_lock" optimized). And then this bias thing can just become:
+> >
+> > if (ifs) {
+> >     if (atomic_dec_and_test(&ifs->read_bytes_pending))
+> >         folio_end_read(folio, !ret);
+> >     *cur_folio_owned = true;
+> > }
+> >
 > 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> This idea doesn't work unfortunately because reading in a range might fail.
 
-Oh goody!
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+As in the asynchronous read generats an error, but finishes faster
+than the submitting context calling the atomic_dec_and_test here?
 
---D
+Yes, that is possible, although rare.  But having a way to pass
+that information on somehow.  PG_uptodate/folio uptodate would make
+sense for that, but right now we expect folio_end_read to set that.
+And I fail to understand the logic folio_end_read - it should clear
+the locked bit and add the updatodate one, but I have no idea how
+it makes that happen.
 
-> ---
->  fs/fuse/dir.c    |  2 +-
->  fs/fuse/fuse_i.h |  8 --------
->  fs/fuse/inode.c  | 13 +------------
->  3 files changed, 2 insertions(+), 21 deletions(-)
-> 
-> diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-> index 5c569c3cb53f..ebee7e0b1cd3 100644
-> --- a/fs/fuse/dir.c
-> +++ b/fs/fuse/dir.c
-> @@ -1199,7 +1199,7 @@ static void fuse_fillattr(struct mnt_idmap *idmap, struct inode *inode,
->  	if (attr->blksize != 0)
->  		blkbits = ilog2(attr->blksize);
->  	else
-> -		blkbits = fc->blkbits;
-> +		blkbits = inode->i_sb->s_blocksize_bits;
->  
->  	stat->blksize = 1 << blkbits;
->  }
-> diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-> index cc428d04be3e..1647eb7ca6fa 100644
-> --- a/fs/fuse/fuse_i.h
-> +++ b/fs/fuse/fuse_i.h
-> @@ -975,14 +975,6 @@ struct fuse_conn {
->  		/* Request timeout (in jiffies). 0 = no timeout */
->  		unsigned int req_timeout;
->  	} timeout;
-> -
-> -	/*
-> -	 * This is a workaround until fuse uses iomap for reads.
-> -	 * For fuseblk servers, this represents the blocksize passed in at
-> -	 * mount time and for regular fuse servers, this is equivalent to
-> -	 * inode->i_blkbits.
-> -	 */
-> -	u8 blkbits;
->  };
->  
->  /*
-> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-> index fdecd5a90dee..5899a47faaef 100644
-> --- a/fs/fuse/inode.c
-> +++ b/fs/fuse/inode.c
-> @@ -292,7 +292,7 @@ void fuse_change_attributes_common(struct inode *inode, struct fuse_attr *attr,
->  	if (attr->blksize)
->  		fi->cached_i_blkbits = ilog2(attr->blksize);
->  	else
-> -		fi->cached_i_blkbits = fc->blkbits;
-> +		fi->cached_i_blkbits = inode->i_sb->s_blocksize_bits;
->  
->  	/*
->  	 * Don't set the sticky bit in i_mode, unless we want the VFS
-> @@ -1810,21 +1810,10 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
->  		err = -EINVAL;
->  		if (!sb_set_blocksize(sb, ctx->blksize))
->  			goto err;
-> -		/*
-> -		 * This is a workaround until fuse hooks into iomap for reads.
-> -		 * Use PAGE_SIZE for the blocksize else if the writeback cache
-> -		 * is enabled, buffered writes go through iomap and a read may
-> -		 * overwrite partially written data if blocksize < PAGE_SIZE
-> -		 */
-> -		fc->blkbits = sb->s_blocksize_bits;
-> -		if (ctx->blksize != PAGE_SIZE &&
-> -		    !sb_set_blocksize(sb, PAGE_SIZE))
-> -			goto err;
->  #endif
->  	} else {
->  		sb->s_blocksize = PAGE_SIZE;
->  		sb->s_blocksize_bits = PAGE_SHIFT;
-> -		fc->blkbits = sb->s_blocksize_bits;
->  	}
->  
->  	sb->s_subtype = ctx->subtype;
-> -- 
-> 2.47.3
-> 
-> 
