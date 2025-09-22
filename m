@@ -1,144 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22614308F2D
-	for <gfs2@lists.linux.dev>; Mon, 22 Sep 2025 11:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD4333991;
+	Mon, 22 Sep 2025 14:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758540899; cv=none; b=UyQBiXSCb8UwrVeDWjvmAStmn8PVJZHMwz0Y+VtwzXWhIFtt7E+oJeLoFtttkaNcQ4DHE2jq/BX/bblQc0MmsZW2pz9FnM46o7+oexET6HmefervwwBt4TfS97qkTG5sfCKKQVKvmFsYa0629du1CemORYm1hT0cZsiCD8JTxDA=
+	t=1758550853; cv=none; b=IXrW58ILpFlyRO9FzPx2HWKDo2UVhG4W2boW1yu3QVr56GH3T4WvBDmhU7M8OH4VEcHvY5QK9rcT9sS3d2hV+Llmlcyt0J7MbPxglIT8YjTvMzj2swjQ0zI3IHtqKzlYYDXJXrd4FCU1RBVmuEwWeu7FQEQ/OKbWJ1lgCN5Q6cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758540899; c=relaxed/simple;
-	bh=Npwp37fasUaztNGjwbjQ24nWh04CyauLI9SVRQGWYVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nwo7FKfVWTUwO77F+24xiu+TNc5qE6IeUFkoGYdzWvAMlkOyac/FR68ZUDezQ9y+4O5+56E5P1Pvgf7BcL2z09zoo1Q0r3veHdQfZtowD7MBjnisvUw9KnmJOk/n4SEqOXd/Zu0yRkk+ILVcs06F3RPv2vA0ZtCxlDUMs4W8CLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1ASn9nH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758550853; c=relaxed/simple;
+	bh=R0weu+X08HQk2XnLPTCbBYzistuQhGHRMXvTiVRYJSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=HWLp7x2VzmN9iSGxik4DlfKDopryJtFl+fCBqY4XPcl21yeAhqDqIVRWJ3nQWOZLPUGU+CzCHqhZCWJbccc7xl/2vyV6nsABmPtuYGsC6BUht5jiQHjCyhc604G6ItMTZLdG8ZfMfP6mNGY5ylgUWgfymcsYV4IcwWbUR2G2Kbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CePgqQr8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1ASn9nH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758540895;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qBL6ran7eeZrT38sfsNjW8tntjx1L4Y7ebN1yvWq/ak=;
-	b=c1ASn9nHobe0N+y8Id6gfcjNTZFd+GM8RMeyIGZDZTf2JKzIvV+JSao/4dnzXxA9T1Ltj1
-	q9SdxyomWNY6y/hj8N+0Q63OSfnGPf6R13ctt2gd12zZXrhRewgXna42A3pZ8vp+5U+0rA
-	2P6AyUUdLBkmEG/zOSeXptZomQ+IXiI=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-cFciBkT_MjGwEfTIraKaEQ-1; Mon, 22 Sep 2025 07:34:48 -0400
-X-MC-Unique: cFciBkT_MjGwEfTIraKaEQ-1
-X-Mimecast-MFC-AGG-ID: cFciBkT_MjGwEfTIraKaEQ_1758540888
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-32ec2211659so4469518a91.0
-        for <gfs2@lists.linux.dev>; Mon, 22 Sep 2025 04:34:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758540888; x=1759145688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qBL6ran7eeZrT38sfsNjW8tntjx1L4Y7ebN1yvWq/ak=;
-        b=jgJx+vqHigwbu43B1z0iPTHdFDMp61eQ7BqhHB89lQJte7IocEthojgaX8U1mfqyh2
-         Ni3D5RAkTNX9Cv0kAvWOC4+YwcnIIolzbTaKVICcebClWaY8AOd+3FIswvVAkHHx6uAP
-         ML6AwETHJuFB4A6xnU2hB5Ewes7N2W4xjTf0OzKgPNkyY8DQMBgmWMowKLtXBfcPJOD9
-         3WBBQ9S+ljR/6LDWvhPS84hkywSQqsYGCDk1Ug/pNRSQtDZLp8dqcm6wOA0Bmj9tL9lf
-         pl49ljTpaHqE77oyXUv99YWwwN0/1dNBq0P/JPkoxtuWVc7BcqP4Sw0vhU0NPPRNKuYH
-         /Mdg==
-X-Gm-Message-State: AOJu0YxzkNzlLZ8MglYno0LCs4rqWr7bkMPkpszKjKwsDh0joXOTQyYN
-	cqpYy+MRdd/6Fx6K6nT36dLEd9TqUDy01sS3lNJbAyqj3KvEVbfFcqpV7b1UZYlCOy8VDvr/Wrt
-	aKbE1fB/+MM/IAkAOqytZJsLrPZ6jRqGFGuh1+UoK03Hoxk6B2y2u1xIy3E1S9bGQ4drvh8MgCy
-	LwT1yGho//oNFC0zM5MBgLT9gX8XqRSg==
-X-Gm-Gg: ASbGncviAelYAeR+zWgv+NWLKyvrF5gqbU06Xv8iFySxuTbenBDAhXbx75kqitWvW1v
-	yDcbJDYDk35SWTbKuGe82R6qJnr0ow4/rihVpJKqDgaZipALU5YTGhv7RGV9jOVuSN1fcmQKcNT
-	AfiTEnvEMIoebBNISZuok=
-X-Received: by 2002:a17:902:ea05:b0:269:874c:4e48 with SMTP id d9443c01a7336-269ba550cd2mr171325255ad.47.1758540887716;
-        Mon, 22 Sep 2025 04:34:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwLwdzoDbuGVYQuEXIHCwQRTwpdPRrzzjp4kgxXc6oHg0FWMGDElJOvb0KAxMjWimeR5uUisUdrOaN5DAr/3I=
-X-Received: by 2002:a17:902:ea05:b0:269:874c:4e48 with SMTP id
- d9443c01a7336-269ba550cd2mr171324975ad.47.1758540887355; Mon, 22 Sep 2025
- 04:34:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CePgqQr8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F385FC4CEF0;
+	Mon, 22 Sep 2025 14:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758550853;
+	bh=R0weu+X08HQk2XnLPTCbBYzistuQhGHRMXvTiVRYJSc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=CePgqQr8sR7WqwUnA12bDvXCWWbEqAFHvlwCpGCPQxzd7K/6uwsZAnm/IkccuNzzV
+	 DsvZzsymVLqjQfdyklRlyqLDeK19KpVKKBpizqwx1lGF2QhKYRMYiQYWtYbm2oDW+2
+	 +SdNtytAwUMMSwx5dyfhy5pw8kuEIgK3HCvOy1nCV2zQABLhFZRxZsYdaJxYI9li1m
+	 324WQQv/JNIZCinkTl7RHOCGe0F2KME9XxpuYfuQ0Wavm1wJgzNhuWPv2V7o8H+mhN
+	 UTslUuU+mmkfcH9692DT6Z4Tzc/f42ILBnchLGp0w8Sz+mYrhOpQs8EBMjfvA15Ao4
+	 gmbhMh2wyu43A==
+Date: Mon, 22 Sep 2025 16:20:47 +0200
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] dlm: Avoid -Wflex-array-member-not-at-end warning
+Message-ID: <aNFbP3UaRokBxruI@kspp>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
-In-Reply-To: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Mon, 22 Sep 2025 13:34:36 +0200
-X-Gm-Features: AS18NWACBZeRywvdMekJd6TCUmlssvkKRWZotY-3FIzanJ_u6GG0-GRTwtWtIGg
-Message-ID: <CAHc6FU4CVLe6ZxPR1Q3dc=5i1ARrNAjnB_NEK5_Y_Pecmk_4bQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: add bounds check for rd_length in compute_bitstructs()
-To: Kriish Sharma <kriish.sharma2006@gmail.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
-	linux-kernel-mentees@lists.linux.dev, 
-	syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pd65mPY7g92bcNLhhme82VZYO36ky96MS1L14zgx7Pc_1758540888
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Kriish,
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-On Thu, Sep 18, 2025 at 10:49=E2=80=AFPM Kriish Sharma
-<kriish.sharma2006@gmail.com> wrote:
-> compute_bitstructs() allocates an array of gfs2_bitmap structures
-> using kcalloc(). The function only checked for length =3D=3D 0 but did no=
-t
-> guard against excessively large length values.
->
-> If rd_length is too large, the multiplication inside
-> kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS) can exceed
-> KMALLOC_MAX_SIZE. This leads to the allocator calculating an order
-> greater than MAX_ORDER when calling get_order(), which is invalid.
-> As a result, __alloc_pages() warns about the bad request.
->
-> This patch adds an explicit check that rd_length is not only non-zero
-> but also within the maximum safe limit for kmalloc_array():
->     length <=3D KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap)
->
-> This ensures that get_order() is only ever called with a valid size,
-> resulting in an allocation order within MAX_ORDER
->
-> Fixes: b9158815de52 ("Merge tag 'char-misc-6.9-rc7' of git://git.kernel.o=
-rg/pub/scm/linux/kernel/git/gregkh/char-misc")
-> Reported-by: syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D7567dc5c8aa8f68bde74
->
-> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
-> ---
->  fs/gfs2/rgrp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-> index 26d6c1eea559..a879e8030568 100644
-> --- a/fs/gfs2/rgrp.c
-> +++ b/fs/gfs2/rgrp.c
-> @@ -760,7 +760,7 @@ static int compute_bitstructs(struct gfs2_rgrpd *rgd)
->         u32 bytes_left, bytes;
->         int x;
->
-> -       if (!length)
-> +       if (!length || length > KMALLOC_MAX_SIZE / sizeof(struct gfs2_bit=
-map))
->                 return -EINVAL;
->
->         rgd->rd_bits =3D kcalloc(length, sizeof(struct gfs2_bitmap), GFP_=
-NOFS);
-> --
-> 2.34.1
->
+Move the conflicting declaration to the end of the corresponding
+structure. Notice that `struct dlm_message` is a flexible
+structure, this is a structure that contains a flexible-array
+member.
 
-this patch looks correct at a certain level of abstraction, but a
-better approach would be to sanity check the resource group fields in
-read_rindex_entry(). Andy and I are trying to work out a patch that
-does that.
+Fix the following warning:
 
-Thanks,
-Andreas
+fs/dlm/dlm_internal.h:609:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ fs/dlm/dlm_internal.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index d534a4bc162b..9df842421ae0 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -606,7 +606,6 @@ struct dlm_ls {
+ 
+ 	struct dlm_rsb		ls_local_rsb;	/* for returning errors */
+ 	struct dlm_lkb		ls_local_lkb;	/* for returning errors */
+-	struct dlm_message	ls_local_ms;	/* for faking a reply */
+ 
+ 	struct dentry		*ls_debug_rsb_dentry; /* debugfs */
+ 	struct dentry		*ls_debug_waiters_dentry; /* debugfs */
+@@ -665,6 +664,9 @@ struct dlm_ls {
+ 
+ 	int			ls_namelen;
+ 	char			ls_name[DLM_LOCKSPACE_LEN + 1];
++
++	/* Must be last --ends in a flexible-array member.*/
++	struct dlm_message	ls_local_ms;	/* for faking a reply */
+ };
+ 
+ /*
+-- 
+2.43.0
 
