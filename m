@@ -1,153 +1,144 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9005E22A4F1
-	for <gfs2@lists.linux.dev>; Fri, 19 Sep 2025 18:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22614308F2D
+	for <gfs2@lists.linux.dev>; Mon, 22 Sep 2025 11:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758306859; cv=none; b=mGWtKhLPGhMwxY0GUZFgONdsCBgZ0E8Ra34OK5XjbjHhD6a7Id8Q7T1jPdkzt3itVYotP0ApmvJ4N1oxNfvRaUiyczij7lsI/X4Gwr9Nz3EBuNxhRXZ0BlfXsZidEPwpkcMQKaS72RQvoqfdPKnAhz0uanoAzmtK7YIZl4uK8Yc=
+	t=1758540899; cv=none; b=UyQBiXSCb8UwrVeDWjvmAStmn8PVJZHMwz0Y+VtwzXWhIFtt7E+oJeLoFtttkaNcQ4DHE2jq/BX/bblQc0MmsZW2pz9FnM46o7+oexET6HmefervwwBt4TfS97qkTG5sfCKKQVKvmFsYa0629du1CemORYm1hT0cZsiCD8JTxDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758306859; c=relaxed/simple;
-	bh=7uX0BeiPsvWw8q8A4083nVg+t12ANac5Jycw2LTy1oc=;
+	s=arc-20240116; t=1758540899; c=relaxed/simple;
+	bh=Npwp37fasUaztNGjwbjQ24nWh04CyauLI9SVRQGWYVI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lRrTZYbO4cUJtvPAHhoGV0qxnziEeRNY0I1WQrq99YnwosdWbmSo+CG61LCbYYZ7qmhZmLh0crlp1Z/Cb4aVVP18TolcwuhxzINTmjEzT1HY8g4P4DX8hERhoLNgFomw26Q1/X69hksyivUZkRQETAZc+AOsWoo4KisTnYP6nGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HM1TrEcz; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Nwo7FKfVWTUwO77F+24xiu+TNc5qE6IeUFkoGYdzWvAMlkOyac/FR68ZUDezQ9y+4O5+56E5P1Pvgf7BcL2z09zoo1Q0r3veHdQfZtowD7MBjnisvUw9KnmJOk/n4SEqOXd/Zu0yRkk+ILVcs06F3RPv2vA0ZtCxlDUMs4W8CLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1ASn9nH; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HM1TrEcz"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b61161c32eso35929761cf.3
-        for <gfs2@lists.linux.dev>; Fri, 19 Sep 2025 11:34:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758306854; x=1758911654; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rhRHN77jwmvAE0x3y6aKKQENztc6fTFsJqlfUz+6jDw=;
-        b=HM1TrEcz1SJBMbwuNmqr7AkeZRSEDFxmJfYqBTYKweIxJ21ePLh4yfmOP8xPqKxupf
-         sxhZv9L+qknbqFPzHgFvP3eAblmZDFU05Q5fWqerSLO6ebi2x/Oy0rBzi7VCB3j4dBEb
-         iNZX9tq9e1y4QzjFNvXs3MLXhMQUp9AzghnMyOLFshcej+8V7emwGa50YO8H3qUeoafe
-         Txwt7ruqjbD+wkcR3fgCvKv7eOfdz7D6lK7URtAUWAN5Z3LwB5zIB6JLgntD0fEEXuyQ
-         +SgUnWbdwRCkhZa267XthPERNELJHvtApNI+Jc5Pz/VDAyqh1wnkj2F9n1sbJtSnyv6G
-         +9TQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1ASn9nH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758540895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qBL6ran7eeZrT38sfsNjW8tntjx1L4Y7ebN1yvWq/ak=;
+	b=c1ASn9nHobe0N+y8Id6gfcjNTZFd+GM8RMeyIGZDZTf2JKzIvV+JSao/4dnzXxA9T1Ltj1
+	q9SdxyomWNY6y/hj8N+0Q63OSfnGPf6R13ctt2gd12zZXrhRewgXna42A3pZ8vp+5U+0rA
+	2P6AyUUdLBkmEG/zOSeXptZomQ+IXiI=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-12-cFciBkT_MjGwEfTIraKaEQ-1; Mon, 22 Sep 2025 07:34:48 -0400
+X-MC-Unique: cFciBkT_MjGwEfTIraKaEQ-1
+X-Mimecast-MFC-AGG-ID: cFciBkT_MjGwEfTIraKaEQ_1758540888
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-32ec2211659so4469518a91.0
+        for <gfs2@lists.linux.dev>; Mon, 22 Sep 2025 04:34:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758306854; x=1758911654;
+        d=1e100.net; s=20230601; t=1758540888; x=1759145688;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rhRHN77jwmvAE0x3y6aKKQENztc6fTFsJqlfUz+6jDw=;
-        b=NGD7T+HVfNAmd4UxBlIJe/yk6sKD4vw4wwmiyAXaNNcQLhfI/bSfn9gNnmqZea7cBh
-         Imo32R0JWkWSKxRn+A8qyKjpAZ67pe2y3XWmB5m3CkqB8VJ7pR0cvxVDQZDcRiv0iF4T
-         Y9qLrfwLMhEFsJf4aoOHIU4xONICROjq7lTj7FLYsjnEPRcy65kSDsE6pvRR/oCTGs4J
-         3gTdaVOAbZnRjWihaloIcMN/HBIfdb4tDmQ3IpQxpkWMiVS4A4OKg22YCk+5NNHrA28s
-         Lf8EVaNjSQLfRFD48HnmxHKGh1y3PdyTW0AwlYw9Ku/zDGYoAbZSSGqEkOZDZErEVBsf
-         iUbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVeEDGKxXS54nfJGzdIJ+KtZxVdTvrUcekqFttkym6y+vzqE+ye+b2S2IjiO0/vHES2gUFy@lists.linux.dev
-X-Gm-Message-State: AOJu0YxqRYXfcki9FV7swp7AjHAAZ50MQMFvCwez6IfoGVaxQPVpZ7E+
-	/EZMhnPLHGlK7DlBzvPR5njM0lMG8QGpdQhCmCOdPens8OkbVg+XHUDDBguI9IeceIb71dKF4K5
-	VPwiI2Djz7UuH4CkTSifso6IEz7DUtRQ=
-X-Gm-Gg: ASbGncvrcJ74Xty/c+1Uz9BtpMTIcxxRwxId7SFCGj3dqhZI1ESb/eQzJtlRH+ZlkJL
-	x744ojPSflRkM04iji99OV9XaosRoiOHPkbBr2kj/5/bh1mZZlFeSjY12RVWqox6qEGqhrRapDU
-	SwJgIzIKIvz7wvoJepEP+wMhHfezJeVFZlIBZ8LDm/bgoqszW0xjuNmdCjyKNHXeHaxOgM92Wwc
-	NWIY4BK6ePRBoHpaK8XuqayiW3uh3iM2ftBIRgr
-X-Google-Smtp-Source: AGHT+IEl3EPErf3c09yltPELq1CrtgsMWd+b8acWGVirSfI9XbkQbByyu5P2kwwv0Ytvm0XcDlRHkOfSCgIJVsMlx8s=
-X-Received: by 2002:a05:622a:1826:b0:4b0:7cb2:cec3 with SMTP id
- d75a77b69052e-4c07238f39dmr58025631cf.38.1758306854308; Fri, 19 Sep 2025
- 11:34:14 -0700 (PDT)
+        bh=qBL6ran7eeZrT38sfsNjW8tntjx1L4Y7ebN1yvWq/ak=;
+        b=jgJx+vqHigwbu43B1z0iPTHdFDMp61eQ7BqhHB89lQJte7IocEthojgaX8U1mfqyh2
+         Ni3D5RAkTNX9Cv0kAvWOC4+YwcnIIolzbTaKVICcebClWaY8AOd+3FIswvVAkHHx6uAP
+         ML6AwETHJuFB4A6xnU2hB5Ewes7N2W4xjTf0OzKgPNkyY8DQMBgmWMowKLtXBfcPJOD9
+         3WBBQ9S+ljR/6LDWvhPS84hkywSQqsYGCDk1Ug/pNRSQtDZLp8dqcm6wOA0Bmj9tL9lf
+         pl49ljTpaHqE77oyXUv99YWwwN0/1dNBq0P/JPkoxtuWVc7BcqP4Sw0vhU0NPPRNKuYH
+         /Mdg==
+X-Gm-Message-State: AOJu0YxzkNzlLZ8MglYno0LCs4rqWr7bkMPkpszKjKwsDh0joXOTQyYN
+	cqpYy+MRdd/6Fx6K6nT36dLEd9TqUDy01sS3lNJbAyqj3KvEVbfFcqpV7b1UZYlCOy8VDvr/Wrt
+	aKbE1fB/+MM/IAkAOqytZJsLrPZ6jRqGFGuh1+UoK03Hoxk6B2y2u1xIy3E1S9bGQ4drvh8MgCy
+	LwT1yGho//oNFC0zM5MBgLT9gX8XqRSg==
+X-Gm-Gg: ASbGncviAelYAeR+zWgv+NWLKyvrF5gqbU06Xv8iFySxuTbenBDAhXbx75kqitWvW1v
+	yDcbJDYDk35SWTbKuGe82R6qJnr0ow4/rihVpJKqDgaZipALU5YTGhv7RGV9jOVuSN1fcmQKcNT
+	AfiTEnvEMIoebBNISZuok=
+X-Received: by 2002:a17:902:ea05:b0:269:874c:4e48 with SMTP id d9443c01a7336-269ba550cd2mr171325255ad.47.1758540887716;
+        Mon, 22 Sep 2025 04:34:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwLwdzoDbuGVYQuEXIHCwQRTwpdPRrzzjp4kgxXc6oHg0FWMGDElJOvb0KAxMjWimeR5uUisUdrOaN5DAr/3I=
+X-Received: by 2002:a17:902:ea05:b0:269:874c:4e48 with SMTP id
+ d9443c01a7336-269ba550cd2mr171324975ad.47.1758540887355; Mon, 22 Sep 2025
+ 04:34:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250916234425.1274735-1-joannelkoong@gmail.com>
- <20250916234425.1274735-11-joannelkoong@gmail.com> <20250918223018.GY1587915@frogsfrogsfrogs>
-In-Reply-To: <20250918223018.GY1587915@frogsfrogsfrogs>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 19 Sep 2025 11:34:03 -0700
-X-Gm-Features: AS18NWA5eATCQro2K3o3en9fIfjv9ya2PYZQVPmIDN-TkbTJuiFMxPoK5v0Ka7I
-Message-ID: <CAJnrk1bB+=J5g5h+asx12SYMogiKSn9SpEvRg11-_N_xWodvSA@mail.gmail.com>
-Subject: Re: [PATCH v3 10/15] iomap: add bias for async read requests
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: brauner@kernel.org, miklos@szeredi.hu, hch@infradead.org, 
-	hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
-	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
+In-Reply-To: <20250918204830.229918-1-kriish.sharma2006@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Mon, 22 Sep 2025 13:34:36 +0200
+X-Gm-Features: AS18NWACBZeRywvdMekJd6TCUmlssvkKRWZotY-3FIzanJ_u6GG0-GRTwtWtIGg
+Message-ID: <CAHc6FU4CVLe6ZxPR1Q3dc=5i1ARrNAjnB_NEK5_Y_Pecmk_4bQ@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: add bounds check for rd_length in compute_bitstructs()
+To: Kriish Sharma <kriish.sharma2006@gmail.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	linux-kernel-mentees@lists.linux.dev, 
+	syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: pd65mPY7g92bcNLhhme82VZYO36ky96MS1L14zgx7Pc_1758540888
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 3:30=E2=80=AFPM Darrick J. Wong <djwong@kernel.org>=
- wrote:
+Kriish,
+
+On Thu, Sep 18, 2025 at 10:49=E2=80=AFPM Kriish Sharma
+<kriish.sharma2006@gmail.com> wrote:
+> compute_bitstructs() allocates an array of gfs2_bitmap structures
+> using kcalloc(). The function only checked for length =3D=3D 0 but did no=
+t
+> guard against excessively large length values.
 >
-> On Tue, Sep 16, 2025 at 04:44:20PM -0700, Joanne Koong wrote:
-> > Non-block-based filesystems will be using iomap read/readahead. If they
-> > handle reading in ranges asynchronously and fulfill those read requests
-> > on an ongoing basis (instead of all together at the end), then there is
-> > the possibility that the read on the folio may be prematurely ended if
-> > earlier async requests complete before the later ones have been issued.
-> >
-> > For example if there is a large folio and a readahead request for 16
-> > pages in that folio, if doing readahead on those 16 pages is split into
-> > 4 async requests and the first request is sent off and then completed
-> > before we have sent off the second request, then when the first request
-> > calls iomap_finish_folio_read(), ifs->read_bytes_pending would be 0,
-> > which would end the read and unlock the folio prematurely.
-> >
-> > To mitigate this, a "bias" is added to ifs->read_bytes_pending before
-> > the first range is forwarded to the caller and removed after the last
-> > range has been forwarded.
-> >
-> > iomap writeback does this with their async requests as well to prevent
-> > prematurely ending writeback.
-> >
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > ---
-> >  fs/iomap/buffered-io.c | 55 ++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 47 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > index 561378f2b9bb..667a49cb5ae5 100644
-> > --- a/fs/iomap/buffered-io.c
-> > +++ b/fs/iomap/buffered-io.c
-> > @@ -420,6 +420,38 @@ const struct iomap_read_ops iomap_bio_read_ops =3D=
- {
-> >  };
-> >  EXPORT_SYMBOL_GPL(iomap_bio_read_ops);
-> >
-> > +/*
-> > + * Add a bias to ifs->read_bytes_pending to prevent the read on the fo=
-lio from
-> > + * being ended prematurely.
-> > + *
-> > + * Otherwise, if the ranges are read asynchronously and read requests =
-are
-> > + * fulfilled on an ongoing basis, there is the possibility that the re=
-ad on the
-> > + * folio may be prematurely ended if earlier async requests complete b=
-efore the
-> > + * later ones have been issued.
-> > + */
-> > +static void iomap_read_add_bias(struct folio *folio)
-> > +{
-> > +     iomap_start_folio_read(folio, 1);
+> If rd_length is too large, the multiplication inside
+> kcalloc(length, sizeof(struct gfs2_bitmap), GFP_NOFS) can exceed
+> KMALLOC_MAX_SIZE. This leads to the allocator calculating an order
+> greater than MAX_ORDER when calling get_order(), which is invalid.
+> As a result, __alloc_pages() warns about the bad request.
 >
-> I wonder, could you achieve the same effect by elevating
-> read_bytes_pending by the number of bytes that we think we have to read,
-> and subtracting from it as the completions come in or we decide that no
-> read is necessary?
+> This patch adds an explicit check that rd_length is not only non-zero
+> but also within the maximum safe limit for kmalloc_array():
+>     length <=3D KMALLOC_MAX_SIZE / sizeof(struct gfs2_bitmap)
+>
+> This ensures that get_order() is only ever called with a valid size,
+> resulting in an allocation order within MAX_ORDER
+>
+> Fixes: b9158815de52 ("Merge tag 'char-misc-6.9-rc7' of git://git.kernel.o=
+rg/pub/scm/linux/kernel/git/gregkh/char-misc")
+> Reported-by: syzbot+7567dc5c8aa8f68bde74@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D7567dc5c8aa8f68bde74
+>
+> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
+> ---
+>  fs/gfs2/rgrp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+> index 26d6c1eea559..a879e8030568 100644
+> --- a/fs/gfs2/rgrp.c
+> +++ b/fs/gfs2/rgrp.c
+> @@ -760,7 +760,7 @@ static int compute_bitstructs(struct gfs2_rgrpd *rgd)
+>         u32 bytes_left, bytes;
+>         int x;
+>
+> -       if (!length)
+> +       if (!length || length > KMALLOC_MAX_SIZE / sizeof(struct gfs2_bit=
+map))
+>                 return -EINVAL;
+>
+>         rgd->rd_bits =3D kcalloc(length, sizeof(struct gfs2_bitmap), GFP_=
+NOFS);
+> --
+> 2.34.1
 >
 
-This is an interesting idea and I think it works (eg we set
-read_bytes_pending to the folio size, keep track of how many
-non-uptodate bytes are read in, then at the end subtract
-read_bytes_pending by folio_size - bytes_read_in). Personally I find
-this bias incrementing/decrementing by 1 approach simplest and easier
-to read and reason about, but maybe I'm just biased (pun intended, I
-guess :P). I don't feel strongly about this so if you do, I'm happy to
-change this.
+this patch looks correct at a certain level of abstraction, but a
+better approach would be to sanity check the resource group fields in
+read_rindex_entry(). Andy and I are trying to work out a patch that
+does that.
 
+Thanks,
+Andreas
 
-> (That might just be overthinking the plumbing though)
->
-> --D
->
