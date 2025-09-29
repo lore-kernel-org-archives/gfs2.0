@@ -1,65 +1,115 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD682773E6
-	for <gfs2@lists.linux.dev>; Fri, 26 Sep 2025 05:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E086C2C3250;
+	Mon, 29 Sep 2025 09:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758865103; cv=none; b=UWG5T3DSYHqj6K52YodJeacFG23wf4bpBkEc2iskyPZ1EblMZKP+0aMYk/smCB5V47HklQpkChbnQoMBf80P0evs4Za12IQBEHbbOcqvbixhtxYlRek2bNPsQvSENGwq8isuC+hy79nvqGBmcNCL1AyitwxFnsUZw00L7z61Y2E=
+	t=1759138745; cv=none; b=LYpf8COBsB5qmx6M4i7ZMaDyd+lVNHJ0OzFCyZWVzenL8ClbVvwMZh410ywuXRJIghYbBbtHg9buuuWweNh5fZ3MsYpw32mfoT9lEGv0uCjeN/0rrvurgRfHY6DnxpyvBoRKgF+yz0jO1EpMwYeBXi0J6ExmbNHYD4MBHU8V80o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758865103; c=relaxed/simple;
-	bh=KkD9rL7YGHlVwvQ0Osh0V5e+ZCSLwP1ZFtxpHOBoGdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PHtgPvB4chu5jyqpsVP7Wi0ETOzn7fkHwNvoCLef+O4PG4wAzDk1YCZxWrcjohwfHT17HZFRsleSLCujGsQ4M8DAyFsJ8bOKeSRPqgM5gkH++jM/ZN3y0Ege3tX7Hm5t60Dr54SHZnj1rHophSSlHjEI+tyFQOySoLmFYuwO0hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rPBMwcqE; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1759138745; c=relaxed/simple;
+	bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n1oqvBmLEKdqYyTW0ZJtfIII3lhRdsqRNN+uS4lI5fU2C8qRGIpqR8O6hr4//FJcI3ntVC4sDLPVgZr5tjhymQGetB5qbNlmIFUPyUPg4f4W41QQilCmOZ6NyVdXor5hC8obWcW2UnrbYf43k8TiCkCbAVjeTqyfqITGDZjcABA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjdRWxta; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rPBMwcqE"
-Message-ID: <ae2db4c3-3769-4945-97bc-2407a260886b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758865095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KkD9rL7YGHlVwvQ0Osh0V5e+ZCSLwP1ZFtxpHOBoGdE=;
-	b=rPBMwcqE0ZoiuFdUzLDekJ6XZGa1QzTbhtw7WQI+f6DsBkq5Jxsbk2kF+pxjbMN6RcXAES
-	xksuCplfb+zpTtmaG4g2rGQRuwPrgG0HO1jbNZG2kXqTQBA7VwIw0ZALQhwgbqvv0UkE1s
-	qoh/Dp9VdcT9Y/SLmLftiUvDs4PoBTQ=
-Date: Fri, 26 Sep 2025 13:37:34 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjdRWxta"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F0EC4CEF4;
+	Mon, 29 Sep 2025 09:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759138744;
+	bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IjdRWxtaUXAOawilIoA5EK1zaNWzq8SuG/RGnayTEvvTw8zkBFRbc95h1U8UXOXtI
+	 o+ChdWCOB1cSxsYTmhEnF4EZvWega7fq9Q5hvzFnoW/4vjE2MrI4IG5yeRG/g18Kp8
+	 gvohG7Zo7gpwrczplAyjI1Bsbj7IcC2iEs/HHL3fNdJRECFzrJnxHGS85figtNoTTA
+	 G/sSMaqFdX1Ohy+mgONJzGFTPJ6Tj3xM+34a0qPEkFNl8UKzwfbwSK9qeMto4zgEj3
+	 57f/S1bg5BHZsmE1HoHkUD56LCkL2l6h69d5wjUgsMUnyn3fypZtpxRVJ1itvbpKr3
+	 HiGZLKyS/z25w==
+From: Christian Brauner <brauner@kernel.org>
+To: miklos@szeredi.hu,
+	Joanne Koong <joannelkoong@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	djwong@kernel.org,
+	hch@infradead.org,
+	linux-block@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	kernel-team@meta.com,
+	linux-xfs@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v5 00/14] fuse: use iomap for buffered reads + readahead
+Date: Mon, 29 Sep 2025 11:38:52 +0200
+Message-ID: <20250929-salzbergwerk-ungnade-8a16d724415e@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250926002609.1302233-1-joannelkoong@gmail.com>
+References: <20250926002609.1302233-1-joannelkoong@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH] gfs2: Move i_nlink checks from gfs2_{link,rename,mkdir}
- to VFS layer
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev,
- linux-kernel@vger.kernel.org, Youling Tang <tangyouling@kylinos.cn>
-References: <20250926025604.500713-1-youling.tang@linux.dev>
- <20250926044854.GD39973@ZenIV>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Youling Tang <youling.tang@linux.dev>
-In-Reply-To: <20250926044854.GD39973@ZenIV>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=brauner@kernel.org; h=from:subject:message-id; bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTcCt4U9G+2seCNkLbaHYktsafTZ5w7c6Oz0+SjoPRM9 4sH77rs7ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZhIpjLDb/ZKb+HfvbbTPqW+ 7T4i9pm515tNlnXnxUVa0/f1bd5RNZvhn/WbmlifgLUasz7qfTzIrLqL8UR9ReulTOaO2bv3S8m +ZAcA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On 9/26/25 12:48, Al Viro wrote:
+On Thu, 25 Sep 2025 17:25:55 -0700, Joanne Koong wrote:
+> This series adds fuse iomap support for buffered reads and readahead.
+> This is needed so that granular uptodate tracking can be used in fuse when
+> large folios are enabled so that only the non-uptodate portions of the folio
+> need to be read in instead of having to read in the entire folio. It also is
+> needed in order to turn on large folios for servers that use the writeback
+> cache since otherwise there is a race condition that may lead to data
+> corruption if there is a partial write, then a read and the read happens
+> before the write has undergone writeback, since otherwise the folio will not
+> be marked uptodate from the partial write so the read will read in the entire
+> folio from disk, which will overwrite the partial write.
+> 
+> [...]
 
-> On Fri, Sep 26, 2025 at 10:56:04AM +0800, Youling Tang wrote:
->> From: Youling Tang <tangyouling@kylinos.cn>
->>
->> vfs_{link, rename, mkdir} will check i_nlink. When sb->s_max_links is set,
->> set sb->s_max_links in gfs2 to simplify the code.
-> For gfs2 you are going to run into a problem - link count is not stable until
-> you take gfs2 locks; checks in vfs_link() et.al. will be inevitably racy for
-> cluster filesystems.
+Applied to the vfs-6.19.iomap branch of the vfs/vfs.git tree.
+Patches in the vfs-6.19.iomap branch should appear in linux-next soon.
 
-Thank you for pointing out this important issue. Let's discard this patch.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Thanks,
-Youling.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.19.iomap
+
+[01/14] iomap: move bio read logic into helper function
+        https://git.kernel.org/vfs/vfs/c/4b1f54633425
+[02/14] iomap: move read/readahead bio submission logic into helper function
+        https://git.kernel.org/vfs/vfs/c/22159441469a
+[03/14] iomap: store read/readahead bio generically
+        https://git.kernel.org/vfs/vfs/c/7c732b99c04f
+[04/14] iomap: iterate over folio mapping in iomap_readpage_iter()
+        https://git.kernel.org/vfs/vfs/c/3b404627d3e2
+[05/14] iomap: rename iomap_readpage_iter() to iomap_read_folio_iter()
+        https://git.kernel.org/vfs/vfs/c/bf8b9f4ce6a9
+[06/14] iomap: rename iomap_readpage_ctx struct to iomap_read_folio_ctx
+        https://git.kernel.org/vfs/vfs/c/abea60c60330
+[07/14] iomap: track pending read bytes more optimally
+        https://git.kernel.org/vfs/vfs/c/13cc90f6c38e
+[08/14] iomap: set accurate iter->pos when reading folio ranges
+        https://git.kernel.org/vfs/vfs/c/63adb033604e
+[09/14] iomap: add caller-provided callbacks for read and readahead
+        https://git.kernel.org/vfs/vfs/c/56b6f5d3792b
+[10/14] iomap: move buffered io bio logic into new file
+        https://git.kernel.org/vfs/vfs/c/80cd9857c47f
+[11/14] iomap: make iomap_read_folio() a void return
+        https://git.kernel.org/vfs/vfs/c/434651f1a9b7
+[12/14] fuse: use iomap for read_folio
+        https://git.kernel.org/vfs/vfs/c/12cae30dc565
+[13/14] fuse: use iomap for readahead
+        https://git.kernel.org/vfs/vfs/c/0853f58ed0b4
+[14/14] fuse: remove fc->blkbits workaround for partial writes
+        https://git.kernel.org/vfs/vfs/c/bb944dc82db1
