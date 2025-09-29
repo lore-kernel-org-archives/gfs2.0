@@ -1,115 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E086C2C3250;
-	Mon, 29 Sep 2025 09:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169F3155A25
+	for <gfs2@lists.linux.dev>; Mon, 29 Sep 2025 14:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759138745; cv=none; b=LYpf8COBsB5qmx6M4i7ZMaDyd+lVNHJ0OzFCyZWVzenL8ClbVvwMZh410ywuXRJIghYbBbtHg9buuuWweNh5fZ3MsYpw32mfoT9lEGv0uCjeN/0rrvurgRfHY6DnxpyvBoRKgF+yz0jO1EpMwYeBXi0J6ExmbNHYD4MBHU8V80o=
+	t=1759156879; cv=none; b=kKYSRnoeSsJEPYp4Ui5xYXPHOgEb3NTQdhTJXWOqUmfxjtBocMcxgOmXBskAOtU94ZEzt/tTOcOR94iUTGYZCWMsai+5DSE01O8buyoyR3itwXJy824LIqVjcgtxaHrqHgrBsPnJ8fBWGoB9O0kGEa/1wLrVnJOdZt6nEtpHLtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759138745; c=relaxed/simple;
-	bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n1oqvBmLEKdqYyTW0ZJtfIII3lhRdsqRNN+uS4lI5fU2C8qRGIpqR8O6hr4//FJcI3ntVC4sDLPVgZr5tjhymQGetB5qbNlmIFUPyUPg4f4W41QQilCmOZ6NyVdXor5hC8obWcW2UnrbYf43k8TiCkCbAVjeTqyfqITGDZjcABA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjdRWxta; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759156879; c=relaxed/simple;
+	bh=pAnQQOOIXd2ZwElnUic41CLFzwzbOlUl4FANGhxifLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Q/pa/h3uYGk3YGLpry/K0ukelF3/UJU84KCIrlT6g3AQO6FGyBbtRD3TPn3hPqztjFg977Gzs6GwbePfkCOdopDFFgxUoVJ3NIUmeSTtva0BaFns64FSWNfwGi6WCLUB2ST9OcizItqcpofM/MnntTmNkUye9QdRtXi/Y+nw0CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MltLxlny; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjdRWxta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F0EC4CEF4;
-	Mon, 29 Sep 2025 09:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759138744;
-	bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjdRWxtaUXAOawilIoA5EK1zaNWzq8SuG/RGnayTEvvTw8zkBFRbc95h1U8UXOXtI
-	 o+ChdWCOB1cSxsYTmhEnF4EZvWega7fq9Q5hvzFnoW/4vjE2MrI4IG5yeRG/g18Kp8
-	 gvohG7Zo7gpwrczplAyjI1Bsbj7IcC2iEs/HHL3fNdJRECFzrJnxHGS85figtNoTTA
-	 G/sSMaqFdX1Ohy+mgONJzGFTPJ6Tj3xM+34a0qPEkFNl8UKzwfbwSK9qeMto4zgEj3
-	 57f/S1bg5BHZsmE1HoHkUD56LCkL2l6h69d5wjUgsMUnyn3fypZtpxRVJ1itvbpKr3
-	 HiGZLKyS/z25w==
-From: Christian Brauner <brauner@kernel.org>
-To: miklos@szeredi.hu,
-	Joanne Koong <joannelkoong@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	djwong@kernel.org,
-	hch@infradead.org,
-	linux-block@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-xfs@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH v5 00/14] fuse: use iomap for buffered reads + readahead
-Date: Mon, 29 Sep 2025 11:38:52 +0200
-Message-ID: <20250929-salzbergwerk-ungnade-8a16d724415e@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250926002609.1302233-1-joannelkoong@gmail.com>
-References: <20250926002609.1302233-1-joannelkoong@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MltLxlny"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759156877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=c04heTAl7RQxQsGulCNruMJ6K3Bkn34DaECM68w9sbM=;
+	b=MltLxlnyKJCo4B5RBS590PpDKgRnOnjTdar6S51LPsjLEcJFOiSmEZQG4hCfzuKdk/oemf
+	Mzvro6neKnhqYB+TJGddjENU0BMn9mJKnpBNZCdJpQhnkJm3+Qkl7dSN1BNw2aBkAjEcsD
+	skXN0ODsCWpwPcJVTl6Zbcc54PbMhBY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-o79F5H0TN6u_LRapffCU2A-1; Mon,
+ 29 Sep 2025 10:41:12 -0400
+X-MC-Unique: o79F5H0TN6u_LRapffCU2A-1
+X-Mimecast-MFC-AGG-ID: o79F5H0TN6u_LRapffCU2A_1759156871
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5292318002C2;
+	Mon, 29 Sep 2025 14:41:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.81.226])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D7531800576;
+	Mon, 29 Sep 2025 14:41:10 +0000 (UTC)
+Date: Mon, 29 Sep 2025 09:41:07 -0500
+From: David Teigland <teigland@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: [GIT PULL] dlm updates for 6.18
+Message-ID: <aNqag0RIXLcG5BH3@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=brauner@kernel.org; h=from:subject:message-id; bh=oug/PLMLLW7/ZVdQh5G7ABppQ7HlQRSRolzg1A9Qm7s=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTcCt4U9G+2seCNkLbaHYktsafTZ5w7c6Oz0+SjoPRM9 4sH77rs7ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZhIpjLDb/ZKb+HfvbbTPqW+ 7T4i9pm515tNlnXnxUVa0/f1bd5RNZvhn/WbmlifgLUasz7qfTzIrLqL8UR9ReulTOaO2bv3S8m +ZAcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, 25 Sep 2025 17:25:55 -0700, Joanne Koong wrote:
-> This series adds fuse iomap support for buffered reads and readahead.
-> This is needed so that granular uptodate tracking can be used in fuse when
-> large folios are enabled so that only the non-uptodate portions of the folio
-> need to be read in instead of having to read in the entire folio. It also is
-> needed in order to turn on large folios for servers that use the writeback
-> cache since otherwise there is a race condition that may lead to data
-> corruption if there is a partial write, then a read and the read happens
-> before the write has undergone writeback, since otherwise the folio will not
-> be marked uptodate from the partial write so the read will read in the entire
-> folio from disk, which will overwrite the partial write.
-> 
-> [...]
+Hi Linus,
 
-Applied to the vfs-6.19.iomap branch of the vfs/vfs.git tree.
-Patches in the vfs-6.19.iomap branch should appear in linux-next soon.
+Please pull dlm updates from tag:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-6.18
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+This set of patches add a dlm_release_lockspace() flag to request that
+node-failure recovery be performed for the node leaving the lockspace.
+The implementation of this flag requires coordination with userland
+clustering components.  It's been requested for use by GFS2.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Thanks,
+Dave
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.19.iomap
+Alexander Aring (9):
+      dlm: check for defined force value in dlm_lockspace_release
+      dlm: use defines for force values in dlm_release_lockspace
+      dlm: add new RELEASE_RECOVER uevent attribute for release_lockspace
+      dlm: add new configfs entry release_recover for lockspace members
+      dlm: add new flag DLM_RELEASE_RECOVER for dlm_lockspace_release
+      dlm: handle invalid lockspace member remove
+      dlm: move to rinfo for all middle conversion cases
+      dlm: handle release_option as unsigned
+      dlm: check for undefined release_option values
 
-[01/14] iomap: move bio read logic into helper function
-        https://git.kernel.org/vfs/vfs/c/4b1f54633425
-[02/14] iomap: move read/readahead bio submission logic into helper function
-        https://git.kernel.org/vfs/vfs/c/22159441469a
-[03/14] iomap: store read/readahead bio generically
-        https://git.kernel.org/vfs/vfs/c/7c732b99c04f
-[04/14] iomap: iterate over folio mapping in iomap_readpage_iter()
-        https://git.kernel.org/vfs/vfs/c/3b404627d3e2
-[05/14] iomap: rename iomap_readpage_iter() to iomap_read_folio_iter()
-        https://git.kernel.org/vfs/vfs/c/bf8b9f4ce6a9
-[06/14] iomap: rename iomap_readpage_ctx struct to iomap_read_folio_ctx
-        https://git.kernel.org/vfs/vfs/c/abea60c60330
-[07/14] iomap: track pending read bytes more optimally
-        https://git.kernel.org/vfs/vfs/c/13cc90f6c38e
-[08/14] iomap: set accurate iter->pos when reading folio ranges
-        https://git.kernel.org/vfs/vfs/c/63adb033604e
-[09/14] iomap: add caller-provided callbacks for read and readahead
-        https://git.kernel.org/vfs/vfs/c/56b6f5d3792b
-[10/14] iomap: move buffered io bio logic into new file
-        https://git.kernel.org/vfs/vfs/c/80cd9857c47f
-[11/14] iomap: make iomap_read_folio() a void return
-        https://git.kernel.org/vfs/vfs/c/434651f1a9b7
-[12/14] fuse: use iomap for read_folio
-        https://git.kernel.org/vfs/vfs/c/12cae30dc565
-[13/14] fuse: use iomap for readahead
-        https://git.kernel.org/vfs/vfs/c/0853f58ed0b4
-[14/14] fuse: remove fc->blkbits workaround for partial writes
-        https://git.kernel.org/vfs/vfs/c/bb944dc82db1
+ drivers/md/md-cluster.c |  4 ++--
+ fs/dlm/config.c         | 64 +++++++++++++++++++++++++++++++++++++++++++++++--
+ fs/dlm/config.h         |  2 ++
+ fs/dlm/lock.c           |  2 +-
+ fs/dlm/lockspace.c      | 46 +++++++++++++++++++----------------
+ fs/dlm/member.c         | 27 ++++++++++++++++-----
+ fs/dlm/recover.c        |  2 +-
+ fs/dlm/user.c           |  6 ++---
+ fs/gfs2/lock_dlm.c      |  4 ++--
+ fs/ocfs2/stack_user.c   |  2 +-
+ include/linux/dlm.h     | 33 ++++++++++++++++++++++++-
+ 11 files changed, 153 insertions(+), 39 deletions(-)
+
