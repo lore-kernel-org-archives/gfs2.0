@@ -1,277 +1,252 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD167258CD0
-	for <gfs2@lists.linux.dev>; Mon, 13 Oct 2025 07:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847E231197B
+	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760341892; cv=none; b=fPWHl73X7toZCitnJylgapo7DKQ18noyN+enT1Y/VNfz6fiydzGRNcPDT2AjU8mWwcBCb7oHVeiZeTBH508EKCGQMw+tykWL5WmxHr+Idmf5KF2rm7bUERAQJAI+mlWBnBW5TttPVVyFXT3O9ukTTAWrubXHTycTP7E3po8toJ4=
+	t=1760443813; cv=none; b=s01tVZsaouqR2m9T4/FIU8SO//afvaxpKUOaUuM1FoPMjYICDXnzW8aMOuV4TuZeDoM1QvLCJ74P3nJRJX1PbvFwjAoyIg6XrGFaOFRRmpazDkBQT7ZzKY61jxtJFLuPrF19qzcN6T/FM1h1yRWhMOdOCjxr2JIy1LZrh10XFd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760341892; c=relaxed/simple;
-	bh=X9ceQgcSnelRUPty+/4AzhoxtRG8+59uauMOTKOYnfI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=m/m/jCLFnL2TEpIUzIFOkES6lgqppnG71kaKnUZAsJuaFWxqoxmr4kaNuxGgkOsZeEgGSLM9XegT+yB7/XWTeKcboXk0jaxRM6/0OcXtxZhFQF8Tegoi+5Q6mUkU1EOVSNPiU8oDHN4KuPZVV72K/ajKhZ+5wAylWyTZP9Mzy2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-90f6e3cd204so1080167139f.2
-        for <gfs2@lists.linux.dev>; Mon, 13 Oct 2025 00:51:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760341890; x=1760946690;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bRT37qVlM5legiXX59icR0BLG47YnKdx9cridyyZbFA=;
-        b=WZqVtP2B5X8yuZOzXMUMPuztVJDaeZzWvZqqv3U8q9/zh8/46p4Kwre8KSnFxEPfrg
-         BXT8gTnfp5jYbNRWtqsX3n+TMKOAXCS77S5OeCR+TxNmTGcjWZ63TKuCtM1RkfgosqHi
-         nno40uDD8aarj8gzju9Ks9SKTOR5u18u6tQJNgLaetGUk86QyjJaqKM/4G2u26tHcIkD
-         dS+Uu8849vCbrSP+sPqKWrBToCofD12/uZh22UW2XVtmwq+giRY1UiJLrDE+6vjzFq9Q
-         9Xw5FKf3knLEMVwhm93fm7pJTqPmbaazqZpWFVkvuzg30vQI9m+tJrO+Treq2xiJ1DAb
-         lcxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrkBnWyJ+KUNxt2dK5WMRxMJgXy/213pB0KIn9qpcY1Q9ejE/oCenYYw8IYLi/DQ5qbsnR@lists.linux.dev
-X-Gm-Message-State: AOJu0YzB3xUtdtaGx5grVNPhih0xbxOtzGHXWAFbEZ8cPu0W73peTyzS
-	LpgnH5uD7x9+d8fhWEyyJN8crz2rQp2k4mH8Lve8yOXVsDr7N757ZafBgfYPJt9VR+QyzXMRQg6
-	rX7Uc6rizeO29OV+jz75aL0VznE3MuMMT+O9zIMu/UJwg1+xYResTClf9HKo=
-X-Google-Smtp-Source: AGHT+IHEeSX0Ane9Za6Sc+5eBeRTADw4/dDhcYK08MerVwy+fHAcezaTgOBi9ngecWMAlVQIFdvGq8br2TCfbTlMTQUwdjQ1ayvq
+	s=arc-20240116; t=1760443813; c=relaxed/simple;
+	bh=XLt1OQt5Z1A41rsu1zAu6iZKvY4alVXJiJaXxvwT/rY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=MigEqMHTnELtTzw7M2eMbkX5qEoK9y8/OPJjKhi/m+rBYAxX+C3L83qXgdB75hP2wNSTPA0XeviLsOpjAWB37S32mKkoD+h5WlZKFk+eWQdoemM/Fg8yGPR9bfLsPMMAFdrWlUXMREJN2Dl/Iv7VWmt1AR3d16O8jFqdHTv3goc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=GRcgBlLY; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="GRcgBlLY"
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251014121001epoutp038dc64461c5ee6c5456ab25df810b86e3~uWk9kC8wZ0652206522epoutp03D
+	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:01 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251014121001epoutp038dc64461c5ee6c5456ab25df810b86e3~uWk9kC8wZ0652206522epoutp03D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760443801;
+	bh=7WbTo3b87TcBxeQcwDkocdqHlwUoY6jjO0nBtSk6L5U=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=GRcgBlLYxNu87I3PvSMG6Dx4PrFFyrG/RwaZ+XidMJv3bxIM44VDHh+QVtLc5Pw9C
+	 GiGm5dW8gvNVYONT8gjs7Xd1iA/+vWtfqSMcuDuW8Q4aj04aU7i1BMiFKRToOouOQs
+	 hlA59dPlHXulx17FxQl9mpUdsD33M3kevmK8n1nU=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20251014121000epcas5p370ee92deffaec925758512149fbf2723~uWk81_YMw2693726937epcas5p3q;
+	Tue, 14 Oct 2025 12:10:00 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.87]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4cmChR48YXz3hhTB; Tue, 14 Oct
+	2025 12:09:59 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9~uWk7KDAhS1888418884epcas5p2o;
+	Tue, 14 Oct 2025 12:09:58 +0000 (GMT)
+Received: from localhost.localdomain (unknown [107.99.41.245]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251014120942epsmtip1ad7d573cabebcfc48960eafa87bdb869~uWkscrJqS1240212402epsmtip1J;
+	Tue, 14 Oct 2025 12:09:42 +0000 (GMT)
+From: Kundan Kumar <kundan.kumar@samsung.com>
+To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
+	djwong@kernel.org, dave@stgolabs.net, wangyufei@vivo.com
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+	gost.dev@samsung.com, kundan.kumar@samsung.com, anuj20.g@samsung.com,
+	vishak.g@samsung.com, joshi.k@samsung.com
+Subject: [PATCH v2 00/16] Parallelizing filesystem writeback
+Date: Tue, 14 Oct 2025 17:38:29 +0530
+Message-Id: <20251014120845.2361-1-kundan.kumar@samsung.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6b08:b0:93b:b799:460b with SMTP id
- ca18e2360f4ac-93bd1831b33mr2409935839f.3.1760341889912; Mon, 13 Oct 2025
- 00:51:29 -0700 (PDT)
-Date: Mon, 13 Oct 2025 00:51:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68ecaf81.050a0220.91a22.01e1.GAE@google.com>
-Subject: [syzbot] [gfs2?] possible deadlock in gfs2_trans_begin (2)
-From: syzbot <syzbot+68c035f26b00b18d07d1@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9
+References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
 
-Hello,
+Currently, pagecache writeback is performed by a single thread. Inodes
+are added to a dirty list, and delayed writeback is triggered. The single
+writeback thread then iterates through the dirty inode list, and executes
+the writeback.
 
-syzbot found the following issue on:
+This series parallelizes the writeback by allowing multiple writeback
+contexts per backing device (bdi). These writeback contexts are executed
+as separate, independent threads, improving overall parallelism. Inodes
+are distributed to these threads and are flushed in parallel.
 
-HEAD commit:    cd5a0afbdf80 Merge tag 'mailbox-v6.18' of git://git.kernel..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14d3852f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5b213914b883d014
-dashboard link: https://syzkaller.appspot.com/bug?extid=68c035f26b00b18d07d1
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+This patchset applies cleanly on v6.17 kernel.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Design Overview
+================
+Following Jan Kara's suggestion [1], we have introduced a new bdi
+writeback context within the backing_dev_info structure. Specifically,
+we have created a new structure, bdi_writeback_context, which contains
+its own set of members for each writeback context.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-cd5a0afb.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/67f9eda6483e/vmlinux-cd5a0afb.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/5368c61451e5/bzImage-cd5a0afb.xz
+struct bdi_writeback_ctx {
+        struct bdi_writeback wb;
+        struct list_head wb_list; /* list of all wbs */
+        struct radix_tree_root cgwb_tree;
+        struct rw_semaphore wb_switch_rwsem;
+        wait_queue_head_t wb_waitq;
+};
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+68c035f26b00b18d07d1@syzkaller.appspotmail.com
+There can be multiple writeback contexts in a bdi, which helps in
+achieving writeback parallelism.
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-kswapd0/78 is trying to acquire lock:
-ffff8880332bc610 (sb_internal#2){.+.+}-{0:0}, at: gfs2_trans_begin+0x6f/0xe0 fs/gfs2/trans.c:118
+struct backing_dev_info {
+...
+        int nr_wb_ctx;
+        struct bdi_writeback_ctx **wb_ctx;
+...
+};
 
-but task is already holding lock:
-ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:7015 [inline]
-ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0x951/0x2800 mm/vmscan.c:7389
+FS geometry and filesystem fragmentation
+========================================
+The community was concerned that parallelizing writeback would impact
+delayed allocation and increase filesystem fragmentation.
+Our analysis of XFS delayed allocation behavior showed that merging of
+extents occurs within a specific inode. Earlier experiments with multiple
+writeback contexts [2] resulted in increased fragmentation due to the
+same inode being processed by different threads.
 
-which lock already depends on the new lock.
+To mitigate this issue, we ensure that an inode is always associated
+with a specific writeback context, allowing delayed allocation to
+function effectively.
 
+Number of writeback contexts
+============================
+We've implemented two interfaces to manage the number of writeback
+contexts:
+1) Sysfs Interface: As suggested by Christoph, we've added a sysfs
+   interface to allow users to adjust the number of writeback contexts
+   dynamically.
+2) Filesystem Superblock Interface: We've also introduced a filesystem
+   superblock interface to retrieve the filesystem-specific number of
+   writeback contexts. For XFS, this count is set equal to the
+   allocation group count. When mounting a filesystem, we automatically
+   increase the number of writeback threads to match this count.
 
-the existing dependency chain (in reverse order) is:
+Resolving the Issue with Multiple Writebacks
+============================================
+For XFS, affining inodes to writeback threads resulted in a decline
+in IOPS for certain devices. The issue was caused by AG lock contention
+in xfs_end_io, where multiple writeback threads competed for the same
+AG lock.
+To address this, we now affine writeback threads to the allocation
+group, resolving the contention issue. In best case allocation happens
+from the same AG where inode metadata resides, avoiding lock contention.
 
--> #3 (fs_reclaim){+.+.}-{0:0}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       __fs_reclaim_acquire mm/page_alloc.c:4269 [inline]
-       fs_reclaim_acquire+0x72/0x100 mm/page_alloc.c:4283
-       might_alloc include/linux/sched/mm.h:318 [inline]
-       prepare_alloc_pages+0x153/0x610 mm/page_alloc.c:4951
-       __alloc_frozen_pages_noprof+0x123/0x370 mm/page_alloc.c:5172
-       alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
-       alloc_frozen_pages_noprof mm/mempolicy.c:2487 [inline]
-       alloc_pages_noprof+0xa9/0x190 mm/mempolicy.c:2507
-       folio_alloc_noprof+0x1e/0x30 mm/mempolicy.c:2517
-       filemap_alloc_folio_noprof+0xdf/0x470 mm/filemap.c:1020
-       __filemap_get_folio+0x3f2/0xaf0 mm/filemap.c:2012
-       filemap_grab_folio include/linux/pagemap.h:838 [inline]
-       gfs2_unstuff_dinode+0xe8/0x1320 fs/gfs2/bmap.c:162
-       gfs2_iomap_begin_write fs/gfs2/bmap.c:1059 [inline]
-       gfs2_iomap_begin+0x9a7/0x11c0 fs/gfs2/bmap.c:1133
-       iomap_iter+0x534/0xde0 fs/iomap/iter.c:108
-       iomap_file_buffered_write+0x207/0x9b0 fs/iomap/buffered-io.c:1070
-       gfs2_file_buffered_write+0x4ed/0x880 fs/gfs2/file.c:1061
-       gfs2_file_write_iter+0x94e/0x1100 fs/gfs2/file.c:1166
-       new_sync_write fs/read_write.c:593 [inline]
-       vfs_write+0x5c6/0xb30 fs/read_write.c:686
-       ksys_write+0x145/0x250 fs/read_write.c:738
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Similar IOPS decline was observed with other filesystems under different
+workloads. To avoid similar issues, we have decided to limit
+parallelism to XFS only. Other filesystems can introduce parallelism
+and distribute inodes as per their geometry.
 
--> #2 (&ip->i_rw_mutex){++++}-{4:4}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       gfs2_unstuff_dinode+0x9d/0x1320 fs/gfs2/bmap.c:161
-       gfs2_iomap_begin_write fs/gfs2/bmap.c:1059 [inline]
-       gfs2_iomap_begin+0x9a7/0x11c0 fs/gfs2/bmap.c:1133
-       iomap_iter+0x534/0xde0 fs/iomap/iter.c:108
-       iomap_file_buffered_write+0x207/0x9b0 fs/iomap/buffered-io.c:1070
-       gfs2_file_buffered_write+0x4ed/0x880 fs/gfs2/file.c:1061
-       gfs2_file_write_iter+0x94e/0x1100 fs/gfs2/file.c:1166
-       new_sync_write fs/read_write.c:593 [inline]
-       vfs_write+0x5c6/0xb30 fs/read_write.c:686
-       ksys_write+0x145/0x250 fs/read_write.c:738
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+IOPS and throughput
+===================
+With the affinity to allocation group we see significant improvement in
+XFS when we write to multiple files in different directories(AGs).
 
--> #1 (&sdp->sd_log_flush_lock){++++}-{4:4}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_read+0x46/0x2e0 kernel/locking/rwsem.c:1537
-       __gfs2_trans_begin+0x515/0x890 fs/gfs2/trans.c:87
-       gfs2_trans_begin+0x6f/0xe0 fs/gfs2/trans.c:118
-       alloc_dinode+0x1e7/0x550 fs/gfs2/inode.c:418
-       gfs2_create_inode+0xbbc/0x1560 fs/gfs2/inode.c:807
-       gfs2_atomic_open+0x116/0x200 fs/gfs2/inode.c:1387
-       atomic_open fs/namei.c:3656 [inline]
-       lookup_open fs/namei.c:3767 [inline]
-       open_last_lookups fs/namei.c:3895 [inline]
-       path_openat+0xf63/0x3830 fs/namei.c:4131
-       do_filp_open+0x1fa/0x410 fs/namei.c:4161
-       do_sys_openat2+0x121/0x1c0 fs/open.c:1437
-       do_sys_open fs/open.c:1452 [inline]
-       __do_sys_openat fs/open.c:1468 [inline]
-       __se_sys_openat fs/open.c:1463 [inline]
-       __x64_sys_openat+0x138/0x170 fs/open.c:1463
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Performance gains:
+  A) Workload 12 files each of 1G in 12 directories(AGs) - numjobs = 12
+    - NVMe device BM1743 SSD
+        Base XFS                : 243 MiB/s
+        Parallel Writeback XFS  : 759 MiB/s  (+212%)
 
--> #0 (sb_internal#2){.+.+}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
-       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
-       __sb_start_write include/linux/fs.h:1916 [inline]
-       sb_start_intwrite include/linux/fs.h:2099 [inline]
-       __gfs2_trans_begin+0x42a/0x890 fs/gfs2/trans.c:76
-       gfs2_trans_begin+0x6f/0xe0 fs/gfs2/trans.c:118
-       gfs2_dirty_inode+0x3cb/0x600 fs/gfs2/super.c:508
-       __mark_inode_dirty+0x2ec/0xe10 fs/fs-writeback.c:2566
-       mark_inode_dirty_sync include/linux/fs.h:2619 [inline]
-       iput+0x381/0xc50 fs/inode.c:1947
-       __dentry_kill+0x209/0x660 fs/dcache.c:669
-       shrink_kill+0xa9/0x2c0 fs/dcache.c:1114
-       shrink_dentry_list+0x2e0/0x5e0 fs/dcache.c:1141
-       prune_dcache_sb+0x10e/0x180 fs/dcache.c:1222
-       super_cache_scan+0x369/0x4b0 fs/super.c:222
-       do_shrink_slab+0x6ec/0x1110 mm/shrinker.c:437
-       shrink_slab_memcg mm/shrinker.c:550 [inline]
-       shrink_slab+0x7ef/0x10d0 mm/shrinker.c:628
-       shrink_one+0x28a/0x7c0 mm/vmscan.c:4955
-       shrink_many mm/vmscan.c:5016 [inline]
-       lru_gen_shrink_node mm/vmscan.c:5094 [inline]
-       shrink_node+0x315d/0x3780 mm/vmscan.c:6081
-       kswapd_shrink_node mm/vmscan.c:6941 [inline]
-       balance_pgdat mm/vmscan.c:7124 [inline]
-       kswapd+0x147c/0x2800 mm/vmscan.c:7389
-       kthread+0x711/0x8a0 kernel/kthread.c:463
-       ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+    - NVMe device PM9A3 SSD
+        Base XFS                : 368 MiB/s
+        Parallel Writeback XFS  : 1634 MiB/s  (+344%)
 
-other info that might help us debug this:
+  B) Workload 6 files each of 20G in 6 directories(AGs)  - numjobs = 6
+    - NVMe device BM1743 SSD
+        Base XFS                : 305 MiB/s
+        Parallel Writeback XFS  : 706 MiB/s  (+131%)
 
-Chain exists of:
-  sb_internal#2 --> &ip->i_rw_mutex --> fs_reclaim
+    - NVMe device PM9A3 SSD
+        Base XFS                : 315 MiB/s
+        Parallel Writeback XFS  : 990 MiB/s  (+214%)
 
- Possible unsafe locking scenario:
+Filesystem fragmentation
+========================
+We also see that there is no increase in filesystem fragmentation
+Number of extents per file:
+  A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
+        Base XFS                : 17
+        Parallel Writeback XFS  : 17
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(fs_reclaim);
-                               lock(&ip->i_rw_mutex);
-                               lock(fs_reclaim);
-  rlock(sb_internal#2);
+  B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
+        Base XFS                : 166593
+        Parallel Writeback XFS  : 161554
 
- *** DEADLOCK ***
+  C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
+        Base XFS                : 3173716
+        Parallel Writeback XFS  : 3364984
 
-2 locks held by kswapd0/78:
- #0: ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:7015 [inline]
- #0: ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0x951/0x2800 mm/vmscan.c:7389
- #1: ffff8880332bc0e0 (&type->s_umount_key#50){.+.+}-{4:4}, at: super_trylock_shared fs/super.c:562 [inline]
- #1: ffff8880332bc0e0 (&type->s_umount_key#50){.+.+}-{4:4}, at: super_cache_scan+0x91/0x4b0 fs/super.c:197
+Testing using kdevops
+=====================
+1. fstests passed for XFS all profiles.
+2. fstests passed for EXT4 and BTRFS also, these were tested for sanity.
 
-stack backtrace:
-CPU: 0 UID: 0 PID: 78 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
- check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
- percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
- __sb_start_write include/linux/fs.h:1916 [inline]
- sb_start_intwrite include/linux/fs.h:2099 [inline]
- __gfs2_trans_begin+0x42a/0x890 fs/gfs2/trans.c:76
- gfs2_trans_begin+0x6f/0xe0 fs/gfs2/trans.c:118
- gfs2_dirty_inode+0x3cb/0x600 fs/gfs2/super.c:508
- __mark_inode_dirty+0x2ec/0xe10 fs/fs-writeback.c:2566
- mark_inode_dirty_sync include/linux/fs.h:2619 [inline]
- iput+0x381/0xc50 fs/inode.c:1947
- __dentry_kill+0x209/0x660 fs/dcache.c:669
- shrink_kill+0xa9/0x2c0 fs/dcache.c:1114
- shrink_dentry_list+0x2e0/0x5e0 fs/dcache.c:1141
- prune_dcache_sb+0x10e/0x180 fs/dcache.c:1222
- super_cache_scan+0x369/0x4b0 fs/super.c:222
- do_shrink_slab+0x6ec/0x1110 mm/shrinker.c:437
- shrink_slab_memcg mm/shrinker.c:550 [inline]
- shrink_slab+0x7ef/0x10d0 mm/shrinker.c:628
- shrink_one+0x28a/0x7c0 mm/vmscan.c:4955
- shrink_many mm/vmscan.c:5016 [inline]
- lru_gen_shrink_node mm/vmscan.c:5094 [inline]
- shrink_node+0x315d/0x3780 mm/vmscan.c:6081
- kswapd_shrink_node mm/vmscan.c:6941 [inline]
- balance_pgdat mm/vmscan.c:7124 [inline]
- kswapd+0x147c/0x2800 mm/vmscan.c:7389
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Changes since v1:
+ - Parallel writeback enabled for XFS only for optimal performance
+ - Made writeback threads affined to allocation groups
+ - Increase the number of writebacks threads to AG count at mount
+ - Added sysfs entry to change the number of writebacks for a
+   bdi(Christoph)
+ - Added a filesystem interface to fetch 64 bit inode numbers (Christoph)
+ - Made common helpers to contain writeback specific changes, which were
+   affecting f2fs, fuse, gfs2 and nfs (Christoph)
+ - Changed name from wb_ctx_arr to wb_ctx (Andrew Morton)
 
+Kundan Kumar (16):
+  writeback: add infra for parallel writeback
+  writeback: add support to initialize and free multiple writeback ctxs
+  writeback: link bdi_writeback to its corresponding bdi_writeback_ctx
+  writeback: affine inode to a writeback ctx within a bdi
+  writeback: modify bdi_writeback search logic to search across all wb
+    ctxs
+  writeback: invoke all writeback contexts for flusher and dirtytime
+    writeback
+  writeback: modify sync related functions to iterate over all writeback
+    contexts
+  writeback: add support to collect stats for all writeback ctxs
+  f2fs: add support in f2fs to handle multiple writeback contexts
+  fuse: add support for multiple writeback contexts in fuse
+  gfs2: add support in gfs2 to handle multiple writeback contexts
+  nfs: add support in nfs to handle multiple writeback contexts
+  writeback: configure the num of writeback contexts between 0 and
+    number of online cpus
+  writeback: segregated allocation and free of writeback contexts
+  writeback: added support to change the number of writebacks using a
+    sysfs attribute
+  writeback: added XFS support for matching writeback count to
+    allocation group count
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/f2fs/node.c                   |   4 +-
+ fs/f2fs/segment.h                |   2 +-
+ fs/fs-writeback.c                | 148 +++++++----
+ fs/fuse/file.c                   |   7 +-
+ fs/gfs2/super.c                  |   2 +-
+ fs/nfs/internal.h                |   2 +-
+ fs/nfs/write.c                   |   4 +-
+ fs/super.c                       |  23 ++
+ fs/xfs/xfs_super.c               |  15 ++
+ include/linux/backing-dev-defs.h |  32 ++-
+ include/linux/backing-dev.h      |  79 +++++-
+ include/linux/fs.h               |   3 +-
+ mm/backing-dev.c                 | 412 +++++++++++++++++++++++++------
+ mm/page-writeback.c              |  13 +-
+ 14 files changed, 581 insertions(+), 165 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-- 
+2.25.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
