@@ -1,47 +1,47 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ED53126CF
-	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02796312838
+	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760443838; cv=none; b=n0LWGHlmyfoe1PiOC03sFdP43tDSZxmX36rd1C7+lLJdjiLhdcalGV/BJ3f06q5qUH3t/sGZQPiLRVR4PY/m3+9Wq/sx+LITrevG3XqvQfuSSf9OY2iKhY0CpQ5wJPdZQk8qhkepwECWZROqYW91W2CjcxqPjC246zKGPFdST9U=
+	t=1760443843; cv=none; b=hYjNwDeqq8L4IEIQk+/rOcpNcfSYkqe6tICRzEC8MFhDSG0MyT/zYvT0wofchQYbLi4A7E6fTTc9z6zybUCl5Qn+ZzOK9mB8gLGhocwzqgQ2NcaSq2R8uXF6rOS+GcDcXQiGo2rbAWvIbMLi8ry1wkAkxc2i2lh1V4PX77TeWOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760443838; c=relaxed/simple;
-	bh=4ORzJnEQGYKZ9ZxMzHBMT5zCM8yCtm2WkXJN2Nefab8=;
+	s=arc-20240116; t=1760443843; c=relaxed/simple;
+	bh=ldxgAyj9/VqFwMSe3xT93eZXRlJRqfwdk2Rwfgr5R/8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=AfWIwTwXvR1pfb12HR0VCPCpmx/cuExAaIM1ZVhieQubJFLEhgiZ7SE1kxrtlQDnSlpr3XEWr/sf2MW0sYgMLLPIwAOXUdpifzMje4evc602lzCkLpmqPueiBp57a0yhb4qzz4vyb8Evj5RhDHi/E2OWlIwgVhm9liQmqAYAc/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ThcGvJtD; arc=none smtp.client-ip=203.254.224.34
+	 Content-Type:References; b=pnd1bdAWiIrkNR5l3Xzf3/ot5MBbnFB75thPDceUdGmU4vKa+z4eUJuYjt/7eaIb+bytM/JfgQCf7fAs8/FuYWWw8wqvNHtxecTO7xRZO/xxkd/MFblacxckygd9jOty0h5KJ3839tQsHkS8nzGqHiOHRZ8wJ5NTB7fb3/FBZ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=W05Y14re; arc=none smtp.client-ip=203.254.224.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ThcGvJtD"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="W05Y14re"
 Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20251014121028epoutp04965090884b1d41ef7ffc1c637974a9bd~uWlW1hyyh0942109421epoutp04B
-	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20251014121028epoutp04965090884b1d41ef7ffc1c637974a9bd~uWlW1hyyh0942109421epoutp04B
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251014121034epoutp023fbcd0be893b8b66c0e93f4f654d51a2~uWlb-mqF82398023980epoutp02M
+	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:10:34 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251014121034epoutp023fbcd0be893b8b66c0e93f4f654d51a2~uWlb-mqF82398023980epoutp02M
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760443828;
-	bh=7Fpri/DmmIz0lhNfmDYWM4M9dqrldIQivF7NvztYdbQ=;
+	s=mail20170921; t=1760443834;
+	bh=rKJH8bwqA59RYOc+B5sM49aSVlRkW4PvNX4CEB13cCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThcGvJtDjMZOIP5h5Rwuk+Tgmz1tWjYMn1kCPySidm5U6ktLxw/wJlnGFhn2OKj5q
-	 T5/A2RWR+c5cI7n2Uq954TnJU6r3k5/eX3HkXfraM4fdC59SCj3Cqr1Vqgf/KUrjnq
-	 jsUwUrc9gm7BZvfZ4zO8CA3lHIscLOzTXdt3kHPg=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20251014121027epcas5p2be9b795d75fcf8516e4e7d26e5044fca~uWlWT01iz1631916319epcas5p2m;
-	Tue, 14 Oct 2025 12:10:27 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.91]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4cmChy70jsz6B9m6; Tue, 14 Oct
-	2025 12:10:26 +0000 (GMT)
+	b=W05Y14rePZ8RFgXUzU42idAHG2tHyqnxyTHEGnyOuTLnJCR/PBRpmpxJAYeWIdafb
+	 wDeLhW0PSZ/QiE4Za8cKFfPoUyj6W/ieVWNi+AasoDHJtSKXrhQXMrBrzXsJ31gnd4
+	 J5rZ2dJ/Xi23b+2H3bT+d4wVB81A2+1H8pW1F1c4=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20251014121033epcas5p1d8391adbcd15cb4c8848b8cb66b6cfeb~uWlbWfGcV0673806738epcas5p1Z;
+	Tue, 14 Oct 2025 12:10:33 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.90]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4cmCj42h5Qz6B9mF; Tue, 14 Oct
+	2025 12:10:32 +0000 (GMT)
 Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121026epcas5p1aecefead887a6b4b6745cca0519d1092~uWlU6QPmR0760907609epcas5p18;
-	Tue, 14 Oct 2025 12:10:26 +0000 (GMT)
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0~uWlZtq5xY0650006500epcas5p33;
+	Tue, 14 Oct 2025 12:10:31 +0000 (GMT)
 Received: from localhost.localdomain (unknown [107.99.41.245]) by
 	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121021epsmtip1a54fa06a954b7223466d190130d994e5~uWlP9AoTA1188911889epsmtip1i;
-	Tue, 14 Oct 2025 12:10:20 +0000 (GMT)
+	20251014121026epsmtip1b892e5a7d3af784888e5b4d33982dd8f~uWlVOMbrO1256112561epsmtip1n;
+	Tue, 14 Oct 2025 12:10:26 +0000 (GMT)
 From: Kundan Kumar <kundan.kumar@samsung.com>
 To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
 	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
@@ -53,10 +53,10 @@ Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
 	gost.dev@samsung.com, kundan.kumar@samsung.com, anuj20.g@samsung.com,
 	vishak.g@samsung.com, joshi.k@samsung.com
-Subject: [PATCH v2 03/16] writeback: link bdi_writeback to its corresponding
- bdi_writeback_ctx
-Date: Tue, 14 Oct 2025 17:38:32 +0530
-Message-Id: <20251014120845.2361-4-kundan.kumar@samsung.com>
+Subject: [PATCH v2 04/16] writeback: affine inode to a writeback ctx within
+ a bdi
+Date: Tue, 14 Oct 2025 17:38:33 +0530
+Message-Id: <20251014120845.2361-5-kundan.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
 Precedence: bulk
@@ -66,76 +66,127 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251014121026epcas5p1aecefead887a6b4b6745cca0519d1092
+X-CMS-MailID: 20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-542,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251014121026epcas5p1aecefead887a6b4b6745cca0519d1092
+X-CMS-RootMailID: 20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0
 References: <20251014120845.2361-1-kundan.kumar@samsung.com>
-	<CGME20251014121026epcas5p1aecefead887a6b4b6745cca0519d1092@epcas5p1.samsung.com>
+	<CGME20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0@epcas5p3.samsung.com>
 
-Introduce a bdi_writeback_ctx field in bdi_writeback. This helps in
-fetching the writeback context from the bdi_writeback.
+Affine inode to a writeback context. This helps in minimizing the
+filesytem fragmentation due to inode being processed by different
+threads.
 
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+To support parallel writeback, wire up a new superblock operation
+get_inode_wb_ctx(). Filesystems can override this callback and select
+desired writeback context for a inode. FS can use the wb context based
+on its geometry and also use 64 bit inode numbers.
+
+If a filesystem doesn't implement this callback, it defaults to
+DEFALT_WB_CTX = 0, maintaining its original behavior.
+
+An example implementation for XFS is provided, where XFS selects the
+writeback context based on its Allocation Group number.
+
 Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
 ---
- mm/backing-dev.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/fs-writeback.c           |  3 ++-
+ fs/xfs/xfs_super.c          | 13 +++++++++++++
+ include/linux/backing-dev.h |  5 ++++-
+ include/linux/fs.h          |  1 +
+ 4 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 47196d326e16..754f2f6c6d7c 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -513,15 +513,16 @@ static void wb_update_bandwidth_workfn(struct work_struct *work)
-  */
- #define INIT_BW		(100 << (20 - PAGE_SHIFT))
- 
--static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,
--		   gfp_t gfp)
-+static int wb_init(struct bdi_writeback *wb,
-+		   struct bdi_writeback_ctx *bdi_wb_ctx,
-+		   struct backing_dev_info *bdi, gfp_t gfp)
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 0715a7617391..56c048e22f72 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -265,7 +265,8 @@ void __inode_attach_wb(struct inode *inode, struct folio *folio)
  {
- 	int err;
+ 	struct backing_dev_info *bdi = inode_to_bdi(inode);
+ 	struct bdi_writeback *wb = NULL;
+-	struct bdi_writeback_ctx *bdi_writeback_ctx = bdi->wb_ctx[0];
++	struct bdi_writeback_ctx *bdi_writeback_ctx =
++						fetch_bdi_writeback_ctx(inode);
  
- 	memset(wb, 0, sizeof(*wb));
+ 	if (inode_cgwb_enabled(inode)) {
+ 		struct cgroup_subsys_state *memcg_css;
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index bb0a82635a77..b3ec9141d902 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -53,6 +53,7 @@
+ #include <linux/magic.h>
+ #include <linux/fs_context.h>
+ #include <linux/fs_parser.h>
++#include <linux/backing-dev.h>
  
- 	wb->bdi = bdi;
--	wb->bdi_wb_ctx = bdi->wb_ctx[0];
-+	wb->bdi_wb_ctx = bdi_wb_ctx;
- 	wb->last_old_flush = jiffies;
- 	INIT_LIST_HEAD(&wb->b_dirty);
- 	INIT_LIST_HEAD(&wb->b_io);
-@@ -698,7 +699,7 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 		goto out_put;
- 	}
+ static const struct super_operations xfs_super_operations;
  
--	ret = wb_init(wb, bdi, gfp);
-+	ret = wb_init(wb, bdi_wb_ctx, bdi, gfp);
- 	if (ret)
- 		goto err_free;
+@@ -1294,6 +1295,17 @@ xfs_fs_show_stats(
+ 	return 0;
+ }
  
-@@ -843,7 +844,7 @@ static int cgwb_bdi_init(struct backing_dev_info *bdi)
- 		mutex_init(&bdi->cgwb_release_mutex);
- 		init_rwsem(&bdi_wb_ctx->wb_switch_rwsem);
++static struct bdi_writeback_ctx *
++xfs_get_inode_wb_ctx(
++	struct inode		*inode)
++{
++	struct xfs_inode *ip = XFS_I(inode);
++	struct backing_dev_info *bdi = inode_to_bdi(inode);
++	xfs_agino_t agno = XFS_INO_TO_AGNO(ip->i_mount, ip->i_ino);
++
++	return bdi->wb_ctx[agno % bdi->nr_wb_ctx];
++}
++
+ static const struct super_operations xfs_super_operations = {
+ 	.alloc_inode		= xfs_fs_alloc_inode,
+ 	.destroy_inode		= xfs_fs_destroy_inode,
+@@ -1310,6 +1322,7 @@ static const struct super_operations xfs_super_operations = {
+ 	.free_cached_objects	= xfs_fs_free_cached_objects,
+ 	.shutdown		= xfs_fs_shutdown,
+ 	.show_stats		= xfs_fs_show_stats,
++	.get_inode_wb_ctx       = xfs_get_inode_wb_ctx,
+ };
  
--		ret = wb_init(&bdi_wb_ctx->wb, bdi, GFP_KERNEL);
-+		ret = wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
- 		if (!ret) {
- 			bdi_wb_ctx->wb.memcg_css = &root_mem_cgroup->css;
- 			bdi_wb_ctx->wb.blkcg_css = blkcg_root_css;
-@@ -1000,7 +1001,7 @@ static int cgwb_bdi_init(struct backing_dev_info *bdi)
- 	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
- 		int ret;
+ static int
+diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+index 951ab5497500..59bbb69d300c 100644
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -148,6 +148,7 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
+ 	return inode_to_bdi(mapping->host)->capabilities & BDI_CAP_WRITEBACK;
+ }
  
--		ret = wb_init(&bdi_wb_ctx->wb, bdi, GFP_KERNEL);
-+		ret = wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
- 		if (ret)
- 			return ret;
- 	}
++#define DEFAULT_WB_CTX 0
+ #define for_each_bdi_wb_ctx(bdi, wbctx) \
+ 	for (int __i = 0; __i < (bdi)->nr_wb_ctx \
+ 		&& ((wbctx) = (bdi)->wb_ctx[__i]) != NULL; __i++)
+@@ -157,7 +158,9 @@ fetch_bdi_writeback_ctx(struct inode *inode)
+ {
+ 	struct backing_dev_info *bdi = inode_to_bdi(inode);
+ 
+-	return bdi->wb_ctx[0];
++	if (inode->i_sb->s_op->get_inode_wb_ctx)
++		return inode->i_sb->s_op->get_inode_wb_ctx(inode);
++	return bdi->wb_ctx[DEFAULT_WB_CTX];
+ }
+ 
+ #ifdef CONFIG_CGROUP_WRITEBACK
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 754fec84f350..5199b0d49fa5 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2379,6 +2379,7 @@ struct super_operations {
+ 	 */
+ 	int (*remove_bdev)(struct super_block *sb, struct block_device *bdev);
+ 	void (*shutdown)(struct super_block *sb);
++	struct bdi_writeback_ctx *(*get_inode_wb_ctx)(struct inode *inode);
+ };
+ 
+ /*
 -- 
 2.25.1
 
