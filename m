@@ -1,187 +1,108 @@
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676593126AF
-	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D66186294;
+	Wed, 15 Oct 2025 01:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760443904; cv=none; b=uovSijNTOv1sf1loZNNWmyS3MpSAbcFtJb7pLJytT6E391lfP1AYPQ/jprbYustrDCyS2k1XPzgPyNl7qoGNRWaFxBzQ9RH3Uvrs1ueAT/B5k8EkI5EDypcEt8SZPSf69toUBPYWQR3hhmINEwBQe7TdyhVEWxpASLoA/Yl8/z8=
+	t=1760490198; cv=none; b=VHJsTWEQlcRhBzjBacZqmwC6pAXtyInj+rUUFh+eX/tGx+xHCqVXCnVDu/a9pP1gO8KnQQJL6hejlSl/XO6QYpDSzW4C1TX6I+K/ar88y74EcTy3Gf5rhQSOezXy7UmduZfMM5DJXGXmwwJSSTQTWurdbCnTc11+RiO+KzM5vgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760443904; c=relaxed/simple;
-	bh=mwJ7fVo6wH6GnrrZ6oCciTIhPSom8JD+XnpoNvDsnxM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=IFDsZr+K6LmmBRycD3BeLX5EtLaFIUCdCY+iu+JshSSZxTg9nyhxqDfC8efeDTHMAv0bQGZiBZpysLbTRSheB4qeQQlWQmCPd6T+22ezpJc4FudKizl2fq1Bs/RHynX3s8hOjvdJpACtLXWBw8oaACZIDLrLVqtXUH2zgoq3HZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=IZEVWzpU; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1760490198; c=relaxed/simple;
+	bh=RREgf6Gg7wwMbGdc/AWZnTykON32Sl+5JqxT1WhtNd8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=EKOijkOSB0a3pbfoRPVUD8+YZXcYvnX5J19exfWZbzxbty/rt7obtp4gS1sOEjABx7CAXWh8TWsKdrRLqtJ+08rAGGN+ZjBZvc9JF6ifoupjBEcEj10h/M9hD8/ZiEx6LxcPWIhJ2vaLx4n+5Kr3XYgO3PNJPW9humQYJR2r4TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b6hAzcK9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="IZEVWzpU"
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20251014121138epoutp01296176ef3092715e4e95726b445d1859~uWmYKEGu-1133811338epoutp01t
-	for <gfs2@lists.linux.dev>; Tue, 14 Oct 2025 12:11:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20251014121138epoutp01296176ef3092715e4e95726b445d1859~uWmYKEGu-1133811338epoutp01t
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760443898;
-	bh=P26ywqsMnB1wfPCMRtpUS0xgTfcL9X0rkalZt4nakI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZEVWzpUM/VeejCxB/jGms73fEuWMwgHnd43yIQgt1GWnuFDZiPddMvQlfgmuselr
-	 P8CMZVovdo1GkWEFNVldpJQ8snOLCctSBP9XD24zoZGz9iz9Hp6oLEr1bJQ1M6v5Rr
-	 O61UQsByvXzJ7XsFA5175gAii6scO4d7O9zrDXY4=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20251014121137epcas5p252ab21a6f213e2a3de40624cc4a06c89~uWmXXMLo33235432354epcas5p2t;
-	Tue, 14 Oct 2025 12:11:37 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.95]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4cmCkJ5szQz2SSKY; Tue, 14 Oct
-	2025 12:11:36 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121135epcas5p2aa801677c0561db10291c51d669873e2~uWmVjz9X22441424414epcas5p2q;
-	Tue, 14 Oct 2025 12:11:35 +0000 (GMT)
-Received: from localhost.localdomain (unknown [107.99.41.245]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121131epsmtip1ababe9c4e8295da908008c77b52ba39e~uWmROln091256112561epsmtip1N;
-	Tue, 14 Oct 2025 12:11:31 +0000 (GMT)
-From: Kundan Kumar <kundan.kumar@samsung.com>
-To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
-	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
-	djwong@kernel.org, dave@stgolabs.net, wangyufei@vivo.com
-Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
-	gost.dev@samsung.com, kundan.kumar@samsung.com, anuj20.g@samsung.com,
-	vishak.g@samsung.com, joshi.k@samsung.com
-Subject: [PATCH v2 16/16] writeback: added XFS support for matching
- writeback count to allocation group count
-Date: Tue, 14 Oct 2025 17:38:45 +0530
-Message-Id: <20251014120845.2361-17-kundan.kumar@samsung.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b6hAzcK9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5719AC4CEE7;
+	Wed, 15 Oct 2025 01:03:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760490194;
+	bh=RREgf6Gg7wwMbGdc/AWZnTykON32Sl+5JqxT1WhtNd8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b6hAzcK9a6ZsHa0Mk3iI21Eqpc+IV+6ztwUn4mhqw/zL741FObJn7o/U9JxPSucFA
+	 SEs+LS9B625yiZiRfHBLry2rSnVIcwt334tzjVqkWVwgBsNZDdhpSWaH5YoM+Re3XR
+	 MVE+EarzW3FoEwNNGRRa6truUMvxx/+8yivIASe4=
+Date: Tue, 14 Oct 2025 18:03:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
+ trondmy@kernel.org, anna@kernel.org, willy@infradead.org,
+ mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com,
+ axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org,
+ dave@stgolabs.net, wangyufei@vivo.com,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+ gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com,
+ joshi.k@samsung.com
+Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
+Message-Id: <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
 In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
+References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
+	<20251014120845.2361-1-kundan.kumar@samsung.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251014121135epcas5p2aa801677c0561db10291c51d669873e2
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251014121135epcas5p2aa801677c0561db10291c51d669873e2
-References: <20251014120845.2361-1-kundan.kumar@samsung.com>
-	<CGME20251014121135epcas5p2aa801677c0561db10291c51d669873e2@epcas5p2.samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Implemented bdi_inc_writeback() to increase the writeback context
-count and called this function at XFS mount time to set the desired
-count.
+On Tue, 14 Oct 2025 17:38:29 +0530 Kundan Kumar <kundan.kumar@samsung.com> wrote:
 
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
----
- fs/xfs/xfs_super.c          |  2 ++
- include/linux/backing-dev.h |  1 +
- mm/backing-dev.c            | 58 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+> Currently, pagecache writeback is performed by a single thread. Inodes
+> are added to a dirty list, and delayed writeback is triggered. The single
+> writeback thread then iterates through the dirty inode list, and executes
+> the writeback.
+> 
+> This series parallelizes the writeback by allowing multiple writeback
+> contexts per backing device (bdi). These writeback contexts are executed
+> as separate, independent threads, improving overall parallelism. Inodes
+> are distributed to these threads and are flushed in parallel.
+> 
+> ...
+>
+> IOPS and throughput
+> ===================
+> With the affinity to allocation group we see significant improvement in
+> XFS when we write to multiple files in different directories(AGs).
+> 
+> Performance gains:
+>   A) Workload 12 files each of 1G in 12 directories(AGs) - numjobs = 12
+>     - NVMe device BM1743 SSD
+>         Base XFS                : 243 MiB/s
+>         Parallel Writeback XFS  : 759 MiB/s  (+212%)
+> 
+>     - NVMe device PM9A3 SSD
+>         Base XFS                : 368 MiB/s
+>         Parallel Writeback XFS  : 1634 MiB/s  (+344%)
+> 
+>   B) Workload 6 files each of 20G in 6 directories(AGs)  - numjobs = 6
+>     - NVMe device BM1743 SSD
+>         Base XFS                : 305 MiB/s
+>         Parallel Writeback XFS  : 706 MiB/s  (+131%)
+> 
+>     - NVMe device PM9A3 SSD
+>         Base XFS                : 315 MiB/s
+>         Parallel Writeback XFS  : 990 MiB/s  (+214%)
+> 
+> Filesystem fragmentation
+> ========================
+> We also see that there is no increase in filesystem fragmentation
+> Number of extents per file:
+>   A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
+>         Base XFS                : 17
+>         Parallel Writeback XFS  : 17
+> 
+>   B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
+>         Base XFS                : 166593
+>         Parallel Writeback XFS  : 161554
+> 
+>   C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
+>         Base XFS                : 3173716
+>         Parallel Writeback XFS  : 3364984
 
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index b3ec9141d902..aa97b59f53c6 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1783,6 +1783,8 @@ xfs_fs_fill_super(
- 	if (error)
- 		goto out_free_sb;
- 
-+	bdi_inc_writeback(sb->s_bdi, mp->m_sb.sb_agcount);
-+
- 	/*
- 	 * V4 support is undergoing deprecation.
- 	 *
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 14f53183b8d1..89a465e1964f 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -40,6 +40,7 @@ void wb_start_background_writeback(struct bdi_writeback *wb);
- void wb_workfn(struct work_struct *work);
- 
- void wb_wait_for_completion(struct wb_completion *done);
-+int bdi_inc_writeback(struct backing_dev_info *bdi, int nwriteback);
- 
- extern spinlock_t bdi_lock;
- extern struct list_head bdi_list;
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 5bfb9bf3ce52..e450b3a9b952 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -1219,6 +1219,64 @@ struct backing_dev_info *bdi_alloc(int node_id)
- }
- EXPORT_SYMBOL(bdi_alloc);
- 
-+int bdi_inc_writeback(struct backing_dev_info *bdi, int nwritebacks)
-+{
-+	struct bdi_writeback_ctx **wb_ctx;
-+	int ret = 0;
-+
-+	if (nwritebacks <= bdi->nr_wb_ctx)
-+		return ret;
-+
-+	wb_ctx = kcalloc(nwritebacks, sizeof(struct bdi_writeback_ctx *),
-+			 GFP_KERNEL);
-+	if (!wb_ctx)
-+		return -ENOMEM;
-+
-+	for (int i = 0; i < bdi->nr_wb_ctx; i++)
-+		wb_ctx[i] = bdi->wb_ctx[i];
-+
-+	for (int i = bdi->nr_wb_ctx; i < nwritebacks; i++) {
-+		wb_ctx[i] = (struct bdi_writeback_ctx *)
-+			kzalloc(sizeof(struct bdi_writeback_ctx), GFP_KERNEL);
-+		if (!wb_ctx[i]) {
-+			pr_err("Failed to allocate %d", i);
-+			while (--i >= bdi->nr_wb_ctx)
-+				kfree(wb_ctx[i]);
-+			kfree(wb_ctx);
-+			return -ENOMEM;
-+		}
-+		INIT_LIST_HEAD(&wb_ctx[i]->wb_list);
-+		init_waitqueue_head(&wb_ctx[i]->wb_waitq);
-+
-+#ifdef CONFIG_CGROUP_WRITEBACK
-+		INIT_RADIX_TREE(&wb_ctx[i]->cgwb_tree, GFP_ATOMIC);
-+		init_rwsem(&wb_ctx[i]->wb_switch_rwsem);
-+#endif
-+		ret = wb_init(&wb_ctx[i]->wb, wb_ctx[i], bdi, GFP_KERNEL);
-+		if (!ret) {
-+#ifdef CONFIG_CGROUP_WRITEBACK
-+			wb_ctx[i]->wb.memcg_css = &root_mem_cgroup->css;
-+			wb_ctx[i]->wb.blkcg_css = blkcg_root_css;
-+#endif
-+		} else {
-+			while (--i >= bdi->nr_wb_ctx)
-+				kfree(wb_ctx[i]);
-+			kfree(wb_ctx);
-+			return ret;
-+		}
-+		cgwb_bdi_register(bdi, wb_ctx[i]);
-+		set_bit(WB_registered, &wb_ctx[i]->wb.state);
-+	}
-+
-+	spin_lock_bh(&bdi_lock);
-+	kfree(bdi->wb_ctx);
-+	bdi->wb_ctx = wb_ctx;
-+	bdi->nr_wb_ctx = nwritebacks;
-+	spin_unlock_bh(&bdi_lock);
-+	return 0;
-+}
-+EXPORT_SYMBOL(bdi_inc_writeback);
-+
- static struct rb_node **bdi_lookup_rb_node(u64 id, struct rb_node **parentp)
- {
- 	struct rb_node **p = &bdi_tree.rb_node;
--- 
-2.25.1
-
+Nice results.  Is testing planned for other filesystems?
