@@ -1,98 +1,92 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591FE2C029C
-	for <gfs2@lists.linux.dev>; Wed, 15 Oct 2025 08:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1795FCA5E
+	for <gfs2@lists.linux.dev>; Wed, 15 Oct 2025 09:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760518513; cv=none; b=J+EDtv+PnKFAww2QewCXhTsZxG13yBdNuc9eb0EIVG+eyUZuVRAXrRMTW3wk2qMTX8AM34qt0cc4WRDz6dVJh/BgXUAfeO5Bvb4ob0bYRlHoGiS3QjAebmIHO9n1cT30wEmMYM1PgF82//6Ful+GrVh+Egi4JZl+ZwfXMJZKiT8=
+	t=1760521952; cv=none; b=HRw7++5UBh1UN3Lt+Kdz3PkA/WZm/njBDBj1zb06qk+xxTHnD4aneEiC5EjWvHsV/BVZmwjKXpMyjGfvZxobAOZh0Fszp4w+HOviOP4U8N0rgHezf3VXDmOzOroqPDsVG98h0g0Wv6wjyOjoW4O2DP1ANDrWrR6gaHwVTt6g5OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760518513; c=relaxed/simple;
-	bh=PnZYoZixlZe2UBYMbO2OeSihGeWSGTpgJH47W2yN5lE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U5WWt+uDsFMreYgqcDQY98R6ibuF+2fxyWjNgOJ8PH96KxDMHCI3lRbBwFzC/pqbGLP7bli6sNaoqWEMPiLSmmCUMGEX/X1oOMtaxMakV2cZw3qVmOpNZykUwOa+9e++KF+ggpepRIQvzTDdxTHuuSyHQJGlVN0Vu36wnpmI+dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QTSsyR87; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760521952; c=relaxed/simple;
+	bh=fxyDDrcO9pn7olDxpiCTCopAZDBbeoYN93O3f6FW5aI=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=W0XQvADEgqjZeoGLDgEmtgfOIkjD3kpAJXLT7eNkbvfMx+NRTQg+HIPVuj78fx8nSkLR9lT7DPBa+shEtVY3OGmaVu+A9yvFFrREODskiHP7W3/oQSKMZu18RIKFXW4KVSjIJG7SxrkKJ6qPMHNeH2EBm0v885cDUjgTCnYmbYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=K+n/e8i4; arc=none smtp.client-ip=203.205.221.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QTSsyR87"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6399706fd3cso9343405a12.2
-        for <gfs2@lists.linux.dev>; Wed, 15 Oct 2025 01:55:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760518510; x=1761123310; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fgEqnrxX4R0u2xnG7ixfV3NvX2lvrI5nPU8w2RGCEiE=;
-        b=QTSsyR87N3eOXmgCZYm4Ocqetz8Rq/c8pMyhvbkNHU3U2OTgZ6VIyDtgqQx8nQ9e3d
-         TW7mqlNukSjRPOiwblgOzfs5PcFpNan8mXOOmUeqT9PXXFwMPKeS+k9Lvl+XUKW2vWEk
-         t/nptsHRRKJpHf5+49cayCPPsr8gZd351mq4ldaEWHXtDj/lYLm5q/LIJI7XoWhkYjAX
-         Uz91w51vX4z5EHgEz80JMqGKTIpXPuUN3wkfN9tOPjsFLOY1CxP5rxArp1zymm55Roff
-         +2rb3kMItj8/9vB0D1a1zzZDMy4cK9pXB7fS6e2uOdOw/pvKRCNIhEecYr7/gZXA8rFn
-         HOsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760518510; x=1761123310;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fgEqnrxX4R0u2xnG7ixfV3NvX2lvrI5nPU8w2RGCEiE=;
-        b=GqbY+kOn5rjdJMlFXi64efSfds3imLNKgm94ONTr2OrJMD74oWIrAW0F1c9aJa31JG
-         xRfRBYpw7mkkpSNVZcv9biw684V0PsImYljbBB4PD75ARgy0Mx0L3rVG/24/63VbWXgR
-         5fXkklhdBv+cgzTKiF2qjaqlZ2sUWWJ89ac+XxeA9LmUG22+1zzmttX3X0YCsHX8EKYc
-         SRWa2GhkOOnoEE/a1cfl3IvYP9YqgaDzjj5eRXXGgpS1XxZIfNerXVEr+n91/LzYsUr5
-         sAX8z2WenPzvKYVXAObLlDfOoqeCHWGw3P1CDyisJlSPUV+gSC2Zlbw3GqUR3yl+8jzf
-         OFQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzthg3Q3O2uCI9mW0DQvBjNgBuNpjiu6H+LeK9rApVC93Y+GtOEYq00xDmLtjAT8Pb1xaH@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHz94PZa2x0tP687JrmUNghJ+Wp6OiEek28q5/RN+//mXh7tJq
-	aU6VzZYOb2YCjx8ARXsjEF7mlAAe/oNAh/LEP9ql4Uqfx1nfDdfj+wXnY/Ed08fou8Rs2NCguZP
-	6hcOz44Rv0X1oU1twRwI1j085b3W6V4U=
-X-Gm-Gg: ASbGncsqJQqC5JZjMK8YB16mfNm98El5qEHKkxzrb5B3JURfw3hOfquDoR9N3RBZgjP
-	Zfxl4go5NuAiSf3M0D8zMIUJIWM/9pWofqtiNBDjMaWv2FcuHi34ln0PKy8AQjYVfeGANp0s1fB
-	cB/sNheL2qsy8YB5u7gK+qc7o36bzUnpvOxi0sYFt8pLGMjxboSsexlU5DupuQY+KYt9AuKQdHg
-	ZIzGONSa6qizoq2ci32PMzdvse7fEQL565aN4SqFEWmfqov
-X-Google-Smtp-Source: AGHT+IFTcVXJ2k4Io0gR55B+LOiUs0D6lc9nA2FkAagSET75wVrURhguyB7dmaTVjRb2yFF3HFNEaUx2J8d6K4IUlfA=
-X-Received: by 2002:a17:907:9448:b0:b40:a71b:151f with SMTP id
- a640c23a62f3a-b50ac1c4e7cmr3185549666b.30.1760518509261; Wed, 15 Oct 2025
- 01:55:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="K+n/e8i4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1760521946; bh=aDg6c7MF5+O7R9/B0Dm+vyOLVIhppol81MSIoJJGZgk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=K+n/e8i4vy+A4RMKDzEEhRz5X9twstNm9Fz7X8HsAsv/yVMHNMX8wXlzSEsX8prc2
+	 4VwUA6ORMCVY4gs2jcJZz+ITEqEK7LK8Z+ar93estgZ3mZxRQCWymk3E+E/y3YCpK5
+	 gTmJ3B/siSZRIkKpWdgAdC6tDFC3uBI35oh3+2EY=
+Received: from pek-lxu-l1.corp.ad.wrs.com ([111.198.230.220])
+	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
+	id CC38F877; Wed, 15 Oct 2025 17:51:03 +0800
+X-QQ-mid: xmsmtpt1760521863tp4b83bdv
+Message-ID: <tencent_9C66663DC537949618361A4B5E750576B309@qq.com>
+X-QQ-XMAILINFO: Me8mHstNM5a8VrVNG3vb3lZZqRj3BHXIM/ZPK3ztls2DaRGLD52+upsObXV4c/
+	 ugrZLYAoHBA/3TtzSOPHN9FrdvcQQRLV0YgqqtkpiTxO8yswkrvxdLozbjHr8eJ/7hVO93TcGJAz
+	 S+Z66UP5fyouAOt78C1hxwgRtuGH7H3yRLtLuM+aoUCbI8Ins147CoVtHEB6mn1XtSzZ4i3joX5h
+	 zXDKJEhdRiVXOxrc/rFTszkRPSM/G5heJBJDvncNgOx/cr4e2NfdP1IBxS/8w7bf6d/kXxU3io2G
+	 wRIZZ8CtWbFgO17BkqHJyqM502Rdm9BTYmhYpUhKq6j5Y054sEJyNNbYqHlv35DIMAzxWiT2Kzcm
+	 55xd3chQaFdMKBasInQUSfXENxPAONSLwSXHKHjY/KwV6JX2z3stBGE7ne4HjLCvJsnVJiV797I0
+	 60siex2E4nfy9K8TD1dSG1I3IB17y1yEQ8WXzj+zlJrjBZbvKwwLGmLSbK15cIbw0qLmeT/PbBPD
+	 xIPHqbD3iBGkH1UcCWyVJWx2Mrd4aquClHihOSzOKNa8/AeVhkOiVxavUKZEEOP7sKIfFkG7WRnb
+	 pR4JTHFh3zpxCijjOV6i6uQKy4dIGSIbZcKel1S5RnOdtFEsGCMnOAwm3LAuHvj19KWKMGQ3gkdX
+	 FsczoIgEOOJ2TjMAlp6eBfD0lIzpa3lphiCutwi2coflbZ5YXg06uc9bBCn1Z7g/MKVqMPLC264O
+	 kFlWBp3Eeo7wOwU9sH33RsnlvhOj81yzEBGerI7nOAYXg1hOcK6xa0Uwnw8JwMpC9sEoIBvQa3EP
+	 fNrvqqyj1Y0tAXKHBBnEYw5c3EWJD67iiYhce4H5Is7ZI/3shlEWi2i2ExRlvadRxld4ZMHy+5K7
+	 U1hO8kt8wVbM0TtmVe2jBV7qB/IJ0n9yV6c4VRhAU+M//5UJhi8z0jAnQvZf7Ya11qQLlb/OmDTT
+	 iVGOqXgJ5RDsNy2KFrz4uas3fsTcLNraAraYKWCGEAT847HvUku65Lq9XVq0w7
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+6b156e132970e550194c@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: [PATCH next] gfs2: Add sanity check for sd_jdesc
+Date: Wed, 15 Oct 2025 17:51:04 +0800
+X-OQ-MSGID: <20251015095103.1086226-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <68ef030a.050a0220.91a22.022a.GAE@google.com>
+References: <68ef030a.050a0220.91a22.022a.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
- <20251014120845.2361-1-kundan.kumar@samsung.com> <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
-In-Reply-To: <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
-From: Kundan Kumar <kundanthebest@gmail.com>
-Date: Wed, 15 Oct 2025 14:24:57 +0530
-X-Gm-Features: AS18NWBrpUjyPc8mxzcKZ88p2FW9F32bwQuz9_BbcqcNCJwm-Zl4oTpr4byxBk0
-Message-ID: <CALYkqXp9Wewk=P79r+Q8HjngUOSWq71ZA6NBm5fPSj9EZHh1Ng@mail.gmail.com>
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org, chao@kernel.org, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, 
-	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, willy@infradead.org, 
-	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com, 
-	axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org, 
-	dave@stgolabs.net, wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com, 
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
->
-> Nice results.  Is testing planned for other filesystems?
->
+Asynchronous withdraw, when sd_withdraw_work is scheduled later than
+put_super, will set sd_jdesc to NULL when clearing all journal index
+information, triggering the syz report uaf.
 
-The changes currently improve the writeback performance for XFS only.
-We have introduced a callback that other filesystems can implement to
-decide which writeback context an inode should be affined to.
+Reported-by: syzbot+6b156e132970e550194c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6b156e132970e550194c
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ fs/gfs2/log.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This is because the decision to affine an inode to a particular
-writeback context depends on the FS geometry. For example, in XFS
-inodes belonging to the same allocation group should be affined to the
-same writeback context. Arbitrarily distributing inodes across
-different writeback contexts can lead to contention of FS resources,
-which can degrade performance.
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 8312cd2cdae4..433a3a11a2f5 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -427,7 +427,8 @@ static void ail2_empty(struct gfs2_sbd *sdp, unsigned int new_tail)
+  */
+ 
+ bool gfs2_log_is_empty(struct gfs2_sbd *sdp) {
+-	return atomic_read(&sdp->sd_log_blks_free) == sdp->sd_jdesc->jd_blocks;
++	return sdp->sd_jdesc &&
++	       atomic_read(&sdp->sd_log_blks_free) == sdp->sd_jdesc->jd_blocks;
+ }
+ 
+ static bool __gfs2_log_try_reserve_revokes(struct gfs2_sbd *sdp, unsigned int revokes)
+-- 
+2.43.0
 
-I conducted a sanity check on the performance of EXT4, BTRFS, and F2FS
-with the current changes, and the results show no performance impact.
