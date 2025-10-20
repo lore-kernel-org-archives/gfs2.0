@@ -1,161 +1,261 @@
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06B22EACEE
-	for <gfs2@lists.linux.dev>; Mon, 20 Oct 2025 21:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A0B314B8E
+	for <gfs2@lists.linux.dev>; Mon, 20 Oct 2025 22:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760994568; cv=none; b=L7380mLU6PSVG7EbVpT91dNvXpzh47PMXkWF7Yr2GjJcu/zvI1nThRbWSqLwpP8wtO9EDi03+NGYsllMsP10wAA8WzXn6/nc6/h3JJEGyRmyWAdkt5RV20bCLBMElM6YXlpvpsq9ZGy6IRy2usR7qUAXKqbZGCbcKC/V5Pt5ksQ=
+	t=1761000396; cv=none; b=S2kKygefbxFIdIjhh4LBwvzymfYoQ17R9lM5hPQN3DJjM+qxOR01FiQBc4NosEpIRsMU5/RxAozakAcYt9NoWirzcHyAoemg1e62/dQwChg3DyDaW9iDLSiRAYesr0bhSMMK27UoPLAhrOD8ricn7+IHDYpBI4AYTD45AlSuhS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760994568; c=relaxed/simple;
-	bh=DS0tap6xNmbpJv6p8l75DfxSZIopObAKGStUF4jO8eo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=F4EhNYbvNyKhNoMFooEjFgkqEZJtJUFJyzFwvMXR2x/+U8av8S6SucHfMgCJuvpQv4B9gJ/yT57RycSAju/DUU6w1ydIsSMi7ad5xTGxagOxLDNz+YRfO3S1b3lGZyNhAeeCDEvu1I+dSs1+C9AMKmL/XGOdNBSBg3hOoLp6ozI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-940e4cf730aso187531339f.1
-        for <gfs2@lists.linux.dev>; Mon, 20 Oct 2025 14:09:26 -0700 (PDT)
+	s=arc-20240116; t=1761000396; c=relaxed/simple;
+	bh=tg/WtCVAyCNywj42umEUEmZjcANyQLTq/nfy6UTS1k4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCVKLRXOzY9bUGf6v7Gsn4blx+uO2tCuSta+X9NMUZMkzTdyTZD09oHU0XY+izGRJAOKtR5lQMUSV5Cg/cZX8mK3PmfM5gUy+jrhsqkaTo8s1P1AjYeZUWx+DJZM39niSk095O7fP3EtdU24BSqFGLzj+JrNHZmT3G25oMfTTkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=g2kHwO7c; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="g2kHwO7c"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-26e68904f0eso48423595ad.0
+        for <gfs2@lists.linux.dev>; Mon, 20 Oct 2025 15:46:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761000394; x=1761605194; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bUtWq6BwnjWVaI8PPEZSZXu56vepaxMGdapsduu3y9o=;
+        b=g2kHwO7cUY1PTlt26tJwOkBgQ7zErH/Rwxl10pwvx/3mFfVlM21Ne50MOPQk9MKKUN
+         6cgyPi6bl0Zui70BxxhUwnlzPmzcUqgqw39FnYnsbYPs2czaX5K7kh9l8uB5WuWGoOsR
+         hkDqVwhxZJbvYjzGkUBr/4L1KjktjYBGWid2HzBQJUOxQWhmunxrryACWaULSI22o2u6
+         3zyvxiUltbITeu0Tj+occWaHOyZ6nTLPtAghiNYrpbY68mKT4OnnpsXKnUNeRf/QYsvw
+         3GE5UOeHVKmA1pftpoCwKiYp0qhcA73+wnDT8fdbIDa4Whsnn0hIezplTLNjK40VY4kK
+         SGBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760994566; x=1761599366;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mXqk3MnmbWUfUTVa8bnsdVBgFdulvqDn/MYGA/ODBCg=;
-        b=dvCClEGGXRHMw0pqjAQNkBm3pkTGNhLUZ8Jv1mPbrXuLTY8D/sUM4Tu1kFzl4dWvCr
-         r8RJW2rrjof7e8FhUbP/jlGyLikYzcpSvgpp+bj18jRaif+JP5bahBKbRWkm0H2PNKMc
-         PDKkR6p24AtfCHvImCM+8tlFMXQnoTKO4ABNY1/w4ynMziHnvt/WzejCPVklrajd5Ga5
-         moFgvuimP3/qlzuz3K8z94sCeCHUQA/oFh6xHNQ6ZV42AZD6j9pZkKghNTqdJkbc66g5
-         HvXuJro+yY9C1wNuZuukzBya14gzA7jAKVlaxAV1zUOrwJnar+WaSkadQIXkycFjxhRO
-         VaUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvJHANSO5hVmp5j4jlGI5nbZdQgavSkJCb6rbofK/sWijy3nJMs2jjpFNSk+jJnXKp+E5x@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAmIaPBKvwH9zhzrBvVi2wIHYnTKRQbs9BsHs9Gn0WdATHOec0
-	IGv/3kdack7gxkS+HNR+8xr+gmULx3FsBKP7NKxKjwHh3fqXRqxnLUYh7NEV2f9uXsPeWobNXil
-	mHzLRbqTFxL4m3dq8fb0mzxKxHgLHlrqr/rzz+TT39R8vBCynlwiGoIGvpKY=
-X-Google-Smtp-Source: AGHT+IGpvx+zvw83xRku9oM0WOtwOm4pkyc8/QeRTAdYFf5Ark3AVgdUL4Wd6nV/KBa91B8gCqDvdatMXujAb4Ic6JG9LWEAI6Ha
+        d=1e100.net; s=20230601; t=1761000394; x=1761605194;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bUtWq6BwnjWVaI8PPEZSZXu56vepaxMGdapsduu3y9o=;
+        b=gOmxpQSiGnjRNgv3X6ZHLGseky32cpmqU8K4vzcct8YqfLnPc7asrBTDGdnDdBwZei
+         4HKHoFzylDNuDdrZLBOsX09SDx8bLBxYQUxYqRmmWErvjtGDdUGvtftjn/aNUAQAFs26
+         6hsNhq87ZCM0a/Jn8u9Yk/XBMqwMZMAOX3zW0PZC3hrbq2ZioN/k8tbyU8IaNeHYIUbA
+         gcpTgpU3Yxv8vRW5rZFKOrNBQUxYWbdK6wp18GcDzxuZ28nScm2V3v3Mm/0LxxsJrXey
+         1vA792SHimPM15KcVR2+7CjXxK/U6elNbcoiS2ejt1wLahdPwUpCGeC9UQ7LiQeaGsfv
+         j+Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTDS/XJuOkz1hrLbXysFcQ19bKHX4vW+p07/2n79UVgU4uNDt0hDQxuuu+GuRimdOeugnN@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/5u1LIpgZ/s+kFtB2Sbe7ByLOcvwfUQbBPkpNvC2y0UZqgDn5
+	YBN7IQmxsslSrCrteBFPgnPBfat/u41AKa0gGKrwuPlGZnGRHRxcP1mIj09ckS2LBJc=
+X-Gm-Gg: ASbGncsYt5jDXRKEK2/CBpaZ2aTDTOTov0EVuoVm0gkRQHD5/0mysVbu5yYnMzwshTA
+	RFHbKECgWvkh7TKZbKrgSUTzQH07qGu4vc2e+LgRJkHbkFj56n495BcMpsowvwOJFH+dnBSDZxe
+	5Yn99qFLWgzJ4UBoqv+a+7f2Lp01Jh7GAMBtoYCtaRht9m3aD9DOLRxtWvbWZpNWuZcykiG8jkV
+	N9l1kM1XjAXEoPgZFSMQISFRnwkdzsiNdhDbOBy6UniSZxDxSb2/O7cTRBTXXrGyefyaNaFHbSr
+	aqIQD7dQPU/JAP7pM5F/H1uokNJgDbjy0AAf6fskhkzuRICKBtJM53hQLJCbATFE1B1aA3gKRBM
+	+1H9hN+zFgA3jEpX/+whK/mKYNQrZpWfk63AD3pKnQiZp2V5++1IrungRU2cnekMz4DWGH2xW/W
+	Lb0pUkPFWc+WveCqdvNlc1m4SrrGy6jQ6noN6VQxzL5Xj8o2tmLL8=
+X-Google-Smtp-Source: AGHT+IFUIIz9u3gROHoyBrX9GrfKv6A6QBpIppZbYxVF4pPYqH4Q7yX35XtiJX79fRgqZ/TJvN1KGA==
+X-Received: by 2002:a17:902:d4c4:b0:25b:f1f3:815f with SMTP id d9443c01a7336-290cb65f80emr187540085ad.58.1761000394302;
+        Mon, 20 Oct 2025 15:46:34 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d594esm90846765ad.72.2025.10.20.15.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 15:46:33 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1vAye6-0000000HVzd-2eTg;
+	Tue, 21 Oct 2025 09:46:30 +1100
+Date: Tue, 21 Oct 2025 09:46:30 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu,
+	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
+	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
+	clm@meta.com, amir73il@gmail.com, axboe@kernel.dk, hch@lst.de,
+	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
+	wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
+Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
+Message-ID: <aPa7xozr7YbZX0W4@dread.disaster.area>
+References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
+ <20251014120845.2361-1-kundan.kumar@samsung.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6b0b:b0:938:6d80:960e with SMTP id
- ca18e2360f4ac-940ddd85458mr509912439f.17.1760994565906; Mon, 20 Oct 2025
- 14:09:25 -0700 (PDT)
-Date: Mon, 20 Oct 2025 14:09:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68f6a505.050a0220.91a22.0455.GAE@google.com>
-Subject: [syzbot] [gfs2?] general protection fault in gfs2_thaw_freeze_initiator
-From: syzbot <syzbot+18b8ec796f5bcc9ea482@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
 
-Hello,
+On Tue, Oct 14, 2025 at 05:38:29PM +0530, Kundan Kumar wrote:
+> Number of writeback contexts
+> ============================
+> We've implemented two interfaces to manage the number of writeback
+> contexts:
+> 1) Sysfs Interface: As suggested by Christoph, we've added a sysfs
+>    interface to allow users to adjust the number of writeback contexts
+>    dynamically.
+> 2) Filesystem Superblock Interface: We've also introduced a filesystem
+>    superblock interface to retrieve the filesystem-specific number of
+>    writeback contexts. For XFS, this count is set equal to the
+>    allocation group count. When mounting a filesystem, we automatically
+>    increase the number of writeback threads to match this count.
 
-syzbot found the following issue on:
-
-HEAD commit:    606da5bb1655 Add linux-next specific files for 20251020
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15e57de2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cc275090905d8fd7
-dashboard link: https://syzkaller.appspot.com/bug?extid=18b8ec796f5bcc9ea482
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=106a9492580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/dfd005041711/disk-606da5bb.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c92ee475612c/vmlinux-606da5bb.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/54c20315c52c/bzImage-606da5bb.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/802ab7289535/mount_2.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=11e57de2580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+18b8ec796f5bcc9ea482@syzkaller.appspotmail.com
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000206: 0000 [#1] SMP KASAN PTI
-KASAN: probably user-memory-access in range [0x0000000000001030-0x0000000000001037]
-CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: events gfs2_withdraw_func
-RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:577 [inline]
-RIP: 0010:__mutex_lock+0x13b/0x1350 kernel/locking/mutex.c:760
-Code: 80 63 9d 99 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 2b 10 00 00 83 3d 43 45 4d 0e 00 75 23 49 8d 7c 24 60 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 74 05 e8 f9 03 d6 f6 4d 39 64 24 60 0f 85 51 0f 00
-RSP: 0018:ffffc900000f7720 EFLAGS: 00010206
-RAX: 0000000000000206 RBX: ffffc900000f7800 RCX: ffffffff999d6303
-RDX: ffff88801ce89e40 RSI: ffffffff8da16ac7 RDI: 0000000000001030
-RBP: ffffc900000f78c8 R08: ffffc900000f7847 R09: 0000000000000000
-R10: ffffc900000f7820 R11: fffff5200001ef09 R12: 0000000000000fd0
-R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff888125cfe000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f09ea358000 CR3: 00000000292f8000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- gfs2_thaw_freeze_initiator+0x4e/0xc0 fs/gfs2/super.c:826
- do_withdraw+0x2bf/0x320 fs/gfs2/util.c:155
- gfs2_withdraw_func+0x2f3/0x430 fs/gfs2/util.c:-1
- process_one_work kernel/workqueue.c:3263 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__mutex_lock_common kernel/locking/mutex.c:577 [inline]
-RIP: 0010:__mutex_lock+0x13b/0x1350 kernel/locking/mutex.c:760
-Code: 80 63 9d 99 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 2b 10 00 00 83 3d 43 45 4d 0e 00 75 23 49 8d 7c 24 60 48 89 f8 48 c1 e8 03 <42> 80 3c 28 00 74 05 e8 f9 03 d6 f6 4d 39 64 24 60 0f 85 51 0f 00
-RSP: 0018:ffffc900000f7720 EFLAGS: 00010206
-RAX: 0000000000000206 RBX: ffffc900000f7800 RCX: ffffffff999d6303
-RDX: ffff88801ce89e40 RSI: ffffffff8da16ac7 RDI: 0000000000001030
-RBP: ffffc900000f78c8 R08: ffffc900000f7847 R09: 0000000000000000
-R10: ffffc900000f7820 R11: fffff5200001ef09 R12: 0000000000000fd0
-R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff888125cfe000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f09ea358000 CR3: 00000000292f8000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	80 63 9d 99          	andb   $0x99,-0x63(%rbx)
-   4:	48 c1 e8 03          	shr    $0x3,%rax
-   8:	42 0f b6 04 28       	movzbl (%rax,%r13,1),%eax
-   d:	84 c0                	test   %al,%al
-   f:	0f 85 2b 10 00 00    	jne    0x1040
-  15:	83 3d 43 45 4d 0e 00 	cmpl   $0x0,0xe4d4543(%rip)        # 0xe4d455f
-  1c:	75 23                	jne    0x41
-  1e:	49 8d 7c 24 60       	lea    0x60(%r12),%rdi
-  23:	48 89 f8             	mov    %rdi,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
-  2f:	74 05                	je     0x36
-  31:	e8 f9 03 d6 f6       	call   0xf6d6042f
-  36:	4d 39 64 24 60       	cmp    %r12,0x60(%r12)
-  3b:	0f                   	.byte 0xf
-  3c:	85 51 0f             	test   %edx,0xf(%rcx)
+This is dangerous. What happens when we mount a filesystem with
+millions of AGs?
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> Resolving the Issue with Multiple Writebacks
+> ============================================
+> For XFS, affining inodes to writeback threads resulted in a decline
+> in IOPS for certain devices. The issue was caused by AG lock contention
+> in xfs_end_io, where multiple writeback threads competed for the same
+> AG lock.
+> To address this, we now affine writeback threads to the allocation
+> group, resolving the contention issue. In best case allocation happens
+> from the same AG where inode metadata resides, avoiding lock contention.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Not necessarily. The allocator can (and will) select different AGs
+for an inode as the file grows and the AGs run low on space. Once
+they select a different AG for an inode, they don't tend to return
+to the original AG because allocation targets are based on
+contiguous allocation w.r.t. existing adjacent extents, not the AG
+the inode is located in.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Indeed, if a user selects the inode32 mount option, there is
+absolutely no relationship between the AG the inode is located in
+and the AG it's data extents are allocated in. In these cases,
+using the inode resident AG is guaranteed to end up with a random
+mix of target AGs for the inodes queued in that AG.  Worse yet,
+there may only be one AG that can have inodes allocated in it, so
+all the writeback contexts for the other hundreds of AGs in the
+filesystem go completely unused...
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+> Similar IOPS decline was observed with other filesystems under different
+> workloads. To avoid similar issues, we have decided to limit
+> parallelism to XFS only. Other filesystems can introduce parallelism
+> and distribute inodes as per their geometry.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+I suspect that the issues with XFS lock contention are related to
+the fragmentation behaviour observed (see below) massively
+increasing the frequency of allocation work for a given amount of
+data being written rather than increasing writeback concurrency...
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+> 
+> IOPS and throughput
+> ===================
+> With the affinity to allocation group we see significant improvement in
+> XFS when we write to multiple files in different directories(AGs).
+> 
+> Performance gains:
+>   A) Workload 12 files each of 1G in 12 directories(AGs) - numjobs = 12
+>     - NVMe device BM1743 SSD
 
-If you want to undo deduplication, reply with:
-#syz undup
+So, 80-100k random 4kB write IOPS, ~2GB/s write bandwidth.
+
+>         Base XFS                : 243 MiB/s
+>         Parallel Writeback XFS  : 759 MiB/s  (+212%)
+
+As such, the baseline result doesn't feel right - it doesn't match
+my experience with concurrent sequential buffered write workloads on
+SSDs. My expectation is that they'd get close to device bandwidth or
+run out of copy-in CPU at somewhere over 3GB/s.
+
+So what are you actually doing to get these numbers? What is the
+benchmark (CLI and conf files details, please!), what is the
+mkfs.xfs output, and how many CPUs/RAM do you have on the machines
+you are testing?  i.e. please document them sufficiently so that
+other people can verify your results.
+
+Also, what is the raw device performance and how close to that are
+we getting through the filesystem?
+
+>     - NVMe device PM9A3 SSD
+
+130-180k random 4kB write IOPS, ~4GB/s write bandwidth. So roughly
+double the physical throughput of the BM1743, and ....
+
+>         Base XFS                : 368 MiB/s
+>         Parallel Writeback XFS  : 1634 MiB/s  (+344%)
+
+.... it gets roughly double the physical throughput of the BM1743.
+
+This doesn't feel like a writeback concurrency limited workload -
+this feels more like a device IOPS and IO depth limited workload.
+
+>   B) Workload 6 files each of 20G in 6 directories(AGs)  - numjobs = 6
+>     - NVMe device BM1743 SSD
+>         Base XFS                : 305 MiB/s
+>         Parallel Writeback XFS  : 706 MiB/s  (+131%)
+> 
+>     - NVMe device PM9A3 SSD
+>         Base XFS                : 315 MiB/s
+>         Parallel Writeback XFS  : 990 MiB/s  (+214%)
+> 
+> Filesystem fragmentation
+> ========================
+> We also see that there is no increase in filesystem fragmentation
+> Number of extents per file:
+
+Are these from running the workload on a freshly made (i.e. just run
+mkfs.xfs, mount and run benchmark) filesystem, or do you reuse the
+same fs for all tests?
+
+>   A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
+>         Base XFS                : 17
+>         Parallel Writeback XFS  : 17
+
+Yup, this implies a sequential write workload....
+
+>   B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
+>         Base XFS                : 166593
+>         Parallel Writeback XFS  : 161554
+
+which implies 144 files, and so over 1000 extents per file. Which
+means about 1MB per extent and is way, way worse than it should be
+for sequential write workloads.
+
+> 
+>   C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
+>         Base XFS                : 3173716
+>         Parallel Writeback XFS  : 3364984
+
+36 files, 720GB and 3.3m extents, which is about 100k extents per
+file for an average extent size of 200kB. That would explain why it
+performed roughly the same on both devices - they both have similar
+random 128kB write IO performance...
+
+But that fragmentation pattern is bad and shouldn't be occurring fro
+sequential writes. Speculative EOF preallocation should be almost
+entirely preventing this sort of fragmentation for concurrent
+sequential write IO and so we should be seeing extent sizes of at
+least hundreds of MBs for these file sizes.
+
+i.e. this feels to me like you test is triggering some underlying
+delayed allocation defeat mechanism that is causing physical
+writeback IO sizes to collapse. This turns what should be a
+bandwitdh limited workload running at full device bandwidth into an
+IOPS and IO depth limited workload.
+
+In adding writeback concurrency to this situation, it enables
+writeback to drive deeper IO queues and so extract more small IO
+performance from the device, thereby showing better performance for
+the wrokload. The issue is that baseline writeback performance is
+way below where I think it should be for the given IO workload (IIUC
+the workload being run, hence questions about benchmarks, filesystem
+configs and test hardware).
+
+Hence while I certainly agree that writeback concurrency is
+definitely needed, I think that the results you are getting here are
+a result of some other issue that writeback concurrency is
+mitigating. The underlying fragmentation issue needs to be
+understood (and probably solved) before we can draw any conclusions
+about the performance gains that concurrent writeback actually
+provides on these workloads and devices...
+
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
