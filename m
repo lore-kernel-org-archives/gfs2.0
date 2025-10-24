@@ -1,60 +1,60 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C733428D8ED
-	for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 19:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F0F2C15B4
+	for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 19:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761333766; cv=none; b=DLVSVsET2+NqFYnLtBg9OWcCuCZi1u+FrpwvcckbrnCeQpxFSKNKhiklM0xwpyhaJZ5maeYH8rv3mxlwSlRS/g6q3/yTxTQeNsEhR1CMY9pA+ItEqk2iXkEePjrcG9a14gvF6qYOAsCBHjIJ+n4NfWA7a4bFPDrHCC5IQgY4vT8=
+	t=1761335304; cv=none; b=r8Pgifr2rgWNTzm8VrymdmTsG+rCE3qqJN5nRmum5Z/luuM/9r3ZQBYNsLiKNrLfUGWFdjcKIDg2y176BvhRiUVAcObhqzkRXM/LZyLCnSSc+85MOjEADGzP80iynUY7ATNxlsF45Zap3W52AAlNMhstr9GsVqBiwb3Chs+HLkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761333766; c=relaxed/simple;
-	bh=QgsR+Vv3MGDc6mihpTVQXoOx12Z77gAlV2xrGnLO6/E=;
+	s=arc-20240116; t=1761335304; c=relaxed/simple;
+	bh=fuOYLw1PsYlQeJgDBx80FvVTqRBTg0jzKUjvWtGfBmg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nQSXj5ULwCYpGn6bxyNoKTN/kRYeP7u3aMzS28xBhBoNTeimI3qi/AHgXzFVZgbKWqsEL1vPf1xr6R+KwO6eje1WAeTXv3AX4uBkrujW1/ttMi0faHhpu1b1Lp61JCZrtKLhRjjHwiR1vnrH2TxUy4H53dbePk6dole2MtWLloc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XjDAxH2P; arc=none smtp.client-ip=209.85.160.175
+	 To:Cc:Content-Type; b=dU7E1xJ0fIhAM9tb/+wDklGBjciUYYXAi+XIp87BZY4Xgept3JAY4o32/VjY9d5m6slgsCMHOZo7dUej8Bi5FosY3sIr6mSZJG2/ZvngKKKk3g5xij/tG8vnZfWAC4k69mx1+OpNeVH8k7tr6WxVILZmSrgWf9Blsl1+SehL7TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUWALzfG; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XjDAxH2P"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4e89d2eaca9so15162561cf.1
-        for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 12:22:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUWALzfG"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4eb9fa69fb8so4955781cf.1
+        for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 12:48:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761333764; x=1761938564; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1761335301; x=1761940101; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QgVsq2p7ysLPME1WhWajPgNYUjlNdQ3sSEmcEy2qO6w=;
-        b=XjDAxH2Pn2HhKmXoHXYw/TW+hF0ryiZGp6+cyffsKp/5C5ptno1aNPiV/talFMF7M1
-         5bhkb3JkSk41nnX/12iiS21RiBM1WuiBv4SmVr8oMrc6UdcCW64nNVTIrn3mViuY5hwx
-         Ov+tqImx97qYIzeKoGHtEk4D0ah6dDqBhUBzosrc7IDlTE8zlk8H10xJm3b1cqLStkTB
-         4a4sNpQhHz5hA7ZJaVr33rumFf39GwekHopV44e+9E45FZc5bg5ixYAfAUT/TalWD4Lx
-         usqS7o09+inBprnNyxXSpFYspWx8bK99Z2LHdBUmgnFSAsPiJM2rzHcVo5R9So6AYKg+
-         JfQQ==
+        bh=VXL+Hu6HNILeLevcEmTlTrT5mGO7UORsDNusHMc7/mU=;
+        b=HUWALzfGj8Ue54PT84fI+sbZ4C3VTonzp7rnhvspH7Kr76X4OIF5ss5LbQBf/h/SF/
+         OPzKUzQ1/pPkTETofwRs2rpwmiefCDhtORAtyuubOty9P4Fkx+U91hiK6LQYkOL93r8s
+         pYdizqCR1d9mBJMYIKOKKaRHCBBKBZ0Cf+gDTBOIJrNixoS7RE+07RzyRxz9mW+h2I8N
+         fsSyFKAHNoy0b8NaxXkIO0pPcxDpK3GhMoFFBL/RdemXTf7uN0PR2ZYIqct7Gu7sX3xT
+         6ztmSI3CXib0ApgrRhZovtoK8pFKQ+0pglcsA845jHnz71YItqgb6OwyxZ5g23a206m0
+         eG4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761333764; x=1761938564;
+        d=1e100.net; s=20230601; t=1761335301; x=1761940101;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QgVsq2p7ysLPME1WhWajPgNYUjlNdQ3sSEmcEy2qO6w=;
-        b=gcFegCA+A1g1mr/6z42ar8Ejv6iGe8W5D53MQRV0UkkbVpBQU4WQvLLXMFp45FB5Ut
-         n0nr8Gdx/PKcmvd3XP2FljN+e0/lvIgk6MXHTx6O2KTm/GzmSBNCL9P3o61mlLt8xJav
-         fHt2kEqocJi+xUSKiJr2Q1rAADhquofOtM0OF7qzpNvmIoQPocUFq66Avi0P260C2+Nn
-         4IsK+EpRCGddJos++gBT10jkMSj7dkkXMzaL5u/UdV783kPisvL6FSSrOMgulVV5NbWQ
-         dfet19amE6LpoL6g0L0P+V1SmBGzQDYuQsS+2Q7LxDyrHvf9IxK8gr0cMTDBZnwzJ6YX
-         bGCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDKpHPJBtEfb20m4LXwRqRpMMk3opWVCTCIPimpkAfu9Ol1D5CaR2rJTcRTlETWMIfQdPy@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZDe4DpSS9LD9GxE1kX5gkYc6gfCRzL1FTWLXomFeAVMu/C/yJ
-	b5GtVemQELcpSZ1/SD5EYu/lxEU+0o3eSgCUMOji6nc49Rr1GfxaPs5MCO/lqz4levT5WUKdJXM
-	X3s56ZWU1R33ym4pAHuqIWS1TDyuuSzc=
-X-Gm-Gg: ASbGncseCySdZm3BB+cCUVcd3Hp3a1nk4nNbhIC+EwbMRYN83+QaA116WCtXL75d+1e
-	e4a7l74BYxTHt2/Ole1H4lz0DiI5jOI6Z8h0SaECG+hOYMYRrLTwlPaxVKEBn9bhYsmJuJcS30w
-	lD08Se0A8wnSlilGvyD79Pcty9K1jH0B8ES//MLUAcvxtUdIJeEFZXBK+3FJ+GxIji1v7JovPsZ
-	/+G/YaTj5YDbujRPBmRE6LHG8Sh6oSkuVhiJYaZQUUAWpY1OkqVxXH8xHaxXjT/qqac3gL5kLcs
-	7uDzSfRzJwq21rlAwxpK13AHFw==
-X-Google-Smtp-Source: AGHT+IGxXnezM7H6ghoHWHVk0i5IpwGNkPTA0TF+xQoIAFjkCgqjiFTZpTBBYWa/w3Z7zp2bKm+jQ4qd+hmkKIGk2Xc=
-X-Received: by 2002:a05:622a:138a:b0:4d8:531e:f896 with SMTP id
- d75a77b69052e-4e89d293c59mr371291051cf.27.1761333763653; Fri, 24 Oct 2025
- 12:22:43 -0700 (PDT)
+        bh=VXL+Hu6HNILeLevcEmTlTrT5mGO7UORsDNusHMc7/mU=;
+        b=VYLfXEpgyUav2GYXQLdfiW0fepfWtv+xAtn3IYgJ5lfiz6SdRLEVLnB565f15EFvFg
+         6Vtn4xdAc1aam4mQcrwU5OIm+tZQ9plb8UmhOToXWbnVC7lITQyowy1sUlzfHKbJp265
+         5j1JD3JTipCMSqv/obZVrsQrwWhl2EotURImJiYaM6G/NFYrTmTZ43OozY4S+MArbLfk
+         WQoPa8oTN7YyWtjC+kZba18fPC9FfeGRiZVY53s33w1SpGsR4r3iCjB34vy4VLcx4OIu
+         SzjwRDeVGqdo0EKnk21k7fNME/Q03I7w/Wm+SP9Odei/KU5SbNe9XXVGJYHpT/097ECF
+         lf8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUaiXHfgIt4CCsRVqzyxoQzpIVT2o4MbyyxgQulFVaRCZ0m82dC9KTS7cndxS5vzqajTXVs@lists.linux.dev
+X-Gm-Message-State: AOJu0YwO1irRJiHMvOjw06nsgyoJQ4D/GiusgUK/kyJUFEvgdaQklyJm
+	3Kh0p5qofhtkE4vm59VgR32Z5QGPENXIdnp2spBva3GDP0kg89txDOVzzsIq39WtFpZx+hd2gVj
+	jqtWSk1+BB3jajEvp2SEnum0ioreAAJ8=
+X-Gm-Gg: ASbGncvh1tArBJ2JbkDQ8d6EyQbJ1tZJtdsPtTFdl1+TItxHK6yyAwCgEljJXO/XyJ2
+	A6GIqYx9hYP7x+c6FGiAJsNVuxg/fb8Pd1ba+uhiJD4zlUWY/MJfYkti3ld3vdq7eR3XwUIFhKm
+	mR4nZlkPAUcyyuljTTcPTcCsBTcZxMdECrUTXylRbxGVFg8ny50f9hDFdetUHWGEDWUlIDw8sJR
+	+GMh0xfQlGcn8kS0QnWct7C3dTIfLuoxNyMcrLK7M0PQbHH0/0sztXc1MG+vh/EYqJocPOgZmhp
+	9Ie89HcDYsa/XaI=
+X-Google-Smtp-Source: AGHT+IFA80mSU92rtRbV9UuI42Axn+KjupRObQQEU4AOkaqRuAcR5Dqvasu5x5WflmV4z8hPWzuXx/NOYjJa+6i7EGE=
+X-Received: by 2002:a05:622a:1187:b0:4e8:a332:ba93 with SMTP id
+ d75a77b69052e-4e8a9d0a927mr362501081cf.76.1761335300915; Fri, 24 Oct 2025
+ 12:48:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -64,26 +64,147 @@ MIME-Version: 1.0
 References: <20250926002609.1302233-1-joannelkoong@gmail.com>
  <20250926002609.1302233-8-joannelkoong@gmail.com> <aPqDPjnIaR3EF5Lt@bfoster>
  <CAJnrk1aNrARYRS+_b0v8yckR5bO4vyJkGKZHB2788vLKOY7xPw@mail.gmail.com>
- <CAJnrk1b3bHYhbW9q0r4A0NjnMNEbtCFExosAL_rUoBupr1mO3Q@mail.gmail.com> <aPu1ilw6Tq6tKPrf@casper.infradead.org>
-In-Reply-To: <aPu1ilw6Tq6tKPrf@casper.infradead.org>
+ <CAJnrk1b3bHYhbW9q0r4A0NjnMNEbtCFExosAL_rUoBupr1mO3Q@mail.gmail.com> <aPuz4Uop66-jRpN-@bfoster>
+In-Reply-To: <aPuz4Uop66-jRpN-@bfoster>
 From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 24 Oct 2025 12:22:32 -0700
-X-Gm-Features: AS18NWDml_8GOzBxWkDpLBz16byJMfZB750GwQQx4HmcQAC4dkTAAf9RVH0Fz44
-Message-ID: <CAJnrk1az+8iFnN4+bViR0USRHzQ8OejhQNNgUT+yr+g+X4nFEA@mail.gmail.com>
+Date: Fri, 24 Oct 2025 12:48:10 -0700
+X-Gm-Features: AS18NWAV-t2BsaOLd-eN2LOeLauCX-oLTi7xf6Ow48M0MfPwAA3NHDoMRARJ3GQ
+Message-ID: <CAJnrk1bqjykKtpAdsHLPuuvHTzOHW0tExRZ8KKmKYyfDpuAsTQ@mail.gmail.com>
 Subject: Re: [PATCH v5 07/14] iomap: track pending read bytes more optimally
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Brian Foster <bfoster@redhat.com>, brauner@kernel.org, miklos@szeredi.hu, 
-	djwong@kernel.org, hch@infradead.org, hsiangkao@linux.alibaba.com, 
-	linux-block@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
+To: Brian Foster <bfoster@redhat.com>
+Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org, 
+	hch@infradead.org, hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
 	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025 at 10:21=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
+On Fri, Oct 24, 2025 at 10:10=E2=80=AFAM Brian Foster <bfoster@redhat.com> =
+wrote:
 >
 > On Fri, Oct 24, 2025 at 09:25:13AM -0700, Joanne Koong wrote:
+> > On Thu, Oct 23, 2025 at 5:01=E2=80=AFPM Joanne Koong <joannelkoong@gmai=
+l.com> wrote:
+> > >
+> > > On Thu, Oct 23, 2025 at 12:30=E2=80=AFPM Brian Foster <bfoster@redhat=
+.com> wrote:
+> > > >
+> > > > On Thu, Sep 25, 2025 at 05:26:02PM -0700, Joanne Koong wrote:
+> > > > > Instead of incrementing read_bytes_pending for every folio range =
+read in
+> > > > > (which requires acquiring the spinlock to do so), set read_bytes_=
+pending
+> > > > > to the folio size when the first range is asynchronously read in,=
+ keep
+> > > > > track of how many bytes total are asynchronously read in, and adj=
+ust
+> > > > > read_bytes_pending accordingly after issuing requests to read in =
+all the
+> > > > > necessary ranges.
+> > > > >
+> > > > > iomap_read_folio_ctx->cur_folio_in_bio can be removed since a non=
+-zero
+> > > > > value for pending bytes necessarily indicates the folio is in the=
+ bio.
+> > > > >
+> > > > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > > > > Suggested-by: "Darrick J. Wong" <djwong@kernel.org>
+> > > > > ---
+> > > >
+> > > > Hi Joanne,
+> > > >
+> > > > I was throwing some extra testing at the vfs-6.19.iomap branch sinc=
+e the
+> > > > little merge conflict thing with iomap_iter_advance(). I end up hit=
+ting
+> > > > what appears to be a lockup on XFS with 1k FSB (-bsize=3D1k) runnin=
+g
+> > > > generic/051. It reproduces fairly reliably within a few iterations =
+or so
+> > > > and seems to always stall during a read for a dedupe operation:
+> > > >
+> > > > task:fsstress        state:D stack:0     pid:12094 tgid:12094 ppid:=
+12091  task_flags:0x400140 flags:0x00080003
+> > > > Call Trace:
+> > > >  <TASK>
+> > > >  __schedule+0x2fc/0x7a0
+> > > >  schedule+0x27/0x80
+> > > >  io_schedule+0x46/0x70
+> > > >  folio_wait_bit_common+0x12b/0x310
+> > > >  ? __pfx_wake_page_function+0x10/0x10
+> > > >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> > > >  filemap_read_folio+0x85/0xd0
+> > > >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> > > >  do_read_cache_folio+0x7c/0x1b0
+> > > >  vfs_dedupe_file_range_compare.constprop.0+0xaf/0x2d0
+> > > >  __generic_remap_file_range_prep+0x276/0x2a0
+> > > >  generic_remap_file_range_prep+0x10/0x20
+> > > >  xfs_reflink_remap_prep+0x22c/0x300 [xfs]
+> > > >  xfs_file_remap_range+0x84/0x360 [xfs]
+> > > >  vfs_dedupe_file_range_one+0x1b2/0x1d0
+> > > >  ? remap_verify_area+0x46/0x140
+> > > >  vfs_dedupe_file_range+0x162/0x220
+> > > >  do_vfs_ioctl+0x4d1/0x940
+> > > >  __x64_sys_ioctl+0x75/0xe0
+> > > >  do_syscall_64+0x84/0x800
+> > > >  ? do_syscall_64+0xbb/0x800
+> > > >  ? avc_has_perm_noaudit+0x6b/0xf0
+> > > >  ? _copy_to_user+0x31/0x40
+> > > >  ? cp_new_stat+0x130/0x170
+> > > >  ? __do_sys_newfstat+0x44/0x70
+> > > >  ? do_syscall_64+0xbb/0x800
+> > > >  ? do_syscall_64+0xbb/0x800
+> > > >  ? clear_bhb_loop+0x30/0x80
+> > > >  ? clear_bhb_loop+0x30/0x80
+> > > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > RIP: 0033:0x7fe6bbd9a14d
+> > > > RSP: 002b:00007ffde72cd4e0 EFLAGS: 00000246 ORIG_RAX: 0000000000000=
+010
+> > > > RAX: ffffffffffffffda RBX: 0000000000000068 RCX: 00007fe6bbd9a14d
+> > > > RDX: 000000000a1394b0 RSI: 00000000c0189436 RDI: 0000000000000004
+> > > > RBP: 00007ffde72cd530 R08: 0000000000001000 R09: 000000000a11a3fc
+> > > > R10: 000000000001d6c0 R11: 0000000000000246 R12: 000000000a12cfb0
+> > > > R13: 000000000a12ba10 R14: 000000000a14e610 R15: 0000000000019000
+> > > >  </TASK>
+> > > >
+> > > > It wasn't immediately clear to me what the issue was so I bisected =
+and
+> > > > it landed on this patch. It kind of looks like we're failing to unl=
+ock a
+> > > > folio at some point and then tripping over it later..? I can kill t=
+he
+> > > > fsstress process but then the umount ultimately gets stuck tossing
+> > > > pagecache [1], so the mount still ends up stuck indefinitely. Anywa=
+ys,
+> > > > I'll poke at it some more but I figure you might be able to make se=
+nse
+> > > > of this faster than I can.
+> > > >
+> > > > Brian
+> > >
+> > > Hi Brian,
+> > >
+> > > Thanks for your report and the repro instructions. I will look into
+> > > this and report back what I find.
+> >
+> > This is the fix:
+> >
+> > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> > index 4e6258fdb915..aa46fec8362d 100644
+> > --- a/fs/iomap/buffered-io.c
+> > +++ b/fs/iomap/buffered-io.c
+> > @@ -445,6 +445,9 @@ static void iomap_read_end(struct folio *folio,
+> > size_t bytes_pending)
+> >                 bool end_read, uptodate;
+> >                 size_t bytes_accounted =3D folio_size(folio) - bytes_pe=
+nding;
+> >
+> > +               if (!bytes_accounted)
+> > +                       return;
+> > +
+> >                 spin_lock_irq(&ifs->state_lock);
+> >
+> >
 > > What I missed was that if all the bytes in the folio are non-uptodate
 > > and need to read in by the filesystem, then there's a bug where the
 > > read will be ended on the folio twice (in iomap_read_end() and when
@@ -91,17 +212,44 @@ g> wrote:
 > > filesystem should end the read), which does 2 folio unlocks which ends
 > > up locking the folio. Looking at the writeback patch that does a
 > > similar optimization [1], I miss the same thing there.
+> >
 >
-> folio_unlock() contains:
->         VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+> Makes sense.. though a short comment wouldn't hurt in there. ;) I found
+> myself a little confused by the accounted vs. pending naming when
+> reading through that code. If I follow correctly, the intent is to refer
+> to the additional bytes accounted to read_bytes_pending via the init
+> (where it just accounts the whole folio up front) and pending refers to
+> submitted I/O.
 >
-> Feels like more filesystem people should be enabling CONFIG_DEBUG_VM
-> when testing (excluding performance testing of course; it'll do ugly
-> things to your performance numbers).
+> Presumably that extra accounting doubly serves as the typical "don't
+> complete the op before the submitter is done processing" extra
+> reference, except in this full submit case of course. If so, that's
+> subtle enough in my mind that a sentence or two on it wouldn't hurt..
 
-Point taken. It looks like there's a bunch of other memory debugging
-configs as well. Do you recommend enabling all of these when testing?
-Do you have a particular .config you use for when you run tests?
+I will add some a comment about this :) That's a good point about the
+naming, maybe "bytes_submitted" and "bytes_unsubmitted" is a lot less
+confusing than "bytes_pending" and "bytes_accounted".
 
 Thanks,
 Joanne
+
+>
+> > I'll fix up both. Thanks for catching this and bisecting it down to
+> > this patch. Sorry for the trouble.
+> >
+>
+> No prob. Thanks for the fix!
+>
+> Brian
+>
+> > Thanks,
+> > Joanne
+> >
+> > [1] https://lore.kernel.org/linux-fsdevel/20251009225611.3744728-4-joan=
+nelkoong@gmail.com/
+> > >
+> > > Thanks,
+> > > Joanne
+> > > >
+> >
+>
