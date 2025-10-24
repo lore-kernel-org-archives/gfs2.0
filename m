@@ -1,153 +1,213 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EDE1A238F
-	for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 14:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77ED324B1C
+	for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 16:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761317146; cv=none; b=LeISbPykmD7SMRGWi/5vhu1hZfk07yKNlVR6bBARk2qaq7l61Rrs80wJ2SV0vpxQ0t0aWGsu3mrJk1dAiPVAwbzFn8q05ZjAfQqfCCqTpBVj1noENE90PgyBqpjPxK+5A5fe20d9/1pb6ZV0VIRS2nePKOdx725Usx5LW73duSc=
+	t=1761323127; cv=none; b=KW5SMHc9njO/fPdda5dn+OlSQaAan1tJvfLo6iTosBgdAQ3NRomgqexRx7j2Wg7P795fGOusRweCQxR7MLOu6D3VnLJ5l6AWgZSZRFavPBIyBy2IEM0H7V5Dry/liYrjTY75992PLtUt93nQL1VDvsJWjiSNS43ky9JV6NsJskM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761317146; c=relaxed/simple;
-	bh=nqG4zh+kHvMInvyQ9gQCc4CsAgJQ86U7Qt1LNvskd/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7dlY1dIgn5xlLJEDGE1rm+hHEGc6+4fNOTbUVNADc6HTn1f2WmrjEwd2dUS13jmmOg6xTQzrR9a8c9IKjPLebXV8C0ymm+sLG8lDpnOHqt10KgUm2ynZ+UXpJzx+hYSEJR2SQXAVJo6n4tzNY4/7I+9kjqfAev1ax2WuTFIevE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RhF0zrM2; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1761323127; c=relaxed/simple;
+	bh=+atxU2EiCvuEBwKzBLViHbEHLO1ByLt9iNuuwtmSwYM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kdXTK3xMIn44v/EFwuTIN97JG2q8hHmYloYNCXgG1t+4T5Bg6vr4vey9YDdr03xwhKUbrkjMw6ulikSAWj/kt7dTAdcAmrl+/wCP2yf4ZzDz9UKtQE+LFoFou0bGVHJUvOJq2alP4i4Ym4/zVw2irpId09CTiap0u+N51d/Q6og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdpL9cUt; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RhF0zrM2"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-339d53f4960so2365726a91.3
-        for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 07:45:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdpL9cUt"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4e8b6144288so19010011cf.0
+        for <gfs2@lists.linux.dev>; Fri, 24 Oct 2025 09:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761317145; x=1761921945; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1761323124; x=1761927924; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/4n0UnjLUys/j015DW1wlIcevAZ741dIgKslESCiUAc=;
-        b=RhF0zrM2+dFzGrtYq4x90H27l9lm2F/juVMkFepzDNoqu9Hq4XSz5Qbjt9n13lU6W3
-         2fbjrCrE4IzTn0uioy6cwPN1YD8qrjUnTjhi88m3AnCQfwZjpNE76FcE2+m3exKxGR41
-         X8muGOwjuEHLuT1r5CiraWsjg9JQTT0jEQ5JYUSRIHCBSUFv2sN9T72Ecp8OJ6oYEey0
-         F8FnU8vsu2Q+gq+ehLKLwMq+rlNnlX6G/OJfaLiihdDLZ/JOk5TQbdiIw4t2PZ6UY5gv
-         /WLOucuXaP9Bak7qi5mUAql1cfA/+meTq5aF+z8q6zGtleexnjmIHBrn/b0gQieVxNBW
-         j+dg==
+        bh=wx/1KUSrS2QODRikqv2kYXYElChlESHNJsV1usUpdu4=;
+        b=GdpL9cUtCwRXcyuq5UMZjvYyzSdaKTcVkAzbdwcAz7GHqmY3USESp21tztvmHm3Mdk
+         SUVQmG7Wu+W86YF4yFmMb3cm121OlE9/ncUIuo3SC5U2XqJ320LI/Q+j0DMkv2CpN5nK
+         7EKI/sf2yFie6Am3lpzITjPrUgjJTGOcpxWHThY5+Vz19lOO717is1tbe9YguIFG0dPP
+         Fmfze/u4q1jLudptonWq7lQS6MHKXptNKP5reIo1Js64OezlMwbWN/lNDVQoEviu+eeu
+         M0lTofSBwWKxoNk7QaYVA4+paEFkk6wwVuhy66HPXQv2woiWpJeDUsBtD0pu5X4RR2P0
+         Ce6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761317145; x=1761921945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1761323124; x=1761927924;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/4n0UnjLUys/j015DW1wlIcevAZ741dIgKslESCiUAc=;
-        b=e0zULyb0kI43TonMs5anhsYkhrrTJh9YEIw13WYY5ZhIDtFMC2ry1UKtv73rG81NC6
-         5UA65SPceOlip97JfioovfAWySK/tj1g78Xc6Hynd13q4ItVcamgsYGmrlzGFd0htDyP
-         lpxTjf3eI/Rh73wvRT2IGUHNrlq8ZioqMblaE02uUlOMibuX9ry1j8qwtRDu5pHfSUS5
-         KhnKoQOdPP9CRCqLjFBDJykJjXAzHi76Auq4Hi7ma2Hgss61Z/cUGjpjlxZWGBsgeBqo
-         tyj8dZPlq3puFihuNnMuYwE9IpK61HDlCAmxzr3Y4lCH9ULNwZMZfKfieqZgaeWmdBPn
-         T0ZQ==
-X-Gm-Message-State: AOJu0YwzwCrV5tTzIfpZf1FnOCC3rVWQsDpQVSOhXyKONezzNtF4UHZ9
-	AInDpcAuHkrHcMHBl+tD203bCbf/fC026kZJ1zrrnRMM219f4u0DVlKf
-X-Gm-Gg: ASbGnctDO3VjckDvEdlZx7/+msABqSnzVwMcMGZFEQAILO0ggP06OcA4bxBT1c74jzn
-	+Jh6yzzEoqrCWZYZUd9niRvUE+2iENreqn3NTHwmeOTrFKaPvwu2n4sORrOGAm5f6VyGmt7kaO9
-	Qmv60g4VSDTimaAo7ezcs5dsSyCpzF9wHSf2T2lXZyZOsZQID9yhrLgXQgiuqmblJmSQabRf16R
-	QoYhU4vlQVdtQj6Mku46amIhs8NYD9VPHr+EWCeUKZNW1uNraSC/uZOApfNPlkh9TZWOyBoi5d6
-	uSGno+KrD1g6HzpNhlvkT3x73e0KDyNZC9tgFZCuKwOABVEmxIPXzf6n0X4lbznpSqna2gUNufr
-	xL+EGJRI+4gDzlLLkuQjE884ZugtdM0u1mFwbw55mWzlfpJLbHu2EBwTl2Wo5mmsT+1AcDvEoKG
-	Ep2wnR1hNP/NvYETJgVs32VMLxMkWzo8HmxtQxx92+l2yHfjkC4/Oi2FJ2
-X-Google-Smtp-Source: AGHT+IEX5+Zc6CDsncOD1U2YKgYTgfSBUwM+Np98fLDZTHhgs+0g9k59w3ppAgkJNjKS+pbJ2TSgiw==
-X-Received: by 2002:a17:90b:4f:b0:33b:a38e:d868 with SMTP id 98e67ed59e1d1-33bcf8e95f3mr35727097a91.24.1761317144424;
-        Fri, 24 Oct 2025 07:45:44 -0700 (PDT)
-Received: from prakrititz-UB.. ([2a09:bac5:3c3a:1aaa::2a8:13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e224a2f28sm9344760a91.19.2025.10.24.07.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 07:45:44 -0700 (PDT)
-From: Nirbhay Sharma <nirbhay.lkd@gmail.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot+19e0be39cc25dfcb0858@syzkaller.appspotmail.com,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Nirbhay Sharma <nirbhay.lkd@gmail.com>
-Subject: [PATCH] gfs2: flush withdraw work before freeing gfs2_sbd
-Date: Fri, 24 Oct 2025 20:13:33 +0530
-Message-ID: <20251024144332.33773-2-nirbhay.lkd@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <68f6a48f.050a0220.91a22.0451.GAE@google.com>
-References: <68f6a48f.050a0220.91a22.0451.GAE@google.com>
+        bh=wx/1KUSrS2QODRikqv2kYXYElChlESHNJsV1usUpdu4=;
+        b=igvX7PW+IuG7CrB4vs5htgBL+KefbjPySVKIT1mwnLqt/5X8Ve9a1RuQmrKW+anV0N
+         Q+OTuXP5sPwrvoU/69mV6EQHkMuejnTlfv/lFgN0SNsDFziFtYbVj7OS5RDgXoJ/UqPJ
+         KrrbJ4ChYbvb/QtV9zrPJPu601cLGkmVCrdwyPZTZvDF/VyOfgWTYtxyM8j+hpgZUn+X
+         tw0kfCXkjGVPOztXogRt0IGXnrUfepkFMNDpaIuEeo2Ggy016d7zSyhb9MarakZshYze
+         lfa32Xlu6MqNgSGhXzYF/DIQHy62QzSsqYiVubVIKpIAcYioKzLer7aB2BRwr2jW0aW/
+         /hUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUePXR05538RU2QjU++xl5/rSqRMaiGGz78aiXEeY24qQnpkeTn+defv64UWEkxpD9/nDZn@lists.linux.dev
+X-Gm-Message-State: AOJu0YwaH5LlrYsG4ypEvqVTBgIcw883hwiwu6JVxoGMPzblXMLeyBkd
+	1p/C7nq70mZ0LtFAtOKKSaGTn4y6XKLzqYnhyK18OO51F6wCEf7qeqdlf6TETDtPTVB7dNoXJp5
+	m7CdMS5x3ZsCiIREbL3HMFSLtlMm2Pus=
+X-Gm-Gg: ASbGncuDnkuUOs+frrVt/wLIdnk3mJVwhgmSTuXG6HYbfgV2o8lBmBTYlGPat9nC4VM
+	Ib/8gQ7S1Aa5daIYv0aiLKREzEA40T74jVTUBaTTT+Q0ljLS18iK3SmCosd0plWxTpcD2Cm6UGr
+	yWVAheJ+6y0W7XZ8dgVHQtLBvP3FXZBlDEP1aZoUDESsKZeJZvV3p0PhLcVt9/PPo9e8pPR0ITO
+	lFaqH/+AeIOTjR3yxJZiuhUghDLPj8tM6k/b34EqC29sA7SrS5bJhNOmgCioH3AnYU0wEVP2fQw
+	565WnU9LFyVHJRNgCL8KuFOzAw==
+X-Google-Smtp-Source: AGHT+IHp3wmsoO5cixVEN6RnBalbhLBxtbDmErayXQYcHx3ZFIvWvsx0O7mjIrtkdb0eYC3IVVBavdS6CsD2AIKgnrM=
+X-Received: by 2002:ac8:7d88:0:b0:4b3:104:792c with SMTP id
+ d75a77b69052e-4eb949095dbmr36793101cf.57.1761323124234; Fri, 24 Oct 2025
+ 09:25:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250926002609.1302233-1-joannelkoong@gmail.com>
+ <20250926002609.1302233-8-joannelkoong@gmail.com> <aPqDPjnIaR3EF5Lt@bfoster> <CAJnrk1aNrARYRS+_b0v8yckR5bO4vyJkGKZHB2788vLKOY7xPw@mail.gmail.com>
+In-Reply-To: <CAJnrk1aNrARYRS+_b0v8yckR5bO4vyJkGKZHB2788vLKOY7xPw@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 24 Oct 2025 09:25:13 -0700
+X-Gm-Features: AS18NWA3qoIlbq6W__AaTzux05FyB2J3eGAkfannm8GTk0lfzD_eFocAFZliHW4
+Message-ID: <CAJnrk1b3bHYhbW9q0r4A0NjnMNEbtCFExosAL_rUoBupr1mO3Q@mail.gmail.com>
+Subject: Re: [PATCH v5 07/14] iomap: track pending read bytes more optimally
+To: Brian Foster <bfoster@redhat.com>
+Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org, 
+	hch@infradead.org, hsiangkao@linux.alibaba.com, linux-block@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Syzbot reported an ODEBUG warning where free_sbd() was freeing memory
-containing an active work_struct (sd_withdraw_work):
+On Thu, Oct 23, 2025 at 5:01=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
+m> wrote:
+>
+> On Thu, Oct 23, 2025 at 12:30=E2=80=AFPM Brian Foster <bfoster@redhat.com=
+> wrote:
+> >
+> > On Thu, Sep 25, 2025 at 05:26:02PM -0700, Joanne Koong wrote:
+> > > Instead of incrementing read_bytes_pending for every folio range read=
+ in
+> > > (which requires acquiring the spinlock to do so), set read_bytes_pend=
+ing
+> > > to the folio size when the first range is asynchronously read in, kee=
+p
+> > > track of how many bytes total are asynchronously read in, and adjust
+> > > read_bytes_pending accordingly after issuing requests to read in all =
+the
+> > > necessary ranges.
+> > >
+> > > iomap_read_folio_ctx->cur_folio_in_bio can be removed since a non-zer=
+o
+> > > value for pending bytes necessarily indicates the folio is in the bio=
+.
+> > >
+> > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > > Suggested-by: "Darrick J. Wong" <djwong@kernel.org>
+> > > ---
+> >
+> > Hi Joanne,
+> >
+> > I was throwing some extra testing at the vfs-6.19.iomap branch since th=
+e
+> > little merge conflict thing with iomap_iter_advance(). I end up hitting
+> > what appears to be a lockup on XFS with 1k FSB (-bsize=3D1k) running
+> > generic/051. It reproduces fairly reliably within a few iterations or s=
+o
+> > and seems to always stall during a read for a dedupe operation:
+> >
+> > task:fsstress        state:D stack:0     pid:12094 tgid:12094 ppid:1209=
+1  task_flags:0x400140 flags:0x00080003
+> > Call Trace:
+> >  <TASK>
+> >  __schedule+0x2fc/0x7a0
+> >  schedule+0x27/0x80
+> >  io_schedule+0x46/0x70
+> >  folio_wait_bit_common+0x12b/0x310
+> >  ? __pfx_wake_page_function+0x10/0x10
+> >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> >  filemap_read_folio+0x85/0xd0
+> >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> >  do_read_cache_folio+0x7c/0x1b0
+> >  vfs_dedupe_file_range_compare.constprop.0+0xaf/0x2d0
+> >  __generic_remap_file_range_prep+0x276/0x2a0
+> >  generic_remap_file_range_prep+0x10/0x20
+> >  xfs_reflink_remap_prep+0x22c/0x300 [xfs]
+> >  xfs_file_remap_range+0x84/0x360 [xfs]
+> >  vfs_dedupe_file_range_one+0x1b2/0x1d0
+> >  ? remap_verify_area+0x46/0x140
+> >  vfs_dedupe_file_range+0x162/0x220
+> >  do_vfs_ioctl+0x4d1/0x940
+> >  __x64_sys_ioctl+0x75/0xe0
+> >  do_syscall_64+0x84/0x800
+> >  ? do_syscall_64+0xbb/0x800
+> >  ? avc_has_perm_noaudit+0x6b/0xf0
+> >  ? _copy_to_user+0x31/0x40
+> >  ? cp_new_stat+0x130/0x170
+> >  ? __do_sys_newfstat+0x44/0x70
+> >  ? do_syscall_64+0xbb/0x800
+> >  ? do_syscall_64+0xbb/0x800
+> >  ? clear_bhb_loop+0x30/0x80
+> >  ? clear_bhb_loop+0x30/0x80
+> >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > RIP: 0033:0x7fe6bbd9a14d
+> > RSP: 002b:00007ffde72cd4e0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> > RAX: ffffffffffffffda RBX: 0000000000000068 RCX: 00007fe6bbd9a14d
+> > RDX: 000000000a1394b0 RSI: 00000000c0189436 RDI: 0000000000000004
+> > RBP: 00007ffde72cd530 R08: 0000000000001000 R09: 000000000a11a3fc
+> > R10: 000000000001d6c0 R11: 0000000000000246 R12: 000000000a12cfb0
+> > R13: 000000000a12ba10 R14: 000000000a14e610 R15: 0000000000019000
+> >  </TASK>
+> >
+> > It wasn't immediately clear to me what the issue was so I bisected and
+> > it landed on this patch. It kind of looks like we're failing to unlock =
+a
+> > folio at some point and then tripping over it later..? I can kill the
+> > fsstress process but then the umount ultimately gets stuck tossing
+> > pagecache [1], so the mount still ends up stuck indefinitely. Anyways,
+> > I'll poke at it some more but I figure you might be able to make sense
+> > of this faster than I can.
+> >
+> > Brian
+>
+> Hi Brian,
+>
+> Thanks for your report and the repro instructions. I will look into
+> this and report back what I find.
 
-  ODEBUG: free active (active state 0) object: ffff888026c285a0
-  object type: work_struct hint: gfs2_withdraw_func+0x0/0x430
-  WARNING: CPU: 0 PID: 6010 at lib/debugobjects.c:545
-  Call Trace:
-   free_sbd+0x1e4/0x270 fs/gfs2/ops_fstype.c:1308
+This is the fix:
 
-The issue occurs when gfs2_fill_super() fails after initializing
-sd_withdraw_work at line 1218. Some error paths (fail_lm, fail_debug,
-etc.) skip the existing flush_work() at the fail_inodes label and jump
-directly to fail_free, which calls free_sbd() without flushing the
-potentially pending work.
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 4e6258fdb915..aa46fec8362d 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -445,6 +445,9 @@ static void iomap_read_end(struct folio *folio,
+size_t bytes_pending)
+                bool end_read, uptodate;
+                size_t bytes_accounted =3D folio_size(folio) - bytes_pendin=
+g;
 
-free_sbd() is also called from init_sbd()'s error path before
-sd_withdraw_work is initialized. Since the structure is allocated with
-kzalloc(), work.func is NULL in this case.
-
-Fix by adding a guarded flush_work() to free_sbd(). Check work.func
-before flushing to handle both cases: when called after INIT_WORK()
-(work must be flushed), and when called before INIT_WORK() (work.func
-is NULL, skip flushing). This avoids the WARN_ON(!work->func) in
-__flush_work().
-
-Note: gfs2_put_super() already calls flush_work() before free_sbd()
-(line 606), so the flush in free_sbd() will be redundant but harmless
-for the normal unmount path.
-
-Reported-by: syzbot+19e0be39cc25dfcb0858@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=19e0be39cc25dfcb0858
-Fixes: 8fdd8a28fe5c ("gfs2: Asynchronous withdraw")
-Signed-off-by: Nirbhay Sharma <nirbhay.lkd@gmail.com>
----
-Testing performed:
-- Reproduced original bug with syzbot C reproducer
-- Verified fix prevents ODEBUG warnings in all error paths
-- Tested early mount failures (unformatted devices)
-- Tested all gfs2_fill_super error paths (4 scenarios)
-- Parallel mount stress test (3 concurrent operations)
-- Memory leak test (50 mount/unmount cycles, <4MB variance)
-- Race condition testing passed
-- Validated with syzbot on linux-next (Oct 22)
-- All tests completed with zero ODEBUG warnings
-
- fs/gfs2/ops_fstype.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 08502d967e71..6cea03410e57 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -67,6 +67,14 @@ void free_sbd(struct gfs2_sbd *sdp)
- {
- 	struct super_block *sb = sdp->sd_vfs;
- 
-+	/*
-+	 * Only flush withdraw work if initialized. Work is initialized in
-+	 * gfs2_fill_super() at line 1218, after init_sbd() succeeds.
-+	 * Checking func avoids WARN_ON in __flush_work() for early failures.
-+	 */
-+	if (sdp->sd_withdraw_work.func)
-+		flush_work(&sdp->sd_withdraw_work);
++               if (!bytes_accounted)
++                       return;
 +
- 	free_percpu(sdp->sd_lkstats);
- 	sb->s_fs_info = NULL;
- 	kfree(sdp);
--- 
-2.48.1
+                spin_lock_irq(&ifs->state_lock);
 
+
+What I missed was that if all the bytes in the folio are non-uptodate
+and need to read in by the filesystem, then there's a bug where the
+read will be ended on the folio twice (in iomap_read_end() and when
+the filesystem calls iomap_finish_folio_write(), when only the
+filesystem should end the read), which does 2 folio unlocks which ends
+up locking the folio. Looking at the writeback patch that does a
+similar optimization [1], I miss the same thing there.
+
+I'll fix up both. Thanks for catching this and bisecting it down to
+this patch. Sorry for the trouble.
+
+Thanks,
+Joanne
+
+[1] https://lore.kernel.org/linux-fsdevel/20251009225611.3744728-4-joannelk=
+oong@gmail.com/
+>
+> Thanks,
+> Joanne
+> >
