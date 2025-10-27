@@ -1,109 +1,250 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31A4224B0D
-	for <gfs2@lists.linux.dev>; Mon, 27 Oct 2025 11:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E069EEAB
+	for <gfs2@lists.linux.dev>; Mon, 27 Oct 2025 12:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761562870; cv=none; b=rgCuIgeJlaL5zA8FAk8aMgserSRqS4qYZlk4JCe0doXLnQ4BFGCY3HwafifIzx1k+bnQB5SqVMv2E7QCj7HeIVLhXs3OL1lUVZO+Cjco08DYpEtxrv32jYTQysglw0a1r1Le9RziTBF2Sor6JA9xAlMaKph+l2glnI2UGLLWmHc=
+	t=1761567137; cv=none; b=YlLA36Q/iNsUons5yi4ovybimnCs8Xgn6I7IDA/dg7XPaC8jaw4aZJ7RLJ7r+roMaaIzkcDyJU72NfkeVi/O0TmYODv2zTVtOXqG2Hu9ySbA4eD/H0d0RySmDtsctq0FQemTKJIua3AX3TSIKBUH3u7ZcTrZZNb+wExWw6fj0po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761562870; c=relaxed/simple;
-	bh=fNSzNH2cea0S6vu+yLc0ygMmMw+DbuZTdNE+lEpxMBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BJf15aduwcfQWiQwQl7T94YHuT4n90ARLNxP2v4IQc/Oo8g6cTBGdyqD1TrV22iDcy/Y6SAY29pfkrDawKshRYS1ZKBn0LThj5fKfoHGioOrURMukhEdnvsBfAhRMrxak8+PgaT+G9ugCO4rIVjO9OLzHsYd69PwFRYdUDtTLUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MEl8eeFF; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761567137; c=relaxed/simple;
+	bh=Abr5mbwnWBxHCsJT0JX28zRVj7tmgWW1C8etKDryohM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTNjNrN1/ISQXrilLiWraPyxrqTL+Ia0Lg/aD+F8HXlrn8qr6zhliDH5qi7AAUn/YfRVGCBz+8+A9QR8hzTR7i+hDK7U1F2bqXOIAG3eHj5ksSxAWSYf6o4ozUy1efEz2wim3i4DkaOXFTAJvSkz1VOa1XBYAXVLfQWfifEQdoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Arf3aDau; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MEl8eeFF"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6cf1a95273so3285391a12.1
-        for <gfs2@lists.linux.dev>; Mon, 27 Oct 2025 04:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761562867; x=1762167667; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6YCUXrqBln9X0KLH2R8ZL8iELcmm08jEAaIpjSJG/28=;
-        b=MEl8eeFFPxJOnx90wN7uFrYVE0ktz/7x8xmwoy9WqED/YBI0QVUPhuKyErx1Bo0pwa
-         rv6We/KURv0poAEiN6MDr7aGAG/EFlsFcHBAPX2Udfrj8L/pii7/PLOUxvn04SwM6mc0
-         4OsGjJXGRaN68F8+3QXVWDA9JM2cCmtF960ouv5LAcpmlnyOgU6DHB5BBemflUJZzQUd
-         nM1COa0dQy8XO45R0VwpdZAtyUrI+LIY/fyDTkbg3OScUs0/w/uGt3FS13BWEZZGt2Es
-         wswu3pr6ecoti1sMY3fot4PcTFAMQzwz4ksGTAeN8Tlv+ThyhQg5RplKuHfhGw3eYA/Y
-         7dTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761562867; x=1762167667;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6YCUXrqBln9X0KLH2R8ZL8iELcmm08jEAaIpjSJG/28=;
-        b=sm0HXNwTY/CLlswy3lGf1dgMwei2g4LdwcklpjfQNLTb5qXffNHdtu0GGtO26M5kGh
-         rToqQDli1RF9W4vAEsIoD7rWp3QyjPRZy+ZPrxQiJea8Ei9i2oBzYM63u8ETrvf5/oMh
-         +heCPMI+4AZ6FP3f+p9Tj3oLP4g4j0MgjLkOCOJnPuNSKXKLukF3pdQuERu/pjdboCDk
-         +UjzhdLe3mCW8ndffUrlgBdOBJcKPkEq2JGFm8aQ8YguLgEEhEodJeP5TbKa0lU/pHH0
-         f3fudEuES9SssQ2nifkJf5Gq6Zk0JtBLKXa6/XttRcP83TLQALXOe0WL2KbyXIaQUarE
-         MyFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf6x4b363fXShjYOdw8qZ1+L3WPeTUH9Hc0LnWMsJrKGDSNqXL3a3nAjpSr3xaz1PKqXos@lists.linux.dev
-X-Gm-Message-State: AOJu0YzUK/wUl4cCJ0MW8Nyg/pKSYmHhpuImJFb3K3ccK5AUfGwOiO/5
-	5cD3UCU3cC51vXNYwoHXFHRGiJWGvQ0Ds9nT5jIrVuKcRbMxjGjam5MK
-X-Gm-Gg: ASbGncuWUbjeiP+MACgahOrlHnHvy/x1DQXNancJaWtn7TJoWufyKalqv9RRCZehn35
-	C2EAqaSs8zi0lEt0zKONjlJCxjyu6tgXn973IJgFUnvrsjNz25hg7e8rxc8ZEn9OYwcVaQQHB3f
-	9ZLlikIFdoUvCw+tB3u4sEX9iqhR4WTVGgX5SCtNK1X1HO6f02wu4TfsDGMNrjp+n6LjvLyl0B4
-	Y0zS6O8QI+l3MFN/9hkBCvCnlevS8bhsNZn4aDX3qWe26KkLjBIyE5WhiXMQUm7FtZhgRz4BhCU
-	O5nhJfV01NNxPYjdrJGYM00A0BZFcPgPxG27O2yV1KDcDeSPFC7EJ7daT0v1TTfWCTF2QbCCAv5
-	G1AW2Zh9sx3xpiVAjbnzEZsdBq3o5l6iZuH7JIWmI7SCBEN3zJyKtzrPj8LCbUWDpAl0ePTyM
-X-Google-Smtp-Source: AGHT+IHL+n9BswPUU/oHfhmEaW00Mk2l89+YrF7PxELyUmd2/Z/ecgzlueG9NX53az0bLz4lfUZx8Q==
-X-Received: by 2002:a17:903:298c:b0:27e:eabd:4b41 with SMTP id d9443c01a7336-290c9c89eabmr442795985ad.7.1761562866909;
-        Mon, 27 Oct 2025 04:01:06 -0700 (PDT)
-Received: from hsukr3.. ([2405:201:d019:4872:e28f:8b98:990a:8261])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7e540csm8111162a91.13.2025.10.27.04.01.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 04:01:06 -0700 (PDT)
-From: Sukrut Heroorkar <hsukrut3@gmail.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>,
-	Bob Peterson <rpeterso@redhat.com>,
-	gfs2@lists.linux.dev (open list:GFS2 FILE SYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Cc: shuah@kernel.org,
-	david.hunter.linux@gmail.com,
-	Sukrut Heroorkar <hsukrut3@gmail.com>
-Subject: [PATCH] gfs2: document ip in __gfs2_holder_init kernel-doc comment
-Date: Mon, 27 Oct 2025 16:30:41 +0530
-Message-ID: <20251027110041.426022-1-hsukrut3@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Arf3aDau"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761567134;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l8QmYcf2qcgHxyLSSNmPzf2VO7g9R1+3AwVMwAbR4/s=;
+	b=Arf3aDauS5DHZrD6e0+dMQqdnXWccD9bU7K6WBfxetPXChGFDglg4wA7qcwd6OUiE15Wwe
+	Kqi4pt1LNSdaXGzeYWxg0XWt1lLMCxN8nPvROY3Mt15BhJCPhHDwNwqSei1b0OPlC/2zRg
+	4GK1bOkgqwfKESAuH49rGuX9KQLtEMY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-gTH_jFoHP2-lTU4NonmGOw-1; Mon,
+ 27 Oct 2025 08:12:09 -0400
+X-MC-Unique: gTH_jFoHP2-lTU4NonmGOw-1
+X-Mimecast-MFC-AGG-ID: gTH_jFoHP2-lTU4NonmGOw_1761567127
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 420A81956095;
+	Mon, 27 Oct 2025 12:12:07 +0000 (UTC)
+Received: from bfoster (unknown [10.22.88.105])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE0241955F1B;
+	Mon, 27 Oct 2025 12:12:03 +0000 (UTC)
+Date: Mon, 27 Oct 2025 08:16:22 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: brauner@kernel.org, miklos@szeredi.hu, djwong@kernel.org,
+	hch@infradead.org, hsiangkao@linux.alibaba.com,
+	linux-block@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+	linux-xfs@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 07/14] iomap: track pending read bytes more optimally
+Message-ID: <aP9illNXOVJ8SF6m@bfoster>
+References: <20250926002609.1302233-1-joannelkoong@gmail.com>
+ <20250926002609.1302233-8-joannelkoong@gmail.com>
+ <aPqDPjnIaR3EF5Lt@bfoster>
+ <CAJnrk1aNrARYRS+_b0v8yckR5bO4vyJkGKZHB2788vLKOY7xPw@mail.gmail.com>
+ <CAJnrk1b3bHYhbW9q0r4A0NjnMNEbtCFExosAL_rUoBupr1mO3Q@mail.gmail.com>
+ <aPuz4Uop66-jRpN-@bfoster>
+ <CAJnrk1bqjykKtpAdsHLPuuvHTzOHW0tExRZ8KKmKYyfDpuAsTQ@mail.gmail.com>
+ <CAJnrk1ZOcnOT77c2fCiqzV=ZiiNnxOcB7wXn4=V+VFijS+-2Rw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1ZOcnOT77c2fCiqzV=ZiiNnxOcB7wXn4=V+VFijS+-2Rw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Building with W=1 reports:
-Warning: fs/gfs2/glock.c:1248 function parameter 'ip' not described
-in '__gfs2_holder_init'
+On Fri, Oct 24, 2025 at 02:55:20PM -0700, Joanne Koong wrote:
+> On Fri, Oct 24, 2025 at 12:48 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> >
+> > On Fri, Oct 24, 2025 at 10:10 AM Brian Foster <bfoster@redhat.com> wrote:
+> > >
+> > > On Fri, Oct 24, 2025 at 09:25:13AM -0700, Joanne Koong wrote:
+> > > > On Thu, Oct 23, 2025 at 5:01 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > > > >
+> > > > > On Thu, Oct 23, 2025 at 12:30 PM Brian Foster <bfoster@redhat.com> wrote:
+> > > > > >
+> > > > > > On Thu, Sep 25, 2025 at 05:26:02PM -0700, Joanne Koong wrote:
+> > > > > > > Instead of incrementing read_bytes_pending for every folio range read in
+> > > > > > > (which requires acquiring the spinlock to do so), set read_bytes_pending
+> > > > > > > to the folio size when the first range is asynchronously read in, keep
+> > > > > > > track of how many bytes total are asynchronously read in, and adjust
+> > > > > > > read_bytes_pending accordingly after issuing requests to read in all the
+> > > > > > > necessary ranges.
+> > > > > > >
+> > > > > > > iomap_read_folio_ctx->cur_folio_in_bio can be removed since a non-zero
+> > > > > > > value for pending bytes necessarily indicates the folio is in the bio.
+> > > > > > >
+> > > > > > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > > > > > > Suggested-by: "Darrick J. Wong" <djwong@kernel.org>
+> > > > > > > ---
+> > > > > >
+> > > > > > Hi Joanne,
+> > > > > >
+> > > > > > I was throwing some extra testing at the vfs-6.19.iomap branch since the
+> > > > > > little merge conflict thing with iomap_iter_advance(). I end up hitting
+> > > > > > what appears to be a lockup on XFS with 1k FSB (-bsize=1k) running
+> > > > > > generic/051. It reproduces fairly reliably within a few iterations or so
+> > > > > > and seems to always stall during a read for a dedupe operation:
+> > > > > >
+> > > > > > task:fsstress        state:D stack:0     pid:12094 tgid:12094 ppid:12091  task_flags:0x400140 flags:0x00080003
+> > > > > > Call Trace:
+> > > > > >  <TASK>
+> > > > > >  __schedule+0x2fc/0x7a0
+> > > > > >  schedule+0x27/0x80
+> > > > > >  io_schedule+0x46/0x70
+> > > > > >  folio_wait_bit_common+0x12b/0x310
+> > > > > >  ? __pfx_wake_page_function+0x10/0x10
+> > > > > >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> > > > > >  filemap_read_folio+0x85/0xd0
+> > > > > >  ? __pfx_xfs_vm_read_folio+0x10/0x10 [xfs]
+> > > > > >  do_read_cache_folio+0x7c/0x1b0
+> > > > > >  vfs_dedupe_file_range_compare.constprop.0+0xaf/0x2d0
+> > > > > >  __generic_remap_file_range_prep+0x276/0x2a0
+> > > > > >  generic_remap_file_range_prep+0x10/0x20
+> > > > > >  xfs_reflink_remap_prep+0x22c/0x300 [xfs]
+> > > > > >  xfs_file_remap_range+0x84/0x360 [xfs]
+> > > > > >  vfs_dedupe_file_range_one+0x1b2/0x1d0
+> > > > > >  ? remap_verify_area+0x46/0x140
+> > > > > >  vfs_dedupe_file_range+0x162/0x220
+> > > > > >  do_vfs_ioctl+0x4d1/0x940
+> > > > > >  __x64_sys_ioctl+0x75/0xe0
+> > > > > >  do_syscall_64+0x84/0x800
+> > > > > >  ? do_syscall_64+0xbb/0x800
+> > > > > >  ? avc_has_perm_noaudit+0x6b/0xf0
+> > > > > >  ? _copy_to_user+0x31/0x40
+> > > > > >  ? cp_new_stat+0x130/0x170
+> > > > > >  ? __do_sys_newfstat+0x44/0x70
+> > > > > >  ? do_syscall_64+0xbb/0x800
+> > > > > >  ? do_syscall_64+0xbb/0x800
+> > > > > >  ? clear_bhb_loop+0x30/0x80
+> > > > > >  ? clear_bhb_loop+0x30/0x80
+> > > > > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > > > RIP: 0033:0x7fe6bbd9a14d
+> > > > > > RSP: 002b:00007ffde72cd4e0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> > > > > > RAX: ffffffffffffffda RBX: 0000000000000068 RCX: 00007fe6bbd9a14d
+> > > > > > RDX: 000000000a1394b0 RSI: 00000000c0189436 RDI: 0000000000000004
+> > > > > > RBP: 00007ffde72cd530 R08: 0000000000001000 R09: 000000000a11a3fc
+> > > > > > R10: 000000000001d6c0 R11: 0000000000000246 R12: 000000000a12cfb0
+> > > > > > R13: 000000000a12ba10 R14: 000000000a14e610 R15: 0000000000019000
+> > > > > >  </TASK>
+> > > > > >
+> > > > > > It wasn't immediately clear to me what the issue was so I bisected and
+> > > > > > it landed on this patch. It kind of looks like we're failing to unlock a
+> > > > > > folio at some point and then tripping over it later..? I can kill the
+> > > > > > fsstress process but then the umount ultimately gets stuck tossing
+> > > > > > pagecache [1], so the mount still ends up stuck indefinitely. Anyways,
+> > > > > > I'll poke at it some more but I figure you might be able to make sense
+> > > > > > of this faster than I can.
+> > > > > >
+> > > > > > Brian
+> > > > >
+> > > > > Hi Brian,
+> > > > >
+> > > > > Thanks for your report and the repro instructions. I will look into
+> > > > > this and report back what I find.
+> > > >
+> > > > This is the fix:
+> > > >
+> > > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> > > > index 4e6258fdb915..aa46fec8362d 100644
+> > > > --- a/fs/iomap/buffered-io.c
+> > > > +++ b/fs/iomap/buffered-io.c
+> > > > @@ -445,6 +445,9 @@ static void iomap_read_end(struct folio *folio,
+> > > > size_t bytes_pending)
+> > > >                 bool end_read, uptodate;
+> > > >                 size_t bytes_accounted = folio_size(folio) - bytes_pending;
+> > > >
+> > > > +               if (!bytes_accounted)
+> > > > +                       return;
+> > > > +
+> > > >                 spin_lock_irq(&ifs->state_lock);
+> > > >
+> > > >
+> > > > What I missed was that if all the bytes in the folio are non-uptodate
+> > > > and need to read in by the filesystem, then there's a bug where the
+> > > > read will be ended on the folio twice (in iomap_read_end() and when
+> > > > the filesystem calls iomap_finish_folio_write(), when only the
+> > > > filesystem should end the read), which does 2 folio unlocks which ends
+> > > > up locking the folio. Looking at the writeback patch that does a
+> > > > similar optimization [1], I miss the same thing there.
+> > > >
+> > >
+> > > Makes sense.. though a short comment wouldn't hurt in there. ;) I found
+> > > myself a little confused by the accounted vs. pending naming when
+> > > reading through that code. If I follow correctly, the intent is to refer
+> > > to the additional bytes accounted to read_bytes_pending via the init
+> > > (where it just accounts the whole folio up front) and pending refers to
+> > > submitted I/O.
+> > >
+> > > Presumably that extra accounting doubly serves as the typical "don't
+> > > complete the op before the submitter is done processing" extra
+> > > reference, except in this full submit case of course. If so, that's
+> > > subtle enough in my mind that a sentence or two on it wouldn't hurt..
+> >
+> > I will add some a comment about this :) That's a good point about the
+> > naming, maybe "bytes_submitted" and "bytes_unsubmitted" is a lot less
+> > confusing than "bytes_pending" and "bytes_accounted".
+> 
+> Thinking about this some more, bytes_unsubmitted sounds even more
+> confusing, so maybe bytes_nonsubmitted or bytes_not_submitted. I'll
+> think about this some more but kept it as pending/accounted for now.
+> 
 
-The ip parameter was added when __gfs2_holder_init started saving the
-gfs2_glock_nq_init caller's return address to gh_ip. This makes it
-easier to backtrack which holder took the lock. Document @ip to silence
-this warning.
+bytes_submitted sounds better than pending to me, not sure about
+unsubmitted or whatever. As long as there's a sentence or two that
+explains what accounted means in the end helper, though, that seems
+reasonable enough to me.
 
-Fixes: b016d9a84abd ("gfs2: Save ip from gfs2_glock_nq_init")
-Signed-off-by: Sukrut Heroorkar <hsukrut3@gmail.com>
----
- fs/gfs2/glock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Brian
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 91d0afec4087..bc6f236b899c 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1163,7 +1163,7 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
-  * @state: the state we're requesting
-  * @flags: the modifier flags
-  * @gh: the holder structure
-- *
-+ * @ip: caller's return address for debugging
-  */
- 
- void __gfs2_holder_init(struct gfs2_glock *gl, unsigned int state, u16 flags,
--- 
-2.43.0
+> The fix for this bug is here [1].
+> 
+> Thanks,
+> Joanne
+> 
+> [1] https://lore.kernel.org/linux-fsdevel/20251024215008.3844068-1-joannelkoong@gmail.com/
+> 
+> >
+> > Thanks,
+> > Joanne
+> >
+> > >
+> > > > I'll fix up both. Thanks for catching this and bisecting it down to
+> > > > this patch. Sorry for the trouble.
+> > > >
+> > >
+> > > No prob. Thanks for the fix!
+> > >
+> > > Brian
+> > >
+> > > > Thanks,
+> > > > Joanne
+> > > >
+> > > > [1] https://lore.kernel.org/linux-fsdevel/20251009225611.3744728-4-joannelkoong@gmail.com/
+> > > > >
+> > > > > Thanks,
+> > > > > Joanne
+> > > > > >
+> > > >
+> > >
+> 
 
