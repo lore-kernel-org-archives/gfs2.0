@@ -1,51 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F8D41C62
-	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 00:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6419041C62
+	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 00:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761956561; cv=none; b=UmNlXEcBYxNRZIBwxnMEJq8n2ptXl9qda0nJEzcyqJtOPbC8UkCzVnNXl+1n6OBcBvYzB6zcVqRGDCJbHoOoDf3btMqf/uK140eCJt4TPT+cJZRpKVnVojhe6qjx3RKhMV8Rz7K2Xcxa/Eoy9ORUwvhb/lwUVON0fE1vAyFMp3Q=
+	t=1761956564; cv=none; b=jzBwkmiLaXbduKWgUE9RIBMx01B+P/8Urnx19KmE65v0m7znrFkItQED0suE0aNwUqYjQu01auoteGjgtjUWsNItzeeGBx1Qg+Bx7aNCpxpKIuVTT/rWsekL7tdNnu08bxDBd2Ru76Ouy20snF4JidyV9OznHOJxJxt2+hY5FwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761956561; c=relaxed/simple;
-	bh=DLj6YPBtmNsjfu7qz1vJNKAs3ZPDA7/0FM1G2Qp6aQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=CqBl4Lk8TAP1Gy4LN79R5+Gm5EbRE6lD+9gOaHneuzBrczWCcwKh8qf6MtxhfUlE7RGiDDqtDnKrv9tSO5xFaB//O5nNg8WksGbnhvmJTDy0oPlzxp/z1SI1pTqCloh+H2lE2fOB4AuG7xjgUskthEhmo4REMdThgxa1mVK0LNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bQCJB8u9; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1761956564; c=relaxed/simple;
+	bh=LcUjxly9mHY8USDIFmehMdx5TMf1JbcZLb5UNHdg43g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=bYndSMu/1O1PXYuBqqBzJFYWM9CM47hR0wbf2Xxbguqh0NTUfiLKvMG5h0cAOL3e+mpP4HU2XSL6WzdpwGHZo379pkD00QigJywa120k6tQMDnS3FZoifbM+7Dz+tflcDzM6zt55+Hg0seeUA925lfypUNtfWawqbrludMyKpwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N6NLQe+5; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bQCJB8u9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N6NLQe+5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761956558;
+	s=mimecast20190719; t=1761956561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LNI8z5JpN+ZtZmxrnmEwy+JNbvzOmHDZ9tEZ+ZlgL3o=;
-	b=bQCJB8u9xmb7tjLh74qSHwNX2plpFZaCviDgz34bKA2wOJZsDPhoA6ofKAaENpM3N0Fw5T
-	dKTn+QYZfprs/5JKHE2njlwhOG+3xm6mFM8B20GPpHxeJHF/7hmE3p+YnDOPtJM5mqw4OV
-	4jVfErqOcS135387wlZ2a8mEsHXe1cI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ugCZzgpX/bUEXUAwfd44eVZ8e1SLQkzJvIy8tpLDXa4=;
+	b=N6NLQe+5Yi3R/6U1CY4uMZFxCUC/fPbvAg9KidAb09Kk9mu1aGLF8t62kBbNRJxulkxywH
+	cc5pH++LFx1q/mSn6ThGJ9E+soLfkvgnFGyd3qWYnMz5vs5HIkQ28m8NELBnvpBIPhk+dM
+	8c+Xd5f249UxBqY33vetFWT2hcMaVcc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-gnn3UKVsPKiufkg2GCSuMw-1; Fri,
- 31 Oct 2025 20:22:37 -0400
-X-MC-Unique: gnn3UKVsPKiufkg2GCSuMw-1
-X-Mimecast-MFC-AGG-ID: gnn3UKVsPKiufkg2GCSuMw_1761956556
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-UqDvtgx_MNOmy9TWaHFLFw-1; Fri,
+ 31 Oct 2025 20:22:39 -0400
+X-MC-Unique: UqDvtgx_MNOmy9TWaHFLFw-1
+X-Mimecast-MFC-AGG-ID: UqDvtgx_MNOmy9TWaHFLFw_1761956558
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 952D61956050
-	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 00:22:36 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A4CD19560A7
+	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 00:22:38 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.12])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8969F180035A;
-	Sat,  1 Nov 2025 00:22:35 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E591180035A;
+	Sat,  1 Nov 2025 00:22:36 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 00/24] gfs2 filesystem withdrawal rework
-Date: Sat,  1 Nov 2025 00:22:09 +0000
-Message-ID: <20251101002234.1286383-1-agruenba@redhat.com>
+Subject: [PATCH 01/24] gfs2: Add clean argument to lm_unmount hook
+Date: Sat,  1 Nov 2025 00:22:10 +0000
+Message-ID: <20251101002234.1286383-2-agruenba@redhat.com>
+In-Reply-To: <20251101002234.1286383-1-agruenba@redhat.com>
+References: <20251101002234.1286383-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -54,86 +58,94 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ofdtBI0k5DoZyp8IRuasaeQai90wH61mFlR8ZTWt7jc_1761956556
+X-Mimecast-MFC-PROC-ID: TyIyMsZY8hdST8yBNXMyy_gAX0rwr1MiJzyv3JxNZk8_1761956558
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-When an unrecoverable filesystem error occurs, the "errors" mount option
-determines whether the filesystem should trigger a kernel panic or
-withdraw the filesystem.  In a production environment, triggering a
-kernel panic is usually recommended as that should lead to eventual node
-recovery.  Filesystem withdrawal will disable the failed filesystem but
-leave the rest of the node running; this can be useful for debugging.
+Add a 'clean' argument to ->lm_unmount() that indicates whether the
+filesystem is clean or needs recovery.  Set clean to true for normal
+unmounts, and to false for withdraws.
 
-Conceptually, the "errors" setting should make no difference for the
-rest of the cluster and in either case, the remaining nodes should
-recover the journal of the failed node before resuming operation.
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+---
+ fs/gfs2/glock.h      |  2 +-
+ fs/gfs2/lock_dlm.c   | 14 ++++++++++++--
+ fs/gfs2/ops_fstype.c |  2 +-
+ fs/gfs2/util.c       |  2 +-
+ 4 files changed, 15 insertions(+), 5 deletions(-)
 
-Up until recently, dlm didn't have a way of leaving a lockspace in an
-inconsistent state and triggering recovery, though.  The withdrawing
-node had to carefully release just the dlm locks needed for recovery,
-wait for the other nodes to perform recovery, and only then could it
-release the remaining dlm locks.  We ended up with two implementations
-of the same concept, and the filesystem withdrawal code was causing
-various problems all over the place.
-
-Since dlm merge a769648f464c in v6.18-rc1, gfs2 can indicate that
-recovery is needed when leaving a lockspace.  This allows the existing
-filesystem withdrawal code to be removed almost entirely.  We can now
-trigger withdrawal in any context and complete it asynchronously.
-
-Thanks,
-Andreas
-
-Andreas Gruenbacher (24):
-  gfs2: Add clean argument to lm_unmount hook
-  gfs2: Asynchronous withdraw
-  gfs2: Get rid of delayed withdraws
-  gfs2: Rename gfs2_{withdrawing_or_ => }withdrawn
-  gfs2: Withdraw immediately on log write errors
-  gfs2: Kill gfs2_io_error_bh_wd
-  gfs2: Rename LM_FLAG_{NOEXP -> RECOVER}
-  Revert "gfs2: don't stop reads while withdraw in progress"
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (1/6)
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (2/6)
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (3/6)
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (4/6)
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (5/6)
-  Revert "gfs2: Force withdraw to replay journals and wait for it to finish" (6/6)
-  Revert "gfs2: fix a deadlock on withdraw-during-mount"
-  Revert "gfs2: Check for log write errors before telling dlm to unlock"
-  Revert "gfs2: Allow some glocks to be used during withdraw"
-  Revert "gfs2: fix infinite loop when checking ail item count before go_inval"
-  gfs2: Rename gfs2_{gl_dq_holders => withdraw_glocks}
-  gfs2: Clean up properly during a withdraw
-  gfs2: New gfs2_withdraw_helper
-  gfs2: Withdraw immediately in gfs2_trans_add_meta
-  gfs2: No longer thaw filesystems during a withdraw
-  gfs2: Clean up SDF_JOURNAL_LIVE flag handling
-
- fs/gfs2/aops.c       |   2 +-
- fs/gfs2/file.c       |   2 +-
- fs/gfs2/glock.c      | 204 ++++++++-------------------
- fs/gfs2/glock.h      |  12 +-
- fs/gfs2/glops.c      |  95 ++-----------
- fs/gfs2/incore.h     |  22 +--
- fs/gfs2/lock_dlm.c   |  57 +++-----
- fs/gfs2/log.c        |  59 +++-----
- fs/gfs2/lops.c       |   7 +-
- fs/gfs2/meta_io.c    |  13 +-
- fs/gfs2/ops_fstype.c |  35 +++--
- fs/gfs2/quota.c      |   8 +-
- fs/gfs2/recovery.c   |   8 +-
- fs/gfs2/super.c      |  31 ++--
- fs/gfs2/super.h      |   1 -
- fs/gfs2/sys.c        |  34 ++---
- fs/gfs2/trace_gfs2.h |   1 -
- fs/gfs2/trans.c      |  30 ++--
- fs/gfs2/util.c       | 328 +++++++++++++++----------------------------
- fs/gfs2/util.h       |  56 ++------
- 20 files changed, 302 insertions(+), 703 deletions(-)
-
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index d041b922b45e..dfbe06346b35 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -136,7 +136,7 @@ struct lm_lockops {
+ 	void (*lm_first_done) (struct gfs2_sbd *sdp);
+ 	void (*lm_recovery_result) (struct gfs2_sbd *sdp, unsigned int jid,
+ 				    unsigned int result);
+-	void (*lm_unmount) (struct gfs2_sbd *sdp);
++	void (*lm_unmount) (struct gfs2_sbd *sdp, bool clean);
+ 	void (*lm_withdraw) (struct gfs2_sbd *sdp);
+ 	void (*lm_put_lock) (struct gfs2_glock *gl);
+ 	int (*lm_lock) (struct gfs2_glock *gl, unsigned int req_state,
+diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
+index 4f00af7dd256..c18e732a04bd 100644
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -1438,7 +1438,15 @@ static void gdlm_first_done(struct gfs2_sbd *sdp)
+ 		fs_err(sdp, "mount first_done error %d\n", error);
+ }
+ 
+-static void gdlm_unmount(struct gfs2_sbd *sdp)
++/*
++ * gdlm_unmount - release our lockspace
++ * @sdp: the superblock
++ * @clean: Indicates whether or not the remaining nodes in the cluster should
++ *	   perform recovery.  Recovery is necessary when a node withdraws and
++ *	   its journal remains dirty.  Recovery isn't necessary when a node
++ *	   cleanly unmounts a filesystem.
++ */
++static void gdlm_unmount(struct gfs2_sbd *sdp, bool clean)
+ {
+ 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
+ 
+@@ -1456,7 +1464,9 @@ static void gdlm_unmount(struct gfs2_sbd *sdp)
+ release:
+ 	down_write(&ls->ls_sem);
+ 	if (ls->ls_dlm) {
+-		dlm_release_lockspace(ls->ls_dlm, DLM_RELEASE_NORMAL);
++		dlm_release_lockspace(ls->ls_dlm,
++				      clean ? DLM_RELEASE_NORMAL :
++					      DLM_RELEASE_RECOVER);
+ 		ls->ls_dlm = NULL;
+ 	}
+ 	up_write(&ls->ls_sem);
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index aa15183f9a16..a29e81b3e954 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1041,7 +1041,7 @@ void gfs2_lm_unmount(struct gfs2_sbd *sdp)
+ {
+ 	const struct lm_lockops *lm = sdp->sd_lockstruct.ls_ops;
+ 	if (!gfs2_withdrawing_or_withdrawn(sdp) && lm->lm_unmount)
+-		lm->lm_unmount(sdp);
++		lm->lm_unmount(sdp, true);
+ }
+ 
+ static int wait_on_journal(struct gfs2_sbd *sdp)
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 56412f63f3bb..27fdcbce2d75 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -339,7 +339,7 @@ void gfs2_withdraw(struct gfs2_sbd *sdp)
+ 
+ 		if (lm->lm_unmount) {
+ 			fs_err(sdp, "telling LM to unmount\n");
+-			lm->lm_unmount(sdp);
++			lm->lm_unmount(sdp, false);
+ 		}
+ 		fs_err(sdp, "File system withdrawn\n");
+ 		dump_stack();
 -- 
 2.51.0
 
