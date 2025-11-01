@@ -1,58 +1,40 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51609277CB8
-	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 08:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A2A17B418
+	for <gfs2@lists.linux.dev>; Sat,  1 Nov 2025 15:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761984580; cv=none; b=VYDoradooZOzqaI78WhJLwXJUOWW1tcIH8VmjCm95AUsdLuDe9P7vn1F3HZpkj0vAbRLnGRDeW9nUeJyvfWvTp1MOLZaDD5s3SNEvWJs/aO4lx42yXNmZMS7Exuy63Qjy4VVpHVxRFO1vfMwwTIjptnkZxfxrkjE2ib2+US3tZA=
+	t=1762011339; cv=none; b=jP5KlSADiIgGhGlFd0YIZBj/KKSN2YFs5Xefx1gcbiIXRwflxpNKwd7ph3/S74PoQutoGBNTeHYaA+GXTeSigkzka+iFDSZ2eMVQwtFnBKi6nxOUSh/LyTM5zEP5bkHicaJIqpxKqTbXHV/M1qbN7cRQV1vZ48+lW3gixfRrKts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761984580; c=relaxed/simple;
-	bh=NTubLnvrfYxlsp2gxaNPv6OO2rMv2OpGp9sUstBF/bM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct0c03ZD7uhSY+XRp/+C+y0MIZpL57CstmNYMgiJmpehDHYu12BJfIs2H0axesce/GGonZj1n7SMFq2nXBOw4PqC933+u6lTm3Z4g8lKMntbma+FJBTu74PJs0NY+N6VgiqS1WvI51fWztpxTNiGN1e1KeI/0pI2wIAdXrGQwEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iakLeiHb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762011339; c=relaxed/simple;
+	bh=d/Vi6umW296mUYSX4hNzCMgSwp/SLgfcmcKnoswc5Ic=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s81wOInguMx5JeinzS16oyUgtt7jBnO4GReeMhYRZWTELVBC1n4Uch3JQPhtMieorimYAQPiw+0cGyq4+jQhNc9pJ/zLIBubGBcPCJCbHXI67uOxxvD9TTWoBmlhxEoGvTVRpt8Qn0L450JpZvcgOqVZgoE5cEA9XxlzGk8/7Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XXuyroy4; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iakLeiHb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761984578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkskNvYUh9HdYNFvmlsAmpRbct+L4i8noxGDKwwLkkw=;
-	b=iakLeiHbTLal8nGM6AsISnN8d0cfys/TyG5hZtYGwmbIi5lKkHH0P6god8USJkDVvhvFI4
-	s6cpDhDuGzf2PrNbaqXQMUXidSMZEOHknU5A6Gh5wROYJwwkoYKzd/hBcUuSzSrrHB6ShI
-	x6WJzxst0bMKNcAMjsiyZX/Gx+bCcXw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-t5QzrkyAOCWKT32J37GkQQ-1; Sat,
- 01 Nov 2025 04:09:33 -0400
-X-MC-Unique: t5QzrkyAOCWKT32J37GkQQ-1
-X-Mimecast-MFC-AGG-ID: t5QzrkyAOCWKT32J37GkQQ_1761984572
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 185BF19560B5;
-	Sat,  1 Nov 2025 08:09:32 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.12])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 82C6719560A2;
-	Sat,  1 Nov 2025 08:09:29 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 4/5] gfs2: Enable non-blocking lookup in gfs2_permission
-Date: Sat,  1 Nov 2025 08:09:18 +0000
-Message-ID: <20251101080919.1290117-5-agruenba@redhat.com>
-In-Reply-To: <20251101080919.1290117-1-agruenba@redhat.com>
-References: <20251101080919.1290117-1-agruenba@redhat.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XXuyroy4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0c
+	Ur8pYzuWRmcI+WIvUB5HLHJAPKHIi3okUSE03VhJw=; b=XXuyroy4GKTVq7M5nd
+	uc8+R4KVpDuMSntHoOdff99bGuCR98dOXdN6zNmbQXgWA4LvTGc6YUv/hO3hisAw
+	rzh2zIUynSxM0W8UtJsCsczenyW9Dkttyj5HSae6TVF2zieT9vKeUp6SP89bUl/i
+	u8pgpQgQLv0QdAxNydRKd3GlY=
+Received: from MacBookPro.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDHd5+rKAZpxWMyCQ--.37795S2;
+	Sat, 01 Nov 2025 23:35:23 +0800 (CST)
+From: cestbonchen <cestbonchen@163.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	cestbonchen <cestbonchen@163.com>,
+	syzbot+353de08f32ce69361b89@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: Fix invalid glock target state during withdraw
+Date: Sat,  1 Nov 2025 23:35:03 +0800
+Message-Id: <20251101153503.6019-1-cestbonchen@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -60,43 +42,56 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-CM-TRANSID:PygvCgDHd5+rKAZpxWMyCQ--.37795S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFy3uw4ktw4xuFyfZw1xGrg_yoW8XF48pr
+	y5Wr47Ar4DKaykXw4UKanYkw1kWa95Gw47CrWkX3W0yan0kFyxXr42g3y7ZFWDJFZ3uF45
+	WF1a9F1ayFWUWrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UTBTrUUUUU=
+X-CM-SenderInfo: hfhv3uxrqfxvrq6rljoofrz/1tbiJgT4wGkGGzHSMwABs-
 
-Under MAY_NOT_BLOCK, we consider the cached permissions "good enough" if
-the glock still appears to be held.
+During filesystem withdraw, do_xmote() may set the glock target state
+to LM_OUT_ERROR when the intended target is not LM_ST_UNLOCKED.
+However, LM_OUT_ERROR is an operation result code, not a valid DLM lock
+state. Passing it to finish_xmote() triggers a kernel BUG at
+fs/gfs2/glock.c:674 due to an invalid state transition.
 
-Reviewed-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+The correct behavior during withdraw is to force the target state to
+LM_ST_UNLOCKED, which safely invalidates cached data via ->go_inval()
+and avoids further DLM operations.
+
+Fix both the general withdraw path and the -ENODEV error handling path.
+
+Fixes: 669d4eb0b918 ("gfs2: Clean up properly during a withdraw")
+Reported-by: syzbot+353de08f32ce69361b89@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=f9cc39ae87e4716a6309e8f5d558432cd90035ac
+Signed-off-by: cestbonchen <cestbonchen@163.com>
 ---
- fs/gfs2/inode.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/gfs2/glock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 3d87ecd277a1..af38676a408f 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1955,14 +1955,14 @@ int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
- 	gfs2_holder_mark_uninitialized(&i_gh);
- 	ip = GFS2_I(inode);
- 	gl = rcu_dereference_check(ip->i_gl, !may_not_block);
--	if (unlikely(!gl)) {
--		/* inode is getting torn down, must be RCU mode */
--		WARN_ON_ONCE(!may_not_block);
--		return -ECHILD;
--        }
--	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
--		if (may_not_block)
-+	if (may_not_block) {
-+		/* Is the inode getting torn down? */
-+		if (unlikely(!gl))
- 			return -ECHILD;
-+		if (gl->gl_state == LM_ST_UNLOCKED ||
-+		    test_bit(GLF_INSTANTIATE_NEEDED, &gl->gl_flags))
-+			return -ECHILD;
-+	} else if (gfs2_glock_is_locked_by_me(gl) == NULL) {
- 		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
- 		if (error)
- 			return error;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index e19aa2e820c8..fb08660567ed 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -696,7 +696,7 @@ __acquires(&gl->gl_lockref.lock)
+ skip_inval:
+ 	if (gfs2_withdrawn(sdp)) {
+ 		if (target != LM_ST_UNLOCKED)
+-			target = LM_OUT_ERROR;
++			target = LM_ST_UNLOCKED;
+ 		goto out;
+ 	}
+ 
+@@ -719,7 +719,7 @@ __acquires(&gl->gl_lockref.lock)
+ 			 * been unlocked implicitly.
+ 			 */
+ 			if (target != LM_ST_UNLOCKED) {
+-				target = LM_OUT_ERROR;
++				target = LM_ST_UNLOCKED;
+ 				goto out;
+ 			}
+ 		} else {
 -- 
-2.51.0
+2.43.0
+
 
