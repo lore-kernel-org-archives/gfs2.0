@@ -1,188 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E031A06C
-	for <gfs2@lists.linux.dev>; Thu, 13 Nov 2025 19:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8609D31195A;
+	Thu, 13 Nov 2025 21:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763061212; cv=none; b=elVFhAFF2F16d8+AkpTARLBZeV/hNpGZIzWZow6+NQgA4hgfqfb7lpaARjeF6JVi885a/41LDcsThPBdRu/+loAJZn8MD+yofQ5+k2A8V3pJLPvVG/XBWaQN39ABkRTBUELp6xUyA8HCpnGerESgyO58EUYQhA9QH1W4oDZyC3Q=
+	t=1763069061; cv=none; b=MIhUx2PCwMOAfrKluYUIdK1khMGJS8SUOiyFsljDp7MUZrZ7CzCDVPZQrsieEX/CFW2HCeBzA4GGFgLEz20SNDzwrfu4vmVKdisM1B/V/gV3G34FAKGxuuDi75cQZGtpz58CiTGvdOCXE5kR66V7wWZnbQ7JhakPO0qimYDLiEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763061212; c=relaxed/simple;
-	bh=t379PNNDtgqAq91+E+L22RFtXrzOjTEW/ORV3+9ulwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oPhmtcoEddsmpNGnVUunidkh7/9DgglT4UgAXkRLjDx93w32oaF2KadpMGAa3TccXGA4BB+LIjkOjwNR23oBlNUBfQjNOY7RN65/N+bTuIE6EALDJlg/LZ+6n/i/pCs52iGew3ZD1asjYtUmYS83zViPYao8ORivPetmgpxbSkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JjYcinjb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763069061; c=relaxed/simple;
+	bh=ZfUZKyIsQu/Tb4yvVxl1LcYxlu57ruMwT56TMDmhSD8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=cUQ2L6yo0JjQ3KCOZZIhWaAVeURgGE9akv8JEgl6+xcPN2QfUfwZtKWgAhMumGwTfi2YH6ob9HAlm0Q9val+9QrxoVc8WPppDAF1XBiV305wU4IdserOQP0dVEVDPBP3COt9PcHoGyXIIlqsgZT9Uu25zRLWAq1bHYRP3x7PTSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HcpNENZq; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JjYcinjb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763061209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TyHzdpDFZ+y9Xq3UcqZS1nBRZScwrGk9PLsYYKXTicQ=;
-	b=JjYcinjbeb/+TokCga9KKqbeiHL0a3Fd/OxgsR7MiGePH2DS89aR++UDRkbGj1kIW5LH72
-	uogn3PD/e2dVhjCVk+TL5TCpdUUbVO3FmUl0brd9F/EMR7Rv92fma1HKqw+4NR9ij1Vth9
-	CEhvBsuTPNGDu/+qYrutlvkW7FlcRQQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-15YijcbmNi2ii0LkA0cgSg-1; Thu,
- 13 Nov 2025 14:13:26 -0500
-X-MC-Unique: 15YijcbmNi2ii0LkA0cgSg-1
-X-Mimecast-MFC-AGG-ID: 15YijcbmNi2ii0LkA0cgSg_1763061204
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2DD719560A1;
-	Thu, 13 Nov 2025 19:13:23 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.90])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 097331800451;
-	Thu, 13 Nov 2025 19:13:15 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Dave Chinner <david@fromorbit.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Price <anprice@redhat.com>
-Subject: [PATCH] gfs2: Prevent recursive memory reclaim
-Date: Thu, 13 Nov 2025 19:13:14 +0000
-Message-ID: <20251113191314.1679300-1-agruenba@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HcpNENZq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763069059; x=1794605059;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ZfUZKyIsQu/Tb4yvVxl1LcYxlu57ruMwT56TMDmhSD8=;
+  b=HcpNENZqlOIQZ7AafKEUf77eTVd9Pz8qwqNg+zV+FfaRcPJv2mBALi4f
+   njOokSEnsyXA6a6j+PZHOCpCs2TOXoLAFTSa2nwVPK5DwhzLnj5lMimiK
+   4/AcYY6CYoINz/tPZdLuqnt3oibBWP+8AcxfSziUp8FRlIdpCvu6XPbxn
+   V/uHfvWe6QTROdVu89Xvx369xRQuzke7zfP1A12DqrbHnanlQ8mmwQt9U
+   3GrVVT7fh+keR0YMumg/S46lClcAv9QtygEQpzne2xKoV9bEg9ooY8lEa
+   R56RzsbJJSK7I+y0qKrRYTKij6T6dU4xqi9OC/Tc7uc03ctVxatuUrsAQ
+   g==;
+X-CSE-ConnectionGUID: KRATt8a3St+4S1k3cZD91A==
+X-CSE-MsgGUID: TOvnCyL7TfW1O6aTP8Zs+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65202008"
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="65202008"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 13:24:16 -0800
+X-CSE-ConnectionGUID: BAppU1aDQE2aAZPFS2AkXA==
+X-CSE-MsgGUID: OnJK56rGSAyC0v5XDLYwBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="189435649"
+Received: from igk-lkp-server01.igk.intel.com (HELO 230842de89ac) ([10.211.93.152])
+  by orviesa009.jf.intel.com with ESMTP; 13 Nov 2025 13:24:15 -0800
+Received: from kbuild by 230842de89ac with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vJend-0000000017V-0EYU;
+	Thu, 13 Nov 2025 21:24:13 +0000
+Date: Thu, 13 Nov 2025 22:23:52 +0100
+From: kernel test robot <lkp@intel.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev
+Subject: [gfs2:e2 4/4] Warning: fs/gfs2/super.c:1297 function parameter 'gh'
+ not described in 'evict_unlinked_inode'
+Message-ID: <202511130438.7VNcUEZp-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Function new_inode() returns a new inode with inode->i_mapping->gfp_mask
-set to GFP_HIGHUSER_MOVABLE.  This value includes the __GFP_FS flag, so
-allocations in that address space can recurse into filesystem memory
-reclaim.  We don't want that to happen because it can consume a
-significant amount of stack memory.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git e2
+head:   a879cfb41053acfcf88ec959b4dbc595a6fc2105
+commit: a879cfb41053acfcf88ec959b4dbc595a6fc2105 [4/4] gfs2: Fix data loss during inode evict
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20251113/202511130438.7VNcUEZp-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251113/202511130438.7VNcUEZp-lkp@intel.com/reproduce)
 
-Worse than that is that it can also deadlock: for example, in several
-places, gfs2_unstuff_dinode() is called inside filesystem transactions.
-This calls calls filemap_grab_folio(), which can allocate a new folio,
-which can trigger memory reclaim.  If memory reclaim recurses into the
-filesystem and starts another transaction, a deadlock will ensue.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511130438.7VNcUEZp-lkp@intel.com/
 
-To fix these kinds of problems, prevent memory reclaim from recursing
-into filesystem code by making sure that the gfp_mask of inode address
-spaces doesn't include __GFP_FS.
+All warnings (new ones prefixed by >>):
 
-The "meta" and resource group address spaces were already using GFP_NOFS
-as their gfp_mask (which doesn't include __GFP_FS).  Inodes allocated by
-new_inode() will have their inode->i_mapping->gfp_mask set to
-GFP_HIGHUSER_MOVABLE, which is less restrictive than GFP_NOFS, though.
-To avoid being overly limiting, use the default value and only knock off
-the __GFP_FS flag.  I'm not sure if this will actually make a
-difference, but it also shouldn't hurt.
+>> Warning: fs/gfs2/super.c:1297 function parameter 'gh' not described in 'evict_unlinked_inode'
 
-This patch is loosely based on commit ad22c7a043c2 ("xfs: prevent stack
-overflows from page cache allocation").
-
-Fixes xfstest generic/273.
-
-Reviewed-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/glock.c      |  5 ++++-
- fs/gfs2/inode.c      | 15 +++++++++++++++
- fs/gfs2/inode.h      |  1 +
- fs/gfs2/ops_fstype.c |  2 +-
- 4 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index b677c0e6b9ab..9f2eb7e38569 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1211,10 +1211,13 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
- 
- 	mapping = gfs2_glock2aspace(gl);
- 	if (mapping) {
-+		gfp_t gfp_mask;
-+
-                 mapping->a_ops = &gfs2_meta_aops;
- 		mapping->host = sdp->sd_inode;
- 		mapping->flags = 0;
--		mapping_set_gfp_mask(mapping, GFP_NOFS);
-+		gfp_mask = mapping_gfp_mask(sdp->sd_inode->i_mapping);
-+		mapping_set_gfp_mask(mapping, gfp_mask);
- 		mapping->i_private_data = NULL;
- 		mapping->writeback_index = 0;
- 	}
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 8a7ed80d9f2d..d7e35a05c161 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -89,6 +89,19 @@ static int iget_set(struct inode *inode, void *opaque)
- 	return 0;
- }
- 
-+void gfs2_setup_inode(struct inode *inode)
-+{
-+	gfp_t gfp_mask;
-+
-+	/*
-+	 * Ensure all page cache allocations are done from GFP_NOFS context to
-+	 * prevent direct reclaim recursion back into the filesystem and blowing
-+	 * stacks or deadlocking.
-+	 */
-+	gfp_mask = mapping_gfp_mask(inode->i_mapping);
-+	mapping_set_gfp_mask(inode->i_mapping, gfp_mask & ~__GFP_FS);
-+}
-+
- /**
-  * gfs2_inode_lookup - Lookup an inode
-  * @sb: The super block
-@@ -132,6 +145,7 @@ struct inode *gfs2_inode_lookup(struct super_block *sb, unsigned int type,
- 		struct gfs2_glock *io_gl;
- 		int extra_flags = 0;
- 
-+		gfs2_setup_inode(inode);
- 		error = gfs2_glock_get(sdp, no_addr, &gfs2_inode_glops, CREATE,
- 				       &ip->i_gl);
- 		if (unlikely(error))
-@@ -752,6 +766,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	error = -ENOMEM;
- 	if (!inode)
- 		goto fail_gunlock;
-+	gfs2_setup_inode(inode);
- 	ip = GFS2_I(inode);
- 
- 	error = posix_acl_create(dir, &mode, &default_acl, &acl);
-diff --git a/fs/gfs2/inode.h b/fs/gfs2/inode.h
-index e43f08eb26e7..2fcd96dd1361 100644
---- a/fs/gfs2/inode.h
-+++ b/fs/gfs2/inode.h
-@@ -86,6 +86,7 @@ static inline int gfs2_check_internal_file_size(struct inode *inode,
- 	return -EIO;
- }
- 
-+void gfs2_setup_inode(struct inode *inode);
- struct inode *gfs2_inode_lookup(struct super_block *sb, unsigned type,
- 			        u64 no_addr, u64 no_formal_ino,
- 			        unsigned int blktype);
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index aa15183f9a16..1a2db8053da0 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1183,7 +1183,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	mapping = gfs2_aspace(sdp);
- 	mapping->a_ops = &gfs2_rgrp_aops;
--	mapping_set_gfp_mask(mapping, GFP_NOFS);
-+	gfs2_setup_inode(sdp->sd_inode);
- 
- 	error = init_names(sdp, silent);
- 	if (error)
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
