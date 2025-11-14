@@ -1,83 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8609D31195A;
-	Thu, 13 Nov 2025 21:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6926A242D86;
+	Fri, 14 Nov 2025 06:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763069061; cv=none; b=MIhUx2PCwMOAfrKluYUIdK1khMGJS8SUOiyFsljDp7MUZrZ7CzCDVPZQrsieEX/CFW2HCeBzA4GGFgLEz20SNDzwrfu4vmVKdisM1B/V/gV3G34FAKGxuuDi75cQZGtpz58CiTGvdOCXE5kR66V7wWZnbQ7JhakPO0qimYDLiEY=
+	t=1763101613; cv=none; b=ra3XoVsukAJn1SwvzmgfOtJnW2tN7JtJKo3tP6uN8NAdRDFOR+ElUBmZFOdQx1VOW26xAIfWQH4cn35bFsTR8muaRmwZ4uSn2dcSg3+w5A56NubBff/s4jBIa/XFPOFmQsT13OhX5+FD+BzHJZVNzabO+05neR9BerBEOecz0mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763069061; c=relaxed/simple;
-	bh=ZfUZKyIsQu/Tb4yvVxl1LcYxlu57ruMwT56TMDmhSD8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=cUQ2L6yo0JjQ3KCOZZIhWaAVeURgGE9akv8JEgl6+xcPN2QfUfwZtKWgAhMumGwTfi2YH6ob9HAlm0Q9val+9QrxoVc8WPppDAF1XBiV305wU4IdserOQP0dVEVDPBP3COt9PcHoGyXIIlqsgZT9Uu25zRLWAq1bHYRP3x7PTSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HcpNENZq; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763101613; c=relaxed/simple;
+	bh=5V0zYJxbf6yTcvA5sVd3U6L3B6QdKntz+6MjepAGQS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LScG4zl2bf8zhLhWz4Ab6W26nBIXfNSNczbHwEZM/1aZl7jZX85ZJwGveay+nqzVXbETc8NAU/RYDETCaU3VznDQy8q6r314DvX5FihZpqWiPHupBg0VJ0AsJYkOi2CGAB4uxloiD+aFcj4w8jdwTW8gTHfHi1X1CmFc2uM+IGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=yc1BbnIP; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HcpNENZq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763069059; x=1794605059;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=ZfUZKyIsQu/Tb4yvVxl1LcYxlu57ruMwT56TMDmhSD8=;
-  b=HcpNENZqlOIQZ7AafKEUf77eTVd9Pz8qwqNg+zV+FfaRcPJv2mBALi4f
-   njOokSEnsyXA6a6j+PZHOCpCs2TOXoLAFTSa2nwVPK5DwhzLnj5lMimiK
-   4/AcYY6CYoINz/tPZdLuqnt3oibBWP+8AcxfSziUp8FRlIdpCvu6XPbxn
-   V/uHfvWe6QTROdVu89Xvx369xRQuzke7zfP1A12DqrbHnanlQ8mmwQt9U
-   3GrVVT7fh+keR0YMumg/S46lClcAv9QtygEQpzne2xKoV9bEg9ooY8lEa
-   R56RzsbJJSK7I+y0qKrRYTKij6T6dU4xqi9OC/Tc7uc03ctVxatuUrsAQ
-   g==;
-X-CSE-ConnectionGUID: KRATt8a3St+4S1k3cZD91A==
-X-CSE-MsgGUID: TOvnCyL7TfW1O6aTP8Zs+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65202008"
-X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="65202008"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 13:24:16 -0800
-X-CSE-ConnectionGUID: BAppU1aDQE2aAZPFS2AkXA==
-X-CSE-MsgGUID: OnJK56rGSAyC0v5XDLYwBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="189435649"
-Received: from igk-lkp-server01.igk.intel.com (HELO 230842de89ac) ([10.211.93.152])
-  by orviesa009.jf.intel.com with ESMTP; 13 Nov 2025 13:24:15 -0800
-Received: from kbuild by 230842de89ac with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vJend-0000000017V-0EYU;
-	Thu, 13 Nov 2025 21:24:13 +0000
-Date: Thu, 13 Nov 2025 22:23:52 +0100
-From: kernel test robot <lkp@intel.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev
-Subject: [gfs2:e2 4/4] Warning: fs/gfs2/super.c:1297 function parameter 'gh'
- not described in 'evict_unlinked_inode'
-Message-ID: <202511130438.7VNcUEZp-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="yc1BbnIP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=k1LbDExrN0ggsKL8BG2ZZifr9NCiwP7806AdNTSqrTo=; b=yc1BbnIPmw7r8r6Ligj0NRD8pt
+	XBQJz9ltXrPwFOlsy0m+7pUmq9nSRoegHccYW3JeNVnf6Wp/qlgoA6DzKwejQfJud0x/kY8PTIkoz
+	bg/dq3maUqbxl0MC/eedcbkJL9LoHn29AfMeOojS4jhZZP8Z7JYv2T+voKIls25rangHauouswCkJ
+	6TyZED9nZGX6JYDJmxJEAUJQlehv8IlNyHtuG0jLcueP2dqrt/DssOEhSyR1FYdXlUE5fGlkAlW9C
+	U5ZrPbzRoj2Db8vZur7MJyMdF6cTXKn5Cl3BS/2BkYx7vJoE7l1EebrCU0dao8tzuRmslpJbrZyqr
+	ugVlRwsw==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJnGh-0000000BeQ2-3r71;
+	Fri, 14 Nov 2025 06:26:48 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	David Sterba <dsterba@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Stefan Roesch <shr@fb.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: re-enable IOCB_NOWAIT writes to files
+Date: Fri, 14 Nov 2025 07:26:03 +0100
+Message-ID: <20251114062642.1524837-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git e2
-head:   a879cfb41053acfcf88ec959b4dbc595a6fc2105
-commit: a879cfb41053acfcf88ec959b4dbc595a6fc2105 [4/4] gfs2: Fix data loss during inode evict
-config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20251113/202511130438.7VNcUEZp-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251113/202511130438.7VNcUEZp-lkp@intel.com/reproduce)
+Hi all,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511130438.7VNcUEZp-lkp@intel.com/
+commit 66fa3cedf16a ("fs: Add async write file modification handling.")
+effectively disabled IOCB_NOWAIT writes as timestamp updates currently
+always require blocking, and the modern timestamp resolution means we
+always update timestamps.  This leads to a lot of context switches from
+applications using io_uring to submit file writes, making it often worse
+than using the legacy aio code that is not using IOCB_NOWAIT.
 
-All warnings (new ones prefixed by >>):
+This series allows non-blocking updates for lazytime if the file system
+supports it, and adds that support for XFS.
 
->> Warning: fs/gfs2/super.c:1297 function parameter 'gh' not described in 'evict_unlinked_inode'
+It also fixes the layering bypass in btrfs when updating timestamps on
+device files for devices removed from btrfs usage, and FMODE_NOCMTIME
+handling in the VFS now that nfsd started using it.  Note that I'm still
+not sure that nfsd usage is fully correct for all file systems, as only
+XFS explicitly supports FMODE_NOCMTIME, but at least the generic code
+does the right thing now.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Diffstat:
+ Documentation/filesystems/locking.rst |    2 
+ Documentation/filesystems/vfs.rst     |    6 ++
+ fs/btrfs/inode.c                      |    3 +
+ fs/btrfs/volumes.c                    |   11 +--
+ fs/fat/misc.c                         |    3 +
+ fs/fs-writeback.c                     |   53 ++++++++++++++----
+ fs/gfs2/inode.c                       |    6 +-
+ fs/inode.c                            |  100 +++++++++++-----------------------
+ fs/internal.h                         |    3 -
+ fs/orangefs/inode.c                   |    7 ++
+ fs/overlayfs/inode.c                  |    3 +
+ fs/sync.c                             |    4 -
+ fs/ubifs/file.c                       |    9 +--
+ fs/utimes.c                           |    1 
+ fs/xfs/xfs_iops.c                     |   29 ++++++++-
+ fs/xfs/xfs_super.c                    |   29 ---------
+ include/linux/fs.h                    |   17 +++--
+ include/trace/events/writeback.h      |    6 --
+ 18 files changed, 152 insertions(+), 140 deletions(-)
