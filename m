@@ -1,205 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FD82EDD53;
-	Fri, 14 Nov 2025 19:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5CAFBF6
+	for <gfs2@lists.linux.dev>; Sat, 15 Nov 2025 16:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763149636; cv=none; b=O1f+P8PelD9nTkshXf173r7zOG4VxcyFonQ4q05XAD8DMhPqsnrBF7cHdZszS/oSG3ovPGUpv1In9bIgf7usPBFJitvlGH4q71cIyFj+mZDLG6slAHLihwsGfjsKOR0XWWryjmQoaEfMuttSXNUGaNDghn2df75Vk2l2MaUuPxw=
+	t=1763223151; cv=none; b=YNzq8fst5htfGcGEyt94+8BvMcbVV5O9MGafkxHVJnX0Y3l9hS0qbxPoeBmP/JjQJFamfNQJea4OkM2SPW126m3LobFb3zug264EhWp64SUlclNoX6DjLULMad5TUNeVi0/SfnDmJEpDBVShDIeoGDv0eftM6shpZffeF9pRDH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763149636; c=relaxed/simple;
-	bh=REeSO5rMp1YGjY627e4cE9lzZEy2V6tti6RpwKKRYO4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MTNjLUi+u/qSHMTTAMfFD8K4Wx7BKSlEhQosqFfgOGeJF8CJLFWAqrVdI7UU25zOExN6k2r6dNfMtOVK5GsbLuKY0SanBFRKxzHAenpZjYqwutETkMcGRkANmeBeHgHuWVxcPKZ5tyBdeWr5qPdjyAlkBjxIGEuGwg2mZDyI96g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxygaeVo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763223151; c=relaxed/simple;
+	bh=ZnpkSR77rpxwOiypBKfNZpIP5HVzuOahGXkvMl2mC78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hro+4N9idwlTYJhcLK/h2dVnjQikn7H5IrGQpKo6nw847iaEbasU5GSt4K0t6lb0xT8nfeYH6+cJI/Q/QYGcpNByXQsmFr9CACMQ0ev5kXXTSpsz4impfrzDK3sR1c4BmyOV637D+PXpaYpdyMPsbiOTj+ENjms3D6YmQV9umBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWyVPdMs; arc=none smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxygaeVo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1033C116B1;
-	Fri, 14 Nov 2025 19:47:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763149635;
-	bh=REeSO5rMp1YGjY627e4cE9lzZEy2V6tti6RpwKKRYO4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=DxygaeVo++Am9yVdIn2xmS6RdOu/inN1IV3jHs/i65Il9sH4kXFCXZQRH5PqD9kr7
-	 EEjZxd3IRMWSOQchWHEfgw+idatwGYPzx/gD3u5YjLB1Pt0fG2Pogz1QmjK0o00JkM
-	 DrMxy1bSGkJycCGUE+c/nOa8kTJi6YXXNZF7GP2h2ijlzMvK0RwGo6u73krrsINHQT
-	 pjI7iap4NoyYLSCxOqlCq/TOw6v5+9tGwYMh8s5ujo+Q+Fl/45AJ5iWazDHDFLKddh
-	 7v9ff2dr2Gf3S9MQ8/+MOVQsoprAYDXpgjpmSCO+YO8o4MXPlDQeYOa9TdZi2Wi+l4
-	 X1LsouQTUgnng==
-Message-ID: <edac512451530bbe4b5f1e8baaeecdcc96e8d39b.camel@kernel.org>
-Subject: Re: re-enable IOCB_NOWAIT writes to files
-From: Jeff Layton <jlayton@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>, Al Viro
- <viro@zeniv.linux.org.uk>,  David Sterba <dsterba@suse.com>, Jan Kara
- <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg
- <martin@omnibond.com>, Carlos Maiolino <cem@kernel.org>, Stefan Roesch
- <shr@fb.com>, 	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org,
- gfs2@lists.linux.dev, 	io-uring@vger.kernel.org, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
-Date: Fri, 14 Nov 2025 14:47:12 -0500
-In-Reply-To: <20251114152840.GD30351@lst.de>
-References: <20251114062642.1524837-1-hch@lst.de>
-	 <b7e8d5e3a0ce8da103f4591afc1f4a9c683ef3c7.camel@kernel.org>
-	 <20251114152840.GD30351@lst.de>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWyVPdMs"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-9352cbe2e14so743399241.3
+        for <gfs2@lists.linux.dev>; Sat, 15 Nov 2025 08:12:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763223148; x=1763827948; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y4ZZROaO2AtV1FcryfogKXlOY1JjkeOo1Pb1PB2vqI8=;
+        b=lWyVPdMsLeihx81vxmZW3kgc3iTB2Sb4/zFgC28hE6lPEpMjwXZ5n/p4iSplaNO3vy
+         fHBEErXym4/RNvL43sx8Is1IKGxLxkHMzz40hghooxcj9U7lICyeQJ/b50SduH0utQit
+         C8zLK9YS4NG4f7JNhF7mHO4kdidrDATBXEtg4o/kif1/+uUroJzwdOxYJ4OgN3mnXv2Y
+         /NPuOXY1g2UiJKfnCULPdsVy1UEJ9BE1iB/qu7UZvcr7gafjr8sTNJQaPQsspxBl/z1O
+         PRT0LnhzWF3Bv0iDJb91MZ4YlJCZXX/OOFbrizb69Mw4baSBh/erj+U8nlmFzHbwHEeA
+         zfKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763223148; x=1763827948;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y4ZZROaO2AtV1FcryfogKXlOY1JjkeOo1Pb1PB2vqI8=;
+        b=aYSbDQh7c1jK+NicpmUUD4GFxQVhj6X8KfamK8805N0cwOnNbnndyAoSRJCF1ZVsyW
+         QVmA4LvLl7FYTF/XUzjtnFnhcQlKEKcjEuDiyJR4URXU1FxI94f5DIX42ydBAAxWXw+5
+         Wd4ZeCHoSRsCYGTy6Cm5T1YG8ggf8jGLYjuDdVUKZuRuLZ23iRKhQBSKGd7OIeRb6Ml8
+         kmnmvOv2mPB1sG41bGiU0Dx5pzFoIxGgvtoezSd4DHjSM4w/3x3yO4mEcKuvK1hlbROM
+         YTjn8fpAfzkEEU8ka3C4/SPd2YIGdn/YH2yR1jFz7MujEAUNOwK6Bw331GBQpTgChd+W
+         uBAg==
+X-Gm-Message-State: AOJu0YyRi5VLKtITk9Pl24a/iZc2aJWpXWjEmsPmTDPdp4fmw+4XWT74
+	L+iilPYoXfNbOpksfvrAZ0s7AlHgE6DPZD96OhCAjwrVMGrRRX3eTrH8
+X-Gm-Gg: ASbGnct4BLZ4rS50dwZNhCNIa/6Utfqo/N5+4+I1WYfeSpAlsKnpPu4gzZmRnv8Bdy0
+	BCHs7xpqbAgqKyFlqdVCXPspNmMGFCh6av1XZmtm84oz1F/ljVkJg7iM3/wOspU6zTwmuW5dFrF
+	8FQL3s8jz0NxZBxXc3Ro2DVBtq7o43ccrsv+wnlbDvkmAT4mIyvwl51aMlgp9hZbz5ve0c0JvuT
+	8jiOGidCCI+7zDvTZOSRjzdKWN17k9CtHwhJeOvkii55HZqorkxsNUkxYzMDde6KHspm9yjcNsf
+	Ip13LES+CY02o0TTbe5J7hZsXn4JNd59XZ0EqCm7MmtU/WRcSt7g3gy4YxuE/+5XDC9+miEm/y9
+	oKEPShkG5+TgNdcuWaOWjpqwGfyqhA1W39/6PWq42hB99ID11ZxqpCNGXkY+O7mPwJ+V4VValWd
+	mLS7HFq3bekphRQqwFVirxAdG/Jeb7isMV23xzUg==
+X-Google-Smtp-Source: AGHT+IF6afF+Sk5OqXufe5DnIInP/wLQgPhexqZnCnJvERed0HkkNXpn1BqSwn2dy7VPQkM2oelwCw==
+X-Received: by 2002:a05:6102:b0f:b0:5db:ecdd:1816 with SMTP id ada2fe7eead31-5dfc564a0b0mr2274620137.24.1763223148354;
+        Sat, 15 Nov 2025 08:12:28 -0800 (PST)
+Received: from [192.168.1.145] ([104.203.11.126])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5dfb726ff96sm2758596137.14.2025.11.15.08.12.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Nov 2025 08:12:27 -0800 (PST)
+Message-ID: <48a69d90-68f7-4ec7-97c4-89ba9896b663@gmail.com>
+Date: Sat, 15 Nov 2025 11:12:25 -0500
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gfs2: flush withdraw work before freeing gfs2_sbd
+To: Nirbhay Sharma <nirbhay.lkd@gmail.com>,
+ Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzbot+19e0be39cc25dfcb0858@syzkaller.appspotmail.com,
+ skhan@linuxfoundation.org, linux-kernel-mentees@lists.linuxfoundation.org
+References: <68f6a48f.050a0220.91a22.0451.GAE@google.com>
+ <20251024144332.33773-2-nirbhay.lkd@gmail.com>
+ <8f270474-7ced-4668-97da-f3d7709a82e7@gmail.com>
+Content-Language: en-US
+From: David Hunter <david.hunter.linux@gmail.com>
+In-Reply-To: <8f270474-7ced-4668-97da-f3d7709a82e7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2025-11-14 at 16:28 +0100, Christoph Hellwig wrote:
-> On Fri, Nov 14, 2025 at 09:04:58AM -0500, Jeff Layton wrote:
-> > This all looks pretty reasonable to me. There are a few changelog and
-> > subject line typos, but the code changes look fine. You can add:
->=20
-> Please tell me about them so I can fix them.=20
->=20
-> > As far as nfsd's usage of FMODE_NOCMTIME, it looks OK to me. That's
-> > implemented today by the check in file_modified_flags(), which is
-> > generic and should work across filesystems.
->=20
-> Nothing requires file_update_time / file_modified_flags are helpers
-> that a file system may or may not call.  I've not done an audit
-> if everyone actually uses them.
+On 11/13/25 15:24, Nirbhay Sharma wrote:
+> Hi Andreas,
+> 
+> I hope this email finds you well.
+> 
+> I'm writing to follow up on the GFS2 patch I submitted regarding the
+> ODEBUG warning in free_sbd(). The patch addressed the syzbot report
+> where sd_withdraw_work was being freed while still active.
+> 
+> I wanted to check if you've had a chance to review the patch, or if
+> there's any feedback or additional information I can provide to help
+> with the review process.
+> 
+> I understand maintainers are busy, and I'm happy to make any necessary
+> revisions or provide further clarification on the testing that was
+> performed.
+> 
+> Best regards,
+> Nirbhay Sharma
+> 
+> 
 
-FWIW, I turned claude loose on this, and it produced:
 
--------------------------------8<----------------------------------
-  Findings:                                                          =20
-                                                                           =
-                             =20
-  1. coda_file_write_iter (fs/coda/file.c:66-94)                     =20
-                                                                           =
-                                                                           =
-                                                            =20
-  Location: fs/coda/file.c:86Issue: Manually updates ctime in
-write_iter operation                                                 =20
-  inode_set_mtime_to_ts(coda_inode,
-inode_set_ctime_current(coda_inode));
-  Context: This is a stacking filesystem that delegates writes to a
-container file via vfs_iter_write(), then manually copies attributes
-back. However, it bypasses file_update_time() or file_modified(),    =20
-  which means it doesn't handle:                   =20
-  - Read-only filesystem checks                                      =20
-  - Immutable inode checks                                           =20
-  - S_NOCMTIME flag                                                  =20
-  - i_version updates                                                =20
-  - Proper dirty marking                                             =20
-                                                                           =
-                             =20
-  2. efivarfs_file_write (fs/efivarfs/file.c:15-77)                  =20
+Hey Nirbay,
 
-  Location: fs/efivarfs/file.c:66Issue: Manually updates ctime in write
-operation                       =20
-  inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-  Context: Uses the legacy .write operation (not .write_iter), but
-still a write path that should use proper timestamp helpers.
+The reply that you write should be below the message you are talking
+about. If you put it above, it is called "top-posting", and the kernel
+community does not like top-posting.
 
-  3. ocfs2_write_end_nolock (fs/ocfs2/aops.c:1926-2050)
+For long email chains, it becomes difficult to keep track of the
+conversations.
 
-  Location: fs/ocfs2/aops.c:2024-2026Issue: Manually updates ctime in
-write_end callback
-  inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-  di->i_mtime =3D di->i_ctime =3D cpu_to_le64(inode_get_mtime_sec(inode));
-  di->i_mtime_nsec =3D di->i_ctime_nsec =3D
-cpu_to_le32(inode_get_mtime_nsec(inode));
-  Context: This is called from OCFS2's write path. While
-ocfs2_file_write_iter calls __generic_file_write_iter, the write_end
-callback manually manages timestamps. This is used both by regular
-writes and
-  page_mkwrite via __ocfs2_page_mkwrite.
+What I am doing now is called in-line posting. I am responding below
+your message, but there are still other messages below mine.
 
-  4. ubifs_vm_page_mkwrite (fs/ubifs/file.c:1493-1580)
 
-  Location: fs/ubifs/file.c:1570Issue: Manually updates ctime in
-page_mkwrite operation
-  inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-  Context: UBIFS implements its own timestamp update logic with
-mctime_update_needed() and manual budgeting for space, bypassing
-file_update_time().
--------------------------------8<----------------------------------
+> On 10/24/25 8:13 PM, Nirbhay Sharma wrote:
+>> Syzbot reported an ODEBUG warning where free_sbd() was freeing memory
+>> containing an active work_struct (sd_withdraw_work):
+>>
+>>   ODEBUG: free active (active state 0) object: ffff888026c285a0
+>>   object type: work_struct hint: gfs2_withdraw_func+0x0/0x430
+>>   WARNING: CPU: 0 PID: 6010 at lib/debugobjects.c:545
+>>   Call Trace:
+>>    free_sbd+0x1e4/0x270 fs/gfs2/ops_fstype.c:1308
+>>
+>> The issue occurs when gfs2_fill_super() fails after initializing
+>> sd_withdraw_work at line 1218. Some error paths (fail_lm, fail_debug,
+>> etc.) skip the existing flush_work() at the fail_inodes label and jump
+>> directly to fail_free, which calls free_sbd() without flushing the
+>> potentially pending work.
+>>
+>> free_sbd() is also called from init_sbd()'s error path before
+>> sd_withdraw_work is initialized. Since the structure is allocated with
+>> kzalloc(), work.func is NULL in this case.
+>>
+>> Fix by adding a guarded flush_work() to free_sbd(). Check work.func
+>> before flushing to handle both cases: when called after INIT_WORK()
+>> (work must be flushed), and when called before INIT_WORK() (work.func
+>> is NULL, skip flushing). This avoids the WARN_ON(!work->func) in
+>> __flush_work().
+>>
+>> Note: gfs2_put_super() already calls flush_work() before free_sbd()
+>> (line 606), so the flush in free_sbd() will be redundant but harmless
+>> for the normal unmount path.
+>>
+>> Reported-by: syzbot+19e0be39cc25dfcb0858@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=19e0be39cc25dfcb0858
+>> Fixes: 8fdd8a28fe5c ("gfs2: Asynchronous withdraw")
+>> Signed-off-by: Nirbhay Sharma <nirbhay.lkd@gmail.com>
+>> ---
+>> Testing performed:
+>> - Reproduced original bug with syzbot C reproducer
+>> - Verified fix prevents ODEBUG warnings in all error paths
+>> - Tested early mount failures (unformatted devices)
+>> - Tested all gfs2_fill_super error paths (4 scenarios)
+>> - Parallel mount stress test (3 concurrent operations)
+>> - Memory leak test (50 mount/unmount cycles, <4MB variance)
+>> - Race condition testing passed
+>> - Validated with syzbot on linux-next (Oct 22)
+>> - All tests completed with zero ODEBUG warnings
+>>
+>>  fs/gfs2/ops_fstype.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+>> index 08502d967e71..6cea03410e57 100644
+>> --- a/fs/gfs2/ops_fstype.c
+>> +++ b/fs/gfs2/ops_fstype.c
+>> @@ -67,6 +67,14 @@ void free_sbd(struct gfs2_sbd *sdp)
+>>  {
+>>  	struct super_block *sb = sdp->sd_vfs;
+>>  
+>> +	/*
+>> +	 * Only flush withdraw work if initialized. Work is initialized in
+>> +	 * gfs2_fill_super() at line 1218, after init_sbd() succeeds.
+>> +	 * Checking func avoids WARN_ON in __flush_work() for early failures.
+>> +	 */
+>> +	if (sdp->sd_withdraw_work.func)
+>> +		flush_work(&sdp->sd_withdraw_work);
+>> +
+>>  	free_percpu(sdp->sd_lkstats);
+>>  	sb->s_fs_info = NULL;
+>>  	kfree(sdp);
+If I respond down here, it is bottom-posting. Both inline and bottom
+posting are encouraged. Top posting is to be avoided.
 
-Only ocfs2 is exportable, so I think we want to convert that one. The
-others I'm not sure of yet.
---=20
-Jeff Layton <jlayton@kernel.org>
+Thanks,
+David Hunter
+
