@@ -1,182 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27CF347BBA;
-	Thu, 20 Nov 2025 14:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CBA33B6DF
+	for <gfs2@lists.linux.dev>; Fri, 21 Nov 2025 08:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763648191; cv=none; b=NGwTJutNEvoSp0WZI6FuIuHoOYLPwmGPiFtBEHrODln+JK1rqLU45rF/W2dYMWYRssB1u6E/NV9PJ6sAB1rBtwuwD1gZCHVeUazzd7TuA4jk77bjdOJJdCJK0ynQpXuKdvwOrgapzUm+BMtIXFGMZKG22s49eaRcPnNABZS0gkk=
+	t=1763713086; cv=none; b=rllAETS/TPAVNXQypzalliRsjG0eOrafK4Q9UHHTTbc8nAN/NLt6mLsiwwlDHCuJ+UklN9qzPScXa+RWTnH1IZGkGrzKzmKcd5dvqBbdzdWupVivGre7HUDxgnFIwNN4UtIR+wspE8x83RP5JMBAZZQcjIuVQi6+eAq/wQkZSPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763648191; c=relaxed/simple;
-	bh=v0VO9dYEhA+UGnORRHe7yF+Q+1hgT5u+mOf1/mZRcL4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oXaLs30aB2eZC5+JjDHh8N0Yn4909l8y4wBtlibInq2wKeCv+Je1lieREV3LgnRwHYvK7jinglk8x/PJtQ0SxXKJLCwSqo4jN/eNkRns3TFw6xzBpxzDshZef4NMIhka5u7Awo10tFQXv7E0cfS4hqvfeC9oyMNbYOjvN/ylcFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PV/N2yd2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763713086; c=relaxed/simple;
+	bh=Aesj1I0kJQZgOgIdvH5avRNPlBnXr3FQR5KqX1cV+9Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kjW8V91JlhU5ssxX7kFFqp9vBx/FDF6l79WyXS4JZcjBru/mK9+zs99LsLMqssaWMHrrLjWBMsNQ+4N2/cG1bUONE1ztthohjgn8B8gUyQgmfd4z5s5TR8GGB0OTeze/xK9y1psLUBruXjKLKsEi4nk/YVo9efUa7R1laPmMlNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEZFRIJ2; arc=none smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PV/N2yd2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4EC4CEF1;
-	Thu, 20 Nov 2025 14:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763648191;
-	bh=v0VO9dYEhA+UGnORRHe7yF+Q+1hgT5u+mOf1/mZRcL4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=PV/N2yd2XfJSJl+7Hh4F74QYukpzxhX2fQG/h/ZWGRu5+SvD7KAvmaUYchLSt4Q+J
-	 4VtbD37LTitMazVTqtUrz4PleJthMVs3K2mfDJgiL2OxJ5atdIOjjhULpAZsa3c6t4
-	 eiaVBD8MQo6yukCQPBjFT3UgiMsAVE2pcImZaLJwgU3IkRuGdd+NjTnc3ZKzI/RRqg
-	 heH0qek7ZSxkSoXEbzPQi1gehSB1E9SgGFCgi4c/TjkE3+JQSBzQ/VMqNbbFHXuOzO
-	 rUWdzUqAmbGyIlw9zk3Qa2hToiecME+JmML7/hWNPs+6c6z++CnsONHAWRRKqOvZiJ
-	 9uU/x0Zg6pN8g==
-Message-ID: <ca04c19da203d0fab27a13db9b55b22cef91dc70.camel@kernel.org>
-Subject: Re: [PATCH 16/16] xfs: enable non-blocking timestamp updates
-From: Jeff Layton <jlayton@kernel.org>
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Jan
- Kara <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>, Martin
- Brandenburg	 <martin@omnibond.com>, Carlos Maiolino <cem@kernel.org>,
- Stefan Roesch	 <shr@fb.com>, linux-kernel@vger.kernel.org,
- linux-btrfs@vger.kernel.org, 	linux-fsdevel@vger.kernel.org,
- gfs2@lists.linux.dev, io-uring@vger.kernel.org, 	devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, 	linux-mtd@lists.infradead.org,
- linux-xfs@vger.kernel.org, 	linux-nfs@vger.kernel.org
-Date: Thu, 20 Nov 2025 09:16:28 -0500
-In-Reply-To: <20251120064859.2911749-17-hch@lst.de>
-References: <20251120064859.2911749-1-hch@lst.de>
-	 <20251120064859.2911749-17-hch@lst.de>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEZFRIJ2"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2a45877bd5eso2695048eec.0
+        for <gfs2@lists.linux.dev>; Fri, 21 Nov 2025 00:18:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763713082; x=1764317882; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0ZCkaU4b3LRtOfKRzVYrWDpKmG/Intyrls11rwoypKw=;
+        b=YEZFRIJ2MyWeTXruAEnDjppVhIl5moI48loxqP8JC+sAErlNvU3CiOk5WegzA2vebO
+         zIIcynrSB4PnO14X5zfJccVYCdzYvtWe07FVsbK50Zcmibr0kbBbZ0PETBNumBtxO+ib
+         mT9+TdsnN6T7q8X1WJV4/vt5TEKDcZWDMUBKBDBL6+V/+Vwo34KmNTbTNIDgBzrJdQP6
+         cPiRW4xUUycXKkOyQ4/yT+YzSd80zJb9vij6QPKBfwb/YMqcA7rsizFy7YQ1OxOJ5ba3
+         A0ZdWXzlrjVseLYjqHnSU/vKvXpLSPddikkSsljuCq5kC8QbBM6W7XPbQ0y+rsZn0p9Q
+         jQ1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763713082; x=1764317882;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0ZCkaU4b3LRtOfKRzVYrWDpKmG/Intyrls11rwoypKw=;
+        b=mQYGQ0BDtxqGbuIJpCsF4q1ChwyyeTD/q7wSlfO4gddXP2mTE+TOLEcIsDHUnGMCxb
+         SXdhpblgARpT/fz6pmOlfakm+qohzuwn5vnxJ8SMSYtiurFlXvqv4UlnJbmcBmv7ZF9+
+         dXNN7dTgEHitB793wdXO7DfGNybw/kk58ADcoOc8B62gj//i1SQevrUi2HA+EB5SfMaJ
+         JTuE6lji4IWD/yp192YdH1Q8wZniWqD3KA7yR7l5HX8+chZlmp5krAiOOZwax9fgPLoA
+         JXvJSONlXG7IkpRAKZIDI8VKW2jSTz0NuMRsZHnMFXke7O0RCcXcmHv7UpL7F/CWtCsH
+         KT7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVTx3lGhIZPItjbSHazeyWgZIazqgI6k7qk87JsFpFYd8usW156hdW/+cCzFI0n8OVZMNP@lists.linux.dev
+X-Gm-Message-State: AOJu0YztqfPa+zZWKwl9q1VEwcirCMzV5n7uB4IS0YgzuuFqjsU92igL
+	ckxsENlVF2k4fSBTRtLVSCVCq06Oi2kHoTRHMNYI/UGPESCzfqr/sEQ0
+X-Gm-Gg: ASbGnctW6EsN1qtYRSfmZxlrEaf+uPTOkHnxgYidtYzti2oo0VucnH+Fr4zyUYwjZZf
+	HMC2uxfKIQOLx+sZKDsDW1vdAahC5Uunlt2oPQzwmwURBILYRgEUCoRreJ2pSWePZG+KP6xUARX
+	2TzzSPCU+1Wq1dY03/UNkk/92zAfqJAUjAjvEDKot+tcdw3VJmlZ05cZx8DepmqqBKWawRjWDYc
+	ajUOclhxu/MDbsAzNEPBwvcr5pYWsLixsj7KuAkVb3qDoqtDmX4sx7go26WzD6G+dFp0dMuREhR
+	9BXzGHQXS255Glul6dEzvbE/atB0EFHEaPe0K4mu12/vC/yagz6zBNiQwYTAfHWuIb4nqojIbVx
+	rNfzp6VJcd8SRVVHib/oxyHMh0IdQ1iefoBeVyBwBwDytzOAvbDHNFWKwxov5Nc10lWBK13S1dU
+	H7C1ltastbBjlDBf4lNzpzWLORoWCvRPahl3m3
+X-Google-Smtp-Source: AGHT+IE6TpNLTdqJhjkLhKVLohT6o1vUjYsRLYbuQCplrHZnwWvmxZgKeOeAEDl0LIesl5PjIoxoYQ==
+X-Received: by 2002:a05:7022:4591:b0:11b:9386:a383 with SMTP id a92af1059eb24-11c9cabc7b4mr475750c88.22.1763713081645;
+        Fri, 21 Nov 2025 00:18:01 -0800 (PST)
+Received: from localhost.localdomain ([104.128.72.43])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93e55af3sm20997352c88.7.2025.11.21.00.17.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 00:18:01 -0800 (PST)
+From: zhangshida <starzhangzsd@gmail.com>
+X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
+To: linux-kernel@vger.kernel.org
+Cc: linux-block@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev,
+	linux-nvme@lists.infradead.org,
+	gfs2@lists.linux.dev,
+	ntfs3@lists.linux.dev,
+	linux-xfs@vger.kernel.org,
+	zhangshida@kylinos.cn,
+	starzhangzsd@gmail.com
+Subject: Fix potential data loss and corruption due to Incorrect BIO Chain Handling
+Date: Fri, 21 Nov 2025 16:17:39 +0800
+Message-Id: <20251121081748.1443507-1-zhangshida@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-11-20 at 07:47 +0100, Christoph Hellwig wrote:
-> The lazytime path using the generic helpers can never block in XFS
-> because there is no ->dirty_inode method that could block.  Allow
-> non-blocking timestamp updates for this case by replacing
-> generic_update_times with the open coded version without the S_NOWAIT
-> check.
->=20
-> Fixes: 66fa3cedf16a ("fs: Add async write file modification handling.")
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/xfs/xfs_iops.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
->=20
-> diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-> index bd0b7e81f6ab..57ff05be5700 100644
-> --- a/fs/xfs/xfs_iops.c
-> +++ b/fs/xfs/xfs_iops.c
-> @@ -1195,16 +1195,24 @@ xfs_vn_update_time(
-> =20
->  	trace_xfs_update_time(ip);
-> =20
-> -	if (flags & S_NOWAIT)
-> -		return -EAGAIN;
-> -
->  	if (inode->i_sb->s_flags & SB_LAZYTIME) {
-> -		if (!((flags & S_VERSION) &&
-> -		      inode_maybe_inc_iversion(inode, false)))
-> -			return generic_update_time(inode, flags);
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-I especially like getting this inode_maybe_inc_iversion() out of this
-function.
+Hello everyone,
 
-> +		int updated =3D flags;
-> +
-> +		error =3D inode_update_timestamps(inode, &updated);
-> +		if (error)
-> +			return error;
-> +
-> +		if (!(updated & S_VERSION)) {
-> +			if (updated)
-> +				mark_inode_dirty_time(inode, updated);
-> +			return 0;
-> +		}
-> =20
->  		/* Capture the iversion update that just occurred */
->  		log_flags |=3D XFS_ILOG_CORE;
-> +	} else {
-> +		if (flags & S_NOWAIT)
-> +			return -EAGAIN;
->  	}
-> =20
->  	error =3D xfs_trans_alloc(mp, &M_RES(mp)->tr_fsyncts, 0, 0, 0, &tp);
+We have recently encountered a severe data loss issue on kernel version 4.19,
+and we suspect the same underlying problem may exist in the latest kernel versions.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Environment:
+*   **Architecture:** arm64
+*   **Page Size:** 64KB
+*   **Filesystem:** XFS with a 4KB block size
+
+Scenario:
+The issue occurs while running a MySQL instance where one thread appends data
+to a log file, and a separate thread concurrently reads that file to perform
+CRC checks on its contents.
+
+Problem Description:
+Occasionally, the reading thread detects data corruption. Specifically, it finds
+that stale data has been exposed in the middle of the file.
+
+We have captured four instances of this corruption in our production environment.
+In each case, we observed a distinct pattern:
+    The corruption starts at an offset that aligns with the beginning of an XFS extent.
+    The corruption ends at an offset that is aligned to the system's `PAGE_SIZE` (64KB in our case).
+
+Corruption Instances:
+1.  Start:`0x73be000`, **End:** `0x73c0000` (Length: 8KB)
+2.  Start:`0x10791a000`, **End:** `0x107920000` (Length: 24KB)
+3.  Start:`0x14535a000`, **End:** `0x145b70000` (Length: 8280KB)
+4.  Start:`0x370d000`, **End:** `0x3710000` (Length: 12KB)
+
+After analysis, we believe the root cause is in the handling of chained bios, specifically
+related to out-of-order io completion.
+
+Consider a bio chain where `bi_remaining` is decremented as each bio in the chain completes.
+For example,
+if a chain consists of three bios (bio1 -> bio2 -> bio3) with
+bi_remaining count:
+1->2->2
+if the bio completes in the reverse order, there will be a problem. 
+if bio 3 completes first, it will become:
+1->2->1
+then bio 2 completes:
+1->1->0
+
+Because `bi_remaining` has reached zero, the final `end_io` callback for the entire chain
+is triggered, even though not all bios in the chain have actually finished processing.
+This premature completion can lead to stale data being exposed, as seen in our case.
+
+The core issue appears to be that `bio_chain_endio` does not check if the current bio's
+`bi_remaining` count has reached zero before proceeding to the next I/O.
+
+Proposed Fix:
+Removing `__bio_chain_endio` and allowing the standard `bio_endio` to handle the completion
+logic should resolve this issue, as `bio_endio` correctly manages the `bi_remaining` counter.
+
+Shida Zhang (9):
+  block: fix data loss and stale date exposure problems during append
+    write
+  block: export bio_chain_and_submit
+  gfs2: use bio_chain_and_submit for simplification
+  xfs: use bio_chain_and_submit for simplification
+  block: use bio_chain_and_submit for simplification
+  fs/ntfs3: use bio_chain_and_submit for simplification
+  zram: use bio_chain_and_submit for simplification
+  nvmet: fix the potential bug and use bio_chain_and_submit for
+    simplification
+  nvdimm: use bio_chain_and_submit for simplification
+
+ block/bio.c                       |  3 ++-
+ drivers/block/zram/zram_drv.c     |  3 +--
+ drivers/nvdimm/nd_virtio.c        |  3 +--
+ drivers/nvme/target/io-cmd-bdev.c |  3 +--
+ fs/gfs2/lops.c                    |  3 +--
+ fs/ntfs3/fsntfs.c                 | 12 ++----------
+ fs/squashfs/block.c               |  3 +--
+ fs/xfs/xfs_bio_io.c               |  3 +--
+ fs/xfs/xfs_buf.c                  |  3 +--
+ fs/xfs/xfs_log.c                  |  3 +--
+ 10 files changed, 12 insertions(+), 27 deletions(-)
+
+-- 
+2.34.1
+
