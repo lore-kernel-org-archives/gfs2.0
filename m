@@ -1,22 +1,22 @@
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4227E30C632
-	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 14:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E7F27B349
+	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763993274; cv=none; b=kcCIGdk12stNGt8wbQQM8RjnLH6lW7r+AeZeA4ZhiJx0Gt4B+pVuGO8awnMl+t+H5sMzJAiitXncg8t/u9iKOt8Zgy9VmwYdLS6L5hH6MNHyerO9ozCmPuBxBjlrbLFIAMF2YOcQaR//Yx0L6YZbcRzkjYr7IO2+VSnCJrDP+d0=
+	t=1763993370; cv=none; b=FFqBg0dFiN0BuJ7QkLycdj0QwAJNkOgIKLOskt44kVTIDJn+6JO+CFOVhnaKMYxTroFu4X4dWzDN6HOnS5JSzvmUp/3W5NcWEkGtptwXG5Zv7UIqIwh7dkqCJmZgILpLFAM1D5ouw0rGeXEBdkWbyYavDvx+VgJD5/QTdtWByg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763993274; c=relaxed/simple;
-	bh=P9EdTF1MezUbkGSY3Ff+pcwlx5yl4Irjd0IA0naJ6n0=;
+	s=arc-20240116; t=1763993370; c=relaxed/simple;
+	bh=trXS4N9Vz9V+Viy49DUBsztBaiTbLynzCDwJ+zstgiE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1o1c6nYNG0v+HS9XGvslveI1UrrZWiR1BgT7OYlZWLfWa2M8cnLmQzlM+VH2Ypu1DT62hzSj6xTMcT9NJAofwIbZvwJG1MDp6SIuyOozC0RxQe2R3dMenx2QsReesMgaH2HRASAf2ztMKl3sHHIRPtVUdgvl+HSUirkscmqkgs=
+	 Content-Type:Content-Disposition:In-Reply-To; b=D6J1MbU1DCy5f1eESktofP09TiTcfNP2dh9aZG+KVt+yQ49rMmbAAlm6tofDvIqIu/WBnTuqtenMIepdrgG7e+AJo3RCyLprq5WbDqNXbpD9ouvmwl9ewk7GCkukoIfWGDpn4Vx6D2gXhlp0615da9N5Ux3HuYE7r/dDCsj3fU8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id A379A68B05; Mon, 24 Nov 2025 15:07:47 +0100 (CET)
-Date: Mon, 24 Nov 2025 15:07:46 +0100
+	id 6355668B05; Mon, 24 Nov 2025 15:09:25 +0100 (CET)
+Date: Mon, 24 Nov 2025 15:09:24 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Jan Kara <jack@suse.cz>
 Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
@@ -29,9 +29,9 @@ Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
 	io-uring@vger.kernel.org, devel@lists.orangefs.org,
 	linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org,
 	linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 09/14] fs: factor out a mark_inode_dirty_time helper
-Message-ID: <20251124140746.GA14417@lst.de>
-References: <20251114062642.1524837-1-hch@lst.de> <20251114062642.1524837-10-hch@lst.de> <fbym7i2zelbatxbhy5eeffwpa3ni7bstjddbf7ran7djzthwjo@kfxj3wrxeuou>
+Subject: Re: [PATCH 10/14] fs: factor out a sync_lazytime helper
+Message-ID: <20251124140924.GB14417@lst.de>
+References: <20251114062642.1524837-1-hch@lst.de> <20251114062642.1524837-11-hch@lst.de> <vkobnnw3ij2n47bhhooawbw546dgwzii32nfqcx4bduoga5d7r@vdo5ryq4mffz>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -40,17 +40,19 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fbym7i2zelbatxbhy5eeffwpa3ni7bstjddbf7ran7djzthwjo@kfxj3wrxeuou>
+In-Reply-To: <vkobnnw3ij2n47bhhooawbw546dgwzii32nfqcx4bduoga5d7r@vdo5ryq4mffz>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Mon, Nov 24, 2025 at 02:22:59PM +0100, Jan Kara wrote:
-> What I find a bit concerning here is that mark_inode_dirty_time() takes a
-> different kind of flags than __mark_inode_dirty() so it's relatively easy
-> to confuse. Proper typing of 'flags' would be nice here but it's a bit
-> cumbersome to do in C so I'm not sure if it's worth it for this relatively
-> limited use. So I guess feel free to add:
+On Mon, Nov 24, 2025 at 02:31:02PM +0100, Jan Kara wrote:
+> > +	if (wbc->sync_mode == WB_SYNC_ALL ||
+> > +	    time_after(jiffies, inode->dirtied_time_when +
+> > +			dirtytime_expire_interval * HZ))
+> > +		sync_lazytime(inode);
+> 
+> The checking of inode->dirtied_time_when for inode potentially without
+> I_DIRTY_TIME set (and thus with unclear value of dirtied_time_when) is kind
+> of odd. It is harmless but IMO still not a good practice. Can't we keep
+> this condition as is and just call sync_lazytime()?
 
-Adding a __bitwise annotation for the S_ flags seems easy enough
-as there's not a whole lot of variables/arguments of that time.  I can
-do that as a follow-on.
+As in keeping the I_DIRTY_TIME in the caller?  Sure, I could do that.
 
