@@ -1,260 +1,258 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52542F5333
-	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 09:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C252FE598
+	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 11:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976080; cv=none; b=HVBbqkV5IQasGJcVVjrXyTGYAJXnH5hIefMmnh4Y+CaXNS1dom07IbusK3CcsVeDBrNizskhjjUCNIBcH8ksYu1Qh19RDCdjB4Ijt6nx/Zxy/Ze0ur2zP0pk0czZvKFWDhKIf+xJcNovY9r/yqxShzRn+UVEB4D0Mkv8+NfPT+c=
+	t=1763985124; cv=none; b=jkq5E8z6BvPGTo5iy5NaQA6wHlZT/tD6dV3ZVGOMN3bT9jqxQaG6WE+BEWoLf3HqV5KU+iMe8cPN+M9IPEn/qQr6WmVB0cQcGcK0AZiUt17PWinqU5zJj511Q17B0E5Sgw5z73+cCCFGwRylrqDt6NBUPz+BSyAuP04rjg9XdfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976080; c=relaxed/simple;
-	bh=WCQWxOUqUGAUbYn/1lWx01t1IwMR1YQjdMHluI9xz3E=;
+	s=arc-20240116; t=1763985124; c=relaxed/simple;
+	bh=AXugJTFCncWMmDtppspK4Rwa1H9IxLi4XrmKy/s2Dgc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AGUunQ6mH5719+0ZkjVgSi2DFoTL70jvdeLrok9e1J3aVeJdGV3X6v9TS6jIza7YEpYHDgWw3mLBYyUxdMBA0RPZpkeEFWaD/Pdc/ZW4USKt5RZ0b+ifYk6BgQhpTftFHjUxOSIjw1o8YxInMdJQHzC5GKQTKF78TJzlyOrS15M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAWuWmGR; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ajRiNc54+ABmtvJW0YKDmQkNjLQOyadOrK0/y21m1SkPSPQRnEdT9wkMTB9oZCqax9mvBu2aCOgiJBOuU0im3Nn7+gAjU4M7ibbnpckF6pIF3/r7KQxRW7n8gJJFeZKrkcu2z6S4YF22WQTjfmVzMeB1MxeBRk992I497NLeAao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Sbi0gwby; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AahnnYaP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=relb+CRX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HfDUfosQ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAWuWmGR"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-640b0639dabso6953624a12.3
-        for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 01:21:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763976077; x=1764580877; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Py5UyMFrH5g95YFUXPVBx4QadWCxP51woz9z/OSNb28=;
-        b=kAWuWmGRbGl9VeZyGW8DQrCubd1Y18e68qMDMAWNOwXuNvG+XWnSIHBoEpQt77flUn
-         pTzOgZKZ/juU+9RJMfPI6oJFp6VcrrpA2hsMKyo7ILeb6GexD9E8VPOoTsxE0VQmbE8+
-         Xf3OC8Q3NqKmjkrI1x9HAK4SzseTbGfNZUrDXnDiL4CUL9kqh4jBUxa+ZlUbHaLSsfXK
-         PCaIg5hsrrCpENMC+qiLDENJpLjJWR/aY+/ga6GkinkTCBSL0r6JnTAP19GKKKkkrZRU
-         mEePirtk8qFmdIg+AKq4OT6OHblN1f43brca0ojs6NdDwnbH2HmkqW22Wj+9OriLRw2X
-         cPIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763976077; x=1764580877;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Py5UyMFrH5g95YFUXPVBx4QadWCxP51woz9z/OSNb28=;
-        b=Gc6wgkl4gRa5UrnbyEtnfzxAOIFwlq8U0M9KVUIKTauIAnsJPu5FXxpVzHg4TOhEVX
-         q0osuLPi+uJex1PEAxFUgKlfGQAi4lP2ZTY4mrxyA4atUEYnTZRt5ZgH1h6rQpfeY9ie
-         UagtbiWv3QGA4IpbtfqT4ufwN01J67SN0y7ZgEGzT55KqiWr0DwAXHKrWh3LoyVxCnyX
-         A8176W0sGGdZ+AxSgFu+NKAdQCWie2N77GkLlHX6cDtIgZguogmAk4ci5DN4zuelDZI6
-         WbY+Pw6xX4+naK7WpqtfsISASnm6S2WG/ixa+SvShLHA0G0Q4KqCadPvsRwGTig/mouW
-         1LbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEMNTxrTyfm4bJeQpnxtgWCZDG9C3HA2bUMpAA2GVwubM3PwTGjG0EAr4byG35OcXxNylj@lists.linux.dev
-X-Gm-Message-State: AOJu0YwH1sEABMlfacNS54Cz5n/SPU31N35oSjp5MtFuDZcA2lWy5yZ1
-	W98zDFKQ6hrnagtibjUZnlyv7ByIOBZdcyh+JCWdkyggo4+dg4Uokhpw
-X-Gm-Gg: ASbGncuJ1oSi72yPdNkMToTfdO3/aHMAaP9LJqSq0c2/oiGfW7aqTlbES+D81cF9t/Z
-	ksHP1unjRBYRH1TnL4sjmErQKO1ErGJWQgVD2zt2T8Xhf+tmpJfJXhFZhsu6UGkvtUoLX0oaaOf
-	y8lE0fvoBY8X8A7/HaiI9JiJW4p7ISEorarzPc1JIgt31DQ3kCB2F3ks5P+PD1eHIY2WstVnPq2
-	bKgdIEF6BDqGuintEoSua49yDdnOG29a6bFnVfjGBNNR/Jy5tC455JmckucKJ9bsruds06Mjyii
-	anA/qTOj3o108QEYaRqKoRm3+tx5ILyFTvtbtDmH9RYOgnTDKYXQIAmcM8zIIcqExfoWzzl8wrW
-	9rtGVGk1n65iKSMAgYBxBBwkfibL8rSMPQvjHOYVliWhA4FYoKo64MqiOaaW/WlMXbcl1LgJDEq
-	jlapJhlU+QNmFjZ17kee9NF24l3KhYFI7RYQfniqg0k52i+5Hj2hUtc+oG
-X-Google-Smtp-Source: AGHT+IEq6wk6IF4PKQSBwW24QSZ4NyUido17WV24VCrnxRb9lAJx3PtZq9pP6MUoSZR1PE+9azUxIA==
-X-Received: by 2002:a05:6402:3246:20b0:640:c640:98c5 with SMTP id 4fb4d7f45d1cf-6455469d112mr8161208a12.34.1763976076961;
-        Mon, 24 Nov 2025 01:21:16 -0800 (PST)
-Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-645363b6012sm11432201a12.12.2025.11.24.01.21.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 01:21:16 -0800 (PST)
-Date: Mon, 24 Nov 2025 10:21:07 +0100
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: brauner@kernel.org, neil@brown.name
-Cc: agruenba@redhat.com, almaz.alexandrovich@paragon-software.com, 
-	dhowells@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	marc.dionne@auristor.com, ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
-	viro@zeniv.linux.org.uk, syzbot+2fefb910d2c20c0698d8@syzkaller.appspotmail.com
-Subject: Re: [syzbot] [ntfs3?] INFO: task hung in __start_renaming
-Message-ID: <c2kpawomkbvtahjm7y5mposbhckb7wxthi3iqy5yr22ggpucrm@ufvxwy233qxo>
-References: <gyt53gbtarw75afmeswazv4dmmj6mc2lzlm2bycunphazisbyq@qrjumrerwox5>
- <6924057f.a70a0220.d98e3.007b.GAE@google.com>
- <wtgy54dfpiapekffjjkonkkhpnxiktfp24wdmwdzf4gslrtact@pongm7vm3l2y>
- <CAGudoHHfGndcMwXMupOs82HM6c_ajMw8GETxPdkqzORrEq0btA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Sbi0gwby";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AahnnYaP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="relb+CRX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HfDUfosQ"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D0C9E5BE36;
+	Mon, 24 Nov 2025 11:51:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763985115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tI75RvvoW7MumU/x2+w7sCIYpG0FwZeE5DdxBpUhg+Q=;
+	b=Sbi0gwbyCpaVKMQV2UlM0psMLoVhGtmKpxAUCXn7wFzHzKEu4mvu2dD1IYZR7uYfvXKCZv
+	aVBNe4DLiH7bbHqlEVUkPCT3v5xDNv1/SCw6soMuFa6l5vdISLiOHWDFHVUMnOqKYP+wzW
+	dZtl+qIGQ2sNM7Rm0w3nYa+92Pu8azY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763985115;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tI75RvvoW7MumU/x2+w7sCIYpG0FwZeE5DdxBpUhg+Q=;
+	b=AahnnYaPxgqzkVL8HD5p5Di5BmAY/Q/Cc5jrQ1C6V9F6dAFKDbzvRRT9JtN3VKTwr4DuJP
+	7Z8GnhV+KEtKCvBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=relb+CRX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HfDUfosQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763985113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tI75RvvoW7MumU/x2+w7sCIYpG0FwZeE5DdxBpUhg+Q=;
+	b=relb+CRXtEMRjoh8RhBPFCKFui+e77Q7FEA5WcpJPj5RdICSoJAQSj13ppULOLxlb9bsn9
+	X7xoa+VXS6MezxqCZK354/5mR0uvwhHyWnke5glOVhzl9lZyEjoPdBkLQSGLh4JdHWXCAa
+	9+zYR2e/am2fmynL9UVWYVF6I7eIqeM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763985113;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tI75RvvoW7MumU/x2+w7sCIYpG0FwZeE5DdxBpUhg+Q=;
+	b=HfDUfosQhYbNz2pBMQmIkOXp2ggPjlZ6CWKuEXm51mN8e2Qy0+37pBYppqBKO/iGOarrg7
+	W58dF9BxphmMNfAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD3483EA61;
+	Mon, 24 Nov 2025 11:51:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8DYpLtlGJGkXdgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 24 Nov 2025 11:51:53 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 032FEA0A04; Mon, 24 Nov 2025 12:51:48 +0100 (CET)
+Date: Mon, 24 Nov 2025 12:51:48 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Jan Kara <jack@suse.cz>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>, Jeff Layton <jlayton@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+	io-uring@vger.kernel.org, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 01/14] fs: refactor file timestamp update logic
+Message-ID: <muv2257pdsdqq3mfqay72rgxgiklnbmcj545tcq5tx3ap4hhue@rccqkibodbv3>
+References: <20251114062642.1524837-1-hch@lst.de>
+ <20251114062642.1524837-2-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGudoHHfGndcMwXMupOs82HM6c_ajMw8GETxPdkqzORrEq0btA@mail.gmail.com>
+In-Reply-To: <20251114062642.1524837-2-hch@lst.de>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: D0C9E5BE36
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,suse.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_THREE(0.00)[3];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Score: -4.01
 
-On Mon, Nov 24, 2025 at 10:01:53AM +0100, Mateusz Guzik wrote:
-> sigh, so it *is* my patch, based on syzbot testing specifically on
-> directory locking vs inode branches, but I don't see why.
+On Fri 14-11-25 07:26:04, Christoph Hellwig wrote:
+> Currently the two high-level APIs use two helper functions to implement
+> almost all of the logic.  Refactor the two helpers and the common logic
+> into a new file_update_time_flags routine that gets the iocb flags or
+> 0 in case of file_update_time passed so that the entire logic is
+> contained in a single function and can be easily understood and modified.
 > 
-> I take it the open() codepath took the rwsem, hence the rename is
-> sleeping. Given that all reproducers find it *on* cpu, it may be this
-> is busy looping for some reason.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/inode.c | 54 +++++++++++++++++-------------------------------------
+>  1 file changed, 17 insertions(+), 37 deletions(-)
 > 
-> I don't have time to dig more into it right now, so I think it would
-> be best to *drop* my patch for the time being. Once I figure it out
-> I'll send a v2.
+> diff --git a/fs/inode.c b/fs/inode.c
+> index ec9339024ac3..4884ffa931e7 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -2310,10 +2310,12 @@ struct timespec64 current_time(struct inode *inode)
+>  }
+>  EXPORT_SYMBOL(current_time);
+>  
+> -static int inode_needs_update_time(struct inode *inode)
+> +static int file_update_time_flags(struct file *file, unsigned int flags)
+>  {
+> +	struct inode *inode = file_inode(file);
+>  	struct timespec64 now, ts;
+> -	int sync_it = 0;
+> +	int sync_mode = 0;
+> +	int ret = 0;
+>  
+>  	/* First try to exhaust all avenues to not sync */
+>  	if (IS_NOCMTIME(inode))
+> @@ -2323,29 +2325,23 @@ static int inode_needs_update_time(struct inode *inode)
+>  
+>  	ts = inode_get_mtime(inode);
+>  	if (!timespec64_equal(&ts, &now))
+> -		sync_it |= S_MTIME;
+> -
+> +		sync_mode |= S_MTIME;
+>  	ts = inode_get_ctime(inode);
+>  	if (!timespec64_equal(&ts, &now))
+> -		sync_it |= S_CTIME;
+> -
+> +		sync_mode |= S_CTIME;
+>  	if (IS_I_VERSION(inode) && inode_iversion_need_inc(inode))
+> -		sync_it |= S_VERSION;
+> +		sync_mode |= S_VERSION;
+>  
+> -	return sync_it;
+> -}
+> -
+> -static int __file_update_time(struct file *file, int sync_mode)
+> -{
+> -	int ret = 0;
+> -	struct inode *inode = file_inode(file);
+> +	if (!sync_mode)
+> +		return 0;
+>  
+> -	/* try to update time settings */
+> -	if (!mnt_get_write_access_file(file)) {
+> -		ret = inode_update_time(inode, sync_mode);
+> -		mnt_put_write_access_file(file);
+> -	}
+> +	if (flags & IOCB_NOWAIT)
+> +		return -EAGAIN;
+>  
+> +	if (mnt_get_write_access_file(file))
+> +		return 0;
+> +	ret = inode_update_time(inode, sync_mode);
+> +	mnt_put_write_access_file(file);
+>  	return ret;
+>  }
+>  
+> @@ -2365,14 +2361,7 @@ static int __file_update_time(struct file *file, int sync_mode)
+>   */
+>  int file_update_time(struct file *file)
+>  {
+> -	int ret;
+> -	struct inode *inode = file_inode(file);
+> -
+> -	ret = inode_needs_update_time(inode);
+> -	if (ret <= 0)
+> -		return ret;
+> -
+> -	return __file_update_time(file, ret);
+> +	return file_update_time_flags(file, 0);
+>  }
+>  EXPORT_SYMBOL(file_update_time);
+>  
+> @@ -2394,7 +2383,6 @@ EXPORT_SYMBOL(file_update_time);
+>  static int file_modified_flags(struct file *file, int flags)
+>  {
+>  	int ret;
+> -	struct inode *inode = file_inode(file);
+>  
+>  	/*
+>  	 * Clear the security bits if the process is not being run by root.
+> @@ -2403,17 +2391,9 @@ static int file_modified_flags(struct file *file, int flags)
+>  	ret = file_remove_privs_flags(file, flags);
+>  	if (ret)
+>  		return ret;
+> -
+>  	if (unlikely(file->f_mode & FMODE_NOCMTIME))
+>  		return 0;
+> -
+> -	ret = inode_needs_update_time(inode);
+> -	if (ret <= 0)
+> -		return ret;
+> -	if (flags & IOCB_NOWAIT)
+> -		return -EAGAIN;
+> -
+> -	return __file_update_time(file, ret);
+> +	return file_update_time_flags(file, flags);
+>  }
+>  
+>  /**
+> -- 
+> 2.47.3
 > 
-
-good news, now that I gave up I found it.
-
-insert_inode_locked() is looping indefinitely an inode which is no
-longer I_NEW or I_CREATING.
-
-In stock kernel:
-                if (unlikely(!inode_unhashed(old))) {
-                        iput(old);
-                        return -EBUSY;
-                }
-                iput(old);
-
-it returns an error
-
-with my patch:
-               if (isnew) {
-                        wait_on_new_inode(old);
-                        if (unlikely(!inode_unhashed(old))) {
-                                iput(old);
-                                return -EBUSY;
-                        }
-                }
-                iput(old);
-
-unhashed status is only ever check if I_NEW was spotted,
-
-which can be false. Afterwards the routine is stuck in endless cycle of
-finding the inode and iputting it.
-
-Christian, I think the easiest way out is to add the fix I initially
-posted, inlined below. It *was* successfuly tested by syzbot. It retains
-inode_unhashed checks even when they are not necessary to avoid any more
-surprises.
-
-There were some other changes in the area and turns out sending a v2 for
-the patch would result in some merge conflicts, on the other hand the
-patch below should be trivial to fold into the existing commit.
-
-Sorry for the spam everyone. :-)
-
-diff --git a/fs/inode.c b/fs/inode.c
-index 0f3a56ea8f48..80298f048117 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -1311,12 +1311,11 @@ struct inode *inode_insert5(struct inode *inode, unsigned long hashval,
- 		spin_unlock(&inode_hash_lock);
- 		if (IS_ERR(old))
- 			return NULL;
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(old);
--			if (unlikely(inode_unhashed(old))) {
--				iput(old);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(old))) {
-+			iput(old);
-+			goto again;
- 		}
- 		return old;
- 	}
-@@ -1413,12 +1412,11 @@ struct inode *iget5_locked_rcu(struct super_block *sb, unsigned long hashval,
- 	if (inode) {
- 		if (IS_ERR(inode))
- 			return NULL;
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(inode);
--			if (unlikely(inode_unhashed(inode))) {
--				iput(inode);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(inode))) {
-+			iput(inode);
-+			goto again;
- 		}
- 		return inode;
- 	}
-@@ -1459,12 +1457,11 @@ struct inode *iget_locked(struct super_block *sb, unsigned long ino)
- 	if (inode) {
- 		if (IS_ERR(inode))
- 			return NULL;
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(inode);
--			if (unlikely(inode_unhashed(inode))) {
--				iput(inode);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(inode))) {
-+			iput(inode);
-+			goto again;
- 		}
- 		return inode;
- 	}
-@@ -1501,12 +1498,11 @@ struct inode *iget_locked(struct super_block *sb, unsigned long ino)
- 		if (IS_ERR(old))
- 			return NULL;
- 		inode = old;
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(inode);
--			if (unlikely(inode_unhashed(inode))) {
--				iput(inode);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(inode))) {
-+			iput(inode);
-+			goto again;
- 		}
- 	}
- 	return inode;
-@@ -1648,12 +1644,11 @@ struct inode *ilookup5(struct super_block *sb, unsigned long hashval,
- again:
- 	inode = ilookup5_nowait(sb, hashval, test, data, &isnew);
- 	if (inode) {
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(inode);
--			if (unlikely(inode_unhashed(inode))) {
--				iput(inode);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(inode))) {
-+			iput(inode);
-+			goto again;
- 		}
- 	}
- 	return inode;
-@@ -1682,12 +1677,11 @@ struct inode *ilookup(struct super_block *sb, unsigned long ino)
- 	if (inode) {
- 		if (IS_ERR(inode))
- 			return NULL;
--		if (unlikely(isnew)) {
-+		if (unlikely(isnew))
- 			wait_on_new_inode(inode);
--			if (unlikely(inode_unhashed(inode))) {
--				iput(inode);
--				goto again;
--			}
-+		if (unlikely(inode_unhashed(inode))) {
-+			iput(inode);
-+			goto again;
- 		}
- 	}
- 	return inode;
-@@ -1863,12 +1857,11 @@ int insert_inode_locked(struct inode *inode)
- 		isnew = !!(inode_state_read(old) & I_NEW);
- 		spin_unlock(&old->i_lock);
- 		spin_unlock(&inode_hash_lock);
--		if (isnew) {
-+		if (isnew)
- 			wait_on_new_inode(old);
--			if (unlikely(!inode_unhashed(old))) {
--				iput(old);
--				return -EBUSY;
--			}
-+		if (unlikely(!inode_unhashed(old))) {
-+			iput(old);
-+			return -EBUSY;
- 		}
- 		iput(old);
- 	}
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
