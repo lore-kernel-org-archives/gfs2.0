@@ -1,231 +1,193 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43522E11B8
-	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 07:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72B22E6CD5
+	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 07:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763968388; cv=none; b=XYB3n4XlNUeV0a8ZQy+mFfoInWNdEKc+Kxb+kMOSJF7SaVPhFyoEo9TMV1P0utMWQVK0NaD00yPx/SbhUW1REN/HJR40wB3Sd3WpvcxIlIsBuePRcaRsm3Z6WfmU2cF7/DFQvVvlZwS8lsjVr8ZdIUoWnXvshNMn3T0QHT8KnrE=
+	t=1763970875; cv=none; b=cHgEw8lCOTbm6IEY2HZPwrN5MQI1kJBVP9oEHXWzIpTtHG3EMQDwvJjJqnFtwipjEet5vNkG2Sh085Ub4nIlOBcW/CYThln/QmgD1vh1M3A6agO2Y4JSbdN840/xBuD8vXpSs81tCNgBwq25RRRhtBgzVnYWQK6FNuPC584vzic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763968388; c=relaxed/simple;
-	bh=HInhl1KO+J0EXrgShI3LVH+RBcQtz85AHxWsOLncCvM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=af+bACtrp6FQEnH0tyl0wExhEZwJb7JFSpLMLfel8OHQVA3I6yBviYgVFyJwq1pDG4Ad1qox0P/rd3lv+3xGg6uP5hBK4L6MF6EyClna6yNCSpAD7swg2H/8ME/pwE5l0otADHf2NRpqvjsFn3VZivwrfQsq4ppPedEWYhIK6nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-433783ff82aso34748365ab.1
-        for <gfs2@lists.linux.dev>; Sun, 23 Nov 2025 23:13:04 -0800 (PST)
+	s=arc-20240116; t=1763970875; c=relaxed/simple;
+	bh=KT/F7f4tTQnA1jOwd5Ni1R6KPd8yFXBsZaKI46tuybE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EvOQqIVAu5p7lXQ8sFY05yx5ExSAiSYo67pTTb9GVh/DbL+jsxc1Fxzo1KKXIkRuG+1ss0NBWSoib+i98o0pnNeZ7mfBAyVLKziBC7u+VbieY/ot9PbspwTIOpAY679SAUlYFTcW1Inh+qXc+icquQuI5h/HQJtG9ebswulpjks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKsxCK69; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKsxCK69"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b735b89501fso442564966b.0
+        for <gfs2@lists.linux.dev>; Sun, 23 Nov 2025 23:54:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763970872; x=1764575672; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FlC7yVANvKUySfKJcEi61tzYs7uhVVgRqqWDz/Q6iAM=;
+        b=kKsxCK69Imu4mOpJnIll+E012+F0gpjl8CcWZZLEuwpKDfYnrjxbToAkVCErOCaug9
+         i96d1Qa+APZVWuju5tE9LpZ9LjhRXMIsKCbO92HeCDeXIwvaCrkCfqzG2oZNgFBI3H0x
+         V7NWqhsK3FF2v4mNH5jxCqXbkpJhsL+LJG19qpIQ6nCIm1gb0DzGm8PnY5Y37s75ml7c
+         Psw0bmg5A25138GYZjWWHLxRfU615tZ5FZ6OpIR0XLeC4kNAeTlLxrwLx24cAzjsco5M
+         Dw/sWvxMu8Y2nI0ESNDzb6D2IySYGL1EeV6P+l96weK0j07l/uzS4jryzyCRE5GojpEm
+         sTdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763968384; x=1764573184;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KF2Ak0sQUgMNK1rKnWGzsfhSUBSdzgZI3IHey+cKkB4=;
-        b=vHTJnfS/JaXEgo7s5JKpCsTFdOKHGnCygmhOOupN7DtF4EaP9iod5UyrKH5/9mMpxA
-         irqZIIXzg6wrLOI8YR6zEz/ES9Zr3zUIW4F78yHj2cizjIpEpvAZs1RBnF54/3Httsdg
-         dM1KT4V7DZI9+00rO6uyNoqnOLke7I+RUnzc4ANLX/ksk4rEX7mW1x8BD4vS4nxWRKfW
-         BtXSMxdICusO1c6e/yFzIlSDfbfxG9gvVwIEjCBcFOG8FQQ3KzI1VKvrLl/PnnVK3gj/
-         UFhbkvkDFV15lKN25IIRROSKWTtSNBPC5NJEn7nriT/8E6QThkTk5BYHXg8xtQmGt5Gs
-         5IeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmDUQPsESFgNn/3aKcqJwnGY+OSFAyrkYd0j2Vm5ls0GvKYqoCIeB7/qRiGSGP8DhqCJwc@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWs0cbdKsyU2AN31OOGZMqbZK33l3TE8rbW3lnC/YajHMqT+So
-	yI9p9eGyukQpw6biaeFfboDvwUDqf88brTs3BcdMEAsYuGK8Xo0y9j0ZsHs9cWpeZpa75cYLioL
-	c3wKpqRZ8KwY0HlsSGt/+wix3viunLKe5bdC5YaO4SAf5qXMJWugulOH0PEg=
-X-Google-Smtp-Source: AGHT+IEWlScereATm2wIbqGUY+hJ/KpTZaNQGX0sn++dl2V4QBfGitYt//QVfB7u/Qi0SKJtuUOPVwlsX3ESLkWm4hlvWFU2j7xK
+        d=1e100.net; s=20230601; t=1763970872; x=1764575672;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FlC7yVANvKUySfKJcEi61tzYs7uhVVgRqqWDz/Q6iAM=;
+        b=GgUTGsJ3lrNyS6j8vn4CAZsk/goM+NcFk5VI8aqw5WLO1OU5iT/W3Mbik93mkt+gub
+         ouPn9yuzNz+g6xE0lj6GRNeKbUTjH2ZKsm6RYqTtedkHLwQg5Wxf6NN6rMc7gYuRBJKy
+         Wfr7SnyOwV6k25wiscc0Gb526UECLdozn8Vw5Lx/BAz8PqEjkshXthEDqNoDeavUA13z
+         JZlLQAAZgWcaA5GVDmIbguukIQsP/YmRVtHCSegaC6vJNq8GQ4p+BkEjxvYGv03tPLuN
+         TDjHDXairFtNWPOXEEshO1s0akh+go+GW+yj5TQ3HyxJOt8tZnfJGeDU0btiNiQU1Jik
+         CgQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1EwoWvsCDyurO/HP6lMmGO5IGunlKkwUL54IEtP7dmrx6nzXwl7lEywDZQyROyCJgrYzH@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJTdlCBC3HtQeM58hjrh+DxPoMNUpm+ubu2tDM45wxiEGZ4hoE
+	4niBOtYgdA7BUZP70KS5U6iNBThemXndb0d6VfLrcL0zq49+Tf6i9X8G
+X-Gm-Gg: ASbGncu9Lmwu3Kby/m5Mqn8YgsbwvQa2gBsPwpnvZCSqtwBLPubGsvknzAvDqiG3vcE
+	aKG64FLB9RPULyJdgtmZ8Nbu8Qu9o8kpVYL/urPyg0qVF7VMRkMeosWZtcH3rVqJfEkoxQ0aZFz
+	eVa1USGGK6FDRIDkjsyzT5e/E2OG2gxw9h70aTb/8g+DQ5Os73FRhHGvBMMsDsPvDdD9RoktVdX
+	1sO1FlCbBUKms7dzVma3md14PdAkABalVUTquyzUqg7C/sJ7yvDOcQiMd6RWLb0ersKBF2PVCSn
+	WbQvQoyn+wf3VUj0UANTWSQ/z3c2V8Tsb2v5ugudE9Gmk7zk0PsZtOgmT17oqMtjCRLgl2O/mgD
+	RIJbZKCS+QoYolRiQwgBhGNu1eSk9f2dyZMCD+XEXjxrd/FZuxvEW1Dz260l5vHlbLUtqAHjc9h
+	osXqaXy+p+B+bSRL9LiFUzzZDRvl/Tjczo9DCkWcZyEOfZPFEmLtVPX8XH0/dk4+UPrco=
+X-Google-Smtp-Source: AGHT+IGtWWuUYPLI1U4Pi4o0OYpw506S88/tH8OAcwEGuSXovPPfsg0e1IiBHAC3h7onJct5SaHDfQ==
+X-Received: by 2002:a17:907:a04:b0:b6d:5363:88a9 with SMTP id a640c23a62f3a-b767154772bmr889142366b.9.1763970872065;
+        Sun, 23 Nov 2025 23:54:32 -0800 (PST)
+Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fd43e2sm1199292166b.39.2025.11.23.23.54.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Nov 2025 23:54:31 -0800 (PST)
+Date: Mon, 24 Nov 2025 08:54:18 +0100
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: brauner@kernel.org, neil@brown.name
+Cc: agruenba@redhat.com, almaz.alexandrovich@paragon-software.com, 
+	dhowells@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
+	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	marc.dionne@auristor.com, ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk, syzbot+2fefb910d2c20c0698d8@syzkaller.appspotmail.com
+Subject: Re: [syzbot] [ntfs3?] INFO: task hung in __start_renaming
+Message-ID: <wtgy54dfpiapekffjjkonkkhpnxiktfp24wdmwdzf4gslrtact@pongm7vm3l2y>
+References: <gyt53gbtarw75afmeswazv4dmmj6mc2lzlm2bycunphazisbyq@qrjumrerwox5>
+ <6924057f.a70a0220.d98e3.007b.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:152e:b0:430:c0e4:9e43 with SMTP id
- e9e14a558f8ab-435b8bf8b4fmr80722175ab.6.1763968383781; Sun, 23 Nov 2025
- 23:13:03 -0800 (PST)
-Date: Sun, 23 Nov 2025 23:13:03 -0800
-In-Reply-To: <gyt53gbtarw75afmeswazv4dmmj6mc2lzlm2bycunphazisbyq@qrjumrerwox5>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6924057f.a70a0220.d98e3.007b.GAE@google.com>
-Subject: Re: [syzbot] [ntfs3?] INFO: task hung in __start_renaming
-From: syzbot <syzbot+2fefb910d2c20c0698d8@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, almaz.alexandrovich@paragon-software.com, 
-	brauner@kernel.org, dhowells@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, mjguzik@gmail.com, 
-	ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6924057f.a70a0220.d98e3.007b.GAE@google.com>
 
-Hello,
+On Sun, Nov 23, 2025 at 11:13:03PM -0800, syzbot wrote:
+> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+> INFO: task hung in __start_renaming
+> 
+> INFO: task syz.0.17:6473 blocked for more than 143 seconds.
+>       Not tainted syzkaller #0
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> task:syz.0.17        state:D stack:27936 pid:6473  tgid:6471  ppid:6352   task_flags:0x400040 flags:0x00080002
+> Call Trace:
+>  <TASK>
+>  context_switch kernel/sched/core.c:5257 [inline]
+>  __schedule+0x14bc/0x5030 kernel/sched/core.c:6864
+>  __schedule_loop kernel/sched/core.c:6946 [inline]
+>  schedule+0x165/0x360 kernel/sched/core.c:6961
+>  schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7018
+>  rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
+>  __down_write_common kernel/locking/rwsem.c:1317 [inline]
+>  __down_write kernel/locking/rwsem.c:1326 [inline]
+>  down_write_nested+0x1b5/0x200 kernel/locking/rwsem.c:1707
+>  inode_lock_nested include/linux/fs.h:1072 [inline]
+>  lock_rename fs/namei.c:3681 [inline]
+>  __start_renaming+0x148/0x410 fs/namei.c:3777
+>  do_renameat2+0x399/0x8e0 fs/namei.c:5991
+>  __do_sys_rename fs/namei.c:6059 [inline]
+>  __se_sys_rename fs/namei.c:6057 [inline]
+>  __x64_sys_rename+0x82/0x90 fs/namei.c:6057
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f2425d8f749
+> RSP: 002b:00007f2426c44038 EFLAGS: 00000246 ORIG_RAX: 0000000000000052
+> RAX: ffffffffffffffda RBX: 00007f2425fe6090 RCX: 00007f2425d8f749
+> RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000200000000340
+> RBP: 00007f2425e13f91 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f2425fe6128 R14: 00007f2425fe6090 R15: 00007ffcd5a91138
+>  </TASK>
+> 
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-INFO: task hung in __start_renaming
+So at the end of the day I think this erroneously bisected to my patch.
+While it may sound like famous last words, hear me out.
 
-INFO: task syz.0.17:6473 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.0.17        state:D stack:27936 pid:6473  tgid:6471  ppid:6352   task_flags:0x400040 flags:0x00080002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5257 [inline]
- __schedule+0x14bc/0x5030 kernel/sched/core.c:6864
- __schedule_loop kernel/sched/core.c:6946 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6961
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7018
- rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
- __down_write_common kernel/locking/rwsem.c:1317 [inline]
- __down_write kernel/locking/rwsem.c:1326 [inline]
- down_write_nested+0x1b5/0x200 kernel/locking/rwsem.c:1707
- inode_lock_nested include/linux/fs.h:1072 [inline]
- lock_rename fs/namei.c:3681 [inline]
- __start_renaming+0x148/0x410 fs/namei.c:3777
- do_renameat2+0x399/0x8e0 fs/namei.c:5991
- __do_sys_rename fs/namei.c:6059 [inline]
- __se_sys_rename fs/namei.c:6057 [inline]
- __x64_sys_rename+0x82/0x90 fs/namei.c:6057
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2425d8f749
-RSP: 002b:00007f2426c44038 EFLAGS: 00000246 ORIG_RAX: 0000000000000052
-RAX: ffffffffffffffda RBX: 00007f2425fe6090 RCX: 00007f2425d8f749
-RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000200000000340
-RBP: 00007f2425e13f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2425fe6128 R14: 00007f2425fe6090 R15: 00007ffcd5a91138
- </TASK>
+The reproducer fails to trigger the problem on my test jig, thus I
+resorted to asking syzbot.
 
-Showing all locks held in the system:
-1 lock held by khungtaskd/31:
- #0: ffffffff8df3d980 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #0: ffffffff8df3d980 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:867 [inline]
- #0: ffffffff8df3d980 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6775
-2 locks held by getty/5592:
- #0: ffff8880342450a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc9000332b2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x43e/0x1400 drivers/tty/n_tty.c:2222
-3 locks held by syz.0.17/6472:
-2 locks held by syz.0.17/6473:
- #0: ffff88805c19c420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff88805e78e988 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff88805e78e988 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff88805e78e988 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.1.18/6495:
-2 locks held by syz.1.18/6496:
- #0: ffff88807bbb8420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff888073ef5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff888073ef5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff888073ef5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-5 locks held by syz.2.19/6519:
-2 locks held by syz.2.19/6520:
- #0: ffff888031634420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff888073e770d0 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff888073e770d0 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff888073e770d0 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.3.20/6552:
-2 locks held by syz.3.20/6553:
- #0: ffff8880241de420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff888073ee5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff888073ee5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff888073ee5af8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.4.21/6582:
-2 locks held by syz.4.21/6583:
- #0: ffff88805dafe420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff88805e78b690 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff88805e78b690 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff88805e78b690 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.5.22/6613:
-2 locks held by syz.5.22/6614:
- #0: ffff88806d820420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff88805e7dcc68 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff88805e7dcc68 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff88805e7dcc68 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.6.23/6654:
-2 locks held by syz.6.23/6655:
- #0: ffff888032cd2420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff88805e78f818 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff88805e78f818 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff88805e78f818 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
-3 locks held by syz.7.24/6689:
-2 locks held by syz.7.24/6690:
- #0: ffff88807eda2420 (sb_writers#12){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:509
- #1: ffff888073e73dd8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: inode_lock_nested include/linux/fs.h:1072 [inline]
- #1: ffff888073e73dd8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: lock_rename fs/namei.c:3681 [inline]
- #1: ffff888073e73dd8 (&type->i_mutex_dir_key#8/1){+.+.}-{4:4}, at: __start_renaming+0x148/0x410 fs/namei.c:3777
+First patch I sent for testing was merely a sanity check -- prior to my
+patch inode_unhashed() checks were *always* executing, with my patch
+they only happen if I_NEW was spotted. This patch "solved" the problem.
 
-=============================================
+Second patch added some asserts on inode_unhashed() and syzbot had some
+internal issues, ultimately it was not tested.
 
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x39e/0x3d0 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x17a/0x300 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:160 [inline]
- __sys_info lib/sys_info.c:157 [inline]
- sys_info+0x135/0x170 lib/sys_info.c:165
- check_hung_uninterruptible_tasks kernel/hung_task.c:346 [inline]
- watchdog+0xfb5/0x1000 kernel/hung_task.c:515
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 6582 Comm: syz.4.21 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:preempt_count arch/x86/include/asm/preempt.h:27 [inline]
-RIP: 0010:check_kcov_mode kernel/kcov.c:183 [inline]
-RIP: 0010:write_comp_data kernel/kcov.c:246 [inline]
-RIP: 0010:__sanitizer_cov_trace_const_cmp4+0x11/0x90 kernel/kcov.c:314
-Code: 09 cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 48 8b 04 24 65 48 8b 14 25 08 60 76 92 <65> 8b 0d 68 82 b4 10 81 e1 00 01 ff 00 74 11 81 f9 00 01 00 00 75
-RSP: 0018:ffffc900040bf660 EFLAGS: 00000246
-RAX: ffffffff82417239 RBX: ffff888073e75268 RCX: df51652e15ac6b00
-RDX: ffff888024430000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff52000817ec0 R12: ffff888073e75268
-R13: ffff888073e752e8 R14: dffffc0000000000 R15: 0000000000000003
-FS:  00007f2cd1b696c0(0000) GS:ffff888125fba000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055b091e56a38 CR3: 000000003082e000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- inode_state_read+0x59/0xd0 include/linux/fs.h:888
- insert_inode_locked+0x2c8/0x650 fs/inode.c:1873
- ntfs_new_inode+0xc8/0x100 fs/ntfs3/fsntfs.c:1675
- ntfs_create_inode+0x606/0x32a0 fs/ntfs3/inode.c:1309
- ntfs_create+0x3d/0x50 fs/ntfs3/namei.c:110
- lookup_open fs/namei.c:4409 [inline]
- open_last_lookups fs/namei.c:4509 [inline]
- path_openat+0x190f/0x3d90 fs/namei.c:4753
- do_filp_open+0x1fa/0x410 fs/namei.c:4783
- do_sys_openat2+0x121/0x1c0 fs/open.c:1432
- do_sys_open fs/open.c:1447 [inline]
- __do_sys_openat fs/open.c:1463 [inline]
- __se_sys_openat fs/open.c:1458 [inline]
- __x64_sys_openat+0x138/0x170 fs/open.c:1458
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2cd0d8f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2cd1b69038 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f2cd0fe5fa0 RCX: 00007f2cd0d8f749
-RDX: 000000000000275a RSI: 00002000000001c0 RDI: ffffffffffffff9c
-RBP: 00007f2cd0e13f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2cd0fe6038 R14: 00007f2cd0fe5fa0 R15: 00007ffce05c0bc8
- </TASK>
+Third patch added even *more* asserts and t0his time around things
+failed the previously reported way about half an hour of testing. But if
+the first patch indeed solved something, the BUG_ONs would have
+triggered instead.
 
+So that's for testing.
 
-Tested on:
+In my first response I made a remark in my first reply that ntfs is at
+fault.  After a quick skim I spotted d_instantiate() instead of
+d_instantiate_new() and jumped to conclusions. It calls unlock_new_inode()
+later which does the right thing, so it is fine AFAICS.
 
-commit:         d724c6f8 Add linux-next specific files for 20251121
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=17ce797c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=68d11c703cf8e4a0
-dashboard link: https://syzkaller.appspot.com/bug?extid=2fefb910d2c20c0698d8
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=10fdf658580000
+So what about correctness of my patch?
 
+My patch lifted the go-to-sleep code from inode_wait_for_lru_isolating().
+In principle that can be buggy but is just used rarely enough that it
+went unnoticed. I don't see anything wrong with it though, including
+after comparing it with __wait_on_freeing_inode(). Notably both
+synchronize with the ->i_lock. No games played.
+
+I figure maybe there is something fucky going on with ordering on wakeup
+side:
+
+inode_state_clear(inode, I_NEW | I_CREATING);
+inode_wake_up_bit(inode, __I_NEW);
+
+Going through __wake_up_common_lock takes a spinlock, which on amd64
+would have a side effect of publishing that I_NEW store, even ignoring
+therest of the ordering.
+
+On going to sleep side to the flag is only ever tested with ->i_lock
+held anyway, so it can't be an ordering issue on that front. The thread
+could not have been missed from the sleepers list as going to sleep is
+again ->i_lock protected, with the lock only dropped around the call to
+schedule().
+
+So I don't see how this can be buggy.
+
+At the same time the traces report the thing off cpu is playing around
+with rwsems with the __start_renaming et al patchset, while the code for
+inode hash manipulation is decidedly *ON* cpu -- reported by NMIs, not
+hung test detector.
+
+In principle this still can be a thread hung waiting on I_NEW somewhere,
+but syzbot did not produce a collection of backtraces for other threads.
+
+However, given that the __start_renaming et al patchset is complicated
+*and* that syzbot could mistakenly report (or not) a bug I'm led to
+conclude the reproducer is highly unreliable and my commit landed as a
+random victim.
+
+All that said, I think the folk working on that patchset should take
+over.
+
+My patch is a minor optimization and can be skipped in this merge window
+at no real loss,
+
+My take is that the big patchset *should* be skipped in this merge
+window given the above, unless the problem is uickly identified. 
