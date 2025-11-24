@@ -1,64 +1,64 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A522EB85E
-	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 08:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBD42EB5D4
+	for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 08:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763971636; cv=none; b=TwkOC6WmHNNoj2yavpQZ5k1mIhn35Q5loiBujbYMuIrvPwKYXCtVz/GsAcJFWkeh2JHulM5kZobqk7/1LeAy/LixwfcNegWaGTdi10Wf7hdueD6wfetnRvw2t8DsA/Txo0aL6CZbm0Zp++H4soaule5NFLPg8U+398oMiiRMe30=
+	t=1763971689; cv=none; b=JhXlqYQsdyMW9WTf5kf1a9oQNbVcvHxU6iQnXqH7WmsLfZ67/V09oPOG7kbI76INPIlJz1iBfP851Fzjk674G5piSlikMP4ZjY58V5Apan1WWwcugCs4Hs3tgVRJZlTrmzHn4etJHNRqC2cgssEtuNHkclrKEA7FrgRoWhtBy3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763971636; c=relaxed/simple;
-	bh=uLF4ymbc1debRYSZV84IG2bq9LlsCFvbjGNsZ7FjQMI=;
+	s=arc-20240116; t=1763971689; c=relaxed/simple;
+	bh=lv+AEbEO5IfBluOI6lN3XPIKGE9a0yctf/Cn6smugBk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pv+LHkYnd2oKq0xHlbSOYW9eMm9GHzn2RKa+efvJPX4IulzmrIOK/hXPo/xXLklPkGKgoWxioORYUmwwzCl3WExXVd0PJ3/1cqMNLnTsCL9xIUhMaLbedWUorFXRpakjCFGlp9qdnM0fK4iKU2XPSk/6G/VibzvXmUaXpa5KIGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HQyUpJd3; arc=none smtp.client-ip=209.85.218.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzqz3J5RLX4sE2wFt4+ojbB+jMa6qXwE2i3h9xlahOlNzuXqDcXQzfGcHyXURhpmPfycKF6NJs6KsQETmbgNsQegLpgcsyk9UibtzwY9dbGLm4lJ2f6p6MrUj5vIEIDNlYKajXMteSvYQbCUfQVsdzTyGNgUtZ7NLXbcbUfaWoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a9DXStPR; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HQyUpJd3"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b72b495aa81so482072966b.2
-        for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 00:07:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a9DXStPR"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b736d883ac4so739751366b.2
+        for <gfs2@lists.linux.dev>; Mon, 24 Nov 2025 00:08:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763971633; x=1764576433; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1763971686; x=1764576486; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ffJm8uD7vCOgF9zgZEJ5I2oPynD5JwzH3iIO07ZQVps=;
-        b=HQyUpJd31NXxusrrTYDQVARFVaWES2+Bq4AifvFaTTlVjU4IPNO38YiCOux5k8BLwr
-         7YdQQZ8l8avaau8s6VBVlNbNXeky36PDYqHI9HPTHahTGjIoHS1HHdYGj4HcdqGaE+6Z
-         QJJEOFWKQFQ0Wl5UiBYwFmUW2fWLpObOL48L4/SJUDTu7rkW0dqxoHev0dccQZknA4wN
-         nzqeQdw4iV5CLyfleq/nuamVuQwwzSsESOchQKvWVLOJTkNv1aeWMWWTta+GlCrbax0Z
-         9SFmkq3KFLH+5NcF1Bexve5bh0cH8+V0X5/EeCvXY5vAsF0vYMFgVFp19vxq7tknzTAE
-         jHwA==
+        bh=YLf2E3nOZAEZ9lLAngAWJ9piteS0oS4r7Jb/uJKZm84=;
+        b=a9DXStPReU5p0aHKxUl5ZBvxThPTS6fvP6fHrPEwKVYPUSmhcs7appcHWUoa1LSIWl
+         z7mNQkAnglKbeZwOReKv/HZ9TH5cJDjjHvuKR1nCswJHC6n+KlBp7wp87B87DqVqKO1K
+         otHhz2TyNuc8+NZF314g/nlzkwCu0JIo0DLLrCLI/coEMuMMhPASZ3kTjhK58kd/ZMlY
+         TIg9qpWKFqE0k94HbzTZhrhqUhdb4+GfUOW2hOY93fE6LQZKBIyIDcG+qA4Ug4RtSWu3
+         +tYdsXy0Pz22GZCFceelWsH9B75qj5nTzFK56sOJaPZckUyV5Yz7Okg6DitzUfKxwjrj
+         Jm8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763971633; x=1764576433;
+        d=1e100.net; s=20230601; t=1763971686; x=1764576486;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ffJm8uD7vCOgF9zgZEJ5I2oPynD5JwzH3iIO07ZQVps=;
-        b=r88EPdCIXX3fMOC9d3sSnQVfwjyFVtendunjz6BEZ1i/M8rBAv/1y2JIc1v3evQR9X
-         aFUGx83PXVJhLCV/O8EGavZdlkscHBeguRqAEXLKGJQIhQDrXaREpWkkqmTDZyqz25ZT
-         GjaXfQGHLKFTnOhE1ymxy3ZCq2i4wiTNq1F9YzrX7BfON+KAeMDbjiZdjnQQUKiMyTAN
-         IQpwhNk6brVIhojAipCrn7MCIVJm/R5kmNBYszfLJ/5H0Egjr+StpUANWEWKuTqhvEUl
-         Xmgag+qMSSSqss4Dfqjn4uWFBwpVC9f8g1GczNVuRS7cr+p9TLOB5fb93OPaEuUkSLKU
-         MgBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpDqnQvj05+h+9Rx3lp1FXiNl+aeC7yiTnBrcsQO0i8NmE8QP17U6WU2aBQRzmKwUCsA/s@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnbwtHKxPB325qk199zN7djJTT22456bpzBvVGt9D1YD8s+hMN
-	T6r2bF0Gx/9P7l3hMu4nu/pMCFW//Mlv0KIi3ed/WzNx+KQfX4I+aI7VKn5Y4/P8
-X-Gm-Gg: ASbGncudzQxH2dTVy7Qf858Q8FaE/9OeRuC8aMw2w42Jd0QRsje7wlBVQCxEJy439bc
-	YRgu9K5WJzLkUHMwcWlKH0RNV8DWzLg8e0fV0x0Sop6vJOpWxsbjjdd0Roy3YORiSY+648bwuFn
-	RAnnGgZlAKa1iaPy/rZ9Bf7cn0nNzE7PBXb8bx9BxO1NIgKRj12a0kJKhvZQXCnEJTpO6no2q/f
-	t/6Bn7jrLBj5S5mE9RaqO4hSF/kWt6c/dUzu7aKV/qxWDXa2f/WrJEkQT+TNKKswbDwACegXdir
-	YTZ8Vh+/5JrTmd4RPVPKKXhPzuaVl5lsSXdrkZgtzdUSsWhUcfKav1/4S9mFy+WQZTxV0QN2kCq
-	J/UOZNuWpznKEyF5mWUWqAaHZaIoeMTiOMpu82DDiVObG17YPbdH/Cb46R2q6FYD5pqCETmP5qI
-	tFY9DC5q3ShVVbBWF7QkXjMHRMHQ3RPf+O1empIUWMSp2GwMgK/X7I+lvs
-X-Google-Smtp-Source: AGHT+IFtvbyzbyYPyyUbUpNZQBqo9VaVT/zaQpsMNf29OGJ5PF9TvCJCEVLb2lxKlFTH4n4qLf5tjg==
-X-Received: by 2002:a17:906:fe46:b0:b4e:d6e3:1670 with SMTP id a640c23a62f3a-b7671517ad4mr1179647766b.11.1763971632882;
-        Mon, 24 Nov 2025 00:07:12 -0800 (PST)
+        bh=YLf2E3nOZAEZ9lLAngAWJ9piteS0oS4r7Jb/uJKZm84=;
+        b=MVvmmNXuOVUr13VrojPQP/VeIyq5gyefgq57lS8FNEiuYSzTq5OhEfWdaB8TIlgvpL
+         kKh2eTa2VSBFpdOSWVILyn+J/61aBLokIUEeKqDvZYnt2bUAf2ajeZWQ2ziBiiI3clvN
+         LZg1M4bHLxFU9SNcwLLG3ox06ve6ePJUYMJYHA6+PNdPu9G3t5bs5B+niuByD7RstI5C
+         N5SCTnmj3J+BX6CwPgPP62G4ZMf1kgY0DdYP/JUXNeCb2nVlcI8Y24wJSBaQHUrmRVFq
+         NcbLmJZP/1U+Rq3Nd718Bu2I5I67DTxs0ZUeroXfQCEq7jXD9GSQhXi2J+7lY4bl6Tv2
+         E6rg==
+X-Forwarded-Encrypted: i=1; AJvYcCVU8GKjQN2TnyEHepjLr4+25WnLCDMIdVgyOnXjKpMGACwGX4ZZG52/5ZyJqAxhjk5esd72@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0IQHQCXTfN67/vVOHZXj4zu1kaRcv7wprxm4zFJBRl5zCaX4f
+	MItvhnHxhSTR+3vNDTei3lXUAe1UO+KM1OzyRwJlfpkSClvk4RcJDV1B
+X-Gm-Gg: ASbGnctRoQ2bL6ee3czfKgoUJnFPrWne8qdS2iZxmL8ba1IjfBs7pwz0KpgI4cud90F
+	ctGG9JNTB4hRchq7xIST8k9Tvq04tyYWuXL7guYEIzCLO9z/keMM5h3cuvSLOXw5vfoFG8UkW30
+	NWEgovA4DyOJsLWXrj0e8plQePWqXlxnc/p282iQIXonfd5cRTqtVNdW6RmrnZErGBl6/yl9A4+
+	V8eg4HMZT4WtkCArcCk16UDwLdiBSzwjyKPtzRxW9RXH9SDELh9eO06gJHgjNdfPJDAA5JTibY1
+	QPWo1x2cpzJ7B27JM74s07DVEHDXtSFRqt6pFGovT/SPg7Dmi2DBRtLuVTM6tQ/Hx21QSX0CASH
+	BBBbUkgleK6IRFqOpSV9oZcdThSggQFqs514cqEc6ASNXkD2I0K2+9MK/BSYFYHM9H8yB15608g
+	s90fMD9LJwOLaduqqWIiWw9y3T6JMRO9WVIFlE9cQ3uowQR0ILqhKrCPzx
+X-Google-Smtp-Source: AGHT+IFtSDCdQoEJDSme9cNU9H3jXN99Pr9VF8AAs0+V0hbQXcsw7JNTw9He4Bb9bU9ZG0GgB3qehw==
+X-Received: by 2002:a17:906:d550:b0:b76:630d:fd27 with SMTP id a640c23a62f3a-b767153a62bmr1142202666b.5.1763971685814;
+        Mon, 24 Nov 2025 00:08:05 -0800 (PST)
 Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cdd5e0sm1283838066b.1.2025.11.24.00.07.11
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654d502cfsm1215050966b.19.2025.11.24.00.08.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 00:07:12 -0800 (PST)
-Date: Mon, 24 Nov 2025 09:07:00 +0100
+        Mon, 24 Nov 2025 00:08:05 -0800 (PST)
+Date: Mon, 24 Nov 2025 09:08:00 +0100
 From: Mateusz Guzik <mjguzik@gmail.com>
 To: syzbot <syzbot+2fefb910d2c20c0698d8@syzkaller.appspotmail.com>
 Cc: agruenba@redhat.com, almaz.alexandrovich@paragon-software.com, 
@@ -67,7 +67,7 @@ Cc: agruenba@redhat.com, almaz.alexandrovich@paragon-software.com,
 	marc.dionne@auristor.com, ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
 	viro@zeniv.linux.org.uk
 Subject: Re: [syzbot] [ntfs3?] INFO: task hung in __start_renaming
-Message-ID: <wij7hnuisn4cukkqmcflda3eurejl2dqjgwlphwesbu5jbljvc@xtqmwpwdj4pr>
+Message-ID: <v6f6kfeeur7hhpj74za4larguj2jdhz652cwvmxu5o32ivkuso@cdpkqhx5gt7j>
 References: <69238e4d.a70a0220.d98e3.006e.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
@@ -112,4 +112,4 @@ On Sun, Nov 23, 2025 at 02:44:29PM -0800, syzbot wrote:
 > console output: https://syzkaller.appspot.com/x/log.txt?x=10f39742580000
 > 
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs-6.19.inode 
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs-6.19.directory.locking
