@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB9A263F54;
-	Tue, 25 Nov 2025 09:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA1D2741AC;
+	Tue, 25 Nov 2025 09:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764062319; cv=none; b=o3d70eGqDmJ/qspVfoSiqOrMneSs6LqGGyIAhRoK5NV1GvEVbT9r/qX8s8Ju8bt/WmriUFOgshE53gQH1PufGvQGq2NJhHkfOQtHsmyE+ktpjlsYfOLliFocm7oyfQXXqc85toCHL91A8g3ybVSUppzHuWZGqFlipbpS/XDRJ8Y=
+	t=1764063324; cv=none; b=R7Xr4Wn3PXMoSBqbDHKRQvxRXHogxeZPrnoHUxTbhwDJ6KelRab9b0bxDYJ1ch8l3Tl/a4GbMvkXFCOdIhWibSmlLULMsMZ1vSiRSDmQvpzF1TPaECIo7rzIQyhAO06Vs+XKlAYqR76xFvenfSJxDjp185TSWXmOGRWTsTNuNPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764062319; c=relaxed/simple;
-	bh=U9iYrYsglLkG8TnBDbI9yrwUWiI8plUWD8Oh3w7r1lw=;
+	s=arc-20240116; t=1764063324; c=relaxed/simple;
+	bh=1Wb/VpaTSKEGMRrsEIbAvD4pOzSKaJus6F2VO710JTw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pug8qhPlHqLSY3p2qkdJb/rZI/H3zF1g2ZKKsdS++5sflR683fnaXiQ+5Z8mcpD1+7QO94sTfFlrY+bdFBLzsctoiciHztP0csErL/NUcQxKibqkJL4I3XH9V6ZxaO87wMGVRT9Ci3Mt+bTPhkaLNN5lMVTsa78YPQzsJiImAeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sctjiYa/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeeTFHA4nSn88jTzQhCdaNQCS/Vucjc2kWcVpvqxynuX8kQVuAI8ojM/l2P0VWS4TCGkSrmQXhVrIY7J6j1DHIOzXJm9zE1icdQbKUu09GJ+kOm0z3muJnFJ2xCDCgmATb3HiznxKD9E8e6XtofzVAKquCVortHS+ftbjbN404E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psP4wvU0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sctjiYa/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62470C4CEF1;
-	Tue, 25 Nov 2025 09:18:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psP4wvU0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46C1C4CEF1;
+	Tue, 25 Nov 2025 09:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764062318;
-	bh=U9iYrYsglLkG8TnBDbI9yrwUWiI8plUWD8Oh3w7r1lw=;
+	s=k20201202; t=1764063324;
+	bh=1Wb/VpaTSKEGMRrsEIbAvD4pOzSKaJus6F2VO710JTw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sctjiYa/DATKoaFc3hWyAe155qdsmeZ0LOX1jyiLgNBS5DiZw+4snbDy8w3moMIlw
-	 qD25hlXOxRpAQw7ks/SOJcVlNOSn2alp+vSe+skncJ9fnv47blkRv/OO1HEnfaLieL
-	 Pdfx8nRHNYcPX7bTnyTH+HvgbdCM1/yJVva5Dr3pvCvteXBjjd4kwFh15WUdPqWtXT
-	 KDE5JgmgqxTmE7mMVxru75iVNEw+PlMkuj4dLF4KAWCHoOTXoPZcis8CK0XFDtFgFD
-	 fKp2aeOAxiijY6s+DoOEPPdvCjJNOF89n2osZI1BVl6VydJ00KKVQTPicDc0+hBj82
-	 /u0YfbHQEuJ6g==
-Date: Tue, 25 Nov 2025 10:18:32 +0100
+	b=psP4wvU0GiNkwuAQkqC4kr+5V42n0JGqL6hgUHlsZ3Y6/eDSc/p8evVZQRniYXlwp
+	 6+H/d1gccZZqxF0fxSW2iZWMMYA0FlcY1vv51O4IN5uScYlGygREQ9CGXV1H1hoUaE
+	 FxjSnovw8WaLr52UHgw4WS1qlg6C7W1s0SuLOJFMDbuB09GpsH45bzZGTohjCYY/eu
+	 AF2V7ar7xgNzhPG/tK+JaTwVXnQeT+jBGcqACfs1l+21weCOKU231C2tS9MZBP2wr0
+	 GuvuROVrXGt6qR7BTDw0yDuA9r2GzL4fVhrXc9/JQUYb69rqHqtjcrlVV3zjYsMtMb
+	 ssf9gePFyjEbw==
+Date: Tue, 25 Nov 2025 10:35:13 +0100
 From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, 
-	Jan Kara <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>, 
-	Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, io-uring@vger.kernel.org, 
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
-Subject: Re: re-enable IOCB_NOWAIT writes to files v2
-Message-ID: <20251125-loten-fabuliert-c0fb6b195b53@brauner>
-References: <20251120064859.2911749-1-hch@lst.de>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: neil@brown.name, agruenba@redhat.com, 
+	almaz.alexandrovich@paragon-software.com, dhowells@redhat.com, gfs2@lists.linux.dev, jack@suse.cz, 
+	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	marc.dionne@auristor.com, ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk, syzbot+2fefb910d2c20c0698d8@syzkaller.appspotmail.com
+Subject: Re: [syzbot] [ntfs3?] INFO: task hung in __start_renaming
+Message-ID: <20251125-hausdach-antrag-f3e4bcd35365@brauner>
+References: <gyt53gbtarw75afmeswazv4dmmj6mc2lzlm2bycunphazisbyq@qrjumrerwox5>
+ <6924057f.a70a0220.d98e3.007b.GAE@google.com>
+ <wtgy54dfpiapekffjjkonkkhpnxiktfp24wdmwdzf4gslrtact@pongm7vm3l2y>
+ <CAGudoHHfGndcMwXMupOs82HM6c_ajMw8GETxPdkqzORrEq0btA@mail.gmail.com>
+ <c2kpawomkbvtahjm7y5mposbhckb7wxthi3iqy5yr22ggpucrm@ufvxwy233qxo>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -47,31 +49,54 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251120064859.2911749-1-hch@lst.de>
+In-Reply-To: <c2kpawomkbvtahjm7y5mposbhckb7wxthi3iqy5yr22ggpucrm@ufvxwy233qxo>
 
-On Thu, Nov 20, 2025 at 07:47:21AM +0100, Christoph Hellwig wrote:
-> Hi all,
+On Mon, Nov 24, 2025 at 10:21:07AM +0100, Mateusz Guzik wrote:
+> On Mon, Nov 24, 2025 at 10:01:53AM +0100, Mateusz Guzik wrote:
+> > sigh, so it *is* my patch, based on syzbot testing specifically on
+> > directory locking vs inode branches, but I don't see why.
+> > 
+> > I take it the open() codepath took the rwsem, hence the rename is
+> > sleeping. Given that all reproducers find it *on* cpu, it may be this
+> > is busy looping for some reason.
+> > 
+> > I don't have time to dig more into it right now, so I think it would
+> > be best to *drop* my patch for the time being. Once I figure it out
+> > I'll send a v2.
+> > 
 > 
-> commit 66fa3cedf16a ("fs: Add async write file modification handling.")
-> effectively disabled IOCB_NOWAIT writes as timestamp updates currently
-> always require blocking, and the modern timestamp resolution means we
-> always update timestamps.  This leads to a lot of context switches from
-> applications using io_uring to submit file writes, making it often worse
-> than using the legacy aio code that is not using IOCB_NOWAIT.
+> good news, now that I gave up I found it.
 > 
-> This series allows non-blocking updates for lazytime if the file system
-> supports it, and adds that support for XFS.
+> insert_inode_locked() is looping indefinitely an inode which is no
+> longer I_NEW or I_CREATING.
 > 
-> It also fixes the layering bypass in btrfs when updating timestamps on
-> device files for devices removed from btrfs usage, and FMODE_NOCMTIME
-> handling in the VFS now that nfsd started using it.  Note that I'm still
-> not sure that nfsd usage is fully correct for all file systems, as only
-> XFS explicitly supports FMODE_NOCMTIME, but at least the generic code
-> does the right thing now.
+> In stock kernel:
+>                 if (unlikely(!inode_unhashed(old))) {
+>                         iput(old);
+>                         return -EBUSY;
+>                 }
+>                 iput(old);
+> 
+> it returns an error
+> 
+> with my patch:
+>                if (isnew) {
+>                         wait_on_new_inode(old);
+>                         if (unlikely(!inode_unhashed(old))) {
+>                                 iput(old);
+>                                 return -EBUSY;
+>                         }
+>                 }
+>                 iput(old);
+> 
+> unhashed status is only ever check if I_NEW was spotted,
+> 
+> which can be false. Afterwards the routine is stuck in endless cycle of
+> finding the inode and iputting it.
+> 
+> Christian, I think the easiest way out is to add the fix I initially
+> posted, inlined below. It *was* successfuly tested by syzbot. It retains
+> inode_unhashed checks even when they are not necessary to avoid any more
+> surprises.
 
-It's a bit too close to the merge window for my taste and we have about
-17 pull request topics for this cycle already.
-
-So I'll take this for vfs-6.20.iomap. As usual I'll create that branch
-now so that the patches don't get lost and will rebase once v6.19-rc1 is
-out.
+Thanks for tracking this down. Now folded.
