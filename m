@@ -1,58 +1,103 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E813148D0
-	for <gfs2@lists.linux.dev>; Tue, 25 Nov 2025 11:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9E3329379;
+	Wed, 26 Nov 2025 13:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764069248; cv=none; b=MV4/Wfgup4ODPfXZfUT+cStlfn2rukRRMfmPezhDUKNnp8p/M2sSCosthA8UI7KcaYIvn0bjm+B8JUj4D1Gc8l0pJ0iEkcwPVdbvVAPL35M2N2tKkXGYu3YZpMQnPyLybePO07LdDVFUpofX1+7exzGzLXfHqf/l7E+2R/uVTzo=
+	t=1764165083; cv=none; b=GttN/x6x5txv4WMGNCEOwG0pbYPqot5Mpc1/7HfHatjshvpH8vZ0Fr4OvYZe5tayj0oagbxasnGC6j04xdsHI49aVARFgCj585/OyL6G/0p4B3K29UkeBCykme4cX1h8liF4xFP84dyz6f0XzuLfnxFHgDbdgAOkUiM84na8ruc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764069248; c=relaxed/simple;
-	bh=/69+0EJmS2X7ff7j0q4w9PZqnsVx+XZDiBTAryw5GXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTgcaSYtTls+7V+jYteR/JCE7uLBdeJA7R1o89myS6G0TdlVX/4i5Pp26t8yyIK7z0MNQFzOvoIFY/t6A7ZIHx1wIu69AGotWyfp88bdd5tcC3w/RfCWwL0p4lZDvx57NvbS3TzzF9M8WZQwO5E6QJOpPbZUvXRcZPvkOXFjKvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 1995868C7B; Tue, 25 Nov 2025 12:14:03 +0100 (CET)
-Date: Tue, 25 Nov 2025 12:14:02 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Jan Kara <jack@suse.cz>,
+	s=arc-20240116; t=1764165083; c=relaxed/simple;
+	bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=miBPd+zx84BIYY2sJDRpPl31r9nQyIpvhZzr2TPGl63tV4UnoM5wUhLQl7EckeRYSUxL2rtH9aCL+gSsFmlTV/dfXzXf+5iNiKbGo7d8i1phYul4n7nM0J/Ad9xctin6JEmsXDFPLXtwLeC/A/+FoqogPGINHMR6LhXvruItRCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8iRE1/W; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8iRE1/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADBEC4CEF8;
+	Wed, 26 Nov 2025 13:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764165082;
+	bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J8iRE1/WnH5hQhQsb+gz1I+WE9aSLdfLQQiRWd7g4hWBfFLiJ7GeKN9MfcROfuy14
+	 Bg5ifG0mRnEDa0wLCNWcaWSef/QLNZ9iuJt146gvNW8/fk6cYnq1PxKc4hQKhLNIBA
+	 sNEXQMAYyhZpIavSfz+KkkZ7tBQo4jX83xz4wgdkgk+sAnQZiGPm4kG9cVpDUNx50f
+	 GszRnMspkE9d7aOOvEx8eAK322hwR8CBYnIQYVbVZy8dg9+z7898oFiThB1IRsH5Xr
+	 Ex3oGaOerSkIflHQPu0XSvcuPfWP3Yma6L1dTMlIVWE32f0gwXl7q8tXr7D18MuVes
+	 /vgMU+UkTu2HA==
+From: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	David Sterba <dsterba@suse.com>,
+	Jan Kara <jack@suse.cz>,
 	Mike Marshall <hubcap@omnibond.com>,
 	Martin Brandenburg <martin@omnibond.com>,
-	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>,
-	Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev, io-uring@vger.kernel.org,
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
+	Carlos Maiolino <cem@kernel.org>,
+	Stefan Roesch <shr@fb.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org,
 	linux-nfs@vger.kernel.org
-Subject: Re: re-enable IOCB_NOWAIT writes to files v2
-Message-ID: <20251125111402.GB22313@lst.de>
-References: <20251120064859.2911749-1-hch@lst.de> <20251125-loten-fabuliert-c0fb6b195b53@brauner>
+Subject: Re: (subset) re-enable IOCB_NOWAIT writes to files v2
+Date: Wed, 26 Nov 2025 14:51:10 +0100
+Message-ID: <20251126-freigaben-fixkosten-7f8ba6710fce@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251120064859.2911749-1-hch@lst.de>
+References: <20251120064859.2911749-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125-loten-fabuliert-c0fb6b195b53@brauner>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1827; i=brauner@kernel.org; h=from:subject:message-id; bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSqs17kYtX3/zt7guqDZZHcotIzSu/JuZ8vW1f2x9Tzn jjvrEs8HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5NJ/hfwz3tQVV/86ebZ6Q ZOX2S/x94+vvFxzsdzFb2M/tOJ9ddJzhf+6cWXKXJ/IYCjVvXXqrOyfkypPfnuY+G+fPOLtET2K HGS8A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 25, 2025 at 10:18:32AM +0100, Christian Brauner wrote:
-> It's a bit too close to the merge window for my taste and we have about
-> 17 pull request topics for this cycle already.
+On Thu, 20 Nov 2025 07:47:21 +0100, Christoph Hellwig wrote:
+> commit 66fa3cedf16a ("fs: Add async write file modification handling.")
+> effectively disabled IOCB_NOWAIT writes as timestamp updates currently
+> always require blocking, and the modern timestamp resolution means we
+> always update timestamps.  This leads to a lot of context switches from
+> applications using io_uring to submit file writes, making it often worse
+> than using the legacy aio code that is not using IOCB_NOWAIT.
 > 
-> So I'll take this for vfs-6.20.iomap. As usual I'll create that branch
-> now so that the patches don't get lost and will rebase once v6.19-rc1 is
-> out.
+> [...]
 
-I can understand that.  Although it would be nice to get the nfsd
-and btrfs fixes in, i.e. patch 1-4 (and 5/6 are trivial and would be
-neat as well).  I'll need to resend the others anyway based on the
-(minor) review feedback, which I'll do right after -rc1.
+Applied to the vfs-6.19.misc branch of the vfs/vfs.git tree.
+Patches in the vfs-6.19.misc branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.19.misc
+
+[01/16] fs: refactor file timestamp update logic
+        https://git.kernel.org/vfs/vfs/c/3cd9a42f1b5e
+[02/16] fs: lift the FMODE_NOCMTIME check into file_update_time_flags
+        https://git.kernel.org/vfs/vfs/c/7f30e7a42371
+[03/16] fs: export vfs_utimes
+        https://git.kernel.org/vfs/vfs/c/013983665227
+[04/16] btrfs: use vfs_utimes to update file timestamps
+        https://git.kernel.org/vfs/vfs/c/ded99587047c
+[05/16] btrfs: fix the comment on btrfs_update_time
+        https://git.kernel.org/vfs/vfs/c/f981264ae75e
+[06/16] orangefs: use inode_update_timestamps directly
+        https://git.kernel.org/vfs/vfs/c/eff094a58d00
