@@ -1,157 +1,119 @@
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E6F27874F
-	for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 17:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE312D94B4
+	for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 19:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764265232; cv=none; b=Fm81ZzYpDjUkhufwYSEFgZLLBCKHNTdyLS3D6xmB0KanqRlLO/9P7Sv3s6pO1aMxhvGWJKdFQmJu/CRdV4Tptu0ImD4WqAdUUSpp7f2/jvm32y5C68d5QknVOwqJNZTTWupDRkX2jIsHtCooZP6c6bFTywIowJRJTkEp9xRp8FE=
+	t=1764271979; cv=none; b=pxYqOCRIHfE2KGvTAzGpVYUdvyfoqGMutaTZWEC1TF1v2kT5nPf8g/yXHbMyfcSFou2GCQaqaittmTllE1BzHeif9B8NuUDqXNq019VGNxnYGgFGqOUms0npLR4MLsE0N5dSGu/+Y7rzBRkJy3IRqkLo5su84xNe+rJYbXI8CVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764265232; c=relaxed/simple;
-	bh=ZqtJnpsRUXUfJfK82U0YxO1B2Eg77OAmsoFUnzjOIRU=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DGwGqeUyb3+XEvr1WEpKzFOJGbRgCw6mbSuiYj4iO7FVi/3ohnQvdkCz9f+fJI8sum+2BXSstQ5XUX67wp7H7Dx+I2qhOxi2polgsDQYQ8DqgoLL0UiuNpVNe6Ao7pTAMiGh331BPERniC191/kVIOJdY8Y/5nKZuMq9t4fQcTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-43373c85296so7358005ab.2
-        for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 09:40:30 -0800 (PST)
+	s=arc-20240116; t=1764271979; c=relaxed/simple;
+	bh=Tn9kt3Rd60qF6RLPM2DBnhkLPhIU66GGiGA+z7bAqHY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pVtokdhQj17vL0RyK5hx/CBoMzW8H5V+tX1gvdWV7WVty/R50dgdiuzxYotk/NLrWBqvSbj/PPPJD5haNvfGTH5PIl/ivAJgkmkBor2yExeNpwe1ZKuDRexjVibGfYpHz0oH4n0ENLKibvSF55xH5nCTnRyOi4wSrmwWJy8eXl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in; spf=none smtp.mailfrom=ee.vjti.ac.in; dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b=YD+xD6Xu; arc=none smtp.client-ip=209.85.215.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ee.vjti.ac.in
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b="YD+xD6Xu"
+Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-bbf2c3eccc9so1064072a12.0
+        for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 11:32:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vjti.ac.in; s=google; t=1764271977; x=1764876777; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lM1r++3RTNjRzY120+T4NuENeTC6ZBYSsw5Jwl/MuQU=;
+        b=YD+xD6XuLy+YaGjcMDipzO/Sy00GzpRRJVCSzV1jxS7Ag2H//H9ql77OgQqK8HjL+v
+         ok3RHrwqJVbXRFEbGTu855qjlLLg0Bsl2o1anV0mJocAS+6fZlx5AugQeHqw722ndYit
+         jLZgJUApy4GHBL5Rwj38V9yeTbQC0xBFAD/1o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764265230; x=1764870030;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Psq9rzD7koIid/gpPFrdtRJyjvj0jQlokI3aS8kzQuQ=;
-        b=tWF7iIy2ZsiMC70fmaUXb4MrofHSgNq0b/VkZ9UYpfxncgPc6rddVBzoTdsaQfKmVO
-         xyO0LtWbN2V3K9VW9NtC6+N6B6ieL7YCkk2gt7yMcmgTu8iO2Zc9c/K/c02VDUYXvsmC
-         cC+7yQ3Fhg6zyfsFraLZEEungt3UPewq9Mef+/rKQWvKRim47q8VFec2l7dTwfe9yAfF
-         Nqbw8+b8OoyX7gAgR+1Hj4/CJOAkCVotwfvceErgDLqWP1WEPFl+IU+B3BzQUyuaHH22
-         iBBbsLeA38Q9cViHV1HRDACPKfHGq0pLDWG1dj3LBH4IDATodK+6ECNhQTSktG5gYPzb
-         Qtaw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmHOMfPg2ECl7CNz9WtyxHgf4lZ22snokJsaIUZj8cp1/9SZu1HqNRQWeat3i9ZZsqLm+7@lists.linux.dev
-X-Gm-Message-State: AOJu0YyD0KoG2NR4Ft14wthU1TXgrXkTZZpAhwX0SFcj/Znqni108BWs
-	LXye3R/t/v5LSWJSZKz2kAimcge0QkapOtvvB7dt7P8P8J7QsSPpMQ662a/qXQ/qBWKTp2gkdDy
-	kCd+SINiFLARwt//kBqo1G4LBHYSOBIIqgXADunUMOtlZY6HSSDe9YwmMraw=
-X-Google-Smtp-Source: AGHT+IHR/XuGrIym3+iyXRhGGqkvMcaJuWz7ww1dNnqVn38OVS9Iatze8S4XZWdTuj18aQpC2SBq+yRpnLtKGzu0hrwIsH5bQ90Q
+        d=1e100.net; s=20230601; t=1764271977; x=1764876777;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lM1r++3RTNjRzY120+T4NuENeTC6ZBYSsw5Jwl/MuQU=;
+        b=AuhFUJENXI2jLOVAay5ObZtnL/ycgT53+uVVEosYAnDShjeMbcEaHV52aLIJeBiZdU
+         ylOJ1V/rivH5WsalyttlJZhaosRy6Op7MaqodEpTkRVK3dXF6rBLxBkSgeAR6j9ts4R0
+         I3reWUYCEi+Rf3ycdBIB9vpYQxdRmliAoCnCRSkS6th/OblFHQEr/2GMcdn2UMNin1YU
+         4OYrsmvmgoeIzl2M03GZHij6XeqPOx8evETf6ggOTB3V9Hs4ihmvP63DRr0Iocb87m1p
+         i2eQH1HENh0/dCTeZIPZ3w7t5AzzspYeDoA2QjD3b8O6ZBiyvivmB0yT/N89/0Nxn30v
+         4JAg==
+X-Gm-Message-State: AOJu0Yz5Ub85YItkMQoxMbSBPtfqkwKrYNZIbSRWtd8WRDY5QzHJEmP4
+	BqTPYqL0XURW2VXHVKqlvJG6Zk45NTdiRgLuz7ONCl0LlInOrjr2Lcqb/XObP7JRARM=
+X-Gm-Gg: ASbGncsjRvFP4TRRDtegvxgHSyP+plwK6o4Z2lT+UvuC6tDbLDf+ZZtttPDbualPWLC
+	efVRTy5vXFuqvBdSRxfwPLMFq81TQEfsHhuQ8Cxmx5cHPAp+NEp1HRGWR0HsFUN8W47Ou4ZJjxA
+	qyTxHywcWuq/JKcNTu4bTVJFnpDkqBOwWwaZpuZF3r2e0TM+J2WKVBOrgDVc7YpdTUy8Nr4N2Af
+	T5kBoOCHQc07yGMYwrzUyS/htqWH0WoB5z4M1oyBTTit8NNgvywtZMZGTuV89wEeE0r8aiNrmtj
+	KVsiD5Wv0a+fvY9M2xsOUMkijrwaEGoYUZHBHsq4fMtCLthn50Ip3mUNIkJPkML9PrmZJOtG8q8
+	qt5eliwFIGGlcZihNdKf+j3Cm6KMuR/EuTKbLMNYWCwiYDFkGjmxH5+JojdQK1SBLsXlTloVtAT
+	g6HNrGlXUDirDc1E1epqnQEzkXadmakvZQXMW+SfSXrzo3HHZ5yKbBq+eMZWjQxQ==
+X-Google-Smtp-Source: AGHT+IHKyKUSA2ibNsoBlTuZ1j6vGRVIEJN6h3w9mksWgr8c890wFiPTq7xmArcLJBhP8a/ET+BxEA==
+X-Received: by 2002:a17:902:cf41:b0:296:547a:4bf2 with SMTP id d9443c01a7336-29b6c004ae1mr257927005ad.27.1764271976944;
+        Thu, 27 Nov 2025 11:32:56 -0800 (PST)
+Received: from ranegod-HP-ENVY-x360-Convertible-13-bd0xxx.. ([2409:40c0:1009:d133:e67f:bfbd:c82:9cc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb55192sm24595595ad.91.2025.11.27.11.32.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Nov 2025 11:32:56 -0800 (PST)
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	syzbot+af4d53576692f8956fd6@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: replace BUG_ON with WARN_ON_ONCE in gfs2_quota_cleanup
+Date: Fri, 28 Nov 2025 01:02:47 +0530
+Message-Id: <20251127193247.17030-1-ssrane_b23@ee.vjti.ac.in>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a84:b0:433:7b4f:f8bb with SMTP id
- e9e14a558f8ab-435dd0de6e2mr82529275ab.20.1764265230195; Thu, 27 Nov 2025
- 09:40:30 -0800 (PST)
-Date: Thu, 27 Nov 2025 09:40:30 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69288d0e.a70a0220.d98e3.010c.GAE@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in gfs2_quota_cleanup (3)
-From: syzbot <syzbot+af4d53576692f8956fd6@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+gfs2_quota_cleanup() triggers a kernel BUG when called while the
+journal is still marked live and SDF_NORECOVERY is not set. This
+can occur during filesystem withdraw or error recovery paths,
+particularly via gfs2_make_fs_ro() during a reconfigure operation.
 
-syzbot found the following issue on:
+The BUG_ON was intended to catch unexpected state where quota
+cleanup runs while the journal is active. However, the cleanup
+code is safe in this scenario because it skips quota entries with
+active references and waits for all references to drain via
+wait_event_timeout().
 
-HEAD commit:    d724c6f85e80 Add linux-next specific files for 20251121
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=109dce92580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=68d11c703cf8e4a0
-dashboard link: https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=178c797c580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11b03612580000
+Crashing the kernel is unnecessarily harsh for what is a
+recoverable situation. Replace the BUG_ON with WARN_ON_ONCE to
+flag the unexpected state for debugging while allowing the
+cleanup to proceed safely.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/0ccfc806f65a/disk-d724c6f8.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c2ec31ffb05e/vmlinux-d724c6f8.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c25d9c0c1917/bzImage-d724c6f8.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/a4debf5b02b8/mount_1.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=10814612580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
 Reported-by: syzbot+af4d53576692f8956fd6@syzkaller.appspotmail.com
-
-RBP: 00002000000003c0 R08: 00007fff7a4b9a50 R09: 000000000126a4b5
-R10: 000000000126a4b5 R11: 0000000000000246 R12: 0000200000000340
-R13: 00007fff7a4b9a10 R14: 0000000000000000 R15: 0000200000004140
- </TASK>
-gfs2: fsid=syz:syz.0: about to withdraw this file system
-------------[ cut here ]------------
-kernel BUG at fs/gfs2/quota.c:1520!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6305 Comm: syz.2.77 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
-Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 82 79 21 fe e9 b5 fd ff ff e8 58 d4 54 07 e8 a3 dd ba fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6
-RSP: 0018:ffffc9000493fa40 EFLAGS: 00010293
-RAX: ffffffff8406fbcd RBX: 0000000000000002 RCX: ffff88801e703d00
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000493fb50 R08: ffff88807aa440af R09: 1ffff1100f548815
-R10: dffffc0000000000 R11: ffffed100f548816 R12: 1ffff92000927f4c
-R13: ffff88802fe9d000 R14: dffffc0000000000 R15: 0000000000000000
-FS:  000055557fefd500(0000) GS:ffff888125fba000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555573bca808 CR3: 0000000075f56000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- gfs2_make_fs_ro+0x27a/0x300 fs/gfs2/super.c:566
- gfs2_reconfigure+0x6a3/0xb20 fs/gfs2/ops_fstype.c:1594
- reconfigure_super+0x227/0x890 fs/super.c:1077
- do_remount fs/namespace.c:3286 [inline]
- path_mount+0xd29/0xff0 fs/namespace.c:4036
- do_mount fs/namespace.c:4057 [inline]
- __do_sys_mount fs/namespace.c:4246 [inline]
- __se_sys_mount+0x313/0x410 fs/namespace.c:4223
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9ca3d90eea
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb a6 e8 de 1a 00 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff7a4b99c8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007fff7a4b9a50 RCX: 00007f9ca3d90eea
-RDX: 00002000000003c0 RSI: 0000200000000340 RDI: 0000000000000000
-RBP: 00002000000003c0 R08: 00007fff7a4b9a50 R09: 000000000126a4b5
-R10: 000000000126a4b5 R11: 0000000000000246 R12: 0000200000000340
-R13: 00007fff7a4b9a10 R14: 0000000000000000 R15: 0000200000004140
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_quota_cleanup+0x6ee/0x6f0 fs/gfs2/quota.c:1519
-Code: ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c2 fd ff ff 4c 89 f7 e8 82 79 21 fe e9 b5 fd ff ff e8 58 d4 54 07 e8 a3 dd ba fd 90 <0f> 0b 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6
-RSP: 0018:ffffc9000493fa40 EFLAGS: 00010293
-RAX: ffffffff8406fbcd RBX: 0000000000000002 RCX: ffff88801e703d00
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000493fb50 R08: ffff88807aa440af R09: 1ffff1100f548815
-R10: dffffc0000000000 R11: ffffed100f548816 R12: 1ffff92000927f4c
-R13: ffff88802fe9d000 R14: dffffc0000000000 R15: 0000000000000000
-FS:  000055557fefd500(0000) GS:ffff888125eba000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8a64ae2000 CR3: 0000000075f56000 CR4: 00000000003526f0
-
-
+Closes: https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
+Fixes: 71733b492200 ("gfs2: fix kernel BUG in gfs2_quota_cleanup")
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/quota.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 2298e06797ac..13f113d8aaef 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1516,8 +1516,8 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
+ 	LIST_HEAD(dispose);
+ 	int count;
+ 
+-	BUG_ON(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
+-		test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
++	WARN_ON_ONCE(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
++		     test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
+ 
+ 	spin_lock(&qd_lock);
+ 	list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
+-- 
+2.34.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
