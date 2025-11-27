@@ -1,103 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9E3329379;
-	Wed, 26 Nov 2025 13:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D0E314B6D
+	for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 07:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764165083; cv=none; b=GttN/x6x5txv4WMGNCEOwG0pbYPqot5Mpc1/7HfHatjshvpH8vZ0Fr4OvYZe5tayj0oagbxasnGC6j04xdsHI49aVARFgCj585/OyL6G/0p4B3K29UkeBCykme4cX1h8liF4xFP84dyz6f0XzuLfnxFHgDbdgAOkUiM84na8ruc=
+	t=1764227169; cv=none; b=Y9MUr6CCwQeU6/ySIBBcWr2F8FNXmiY5Y9aQpZuk1AwQcu6tXohJiU7yuBMfK1MjhnZIuMyZl+f3gZmzlJajCSq41FGdqXGvde7IdEj720MdixXsKgucPyD0VtxijXwckW4SB9vWa+4+DxYvJ0GT8fFt9qnYOuG8wxVIf9uXxq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764165083; c=relaxed/simple;
-	bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=miBPd+zx84BIYY2sJDRpPl31r9nQyIpvhZzr2TPGl63tV4UnoM5wUhLQl7EckeRYSUxL2rtH9aCL+gSsFmlTV/dfXzXf+5iNiKbGo7d8i1phYul4n7nM0J/Ad9xctin6JEmsXDFPLXtwLeC/A/+FoqogPGINHMR6LhXvruItRCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8iRE1/W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764227169; c=relaxed/simple;
+	bh=CMn8Ph+lvXBEATa6Qkf2qs1z8fpeEQ8hfjfQnD544JE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kc76gFzmJX10tBMlBplKJiF4lulg4tnysNib+FUlZ0SNpxuLss5MRq6NdyKHHFcvZ9ZtdUfw/fRTRIzvEf0JsRQL8Q8H++18ZajSk42a8mV8YJjH/kzOGNR8zlYks++VonLnf7lI5QWJGsuxoOxl31PDVELAlRrLw+vtSNsDX0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RirWHyHF; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8iRE1/W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADBEC4CEF8;
-	Wed, 26 Nov 2025 13:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764165082;
-	bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8iRE1/WnH5hQhQsb+gz1I+WE9aSLdfLQQiRWd7g4hWBfFLiJ7GeKN9MfcROfuy14
-	 Bg5ifG0mRnEDa0wLCNWcaWSef/QLNZ9iuJt146gvNW8/fk6cYnq1PxKc4hQKhLNIBA
-	 sNEXQMAYyhZpIavSfz+KkkZ7tBQo4jX83xz4wgdkgk+sAnQZiGPm4kG9cVpDUNx50f
-	 GszRnMspkE9d7aOOvEx8eAK322hwR8CBYnIQYVbVZy8dg9+z7898oFiThB1IRsH5Xr
-	 Ex3oGaOerSkIflHQPu0XSvcuPfWP3Yma6L1dTMlIVWE32f0gwXl7q8tXr7D18MuVes
-	 /vgMU+UkTu2HA==
-From: Christian Brauner <brauner@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Stefan Roesch <shr@fb.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	io-uring@vger.kernel.org,
-	devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-xfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: Re: (subset) re-enable IOCB_NOWAIT writes to files v2
-Date: Wed, 26 Nov 2025 14:51:10 +0100
-Message-ID: <20251126-freigaben-fixkosten-7f8ba6710fce@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251120064859.2911749-1-hch@lst.de>
-References: <20251120064859.2911749-1-hch@lst.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RirWHyHF"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4edb7c8232aso8077201cf.3
+        for <gfs2@lists.linux.dev>; Wed, 26 Nov 2025 23:06:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764227165; x=1764831965; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NWx41fjiYDvxJBDcxhBox+FSm0FMogENCux+016VrYw=;
+        b=RirWHyHFmp1ynRp/pa1M9VXSXgwzGwITBe26u1p02fD0TMRiWxxQxeEG0/4ToEGuEk
+         ovRVNhYsh2TKknkhIiBpIfG2JWUIc+cNq14DIvUBDocR3fIQO21icnTaqZnqoDWfHXez
+         IbQQ/UrXUC+ZPsOjTq7YFj5Ctd8XSTbpQmV6jKEd9iIRT2mmys0BaD0/Ro15YCywFstQ
+         yLJSGXB1YzjAqY1q2I89X0/8Q3y1mvGJglRbdRiml9o0UMR9KTIEIXmgGq88wZrSk7UR
+         EEcDciizmXAyGEXdk/+DFrNO4ADkBeUzTEvtCOroeDuwVinpd1k+fF0qpTGIIhqMaqd1
+         E9sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764227165; x=1764831965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NWx41fjiYDvxJBDcxhBox+FSm0FMogENCux+016VrYw=;
+        b=TtrwExwZIkMmJlq2I0MIMHo4QE3CoZ6Neu0GRxAJyR61qWoZY2FTndEy6GTcLrLp8Q
+         Vha6OPMA2mrw66JxAOFLRBn3LEkvsLvfEyYHEf4mOZqs16zLw3um0p2EDybOSKy+SUx5
+         ODMB1a8dPhk08USpotFl0glJQAX4K6qWjrc/JLAbsYOeBG/LQEc1Yb/4QGWiGukjySbV
+         7EOO43/xSM8Xarhqu7klQYKUZJraIUaq9ONTz1gRl+Hy3IpQkeJ/xC+6hSvHYo2yJXIl
+         +QrVjV1CGuQ7hPBJLCwupcWKKm19w9DLIQd6olrDGPQRs4AS4igeTRsJULQKIMq22fnF
+         NEJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/qMEVKdbZdV6FLNyGUdwiaEeMcLkTI1Uj3rKLxhoR6CVVRvBEn1scI7QJu9FfXWpfKsEH@lists.linux.dev
+X-Gm-Message-State: AOJu0YxJS8rD6KTHRom82ALdqIniWd80eqShapfS5YvcYYRNCo9Wm5HJ
+	snqK5rVTCDNm+BP0hhL5e4T9WHs6SwvL6BmLZRbBv3M8o2kx24axwFkK1GyYwzVzZBm4sLsk+6K
+	zAAhGW4mfsj97WGhWI/mV64DVfRWcsgE=
+X-Gm-Gg: ASbGncukdqjS0JnG4WuAwhBZXJq4kGvqqCc32l3s0L/w/VhBjbMSmygFfwx3QdhWfmz
+	QvKG/vshgM9I5AZvtd0KkYC847q8RW/BqmFy06MP3UslTUsY9PHz3NhPMb46iP+/2Cnih0oG2u+
+	KwjmFpQgWCG+OWKALP5UeXu5oLTiIUCtjecfnmI5vAahl5T5Gz8XcVPNsZTBXBggAmOWKMgoH5M
+	JEmyiErQNnIfurgZorEf+d6Y8s8iNr52nobVjNeaJJ0nrF4QZuMwA3dItv0iUgL+xfvbZGk64gn
+	vsW+Zg==
+X-Google-Smtp-Source: AGHT+IHzM3mMsS8tgLfoKGHhBY7XCjpG2AMXOtnZwN9X/T1/YsQGgtSmkxVAO42GtcErC0+dnzj4kMOng2ojzVjt/kM=
+X-Received: by 2002:ac8:5ac4:0:b0:4ed:aa7b:e1a6 with SMTP id
+ d75a77b69052e-4ee58b06ceemr313796031cf.81.1764227165447; Wed, 26 Nov 2025
+ 23:06:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1827; i=brauner@kernel.org; h=from:subject:message-id; bh=yUKYtxHtKaR+6m/xsrQsQe67bKqXRGc4JbcKnKX+a20=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSqs17kYtX3/zt7guqDZZHcotIzSu/JuZ8vW1f2x9Tzn jjvrEs8HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5NJ/hfwz3tQVV/86ebZ6Q ZOX2S/x94+vvFxzsdzFb2M/tOJ9ddJzhf+6cWXKXJ/IYCjVvXXqrOyfkypPfnuY+G+fPOLtET2K HGS8A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20251121081748.1443507-1-zhangshida@kylinos.cn>
+ <aSBA4xc9WgxkVIUh@infradead.org> <CANubcdVjXbKc88G6gzHAoJCwwxxHUYTzexqH+GaWAhEVrwr6Dg@mail.gmail.com>
+ <aSP5svsQfFe8x8Fb@infradead.org>
+In-Reply-To: <aSP5svsQfFe8x8Fb@infradead.org>
+From: Stephen Zhang <starzhangzsd@gmail.com>
+Date: Thu, 27 Nov 2025 15:05:29 +0800
+X-Gm-Features: AWmQ_bk_Q7JOTiSFa20fvKvOS6m3SqnDBEgFzZo8VoXEPgg04GUPVW1qbNBOsHU
+Message-ID: <CANubcdVgeov2fhcgDLwOmqW1BNDmD392havRRQ7Jz5P26+8HrQ@mail.gmail.com>
+Subject: Re: Fix potential data loss and corruption due to Incorrect BIO Chain Handling
+To: Christoph Hellwig <hch@infradead.org>, Ming Lei <ming.lei@redhat.com>, 
+	Andreas Gruenbacher <agruenba@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	nvdimm@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-nvme@lists.infradead.org, gfs2@lists.linux.dev, ntfs3@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, zhangshida@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Nov 2025 07:47:21 +0100, Christoph Hellwig wrote:
-> commit 66fa3cedf16a ("fs: Add async write file modification handling.")
-> effectively disabled IOCB_NOWAIT writes as timestamp updates currently
-> always require blocking, and the modern timestamp resolution means we
-> always update timestamps.  This leads to a lot of context switches from
-> applications using io_uring to submit file writes, making it often worse
-> than using the legacy aio code that is not using IOCB_NOWAIT.
-> 
-> [...]
+Christoph Hellwig <hch@infradead.org> =E4=BA=8E2025=E5=B9=B411=E6=9C=8824=
+=E6=97=A5=E5=91=A8=E4=B8=80 14:22=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Sat, Nov 22, 2025 at 02:38:59PM +0800, Stephen Zhang wrote:
+> > =3D=3D=3D=3D=3D=3Dcode analysis=3D=3D=3D=3D=3D=3D
+> > In kernel version 4.19, XFS handles extent I/O using the ioend structur=
+e,
+>
+> Linux 4.19 is more than four years old, and both the block I/O code
+> and the XFS/iomap code changed a lot since then.
+>
+> > changes the logic. Since there are still many code paths that use
+> > bio_chain, I am including these cleanups with the fix. This provides a =
+reason
+> > to CC all related communities. That way, developers who are monitoring
+> > this can help identify similar problems if someone asks for help in the=
+ future,
+> > if that is the right analysis and fix.
+>
+> As many pointed out something in the analysis doesn't end up.  How do
+> you even managed to call bio_chain_endio as almost no one should be
+> calling it.  Are you using bcache?  Are the others callers in the
+> obsolete kernel you are using?  Are they calling it without calling
+> bio_endio first (which the bcache case does, and which is buggy).
+>
 
-Applied to the vfs-6.19.misc branch of the vfs/vfs.git tree.
-Patches in the vfs-6.19.misc branch should appear in linux-next soon.
+No, they are not using bcache.
+This problem is now believed to be related to the following commit:
+-------------
+commit 9f9bc034b84958523689347ee2bdd9c660008e5e
+Author: Brian Foster <bfoster@redhat.com>
+Date:   Fri Feb 1 09:14:22 2019 -0800
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+xfs: update fork seq counter on data fork changes
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+diff --git a/fs/xfs/libxfs/xfs_iext_tree.c b/fs/xfs/libxfs/xfs_iext_tree.c
+index 771dd072015d..bc690f2409fa 100644
+--- a/fs/xfs/libxfs/xfs_iext_tree.c
++++ b/fs/xfs/libxfs/xfs_iext_tree.c
+@@ -614,16 +614,15 @@ xfs_iext_realloc_root(
+ }
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+ static inline void xfs_iext_inc_seq(struct xfs_ifork *ifp, int state)
+ {
+-       if (state & BMAP_COWFORK)
+-               WRITE_ONCE(ifp->if_seq, READ_ONCE(ifp->if_seq) + 1);
++       WRITE_ONCE(ifp->if_seq, READ_ONCE(ifp->if_seq) + 1);
+ }
+----------
+Link: https://lore.kernel.org/linux-xfs/20190201143256.43232-3-bfoster@redh=
+at.com/
+---------
+Without this commit, a race condition can occur between the EOF trim
+worker, sequential buffer writes, and writeback. This race causes writeback
+to use a stale iomap, which leads to I/O being sent to sectors that have
+already been trimmed.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.19.misc
+If there are no further objections or other insights regarding this issue,
+I will proceed with creating a v2 of this series.
 
-[01/16] fs: refactor file timestamp update logic
-        https://git.kernel.org/vfs/vfs/c/3cd9a42f1b5e
-[02/16] fs: lift the FMODE_NOCMTIME check into file_update_time_flags
-        https://git.kernel.org/vfs/vfs/c/7f30e7a42371
-[03/16] fs: export vfs_utimes
-        https://git.kernel.org/vfs/vfs/c/013983665227
-[04/16] btrfs: use vfs_utimes to update file timestamps
-        https://git.kernel.org/vfs/vfs/c/ded99587047c
-[05/16] btrfs: fix the comment on btrfs_update_time
-        https://git.kernel.org/vfs/vfs/c/f981264ae75e
-[06/16] orangefs: use inode_update_timestamps directly
-        https://git.kernel.org/vfs/vfs/c/eff094a58d00
+Thanks,
+shida
