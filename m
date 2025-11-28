@@ -1,64 +1,64 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189D42FDC26
-	for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 08:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEA62FF64D
+	for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 08:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764318811; cv=none; b=g46irB6jO6GXXLNYpFT1YI5SqQLbttNePM9bn+sjhSUxDsAX6Q4vK+vGyhNEUw0DBWDItyJFKpFqDwv6xqfUn8wTu9MFAkfGCGwNJA884XTiaGKrFv8rpGdDeOX08vM9mUUD6elq13g6MMJ2Y/hSX14D3g1sivqyOOi3GMlHTkA=
+	t=1764318818; cv=none; b=jhFhMORNPSW3Sg6vj4vI9IexHiBxINjnCmqXR4m8W87wOgm9CW+d+9XzXm0InOCQ9aS41r1Uo0eclZb1O8eeYKi+8r+9KSmdpAINyRVFwQMkT87R+kYuWOdF9ff0h03Y0bdFK3NpMVPBGKvuxGcLe5xDQQvAYOSMkB6x4rggI4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764318811; c=relaxed/simple;
-	bh=TbxNohFMmSKnHTWH+mnyMfPFRdWdcWW/LS3/VsufZdc=;
+	s=arc-20240116; t=1764318818; c=relaxed/simple;
+	bh=MIUxfeIlXsLJb7D1x07khmxiQaV6FMQZLzsNI6cDMOY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rzDSDThCc6LPGJJMyzQmJYYB1MbB6AYK22MFKZlzsYj29l05qql5T5Ctaf2m1EupW0Mo3ywmpjSxJiOLenKCecBjA6g7oXAyX3f21NAZtmPQ+EG/d+0JTBO0Y50HdDiN6+QZkeoZixhjGosV9VX9u2mYxScPUWqmnHpJslvui1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EE62MRX0; arc=none smtp.client-ip=209.85.215.176
+	 MIME-Version; b=pQ7iKFzpBOYysl7Q99UvFtFSdWBoCjlqtjCI8uxba6Hfl8t5zcgchNGXL6VMenreLsljsrROBh/E+JHSNXcZ3mCvsFlOpxF0UN6Lq9XGb8ZrK1x+U0e3YAYPMf8bWoepXvvBES09ZXSG5Rho7nIcDR8kVtCF5y9L7aE/WK7qwl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H97JsPo1; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EE62MRX0"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-bdde8f1814fso1401253a12.2
-        for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 00:33:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H97JsPo1"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7bb3092e4d7so1643039b3a.0
+        for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 00:33:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764318808; x=1764923608; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1764318813; x=1764923613; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jJti1W24hnwF4OFg7cS4jWnw0eZv9xglyyGrmFluATQ=;
-        b=EE62MRX0atIaRAQP7wjFlyAOKNbJKyyLvIE6107ew5CLRL4pGzUhJwgHmkMnXm95G+
-         BNM5FVWwaHisy0BhjrJ+gYlTvGsgoKc2k3IjfNvGt+WFJwq4t5MUyxKjvvN6iYVNVRYi
-         +6TAMomOaLm20VKIXU1dhb6XT3w62E0yvhHLv6tA7HhexPOc/wd32EfBzNhlXIdc1FzU
-         dH/f204qY0hTQkLX6T/GZjHSoeiGVBLL2bZPUlzXGlyQhuH9A30Llv3dHOpEjkFK+two
-         jF9p/qBz4fs/tkQenQm/tHYai6SAxdSxvzSdyCEutvIQb6kYCnXUyEuirDBJcf7YaMt4
-         ehcQ==
+        bh=rZsPDOjyUTRUehf6LhbOb026Dy93eapwVzPzgOc2prg=;
+        b=H97JsPo1LV0dEJ3lm1aMvcWUzzRN9xS2cObapnNjcpA3VW9LbbgDmGMoiXLcZSoOpi
+         JRyi7/VdLgs1QpfW5b1MEZ/EBaO0tfnwAIvAiGSEgI2SswH5RYqc0VhsC+KgeqS551bf
+         1h1Xjso8J8yvtkuee3N5VTm9s1bFBoccdp0eflPRPCKijwWPPWmMG8KXmCS3pyWOpUgE
+         D5q3O/GV5lK4A48yOVngdFyx5xRn1nriqI2bl0shQdRBlnlfZDx8jQKHjfqf/1Jm8vut
+         2G93wRuffSM3+xsXnwEm4wTAZEAZD5bLOgCxvdtgEHYsDJTm6eln9M8RGVKPNqHhoVLG
+         X/7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764318808; x=1764923608;
+        d=1e100.net; s=20230601; t=1764318813; x=1764923613;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jJti1W24hnwF4OFg7cS4jWnw0eZv9xglyyGrmFluATQ=;
-        b=HCHxOx8DoxMcqNL6C7ZLHAK5EQhHkO1DqTmAnivjRG2w1V34eCMj3QXe0SNXQSHagf
-         rE9ZR0eFst89BC6eMN9ir9EMYS7jPLJjjPQawbOgPV3ubhXcYo0iMw91OIe5qIdtrDu6
-         VxUh5W2PWtRMiOjqv9oH+mdut0O6ZN6FD28oDvJJsaCVotEvsM2XTRwkF1oWrXMtp4X0
-         TmUv9sxpMMuYOjmBwfOqoKCXis90Vwyic1vQDhtn6ew4iIMufzRitZ8dEjE8EP+wvkal
-         uGXPKGMNn78KDJ4GPy2e5rzyun4hKnITTtyFdYWNMEPb/DgyJx5uitPS4JGPEr/paeNh
-         KUpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVG+Qi3Pm2wBg18/C9GiQoc1nreUQS0pl3iPoBNWYot2fhuOXJweorHl+7tlIXDMJWTV0lM@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxds5LnlgM+68heg04pXbPK+thoUcpDTR07YHAxQiLRFT9cFakd
-	vUUFTMfxozw6R0iOi++8Vyrdk94yMaIRsGOdnJ82wLYA+6Pj36k0vViI
-X-Gm-Gg: ASbGncsoSUokYa7vprnOiqFdtPhj+UhFpA5TnOWbb3k4gY5HAr8gh5vVcs+ZWxmcqmy
-	pE2cGkOQNCoLDFJCyqO/0TIds1ZkukoZFZ4JkZBPTmlgn07DLQvaPch1T8ZhfjEF4+Um0bIA4Fj
-	limcs3ScUi8F49Oqw60a5tDs88n4b7oGx6JrnFTlPxgsyGua1HeYjjyvbFE1DanrJkc6cB0OhJu
-	M3SpeS52+nF/0MVSh+4D0TbQOJe1m2AbmMzlmQwCMAGenKEUQqG1wzbpfhj2MgErP/NP/+kjkOm
-	D58B60C7RmG4dqtaBW5hyO1zyiHiGHoSFGQljHsX2RRxpoIYFFiwKrlItxwAMBbX/xrMpCBlNDI
-	4bopvti7NOpopTXXR5ZjeqU8QadZF2oV8Li0srb/Wf6mKURWwADJm8oK36V5Fuxde8nV8MYDH5E
-	1JAYvXY0i0Ltz/Lafo/ZwaVES0z9BS0YjznuKj
-X-Google-Smtp-Source: AGHT+IHDsMToqUoj0PcNSA32TYDuHE8zhBuDir1BrYt+w5Y/wAZYCWlUzMNg1Dgih3T9wVkLcbd8Tg==
-X-Received: by 2002:a05:693c:2488:b0:2a4:3593:6464 with SMTP id 5a478bee46e88-2a71929687fmr16240699eec.20.1764318807899;
-        Fri, 28 Nov 2025 00:33:27 -0800 (PST)
+        bh=rZsPDOjyUTRUehf6LhbOb026Dy93eapwVzPzgOc2prg=;
+        b=IiBnETONziJV9iX9svalRtp6jFazHZ+vkLhFT18GMWG60IgFYqku0TuTUO4tEed9B/
+         FiBL1G73Ou0R4dZsix5pE3wVC5KWNdwKoO3v+pQ6DhXw43wxryzTfIoka5uaJX1yUCw2
+         BXc2wPIwQr5RB02CwwlI+SMqUc/k1Pe19bzh9xSaW6UL69XaVIF040yb3RXxJnmwhX8W
+         80+ExPVASm2QOcyfJ1CmMfRqBFrkbE82xt8EgIRGO0xklZH1eIa1FurF6KIRwcfmcDPv
+         WOm1qYgqk3HkoJoDZbzLlBE6M1fdGPuB7wK+1ojebpIcErdKubzcTVRDUKfpHA48h/Qk
+         muiA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6FhmrsY3bfJTSmBLpneKEHUv7YzCMNbodf05tvC6hbp1KuRfV8xEYQlBVawUn7H54D2aN@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvwwOVhpUndS6HXigpw05IcrxuGAD6HF+AALppJuWKpiiTMJZ1
+	DBiKQxlWmkBmfT4GnNuiIakIF09Tz6/P2DvOaU+gCp7E5MvNP2qhWf0y
+X-Gm-Gg: ASbGncsnYVXkgEPqp6BhTltYKVYSDGGlR8f+33cK8LAFru7DhGUJsodd2YHircOP3hc
+	lfr8366ro6YmcP4HFyMsYgoo90ISHY11Ys2O8qNfcAOtFJgWWkn9pwtdnpU6Tk72WhlEcvXLpux
+	0e4P6HKSp6M65ETI2P39zHEmqEgKD4msWRRydCQkVkXoDEShqi3Tc1Ev9M3f0+fuFt3EajAj3Ub
+	AnEdPchXkj7zkwYkvhP2NHz4l1sUupXmHljcIDzlUYPcIyyTI53mQUrbgzxxPT6q7jiGXfz5ks5
+	LvRdYcSTViddEVUYRWTF/iD4m1/QAIweurpk0oWaw8v7UA1I+6S956apDC7nBMQvkexmz2gJi05
+	XMXQFhLMU1AF1jHNTDVmag7z7vm4NFsudxLCFiLA5kgyUm6BT+Sf7agKT2FJN57lWpQbGnTL5/g
+	TKaSCkkaAhhHFGgkKvfrRtlFGmuM/CVKmrkzql
+X-Google-Smtp-Source: AGHT+IHqHdLof6s224+GbtnJAk22/n625R68t5gW5XXJrnH8NN05gDy1A3OVkHY/4+FwyWeG7e9t0g==
+X-Received: by 2002:a05:7022:3886:b0:11b:9386:a3c8 with SMTP id a92af1059eb24-11c9d867ff0mr21572562c88.41.1764318813388;
+        Fri, 28 Nov 2025 00:33:33 -0800 (PST)
 Received: from localhost.localdomain ([104.128.72.44])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaed5f6bsm20941371c88.1.2025.11.28.00.33.23
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaed5f6bsm20941371c88.1.2025.11.28.00.33.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 00:33:27 -0800 (PST)
+        Fri, 28 Nov 2025 00:33:33 -0800 (PST)
 From: zhangshida <starzhangzsd@gmail.com>
 X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
 To: Johannes.Thumshirn@wdc.com,
@@ -77,9 +77,9 @@ Cc: linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	zhangshida@kylinos.cn,
 	starzhangzsd@gmail.com
-Subject: [PATCH v2 10/12] zram: Replace the repetitive bio chaining code patterns
-Date: Fri, 28 Nov 2025 16:32:17 +0800
-Message-Id: <20251128083219.2332407-11-zhangshida@kylinos.cn>
+Subject: [PATCH v2 11/12] nvdimm: Replace the repetitive bio chaining code patterns
+Date: Fri, 28 Nov 2025 16:32:18 +0800
+Message-Id: <20251128083219.2332407-12-zhangshida@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251128083219.2332407-1-zhangshida@kylinos.cn>
 References: <20251128083219.2332407-1-zhangshida@kylinos.cn>
@@ -98,23 +98,23 @@ bio_chain_and_submit helper function.
 
 Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 ---
- drivers/block/zram/zram_drv.c | 3 +--
+ drivers/nvdimm/nd_virtio.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a4307465753..084de60ebaf 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -730,8 +730,7 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
- 	bio = bio_alloc(zram->bdev, 1, parent->bi_opf, GFP_NOIO);
- 	bio->bi_iter.bi_sector = entry * (PAGE_SIZE >> 9);
- 	__bio_add_page(bio, page, PAGE_SIZE, 0);
--	bio_chain(bio, parent);
--	submit_bio(bio);
-+	bio_chain_and_submit(bio, parent);
- }
- 
- static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index c3f07be4aa2..e6ec7ceee9b 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -122,8 +122,7 @@ int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
+ 			return -ENOMEM;
+ 		bio_clone_blkg_association(child, bio);
+ 		child->bi_iter.bi_sector = -1;
+-		bio_chain(child, bio);
+-		submit_bio(child);
++		bio_chain_and_submit(child, bio);
+ 		return 0;
+ 	}
+ 	if (virtio_pmem_flush(nd_region))
 -- 
 2.34.1
 
