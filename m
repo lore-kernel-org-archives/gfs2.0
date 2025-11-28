@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A1C329E40
-	for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C329A32B984
+	for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764334793; cv=none; b=bkzJ3z0v6tjvMsIFPUdJ5bLyGh5Uhb1V1iH3ySFZtfDyECITS6QlYXndaLzfk1AkWSmJ8oSey8GHO4DondmhW7de6Ks3cDcEEL6omQg+LpJqKXPpW6ukMEx8xzryWDEU57GzUckMGPz16n1O5XzAuWayAoRBQcMhNtxKlz9NhsU=
+	t=1764335495; cv=none; b=cphm/SMkmmkcTfiaVEhuVIhfkHFbMg9054sqRh48NnWDsjDiX4rqDHXuxKvpwHWaZZhYzTY0mO4tooXw65O5XX2rBIC/vDr6kQPgLJ1PuHlsOcdOqjDH4H8WecHMfPq8cnj8A/6ctjn12x+VLXa1KEzAfqaSMH/RCS7UEZxe4yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764334793; c=relaxed/simple;
-	bh=5QcOkFfFDyBXYDnDanyoo0Sx7zR4bMbvdaWPFSIL9Dk=;
+	s=arc-20240116; t=1764335495; c=relaxed/simple;
+	bh=cT5VambQLzg4yYEkETS1DAEPp4cL0vkJ6BivaulYb7M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZwhqWL7tytEeoa5/zV/+2Iku4CdO/xf0F4r3nt5jQ/z6GMbg5ZNJ3j3Jt/i9G5b26XqC+AT69xUcAxsduAKp63JCOICJqq2mEjLAU8tgi9eZ7VthiHV2DbN5gVmgblWp3As63UksSoda6RDL7fGSWCuQjt0DXlOp9rViDDL+l0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GiSx9KUj; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=VWrt8U/6vgGChEGm20T4gprTzXe6qS39bhJvIyymaTdUfwjZMulYr8DHiZJ0ZY8xWUkvENdHlEUegPLOUIgML5wnvX3nRbc0e3mES0NwkzbLlQ15+UrifRZ60oz+eqchhxpRImjzxRJ7tnh3nqqGANoI5nEar5jzwfgjcOgO2zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NIygpMCj; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GiSx9KUj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NIygpMCj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764334790;
+	s=mimecast20190719; t=1764335492;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UbnViGm0SST3AIOO/NDK6ivARfPGgq8UL5FPgRGsaTs=;
-	b=GiSx9KUjtxhoZsS5uDlwlsauxt6xbUtAaqMxXCp31fnyp+Y99ROSftxzDalwK1c31wqBwn
-	5QyjyUtF74Vgg+bXV+L1fqrKSjr83qLFN6GBreP28RP+Nt43DISiK3OLOrpSnHz6YRmOsh
-	iNno/MNxkGh6Z9JReMqiDfMeg1YAp54=
+	bh=cDb8wvl+/S3cs8WDouA4IaIUDYl/lhw5kT6xFlbeDqo=;
+	b=NIygpMCjROe06ApYalrjCwRGN6G2Tx+linFraEADItEpQw2KNmtseValASb2gjO06Aw76q
+	n1FD02DdItSdCyNLrX400ubJ06v/7QuXk03zt3yYqPeTo2DW/sTEKRYaCG2V9XX/LqKz6H
+	ia/Dj+q5XlYYmWUNeQDjF/EmM7g2jfs=
 Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
  [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-55FY2S4FNhyPBDwmDhHorQ-1; Fri, 28 Nov 2025 07:59:47 -0500
-X-MC-Unique: 55FY2S4FNhyPBDwmDhHorQ-1
-X-Mimecast-MFC-AGG-ID: 55FY2S4FNhyPBDwmDhHorQ_1764334787
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-78aaf491ea9so21487237b3.2
-        for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 04:59:47 -0800 (PST)
+ us-mta-231-sUIdN-oENm-tuGGeY2nf_A-1; Fri, 28 Nov 2025 08:11:31 -0500
+X-MC-Unique: sUIdN-oENm-tuGGeY2nf_A-1
+X-Mimecast-MFC-AGG-ID: sUIdN-oENm-tuGGeY2nf_A_1764335490
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-78a712cfae6so24057587b3.3
+        for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 05:11:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764334787; x=1764939587;
+        d=1e100.net; s=20230601; t=1764335490; x=1764940290;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UbnViGm0SST3AIOO/NDK6ivARfPGgq8UL5FPgRGsaTs=;
-        b=VtVs0H4mW+cYVFEW4sK0u2sm6RfpDc3pdCyUB789maEXzwNfxFdig83m45h8h/D8pm
-         NkoITr2V9sV6/cEV40/uT5jepapNdiRjPK2hOYFvU5K4mUm6zM6X4IqVya7qcccyvwGC
-         vDd0H36HxeeX93+aj4qvorGY9B2oEB5+3St09wVXf/qnR6AMGzC8+VoPOpWWxSkoswTL
-         sKGYgoWJ1YmaLjVCz8I6jvncu6ki05eHnZO0vq692ezTwweosLMru+B9wGTYWm1TKMK4
-         Y+jNBcf5DNPhWrkKntE8G6GzJod+DbfXZoRvs7W8wnzAqvR9oKSgiPfoAEHP4x4rX0Tt
-         x1aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2El9q7DoQHAiS/VFKHCoY4f0sXGqEV1ZgU2HdouX5truXdcXYj2lCYV5vVNDsHnnBLNdx@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx32O0Vh5Y42XfgM1Jar2mczG3/EWEu6/cdlT6I/umyHEkbq7qu
-	3BUyWzHssgDJAwFIjObrBW4osF+3B9casJb14qNjIWgjRCnbRvboZJot/LpfsZMkj2W10autgK/
-	8AmUzqg3W5Cm0mah57hgEH2+sg7wEHcTtyIazPbiQzJq6rPEcFq7M8ikNAV3wKq2pgARcH9BaUn
-	rHgOXY38dMU2pCFAcCruCsjnDHO/scgg==
-X-Gm-Gg: ASbGncujp3fjJ8SaGmVqnfvKl+ztwmtHkLJPd4Y04FyE5fFu69YTvgwAi2tPCaMQAGm
-	U4H/CkYhTKbWNsguvYvyS6fovhpnoHtT55rOxjFdkv5/zoZDiyDabCfwuDZSRIwwQ1bwvzl9a6H
-	q99ea6DgK7Ozba/ibNPmMfthIElQVNOSop2Gv7WOXbpLA3HmU7iTCzew+TS9ynuooc
-X-Received: by 2002:a05:690c:6f03:b0:786:78ab:72d0 with SMTP id 00721157ae682-78a8b47a179mr234771317b3.7.1764334786915;
-        Fri, 28 Nov 2025 04:59:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGesqVOsUJELcTkEGN3hauFQ6kd2TkNnYcjHT4c1bgANcOfukNB8/4Sre15bHJPI3DpWDPFXhJhMME6PGLKN8M=
-X-Received: by 2002:a05:690c:6f03:b0:786:78ab:72d0 with SMTP id
- 00721157ae682-78a8b47a179mr234770957b3.7.1764334786528; Fri, 28 Nov 2025
- 04:59:46 -0800 (PST)
+        bh=cDb8wvl+/S3cs8WDouA4IaIUDYl/lhw5kT6xFlbeDqo=;
+        b=KiyXi6FEyeRcqYJvZ5Fs3XDCXYoLowoGhUYhlOq4ODLZL2QQmZVYEOzq8g34qst3QK
+         UFD1VMQhjLsavGokmOA+hLyDj0OU93DVsIYjeu4X+pcESCpCH0PNgl2muhCP2F7avurh
+         E68UiXtnl8ApOB9Ge/LN+6qoMNPPIf8/MDoT9XwZ85L7q6ZV5DGBjuSjAGg/rNjav603
+         4ovFyZ+39pA/17vkZrLfvj/A67Tip0xFsYdlYsBaXx/c+C6hmOs3gIhaB9VvQP9LJRzI
+         OLNfux+t9rodGlyeKEdHNNM9XHTfTiU4GNcmzrMZuxaYvFjSpQ0xPDcHDU92W/T7H2aG
+         AGkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMOPpzuZ98iWtTZDdly0MjocnD4I52isto9oG9UOETxdzKUwx7mIlPBf63BMxnmr+zqbYN@lists.linux.dev
+X-Gm-Message-State: AOJu0YziTiV6WSG8EzFdx/Jlb4m0tcFBYhpJGn5Ea2LgjFEzv5BYDXeC
+	+oGF9KFtOhonBrgNSI5uS3BXqIQIHmf2S+zo/IkPFdb6IgOaWnpCZ2TvIpn7zq46tscr7V4qHNS
+	cqIwmvm1yw3N7wDDAegv3q99QJz4Edbt1s5wk2kw0/+wX2hkVlXJLDbHUsRnF1yYq8BKQIbqUfa
+	9AH2jiIIzaWBqHTVEOwuqg5MD3g0oUiw==
+X-Gm-Gg: ASbGnctbvDlfIbbArGB59Ee++5UVKyhDhKJa50Tsjatm69NQnw3rVO8AjBUK3ktd1Jx
+	+jw2RHRmPkW1iuX5L2+/eLXxrJ3cNRSQ0N0Sdmi0hpSWxwC0sGbPz6eQkKNxggDoiAHaQlL8P84
+	2gRqHEK97tvnJUxAfVuCj7U9RSGatYi19ta//tGIGGmqLyt7eVA3NVDdw4yornskeL
+X-Received: by 2002:a05:690e:8d2:b0:63f:bd67:7c52 with SMTP id 956f58d0204a3-64302a48446mr15103914d50.29.1764335490416;
+        Fri, 28 Nov 2025 05:11:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpYs6Bqkkw2QMj53nrShI4JIcUgw0aEZxMMPQ2h/FT8I7boFY7Ao7pNuY9j2sTWaBF/Hvop1CT06FKU/ZbYVo=
+X-Received: by 2002:a05:690e:8d2:b0:63f:bd67:7c52 with SMTP id
+ 956f58d0204a3-64302a48446mr15103893d50.29.1764335490100; Fri, 28 Nov 2025
+ 05:11:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -69,9 +69,9 @@ MIME-Version: 1.0
 References: <20251128083219.2332407-1-zhangshida@kylinos.cn> <20251128083219.2332407-3-zhangshida@kylinos.cn>
 In-Reply-To: <20251128083219.2332407-3-zhangshida@kylinos.cn>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 28 Nov 2025 13:59:35 +0100
-X-Gm-Features: AWmQ_bmJ3AOy1Ou64bzbzmfYJle8eXItasxBb4QbS7GrXBYKV503HxVqfGGmAks
-Message-ID: <CAHc6FU6H22GEQTaOh4tm_=yL7CZ-Ck4EkXtmdsn_oyAW7OWB6g@mail.gmail.com>
+Date: Fri, 28 Nov 2025 14:11:19 +0100
+X-Gm-Features: AWmQ_bmMbDxUx7xf6l9s72idOADcxGPBv_GTFewzDFs5Yo-0xMy2x8K16_Wfsjs
+Message-ID: <CAHc6FU43FWMYm2y2b9EvrFzsJdOn55s2QOMxCfRiHKVMVRqQaQ@mail.gmail.com>
 Subject: Re: [PATCH v2 02/12] block: prevent race condition on bi_status in __bio_chain_endio
 To: zhangshida <starzhangzsd@gmail.com>
 Cc: Johannes.Thumshirn@wdc.com, hch@infradead.org, gruenba@redhat.com, 
@@ -81,13 +81,13 @@ Cc: Johannes.Thumshirn@wdc.com, hch@infradead.org, gruenba@redhat.com,
 	gfs2@lists.linux.dev, ntfs3@lists.linux.dev, linux-xfs@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, zhangshida@kylinos.cn
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HjO-D6-Sw6wgcd-tfkyrStbnZ347GOlGuzT-eSRtH7A_1764334787
+X-Mimecast-MFC-PROC-ID: wiV4e-BXAhn_rWXLaqreKuTEjg9UQFLXVMv42JSdVw0_1764335490
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Nov 28, 2025 at 9:32=E2=80=AFAM zhangshida <starzhangzsd@gmail.com>=
- wrote:>
+ wrote:
 > From: Shida Zhang <zhangshida@kylinos.cn>
 >
 > Andreas point out that multiple completions can race setting
