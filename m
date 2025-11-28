@@ -1,119 +1,115 @@
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE312D94B4
-	for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 19:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D4A22A7E6
+	for <gfs2@lists.linux.dev>; Fri, 28 Nov 2025 01:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764271979; cv=none; b=pxYqOCRIHfE2KGvTAzGpVYUdvyfoqGMutaTZWEC1TF1v2kT5nPf8g/yXHbMyfcSFou2GCQaqaittmTllE1BzHeif9B8NuUDqXNq019VGNxnYGgFGqOUms0npLR4MLsE0N5dSGu/+Y7rzBRkJy3IRqkLo5su84xNe+rJYbXI8CVc=
+	t=1764293431; cv=none; b=XB7E2wOqxmFeyvITHEgnae20xdW3aZktyl5D13v3xQytFh/fWFUcYUToopkeBxT2OgHm8e5rOOl/d1CdOi9p/+nUPm/F3kZhuPaJNUcMbM04V42PvxguYhalCDu1RiiKDSe41cu8kg4LWHvu3upAEFpAbHOAKM+ugGd9IyC8FuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764271979; c=relaxed/simple;
-	bh=Tn9kt3Rd60qF6RLPM2DBnhkLPhIU66GGiGA+z7bAqHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pVtokdhQj17vL0RyK5hx/CBoMzW8H5V+tX1gvdWV7WVty/R50dgdiuzxYotk/NLrWBqvSbj/PPPJD5haNvfGTH5PIl/ivAJgkmkBor2yExeNpwe1ZKuDRexjVibGfYpHz0oH4n0ENLKibvSF55xH5nCTnRyOi4wSrmwWJy8eXl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in; spf=none smtp.mailfrom=ee.vjti.ac.in; dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b=YD+xD6Xu; arc=none smtp.client-ip=209.85.215.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ee.vjti.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ee.vjti.ac.in
+	s=arc-20240116; t=1764293431; c=relaxed/simple;
+	bh=KBcsmp5at+jJviL3J+0mcROw+lr8j4mNJ+AGY+9OtGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U3hLKRrveeEKFcI1i0cgDl1kuiNAGw6HTOhWBfHNvY6bQMQLltnesU6vfN3VB2SZsqrTTOJZS21toLDCfJZugTZZ7RYKTfGNfxWaC3s+PHfex/KGqWn7buAn8KQxsGgx42owd9oCpNOCvlLD4UGwEOJTWyZOnNshZY5c4naJQiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EohoMbcs; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=vjti.ac.in header.i=@vjti.ac.in header.b="YD+xD6Xu"
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-bbf2c3eccc9so1064072a12.0
-        for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 11:32:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EohoMbcs"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ed82ee9e57so18729681cf.0
+        for <gfs2@lists.linux.dev>; Thu, 27 Nov 2025 17:30:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vjti.ac.in; s=google; t=1764271977; x=1764876777; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lM1r++3RTNjRzY120+T4NuENeTC6ZBYSsw5Jwl/MuQU=;
-        b=YD+xD6XuLy+YaGjcMDipzO/Sy00GzpRRJVCSzV1jxS7Ag2H//H9ql77OgQqK8HjL+v
-         ok3RHrwqJVbXRFEbGTu855qjlLLg0Bsl2o1anV0mJocAS+6fZlx5AugQeHqw722ndYit
-         jLZgJUApy4GHBL5Rwj38V9yeTbQC0xBFAD/1o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764271977; x=1764876777;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764293428; x=1764898228; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lM1r++3RTNjRzY120+T4NuENeTC6ZBYSsw5Jwl/MuQU=;
-        b=AuhFUJENXI2jLOVAay5ObZtnL/ycgT53+uVVEosYAnDShjeMbcEaHV52aLIJeBiZdU
-         ylOJ1V/rivH5WsalyttlJZhaosRy6Op7MaqodEpTkRVK3dXF6rBLxBkSgeAR6j9ts4R0
-         I3reWUYCEi+Rf3ycdBIB9vpYQxdRmliAoCnCRSkS6th/OblFHQEr/2GMcdn2UMNin1YU
-         4OYrsmvmgoeIzl2M03GZHij6XeqPOx8evETf6ggOTB3V9Hs4ihmvP63DRr0Iocb87m1p
-         i2eQH1HENh0/dCTeZIPZ3w7t5AzzspYeDoA2QjD3b8O6ZBiyvivmB0yT/N89/0Nxn30v
-         4JAg==
-X-Gm-Message-State: AOJu0Yz5Ub85YItkMQoxMbSBPtfqkwKrYNZIbSRWtd8WRDY5QzHJEmP4
-	BqTPYqL0XURW2VXHVKqlvJG6Zk45NTdiRgLuz7ONCl0LlInOrjr2Lcqb/XObP7JRARM=
-X-Gm-Gg: ASbGncsjRvFP4TRRDtegvxgHSyP+plwK6o4Z2lT+UvuC6tDbLDf+ZZtttPDbualPWLC
-	efVRTy5vXFuqvBdSRxfwPLMFq81TQEfsHhuQ8Cxmx5cHPAp+NEp1HRGWR0HsFUN8W47Ou4ZJjxA
-	qyTxHywcWuq/JKcNTu4bTVJFnpDkqBOwWwaZpuZF3r2e0TM+J2WKVBOrgDVc7YpdTUy8Nr4N2Af
-	T5kBoOCHQc07yGMYwrzUyS/htqWH0WoB5z4M1oyBTTit8NNgvywtZMZGTuV89wEeE0r8aiNrmtj
-	KVsiD5Wv0a+fvY9M2xsOUMkijrwaEGoYUZHBHsq4fMtCLthn50Ip3mUNIkJPkML9PrmZJOtG8q8
-	qt5eliwFIGGlcZihNdKf+j3Cm6KMuR/EuTKbLMNYWCwiYDFkGjmxH5+JojdQK1SBLsXlTloVtAT
-	g6HNrGlXUDirDc1E1epqnQEzkXadmakvZQXMW+SfSXrzo3HHZ5yKbBq+eMZWjQxQ==
-X-Google-Smtp-Source: AGHT+IHKyKUSA2ibNsoBlTuZ1j6vGRVIEJN6h3w9mksWgr8c890wFiPTq7xmArcLJBhP8a/ET+BxEA==
-X-Received: by 2002:a17:902:cf41:b0:296:547a:4bf2 with SMTP id d9443c01a7336-29b6c004ae1mr257927005ad.27.1764271976944;
-        Thu, 27 Nov 2025 11:32:56 -0800 (PST)
-Received: from ranegod-HP-ENVY-x360-Convertible-13-bd0xxx.. ([2409:40c0:1009:d133:e67f:bfbd:c82:9cc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb55192sm24595595ad.91.2025.11.27.11.32.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 11:32:56 -0800 (PST)
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	syzbot+af4d53576692f8956fd6@syzkaller.appspotmail.com
-Subject: [PATCH] gfs2: replace BUG_ON with WARN_ON_ONCE in gfs2_quota_cleanup
-Date: Fri, 28 Nov 2025 01:02:47 +0530
-Message-Id: <20251127193247.17030-1-ssrane_b23@ee.vjti.ac.in>
-X-Mailer: git-send-email 2.34.1
+        bh=D5P89IZigPftxBdPjv0hBiMVJle7Ici8oyWvWVUIt1w=;
+        b=EohoMbcslBppWCzyB78X0zdPUNazPZ+8ULHM/CB+1nxoiM5i34w5x6N51p9GbRm31g
+         nL2+wQVDPaEK7VbUMREkHLMucLKNjZUV7jn/PSSp4EwX1Ad4Ynm/WsPG5KqQGEUa6ApI
+         TdeqPqTpAQIvPKJbCNuOAwd5v4T2f/cHDrn44XHK5JidfVviE0kakqc8QlAJBbK4Qz48
+         g+qH1iOCHXfYRSy3OaDmahzOWlPhv6oLq6scohMU8qtZXz0Hy0EF0+OjcHVd6CUMgXpZ
+         RI/P1ty+0fgEvclEs9VPhgt2kT8NZa5fFXXVqPcl9d1ZnhvzMpH0QOf+agOuGYgn7URI
+         A1/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764293428; x=1764898228;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D5P89IZigPftxBdPjv0hBiMVJle7Ici8oyWvWVUIt1w=;
+        b=w529XJJQoQTpGWrnFGq/waKn8KMk1YdpNMwQ/jxLN1YvQ6nNc52wvzEhI2DAHQlr7i
+         uLY46QBqHuF8/Nt7Dp6o5heZhnhG2QgPLCeKX+PTw5d/w8FvlpmVRvmvdGbUHn+VF3Dh
+         nRqAA3PPEakmYzAj+D3wpYu5VL42+1Nx6Mwyg/RqGIQhu54MI9EIpqFBXb4Ri6aA1ToH
+         hDXGfX0UyUkIc182zqJGbDjEfFftr1ZQSoqHFs0JnpgMZ1WtR9kpLHVre11UEOKHPFzm
+         DfMn5Pxlj4QLL5LZHwX4LCN4sSt1JrLKLnHH26XhLRjhiPwx309soTgUBVmJT6exVxlc
+         iORA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYUEWI8qDqstm6mZpLB0IVWl+RcYnCnCditI56keQbr6z4p4XrtmL68XDh5C0GxYXchiXK@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyv9Iyi8SyfisKKv2S+bABLC/fNt9kVHfH6PV+eXN5rI5tgD7JF
+	DSXhLhGvguJ1+C3IHsXaWTK7Ti4nyUY62Xvb1ckZSyksLf9S7oyAtNztk+PtgJDum5sLWk9G2lU
+	CSZV2pp8IDABmSggTPdJriB1rBKDspoE=
+X-Gm-Gg: ASbGncsHZnBMeFW9KwS4pgejuVOlg4SWhvpI1jiiLD2iy7Pge3q26wPezCgTjZVC5tL
+	oYwDFg0PRsLJQ/LczS/NjbpsLP7G+IR1POkr8TJ/iTxoNyX5wUXpRjs4hru33I1DjOzPhpcNt9a
+	LOgOnVDX+eiuzBDSa7ln1VrCcVg0n3unV9e2gkiR5C/7veoO6sydcu5046OT0yEN9Y9eqaprPow
+	hpk1T6fPIdeLslwSrKH+DVZiyElk8yDqziSuai+DhW7YYPPKqX/SAxnsNxIsjBkeP46k6o=
+X-Google-Smtp-Source: AGHT+IHLwC+N+hhLqdlufghZ5fhnM4rSYysjvUV/1fIoNRweHCYWM0pQrvWGMYNUf8igtQ6F3vcEMbZAHieS7voSeP4=
+X-Received: by 2002:ac8:57d0:0:b0:4ee:827:7e62 with SMTP id
+ d75a77b69052e-4ee58b05b62mr339066531cf.82.1764293427985; Thu, 27 Nov 2025
+ 17:30:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251121081748.1443507-1-zhangshida@kylinos.cn>
+ <aSBA4xc9WgxkVIUh@infradead.org> <CANubcdVjXbKc88G6gzHAoJCwwxxHUYTzexqH+GaWAhEVrwr6Dg@mail.gmail.com>
+ <aSP5svsQfFe8x8Fb@infradead.org> <CANubcdVgeov2fhcgDLwOmqW1BNDmD392havRRQ7Jz5P26+8HrQ@mail.gmail.com>
+ <aSf6T6z6f2YqQRPH@infradead.org>
+In-Reply-To: <aSf6T6z6f2YqQRPH@infradead.org>
+From: Stephen Zhang <starzhangzsd@gmail.com>
+Date: Fri, 28 Nov 2025 09:29:52 +0800
+X-Gm-Features: AWmQ_bnZka8N-6d6tnub2wv_mKK_srvt07g0FExU0PMtOqpsh3yITqQM0jweo2c
+Message-ID: <CANubcdVhDZ+G5brj6g+mBBOHLyeyM9gWaLJ+EKwyWXJjSoi1SQ@mail.gmail.com>
+Subject: Re: Fix potential data loss and corruption due to Incorrect BIO Chain Handling
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Ming Lei <ming.lei@redhat.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	nvdimm@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-nvme@lists.infradead.org, gfs2@lists.linux.dev, ntfs3@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, zhangshida@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-gfs2_quota_cleanup() triggers a kernel BUG when called while the
-journal is still marked live and SDF_NORECOVERY is not set. This
-can occur during filesystem withdraw or error recovery paths,
-particularly via gfs2_make_fs_ro() during a reconfigure operation.
+Christoph Hellwig <hch@infradead.org> =E4=BA=8E2025=E5=B9=B411=E6=9C=8827=
+=E6=97=A5=E5=91=A8=E5=9B=9B 15:17=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Thu, Nov 27, 2025 at 03:05:29PM +0800, Stephen Zhang wrote:
+> > No, they are not using bcache.
+>
+> Then please figure out how bio_chain_endio even gets called in this
+> setup.  I think for mainline the approach should be to fix bcache
+> and eorfs to not call into ->bi_end_io and add a BUG_ON() to
+> bio_chain_endio to ensure no new callers appear.  I
+>
 
-The BUG_ON was intended to catch unexpected state where quota
-cleanup runs while the journal is active. However, the cleanup
-code is safe in this scenario because it skips quota entries with
-active references and waits for all references to drain via
-wait_event_timeout().
+Okay, thanks for the suggestion.
 
-Crashing the kernel is unnecessarily harsh for what is a
-recoverable situation. Replace the BUG_ON with WARN_ON_ONCE to
-flag the unexpected state for debugging while allowing the
-cleanup to proceed safely.
+> > If there are no further objections or other insights regarding this iss=
+ue,
+> > I will proceed with creating a v2 of this series.
+>
+> Not sure how that is helpful.  You have a problem on a kernel from stone
+> age, can't explain what actually happens and propose something that is
+> mostly a no-op in mainline, with the callers that could even reach the
+> area being clear API misuse.
+>
 
-Reported-by: syzbot+af4d53576692f8956fd6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-Fixes: 71733b492200 ("gfs2: fix kernel BUG in gfs2_quota_cleanup")
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
----
- fs/gfs2/quota.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Analysis of the 4.19 kernel bug confirmed it was not caused by the
+->bi_end_io call. Instead, this investigation led us to discover a differen=
+t bug
+in the upstream kernel. The v2 patch series is dedicated to fixing this new=
+ly
+found upstream issue.
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 2298e06797ac..13f113d8aaef 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -1516,8 +1516,8 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
- 	LIST_HEAD(dispose);
- 	int count;
- 
--	BUG_ON(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
--		test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
-+	WARN_ON_ONCE(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
-+		     test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
- 
- 	spin_lock(&qd_lock);
- 	list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
--- 
-2.34.1
-
+Thanks,
+shida
+>
