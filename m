@@ -1,89 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780BE2FDC59;
-	Sat,  6 Dec 2025 14:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0036A2C15BC
+	for <gfs2@lists.linux.dev>; Sun,  7 Dec 2025 10:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765029830; cv=none; b=fG5nIUTWY0XT3+k3wb8mlt21MBHj4QDwIOPSxiF3SrIytu/pen1U7zlIXfyk/V4QE3Q3r7UpTACfcQ+6AXQCvqBMqM1+0UCotGQmTN09OH20lo9l5Sejc1TwRbinMX3USRuAFK0yN7iMOVq8rXU6NQeQl0X9jQ/ezggicq8eYIQ=
+	t=1765101874; cv=none; b=PLDsjho+WyVSXWBnvfY8HFmQgWGhKNi0dZzhEMJMTlG8iAK/UR9/FydcK2YfE4AWOeXVtKnFAe/vB8sy/4qOyrqA7sq8F8Px3M3Myf6nISMl7AxHl3oOlLDTr3sFkpfhlaqo1bXPndT/akJ/nNGNaGWNgDiQ5b1WweOsOingkmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765029830; c=relaxed/simple;
-	bh=9ZkhCQriaUyQhO3XSy1/1/FXk4FgoAR0dLQkr/Rj9wM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1G2SnpFWUfW3a3Purcu41z6ECEXW3KbVxoEEYcuZx/Pn0miKGqstMnYAMac8Zk42C1agiSzqk4b5fhmN3YM+61p/P2wTiU9sTdnhTjeHYA5BdGVs7ZniJ53dkOwL+NOxT1/DpxA/X4XNixa8jQwh7WF6OwPAxCuBUxPHaYLCv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAh7WrNh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765101874; c=relaxed/simple;
+	bh=oU+vvCeHMKSGHwu1ci54jpS3s8eATvZ3aiVnEThBVIc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W+OItQrBaN95eqYcbNRvsYnltRswPDBZAsVA7cowOIcG/b0Hdwu088pX3rqy57IVUXVBBUj/1Q9dgDuImXt10P6I2MTInK7x7ejbOj0jJci2Y8wka6qZ+EOntGEEMa7+h9WzyKiz9rzO21iojaZXA8NSs19HlRD62E1ccFKdk8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S49MsaeF; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAh7WrNh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687E0C4CEF5;
-	Sat,  6 Dec 2025 14:03:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765029830;
-	bh=9ZkhCQriaUyQhO3XSy1/1/FXk4FgoAR0dLQkr/Rj9wM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAh7WrNho0nflGLsQrBhAe+DCFEgQ6ngy1psG8Sy3DeGCdDMj2HYLiTV7sD+cxh6Q
-	 1qOkC9K4WVXwlnmLERL4sqVEu7sicx8Sj28nNrD3iSvk/y2nDFan5Kxy9CzccuCp63
-	 4v/T/578cuR5Gne4754Uydktwt7BrT+N1wMG2+Kcmd4WG+fwJsKStGBZSzZUvhI5rt
-	 qLrikfGS+vyPDqpvIuaC0JAm/DQlp6rzF4qmeikc4SP+Ft3BDSNmwLyzB3OZ7UACuD
-	 pUeXKfDlFGbxexch0XspOKcVyA7+CTFSDn9F9iJZIdSK1qF5CCUPpHLme4sKOfXWhl
-	 CYkBSzuc8QZEQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.18-6.12] gfs2: Fix "gfs2: Switch to wait_event in gfs2_quotad"
-Date: Sat,  6 Dec 2025 09:02:30 -0500
-Message-ID: <20251206140252.645973-25-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251206140252.645973-1-sashal@kernel.org>
-References: <20251206140252.645973-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S49MsaeF"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso33657491cf.1
+        for <gfs2@lists.linux.dev>; Sun, 07 Dec 2025 02:04:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765101870; x=1765706670; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oU+vvCeHMKSGHwu1ci54jpS3s8eATvZ3aiVnEThBVIc=;
+        b=S49MsaeFdEPAFtEpevNWYJDBtH9mEM8+LNqS+FHLmZtODALy4nY5A+THgHZfsTmEnV
+         4/lQxMMu2QNceC//DIxv561zSQQbU2FtWw8micw48SqH8cvqAwY08WzuVDneKOnPmEuO
+         VIhmQMTsiOpZFzUuw+0rJOAtbw9bEvkRze6HlKyxc1vnnl08wHSVMRsA5yifuOWvHzlv
+         SfiOpNS9ZD59iqDVVgvOQGGBA+ahd/XQaixyMeJbkdqLh1JamJxOjEtBAD5CrshAfZdP
+         EHDeNeWIGNbEBrCjeFBn+M2KYYxa76CVy4eCegGUu2KGCCt2Jnqz7RPi8TrZLdf9mdna
+         sA8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765101870; x=1765706670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oU+vvCeHMKSGHwu1ci54jpS3s8eATvZ3aiVnEThBVIc=;
+        b=e7BhmfSYOeXuZvkNQ11Zuv5lXurIpPFYV6NeG+ogfanyNpJxLD+CMvTlYd7MJkTUZG
+         pnbriw01LxNuCBMYoKlhT1Iw2e0rJiCUZ04gLNFBrV7G3DiuTklBrrqqtr9Ndtw1L4NT
+         8BXPAMb3DuTKXvgySRtuBC9Avhj7MYGry+uxOnbQmnCZPpVKwTK7gHbp3HEUC+ZEvz2q
+         fUKGvYmqTp5VAVEIRgCtVVI2SSNaL2q8GUQwxDMwYwhum0PUriR6N+AUvbgWIZWxfWkA
+         k+mmzHllkH2URpfZEwgZBMzqA3wCb0z9jHR2r5EPzl1Af3wJQ39ltKjj4/QRRzJ7tF8N
+         QBSA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJbkG+Dtb59WGmJZnSUy4YQGpKHH5QOB/njIlbg5bPBLh57EssLRh0EHkHmRyJ/PC+reM+@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/Hv669LWdPg8WegyyxlCPdkMhQX+ag/8NssUn21YMq16SwPxW
+	ChocjM8ZX1MGhyU69yaw7C4T0N2cU2AqeiUxm3aaBt38wFoVI/Iwywqh5BHHTMXA5LbDB6UF8ud
+	PHBAjis5qhVi1D9qO9mFh2v06864T/+8=
+X-Gm-Gg: ASbGnctxr2OBQBtnRmvjyTTIR0dn10ZqyK4fdWRlqYy8TQweIp/WbE//yDBz0jdu8rB
+	TI3G4d8jYeptmijZcaLGj3KftCvKOOb+Qe97dIsfHq0GVhPkjlq3jCPHamSUK7c08YOp9lW/Gl9
+	LzS2o5izqle+a76kstPGjWbGy4dKo0s6z9rhNF1BUWju+KKfHu3HmZ4rJlmVHYzB151ZEKYIbRm
+	MvhSiT55vMrZlhlsbWm89IKvqk+TBlhz56TX45ZlVjV975kvCGBDtzRRhXigQPfcO4AVbI=
+X-Google-Smtp-Source: AGHT+IFyS19gciaAgZhRx4HvH1R1sNPMXGO05IWdCy0tyufd5AG5DROw9tSZhuIt2ZeFQYvOMOepLj8Zf3YwFI1IGTs=
+X-Received: by 2002:a05:622a:1249:b0:4ed:aeaa:ec4d with SMTP id
+ d75a77b69052e-4f03ff48c23mr65405971cf.77.1765101869874; Sun, 07 Dec 2025
+ 02:04:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Transfer-Encoding: 8bit
+References: <20251128083219.2332407-1-zhangshida@kylinos.cn>
+ <20251128083219.2332407-7-zhangshida@kylinos.cn> <CANubcdUtncH7OxYg0+4ax0v9OmbuV337AM5DQHOpsBVa-A1cbA@mail.gmail.com>
+ <CAHc6FU5DAhrRKyYjuZ+qF84rCsUDiPo3iPoZ67NvN-pbunJH4A@mail.gmail.com>
+ <CAHc6FU57xqs1CTSOd-oho_m52aCTorRVJQKKyVAGJ=rbfh5VxQ@mail.gmail.com>
+ <CANubcdVuRNfygyGwnXQpsb2GsHy4=yrzcLC06paUbAMS60+qyA@mail.gmail.com> <CAHc6FU4G+5QnSgXoMN726DOTF9R-d88-CrfYMof0kME6P_o-7w@mail.gmail.com>
+In-Reply-To: <CAHc6FU4G+5QnSgXoMN726DOTF9R-d88-CrfYMof0kME6P_o-7w@mail.gmail.com>
+From: Stephen Zhang <starzhangzsd@gmail.com>
+Date: Sun, 7 Dec 2025 18:03:53 +0800
+X-Gm-Features: AQt7F2r1YNFWGA2Q9VwdNr_tG5KYi4lqES_2HjNJQ6tE7fdz6CI5_Dt06IQV2e4
+Message-ID: <CANubcdVAitTW_aBqwxC=TV77rg_iie0uX54_qEtMCjgdN+zeig@mail.gmail.com>
+Subject: Re: [PATCH v2 06/12] gfs2: Replace the repetitive bio chaining code patterns
+To: Andreas Gruenbacher <agruenba@redhat.com>, sashal@kernel.org
+Cc: Johannes.Thumshirn@wdc.com, hch@infradead.org, ming.lei@redhat.com, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, linux-block@vger.kernel.org, 
+	linux-bcache@vger.kernel.org, nvdimm@lists.linux.dev, 
+	virtualization@lists.linux.dev, linux-nvme@lists.infradead.org, 
+	gfs2@lists.linux.dev, ntfs3@lists.linux.dev, linux-xfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, zhangshida@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+Andreas Gruenbacher <agruenba@redhat.com> =E4=BA=8E2025=E5=B9=B412=E6=9C=88=
+5=E6=97=A5=E5=91=A8=E4=BA=94 16:55=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Dec 5, 2025 at 8:46=E2=80=AFAM Stephen Zhang <starzhangzsd@gmail.=
+com> wrote:
+> > Andreas Gruenbacher <agruenba@redhat.com> =E4=BA=8E2025=E5=B9=B412=E6=
+=9C=884=E6=97=A5=E5=91=A8=E5=9B=9B 17:37=E5=86=99=E9=81=93=EF=BC=9A
+> > >
+> > > On Mon, Dec 1, 2025 at 11:31=E2=80=AFAM Andreas Gruenbacher <agruenba=
+@redhat.com> wrote:
+> > > > On Sat, Nov 29, 2025 at 3:48=E2=80=AFAM Stephen Zhang <starzhangzsd=
+@gmail.com> wrote:
+> > > > > This one should also be dropped because the 'prev' and 'new' are =
+in
+> > > > > the wrong order.
+> > > >
+> > > > Ouch. Thanks for pointing this out.
+> > >
+> > > Linus has merged the fix for this bug now, so this patch can be
+> > > updated / re-added.
+> > >
+> >
+> > Thank you for the update. I'm not clear on what specifically has been
+> > merged or how to verify it.
+> > Could you please clarify which fix was merged,
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D8a157e0a0aa5
+> "gfs2: Fix use of bio_chain"
+>
+>
 
-[ Upstream commit dff1fb6d8b7abe5b1119fa060f5d6b3370bf10ac ]
+Thank you for the detailed clarification. Here is a polite and
+professional rephrasing of your message:
 
-Commit e4a8b5481c59a ("gfs2: Switch to wait_event in gfs2_quotad") broke
-cyclic statfs syncing, so the numbers reported by "df" could easily get
-completely out of sync with reality.  Fix this by reverting part of
-commit e4a8b5481c59a for now.
-
-A follow-up commit will clean this code up later.
-
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-LLM Generated explanations, may be completely bogus:
+[WARNING]
+Hello,
+
+I may not have expressed myself clearly, and you might have
+misunderstood my point.
+
+In the original code, the real end I/O handler (`gfs2_end_log_read`)
+was placed at the end of the chained bio list, while the newer
+`bio_chain_endio` was placed earlier. With `bio_chain(new, prev)`,
+the chain looked like:
+
+`bio1 =E2=86=92 bio2 =E2=86=92 bio3`
+`bio_chain_endio =E2=86=92 bio_chain_endio =E2=86=92 gfs2_end_log_read`
+
+This ensured the actual handler (`gfs2_end_log_read`) was triggered
+at the end of the chain.
+
+However, after the fix changed the order to `bio_chain(prev, new)`,
+the chain now looks like:
+
+`bio1 =E2=86=92 bio2 =E2=86=92 bio3`
+`gfs2_end_log_read =E2=86=92 bio_chain_endio =E2=86=92 bio_chain_endio`
+
+This seems to place `gfs2_end_log_read` at the beginning rather
+than the end, potentially preventing it from being executed as intended.
+
+I hope I misunderstand the gfs2 code logic, and your fix may still be
+correct. However, given how quickly the change was made and ported
+back, I wanted to highlight this concern in case the original behavior
+was intentional.
+
+Thank you for your attention to this matter.
+
+Best regards,
+Shida
 
 
 
- fs/gfs2/quota.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 2298e06797ac3..f2df01f801b81 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -1616,7 +1616,7 @@ int gfs2_quotad(void *data)
- 
- 		t = min(quotad_timeo, statfs_timeo);
- 
--		t = wait_event_freezable_timeout(sdp->sd_quota_wait,
-+		t -= wait_event_freezable_timeout(sdp->sd_quota_wait,
- 				sdp->sd_statfs_force_sync ||
- 				gfs2_withdrawing_or_withdrawn(sdp) ||
- 				kthread_should_stop(),
--- 
-2.51.0
-
+> > and if I should now resubmit the cleanup patches?
+> >
+> > Thanks,
+> > Shida
+> >
+> > > Thanks,
+> > > Andreas
+> > >
+> >
+>
