@@ -1,105 +1,265 @@
-Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9789F28695
-	for <gfs2@lists.linux.dev>; Mon,  8 Dec 2025 06:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6990521767A
+	for <gfs2@lists.linux.dev>; Mon,  8 Dec 2025 08:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765174356; cv=none; b=lYrpkxtyn8sAh2HHiCoex8pwIo8sWC0F8fd3YvVq7ykGq3/c72J/n5KTaVdqBNNMjQkI8GYpYayVxWAkiO0MfP8FM9ZRuJfWnVC2U148q0Qn3X7YIS2TAnHkiOPs9dUQvkR95A5whmUuRl48zxX+hR0hqp1DaUGPuEb1tLp2zoo=
+	t=1765183647; cv=none; b=Pa60VNkaZ1sinCI0Wc/LjfKKmYDsobzY3d7W7ZAUUEZexGMY34UHNMTWdxzWWA5OeNrOlQgTDDzilPwqbazyy/IC7DrOSnvjsxfY+0Y6NON2WA/oJFec9iJ2PV6o2g71kjcMQAHsDwNUTQ6ntrBVvHck6t6uILoHOG/lWykzoXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765174356; c=relaxed/simple;
-	bh=2MccI9ijysGzmtEpmSs/8U7WQbacdBsVNC2AVKaGa3M=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=CN91pcvOo+UJXJKSOKQQGJI3/ur71/wCOBUWu9kYqo35ZdPRtyZEk+Go7T3/vdubcuR/31XvkRp5gvKK/CGWzevPX6KNWUeEoxrQdrucKOLXrZUxTuceShEbc+20kZwcHVWNWz8gtOnoGieUJyz09+xWGIc4z0ng8Kia3oztx0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=LeuP/F9Q; arc=none smtp.client-ip=203.205.221.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="LeuP/F9Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1765174343; bh=EkAQOGmig8RWXdbFQGHpAAG9Q2rxBVByGXHl/9kFcRE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LeuP/F9QZNkouZ/VHDrw07ujxbl365Z3IKAmxFqlRfK1mKyfjvGWyBpuozAK9tqrd
-	 W23pf9c4o+sdnAmFmXQwqE6vd7C9NEp1WPmBhxHDIlvrIdCNXy3nLdJALM+8BaQs7z
-	 jOFlTUR3rorSLK8oo3lDLH7SccIVTxFEer28R+xs=
-Received: from lxu-ped-host.. ([111.201.7.117])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 3159A6A3; Mon, 08 Dec 2025 14:12:21 +0800
-X-QQ-mid: xmsmtpt1765174341t0jd0dkoo
-Message-ID: <tencent_0136C09726370A4A04742377C566063C7109@qq.com>
-X-QQ-XMAILINFO: MRMtjO3A6C9X+fVda2AaJpDv1ux4O4yKvvQZ3rG2ALqX7a178uLTaifqB10X1n
-	 3+NQPEB/gEBnzYLfP6ylUTJChGpuXUNJnA6dl4f5iu8WFXWci2sfdXZ2BKfrPkc6L0z4QSziXvri
-	 jsMMXeHF/46cQlOSQNji0InYU1pgF22I5NMR7tPy4fnnzhEByORpwHmjD0ixQdIQ8nxNlCQY81y4
-	 4lBy6EcMd8g+6lV2ljOjchReHyCL+JzcZvV23lMM05Uk90eOHoNAx6MtkAoqav6B7LIRq2NWkGPC
-	 Mw8UplWA6RXGabb7RGjvh+RQZCJpqi9Cq1HVXlyhztf7d5FekoRvdvszrLQv+ixHCKl8jPrLT2PV
-	 XSJEf8oTOJPsqs5HJCH9b4A54eSyQxWJqK0vi0q7O3NaEB+CNAPc1HSc95dzLmiafWe4FGBy5sFA
-	 Bvl4Yp6KUX7QhGVAXyeOAdSWfJhQgKoGsNFCWY8X52kuim+McqePX2A81w1SLV6vscUR2NHLxcxm
-	 fjnszBkNPgnuvb6w+zcPO64jSgMZn8e28SD0wO3+7w8JM72M/MsQ2Iu6bLMfl2VQ7lC5+0zK1ewt
-	 j9pvanm3hm9H/6nOwlKL5XhRLnE+oG8Ark1bD1g8sZPC39NgSz4kzklnXLNxVBFWywCakIm2jMt8
-	 QQIUJZAFdW3bc6ZXHo/K7wEHpA4GTEJUkl9M85xZYCsRonyekRvtnqnBZmfORUv00cpavxcnchQG
-	 mK4LHVrDoK3G9SJsXvoLT/hzaQCmE63t0EqPBN5344VdtVUNQjN7xGr1mCjvXYlmpQO2mwEPotDE
-	 X7zGqEcGMibx2CoVo9qOG/YcF71xwnyrqOaL8ko8+m3Y+VEz+11tlQcBz3gHyTKswOps+nwyON1h
-	 w0+TJ2rLdEf6qsFyhJjBUlDU3cBu4/yRU0jHYFAhjBXiFB8Mb8at0f7t56VEmOO+OZd7cPoSQwhH
-	 zWfnV/dbGXxuO0bdWFMmidTQWLldgM1o/PSdDFCxzEfqKKyc+0YrqueTB+DzA4ZOSSgP91Lrg=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+f6539d4ce3f775aee0cc@syzkaller.appspotmail.com
-Cc: agruenba@redhat.com,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH Next] gfs2: update end and prev bio for chain bio
-Date: Mon,  8 Dec 2025 14:12:21 +0800
-X-OQ-MSGID: <20251208061220.472205-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <69351d9c.a70a0220.38f243.0049.GAE@google.com>
-References: <69351d9c.a70a0220.38f243.0049.GAE@google.com>
+	s=arc-20240116; t=1765183647; c=relaxed/simple;
+	bh=kzd/oZzprIhHSOjQUFDjQX+/721JGNpFEoBsVOIIheM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=q4yvt4EHDqg245t4KZjD6dZ8PA4wzsttoujjDwKbLnPTPjK4jMJuTeMyhtwcNYSTv0eUxMZIKb0f612eyLBLmrnHWl7BU20bnSoARJU/pF8on/vfYkXsS8nga2/YLAEAKhI5MNQ/EwjakTQTFlQ0P3V0Knve11NgdSZ9pU/A21I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-65997ee5622so3154320eaf.1
+        for <gfs2@lists.linux.dev>; Mon, 08 Dec 2025 00:47:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765183644; x=1765788444;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1IpN2pmQ7ol4+J7MB/xS6YhjA2n80U+vKo8rOEL4NY=;
+        b=eAuWLEUcLzM53hvSj1Cop4Onz+hmAqKaHA54rL6lR+/TnC0P9iXgA3F738FaDjVGky
+         wn0J+yHocoR/jijWbAXaO0H45n219FmC6KA+huftUv7Rl5JqE69IK0kyI6vvqpS3uaN2
+         CfZlHUDX52NI2xUi7TioBe6NLzj8eMPk6YmDBSs/HFFQiKiqgMcKg8xbTu+e9+Pcx2Di
+         +GjRMujYnsyeGsp9O4f03jHiExjnnERCNgvHcm8jKU1cLlkEaKcBxs+CYnRH9ZEsSc5B
+         C77KUCpnNDKmAUnF3K/0OgoLzNxY1ZbwFi5Jd8p4d6iJzJrefTHWnth/YYcRzybsA0Xd
+         UkPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmnDht0FB8MzbeV/2Tv/X7fcqDW1ODOWsbA1q15OcSj0J8MV3P+9e3FMx6/RIcOeL7ViBg@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywb14lvuh9zLtly0ypSoOk0GdhuzRMYtI3h3JvLn6vb/YOJXR2G
+	PzQu+faoKIeA/LXg7Wm/n46AS3ja5tsHSJrPEcXVum7KcKs4nMqWzzJhh3O+cbDAsOnbv/YjcYR
+	kj8aZlHCicnDwFVi2IK9Y2YQF9dmCoPFK6qraDDRtEiwGBf4MNB6zt0HJUf4=
+X-Google-Smtp-Source: AGHT+IET0/5G5dv0kZly2VOOV5QIpNyHCicrvyrrOsoWh+N7tVzup3wOK3nAJYhDBOet350wfuqT+/bNjUgDM3egPFFvDUhV2ogA
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:4d07:b0:659:9a49:8e8f with SMTP id
+ 006d021491bc7-6599a8c27c7mr2902981eaf.19.1765183644537; Mon, 08 Dec 2025
+ 00:47:24 -0800 (PST)
+Date: Mon, 08 Dec 2025 00:47:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6936909c.a70a0220.38f243.0098.GAE@google.com>
+Subject: [syzbot] [gfs2?] KASAN: slab-use-after-free Read in gfs2_quotad
+From: syzbot <syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The bios are created and initialized using gfs2_log_alloc_bio() in
-gfs2_find_jhead(), which sets bi_end_io and bi_private. When the I/O
-request is too large and needs to be split into multiple bios and
-submitted as a chain, the bug reported by syzbot [1] is triggered.
+Hello,
 
-When we need to submit multiple bios in a chain, we need to pass the
-bi_end_io and bi_private of the previous bio to the end bio to ensure
-that the multiple bios are correctly assembled into a submission chain.
+syzbot found the following issue on:
 
-[1]
-kernel BUG at block/bio.c:342!
+HEAD commit:    2aa680df6806 Merge tag 'sound-6.19-rc1' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15ac701a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7e44d84dbc04570e
+dashboard link: https://syzkaller.appspot.com/bug?extid=4cb0d0336db6bc6930e9
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1213bcc2580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/dcfbfa0a8815/disk-2aa680df.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1a6f7574c952/vmlinux-2aa680df.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/be0a631aa7d7/bzImage-2aa680df.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/b2c257be04cf/mount_3.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=11ffb192580000)
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: slab-use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-use-after-free in gfs2_withdrawn fs/gfs2/util.h:187 [inline]
+BUG: KASAN: slab-use-after-free in gfs2_quotad+0x19c/0x930 fs/gfs2/quota.c:1586
+Read of size 8 at addr ffff8880754740a8 by task gfs2_quotad/syz/8747
+
+CPU: 1 UID: 0 PID: 8747 Comm: gfs2_quotad/syz Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
 Call Trace:
- gfs2_chain_bio fs/gfs2/lops.c:487 [inline]
- gfs2_find_jhead+0x627/0xe40 fs/gfs2/lops.c:549
- gfs2_recover_func+0x5f5/0x1c90 fs/gfs2/recovery.c:459
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ gfs2_withdrawn fs/gfs2/util.h:187 [inline]
+ gfs2_quotad+0x19c/0x930 fs/gfs2/quota.c:1586
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
 
-Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
-Reported-by: syzbot+f6539d4ce3f775aee0cc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6539d4ce3f775aee0cc
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Allocated by task 8733:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
+ kasan_kmalloc include/linux/kasan.h:262 [inline]
+ __kmalloc_cache_noprof+0x3d5/0x6f0 mm/slub.c:5771
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ init_sbd fs/gfs2/ops_fstype.c:79 [inline]
+ gfs2_fill_super+0x11f/0x21b0 fs/gfs2/ops_fstype.c:1121
+ get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1699
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1332
+ vfs_get_tree+0x92/0x2a0 fs/super.c:1759
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3636 [inline]
+ do_new_mount+0x302/0xa10 fs/namespace.c:3712
+ do_mount fs/namespace.c:4035 [inline]
+ __do_sys_mount fs/namespace.c:4224 [inline]
+ __se_sys_mount+0x313/0x410 fs/namespace.c:4201
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 8733:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2540 [inline]
+ slab_free mm/slub.c:6663 [inline]
+ kfree+0x1c0/0x660 mm/slub.c:6871
+ free_sbd fs/gfs2/ops_fstype.c:72 [inline]
+ gfs2_fill_super+0x14ef/0x21b0 fs/gfs2/ops_fstype.c:1316
+ get_tree_bdev_flags+0x40e/0x4d0 fs/super.c:1699
+ gfs2_get_tree+0x51/0x1e0 fs/gfs2/ops_fstype.c:1332
+ vfs_get_tree+0x92/0x2a0 fs/super.c:1759
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3636 [inline]
+ do_new_mount+0x302/0xa10 fs/namespace.c:3712
+ do_mount fs/namespace.c:4035 [inline]
+ __do_sys_mount fs/namespace.c:4224 [inline]
+ __se_sys_mount+0x313/0x410 fs/namespace.c:4201
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888075474000
+ which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 168 bytes inside of
+ freed 8192-byte region [ffff888075474000, ffff888075476000)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x75470
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ksm flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000040 ffff88801a027280 ffffea00009a8c00 dead000000000003
+raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+head: 00fff00000000040 ffff88801a027280 ffffea00009a8c00 dead000000000003
+head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+head: 00fff00000000003 ffffea0001d51c01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5660, tgid 5660 (dhcpcd-run-hook), ts 66112319039, free_ts 66011248304
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x234/0x290 mm/page_alloc.c:1845
+ prep_new_page mm/page_alloc.c:1853 [inline]
+ get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3879
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5183
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3075 [inline]
+ allocate_slab+0x86/0x3b0 mm/slub.c:3248
+ new_slab mm/slub.c:3302 [inline]
+ ___slab_alloc+0xf2b/0x1960 mm/slub.c:4651
+ __slab_alloc+0x65/0x100 mm/slub.c:4774
+ __slab_alloc_node mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:5246 [inline]
+ __kmalloc_cache_noprof+0x411/0x6f0 mm/slub.c:5766
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ tomoyo_print_bprm security/tomoyo/audit.c:26 [inline]
+ tomoyo_init_log+0x111f/0x1f70 security/tomoyo/audit.c:264
+ tomoyo_supervisor+0x340/0x1480 security/tomoyo/common.c:2198
+ tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+ tomoyo_env_perm+0x149/0x1e0 security/tomoyo/environ.c:63
+ tomoyo_environ security/tomoyo/domain.c:672 [inline]
+ tomoyo_find_next_domain+0x15ce/0x1aa0 security/tomoyo/domain.c:888
+ tomoyo_bprm_check_security+0x11c/0x180 security/tomoyo/tomoyo.c:102
+ security_bprm_check+0x89/0x270 security/security.c:794
+ search_binary_handler fs/exec.c:1659 [inline]
+ exec_binprm fs/exec.c:1701 [inline]
+ bprm_execve+0x887/0x1400 fs/exec.c:1753
+ do_execveat_common+0x510/0x6a0 fs/exec.c:1859
+page last free pid 5655 tgid 5655 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1394 [inline]
+ __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2901
+ discard_slab mm/slub.c:3346 [inline]
+ __put_partials+0x146/0x170 mm/slub.c:3886
+ put_cpu_partial+0x1f2/0x2d0 mm/slub.c:3961
+ __slab_free+0x288/0x2a0 mm/slub.c:5947
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:352
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4948 [inline]
+ slab_alloc_node mm/slub.c:5258 [inline]
+ __do_kmalloc_node mm/slub.c:5651 [inline]
+ __kmalloc_node_track_caller_noprof+0x51d/0x810 mm/slub.c:5759
+ __kmemdup_nul mm/util.c:64 [inline]
+ kstrdup+0x42/0x100 mm/util.c:84
+ bprm_change_interp+0x82/0xc0 fs/exec.c:1479
+ load_script+0x6d0/0x860 fs/binfmt_script.c:125
+ search_binary_handler fs/exec.c:1669 [inline]
+ exec_binprm fs/exec.c:1701 [inline]
+ bprm_execve+0x92e/0x1400 fs/exec.c:1753
+ do_execveat_common+0x510/0x6a0 fs/exec.c:1859
+ do_execve fs/exec.c:1933 [inline]
+ __do_sys_execve fs/exec.c:2009 [inline]
+ __se_sys_execve fs/exec.c:2004 [inline]
+ __x64_sys_execve+0x94/0xb0 fs/exec.c:2004
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888075473f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888075474000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff888075474080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                  ^
+ ffff888075474100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888075474180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
 ---
- fs/gfs2/lops.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 97ebe457c00a..2de334034c74 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -484,6 +484,10 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
- 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
- 	bio_clone_blkg_association(new, prev);
- 	new->bi_iter.bi_sector = bio_end_sector(prev);
-+	new->bi_end_io = prev->bi_end_io;
-+	new->bi_private = prev->bi_private;
-+	prev->bi_end_io = NULL;
-+	prev->bi_private = NULL;
- 	bio_chain(prev, new);
- 	submit_bio(prev);
- 	return new;
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
