@@ -1,133 +1,185 @@
-Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9E0217F31
-	for <gfs2@lists.linux.dev>; Mon,  8 Dec 2025 23:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1B4220F3E;
+	Tue,  9 Dec 2025 00:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765235787; cv=none; b=sEHNWxOp8heMKQsOBbqpeoZnBGBgoBt41xI8NpEEM9c5lvnzf10X8YdPkcgC4YekCD4ahSzrzfZN/OA9uazQ0wYEuipt2tM4XJTXmjkCyqONHbKEUhTMYMJqq7DXRr/qmAeLREv9bQZHWaCCZ2gV55TYPbczsbjyekTaanHzckE=
+	t=1765239409; cv=none; b=QHWPgkqeGimxDi5DdhZFZ9zLpuv0zkpx0Ohh6snbFyn+lNeKslEiWAr4kvQ10M73IR0EQb/RL7WFHqxL/vQLBu7qYkBl7yc4961K7IxQATzz68vFvOMU6uY9SIbfNSk+PDmLwaY1fnztHQReN1WI2vcs+yEoMSGgoGWdol/ZC30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765235787; c=relaxed/simple;
-	bh=bgQUGJat4+yM8+3boIjC+3eYax4ZwuJ24OiiNY8E8kA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Kt+RwULWEiTutF0MeNDfHxlZzsAhTQZ+as3n/sHONY9pF8jyz8rv1TwEPl8+DAM1nROmzvRLSoGOZX1ZOmUMJEsKMUuCtFgMhR6A0Il9ptrRP0i3f744z3A8dt/Q/bbr0UXONA5oi4FMpHlLoy8RpEQHI/14DFnIF2ivp06TFT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7c6db96dfcdso10636281a34.3
-        for <gfs2@lists.linux.dev>; Mon, 08 Dec 2025 15:16:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765235784; x=1765840584;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5gYsrD7J869Vvtx5m079l0Dcp15+UlIRSfvjkn26PEw=;
-        b=Q52H6vCPKwGTaG9kHPJJmKZfCMro6I7GPh+17gn5Tol6kR85UDz0TfJejZdikRoD5W
-         mmaCWx5HzyKlx1g18XMUAGF1seZ0lDM5Vg9qgyp4dD/+hKqUZrdwRPWAWLnaLpr5xkYM
-         cnZ7kWyYm2iQRGBHDEBamgtehsrl5zKJXrZ2AMeLdQdmf4u9J7xIvw4W+gBH5cOw/ML/
-         vS3YWh4+nm7CnNz6UIyz2Q2QLGucjWkljEGPukd9tdgNHteUY95brJAWochP5mjcFR8i
-         jyEH2XGlbkdFH3OXBgL9as0pfqZoPKhFkQedOnBgH2QoGsDONx77MnmBts2EQq4OiFpG
-         ClWw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/s/QPrFgLQ1Yqe8817U4d4aCgcdBNJeKG/a9UpToh/8p+NTernHv0jlJs4wZT7WHH55OJ@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEYOAjnKfBbgpkXwJL/1AwZnIJwenj4HIFPcX+76Fnkh2hSRO1
-	/jF0KRl4DTyBaOcsVnr42xbu4uw8agKqf3zi67QPyZTO1Mpp/awxyA0lDVQrukLWZW6TVGQPW7C
-	nSQNbseRsEkjOvkC2tEp5DPaVpC4Lo4mcp/Mhv9dJnvHM+iItZOIXqX1vAzc=
-X-Google-Smtp-Source: AGHT+IE4/8uyHqBb6ooUEgEL88LNYHIObYU/E7UG+buxa5uj5MCDTRnrXFqxyPBFQsi3CuThcgjoLpatKjE/yCEsov1DKZvK0bTv
+	s=arc-20240116; t=1765239409; c=relaxed/simple;
+	bh=+fEtpiAU5F4qN2nqblGeJLbNnNnrXklntIsEeaDT3ns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bAbaj/Upd9XWlHgXOEN9ty2CAG0U0jQLgLziAjdKLPn3I6HMuEgrLJOARuz250F7Sc9QM+UKqF1wYzkB1fjS1TpdRf/ioQwNYbVOOfL8cnn4nURMrUkaXMZEAXBgwsJJmikaa9F5SfzHg61nuz09uoQ0P/Ul9EYw4fqTEq6D3xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5yLId5x; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5yLId5x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE272C19421;
+	Tue,  9 Dec 2025 00:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765239408;
+	bh=+fEtpiAU5F4qN2nqblGeJLbNnNnrXklntIsEeaDT3ns=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=i5yLId5x6TQTUTJcUxf13z4bmstvfc3r0y+ceWeYnx8kZimGGqLb+d+5E497N0WrZ
+	 ONJqyQ3+MLTw1EI1Jz4n/TZFzjaI9ces1wSeKCePOtUS4suK7hdzaVxBibr9A35rgI
+	 wp6e68ZP2U8HMA+QWvP5uUCb4dIf4K88r2bBWf3+FQmXbE8iS6eh4iF0NCCJ0YMMOn
+	 WrY/ju29LumH6p81ctEcqnLPUP+LD1ubBQcP/dJfPOHw3AvRx8O9oa6e5UHM94/9NW
+	 IggIgBnEfCSezUNeCR4ngWNmW4E91xP8NW9MRuWyXidaRin7hpPGnfRIh/X19xPUGo
+	 VpundUZGWWqRg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Stephen Zhang <starzhangzsd@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	gfs2@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.18-6.1] gfs2: Fix use of bio_chain
+Date: Mon,  8 Dec 2025 19:15:00 -0500
+Message-ID: <20251209001610.611575-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
+References: <20251209001610.611575-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:818b:b0:659:9a49:9044 with SMTP id
- 006d021491bc7-6599a8ba043mr3583314eaf.15.1765235784643; Mon, 08 Dec 2025
- 15:16:24 -0800 (PST)
-Date: Mon, 08 Dec 2025 15:16:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69375c48.a70a0220.38f243.00af.GAE@google.com>
-Subject: [syzbot] [gfs2?] WARNING in gfs2_evict_inode
-From: syzbot <syzbot+6a7837644249dbdc1fa0@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-syzbot found the following issue on:
+[ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
 
-HEAD commit:    6dfafbd0299a Merge tag 'drm-next-2025-12-03' of https://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=150d3cc2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7290a4d27e182f8b
-dashboard link: https://syzkaller.appspot.com/bug?extid=6a7837644249dbdc1fa0
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+In gfs2_chain_bio(), the call to bio_chain() has its arguments swapped.
+The result is leaked bios and incorrect synchronization (only the last
+bio will actually be waited for).  This code is only used during mount
+and filesystem thaw, so the bug normally won't be noticeable.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-6dfafbd0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e7dec7519b1a/vmlinux-6dfafbd0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3ef2b7e3eee7/bzImage-6dfafbd0.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6a7837644249dbdc1fa0@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: fs/gfs2/super.c:1247 at evict_should_delete fs/gfs2/super.c:1247 [inline], CPU#0: kswapd0/78
-WARNING: fs/gfs2/super.c:1247 at gfs2_evict_inode+0xe8f/0x1000 fs/gfs2/super.c:1400, CPU#0: kswapd0/78
-Modules linked in:
-CPU: 0 UID: 0 PID: 78 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:evict_should_delete fs/gfs2/super.c:1247 [inline]
-RIP: 0010:gfs2_evict_inode+0xe8f/0x1000 fs/gfs2/super.c:1400
-Code: 7c 24 20 e8 a3 84 22 fe 48 8b 44 24 20 48 8b 30 4c 89 f7 e8 53 75 f8 ff eb 1d e8 0c 02 bb fd e9 7f fe ff ff e8 02 02 bb fd 90 <0f> 0b 90 e9 f7 f4 ff ff e8 f4 01 bb fd 45 31 f6 49 bd 00 00 00 00
-RSP: 0018:ffffc9000103f000 EFLAGS: 00010293
-RAX: ffffffff840657fe RBX: ffff888019f45620 RCX: ffff88801c254980
-RDX: 0000000000000000 RSI: 0000000000000800 RDI: 0000000000000000
-RBP: ffffc9000103f130 R08: ffff888000d1c327 R09: 1ffff110001a3864
-R10: dffffc0000000000 R11: ffffed10001a3865 R12: ffff888019f45668
-R13: 1ffff110033e8acd R14: 1ffff110033e8b53 R15: 0000000000000800
-FS:  0000000000000000(0000) GS:ffff88808d68a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fc185f879a0 CR3: 000000005106d000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- evict+0x5f4/0xae0 fs/inode.c:837
- dispose_list fs/inode.c:879 [inline]
- prune_icache_sb+0x21b/0x2c0 fs/inode.c:1027
- super_cache_scan+0x39b/0x4b0 fs/super.c:224
- do_shrink_slab+0x6df/0x10d0 mm/shrinker.c:437
- shrink_slab_memcg mm/shrinker.c:550 [inline]
- shrink_slab+0x7ef/0x10d0 mm/shrinker.c:628
- shrink_one+0x28a/0x7c0 mm/vmscan.c:4955
- shrink_many mm/vmscan.c:5016 [inline]
- lru_gen_shrink_node mm/vmscan.c:5094 [inline]
- shrink_node+0x315d/0x3780 mm/vmscan.c:6081
- kswapd_shrink_node mm/vmscan.c:6941 [inline]
- balance_pgdat mm/vmscan.c:7124 [inline]
- kswapd+0x13f5/0x2780 mm/vmscan.c:7389
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-
-
+Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+LLM Generated explanations, may be completely bogus:
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Now I understand the bug clearly. The `bio_chain()` signature is:
+```c
+void bio_chain(struct bio *bio, struct bio *parent)
+```
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+Where:
+- `bio` - the target bio being submitted
+- `parent` - the bio whose completion will be delayed until both
+  complete
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+**The Bug:**
+In `gfs2_chain_bio()`:
+```c
+new->bi_iter.bi_sector = bio_end_sector(prev);
+bio_chain(new, prev);  // WRONG: arguments swapped
+submit_bio(prev);
+return new;
+```
 
-If you want to undo deduplication, reply with:
-#syz undup
+The function allocates `new`, chains with `prev`, submits `prev`, and
+returns `new`. The intention is that `new` accumulates all completions -
+callers wait on `new`.
+
+With the **wrong order** `bio_chain(new, prev)`:
+- `new`'s completion increments `prev`'s remaining count
+- But `prev` is submitted immediately and freed after completion
+- Result: **leaked bios** (new never freed properly) and **incorrect
+  synchronization** (waiting on `new` doesn't work correctly)
+
+With the **correct order** `bio_chain(prev, new)`:
+- `prev`'s completion increments `new`'s remaining count
+- Waiting on `new` correctly waits for all chained bios
+
+## 3. CLASSIFICATION
+
+- **Type:** Bug fix - logic error (swapped arguments)
+- **Impact:** Memory leaks and incorrect I/O synchronization in GFS2
+- **Not:** Feature addition, refactoring, or cleanup
+
+## 4. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** 1 line
+- **Files touched:** 1 file
+- **Complexity:** Trivial - argument swap
+- **Risk:** Extremely low - this is the obviously correct fix
+
+The fix is minimal, self-contained, and the correct argument order is
+unambiguous from the API documentation.
+
+## 5. USER IMPACT
+
+- **Affected users:** GFS2 users (enterprise/cluster environments)
+- **Trigger conditions:** Mount and filesystem thaw operations
+- **Severity:**
+  - Bio leaks (memory exhaustion over time)
+  - Incorrect synchronization could lead to data consistency issues
+    during mount/thaw
+
+While the maintainer notes "normally won't be noticeable," in production
+cluster environments, bio leaks during repeated mount/umount cycles
+could be problematic, and synchronization bugs in filesystem code are
+inherently risky.
+
+## 6. STABILITY INDICATORS
+
+- Reported-by tag (issue was identified)
+- Signed by GFS2 maintainer (Andreas Gruenbacher)
+- Trivially correct fix - no ambiguity about the right solution
+
+## 7. DEPENDENCY CHECK
+
+This is a standalone fix with no dependencies. The `bio_chain()` API is
+stable and has existed for years.
+
+## CONCLUSION
+
+**Meets stable criteria:**
+- ✅ Obviously correct - clear API misuse with documented correct usage
+- ✅ Fixes real bug - bio leaks and incorrect synchronization
+- ✅ Small and contained - single one-line change
+- ✅ No new features
+- ✅ Risk is minimal
+
+**Minor concerns:**
+- No explicit `Cc: stable@vger.kernel.org` tag (maintainer didn't
+  request backport)
+- No `Fixes:` tag identifying affected versions
+- Impact described as "normally won't be noticeable"
+
+Despite the lack of explicit stable tags, this is a clear bug fix to
+filesystem code. Bio leaks and synchronization issues in filesystem
+operations are exactly the type of bugs stable trees should fix. The
+change is trivial, obviously correct, and carries essentially zero risk
+of regression.
+
+**YES**
+
+ fs/gfs2/lops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index 9c8c305a75c46..914d03f6c4e82 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
+ 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
+ 	bio_clone_blkg_association(new, prev);
+ 	new->bi_iter.bi_sector = bio_end_sector(prev);
+-	bio_chain(new, prev);
++	bio_chain(prev, new);
+ 	submit_bio(prev);
+ 	return new;
+ }
+-- 
+2.51.0
+
