@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1B4220F3E;
-	Tue,  9 Dec 2025 00:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD41D23C8C7;
+	Tue,  9 Dec 2025 00:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765239409; cv=none; b=QHWPgkqeGimxDi5DdhZFZ9zLpuv0zkpx0Ohh6snbFyn+lNeKslEiWAr4kvQ10M73IR0EQb/RL7WFHqxL/vQLBu7qYkBl7yc4961K7IxQATzz68vFvOMU6uY9SIbfNSk+PDmLwaY1fnztHQReN1WI2vcs+yEoMSGgoGWdol/ZC30=
+	t=1765239445; cv=none; b=YrufaNBhGsshv//E7DZcQNTJrxlI6V9b6L+7qbRS6ZqAro54zm98qWydQstblkhpV2XaCZ3jt80o5di2OFB+W7dP5IRODgcqlebLRDOd2G15CHwqagXBbljQVrKJQe576iyNV8lwFo5rcbjclk5xv0v/r+XsXcqkwkFRKPp5v0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765239409; c=relaxed/simple;
-	bh=+fEtpiAU5F4qN2nqblGeJLbNnNnrXklntIsEeaDT3ns=;
+	s=arc-20240116; t=1765239445; c=relaxed/simple;
+	bh=zJDUZJLStca6AOH5tUlUpjNsJ+2vLrqieI6DgNVKTC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bAbaj/Upd9XWlHgXOEN9ty2CAG0U0jQLgLziAjdKLPn3I6HMuEgrLJOARuz250F7Sc9QM+UKqF1wYzkB1fjS1TpdRf/ioQwNYbVOOfL8cnn4nURMrUkaXMZEAXBgwsJJmikaa9F5SfzHg61nuz09uoQ0P/Ul9EYw4fqTEq6D3xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5yLId5x; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=iAxlcoItdiXFMN6ErdUpLo6wlxFYKs1eTujQThCIggbEXjz5y2sWv/esBCrBJGP5quVDvMj8OVoTKvb7fEXuzWnKRcmDLXmsFe6ik138nftfswWgnm2yciIr8aKmU2+aN3tzbP952EXCgEtuWvKFCnBfaJfTSe5x7YppiUBgLpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKVBdvYY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5yLId5x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE272C19421;
-	Tue,  9 Dec 2025 00:16:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKVBdvYY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93D2C19421;
+	Tue,  9 Dec 2025 00:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765239408;
-	bh=+fEtpiAU5F4qN2nqblGeJLbNnNnrXklntIsEeaDT3ns=;
+	s=k20201202; t=1765239444;
+	bh=zJDUZJLStca6AOH5tUlUpjNsJ+2vLrqieI6DgNVKTC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5yLId5x6TQTUTJcUxf13z4bmstvfc3r0y+ceWeYnx8kZimGGqLb+d+5E497N0WrZ
-	 ONJqyQ3+MLTw1EI1Jz4n/TZFzjaI9ces1wSeKCePOtUS4suK7hdzaVxBibr9A35rgI
-	 wp6e68ZP2U8HMA+QWvP5uUCb4dIf4K88r2bBWf3+FQmXbE8iS6eh4iF0NCCJ0YMMOn
-	 WrY/ju29LumH6p81ctEcqnLPUP+LD1ubBQcP/dJfPOHw3AvRx8O9oa6e5UHM94/9NW
-	 IggIgBnEfCSezUNeCR4ngWNmW4E91xP8NW9MRuWyXidaRin7hpPGnfRIh/X19xPUGo
-	 VpundUZGWWqRg==
+	b=VKVBdvYYoKYEWFRggfdzHmgI/xL7t3P0MB6mMukFv6exTK33gXmbRMZva96zmiPYS
+	 XK7TGbthkndzoRqQ6dBuAPdFCTCt66uHZiCTTuGq/aYA32DBwrSaq71v9sHcB5i4/5
+	 CBHQR4pYl26ey/+lTaVmbd3vK6y5QJixiuGmoQ7jyGJdvqFnK3jOliIxfieSR7pY8A
+	 FrNXZ2v3GCJ/p1VOuw+O8DmkWv4zuNsMnzWn6rKaFaxy/Xo2NZgPfI/DdI26jBSFUJ
+	 ionFY3sU4gIj6oEa8uN9ZkIE4i+LlCiUQD/tJ5GCXesOqvcNzyobFzhxuqQc7J/KrH
+	 CydU/NKY7ZoZg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Stephen Zhang <starzhangzsd@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.18-6.1] gfs2: Fix use of bio_chain
-Date: Mon,  8 Dec 2025 19:15:00 -0500
-Message-ID: <20251209001610.611575-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] gfs2: fix remote evict for read-only filesystems
+Date: Mon,  8 Dec 2025 19:15:15 -0500
+Message-ID: <20251209001610.611575-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
 References: <20251209001610.611575-1-sashal@kernel.org>
@@ -53,133 +52,169 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
+[ Upstream commit 64c10ed9274bc46416f502afea48b4ae11279669 ]
 
-In gfs2_chain_bio(), the call to bio_chain() has its arguments swapped.
-The result is leaked bios and incorrect synchronization (only the last
-bio will actually be waited for).  This code is only used during mount
-and filesystem thaw, so the bug normally won't be noticeable.
+When a node tries to delete an inode, it first requests exclusive access
+to the iopen glock.  This triggers demote requests on all remote nodes
+currently holding the iopen glock.  To satisfy those requests, the
+remote nodes evict the inode in question, or they poke the corresponding
+inode glock to signal that the inode is still in active use.
 
-Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
+This behavior doesn't depend on whether or not a filesystem is
+read-only, so remove the incorrect read-only check.
+
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I understand the bug clearly. The `bio_chain()` signature is:
+## Analysis: gfs2: fix remote evict for read-only filesystems
+
+### 1. COMMIT MESSAGE ANALYSIS
+
+**Subject:** Uses "fix" keyword, indicating a bug fix
+**Description:** Explains a cluster coordination bug in GFS2 where the
+read-only check was incorrectly preventing remote inode eviction
+**Tags:**
+- Signed-off-by from Andreas Gruenbacher (GFS2 maintainer)
+- No explicit "Cc: stable@vger.kernel.org" tag
+- No "Fixes:" tag
+
+### 2. CODE CHANGE ANALYSIS
+
+The change is extremely minimal - removing a single condition from
+`iopen_go_callback()`:
+
+**Before:**
 ```c
-void bio_chain(struct bio *bio, struct bio *parent)
+if (!remote || sb_rdonly(sdp->sd_vfs) ||
+    test_bit(SDF_KILL, &sdp->sd_flags))
+    return;
 ```
 
-Where:
-- `bio` - the target bio being submitted
-- `parent` - the bio whose completion will be delayed until both
-  complete
-
-**The Bug:**
-In `gfs2_chain_bio()`:
+**After:**
 ```c
-new->bi_iter.bi_sector = bio_end_sector(prev);
-bio_chain(new, prev);  // WRONG: arguments swapped
-submit_bio(prev);
-return new;
+if (!remote || test_bit(SDF_KILL, &sdp->sd_flags))
+    return;
 ```
 
-The function allocates `new`, chains with `prev`, submits `prev`, and
-returns `new`. The intention is that `new` accumulates all completions -
-callers wait on `new`.
+**Technical mechanism of the bug:**
+- GFS2 is a clustered filesystem where multiple nodes access shared
+  storage
+- When Node A wants to delete an inode, it requests exclusive access to
+  the iopen glock
+- This triggers demote requests to all remote nodes (Node B, C, etc.)
+  holding that glock
+- Remote nodes must respond by either evicting the inode or signaling
+  it's still in use
+- The bug: The `sb_rdonly()` check caused read-only mounted nodes to
+  skip this coordination entirely
+- This breaks cluster protocol because Node A waits for Node B to
+  release the glock, but Node B ignores the request
 
-With the **wrong order** `bio_chain(new, prev)`:
-- `new`'s completion increments `prev`'s remaining count
-- But `prev` is submitted immediately and freed after completion
-- Result: **leaked bios** (new never freed properly) and **incorrect
-  synchronization** (waiting on `new` doesn't work correctly)
+**Why the fix is correct:**
+Cluster coordination for glock demotes must work regardless of mount
+mode. A read-only node still participates in the cluster and must
+properly respond to glock callbacks. The read-only check was logically
+incorrect and could cause:
+- Stale inode issues across the cluster
+- Potential hangs where nodes wait indefinitely for glock release
+- Cluster coordination failures
 
-With the **correct order** `bio_chain(prev, new)`:
-- `prev`'s completion increments `new`'s remaining count
-- Waiting on `new` correctly waits for all chained bios
+### 3. CLASSIFICATION
 
-## 3. CLASSIFICATION
+- **Bug type:** Logic error - incorrect early return preventing required
+  cluster coordination
+- **Not a feature:** Removing an incorrect check doesn't add
+  functionality
+- **Security impact:** Not directly security-related, but could cause
+  availability issues
 
-- **Type:** Bug fix - logic error (swapped arguments)
-- **Impact:** Memory leaks and incorrect I/O synchronization in GFS2
-- **Not:** Feature addition, refactoring, or cleanup
+### 4. SCOPE AND RISK ASSESSMENT
 
-## 4. SCOPE AND RISK ASSESSMENT
+| Metric | Assessment |
+|--------|------------|
+| Lines changed | 2 lines (trivial) |
+| Files touched | 1 file |
+| Complexity | Very low |
+| Subsystem | GFS2 (clustered filesystem) |
+| Regression risk | Very low |
 
-- **Lines changed:** 1 line
-- **Files touched:** 1 file
-- **Complexity:** Trivial - argument swap
-- **Risk:** Extremely low - this is the obviously correct fix
+The change is extremely surgical - it only removes an erroneous
+condition. The remaining code path already exists and has been tested;
+this fix just ensures it executes when it should.
 
-The fix is minimal, self-contained, and the correct argument order is
-unambiguous from the API documentation.
+### 5. USER IMPACT
 
-## 5. USER IMPACT
+- **Affected users:** GFS2 users in clustered environments with read-
+  only mounts
+- **Use case:** Enterprise clusters (Red Hat, etc.) that use GFS2
+- **Severity:** Could cause cluster coordination failures, stale inodes,
+  or hangs
+- **Frequency:** Affects all read-only GFS2 mounts in cluster mode
 
-- **Affected users:** GFS2 users (enterprise/cluster environments)
-- **Trigger conditions:** Mount and filesystem thaw operations
-- **Severity:**
-  - Bio leaks (memory exhaustion over time)
-  - Incorrect synchronization could lead to data consistency issues
-    during mount/thaw
+### 6. STABILITY INDICATORS
 
-While the maintainer notes "normally won't be noticeable," in production
-cluster environments, bio leaks during repeated mount/umount cycles
-could be problematic, and synchronization bugs in filesystem code are
-inherently risky.
+- Written by Andreas Gruenbacher, the GFS2 maintainer who deeply
+  understands the subsystem
+- The fix logic is obviously correct based on the documented behavior
+- Small change means easy to verify correctness
 
-## 6. STABILITY INDICATORS
+### 7. DEPENDENCY CHECK
 
-- Reported-by tag (issue was identified)
-- Signed by GFS2 maintainer (Andreas Gruenbacher)
-- Trivially correct fix - no ambiguity about the right solution
+- No dependencies on other commits
+- The `iopen_go_callback()` function and `sb_rdonly()` exist in all
+  stable kernels with GFS2 support
+- Clean backport expected (simple line removal)
 
-## 7. DEPENDENCY CHECK
+### Risk vs Benefit Analysis
 
-This is a standalone fix with no dependencies. The `bio_chain()` API is
-stable and has existed for years.
+**Benefits:**
+- Fixes a real bug affecting cluster coordination
+- Prevents potential hangs and stale inode issues
+- Restores correct cluster protocol behavior
 
-## CONCLUSION
+**Risks:**
+- Extremely low - the change simply allows existing, tested code to run
+- Only affects GFS2, a specialized filesystem
+- The maintainer clearly understands the impact
 
-**Meets stable criteria:**
-- ✅ Obviously correct - clear API misuse with documented correct usage
-- ✅ Fixes real bug - bio leaks and incorrect synchronization
-- ✅ Small and contained - single one-line change
-- ✅ No new features
-- ✅ Risk is minimal
+### Conclusion
 
-**Minor concerns:**
-- No explicit `Cc: stable@vger.kernel.org` tag (maintainer didn't
-  request backport)
-- No `Fixes:` tag identifying affected versions
-- Impact described as "normally won't be noticeable"
+Despite the lack of explicit "Cc: stable" tag, this commit:
+1. ✅ Is obviously correct (removing incorrect logic)
+2. ✅ Fixes a real bug affecting cluster coordination
+3. ✅ Is small and contained (2 lines)
+4. ✅ Does not introduce new features
+5. ✅ Will apply cleanly to stable trees
+6. ✅ Has minimal regression risk
 
-Despite the lack of explicit stable tags, this is a clear bug fix to
-filesystem code. Bio leaks and synchronization issues in filesystem
-operations are exactly the type of bugs stable trees should fix. The
-change is trivial, obviously correct, and carries essentially zero risk
-of regression.
+The fix addresses a genuine bug that can cause cluster coordination
+failures in GFS2. The change is trivially small, written by the
+subsystem maintainer, and the logic is clearly correct - read-only
+status should not prevent a node from properly responding to cluster
+glock demote requests.
 
 **YES**
 
- fs/gfs2/lops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/glops.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 9c8c305a75c46..914d03f6c4e82 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
- 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
- 	bio_clone_blkg_association(new, prev);
- 	new->bi_iter.bi_sector = bio_end_sector(prev);
--	bio_chain(new, prev);
-+	bio_chain(prev, new);
- 	submit_bio(prev);
- 	return new;
- }
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 0c0a80b3bacab..0c68ab4432b08 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -630,8 +630,7 @@ static void iopen_go_callback(struct gfs2_glock *gl, bool remote)
+ 	struct gfs2_inode *ip = gl->gl_object;
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+ 
+-	if (!remote || sb_rdonly(sdp->sd_vfs) ||
+-	    test_bit(SDF_KILL, &sdp->sd_flags))
++	if (!remote || test_bit(SDF_KILL, &sdp->sd_flags))
+ 		return;
+ 
+ 	if (gl->gl_demote_state == LM_ST_UNLOCKED &&
 -- 
 2.51.0
 
