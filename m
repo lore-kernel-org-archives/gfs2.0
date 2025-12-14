@@ -1,48 +1,58 @@
-Received: from smtp.smtpout.orange.fr (smtp-69.smtpout.orange.fr [80.12.242.69])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CB33B8D7F
-	for <gfs2@lists.linux.dev>; Sun, 14 Dec 2025 16:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCF72652BD
+	for <gfs2@lists.linux.dev>; Sun, 14 Dec 2025 22:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765730734; cv=none; b=hCyP3hHHkTU39feV5Gz0TcFZ2ERil2Hmlvd0wLgxxsiicXodYiSDSy/KRWdy+H5omlyFD9fuKC+uoPCycE8kaNRn968OYRXoIURIXp5+nDSbKBLRpntL5pGwAuticgdXtAuySIDtfFDQU9LR3MvNMM5Q5NOxh/JNim7l5DkvRak=
+	t=1765752490; cv=none; b=tQdmnSSbmbS6oNZo+vXAZbtWrRVycTIufIqWYG1hqrB6OYkjmJVSM+JCZJK75G6wiFeF3qFue9sVzTHt3zJpmjCDl/S6ME1LPs1g2vcfMgDKgE5scjEu2jv8cyCBXTQSQPFLDL8pSxK9SyNyLLituDOQexaRXQGQLf3gQRq5uIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765730734; c=relaxed/simple;
-	bh=ihRV2+lJdQUC5dqs92CsuBUKuy3VbMgZTcqqUhAEORk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AMbM+DFc5LNN5f0k+sRuY6vrM3tiOwYiiSW85rmVsNm+aBQl/CAOIZGfNvKQ7JNGg0xgCjo5Aywl+T6stBQS+pjX7vCfwXdC8h5D30RzwKGW6edmATwlfdOYANuKY9j9X1YJgUqeIvKueqN9C7b/790IUDVNRyYuSvbBcxILapA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=OXijsay1; arc=none smtp.client-ip=80.12.242.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1765752490; c=relaxed/simple;
+	bh=oThqMAQE6oXAUrT3f+mJGQ6Kvt/tEVEHiR9UBl3ZtpU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nt3W+Cr7GxG4EFVkUkPTtUnyXLWHp089Jo852KTxB54atwai2CwmJ7VestLFv3FFZ/aPhV9ySuqZO0POLJZztIBRKDOpjge8fRCkMmgJv8QUebREIPb6RKfAcUR9tm2ZjEtGnYdkX2iIbW0I6U/nVxulIx8whMb+FD0XwyjztuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WQAAUvht; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="OXijsay1"
-Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id UpCjviAbSl1edUpCkvyHZ1; Sun, 14 Dec 2025 17:44:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1765730660;
-	bh=RBMlKerY6DIW1kq8lcAvwPe4ONKkpAi0jjadljVCmQQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=OXijsay17pwhtSBn4ZRgje5S9XsRyUKRqgALyHo0cw40slgU6384UqiNZfo1QRnvE
-	 zBNVjXpQ5S7pf3Z2lL3onNo9yg+eaucjU4l8UKDKEui5A8QBgMxPk6a+xvjL+WvWSM
-	 /mjOQXXe/X7MO3l2MWXeBvcLhdYJxZnhuFZyX7IICWFJXIRwjs+SZoaNUc64MH9qgR
-	 DXTPIWJysC3yvF2Wka91HGcAXm/8vQ3xz3FHR46jMIvhI8kw51g5AJlhXlHfVShDUx
-	 oP8+iSMiSqj0XU41x8heMjRn9PnOt7W0X93JW3I6NaBYTSao03Bb5WuQv+1219f5OK
-	 YWLnLsll52fhg==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 14 Dec 2025 17:44:20 +0100
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	gfs2@lists.linux.dev
-Subject: [PATCH] dlm: Constify struct configfs_item_operations and configfs_group_operations
-Date: Sun, 14 Dec 2025 17:44:14 +0100
-Message-ID: <5b7ed5a152307c7df3dbcf39b32b7c23fd8f522f.1765730638.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WQAAUvht"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765752487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=swBe7Ht9/vr+Ziv//T4WHLVkeO4fVKsQfXOXXH7Ug8o=;
+	b=WQAAUvhtbfmFPoWODzecmci1REF+kpJccbAHclofkxtlWLWdxu1wonsVNHoIijPkwLC9Q8
+	M1dPs9cYZAdbNI+osPV3otFDsANHM/WeiUnGxbAfAWpyT7X2oPZ+XXwXi79YjfBAIhjKiL
+	IXRoUbd25aqZ6r9UFYPFd/6QkriNtKE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-2hQOANd4MKa3wlCixhIgvQ-1; Sun,
+ 14 Dec 2025 17:48:03 -0500
+X-MC-Unique: 2hQOANd4MKa3wlCixhIgvQ-1
+X-Mimecast-MFC-AGG-ID: 2hQOANd4MKa3wlCixhIgvQ_1765752483
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA0FB19560A5;
+	Sun, 14 Dec 2025 22:48:02 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.34.3])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0DF6180045B;
+	Sun, 14 Dec 2025 22:48:00 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzbot+046b605f01802054bff0@syzkaller.appspotmail.com
+Subject: Re: [PATCH] gfs2: Fix slab-use-after-free in gfs2_qd_dispose
+Date: Sun, 14 Dec 2025 22:47:58 +0000
+Message-ID: <20251214224759.2324369-1-agruenba@redhat.com>
+In-Reply-To: <20251213064304.148987-1-kartikey406@gmail.com>
+References: <20251213064304.148987-1-kartikey406@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -50,86 +60,88 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-'struct configfs_item_operations' and 'configfs_group_operations' are not
-modified in this driver.
+Hello,
 
-Constifying these structures moves some data to a read-only section, so
-increases overall security, especially when the structure holds some
-function pointers.
+> In gfs2_qd_dispose(), the quota data (qd) is removed from qd_list and
+> qd_hlist, but not removed from the LRU list before call_rcu() is
+> invoked to free the object.
+> 
+> This can lead to a use-after-free when the shrinker (gfs2_qd_shrink_scan)
+> runs concurrently with filesystem unmount. The shrinker attempts to walk
+> the LRU list via list_lru_shrink_walk(), accessing quota data that has
+> already been freed by the RCU callback (gfs2_qd_dealloc).
+> 
+> Fix this by calling list_lru_del_obj() to remove the quota data from
+> the LRU list before scheduling the RCU callback.
+> 
+> Fixes: faada74a90563 ("gfs2: Factor out duplicate quota data disposal code")
+> Reported-by: syzbot+046b605f01802054bff0@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=046b605f01802054bff0
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+> Note: Only compile-tested. No reproducer available from syzbot.
+> ---
+>  fs/gfs2/quota.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+> index b1692f12a602..85b0b5105b4b 100644
+> --- a/fs/gfs2/quota.c
+> +++ b/fs/gfs2/quota.c
+> @@ -125,6 +125,8 @@ static void gfs2_qd_dispose(struct gfs2_quota_data *qd)
+>       hlist_bl_del_rcu(&qd->qd_hlist);
+>       spin_unlock_bucket(qd->qd_hash);
+>  
+> +     list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
+> +
 
-On a x86_64, with allmodconfig, as an example:
-Before:
-======
-   text	   data	    bss	    dec	    hex	filename
-  29436	  12952	    384	  42772	   a714	fs/dlm/config.o
+thanks for the suggestion, but this will call list_lru_del_obj() a
+second time on the gfs2_qd_shrink_scan() -> gfs2_qd_list_dispose() ->
+gfs2_qd_dispose() code path.  The bug also isn't introduced by the
+commit you've identified.
 
-After:
-=====
-   text	   data	    bss	    dec	    hex	filename
-  30076	  12312	    384	  42772	   a714	fs/dlm/config.o
+The below fix should be better.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Andreas
+
+--
+
+Subject: gfs2: Fix slab-use-after-free in qd_put
+
+Commit a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
+started freeing quota data objects during filesystem shutdown instead of
+putting them back onto the LRU list, but it failed to remove these
+objects from the LRU list, causing LRU list corruption.  This caused
+use-after-free when the shrinker (gfs2_qd_shrink_scan) tried to access
+already-freed objects on the LRU list.
+
+Fix this by removing qd objects from the LRU list before freeing them in
+qd_put().
+
+Initial fix from Deepanshu Kartikey <kartikey406@gmail.com>.
+
+Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
+Reported-by: syzbot+046b605f01802054bff0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=046b605f01802054bff0
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
-Compile tested only.
+ fs/gfs2/quota.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This change is possible since commits f2f36500a63b and f7f78098690d.
----
- fs/dlm/config.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/fs/dlm/config.c b/fs/dlm/config.c
-index a0d75b5c83c6..82cc3215663f 100644
---- a/fs/dlm/config.c
-+++ b/fs/dlm/config.c
-@@ -324,39 +324,39 @@ struct dlm_member_gone {
- 	struct list_head list; /* space->members_gone */
- };
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 21dfe1e48da6..1c3455093ae8 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -334,6 +334,7 @@ static void qd_put(struct gfs2_quota_data *qd)
+ 		lockref_mark_dead(&qd->qd_lockref);
+ 		spin_unlock(&qd->qd_lockref.lock);
  
--static struct configfs_group_operations clusters_ops = {
-+static const struct configfs_group_operations clusters_ops = {
- 	.make_group = make_cluster,
- 	.drop_item = drop_cluster,
- };
- 
--static struct configfs_item_operations cluster_ops = {
-+static const struct configfs_item_operations cluster_ops = {
- 	.release = release_cluster,
- };
- 
--static struct configfs_group_operations spaces_ops = {
-+static const struct configfs_group_operations spaces_ops = {
- 	.make_group = make_space,
- 	.drop_item = drop_space,
- };
- 
--static struct configfs_item_operations space_ops = {
-+static const struct configfs_item_operations space_ops = {
- 	.release = release_space,
- };
- 
--static struct configfs_group_operations comms_ops = {
-+static const struct configfs_group_operations comms_ops = {
- 	.make_item = make_comm,
- 	.drop_item = drop_comm,
- };
- 
--static struct configfs_item_operations comm_ops = {
-+static const struct configfs_item_operations comm_ops = {
- 	.release = release_comm,
- };
- 
--static struct configfs_group_operations nodes_ops = {
-+static const struct configfs_group_operations nodes_ops = {
- 	.make_item = make_node,
- 	.drop_item = drop_node,
- };
- 
--static struct configfs_item_operations node_ops = {
-+static const struct configfs_item_operations node_ops = {
- 	.release = release_node,
- };
- 
++		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
+ 		gfs2_qd_dispose(qd);
+ 		return;
+ 	}
 -- 
-2.52.0
+2.51.0
 
