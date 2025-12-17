@@ -1,204 +1,111 @@
-Received: from mail-oa1-f79.google.com (mail-oa1-f79.google.com [209.85.160.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151893168F1
-	for <gfs2@lists.linux.dev>; Mon, 15 Dec 2025 10:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCD42D3A69;
+	Wed, 17 Dec 2025 06:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765795477; cv=none; b=jdLB/8keN9/arByObma63tEM8fH9CKopEFaTUIDsaRYGc7/bRFKtCMSWuQ51Bs77vTGlGdmq0+j6l2hH6ATKpR6cThFyw1HKn4uhHSS+24ojA+RHLVo0Mn+wAnRwFkA9tOcELCkMU5eMHnnsa46j7vF7ncsJEi8DEsObnlJve/c=
+	t=1765951828; cv=none; b=MJG4CCd+LeaKu9R5tLVE98GiP7hrzTpoeOCx+wO//kdfim9L3/kTJSQz5Z8IPQfD20/k1ovZqLhydIB469BsWow3gkJckOeAdNV15EQxbVaioiiaxdgmEtC/v4QtGXevotTLxFYFYUHOCRRvvpfE0Fq1B1qrycoJkH//qwJROj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765795477; c=relaxed/simple;
-	bh=uFETebDBxR8cujiqPBalfjv9ymqc37v8PPuTb63vDqo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UgCRgOq+yiluetyHy7JDoIEd4gT3jjNZqw89cNUN30hbaGVfL42uTJonnp0UorfzVnUbrJzLSfzi+bb6ljEuBpiuaWAUUXbFy8IZH2WOpPGh/FvDpVpGIRiSisEX1LuIGWYDXlg05MqYkSNsutl+kihFq/gFreSBKpxkAazKmxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f79.google.com with SMTP id 586e51a60fabf-3ed1784353eso5483827fac.3
-        for <gfs2@lists.linux.dev>; Mon, 15 Dec 2025 02:44:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765795475; x=1766400275;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qqCNuwmA4fbA37GlLvH1uHV20RN2FR+FjvmX3WZ33UE=;
-        b=qIR6Rp1lCbd+K6GbqDSlrZ42eizo8ljUBUTDPWhoXplLmhDHjvlR7p1egPFgZPQt/u
-         k6Fc+rFlIL5MwympeXNAV1yirILWq3fQ5MTqbfGjJGyh1mwsh+eXdLyw7tyhHg2KACt2
-         0i8jesKh5aM2QPM0v9JW3BY4Wf6uiJCh+kXN7U9YFOSGxcW0/dnH1eXU3WEONORiIzgP
-         Mfp3dqhha1b8rADfHg0XYkhPU+AvEHthC0URRrvI0ySonKYdgZjLHSOr5gmmrc1Urw9u
-         0jh+V8jH395854BhFJfH/sujFsSlAdC6M0uw9baNoFqSdH3SF1B8gqVhVDTzU5XOQDeX
-         pV4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUhiYrRqq/3b7xI4OK6s1JozC7+Uh1Y4uRfC9eN8f9GrsBiDfNbD7x8GqfTs1wkBLBVssUP@lists.linux.dev
-X-Gm-Message-State: AOJu0YwD+CLtmiIfuNBvHvXoZd0H+yYD9Z7MC1xFjRno6Oiovvn8GIKA
-	RHYqAbjNT4GooXeBvznER23HdfpiQ/bpG52+YF+vEOsibme1giEblebEuEnghwYsP/439GJNIBL
-	ezUQd3QS5aaLu/fPTUSQOQJvgLbT25SLbPXdGq3973/huYU8LzpWLG4uv28o=
-X-Google-Smtp-Source: AGHT+IHo4gJjjhrRPFyJ9Gs244i1tNBM1GLQIxw95uTKBrJVMwsHDbLnLCjCh33girb31Da/Ohs6f8hKfVdzAUrjp4blywts1kXU
+	s=arc-20240116; t=1765951828; c=relaxed/simple;
+	bh=n/ts86dlJHFC1dtjkqgZ3MJH7gMwJ/qoS8cXeqwI98o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fvPL1o0PhGvfeH3/Z2kSnpM9CD471QWJ19O78fMPPvAdysF0KjqNgbV3Cw0Sz9CdAErb0MkflPPS6W22V6TSgcVOqiPH03d41yCrmWCQLM+aSLAvP1WQooF6LbdA20HxnI/LzoyY6rrhK91XqyLhYy0A7w+ok+jq3RdN3vVzCSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RWaIE1XN; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RWaIE1XN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=Hg/tESeGWqFXyE6OY/4FD3HnRJ5gNtQ9rs6sVZ/sm/I=; b=RWaIE1XNo2xqIf3v0pGEty3Vki
+	i+XyIgwgRWHpSRL5IOdxnnbugZImmEzMyU9gjru4003sHk0x1z1h5Q+sR+1QYMYD+zBAX48bDlSkv
+	/eY5BUfdn0Roh8veto2Y5ZTRz+JO9BdfXAEGHbqg89WiF9fNB7ILVgKSVlt61wPTxW8LajYjdh4s3
+	Vapn/ah77rbNgBkL1F6/I1ldQx6KpEy2cCc9qkJ4qVeH/McHKj//6iOUJFRaTkPXa8uVckHnDKis0
+	QEn0e7jOdiGQ5noV1sixi4BZUMf7H0rIvn4F6x7YyBVftkCq4jInersDaT8mfv8JcCU0EDxPMkMpc
+	dIe+M5hw==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vVkjt-00000006DOb-2Y4Q;
+	Wed, 17 Dec 2025 06:10:24 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	David Sterba <dsterba@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Stefan Roesch <shr@fb.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: re-enable IOCB_NOWAIT writes to files v3
+Date: Wed, 17 Dec 2025 07:09:33 +0100
+Message-ID: <20251217061015.923954-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1613:b0:659:858f:f1df with SMTP id
- 006d021491bc7-65b44ff776dmr4579519eaf.0.1765795474961; Mon, 15 Dec 2025
- 02:44:34 -0800 (PST)
-Date: Mon, 15 Dec 2025 02:44:34 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <693fe692.a70a0220.104cf0.033c.GAE@google.com>
-Subject: [syzbot] [gfs2] KASAN: use-after-free Read in iomap_read_inline_data (2)
-From: syzbot <syzbot+365d799c2cc252b698e4@syzkaller.appspotmail.com>
-To: brauner@kernel.org, djwong@kernel.org, gfs2@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Hello,
+Hi all,
 
-syzbot found the following issue on:
+commit 66fa3cedf16a ("fs: Add async write file modification handling.")
+effectively disabled IOCB_NOWAIT writes as timestamp updates currently
+always require blocking, and the modern timestamp resolution means we
+always update timestamps.  This leads to a lot of context switches from
+applications using io_uring to submit file writes, making it often worse
+than using the legacy aio code that is not using IOCB_NOWAIT.
 
-HEAD commit:    8f0b4cce4481 Linux 6.19-rc1
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=169acd92580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=513255d80ab78f2b
-dashboard link: https://syzkaller.appspot.com/bug?extid=365d799c2cc252b698e4
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+This series allows non-blocking updates for lazytime if the file system
+supports it, and adds that support for XFS.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Changes since v2:
+ - drop patches merged upstream
+ - adjust for the inode state accesors
+ - keep a check in __writeback_single_inode instead of exercising
+   potentially undefined behavior
+ - more spelling fixes
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8f0b4cce.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7b037b4b8714/vmlinux-8f0b4cce.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/31c24c278e15/bzImage-8f0b4cce.xz
+Changes since v1:
+ - more regular numbering of the S_* flags
+ - fix XFS to actually not block
+ - don't ignore the generic_update_time return value in
+   file_update_time_flags
+ - fix the sync_lazytime return value
+ - fix an out of data comment in btrfs
+ - fix a race that would update i_version before returning -EAGAIN in XFS
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+365d799c2cc252b698e4@syzkaller.appspotmail.com
-
-loop0: detected capacity change from 0 to 32768
-gfs2: fsid=syz:syz: Trying to join cluster "lock_nolock", "syz:syz"
-gfs2: fsid=syz:syz: Now mounting FS (format 1801)...
-gfs2: fsid=syz:syz.0: journal 0 mapped with 1 extents in 0ms
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-==================================================================
-BUG: KASAN: use-after-free in folio_fill_tail include/linux/highmem.h:600 [inline]
-BUG: KASAN: use-after-free in iomap_read_inline_data+0x6dd/0xbb0 fs/iomap/buffered-io.c:379
-Read of size 159 at addr ffff88801e8298e8 by task syz.0.0/5336
-
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x240 mm/kasan/report.c:482
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
- __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
- folio_fill_tail include/linux/highmem.h:600 [inline]
- iomap_read_inline_data+0x6dd/0xbb0 fs/iomap/buffered-io.c:379
- iomap_write_begin_inline fs/iomap/buffered-io.c:898 [inline]
- iomap_write_begin+0xcdd/0x1270 fs/iomap/buffered-io.c:975
- iomap_write_iter fs/iomap/buffered-io.c:1107 [inline]
- iomap_file_buffered_write+0x45f/0x9c0 fs/iomap/buffered-io.c:1188
- gfs2_file_buffered_write+0x4ed/0x880 fs/gfs2/file.c:1061
- gfs2_file_write_iter+0x94e/0x1100 fs/gfs2/file.c:1166
- iter_file_splice_write+0x972/0x10b0 fs/splice.c:738
- do_splice_from fs/splice.c:938 [inline]
- direct_splice_actor+0x101/0x160 fs/splice.c:1161
- splice_direct_to_actor+0x5a8/0xcc0 fs/splice.c:1105
- do_splice_direct_actor fs/splice.c:1204 [inline]
- do_splice_direct+0x181/0x270 fs/splice.c:1230
- do_sendfile+0x4da/0x7e0 fs/read_write.c:1370
- __do_sys_sendfile64 fs/read_write.c:1431 [inline]
- __se_sys_sendfile64+0x13e/0x190 fs/read_write.c:1417
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9c8bf8f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f9c8ce68038 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
-RAX: ffffffffffffffda RBX: 00007f9c8c1e5fa0 RCX: 00007f9c8bf8f7c9
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000008
-RBP: 00007f9c8c013f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000007ffff000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f9c8c1e6038 R14: 00007f9c8c1e5fa0 R15: 00007ffdb62719d8
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x92c pfn:0x1e829
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000000000 ffffea00007a2288 ffffea00007f1cc8 0000000000000000
-raw: 000000000000092c 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 0, migratetype Movable, gfp_mask 0x148c4a(GFP_NOFS|__GFP_HIGHMEM|__GFP_MOVABLE|__GFP_NOFAIL|__GFP_COMP|__GFP_HARDWALL), pid 5336, tgid 5335 (syz.0.0), ts 75696329519, free_ts 76469625595
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x234/0x290 mm/page_alloc.c:1846
- prep_new_page mm/page_alloc.c:1854 [inline]
- get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3915
- __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5210
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2486
- alloc_frozen_pages_noprof mm/mempolicy.c:2557 [inline]
- alloc_pages_noprof+0xa9/0x190 mm/mempolicy.c:2577
- folio_alloc_noprof+0x1e/0x30 mm/mempolicy.c:2587
- filemap_alloc_folio_noprof+0x112/0x490 mm/filemap.c:1013
- __filemap_get_folio_mpol+0x3fc/0xb00 mm/filemap.c:2006
- __filemap_get_folio include/linux/pagemap.h:763 [inline]
- gfs2_getbuf+0x181/0x6d0 fs/gfs2/meta_io.c:144
- gfs2_meta_new+0x31/0x160 fs/gfs2/meta_io.c:196
- init_dinode+0x75/0xa70 fs/gfs2/inode.c:580
- gfs2_create_inode+0x10d6/0x15b0 fs/gfs2/inode.c:863
- gfs2_atomic_open+0x116/0x200 fs/gfs2/inode.c:1402
- atomic_open fs/namei.c:4295 [inline]
- lookup_open fs/namei.c:4406 [inline]
- open_last_lookups fs/namei.c:4540 [inline]
- path_openat+0x11f8/0x3dd0 fs/namei.c:4784
- do_filp_open+0x1fa/0x410 fs/namei.c:4814
- do_sys_openat2+0x121/0x200 fs/open.c:1430
-page last free pid 78 tgid 78 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1395 [inline]
- free_unref_folios+0xdb3/0x14f0 mm/page_alloc.c:3000
- shrink_folio_list+0x4800/0x5010 mm/vmscan.c:1603
- evict_folios+0x473e/0x57f0 mm/vmscan.c:4711
- try_to_shrink_lruvec+0x8a3/0xb50 mm/vmscan.c:4874
- shrink_one+0x25c/0x720 mm/vmscan.c:4919
- shrink_many mm/vmscan.c:4982 [inline]
- lru_gen_shrink_node mm/vmscan.c:5060 [inline]
- shrink_node+0x2f7d/0x35b0 mm/vmscan.c:6047
- kswapd_shrink_node mm/vmscan.c:6901 [inline]
- balance_pgdat mm/vmscan.c:7084 [inline]
- kswapd+0x145a/0x2820 mm/vmscan.c:7354
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Memory state around the buggy address:
- ffff88801e829780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88801e829800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff88801e829880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                          ^
- ffff88801e829900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88801e829980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Diffstat:
+ Documentation/filesystems/locking.rst |    2 
+ Documentation/filesystems/vfs.rst     |    6 ++
+ fs/btrfs/inode.c                      |   11 +++-
+ fs/fat/misc.c                         |    3 +
+ fs/fs-writeback.c                     |   52 ++++++++++++++++---
+ fs/gfs2/inode.c                       |    6 +-
+ fs/inode.c                            |   89 +++++++++++++++++++---------------
+ fs/internal.h                         |    3 -
+ fs/nfs/inode.c                        |    4 -
+ fs/orangefs/inode.c                   |    8 ++-
+ fs/overlayfs/inode.c                  |    3 +
+ fs/sync.c                             |    4 -
+ fs/ubifs/file.c                       |   11 ++--
+ fs/xfs/xfs_iops.c                     |   35 ++++++++++++-
+ fs/xfs/xfs_super.c                    |   29 -----------
+ include/linux/fs.h                    |   19 ++++---
+ include/trace/events/writeback.h      |    6 --
+ 17 files changed, 182 insertions(+), 109 deletions(-)
