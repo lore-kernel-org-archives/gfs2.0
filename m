@@ -1,81 +1,96 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B61C21C17D
-	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 06:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E42231845
+	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 10:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766038747; cv=none; b=B5sXL/xhIUbroaUvdAveFJRPN9qiQXzrBychgQts5WuJIgIoVPC2ta/49uGnaLojuLgA8YPtrxX8ITRnisrGdC82UGJpXk8HvTqcwkAxCj1NiqgEesRA5SVt7/PjCZB3K2HVWzJCJ0/a/22J5g6Uu8DHS5P0H6yqM13nBdWOliA=
+	t=1766052388; cv=none; b=dbBj8WtbJAiVqifu60+MOHPUgwbmFTHwNREOlR8+Ug79fe/LZ8f5jh4/BwloN0KoNRdboXPDPOINCU+kEQlOrrkkxrLJiJpoGbZMwn8TTOaKKHkfCcYJfzKZcZvT+gU15dHBc8H+rRbNSUj6vAxMUqnyj1FGrXR49jGfvr34lCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766038747; c=relaxed/simple;
-	bh=JmvjwhEYnkt2EOZtxq/vNq4N+U4ZhJ/hWwGm4zYqqjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZOAW/YyoTlcQde7ZMTP8e53YbRg/S2d3B9VfDI21u7zpkTPDVcHxMA0kdiEEezx4q7haKWeaJpN8PClIScKkpf2amSOBzCs6eAztCRdriuqbGkN7BHvhqpnZofEWBTkaqX5Xd7CpLmLPkVqHSx6Un1pTSk7xmQ4w3cw2LVBUDIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 742AF227A88; Thu, 18 Dec 2025 07:19:01 +0100 (CET)
-Date: Thu, 18 Dec 2025 07:19:00 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>,
-	Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev, io-uring@vger.kernel.org,
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 08/10] fs: add support for non-blocking timestamp
- updates
-Message-ID: <20251218061900.GB2775@lst.de>
-References: <20251217061015.923954-1-hch@lst.de> <20251217061015.923954-9-hch@lst.de> <2hnq54zc4x2fpxkpuprnrutrwfp3yi5ojntu3e3xfcpeh6ztei@2fwwsemx4y5z>
+	s=arc-20240116; t=1766052388; c=relaxed/simple;
+	bh=Mh0oP4HlUF4vJ5EWo4F9iJ0dfMo6kLfsjwYVtLVk1h0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=qc7NgvdV9ylhaq+MR/PiBbKA9a4puoUX8XL4d/pAANyTHq+DTapCNqu1Vy4RuGO3GJq8sJt0dM6pXbEzYTgaNOjVSqgkAHZ1Lo7EK901Inwh5qlXlBDpA5kpp3FzdSH4wJFFZtWoF7ku0PLk74tBZCldJeKmSM0BvOqse/Gsoko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-657a467228eso601812eaf.0
+        for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 02:06:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766052386; x=1766657186;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jfWGGf32bjAsJumom/V+y1wxizbLYMBuz2jzZs6RHB4=;
+        b=ZdepNGwcXGsypH0eDm5vbp6LXptoRw2Ig6fbnWPvzsrdey0ZAVLPSqsu+F3I/7Ik5t
+         Snmkp2zkRKt0Mbe+770v4Jwa8tRBjujHbvT+urJb+oWwlN6r5tQdW1WripdfhMqx9DtQ
+         GvmeyjLZPiaKkEzQ43fdQiBBy4e6nJsuw4eHArQx3JKpGz6mDdkImt75vAcksZzjaGOm
+         hquzeu5GYiiIIV0iCAXtsYAqqwxjVMW8Hfk8coBvx4dURM/YIgQE29DqtNhWWVnrw+I8
+         L3Xjhg9ju2156FtPrAaWwgvBcz1bKd39ovgHvaqNn5EDfbdMsuGAjQpDOG/ASm34HFB9
+         fcHA==
+X-Gm-Message-State: AOJu0YxB9NZMAJfnIivA/v1EcUWHfTFass44eGCSIBkXMgy3PUepJa39
+	/nJtli9OvaSGkY2jUM5rywNG41/54IhbkeyT653W/AkkV9zDF3PJLsg1bDVgnBgF/xHyLT3Ef1m
+	XYFQcy4vbEgGp98V6GszhxbFDzLTMY3mjQCUgR4VRYAwZgVdlFV79nbtNaro=
+X-Google-Smtp-Source: AGHT+IG/NI6b7yAfl6SSk5rDZ37sYcQgE+kiWZ2Ni/Y5rVropDIQJLj8etXxuicWofwnIcPF+WJWToaR5t2oCWaDHGlZiIuea/rO
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2hnq54zc4x2fpxkpuprnrutrwfp3yi5ojntu3e3xfcpeh6ztei@2fwwsemx4y5z>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Received: by 2002:a05:6820:2294:b0:65b:579c:8479 with SMTP id
+ 006d021491bc7-65b579c8cd6mr6433665eaf.75.1766052386042; Thu, 18 Dec 2025
+ 02:06:26 -0800 (PST)
+Date: Thu, 18 Dec 2025 02:06:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6943d222.a70a0220.207337.00da.GAE@google.com>
+Subject: [syzbot] Monthly gfs2 report (Dec 2025)
+From: syzbot <syzbot+list6399ad7aede57fc4022c@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 17, 2025 at 01:42:20PM +0100, Jan Kara wrote:
-> > @@ -2110,12 +2110,26 @@ int inode_update_timestamps(struct inode *inode, int *flags)
-> >  		now = inode_set_ctime_current(inode);
-> >  		if (!timespec64_equal(&now, &ctime))
-> >  			updated |= S_CTIME;
-> > -		if (!timespec64_equal(&now, &mtime)) {
-> > -			inode_set_mtime_to_ts(inode, now);
-> > +		if (!timespec64_equal(&now, &mtime))
-> >  			updated |= S_MTIME;
-> > +
-> > +		if (IS_I_VERSION(inode)) {
-> > +			if (*flags & S_NOWAIT) {
-> > +				/*
-> > +				 * Error out if we'd need timestamp updates, as
-> > +				 * the generally requires blocking to dirty the
-> > +				 * inode in one form or another.
-> > +				 */
-> > +				if (updated && inode_iversion_need_inc(inode))
-> > +					goto bail;
-> 
-> I'm confused here. What the code does is that if S_NOWAIT is set and
-> i_version needs increment we bail. However the comment as well as the
-> changelog speaks about timestamps needing update and not about i_version.
-> And intuitively I agree that if any timestamp is updated, inode needs
-> dirtying and thus we should bail regardless of whether i_version is updated
-> as well or not. What am I missing?
+Hello gfs2 maintainers/developers,
 
-With lazytime timestamp updates that don't require i_version updates
-are performed in-memory only, and we'll only reach this with S_NOWAIT
-set for those (later in the series, it can't be reached at all as
-of this patch).
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
 
-But yes, this needs to be documented much better.
+During the period, 3 new issues were detected and 0 were fixed.
+In total, 39 issues are still open and 41 have already been fixed.
 
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  1434    Yes   kernel BUG in gfs2_glock_nq (2)
+                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<2>  858     Yes   INFO: task hung in __gfs2_lookup
+                   https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
+<3>  770     Yes   kernel BUG in gfs2_jindex_free (2)
+                   https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
+<4>  545     Yes   WARNING in vfs_setxattr (3)
+                   https://syzkaller.appspot.com/bug?extid=5ce48a14916462cec450
+<5>  399     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
+                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
+<6>  215     Yes   WARNING in do_mknodat (3)
+                   https://syzkaller.appspot.com/bug?extid=0cee785b798102696a4b
+<7>  172     Yes   WARNING in chown_common
+                   https://syzkaller.appspot.com/bug?extid=04c2672c56fbb9401640
+<8>  137     Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
+                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
+<9>  68      Yes   INFO: task hung in block_invalidate_folio (2)
+                   https://syzkaller.appspot.com/bug?extid=85194ada5aabdfff265b
+<10> 66      No    WARNING in gfs2_put_super
+                   https://syzkaller.appspot.com/bug?extid=56182be23469e01affbc
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
