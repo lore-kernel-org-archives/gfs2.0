@@ -1,96 +1,138 @@
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E42231845
-	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 10:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD2B191F98
+	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 19:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766052388; cv=none; b=dbBj8WtbJAiVqifu60+MOHPUgwbmFTHwNREOlR8+Ug79fe/LZ8f5jh4/BwloN0KoNRdboXPDPOINCU+kEQlOrrkkxrLJiJpoGbZMwn8TTOaKKHkfCcYJfzKZcZvT+gU15dHBc8H+rRbNSUj6vAxMUqnyj1FGrXR49jGfvr34lCs=
+	t=1766085529; cv=none; b=a2dggA93UIwXteLyyeUyBWuDah2UrnCYjOS43IjJg5YQmLO9/ixIkZdzW+Q++aAk5MRSVmYQYNk1amj/uyFAKXFmEf7a6749fMJVj+oNMJ7NXqiIHqMaorxXUR7JwPZlUjo+f4l7wxeIQt/cImYAWn2i1NetxjD89NV3KmurDEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766052388; c=relaxed/simple;
-	bh=Mh0oP4HlUF4vJ5EWo4F9iJ0dfMo6kLfsjwYVtLVk1h0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=qc7NgvdV9ylhaq+MR/PiBbKA9a4puoUX8XL4d/pAANyTHq+DTapCNqu1Vy4RuGO3GJq8sJt0dM6pXbEzYTgaNOjVSqgkAHZ1Lo7EK901Inwh5qlXlBDpA5kpp3FzdSH4wJFFZtWoF7ku0PLk74tBZCldJeKmSM0BvOqse/Gsoko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-657a467228eso601812eaf.0
-        for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 02:06:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766052386; x=1766657186;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jfWGGf32bjAsJumom/V+y1wxizbLYMBuz2jzZs6RHB4=;
-        b=ZdepNGwcXGsypH0eDm5vbp6LXptoRw2Ig6fbnWPvzsrdey0ZAVLPSqsu+F3I/7Ik5t
-         Snmkp2zkRKt0Mbe+770v4Jwa8tRBjujHbvT+urJb+oWwlN6r5tQdW1WripdfhMqx9DtQ
-         GvmeyjLZPiaKkEzQ43fdQiBBy4e6nJsuw4eHArQx3JKpGz6mDdkImt75vAcksZzjaGOm
-         hquzeu5GYiiIIV0iCAXtsYAqqwxjVMW8Hfk8coBvx4dURM/YIgQE29DqtNhWWVnrw+I8
-         L3Xjhg9ju2156FtPrAaWwgvBcz1bKd39ovgHvaqNn5EDfbdMsuGAjQpDOG/ASm34HFB9
-         fcHA==
-X-Gm-Message-State: AOJu0YxB9NZMAJfnIivA/v1EcUWHfTFass44eGCSIBkXMgy3PUepJa39
-	/nJtli9OvaSGkY2jUM5rywNG41/54IhbkeyT653W/AkkV9zDF3PJLsg1bDVgnBgF/xHyLT3Ef1m
-	XYFQcy4vbEgGp98V6GszhxbFDzLTMY3mjQCUgR4VRYAwZgVdlFV79nbtNaro=
-X-Google-Smtp-Source: AGHT+IG/NI6b7yAfl6SSk5rDZ37sYcQgE+kiWZ2Ni/Y5rVropDIQJLj8etXxuicWofwnIcPF+WJWToaR5t2oCWaDHGlZiIuea/rO
+	s=arc-20240116; t=1766085529; c=relaxed/simple;
+	bh=Ii4P1QNZs08qYlvOtTPD1seSmShP1H/CJcqCfJ+7i2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=B3FHO8UoaQKonzOxO/Wn+zEuJ7zS4nMaVIoZ2nacdsb54jqLfkN08hfMgSDsXJaatvC/b8gyv4yPmD/Pa92BhN5wZ2BUFdRZwARKLH0q7YKHNnvtN7JyfBOh0q9cdKQPHonvMJzNI9UrbB4+0ja2bgG7Cx2t8h3wSgYaVHct1TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ygn4zIUs; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ygn4zIUs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766085527;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hQGbxhKZRfEdi1AnFXsubZ/UiUAoSyoLz14IRTe+6CM=;
+	b=Ygn4zIUswzCpE/kATyHvZ49luW/wyiJYeWKrlK36nelz3BEMHvhmREy0M8+QdcA9qhGpmF
+	pXz0COv9h6Mdsa7tu++K26mgVKYPnTMWvlBdTjvi7VTLVLyW528N1GCk2wXci7xoRYTIVY
+	EKXp1NyawSCOOvlsYEdSR6zqEapJPBg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-O4fKIFnYMSy7SOSES13eoA-1; Thu,
+ 18 Dec 2025 14:18:45 -0500
+X-MC-Unique: O4fKIFnYMSy7SOSES13eoA-1
+X-Mimecast-MFC-AGG-ID: O4fKIFnYMSy7SOSES13eoA_1766085525
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CF511956061
+	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 19:18:45 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 560A919560B4;
+	Thu, 18 Dec 2025 19:18:44 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev
+Subject: [PATCH v6.19-rc1] dlm: fix recovery pending middle conversion
+Date: Thu, 18 Dec 2025 14:18:42 -0500
+Message-ID: <20251218191843.2938730-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2294:b0:65b:579c:8479 with SMTP id
- 006d021491bc7-65b579c8cd6mr6433665eaf.75.1766052386042; Thu, 18 Dec 2025
- 02:06:26 -0800 (PST)
-Date: Thu, 18 Dec 2025 02:06:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6943d222.a70a0220.207337.00da.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Dec 2025)
-From: syzbot <syzbot+list6399ad7aede57fc4022c@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: i7cIPqwCs3EuQNLmmMoYRJrWeicdNXezXB56eWlQPOg_1766085525
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello gfs2 maintainers/developers,
+A workload involving PR <-> CW conversions and triggering recovery can
+end in a so named "conversion deadlock" situation that is signaled by
+"dlm: WARN: pending deadlock 1e node 0 2 1bf21" in the kernel log.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+Under normal circumstances such conversion deadlocks are solved
+immediately, in this case recovery created such scenario that was not
+solved immediately. This scenario that two locks ending up on the
+convertqueue with the conversion PR -> CW. In normal circumstances one
+of the conversion will be rejected with -DEADLK as CW cannot be granted
+when one lock is helding still PR. Usually one of those conversion will
+immediately rejected and the rejected conversion need to convert to a
+compatible lock mode. If such situation is created on the convertqueue
+we don't solve such conversion in the expected way by the user.
 
-During the period, 3 new issues were detected and 0 were fixed.
-In total, 39 issues are still open and 41 have already been fixed.
+The situation is created by recovery when a pending middle conversion
+will be recovered and signaled by:
 
-Some of the still happening issues:
+receive_rcom_lock_args 2e middle convert gr 3 rq 2 remote 2 1e
 
-Ref  Crashes Repro Title
-<1>  1434    Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<2>  858     Yes   INFO: task hung in __gfs2_lookup
-                   https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<3>  770     Yes   kernel BUG in gfs2_jindex_free (2)
-                   https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
-<4>  545     Yes   WARNING in vfs_setxattr (3)
-                   https://syzkaller.appspot.com/bug?extid=5ce48a14916462cec450
-<5>  399     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<6>  215     Yes   WARNING in do_mknodat (3)
-                   https://syzkaller.appspot.com/bug?extid=0cee785b798102696a4b
-<7>  172     Yes   WARNING in chown_common
-                   https://syzkaller.appspot.com/bug?extid=04c2672c56fbb9401640
-<8>  137     Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<9>  68      Yes   INFO: task hung in block_invalidate_folio (2)
-                   https://syzkaller.appspot.com/bug?extid=85194ada5aabdfff265b
-<10> 66      No    WARNING in gfs2_put_super
-                   https://syzkaller.appspot.com/bug?extid=56182be23469e01affbc
+In this case recovery will remove waiting for the pending message and
+force the lock being on the convertqueue without checking if there
+is another incompatible conversion going on like PR -> CW which was the
+case as the mentioned above "WARN pending deadlock ..." occurs.
 
+This state is difficult to reproduce as it is requires a pending PR ->
+CW conversion, however we automated a test scenario that fences randomly
+on PR -> CW conversion and we was able to hit it.
+
+The proposed change in this patch changes to not "force" putting the
+pending middle conversion on the convertqueue and just handle it like
+every other message to resend it later to the new lock master. To using
+the existing convert functionality we will immediately reject such
+conversion if a incompatible mode on the convertqueue is detected.
+
+Long run with the automated randomly middle conversion test showed so
+far we don't run into a "WARN: pending deadlock ..." situation again.
+
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/dlm/lock.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index be938fdf17d96..c01a291db401b 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -5014,25 +5014,8 @@ void dlm_receive_buffer(const union dlm_packet *p, int nodeid)
+ static void recover_convert_waiter(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 				   struct dlm_message *ms_local)
+ {
+-	if (middle_conversion(lkb)) {
+-		log_rinfo(ls, "%s %x middle convert in progress", __func__,
+-			 lkb->lkb_id);
+-
+-		/* We sent this lock to the new master. The new master will
+-		 * tell us when it's granted.  We no longer need a reply, so
+-		 * use a fake reply to put the lkb into the right state.
+-		 */
+-		hold_lkb(lkb);
+-		memset(ms_local, 0, sizeof(struct dlm_message));
+-		ms_local->m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
+-		ms_local->m_result = cpu_to_le32(to_dlm_errno(-EINPROGRESS));
+-		ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
+-		_receive_convert_reply(lkb, ms_local, true);
+-		unhold_lkb(lkb);
+-
+-	} else if (lkb->lkb_rqmode >= lkb->lkb_grmode) {
++	if (middle_conversion(lkb) || lkb->lkb_rqmode >= lkb->lkb_grmode)
+ 		set_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags);
+-	}
+ 
+ 	/* lkb->lkb_rqmode < lkb->lkb_grmode shouldn't happen since down
+ 	   conversions are async; there's no reply from the remote master */
+-- 
+2.43.0
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
