@@ -1,138 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD2B191F98
-	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 19:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D156233B6E9
+	for <gfs2@lists.linux.dev>; Fri, 19 Dec 2025 15:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766085529; cv=none; b=a2dggA93UIwXteLyyeUyBWuDah2UrnCYjOS43IjJg5YQmLO9/ixIkZdzW+Q++aAk5MRSVmYQYNk1amj/uyFAKXFmEf7a6749fMJVj+oNMJ7NXqiIHqMaorxXUR7JwPZlUjo+f4l7wxeIQt/cImYAWn2i1NetxjD89NV3KmurDEs=
+	t=1766157126; cv=none; b=f2OYIqk5kte27iBz+HKcixZMInE8kvDX90ZLnLxo63dJW2OD9cyn/GNV/96LyWwva4MlAKJNu85y0/N/ZcscmbZLaTS27mULRjbQ1nbUgVK159qblnwnsMh25KErtYPeQ1uyI5ecuOyZXdecO3IMFW7AqyLt3i+O9R83V9pBqyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766085529; c=relaxed/simple;
-	bh=Ii4P1QNZs08qYlvOtTPD1seSmShP1H/CJcqCfJ+7i2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=B3FHO8UoaQKonzOxO/Wn+zEuJ7zS4nMaVIoZ2nacdsb54jqLfkN08hfMgSDsXJaatvC/b8gyv4yPmD/Pa92BhN5wZ2BUFdRZwARKLH0q7YKHNnvtN7JyfBOh0q9cdKQPHonvMJzNI9UrbB4+0ja2bgG7Cx2t8h3wSgYaVHct1TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ygn4zIUs; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1766157126; c=relaxed/simple;
+	bh=khSk3JMEwC370gokxLVt2+V81u3kcMruZJtN2TvaSFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/jqwLS8vwqx4gQBl4PO0GaN0ANqP4uCJLRoL0yGibgbMqBnPa9brrUymxTQB7ZuR7Z6ymtBCmulylJchUv3S8E+7FS/4igJ68T71fb2AOAZcpITc6DtfghnM/QOlR/7chZJcPzNvBsdaLX3hNEx6VoMRI49AMT9me1GYpUpgww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KI19ArTA; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hh7RDHL5; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=b5aN+xiY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UlK0GM+L; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ygn4zIUs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766085527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hQGbxhKZRfEdi1AnFXsubZ/UiUAoSyoLz14IRTe+6CM=;
-	b=Ygn4zIUswzCpE/kATyHvZ49luW/wyiJYeWKrlK36nelz3BEMHvhmREy0M8+QdcA9qhGpmF
-	pXz0COv9h6Mdsa7tu++K26mgVKYPnTMWvlBdTjvi7VTLVLyW528N1GCk2wXci7xoRYTIVY
-	EKXp1NyawSCOOvlsYEdSR6zqEapJPBg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-O4fKIFnYMSy7SOSES13eoA-1; Thu,
- 18 Dec 2025 14:18:45 -0500
-X-MC-Unique: O4fKIFnYMSy7SOSES13eoA-1
-X-Mimecast-MFC-AGG-ID: O4fKIFnYMSy7SOSES13eoA_1766085525
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KI19ArTA";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hh7RDHL5";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="b5aN+xiY";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UlK0GM+L"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CF511956061
-	for <gfs2@lists.linux.dev>; Thu, 18 Dec 2025 19:18:45 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 560A919560B4;
-	Thu, 18 Dec 2025 19:18:44 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: aahringo@redhat.com,
-	gfs2@lists.linux.dev
-Subject: [PATCH v6.19-rc1] dlm: fix recovery pending middle conversion
-Date: Thu, 18 Dec 2025 14:18:42 -0500
-Message-ID: <20251218191843.2938730-1-aahringo@redhat.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C6B6233714;
+	Fri, 19 Dec 2025 15:12:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766157122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nm9StvwwiQFX7seFXlICx2z9FzoyRX/N9SPzI43K0Zg=;
+	b=KI19ArTADje7Ef3OPJV1hLzka/GGmcgxpQRR6RSJ7DHa8xN87n5DpWcUrEuP6zcbKNBkjh
+	jdAHIcOy+pP1KDVylL7DduL0D9Z0djbZqkz/dqZTELixx8ReuUvdb+2z6i1Q55oDKPgAyN
+	F2xzcn95MmmXstBZd5eceTZYnIWCjuE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766157122;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nm9StvwwiQFX7seFXlICx2z9FzoyRX/N9SPzI43K0Zg=;
+	b=hh7RDHL5gn+xmIJE6BzwmatN//9gS67udthbyazRkh3JxbChFHIcaQzU79Hl2FV08I6i1R
+	t44ziy3+n6cOEYBw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=b5aN+xiY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UlK0GM+L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1766157121; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nm9StvwwiQFX7seFXlICx2z9FzoyRX/N9SPzI43K0Zg=;
+	b=b5aN+xiYhnhbNofq9pLwTKt0OjqkrkmlduPcJsiSUaIIrXwCK2Q9qj5x9rllOIHmzan7Gj
+	lSZylngfV0Tizm6Cb6iQYT6I2X7cikiVJYghY1diH86XV0Tte9zOjItXeuIbMcOMIJ3Y8h
+	+5KI8rTQVHeZlHCTIGuLbkdxU5sGFZY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1766157121;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nm9StvwwiQFX7seFXlICx2z9FzoyRX/N9SPzI43K0Zg=;
+	b=UlK0GM+LwMJgyv+MpnfOq7YkH6maQd48o4ODk32s9ZBPNqUpUWpQQ+PhTj8LW2gM7rc5Zn
+	gNkmYnSNDyk1a8Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9CC53EA63;
+	Fri, 19 Dec 2025 15:12:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EXtULUFrRWmvQgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 19 Dec 2025 15:12:01 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 764A1A090B; Fri, 19 Dec 2025 16:12:01 +0100 (CET)
+Date: Fri, 19 Dec 2025 16:12:01 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>, Jeff Layton <jlayton@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	gfs2@lists.linux.dev, io-uring@vger.kernel.org, devel@lists.orangefs.org, 
+	linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 08/10] fs: add support for non-blocking timestamp updates
+Message-ID: <wynhubqgvknr3fl4umfst62xyacck3avmg6qnbp2na6w7ee3qf@odetcif4kozl>
+References: <20251217061015.923954-1-hch@lst.de>
+ <20251217061015.923954-9-hch@lst.de>
+ <2hnq54zc4x2fpxkpuprnrutrwfp3yi5ojntu3e3xfcpeh6ztei@2fwwsemx4y5z>
+ <20251218061900.GB2775@lst.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: i7cIPqwCs3EuQNLmmMoYRJrWeicdNXezXB56eWlQPOg_1766085525
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218061900.GB2775@lst.de>
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Queue-Id: C6B6233714
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
 
-A workload involving PR <-> CW conversions and triggering recovery can
-end in a so named "conversion deadlock" situation that is signaled by
-"dlm: WARN: pending deadlock 1e node 0 2 1bf21" in the kernel log.
+On Thu 18-12-25 07:19:00, Christoph Hellwig wrote:
+> On Wed, Dec 17, 2025 at 01:42:20PM +0100, Jan Kara wrote:
+> > > @@ -2110,12 +2110,26 @@ int inode_update_timestamps(struct inode *inode, int *flags)
+> > >  		now = inode_set_ctime_current(inode);
+> > >  		if (!timespec64_equal(&now, &ctime))
+> > >  			updated |= S_CTIME;
+> > > -		if (!timespec64_equal(&now, &mtime)) {
+> > > -			inode_set_mtime_to_ts(inode, now);
+> > > +		if (!timespec64_equal(&now, &mtime))
+> > >  			updated |= S_MTIME;
+> > > +
+> > > +		if (IS_I_VERSION(inode)) {
+> > > +			if (*flags & S_NOWAIT) {
+> > > +				/*
+> > > +				 * Error out if we'd need timestamp updates, as
+> > > +				 * the generally requires blocking to dirty the
+> > > +				 * inode in one form or another.
+> > > +				 */
+> > > +				if (updated && inode_iversion_need_inc(inode))
+> > > +					goto bail;
+> > 
+> > I'm confused here. What the code does is that if S_NOWAIT is set and
+> > i_version needs increment we bail. However the comment as well as the
+> > changelog speaks about timestamps needing update and not about i_version.
+> > And intuitively I agree that if any timestamp is updated, inode needs
+> > dirtying and thus we should bail regardless of whether i_version is updated
+> > as well or not. What am I missing?
+> 
+> With lazytime timestamp updates that don't require i_version updates
+> are performed in-memory only, and we'll only reach this with S_NOWAIT
+> set for those (later in the series, it can't be reached at all as
+> of this patch).
 
-Under normal circumstances such conversion deadlocks are solved
-immediately, in this case recovery created such scenario that was not
-solved immediately. This scenario that two locks ending up on the
-convertqueue with the conversion PR -> CW. In normal circumstances one
-of the conversion will be rejected with -DEADLK as CW cannot be granted
-when one lock is helding still PR. Usually one of those conversion will
-immediately rejected and the rejected conversion need to convert to a
-compatible lock mode. If such situation is created on the convertqueue
-we don't solve such conversion in the expected way by the user.
+Ah, I see now. Thanks for explanation. This interplay between filesystem's
+.update_time() helper and inode_update_timestamps() is rather subtle.
+Cannot we move the SB_LAZYTIME checking from .update_time() to
+inode_update_timestamps() to have it all in one function? The hunk you're
+adding to xfs_vn_update_time() later in the series looks like what the
+other filesystems using it will want as well?
 
-The situation is created by recovery when a pending middle conversion
-will be recovered and signaled by:
+BTW, I've noticed that ovl_update_time() and fat_update_time() should be
+safe wrt NOWAIT IO so perhaps you don't have to disable it in your patch
+(or maybe reenable explicitly?).
 
-receive_rcom_lock_args 2e middle convert gr 3 rq 2 remote 2 1e
+And I don't really now what orangefs_update_time() is trying to do with its
+__orangefs_setattr() call which just copies the zeroed-out timestamps from
+iattr into the inode? Mike?
 
-In this case recovery will remove waiting for the pending message and
-force the lock being on the convertqueue without checking if there
-is another incompatible conversion going on like PR -> CW which was the
-case as the mentioned above "WARN pending deadlock ..." occurs.
+								Honza
 
-This state is difficult to reproduce as it is requires a pending PR ->
-CW conversion, however we automated a test scenario that fences randomly
-on PR -> CW conversion and we was able to hit it.
-
-The proposed change in this patch changes to not "force" putting the
-pending middle conversion on the convertqueue and just handle it like
-every other message to resend it later to the new lock master. To using
-the existing convert functionality we will immediately reject such
-conversion if a incompatible mode on the convertqueue is detected.
-
-Long run with the automated randomly middle conversion test showed so
-far we don't run into a "WARN: pending deadlock ..." situation again.
-
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
-
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index be938fdf17d96..c01a291db401b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -5014,25 +5014,8 @@ void dlm_receive_buffer(const union dlm_packet *p, int nodeid)
- static void recover_convert_waiter(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 				   struct dlm_message *ms_local)
- {
--	if (middle_conversion(lkb)) {
--		log_rinfo(ls, "%s %x middle convert in progress", __func__,
--			 lkb->lkb_id);
--
--		/* We sent this lock to the new master. The new master will
--		 * tell us when it's granted.  We no longer need a reply, so
--		 * use a fake reply to put the lkb into the right state.
--		 */
--		hold_lkb(lkb);
--		memset(ms_local, 0, sizeof(struct dlm_message));
--		ms_local->m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
--		ms_local->m_result = cpu_to_le32(to_dlm_errno(-EINPROGRESS));
--		ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
--		_receive_convert_reply(lkb, ms_local, true);
--		unhold_lkb(lkb);
--
--	} else if (lkb->lkb_rqmode >= lkb->lkb_grmode) {
-+	if (middle_conversion(lkb) || lkb->lkb_rqmode >= lkb->lkb_grmode)
- 		set_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags);
--	}
- 
- 	/* lkb->lkb_rqmode < lkb->lkb_grmode shouldn't happen since down
- 	   conversions are async; there's no reply from the remote master */
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
