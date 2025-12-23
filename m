@@ -1,67 +1,67 @@
-Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5EA2B2D7
-	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 05:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094632F12AB
+	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 05:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766467989; cv=none; b=dXMhL8c6Vija1lOfPJ9YPUR9ea65pCQUQRZcEbNY4gMZaI0ZACTsCxcDYjLbsRL6s9vAD+SCtTQYzTBtG00l8n1q12SvFHH+DPPpVXh4vOZ0B8Ak350o4CtMC17iQ7hmVgXUHqGjn1lqVEZV1RJOmRpCHlKINx56TNe52aTV0XE=
+	t=1766468155; cv=none; b=XBcibwXiiJUeIzAmdR7wIvrBH0QDJZjr02jmq3jTZ2c6J+KbhddO9UGYrT4jFZPjycrRpsSaTQ0Vr13M72jjJ0+XjqNb5Z3Bf2CX2E7hrlQp+pkPH/Rg2xabMBEiAf8ktVB0jwipYTmCnB2v9a2uclwM0n/hO7ODb+Djeu/G5rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766467989; c=relaxed/simple;
-	bh=NqkuKEROb/OmRVYRZgeOKw/Kls8Un9PKgqEiKcwkGnk=;
+	s=arc-20240116; t=1766468155; c=relaxed/simple;
+	bh=g9Bt2s+UFC+DeXi/131tDLXltXct0EalOx5ApUtrNkg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHxOqfZAiNtkWyPIGGjp2bHSTBpIyYRcw07K9wzO/1DdWvaXY9I6Q2NxByG3ovDNdg/2ZgMQarX3FTooCDaqIdh4+RoxYpA0QImX5UlQjZYSSaWo7d9RHTE57ZG6MBLnD70O0uBG0toH8MMtMMfF6qZTSz2tmAFbhuZgySZFFKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aWemaWzc; arc=none smtp.client-ip=209.85.215.196
+	 In-Reply-To:Content-Type; b=Q8EvXVQ/reXmZ7s0qaC+sTohXAUgJbSdlkwI+133PFPQ/JZmokP1I8lEvbyuqAiskMNB7yZAU7LxKjPqpJCPJ8fkly6B4N4QNXCnVRUWb1ctBU7ox7Tg0e7+i4uPnM/0HZubBq0xf5HajaUVxFnl7bFNHPkQE3FL9ezYc2PExvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gHj4NtP8; arc=none smtp.client-ip=74.125.82.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWemaWzc"
-Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-bc29d64b39dso2482141a12.3
-        for <gfs2@lists.linux.dev>; Mon, 22 Dec 2025 21:33:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gHj4NtP8"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-11b6bc976d6so8222829c88.0
+        for <gfs2@lists.linux.dev>; Mon, 22 Dec 2025 21:35:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766467986; x=1767072786; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1766468152; x=1767072952; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NqkuKEROb/OmRVYRZgeOKw/Kls8Un9PKgqEiKcwkGnk=;
-        b=aWemaWzcgkBAt8CumoRFLK1ejTswB/cev2dcIQN6t01gK6gcqzdHqtC7j0jQ4UXqpa
-         o/YB5ohzsrdU66k3ey/snYaWkZAKZ2IJQzWVsv5GGDr9DL53B36Z7Q4rWVwP9Hh/Pi9p
-         dA5i8Hqq9VACl55yn4X386n+bisdruxaR9cQ795v2WcAsZytD+hTwTThs+dbyFBBrWRG
-         bba3GJdH04b+olAG6tEHSNmVwjfEwJnOjnuNNOPrKwCiPAzWnun7k6GkCfJt1fjbJoYv
-         jRpQCkZT9iVNyEnRdSWsyxS8Urx6UvtVakmgqVbp2IcWp2OMObsFPZEuKC3LzwqR/35J
-         C2kw==
+        bh=1VDWjicrLkuqVcwGv9d1sh+ocm1fa0mGizT1YHR+Z6c=;
+        b=gHj4NtP8ePcl+PyN+P5enCCwhGemVU4Ji77VCZVPq5yim674yUwXP14YdsEjVzx5JJ
+         WHHTz7334/khhchd1dqfbOgV7bSlg2s5N/6UrnPHvqrqPyM8O0v3lLvwE1ycRZ8SICGF
+         kmLiplYno8/YS2AudYXXHTuDoG9eq1+pjiEv/h0GmE2g/xlWjyYag5O7th+DMYAXpnFA
+         CJNHIC27VoSOtbdry5shShQh78iVo4lCb5o5ur+r4EWVx2kQaC4YcWZPtoUpZTQvBEaD
+         vb6VLQ2eRPSqdGm91jazVTrCMOmaBIux9KPKSjHveLwXceRaQXJJKZld56eHgVBLDDon
+         uS7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766467986; x=1767072786;
+        d=1e100.net; s=20230601; t=1766468152; x=1767072952;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NqkuKEROb/OmRVYRZgeOKw/Kls8Un9PKgqEiKcwkGnk=;
-        b=LhWQLR9YMSGqR5e0tlpg1PoG09HVpcvBlraMcSSuOAhkhzYACEU9DwbSoDHyWewwhf
-         en5tTXYc7iMbnDJNvlopOWtOXjt1JqyJ3uSW6IXVia2nIfZ7zy5O4MtdMT0GxYAifHqh
-         0neLQeLozw4tLJlaShRQFJHj/LmP8B+7oF52bV0nlYcGqYeZrHUA5UG8jkecgW9VACiF
-         42tShuPBLsFylrCRA6Bx4s6C3eL9QpRbVC7acl1oDXCDgSzE2GCow2cj9LBbzCLeIclk
-         0JRIQYuoNcjsY+NfjtJK8+gOm7IFEvmg7A6zFMdBWVJvoQwTPxJpI3Pwg1SSceNMieWu
-         +86w==
-X-Forwarded-Encrypted: i=1; AJvYcCW1lSjae71MJGSN5IonVKeuWtc7ANxt+yH+lkNz0sjXYx5YXSlUXdVyheRTGKt8iUlMQHyc@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRUG+oBxlT46QIrcvdriT9571siVyHWGwrMQYHxu4pu6qXbRgC
-	m7iPz6wQ/LfRhD/l82VJBiu2h2lw4oYOagblMl//p2jNMmhSnjqk3TRb
-X-Gm-Gg: AY/fxX4Y77IyE3Z9cc1RRVPLpoFGbMwYiYFW/WYR8FftZokWabZNkXIY6DIhSQSIvhf
-	l0ag+KsjJ4cPqDySazXwnRhKK/Y/B8tGp3ZQldZrlopl2RrZCZUCOh/lbYhevhIC2/BQdJ0lUYK
-	6vxfAQsm7oDYld2zOJW4S0WUw4M70I0s+ctdGMsHZEC/TYM2Of8b7qJlCKhR7ZqeWWAZgtWKkH6
-	guI5Ae+MBtjDfIm2qUasQ+C0EAl+aZYGik3NM7DVRo9j3hBXD2hRnmv3GvXJ1Vv84WT0p8LKohV
-	BS2sBVRAAupkKR53F8xsaWKXuq6r0eVMZVpQgDU5Aj2xX4hymz6DNYHx7THMUXhM+O8rDJF7RHm
-	IeOWnPhh2KERsXLRy7gfTSqO7kPxMlUY69B6yOW5R3vznb9lpzNyfUyvVIRqgj6ljJTvhOHwIMh
-	QBNN5mh/g58NPgw/An09Qbg6Yvxft5TbHRrMkCs539Jt9YkdrGvThzEViyN2qFXTC2
-X-Google-Smtp-Source: AGHT+IG5Qf4dCPxqVYyhhZiZ2cPZHWZcc5Jl8Dom3Sf+VbFYEbzUaslYB9RlXBdrrGXOm7O8E9bw2A==
-X-Received: by 2002:a05:7301:1a12:b0:2a4:3593:ddd6 with SMTP id 5a478bee46e88-2b05ebb6038mr11158060eec.3.1766467986000;
-        Mon, 22 Dec 2025 21:33:06 -0800 (PST)
+        bh=1VDWjicrLkuqVcwGv9d1sh+ocm1fa0mGizT1YHR+Z6c=;
+        b=PUosB0laLxeDJVWjLkP/guxfWKaEUmPIF6wai7Qym1vxQl68R6PgKwcQz/Lhyeuh4u
+         PuareYsFB3WZPV34Gng1AWZjVw1ybUwlXDwlLlKHpv1IhovJezpA8oOhoi1JbKU11nAl
+         zGYfJJFoza05X/bUEqK19VCMPddxbh4Fbaq6X6IOa3vrQdaUen/qeHmDCwWNQx2wnHXY
+         n0pI4y9xHCPdkYJStGEKkjPz0LMCYDCP49nuLh8kb2q/QHsSx/3RTfIJ+tiPk3nffKnR
+         EMi3fDpJbvl0UQAji+Y6tw/GlvtYadYfFgIQlIjGaRUaM+JDEiArKJxx0SGblN9xKdOg
+         S/yA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5mgVTRNcXgoHYADvw6eAwuB5eosNiqzSt2lnZ450Hg/+jrYkm9RW49iIYp4BKpPcwVFL1@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKbaI52uzJI1oJbq7tph4eRy817LFJjMLANs55qKD9qVD7Cqdw
+	G9GWwu8urFerA7uxCphKqK0tU6zRiFT/KsQuxXHN7OgrklhCpW5V0NNZ
+X-Gm-Gg: AY/fxX6jf0znqpRdTXJSWWRkEPgdJmCVi0o9ijPxUyYfQNiq90t45/wUvoIhohhzM+S
+	CcdDScZ8OBG6TtpfEU0Zz6LVQT7fDygHhSX0u2K3JMziUD3mqaSjnFWZVGzZwtwp/RlJO7bjr4/
+	C9d9k/PJbXdGWBM6MrepqoituUZ+lGc2MTcJnyziAq50KjYe5KXw7YvFQU3mVchVPS9NrJStxja
+	zpWwAS1Nl6TV7Vf0ScFoQsHsxDs/lFJh9utlXcOoF2QcXYgtkqCqrvi1RT9SD9Fs5iX4so0ILVM
+	WvmTr9Qwi6BarWe64C3XqpKct7nYHA4Oae1D3QhvyHCsnxVwJ+Gt1x/28dhHw2Y4itpFupU2YZb
+	0sT6HVrrbkWvFOSgwXEZlnhfh6Mr/AaFDksPwNJf07gc3PUSnH6g2BGGz06CQnxrgcuoBVut/9B
+	/DW7JG0RDnaqjnLyXQWHzmDcqFptXxbF+m6IJNgdVusqLLpF58COpwREAsAVIIhKIb
+X-Google-Smtp-Source: AGHT+IFgD3SNwd/4TCZfokt7AW5oqjEJYNTcZgO21z1zxvgYYO/3rgL7QNl7uSOUpz7Nh4qCGFV22A==
+X-Received: by 2002:a05:7022:eacd:b0:11a:4ffb:984f with SMTP id a92af1059eb24-12171a85250mr15323051c88.11.1766468151780;
+        Mon, 22 Dec 2025 21:35:51 -0800 (PST)
 Received: from ?IPV6:2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab? ([2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217243bbe3sm54002618c88.0.2025.12.22.21.33.05
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121725548b5sm54725089c88.17.2025.12.22.21.35.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 21:33:05 -0800 (PST)
-Message-ID: <12bb96b6-1e2e-4f53-b4ea-1fae2500aa21@gmail.com>
-Date: Mon, 22 Dec 2025 21:33:04 -0800
+        Mon, 22 Dec 2025 21:35:51 -0800 (PST)
+Message-ID: <6f297260-3c99-4330-92ab-deeb1fc5d8f7@gmail.com>
+Date: Mon, 22 Dec 2025 21:35:50 -0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -69,8 +69,8 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/11] fs: exit early in generic_update_time when there is
- no work
+Subject: Re: [PATCH 04/11] fs: delay the actual timestamp updates in
+ inode_update_timestamps
 To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
 Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
  Jan Kara <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>,
@@ -82,22 +82,20 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
  linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org,
  linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
 References: <20251223003756.409543-1-hch@lst.de>
- <20251223003756.409543-4-hch@lst.de>
+ <20251223003756.409543-5-hch@lst.de>
 Content-Language: en-US
 From: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
-In-Reply-To: <20251223003756.409543-4-hch@lst.de>
+In-Reply-To: <20251223003756.409543-5-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 12/22/25 16:37, Christoph Hellwig wrote:
-> Exit early if no attributes are to be updated, to avoid a spurious call
-> to __mark_inode_dirty which can turn into a fairly expensive no-op due to
-> the extra checks and locking.
+> Perform the actual updates of the inode timestamp at the very end of
+> inode_update_timestamps after finishing all checks.  This prepares for
+> adding non-blocking timestamp updates where we might bail out instead of
+> performing this updates if the update would block.
 >
 > Signed-off-by: Christoph Hellwig<hch@lst.de>
-> Reviewed-by: Jan Kara<jack@suse.cz>
-> Reviewed-by: Jeff Layton<jlayton@kernel.org>
-
 
 Looks good.
 
