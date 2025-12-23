@@ -1,67 +1,67 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462522F12AB
-	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 05:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E812F12AB
+	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 05:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766468172; cv=none; b=O+Ugl5W6/TFJ5RSrQgXjbJ9HdvqwNoAI96sCfSH7OwuWhXUXS4dmWV0983/U7AePcNiAyDbYoOqa/rtLCuTyQiAtpXFm5JfE797qVVTYY+aWzJBl3ldGh9E/bqTVVLZnxAHtRq4vdagY8TGytBzh/XpKNbcTtftP8Se5oMbKQbg=
+	t=1766468186; cv=none; b=a7MAP22zs8ASFrolELvSdIDcUD8zek1LREa/YTZ8BXRq5CMOJpQSfZBiFLHebbbn+hgZ3D8wb+DxKPtsHv0wc2hSNJtoVhM00H9X/U6sTLqkTiILBzVB9dbp8++8GEvmCiWBIAt3fn+Dtk79Q7vlgfoyMojStqQVDxCg8KQmEZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766468172; c=relaxed/simple;
-	bh=lW+UmIWRSVZ7zpivjjDN2RAk8y2uECMzZoBmWD3afKc=;
+	s=arc-20240116; t=1766468186; c=relaxed/simple;
+	bh=VlgqwkzGyrE3K5mQqCM6bG2Y747dQIeSyi7etFJLJbQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CqRfc5Em9OQDvMJ10+suYMjPgsSttdDCyEA1LFAYHB/whnLa/lNjpir36vZNB+hUn2JiCwG4xrX8DYIfJgTNIK9e3DBRN9Wz7SQuIe1cC8KwENBCB7yP7DpeOXZJrYiKr/Ow/BgX0iOEx4eup8SE+5WrGAjGY9blJyGiIRixMG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ckKwu8ex; arc=none smtp.client-ip=209.85.214.177
+	 In-Reply-To:Content-Type; b=b5J0O8oEZAhugHGpN9b+lr/1TLcO3InXvIT1u5kK7uqXdUMaLylABdDx6jxWjeP8QXkP7GScmus3/LzK1NZwX23ddOX50QRFByCxg09ma7r1HAjMornyDPqCG84xejI15t72iJU3OIGCeZ8Bt49K05j8iSnKAIi5kOLWGY87k7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4P/VdFu; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ckKwu8ex"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0fe77d141so49841965ad.1
-        for <gfs2@lists.linux.dev>; Mon, 22 Dec 2025 21:36:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4P/VdFu"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34ccbf37205so3490884a91.2
+        for <gfs2@lists.linux.dev>; Mon, 22 Dec 2025 21:36:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766468169; x=1767072969; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1766468184; x=1767072984; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lW+UmIWRSVZ7zpivjjDN2RAk8y2uECMzZoBmWD3afKc=;
-        b=ckKwu8exRG+x+1X6793LIZ98dUb+SIVujbGKxxy1SVNXcFgdVIqMoqxslW2khgWx07
-         CbHjmVxFizoUeBNO6TvB253ESGl7cRRLywqIbm3ZcwHSkTSRaI41naL309Ip3ZjyhFCI
-         ci9pfCln0mYEBnHNCZd8t0MTxmDTHv0dHng4sN+LFT5xuQLQceImkSHR4ZaCoP4x2G6m
-         /jiQLCMui/Abf9XoNVl4uI0Z2+fZZ//xUjPMKWi9iu9j/kRgYuYol/QVRgdh3TCU10CC
-         b6r4q0OKxIsJV/1ARLIMG3d915DfjyyFLoEE6Zj5afwJOi3Rczn7+lolDIWWJWXFbwLp
-         mn6w==
+        bh=VlgqwkzGyrE3K5mQqCM6bG2Y747dQIeSyi7etFJLJbQ=;
+        b=I4P/VdFuAvZKd2Ym09roskIZsC6lllOPnfup88XZLtDSD4oFAVu2LGb4cCvdZ9WEEM
+         gU8U55B4Ks1xM36XfkGLE4W2r6qZZfRafW55IZq6QciUI4Co2eDqGujdLtTCYm8ROASQ
+         /s+IZbNA9CWPXgSCv8UAto/qWzYano5fVyZd+MHLoPq4sONGDOaaNQXC2FddXkEbMzaB
+         v3md4Wdhgs6C5al2XeotRzmbjYF+Id0L1hVsWT6Z+dOOrI7IKkTzsyBYNHUrxoILylfi
+         lqItVeEXcxk/GVOUyMvomI2jgGUm4brOlUaD2P0wwzz+ys12e6EMS4t5YXwVZHRfQQah
+         V6kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766468169; x=1767072969;
+        d=1e100.net; s=20230601; t=1766468184; x=1767072984;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lW+UmIWRSVZ7zpivjjDN2RAk8y2uECMzZoBmWD3afKc=;
-        b=D2Bj0INbzdL+icjXZLZ8HP7eVq8nzUdRA3gyn1t9OImQHiiOb42lCbIWBylW7NsRe/
-         DimnhmYZOYUSMk0T+VkSOvXdcDuoBRqOeMCH2Acer36a4Fh6DGSmt3UW1oE7SSRUjbwH
-         ZDVn7wVuT+Sxtfq8nX9TLdY7dh4rTGvMciQp62enKTzD0NCenXJcr0kvhh7GkHsui5ke
-         FjXm7/NThu5iyaTjsex2lBQRIGOESxxC5HTjyjw/eobPymrckCUF5M6U7B4EgxW1T90u
-         00OJLPHW/URmPs9wg/9ECHBfxxL/4NAfGwOOFQhUPUEXRYGj0a8VVbKA129R9nbBnt4A
-         T3WA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBuWjfm+8LvKiS18zKH+QNfgWK1ux6Nl2X3SBVR1ucdLNd582oqqZsoI7Y6ROCFvaIy1/7@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywlb1fzXrXA5SBRo1YCNJqrBzU8aEAq1OEFl7TxWv75bB2nrFWw
-	cNncNEDbZfm4TzTCoc34NVpKM51wxDKL8Ur2Xj//PfF4h7b3OVwWIlBn
-X-Gm-Gg: AY/fxX57EnrRUdQNxr5hfR9wR90X3FHYu0cKTFOU4J134jd9+yqLraAJtqbA7t63R2n
-	yR7+vN77PUqDPseZr8h3SAMmh8CAY6svmaXSHSYb6xACEbDAUPCPnixlGyiN6g1YIDG613y2aEp
-	MCPS8XofFia1OY9JxsPffF4nJvrEgtmvqveSiJ3IxdxlOp6eDi+iP8W2nru2xsJY79dsxdGAyhl
-	FkFSXaxd9O70DDhGqKqqZPtrBoIbroQIdVcpYtYaKW2wkMWZBVZTU7NUCWdlXbTm7IYX/n264LQ
-	OnfJY/1jnw1u/nNA+EtsGtrn8jm/UpCs5+6IRKji8WF/U05WNkpOP6XKkEzF7uheGT4C9WxFdtM
-	lRH2rJ/N5NaclcH/DnkQIb9R1ZcaI+/zi4mxfnIaDKl0GMYxg1NF/lm4K7R6GvdabsOhjJzOfJO
-	Y7kfp048+42Mf9VqnVmpxip1cPymE1OgX21Ayu62gSgoxslj5L8Cyy+zBlKaCjleVs
-X-Google-Smtp-Source: AGHT+IH379xsDZ0d7vjKdC6ERRiENfgRNsDKq+A1tK8cXdwsmB2ywvOol5d1N83fquxU7SkCjjJrLg==
-X-Received: by 2002:a05:7022:3b8a:b0:11b:79f1:850 with SMTP id a92af1059eb24-121722b7f23mr14589383c88.14.1766468169469;
-        Mon, 22 Dec 2025 21:36:09 -0800 (PST)
+        bh=VlgqwkzGyrE3K5mQqCM6bG2Y747dQIeSyi7etFJLJbQ=;
+        b=WWTleWEQc/GqVIyv/kOviLJi/gWOX5SzfRjY8wtFwV7pK8qwQWJvZZ8xiCko6voidd
+         zSmWMDo+jLKHeJ0nU/8fxTatb+oX87xLkhv3QeFXcXP7Tv2q7qUTu1D12PVTUvmqLdX5
+         s3Ut73es5F1oi5ze5YUC+cnWkH0UWbu6jUAjOMc/u97fGnaOv3bCiuQ1HYsIILVXfu9L
+         oYPnYBnVP7QsvINpwrEIIORH3q+iB/6RRuMfT8Y3HDiv4fQi3fE/es2xPkkZv5E4Z+/d
+         fMfW0Ap1749IMwnX0TUwmE7UTS0hDMQ9X65cWi4RtOK/v7WMutiGkMCQ4r07DGRUTMD4
+         uRvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXAXgfk1vT2PJ0wzoGlbFc4sNMfJRz1/SSjwiMvXAoX5nSjAutTKGF6aqcy/SZFZitgEcdF@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywe5NBjloCPkmGNhrr2P5J7y2I/uY+RBWHzDcv0VBucZv9AsB1b
+	Zvgg2W2H71jJKMleyDYSnGfKQLMziz/bLwzejTJlNAnlQSAJHXAITA3Z
+X-Gm-Gg: AY/fxX4v4Gozc62Q+9r0DdUtUz+p0Zjpv38Fb14fSkNXW8T0NkxfebixildcbyN8pPz
+	kYFVyB0OMfj5/EEMcnmA0WDHwalx1ArOjH2qi0Kt04xGYNgYjpUINllviDOG1IDGjezmCSLW2oz
+	MdlT2EUeH9gYwWxWm+sfkD4TN6pkHZPq/JipaqUh+ZfUZsZCSxNwtRwgfh1+q+XUpGvyfIznf3o
+	6dEfZFco5bt3UhTGTJqznK07CfKSNvAsN5TzYMvs+rpmJUNoK+wFTE8bbXlyoQBFWgXKs/0dE5a
+	pVH7k8tKu4N3ZuRYcR5kM/ff7hIqq937YVwRaCRKRYSqtToqTFqkmhoYgvMbwjB+dSpRSriI70c
+	TvNbrWh5uTddH6g8HPTRsFnJwh9k06Bx9scDTEZFY2m23MG+0h8hjCFDFTNoDCf9SAwc587BbcZ
+	AFMs+xr0MN0+SbhTJExKkkZhL68wikoVL/FD7euYbtN1i1u2bjFomukr3S2i6JKWvI
+X-Google-Smtp-Source: AGHT+IFX/6+bwcWXg/4km6FqYdkuwnUGcop1hJcfw4hTgcVNu0v2yNrPtPf/mgK+hd5hIFUJyC/N+g==
+X-Received: by 2002:a05:7022:3705:b0:119:e56b:91e9 with SMTP id a92af1059eb24-121722dff1cmr11158229c88.26.1766468183950;
+        Mon, 22 Dec 2025 21:36:23 -0800 (PST)
 Received: from ?IPV6:2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab? ([2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217254ce49sm52556580c88.15.2025.12.22.21.36.08
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217243bbe3sm54039368c88.0.2025.12.22.21.36.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 21:36:09 -0800 (PST)
-Message-ID: <e2d34cef-c0f4-4f27-91a0-439f85ed26b5@gmail.com>
-Date: Mon, 22 Dec 2025 21:36:08 -0800
+        Mon, 22 Dec 2025 21:36:23 -0800 (PST)
+Message-ID: <4e5f6df4-b446-4ec0-a0d9-231756ee934c@gmail.com>
+Date: Mon, 22 Dec 2025 21:36:22 -0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -69,8 +69,7 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/11] fs: return I_DIRTY_* and allow error returns from
- inode_update_timestamps
+Subject: Re: [PATCH 06/11] fs: factor out a sync_lazytime helper
 To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
 Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
  Jan Kara <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>,
@@ -82,21 +81,20 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
  linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org,
  linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
 References: <20251223003756.409543-1-hch@lst.de>
- <20251223003756.409543-6-hch@lst.de>
+ <20251223003756.409543-7-hch@lst.de>
 Content-Language: en-US
 From: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
-In-Reply-To: <20251223003756.409543-6-hch@lst.de>
+In-Reply-To: <20251223003756.409543-7-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 12/22/25 16:37, Christoph Hellwig wrote:
-> Change the inode_update_timestamps calling convention, so that instead
-> of returning the updated flags that are only needed to calculate the
-> I_DIRTY_* flags, return the I_DIRTY_* flags diretly in an argument, and
-> reserve the return value to return an error code, which will be needed to
-> support non-blocking timestamp updates.
+> Centralize how we synchronize a lazytime update into the actual on-disk
+> timestamp into a single helper.
 >
 > Signed-off-by: Christoph Hellwig<hch@lst.de>
+> Reviewed-by: Jan Kara<jack@suse.cz>
+> Reviewed-by: Jeff Layton<jlayton@kernel.org>
 
 Looks good.
 
