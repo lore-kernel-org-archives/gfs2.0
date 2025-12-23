@@ -1,109 +1,142 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3CD2F3C02
-	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 05:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB1F29B204
+	for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 14:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766468349; cv=none; b=BqW2CkkmTptcegSUG3ZNWrx6OXZv61EozmOXcSRS7tmnCsUS0+LgcDk25DCdEiESKZCPjDLEjSX/CqlAamtzJAQ0ZVsbLTLxReyZrKHkE86kRhhAO0+kR3C1btZYNifUnUXWjALGXi+NCYQ7OWbD207hR5mceKCw0fiRTgAuxJw=
+	t=1766498715; cv=none; b=Zb87fVJzDgoTM1iL29B57Yz6mx+MJmo54pGhQMaheswIUm7g3nlg4z6Y0v9oap/3Mbb/my6rAR0PYnxIw6tIWlCovtELUSGlrUAK4iRaVc1lvwkpG5YpRCqRQ/hDR6mt5E5xwVbe4jBBBU4bF3eYdug6t+0mgJ0ycIsNBD9842A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766468349; c=relaxed/simple;
-	bh=4EYwI5dt6aXRXkl+FSZUrQuoyCBEuH9OaUQ78T0nqW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mq0ej06I5EbCSr+AOFj2rB3vaiAW5XRJMBgMC3BnVZU4W3jyBa2X08KsBgBNPKbS2GsYxWgv2e1QmO08monNELKkwMsKb+Ub/DZENrWAKC7IxZTA3+EKUNYzCZYrVvBGKj+hYpTZHQHQCILM7rrmd33c57xlEDUJuWADWKyy7eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BihPuA/W; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1766498715; c=relaxed/simple;
+	bh=vPU2V50o5jpPnvrbKJzOO+bcSFJqLPqe32WzSG2rqCQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N9nsJumBkpAzz96Vr8iUzOEGur/onSKz0up3IVCxVUCmP0n01cnQMpvnXtSOy2VuQ3b3fpHrJ624MJ4Ai8zNrpMgHfQGnZ+NbR8Rve098G/zE3IZTIAUSl325N6kdY1nEljpe44817812ZTs0ScLn8X3HJExd2XvzSb5ps5obIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FcVclo5u; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BihPuA/W"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a12ed4d205so40584315ad.0
-        for <gfs2@lists.linux.dev>; Mon, 22 Dec 2025 21:39:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FcVclo5u"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a110548cdeso70303125ad.0
+        for <gfs2@lists.linux.dev>; Tue, 23 Dec 2025 06:05:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766468347; x=1767073147; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V0Oa5NOGMRC1AJFdH7RGft89mUSkkZqf9Qovy9KVtFo=;
-        b=BihPuA/WzGGgE3QY7T7XEcalLoYfx6lizsk9VL9ppkBp7HAm0US+ZSuu2Eu6jLmOWS
-         hjagZaTXGXUnaPSOTh5itAdYW+iQdNb1BGPhMgW8uEnMk9A52XSNaDkt1mpS9R9yXGEz
-         6jRSyVNpf/YQfaEhjPYy1JBAW9T48saXY9R5uNUMmzPC2obGqOqZILUHgRwGJDgj77nA
-         o6XxNBlNFustG+Qp0qSLo3H51F5q/FU2nV+NVvmneJrVptoDvhoCKmzIagPbYTNZ6HX1
-         Ct4290MP8tVH1kViaeTIa8k7d8PGY+NmMfI+PEnVUpPBjZz8YhY8EIDsylyChXKNZXds
-         4WUw==
+        d=gmail.com; s=20230601; t=1766498713; x=1767103513; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
+        b=FcVclo5uC8I8tzEMX60ydw+u1LqIlvWvAq7IGFv8JENTPcFjUqSYn63eTwrVrJLGys
+         OhmEQwlm3oVch3YHgtwTML9GytQR/ypWsHAp1n40hGsXHDiHtgq72B+mVLWPPiMASoE7
+         iHWhuKwPMRDRGrNkm7crrzqJ8LuvE0vlovrpMCFsYloFSdZu9UcqJHwjhpVqCgzXe5aV
+         3ace2LP4o0xM0ncercXlVyaSrbEMjhXcr2ShEY3yTXNJge/5pY9VpAAikKmQEqaC7I2Z
+         mxPCAOb3Rwjgp/MD2Wt9XczhH5xmV+Kna8FaKCKM7yoIxYysthkKG3mOrVv56JmCQa3B
+         ifbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766468347; x=1767073147;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V0Oa5NOGMRC1AJFdH7RGft89mUSkkZqf9Qovy9KVtFo=;
-        b=wprtPuhGmwlzgBh/288YUziINhBqvi1Q5JqObULwu+m6JDdv7UmgjohWboWv2PPoeL
-         DIbPZBsULok2WG8jOY4wXsj3v8GYZRJqhXRY3FzYmbso5PTz55lKgyP4/tM+wLUH175Q
-         iHP89Elq5NZBO9rda9H5o+UNTAL+V+RYytQtD1vOH04lnyrU6Qaq9S0Tms4E8BawIVGc
-         JfTcd1KMfwKsGy3o7Cg2bvW3n7N/S9/NcvL9NbyjxLl8fpULUGH7iibo7iHj+sOygXeg
-         sDxJ0MySfYXjMiDYrSTfmHYiyQUSVYXPwjKCaJSmyz3Qcy0nya4/KpfmE2UCoM8orrQI
-         e0PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBUe6j+9g3GMJYDYBH2ALZ8+D6783i++uQ2ohgBIqrb44NeXkUifRby+OmXC/TXBmpgpC9@lists.linux.dev
-X-Gm-Message-State: AOJu0YxDS+YEU1QshU/+Gwzd8rbtnppmSaifL7wH4dO1sofjPKb65TXK
-	6w+ykWFpsz5CwUNm+Qv9VdjtXmCFRAP3obAOlCEIGqOZWQUM0QudWxvW
-X-Gm-Gg: AY/fxX459/FXL3zeW/OTRcPtc2nL+yOAUvnKTvwT2eA4pFdhmNJ6ng2HSr9dmUimUF1
-	4Kle0ujgnfeUmPSTeinkZmlh5E2Wl6fzQZSXVrz0hLnEh+g791ZE0CMTcEcGCQrMwIrvNAIMR0t
-	MMUoJ63ztIJ2pnctydL2bLk7gIfBVA2yEiBl85HumCQx485yec75o3sHut4/jMs7T3eRfr4nsHk
-	QDjqiHl3PZzodW5dph0gVOHiRXNtXIq3C2HazMXYF6AH87eNHbdcEZukuJC38x5OIXtPJXSajEv
-	ulgjnB17MFAJMPFyTEXZH60xT5rg8BghURqdzGjzmDjDpj+4XtoCLa6gTyfxzpEhdlBpRE/EjeJ
-	t54Z+FzETuqDF5aqVEr4j9ZVnDKae8nG2XFNXbjirkV6RKjuHGn+JX+uWhrUf0bKwGwINtmuHgv
-	ej513nGluko6ecvZn2UP7hLj50V/RT5lyWsfVrO2zynYcHTBKIGy77M2NzmM7dFGer
-X-Google-Smtp-Source: AGHT+IFzlCLo+BvPmOwaQvXqt6LlTFpUSJebHNJribHXa7k68xn/ydFompByNLrYdKm0zAa3YWAnPw==
-X-Received: by 2002:a05:7022:793:b0:11b:9386:8257 with SMTP id a92af1059eb24-12172302180mr11142291c88.44.1766468347292;
-        Mon, 22 Dec 2025 21:39:07 -0800 (PST)
-Received: from ?IPV6:2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab? ([2600:8802:b00:9ce0:637f:5cdc:9df0:d9ab])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm40285157c88.8.2025.12.22.21.39.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 21:39:06 -0800 (PST)
-Message-ID: <bc999618-1f1a-4ae7-a81c-57062d57614d@gmail.com>
-Date: Mon, 22 Dec 2025 21:39:05 -0800
+        d=1e100.net; s=20230601; t=1766498713; x=1767103513;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
+        b=IXwGjLhTFTHnqeStp8TMDu+RHuLatChl44nSLbBtETE9eePgqxVf4tUQLrAlkJJMun
+         3mHsh1/118NyMfkrg7w9qwBuc9gzOHfPIdx1tXd8LaEtIr0MG/a9kSMXjpD+AZSiWZyP
+         P++UoTMfnVL2TQxGyr/ObMrHvaB38HONQNpCdVxaDEuT+D/jbzPWCwl6ORnZtQg6ThNF
+         sldquD+0zhkbFCTMbTd2XW5CXfQoeZ3WW4tFz2aioudq5EBTZeBImClMFASzFSmZZtN9
+         Dbys6HDpPcCjEWFrm81OVMzn6k8Kz2OIqGL67KY1KiTrC8fermWCWHiciGDH8E94sD5o
+         /4rA==
+X-Gm-Message-State: AOJu0YxOUjV53tL1/eRjs/AliPrm96qI1wKuSQ0Xm99F+0vYiWGNwVJo
+	avAYGbgQfGIYlQxKhjq4oXinXKwbVwACxxAvs5q/mFSIZTLj0ubS11ml
+X-Gm-Gg: AY/fxX4E7P5UqHbnDDMOCPlDiVTpmzdYU1FME5W85gOr1BlNHBv6vvqjVAKmEjHUUOr
+	7w1/RT7OcMaZSaAgr54a7nLUzG2FtUBnrnlbs/u7fHEFscP1es409+WoZB6ByM15LnTJIF5mi/G
+	tnIQgjdjofKWBd3vIInNxAAkmAFzerYjod+sQFXjASulIQc5YvNNGFMJS9O5P2vDPidl7mGkNpj
+	XAieKps4M+ZjMwPEq2L3ncuFzfOg3ZZa7Q+XkuaY4kRjTPUp2By1j+ha/S0uPDhLsodg5FUBRZj
+	hNOkNyqY0SSPRHJ93DEthTj0OCafsYzOEYiwC6SlBkOM76o/kFVHxTrQ5DvKex+E9lKP76VXa+I
+	Y1DR+tRvNhVoSHsNn3ZTyGKMfGjaCKv+XD45+11JDkNiJ5K6tSqXcZFCTEmJ7M2DN5PJGbF6NvP
+	WMD+SroevyFMFm
+X-Google-Smtp-Source: AGHT+IHbyFgKmCkKVy+fWCluUAqW7A5+LdBDsZ00crpOJb71qQWKWZcujxPGz1eDLdPumnLW6UqawQ==
+X-Received: by 2002:a05:7022:f68e:b0:11a:641f:ba11 with SMTP id a92af1059eb24-121722eaec0mr13661214c88.29.1766498712830;
+        Tue, 23 Dec 2025 06:05:12 -0800 (PST)
+Received: from pop-os.. ([177.21.140.228])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724ddc30sm60661035c88.6.2025.12.23.06.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Dec 2025 06:05:12 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Subject: [PATCH] gfs2: do not evict glocks with populated address spaces
+Date: Tue, 23 Dec 2025 11:05:06 -0300
+Message-Id: <20251223140506.568643-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/11] xfs: enable non-blocking timestamp updates
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
- Jan Kara <jack@suse.cz>, Mike Marshall <hubcap@omnibond.com>,
- Martin Brandenburg <martin@omnibond.com>, Carlos Maiolino <cem@kernel.org>,
- Stefan Roesch <shr@fb.com>, Jeff Layton <jlayton@kernel.org>,
- linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
- io-uring@vger.kernel.org, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org
-References: <20251223003756.409543-1-hch@lst.de>
- <20251223003756.409543-12-hch@lst.de>
-Content-Language: en-US
-From: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
-In-Reply-To: <20251223003756.409543-12-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/22/25 16:37, Christoph Hellwig wrote:
-> The lazytime path using the generic helpers can never block in XFS
-> because there is no ->dirty_inode method that could block.  Allow
-> non-blocking timestamp updates for this case by replacing
-> generic_update_time with the open coded version without the S_NOWAIT
-> check.
->
-> Fixes: 66fa3cedf16a ("fs: Add async write file modification handling.")
-> Signed-off-by: Christoph Hellwig<hch@lst.de>
-> Reviewed-by: Jeff Layton<jlayton@kernel.org>
+Metadata glocks may have associated address spaces used as caches. Avoid
+reclaiming such glocks under memory pressure while their mappings are
+still populated or their state is not unlocked, as this can lead to
+invalid page cache state and GLOCK_BUG_ON().
 
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ fs/gfs2/glock.h | 30 ++++++++++++++++++++++++++++++
+ fs/gfs2/super.c |  3 +++
+ 2 files changed, 33 insertions(+)
 
-Looks good.
-
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-
--ck
-
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index 55d5985f32a0..12f57461f687 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -305,4 +305,34 @@ static inline bool glock_needs_demote(struct gfs2_glock *gl)
+ 		test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags));
+ }
+ 
++/*
++ * gfs2_glock_not_evictable - check if a glock is not evictable
++ * @gl:	The glock to check
++ *
++ * Glocks which do not represent normal filesystem inodes (e.g. statfs, quota, rindex)
++ * may have associated address spaces used as metadata caches. These glocks must not
++ * be reclaimed under memory pressure while their mappings are still populated or their
++ * state is not unlocked.
++ */
++
++static inline bool gfs2_glock_not_evictable(struct gfs2_glock *gl)
++{
++	if (gl->gl_name.ln_type == LM_TYPE_INODE)
++		return false;
++
++	if (gl->gl_ops->go_flags & GLOF_ASPACE) {
++		struct gfs2_glock_aspace *gla;
++
++		gla = container_of(gl, struct gfs2_glock_aspace, glock);
++
++		if (!mapping_empty(&gla->mapping))
++			return true;
++	}
++
++	if (gl->gl_state != LM_ST_UNLOCKED)
++		return true;
++
++	return false;
++}
++
+ #endif /* __GLOCK_DOT_H__ */
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index f6cd907b3ec6..86544cdafe53 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1164,6 +1164,9 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
+ 
+ static void gfs2_glock_put_eventually(struct gfs2_glock *gl)
+ {
++	if (gfs2_glock_not_evictable(gl))
++		return;
++
+ 	if (current->flags & PF_MEMALLOC)
+ 		gfs2_glock_put_async(gl);
+ 	else
+-- 
+2.34.1
 
