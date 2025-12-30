@@ -1,146 +1,147 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358FF3191A0
-	for <gfs2@lists.linux.dev>; Mon, 29 Dec 2025 18:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174A11BF33
+	for <gfs2@lists.linux.dev>; Tue, 30 Dec 2025 07:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767031905; cv=none; b=haxKQyxjdwjJ8fzgRqIFhunz8pqZs0aAWvCkTkz+iGa/QPT15XhDrUpyiZW6AlN/jtjWiAzYS1jdNVlv/ulSEQ1IICIKc3AmEW3RFivEuoDuwvmDJ2xxjUrL4kdrZ1SJAohPyomXS4kwOaEmjjBs2nmF44gByiiXfwskxA52k8I=
+	t=1767080807; cv=none; b=XYcPkyZxl5i5KOYXTtD06dnkjHg2fVOLpmx6JXmvT56XXysQNSmjJ80FzFyd9ba4MfLOpqLr9+ueNiWtQAaKjzGybafphhDGz9Au2e4rgqnVcau0Rx/fPa5IKkL0c2fhvi62Yt/9e+4G3mhfe0tDT6Wd1egcrV9R1LUC9hVe/kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767031905; c=relaxed/simple;
-	bh=3mxvxrp4wY/3uGpZuzNNr+dKx2oGx7/JyRyOy5FqYfw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YEBNNJ1s0GHRWCX4nUfG/szB4OszG25N+O58SC5Ud/XNEyHMYLgXazPltEt+fpToOZyW3nGvLBKHcWqCml9SS6vk/xhhKYTxVNQOMiKDGRqem5lesnlJnS1Z5YKLrClrzvNc0WBc0YboAX7I97jUD7r+632jpbMQbGiP/PpA3Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtuH6lH3; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767080807; c=relaxed/simple;
+	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hH4Q99UwjBIfTtu/3KSF/777tcylbhT0KxIF2bUSNMEbec0Ji04tdnEt/TLuXdBpeSh3mmlKpD2HCNGwtVSpjHIAmQJcxYAikwd8bHI7QYvZj096vqte/Vela8D8L7mAZFVaXxua1j8bXBOJ7jTJxd9VbDZAIkQrtYE8wd4Pdds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dNvwG/Av; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtuH6lH3"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-34c902f6845so13069194a91.2
-        for <gfs2@lists.linux.dev>; Mon, 29 Dec 2025 10:11:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767031903; x=1767636703; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ViypW+a/MB+nsvvfZGHfmVvZeQI/Iv9ibJjlMSavIV0=;
-        b=KtuH6lH3VSanzg+kYMWsXOT1rTWEzbXVlz1SbVsv0CtnfMjAmxLEe0EWKpywJ7UOlb
-         6FOB4dWWtGsYm9yQd5YFGwGiw80hNXcG+J5IZVZC/EJDnrKV8IhfjGFK5FFFeqVxVPSq
-         yBqiL3yjz9cuSpMdyonecSLvd0JR3kQ/S096KXjFZa5UGfCJJTbDXgrF7vbjm/46gpuU
-         8RCy7ilC41U3A7GNi9MDEcuKttNucuwP0X8Kvlfy5RmsMyor/jrdAOZlYs3cqXH9pg7w
-         FPT9LvbPKyD/u2LVny/n4nJyLkgwnx7pML4YxBhgOQVHvJfSiHXH18Vo5UgHPFv3k7cW
-         cLZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767031903; x=1767636703;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ViypW+a/MB+nsvvfZGHfmVvZeQI/Iv9ibJjlMSavIV0=;
-        b=j1QjoP6FhP8jAfKA5jq2nXGp6b4TYUio8kFR0dEgUfkRJLGJkuuIAkz+TAFb2bXk2a
-         kP3F94/NZsicxvZ8y27jFAv1jNNHyZzmfnmZDX3Qo6zBuzR0lZoaYve/YXnp6N9m1Orp
-         bwNC01W3HVEhQoqTTCejeY0T42oaIwLVd65VD+WT3Z3Sc4xF/1RZc6jaEVj2fl+xiT8Q
-         ENmPgNxTyAUmmKfsAsF6/CMyWivFOOOCcMuF57njjZVp91th8GY2S/8HI8aArqCyxpB/
-         mvJg03ohmhfLwCGUyhdvULHlUmnINHpeFTwQa7KxQaa4/7uXcNQnr4bH5WNJusZJjOe9
-         +Byw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcLrOuK3loJ3Uv74JaF/BxT966n+97h8B21HvNaF49wf88VJZdMuj5VcQezfcQOdxSP12c@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0ZjVlc9SCzD9Kmz4Ncygl34eaQ5GjZvXxasui5zTAID2CO/bn
-	82UCZJUHUE9zaJ3EzfNgevbkFppTCm+zuxLJ5gVw48V8C8fvVlABnA25
-X-Gm-Gg: AY/fxX6I0UTJpyPrgyRvRE85m1j+OcGpUKfDFf39FJdIIWsXAmtkAwwO0tSVtDAeyzI
-	UxJ9uMRQMijEK7kZvri8vIqxPrqS9RZzp4D0vNQJWGToBagzfS0S0P+FOru/D1Z/+wpp5eH2him
-	1yMcIkzVTB+80KGe64R1gyCCHYK3v4BrG3ZBy5KElC2y1fX9bVa7tcOxr586bNpEpK5BoAumwik
-	ZLHintIX250zBQa+rCAOVYzW2VvchaPKvrkUacAaoinktChDjz+tc+MUrmikTbP8qt6o+TQneNS
-	WShsq/hnZPJxIQKwnDaYjSJSxO+to+m/Uu3OSD7zU7eQvEIwYjx7gZ9FzI12/MTR/4d6ItJPPWY
-	WOn+TVhJ/hN1VR3UrTsmKCoaFKbB7s9JHyJnlSU2gWtOVCPgvWrkGEQnKKjDHW4fSSfGF5nJ1sS
-	xL64TZOjX0/BFJTdgbbxY=
-X-Google-Smtp-Source: AGHT+IFp7RHj+un7puWHRl+h8lj4aFf3vhZWRP1VkW5p0M/OCRPHRXaSCSd7ytGI3VvKtAwTrRlq2w==
-X-Received: by 2002:a17:90b:49:b0:343:5f43:933e with SMTP id 98e67ed59e1d1-34e921afaf8mr23802102a91.19.1767031903383;
-        Mon, 29 Dec 2025 10:11:43 -0800 (PST)
-Received: from [172.16.80.107] ([210.228.119.9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e769c347asm16353246a91.0.2025.12.29.10.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 10:11:42 -0800 (PST)
-From: Ryota Sakamoto <sakamo.ryota@gmail.com>
-Date: Tue, 30 Dec 2025 03:08:46 +0900
-Subject: [PATCH v2] gfs2: Fix use-after-free in gfs2_fill_super()
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dNvwG/Av"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1767080797; x=1767685597; i=markus.elfring@web.de;
+	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=dNvwG/Av/PSxsIAnMeZgLugq+dDR5yEbDmzm5qsWzYhlEQ9QAsad7BlabWPHUjQl
+	 SuQyD74SpSlt5EvazpQLSnwNzHB5636d7pjcCAXzlexemHohyu1WL15wvLyRiErom
+	 ydcmHTT0dsg4hhwg9v6IYh3HHfdUGX/ABbBNWt7JT58AKcoNFut4iejMvCQFlARsA
+	 Z2QdXel0pLWmMSx7EQka+r7grQtrkvZ+QwI2Y6VhVSnIi1Ytc0df7JkyNp0TZQRJD
+	 Sb9lF4MaFdp5U4/BBNU23FAXxt80JamNNcl4oGJ52vnumpxpGUE/Ls8TMfqg54D9f
+	 XG6GhXXZSprHFt5+Ag==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.0]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MRW6Z-1vFPB21CLN-00VPZQ; Tue, 30
+ Dec 2025 08:46:37 +0100
+Message-ID: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+Date: Tue, 30 Dec 2025 08:46:36 +0100
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6CMBSEr0Le2mdo0UZdeQ/DopQpvER+0iLRk
- N7dygVcfpOZbzaKCIJIt2KjgFWiTGMGfSjI9XbswNJmJl3qs9JVyV7e/Ipg6xcE9gHgzkfNxjj
- fQFeNtRfK6zkgV3fzo87cS1ym8NmPVvVL/ztXxYrhS5xM2xi4670brDyPbhqoTil9AeWwjhq+A
- AAA
-X-Change-ID: 20251230-fix-use-after-free-gfs2-66cfbe23baa8
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Markus Elfring <Markus.Elfring@web.de>, gfs2@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, 
- stable@vger.kernel.org, Ryota Sakamoto <sakamo.ryota@gmail.com>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
+To: Ryota Sakamoto <sakamo.ryota@gmail.com>,
+ =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>,
+ gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+ syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zSzoFl0GZQnkgKMC6J+rRP2ltFJs7Q4YOT+5mtuPFgMAK1Pklrq
+ hA2lfnCQ0CW0OF7Z3wYbFNwmxCGyWFtHBU2IXjfNtd5PrjCq3bL5Z0jTOOFhYfZysojTbTw
+ Hnr5C4ZkGfoLVS7KVOtUrnONmiYFWx1wQfBCVLxC/zf5NYeiUf5a8k46vudKMMhroQRaHQ9
+ i9NnswrwteFi/fjSG8Frg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1rgeMLltv/Y=;Z+zASM1FDxPLWFjvhp0C2N/bWzH
+ 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
+ intiEI9CxlgUi6xSvstlIU3OSF/8aBNcNWnayf
 
-The issue occurs when gfs2_freeze_lock_shared() fails in
-gfs2_fill_super(). If !sb_rdonly(sb), threads for the quotad and logd
-were started, however, in the error path for gfs2_freeze_lock_shared(),
-the threads are not stopped by gfs2_destroy_threads() before jumping to
-fail_per_node.
+=E2=80=A6
+> Introduce fail_threads to handle stopping the threads if the threads wer=
+e
+> started.
 
-Introduce fail_threads to handle stopping the threads if the threads were
-started.
+Is there a need to indicate a role for the mentioned identifier?
 
-Reported-by: syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4cb0d0336db6bc6930e9
-Fixes: a28dc123fa66 ("gfs2: init system threads before freeze lock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ryota Sakamoto <sakamo.ryota@gmail.com>
----
-Changes in v2:
-- Fix commit message style (imperative mood) as suggested by Markus Elfring.
-- Add parentheses to function name in subject as suggested by Markus Elfring.
-- Link to v1: https://lore.kernel.org/r/20251230-fix-use-after-free-gfs2-v1-1-ef0e46db6ec9@gmail.com
----
- fs/gfs2/ops_fstype.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Do you propose to use another label here?
 
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index e7a88b717991ae3647c1da039636daef7005a7f0..4b5ac1a7050f1fd34e10be4100a2bc381f49c83d 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1269,21 +1269,23 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	error = gfs2_freeze_lock_shared(sdp);
- 	if (error)
--		goto fail_per_node;
-+		goto fail_threads;
- 
- 	if (!sb_rdonly(sb))
- 		error = gfs2_make_fs_rw(sdp);
- 
- 	if (error) {
- 		gfs2_freeze_unlock(sdp);
--		gfs2_destroy_threads(sdp);
- 		fs_err(sdp, "can't make FS RW: %d\n", error);
--		goto fail_per_node;
-+		goto fail_threads;
- 	}
- 	gfs2_glock_dq_uninit(&mount_gh);
- 	gfs2_online_uevent(sdp);
- 	return 0;
- 
-+fail_threads:
-+	if (!sb_rdonly(sb))
-+		gfs2_destroy_threads(sdp);
- fail_per_node:
- 	init_per_node(sdp, UNDO);
- fail_inodes:
-
----
-base-commit: 7839932417dd53bb09eb5a585a7a92781dfd7cb2
-change-id: 20251230-fix-use-after-free-gfs2-66cfbe23baa8
-
-Best regards,
--- 
-Ryota Sakamoto <sakamo.ryota@gmail.com>
-
+Regards,
+Markus
