@@ -1,147 +1,77 @@
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174A11BF33
-	for <gfs2@lists.linux.dev>; Tue, 30 Dec 2025 07:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6E2D77E9
+	for <gfs2@lists.linux.dev>; Wed, 31 Dec 2025 01:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767080807; cv=none; b=XYcPkyZxl5i5KOYXTtD06dnkjHg2fVOLpmx6JXmvT56XXysQNSmjJ80FzFyd9ba4MfLOpqLr9+ueNiWtQAaKjzGybafphhDGz9Au2e4rgqnVcau0Rx/fPa5IKkL0c2fhvi62Yt/9e+4G3mhfe0tDT6Wd1egcrV9R1LUC9hVe/kk=
+	t=1767145325; cv=none; b=L+xDroty7R+h9y/PnlSRhJhJ15Gn6CAADHHca9t1tfZBjXfZpgaCB8ajwCCpKvLlT1Y+S44SyWojdyASiUxF1nH7ZfIUJzf2zq/EsIj2tORVX9M8LcyYETvFLtfoOGl/g6WixAUiHEvrFeOLIC3WfpcksVbY5x1Eu6KXBZgHqZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767080807; c=relaxed/simple;
-	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hH4Q99UwjBIfTtu/3KSF/777tcylbhT0KxIF2bUSNMEbec0Ji04tdnEt/TLuXdBpeSh3mmlKpD2HCNGwtVSpjHIAmQJcxYAikwd8bHI7QYvZj096vqte/Vela8D8L7mAZFVaXxua1j8bXBOJ7jTJxd9VbDZAIkQrtYE8wd4Pdds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dNvwG/Av; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dNvwG/Av"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1767080797; x=1767685597; i=markus.elfring@web.de;
-	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=dNvwG/Av/PSxsIAnMeZgLugq+dDR5yEbDmzm5qsWzYhlEQ9QAsad7BlabWPHUjQl
-	 SuQyD74SpSlt5EvazpQLSnwNzHB5636d7pjcCAXzlexemHohyu1WL15wvLyRiErom
-	 ydcmHTT0dsg4hhwg9v6IYh3HHfdUGX/ABbBNWt7JT58AKcoNFut4iejMvCQFlARsA
-	 Z2QdXel0pLWmMSx7EQka+r7grQtrkvZ+QwI2Y6VhVSnIi1Ytc0df7JkyNp0TZQRJD
-	 Sb9lF4MaFdp5U4/BBNU23FAXxt80JamNNcl4oGJ52vnumpxpGUE/Ls8TMfqg54D9f
-	 XG6GhXXZSprHFt5+Ag==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.0]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MRW6Z-1vFPB21CLN-00VPZQ; Tue, 30
- Dec 2025 08:46:37 +0100
-Message-ID: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
-Date: Tue, 30 Dec 2025 08:46:36 +0100
+	s=arc-20240116; t=1767145325; c=relaxed/simple;
+	bh=Zxm+JxbQDcWg11BOhyw7dobOfjO2hvH3NDQOCPh97Jw=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=Yi30QabhszDNGAcTHQAI2nWkQB1Y5FOcFfaf75zkngmwPqX9n0z2DUH1bPn35sDtsy7LAlg0F+VShPuBwB6tfr3s8Tj5Z2JjDG/ERUeUVww0v4BsvWrmwQAzWLja+la2WxKGrB+IxTw1adYr5m77kalns3tCIbEIQJ40ekGmkF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65eccb3f95cso10531508eaf.3
+        for <gfs2@lists.linux.dev>; Tue, 30 Dec 2025 17:42:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767145322; x=1767750122;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gTZZjS79VHrfpj0W1pWmRNTRak1AXpPtMEXkehl7HRk=;
+        b=nHKYXU6WO0Z7s8w6PuZZglCVN6Zyc/Q2CEyj0/k2UbVx99xLnEk9gr9stLh7sVJwDU
+         0gfJlqbVlBAPcBLVUZd/HfN1PA5+ZSmh6L71ovs4klSEvlYzi+9Bp8MAR3cuDMf/TDgT
+         qJ2jGTRYsp8LWeJL5jJIfkcDM+f2rq9k/Ltm60/RP+rRYaXms+ndHw66YS5ezL7sDIEq
+         WPPISz6jnQxCxVvuS/uIPUxvFg/iI1iaDCwBlkL/fjCxspIBlRNAX470eG8NUkq2Lmiw
+         MRh25ThoxIomVzGRRRenQ2REv2FkNHcn0tWJmtt0EWASHHmBpibAXWVcTFgdzEKxj8EQ
+         zviQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVr5VIJRweNYD1cjHu4uQpNimiTXA88t9FxlXtntLPs6sc8AFSfFC9VHMloX7Q5ipe/7qoC@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUpEqU6FqflDnurbkN0wThAyugGEy/t9ideH06YdQWKqzlzVdy
+	O0kpeDRZY/ey8rz9o6TleVc+hIHuZERnY2ar7Ius8d0prYzJa0hUQbt+OJbeXFulMPEKZuOKADD
+	wF99E0m0DkLDOM2SOxlF4ZOqyEJjqxKo8A+PL+7WqmktIUO+D9JSEGoabaXE=
+X-Google-Smtp-Source: AGHT+IHxNzByy/IIqB+GfG++jCTnMxPHAU+BIqEALwrSkaIPtHK7tKgpL7oIzY6zR37aqpu0Jo5qfft1DeP4tsACTpcUsq5RaQ94
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
-To: Ryota Sakamoto <sakamo.ryota@gmail.com>,
- =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>,
- gfs2@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
- syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zSzoFl0GZQnkgKMC6J+rRP2ltFJs7Q4YOT+5mtuPFgMAK1Pklrq
- hA2lfnCQ0CW0OF7Z3wYbFNwmxCGyWFtHBU2IXjfNtd5PrjCq3bL5Z0jTOOFhYfZysojTbTw
- Hnr5C4ZkGfoLVS7KVOtUrnONmiYFWx1wQfBCVLxC/zf5NYeiUf5a8k46vudKMMhroQRaHQ9
- i9NnswrwteFi/fjSG8Frg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1rgeMLltv/Y=;Z+zASM1FDxPLWFjvhp0C2N/bWzH
- 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
- intiEI9CxlgUi6xSvstlIU3OSF/8aBNcNWnayf
+X-Received: by 2002:a05:6820:2305:b0:65c:fb01:71af with SMTP id
+ 006d021491bc7-65ea0345582mr11615339eaf.5.1767145322587; Tue, 30 Dec 2025
+ 17:42:02 -0800 (PST)
+Date: Tue, 30 Dec 2025 17:42:02 -0800
+In-Reply-To: <67a4eae3.050a0220.65602.0001.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69547f6a.050a0220.a1b6.0308.GAE@google.com>
+Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in list_lru_del
+From: syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@fromorbit.com, gfs2@lists.linux.dev, 
+	hughd@google.com, kent.overstreet@linux.dev, linux-bcachefs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mmpgouride@gmail.com, 
+	muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
 
-=E2=80=A6
-> Introduce fail_threads to handle stopping the threads if the threads wer=
-e
-> started.
+syzbot suspects this issue was fixed by commit:
 
-Is there a need to indicate a role for the mentioned identifier?
+commit 3a04334d6282d08fbdd6201e374db17d31927ba3
+Author: Alan Huang <mmpgouride@gmail.com>
+Date:   Fri Mar 7 16:58:27 2025 +0000
 
-Do you propose to use another label here?
+    bcachefs: Fix b->written overflow
 
-Regards,
-Markus
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=117f329a580000
+start commit:   03d38806a902 Merge tag 'thermal-6.14-rc5' of git://git.ker..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8de9cc84d5960254
+dashboard link: https://syzkaller.appspot.com/bug?extid=6663075ddb9be85fa6e5
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=104d2864580000
+
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: bcachefs: Fix b->written overflow
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
