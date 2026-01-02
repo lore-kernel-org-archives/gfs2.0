@@ -1,77 +1,93 @@
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6E2D77E9
-	for <gfs2@lists.linux.dev>; Wed, 31 Dec 2025 01:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9210155C87
+	for <gfs2@lists.linux.dev>; Fri,  2 Jan 2026 08:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767145325; cv=none; b=L+xDroty7R+h9y/PnlSRhJhJ15Gn6CAADHHca9t1tfZBjXfZpgaCB8ajwCCpKvLlT1Y+S44SyWojdyASiUxF1nH7ZfIUJzf2zq/EsIj2tORVX9M8LcyYETvFLtfoOGl/g6WixAUiHEvrFeOLIC3WfpcksVbY5x1Eu6KXBZgHqZs=
+	t=1767343216; cv=none; b=oiwxgitLBj2rvlnLuA0sP/QshHFMgwiWuMXlujdKbxslXz9YyGhLmB8/izGw3MAV+BJWnXsSLNMxNTttshZuSusXsMJkAX71nwVCOZl90VRBZTl2xxALVgnMLy42p56jgydp+YtzXxfZDO1sE1YscYiP8bz5xoyQjm1jqBj8cgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767145325; c=relaxed/simple;
-	bh=Zxm+JxbQDcWg11BOhyw7dobOfjO2hvH3NDQOCPh97Jw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Yi30QabhszDNGAcTHQAI2nWkQB1Y5FOcFfaf75zkngmwPqX9n0z2DUH1bPn35sDtsy7LAlg0F+VShPuBwB6tfr3s8Tj5Z2JjDG/ERUeUVww0v4BsvWrmwQAzWLja+la2WxKGrB+IxTw1adYr5m77kalns3tCIbEIQJ40ekGmkF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65eccb3f95cso10531508eaf.3
-        for <gfs2@lists.linux.dev>; Tue, 30 Dec 2025 17:42:03 -0800 (PST)
+	s=arc-20240116; t=1767343216; c=relaxed/simple;
+	bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gae6kQEV3cbMm9aGmykYambo9hSXYwz2cOfxXj8rxmeItn1YksUZrkd141H3hz/Qt0fGYnzjwl2DLUdxZkz57gM3D1MpOoAQvT2l5YshDu7a9/OrTyOpM7mVrKSB8KOia/9ygFI0xFvSVeHusb7OBqeXb8DRO9P63JuUAqedg24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkAXTJW3; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkAXTJW3"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88888c41a13so157710216d6.3
+        for <gfs2@lists.linux.dev>; Fri, 02 Jan 2026 00:40:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767343214; x=1767948014; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+        b=SkAXTJW32COvraGvJG0u+1II1LWNxttB11qoFcOFGFJZya5M6kt37rti4faaujLNyq
+         wvUwiRSgf2/bs8Gae6Yz6HWQVOWNwAogv8E7pQvvrb8KwDastWe+mXOZjR993w4uC2tY
+         7wcqRH7v67MARtXmuZXWSbc0lYjNZA8taxjGVMm9KE1esJhUe5L2JLLhSZKwBU0OUyjS
+         IIPKCCx+y/nlglDYqRwJ8ZYiMrSnzEqjSV8UQh+HuOX6en58F3p39AIhZFYq/G+vlCwB
+         3AhQJFSLcDO/jL8IKZ4uh7/PpYZwRu6vEL0EtMMAei6aZELCdWAH8XFZTMYLvfny/7BG
+         EHDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767145322; x=1767750122;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gTZZjS79VHrfpj0W1pWmRNTRak1AXpPtMEXkehl7HRk=;
-        b=nHKYXU6WO0Z7s8w6PuZZglCVN6Zyc/Q2CEyj0/k2UbVx99xLnEk9gr9stLh7sVJwDU
-         0gfJlqbVlBAPcBLVUZd/HfN1PA5+ZSmh6L71ovs4klSEvlYzi+9Bp8MAR3cuDMf/TDgT
-         qJ2jGTRYsp8LWeJL5jJIfkcDM+f2rq9k/Ltm60/RP+rRYaXms+ndHw66YS5ezL7sDIEq
-         WPPISz6jnQxCxVvuS/uIPUxvFg/iI1iaDCwBlkL/fjCxspIBlRNAX470eG8NUkq2Lmiw
-         MRh25ThoxIomVzGRRRenQ2REv2FkNHcn0tWJmtt0EWASHHmBpibAXWVcTFgdzEKxj8EQ
-         zviQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVr5VIJRweNYD1cjHu4uQpNimiTXA88t9FxlXtntLPs6sc8AFSfFC9VHMloX7Q5ipe/7qoC@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUpEqU6FqflDnurbkN0wThAyugGEy/t9ideH06YdQWKqzlzVdy
-	O0kpeDRZY/ey8rz9o6TleVc+hIHuZERnY2ar7Ius8d0prYzJa0hUQbt+OJbeXFulMPEKZuOKADD
-	wF99E0m0DkLDOM2SOxlF4ZOqyEJjqxKo8A+PL+7WqmktIUO+D9JSEGoabaXE=
-X-Google-Smtp-Source: AGHT+IHxNzByy/IIqB+GfG++jCTnMxPHAU+BIqEALwrSkaIPtHK7tKgpL7oIzY6zR37aqpu0Jo5qfft1DeP4tsACTpcUsq5RaQ94
+        d=1e100.net; s=20230601; t=1767343214; x=1767948014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+        b=cGEGXaZL6AFaMdQ5xAPjq2Frdiqdhhuue7uFPFuB0SO2iRo18OyOSvZXEOqB+hysmG
+         6jTI9STUsXCsY6AS5aR/GGdWFp0wB/bJ/5gvxbb81fPccVWeTBlJ8V5HqSbNq2gEn2pa
+         8UUdyvSLgkJiHQAwKalVqGB5cFvAXNTdDpp+v4QnLNlhXy6iHF7TLHBv7I2GS7c3wGJW
+         7ZS7iShXqTdqQYjYGOYhP5QTWPfTZZronxaXxwwAktTBA6GhXuE/aRbMXf08KdSgQuEk
+         WFpvMk9MVO7bfvwQTn7gpkBPZb0PTczp2OG4063XPU92tfmnOtu5t0EvPF5NtlatR41R
+         +VqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXnto3p16meAmOMVzY1UpqRPeLc5uewYCGlw1lBuRmjOHBYUpVMOGxL00paaHt0Eb952SY@lists.linux.dev
+X-Gm-Message-State: AOJu0YxKn8qudXs2XqsXcTkQHgB9ejPF8P7tQNbqvNUUR9W/6wiqQe7Y
+	7ik8dFBaywRP6HGvh0QM1Id/K4QZRT1sxxdO98+GdGjnA14pi/Ryoe8k6UOgSzT8a1ki+TM9WI4
+	o2VHQSx/iaxWUquSaPPRnNoJa7+HgF20=
+X-Gm-Gg: AY/fxX6GvOJ76TGVEE3+4zxi4WRW53CEOawX2aXzyyeGFjAcdEx4dzEsm8Gfr6k+2id
+	4RkDCj341x7kY7GUkxRs57ZrzabC1l5m5eCumbeTeLAxKcSyzQt5x6uyVIPaz3HyNz/EOuxAL8U
+	Rz6DS6gy69nkUcI5SDCz2sx7mNBcZePwmYl3WYXFPmYS0qlnXEeqJ2I5xkjGPVAlT9wy1HTEwpD
+	gl9C9SY6GqMtFNwbbDmCRV6yR/cFfZxfgfcxYHvGNnYgTWPtYb9iH4TYgsunE9TN0UUpKk=
+X-Google-Smtp-Source: AGHT+IGC6CuYzGpscftFjWf5+gmMzki6w7/Iy7X2Zql16cmak2tCVDp7at2bcPo1WOtb39jHX+LdpWUm1mnZBbUac4Q=
+X-Received: by 2002:a05:6214:23c6:b0:88a:261f:6af4 with SMTP id
+ 6a1803df08f44-88d8404df6amr636211446d6.58.1767343213797; Fri, 02 Jan 2026
+ 00:40:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2305:b0:65c:fb01:71af with SMTP id
- 006d021491bc7-65ea0345582mr11615339eaf.5.1767145322587; Tue, 30 Dec 2025
- 17:42:02 -0800 (PST)
-Date: Tue, 30 Dec 2025 17:42:02 -0800
-In-Reply-To: <67a4eae3.050a0220.65602.0001.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69547f6a.050a0220.a1b6.0308.GAE@google.com>
-Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in list_lru_del
-From: syzbot <syzbot+6663075ddb9be85fa6e5@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@fromorbit.com, gfs2@lists.linux.dev, 
-	hughd@google.com, kent.overstreet@linux.dev, linux-bcachefs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mmpgouride@gmail.com, 
-	muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com
+References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com> <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+In-Reply-To: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+From: Ryota Sakamoto <sakamo.ryota@gmail.com>
+Date: Fri, 2 Jan 2026 17:40:02 +0900
+X-Gm-Features: AQt7F2r0MrGfokVOhyqLOTiI52EVobi3HtPfSH9ESALiCshy7ly_MguWuQFVcmY
+Message-ID: <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
+Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>, 
+	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot suspects this issue was fixed by commit:
+On Tue, Dec 30, 2025 at 4:46=E2=80=AFPM Markus Elfring <Markus.Elfring@web.=
+de> wrote:
+> Is there a need to indicate a role for the mentioned identifier?
 
-commit 3a04334d6282d08fbdd6201e374db17d31927ba3
-Author: Alan Huang <mmpgouride@gmail.com>
-Date:   Fri Mar 7 16:58:27 2025 +0000
+Yes, "fail_threads" is a goto label. And including "label" in the message
+explicitly is precise.
 
-    bcachefs: Fix b->written overflow
+> Do you propose to use another label here?
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=117f329a580000
-start commit:   03d38806a902 Merge tag 'thermal-6.14-rc5' of git://git.ker..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8de9cc84d5960254
-dashboard link: https://syzkaller.appspot.com/bug?extid=6663075ddb9be85fa6e5
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=104d2864580000
+Yes, I am proposing a new label "fail_threads".
+I chose this name to maintain consistency with the existing error labels
+in this function (e.g., fail_per_node, fail_inodes).
 
-If the result looks correct, please mark the issue as fixed by replying with:
+If a v3 is required for other reasons, I will update the commit message
+to include "label".
 
-#syz fix: bcachefs: Fix b->written overflow
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Regards,
