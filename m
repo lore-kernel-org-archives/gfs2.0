@@ -1,93 +1,762 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9210155C87
-	for <gfs2@lists.linux.dev>; Fri,  2 Jan 2026 08:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABDA311975
+	for <gfs2@lists.linux.dev>; Mon,  5 Jan 2026 18:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767343216; cv=none; b=oiwxgitLBj2rvlnLuA0sP/QshHFMgwiWuMXlujdKbxslXz9YyGhLmB8/izGw3MAV+BJWnXsSLNMxNTttshZuSusXsMJkAX71nwVCOZl90VRBZTl2xxALVgnMLy42p56jgydp+YtzXxfZDO1sE1YscYiP8bz5xoyQjm1jqBj8cgs=
+	t=1767639079; cv=none; b=Kef03aQXYgSi8+HdIHrWTQBzzz1isf4xLyWhzVF1bIFC5enHaJaH8HKEc52U6Nl9bXoiqnpgE2hh2MHNGphPjth4CyKkzt4pfA4qK08qvCk8/CujagKr8nAP5pgrswLSUVfQrQEC5aF0Bbp9yUkk7MU8pH3rVQCgvuPpEzGoWz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767343216; c=relaxed/simple;
-	bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gae6kQEV3cbMm9aGmykYambo9hSXYwz2cOfxXj8rxmeItn1YksUZrkd141H3hz/Qt0fGYnzjwl2DLUdxZkz57gM3D1MpOoAQvT2l5YshDu7a9/OrTyOpM7mVrKSB8KOia/9ygFI0xFvSVeHusb7OBqeXb8DRO9P63JuUAqedg24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkAXTJW3; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767639079; c=relaxed/simple;
+	bh=wSLacTucJowVLkcpf967RgLrw9rK/4OMcERpwnXqNvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=S09ieDYbJYR5bC96kuts7YSYhwnAR8UyYo/Ma38PVi1b2PU48ExQ2Zgzz95rEq44a2crAoW7WD07GoDgJgMH28KyFKy+CeOEjKxWNovJG3tYSmrPhQDR6bwIJGlTYYhMwMZtU5HJq6YHsFx+KDV4UqwFvY7nPWutbzWe4c5fJJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rm2cTrTx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkAXTJW3"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88888c41a13so157710216d6.3
-        for <gfs2@lists.linux.dev>; Fri, 02 Jan 2026 00:40:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767343214; x=1767948014; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-        b=SkAXTJW32COvraGvJG0u+1II1LWNxttB11qoFcOFGFJZya5M6kt37rti4faaujLNyq
-         wvUwiRSgf2/bs8Gae6Yz6HWQVOWNwAogv8E7pQvvrb8KwDastWe+mXOZjR993w4uC2tY
-         7wcqRH7v67MARtXmuZXWSbc0lYjNZA8taxjGVMm9KE1esJhUe5L2JLLhSZKwBU0OUyjS
-         IIPKCCx+y/nlglDYqRwJ8ZYiMrSnzEqjSV8UQh+HuOX6en58F3p39AIhZFYq/G+vlCwB
-         3AhQJFSLcDO/jL8IKZ4uh7/PpYZwRu6vEL0EtMMAei6aZELCdWAH8XFZTMYLvfny/7BG
-         EHDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767343214; x=1767948014;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-        b=cGEGXaZL6AFaMdQ5xAPjq2Frdiqdhhuue7uFPFuB0SO2iRo18OyOSvZXEOqB+hysmG
-         6jTI9STUsXCsY6AS5aR/GGdWFp0wB/bJ/5gvxbb81fPccVWeTBlJ8V5HqSbNq2gEn2pa
-         8UUdyvSLgkJiHQAwKalVqGB5cFvAXNTdDpp+v4QnLNlhXy6iHF7TLHBv7I2GS7c3wGJW
-         7ZS7iShXqTdqQYjYGOYhP5QTWPfTZZronxaXxwwAktTBA6GhXuE/aRbMXf08KdSgQuEk
-         WFpvMk9MVO7bfvwQTn7gpkBPZb0PTczp2OG4063XPU92tfmnOtu5t0EvPF5NtlatR41R
-         +VqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXnto3p16meAmOMVzY1UpqRPeLc5uewYCGlw1lBuRmjOHBYUpVMOGxL00paaHt0Eb952SY@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKn8qudXs2XqsXcTkQHgB9ejPF8P7tQNbqvNUUR9W/6wiqQe7Y
-	7ik8dFBaywRP6HGvh0QM1Id/K4QZRT1sxxdO98+GdGjnA14pi/Ryoe8k6UOgSzT8a1ki+TM9WI4
-	o2VHQSx/iaxWUquSaPPRnNoJa7+HgF20=
-X-Gm-Gg: AY/fxX6GvOJ76TGVEE3+4zxi4WRW53CEOawX2aXzyyeGFjAcdEx4dzEsm8Gfr6k+2id
-	4RkDCj341x7kY7GUkxRs57ZrzabC1l5m5eCumbeTeLAxKcSyzQt5x6uyVIPaz3HyNz/EOuxAL8U
-	Rz6DS6gy69nkUcI5SDCz2sx7mNBcZePwmYl3WYXFPmYS0qlnXEeqJ2I5xkjGPVAlT9wy1HTEwpD
-	gl9C9SY6GqMtFNwbbDmCRV6yR/cFfZxfgfcxYHvGNnYgTWPtYb9iH4TYgsunE9TN0UUpKk=
-X-Google-Smtp-Source: AGHT+IGC6CuYzGpscftFjWf5+gmMzki6w7/Iy7X2Zql16cmak2tCVDp7at2bcPo1WOtb39jHX+LdpWUm1mnZBbUac4Q=
-X-Received: by 2002:a05:6214:23c6:b0:88a:261f:6af4 with SMTP id
- 6a1803df08f44-88d8404df6amr636211446d6.58.1767343213797; Fri, 02 Jan 2026
- 00:40:13 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rm2cTrTx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767639075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dFL2okKb7SqrHtWqfCWLD+Yp4kMem+9WxdCrJX9b86s=;
+	b=Rm2cTrTxWziafuye+e/pKc4ciaT2T9KYvZa/riIeQkIqnSrwjEztf3qvRfY0GgfTbRvtXy
+	l2he+hp9G3k5vhV0D9HFsgBljsMYzcOkp43mFYx925jx+jgCAc6xu7rvEEglfYGQBE3HXg
+	yzqTekFjNozvTot5stSh6ADbpaYMcQQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-NjIVi2vEMcaGfzYN_Iol4Q-1; Mon,
+ 05 Jan 2026 13:51:14 -0500
+X-MC-Unique: NjIVi2vEMcaGfzYN_Iol4Q-1
+X-Mimecast-MFC-AGG-ID: NjIVi2vEMcaGfzYN_Iol4Q_1767639073
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80CC41956054
+	for <gfs2@lists.linux.dev>; Mon,  5 Jan 2026 18:51:13 +0000 (UTC)
+Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C6D85180049F;
+	Mon,  5 Jan 2026 18:51:12 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev
+Subject: [PATCH dlm/next 1/2] dlm: use bool for coniditonal expressions
+Date: Mon,  5 Jan 2026 13:51:09 -0500
+Message-ID: <20260105185110.3925620-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com> <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
-In-Reply-To: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
-From: Ryota Sakamoto <sakamo.ryota@gmail.com>
-Date: Fri, 2 Jan 2026 17:40:02 +0900
-X-Gm-Features: AQt7F2r0MrGfokVOhyqLOTiI52EVobi3HtPfSH9ESALiCshy7ly_MguWuQFVcmY
-Message-ID: <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
-Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>, 
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CMs_GBZzjcNZrN3T1sNcDIMb3E02TLWSxW1L91D8dVQ_1767639073
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Tue, Dec 30, 2025 at 4:46=E2=80=AFPM Markus Elfring <Markus.Elfring@web.=
-de> wrote:
-> Is there a need to indicate a role for the mentioned identifier?
+This patch changes the return value of functions instead of using int
+and their corresponding value 1/0 for true/false. Instead we use the
+predefined true/false definitions.
 
-Yes, "fail_threads" is a goto label. And including "label" in the message
-explicitly is precise.
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/dlm_internal.h |   2 +-
+ fs/dlm/lock.c         | 151 +++++++++++++++++++++---------------------
+ fs/dlm/lowcomms.c     |  16 ++---
+ fs/dlm/member.c       |  18 ++---
+ fs/dlm/member.h       |   6 +-
+ fs/dlm/requestqueue.c |  12 ++--
+ fs/dlm/user.c         |  16 ++---
+ fs/dlm/user.h         |   2 +-
+ 8 files changed, 111 insertions(+), 112 deletions(-)
 
-> Do you propose to use another label here?
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index d534a4bc162bb..c9d924b03f14a 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -381,7 +381,7 @@ static inline void rsb_clear_flag(struct dlm_rsb *r, enum rsb_flags flag)
+ 	__clear_bit(flag, &r->res_flags);
+ }
+ 
+-static inline int rsb_flag(struct dlm_rsb *r, enum rsb_flags flag)
++static inline bool rsb_flag(struct dlm_rsb *r, enum rsb_flags flag)
+ {
+ 	return test_bit(flag, &r->res_flags);
+ }
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index c01a291db401b..f5489a7432768 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -216,72 +216,72 @@ int dlm_lock_recovery_try(struct dlm_ls *ls)
+ 	return down_read_trylock(&ls->ls_in_recovery);
+ }
+ 
+-static inline int can_be_queued(struct dlm_lkb *lkb)
++static inline bool can_be_queued(struct dlm_lkb *lkb)
+ {
+ 	return !(lkb->lkb_exflags & DLM_LKF_NOQUEUE);
+ }
+ 
+-static inline int force_blocking_asts(struct dlm_lkb *lkb)
++static inline bool force_blocking_asts(struct dlm_lkb *lkb)
+ {
+ 	return (lkb->lkb_exflags & DLM_LKF_NOQUEUEBAST);
+ }
+ 
+-static inline int is_demoted(struct dlm_lkb *lkb)
++static inline bool is_demoted(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_SBF_DEMOTED_BIT, &lkb->lkb_sbflags);
+ }
+ 
+-static inline int is_altmode(struct dlm_lkb *lkb)
++static inline bool is_altmode(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_SBF_ALTMODE_BIT, &lkb->lkb_sbflags);
+ }
+ 
+-static inline int is_granted(struct dlm_lkb *lkb)
++static inline bool is_granted(struct dlm_lkb *lkb)
+ {
+ 	return (lkb->lkb_status == DLM_LKSTS_GRANTED);
+ }
+ 
+-static inline int is_remote(struct dlm_rsb *r)
++static inline bool is_remote(struct dlm_rsb *r)
+ {
+ 	DLM_ASSERT(r->res_nodeid >= 0, dlm_print_rsb(r););
+ 	return !!r->res_nodeid;
+ }
+ 
+-static inline int is_process_copy(struct dlm_lkb *lkb)
++static inline bool is_process_copy(struct dlm_lkb *lkb)
+ {
+ 	return lkb->lkb_nodeid &&
+ 	       !test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags);
+ }
+ 
+-static inline int is_master_copy(struct dlm_lkb *lkb)
++static inline bool is_master_copy(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags);
+ }
+ 
+-static inline int middle_conversion(struct dlm_lkb *lkb)
++static inline bool middle_conversion(struct dlm_lkb *lkb)
+ {
+ 	if ((lkb->lkb_grmode==DLM_LOCK_PR && lkb->lkb_rqmode==DLM_LOCK_CW) ||
+ 	    (lkb->lkb_rqmode==DLM_LOCK_PR && lkb->lkb_grmode==DLM_LOCK_CW))
+-		return 1;
+-	return 0;
++		return true;
++	return false;
+ }
+ 
+-static inline int down_conversion(struct dlm_lkb *lkb)
++static inline bool down_conversion(struct dlm_lkb *lkb)
+ {
+ 	return (!middle_conversion(lkb) && lkb->lkb_rqmode < lkb->lkb_grmode);
+ }
+ 
+-static inline int is_overlap_unlock(struct dlm_lkb *lkb)
++static inline bool is_overlap_unlock(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_IFL_OVERLAP_UNLOCK_BIT, &lkb->lkb_iflags);
+ }
+ 
+-static inline int is_overlap_cancel(struct dlm_lkb *lkb)
++static inline bool is_overlap_cancel(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_IFL_OVERLAP_CANCEL_BIT, &lkb->lkb_iflags);
+ }
+ 
+-static inline int is_overlap(struct dlm_lkb *lkb)
++static inline bool is_overlap(struct dlm_lkb *lkb)
+ {
+ 	return test_bit(DLM_IFL_OVERLAP_UNLOCK_BIT, &lkb->lkb_iflags) ||
+ 	       test_bit(DLM_IFL_OVERLAP_CANCEL_BIT, &lkb->lkb_iflags);
+@@ -2135,19 +2135,19 @@ static void munge_altmode(struct dlm_lkb *lkb, const struct dlm_message *ms)
+ 	}
+ }
+ 
+-static inline int first_in_list(struct dlm_lkb *lkb, struct list_head *head)
++static inline bool first_in_list(struct dlm_lkb *lkb, struct list_head *head)
+ {
+ 	struct dlm_lkb *first = list_entry(head->next, struct dlm_lkb,
+ 					   lkb_statequeue);
+ 	if (lkb->lkb_id == first->lkb_id)
+-		return 1;
++		return true;
+ 
+-	return 0;
++	return false;
+ }
+ 
+ /* Check if the given lkb conflicts with another lkb on the queue. */
+ 
+-static int queue_conflict(struct list_head *head, struct dlm_lkb *lkb)
++static bool queue_conflict(struct list_head *head, struct dlm_lkb *lkb)
+ {
+ 	struct dlm_lkb *this;
+ 
+@@ -2155,9 +2155,9 @@ static int queue_conflict(struct list_head *head, struct dlm_lkb *lkb)
+ 		if (this == lkb)
+ 			continue;
+ 		if (!modes_compat(this, lkb))
+-			return 1;
++			return true;
+ 	}
+-	return 0;
++	return false;
+ }
+ 
+ /*
+@@ -2201,7 +2201,7 @@ static int queue_conflict(struct list_head *head, struct dlm_lkb *lkb)
+  * both already on the convert queue.
+  */
+ 
+-static int conversion_deadlock_detect(struct dlm_rsb *r, struct dlm_lkb *lkb2)
++static bool conversion_deadlock_detect(struct dlm_rsb *r, struct dlm_lkb *lkb2)
+ {
+ 	struct dlm_lkb *lkb1;
+ 	int lkb_is_ahead = 0;
+@@ -2214,14 +2214,14 @@ static int conversion_deadlock_detect(struct dlm_rsb *r, struct dlm_lkb *lkb2)
+ 
+ 		if (!lkb_is_ahead) {
+ 			if (!modes_compat(lkb2, lkb1))
+-				return 1;
++				return true;
+ 		} else {
+ 			if (!modes_compat(lkb2, lkb1) &&
+ 			    !modes_compat(lkb1, lkb2))
+-				return 1;
++				return true;
+ 		}
+ 	}
+-	return 0;
++	return false;
+ }
+ 
+ /*
+@@ -2240,10 +2240,10 @@ static int conversion_deadlock_detect(struct dlm_rsb *r, struct dlm_lkb *lkb2)
+  * References are from chapter 6 of "VAXcluster Principles" by Roy Davis
+  */
+ 
+-static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+-			   int recover)
++static bool _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, bool now,
++			    bool recover)
+ {
+-	int8_t conv = (lkb->lkb_grmode != DLM_LOCK_IV);
++	bool conv = (lkb->lkb_grmode != DLM_LOCK_IV);
+ 
+ 	/*
+ 	 * 6-10: Version 5.4 introduced an option to address the phenomenon of
+@@ -2265,7 +2265,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (lkb->lkb_exflags & DLM_LKF_EXPEDITE)
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * A shortcut. Without this, !queue_conflict(grantqueue, lkb) would be
+@@ -2273,7 +2273,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (queue_conflict(&r->res_grantqueue, lkb))
+-		return 0;
++		return false;
+ 
+ 	/*
+ 	 * 6-3: By default, a conversion request is immediately granted if the
+@@ -2282,7 +2282,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (queue_conflict(&r->res_convertqueue, lkb))
+-		return 0;
++		return false;
+ 
+ 	/*
+ 	 * The RECOVER_GRANT flag means dlm_recover_grant() is granting
+@@ -2299,7 +2299,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (conv && recover)
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * 6-5: But the default algorithm for deciding whether to grant or
+@@ -2325,7 +2325,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (now && conv && !(lkb->lkb_exflags & DLM_LKF_QUECVT))
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * Even if the convert is compat with all granted locks,
+@@ -2334,9 +2334,9 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 
+ 	if (now && conv && (lkb->lkb_exflags & DLM_LKF_QUECVT)) {
+ 		if (list_empty(&r->res_convertqueue))
+-			return 1;
++			return true;
+ 		else
+-			return 0;
++			return false;
+ 	}
+ 
+ 	/*
+@@ -2345,7 +2345,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (lkb->lkb_exflags & DLM_LKF_NOORDER)
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * 6-3: Once in that queue [CONVERTING], a conversion request cannot be
+@@ -2354,7 +2354,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 	 */
+ 
+ 	if (!now && conv && first_in_list(lkb, &r->res_convertqueue))
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * 6-4: By default, a new request is immediately granted only if all
+@@ -2369,7 +2369,7 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 
+ 	if (now && !conv && list_empty(&r->res_convertqueue) &&
+ 	    list_empty(&r->res_waitqueue))
+-		return 1;
++		return true;
+ 
+ 	/*
+ 	 * 6-4: Once a lock request is in the queue of ungranted new requests,
+@@ -2381,17 +2381,16 @@ static int _can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ 
+ 	if (!now && !conv && list_empty(&r->res_convertqueue) &&
+ 	    first_in_list(lkb, &r->res_waitqueue))
+-		return 1;
++		return true;
+ 
+-	return 0;
++	return false;
+ }
+ 
+-static int can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+-			  int recover, int *err)
++static bool can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, bool now,
++			   bool recover, int *err)
+ {
+-	int rv;
++	bool rv, is_convert = (lkb->lkb_grmode != DLM_LOCK_IV);
+ 	int8_t alt = 0, rqmode = lkb->lkb_rqmode;
+-	int8_t is_convert = (lkb->lkb_grmode != DLM_LOCK_IV);
+ 
+ 	if (err)
+ 		*err = 0;
+@@ -2448,27 +2447,27 @@ static int can_be_granted(struct dlm_rsb *r, struct dlm_lkb *lkb, int now,
+ /* Returns the highest requested mode of all blocked conversions; sets
+    cw if there's a blocked conversion to DLM_LOCK_CW. */
+ 
+-static int grant_pending_convert(struct dlm_rsb *r, int high, int *cw,
++static int grant_pending_convert(struct dlm_rsb *r, int high, bool *cw,
+ 				 unsigned int *count)
+ {
++	bool demoted, quit, grant_restart, demote_restart;
++	bool recover = rsb_flag(r, RSB_RECOVER_GRANT);
+ 	struct dlm_lkb *lkb, *s;
+-	int recover = rsb_flag(r, RSB_RECOVER_GRANT);
+-	int hi, demoted, quit, grant_restart, demote_restart;
+-	int deadlk;
++	int hi, deadlk;
+ 
+-	quit = 0;
++	quit = false;
+  restart:
+-	grant_restart = 0;
+-	demote_restart = 0;
++	grant_restart = false;
++	demote_restart = false;
+ 	hi = DLM_LOCK_IV;
+ 
+ 	list_for_each_entry_safe(lkb, s, &r->res_convertqueue, lkb_statequeue) {
+ 		demoted = is_demoted(lkb);
+ 		deadlk = 0;
+ 
+-		if (can_be_granted(r, lkb, 0, recover, &deadlk)) {
++		if (can_be_granted(r, lkb, false, recover, &deadlk)) {
+ 			grant_lock_pending(r, lkb);
+-			grant_restart = 1;
++			grant_restart = true;
+ 			if (count)
+ 				(*count)++;
+ 			continue;
+@@ -2477,7 +2476,7 @@ static int grant_pending_convert(struct dlm_rsb *r, int high, int *cw,
+ 		if (!demoted && is_demoted(lkb)) {
+ 			log_print("WARN: pending demoted %x node %d %s",
+ 				  lkb->lkb_id, lkb->lkb_nodeid, r->res_name);
+-			demote_restart = 1;
++			demote_restart = true;
+ 			continue;
+ 		}
+ 
+@@ -2504,33 +2503,33 @@ static int grant_pending_convert(struct dlm_rsb *r, int high, int *cw,
+ 		hi = max_t(int, lkb->lkb_rqmode, hi);
+ 
+ 		if (cw && lkb->lkb_rqmode == DLM_LOCK_CW)
+-			*cw = 1;
++			*cw = true;
+ 	}
+ 
+ 	if (grant_restart)
+ 		goto restart;
+ 	if (demote_restart && !quit) {
+-		quit = 1;
++		quit = true;
+ 		goto restart;
+ 	}
+ 
+ 	return max_t(int, high, hi);
+ }
+ 
+-static int grant_pending_wait(struct dlm_rsb *r, int high, int *cw,
++static int grant_pending_wait(struct dlm_rsb *r, int high, bool *cw,
+ 			      unsigned int *count)
+ {
+ 	struct dlm_lkb *lkb, *s;
+ 
+ 	list_for_each_entry_safe(lkb, s, &r->res_waitqueue, lkb_statequeue) {
+-		if (can_be_granted(r, lkb, 0, 0, NULL)) {
++		if (can_be_granted(r, lkb, false, false, NULL)) {
+ 			grant_lock_pending(r, lkb);
+ 			if (count)
+ 				(*count)++;
+ 		} else {
+ 			high = max_t(int, lkb->lkb_rqmode, high);
+ 			if (lkb->lkb_rqmode == DLM_LOCK_CW)
+-				*cw = 1;
++				*cw = true;
+ 		}
+ 	}
+ 
+@@ -2542,25 +2541,25 @@ static int grant_pending_wait(struct dlm_rsb *r, int high, int *cw,
+    high is the largest rqmode of all locks blocked on the convert or
+    waiting queue. */
+ 
+-static int lock_requires_bast(struct dlm_lkb *gr, int high, int cw)
++static bool lock_requires_bast(struct dlm_lkb *gr, int high, bool cw)
+ {
+ 	if (gr->lkb_grmode == DLM_LOCK_PR && cw) {
+ 		if (gr->lkb_highbast < DLM_LOCK_EX)
+-			return 1;
+-		return 0;
++			return true;
++		return false;
+ 	}
+ 
+ 	if (gr->lkb_highbast < high &&
+ 	    !__dlm_compat_matrix[gr->lkb_grmode+1][high+1])
+-		return 1;
+-	return 0;
++		return true;
++	return false;
+ }
+ 
+ static void grant_pending_locks(struct dlm_rsb *r, unsigned int *count)
+ {
+ 	struct dlm_lkb *lkb, *s;
+ 	int high = DLM_LOCK_IV;
+-	int cw = 0;
++	bool cw = false;
+ 
+ 	if (!is_master(r)) {
+ 		log_print("grant_pending_locks r nodeid %d", r->res_nodeid);
+@@ -2597,13 +2596,13 @@ static int modes_require_bast(struct dlm_lkb *gr, struct dlm_lkb *rq)
+ 	if ((gr->lkb_grmode == DLM_LOCK_PR && rq->lkb_rqmode == DLM_LOCK_CW) ||
+ 	    (gr->lkb_grmode == DLM_LOCK_CW && rq->lkb_rqmode == DLM_LOCK_PR)) {
+ 		if (gr->lkb_highbast < DLM_LOCK_EX)
+-			return 1;
+-		return 0;
++			return true;
++		return false;
+ 	}
+ 
+ 	if (gr->lkb_highbast < rq->lkb_rqmode && !modes_compat(gr, rq))
+-		return 1;
+-	return 0;
++		return true;
++	return false;
+ }
+ 
+ static void send_bast_queue(struct dlm_rsb *r, struct list_head *head,
+@@ -3038,7 +3037,7 @@ static int do_request(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ {
+ 	int error = 0;
+ 
+-	if (can_be_granted(r, lkb, 1, 0, NULL)) {
++	if (can_be_granted(r, lkb, true, false, NULL)) {
+ 		grant_lock(r, lkb);
+ 		queue_cast(r, lkb, 0);
+ 		goto out;
+@@ -3077,7 +3076,7 @@ static int do_convert(struct dlm_rsb *r, struct dlm_lkb *lkb)
+ 
+ 	/* changing an existing lock may allow others to be granted */
+ 
+-	if (can_be_granted(r, lkb, 1, 0, &deadlk)) {
++	if (can_be_granted(r, lkb, true, false, &deadlk)) {
+ 		grant_lock(r, lkb);
+ 		queue_cast(r, lkb, 0);
+ 		goto out;
+@@ -5024,16 +5023,16 @@ static void recover_convert_waiter(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ /* A waiting lkb needs recovery if the master node has failed, or
+    the master node is changing (only when no directory is used) */
+ 
+-static int waiter_needs_recovery(struct dlm_ls *ls, struct dlm_lkb *lkb,
+-				 int dir_nodeid)
++static bool waiter_needs_recovery(struct dlm_ls *ls, struct dlm_lkb *lkb,
++				  int dir_nodeid)
+ {
+ 	if (dlm_no_directory(ls))
+-		return 1;
++		return true;
+ 
+ 	if (dlm_is_removed(ls, lkb->lkb_wait_nodeid))
+-		return 1;
++		return true;
+ 
+-	return 0;
++	return false;
+ }
+ 
+ /* Recovery for locks that are waiting for replies from nodes that are now
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index b3958008ba3f7..3c4d4b837e474 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -331,32 +331,32 @@ static struct connection *nodeid2con(int nodeid, gfp_t alloc)
+ 	return con;
+ }
+ 
+-static int addr_compare(const struct sockaddr_storage *x,
+-			const struct sockaddr_storage *y)
++static bool addr_compare(const struct sockaddr_storage *x,
++			 const struct sockaddr_storage *y)
+ {
+ 	switch (x->ss_family) {
+ 	case AF_INET: {
+ 		struct sockaddr_in *sinx = (struct sockaddr_in *)x;
+ 		struct sockaddr_in *siny = (struct sockaddr_in *)y;
+ 		if (sinx->sin_addr.s_addr != siny->sin_addr.s_addr)
+-			return 0;
++			return false;
+ 		if (sinx->sin_port != siny->sin_port)
+-			return 0;
++			return false;
+ 		break;
+ 	}
+ 	case AF_INET6: {
+ 		struct sockaddr_in6 *sinx = (struct sockaddr_in6 *)x;
+ 		struct sockaddr_in6 *siny = (struct sockaddr_in6 *)y;
+ 		if (!ipv6_addr_equal(&sinx->sin6_addr, &siny->sin6_addr))
+-			return 0;
++			return false;
+ 		if (sinx->sin6_port != siny->sin6_port)
+-			return 0;
++			return false;
+ 		break;
+ 	}
+ 	default:
+-		return 0;
++		return false;
+ 	}
+-	return 1;
++	return true;
+ }
+ 
+ static int nodeid_to_addr(int nodeid, struct sockaddr_storage *sas_out,
+diff --git a/fs/dlm/member.c b/fs/dlm/member.c
+index c0f557a80a754..f3e29c9879636 100644
+--- a/fs/dlm/member.c
++++ b/fs/dlm/member.c
+@@ -18,11 +18,11 @@
+ #include "midcomms.h"
+ #include "lowcomms.h"
+ 
+-int dlm_slots_version(const struct dlm_header *h)
++bool dlm_slots_version(const struct dlm_header *h)
+ {
+ 	if ((le32_to_cpu(h->h_version) & 0x0000FFFF) < DLM_HEADER_SLOTS)
+-		return 0;
+-	return 1;
++		return false;
++	return true;
+ }
+ 
+ void dlm_slot_save(struct dlm_ls *ls, struct dlm_rcom *rc,
+@@ -357,20 +357,20 @@ static struct dlm_member *find_memb(struct list_head *head, int nodeid)
+ 	return NULL;
+ }
+ 
+-int dlm_is_member(struct dlm_ls *ls, int nodeid)
++bool dlm_is_member(struct dlm_ls *ls, int nodeid)
+ {
+ 	if (find_memb(&ls->ls_nodes, nodeid))
+-		return 1;
+-	return 0;
++		return true;
++	return false;
+ }
+ 
+-int dlm_is_removed(struct dlm_ls *ls, int nodeid)
++bool dlm_is_removed(struct dlm_ls *ls, int nodeid)
+ {
+ 	WARN_ON_ONCE(!nodeid || nodeid == -1);
+ 
+ 	if (find_memb(&ls->ls_nodes_gone, nodeid))
+-		return 1;
+-	return 0;
++		return true;
++	return false;
+ }
+ 
+ static void clear_memb_list(struct list_head *head,
+diff --git a/fs/dlm/member.h b/fs/dlm/member.h
+index f61cfde463140..c672009548f22 100644
+--- a/fs/dlm/member.h
++++ b/fs/dlm/member.h
+@@ -16,9 +16,9 @@ int dlm_ls_start(struct dlm_ls *ls);
+ void dlm_clear_members(struct dlm_ls *ls);
+ void dlm_clear_members_gone(struct dlm_ls *ls);
+ int dlm_recover_members(struct dlm_ls *ls, struct dlm_recover *rv,int *neg_out);
+-int dlm_is_removed(struct dlm_ls *ls, int nodeid);
+-int dlm_is_member(struct dlm_ls *ls, int nodeid);
+-int dlm_slots_version(const struct dlm_header *h);
++bool dlm_is_removed(struct dlm_ls *ls, int nodeid);
++bool dlm_is_member(struct dlm_ls *ls, int nodeid);
++bool dlm_slots_version(const struct dlm_header *h);
+ void dlm_slot_save(struct dlm_ls *ls, struct dlm_rcom *rc,
+ 		   struct dlm_member *memb);
+ void dlm_slots_copy_out(struct dlm_ls *ls, struct dlm_rcom *rc);
+diff --git a/fs/dlm/requestqueue.c b/fs/dlm/requestqueue.c
+index 719a5243a0693..daffc8df61e76 100644
+--- a/fs/dlm/requestqueue.c
++++ b/fs/dlm/requestqueue.c
+@@ -105,16 +105,16 @@ int dlm_process_requestqueue(struct dlm_ls *ls)
+ 	return error;
+ }
+ 
+-static int purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
++static bool purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
+ {
+ 	__le32 type = ms->m_type;
+ 
+ 	/* the ls is being cleaned up and freed by release_lockspace */
+ 	if (!atomic_read(&ls->ls_count))
+-		return 1;
++		return true;
+ 
+ 	if (dlm_is_removed(ls, nodeid))
+-		return 1;
++		return true;
+ 
+ 	/* directory operations are always purged because the directory is
+ 	   always rebuilt during recovery and the lookups resent */
+@@ -122,12 +122,12 @@ static int purge_request(struct dlm_ls *ls, struct dlm_message *ms, int nodeid)
+ 	if (type == cpu_to_le32(DLM_MSG_REMOVE) ||
+ 	    type == cpu_to_le32(DLM_MSG_LOOKUP) ||
+ 	    type == cpu_to_le32(DLM_MSG_LOOKUP_REPLY))
+-		return 1;
++		return true;
+ 
+ 	if (!dlm_no_directory(ls))
+-		return 0;
++		return false;
+ 
+-	return 1;
++	return true;
+ }
+ 
+ void dlm_purge_requestqueue(struct dlm_ls *ls)
+diff --git a/fs/dlm/user.c b/fs/dlm/user.c
+index 51daf4acbe318..988584c49953a 100644
+--- a/fs/dlm/user.c
++++ b/fs/dlm/user.c
+@@ -156,20 +156,20 @@ static void compat_output(struct dlm_lock_result *res,
+    not related to the lifetime of the lkb struct which is managed
+    entirely by refcount. */
+ 
+-static int lkb_is_endoflife(int mode, int status)
++static bool lkb_is_endoflife(int mode, int status)
+ {
+ 	switch (status) {
+ 	case -DLM_EUNLOCK:
+-		return 1;
++		return true;
+ 	case -DLM_ECANCEL:
+ 	case -ETIMEDOUT:
+ 	case -EDEADLK:
+ 	case -EAGAIN:
+ 		if (mode == DLM_LOCK_IV)
+-			return 1;
++			return true;
+ 		break;
+ 	}
+-	return 0;
++	return false;
+ }
+ 
+ /* we could possibly check if the cancel of an orphan has resulted in the lkb
+@@ -877,13 +877,13 @@ static __poll_t device_poll(struct file *file, poll_table *wait)
+ 	return 0;
+ }
+ 
+-int dlm_user_daemon_available(void)
++bool dlm_user_daemon_available(void)
+ {
+ 	/* dlm_controld hasn't started (or, has started, but not
+ 	   properly populated configfs) */
+ 
+ 	if (!dlm_our_nodeid())
+-		return 0;
++		return false;
+ 
+ 	/* This is to deal with versions of dlm_controld that don't
+ 	   know about the monitor device.  We assume that if the
+@@ -892,9 +892,9 @@ int dlm_user_daemon_available(void)
+ 	   should open the monitor device before populating configfs. */
+ 
+ 	if (dlm_monitor_unused)
+-		return 1;
++		return true;
+ 
+-	return atomic_read(&dlm_monitor_opened) ? 1 : 0;
++	return !!atomic_read(&dlm_monitor_opened);
+ }
+ 
+ static int ctl_device_open(struct inode *inode, struct file *file)
+diff --git a/fs/dlm/user.h b/fs/dlm/user.h
+index 2caf8e6e24d51..f7e6d1054492d 100644
+--- a/fs/dlm/user.h
++++ b/fs/dlm/user.h
+@@ -12,6 +12,6 @@ void dlm_user_add_ast(struct dlm_lkb *lkb, uint32_t flags, int mode,
+ int dlm_user_init(void);
+ void dlm_user_exit(void);
+ int dlm_device_deregister(struct dlm_ls *ls);
+-int dlm_user_daemon_available(void);
++bool dlm_user_daemon_available(void);
+ 
+ #endif
+-- 
+2.43.0
 
-Yes, I am proposing a new label "fail_threads".
-I chose this name to maintain consistency with the existing error labels
-in this function (e.g., fail_per_node, fail_inodes).
-
-If a v3 is required for other reasons, I will update the commit message
-to include "label".
-
-Regards,
