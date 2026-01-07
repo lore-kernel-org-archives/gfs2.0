@@ -1,95 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7722225A35;
-	Wed,  7 Jan 2026 07:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30921D6AA
+	for <gfs2@lists.linux.dev>; Wed,  7 Jan 2026 07:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771050; cv=none; b=hOVJH8J5o24pahVLP5Ybwt0v6jntZ50PJA9KuRt5JuHLIZMPLDGu/Fcu3+JzANNlbQormluCKPhpLhMVGbXDlErENWn93T0Fh0Wd6br85RqHWKlA7e9y0Zy0sXBuignfg1MCtphe8wN1wf6baKXKd1TYh5DikDkxL1/aFdZTnJY=
+	t=1767771179; cv=none; b=Azuo3EZQT4xvZy3CEGFvWoIpDXH21ymgOnXBfdVgg+wERKZgQfCsbe2xbcemVVaoYaEqEo7VS90R0Fjr/A9nrwfK8y4yW79o0FkLbNj/Sk2gmGbb9eHQPHX9s4AQVsmugBL0bNWaFLJgwtim/wYy2YWpJfOxqdtHUO/vTyUgt5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771050; c=relaxed/simple;
-	bh=DrtYMI4Ej5hB1qGekufnysvZNKSPAiI/xDXdjcKQs30=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TUlhnFsMEvxzXeLKfvbRLfP/yUAAIQTnVjZ5O7Cws3gWPoET6A66pjPvOF6TGU4zHW0f/hAbn/ynAbR3PzqUGPHkgEODC3p14DOG1Fri2HKAieJWUcC+oBSNcCZjmBCCB0RB6zqKa0x9NuduHqap2Gz+Qx+jADVIo0TsTpCFhhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyE8UKfp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyE8UKfp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4881C4CEF7;
-	Wed,  7 Jan 2026 07:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767771050;
-	bh=DrtYMI4Ej5hB1qGekufnysvZNKSPAiI/xDXdjcKQs30=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SyE8UKfpMymsaI43GVSN2rA1aqIZ0N93nEc5EWqG0c6eB5PRF1j7+LFeeoZIzt7eF
-	 EW7UgrAIToYL9DcNlkbiHwqdVkuCzVCjscFBdykJEufJKx609dJseoqNB6z2vhvL+7
-	 LB+ZntgafVGz4b1Ym1LHAGN4lj/V0+JSK9waA6Ny5eO2vyT6TXJYE9WdewW1zYGxNG
-	 G6YHPXfhfQxNR1avVgo1jjowiZbF1N893Bn+vnf5ltFxboRNXOmiubuSJ9IAhI/uvB
-	 h+Ehv0c4cSCOkkXUdTlBKOBQElfSrhd3QoYbl8AN0Ut4TvNHFYtInn3GTtgB6gYKTM
-	 9seARjn5mYEKw==
-From: alexs@kernel.org
-To: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	gfs2@lists.linux.dev (open list:DISTRIBUTED LOCK MANAGER (DLM)),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Alex Shi <alexs@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [RFC PATCH] fs/dlm/dir: remove unuse varible count_match
-Date: Wed,  7 Jan 2026 15:30:14 +0800
-Message-ID: <20260107073015.16562-1-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1767771179; c=relaxed/simple;
+	bh=rcNkEg2r6U/yIEY7iukyvq5YvWXgri4jOz/NbgAd+eQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QgGtwq4eOWWYjaSfYHBH59873MvHvCeKsPzDpCXAr1yR0KBtrNOkWSA6U3F2jnhsgpYxrij1Q8llvEgXeLXcstpVRuCKST2WHE2M42zWto2h4/c+TnvaEXgD+0NI1ZvBs0tQLbWJ5DzeoFjydvd6whLtM+ml/KgH1CVlwFRihqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id C876467373; Wed,  7 Jan 2026 08:32:47 +0100 (CET)
+Date: Wed, 7 Jan 2026 08:32:47 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>,
+	David Sterba <dsterba@suse.com>, Jan Kara <jack@suse.cz>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>,
+	Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev, io-uring@vger.kernel.org,
+	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: Re: re-enable IOCB_NOWAIT writes to files v4
+Message-ID: <20260107073247.GA17448@lst.de>
+References: <20251223003756.409543-1-hch@lst.de> <20251224-zusah-emporsteigen-764a9185a0a1@brauner> <20260106062409.GA16998@lst.de> <20260106-bequem-albatros-3c747261974f@brauner>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260106-bequem-albatros-3c747261974f@brauner>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-From: Alex Shi <alexs@kernel.org>
+On Tue, Jan 06, 2026 at 10:43:49PM +0100, Christian Brauner wrote:
+> > Umm, as in my self reply just before heading out for vacation, Julia
+> > found issues in it using static type checking tools.  I have a new
+> > version that fixes that and sorts out the S_* mess.  So please drop
+> > it again for now, I'll resend the fixed version ASAP.
+> 
+> It has never been pushed nor applied as I saw your mail right before all
+> of that.
 
-The variable was never used after introduced. Better to comment it if we
-want to keep the info.
-
-fs/dlm/dir.c:65:26: error: variable 'count_match' set but not used [-Werror,-Wunused-but-set-variable]
-   65 |         unsigned int count = 0, count_match = 0, count_bad = 0, count_add = 0;
-      |                                 ^
-1 error generated.
-
-Signed-off-by: Alex Shi <alexs@kernel.org>
-Cc: gfs2@lists.linux.dev
-Cc: Alexander Aring <aahringo@redhat.com>
-Cc: David Teigland <teigland@redhat.com>
----
- fs/dlm/dir.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/fs/dlm/dir.c b/fs/dlm/dir.c
-index b1ab0adbd9d0..01c292379f5b 100644
---- a/fs/dlm/dir.c
-+++ b/fs/dlm/dir.c
-@@ -62,7 +62,7 @@ int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq)
- 	char *b, *last_name = NULL;
- 	int error = -ENOMEM, last_len, nodeid, result;
- 	uint16_t namelen;
--	unsigned int count = 0, count_match = 0, count_bad = 0, count_add = 0;
-+	unsigned int count = 0, count_bad = 0, count_add = 0;
- 
- 	log_rinfo(ls, "dlm_recover_directory");
- 
-@@ -157,12 +157,12 @@ int dlm_recover_directory(struct dlm_ls *ls, uint64_t seq)
- 				}
- 
- 				/* The name was found in rsbtbl, and the
--				 * master nodeid matches memb->nodeid. */
-+				 * master nodeid matches memb->nodeid.
- 
- 				if (result == DLM_LU_MATCH &&
- 				    nodeid == memb->nodeid) {
- 					count_match++;
--				}
-+				}*/
- 
- 				/* The name was not found in rsbtbl and was
- 				 * added with memb->nodeid as the master. */
--- 
-2.43.0
-
+Thanks.  But maybe you can fix up the applied messages to be more
+specific?  We had various issues in the past with them, where they
+were sent, but things did not end up in the tree for various reasons.
