@@ -1,110 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE6119AD5C
-	for <gfs2@lists.linux.dev>; Wed,  7 Jan 2026 14:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2C61DED42;
+	Wed,  7 Jan 2026 14:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767795287; cv=none; b=OwVk1jf19qEFxFHR43UsCk+PsOZpKSH0bOght6DCdnPbinMK6UnLgCMV+Y30XgkQT1EChis9tinp4+fHwgBxePG6wu09KNq4d9iT0FnWAeX1nxY22Ba1lb/AoI3PVMtBUCRor3Ha/nemk3QEymph6bIqQWSgkMe3A6PfbEatToA=
+	t=1767795632; cv=none; b=io1xBoFB5Q3d5U2Yl+DqsubRAnWafxlSPriUZZB1sym31dpJBp825IV9GVkRwuTcw7G9SiVUWMhxvUQDsi6CKtGkEyRMAxggCwrJ569Lwph5ZCQyZuVxu3vBpwkL7XIPJ31YEOfshfJuEpbhfU6kCn4aBAzhXgO4X783b4QmnyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767795287; c=relaxed/simple;
-	bh=QNL1RP/JdhOmi5/rV45P2NsWogoItoqxDhCvmLtaWXw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XiSDq8+KxazOFtJ49/Ke5BTKDS9RxsAN8axxTi9zsGrwFHhyTLwK+5GjrqhgsyBeDATddZVt+fypubjt1Jx0GYt0Z7Ems61UFjnWcBmzLM7IV5EuhB78RVam/CX86e1i3txI2c9JHky61sMbkB0EkHr6ZRZiyDI6+214DYKdIbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ehb01eKw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767795632; c=relaxed/simple;
+	bh=01i4PcQIyZNEKL5dnGjZ3BeIzI5aRHisNJ+n2qZAaaI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Dbrtzk07VPBHX0tPrTsNHWUP5SF0bQlrlQtRGEJQwb7XSLEWxmsyRsVctk2RCbF5Y18glxS6zjzYDqoif0uxTonAeccbHAEqhSMu8GQOeCppduG8s+Q+jcqF1g+cLLLJxckAaKZR/tj0epFsSMmwCXsBVFYL7a+/vmRd4jrK5IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rYLEvJyC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ehb01eKw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767795284;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lQ2xstaENyoaXi9ftJgZjYoP0g4HtybPCVnpkoIo40A=;
-	b=ehb01eKwqZGZbOevL0wK0xwGSLbqsk7oaMrJ1IlMPJqw5MTpbgm8UYWmLn1waN1Z4bBw3B
-	5Zw9mxd4ZbXw1ZIZc+Cqmt4UTZr6536f39FX6RIXuVCixkdU198nw1cwxVGKf225avJMLA
-	LnyUU4S80D6Hr4S5crKny15gA7JZBIY=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-Uc-EhF3NPjKVVi4lmxKJvg-1; Wed, 07 Jan 2026 09:14:43 -0500
-X-MC-Unique: Uc-EhF3NPjKVVi4lmxKJvg-1
-X-Mimecast-MFC-AGG-ID: Uc-EhF3NPjKVVi4lmxKJvg_1767795282
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-38301605df8so2737431fa.2
-        for <gfs2@lists.linux.dev>; Wed, 07 Jan 2026 06:14:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767795282; x=1768400082;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lQ2xstaENyoaXi9ftJgZjYoP0g4HtybPCVnpkoIo40A=;
-        b=LIG6hDSPr054dSLQjaeFZVpQN9RJ8MtWoCL+EgVsU3lGP8UQPc5nUsOGbnAVbfJ7Bv
-         a2Qr6TXTOIObJZ/2wzscgr0GGrTRRahqBOD1G9qZ6UxlRM7+einBNidxwI9+mD5DcmPQ
-         kqmnPxy3dZNrvEIOdC5KC2rAUjY3mDYHKR6Nz96GbirYUJ917G0S3mvqM4wrfraJS04P
-         gMItmzkN/f2O2akBih8+ChQBZF8dPuEttPf3AJvLg6d9J3BQxsRAgnJ+H2+cnmSEKIfV
-         gccxK7v1osPnO6WBY8C21eeoLDoUbZY/TPOi0G/W+hamzuOSjeXbXH3ofJ3ks7taGQlW
-         PAkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXveXbLFOpEvxpw2liG4hI7uLutjacDBwVUtvGoPesP1RgxcvyQTE+/e79gau/0cQp4onuS@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0KwlM2o0IJ4esNO7+5tRFiiDNCL262bXPeO+H7Bx8LdeLPgju
-	dFmHQHQUyPGYMWQr9Sxoh2rTjUn//2nwJ5o0lbKTJbJNdtfG2o9lTw5+K3wJwKNIFo/+YHqZtxG
-	TLhjT0ZR22oK42fme5kwK7D4tSaSCrBuwEQsmuWqUyDsGS740bQF/ZQs+0oCGPj3upEtszgwwZS
-	p9Es4xian2BkgzDtp5XsI7F11vVzyqaw==
-X-Gm-Gg: AY/fxX4y9m6Bqsho1IH6/+MU+b0sDe/VVtEFdtfdbyldN5DYC2Qb2muxPwoZRdus7sQ
-	akSsMlJKIh9/wh+quHEclTui6iuvOY9KzQwAJi6AeukgMrjobhLUFkLdfUwH0R26Pm71SS4JEuT
-	OB1YqRAxn6J8PAOmybYxS3ibkCn93JW0C9uxM4dNxqrU3X1PZiBxyCjc644DR9RJUB7fz9jTc0b
-	NcP93FdVbjogpT7xNtgX4+h0PFO
-X-Received: by 2002:a2e:8a96:0:b0:380:989:f60e with SMTP id 38308e7fff4ca-382ff680159mr8904821fa.7.1767795281590;
-        Wed, 07 Jan 2026 06:14:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGKokhDVdin3q3d1qcbnrc1b7zSfgizQGUCp20GJG2jGcfMCECuRNHwfNw/eBAuzayukcFTCxt7CFl/E7WO3Ec=
-X-Received: by 2002:a2e:8a96:0:b0:380:989:f60e with SMTP id
- 38308e7fff4ca-382ff680159mr8904681fa.7.1767795281009; Wed, 07 Jan 2026
- 06:14:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rYLEvJyC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C873AC4CEF7;
+	Wed,  7 Jan 2026 14:20:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767795632;
+	bh=01i4PcQIyZNEKL5dnGjZ3BeIzI5aRHisNJ+n2qZAaaI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=rYLEvJyCyZAtJUnWrAjuM7ELo8ynjkvDesXkPEQHUU2+ZAFUtBeLcjGIHB4mzmedl
+	 6Tuc8C6G+wPsAaIB+xb+1ndvwfGNY9d97n5/PTK+x8Tt6TcFEqKhuvSZOFbJnVxKfY
+	 q+e/E7E7aWOpraV4AmrqRtZuYNLFqTF4DCg3vm93EeZvf+qao2oy160s8fx06W7562
+	 oKiki+0bc8m+2Ix48DziKQcw2GHtVidmlVf7zqjpp0eWes/Z3KBC5I5Kv2n6x8VAtK
+	 QSdlpGwSdJT3W0RSUiKs/zgJNOSDTUmDlG1f7lvgL0AH5AcD+J7h7npBg4OzUx+4Qn
+	 YJckYxHiP8eIw==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 0/6] vfs: properly deny directory leases on filesystems
+ with special lease handling
+Date: Wed, 07 Jan 2026 09:20:08 -0500
+Message-Id: <20260107-setlease-6-19-v1-0-85f034abcc57@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260107073015.16562-1-alexs@kernel.org>
-In-Reply-To: <20260107073015.16562-1-alexs@kernel.org>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 7 Jan 2026 09:14:29 -0500
-X-Gm-Features: AQt7F2q-axPPTJWbaXmpV0uLqil13Xs9JH4QKnFAOZpv7g_Y0mwxWANdRn-AbZQ
-Message-ID: <CAK-6q+jkL6ZVD3W7byROpUBwSEz4PP2vQcVdkfuaKbBAQUPyog@mail.gmail.com>
-Subject: Re: [RFC PATCH] fs/dlm/dir: remove unuse varible count_match
-To: alexs@kernel.org
-Cc: David Teigland <teigland@redhat.com>, 
-	"open list:DISTRIBUTED LOCK MANAGER (DLM)" <gfs2@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QfE1fpXXldeTtCmLz3b1N2urdRdJSTBifKxAr1vwYB8_1767795282
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBvQRKOuEi3MphoICyciCO+et
+ HyL/18QSkwCffVCopuFj1ig6wrC5uNKyHMxNKpxSqsWha6dvBA61B0aP7XezkYFq6E0Z6KFn/8
+ 3jDl/yHF0Jl8AAAA=
+X-Change-ID: 20260107-setlease-6-19-3ab7a5d30c51
+To: Christian Brauner <brauner@kernel.org>, 
+ Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+ Bharath SM <bharathsm@microsoft.com>, Trond Myklebust <trondmy@kernel.org>, 
+ Anna Schumaker <anna@kernel.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Andreas Gruenbacher <agruenba@redhat.com>, Xiubo Li <xiubli@redhat.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+ NeilBrown <neil@brown.name>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-cifs@vger.kernel.org, 
+ samba-technical@lists.samba.org, linux-kernel@vger.kernel.org, 
+ linux-nfs@vger.kernel.org, v9fs@lists.linux.dev, gfs2@lists.linux.dev, 
+ ceph-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1845; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=01i4PcQIyZNEKL5dnGjZ3BeIzI5aRHisNJ+n2qZAaaI=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpXmuifTbkqt+ZOrvgDQRwzfOoI08t58vlX62jN
+ WYGuxH12bGJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaV5rogAKCRAADmhBGVaC
+ FbVmD/9VkhtBy64WYZM/vE1bLRtTONQcJjUhRSw9Tneh6sbfwAd+eM5oqOPvGn0GHjhJ6CSNHus
+ k7SJy68/c1G27gmxHO108IMZwMt8rEBqlxm8c9lagraQFBt57AAMGWEBGwtdi+P/AIXsNJe+0g4
+ 6f4tXPC77qc+M2+MbH+Iyku4WDT1u5XFkluyFymfw0tlY8EGgMfkU1rea2yIDaEr8mwtUi6QvF2
+ RWnOtApZPcfhtJuGfVbiVU/RnXe3BvP2MrEgyvjgyXZm8uNyoH8LwwqiaQelzsyhCH1ESLz3tU5
+ Jm9MzDYu7g3ZRsGS9BWxQ+NZ68fWzDVi0dUS89L+toWsXkbMKa5XN6DEwo/5w5vHGN8r9xQHGv5
+ VxY3g/f4fuMY3BOzG5Ain+x6Civsd/Rcx95xm4rP0Y8pYMuuxL6qP0Fdimx+HyVfkK65emJlp/l
+ NDxZ7klS+oHVegAp8z2EYKlguAvOCduo+nQ36z91gBsAyWrSOKnVl8EGN7uCwiO0ZwUtMnaNfaO
+ n4wCVRl55B1l76zxjfCZKn/c0FLPL08SXz7gOvuwAo+XrizlwUfhk4wxLnbOJtrXBDCMRB6X40l
+ R6PxnGnG7l65AYNss70s34L9b9JAxSZUM5axw4J2pIDM1FB/23UX0vlVbTnXKUNwUzAD7Cn+Nzv
+ FmXYssKm9gwAYow==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Hi,
+Filesystems currently have to set the ->setlease() method explicitly in
+order to deny attempts to set a lease or delegation. With the advent of
+directory delegations, we now need to set ->setlease on the directory
+file_operations for several filesystems to simple_nosetlease() to ensure
+this.
 
-On Wed, Jan 7, 2026 at 2:36=E2=80=AFAM <alexs@kernel.org> wrote:
->
-> From: Alex Shi <alexs@kernel.org>
->
-> The variable was never used after introduced. Better to comment it if we
-> want to keep the info.
->
-> fs/dlm/dir.c:65:26: error: variable 'count_match' set but not used [-Werr=
-or,-Wunused-but-set-variable]
->    65 |         unsigned int count =3D 0, count_match =3D 0, count_bad =
-=3D 0, count_add =3D 0;
->       |                                 ^
-> 1 error generated.
->
-> Signed-off-by: Alex Shi <alexs@kernel.org>
-> Cc: gfs2@lists.linux.dev
-> Cc: Alexander Aring <aahringo@redhat.com>
-> Cc: David Teigland <teigland@redhat.com>
+This patchset does that. There should be no noticeable change in
+behavior, other than fixing the support detection in xfstests, allowing
+lease/delegation tests to be properly skipped on these filesystems.
 
-Acked-by: Alexander Aring <aahringo@redhat.com>
+It's probably simplest to merge these all at once via Christian's tree
+if he's amenable, but Acks would be welcome. Ideally these would go in
+for v6.19.
 
-- Alex
+Long term, I think it would be best to change leases/delegations to be
+an opt-in thing, such that leases are always denied by default if the
+method isn't set. That's a larger patchset though as we'd need to audit
+all of the file_operations that currently have ->setlease() as NULL.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+Jeff Layton (6):
+      nfs: properly disallow delegation requests on directories
+      smb/client: properly disallow delegations on directories
+      9p: don't allow delegations to be set on directories
+      gfs2: don't allow delegations to be set on directories
+      ceph: don't allow delegations to be set on directories
+      vboxsf: don't allow delegations to be set on directories
+
+ fs/9p/vfs_dir.c        | 2 ++
+ fs/ceph/dir.c          | 2 ++
+ fs/gfs2/file.c         | 1 +
+ fs/nfs/dir.c           | 1 +
+ fs/nfs/nfs4file.c      | 2 --
+ fs/smb/client/cifsfs.c | 4 +---
+ fs/vboxsf/dir.c        | 1 +
+ 7 files changed, 8 insertions(+), 5 deletions(-)
+---
+base-commit: 7f98ab9da046865d57c102fd3ca9669a29845f67
+change-id: 20260107-setlease-6-19-3ab7a5d30c51
+
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
