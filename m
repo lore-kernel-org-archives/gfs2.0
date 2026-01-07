@@ -1,38 +1,41 @@
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30921D6AA
-	for <gfs2@lists.linux.dev>; Wed,  7 Jan 2026 07:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEA9225791
+	for <gfs2@lists.linux.dev>; Wed,  7 Jan 2026 07:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771179; cv=none; b=Azuo3EZQT4xvZy3CEGFvWoIpDXH21ymgOnXBfdVgg+wERKZgQfCsbe2xbcemVVaoYaEqEo7VS90R0Fjr/A9nrwfK8y4yW79o0FkLbNj/Sk2gmGbb9eHQPHX9s4AQVsmugBL0bNWaFLJgwtim/wYy2YWpJfOxqdtHUO/vTyUgt5o=
+	t=1767771359; cv=none; b=m9FzDM/MbdOLxC8rwF/V/3Qqig5FJJRDS0tiypYlRTZ4v+ni3G1G6Y8o6jjQNyyj+2zWrPtfG4U4A/E9L9Im50mBI6XL6qTsir/UJHS2EcZWEpIySFWFkARGYMlvwgcLXjTzCA7iTl7q45eUwvpjj5Euw1ZdRVYXvk2dN0teusc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771179; c=relaxed/simple;
-	bh=rcNkEg2r6U/yIEY7iukyvq5YvWXgri4jOz/NbgAd+eQ=;
+	s=arc-20240116; t=1767771359; c=relaxed/simple;
+	bh=MYOuB/KZfOgHfaM3iD3cEkrlO8Alm/fztkpNRGJNxs8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QgGtwq4eOWWYjaSfYHBH59873MvHvCeKsPzDpCXAr1yR0KBtrNOkWSA6U3F2jnhsgpYxrij1Q8llvEgXeLXcstpVRuCKST2WHE2M42zWto2h4/c+TnvaEXgD+0NI1ZvBs0tQLbWJ5DzeoFjydvd6whLtM+ml/KgH1CVlwFRihqE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDoAGS6VM+EN8nsNzBenNGdS8+WmVIF2vDg54nwk6qmJEkGn+U2VTs3qh9irfcKa9gg1HRnGMj1iPjfm4C5xmAzGXlM9ipR2uzHje+3aOCxSbNXM3ksN8Hv2daUVdS+dU+YqI+n1NanYbWGd2luEH2nAHg2wj1yop6sO8U3+DjQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id C876467373; Wed,  7 Jan 2026 08:32:47 +0100 (CET)
-Date: Wed, 7 Jan 2026 08:32:47 +0100
+	id 5170F227A87; Wed,  7 Jan 2026 08:35:53 +0100 (CET)
+Date: Wed, 7 Jan 2026 08:35:52 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Jan Kara <jack@suse.cz>,
+To: Jan Kara <jack@suse.cz>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>,
 	Mike Marshall <hubcap@omnibond.com>,
 	Martin Brandenburg <martin@omnibond.com>,
 	Carlos Maiolino <cem@kernel.org>, Stefan Roesch <shr@fb.com>,
-	Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
+	Jeff Layton <jlayton@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev, io-uring@vger.kernel.org,
 	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
 	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
 	linux-nfs@vger.kernel.org
-Subject: Re: re-enable IOCB_NOWAIT writes to files v4
-Message-ID: <20260107073247.GA17448@lst.de>
-References: <20251223003756.409543-1-hch@lst.de> <20251224-zusah-emporsteigen-764a9185a0a1@brauner> <20260106062409.GA16998@lst.de> <20260106-bequem-albatros-3c747261974f@brauner>
+Subject: Re: [PATCH 05/11] fs: refactor ->update_time handling
+Message-ID: <20260107073552.GB17448@lst.de>
+References: <20260106075008.1610195-1-hch@lst.de> <20260106075008.1610195-6-hch@lst.de> <jlw4ghr5vx32ss576akxes25oodlcx42zak7vjaaktlgn3m3d7@cbpcvx66y7za>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -41,18 +44,16 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260106-bequem-albatros-3c747261974f@brauner>
+In-Reply-To: <jlw4ghr5vx32ss576akxes25oodlcx42zak7vjaaktlgn3m3d7@cbpcvx66y7za>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Tue, Jan 06, 2026 at 10:43:49PM +0100, Christian Brauner wrote:
-> > Umm, as in my self reply just before heading out for vacation, Julia
-> > found issues in it using static type checking tools.  I have a new
-> > version that fixes that and sorts out the S_* mess.  So please drop
-> > it again for now, I'll resend the fixed version ASAP.
+On Tue, Jan 06, 2026 at 12:48:47PM +0100, Jan Kara wrote:
+> > +static int inode_update_cmtime(struct inode *inode)
+> > +{
+> > +	struct timespec64 now = inode_set_ctime_current(inode);
 > 
-> It has never been pushed nor applied as I saw your mail right before all
-> of that.
+> This needs to be below sampling of ctime. Otherwise inode dirtying will be
+> broken...
 
-Thanks.  But maybe you can fix up the applied messages to be more
-specific?  We had various issues in the past with them, where they
-were sent, but things did not end up in the tree for various reasons.
+Fixed.
+
