@@ -1,314 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9852B2C0294;
-	Mon, 12 Jan 2026 14:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE43322B8B
+	for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 15:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229429; cv=none; b=AwK8ZP07ezB+Ig3ihqe8AuNpTkRNJ1FWFdpfVWkcocbj0ia1zO5PaSvWCTTEgfsR1Zt9tcnz/GngbRIcGF7hlIhKEjuFwXIjr9RN+t7H9vWiZKm6IXBIZEeldZUZ1gbIMjfJFpj9Kdwdjlq5SEVu0ZzngTggqVzgNax8KHckgnE=
+	t=1768232970; cv=none; b=nOK6GwliCZTgRg0/BJcIsjggeddmKdr9dEJAPpevl4+ARwz6o5Ms41OaGx35YgTkdVvieQPeFW3OOFD5lNtws/8Gguz0Z9v0nhhqW2RrYNm2yf5oaIsVwaMYgXPjuMePWU8AMN3eRI3JTJCILFwK+ykX12/Y6SII5VME6/0vArg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229429; c=relaxed/simple;
-	bh=cheSnBLxN544y0UKkw10KpgjiO68XnZpyeYuNQCu1SI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kY20/c/FxjOZ2G8iL3Ie10tORBAPO56cvbGteBNzB8l80lSn3jZNqBM9cvPa9MOOgzRRzIk0LnDKINUYoH9XV0FCuGlR5rIKn7y4hpkxsgCGsEdgmFUrT/EqkD+LCI/lTkDhPlT9u7xHEorNnM2nbd8sMDf2VYOGRg7HI+D8Wmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpMEz5TH; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpMEz5TH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8AEC16AAE;
-	Mon, 12 Jan 2026 14:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229429;
-	bh=cheSnBLxN544y0UKkw10KpgjiO68XnZpyeYuNQCu1SI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=UpMEz5THVo05QbZ/pAisnu0HRhesOIjE2rYftbA7FBhGQj5tCikdbZP3s9Z/gB+1y
-	 k8fYirWnboJmtXtByE43Gev4eWZMrnZp2xsCYHsMHZKKPwK6nyAzNy2SlEd6q6RdQX
-	 E9BsB3Zeg8leNoOsSqkZw9UMTUfEJ1CwpbuRjO/ZsHVZdkTGXi72eLukzZew16H4By
-	 2V8I14GVLtY2HkAvnbTAdK8f8SFRaA/5FSsShCjCBoX+/4KLO8Va98nCZCU0IF7NSt
-	 5mEIqfFpYxDWcq+lTy0EQTI0buuA/J9QluBW76YeWrm5Yt8NF684D6eD5hHIR3dAHu
-	 cDKQUbKLqjwJw==
-Message-ID: <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-From: Jeff Layton <jlayton@kernel.org>
-To: Chuck Lever <chuck.lever@oracle.com>, Amir Goldstein
- <amir73il@gmail.com>,  Christian Brauner	 <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Luis de Bethencourt <luisbg@kernel.org>, Salah
- Triki <salah.triki@gmail.com>, Nicolas Pitre <nico@fluxnic.net>, Christoph
- Hellwig	 <hch@infradead.org>, Anders Larsen <al@alarsen.net>, Alexander
- Viro	 <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Chris
- Mason	 <clm@fb.com>, Gao Xiang <xiang@kernel.org>, Chao Yu
- <chao@kernel.org>, Yue Hu	 <zbestahu@gmail.com>, Jeffle Xu
- <jefflexu@linux.alibaba.com>, Sandeep Dhavale	 <dhavale@google.com>, Hongbo
- Li <lihongbo22@huawei.com>, Chunhai Guo	 <guochunhai@vivo.com>, Jan Kara
- <jack@suse.com>, Theodore Ts'o <tytso@mit.edu>,  Andreas Dilger
- <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA
- Hirofumi	 <hirofumi@mail.parknet.co.jp>, David Woodhouse
- <dwmw2@infradead.org>,  Richard Weinberger	 <richard@nod.at>, Dave Kleikamp
- <shaggy@kernel.org>, Ryusuke Konishi	 <konishi.ryusuke@gmail.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,  Konstantin Komarov
- <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker	 <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Mike Marshall	 <hubcap@omnibond.com>, Martin Brandenburg
- <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Phillip Lougher
- <phillip@squashfs.org.uk>, Carlos Maiolino	 <cem@kernel.org>, Hugh Dickins
- <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Andrew
- Morton <akpm@linux-foundation.org>,  Namjae Jeon <linkinjeon@kernel.org>,
- Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo	 <yuezhang.mo@sony.com>,
- Alexander Aring <alex.aring@gmail.com>, Andreas Gruenbacher
- <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, "Matthew Wilcox
- (Oracle)"	 <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
- <asmadeus@codewreck.org>, Christian Schoenebeck	 <linux_oss@crudebyte.com>,
- Xiubo Li <xiubli@redhat.com>, Ilya Dryomov	 <idryomov@gmail.com>, Trond
- Myklebust <trondmy@kernel.org>, Anna Schumaker	 <anna@kernel.org>, Steve
- French <sfrench@samba.org>, Paulo Alcantara	 <pc@manguebit.org>, Ronnie
- Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N	
- <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Bharath SM	
- <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, 	devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, 	linux-xfs@vger.kernel.org,
- linux-mm@kvack.org, gfs2@lists.linux.dev, 	linux-doc@vger.kernel.org,
- v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org
-Date: Mon, 12 Jan 2026 09:50:20 -0500
-In-Reply-To: <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-	 <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
-	 <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
-	 <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
-	 <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
-	 <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1768232970; c=relaxed/simple;
+	bh=GdnoJe5LXqiAB0UkbWsnh+niHS7njJFVB1OaAKi271k=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nuPTDWgAeZRFAtTlEDwvATzT2/40Mj7AuoqrR59olTumyQhMZ4ViowfN5rihvyztmIhGrKlTw6hVp/kx1u+cz0E61r37vO3ljeZRrANvta9vClm/qUSG9pLjhL/MvIKQZmq0vm5P9jslJkvYW9PlUvhtniKyEsV3kkqFZJ+sMdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-3fda5f60035so11961869fac.0
+        for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 07:49:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768232968; x=1768837768;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QsLaALc9MteT9gyHUpO9MJnDbv4so+PXtA5FesndbBs=;
+        b=IBs9MeYS4LM/dDDm8lz0WnTn8La98zPj/ir+9l5gQZqAVsjSzkGgDqH9yU+15937+l
+         CKpuUT3ADxp07FfWpcX/mRfRAPhO5oQJqxaC9LQ9yYuRX1+uxZ3G/dhQhpkeYtOikz2L
+         29bk0ld3At7Bk21ZNy2BsTUE01ogLcinx34Q9knKKVN/cmIfEdgJySDR4qxdDUQBNQf/
+         AQTlbNAz9WTNn8O59YYKn/dwdNouVWXdWSGqdBadciMkfy48MMVJd3hK05DkKkogNd7z
+         fhHmb81ku2QTR+ncGiv24It8D0TPr001nH1AQcXNz3tS9meFg64D7YJpOysiTOo1GqMh
+         99Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBoZlvZt2Rke1CR7Ut5Mnkrp3jY9PXkhAdDhwUqRZ0iAeYrjD4lYfHw6eMBTHC91FykaeT@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNsMNqxrDhL4P1eD8gSVZ8J23XVzvFzPAM9DLlwnHfZloHAVfZ
+	zuvTqjD34Lu8t5+AN23ymmUxipOpNffLjK2MTZL6JAJqxFwKVVdQOu09K8vrDgDlu606ugxvNkl
+	c8SXs7lrlYBpQu+fDFYWXJ9i7B0kEAWjKSlDbX0ZMIQNMYDSXCNw0esxpAok=
+X-Google-Smtp-Source: AGHT+IHaHEzOHcVoSRf/0Lc/a6qkBzjQQrUQBxYmBZmCXuuQ4EiQjU0rhkUaJddBXr4wmFxeLknsLDGeRKwKjlFVPGDcvLJxgv6T
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6820:1501:b0:659:9a49:8e76 with SMTP id
+ 006d021491bc7-65f5507e732mr8757216eaf.70.1768232967920; Mon, 12 Jan 2026
+ 07:49:27 -0800 (PST)
+Date: Mon, 12 Jan 2026 07:49:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69651807.050a0220.eaf7.00b2.GAE@google.com>
+Subject: [syzbot] [gfs2?] WARNING in rgblk_free (2)
+From: syzbot <syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2026-01-12 at 09:31 -0500, Chuck Lever wrote:
-> On 1/12/26 8:34 AM, Jeff Layton wrote:
-> > On Fri, 2026-01-09 at 19:52 +0100, Amir Goldstein wrote:
-> > > On Thu, Jan 8, 2026 at 7:57=E2=80=AFPM Jeff Layton <jlayton@kernel.or=
-g> wrote:
-> > > >=20
-> > > > On Thu, 2026-01-08 at 18:40 +0100, Jan Kara wrote:
-> > > > > On Thu 08-01-26 12:12:55, Jeff Layton wrote:
-> > > > > > Yesterday, I sent patches to fix how directory delegation suppo=
-rt is
-> > > > > > handled on filesystems where the should be disabled [1]. That s=
-et is
-> > > > > > appropriate for v6.19. For v7.0, I want to make lease support b=
-e more
-> > > > > > opt-in, rather than opt-out:
-> > > > > >=20
-> > > > > > For historical reasons, when ->setlease() file_operation is set=
- to NULL,
-> > > > > > the default is to use the kernel-internal lease implementation.=
- This
-> > > > > > means that if you want to disable them, you need to explicitly =
-set the
-> > > > > > ->setlease() file_operation to simple_nosetlease() or the equiv=
-alent.
-> > > > > >=20
-> > > > > > This has caused a number of problems over the years as some fil=
-esystems
-> > > > > > have inadvertantly allowed leases to be acquired simply by havi=
-ng left
-> > > > > > it set to NULL. It would be better if filesystems had to opt-in=
- to lease
-> > > > > > support, particularly with the advent of directory delegations.
-> > > > > >=20
-> > > > > > This series has sets the ->setlease() operation in a pile of ex=
-isting
-> > > > > > local filesystems to generic_setlease() and then changes
-> > > > > > kernel_setlease() to return -EINVAL when the setlease() operati=
-on is not
-> > > > > > set.
-> > > > > >=20
-> > > > > > With this change, new filesystems will need to explicitly set t=
-he
-> > > > > > ->setlease() operations in order to provide lease and delegatio=
-n
-> > > > > > support.
-> > > > > >=20
-> > > > > > I mainly focused on filesystems that are NFS exportable, since =
-NFS and
-> > > > > > SMB are the main users of file leases, and they tend to end up =
-exporting
-> > > > > > the same filesystem types. Let me know if I've missed any.
-> > > > >=20
-> > > > > So, what about kernfs and fuse? They seem to be exportable and do=
-n't have
-> > > > > .setlease set...
-> > > > >=20
-> > > >=20
-> > > > Yes, FUSE needs this too. I'll add a patch for that.
-> > > >=20
-> > > > As far as kernfs goes: AIUI, that's basically what sysfs and resctr=
-l
-> > > > are built on. Do we really expect people to set leases there?
-> > > >=20
-> > > > I guess it's technically a regression since you could set them on t=
-hose
-> > > > sorts of files earlier, but people don't usually export kernfs base=
-d
-> > > > filesystems via NFS or SMB, and that seems like something that coul=
-d be
-> > > > used to make mischief.
-> > > >=20
-> > > > AFAICT, kernfs_export_ops is mostly to support open_by_handle_at().=
- See
-> > > > commit aa8188253474 ("kernfs: add exportfs operations").
-> > > >=20
-> > > > One idea: we could add a wrapper around generic_setlease() for
-> > > > filesystems like this that will do a WARN_ONCE() and then call
-> > > > generic_setlease(). That would keep leases working on them but we m=
-ight
-> > > > get some reports that would tell us who's setting leases on these f=
-iles
-> > > > and why.
-> > >=20
-> > > IMO, you are being too cautious, but whatever.
-> > >=20
-> > > It is not accurate that kernfs filesystems are NFS exportable in gene=
-ral.
-> > > Only cgroupfs has KERNFS_ROOT_SUPPORT_EXPORTOP.
-> > >=20
-> > > If any application is using leases on cgroup files, it must be some
-> > > very advanced runtime (i.e. systemd), so we should know about the
-> > > regression sooner rather than later.
-> > >=20
-> >=20
-> > I think so too. For now, I think I'll not bother with the WARN_ONCE().
-> > Let's just leave kernfs out of the set until someone presents a real
-> > use-case.
-> >=20
-> > > There are also the recently added nsfs and pidfs export_operations.
-> > >=20
-> > > I have a recollection about wanting to be explicit about not allowing
-> > > those to be exportable to NFS (nsfs specifically), but I can't see wh=
-ere
-> > > and if that restriction was done.
-> > >=20
-> > > Christian? Do you remember?
-> > >=20
-> >=20
-> > (cc'ing Chuck)
-> >=20
-> > FWIW, you can currently export and mount /sys/fs/cgroup via NFS. The
-> > directory doesn't show up when you try to get to it via NFSv4, but you
-> > can mount it using v3 and READDIR works. The files are all empty when
-> > you try to read them. I didn't try to do any writes.
-> >=20
-> > Should we add a mechanism to prevent exporting these sorts of
-> > filesystems?
-> >=20
-> > Even better would be to make nfsd exporting explicitly opt-in. What if
-> > we were to add a EXPORT_OP_NFSD flag that explicitly allows filesystems
-> > to opt-in to NFS exporting, and check for that in __fh_verify()? We'd
-> > have to add it to a bunch of existing filesystems, but that's fairly
-> > simple to do with an LLM.
->=20
-> What's the active harm in exporting /sys/fs/cgroup ? It has to be done
-> explicitly via /etc/exports, so this is under the NFS server admin's
-> control. Is it an attack surface?
->=20
+Hello,
 
-Potentially?
+syzbot found the following issue on:
 
-I don't see any active harm with exporting cgroupfs. It doesn't work
-right via nfsd, but it's not crashing the box or anything.
+HEAD commit:    54e82e93ca93 Merge tag 'core_urgent_for_v6.19_rc4' of git:..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1216e5fa580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=513255d80ab78f2b
+dashboard link: https://syzkaller.appspot.com/bug?extid=3e2c95229d1ab81a0bfd
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11b4bc3a580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1015b922580000
 
-At one time, those were only defined by filesystems that wanted to
-allow NFS export. Now we've grown them on filesystems that just want to
-provide filehandles for open_by_handle_at() and the like. nfsd doesn't
-care though: if the fs has export operations, it'll happily use them.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-54e82e93.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f3befb5f53a4/vmlinux-54e82e93.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/92820ca1dbd8/bzImage-54e82e93.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/074df7c33445/mount_0.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=10da39fc580000)
 
-Having an explicit "I want to allow nfsd" flag see ms like it might
-save us some headaches in the future when other filesystems add export
-ops for this sort of filehandle use.
---=20
-Jeff Layton <jlayton@kernel.org>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com
+
+gfs2: fsid=syz:syz.0: first mount done, others may mount
+gfs2: fsid=syz:syz.0: found 1 quota changes
+------------[ cut here ]------------
+WARNING: fs/gfs2/rgrp.c:2267 at rgblk_free+0x136/0x750 fs/gfs2/rgrp.c:2267, CPU#0: syz.0.17/5483
+Modules linked in:
+CPU: 0 UID: 0 PID: 5483 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:rgblk_free+0x136/0x750 fs/gfs2/rgrp.c:2267
+Code: c0 0f 85 fe 05 00 00 45 8b 36 44 89 f7 44 89 e6 e8 cf 42 b9 fd 45 39 e6 76 2e e8 05 41 b9 fd e9 89 00 00 00 e8 fb 40 b9 fd 90 <0f> 0b 65 48 8b 05 b0 f9 78 0e 48 3b 84 24 80 00 00 00 0f 85 a0 05
+RSP: 0018:ffffc90002797a80 EFLAGS: 00010293
+RAX: ffffffff8407c5a6 RBX: ffff88801fce7000 RCX: ffff888000634980
+RDX: 0000000000000000 RSI: 0000000000000927 RDI: 0000000025540013
+RBP: ffff88801fce7000 R08: ffffffff8f824677 R09: 1ffffffff1f048ce
+R10: dffffc0000000000 R11: fffffbfff1f048cf R12: 0000000000000927
+R13: 0000000000000001 R14: 0000000025540013 R15: dffffc0000000000
+FS:  000055556242d500(0000) GS:ffff88808d414000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000011b5f000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ gfs2_unlink_di+0x296/0x420 fs/gfs2/rgrp.c:2566
+ gfs2_unlink_inode+0x11d/0x180 fs/gfs2/inode.c:1226
+ gfs2_unlink+0x448/0x550 fs/gfs2/inode.c:1298
+ vfs_rmdir+0x512/0x660 fs/namei.c:5236
+ do_rmdir+0x27f/0x4a0 fs/namei.c:5291
+ __do_sys_rmdir fs/namei.c:5315 [inline]
+ __se_sys_rmdir fs/namei.c:5313 [inline]
+ __x64_sys_rmdir+0x47/0x50 fs/namei.c:5313
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbfb358f7c9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc4142d868 EFLAGS: 00000246 ORIG_RAX: 0000000000000054
+RAX: ffffffffffffffda RBX: 00007fbfb37e5fa0 RCX: 00007fbfb358f7c9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000100
+RBP: 00007fbfb3613f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fbfb37e5fa0 R14: 00007fbfb37e5fa0 R15: 0000000000000001
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
