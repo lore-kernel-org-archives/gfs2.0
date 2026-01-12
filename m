@@ -1,141 +1,156 @@
-Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE43322B8B
-	for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 15:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B562F39A3
+	for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 19:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768232970; cv=none; b=nOK6GwliCZTgRg0/BJcIsjggeddmKdr9dEJAPpevl4+ARwz6o5Ms41OaGx35YgTkdVvieQPeFW3OOFD5lNtws/8Gguz0Z9v0nhhqW2RrYNm2yf5oaIsVwaMYgXPjuMePWU8AMN3eRI3JTJCILFwK+ykX12/Y6SII5VME6/0vArg=
+	t=1768245186; cv=none; b=derOwHd1fMJJx2TGFRXR/YCT7L32/b+xIXVLcEfR14EIArdYhxuUILcyvSDjJZ4rOnjYEprHXqtvgKbggy2LJHyUNayDDvVEi8ZMCFUxgs7Xf/cZgBVTnL96DtvengWDPrLM9GIDBanMQ/A1XCJJBjePmnpvErVAHNKOh8TF3eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768232970; c=relaxed/simple;
-	bh=GdnoJe5LXqiAB0UkbWsnh+niHS7njJFVB1OaAKi271k=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nuPTDWgAeZRFAtTlEDwvATzT2/40Mj7AuoqrR59olTumyQhMZ4ViowfN5rihvyztmIhGrKlTw6hVp/kx1u+cz0E61r37vO3ljeZRrANvta9vClm/qUSG9pLjhL/MvIKQZmq0vm5P9jslJkvYW9PlUvhtniKyEsV3kkqFZJ+sMdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-3fda5f60035so11961869fac.0
-        for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 07:49:28 -0800 (PST)
+	s=arc-20240116; t=1768245186; c=relaxed/simple;
+	bh=GzJ6XVWa2r4zVf7krtugyMXldgpLAfA6hmjcVRijFUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=G5ukjvOX6uySJe7SvOcSlZ18nK/kJTyJ8DLFHhRU7cxJGRs4R6JxCjoyCu074+wWjBbjQSpHE1sVSJ76M911un8UWw0NnfjjwDKAGDZCOIeJRD/RF+dSmn3uHNVnA9YuFKvdw5AlAuD+nhYCtoOspvma1m1sVrFvNLRSVlu2nNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XNBJq94j; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XNBJq94j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768245184;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B/LS3+D2+0JGACQST8G26iX5o4ix4SU35Pj9rPbsm5Y=;
+	b=XNBJq94jKpJGgSRB9PTnXm3ClfwfZozIRjkm06efnEER9N+YvWsyH4WYgtYh9FbkWIsaWZ
+	SDrBTgBT4Y6whmKAXUPmPDWlKWhvT/Qb1vJQ9u3+kef/A8p3EqxT0sq6z+lc5meti8SqVe
+	6P4iE0GDVmeu9sj7XFSLbM51kkcw93w=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465--n-MFiMuOHiflJKuBcRfLw-1; Mon, 12 Jan 2026 14:12:54 -0500
+X-MC-Unique: -n-MFiMuOHiflJKuBcRfLw-1
+X-Mimecast-MFC-AGG-ID: -n-MFiMuOHiflJKuBcRfLw_1768245173
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d5bd981c8so46574315e9.0
+        for <gfs2@lists.linux.dev>; Mon, 12 Jan 2026 11:12:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768232968; x=1768837768;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QsLaALc9MteT9gyHUpO9MJnDbv4so+PXtA5FesndbBs=;
-        b=IBs9MeYS4LM/dDDm8lz0WnTn8La98zPj/ir+9l5gQZqAVsjSzkGgDqH9yU+15937+l
-         CKpuUT3ADxp07FfWpcX/mRfRAPhO5oQJqxaC9LQ9yYuRX1+uxZ3G/dhQhpkeYtOikz2L
-         29bk0ld3At7Bk21ZNy2BsTUE01ogLcinx34Q9knKKVN/cmIfEdgJySDR4qxdDUQBNQf/
-         AQTlbNAz9WTNn8O59YYKn/dwdNouVWXdWSGqdBadciMkfy48MMVJd3hK05DkKkogNd7z
-         fhHmb81ku2QTR+ncGiv24It8D0TPr001nH1AQcXNz3tS9meFg64D7YJpOysiTOo1GqMh
-         99Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBoZlvZt2Rke1CR7Ut5Mnkrp3jY9PXkhAdDhwUqRZ0iAeYrjD4lYfHw6eMBTHC91FykaeT@lists.linux.dev
-X-Gm-Message-State: AOJu0YwNsMNqxrDhL4P1eD8gSVZ8J23XVzvFzPAM9DLlwnHfZloHAVfZ
-	zuvTqjD34Lu8t5+AN23ymmUxipOpNffLjK2MTZL6JAJqxFwKVVdQOu09K8vrDgDlu606ugxvNkl
-	c8SXs7lrlYBpQu+fDFYWXJ9i7B0kEAWjKSlDbX0ZMIQNMYDSXCNw0esxpAok=
-X-Google-Smtp-Source: AGHT+IHaHEzOHcVoSRf/0Lc/a6qkBzjQQrUQBxYmBZmCXuuQ4EiQjU0rhkUaJddBXr4wmFxeLknsLDGeRKwKjlFVPGDcvLJxgv6T
+        d=1e100.net; s=20230601; t=1768245173; x=1768849973;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B/LS3+D2+0JGACQST8G26iX5o4ix4SU35Pj9rPbsm5Y=;
+        b=gNA3T3tpgDzq1vv0OUqA3l8iUz+PDC6wrFG9MkGEjZQSVJvv/T0ulfci4boxkrZeTF
+         cm3SmcaHcRTBi2jzk4mg6CHqneKp3cxIAspoMWAi+4pPb+4A2SFwrpUVYdhcWO9pxFTK
+         op865JWI8Wi4s+OO3HdgYCs8WCkAa/93Q9igcwxwOEq2TM+DLDb8yQrO/Hd0yzhUnFIE
+         HCzq6WVeluCLvonxLQvbU0i9Z2X9SODPl3A6U5tG/w664l5GRluBZBcG0RI9RAELLR1D
+         gJZnZ3zFf12wGXmYDPoB15oVxRHtIAa2GyQgR/5d0yIcL+OJKMWBVGZqVAUeA3C/lFWg
+         2FeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgEtBltPnfhY59AsGJeimgDYRTlQu+V5M9dJn11Bzyy/PDPs60fUbI7va1KVauEahxZkTf@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx28FmplP1PfbRDPUfKWRmcsoXgqRBKdv9ROCbzKOcDxIFig7CC
+	tZK2+rCAa33ZLFQAC73rrkKg4v4bbYSu0Xgy/uFoTjgd9j32X7liWwGiHL6AY0NCSkINL3/a90r
+	r6Rzk3BtEe6VTjCYqPj/hJ5AcR0aIsCrLhkfsAqGhrePCAXjT05iVu3c=
+X-Gm-Gg: AY/fxX5MWGsGuoOsLA31bkQJqLhsxnm2R1l6/iH/6PyTFHNcLHGhtO2uf5TrbLK3ctG
+	EQdknCKflbwDoodsXBTnmObKpxPuxbENHwKdGSyrPI6lJIbMHtkSxE91PZapsmQOf8g0yQQ61AR
+	J43igm0B59ZRIiRGTZsQwJbQiHuO7p/zjlWk5v458cMWcWzkRDQKNNojuW3ll/3xK69NA3EicAY
+	FvRyoYOw+DkqMldomxcfTdOZo4EndaQ7XeTzY9tK0Qx0QGAqIASHmPavMyhC1o0q2aEiNB78wj5
+	TizODHOGsM4YaDzUGalyqqDONCbXSJdLR4BvbsXD+6hJR3l8BrQAgbN9qsWCF0T7Qsiy8QfOsmK
+	8dI933hqumiEaMfyeJ3tBl4kQUsvZq1ST3/NcppVo7x0Enkk9g7FJ5+hgJ8hW+gk5AMuovw==
+X-Received: by 2002:a05:600c:500d:b0:476:d494:41d2 with SMTP id 5b1f17b1804b1-47d84b3bc37mr166004745e9.29.1768245173363;
+        Mon, 12 Jan 2026 11:12:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDfgCZHyxfDNzopCdhCdbmTHkg1Lro5Bs5rh2uwlheYxWEnkW5GyIfRIOS+fD5ZOP1ovVcXg==
+X-Received: by 2002:a05:600c:500d:b0:476:d494:41d2 with SMTP id 5b1f17b1804b1-47d84b3bc37mr166004565e9.29.1768245172924;
+        Mon, 12 Jan 2026 11:12:52 -0800 (PST)
+Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8717a48asm141719035e9.8.2026.01.12.11.12.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Jan 2026 11:12:52 -0800 (PST)
+Message-ID: <bfe98f76-2c8a-4bb9-a37a-f9b184a9621f@redhat.com>
+Date: Mon, 12 Jan 2026 19:12:51 +0000
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1501:b0:659:9a49:8e76 with SMTP id
- 006d021491bc7-65f5507e732mr8757216eaf.70.1768232967920; Mon, 12 Jan 2026
- 07:49:27 -0800 (PST)
-Date: Mon, 12 Jan 2026 07:49:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69651807.050a0220.eaf7.00b2.GAE@google.com>
-Subject: [syzbot] [gfs2?] WARNING in rgblk_free (2)
-From: syzbot <syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [gfs2?] WARNING in rgblk_free (2)
+To: syzbot <syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com>,
+ gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com
+References: <69651807.050a0220.eaf7.00b2.GAE@google.com>
+From: Andrew Price <anprice@redhat.com>
+In-Reply-To: <69651807.050a0220.eaf7.00b2.GAE@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PwvW6qLiAGI192DuwJ2ovYsWl5-mflcBJGq8RxOy3EE_1768245173
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 12/01/2026 15:49, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    54e82e93ca93 Merge tag 'core_urgent_for_v6.19_rc4' of git:..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1216e5fa580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=513255d80ab78f2b
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3e2c95229d1ab81a0bfd
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11b4bc3a580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1015b922580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-54e82e93.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/f3befb5f53a4/vmlinux-54e82e93.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/92820ca1dbd8/bzImage-54e82e93.xz
+> mounted in repro: https://storage.googleapis.com/syzbot-assets/074df7c33445/mount_0.gz
+>   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=10da39fc580000)
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com
+> 
+> gfs2: fsid=syz:syz.0: first mount done, others may mount
+> gfs2: fsid=syz:syz.0: found 1 quota changes
+> ------------[ cut here ]------------
+> WARNING: fs/gfs2/rgrp.c:2267 at rgblk_free+0x136/0x750 fs/gfs2/rgrp.c:2267, CPU#0: syz.0.17/5483
 
-syzbot found the following issue on:
+The test is scribbling on an rindex entry's ri_data0.
 
-HEAD commit:    54e82e93ca93 Merge tag 'core_urgent_for_v6.19_rc4' of git:..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1216e5fa580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=513255d80ab78f2b
-dashboard link: https://syzkaller.appspot.com/bug?extid=3e2c95229d1ab81a0bfd
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11b4bc3a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1015b922580000
+#syz test
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-54e82e93.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f3befb5f53a4/vmlinux-54e82e93.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/92820ca1dbd8/bzImage-54e82e93.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/074df7c33445/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=10da39fc580000)
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -871,11 +871,15 @@ static int rgd_insert(struct gfs2_rgrpd *rgd)
+                                                  rd_node);
+ 
+                parent = *newn;
+-               if (rgd->rd_addr < cur->rd_addr)
++               if (rgd->rd_addr < cur->rd_addr) {
++                       if (rgd->rd_data0 + rgd->rd_data > cur->rd_addr)
++                               return -EUCLEAN;
+                        newn = &((*newn)->rb_left);
+-               else if (rgd->rd_addr > cur->rd_addr)
++               } else if (rgd->rd_addr > cur->rd_addr) {
++                       if (rgd->rd_addr < cur->rd_data0)
++                               return -EUCLEAN;
+                        newn = &((*newn)->rb_right);
+-               else
++               } else
+                        return -EEXIST;
+        }
+ 
+@@ -944,7 +948,8 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+                return 0;
+        }
+ 
+-       error = 0; /* someone else read in the rgrp; free it and ignore it */
++       if (error == -EEXIST)
++               error = 0; /* someone else read in the rgrp; free it and ignore it */
+ fail_glock:
+        gfs2_glock_put(rgd->rd_gl);
+ 
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com
-
-gfs2: fsid=syz:syz.0: first mount done, others may mount
-gfs2: fsid=syz:syz.0: found 1 quota changes
-------------[ cut here ]------------
-WARNING: fs/gfs2/rgrp.c:2267 at rgblk_free+0x136/0x750 fs/gfs2/rgrp.c:2267, CPU#0: syz.0.17/5483
-Modules linked in:
-CPU: 0 UID: 0 PID: 5483 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:rgblk_free+0x136/0x750 fs/gfs2/rgrp.c:2267
-Code: c0 0f 85 fe 05 00 00 45 8b 36 44 89 f7 44 89 e6 e8 cf 42 b9 fd 45 39 e6 76 2e e8 05 41 b9 fd e9 89 00 00 00 e8 fb 40 b9 fd 90 <0f> 0b 65 48 8b 05 b0 f9 78 0e 48 3b 84 24 80 00 00 00 0f 85 a0 05
-RSP: 0018:ffffc90002797a80 EFLAGS: 00010293
-RAX: ffffffff8407c5a6 RBX: ffff88801fce7000 RCX: ffff888000634980
-RDX: 0000000000000000 RSI: 0000000000000927 RDI: 0000000025540013
-RBP: ffff88801fce7000 R08: ffffffff8f824677 R09: 1ffffffff1f048ce
-R10: dffffc0000000000 R11: fffffbfff1f048cf R12: 0000000000000927
-R13: 0000000000000001 R14: 0000000025540013 R15: dffffc0000000000
-FS:  000055556242d500(0000) GS:ffff88808d414000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000011b5f000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- gfs2_unlink_di+0x296/0x420 fs/gfs2/rgrp.c:2566
- gfs2_unlink_inode+0x11d/0x180 fs/gfs2/inode.c:1226
- gfs2_unlink+0x448/0x550 fs/gfs2/inode.c:1298
- vfs_rmdir+0x512/0x660 fs/namei.c:5236
- do_rmdir+0x27f/0x4a0 fs/namei.c:5291
- __do_sys_rmdir fs/namei.c:5315 [inline]
- __se_sys_rmdir fs/namei.c:5313 [inline]
- __x64_sys_rmdir+0x47/0x50 fs/namei.c:5313
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbfb358f7c9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc4142d868 EFLAGS: 00000246 ORIG_RAX: 0000000000000054
-RAX: ffffffffffffffda RBX: 00007fbfb37e5fa0 RCX: 00007fbfb358f7c9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000100
-RBP: 00007fbfb3613f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbfb37e5fa0 R14: 00007fbfb37e5fa0 R15: 0000000000000001
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
