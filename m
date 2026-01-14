@@ -1,159 +1,167 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD87634F461
-	for <gfs2@lists.linux.dev>; Wed, 14 Jan 2026 08:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6993838759E
+	for <gfs2@lists.linux.dev>; Wed, 14 Jan 2026 09:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768380388; cv=none; b=LQTkmS0AoUbkBnnyQVF0A0/cJfPEuCWh0Q3jqnQXV6kSHj2YDonTgVIgkFuYsn3X8+z7GcCfum70Ee0b97nCSzSW2erp7F9F+v7KTysbEg8/8niKGTonPJd/OGL3Lkw32hFFXFwggVV6hpNdBmIb2LwYtQEaPJo0AFMMusuEtT0=
+	t=1768383261; cv=none; b=BmxqEk20dasV9OW323keM/zd0IHqbjqPKpUwyiglG5gXuao9Fy6gAQTSUt8x/lC5AIoCOKfNGUujp4sdpKhd+OazAXIrYUeyih5RAt2Is7DGzducjxC2Nojcfo2gu5XXzz4CUOdD//ago4rd+L7FZ1s7xa+56SwOtyADW1FnoVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768380388; c=relaxed/simple;
-	bh=2q5+7L9lp4rYGtqiFMieQT6+gWJ6Xt1i0lSorRhk3TQ=;
+	s=arc-20240116; t=1768383261; c=relaxed/simple;
+	bh=1et5czBbAtdqXmgJG4CYdcCCm2KxQaiqpQUINwrSInw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DXatKkw+V3QuaAOCVxW0sC3k4DnbtIUmkbZl5wO5tKx4b0FmBOL2MDnvlePdcbXUnzvZa4YlPjJVD3NVxH4zHQ0FD4YH++qRnZmGYEF/WKV6uJrJzjZcR3p7bgnOgzu0BijCQBdYKRziJ+iOwRSZ2/JpGg/hiC1eR/2xgpaRUkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BXZnECSV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=JCSxhdmoPCmagTWEa4Rp8dr1cf0xRjFzS+qg04UqvuDzXS+fQ5JMw2es69tAqqwwJXz05D+vkL4TkDWe9464Bxdre92GVzWdZJMmeZRIgFm6gmOoVTsoFgD58EsVV+20blHLFJnA8WJduuT9rvaqJDj5J7N4uh80wKIQvSvdPvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQ1H2xfl; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BXZnECSV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768380384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mC57iukE7dahb+QiB/aSL8Lhq1hdQsTNrwGoDOzmy/8=;
-	b=BXZnECSVYd/PM8yaH1hLaYJQeH5Jp1av5WS4VvmhBRSK01c9dUJkkTA3OGuIbZZgrAUGVv
-	rA2O8YWl3M0GYwE6EMC9JItB2l6nWMPgtimPrr2ZUv2u7VZ/kGalHQ4kROtecE1yB3wgY/
-	z1gU780jh/ZHMnTYec6ygTRIMEjyG8c=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-K_llE_ZTOL2BrMJgzRlfKw-1; Wed, 14 Jan 2026 03:46:22 -0500
-X-MC-Unique: K_llE_ZTOL2BrMJgzRlfKw-1
-X-Mimecast-MFC-AGG-ID: K_llE_ZTOL2BrMJgzRlfKw_1768380382
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-79012391ce2so123957947b3.1
-        for <gfs2@lists.linux.dev>; Wed, 14 Jan 2026 00:46:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQ1H2xfl"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b87693c981fso55411766b.1
+        for <gfs2@lists.linux.dev>; Wed, 14 Jan 2026 01:34:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768383257; x=1768988057; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cV5qgJhr5qbvOPleJHxrmxwzjsLTEkwpqcVKyAw90ng=;
+        b=EQ1H2xflchgrh8py8dpmqvHp4AtH+ntqLuVnpypRSWKrSGBnPZwzU3YHkrgCvwLaco
+         U2BUKAG9MLAr/gZx9FtfXRN1A8/ks8q/HlMZKkEdpUfIvMzkgAlRgv9mMrQlYqYkcqvQ
+         6XMXZUQ+TAQaPCzuvY+oYVaQlRNkc88I+ryR+riLLvmJdwCrec+TGpgz8PW+iyF+F57D
+         EEe+R4kdweWBsTpBEdxUks8pPTdeMZvM3VulaEg7YNCMneZduffOoE6VpAaCsAIv3Ula
+         V461HTx+JVY3AcP67a+Zqpt8Vigs0m+edTPlSKmGEAEvL1Y0g/xF8mgs920Loh8EckgS
+         8eeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768380382; x=1768985182;
+        d=1e100.net; s=20230601; t=1768383257; x=1768988057;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mC57iukE7dahb+QiB/aSL8Lhq1hdQsTNrwGoDOzmy/8=;
-        b=pBmD4BTQILVlwUGwXGd2u/OVlqW0vTtHz4wi1VA70UrSvDfXu59veheWyHtsrF+Cck
-         AbAGS1Wp+3BOqK6sW8CeJzMr+CeoWpkxZqXb759sBunBnTMUE5iOWMKaY82zfUnriVsl
-         6CURO+uG6hwkyJ4Xe6sr5wpJZjIksQjXsG8sNSUudxW3e3zRu/4jAS0QCXQJftu7+daR
-         fa2EPVFMZGxyt1QQ5zEtKz9917G0zUzxFvHIlkzTVZWCjwF0CfUoMyIvsXC4FOPxpjs3
-         aFaCjmxNZ+ux6rCedlNcGI07MiItIMSrAHZfKsKIvie0kM0arXW5fBdDgpXGVLW/z2VQ
-         QAqQ==
-X-Gm-Message-State: AOJu0Yx4LwPqXgkLGZLoLLn0Trz6CH7Dphm6jUk0BWDFMwFR0ehY6bBe
-	FdaeD6YghaViae+7KNmi2uoN1Ha/VT/jFJqt4odsiSl+tEulhLaIQNIDw5bscJG2eZVniG2+KGt
-	WZj74/A1GYL567hUG7DzkYcE1XlVRp2FQvvTBTknFZZD6mnYLjlSZ8KecmjAT9uAaH7cbCsUsNP
-	2EHjacH5Md+0L5qrBqyfopGRNB0dIe5wJph6Df8P0r
-X-Gm-Gg: AY/fxX5psStmJjxRozqE6yR7BLgm7FiSKpc9IDfcqTYQ6VT+OX7SKMVP4C0JeBbMJwN
-	Ig8T16iNGqerQCVlkUApr8duBTrQSUapYRMt3GWS4XlAPnuRBs0eDhQCeNqkKyO5bVIZLKJEsle
-	OK/CzhEQ1Bp0/rGVXBFR9CMdz/AyS9cXp6D6rNPaHWVLwHvrB2oXuSfnCzeZL8u8yhdX+5qjLqJ
-	raQJPvv6TPxc1QKYNrE+3MxBVHPi/dm5Wo5QeDp9I0evUp7sjm5wA==
-X-Received: by 2002:a05:690e:1898:b0:646:ba5e:4cf4 with SMTP id 956f58d0204a3-64903b45b26mr1042855d50.51.1768380382002;
-        Wed, 14 Jan 2026 00:46:22 -0800 (PST)
-X-Received: by 2002:a05:690e:1898:b0:646:ba5e:4cf4 with SMTP id
- 956f58d0204a3-64903b45b26mr1042844d50.51.1768380381624; Wed, 14 Jan 2026
- 00:46:21 -0800 (PST)
+        bh=cV5qgJhr5qbvOPleJHxrmxwzjsLTEkwpqcVKyAw90ng=;
+        b=bmfbIYM/Y76WzF2iSX8g/Vg6OEY5VoeIgxjeNAtlCPLYvhDVVNN8/IhQVxVWHlJnX0
+         KCpT1W4nyqJcQJbo+ct/ZIfjURzMvoA5rWuvmYYhlrhiVGjBOu1dUOJAe8fN8f1Bz9Gt
+         hD/+a2T0wJQnkhHUK+b+CkWy0dgCttv9TAv9LdM3caOqZtkkcnCJ/W7zsnfycsFdZyt5
+         5A53lRl81DtHjvHhFDh7sslZ3O6DaW2AWRZgKNoCj9cysFJLx7lDmml1b/dQOIW/ZG1E
+         YegR4zBuljgJhoIYpk+PdW9JcJkXZQIQK9NQW5ZAOrIsklwzKLsQhZQnQvV5aOEEOmPb
+         3DHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCIAhQOD94Y5zfXNkZbWuHS1Al17H7PaQ3IPA6LitoL6ux6BsrtiTPzmgx2I7nnc5lEXNK@lists.linux.dev
+X-Gm-Message-State: AOJu0YzPbKh1Ln7fToOdYeB7+wJsrKddrdrj/B4nERyMGh91LYT5y+nt
+	PEy2yfWj1Sl/mxowkwpi6TCJIBXpi3OhqEQuhfAwnlynVDEnQwxLkEKk9W97Qy0cR57Ag3iWryz
+	Z865zIXeR5WzXZ+eiTFvRxfAQ65rbPJnpVbFaSoztQA==
+X-Gm-Gg: AY/fxX4aksHZRJNhWvYoNHPugZIa9gElBMdhB6bjJMDj2ZBfCFAzoaKeM2nirrvHvz7
+	++I75hIlpbaGkdY38p8VjsW3ids71clF5Axb1OZl3ifoKRJ4kLJo7YYQXoR81mLSm/7Q1PgxKBa
+	01AfKZ1R7XObdtD156908m6QoSxieoaMuZNA8Ybu4cdZyx7eYTBDYn6PrrvRdxjcmItt8cuCvER
+	icfBGPal0G9LJQFvcVBJyRefeU13OauZ28MMkPuH5+j/ziwvZ3E3Dn7Fh1qiNzowWSwq1NRZZBk
+	W/e5s6PWfcB6Yr0XRv/ZzWIqT1v4gQHO2KZo5ePw
+X-Received: by 2002:a17:906:6a02:b0:b87:25a6:a906 with SMTP id
+ a640c23a62f3a-b87677e0680mr108491266b.46.1768383255915; Wed, 14 Jan 2026
+ 01:34:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHc6FU50_ZQM2G3y_z11J99xgRUE5yGj5DHKhpgEQd4QpmCLTg@mail.gmail.com>
- <tencent_B55495E8E88EEE66CC2C7A1E6FBC2FC16C0A@qq.com>
-In-Reply-To: <tencent_B55495E8E88EEE66CC2C7A1E6FBC2FC16C0A@qq.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 14 Jan 2026 09:46:10 +0100
-X-Gm-Features: AZwV_Qh2fjB-Hjjk7fbYXLuZdra1THHgnStpWuqdoBDK1bftldd-iTG9OFnPIXc
-Message-ID: <CAHc6FU6q=pvFTcWL8CLv+qXAyRw8DmYqdHgUr=qBWF16uozCmQ@mail.gmail.com>
-Subject: Re: [PATCH Next] gfs2: update end and prev bio for chain bio
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+f6539d4ce3f775aee0cc@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: v3Eal-PB0-Knn5jCK85wlgBxYhVsq6bNrhaviZdeqBs_1768380382
-X-Mimecast-Originator: redhat.com
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
+ <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
+ <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
+ <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
+ <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com> <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
+ <20260113-mondlicht-raven-82fc4eb70e9d@brauner> <aWZcoyQLvbJKUxDU@infradead.org>
+ <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org> <aWc3mwBNs8LNFN4W@infradead.org>
+In-Reply-To: <aWc3mwBNs8LNFN4W@infradead.org>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 14 Jan 2026 10:34:04 +0100
+X-Gm-Features: AZwV_QjTKvsgUAM6BTw2rpBHAs0ymZXhE-dNbh6dt2ll27JlZs1InITXkkYC5Xs
+Message-ID: <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
+ lease support
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>, 
+	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
+	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Phillip Lougher <phillip@squashfs.org.uk>, 
+	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+	Yuezhang Mo <yuezhang.mo@sony.com>, Alexander Aring <alex.aring@gmail.com>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, 
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	gfs2@lists.linux.dev, linux-doc@vger.kernel.org, v9fs@lists.linux.dev, 
+	ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 14, 2025 at 3:18=E2=80=AFAM Edward Adam Davis <eadavis@qq.com> =
-wrote:
-> On Fri, 12 Dec 2025 13:47:40 +0100, Andreas Gruenbacher <agruenba@redhat.=
-com> wrote:
-> > On Mon, Dec 8, 2025 at 7:12 AM Edward Adam Davis <eadavis@qq.com> wrote=
-:
-> > > The bios are created and initialized using gfs2_log_alloc_bio() in
-> > > gfs2_find_jhead(), which sets bi_end_io and bi_private. When the I/O
-> > > request is too large and needs to be split into multiple bios and
-> > > submitted as a chain, the bug reported by syzbot [1] is triggered.
-> > >
-> > > When we need to submit multiple bios in a chain, we need to pass the
-> > > bi_end_io and bi_private of the previous bio to the end bio to ensure
-> > > that the multiple bios are correctly assembled into a submission chai=
-n.
-> > >
-> > > [1]
-> > > kernel BUG at block/bio.c:342!
-> > > Call Trace:
-> > >  gfs2_chain_bio fs/gfs2/lops.c:487 [inline]
-> > >  gfs2_find_jhead+0x627/0xe40 fs/gfs2/lops.c:549
-> > >  gfs2_recover_func+0x5f5/0x1c90 fs/gfs2/recovery.c:459
-> > >
-> > > Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
-> > > Reported-by: syzbot+f6539d4ce3f775aee0cc@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=3Df6539d4ce3f775aee0c=
-c
-> > > Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> > > ---
-> > >  fs/gfs2/lops.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-> > > index 97ebe457c00a..2de334034c74 100644
-> > > --- a/fs/gfs2/lops.c
-> > > +++ b/fs/gfs2/lops.c
-> > > @@ -484,6 +484,10 @@ static struct bio *gfs2_chain_bio(struct bio *pr=
-ev, unsigned int nr_iovecs)
-> > >         new =3D bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP=
-_NOIO);
-> > >         bio_clone_blkg_association(new, prev);
-> > >         new->bi_iter.bi_sector =3D bio_end_sector(prev);
-> > > +       new->bi_end_io =3D prev->bi_end_io;
-> > > +       new->bi_private =3D prev->bi_private;
-> > > +       prev->bi_end_io =3D NULL;
-> > > +       prev->bi_private =3D NULL;
-> > >         bio_chain(prev, new);
-> > >         submit_bio(prev);
-> > >         return new;
-> > > --
-> > > 2.43.0
-> > >
-> >
-> > thanks for this patch, it looks correct. However, the underlying
-> > problem is that bi_end_io and bi_private are set too early, and if we
-> > change the code to set those fields before submitting the bio, we
-> > won't need this hack in gfs2_chain_bio().
-> >
-> > I have pushed patches doing that onto for-next:
-> >
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git/l=
-og/?h=3Dfor-next
-> >
-> > Does this work for you?
+On Wed, Jan 14, 2026 at 7:28=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
 >
-> I think it's work for me.
+> On Tue, Jan 13, 2026 at 12:06:42PM -0500, Jeff Layton wrote:
+> > Fair point, but it's not that hard to conceive of a situation where
+> > someone inadvertantly exports cgroupfs or some similar filesystem:
+>
+> Sure.  But how is this worse than accidentally exporting private data
+> or any other misconfiguration?
+>
 
-It turns out that commit 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
-was bad and needed to be reverted. This means that patch "gfs2: Set
-bio->{bi_private,bi_end_ino} late" has been dropped from for-next as
-well.
+My POV is that it is less about security (as your question implies), and
+more about correctness.
+
+The special thing about NFS export, as opposed to, say, ksmbd, is
+open by file handle, IOW, the export_operations.
+
+I perceive this as a very strange and undesired situation when NFS
+file handles do not behave as persistent file handles.
+
+FUSE will gladly open a completely different object, sometimes
+a different object type from an NFS client request after server restart.
+
+I suppose that the same could happen with tmpfs and probably some
+other fs.
+
+This problem is old and welded into the system, but IMO adding more
+kernel filesystems, which consciously export file handles that do not
+survive server reboot does not serve users interests well.
+
+One could claim that this is a bug that can be fixed by adding boot_id
+to said file handles, but why fix something that nobody asked for?
+
+cgroupfs, pidfs, nsfs, all gained open_by_handle_at() capability for
+a known reason, which was NOT NFS export.
+
+If the author of open_by_handle_at() support (i.e. brauner) does not
+wish to imply that those fs should be exported to NFS, why object?
+
+We could have the opt-in/out of NFS export fixes per EXPORT_OP_
+flags and we could even think of allowing admin to make this decision
+per vfsmount (e.g. for cgroupfs).
+
+In any case, I fail to see how objecting to the possibility of NFS export
+opt-out serves anyone.
 
 Thanks,
-Andreas
-
+Amir.
