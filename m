@@ -1,72 +1,73 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51C42F12AF
-	for <gfs2@lists.linux.dev>; Thu, 15 Jan 2026 19:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9C9304972
+	for <gfs2@lists.linux.dev>; Thu, 15 Jan 2026 19:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768505013; cv=none; b=Ozpxai6nrtH9hoBLX04PsDg5iCy7MupGdinC/x30kGDFu7BjVrLi5rJN39vO/aRRGhcF7mVH0D5rcHX1YFHJM7XipGgZrX1Qx0W7gwYL7/ROnN1QT7Z90DQpjcdI7zGGVuhXfiXk4YR80+iIwcT3Wderm+KybDYVIWqWYuKLKqw=
+	t=1768505213; cv=none; b=Dy02VTGfY7Xu1J+6UFBoWwepgVMKGMVjwR4vCWwpHmYFFNm3eEE+crI3MmKWrRuAD2m7UJ8gO4bSNfjVAe6hPr+WNogpeMtkSem8fjtZKYQVoWYcILXjbOSViXuwmYYblSwnpJlxuPlWxiH2QfJ9UaG36SZaArtWpQ889+CaqRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768505013; c=relaxed/simple;
-	bh=K7EKeFZcYOwWj32Ok6OEcoTNGvsHPX2vPwhKzUVyoug=;
+	s=arc-20240116; t=1768505213; c=relaxed/simple;
+	bh=UxolFbMwV2HRPaKQ37FO6EpPTEmN4gnY7UWNmQTK8QI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R03LYhjyTnYxUbnAY8t4frXG1u2dOlDJ10UtXgN+JgSlupDSwrPK+KXaWjAa4D3EWBpTjYKCvtDd6VuC6JCjkMkacQp1+terAwRo3MtjAJPFm43NgTu31ZnNZ6hOH8mbAXdViNzA4ZAAZkRP87OGpE0ncY7exvrgA/J5VO9oCDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nEekY90T; arc=none smtp.client-ip=209.85.208.54
+	 To:Cc:Content-Type; b=GvWr2ECU0Vh8sC8KdQXf+LGTL7vBogIMhTd/ILX1hpxL/itMvVq38GT2RMt+XjHRa74o7JzHSGOCxVoqr2eBieNr82QRW1i8NxPdsPpn0holWeso2918eCzqT7TkHH17bFSx85A83bAEwhmZQ7L93s+Cy628I+RZsUdlPv/8NUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X12dmIsJ; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nEekY90T"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso2620574a12.0
-        for <gfs2@lists.linux.dev>; Thu, 15 Jan 2026 11:23:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X12dmIsJ"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-652fdd043f9so2506944a12.1
+        for <gfs2@lists.linux.dev>; Thu, 15 Jan 2026 11:26:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768505009; x=1769109809; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1768505203; x=1769110003; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1HpNW/ml4xLa7Q+ZYoOd6NCigBelaQL2RtJ0aaDh9mI=;
-        b=nEekY90T4vPVH1ZBzrb9i02rBhSXN0D0YkVjYCf+wY158o3/iCS1FO48NRaCPQR7g6
-         YNhtWU+ERCPEOY+Kc00hj0PtSrkM5E7Y9CPI7OuUXRY3R4xd6s79xpLtvMx6BZIukYI/
-         HHSs4kNGjyZwx2Im2ZDuKi3YPSChdgZnD0ms0bF7IPONElFXV8Ii5r0qFmAfeSTsfivs
-         urj9z3vJskvsx4FP54V1n1btkRmZKg3NOrmZQoKnX8OHLIfqQ77bQyGOQGmsrM5eXb0L
-         R2rtpCS+8QkHlL7+zRtWCM0ZfJh8pBovg6WCBd1qDQfUcAC8uOOZelgclKIP2sTCn6nX
-         P6qg==
+        bh=aDUsn+SB7H7nYSne5YCtxozzRNZ3DAEsXPNjynL2NCs=;
+        b=X12dmIsJ1RK5JqjUPZ8T5/4+11E/5d1PNZsWrjowfwQOGAcrkx9ElLPJJqhlaOS/jB
+         /XF1vIU2fGCeuwwZuZEZ3nhBzxo9rPgmYBMvMPSU8doRGxPNAMa3oc2MDPfp3ACdgf8G
+         s4sd/bG20aXIWNwhc184Avk5SDVLNDbn82DSK0fco6IV2C4dCBJrjEnMD3FLFlGh+78I
+         Z1hIpbfd7i9Y0JZYktppXtqrW6ODrIsD3OqMWxVSAPYm/58mflcGzAJUypCscEjWn7Iy
+         p5gAzW8FSJRJAvUYdkfTGIfz5vZYo6FZQddhsBTtthfPugaqITOwcIGHqT5/NAwB1Ruh
+         RAcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768505009; x=1769109809;
+        d=1e100.net; s=20230601; t=1768505203; x=1769110003;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1HpNW/ml4xLa7Q+ZYoOd6NCigBelaQL2RtJ0aaDh9mI=;
-        b=LbjAQN63l714NqMAWHNcYpDQsT5+vWOuJ9VgWaCE+aQbmI+CxhbLhf0lnr9agvSV+0
-         i5wM/o03eFA2Q0m6gwLYoFCUzCMhkxpPz4iJn+L67arueRbM7vrDqiqr97gI4BKMOktZ
-         BZNazxh59NwUfmXiSpuwwJ6HGgWh8yvaJIKQi9rIByh0ArTruBOrugWQynq6CuO4w0WI
-         jmquS/a5jX0LhQDlKTeenWXe5HGIsLLLgX9clxzVOX4Ltlh2ZKoXMDJkqa38VZD8TxJl
-         YHC/PiZJWYEN8KRCtHgejzawKxrMZGRlQ4KEtj5OIzmr06obi+ob2w0BGAHmZdnz0Q3W
-         T7bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWY3jhfQuQ7eBNa582jOtf7SxRUC20cKtbsEgmSQtvip11CZSILQQUKkxV+HM6WQx0YJ1BH@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqdWGHLu7qWJfQFz2xiekEgI507xvIK+efy108938qgkGzuxuu
-	gydyN9LOpwZwFQ9XDv/82DaipZ5jvVrtyt5bwK2bG+FFeVzFMAtT+7a2YFIc6ZaKF6tFaqNIdJ8
-	HuJPsvOVauSL3JJOnwmjzHsFgvM0EeDs=
-X-Gm-Gg: AY/fxX6Zeiwpbxx1EtPpoxC5c1GUmjXMuYsd0EXhu8/gqvVHgRCc3iet0hEuVl9QenK
-	LVl0Ir0eBYvXaUQ1H87WgNW6RwoVC3Zw2aiVqvqVWGQygW5fHv8koQn8Dn5MfLoKOFdEwOV1DcN
-	dOWZhI5K++9dGp6wVtBZGKnuiWknW/S6XL0pUhZ/kPcLFqi2OTVPkHeA/JPoJ5XKSYE14xo5VMO
-	BmwbSZ/drw0zhzn4fJHG+qfn6ZssqrEouqMZNPfsSo4Mg1MYwY2GL+ix6vQR4rD3d1rHB++MUZm
-	oIXuAr6QA9/q6zmOvhQqN5NKHXEGWA==
-X-Received: by 2002:a17:907:3e97:b0:b73:7c3e:e17c with SMTP id
- a640c23a62f3a-b879327e30bmr63085666b.44.1768505008810; Thu, 15 Jan 2026
- 11:23:28 -0800 (PST)
+        bh=aDUsn+SB7H7nYSne5YCtxozzRNZ3DAEsXPNjynL2NCs=;
+        b=SyWE77jwBLgNrY3cdq6Kn8jMHnRjGJtW6kQxXlAnla410lQDEkfODQT5fghPE5S0B/
+         TMd7O4xjcNGDshI4BTjyeSN5HVdh+oz3VufMX6W6Hr0gH83y08pr6+ypG1cugBGa572+
+         sBHTwuR8sZZZPVsQvxetPlx+y9VKdSIouEzbGASXJYjeo0nZg4tr1LdJM3TD4+fxe1Uk
+         /7zH0vKW76KESEnwwKlH/PzSw90wvnV/euGFoOw8DseZ7MX9weI2JQ8HAS07cTKkCvIg
+         u5MrR+9JubJI2it3a+QlmgScVKcYrk5cEO11g09eggh0tP/DIaRPqB2M0K9PC6Yn7I44
+         06UQ==
+X-Forwarded-Encrypted: i=1; AJvYcCURiKyCcvtrff0Keu8m4M6JrfAETJjOerZakpIcENaa0Sd+t8PWbyG4J0LqEs4IX81ky3nd@lists.linux.dev
+X-Gm-Message-State: AOJu0YwZZJjxssn/6vDB1U7SX0W/FKet9bch/06lU4MiPuI+5c+EPVm0
+	vpkCy1GzAzW7Gp2czSgHnRA9XLkdMlxF13HTq4SH4k+MQrk+n3CuRgeAR3/HVycxUaVIteALA1S
+	AudNtRMN0YRKNu28zof1J+TCLQ15UcTA=
+X-Gm-Gg: AY/fxX65FVjEjjTJu027TyEa//6p8mVz1lM8REO5mVWvrMwRrxhVIe3eLhhGJUqPdIx
+	Y+ULFg7KpVdlcLR8wDeh4hDbnV0uscSIqLZXWPNmHQSUHPb/DgUxkdH2RvUWcmzpdKENmAf5dZL
+	MtOk3mgPZ/Jd8F7GJraoGUFtj43AocPPrO4fIzVtDN2ZtCvI+pZWDi13pMTq0OsyYt1J8VFneiG
+	oL3hltFsps4YsImGxM6Dp41IXgd7fMzAjxf870SM1MuyemsCGfaXUZ918G3RGy+djBlXY8W9SWP
+	FBaTdCOILwWZYINZYcER7W1OFhe7aA==
+X-Received: by 2002:a05:6402:4402:b0:64b:4540:6edb with SMTP id
+ 4fb4d7f45d1cf-65452ad0f58mr442903a12.22.1768505202965; Thu, 15 Jan 2026
+ 11:26:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org> <20260115-exportfs-nfsd-v1-29-8e80160e3c0c@kernel.org>
-In-Reply-To: <20260115-exportfs-nfsd-v1-29-8e80160e3c0c@kernel.org>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org> <20260115-exportfs-nfsd-v1-15-8e80160e3c0c@kernel.org>
+In-Reply-To: <20260115-exportfs-nfsd-v1-15-8e80160e3c0c@kernel.org>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 15 Jan 2026 20:23:17 +0100
-X-Gm-Features: AZwV_Qj21qC7f0_83CWGwxMbCuhLisWPoHuSIOsZGqfnrVByhBJVGvUqJqXdQ-8
-Message-ID: <CAOQ4uxg304=s1Uoeayy3rm1e154Nf7ScOgseJHThw4uQjKwk0A@mail.gmail.com>
-Subject: Re: [PATCH 29/29] nfsd: only allow filesystems that set EXPORT_OP_STABLE_HANDLES
+Date: Thu, 15 Jan 2026 20:26:31 +0100
+X-Gm-Features: AZwV_QgHlhd5AJtx9A_oESS7w6U6eCWyUuqrhH3MyU474xj2Kq62KuhGZ4o-aoc
+Message-ID: <CAOQ4uxiTE+8r+F-e91cg9wZY-fjZfSHHOeLk3RWb+2JQQZvbvA@mail.gmail.com>
+Subject: Re: [PATCH 15/29] smb/client: add EXPORT_OP_STABLE_HANDLES flag to
+ export operations
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
@@ -104,42 +105,31 @@ Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 6:51=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
+On Thu, Jan 15, 2026 at 6:49=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
 ote:
 >
-> Some filesystems have grown export operations in order to provide
-> filehandles for local usage. Some of these filesystems are unsuitable
-> for use with nfsd, since their filehandles are not persistent across
-> reboots.
->
-> In __fh_verify, check whether EXPORT_OP_STABLE_HANDLES is set
-> and return nfserr_stale if it isn't.
+> Add the EXPORT_OP_STABLE_HANDLES flag to cifs export operations to indica=
+te
+> that this filesystem can be exported via NFS.
 >
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
->  fs/nfsd/nfsfh.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  fs/smb/client/export.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-> index ed85dd43da18e6d4c4667ff14dc035f2eacff1d6..da9d5fb2e6613c2707195da2e=
-8678b3fcb3d444d 100644
-> --- a/fs/nfsd/nfsfh.c
-> +++ b/fs/nfsd/nfsfh.c
-> @@ -334,6 +334,10 @@ __fh_verify(struct svc_rqst *rqstp,
->         dentry =3D fhp->fh_dentry;
->         exp =3D fhp->fh_export;
->
-> +       error =3D nfserr_stale;
-> +       if (!(dentry->d_sb->s_export_op->flags & EXPORT_OP_STABLE_HANDLES=
-))
-> +               goto out;
-> +
->         trace_nfsd_fh_verify(rqstp, fhp, type, access);
->
+> diff --git a/fs/smb/client/export.c b/fs/smb/client/export.c
+> index d606e8cbcb7db2b4026675bd9cbc264834687807..c1c23e21bfe610f1b5bf8d0ee=
+a64ab49e2c6ee3a 100644
+> --- a/fs/smb/client/export.c
+> +++ b/fs/smb/client/export.c
+> @@ -47,6 +47,7 @@ const struct export_operations cifs_export_ops =3D {
+>   * Following export operations are mandatory for NFS export support:
+>   *     .fh_to_dentry =3D
+>   */
+> +       .flags =3D EXPORT_OP_STABLE_HANDLES,
 
-IDGI. Don't you want  to deny the export of those fs in check_export()?
-By the same logic that check_export() checks for can_decode_fh()
-not for can_encode_fh().
+Kind of odd to have this here after the comment out of NFS export.
+Maybe add it inside the comment...
 
 Thanks,
 Amir.
