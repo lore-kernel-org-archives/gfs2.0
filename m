@@ -1,95 +1,116 @@
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55E721D5AF
-	for <gfs2@lists.linux.dev>; Mon, 19 Jan 2026 08:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846A83451CE
+	for <gfs2@lists.linux.dev>; Mon, 19 Jan 2026 08:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768810707; cv=none; b=Y5WovsdmD6zvbKWGdUlMIPOq8pb26DaTGJDyKm0s0T/qt8iRZFCSoGbiYINLX9Gy+xpU8F6ukSgShnEil4LMk0bi2Y3cive3KesP7cj0NWWoe1R+duE95enGmDO0BUv1/+KnACo1T0uenF7woh3yd0MUet2ceJ0ZLctYjTKRK/k=
+	t=1768812024; cv=none; b=ovD122gqc6c1SKDIIpj98ORrtpKRwWEWo+xeWrvkmNtEH6TTCVAeCuJaHuIcN+lQewPn13iciLYayjxxAeT60F4/UHevvjTNJ9ME6kz1ZcmLqdn7xlv3EKRkLncUAGz70oN67tOnqpPTkrkUF/9yVoZYVzy7rjzOr/GrS15q7as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768810707; c=relaxed/simple;
-	bh=8WqwcVIyAuNzFKiAv3P7uQClLYTUpWumN6zkpaa4phI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=n3L4k07MQaKh/XvZCvaE7TEmI0mLggrRETZhTZyGTo0Bj9nwL9d3q2oqBOamrgVmGvWkGhMDUPBHsPadOJruMoy7ZKpGMezkt5aCMtS72lZ+rzDG3iROyos+V8SAEuxviMGEwfjsqedQd//EbZ052lvH4/EfUWkUSPawPg6ypK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-66110333b04so6501389eaf.0
-        for <gfs2@lists.linux.dev>; Mon, 19 Jan 2026 00:18:25 -0800 (PST)
+	s=arc-20240116; t=1768812024; c=relaxed/simple;
+	bh=KJoYOa5K18nqNKCWxkYAOdRPH4EyPY3p5tSvazTt+nc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MBjjIy07xmQhFdLshjLY+CKjxsP8VarxTUj7RB9yo9NUKNETd6U6W6LojEgNuZxr/BtbRLHcQS/sNOs2DBoLcTCSAbMBr5fgxh1/GvN4lPdDdXQW1nmdH2RVxuCjzuY/+Y16qF1lCRxBZ8IrmsP0brzm8KSHkFGL5V5AIkoIxkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0yu9BhV; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0yu9BhV"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-382fd6cbae1so34474651fa.3
+        for <gfs2@lists.linux.dev>; Mon, 19 Jan 2026 00:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768812015; x=1769416815; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KJoYOa5K18nqNKCWxkYAOdRPH4EyPY3p5tSvazTt+nc=;
+        b=T0yu9BhV7cJYV5ZMBOxOYcKJP8eYui4sRtsWwxdL4fbSxIXOxesWMGO+YmyHjxkN8r
+         hfLKgOTNMtvhyzx9fC/Nm1/hS26Zzmsm4y2udYPTVwS6AUxPg7IRttO+kvxCvUpGDjUd
+         I1lpW3uOiN3SQLT3nkffDlg+78Ir/l6Ck1VcPBJ4oAgHN3KxTUTkIZ7QrjT8YN3HA/4t
+         JnNhdGVoWyYMrLRAjNidDzVXkV8gsyb1Ldus2LL71hDQ/KfqwjIWlbErzdl6+4s2kklw
+         KkCSIqkeAxPj9H3dtT2MKOJZGP2BWy5/RpH51X03IrCb9Pe6Y01m8ytzMbm2DLVvjlR8
+         ABKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768810705; x=1769415505;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GBOZJz6DuEs4qqOayzhjyXuSgbeFyRvGebOc0kNb5Ug=;
-        b=rkvM+/XUt1a6qu1Vf6Rwb98ywBb/MioqyPlZaGKLx9Cj4XouQ2joSf1DPSiOlr9X0B
-         SlwUzfDOSLu3dOKs2lEfjS8gAUoaN+23rVthBGWq7dl/tnNza2rjHFjTEqGTxV+XeyYj
-         IWS0DoSlxYdG+lG+KY1XIA5DwMzjCXH1p4Bg3c6JFODeMrzDM5JyhMCgP8WReSLHQzqP
-         Ft5S7fzHTZCuGC3NlBjQ3WIVM3YB2vdahN9jAgp9tvcrKEpKsyD5LR1JXxAjB0TV6Tld
-         doCFZMOtsHN3kTunqFYo4ULGG0+OiVWS46/FFWHQOHHm8pZkdwfimakrgZZ09mkgMku+
-         7Fcg==
-X-Gm-Message-State: AOJu0YwdvFoSHzH4ox53rd/58UaJ+LQNR/B6Tx+eeVmWUJcs2FJGfm8w
-	VTakQr3wxyX/+GPIYWoqEShOOE9gAqjStJfKZiusb1UbXBZUKkkdbvZuik76IQFt26yCSediQnG
-	EYPNRYVEHED4BLGxkY8eCVjVQvNsosyWpvYSPT+phCrZeJpqQ8jFVmaqQ0o4=
+        d=1e100.net; s=20230601; t=1768812015; x=1769416815;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KJoYOa5K18nqNKCWxkYAOdRPH4EyPY3p5tSvazTt+nc=;
+        b=gGBK6FfCNzd5F4yfDnY6nNKRE8oXXaUpRljkyMIFWn94vRIvQ8jopXga0E4ZCYOKOz
+         a3tOlptVGfVEWEr/nLEyxnCld1yoDcrLIe4Lgn5KTUqvC/QvdhDqWlAeHlWOU+WPUjx4
+         AmtzQCSTnFf0k3wjcANszfbxTaZ0RmHCzg+RgPdagQEgCFLYyqt39TTyfS9wqpmH2fwQ
+         OyU7hsfllOZ4kn0xOgEzQ5pdQNJW835WDgsKNMi/SvGAYQekfIa0ce9iImm11xxVE4ai
+         NOQZURUa7vf92XxEvbVGYXpRs62UdSySC1l7oTD4bAwh4Xsvuu99JUKtOrdyBtMVNSwO
+         P4CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/65h/EJXGX65Js46zVhPoAYv7P+wqCQnCIgZNU5Bdmk31rgp12w9KE5KgLl4Nm/qu67LA@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+orLAa+ppv/y407cJQF1SjX0yLxtjCHd2R+tiKi8MYkIX858w
+	3EiBUeeu5+YpuEXOZsTi4JV+XFgy5HxmB89a04xAdhXUUGSDvjHrq5UsKGA5m/IY99PflHUUP5n
+	twVoADvM1IvbyJ49xdb80psDANRUS944=
+X-Gm-Gg: AY/fxX650F/xh5RRtmubatjdlzB4iqb0tM7NC8IOOp075cGBxYPvsIM2jfQlEknhIxq
+	q1K163XVdztc+MOrca2p4mqGMvNyLUnlQ4UZ2ZW5HbOimowWfsAKCPTQZfnb2ADzyUvSjsxr/Pc
+	4voXFUOWANdbj6bwi+Kd5vJAe8hYCZ2sY8dG4GxIcTG13oc59UISZPZ1HKcCgLFz5/y5POB4UAI
+	sghRmpUKhE5ubeDedAiBsRW6qhRf/efPMwqDR5xuZjZvEor3i1qxBs0l/P0/bsJOvRa2v0W
+X-Received: by 2002:a05:651c:31d3:b0:37b:9ab6:a071 with SMTP id
+ 38308e7fff4ca-383842a1f56mr38777111fa.28.1768812014411; Mon, 19 Jan 2026
+ 00:40:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4a0c:b0:65c:f583:d3d6 with SMTP id
- 006d021491bc7-661189b6bbdmr3607701eaf.70.1768810704980; Mon, 19 Jan 2026
- 00:18:24 -0800 (PST)
-Date: Mon, 19 Jan 2026 00:18:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696de8d0.050a0220.3390f1.003d.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Jan 2026)
-From: syzbot <syzbot+listd7413ccb1a116ef396da@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org> <20260115-exportfs-nfsd-v1-20-8e80160e3c0c@kernel.org>
+In-Reply-To: <20260115-exportfs-nfsd-v1-20-8e80160e3c0c@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Mon, 19 Jan 2026 17:39:57 +0900
+X-Gm-Features: AZwV_QgvoiJk-4c_7XszNQLNhAbjR94vrEkk8toY4eDKXl6u9TqMllUY3n06aqo
+Message-ID: <CAKFNMomS-8MMAjy8yuFwzuLBuQQA8r7gPJeJh1ci6RvVc9u4EA@mail.gmail.com>
+Subject: Re: [PATCH 20/29] nilfs2: add EXPORT_OP_STABLE_HANDLES flag to export operations
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
+	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-ext4@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org, 
+	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
+	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, 
+	linux-f2fs-devel@lists.sourceforge.net
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello gfs2 maintainers/developers,
+On Fri, Jan 16, 2026 at 2:50=E2=80=AFAM Jeff Layton wrote:
+>
+> Add the EXPORT_OP_STABLE_HANDLES flag to nilfs2 export operations to indi=
+cate
+> that this filesystem can be exported via NFS.
+>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 41 issues are still open and 41 have already been fixed.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  1439    Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<2>  1437    Yes   INFO: task hung in __gfs2_lookup
-                   https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<3>  831     Yes   kernel BUG in gfs2_jindex_free (2)
-                   https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
-<4>  603     Yes   WARNING in vfs_setxattr (3)
-                   https://syzkaller.appspot.com/bug?extid=5ce48a14916462cec450
-<5>  502     Yes   kernel BUG in __gfs2_glock_put (2)
-                   https://syzkaller.appspot.com/bug?extid=ef4ad020dc976d178975
-<6>  402     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<7>  233     Yes   WARNING in do_mknodat (3)
-                   https://syzkaller.appspot.com/bug?extid=0cee785b798102696a4b
-<8>  191     Yes   WARNING in chown_common
-                   https://syzkaller.appspot.com/bug?extid=04c2672c56fbb9401640
-<9>  156     Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
-                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
-<10> 110     Yes   KASAN: slab-use-after-free Write in gfs2_qd_dealloc (3)
-                   https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+Thanks,
+Ryusuke Konishi
