@@ -1,95 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632CF3F0767;
-	Tue, 20 Jan 2026 10:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8535426D3B
+	for <gfs2@lists.linux.dev>; Tue, 20 Jan 2026 12:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768905271; cv=none; b=txrIbon5uBjfXD1k3rp+C8FMswsf75Nj/iaybjhdbzSwuac15QF+RnZTjspIQKjt2WOT4hR15JkECOyyJDVeIWDvSJ1VuQ5v67GJFmi7TGxuQQkD8gJ0+Sr+JTYzo3yuhH42b7dCMNSWHl0RIXgr7tshTjcVOnJ1rYRIpSDz0lA=
+	t=1768912437; cv=none; b=YKbnzzSgnULM90y3KLezgLhmuqFpcsDqNxUI/+BQ9P+rIbQdF2gX3BWbGDzUGPauTIg6PCsJ8aywZGHPhyEb/frkDY22C+jbUqOeDCcRUvUofadecujApiEtk7uxmuLulo0w0t5JIBXY5c9NKcJEZGggzqhBFgh1PBbP3mecA7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768905271; c=relaxed/simple;
-	bh=ofM75JqEotc0v7XRCKkNO2AMeaUn3xH4tlqNjm8W0YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VKNv7NH0u39ycOWk5ybv9OhrJp+Yt9gbap2XDSVL+H8FawgWfLAd8J0kJ48gKH2SxVg9gHbJAbROTtOY0cicQEg16fGCEhc4isoDTI0MU1IZmDM8c2ntQ9+MD3cQBzRiKPTGXtTuMfKmHjG6+9gL9wbvhcLtFkWlM7FwlFHSpNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkYiavwj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768912437; c=relaxed/simple;
+	bh=vPU2V50o5jpPnvrbKJzOO+bcSFJqLPqe32WzSG2rqCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p6ftUoBCuZUm4b+BG2Rqn4WVzOpTFBuvaZHgGrd66J7ZzQ8zi244vu7vi90joQ2KFuzM+acYAr0lS+a1XJr3MdPESRqyIv1RWQ8epkKOaEoMfy8ByRYi2SugJ0PgMXwHUo5uf7O+X26kztGUwA4HIX7kt/bG5lAq4kSJ2LpOcGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NzTJL6kR; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkYiavwj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04B6C16AAE;
-	Tue, 20 Jan 2026 10:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768905271;
-	bh=ofM75JqEotc0v7XRCKkNO2AMeaUn3xH4tlqNjm8W0YQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dkYiavwjArBw+8JM3Doyt4vFEjXCjTBOooZATw7ybtJyDWfHOsWo6vfR+lTcrWca0
-	 84g12kcedULlbCjwN3OhgKihsyS+8LP34glFKHjjboChPwnx87Mgd4ye5oYrptvwcU
-	 IR130p8sJwGfsM12J432DDMgzJBXrhBvvtKpy/9JDcG+rvOkHRKRbslb+hAqYozEy4
-	 8HXCy/UDUBGKe0SB1WSHTXCGpraNDHfp54t2En1JQCop3QwMKo4TzMN4znHIRfj92N
-	 0amrFzP0cYXKJTlNdj7dkkgVOhyK03N9xYYfKakG8ehUjpIPXdBq3+jcGxXnzZWvCP
-	 JUo4/sRFClXEw==
-Date: Tue, 20 Jan 2026 11:34:13 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Christoph Hellwig <hch@infradead.org>, 
-	Jeff Layton <jlayton@kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Luis de Bethencourt <luisbg@kernel.org>, 
-	Salah Triki <salah.triki@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-ext4@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <20260120-bindung-eselsfell-fadec0d95909@brauner>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
- <176877859306.16766.15009835437490907207@noble.neil.brown.name>
- <aW3SAKIr_QsnEE5Q@infradead.org>
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>
- <20260119-kanufahren-meerjungfrau-775048806544@brauner>
- <176885553525.16766.291581709413217562@noble.neil.brown.name>
- <aW8w2SRyFnmA2uqk@infradead.org>
- <176890126683.16766.5241619788613840985@noble.neil.brown.name>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzTJL6kR"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b6fd5bec41so1167697eec.1
+        for <gfs2@lists.linux.dev>; Tue, 20 Jan 2026 04:33:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768912435; x=1769517235; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
+        b=NzTJL6kR0KHVUMbZPEu8OA0nqUXC1fLsu3HfnMGb4jsYHoGzAkBEZg3FtndXWw/6jd
+         XICwpcH4MsZ23bcPtMlORygFGoeX1spc4YZvaw83eIVD1s7/HG76gV0pb1//Mkk9jbr/
+         vx3Lf6XMeLnrXwugDSuA28YBJfMTqrh4fQXSrU9kXl8WUQrK0pxLMcEY5T+usM47G78+
+         SUTi2EX1YlnaShqlu/Ukktbyj8xRYqzVYp6AZ5aDlSbdkZtqr9C78L132OdB/0ntHv5N
+         YisYnQedHaQEtxfcvwv3PMuvhLVoO08j5Xn287jLrJlhGfq9HYzuRvzK6nhovMrduYsp
+         YHvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768912435; x=1769517235;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
+        b=NOQGmBNMAOIprtxxgkDrSOh1V+Mp++g6EI7U9qDYlAggDo1ghUY4u1+LE3o78uJumc
+         qiAXtjWlk+qM/dVb0bX/2GemOzvvp7QdTyXKQ/8Ig+sIdH6OK0j78YghwNj+qiieW/xf
+         emtq/vxHMJTZTHCpOAS1CxsooJ5dWeSySwTy4l4X06InG2yoUk+nSRlp+kHnauCXvXPe
+         /+AhLRWicgbjex9uQguzQdCmcFDjrSgvpR8t200PqPvfV71tHper3phSL0P5LWihY2zt
+         yU22UWwG+HNT6RThCrp+P8PCA7yTXoqoCEDgnOtFLaz64jsWrSqJeSRofJRKRjNk+kTv
+         1Jtg==
+X-Gm-Message-State: AOJu0YzYR5TdLdoQzKDwLxq/AG1mYI386y7jKBrdg16Bu2h2is8P3xig
+	j04UweICrWzqAprC7VZ9e2l4NBJfKn1/YC595cuJRHn7OvQgTbbDfpWd
+X-Gm-Gg: AZuq6aIoAHGCQ/ZudpcfMjEamVhpY9qFIA7seAX6lVbr3Psc6bThdNsTHUFdvjI+O+g
+	p993v8ru/xfOcXVOORIQdDjtBYz/h8rYWFHsWjPSLNlJ+DoB8nGtbsIuHsZQXZ+gzpNuo8ADaTN
+	UIdqE3ChnnfuZNhieDrFgisCxvRdthiP2RtHPNWnT5UHEllpg183nfPsMqx3BYCn9SKqTJ3ZnBH
+	p+6IxtmjhaJnF4LbS/3L+K0rs9oYfljJVuqP4KJzKD6Y3HKrsYlTCwyUkizP9KaCw5q57pUSOkh
+	9plc95+0FG15Am7ezaw1ZmGkrY7pMgc2KnFigEfj0lMDIBIwZywl+LJkPc6mddRGT28YBxAWNgm
+	L39oYDkiwS1keloeXKVmisFDTmZLXhER2TB2GnHIS9qCgmP3J9NpNZdX9GZ2kPMoGWxFexvFJ6F
+	blo26/J/anHJo=
+X-Received: by 2002:a05:7301:678e:b0:2a4:3593:968d with SMTP id 5a478bee46e88-2b6b3f2ee49mr7293985eec.10.1768912434418;
+        Tue, 20 Jan 2026 04:33:54 -0800 (PST)
+Received: from fedora ([187.120.157.239])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b34c11dasm18676778eec.2.2026.01.20.04.33.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 04:33:53 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Subject: [RESEND PATCH] gfs2: do not evict glocks with populated address spaces
+Date: Tue, 20 Jan 2026 09:33:39 -0300
+Message-ID: <20260120123339.70724-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176890126683.16766.5241619788613840985@noble.neil.brown.name>
+Content-Transfer-Encoding: 8bit
 
-> It took me a while to sift through the code/patches/comments and come to
-> this understanding and I apologise if I wasn't as clear earlier.  But
-> my intuition was always that file handle stability was never the real
-> issue, and maintainer choice was.  Hence my rejection of the
+Metadata glocks may have associated address spaces used as caches. Avoid
+reclaiming such glocks under memory pressure while their mappings are
+still populated or their state is not unlocked, as this can lead to
+invalid page cache state and GLOCK_BUG_ON().
 
-I very much agree with that assessment. Yet we so far have failed to
-even agree that this is an acceptable position. Hence my irritation.
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ fs/gfs2/glock.h | 30 ++++++++++++++++++++++++++++++
+ fs/gfs2/super.c |  3 +++
+ 2 files changed, 33 insertions(+)
 
-And apologies on my part if I'm curt. I'm simply annoyed by the very
-lengthy and to me somewhat pointless debate here at times.
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index 55d5985f32a0..12f57461f687 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -305,4 +305,34 @@ static inline bool glock_needs_demote(struct gfs2_glock *gl)
+ 		test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags));
+ }
+ 
++/*
++ * gfs2_glock_not_evictable - check if a glock is not evictable
++ * @gl:	The glock to check
++ *
++ * Glocks which do not represent normal filesystem inodes (e.g. statfs, quota, rindex)
++ * may have associated address spaces used as metadata caches. These glocks must not
++ * be reclaimed under memory pressure while their mappings are still populated or their
++ * state is not unlocked.
++ */
++
++static inline bool gfs2_glock_not_evictable(struct gfs2_glock *gl)
++{
++	if (gl->gl_name.ln_type == LM_TYPE_INODE)
++		return false;
++
++	if (gl->gl_ops->go_flags & GLOF_ASPACE) {
++		struct gfs2_glock_aspace *gla;
++
++		gla = container_of(gl, struct gfs2_glock_aspace, glock);
++
++		if (!mapping_empty(&gla->mapping))
++			return true;
++	}
++
++	if (gl->gl_state != LM_ST_UNLOCKED)
++		return true;
++
++	return false;
++}
++
+ #endif /* __GLOCK_DOT_H__ */
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index f6cd907b3ec6..86544cdafe53 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1164,6 +1164,9 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
+ 
+ static void gfs2_glock_put_eventually(struct gfs2_glock *gl)
+ {
++	if (gfs2_glock_not_evictable(gl))
++		return;
++
+ 	if (current->flags & PF_MEMALLOC)
+ 		gfs2_glock_put_async(gl);
+ 	else
+-- 
+2.34.1
+
