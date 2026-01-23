@@ -1,53 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F8219C553
-	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D6E22F75E
+	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769182281; cv=none; b=Zll332DYsM+B2E2GfN77uqA/DfU8R0MzF946IIYCABbUP2ybRmizhJZyLSAx23WJgHYIjFIcYmqpCUCR6ubFEm043ceDh7KzwKDhVeG4mWp0qWteL73uX4bjPYGwuzPtVuP0WRZD9sn21jw6ye0jKLgo5mwVRvugtAiA7gNtSZs=
+	t=1769182281; cv=none; b=ftrLxl443+2rm0n1dYwZD4ikGCACLuf09lyx65koln+/t5++xxpFtmzJ35upWiwsImpZOOmMy/VDPvOrgX955tSKXBnGNMwU0hnSIxfW/ii2JXT2436behnL66UDeEOh0c8qkmyl6wjC+G45/+71D1TwunnC5A52iKzwHKYQ+Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769182281; c=relaxed/simple;
-	bh=Qfseu9kA7i1NupyCpbD/vwawJSbjEOxONurOC5suXtA=;
+	bh=w2JiCUhmvRT8ZQZxwuaTFt0UtjH6jhCGJVP322DS2Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=ognPLS2csJJH1oaIJzam4SLHgxk/vIWuPnj4fgSd95vAxoaYP3nTQ2jNqiI7hrCGBAMiq6j+M1eJG+wvAEOtzrg5cO7sdc5vA/vg8vCeQHZtLHRpNRpy/9xT9VH5BRddJEDMg4z8f15HHMSxCHu+9YW0b2lmSMNJp5Riw3AMO9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YTeCinbq; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=WtgtGCGLu14vpaoCvpV4Vfwa8Q8a/K0CG4Vultf2hX6We50Mz95nxSpeGlba1lQiT4Moz4v2HNeyqTAxIxkkBxOVYZsVxIFsNK8JqrUlmrhNz0sgu4HWim4VYmUJxlz4xJSjTYP7bZFcjobQyY9skeE/rqZWXce/C4BsuTxwwlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V5ws3wEQ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YTeCinbq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V5ws3wEQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1769182279;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DNzto65/7huM3ydvebqfxF7J1JZ5kdaPqxrXxZPOa88=;
-	b=YTeCinbqV/z0KXmJrxkwuAExbNlQpLQe0MCjJfP//OmhIsxHrTYGr7n+/IEdz80E+wfFnU
-	gxwqQuB0FT2jG6WNRROI+kUtnobygU625I0/xvlpc9REU2MM8rje5m4y3EHd0HkYXeibJo
-	TzbittUt/fVQPhPc0/P1/e0sRk9Ptzg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=MymNL/nYeDWvomO79oTb7U4puYKN2dbfH+nTeBxlP5Q=;
+	b=V5ws3wEQGCLLvCHxjtQY3p+PXIySd3FboJY1LgHzGkWFz8Bz3iHP+qtzJ4kczoAqs2I28B
+	YVLcHxZ8KsKOXUsIkdXBCwYifbuh2ROkEFnjGJ3QXo6uSluYIQNcpLVJRAIIHdgzWY+0o5
+	pzmNUl3rfuTsm6zVshOC1h8qFsQ6jGk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-231-cbs8WTDzPEiEvreFF5izOA-1; Fri,
- 23 Jan 2026 10:31:17 -0500
-X-MC-Unique: cbs8WTDzPEiEvreFF5izOA-1
-X-Mimecast-MFC-AGG-ID: cbs8WTDzPEiEvreFF5izOA_1769182276
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-8LOpjD06NHmEqrGi9fP1uA-1; Fri,
+ 23 Jan 2026 10:31:16 -0500
+X-MC-Unique: 8LOpjD06NHmEqrGi9fP1uA-1
+X-Mimecast-MFC-AGG-ID: 8LOpjD06NHmEqrGi9fP1uA_1769182275
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B15DC193E8C3
-	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:16 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.52])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BC62430002D1;
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 512861955D9F;
 	Fri, 23 Jan 2026 15:31:15 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.52])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A5C830002D1;
+	Fri, 23 Jan 2026 15:31:13 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 06/13] gfs2: Rename gfs2_log_submit_{bio -> write}
-Date: Fri, 23 Jan 2026 16:30:56 +0100
-Message-ID: <20260123153105.797382-7-agruenba@redhat.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 05/13] Revert "gfs2: Fix use of bio_chain"
+Date: Fri, 23 Jan 2026 16:30:55 +0100
+Message-ID: <20260123153105.797382-6-agruenba@redhat.com>
 In-Reply-To: <20260123153105.797382-1-agruenba@redhat.com>
 References: <20260123153105.797382-1-agruenba@redhat.com>
 Precedence: bulk
@@ -56,89 +57,37 @@ List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nLGewC0koM5ndKE7JaCbeWll07FQmwnO4dzh887GMRg_1769182276
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Rename gfs2_log_submit_bio() to gfs2_log_submit_write(): this function
-isn't used for submitting log reads.
+This reverts commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941.
 
+That commit incorrectly assumed that the bio_chain() arguments were
+swapped in gfs2.  However, gfs2 intentionally constructs bio chains so
+that the first bio's bi_end_io callback is invoked when all bios in the
+chain have completed, unlike bio chains where the last bio's callback is
+invoked.
+
+Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
+Cc: stable@vger.kernel.org
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/log.c  | 4 ++--
- fs/gfs2/lops.c | 6 +++---
- fs/gfs2/lops.h | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ fs/gfs2/lops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 8312cd2cdae4..2a3b9d10eba7 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -889,7 +889,7 @@ void gfs2_write_log_header(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
- 	lh->lh_crc = cpu_to_be32(crc);
- 
- 	gfs2_log_write(sdp, jd, page, sb->s_blocksize, 0, dblock);
--	gfs2_log_submit_bio(&jd->jd_log_bio, REQ_OP_WRITE | op_flags);
-+	gfs2_log_submit_write(&jd->jd_log_bio, REQ_OP_WRITE | op_flags);
- }
- 
- /**
-@@ -1096,7 +1096,7 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
- 	if (sdp->sd_jdesc)
--		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
-+		gfs2_log_submit_write(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
- 
 diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index d27a0b1080a9..aa9e9fe25c2f 100644
+index 97ebe457c00a..d27a0b1080a9 100644
 --- a/fs/gfs2/lops.c
 +++ b/fs/gfs2/lops.c
-@@ -229,7 +229,7 @@ static void gfs2_end_log_write(struct bio *bio)
+@@ -484,7 +484,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
+ 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
+ 	bio_clone_blkg_association(new, prev);
+ 	new->bi_iter.bi_sector = bio_end_sector(prev);
+-	bio_chain(prev, new);
++	bio_chain(new, prev);
+ 	submit_bio(prev);
+ 	return new;
  }
- 
- /**
-- * gfs2_log_submit_bio - Submit any pending log bio
-+ * gfs2_log_submit_write - Submit a pending log write bio
-  * @biop: Address of the bio pointer
-  * @opf: REQ_OP | op_flags
-  *
-@@ -237,7 +237,7 @@ static void gfs2_end_log_write(struct bio *bio)
-  * there is no pending bio, then this is a no-op.
-  */
- 
--void gfs2_log_submit_bio(struct bio **biop, blk_opf_t opf)
-+void gfs2_log_submit_write(struct bio **biop, blk_opf_t opf)
- {
- 	struct bio *bio = *biop;
- 	if (bio) {
-@@ -303,7 +303,7 @@ static struct bio *gfs2_log_get_bio(struct gfs2_sbd *sdp, u64 blkno,
- 		nblk >>= sdp->sd_fsb2bb_shift;
- 		if (blkno == nblk && !flush)
- 			return bio;
--		gfs2_log_submit_bio(biop, op);
-+		gfs2_log_submit_write(biop, op);
- 	}
- 
- 	*biop = gfs2_log_alloc_bio(sdp, blkno, end_io);
-diff --git a/fs/gfs2/lops.h b/fs/gfs2/lops.h
-index be740bf33666..010a4696406b 100644
---- a/fs/gfs2/lops.h
-+++ b/fs/gfs2/lops.h
-@@ -17,7 +17,7 @@ u64 gfs2_log_bmap(struct gfs2_jdesc *jd, unsigned int lbn);
- void gfs2_log_write(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
- 		    struct page *page, unsigned size, unsigned offset,
- 		    u64 blkno);
--void gfs2_log_submit_bio(struct bio **biop, blk_opf_t opf);
-+void gfs2_log_submit_write(struct bio **biop, blk_opf_t opf);
- void gfs2_pin(struct gfs2_sbd *sdp, struct buffer_head *bh);
- int gfs2_find_jhead(struct gfs2_jdesc *jd,
- 		    struct gfs2_log_header_host *head);
 -- 
 2.52.0
 
