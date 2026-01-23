@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA5521CA13
-	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D50E19C553
+	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769182275; cv=none; b=dYjdfJ06fNr5MYV94N4jyzuMMB0F5gRtUcpEYuPdIgI5c9B7mT5GilOvyHIXomNjfUCza31oq375Wdr1v9SWltT64fe9bfTVOeQzmBinvXU3Po4NKmM46qyiN2Pgu1qidvq6uY0GFpW7b0Fusskx1d1lmoCALtx6E3d7TEKYb4M=
+	t=1769182276; cv=none; b=iALSlJdr1NstKzgvz6DIU85kRaoiPYuUNLQ+qfSOV33yxQCTsJ9EP6eH6lTbsDzb+71OrfsScAJhhAhmJeGsa/RHVyfdTR+yx2VBpJic5PsNQK0PGHwosGlUcqi6Dezao/TG54kAjSxYU8dZ3j9OSHdfn8aqeUEIQFP2Hiep7Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769182275; c=relaxed/simple;
-	bh=4hvHWPLqhoJ3/Ra5q+XHDkJRjBjgMehD0O5qgS5hCl0=;
+	s=arc-20240116; t=1769182276; c=relaxed/simple;
+	bh=f6hK82yS5mGMGM6uMeRq8kL7MuQmUtgeq4aLodz1lbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=gxm3392h4OtrlMwweq2z035EPZCFR68GbKSCgxmKR5Rat5FpV6sclYlG1xC09YQUM6YTA08GlENh2fqB+IapZRjvqaytSauT9flTMz0Oz7HZs4C9sTSubsGi08+G2+SdDFQk9mUuYs6I+wrTw3v9YNZ/2PxyNXQwPZXyZrhJqlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VywEIfKr; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=AXgDgHGDrOka5PHBrtSdHjj0eeeozGVc02t9bBK8tJ2WM6LsSARypNkcHjawaP3sjiJBmq5J268aow5PlqCTD6aJ8ay2zAKZEqCpKKySWJLszwCuRnvhe3A7KrcsO3zhLw8DHGuPWIkA9V7rqkSlRZnZa9V5xvL+KNcJzcFdzag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bYTDqUPq; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VywEIfKr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bYTDqUPq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769182272;
+	s=mimecast20190719; t=1769182274;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iWZN7fRdClPwhydkQU4S0Zu0YZHePX4kKQzPFyfEwyY=;
-	b=VywEIfKrhp/ultQiZec4jFdO83M8S7uhMBvdwOlOGLGei2LMpuIZJqEzDVGyif2tyqGjMu
-	cTt9i1KbEXtP0/kyybSO3fq9TcDiXKneXixefehAklxVRxzOiBpCoBEyHT1IDyawjVBLpn
-	z+T9Bxx+ueiF/VoWQ94DAJU0SYz6AUE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ieI96Gtuv8srwQyyssWYHpiIm9UIhxIX7uftbRettj8=;
+	b=bYTDqUPqh6mVpcHCQVXpPER55q8IruoYZRJ/WT3x98wUP42HXGU+DZHcibsNp6GR5hW/6l
+	WMxIPAMm0X935mvO5q3W91bIz5MiXREuQ1325OwIyEVa72nfYMKQpTV+W092Dld4w40mtF
+	ZL7ei62uoEEdg2+5xlnc7gCmyFnxZ5o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-xF3SQWBvN22G0GmA_UcQtw-1; Fri,
- 23 Jan 2026 10:31:11 -0500
-X-MC-Unique: xF3SQWBvN22G0GmA_UcQtw-1
-X-Mimecast-MFC-AGG-ID: xF3SQWBvN22G0GmA_UcQtw_1769182270
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-rrVCaL4lORuEFYa-bBWc6A-1; Fri,
+ 23 Jan 2026 10:31:13 -0500
+X-MC-Unique: rrVCaL4lORuEFYa-bBWc6A-1
+X-Mimecast-MFC-AGG-ID: rrVCaL4lORuEFYa-bBWc6A_1769182272
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 975FF193E8D6
-	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:10 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21E4718005B2
+	for <gfs2@lists.linux.dev>; Fri, 23 Jan 2026 15:31:12 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.52])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A2F0F30002D1;
-	Fri, 23 Jan 2026 15:31:09 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0EF2130002DC;
+	Fri, 23 Jan 2026 15:31:10 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 02/13] gfs2: Retries missing in gfs2_{rename,exchange}
-Date: Fri, 23 Jan 2026 16:30:52 +0100
-Message-ID: <20260123153105.797382-3-agruenba@redhat.com>
+Subject: [PATCH 03/13] gfs2: run_queue cleanup
+Date: Fri, 23 Jan 2026 16:30:53 +0100
+Message-ID: <20260123153105.797382-4-agruenba@redhat.com>
 In-Reply-To: <20260123153105.797382-1-agruenba@redhat.com>
 References: <20260123153105.797382-1-agruenba@redhat.com>
 Precedence: bulk
@@ -58,176 +58,85 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qfPqACjgSEcn5ot8Xf1pAMKa9bRaszTgQaDlPVUr9QI_1769182270
+X-Mimecast-MFC-PROC-ID: 9lbHOzJ0_le4Y5fMTItQjuDmihTXfr_Knr0ihMHJxU0_1769182272
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix a bug in gfs2's asynchronous glock handling for rename and exchange
-operations.  The original async implementation from commit ad26967b9afa
-("gfs2: Use async glocks for rename") mentioned that retries were needed
-but never implemented them, causing operations to fail with -ESTALE
-instead of retrying on timeout.
+In run_queue(), instead of always setting the GLF_LOCK flag, only set it
+when the flag is actually needed.  This avoids having to undo the flag
+setting later.
 
-Also makes the waiting interruptible.
-
-In addition, the timeouts used were too high for situations in which
-timing out is a rare but expected scenario.  Switch to shorter timeouts
-with randomization and exponentional backoff.
-
-Fixes: ad26967b9afa ("gfs2: Use async glocks for rename")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/glock.c | 36 +++++++++++++++++++++++++++---------
- fs/gfs2/glock.h |  3 ++-
- fs/gfs2/inode.c | 18 ++++++++++++++----
- 3 files changed, 43 insertions(+), 14 deletions(-)
+ fs/gfs2/glock.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 47e8809575d5..f358448d7b3d 100644
+index f358448d7b3d..776179933315 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -1284,31 +1284,45 @@ static int glocks_pending(unsigned int num_gh, struct gfs2_holder *ghs)
-  * gfs2_glock_async_wait - wait on multiple asynchronous glock acquisitions
-  * @num_gh: the number of holders in the array
-  * @ghs: the glock holder array
-+ * @retries: number of retries attempted so far
-  *
-  * Returns: 0 on success, meaning all glocks have been granted and are held.
-  *          -ESTALE if the request timed out, meaning all glocks were released,
-  *          and the caller should retry the operation.
-  */
+@@ -753,13 +753,10 @@ __acquires(&gl->gl_lockref.lock)
  
--int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
-+int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
-+			  unsigned int retries)
- {
- 	struct gfs2_sbd *sdp = ghs[0].gh_gl->gl_name.ln_sbd;
--	int i, ret = 0, timeout = 0;
- 	unsigned long start_time = jiffies;
-+	int i, ret = 0;
-+	long timeout;
+ 	if (test_bit(GLF_LOCK, &gl->gl_flags))
+ 		return;
+-	set_bit(GLF_LOCK, &gl->gl_flags);
  
- 	might_sleep();
--	/*
--	 * Total up the (minimum hold time * 2) of all glocks and use that to
--	 * determine the max amount of time we should wait.
--	 */
--	for (i = 0; i < num_gh; i++)
--		timeout += ghs[i].gh_gl->gl_hold_time << 1;
+ 	/*
+-	 * The GLF_DEMOTE_IN_PROGRESS flag is only set intermittently during
+-	 * locking operations.  We have just started a locking operation by
+-	 * setting the GLF_LOCK flag, so the GLF_DEMOTE_IN_PROGRESS flag must
+-	 * be cleared.
++	 * The GLF_DEMOTE_IN_PROGRESS flag must only be set when the GLF_LOCK
++	 * flag is set as well.
+ 	 */
+ 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
  
--	if (!wait_event_timeout(sdp->sd_async_glock_wait,
-+	timeout = GL_GLOCK_MIN_HOLD;
-+	if (retries) {
-+		unsigned int max_shift;
-+		long incr;
-+
-+		/* Add a random delay and increase the timeout exponentially. */
-+		max_shift = BITS_PER_LONG - 2 - __fls(GL_GLOCK_HOLD_INCR);
-+		incr = min(GL_GLOCK_HOLD_INCR << min(retries - 1, max_shift),
-+			   10 * HZ - GL_GLOCK_MIN_HOLD);
-+		schedule_timeout_interruptible(get_random_long() % (incr / 3));
-+		if (signal_pending(current))
-+			goto interrupted;
-+		timeout += (incr / 3) + get_random_long() % (incr / 3);
-+	}
-+
-+	if (!wait_event_interruptible_timeout(sdp->sd_async_glock_wait,
- 				!glocks_pending(num_gh, ghs), timeout)) {
- 		ret = -ESTALE; /* request timed out. */
- 		goto out;
- 	}
-+	if (signal_pending(current))
-+		goto interrupted;
- 
- 	for (i = 0; i < num_gh; i++) {
- 		struct gfs2_holder *gh = &ghs[i];
-@@ -1332,6 +1346,10 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs)
+@@ -770,12 +767,13 @@ __acquires(&gl->gl_lockref.lock)
  		}
+ 
+ 		if (find_first_holder(gl))
+-			goto out_unlock;
++			return;
+ 		if (nonblock)
+ 			goto out_sched;
+ 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
+ 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
+ 		gl->gl_target = gl->gl_demote_state;
++		set_bit(GLF_LOCK, &gl->gl_flags);
+ 		do_xmote(gl, NULL, gl->gl_target);
+ 		return;
  	}
- 	return ret;
-+
-+interrupted:
-+	ret = -EINTR;
-+	goto out;
+@@ -783,26 +781,22 @@ __acquires(&gl->gl_lockref.lock)
+ promote:
+ 	do_promote(gl);
+ 	if (find_first_holder(gl))
+-		goto out_unlock;
++		return;
+ 	gh = find_first_waiter(gl);
+ 	if (!gh)
+-		goto out_unlock;
++		return;
+ 	if (nonblock)
+ 		goto out_sched;
+ 	gl->gl_target = gh->gh_state;
+ 	if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
+ 		do_error(gl, 0); /* Fail queued try locks */
++	set_bit(GLF_LOCK, &gl->gl_flags);
+ 	do_xmote(gl, gh, gl->gl_target);
+ 	return;
+ 
+ out_sched:
+-	clear_bit(GLF_LOCK, &gl->gl_flags);
+ 	gl->gl_lockref.count++;
+ 	gfs2_glock_queue_work(gl, 0);
+-	return;
+-
+-out_unlock:
+-	clear_bit(GLF_LOCK, &gl->gl_flags);
  }
  
  /**
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index 55d5985f32a0..dccbf36b8cb1 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -204,7 +204,8 @@ int gfs2_glock_poll(struct gfs2_holder *gh);
- int gfs2_instantiate(struct gfs2_holder *gh);
- int gfs2_glock_holder_ready(struct gfs2_holder *gh);
- int gfs2_glock_wait(struct gfs2_holder *gh);
--int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs);
-+int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
-+			  unsigned int retries);
- void gfs2_glock_dq(struct gfs2_holder *gh);
- void gfs2_glock_dq_wait(struct gfs2_holder *gh);
- void gfs2_glock_dq_uninit(struct gfs2_holder *gh);
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 36618e353199..b6ed069b3487 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1495,7 +1495,7 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
- 	unsigned int num_gh;
- 	int dir_rename = 0;
- 	struct gfs2_diradd da = { .nr_blocks = 0, .save_loc = 0, };
--	unsigned int x;
-+	unsigned int retries = 0, x;
- 	int error;
- 
- 	gfs2_holder_mark_uninitialized(&r_gh);
-@@ -1545,12 +1545,17 @@ static int gfs2_rename(struct inode *odir, struct dentry *odentry,
- 		num_gh++;
- 	}
- 
-+again:
- 	for (x = 0; x < num_gh; x++) {
- 		error = gfs2_glock_nq(ghs + x);
- 		if (error)
- 			goto out_gunlock;
- 	}
--	error = gfs2_glock_async_wait(num_gh, ghs);
-+	error = gfs2_glock_async_wait(num_gh, ghs, retries);
-+	if (error == -ESTALE) {
-+		retries++;
-+		goto again;
-+	}
- 	if (error)
- 		goto out_gunlock;
- 
-@@ -1739,7 +1744,7 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
- 	struct gfs2_sbd *sdp = GFS2_SB(odir);
- 	struct gfs2_holder ghs[4], r_gh;
- 	unsigned int num_gh;
--	unsigned int x;
-+	unsigned int retries = 0, x;
- 	umode_t old_mode = oip->i_inode.i_mode;
- 	umode_t new_mode = nip->i_inode.i_mode;
- 	int error;
-@@ -1783,13 +1788,18 @@ static int gfs2_exchange(struct inode *odir, struct dentry *odentry,
- 	gfs2_holder_init(nip->i_gl, LM_ST_EXCLUSIVE, GL_ASYNC, ghs + num_gh);
- 	num_gh++;
- 
-+again:
- 	for (x = 0; x < num_gh; x++) {
- 		error = gfs2_glock_nq(ghs + x);
- 		if (error)
- 			goto out_gunlock;
- 	}
- 
--	error = gfs2_glock_async_wait(num_gh, ghs);
-+	error = gfs2_glock_async_wait(num_gh, ghs, retries);
-+	if (error == -ESTALE) {
-+		retries++;
-+		goto again;
-+	}
- 	if (error)
- 		goto out_gunlock;
- 
 -- 
 2.52.0
 
