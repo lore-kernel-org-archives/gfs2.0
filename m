@@ -1,81 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5660C37998A;
-	Thu, 29 Jan 2026 07:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4E62D3ED1
+	for <gfs2@lists.linux.dev>; Thu, 29 Jan 2026 15:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769670462; cv=none; b=KWtmeHY4cccBV7wu4NdmV6Sib4YjNuiHvJtH2MrzrQW+1LGergspfIx+fXLm8fDBR1AFmZb6DGc5I8dbVQSx00dR4+kt1lsOfqkbjHtTQ+qaepanD12qRbGmiE21uM4fDN0QiGCgbfwrVNZQurat1mNhNbZ0bA5wlBvFV6r337k=
+	t=1769700479; cv=none; b=iJYLIGE+8DzcAI6FTjV7+5nxcEyeowfhbA2xm3rxq1K/kGIaRutDao9EmFzS8yW5mIOHT9kFQfd4t+o3gXbjYBZEa0rLI33TOdoVyAUUks4IcMaiMqw070zYYohz0MF+oNf5x7Nm7+mRhNov6jiVVW3VK0z2PT1Tx/zBf3Zo7/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769670462; c=relaxed/simple;
-	bh=79Ob+0kE12R6Uti0WJjfey0zVs+v9YDo6w38AHHbRwc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=tPNa1nddkCdQd3/eONngnPuNuvpsPCI0+/eaPhLLnGDAdgLYp0L5ovww9mSULxAD5OtH9aNVEJs6TVVoOcxbEiTTPoOcp0I63Hd4TH/IH764bnH2wAR19pl6RA3SjuBjWoWQpJblMj4b8f6Lkwq/x02GTEgXFY1Md5P2NnsVD0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZVLzOyB; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769700479; c=relaxed/simple;
+	bh=WGcd+eGZrnT4a8vrCYCQCfONoxvosYN2DwBdqwJnV9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rSLFjMeAwJ9C3izDn070fFBNplWxKi8XzrsJO1EhbKHKMASZwfgTIcbrCfRMFN6Pzn59/XAvshVWIzc5QbM5p4F4MDAHcR/iLWznOiymSL2ikiDEYt5Fz1FE0cLatkhFzA7uazYE45J7d0FxRRA08LEcTI4OPhsMxaNQqHL1WOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDO3tt1q; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZVLzOyB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769670462; x=1801206462;
-  h=date:from:to:cc:subject:message-id;
-  bh=79Ob+0kE12R6Uti0WJjfey0zVs+v9YDo6w38AHHbRwc=;
-  b=FZVLzOyB3aOThmrGNovU05mHtnltU3XR8OzZXqIO1FbXdlVttzIUPRb7
-   SEBsb5TBM5LHB5RmpjJBNn4b2yIXTfrvUu3jMwVwKK2ginbNeX+T2GXWt
-   pvRyeFkgZmksDfGIHT+VS3veuTwO0mglJMFDJaYhBwFlOVou9Mkd4PvE1
-   nvohEDB6AsO23o2hCB/pI/LqrbaUvi+bSReTcv+DELtrnRwoN31qgqAm8
-   f0fV1ig8TcZgGCka6t/yj+uxglvYBhjStzIzeBz35eZAFyBl9qFK9ADQN
-   lP75wOdLfQraiOcvzG8cHWNqDPrKyJI7q9ufgjmCfACzURhoGy4z60k2X
-   A==;
-X-CSE-ConnectionGUID: +EOmDeSiR5isQ9Dkzl09HA==
-X-CSE-MsgGUID: 57cKSwN8R7yh8NUaqaCUBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="88473648"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
-   d="scan'208";a="88473648"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 23:07:41 -0800
-X-CSE-ConnectionGUID: b4X4BLozTGOkLFmalRY/9Q==
-X-CSE-MsgGUID: 9YNuJtYZS1KoICjPTonDkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
-   d="scan'208";a="208730308"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 28 Jan 2026 23:07:39 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vlM7t-00000000bC6-1dMO;
-	Thu, 29 Jan 2026 07:07:37 +0000
-Date: Thu, 29 Jan 2026 15:06:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, gfs2@lists.linux.dev
-Subject: [gfs2:bufdata 13/13] Warning: fs/gfs2/log.c:994 function
- parameter 'sdp' not described in 'trans_drain'
-Message-ID: <202601291537.4Vu4TCu0-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDO3tt1q"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso7876375ad.1
+        for <gfs2@lists.linux.dev>; Thu, 29 Jan 2026 07:27:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769700478; x=1770305278; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WGcd+eGZrnT4a8vrCYCQCfONoxvosYN2DwBdqwJnV9o=;
+        b=SDO3tt1qWMgURv5DhyxZu0YhNRbRD40a8BDUi3IuZh+FazVYFRfV/gQoyfF5FL8DmQ
+         It2cqajHCF7TtUKjvZ3H40PG/mO8Nok0eQXktuug6lSnERdp3dSNQgszJ0y9TEjbzP3H
+         JFOIARWHnninx8bQEIlQzUds9ia89j6NCZV2zjM06pXTXwgGeQKmpjKuuFgGNnfsK7bS
+         fS291PrAPZqTiAIp88FyiYZmEQpLbzhQPPhuBFxzM5rbWK6hnZFHGJGCLLrx1Ier0yOx
+         qlBh0lkSGhzW8Erq8Yno1XeBJRUeU+SRoEaIoZwmAXK5avVZ2LNmWugWbnehoInUboIW
+         kjig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769700478; x=1770305278;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WGcd+eGZrnT4a8vrCYCQCfONoxvosYN2DwBdqwJnV9o=;
+        b=ICHWLpQ1EZAw4PCO6AMLiIS21QAvwo7fUO4ClwyWVZzdUCylpdhO/8OU63aSdv79+F
+         Dh5SL4InC2VEkiAy9lzSjpFzRO5MK/PtkPLkVImmar+CWnqSg5xWV79/n0hWg4K5tTsf
+         /+2ZzZa+J71nXFxWLB0RvWV0soVZvTPQU8kwG4LX2xlUcMCgkqHbFekSlN3NZDCqTPkd
+         D0QndDIk7TielC0UYGmt3ZyTYuJ68AjIEbsnGDyWyHYhScrHOZVqC15sP+8Q4udHftuF
+         GDnzOulWnoPSRW9rOxIcVRSw2Do+rIZDEt13MbFtb0cYWBvu66DkbQTIHFKNQpjVAXOJ
+         nfrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMDi618DL3NSheA+Rkma+MdpEpboQPvkk5Qb/g45Z0Q5dcV0MZl0VtdmN5hdrld8zPvg6r@lists.linux.dev
+X-Gm-Message-State: AOJu0YxDpL6dpQN9/+RK1csWSj+PPyx1hL1QMsN3Lf0iM9B2SNfFK872
+	YZir1aYTrK1OVxtYxlp7QYCnubKCMkjP2xmeaoKCD7tXLpsKqxoRem9d
+X-Gm-Gg: AZuq6aL6OEEs94fITLmuS4M/4TtK6oxcEeQvvXZZCOYDNz0kb0yxrugKCYwIVic2vdG
+	/WHpEN4c60A+N/rdkcN9vXMZUc4QRCCSJUuz+FPBTUQ6vAJuwCv9qDEMSDwSFxb3BT2XxL3MTvu
+	ysV6q46mq5vCWqDnyHGF55BHfzIjxeWw1qPNbcqjEmY0WQ1ZY8Ob4jg2mdMlLV23udnO25e6tk+
+	0tYnDD/UmxkhnMczjVm31arHoTQ4Jk997Rz7jOVdVfQFFlEN3XnbfaEShpkBWTfBCXQw4baRCpX
+	78cZSCt0DzrdrILoSBp3pRgZ99ciF0e6kIwxaSFtn2wkzv9rkj60KDS70EbkOYZEio4lcgDVb5B
+	plbD0k4p5sm0veZiZ8O03wgfpammscz/dC1p3H1yOYOodAejwklbQwGn3F7LIcCmqp8gzuX6r2F
+	FSZID7/aUUA8CC/XBCFQ==
+X-Received: by 2002:a17:903:2ece:b0:2a0:d074:e9f4 with SMTP id d9443c01a7336-2a870def787mr86840655ad.59.1769700478049;
+        Thu, 29 Jan 2026 07:27:58 -0800 (PST)
+Received: from fedora ([210.228.119.9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d8eabsm54826735ad.68.2026.01.29.07.27.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 07:27:57 -0800 (PST)
+Date: Fri, 30 Jan 2026 00:27:53 +0900
+From: Ryota Sakamoto <sakamo.ryota@gmail.com>
+To: Andreas =?utf-8?Q?Gr=C3=BCnbacher?= <agruenba@redhat.com>
+Cc: Markus Elfring <Markus.Elfring@web.de>, gfs2@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org
+Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
+Message-ID: <aXt5oYSyrSTjmXMf@fedora>
+References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
+ <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+ <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git bufdata
-head:   e4483c611981a48e12166c1b2845773dafd7de52
-commit: e4483c611981a48e12166c1b2845773dafd7de52 [13/13] gfs2: per-filesystem bufdata
-config: parisc-randconfig-002-20260129 (https://download.01.org/0day-ci/archive/20260129/202601291537.4Vu4TCu0-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260129/202601291537.4Vu4TCu0-lkp@intel.com/reproduce)
+Hi Andreas, Hi folks,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601291537.4Vu4TCu0-lkp@intel.com/
+I'm following up on this patch. It addresses a use-after-free bug reported
+by syzbot.
 
-All warnings (new ones prefixed by >>):
+Would you take a look at the patch and let me know if this version is
+acceptable, or if you'd prefer any further changes?
+Link: https://lore.kernel.org/all/20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com/
 
->> Warning: fs/gfs2/log.c:994 function parameter 'sdp' not described in 'trans_drain'
->> Warning: fs/gfs2/log.c:994 function parameter 'sdp' not described in 'trans_drain'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Ryota Sakamoto
