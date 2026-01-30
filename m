@@ -1,170 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D949636B061
-	for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 12:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3777E36C0D9
+	for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 12:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769774524; cv=none; b=g27xiGu/5RFbuoDVkbYuPI+4RnNYM1oRMwGPcqu2XR3Y7urD4AphFdPUytkyShjZaB6Rqygg9wKGRXxvXya9B3Kol9KwWlSRVQTqH1MEgtefkgMSpCYaw4zY7VPePbgnahbUAf0BJ/S/g0GxWWN4pYJN5rcvAHRUcgynxxVDPrQ=
+	t=1769776801; cv=none; b=NhhN8rVJbbgg7bprZj6xQB6Fz/4jF9C7JS7vn8/JvMzvQnoKpFb1ZImAC+ilhygW2WazQlSDbe6/o4gwUWAc8GPF3UQ9jSzgs6wiCejT9OopppDJADCHxhX34dXdaRFRaKhDrqEdVe9/8wGI/4TQUz5sp5eW74gDMDssqFwBPGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769774524; c=relaxed/simple;
-	bh=LscoGqgvjS9EyKfVXT0o2401xM7VGLtOquRueXYlfGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I7quBhnbGhTKYdrbyhYcDgaQ1vVHt+TVZnPk/ulx1+0z19aD4I56tqEWozk3wt8oMzCs8aE7GuSUPRBg+7Wox5u9lcjac63ehKjD63pgRDkRC0aDMAzx08jVcqfKvA8OcUMwUAEZVEJM6BvBrCmkr7ePYurEOal+cg1h++w3/pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X6+V8RDs; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769776801; c=relaxed/simple;
+	bh=3BZc3Thv5LEKtK+rwOEodZllTHTFApthvFLc2lbPNNs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rz1WocvqZv5mTa4+BJk8GokpNJStnqU6PHE1dxtRuH04eH+sgiV6FpKdGj6Ema2S0Qb9MNkrtdXjcfHeGgSjg13Qmoi/3G64iVvAifU9a78I+5uUaPqcRIu6RNLP2UA1e8fpLxB+m/c3eIeq8lrGXWrcunmIbvqFoPI6fU2jzf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DyvczJja; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X6+V8RDs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769774522;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VLwB2G7Aol3Iav7v43ToW8V1IIb1NGvoSV5/VD2hgJ4=;
-	b=X6+V8RDs6XEzFmdiux93u6m2cUfaFhF+FYWhRO+HJpdtT+gtNvx84nT6q0Vkay6/FOCSIs
-	XERGtW8ID8LUXIyrkK0bWgcavhira4KRZTyef6ZowJpVlX20pHhr7IbGMSJiVMSepUt76H
-	7tbRa7VL4etKrbT/qqQ8I8em3yI0THQ=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-94anEzJSOWmIB1R7TNHy5Q-1; Fri, 30 Jan 2026 07:02:00 -0500
-X-MC-Unique: 94anEzJSOWmIB1R7TNHy5Q-1
-X-Mimecast-MFC-AGG-ID: 94anEzJSOWmIB1R7TNHy5Q_1769774519
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7948fd222d0so30839947b3.3
-        for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 04:01:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DyvczJja"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29efd139227so13111315ad.1
+        for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 04:40:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769776799; x=1770381599; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IKEkl8CvxvFJM2weLeokDtwNfyW3MjqMZBwUQAOABKg=;
+        b=DyvczJja1tbWHbQ+tZFcp2wY9JPO+BweZLmllMx9al3lQusqHqeIiTpMXTiWAZqjNw
+         G4s3DrCnrMCvCrs+YDsgbZuOMXgiPdlqF0AF7qNKYuJQW9N3+0yOeST2Ccb3wQh0tF8N
+         81evRwOUT/hkMM1lS6LTnMTCHIE6fffRdT5HHop2E5ONBWhwd/j5eF45sFeznpwDQWvI
+         h6mdWa6pXTeo+vSpIYsA2pF3ZNbzpv+hSvFqH0c60YyxiGHWzY66P7yw8WUg/4OTlkfm
+         /u85zdLBAY/MI9bV36/0e17TuaWjeOF0PeVKyxD+V8lsf9aNWaCqUyboHV+afEDFMU4K
+         zz/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769774519; x=1770379319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VLwB2G7Aol3Iav7v43ToW8V1IIb1NGvoSV5/VD2hgJ4=;
-        b=p2+NDvyrwy+CMKs7vCgM3UXq8O3dAPIXN2jG18OXjd59H9SAkI54oApxEdkBdvlomM
-         MWqXonuv1MB1/Uu1FQiv3+ff6qdZkzkNU5F+SNre6Hd1vDtGFvbvm1V3A64KRvlnJ+Cw
-         SbUEurCiFD1CP4slXGhLPrVqgpOTiXu4rUME4oxOO7Q54Wop1H2iaE5peYoIo/SdNa/X
-         vtHPacuj5HdyUyiSyZgM4ZoFm/vTNrGZ0acmLNJF2u/wTYnRZgIzQPm+W45UmnDFcVpd
-         RrKICLc2Zo6KXtXapnsMLSUsnX4GoAxBZWHNhcwE87BLQUQP1v5ZBilYSNRIyXZBXboG
-         XgZQ==
-X-Gm-Message-State: AOJu0Yxf/1Utf0/69WM+EFSpmRU/qWsicDX9CafcxapTnLE1bEo+oRv3
-	GSkfOC7ptW4iijXyerRowwxGWw6OhqJb4n4ymUZILv7bGTgHf5RXTrQF+bLN4JprkkyXdlqkBDa
-	MvCbJsZI7YSg1oLHFJhpejJysm66+fH0/GveUKCfryR8ZFXl3gmCN4BLHO0YvjqEK1hXrTD2SAQ
-	y2wuuK3Mh1FdnctAaJH+s459bSq1HyM48UmFXGmMCM
-X-Gm-Gg: AZuq6aJtjP2UKIBMMH99aTvvE1xBHKwQxRWxdVmB+9scBSGDsoXMJ1IiVCB6QbjYWgo
-	8EDsjoFlhECLjGRh9lRL47dFH7ALqWG6p2R60DjME225KpT20vU8rTX+YW4qHpyBfTHIwcvZdoP
-	UQMJif87CSI44qLCyQisO4vfjfGYdKmekSFFUdmPxGIJrTiUmS5rIuHsPiKQ2t54sJ12a4Ypaya
-	ohL3s6wgu1hgB/sMTExJViSxDwqG0kTiqdHvnTQTgqQE9QxdlN5NA==
-X-Received: by 2002:a53:ac9b:0:b0:63f:b4ee:7915 with SMTP id 956f58d0204a3-649a83a93f9mr2277137d50.11.1769774519148;
-        Fri, 30 Jan 2026 04:01:59 -0800 (PST)
-X-Received: by 2002:a53:ac9b:0:b0:63f:b4ee:7915 with SMTP id
- 956f58d0204a3-649a83a93f9mr2277099d50.11.1769774518408; Fri, 30 Jan 2026
- 04:01:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769776799; x=1770381599;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IKEkl8CvxvFJM2weLeokDtwNfyW3MjqMZBwUQAOABKg=;
+        b=KhGXUvl4yktOol0RZrHP/cNpr5/i3blddg2b/nEYNezo2GKRyd1qs8I2U7V62jPkmz
+         eiQXFDF9FpCrnhKmVTgYkKwDbwj6tS9scaadfv6OTq8M4u5aM4q8nxvhyL0ZCPd98z16
+         rkR6Opzq5lnxFXUEkkcrcwzgRLkwkEJ2wY7tHG2sRJIg82JssPKkPzF6+1tU6CqDkMm/
+         1RxyavxFKX/tWgZm5gcSbZOgd56qF63FUJsIy3+bv3D7VLLzLcDtYQTwKl0FbO6scArs
+         BJa5XwhnOMmMnJ9FgO19z1KKybcqipyqNGNvezqQJKE7zs/t/ytkqIJVUi1zDW4u1HEd
+         LWyw==
+X-Gm-Message-State: AOJu0YwybOpX0o3L+elxShZSKKS8Ygtc6iEwrdJHLv/2jSHT5z7wO51q
+	97ZBHmGcjzaTrluu3N/foIOKGZxYpkkd02YXNxsWveL40BQ1rJmLXfM+
+X-Gm-Gg: AZuq6aL6NtBAVY4UhK0EMTlAT/TpLT3foQIUGW1X6oO7KYuSK87NWgUn6EORj36YPDl
+	j7UtdI5K8diP8ApCojY881SKjSDqxORA/Y7u5H1HdS2CN/j0VjEToMfu0ij3HamtdF49ajVGie2
+	SjiMBBY/wTAcmTGPzjFkLfM2jPVbHx6vena4/46zQy4+RCy9ZflWzijytBiIykRpbRWhqdg6BkI
+	MqsxF8S80IapMiF9J+8NEd18csUq2uD98NYHiCtWwD65RIXMXhLxV+febuwWual/vFNyPIG4ofZ
+	2sCx+vE47MuvgSRWUXr1rpfVdtnBLFbfSTBe+6KS9XRiiVJAV60f2PV2PPAjbc7tE/gMMrdNBlQ
+	u+NTKgeb1eMMNK5UPTdeaYhSnQr0xZgVhuK6BFagZNttQKCQFQL6IDgVH847YrXulfQyeZMl/1I
+	mamNcET9Myhrfkem2lcyrec3O0bVbiacdJFmBgBHn4P66cIbFGtJC58a4sA4/S3F3DeyjUnRbGe
+	5f82w==
+X-Received: by 2002:a17:903:2f0b:b0:2a7:9163:8e68 with SMTP id d9443c01a7336-2a8d7eabffamr31847535ad.6.1769776799459;
+        Fri, 30 Jan 2026 04:39:59 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:144b:d627:2937:e2fe])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379c64b4esm8247169b3a.69.2026.01.30.04.39.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 04:39:58 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com
+Subject: [PATCH v2] gfs2: Fix use-after-free and reference leaks in iomap inline data paths
+Date: Fri, 30 Jan 2026 18:09:51 +0530
+Message-ID: <20260130123951.64927-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260130092134.62407-1-kartikey406@gmail.com> <CAHc6FU4myfqhqjB=xxVh9JZWi=un4tWYKWRSm0YJZ6DRh3UTZQ@mail.gmail.com>
-In-Reply-To: <CAHc6FU4myfqhqjB=xxVh9JZWi=un4tWYKWRSm0YJZ6DRh3UTZQ@mail.gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 30 Jan 2026 13:01:47 +0100
-X-Gm-Features: AZwV_QhRS57MBX6ZC-LlxqW2jcOGkzFPNq39-v3_pVKmY7AS2CJf9Rrq4hAqS-I
-Message-ID: <CAHc6FU7f3ffoma263VbQAowjQYoC1K6f_=Ubp-mP_R5pds2PeA@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: Fix use-after-free in iomap inline data write path
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: edwWLEof3TWoehmsAw9Wro1H_4Jz0EZ2kj6ZkRqcY7k_1769774519
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 30, 2026 at 12:33=E2=80=AFPM Andreas Gruenbacher
-<agruenba@redhat.com> wrote:
-> Hello Deepanshu,
->
-> On Fri, Jan 30, 2026 at 10:21=E2=80=AFAM Deepanshu Kartikey
-> <kartikey406@gmail.com> wrote:
-> > The inline data buffer head (dibh) is being released prematurely in
-> > gfs2_iomap_begin() via release_metapath(), while iomap->inline_data
-> > still points to dibh->b_data. This causes a use-after-free when
-> > iomap_write_end_inline() later attempts to write to the inline data
-> > area.
-> >
-> > The bug sequence:
-> > 1. gfs2_iomap_begin() calls gfs2_meta_inode_buffer() to read inode
-> >    metadata into dibh
-> > 2. Sets iomap->inline_data =3D dibh->b_data + sizeof(struct gfs2_dinode=
-)
-> > 3. Calls release_metapath() which calls brelse(dibh), dropping refcount
-> >    to 0
-> > 4. kswapd reclaims the page (~39ms later in the syzbot report)
-> > 5. iomap_write_end_inline() tries to memcpy() to iomap->inline_data
-> > 6. KASAN detects use-after-free write to freed memory
-> >
-> > Fix by storing dibh in iomap->private and incrementing its refcount
-> > with get_bh() in gfs2_iomap_begin(). The buffer is then properly
-> > released in gfs2_iomap_end() after the inline write completes,
-> > ensuring the page stays alive for the entire iomap operation.
->
-> I agree with this analysis and fix. Some nitpicking below.
->
-> > Note: A C reproducer is not available for this issue. The fix is based
-> > on analysis of the KASAN report and code review showing the buffer head
-> > is freed before use.
-> >
-> > Reported-by: syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3Dea1cd4aa4d1e98458a55
-> > Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> > ---
-> >  fs/gfs2/bmap.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-> > index 131091520de6..e70095809e4a 100644
-> > --- a/fs/gfs2/bmap.c
-> > +++ b/fs/gfs2/bmap.c
-> > @@ -887,6 +887,8 @@ static int __gfs2_iomap_get(struct inode *inode, lo=
-ff_t pos, loff_t length,
-> >                               sizeof(struct gfs2_dinode);
-> >                 iomap->type =3D IOMAP_INLINE;
-> >                 iomap->inline_data =3D dibh->b_data + sizeof(struct gfs=
-2_dinode);
-> > +               iomap->private =3D dibh;
-> > +               get_bh(dibh);
-> >                 goto out;
-> >         }
-> >
-> > @@ -1144,6 +1146,12 @@ static int gfs2_iomap_end(struct inode *inode, l=
-off_t pos, loff_t length,
-> >         struct gfs2_inode *ip =3D GFS2_I(inode);
-> >         struct gfs2_sbd *sdp =3D GFS2_SB(inode);
-> >
-> > +       /* Release buffer head for inline data */
-> > +       if (iomap->type =3D=3D IOMAP_INLINE && iomap->private) {
-> > +               brelse(iomap->private);
-> > +               iomap->private =3D NULL;
-> > +       }
->
-> We're not using iomap->private for anything else and that field is
-> zeroed out automatically, so this can be simplified to:
->
-> if (iomap->private)
->   brelse(iomap->private);
+The inline data buffer head (dibh) is being released prematurely in
+gfs2_iomap_begin() via release_metapath(), while iomap->inline_data
+still points to dibh->b_data. This causes a use-after-free when
+iomap_write_end_inline() later attempts to write to the inline data
+area.
 
-And then we've also got iomap->private leaking a dibh reference in
-gfs2_iomap_get() and gfs2_iomap_alloc().
+Additionally, gfs2_iomap_get() and gfs2_iomap_alloc() leak buffer head
+references when they call __gfs2_iomap_get() for inline data files,
+as they don't release the dibh reference stored in iomap->private.
 
-> > +
-> >         switch (flags & (IOMAP_WRITE | IOMAP_ZERO)) {
-> >         case IOMAP_WRITE:
-> >                 if (flags & IOMAP_DIRECT)
-> > --
-> > 2.43.0
-> >
->
-> Thanks,
-> Andreas
+The bug sequence for the use-after-free:
+1. __gfs2_iomap_get() calls gfs2_meta_inode_buffer() to read inode
+   metadata into dibh
+2. Sets iomap->inline_data = dibh->b_data + sizeof(struct gfs2_dinode)
+3. Calls release_metapath() which calls brelse(dibh), dropping refcount
+   to 0
+4. kswapd reclaims the page (~39ms later in the syzbot report)
+5. iomap_write_end_inline() tries to memcpy() to iomap->inline_data
+6. KASAN detects use-after-free write to freed memory
+
+Fix by storing dibh in iomap->private and incrementing its refcount
+with get_bh() in __gfs2_iomap_get(). The buffer is then properly
+released in:
+- gfs2_iomap_end() for the iomap iterator path
+- gfs2_iomap_get() before returning
+- gfs2_iomap_alloc() before returning
+
+This ensures the page stays alive for the entire iomap operation and
+prevents reference leaks.
+
+Changes in v2:
+- Simplified iomap->private cleanup in gfs2_iomap_end() per feedback
+  from Andreas Gruenbacher (removed redundant type check and explicit
+  NULL assignment)
+- Added missing brelse(iomap->private) in gfs2_iomap_get() to fix
+  buffer head reference leak
+- Added missing brelse(iomap->private) in gfs2_iomap_alloc() to fix
+  buffer head reference leak
+
+Note: A C reproducer is not available for this issue. The fix is based
+on analysis of the KASAN report and code review.
+
+Reported-by: syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ea1cd4aa4d1e98458a55
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ fs/gfs2/bmap.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index 131091520de6..81a958694d1f 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -887,6 +887,8 @@ static int __gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
+ 			      sizeof(struct gfs2_dinode);
+ 		iomap->type = IOMAP_INLINE;
+ 		iomap->inline_data = dibh->b_data + sizeof(struct gfs2_dinode);
++		iomap->private = dibh;
++		get_bh(dibh);
+ 		goto out;
+ 	}
+ 
+@@ -1144,6 +1146,9 @@ static int gfs2_iomap_end(struct inode *inode, loff_t pos, loff_t length,
+ 	struct gfs2_inode *ip = GFS2_I(inode);
+ 	struct gfs2_sbd *sdp = GFS2_SB(inode);
+ 
++	if (iomap->private)
++		brelse(iomap->private);
++
+ 	switch (flags & (IOMAP_WRITE | IOMAP_ZERO)) {
+ 	case IOMAP_WRITE:
+ 		if (flags & IOMAP_DIRECT)
+@@ -1419,6 +1424,8 @@ int gfs2_iomap_get(struct inode *inode, loff_t pos, loff_t length,
+ 
+ 	ret = __gfs2_iomap_get(inode, pos, length, 0, iomap, &mp);
+ 	release_metapath(&mp);
++	if (iomap->private)
++		brelse(iomap->private);
+ 	return ret;
+ }
+ 
+@@ -1432,6 +1439,8 @@ int gfs2_iomap_alloc(struct inode *inode, loff_t pos, loff_t length,
+ 	if (!ret && iomap->type == IOMAP_HOLE)
+ 		ret = __gfs2_iomap_alloc(inode, iomap, &mp);
+ 	release_metapath(&mp);
++	if (iomap->private)
++		brelse(iomap->private);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
 
