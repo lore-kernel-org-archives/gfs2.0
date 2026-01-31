@@ -1,131 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D6F238C08
-	for <gfs2@lists.linux.dev>; Sat, 31 Jan 2026 01:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A134F1DE2A5
+	for <gfs2@lists.linux.dev>; Sat, 31 Jan 2026 06:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769822252; cv=none; b=Lg7MQEv+0GgwV4ChSVYjwLPbQ2VZ7U0AJkzxxpcpo2+UBABBKoTAqB2/5MbV3pxb/x7TUcQ402K+MKqBjcjqPbMdgBBKQnzKqmfuDy2PvzK46MkxAqGrDjLlpZmWpdyg0squeB0RFqogKmWRTpr42je3j2bj6qw1NY4YaLqQp1Y=
+	t=1769840718; cv=none; b=eC2qmpgLmERO9vT80FJbk5TJYcKaTg0BERsEa4DxYG6cPcOZeIbnNwxDSMqaAJF9xLFMqBitjhXe10MkE1bbu1zDHq/Bj4dGL+WPBro3jnJYAf+BNOh+lhajiJohXYTy11d6cUzsJz6S/aky7ZFojPbrq0814/kCHvqPPk6LlDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769822252; c=relaxed/simple;
-	bh=GWTRCN/AycRvbo4khjl5+VFeJJ9X1H7EUJUqhjiIGCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gZ7bkS7amMx+we3H6cAqxVURGWwknO5MzPz0Iov4WRfz+tQP6qOuyWrmQIAtX9R7vME0sWPIJDr6zqz3NQoDguv06Ozj0ji94JvvYzfZ9nGYuSGzdUEiqEEgE6bz3PoPWeV4zInceI2UW86mxzCKhDwBr1wvvCnz/Ss2c9xWswM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WcsQinas; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769840718; c=relaxed/simple;
+	bh=OnRpWAwLOyGrpUWVetx1PF7N03UnDjKCqSp2an0V4hc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvEpDIxuiBigbBe6RoXprTxks9MV2IwNGI93lt6XSYUWtgFEfxTWA9ecdTv/AtQ8rOMCsXFaiX7lm72KIF8COeKwUiSlFla4KRWaSND0pqu9NrMvhX4m6LfY/Mr0RsQ5DmEFc6GxUnAN+nUUoAQi6aWCvHnnvLVccPstQmyjtes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sn4cnX2Y; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WcsQinas"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769822250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GWTRCN/AycRvbo4khjl5+VFeJJ9X1H7EUJUqhjiIGCk=;
-	b=WcsQinasmbFLsHNS0KP9nAYNYmiYYcskzw/7+H9l6BOvYH/AbP5IsECkvXYAqctUSwlDaY
-	BT5wyizlpzDGvPKOPd3+8mTCPGtZvB+AjkpXW8FrbuInqLYTZFaz3cB1rKDp6Wj+GvYEVZ
-	g9HOWMTheH4tDZb+2eNLQKmw0NzndwU=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-AarJaaM-PMSR-kxiOIwLKg-1; Fri, 30 Jan 2026 20:17:28 -0500
-X-MC-Unique: AarJaaM-PMSR-kxiOIwLKg-1
-X-Mimecast-MFC-AGG-ID: AarJaaM-PMSR-kxiOIwLKg_1769822247
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-385c81c2ab5so14335651fa.2
-        for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 17:17:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sn4cnX2Y"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82310b74496so1683767b3a.3
+        for <gfs2@lists.linux.dev>; Fri, 30 Jan 2026 22:25:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769840717; x=1770445517; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=of/jk6w1rGgtFqkJD/eLgqCF5bATtfFhSRr/rVMr3d8=;
+        b=Sn4cnX2YqRmBWSNhgRS7ksJEZVHJcnobLD8e8xxmhW1p+KcHcCCMEurSHlP3GcMTU9
+         WjHtJcSaxsrzW0rHn1tjBXWy62762vU4RanK7e5PnjDv/whsvZdqMrpxJHCz4lO109Xd
+         etm1KZLoB4wdKNSMCiQqDfYXp4f5AJeG3ZcHoPsDpPyS4ghaCsTMk2xwMFxR+xWlkrN+
+         6ZDxHElmNWW4KM5lpg4mm+HBjpHdeywF9X8EgxM/XLUkHWyffW+qDd+WYGMZ/XR8Lz2C
+         cbJrNXJdI8YDPdAO7nC6MgAtrRk1dreiqJnTF3QX8jA4CJYDtGIFW4YDgKS62IyAiqBc
+         GQMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769822247; x=1770427047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GWTRCN/AycRvbo4khjl5+VFeJJ9X1H7EUJUqhjiIGCk=;
-        b=xCSvAdNFEAJ8QQ1V4vxeyqvHRa0sU2AoqDc2QpL+eVtUhNCZpqKnXUsIDY4eWy9tgr
-         fw/ZPyu8yhzCDopdTlWBQDT3bJGUPbRh2eN/NRecHDB2aoZZUTEH/bVcQsmr5CNoMnXI
-         Mj/fDqyeFVPGt/eyBz8DDz+yqFWAN/Efpw2IIld5WACxEpY8SL9cfbYacE0+LtwcKEQ5
-         79JsVuVFnqtNDg+iA9G2K7mkzhZZ44F31pZr11thgd+eMLUswnCcdVZd7ygXxjVl1w8N
-         KM0+1Jp2tK3pUqZf5NfWuWK20frcM6+sQQTDBBmOZZxh7Ft967BMnd6BQNrlGMyraN33
-         brlA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2krrrkVebNrs9wqb3AU7DMWbxahaM6swksxcX0T+U4qGGRbGvOMzRX/Fhmg/ZVbM9j3GA@lists.linux.dev
-X-Gm-Message-State: AOJu0YwbEPqnvRzgzTm0JflzOJuY6uL432QsjGhhTqxa4KJk58OMvKvk
-	Ew/D6EExVmdnWO+nixfB8fjoCuPpnEK/QRgjU/yReapHR21/cn0OXtJefuB73Rlwcbt1dIXvaub
-	rMMLmKmc3TsFELSERE9DHwG4qYaCJ8Ta/eILaQrfq5mKU8fyyGzP6L6JQIXFf83XOxS9FedvaDo
-	83K+JafCfh4YyhgOoGaX7NapZhHo8MUQ==
-X-Gm-Gg: AZuq6aKJvyDReDG7MOGepAWKsFTi9Q45pEtrbEP6mMooAx/JQ6wC2bUdHCW69S+N0ob
-	ECjLlRdYKKGL6L73RfbbcKjW+s343zx/Vt39eBnkbRQO2SSLDL3Fz9z0r3vWLcngRysUn5wye43
-	BCPEMLD7QjgPCuQmff9JoazCCsLPhxIcCoa6ho15K4G8FA/+F1/c/mzGhuK3FpwTJeoSAftUbz8
-	RUisyrrR4rLqcoNellywx1i/LbX
-X-Received: by 2002:a05:651c:1ac8:b0:383:1c18:adfd with SMTP id 38308e7fff4ca-386465246c9mr11816621fa.7.1769822247009;
-        Fri, 30 Jan 2026 17:17:27 -0800 (PST)
-X-Received: by 2002:a05:651c:1ac8:b0:383:1c18:adfd with SMTP id
- 38308e7fff4ca-386465246c9mr11816531fa.7.1769822246613; Fri, 30 Jan 2026
- 17:17:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769840717; x=1770445517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=of/jk6w1rGgtFqkJD/eLgqCF5bATtfFhSRr/rVMr3d8=;
+        b=ux6fb+4gievb0bAbnilpWwpFAKDc1y62fhV1YY7tZeRQO/Oz+WTrjczboB7m4bxDNG
+         Dr+oAgGRPxGgSSWZ5i9v4ebiZOu4hG05aMTM4qUK/XMOKhdinLiED998DJoiAl/u1yAo
+         Djm01VHmHg1Nee3IDklVEusH6rIan+Xf3WbDUudy8pXTE9GT5RolNxOvg47bGgaomj8I
+         T0YXsDDE7nLn1kES5KGoDj7w293aCnG32HebxjhmC2Uiyrb6zJhRDqirHSjYvrdpbmVq
+         9VTFWg9q7XhligOP6OzXHjFg900gUmKwPIN+bHOh2BDn/tIe0+TjH7BtZbMCJmrw4opy
+         lQaw==
+X-Gm-Message-State: AOJu0Yxp6A0LJ296usvU96rCCgaUw+WZ7sa2+SYzM+ewhr6oQADFzZnw
+	XMJhwaEM7VBaxRSJnIpSl/yAadLrlwt0arR0eIROPFABxmMbFdtXcMJP
+X-Gm-Gg: AZuq6aLaK3EvfHk8Z8kqos6wUg+6j2HkrGlqThMvUFY9LYQXwXIxihb7kjU680IZFPu
+	rOa1xmO74LlDi7kKGKDYd0FL9vClSKwnGfLsVw4tAJsPmz8uOb2xn6SwcK6tlktWKkXx5GXlt3U
+	eVr046r1YFlyGK2MeXCSjxSUvgONiV1IYvFKHwQQ6/52kEf4KOHOzbRCcl/qyeFTEUhjdaKY810
+	lMXjb/hotNLNt9EE3gZRs2BK/budCT4EiW5VF97Yu8fWgUss8wZHh2+HLo0P4AvoYfFy4ijOp7S
+	wTI933BVeIK05uTcfhAPJWAqnssyXNoCI8ytIa3hlwuK3XdPcACNXjQ9klYCJst5hG5NsEvoZ/Z
+	0M26hRfiiP5+v4BriAa2OJn5mHQPazy5vdBNAn0Tmga7pOxVhYz9KzmD59lUBLtE/6yvNf/w4nD
+	OJV9ruAJVZAs6Izxmno9bosmp9YRVUG0AT9Sp3jUkTWwhrqeZcKzOcIE6r4QDAbDmn4gHPngBRD
+	wcShg==
+X-Received: by 2002:a05:6a00:1249:b0:81f:473e:e8d7 with SMTP id d2e1a72fcca58-823ab749811mr5105864b3a.54.1769840716959;
+        Fri, 30 Jan 2026 22:25:16 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:2e0d:61f1:f4e0:f787])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379bfcab8sm9174062b3a.36.2026.01.30.22.25.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 22:25:15 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+aac438d7a1c44071e04b@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH] gfs2: fix memory leaks in gfs2_fill_super error path
+Date: Sat, 31 Jan 2026 11:55:09 +0530
+Message-ID: <20260131062509.77974-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <aNFbP3UaRokBxruI@kspp> <7d712992-e006-4787-95ee-e82cfa25f8ff@embeddedor.com>
-In-Reply-To: <7d712992-e006-4787-95ee-e82cfa25f8ff@embeddedor.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Fri, 30 Jan 2026 20:17:15 -0500
-X-Gm-Features: AZwV_QhMawgByiZ71sisK8DLL_VBMZnLRRD0cUo7moFtR891-SdiA88rULw1gIY
-Message-ID: <CAK-6q+i0wNRRhhkBGNs6oP159vCfa40SjbrLPbQ_P1NXv2EmFg@mail.gmail.com>
-Subject: Re: [PATCH][next] dlm: Avoid -Wflex-array-member-not-at-end warning
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, David Teigland <teigland@redhat.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1lybf3ZoIey8F-CsXfXbv_colcjDcH3vWFdraYUs5YE_1769822247
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Fix two memory leaks in the gfs2_fill_super() error handling path when
+transitioning a filesystem to read-write mode fails.
 
-On Fri, Jan 30, 2026 at 4:43=E2=80=AFPM Gustavo A. R. Silva
-<gustavo@embeddedor.com> wrote:
->
-> Hi all,
->
-> Who can take this, please?
->
+First leak: kthread objects (thread_struct, task_struct, etc.)
+When gfs2_freeze_lock_shared() fails after init_threads() succeeds,
+the created kernel threads (logd and quotad) are never destroyed.
+This occurs because the fail_per_node label doesn't call
+gfs2_destroy_threads().
 
-Sorry, I will take care that it will be queued up for the next dlm pull-req=
-uest.
-I just checked again if the flexible array member can be accessed
-under the current conditions, but I don't see this can be ever the
-case... otherwise we would access garbage.
+Second leak: quota bitmap buffer (8192 bytes)
+When gfs2_make_fs_rw() fails after gfs2_quota_init() succeeds but
+before other operations complete, the allocated quota bitmap is never
+freed. The error path destroyed threads but didn't cleanup quota
+structures.
 
-Thanks.
+The fix consolidates thread cleanup at the fail_per_node label for all
+error paths, which is safe because gfs2_destroy_threads() checks for
+NULL pointers before calling kthread_stop_put(). Quota cleanup is added
+specifically to the gfs2_make_fs_rw() error path where quota structures
+were initialized.
 
-> Thanks
-> -Gustavo
->
-> On 9/22/25 23:20, Gustavo A. R. Silva wrote:
-> > -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> > getting ready to enable it, globally.
-> >
-> > Move the conflicting declaration to the end of the corresponding
-> > structure. Notice that `struct dlm_message` is a flexible
-> > structure, this is a structure that contains a flexible-array
-> > member.
-> >
-> > Fix the following warning:
-> >
-> > fs/dlm/dlm_internal.h:609:33: warning: structure containing a flexible =
-array member is not at the end of another structure [-Wflex-array-member-no=
-t-at-end]
-> >
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Syzbot detected these leaks with the following signatures:
 
-Acked-by: Alexander Aring <aahringo@redhat.com>
+Thread leak (PATH 3: gfs2_freeze_lock_shared failure):
+  unreferenced object 0xffff88801d7bca80 (size 4480):
+    copy_process+0x3a1/0x4670 kernel/fork.c:2422
+    kernel_clone+0xf3/0x6e0 kernel/fork.c:2779
+    kthread_create_on_node+0x100/0x150 kernel/kthread.c:478
+    init_threads+0xab/0x350 fs/gfs2/ops_fstype.c:611
+    gfs2_fill_super+0xe5c/0x1240 fs/gfs2/ops_fstype.c:1265
 
-David Teigland can you please apply this patch to dlm/next so we don't
-forget it.
+Quota leak (PATH 4: gfs2_make_fs_rw failure):
+  unreferenced object 0xffff88812de7c000 (size 8192):
+    gfs2_quota_init+0xe5/0x820 fs/gfs2/quota.c:1409
+    gfs2_make_fs_rw+0x7a/0xe0 fs/gfs2/super.c:149
+    gfs2_fill_super+0xfbb/0x1240 fs/gfs2/ops_fstype.c:1275
 
-Thanks
+Reported-by: syzbot+aac438d7a1c44071e04b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=aac438d7a1c44071e04b
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+---
+ fs/gfs2/ops_fstype.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-- Alex
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index e7a88b717991..fdc70189e4f1 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1276,7 +1276,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	if (error) {
+ 		gfs2_freeze_unlock(sdp);
+-		gfs2_destroy_threads(sdp);
++		gfs2_quota_cleanup(sdp);
+ 		fs_err(sdp, "can't make FS RW: %d\n", error);
+ 		goto fail_per_node;
+ 	}
+@@ -1286,6 +1286,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ fail_per_node:
+ 	init_per_node(sdp, UNDO);
++	if (!sb_rdonly(sb))
++		gfs2_destroy_threads(sdp);
+ fail_inodes:
+ 	init_inodes(sdp, UNDO);
+ fail_sb:
+-- 
+2.43.0
 
