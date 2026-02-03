@@ -1,141 +1,169 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FF33164D6
-	for <gfs2@lists.linux.dev>; Tue,  3 Feb 2026 10:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402EB31A571
+	for <gfs2@lists.linux.dev>; Tue,  3 Feb 2026 11:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770115246; cv=none; b=BW5gmPOvkMPY2dCKru6BiZHprMDvRbyXats7UB7H7zaoJ6A8vMlmO2uL7WRGdR/50zhJ1TyO4iegGOnlvprXgU/Ie+UqMAbEmhKPv+Dhm4+/ucuGfSmYb24bYDiEHnkiTv9vqGvEY1ACcKgmZPe9H+EN9Sw2KUiwimwFvnDJvCQ=
+	t=1770117433; cv=none; b=T/cuIZBpqSDGXtqPGsRjM5lbWADEH3pOwAsHRVT1OrnOrSwW4igb5WRd2wMtivaIVqT63AgTd5Cx4k8sy6rQj4dxVG9Ht4yInARIQe9uLxdK/WiUwRVK2gXgx1mXBPdwB2PwLW2CEaRjSraRUPX13EhH34B0CKnU/NVCMnSBaMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770115246; c=relaxed/simple;
-	bh=vPU2V50o5jpPnvrbKJzOO+bcSFJqLPqe32WzSG2rqCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CqZ6ZukuNurKoXp/xf6+cluaZ9DBa+JORJwHCWc9JcgntmfXMP2EgfaVOtPtsEJ4j8iKyuaUtQ5NfFwPOqmh1ulw/e0BZgbeMAieeGC27/KxURV6K9mK+mtvNWpmuZoAZfCJbzCwBOJY4vnRtlvwNgnNNgYu7qcSR7jKwcBNLU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bz9zjygH; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770117433; c=relaxed/simple;
+	bh=Iqbb0NRtHrMLVZMstvNL/lygo3fhKe618V4dj4LwTyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JLHTetVoE38Oxpgf24K6/ZCeMMgfeSysZ1otV/+t60jmm5zfIMbpe+VIdTbJynNbM/05Q4STJFVCxqg/pTRzqiC4br8p/7J2QIdsmzzxfEnhgyGTCiXmFXuDwclLYp9koTXNOybtG3Q8fwHTZEG+Yqx814vw53z7Z/qpX3xp438=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XLWB8mhJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bz9zjygH"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-794d4f11a20so21948397b3.1
-        for <gfs2@lists.linux.dev>; Tue, 03 Feb 2026 02:40:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770115244; x=1770720044; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
-        b=bz9zjygHXEuN00r6PgAx1/nq6p39AYX4Gi7oZzG7AMWkNV5yc7lIYlHAXJZlm7qQ7h
-         kMrPNNWiZTOQhj1uqBbYkYluiae2attdP4c72aZkp9IX7ID94q46f2oDPkl9/YWg+fHb
-         aPxESPpKLjmQcsIeVb4i/dX4KFkTRRQDfn7ARWf0MwtfozvYOhMkaRrV3Jb069osHp3q
-         u9TtRZ94SetKDxFzjtyEJbwlNWHaofQ3sC4Fu/n5WJ6siNmoLaILqAEgjHU07jgRebB4
-         T/1EDm3tEFG2xJJ5HaIrvyXCRsCLbsraHCrHoWGHHHu+/BFvoim6nz7Wbp/nU7aOu9pl
-         X8vA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XLWB8mhJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770117431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZB7pys7aVTpydspegTtd64qmcsFblDzpu2L3xqTfUK8=;
+	b=XLWB8mhJ7TCtQF4+cY5UgStkA36CohIcSiYIHtxNN4r2ySei/JqM+z2Tlxim3cjydCO912
+	TrpMrBKuDDEiMkBUCKN4/HwcpIHhZ8gxJ7UFTaWDTOhXgX3CGlHJtcS39PGcrykva3/z2G
+	uijKe55cbUSTVNUmsz+z7hSWqtHhjtU=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-94-ACWvsvxdNHW1LtlZhx0LRg-1; Tue, 03 Feb 2026 06:17:09 -0500
+X-MC-Unique: ACWvsvxdNHW1LtlZhx0LRg-1
+X-Mimecast-MFC-AGG-ID: ACWvsvxdNHW1LtlZhx0LRg_1770117429
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-649b28b7a67so5880034d50.2
+        for <gfs2@lists.linux.dev>; Tue, 03 Feb 2026 03:17:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770115244; x=1770720044;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TG6EI6RBrBqfcG1Qj/7XoK7r3FMDle9OXgLojBRhNAU=;
-        b=DlnPg+78xAbO0JGpY5VNHCeC+mbMlu12nCUs4pGmYi0iaGIq6jb0QMlJ3S2SneLblV
-         BUt/BVnpd06f6NeSn1cIimf/fagKuY/I3ZCZEGBhpNa32jcMKus7niz6CTW4aq+PHlOB
-         0dH4cFRJqK7i1ag2k7hhnCalPZ+IOqcuFylF9HW6t3dXQJGzoNmk6kpKE9gkcaPg+vZX
-         AUG7+7CqJf5gFftkGgVhFHPwBc2lkQJpEkvOzWn0Ysfx68GDZorakbYhPbeYR+lEEIDu
-         Rd0p9Jfr8h7tR5h6mvhOM8Hf+uxXYh05od4cljnf4Uk+EqBq9ZpmAtQPBXkHvnhUMpPd
-         TZ1Q==
-X-Gm-Message-State: AOJu0YwfyRcFsiYA4sQVcq4ybTgBImTPwwrEct3iFtmmTOfO3CSFGTlG
-	hj4baZ+Hs5+T9ZUUdU57Cnmc+YDLYkkay1oWXg9YzplfEn1BE7QvQRME
-X-Gm-Gg: AZuq6aKrdvGFLPdcfBEKtu35BoBiw2X0No3R/e54t0QWWnGyMAEJupgPYmaS1p/Xw0K
-	D3WFgSnsUjS4K20p1g1Sz+z0HGVELUSQFgFlwhT/4rGnDvcR+T7TtMq6F4+OMwfqujPJ6BhRCvF
-	wcWLy5ulL5N4dpo1iJb1MpIvow9ppMMFct8IYZztY0RX87QbXZXknwzrLSBRQNET45cmSrTwCZj
-	GB1BOawngbQ9HF3kYMMiUfXymfjiGBe++DT7P01aFgOc1/XRcDeC7i/GR1bZshYtOrpJA/9NSuM
-	aZzdgt15WTfV9RbpaRE7gpUHiH9Ex323Eoz6ZE/TSVuIK5P4gow3VPqezBg7ust0fK1nTg4k75L
-	LiGFWakMRqFt+JqqZhnlOIiC4eQ93HLVcoOWJLGOW2+PxARe2IL8dXxQOrEQvAUt69D3NJ7BuIr
-	aWnQUNjzyHCw==
-X-Received: by 2002:a05:690c:2703:b0:794:bd20:ea1f with SMTP id 00721157ae682-794bd210154mr72796687b3.47.1770115243635;
-        Tue, 03 Feb 2026 02:40:43 -0800 (PST)
-Received: from fedora ([187.120.156.78])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-794d4a54de7sm47138167b3.38.2026.02.03.02.40.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 02:40:43 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Subject: [RESEND PATCH] gfs2: do not evict glocks with populated address spaces
-Date: Tue,  3 Feb 2026 07:39:41 -0300
-Message-ID: <20260203103941.12918-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        d=1e100.net; s=20230601; t=1770117429; x=1770722229;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZB7pys7aVTpydspegTtd64qmcsFblDzpu2L3xqTfUK8=;
+        b=pkx+EEKqM3PJlvNG9+cIN7RqhIJzWtihUs5cRXzbQ2GPD6ZhQiR0ItzoWUU2pg+dcU
+         sbANaandPX2jtTsAXojx7aFqa/JW818y2SseEQqbO1SVAcuK8vX3kU/63LVNis163Buq
+         cfRqYzk2RDaesxA4CKnpw0lz5thrCaa2HbzYLQpnMISm+merwa/CwG6O2GXsJCzJ9RI4
+         IsfxUBM+d8QUR5FQCMxOlk1t50OeVtlfZ8IFn6eup7Ylo7hErcN/EFGw9GdKxpr5tYLW
+         L4ld9D8JZzBSr4OdkZ53e+pASAMZ5dlIslRTz765zMHFP7nKh/ycs802fSCTBtDl40Dw
+         wGKA==
+X-Gm-Message-State: AOJu0YwvsBvc+6RDhwTm+oDVUKdHFaToE3T+Kn/Ht9UzhEJbwuwJLlG9
+	V+YqqQ7QRpNgeBKQLbpFUuHdTZLjwVT5Wlmo9UJVAzWC+QoW554biZt8M5RoW25wyJIZo6RFpmz
+	OA+aCGomhZijWe8VwZSdHjqvwXPjzIyubLnZl0Ef1z2GWJjFzsbocCtzUzIWTw7Qlg1T9VY1YmS
+	NF9YxsBjqLZMMCwLE2FWnnC8mLg0u6yG2YEj95iG4A
+X-Gm-Gg: AZuq6aLbjpl0PLcTsfBhCv4leeO5twRSP/rfZgYvFU3xX0tGFClrqK4W2ofJwBzk/ML
+	KlLFqNUEVPgML+muHximEXoYlrBWlWi+oJxm3kJrgoLW1tYzT5nJZtWBgWPWbCr9gyVnrmjzWS5
+	TBYp+vdbtz7Y9fQSmRSKlN5Cm7x9egdDnOP14tYswiYREFDaYeF2UIjUIchHh4BBHDxlXIjvduB
+	AicWnLViafH0KA0/aZSUVuJAZcAC7UupeRhyFYbhVfsxzr5ZGUXhg==
+X-Received: by 2002:a05:690e:1248:b0:645:443d:10a2 with SMTP id 956f58d0204a3-649a83c066dmr11736476d50.26.1770117429317;
+        Tue, 03 Feb 2026 03:17:09 -0800 (PST)
+X-Received: by 2002:a05:690e:1248:b0:645:443d:10a2 with SMTP id
+ 956f58d0204a3-649a83c066dmr11736458d50.26.1770117428962; Tue, 03 Feb 2026
+ 03:17:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260203103941.12918-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20260203103941.12918-1-trintaeoitogc@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 3 Feb 2026 12:16:57 +0100
+X-Gm-Features: AZwV_Qis4Buq6oKsnT9sgN2fZYtor8IOs8Q3eHTbUB5-9Q5L2rlGh6cYxtpXYdg
+Message-ID: <CAHc6FU7kH3VfyERRTFuCshiSq0c-ttJLG7OeX_j31K9ehvH7uQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH] gfs2: do not evict glocks with populated address spaces
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: aSYyImT61mMd9VpjnvUJIOd_gJTgWyNWy7ZHJwukKAw_1770117429
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Metadata glocks may have associated address spaces used as caches. Avoid
-reclaiming such glocks under memory pressure while their mappings are
-still populated or their state is not unlocked, as this can lead to
-invalid page cache state and GLOCK_BUG_ON().
+Guilherme,
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- fs/gfs2/glock.h | 30 ++++++++++++++++++++++++++++++
- fs/gfs2/super.c |  3 +++
- 2 files changed, 33 insertions(+)
+On Tue, Feb 3, 2026 at 11:40=E2=80=AFAM Guilherme Giacomo Simoes
+<trintaeoitogc@gmail.com> wrote:
+> Metadata glocks may have associated address spaces used as caches. Avoid
+> reclaiming such glocks under memory pressure while their mappings are
+> still populated or their state is not unlocked, as this can lead to
+> invalid page cache state and GLOCK_BUG_ON().
 
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index 55d5985f32a0..12f57461f687 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -305,4 +305,34 @@ static inline bool glock_needs_demote(struct gfs2_glock *gl)
- 		test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags));
- }
- 
-+/*
-+ * gfs2_glock_not_evictable - check if a glock is not evictable
-+ * @gl:	The glock to check
-+ *
-+ * Glocks which do not represent normal filesystem inodes (e.g. statfs, quota, rindex)
-+ * may have associated address spaces used as metadata caches. These glocks must not
-+ * be reclaimed under memory pressure while their mappings are still populated or their
-+ * state is not unlocked.
-+ */
-+
-+static inline bool gfs2_glock_not_evictable(struct gfs2_glock *gl)
-+{
-+	if (gl->gl_name.ln_type == LM_TYPE_INODE)
-+		return false;
-+
-+	if (gl->gl_ops->go_flags & GLOF_ASPACE) {
-+		struct gfs2_glock_aspace *gla;
-+
-+		gla = container_of(gl, struct gfs2_glock_aspace, glock);
-+
-+		if (!mapping_empty(&gla->mapping))
-+			return true;
-+	}
-+
-+	if (gl->gl_state != LM_ST_UNLOCKED)
-+		return true;
-+
-+	return false;
-+}
-+
- #endif /* __GLOCK_DOT_H__ */
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index f6cd907b3ec6..86544cdafe53 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1164,6 +1164,9 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- 
- static void gfs2_glock_put_eventually(struct gfs2_glock *gl)
- {
-+	if (gfs2_glock_not_evictable(gl))
-+		return;
-+
- 	if (current->flags & PF_MEMALLOC)
- 		gfs2_glock_put_async(gl);
- 	else
--- 
-2.34.1
+What invalid page cache state and GLOCK_BUG_ON() errors is this about, exac=
+tly?
+
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> ---
+>  fs/gfs2/glock.h | 30 ++++++++++++++++++++++++++++++
+>  fs/gfs2/super.c |  3 +++
+>  2 files changed, 33 insertions(+)
+>
+> diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+> index 55d5985f32a0..12f57461f687 100644
+> --- a/fs/gfs2/glock.h
+> +++ b/fs/gfs2/glock.h
+> @@ -305,4 +305,34 @@ static inline bool glock_needs_demote(struct gfs2_gl=
+ock *gl)
+>                 test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags));
+>  }
+>
+> +/*
+> + * gfs2_glock_not_evictable - check if a glock is not evictable
+> + * @gl:        The glock to check
+> + *
+> + * Glocks which do not represent normal filesystem inodes (e.g. statfs, =
+quota, rindex)
+> + * may have associated address spaces used as metadata caches. These glo=
+cks must not
+> + * be reclaimed under memory pressure while their mappings are still pop=
+ulated or their
+> + * state is not unlocked.
+> + */
+> +
+> +static inline bool gfs2_glock_not_evictable(struct gfs2_glock *gl)
+> +{
+> +       if (gl->gl_name.ln_type =3D=3D LM_TYPE_INODE)
+> +               return false;
+> +
+> +       if (gl->gl_ops->go_flags & GLOF_ASPACE) {
+> +               struct gfs2_glock_aspace *gla;
+> +
+> +               gla =3D container_of(gl, struct gfs2_glock_aspace, glock)=
+;
+> +
+> +               if (!mapping_empty(&gla->mapping))
+> +                       return true;
+> +       }
+> +
+> +       if (gl->gl_state !=3D LM_ST_UNLOCKED)
+> +               return true;
+> +
+> +       return false;
+> +}
+> +
+>  #endif /* __GLOCK_DOT_H__ */
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index f6cd907b3ec6..86544cdafe53 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -1164,6 +1164,9 @@ static int gfs2_show_options(struct seq_file *s, st=
+ruct dentry *root)
+>
+>  static void gfs2_glock_put_eventually(struct gfs2_glock *gl)
+>  {
+> +       if (gfs2_glock_not_evictable(gl))
+> +               return;
+> +
+
+This leaks a glock reference, so it's definitely wrong.
+
+>         if (current->flags & PF_MEMALLOC)
+>                 gfs2_glock_put_async(gl);
+>         else
+> --
+> 2.34.1
+>
+
+Thanks,
+Andreas
 
