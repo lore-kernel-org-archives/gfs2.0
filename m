@@ -1,133 +1,102 @@
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E892219DF4D
-	for <gfs2@lists.linux.dev>; Wed,  4 Feb 2026 16:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB08275844
+	for <gfs2@lists.linux.dev>; Thu,  5 Feb 2026 06:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224322; cv=none; b=HSLSxnljgGzzLKqNsZ9egaYxoWLGLAJ/gaGMmNAlS/vhoOWsmnsqme2E+jqWoN6UGptwNQWiGrOtAEjwYiJysOoOJPuYtNN+mLafhNfEqE1UgJqls9ukre/r1+Dqu2W337y8o7qsznRcRjOPH5I02BCiUJP0MPPfTvr3TcteyXg=
+	t=1770273112; cv=none; b=U1+X/gFuX2LEpO1iv3hPPZfU7cIk0dGWMBTXw8QMdcxbyqFetGOTfIbbRrlTKauFjXuBCrl5jgG+CUv3CKR9cl2we4zlaA2twqf8xWTrzKSdv8voCC1d2qtrRC8MzLtLouSOOA8PyOjxRI+JNIues6hVTPNjJ3QO1eXYHbmZj5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224322; c=relaxed/simple;
-	bh=lU2WsBPhcxscoZw+O2DvIw00RsiPU9CY6EVhEJiOiAg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Xi2mp/nybZsF7mOTocWEdhmr7ype+ZFgWVUDb/IpHZtkDrzh505VJm20UUNGIuh3tbOjAfA1F25qTARyuhL341SVj2wkrmjUiWA8/1ZcYTwyUDt6zIk1ZwbOZ9gdC0An8HnY5EvT8nc5W54iOctH4TH4ggGI5uWbux+yBeaNWto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-662f839d680so13607eaf.2
-        for <gfs2@lists.linux.dev>; Wed, 04 Feb 2026 08:58:41 -0800 (PST)
+	s=arc-20240116; t=1770273112; c=relaxed/simple;
+	bh=D2FZGnks1mhd70ETt05smEqAwMkcsbqYZmg9z0sMIEs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hbTbmKMfFPRDEoii+NeanBaPXTcLqliq/grMTYeXWRIODaiY5rp+SmZCt4FVXbYvgdWwp1OFWRviOshrQF5FPkh8GrhJC9LWpyDfVnEQBm2YUFurtRrJVrkXOUhLGn4HTkgK4xyrgaY1nH7V8sNmiz9MZLOXTN9qRkw6Utksnpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0iMEBFg; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0iMEBFg"
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-c61343f82d7so193862a12.1
+        for <gfs2@lists.linux.dev>; Wed, 04 Feb 2026 22:31:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770273111; x=1770877911; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6IzNoHDjJv8QcXTrk47DlqDi/FcMS1AAEpRJRBBFpgU=;
+        b=D0iMEBFgSFDJwrdS7AsWF8e24WVmQ2ALoG2RgUGcXfpkgS4tT8ovO3awRFrFCtaGng
+         TehOx7YPhmvsiFt2K7KnmZ0JqYy77GzK4f7z5l/8eY/POU7j8pjwvMf47o3UFhkq/Z/W
+         frMFjEVmS6C0+XE8aOi97F/urjVvXRBdKzlvYpMAldZMt73oxbr11VQjmN6X2u1QDu/v
+         KMkDc8vWKyvEgX4UDcQbBBorBxLYUiPxo09seOZMLCBW/dkQWMIJMk9PIZUVrESDqbLz
+         tq85cGJIKiNo4r+4bK7WEkjNx1O+o7ONRRl4SqQ+dCnWaw7X0OrQg6pvAKG6Ibbq/Kh0
+         5qzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770224321; x=1770829121;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NSyDNamann+yh93+/JRAZDIVe/U2O2ydLQcczFr/+hM=;
-        b=EqCUQ3RcB0d84sN10uzUMCDG3vFV70pZReTNKzqjIwT+l7FJfkzqtWGlUPVY8SM/ug
-         yURZdTpRNe7sf1knWVc0mTq/sP17YQdA4OOed8DNy0nvB3qyCu+Xtt4u6zULS0FGsT+b
-         SU4ckzBljTpvxGnHpdtHfY1Qzhru/0hfBBCmTTJAxMCVxnhVhdoMaOTK82mcZDGR/rwM
-         AD0KArdKFExEMYt22uTN8eE7N1DmF+V/R/bnTRW9jPJ0FpE88CHZlJ0/1F5TGNIujMmX
-         4xbyvuIijQZ+K+ePUrvk5WEm2Vu08CX6jYYS3UKVknbOUX96py0U2wk978G3MFSt/Deu
-         Nm5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXZFi0k6lFpQ44vc15IPMeR6sLa2uRKCrgdE39t/kRYFpm16mptptV2DKI0J10LPwhIa/hV@lists.linux.dev
-X-Gm-Message-State: AOJu0YzuBSCFoLFZscZNgoa9qh0rV33pYe/KBcZmT1bh5yK44XYYnGlQ
-	ZSdURpRO4UoVUI0O15rC1NmbiXRTeVft+h8EucPxqSx4ykWh1N+aUfUwJz0gURTh8YiZ5lC+bIQ
-	38C8+rd83Zh0TXqg2DV3LiVWCzwhATseIKLilP6NDMyCiV5O4EK8ZiQslFCE=
+        d=1e100.net; s=20230601; t=1770273111; x=1770877911;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6IzNoHDjJv8QcXTrk47DlqDi/FcMS1AAEpRJRBBFpgU=;
+        b=EEN5VjSdN8f/lymR9QJ6WRidmgMNIe+gPysWbeNBp16K8eTJw/AL925EXwsh7hr8kV
+         HwzUIz6UDbB50Hkdl44TJYcKS8X38mozHvllsIGidqHEZV+ZXG24BaesF1bcHVEw4ASd
+         dMDo0rWZskl3dGlaf8eGi7SINIfy0HX1GsEnXnHZ7LD1P1GojmY2XyOtsPACeMqfaEHg
+         mQyY4Qg9sNxCqw1qmhw+72hkT6ce3JZAp2j7CRCdagEfoit9L4hxnQtCNZaFL321Y4es
+         agjAo/EVGZlbsFYjcUNEq2fhtYSj35SE1UWYNiAEecLJ3OOjqsz5Uhsm916/zrf3E0ZP
+         krUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKMb06SLdc17hlMu3nM+kWBu5c0PYzi//yhXAnhzjfwprJVygnDDxwdGy0tba2L3Ea93lq@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2FDAE/x95OtxaAaFZBC1HrmjbqberDqCpcXtnm9chO58CqIys
+	YNvyK4gas+rNlvMuJJnNce9KCeEV21py5KAbF9KpkxxvREYTCB+nlJNJ1T3BcWlBv1I=
+X-Gm-Gg: AZuq6aIBloDx651UMeDEGDiXGd34PkBdregq7Zv4nFI1xLX0PKC2EypHiSzBEkpNNwx
+	RIrnXC2p1HRwCIjWA4UXSpTwO20orMDXth3SeSvbDptRnfE+QXBAELE9FSXOAqfBsPRS1JtSd1X
+	gqH7jZt1Mxp1zrwgqopqqz7hw9GKPlUb7O/U61PPraECZEJUSzL25EPdJjdjFZ+YkinrMdZNS1X
+	QWqVQhtTyxdcO8zWV3gq4yXTrf9Ssct4iGjHm1FihwIGye0euulwL5DRDMWUaJwTf7Jk6Dy/iFW
+	9Waalv9113+Lt+0M+KTPtEaaNqLJdhfFrldPQSWu3+nQt8QH0BtR9B8cy5ANKT/mDqki1Pwrzv3
+	KDpBeQBm7fcvrY+nXxjXoOWPUB1YSyTBOONc8niJSNSLiaqp+oB+/BOaSlIgZQA1tGqHGr2GATj
+	eWaNBszNmmbKlStd19d+vGLxJltcZSvBuYOLU74w==
+X-Received: by 2002:a17:90b:5870:b0:33b:a906:e40 with SMTP id 98e67ed59e1d1-354870a5b6fmr4816464a91.2.1770273111310;
+        Wed, 04 Feb 2026 22:31:51 -0800 (PST)
+Received: from lima-ubuntu.hz.ali.com ([47.246.98.212])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6c83127962sm3796413a12.10.2026.02.04.22.31.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 22:31:50 -0800 (PST)
+From: Qing Wang <wangqing7171@gmail.com>
+To: syzbot+e57495fb65020ac7bca4@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [gfs2?] memory leak in gfs2_quota_init (2)
+Date: Thu,  5 Feb 2026 14:31:45 +0800
+Message-Id: <20260205063145.1039526-1-wangqing7171@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <69837ac0.a00a0220.34fa92.0011.GAE@google.com>
+References: <69837ac0.a00a0220.34fa92.0011.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1524:b0:663:2b12:14fa with SMTP id
- 006d021491bc7-66a229792d7mr1787822eaf.51.1770224320836; Wed, 04 Feb 2026
- 08:58:40 -0800 (PST)
-Date: Wed, 04 Feb 2026 08:58:40 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69837ac0.a00a0220.34fa92.0011.GAE@google.com>
-Subject: [syzbot] [gfs2?] memory leak in gfs2_quota_init (2)
-From: syzbot <syzbot+e57495fb65020ac7bca4@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+#syz test
 
-syzbot found the following issue on:
-
-HEAD commit:    283073725700 Merge tag 'riscv-for-linus-6.19-rc8' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=108d3c5a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9d7d0fbecb37bff8
-dashboard link: https://syzkaller.appspot.com/bug?extid=e57495fb65020ac7bca4
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=158fa72a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=174c9644580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/29ae0baa9654/disk-28307372.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cc5f836cdf79/vmlinux-28307372.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c40c2fb29195/bzImage-28307372.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/bb1679f271de/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=170d3c5a580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e57495fb65020ac7bca4@syzkaller.appspotmail.com
-
-BUG: memory leak
-unreferenced object 0xffff88810e866000 (size 8192):
-  comm "syz.0.477", pid 7931, jiffies 4295008793
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 8429a099):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4958 [inline]
-    slab_alloc_node mm/slub.c:5263 [inline]
-    __do_kmalloc_node mm/slub.c:5656 [inline]
-    __kmalloc_noprof+0x465/0x680 mm/slub.c:5669
-    kmalloc_noprof include/linux/slab.h:961 [inline]
-    kzalloc_noprof include/linux/slab.h:1094 [inline]
-    gfs2_quota_init+0xe5/0x820 fs/gfs2/quota.c:1409
-    gfs2_make_fs_rw+0x7a/0xe0 fs/gfs2/super.c:149
-    gfs2_fill_super+0xfbb/0x1210 fs/gfs2/ops_fstype.c:1275
-    get_tree_bdev_flags+0x1c0/0x290 fs/super.c:1691
-    gfs2_get_tree+0x26/0xd0 fs/gfs2/ops_fstype.c:1332
-    vfs_get_tree+0x30/0x120 fs/super.c:1751
-    fc_mount fs/namespace.c:1199 [inline]
-    do_new_mount_fc fs/namespace.c:3636 [inline]
-    do_new_mount fs/namespace.c:3712 [inline]
-    path_mount+0x5a9/0x1350 fs/namespace.c:4022
-    do_mount fs/namespace.c:4035 [inline]
-    __do_sys_mount fs/namespace.c:4224 [inline]
-    __se_sys_mount fs/namespace.c:4201 [inline]
-    __x64_sys_mount+0x1a3/0x1e0 fs/namespace.c:4201
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index f6cd907b3ec6..1144720a17ff 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -149,9 +149,12 @@ int gfs2_make_fs_rw(struct gfs2_sbd *sdp)
+ 	error = gfs2_quota_init(sdp);
+ 	if (!error && gfs2_withdrawn(sdp))
+ 		error = -EIO;
+-	if (!error)
+-		set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+-	return error;
++	if (error) {
++		gfs2_quota_cleanup(sdp);
++		return error;
++	}
++	set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
++	return 0;
+ }
+ 
+ void gfs2_statfs_change_in(struct gfs2_statfs_change_host *sc, const void *buf)
