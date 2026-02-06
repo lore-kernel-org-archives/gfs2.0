@@ -1,120 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from outbound.baidu.com (mx22.baidu.com [220.181.50.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799A222339
-	for <gfs2@lists.linux.dev>; Thu,  5 Feb 2026 17:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6CE2459C9
+	for <gfs2@lists.linux.dev>; Fri,  6 Feb 2026 05:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.50.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770311162; cv=none; b=kbs9IgxdEW6vqxciS6loegkx0mZqsNi6JHSOzey3vXSAk0xAurCBHQAQIBNQg98fS2qMxfWi49XOJZ5Rc7xRbVo9on4S4j2fy/nAjmZrEHNYBU6J59FfjxhCtuq7MyNtZD2ZP0bKy+T4VoH7FXUQyLolig6+kp0QpitzGWwd104=
+	t=1770354239; cv=none; b=F/JaUf0FHk3w56EQCHWZ1K9X0VirU16X12E1mlkCTnqE6mgqjkE8rgCLzRpleMTxqj0gR0tlHMfrCZslOiQRwZ1SLzB/xEh7EzRBj5yACH88GEHXsRac8MucXN7VVlIUPlDHwHHtQiuDh9FrS3wOO3CS0/mZCPiLLHrwg1AVbqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770311162; c=relaxed/simple;
-	bh=mxdsqLQzKwujBVpb80GBqNJLBqaCY5lOGVkBV8ZZGAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=ekDQhqwddZW90b7I7ffo0UpnM4moOW0rUhLRbnJCh1JrYZ/JJ/LpDUJvl+f3qw1SooFXBH53kLE+dgTk2KHx40XwEhWTU5tKRypSz+oX7TyRTC++l4zgxDw3vN4+lIrPFC2AoLxeg+q2USMnDnja6AbYPqcdaa1Ca4sYpJw9rq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DCb99iKg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DCb99iKg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770311161;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8jyPMf0RawOV4Uk46BJulibP8G6RSkLSbbL/Gox//uA=;
-	b=DCb99iKgLAbdtNrah+YziM4YO+p7HO4sEplRUBBBRxqRFhEtPndVBYLIHF/uLWLvnCZGx9
-	vmhNClCIlacldcOT2EbaQWXlqtjboohAk00Ctm4FZtN5NCx9eKc3ZJcSvapPhuOPXhRtaX
-	YXYa3T4zFJWZE6nLmdR0LJQP62zDBZ0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-15j5gRF3O2ioATSvcWQ1UA-1; Thu,
- 05 Feb 2026 12:05:59 -0500
-X-MC-Unique: 15j5gRF3O2ioATSvcWQ1UA-1
-X-Mimecast-MFC-AGG-ID: 15j5gRF3O2ioATSvcWQ1UA_1770311158
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 84BEB1964CE4
-	for <gfs2@lists.linux.dev>; Thu,  5 Feb 2026 17:05:52 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.226.189])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 87FB2192C7CD;
-	Thu,  5 Feb 2026 17:05:51 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH] gfs2: fiemap page fault fix
-Date: Thu,  5 Feb 2026 18:05:50 +0100
-Message-ID: <20260205170550.1167774-1-agruenba@redhat.com>
+	s=arc-20240116; t=1770354239; c=relaxed/simple;
+	bh=Q98roVB5hZrAY/PrGD8FV1aQ+VKPQNxhBpZb1F+TS1M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s/zTrYuAZ7XmMqiWM7ti7w+YBJG5azEOXNoCAfmCRAR6qwXoMPZuJXbw8NjaEO5TPIZHlXf/ToD3OF6a6RMW0CMaZslQtsVrKxuGbUSgPcVLZ/m0HeoY0bgr1/ex7EqUNmGoTs6PnDEveyULSvX0fh5iip+A872lhywhh3RcDlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=220.181.50.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+From: lirongqing <lirongqing@baidu.com>
+To: Alexander Aring <aahringo@redhat.com>, David Teigland
+	<teigland@redhat.com>, <gfs2@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH] dlm: use hlist_for_each_entry_srcu for SRCU protected lists
+Date: Fri, 6 Feb 2026 00:03:29 -0500
+Message-ID: <20260206050329.5834-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lVoWrFQFtWeAuvUzqyozy85E4f1L2XE9Y8q3QCoDGC8_1770311158
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc10.internal.baidu.com (172.31.3.20) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+X-FEAS-Client-IP: 172.31.50.47
+X-FE-Policy-ID: 52:10:53:SYSTEM
 
-In gfs2_fiemap(), we are calling iomap_fiemap() while holding the inode
-glock.  This can lead to recursive glock taking if the fiemap buffer is
-memory mapped to the same inode and accessing it triggers a page fault.
+From: Li RongQing <lirongqing@baidu.com>
 
-Fix by disabling page faults for iomap_fiemap() and faulting in the
-buffer by hand if necessary.
+The connection and node hash tables in DLM are protected by SRCU, but
+the code currently uses hlist_for_each_entry_rcu() for traversal.
+While this works functionally, it is semantically incorrect and triggers
+warnings when RCU lockdep debugging is enabled, as it expects regular
+RCU read-side critical sections.
 
-Fixes xfstest generic/742.
+This patch replaces the incorrect macros with hlist_for_each_entry_srcu()
+and adds the appropriate lockdep expressions using srcu_read_lock_held()
+to ensure consistency with the underlying locking mechanism.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
 ---
- fs/gfs2/inode.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/dlm/lowcomms.c | 12 ++++++++----
+ fs/dlm/midcomms.c | 15 ++++++++++-----
+ 2 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index b6ed069b3487..4d65e4a75262 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -2192,6 +2192,14 @@ static int gfs2_getattr(struct mnt_idmap *idmap,
- 	return 0;
- }
- 
-+static bool fault_in_fiemap(struct fiemap_extent_info *fi)
-+{
-+	struct fiemap_extent __user *dest = fi->fi_extents_start;
-+	size_t size = sizeof(*dest) * fi->fi_extents_max;
-+
-+	return fault_in_safe_writeable((char __user *)dest, size) == 0;
-+}
-+
- static int gfs2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		       u64 start, u64 len)
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index b395800..59e91a6 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -271,7 +271,8 @@ static struct connection *__find_con(int nodeid, int r)
  {
-@@ -2201,14 +2209,22 @@ static int gfs2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 	struct connection *con;
  
- 	inode_lock_shared(inode);
+-	hlist_for_each_entry_rcu(con, &connection_hash[r], list) {
++	hlist_for_each_entry_srcu(con, &connection_hash[r], list,
++			srcu_read_lock_held(&connections_srcu)) {
+ 		if (con->nodeid == nodeid)
+ 			return con;
+ 	}
+@@ -426,7 +427,8 @@ static int addr_to_nodeid(struct sockaddr_storage *addr, int *nodeid,
  
-+retry:
- 	ret = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, 0, &gh);
- 	if (ret)
- 		goto out;
+ 	idx = srcu_read_lock(&connections_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(con, &connection_hash[i], list) {
++		hlist_for_each_entry_srcu(con, &connection_hash[i], list,
++				srcu_read_lock_held(&connections_srcu)) {
+ 			WARN_ON_ONCE(!con->addr_count);
  
-+	pagefault_disable();
- 	ret = iomap_fiemap(inode, fieinfo, start, len, &gfs2_iomap_ops);
-+	pagefault_enable();
+ 			spin_lock(&con->addrs_lock);
+@@ -1729,7 +1731,8 @@ void dlm_lowcomms_shutdown(void)
  
- 	gfs2_glock_dq_uninit(&gh);
+ 	idx = srcu_read_lock(&connections_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(con, &connection_hash[i], list) {
++		hlist_for_each_entry_srcu(con, &connection_hash[i], list,
++				srcu_read_lock_held(&connections_srcu)) {
+ 			shutdown_connection(con, true);
+ 			stop_connection_io(con);
+ 			flush_workqueue(process_workqueue);
+@@ -1968,7 +1971,8 @@ void dlm_lowcomms_exit(void)
  
-+	if (ret == -EFAULT && fault_in_fiemap(fieinfo)) {
-+		fieinfo->fi_extents_mapped = 0;
-+		goto retry;
-+	}
-+
- out:
- 	inode_unlock_shared(inode);
- 	return ret;
+ 	idx = srcu_read_lock(&connections_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(con, &connection_hash[i], list) {
++		hlist_for_each_entry_srcu(con, &connection_hash[i], list,
++				srcu_read_lock_held(&connections_srcu)) {
+ 			spin_lock(&connections_lock);
+ 			hlist_del_rcu(&con->list);
+ 			spin_unlock(&connections_lock);
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index 2c101bb..e08765b 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -275,7 +275,8 @@ static struct midcomms_node *__find_node(int nodeid, int r)
+ {
+ 	struct midcomms_node *node;
+ 
+-	hlist_for_each_entry_rcu(node, &node_hash[r], hlist) {
++	hlist_for_each_entry_srcu(node, &node_hash[r], hlist,
++			srcu_read_lock_held(&nodes_srcu)) {
+ 		if (node->nodeid == nodeid)
+ 			return node;
+ 	}
+@@ -1165,7 +1166,8 @@ void dlm_midcomms_exit(void)
+ 
+ 	idx = srcu_read_lock(&nodes_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(node, &node_hash[i], hlist) {
++		hlist_for_each_entry_srcu(node, &node_hash[i], hlist,
++				srcu_read_lock_held(&nodes_srcu)) {
+ 			dlm_delete_debug_comms_file(node->debugfs);
+ 
+ 			spin_lock(&nodes_lock);
+@@ -1325,7 +1327,8 @@ void dlm_midcomms_version_wait(void)
+ 
+ 	idx = srcu_read_lock(&nodes_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(node, &node_hash[i], hlist) {
++		hlist_for_each_entry_srcu(node, &node_hash[i], hlist,
++				srcu_read_lock_held(&nodes_srcu)) {
+ 			ret = wait_event_timeout(node->shutdown_wait,
+ 						 node->version != DLM_VERSION_NOT_SET ||
+ 						 node->state == DLM_CLOSED ||
+@@ -1396,7 +1399,8 @@ void dlm_midcomms_shutdown(void)
+ 	mutex_lock(&close_lock);
+ 	idx = srcu_read_lock(&nodes_srcu);
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(node, &node_hash[i], hlist) {
++		hlist_for_each_entry_srcu(node, &node_hash[i], hlist,
++				srcu_read_lock_held(&nodes_srcu)) {
+ 			midcomms_shutdown(node);
+ 		}
+ 	}
+@@ -1404,7 +1408,8 @@ void dlm_midcomms_shutdown(void)
+ 	dlm_lowcomms_shutdown();
+ 
+ 	for (i = 0; i < CONN_HASH_SIZE; i++) {
+-		hlist_for_each_entry_rcu(node, &node_hash[i], hlist) {
++		hlist_for_each_entry_srcu(node, &node_hash[i], hlist,
++				srcu_read_lock_held(&nodes_srcu)) {
+ 			midcomms_node_reset(node);
+ 		}
+ 	}
 -- 
-2.52.0
+2.9.4
 
