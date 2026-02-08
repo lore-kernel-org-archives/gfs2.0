@@ -1,96 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100C1ACEDF
-	for <gfs2@lists.linux.dev>; Sun,  8 Feb 2026 12:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C6B344D9B
+	for <gfs2@lists.linux.dev>; Sun,  8 Feb 2026 22:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770555330; cv=none; b=h9Ir6kKTUAYTzicUtStm2sNBrTpoyPTF1iB3ZM6VkleqkDWixXx2bgA5tzZJVGeyjinPUrbTCXOxzonbngIqkV7LU2WQCwVnfhWigMw16dx6zC/lmG+fOgPlnvlXXCG2snUl6H7sxdqzIU/DJCcehdM92KEacv8j+6uCKLvyU8g=
+	t=1770588743; cv=none; b=SMsRH/RP3Gn2cQQ6B4cayPu465mlWXDVAqf2iPPrBwPJM3hCZk4hTVqRiTQ5UXfLPFiE5ZvyLIa8cPA7rM+8bzNv0u4s90t2ayi2m/wItmVtYvcvraDQc/JMcWpC+klGCb+dHSW/vY6jNkALpjDiwXeIPV/1CAEudG1y7+x9+3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770555330; c=relaxed/simple;
-	bh=lbwpZDiJ0RubAEN4iV6JVLxvcDGJBPXS1t6V3HXk+cQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GcILsf3T4iyNatCSGDYnwnRoW56RTMx76p+ioxYXxm9/kq8fJAtwfe+bt/LyP7Xi31seNELgVik+R9aiY2Qeex7Y6ZNNSEzXtXZok04q+EZbfmG4O3MOs53kf7QqhMVuMEL9q9XkfR59VN5ecZ1h8YLpu08FeOapO7tD8+aUksg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KKvFUSAv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770588743; c=relaxed/simple;
+	bh=3434Rh+P7hIVnR5FrEbOerNrTX0TkzhDFEvO1sbJk9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQwts0Jt7+j2+aFBfsIJ5fN7xyll67v2sQ5cndTEcvM7fSmTIJ2miGv2Xr+caMGttcDLUg9KJ8GRRWQC4b4xD+yveilhg1rOqnRjEwZfQW1HRXgrOSxq4cEOCYYIOinnYDGp+lV1tAwIEWzKF09DeDMEzXwquQFAVK15c7KW70k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amSUvS34; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KKvFUSAv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770555328;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lbwpZDiJ0RubAEN4iV6JVLxvcDGJBPXS1t6V3HXk+cQ=;
-	b=KKvFUSAvK4pD/ANAo+/IZDqJB5YTtOzHFFukV4fTSafx7ZfKC/Pv8iAcAJcUstY2kkquo2
-	OHQqOnGmhT6gEQbey+B6GIBWpsaHD3RDGIglcv7r/aCfZTU5TInI1G14d5fezrCW9YLmv8
-	8RPYjOa1NnkGuHlyY12kG3auROCosY8=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-472-1oyzAeFBOaijMygN_OG7Pg-1; Sun, 08 Feb 2026 07:55:27 -0500
-X-MC-Unique: 1oyzAeFBOaijMygN_OG7Pg-1
-X-Mimecast-MFC-AGG-ID: 1oyzAeFBOaijMygN_OG7Pg_1770555327
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-64ad4fd4257so2066215d50.3
-        for <gfs2@lists.linux.dev>; Sun, 08 Feb 2026 04:55:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amSUvS34"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-794911acb04so22119287b3.0
+        for <gfs2@lists.linux.dev>; Sun, 08 Feb 2026 14:12:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770588742; x=1771193542; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5u7HvU/qv5ExBJjQqEceuf5F7enjLIIjfK/O6HizMHI=;
+        b=amSUvS34lu1Wzq5HoK4g0Du4q2aa6gouM/yZAhG2/GHxiHypnNgr9QUt+prBtnzNyL
+         gpPzJcFf/CeSsKS6VknAPlje6PMMR15l4y/s4glaJUUkNDN8S0GLyDLliEZs1rQF0D/w
+         1dIOZR2nSf6d++YR6Ti0jm6HgyF1vVxD6HLFJbcYngSZ1WypaBUyCE0kBE9mHFV3aB8M
+         u2OLp4vddJbUie9Ukju8mvQptWAWjw55WEPmtc6dbBTIAQtQkEeyvrhFZchMpZGtiJUw
+         apY5URyiRvb5xNnboVBw7GuUbaR3x7wpLnSc/jPLOAEPi83zizj+FtgZDX/AQ7LO/LpE
+         fONQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770555327; x=1771160127;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lbwpZDiJ0RubAEN4iV6JVLxvcDGJBPXS1t6V3HXk+cQ=;
-        b=H2wv4431VIZsGk8+DA3IzUjicMc/n4tszaRvHQ/4W4EgiY1w+sdDp4Lb2kGUpnHETR
-         Eh2SzKrkDg+pULU1MptZaIfo1N1JsKqITusmnA2+zzCUZrD+wVgR9k0PGHiHfZz7fgD5
-         NI39/+p6H9pjaeUtquDOoDFYwB2m8pC371wFd1S3uaCcS8Lj2aZ3jkCgxrcd13AQgxFh
-         DKI7tfESC4eeitgXY++wkuEGMYcFgHxKuy+9ZAvNuJZhws74L5J+O15KCF9IMZ3MZfSC
-         efLMCqMFYYPdR5fA6A9VSrtjA6fRDj4awdi2K0MPIZsB62SEtF/r/VLWhwfM4l3Gbjag
-         ddtA==
-X-Gm-Message-State: AOJu0YzjT/01OcAqdLVMHcvLJFwJHTlf0hz8WDiyM3ADW6Cww4RNaPoP
-	CSqhWQx9WvJCwALIQxk2MBclcxvJ31CSMxCEMnREBzKMelUzSmKtCwDRa3akhUJ46m78yB5WQ4T
-	HALZLr/dAXCh3AIjQqCUNZgBSldBTTMxyPUurLObP0FmA/S5kKUYsjMZ14w/lVohtCQPUvZysQg
-	SPqjplNll3ZpDfjSA8N2wrqs22mfaLqA==
-X-Gm-Gg: AZuq6aIkkRuUuDcpXqfF476n1EA6JmBms0lUb77uZAB9/Hmg8/fO3N2vK2EnSRUiDM6
-	dkKtIv37roa+yhYCYbR1cpAFPZp72weyohhqBxMKVpWNSP25R4pZOzBIQrIvtErH97Y9E70mDRU
-	b+f1gBpomNj+YdrWCcp9ntpBi05+3gvaHrIb/sqYfob1YKH5vbv3W75dU4lgeR3NzFZ7cTndURw
-	8eic94uzi3SKWQjnPBUdOs4AmQ6gzaWuf/hObRd1UNMFPmcUcbTzw==
-X-Received: by 2002:a05:690e:1186:b0:64a:cdcb:95a7 with SMTP id 956f58d0204a3-64acdcb9819mr6791238d50.22.1770555326864;
-        Sun, 08 Feb 2026 04:55:26 -0800 (PST)
-X-Received: by 2002:a05:690e:1186:b0:64a:cdcb:95a7 with SMTP id
- 956f58d0204a3-64acdcb9819mr6791225d50.22.1770555326441; Sun, 08 Feb 2026
- 04:55:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770588742; x=1771193542;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5u7HvU/qv5ExBJjQqEceuf5F7enjLIIjfK/O6HizMHI=;
+        b=IFFmgNNJKVe9goEcFq3tqC3SnSkWc3+pB75o5a3Ram34gmmhlT29OBnH1VGOK9jbl9
+         hxxPkbJKiON1xolLcbkZyxQ8S3xxJ/tykzRULddhbFOYYKvy6TDyFrGr5W/DqRDlBdwN
+         woCvLJdf5B8BwZK3+Wpza4HhvnkmHLQh508mYmL9+0XqU1EsQ4x0lhX6G7cnc8MnNe+j
+         GC9El8s+mXrzblIJvnWpWh98no2XrX2zRPhlPYu+Bn8pxJjeo5DiPgdxckrLydbd8nQV
+         1ADJDOBzgvCwVJ3Xi4KqybfRJeSs5J9t7FGUvYo9CMXbz49qyx0N7jdD3r2aiChvJUkq
+         +X2A==
+X-Gm-Message-State: AOJu0YyNbtE63adu3Ca9mFM8L1QefmY4TArYf4X0jJnytbwfunh9YWRj
+	3uF+2wtFBZk9tFQoqFf1uOxg3WeiUBmgQxaE4p4Ppx/TrI8p0ypyMKQF
+X-Gm-Gg: AZuq6aLJSR7uo20hto9oUqcD7oVFP6PYHS7BV6Rl4K3WEOnztk0iPtpd3HwzFO2BJg8
+	7gQMjbGvfujtkUFoAztn4jd0nR0PYmLLAV8MM1xv7TymrIuuMQbNlnzX8kgQ/zp0gb/4qpQajEp
+	EVdVqYCkji7SF2dzY3NUxXaY9bkbLMKam1/izw9umnPTgIalnpH+n+5L0LksvvSYgwcHi8lIUb8
+	35j013wbUM6+r7K5lbRnKhm1wgu5/7AdA3Y+Ec/+ni4cVM5Q8xt16OuxQfuO8I7aD6JMA3A5yJJ
+	12ns5to8fiijwqGvPkPmeXr6OIZ9Kzv/vdlPRNx4bU1xrjVF4l2088lN74Ek8X36qmfwBJtNT5A
+	+dTgeyAGTCwtvsDZOA6G492vo1OChYN6ZFhqKe4b0jiyLPK8GpuSZ7zKtUFovdT7LhSB+meZJoj
+	Zbzo9zrJo7oDE4NhYEK+cpvlaIaOM=
+X-Received: by 2002:a05:690c:fd1:b0:794:d639:375 with SMTP id 00721157ae682-7952aa49d4amr94286897b3.1.1770588741821;
+        Sun, 08 Feb 2026 14:12:21 -0800 (PST)
+Received: from anish-GV62VR-7RF.lan ([2603:6081:24f0:35f0:dbe3:27f9:6ac3:4647])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm76164317b3.50.2026.02.08.14.12.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Feb 2026 14:12:21 -0800 (PST)
+From: Anish Mulay <anishm7030@gmail.com>
+To: aahringo@redhat.com,
+	teigland@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Anish Mulay <anishm7030@gmail.com>
+Subject: [PATCH] fs: dlm: use sysfs_emit() instead of snprintf()
+Date: Sun,  8 Feb 2026 17:12:15 -0500
+Message-ID: <20260208221215.205864-1-anishm7030@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260205135318.5346-1-wangqing7171@gmail.com>
-In-Reply-To: <20260205135318.5346-1-wangqing7171@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Sun, 8 Feb 2026 13:55:15 +0100
-X-Gm-Features: AZwV_QiP2TzJbgMyMedgJDgLc1ksYHBK9Xd9m91Ug6I-9L4WOOcZxwBAbNWvBmc
-Message-ID: <CAHc6FU6qN_ddCOMpkdow4k21=DjzhUVdY-rgy-7Zb8_SwTz-bQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: Fix memory leak in gfs2_make_fs_rw()
-To: Qing Wong <wangqing7171@gmail.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+e57495fb65020ac7bca4@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ks2Xp_J2SywGMiKg-4-vO7Fh-hsl8-TBden4Mva11vY_1770555327
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 5, 2026 at 2:53=E2=80=AFPM Qing Wong <wangqing7171@gmail.com> w=
-rote:
-> From: Qing Wang <wangqing7171@gmail.com>
->
-> If gfs2_quota_init() success and filesystem is withdrawn, need to cleanup
-> by gfs2_quota_cleanup() to avoid memory leak.
+Follow the advice in Documentation/filesystems/sysfs.rst:
+show() should only use sysfs_emit() or sysfs_emit_at() when formatting
+the value to be returned to user space.
 
-This is already taken care of by commit da6f5bbc2e79 ("gfs2: fix
-memory leaks in gfs2_fill_super error path") now.
+This patch replaces snprintf() with sysfs_emit() in the lockspace
+show functions.
 
-Thanks,
-Andreas
+Signed-off-by: Anish Mulay <anishm7030@gmail.com>
+---
+ fs/dlm/lockspace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index ddaa76558706..23975bb394eb 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -69,7 +69,7 @@ static ssize_t dlm_event_store(struct dlm_ls *ls, const char *buf, size_t len)
+ 
+ static ssize_t dlm_id_show(struct dlm_ls *ls, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%u\n", ls->ls_global_id);
++	return sysfs_emit(buf, "%u\n", ls->ls_global_id);
+ }
+ 
+ static ssize_t dlm_id_store(struct dlm_ls *ls, const char *buf, size_t len)
+@@ -83,7 +83,7 @@ static ssize_t dlm_id_store(struct dlm_ls *ls, const char *buf, size_t len)
+ 
+ static ssize_t dlm_nodir_show(struct dlm_ls *ls, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%u\n", dlm_no_directory(ls));
++	return sysfs_emit(buf, "%u\n", dlm_no_directory(ls));
+ }
+ 
+ static ssize_t dlm_nodir_store(struct dlm_ls *ls, const char *buf, size_t len)
+@@ -101,12 +101,12 @@ static ssize_t dlm_nodir_store(struct dlm_ls *ls, const char *buf, size_t len)
+ static ssize_t dlm_recover_status_show(struct dlm_ls *ls, char *buf)
+ {
+ 	uint32_t status = dlm_recover_status(ls);
+-	return snprintf(buf, PAGE_SIZE, "%x\n", status);
++	return sysfs_emit(buf, "%x\n", status);
+ }
+ 
+ static ssize_t dlm_recover_nodeid_show(struct dlm_ls *ls, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%d\n", ls->ls_recover_nodeid);
++	return sysfs_emit(buf, "%d\n", ls->ls_recover_nodeid);
+ }
+ 
+ struct dlm_attr {
+-- 
+2.43.0
 
