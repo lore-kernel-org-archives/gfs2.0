@@ -1,127 +1,133 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C6B344D9B
-	for <gfs2@lists.linux.dev>; Sun,  8 Feb 2026 22:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C8C37A487
+	for <gfs2@lists.linux.dev>; Mon,  9 Feb 2026 13:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770588743; cv=none; b=SMsRH/RP3Gn2cQQ6B4cayPu465mlWXDVAqf2iPPrBwPJM3hCZk4hTVqRiTQ5UXfLPFiE5ZvyLIa8cPA7rM+8bzNv0u4s90t2ayi2m/wItmVtYvcvraDQc/JMcWpC+klGCb+dHSW/vY6jNkALpjDiwXeIPV/1CAEudG1y7+x9+3s=
+	t=1770645568; cv=none; b=DFL+zz76u8dUUO/GgiOh2rKG2JOHHsG7teG/lOljBfmdAxA8HZF1Sl83DZAkrN+5FwP5VW0yvzO3xrGUDWbWhdRBew5PqJMPIB1zSYEXKN1pYhXJ5CGv3yITnXs76h8E9QRowrxqDJ/p+CuHaJlZbfv6IZWCAl/rymuazpBiqrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770588743; c=relaxed/simple;
-	bh=3434Rh+P7hIVnR5FrEbOerNrTX0TkzhDFEvO1sbJk9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQwts0Jt7+j2+aFBfsIJ5fN7xyll67v2sQ5cndTEcvM7fSmTIJ2miGv2Xr+caMGttcDLUg9KJ8GRRWQC4b4xD+yveilhg1rOqnRjEwZfQW1HRXgrOSxq4cEOCYYIOinnYDGp+lV1tAwIEWzKF09DeDMEzXwquQFAVK15c7KW70k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amSUvS34; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770645568; c=relaxed/simple;
+	bh=LoXzuHjfuOGaaoISgTDRberrHZSuaxvxop3k5Mwo5nI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=OSZuSTkA5cEhDGpD78f6cdfSIdG9K5n2oSiouhrWIZabzit4kwgOkDN0aEJ5oQhB1KFyV08tb62nBQ2yPBnFC4T9TA5HVjc2ypxyjxNgNYoxVwTfweDZw4aryR4C2mUn3ovtZrNHpLpmLlzGMmcYgION91yppTYwmmvKTDHf/1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Kkk5xION; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amSUvS34"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-794911acb04so22119287b3.0
-        for <gfs2@lists.linux.dev>; Sun, 08 Feb 2026 14:12:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770588742; x=1771193542; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5u7HvU/qv5ExBJjQqEceuf5F7enjLIIjfK/O6HizMHI=;
-        b=amSUvS34lu1Wzq5HoK4g0Du4q2aa6gouM/yZAhG2/GHxiHypnNgr9QUt+prBtnzNyL
-         gpPzJcFf/CeSsKS6VknAPlje6PMMR15l4y/s4glaJUUkNDN8S0GLyDLliEZs1rQF0D/w
-         1dIOZR2nSf6d++YR6Ti0jm6HgyF1vVxD6HLFJbcYngSZ1WypaBUyCE0kBE9mHFV3aB8M
-         u2OLp4vddJbUie9Ukju8mvQptWAWjw55WEPmtc6dbBTIAQtQkEeyvrhFZchMpZGtiJUw
-         apY5URyiRvb5xNnboVBw7GuUbaR3x7wpLnSc/jPLOAEPi83zizj+FtgZDX/AQ7LO/LpE
-         fONQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770588742; x=1771193542;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5u7HvU/qv5ExBJjQqEceuf5F7enjLIIjfK/O6HizMHI=;
-        b=IFFmgNNJKVe9goEcFq3tqC3SnSkWc3+pB75o5a3Ram34gmmhlT29OBnH1VGOK9jbl9
-         hxxPkbJKiON1xolLcbkZyxQ8S3xxJ/tykzRULddhbFOYYKvy6TDyFrGr5W/DqRDlBdwN
-         woCvLJdf5B8BwZK3+Wpza4HhvnkmHLQh508mYmL9+0XqU1EsQ4x0lhX6G7cnc8MnNe+j
-         GC9El8s+mXrzblIJvnWpWh98no2XrX2zRPhlPYu+Bn8pxJjeo5DiPgdxckrLydbd8nQV
-         1ADJDOBzgvCwVJ3Xi4KqybfRJeSs5J9t7FGUvYo9CMXbz49qyx0N7jdD3r2aiChvJUkq
-         +X2A==
-X-Gm-Message-State: AOJu0YyNbtE63adu3Ca9mFM8L1QefmY4TArYf4X0jJnytbwfunh9YWRj
-	3uF+2wtFBZk9tFQoqFf1uOxg3WeiUBmgQxaE4p4Ppx/TrI8p0ypyMKQF
-X-Gm-Gg: AZuq6aLJSR7uo20hto9oUqcD7oVFP6PYHS7BV6Rl4K3WEOnztk0iPtpd3HwzFO2BJg8
-	7gQMjbGvfujtkUFoAztn4jd0nR0PYmLLAV8MM1xv7TymrIuuMQbNlnzX8kgQ/zp0gb/4qpQajEp
-	EVdVqYCkji7SF2dzY3NUxXaY9bkbLMKam1/izw9umnPTgIalnpH+n+5L0LksvvSYgwcHi8lIUb8
-	35j013wbUM6+r7K5lbRnKhm1wgu5/7AdA3Y+Ec/+ni4cVM5Q8xt16OuxQfuO8I7aD6JMA3A5yJJ
-	12ns5to8fiijwqGvPkPmeXr6OIZ9Kzv/vdlPRNx4bU1xrjVF4l2088lN74Ek8X36qmfwBJtNT5A
-	+dTgeyAGTCwtvsDZOA6G492vo1OChYN6ZFhqKe4b0jiyLPK8GpuSZ7zKtUFovdT7LhSB+meZJoj
-	Zbzo9zrJo7oDE4NhYEK+cpvlaIaOM=
-X-Received: by 2002:a05:690c:fd1:b0:794:d639:375 with SMTP id 00721157ae682-7952aa49d4amr94286897b3.1.1770588741821;
-        Sun, 08 Feb 2026 14:12:21 -0800 (PST)
-Received: from anish-GV62VR-7RF.lan ([2603:6081:24f0:35f0:dbe3:27f9:6ac3:4647])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm76164317b3.50.2026.02.08.14.12.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Feb 2026 14:12:21 -0800 (PST)
-From: Anish Mulay <anishm7030@gmail.com>
-To: aahringo@redhat.com,
-	teigland@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Anish Mulay <anishm7030@gmail.com>
-Subject: [PATCH] fs: dlm: use sysfs_emit() instead of snprintf()
-Date: Sun,  8 Feb 2026 17:12:15 -0500
-Message-ID: <20260208221215.205864-1-anishm7030@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Kkk5xION"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770645567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8RGRjX8NXThZFEyWIiCFcY1cFNIxf3fR00Obcga1zWo=;
+	b=Kkk5xIONy7JLUrW4MBOqQMZn5p0QplpX4FWuoc4ifFF0nos70ff+BTnxXdWuCTjGuB71VK
+	/9BT3nR9IudriNqJlpBq/0HvAhkAq9sQ5afbcDDdm0bWpO6t9bc8MJqps/MyO2bjPrSBlJ
+	z3RezuSf7JmUfceeDlVsrvb3SxK6/k0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-eHN-QDZqP42Hicu00G_VCw-1; Mon,
+ 09 Feb 2026 08:59:24 -0500
+X-MC-Unique: eHN-QDZqP42Hicu00G_VCw-1
+X-Mimecast-MFC-AGG-ID: eHN-QDZqP42Hicu00G_VCw_1770645563
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D325519560B2;
+	Mon,  9 Feb 2026 13:59:22 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.226.163])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 33D7B19560BA;
+	Mon,  9 Feb 2026 13:59:20 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes for 7.0
+Date: Mon,  9 Feb 2026 14:59:18 +0100
+Message-ID: <20260209135919.1827410-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 3efpSv97RLFUdpv0rNSYE-I5sBz39tfpNoICoXnTNEM_1770645563
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Follow the advice in Documentation/filesystems/sysfs.rst:
-show() should only use sysfs_emit() or sysfs_emit_at() when formatting
-the value to be returned to user space.
+Dear Linus,
 
-This patch replaces snprintf() with sysfs_emit() in the lockspace
-show functions.
+please consider pulling the following gfs2 changes for 7.0.
 
-Signed-off-by: Anish Mulay <anishm7030@gmail.com>
----
- fs/dlm/lockspace.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks,
+Andreas
 
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index ddaa76558706..23975bb394eb 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -69,7 +69,7 @@ static ssize_t dlm_event_store(struct dlm_ls *ls, const char *buf, size_t len)
- 
- static ssize_t dlm_id_show(struct dlm_ls *ls, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%u\n", ls->ls_global_id);
-+	return sysfs_emit(buf, "%u\n", ls->ls_global_id);
- }
- 
- static ssize_t dlm_id_store(struct dlm_ls *ls, const char *buf, size_t len)
-@@ -83,7 +83,7 @@ static ssize_t dlm_id_store(struct dlm_ls *ls, const char *buf, size_t len)
- 
- static ssize_t dlm_nodir_show(struct dlm_ls *ls, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%u\n", dlm_no_directory(ls));
-+	return sysfs_emit(buf, "%u\n", dlm_no_directory(ls));
- }
- 
- static ssize_t dlm_nodir_store(struct dlm_ls *ls, const char *buf, size_t len)
-@@ -101,12 +101,12 @@ static ssize_t dlm_nodir_store(struct dlm_ls *ls, const char *buf, size_t len)
- static ssize_t dlm_recover_status_show(struct dlm_ls *ls, char *buf)
- {
- 	uint32_t status = dlm_recover_status(ls);
--	return snprintf(buf, PAGE_SIZE, "%x\n", status);
-+	return sysfs_emit(buf, "%x\n", status);
- }
- 
- static ssize_t dlm_recover_nodeid_show(struct dlm_ls *ls, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%d\n", ls->ls_recover_nodeid);
-+	return sysfs_emit(buf, "%d\n", ls->ls_recover_nodeid);
- }
- 
- struct dlm_attr {
--- 
-2.43.0
+The following changes since commit b54345928fa1dbde534e32ecaa138678fd5d2135:
+
+  Merge tag 'gfs2-for-6.19-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2026-01-13 10:04:34 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-7.0
+
+for you to fetch changes up to e411d74cc5ba290f85d0dd5e4d1df8f1d6d975d2:
+
+  gfs2: fiemap page fault fix (2026-02-05 18:00:45 +0100)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Prevent rename() from failing with -ESTALE when there are locking
+  conflicts and retry the operation instead.
+
+- Don't fail when fiemap triggers a page fault (xfstest generic/742).
+
+- Fix another locking request cancellation bug.
+
+- Minor other fixes and cleanups.
+
+----------------------------------------------------------------
+Andreas Gruenbacher (13):
+      gfs2: glock cancelation flag fix
+      gfs2: Retries missing in gfs2_{rename,exchange}
+      gfs2: run_queue cleanup
+      gfs2: Do not cancel internal demote requests
+      gfs2: Rename gfs2_log_submit_{bio -> write}
+      gfs2: Initialize bio->bi_opf early
+      gfs2: gfs2_chain_bio start sector fix
+      gfs2: Fix gfs2_log_get_bio argument type
+      gfs: Use fixed GL_GLOCK_MIN_HOLD time
+      gfs2: gfs2_glock_hold cleanup
+      gfs2: Introduce glock_{type,number,sbd} helpers
+      gfs2: Fix slab-use-after-free in qd_put
+      gfs2: fiemap page fault fix
+
+Deepanshu Kartikey (2):
+      gfs2: Fix use-after-free in iomap inline data write path
+      gfs2: fix memory leaks in gfs2_fill_super error path
+
+ fs/gfs2/bmap.c       |  13 +++-
+ fs/gfs2/glock.c      | 190 ++++++++++++++++++++++++++++++---------------------
+ fs/gfs2/glock.h      |   9 +--
+ fs/gfs2/glops.c      |  34 ++++-----
+ fs/gfs2/incore.h     |  18 ++++-
+ fs/gfs2/inode.c      |  34 +++++++--
+ fs/gfs2/lock_dlm.c   |  28 ++++----
+ fs/gfs2/log.c        |   7 +-
+ fs/gfs2/lops.c       |  51 +++++++-------
+ fs/gfs2/lops.h       |   4 +-
+ fs/gfs2/meta_io.c    |   6 +-
+ fs/gfs2/meta_io.h    |   2 +-
+ fs/gfs2/ops_fstype.c |   2 +-
+ fs/gfs2/quota.c      |   5 +-
+ fs/gfs2/rgrp.c       |   2 +-
+ fs/gfs2/super.c      |   4 +-
+ fs/gfs2/trace_gfs2.h |  50 +++++++-------
+ fs/gfs2/trans.c      |   4 +-
+ 18 files changed, 277 insertions(+), 186 deletions(-)
 
