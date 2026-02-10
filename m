@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D920F311960;
-	Tue, 10 Feb 2026 23:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68E72571B0;
+	Tue, 10 Feb 2026 23:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770766287; cv=none; b=FT7l5GwljABsGksvmSlHhjAIhxnUirbI6R+7cOnnBEt5AJuW8hJ5FlE1aOcoDNmG1APEfITIwkEtKx4wqSED1ibp6EkRzXkjjf814t8N8UWiPYIz0hus6lPVZxBeC8zlpeZD1ByuBTez3oMPVHiN0q3qiSMgK5ro4UBH8d+Vhao=
+	t=1770766303; cv=none; b=UjBx6SNKinmTSJnsQc4XvwVztHHujCMp1KcvinzK4Bvz9cGnvCWQ8+531un+zcdtrMa2DwLwfYyqEs3tKvkWPn5IyL+aKTgc7Tn1bk4gfg736xErWpU28cL5XQmWnRM/cN0DgTbr4NTOf0dVRORZZ7b41HYPtOf48NTgu0f5XVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770766287; c=relaxed/simple;
-	bh=4Q38nV3N8Ns74G9RFUVss5/YKtfidd3QW6KdbU5LrNI=;
+	s=arc-20240116; t=1770766303; c=relaxed/simple;
+	bh=y1A6qQyJvwgmdfji+xA9xyMlq+d3I74jPNVsjhZYWqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ADsvI65ZIpaTsQh0EZ52VXILDKJ3WCUqaCvwtKTuhyHrZFXfQWyPkExvnR1hAoLj452XxVzYghugIMmsxZMa0a+1mDlMI114YnnSMj7Ze/hy9a1aR69DakemSaZCg0433wVK+OrKlNfZ9/au0hp9YJb6mwdPN95abZeiaba4+sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qI9jwf2J; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=pwuAOxlwCvOGkuRzwns/FvZJRY8R2CH9HIVxAKg05ur078SkbY6kRjkTAMS5qtpmrTT6moscVO5eVLt55yDj48j9ru8oTZzI/HpyKxqp5DB5R+By0PTfsq7TqM0M9q6NcDJzgWNe6fMysHCRRCAEHelxwBq1xyq0umBaWEBkrGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmSo6aga; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qI9jwf2J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCB8C19425;
-	Tue, 10 Feb 2026 23:31:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmSo6aga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E87C116C6;
+	Tue, 10 Feb 2026 23:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770766287;
-	bh=4Q38nV3N8Ns74G9RFUVss5/YKtfidd3QW6KdbU5LrNI=;
+	s=k20201202; t=1770766303;
+	bh=y1A6qQyJvwgmdfji+xA9xyMlq+d3I74jPNVsjhZYWqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qI9jwf2JJy/mdzwsltCtk3kszlbzNFtRvwkyy3FEzOJ2mhLKNyNK8JJgTKkeIz/f+
-	 qrlfgorez+KIEhftDE1rLZpEhiUbIAj1GzcK9CIO6f36pkUnqllpIZQaZl1WKpHw/v
-	 mQ1EmaYRiBOb+B6MJ+foERZ412eZcy2T3BTQuji1okLl/yBBLcufZ94NX/C4QzhPU0
-	 6Rnx061AllZkUDCLb35NThZkMzSLWN/P5NW3ft+TIV5+VN87m1b2uHPCDz49ar5a8D
-	 VJiA+n157ApQHCqh1l/oe0DHfRglQQYMz0IlET8mRQhwub8puBTEmLmvZn6igAARqG
-	 JObQEP4PBgTfw==
+	b=QmSo6agaIackdqPmXH6xx4prAbJ1wbUmE/OdOgXzjOc1CpWp4fyMo2zg6qNe5SNvj
+	 DzZwGZGOfRe+8NRt/7a1O2YxiyBuJjYrFAKd9fd7yN6/+J8L1OsZdN95q2yi2JzJz/
+	 1sN499WG634DeElOtcliPTphao/UZQEF/EVfnmiuTGjm+mtkO+ca+IXig1zIkd9VJH
+	 15lCmfA1NU8fKuCoVtYL2bLLwxceP5qF2JbIO92rkRQsqFmgXwyrG1R5FF9myUKviU
+	 VP9d+2yWwsub3F4a5ykz3mXRMM+OVckYTnGoRXZvmYhPFjPOSXpUEEOCX2Gj8EZhYV
+	 bqVd62GqLHRgw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Alexander Aring <aahringo@redhat.com>,
+Cc: Ezrak1e <ezrakiez@gmail.com>,
+	Alexander Aring <aahringo@redhat.com>,
 	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.19-6.18] dlm: fix recovery pending middle conversion
-Date: Tue, 10 Feb 2026 18:30:48 -0500
-Message-ID: <20260210233123.2905307-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.12] dlm: validate length in dlm_search_rsb_tree
+Date: Tue, 10 Feb 2026 18:30:57 -0500
+Message-ID: <20260210233123.2905307-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260210233123.2905307-1-sashal@kernel.org>
 References: <20260210233123.2905307-1-sashal@kernel.org>
@@ -51,35 +52,17 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Ezrak1e <ezrakiez@gmail.com>
 
-[ Upstream commit 1416bd508c78bdfdb9ae0b4511369e5581f348ea ]
+[ Upstream commit 080e5563f878c64e697b89e7439d730d0daad882 ]
 
-During a workload involving conversions between lock modes PR and CW,
-lock recovery can create a "conversion deadlock" state between locks
-that have been recovered.  When this occurs, kernel warning messages
-are logged, e.g.
+The len parameter in dlm_dump_rsb_name() is not validated and comes
+from network messages. When it exceeds DLM_RESNAME_MAXLEN, it can
+cause out-of-bounds write in dlm_search_rsb_tree().
 
-  "dlm: WARN: pending deadlock 1e node 0 2 1bf21"
+Add length validation to prevent potential buffer overflow.
 
-  "dlm: receive_rcom_lock_args 2e middle convert gr 3 rq 2 remote 2 1e"
-
-After this occurs, the deadlocked conversions both appear on the convert
-queue of the resource being locked, and the conversion requests do not
-complete.
-
-Outside of recovery, conversions that would produce a deadlock are
-resolved immediately, and return -EDEADLK.  The locks are not placed
-on the convert queue in the deadlocked state.
-
-To fix this problem, an lkb under conversion between PR/CW is rebuilt
-during recovery on a new master's granted queue, with the currently
-granted mode, rather than being rebuilt on the new master's convert
-queue, with the currently granted mode and the newly requested mode.
-The in-progress convert is then resent to the new master after
-recovery, so the conversion deadlock will be processed outside of
-the recovery context and handled as described above.
-
+Signed-off-by: Ezrak1e <ezrakiez@gmail.com>
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -87,212 +70,169 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture. Let me provide my detailed analysis.
+Indeed, `dlm_copy_master_names` calls `find_rsb_root` with `inlen` that
+comes from network data (`receive_rcom_names` →
+`dlm_copy_master_names`). `inlen` is derived from
+`rc_in->rc_header.h_length - sizeof(struct dlm_rcom)` with no bounds
+check. And `find_rsb_root` doesn't validate it before passing to
+`dlm_search_rsb_tree`.
 
----
+So there are **at least two** unvalidated network-
+to-`dlm_search_rsb_tree` paths:
+1. `receive_rcom_lookup` → `dlm_dump_rsb_name` → `dlm_search_rsb_tree`
+   (debug dump path)
+2. `receive_rcom_names` → `dlm_copy_master_names` → `find_rsb_root` →
+   `dlm_search_rsb_tree`
+
+Both can pass `len > DLM_RESNAME_MAXLEN` (64), causing `memcpy(key,
+name, len)` to overflow the stack buffer `key[DLM_RESNAME_MAXLEN]`.
+
+Now let me verify what `DLM_RESNAME_MAXLEN` is:
+
+The value is 64 (from `include/uapi/linux/dlmconstants.h`). The stack
+buffer `key` is 64 bytes. If `len` > 64, `memcpy(key, name, len)` writes
+beyond the buffer — a classic **stack buffer overflow**.
+
+This is exploitable from a malicious DLM cluster node sending a crafted
+network message.
 
 ## Detailed Analysis
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit subject clearly says "fix" and the message describes a
-concrete, reproducible bug:
-
-- **Symptom**: During a workload involving conversions between lock
-  modes PR (Protected Read) and CW (Concurrent Write), lock recovery
-  creates a "conversion deadlock" state between recovered locks.
-- **Visible effects**: Kernel warning messages (`"dlm: WARN: pending
-  deadlock..."`) and permanently stuck lock conversions on the convert
-  queue that never complete.
-- **This affects clustered filesystem users** (GFS2, OCFS2) running on
-  systems where DLM node recovery occurs during PR/CW conversion
-  workloads.
-
-The authors are **Alexander Aring** (Red Hat, DLM subsystem developer)
-and **David Teigland** (the DLM maintainer who signs off all DLM
-patches). This is authoritative.
+The commit message clearly states:
+- The `len` parameter comes from **network messages** (untrusted input)
+- When `len` exceeds `DLM_RESNAME_MAXLEN` (64), it causes an **out-of-
+  bounds write** in `dlm_search_rsb_tree()`
+- The fix adds length validation to prevent the buffer overflow
 
 ### 2. CODE CHANGE ANALYSIS
 
-The change is in `recover_convert_waiter()` in `fs/dlm/lock.c`. Here's
-what changed:
+The change is extremely small and surgical — just 2 lines added:
 
-**Before (buggy code introduced by f74dacb4):**
-
-```5017:5035:fs/dlm/lock.c
-        if (middle_conversion(lkb)) {
-                log_rinfo(ls, "%s %x middle convert in progress",
-__func__,
-                         lkb->lkb_id);
-                /* We sent this lock to the new master. The new master
-will
-   - tell us when it's granted.  We no longer need a reply, so
-   - use a fake reply to put the lkb into the right state.
-                 */
-                hold_lkb(lkb);
-                memset(ms_local, 0, sizeof(struct dlm_message));
-                ms_local->m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
-                ms_local->m_result =
-cpu_to_le32(to_dlm_errno(-EINPROGRESS));
-                ms_local->m_header.h_nodeid =
-cpu_to_le32(lkb->lkb_nodeid);
-                _receive_convert_reply(lkb, ms_local, true);
-                unhold_lkb(lkb);
-        } else if (lkb->lkb_rqmode >= lkb->lkb_grmode) {
-                set_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags);
-        }
+```625:636:fs/dlm/lock.c
+int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int
+len,
+                        struct dlm_rsb **r_ret)
+{
+        char key[DLM_RESNAME_MAXLEN] = {};
+        // NEW: if (len > DLM_RESNAME_MAXLEN) return -EINVAL;
+        memcpy(key, name, len);
+        // ...
+}
 ```
 
-**After (the fix):**
+Without the check, `memcpy(key, name, len)` with `len > 64` writes past
+the end of the 64-byte stack buffer `key`. This is a **stack buffer
+overflow** — one of the most dangerous vulnerability classes in C.
 
-```c
-        if (middle_conversion(lkb) || lkb->lkb_rqmode >=
-lkb->lkb_grmode)
-                set_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags);
-```
+### 3. VULNERABLE CODE PATHS
 
-### 3. BUG MECHANISM
+I traced all 6 callers of `dlm_search_rsb_tree`:
 
-The recovery sequence in `fs/dlm/recoverd.c` runs these steps in order:
+| Caller | Validates `len`? | Network-reachable? |
+|--------|------------------|--------------------|
+| `find_rsb_dir` | YES (via `find_rsb` at line 1089) | Yes |
+| `find_rsb_nodir` | YES (via `find_rsb` at line 1089) | Yes |
+| `_dlm_master_lookup` | YES (line 1268) | Yes |
+| `receive_remove` | YES (line 4300) | Yes |
+| **`dlm_dump_rsb_name`** | **NO** | **Yes** (via `receive_rcom_lookup`)
+|
+| **`find_rsb_root`** | **NO** | **Yes** (via `receive_rcom_names` →
+`dlm_copy_master_names`) |
 
-1. **Line 218**: `dlm_recover_waiters_pre()` — handles lkbs waiting for
-   replies from failed nodes
-2. **Line 247**: `dlm_recover_locks()` — sends locks to new masters (via
-   rcom)
-3. **Line 270**: `dlm_recover_rsbs()` — calls `recover_conversion()` on
-   flagged resources
-4. **Line 320**: `dlm_recover_waiters_post()` — resends operations
-   marked with RESEND bit
+Two callers do NOT validate `len` before calling `dlm_search_rsb_tree`,
+and both are reachable from network messages:
 
-**The bug in the old code**: When `recover_convert_waiter` faked an
-`-EINPROGRESS` reply for a middle conversion:
-- `_receive_convert_reply()` → `__receive_convert_reply()` would handle
-  the `-EINPROGRESS` case by calling `del_lkb(r, lkb)` + `add_lkb(r,
-  lkb, DLM_LKSTS_CONVERT)`, moving the lkb to the **local convert
-  queue**
-- The lkb was also removed from the waiters list via
-  `remove_from_waiters_ms()`
-- When the lock was subsequently sent to the **new master** via rcom
-  (step 2), it was sent as a converting lock
-- `receive_rcom_lock_args()` on the new master placed it on the convert
-  queue and set `RSB_RECOVER_CONVERT`
-- If **two locks** had middle conversions (e.g., A: PR→CW, B: CW→PR),
-  both ended up on the convert queue of the new master resource in a
-  **deadlocked state**
-- `recover_conversion()` couldn't resolve this; the normal `-EDEADLK`
-  detection doesn't run during recovery
-- Result: permanent deadlock, kernel warnings, stuck I/O
+1. **`receive_rcom_lookup`** (rcom.c:379): When `rc_in->rc_id ==
+   0xFFFFFFFF`, it calls `dlm_dump_rsb_name(ls, rc_in->rc_buf, len)`
+   where `len` is derived from `rc_in->rc_header.h_length` (a network-
+   supplied 16-bit field). No bounds check.
 
-**How the fix resolves it**: By setting `DLM_IFL_RESEND_BIT` instead of
-faking `-EINPROGRESS`:
-- The lkb stays on the waiters list with its original granted status
-  unchanged
-- When sent to the new master via rcom, it's sent as a **granted lock**
-  (not converting), placed on the **granted queue**
-- No conversion deadlock can form during recovery
-- After recovery, `dlm_recover_waiters_post()` finds the lkb (via
-  `find_resend_waiter`), resets its state, and calls `_convert_lock()`
-  to resend the conversion to the new master through **normal channels**
-- If the conversion would deadlock, the normal code returns `-EDEADLK`
-  immediately, preventing the stuck state
+2. **`receive_rcom_names`** (rcom.c:336): Calculates `inlen` from
+   `rc_in->rc_header.h_length - sizeof(struct dlm_rcom)` and passes it
+   directly to `dlm_copy_master_names` → `find_rsb_root` →
+   `dlm_search_rsb_tree`. No bounds check.
 
-### 4. CLASSIFICATION
+### 4. BUG SEVERITY
 
-This is a **clear bug fix** — it fixes a conversion deadlock in DLM lock
-recovery. There are no new features, APIs, or behavioral changes. The
-fix actually **removes** complex code and replaces it with the simpler,
-correct approach.
+This is a **stack buffer overflow triggered by network input** in the
+DLM (Distributed Lock Manager) subsystem:
 
-### 5. SCOPE AND RISK ASSESSMENT
+- **Type**: Out-of-bounds write (stack buffer overflow)
+- **Attack vector**: Network (DLM cluster communication protocol)
+- **Trigger**: A malicious or buggy DLM cluster node sending a message
+  with `h_length` large enough to make the extracted `len` exceed 64
+- **Impact**: Stack corruption, potential code execution, kernel
+  crash/panic
+- **DLM context**: DLM is used in cluster filesystems like GFS2 and
+  OCFS2, which are used in production enterprise environments
 
-- **Lines changed**: Net removal of ~17 lines; replaces ~20 lines with 2
-  lines
+While the attack surface requires being part of a DLM cluster (not
+publicly internet-reachable in most deployments), this is still a
+serious security bug. In shared hosting or cloud environments, cluster
+node compromise could lead to kernel-level exploitation of other cluster
+members.
+
+### 5. FIX QUALITY
+
+The fix is **defense-in-depth at the right layer**:
+- Rather than fixing each individual caller, it adds the validation in
+  `dlm_search_rsb_tree` itself
+- This protects against any future caller that might forget to validate
+- The fix returns `-EINVAL`, which all callers handle (they all check
+  the return value)
+- It's only 2 lines, extremely low risk of regression
+- The pattern is identical to the existing checks in
+  `_dlm_master_lookup` (line 1268) and `receive_remove` (line 4300)
+
+### 6. SCOPE AND RISK
+
+- **Lines changed**: 2 (added `if` check and return)
 - **Files changed**: 1 (`fs/dlm/lock.c`)
-- **Function modified**: Only `recover_convert_waiter()`
-- **Risk**: **Very low** — the fix simplifies the code and uses the same
-  `DLM_IFL_RESEND_BIT` mechanism that is already used for normal up-
-  conversions (REQUEST, LOOKUP, and non-middle CONVERT cases). The
-  RESEND path via `dlm_recover_waiters_post()` → `_convert_lock()` is
-  well-tested existing code.
-- **Subsystem**: DLM (fs/dlm/) — critical for clustered filesystems
+- **Risk of regression**: Extremely low — it adds a bounds check that
+  was already present in 4 of 6 callers
+- **Subsystem**: DLM (mature, production-critical for cluster
+  filesystems)
 
-### 6. USER IMPACT
+### 7. APPLICABILITY TO STABLE
 
-- **Who is affected**: Users of DLM-based clustered filesystems (GFS2,
-  OCFS2) in production clusters
-- **Severity**: **High** — when the bug triggers, lock conversions
-  permanently hang, which would block I/O on clustered filesystems
-- **Trigger**: PR↔CW conversions during node recovery (when a cluster
-  node fails). This is a realistic scenario in production clusters.
+- The function `dlm_search_rsb_tree` was introduced in commit
+  `5be323b0c64db` ("dlm: move dlm_search_rsb_tree() out of lock") from
+  August 2024, which was merged in 6.12
+- Older kernels may have equivalent vulnerable code but with different
+  structure
+- For 6.12+ stable trees, the fix should apply cleanly
 
-### 7. DEPENDENCY CHECK
+### 8. STABLE CRITERIA CHECK
 
-- **Requires f74dacb4** ("dlm: fix recovery of middle conversions"):
-  This commit introduced the code being modified (the fake -EINPROGRESS
-  approach). f74dacb4 entered mainline in v6.13-rc1 and is present in
-  v6.13+ stable trees.
-- **Does NOT require a8abcff1** ("dlm: move to rinfo for all middle
-  conversion cases"): a8abcff1 only changed `log_limit` → `log_rinfo` in
-  `receive_rcom_lock_args` and `recover_conversion`, not in
-  `recover_convert_waiter`. The code being removed already used
-  `log_rinfo` since f74dacb4.
-- The patch should apply cleanly on any tree containing f74dacb4.
-
-### 8. STABILITY INDICATORS
-
-- Authored and signed-off by the DLM maintainers (Aring + Teigland)
-- The fix simplifies code (reduction in complexity = lower regression
-  risk)
-- Uses existing well-tested RESEND mechanism
-- The commit message thoroughly explains the problem and solution
-
-### Summary
-
-This is a clear-cut bug fix for a conversion deadlock in DLM lock
-recovery that causes permanent hangs and kernel warnings. The fix is
-small, surgical (net code removal), contained to a single function in a
-single file, and uses existing well-tested mechanisms. It affects
-production clustered filesystem users. The prerequisite commit
-(f74dacb4) is in v6.13+ stable trees, so this fix is needed in those
-same trees. The risk is very low — the fix actually simplifies the
-recovery path.
+- Obviously correct and tested: YES (trivial bounds check, accepted by
+  DLM maintainers Alexander Aring and David Teigland)
+- Fixes a real bug: YES (stack buffer overflow from network input)
+- Fixes an important issue: YES (security vulnerability — buffer
+  overflow exploitable from network)
+- Small and contained: YES (2 lines in 1 file)
+- No new features or APIs: YES (pure bug fix)
 
 **YES**
 
- fs/dlm/lock.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ fs/dlm/lock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index be938fdf17d96..c01a291db401b 100644
+index c01a291db401b..a393ecaf3442a 100644
 --- a/fs/dlm/lock.c
 +++ b/fs/dlm/lock.c
-@@ -5014,25 +5014,8 @@ void dlm_receive_buffer(const union dlm_packet *p, int nodeid)
- static void recover_convert_waiter(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 				   struct dlm_message *ms_local)
+@@ -626,7 +626,8 @@ int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
+ 			struct dlm_rsb **r_ret)
  {
--	if (middle_conversion(lkb)) {
--		log_rinfo(ls, "%s %x middle convert in progress", __func__,
--			 lkb->lkb_id);
+ 	char key[DLM_RESNAME_MAXLEN] = {};
 -
--		/* We sent this lock to the new master. The new master will
--		 * tell us when it's granted.  We no longer need a reply, so
--		 * use a fake reply to put the lkb into the right state.
--		 */
--		hold_lkb(lkb);
--		memset(ms_local, 0, sizeof(struct dlm_message));
--		ms_local->m_type = cpu_to_le32(DLM_MSG_CONVERT_REPLY);
--		ms_local->m_result = cpu_to_le32(to_dlm_errno(-EINPROGRESS));
--		ms_local->m_header.h_nodeid = cpu_to_le32(lkb->lkb_nodeid);
--		_receive_convert_reply(lkb, ms_local, true);
--		unhold_lkb(lkb);
--
--	} else if (lkb->lkb_rqmode >= lkb->lkb_grmode) {
-+	if (middle_conversion(lkb) || lkb->lkb_rqmode >= lkb->lkb_grmode)
- 		set_bit(DLM_IFL_RESEND_BIT, &lkb->lkb_iflags);
--	}
- 
- 	/* lkb->lkb_rqmode < lkb->lkb_grmode shouldn't happen since down
- 	   conversions are async; there's no reply from the remote master */
++	if (len > DLM_RESNAME_MAXLEN)
++		return -EINVAL;
+ 	memcpy(key, name, len);
+ 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
+ 	if (*r_ret)
 -- 
 2.51.0
 
