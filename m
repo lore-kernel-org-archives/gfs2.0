@@ -1,147 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268D51E1DE5;
-	Wed, 11 Feb 2026 13:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B33521CC59
+	for <gfs2@lists.linux.dev>; Wed, 11 Feb 2026 13:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770816626; cv=none; b=Z6QUuWO8voJeqcQsuzpP9CRm80PGTS8Cv3vyEpwfSOKdbG8aGf91nxwyi2u8Kj55CvJ5OMkrHJ7nrIytrtwkg7vLrZYeDwiaA+RGjU+l6TYLzcaH+MWx54gEKxItOMsW//rp+mjVhEDQwpaFblr1Bpit4cV78EvdEp3xIqDjwIE=
+	t=1770817810; cv=none; b=eluPoJTJYQSO7CmBKaWT0EbCQVJcGGgORhWv6BXFCr/iBESpUyDkbxxLi1ZhHoPcW5y60MlN2FaqP4m8X+3zkoleOl14xw+pOS3pgwwZ8vyjKUWe22WyVRvXwDRzRmHihT8IupKFZYErN9ypWtDDoAmLQCJ0NZWLnoILqt5D+Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770816626; c=relaxed/simple;
-	bh=eCdIGEmlQC3hsCzEv0VStBX+H9d2huLhyXUnbaIx4JM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=frlyiXWRvtAkrUsRKFYaQCx3caH8yh9XZbAMQqlqVH9IMmJMDyEHwjQfFey6pr7tVB3qod+iq8d4CxM399MJzHuS2bjDsAoViYHKl5P+/lmkE7n73vhJGFmiTl5jhKYdNc4Q2V0sCTCatXQfrbgRK77N8OFWYfQmCQTs4hv2ydE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMq2q1Y8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770817810; c=relaxed/simple;
+	bh=9sZWJXMrsvFSIpM2gpX8H/TzEeebXEBNrwxUqhUTzq8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cBDri7A0ZsQcYXtev7vQ5NaLp6En+5DqeLY5aErFuph4q0OvuQonKYo7xbIGaL3pJ4IyZeAprn/+2Wxkp+Rc5AO26iHE4oBEc//NBDBIavdpqzowrGq/w09D8cHxvn3teYLhyurSMMzsmOJCYkzR7w9RjWD8HUgjjm26FatJMsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eR/238IG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMq2q1Y8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF568C4CEF7;
-	Wed, 11 Feb 2026 13:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770816625;
-	bh=eCdIGEmlQC3hsCzEv0VStBX+H9d2huLhyXUnbaIx4JM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=OMq2q1Y8uAeI8rYGiX0xXXWOXy3t0xIyMyhJUq5nVUTsHQSjKA8WM7YsOmpO/HSV6
-	 +Rs5RbOtyBknjAbBQRXX9PBmoTX9yEM52tkFIdOnP0HPMAhAgSVwNH6HBPkgk9WtlB
-	 dWWGr38Y+fd6B25Ock/cGdqtSCI784G7XgvpaPOdGGU7kV4P15bwBpYPZOqrS1pJ1C
-	 H1k21aZdW/uuzhwlMQMhMGp8Xsj5M9+9/pkIVda/Co/onEbxxY5h/ydHIDqTf7BMvv
-	 eEDCXUsKkbGsys5MZfi4LuEH8bZB4Cbtw25k8W1af56dbcFMnj1nAnMpBTH2GHSXvA
-	 PmNcSZOQcTjmg==
-Message-ID: <c830a8afe51514ac40fa272558eed4fcbb5efcea.camel@kernel.org>
-Subject: Re: [PATCH 0/4] Avoid filesystem references to writeback internals
-From: Jeff Layton <jlayton@kernel.org>
-To: Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org, 
-	chao@kernel.org, agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, 
-	hch@lst.de, brauner@kernel.org, jack@suse.cz, viro@zeniv.linux.org.uk, 
-	djwong@kernel.org, pankaj.raghav@linux.dev
-Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, gost.dev@samsung.com, 
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com,
- mcgrof@kernel.org
-Date: Wed, 11 Feb 2026 08:30:22 -0500
-In-Reply-To: <20260211070057.22001-1-kundan.kumar@samsung.com>
-References: 
-	<CGME20260211070533epcas5p32f50f317b20250bb61b1b5a0b3a2a5d9@epcas5p3.samsung.com>
-	 <20260211070057.22001-1-kundan.kumar@samsung.com>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eR/238IG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770817808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NyGxR5LQHMgd3AjzZ3ErlH/2lpT7HfDqYV4EqF+AD+E=;
+	b=eR/238IGT8jTn4sdPWxALomPmhLJ9TURIwDpwULelgISUfh6cqH8X1crohw0mHWW/lNjvl
+	T1qFo/+ac+nIyVJ4EaHIKdxRCXFctPOW6tf0VbfW/4LtHituayTA16vcBVhzk6Tt6cczt7
+	kDDhKE9484QaK8E8UGqkQRw7oqre8JI=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-EKsNeH9tMRaJZ2GrIOHb_w-1; Wed, 11 Feb 2026 08:50:07 -0500
+X-MC-Unique: EKsNeH9tMRaJZ2GrIOHb_w-1
+X-Mimecast-MFC-AGG-ID: EKsNeH9tMRaJZ2GrIOHb_w_1770817807
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-79628adff03so76553577b3.2
+        for <gfs2@lists.linux.dev>; Wed, 11 Feb 2026 05:50:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770817807; x=1771422607;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NyGxR5LQHMgd3AjzZ3ErlH/2lpT7HfDqYV4EqF+AD+E=;
+        b=OtMjVQGY9seYbvT1S9+U/zLEnv8pcNP1hBzW91Wg7leM2kmj8k1OHa59woDd8GYolL
+         NiL1B6vTvjq5fc9X+WU9M8aqv19TAu88WIjNFeEwOgZE1xNrpykMzMwPcAGU5HBmIEew
+         jZ7tyRGTJoV0DApVzHUnGPZins5cxWWbWw/Iu8o9aU3zKmGvMsxxNj9bZREja5p8FgkB
+         0ZnnONZJBSz+Tp438AiKIGPHloN59lNqDrqdJ4wW7TDEoOHBp9Jp0YL33Eh0DjBX+KwT
+         5v6fWcqWY3qCQ9Xgfy6lenHFWaborJAGpn9Z6QcKQ/tYARdgbyPorGq1+42pJE/oFxzd
+         5Jew==
+X-Forwarded-Encrypted: i=1; AJvYcCVqKFHklJFnp3xj5dhZdW6Gq3StFCx3MPaCYRDqUVopSfcI5CslF+K0aBHFUbB5wxsbGGyy@lists.linux.dev
+X-Gm-Message-State: AOJu0YwHkdA5+C1iFUhFTw20R2Dz8ORsDQNNvY7+tUJbo5gX55ueCGdY
+	plLS/MxhW+YKPfrETww7XGif0+cfR0Yu3K3TyT5LgAF09n+lSv5CUkpe53eVgtGcIHLJKNOJlyC
+	9d/ftTCEUZh9dDT7xsw5S+CScIU1gNTQhfTa24slC8xke/RZuOuEdSTw62XRWddL1TQ3AMUTzuB
+	ihGZTbST3yDDESPeYjuGrXEEd7ZsQghw==
+X-Gm-Gg: AZuq6aI+6pQi7ASw4mfc5B8D2+ThcJVGhsVklykCEFG1HlxIo2+ceEmnPPunogO35nc
+	7rIefK8X08Ao73ZgaJu4dkHt0rOXlxRG51omwZ4jQeib9mqHQ+qD49xwjrvwnIGZqQv5Tluq5OF
+	hiwDBxBQNRrgnjSLA1vkhaaVt8hJXAlgg0mFhGubHStORoiHrvwrhWolcUMf+NI4k780JHqDrrZ
+	dfFEiXubrPfqqlviUnKkAq4wKQJaEnoFjnVwUwdoEa1OO84/JYJMPzbU0ueToXpVg==
+X-Received: by 2002:a05:690e:dcf:b0:64a:dd9d:e944 with SMTP id 956f58d0204a3-64afe30abbcmr1311171d50.25.1770817806877;
+        Wed, 11 Feb 2026 05:50:06 -0800 (PST)
+X-Received: by 2002:a05:690e:dcf:b0:64a:dd9d:e944 with SMTP id
+ 956f58d0204a3-64afe30abbcmr1311156d50.25.1770817806461; Wed, 11 Feb 2026
+ 05:50:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <CGME20260211070533epcas5p32f50f317b20250bb61b1b5a0b3a2a5d9@epcas5p3.samsung.com>
+ <20260211070057.22001-1-kundan.kumar@samsung.com>
+In-Reply-To: <20260211070057.22001-1-kundan.kumar@samsung.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Wed, 11 Feb 2026 14:49:55 +0100
+X-Gm-Features: AZwV_QjumAFlbk9ZsPEeDmvoG4FkvqsDNDq1VBbfmeKSRae7isamuXkM1GDbV04
+Message-ID: <CAHc6FU4O4YTm-0cU+kpqY2L3BRaA_Jsyh20tTk2KjmGN7-kKCg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Avoid filesystem references to writeback internals
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, trondmy@kernel.org, anna@kernel.org, 
+	hch@lst.de, brauner@kernel.org, jack@suse.cz, viro@zeniv.linux.org.uk, 
+	djwong@kernel.org, pankaj.raghav@linux.dev, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, gost.dev@samsung.com, 
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com, 
+	mcgrof@kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -xoZfe3LIgHWHH5kure_IpcE7QTP02UKdx1TqpFDeUo_1770817807
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-02-11 at 12:30 +0530, Kundan Kumar wrote:
+On Wed, Feb 11, 2026 at 8:13=E2=80=AFAM Kundan Kumar <kundan.kumar@samsung.=
+com> wrote:
 > The series introduces writeback helper APIs and converts f2fs, gfs2
 > and nfs to stop accessing writeback internals directly.
->=20
+>
 > As suggested by Christoph [1], filesystem code that directly accesses
 > writeback internals is split out:
 > [1] https://lore.kernel.org/all/20251015072912.GA11294@lst.de/
->=20
+>
 > No functional changes intended
->=20
+>
 > Kundan Kumar (4):
 >   writeback: prep helpers for dirty-limit and writeback accounting
 >   f2fs: stop using writeback internals for dirty_exceeded checks
 >   gfs2: stop using writeback internals for dirty_exceeded check
 >   nfs: stop using writeback internals for WB_WRITEBACK accounting
->=20
+>
 >  fs/f2fs/node.c              |  4 ++--
 >  fs/f2fs/segment.h           |  2 +-
 >  fs/gfs2/super.c             |  2 +-
@@ -149,10 +112,11 @@ On Wed, 2026-02-11 at 12:30 +0530, Kundan Kumar wrote:
 >  fs/nfs/write.c              |  4 ++--
 >  include/linux/backing-dev.h | 11 +++++++++++
 >  6 files changed, 18 insertions(+), 7 deletions(-)
->=20
->=20
+>
+>
 > base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
 
-Seems sensible.
+Sure, that won't hurt.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+
