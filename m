@@ -1,238 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68E72571B0;
-	Tue, 10 Feb 2026 23:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FF32D0D9
+	for <gfs2@lists.linux.dev>; Wed, 11 Feb 2026 07:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770766303; cv=none; b=UjBx6SNKinmTSJnsQc4XvwVztHHujCMp1KcvinzK4Bvz9cGnvCWQ8+531un+zcdtrMa2DwLwfYyqEs3tKvkWPn5IyL+aKTgc7Tn1bk4gfg736xErWpU28cL5XQmWnRM/cN0DgTbr4NTOf0dVRORZZ7b41HYPtOf48NTgu0f5XVg=
+	t=1770793543; cv=none; b=PcR+USATp6XH+fVuKsc2XrPORQa3WFVRmfxyFlczeh7PI1EjNPZrYV0TUHU/4JVhxqnAiJPdQw54X+0Tjl5+3SooznH5vM3imtMBF4s/e7DnfOJoj1Kvq5wK7HATIgBLMWhGPtjfQST2RoEG/tzRNNvJIrtk/rT0YbxG262biFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770766303; c=relaxed/simple;
-	bh=y1A6qQyJvwgmdfji+xA9xyMlq+d3I74jPNVsjhZYWqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pwuAOxlwCvOGkuRzwns/FvZJRY8R2CH9HIVxAKg05ur078SkbY6kRjkTAMS5qtpmrTT6moscVO5eVLt55yDj48j9ru8oTZzI/HpyKxqp5DB5R+By0PTfsq7TqM0M9q6NcDJzgWNe6fMysHCRRCAEHelxwBq1xyq0umBaWEBkrGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmSo6aga; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770793543; c=relaxed/simple;
+	bh=djZiiRv4Atfe0TSz4MTf3POZZCovBo80N3X43c5UC2o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=M98g7XReDQ3dYAyWSf1arS6Mm93V027kgdwPRjdABXmoYnFexK5E7kBHc2jkaKhKvT/sVMfdi8rBQ+WrT3mKWrdwmSVhf73sllclx96uSf8CF+jufy7ZG52JVpfFm7x+MnQ0BJy3TnzuBmYrTWqNajDswaaiwot3UrKsOfT4I1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Rqm4prS3; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmSo6aga"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E87C116C6;
-	Tue, 10 Feb 2026 23:31:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770766303;
-	bh=y1A6qQyJvwgmdfji+xA9xyMlq+d3I74jPNVsjhZYWqY=;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Rqm4prS3"
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260211070539epoutp01dd7f65aa7aadb51e42688569d0a20b5d~TH1eYMuxH1985519855epoutp01C
+	for <gfs2@lists.linux.dev>; Wed, 11 Feb 2026 07:05:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260211070539epoutp01dd7f65aa7aadb51e42688569d0a20b5d~TH1eYMuxH1985519855epoutp01C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1770793539;
+	bh=BF/a5V2IAl0CQ6EVXzXFAOoP6G59N24GE3IM1SlFR8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmSo6agaIackdqPmXH6xx4prAbJ1wbUmE/OdOgXzjOc1CpWp4fyMo2zg6qNe5SNvj
-	 DzZwGZGOfRe+8NRt/7a1O2YxiyBuJjYrFAKd9fd7yN6/+J8L1OsZdN95q2yi2JzJz/
-	 1sN499WG634DeElOtcliPTphao/UZQEF/EVfnmiuTGjm+mtkO+ca+IXig1zIkd9VJH
-	 15lCmfA1NU8fKuCoVtYL2bLLwxceP5qF2JbIO92rkRQsqFmgXwyrG1R5FF9myUKviU
-	 VP9d+2yWwsub3F4a5ykz3mXRMM+OVckYTnGoRXZvmYhPFjPOSXpUEEOCX2Gj8EZhYV
-	 bqVd62GqLHRgw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Ezrak1e <ezrakiez@gmail.com>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.19-6.12] dlm: validate length in dlm_search_rsb_tree
-Date: Tue, 10 Feb 2026 18:30:57 -0500
-Message-ID: <20260210233123.2905307-12-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260210233123.2905307-1-sashal@kernel.org>
-References: <20260210233123.2905307-1-sashal@kernel.org>
+	b=Rqm4prS3JvFvBnhAHAlZW+81XvflSxaRZtvoTeqYOtyvBNmkKIOcc9+DanCwx1QJv
+	 ujey0xlDsQWfVMS6hrz3kLfj/7UU7v5G+aFSQb7BMvXQDrGdzjZxdNEDBpI1shlsD8
+	 dtQNU3H3uQR0YN8/NAku305i1yMutgyEg3m/2Cw0=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260211070538epcas5p1be00489644f05334d8d9ef50a4e4f4c5~TH1dpqVRp2433424334epcas5p1J;
+	Wed, 11 Feb 2026 07:05:38 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.94]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4f9qFs5bzlz2SSKh; Wed, 11 Feb
+	2026 07:05:37 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260211070537epcas5p11bcbdc3d5ab68e1b9b7ec68feda22487~TH1cO4IxW2671026710epcas5p1J;
+	Wed, 11 Feb 2026 07:05:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [107.99.41.245]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260211070534epsmtip2c653cdb90b99f4e1ceaad6e2f182b918~TH1ZWrf7i0195901959epsmtip2W;
+	Wed, 11 Feb 2026 07:05:33 +0000 (GMT)
+From: Kundan Kumar <kundan.kumar@samsung.com>
+To: jaegeuk@kernel.org, chao@kernel.org, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, hch@lst.de, brauner@kernel.org,
+	jack@suse.cz, viro@zeniv.linux.org.uk, djwong@kernel.org,
+	pankaj.raghav@linux.dev
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com,
+	mcgrof@kernel.org, Kundan Kumar <kundan.kumar@samsung.com>
+Subject: [PATCH 1/4] writeback: prep helpers for dirty-limit and writeback
+ accounting
+Date: Wed, 11 Feb 2026 12:30:54 +0530
+Message-Id: <20260211070057.22001-2-kundan.kumar@samsung.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260211070057.22001-1-kundan.kumar@samsung.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260211070537epcas5p11bcbdc3d5ab68e1b9b7ec68feda22487
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260211070537epcas5p11bcbdc3d5ab68e1b9b7ec68feda22487
+References: <20260211070057.22001-1-kundan.kumar@samsung.com>
+	<CGME20260211070537epcas5p11bcbdc3d5ab68e1b9b7ec68feda22487@epcas5p1.samsung.com>
 
-From: Ezrak1e <ezrakiez@gmail.com>
+Add helper APIs needed by filesystems to avoid poking into writeback
+internals.
 
-[ Upstream commit 080e5563f878c64e697b89e7439d730d0daad882 ]
-
-The len parameter in dlm_dump_rsb_name() is not validated and comes
-from network messages. When it exceeds DLM_RESNAME_MAXLEN, it can
-cause out-of-bounds write in dlm_search_rsb_tree().
-
-Add length validation to prevent potential buffer overflow.
-
-Signed-off-by: Ezrak1e <ezrakiez@gmail.com>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 ---
+ include/linux/backing-dev.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-LLM Generated explanations, may be completely bogus:
-
-Indeed, `dlm_copy_master_names` calls `find_rsb_root` with `inlen` that
-comes from network data (`receive_rcom_names` →
-`dlm_copy_master_names`). `inlen` is derived from
-`rc_in->rc_header.h_length - sizeof(struct dlm_rcom)` with no bounds
-check. And `find_rsb_root` doesn't validate it before passing to
-`dlm_search_rsb_tree`.
-
-So there are **at least two** unvalidated network-
-to-`dlm_search_rsb_tree` paths:
-1. `receive_rcom_lookup` → `dlm_dump_rsb_name` → `dlm_search_rsb_tree`
-   (debug dump path)
-2. `receive_rcom_names` → `dlm_copy_master_names` → `find_rsb_root` →
-   `dlm_search_rsb_tree`
-
-Both can pass `len > DLM_RESNAME_MAXLEN` (64), causing `memcpy(key,
-name, len)` to overflow the stack buffer `key[DLM_RESNAME_MAXLEN]`.
-
-Now let me verify what `DLM_RESNAME_MAXLEN` is:
-
-The value is 64 (from `include/uapi/linux/dlmconstants.h`). The stack
-buffer `key` is 64 bytes. If `len` > 64, `memcpy(key, name, len)` writes
-beyond the buffer — a classic **stack buffer overflow**.
-
-This is exploitable from a malicious DLM cluster node sending a crafted
-network message.
-
-## Detailed Analysis
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-The commit message clearly states:
-- The `len` parameter comes from **network messages** (untrusted input)
-- When `len` exceeds `DLM_RESNAME_MAXLEN` (64), it causes an **out-of-
-  bounds write** in `dlm_search_rsb_tree()`
-- The fix adds length validation to prevent the buffer overflow
-
-### 2. CODE CHANGE ANALYSIS
-
-The change is extremely small and surgical — just 2 lines added:
-
-```625:636:fs/dlm/lock.c
-int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int
-len,
-                        struct dlm_rsb **r_ret)
-{
-        char key[DLM_RESNAME_MAXLEN] = {};
-        // NEW: if (len > DLM_RESNAME_MAXLEN) return -EINVAL;
-        memcpy(key, name, len);
-        // ...
-}
-```
-
-Without the check, `memcpy(key, name, len)` with `len > 64` writes past
-the end of the 64-byte stack buffer `key`. This is a **stack buffer
-overflow** — one of the most dangerous vulnerability classes in C.
-
-### 3. VULNERABLE CODE PATHS
-
-I traced all 6 callers of `dlm_search_rsb_tree`:
-
-| Caller | Validates `len`? | Network-reachable? |
-|--------|------------------|--------------------|
-| `find_rsb_dir` | YES (via `find_rsb` at line 1089) | Yes |
-| `find_rsb_nodir` | YES (via `find_rsb` at line 1089) | Yes |
-| `_dlm_master_lookup` | YES (line 1268) | Yes |
-| `receive_remove` | YES (line 4300) | Yes |
-| **`dlm_dump_rsb_name`** | **NO** | **Yes** (via `receive_rcom_lookup`)
-|
-| **`find_rsb_root`** | **NO** | **Yes** (via `receive_rcom_names` →
-`dlm_copy_master_names`) |
-
-Two callers do NOT validate `len` before calling `dlm_search_rsb_tree`,
-and both are reachable from network messages:
-
-1. **`receive_rcom_lookup`** (rcom.c:379): When `rc_in->rc_id ==
-   0xFFFFFFFF`, it calls `dlm_dump_rsb_name(ls, rc_in->rc_buf, len)`
-   where `len` is derived from `rc_in->rc_header.h_length` (a network-
-   supplied 16-bit field). No bounds check.
-
-2. **`receive_rcom_names`** (rcom.c:336): Calculates `inlen` from
-   `rc_in->rc_header.h_length - sizeof(struct dlm_rcom)` and passes it
-   directly to `dlm_copy_master_names` → `find_rsb_root` →
-   `dlm_search_rsb_tree`. No bounds check.
-
-### 4. BUG SEVERITY
-
-This is a **stack buffer overflow triggered by network input** in the
-DLM (Distributed Lock Manager) subsystem:
-
-- **Type**: Out-of-bounds write (stack buffer overflow)
-- **Attack vector**: Network (DLM cluster communication protocol)
-- **Trigger**: A malicious or buggy DLM cluster node sending a message
-  with `h_length` large enough to make the extracted `len` exceed 64
-- **Impact**: Stack corruption, potential code execution, kernel
-  crash/panic
-- **DLM context**: DLM is used in cluster filesystems like GFS2 and
-  OCFS2, which are used in production enterprise environments
-
-While the attack surface requires being part of a DLM cluster (not
-publicly internet-reachable in most deployments), this is still a
-serious security bug. In shared hosting or cloud environments, cluster
-node compromise could lead to kernel-level exploitation of other cluster
-members.
-
-### 5. FIX QUALITY
-
-The fix is **defense-in-depth at the right layer**:
-- Rather than fixing each individual caller, it adds the validation in
-  `dlm_search_rsb_tree` itself
-- This protects against any future caller that might forget to validate
-- The fix returns `-EINVAL`, which all callers handle (they all check
-  the return value)
-- It's only 2 lines, extremely low risk of regression
-- The pattern is identical to the existing checks in
-  `_dlm_master_lookup` (line 1268) and `receive_remove` (line 4300)
-
-### 6. SCOPE AND RISK
-
-- **Lines changed**: 2 (added `if` check and return)
-- **Files changed**: 1 (`fs/dlm/lock.c`)
-- **Risk of regression**: Extremely low — it adds a bounds check that
-  was already present in 4 of 6 callers
-- **Subsystem**: DLM (mature, production-critical for cluster
-  filesystems)
-
-### 7. APPLICABILITY TO STABLE
-
-- The function `dlm_search_rsb_tree` was introduced in commit
-  `5be323b0c64db` ("dlm: move dlm_search_rsb_tree() out of lock") from
-  August 2024, which was merged in 6.12
-- Older kernels may have equivalent vulnerable code but with different
-  structure
-- For 6.12+ stable trees, the fix should apply cleanly
-
-### 8. STABLE CRITERIA CHECK
-
-- Obviously correct and tested: YES (trivial bounds check, accepted by
-  DLM maintainers Alexander Aring and David Teigland)
-- Fixes a real bug: YES (stack buffer overflow from network input)
-- Fixes an important issue: YES (security vulnerability — buffer
-  overflow exploitable from network)
-- Small and contained: YES (2 lines in 1 file)
-- No new features or APIs: YES (pure bug fix)
-
-**YES**
-
- fs/dlm/lock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c01a291db401b..a393ecaf3442a 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -626,7 +626,8 @@ int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
- 			struct dlm_rsb **r_ret)
- {
- 	char key[DLM_RESNAME_MAXLEN] = {};
--
-+	if (len > DLM_RESNAME_MAXLEN)
-+		return -EINVAL;
- 	memcpy(key, name, len);
- 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
- 	if (*r_ret)
+diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+index 0c8342747cab..4165ad3ddf00 100644
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -78,6 +78,17 @@ static inline s64 wb_stat_sum(struct bdi_writeback *wb, enum wb_stat_item item)
+ 
+ extern void wb_writeout_inc(struct bdi_writeback *wb);
+ 
++static inline int bdi_wb_dirty_exceeded(struct backing_dev_info *bdi)
++{
++	return bdi->wb.dirty_exceeded;
++}
++
++static inline void bdi_wb_stat_mod(struct backing_dev_info *bdi,
++				   enum wb_stat_item item, s64 amount)
++{
++	wb_stat_mod(&bdi->wb, item, amount);
++}
++
+ /*
+  * maximal error of a stat counter.
+  */
 -- 
-2.51.0
+2.25.1
 
