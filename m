@@ -1,107 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B07E29B777
-	for <gfs2@lists.linux.dev>; Thu, 12 Feb 2026 13:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428C4274B59
+	for <gfs2@lists.linux.dev>; Fri, 13 Feb 2026 05:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770903237; cv=none; b=VAJOHaQ60tMrDsyUEIzx2QbpQnxReLiaVhHF0RNg0otW6UopCYcOSJyuv066kfgenkXplYdlB+CGm+OyxmkmlWLlyRoudsvDXaGSzDMwlZKG7s6LCIgm4lRt8j/s1L9kyp25/JcGRJOwXNeVKxTuURFeYwmFGcWORyKBHDJ3hM4=
+	t=1770961891; cv=none; b=Vt8UUFbyXfQKbzyoZ7LT99iyFscz9zhLtjxGbbzmP8zdZ8XHb3hmOxx2jXJ8VOtmVLdTgwo/sXN3bANuv0rntfqonfuuavCU80m/o5jwyaYVC7WMYxPRKC1rvwlf6oTlrqf7ix3YiofqYSl2WA3ReT2nz2paN/+V4I5jRiGf3kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770903237; c=relaxed/simple;
-	bh=AHFakH0y2rrZmaWS6xHv4RQ9Ta0qZMhdwwOzR44urWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n0XUWPM1xUTWcCNC/T5m+GB8zW7qpvDI+3JeahALwkr1t6D1dF4nDYxgfqK8Az32wEftgRWi4e1GcjNJe6yapU4odNOAAwtpF0eK21GoMIqD7nq1kpcHgEJF5WnxMFS9ba0PAqEioHcPKcGyc+uxRto8znWXFa7b6kJntm29mTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hvbZCvyN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770961891; c=relaxed/simple;
+	bh=Z/yQn8DzSvsjQsxW3X/WSGnYwmjkz9b/zpQanQyUDoI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=a1RzQnWGbJOYlK+RsS0mQzZRtoP4NXHFVkXwrrocGe/Ay215K50kqQQM4cfrifKfPnHWhlTjDXA3Ct6cru4ol6t+jjflRv5eeqW4lN6Db7I40mrbAXT0LbLAT9RQUcZvtjONoczSN8or+TbUBXJ2u/FJWv64LUVwsIIaCMxD+cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=NucdvvTX; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hvbZCvyN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770903235;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AHFakH0y2rrZmaWS6xHv4RQ9Ta0qZMhdwwOzR44urWc=;
-	b=hvbZCvyNXD1bRf4L1IscsJuccNoSbOdfR7QVzaMPCCCJi/JRC0Fo2Q5VaEMvSzLewZDVKg
-	0v/IIPXEESCsQa6eEi4N2DV9/8lWsw/SAlKCHx+6OdhmWBuIxOBtyN/j41ccHxL1HBEWI8
-	H7vHxxisfLWvCUlKy0KHFsVL9E548QA=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-3b_y7ExLN72uWyweLkJS_A-1; Thu, 12 Feb 2026 08:33:54 -0500
-X-MC-Unique: 3b_y7ExLN72uWyweLkJS_A-1
-X-Mimecast-MFC-AGG-ID: 3b_y7ExLN72uWyweLkJS_A_1770903233
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-38710504f15so5098771fa.0
-        for <gfs2@lists.linux.dev>; Thu, 12 Feb 2026 05:33:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770903232; x=1771508032;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AHFakH0y2rrZmaWS6xHv4RQ9Ta0qZMhdwwOzR44urWc=;
-        b=UAoxVHRf1kfCtp7L/ZFG6nl1h1x0bcr+2DwEGkpQnmXI3NmpldNwnt+tFd1+B5T95P
-         jOty0Lu0fm79jqaVU3WdrihwkGY+PYTsUBw5RqT1K5FyPapungXsKaglZ1yY/0UPDnmu
-         /giCt77Jk9Iw1jF6qngMGfT8Pz0EBmxULJz1MyyCGQv0XJBJtd7klHS6LFHkMOaMvhFc
-         1nYr8uUrtDd7scdya5b8NsUPFbc0NOEPbX+KaMG1rndNPkN75br1uHYLvpOMQig73wyi
-         z5Qyxsu+MzS3YtAMTqED1YmsRi0J/IxgDAYmqiYvaTFe5s4AlRHmi8donQCjcfwoyb70
-         TRKw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+6XZnXESpSBHTySjJ6+mhGtQHFV2PCpPONJ1jAcEqa4bNblN7jyDTuJGWwJEk1Dge3MIy@lists.linux.dev
-X-Gm-Message-State: AOJu0YxAJP3qeyzNaaM/cNpzFVX/SHP3Xl8T5VwOjmwRjbQCyDIvIMca
-	T+fJCuZjQKKZYjuWaNcLTVIfNO5DlMadu4aOIAZ95Ndh2eLAriaBPVACdeg1tyZzwFs2eV/V/aQ
-	t0k1HvHne1afi3zZpizWFBYztgWwABaYEiSDBgSPnFENPhSqF89mlWPM5H4AQMTCLGC73Ji3Pb3
-	rlV3hO0WL73f5+JaGIyMAyz2le9yj2Cw==
-X-Gm-Gg: AZuq6aJl+8BWtcYbVpk0Z779FTw5m5RAxBa497N+LrrP9TxHEiKW4n7NLxy4XcgkO9y
-	WswqBDKehnaiOhNtYYO25SriuEDhZJZrl8fnCVNl6yH18LFp1sbmuRomp/oavQ/msJXTNtLWuzm
-	PEc/lRtsLA9T1Xl89s5dqQam642Ihrn1EhRgZ2XFpX27nz6MTOZFHj91NLLC9nDWSGCq2jw9gI0
-	ICpGuFHqx0aUM9XPpTOnJXtVWD8PExdyG5GVI4=
-X-Received: by 2002:a2e:9205:0:b0:385:bb35:8e45 with SMTP id 38308e7fff4ca-38711bcd1f3mr7034021fa.6.1770903232467;
-        Thu, 12 Feb 2026 05:33:52 -0800 (PST)
-X-Received: by 2002:a2e:9205:0:b0:385:bb35:8e45 with SMTP id
- 38308e7fff4ca-38711bcd1f3mr7033911fa.6.1770903232032; Thu, 12 Feb 2026
- 05:33:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="NucdvvTX"
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260213055126epoutp01d1ad0f725806ccbaf253994efe6074e2~TuHQFXSBc2887728877epoutp01f
+	for <gfs2@lists.linux.dev>; Fri, 13 Feb 2026 05:51:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260213055126epoutp01d1ad0f725806ccbaf253994efe6074e2~TuHQFXSBc2887728877epoutp01f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1770961886;
+	bh=02DDEaQljJH+1NIoCRiXwA4Cox05Tk7oMWaIvNrazSM=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=NucdvvTXujmEfYfriSe+LqqnwNbnMqP+LoZiobsIbMhGPR8CzisJjGUk74J8wHOlr
+	 78n39vIpmh6qEKn10F7msTFMQ9WC2XOhL3Kz0Ixg7UN3A3umCiyoir+0Mp1zo+SRs9
+	 nhmMFMcalYQJZboHssKoO/ChnE423Dbf7PkjDtO0=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260213055126epcas5p24356d9d29f340cec40f8474b60ab888e~TuHPkBxBP2327423274epcas5p2w;
+	Fri, 13 Feb 2026 05:51:26 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.95]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4fC1WJ4TXQz2SSKX; Fri, 13 Feb
+	2026 05:51:24 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260213055123epcas5p25f52d5961c04b1a1f514827a494a0773~TuHNHL6z22327923279epcas5p2j;
+	Fri, 13 Feb 2026 05:51:23 +0000 (GMT)
+Received: from localhost.localdomain (unknown [107.99.41.245]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260213055119epsmtip27175adf3780b7d24b46fc8ee007de103~TuHJE0T9c2557525575epsmtip2h;
+	Fri, 13 Feb 2026 05:51:19 +0000 (GMT)
+From: Kundan Kumar <kundan.kumar@samsung.com>
+To: jaegeuk@kernel.org, chao@kernel.org, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, hch@lst.de, brauner@kernel.org,
+	jack@suse.cz, viro@zeniv.linux.org.uk, djwong@kernel.org, jlayton@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com, Kundan
+	Kumar <kundan.kumar@samsung.com>
+Subject: [PATCH v2 0/4] Avoid filesystem references to writeback internals
+Date: Fri, 13 Feb 2026 11:16:30 +0530
+Message-Id: <20260213054634.79785-1-kundan.kumar@samsung.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260212034254.2864235-1-n7l8m4@u.northwestern.edu>
-In-Reply-To: <20260212034254.2864235-1-n7l8m4@u.northwestern.edu>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 12 Feb 2026 08:33:40 -0500
-X-Gm-Features: AZwV_QjdTFGOqkL_htkyZaXZiBS7ZHFwqyR0pjmByM8pf3kRv7eqpEW166FK2bg
-Message-ID: <CAK-6q+jySOc8qWJD+8oVXojf_T5L3qSB+Tt-q1gdZSnm6a=wxQ@mail.gmail.com>
-Subject: Re: [PATCH] dlm: add usercopy whitelist to dlm_cb cache
-To: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: THtMtfQZduWt1U1HAFuZsXI8zKetHl_2gdX_AuUPqHY_1770903233
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260213055123epcas5p25f52d5961c04b1a1f514827a494a0773
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260213055123epcas5p25f52d5961c04b1a1f514827a494a0773
+References: <CGME20260213055123epcas5p25f52d5961c04b1a1f514827a494a0773@epcas5p2.samsung.com>
 
-Hi,
+The series introduces writeback helper APIs and converts f2fs, gfs2
+and nfs to stop accessing writeback internals directly.
 
-On Wed, Feb 11, 2026 at 10:43=E2=80=AFPM Ziyi Guo <n7l8m4@u.northwestern.ed=
-u> wrote:
->
-> The dlm_cb slab cache is created with kmem_cache_create(), which
-> provides no usercopy whitelist. When a callback carries LVB data,
-> dlm_user_add_ast() copies the LVB into the inline lvbptr[] array within
-> the slab-allocated struct dlm_callback and redirects ua->lksb.sb_lvbptr
-> to point to it. copy_result_to_user() then calls copy_to_user() with
-> this pointer. With CONFIG_HARDENED_USERCOPY enabled, this triggers
-> usercopy_abort().
->
-> Switch to kmem_cache_create_usercopy() with a whitelist covering the
-> lvbptr field.
->
-> Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+As suggested by Christoph [1], filesystem code that directly accesses
+writeback internals is split out:
+[1] https://lore.kernel.org/all/20251015072912.GA11294@lst.de/
 
-Acked-by: Alexander Aring <aahringo@redhat.com>
+No functional changes intended.
 
-Thanks for pointing this out.
+Changes since v1:
+1) Added comment indicating that these functions shall not be used by
+   filesystems that support cgroup writeback. (Christoph)
+2) Pass inode instead of bdi for modifying writeback accounting stats,
+   will make it easier to select proper wb context for the upcoming
+   parallel writeback patches. (hence dropped the previous reviewed-bys
+   for patch 4)
 
-- Alex
+Kundan Kumar (4):
+  writeback: prep helpers for dirty-limit and writeback accounting
+  f2fs: stop using writeback internals for dirty_exceeded checks
+  gfs2: stop using writeback internals for dirty_exceeded check
+  nfs: stop using writeback internals for WB_WRITEBACK accounting
+
+ fs/f2fs/node.c              |  4 ++--
+ fs/f2fs/segment.h           |  2 +-
+ fs/gfs2/super.c             |  2 +-
+ fs/nfs/internal.h           |  2 +-
+ fs/nfs/write.c              |  3 +--
+ include/linux/backing-dev.h | 13 +++++++++++++
+ 6 files changed, 19 insertions(+), 7 deletions(-)
+
+
+base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+-- 
+2.25.1
 
