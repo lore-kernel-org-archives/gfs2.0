@@ -1,153 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF08377556;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CF619A288
+	for <gfs2@lists.linux.dev>; Tue, 17 Feb 2026 22:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771362878; cv=none; b=I1cE0czN/JqrzwCyYagf5KFZu2o2M3/tomV5KpJ3m76vgxobOJgTM0cEsY8zprq11QsGUJNYWVld+2V7PuI2Ho0eHbUunAz6fN6oTrIsrYwPc/Ses21IHJztjbV7AbtH/IUbJpTrIQkT7PrrYtAnLgPVv52tTi8pTqUqiDuJvQk=
+	t=1771366743; cv=none; b=dMUwWPj7Vz5uwExKKczPFKNkpodw63/b2Qb6uHKpp7gmTX7gKTQ+5Ez2b7umVWuaq1nbKVeJYyPHFczn7TTBDdodcO1GnNoQ5IH1g22HsPO9WLdimdWwatMv/TLE3ZwoLUsjKi2LwGiwjGAHeBOyA8DYJ6mcMmQi4pckD9LpEzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771362878; c=relaxed/simple;
-	bh=SWr3Pg6zIeu2S3Z6UDsk8BzZU6tf527GPJ41POMlghM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qf73RQTBW78Pcv6J9dBKvzNX/FNGJgXVTmVVoigvinF0CjnwPfK0iR0uj8VK38XoiI6cVmH64K4TLto6Y3pEc02dtB225HrR8fIR/RV3h6mqzIvUGnbdLlsk8MLaVaquaRd2p/sYT+3a1y5N6U27AF7NGxXcL3SWTYAmHp7+jO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qME5lVPC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771366743; c=relaxed/simple;
+	bh=lm7iwONb7FGSy3u3bCtG88NlrAlCB411P2BG0uMcprw=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=W3A1VO3yESl10M0WCX1f+aCbRC+j99hOe8J1dS8JK+RueGG0Zw7armWHY7lcs0Qe/89DxgUjQlieZpAdR1a6Tz4Ytci6urLjv77tst5qXWsvmwFNLihFkScPQTRCljyhvHycNW2x/qSO36UMg9F37Fpk9mqgyQD9kIFZJ5u7bqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=NiCaIJEn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qYDdxUQy; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qME5lVPC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05413C19421;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771362878;
-	bh=SWr3Pg6zIeu2S3Z6UDsk8BzZU6tf527GPJ41POMlghM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qME5lVPCgbs75GtVkYDVSedStUuy5Pu7iKCY4IKu3xqN3EcQE+Oh5yA77hoZy7VyU
-	 +0wZZYMpZQVXM9oVuFBmRCNz9ULENuT2B5em0ouDg88Yb0OXaPujVB/GBPkgNNMpHr
-	 EhgPO+uLpu1WI515RTCnoSYcSuoUoWHPdRcl280BUTS4HjHiimnSyoFiD+9+NmEu7s
-	 4m0WVXB/a1C6i48qotqtPrvf49sFdMixg5MNCldkNycO7JhTW+IJtnP0WEfZw+8dYi
-	 1uYBY6iDz7huxRyc2w6LATusfRgMkVW0RAKYcp9Uufer3E7jADONKO2Apo8cM0wFiU
-	 pB1OIFY+N5Jzg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B1123806667;
-	Tue, 17 Feb 2026 21:14:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="NiCaIJEn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qYDdxUQy"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id E30BE7A0123;
+	Tue, 17 Feb 2026 17:19:00 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 17 Feb 2026 17:19:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1771366740; x=1771453140; bh=u2H8p40L5wckMyaw3R8Ixd82jhqlRVZNb3Y
+	AhJWKOws=; b=NiCaIJEnlbCLt8nh4j6+Kw2IEztZVFT0EFbp4f9SqrJOTe3GQh8
+	1EfSL3oGgUo5XTxevqzHCM9SA+C8J8Q1mvY3ZIODzHuvJ5KT4v8OkbCp3GN2L4SB
+	d90Tk8znyZBwZS+al/+1sGFyHGcY6Jn4JKFK6R4s2k45llS39gpWwkBijPzGYbNV
+	2iqYe0Eo3q9e8moxC5qk0mVLjGXCS3sulO7TmFQzwOGvrU1O2e80BZVaJxIvum6P
+	3wer/21B1atwr3PKAhU44YK+nuww0JaV3jdhPGa20VkD6GMxy1Zl3GvAUMcj03U/
+	J6Y/BFVi4c+JdIoYmo1eNWBbJV0Gi5FPrhQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771366740; x=
+	1771453140; bh=u2H8p40L5wckMyaw3R8Ixd82jhqlRVZNb3YAhJWKOws=; b=q
+	YDdxUQy+djCLT5zGJrpSxXYmrF2I8MGajtH65H5EuQBeZ71jMbYsoXotP4gl23ze
+	WKuZr3xNIpgqUOfxp166xNmEGF55u49YKx5g8a7H4wiq171EIhfqguxw/aWExWcT
+	aARxohu0vGlJONI+gmDVKL3cIoTVTYfVn2gyojnMS17ma8fDaxy9ciMp73DtXHRZ
+	Rpvro6RLvYI/JK2X/I8Nq80QMNddtJxA/+WZmJrLLuiGZnjtktlPF/gZ/oU/WIRy
+	XNdLcNOqEiB3rfGdRTlOVEhvq4fFDN7Nh9sBFiJIZuGIi2gkBgSNMX/Og6OE8MAq
+	KXciUfLu6dqauRnAXkhXA==
+X-ME-Sender: <xms:VOmUaQSN27c3M1uLt7h55EQ-LUBK8dvVC6mvtlslbX-pOq6vMstIoA>
+    <xme:VOmUaeNYfhK2gD4SartlmVPL0Y8pboCMSGE7EnJLwgXuzhdVpdRNw_4BiJ-O2ng_R
+    72DnuAu1_i9QstHwykvEOeeUpmdfuZyphs3WhNXxooqT6jRSg>
+X-ME-Received: <xmr:VOmUaejG8vcnvIPQoC5zQl2DHCpQLfg4L8KVdFnZVkFGGejHLGWgLCmsLUm0BrDE6252If2J91eCEtF7aRPwpb78mAFNJ3MJ9WoRGebZAD0U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtleegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegouf
+    hushhpvggtthffohhmrghinhculdegledmnecujfgurheptgfgggfhvfevufgjfhffkfhr
+    sehtqhertddttdejnecuhfhrohhmpefpvghilheurhhofihnuceonhgvihhlsgesohifnh
+    hmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffhfffkeegjeejtdffueekjeff
+    feeljedtvdekveduuddtudeiieeuhefhheehnecuffhomhgrihhnpehshiiikhgrlhhlvg
+    hrrdgrphhpshhpohhtrdgtohhmpdhgohhoghhlvggrphhishdrtghomhenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmh
+    grihhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtoh
+    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehshiiisghothdotdgvrgehuddtkegrudhfhehfsgegfhgttgdvugeksehshiii
+    khgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhmpdhrtghpthhtohepjhgrtghkse
+    hsuhhsvgdrtgiipdhrtghpthhtohepghhfshdvsehlihhsthhsrdhlihhnuhigrdguvghv
+    pdhrtghpthhtohepsghrrghunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsh
+    ihiihkrghllhgvrhdqsghughhssehgohhoghhlvghgrhhouhhpshdrtghomh
+X-ME-Proxy: <xmx:VOmUabkHv7bDWpfhyBUTtYItEuy2is3QSqzBhJECUEfpk1rLHVoVoA>
+    <xmx:VOmUaai4eHDdZ-LS1Ct9qts6r1RPheeabcYkgqyDcTrKL-VIplxRKQ>
+    <xmx:VOmUaeGQonTpUMlWXH5vYOG-hFbDn5Z5a8_tqqc6U8Ntn1bIvEb49A>
+    <xmx:VOmUacut68CqZQ9WfiLDH0UhG9PKxh2jkDcq0HSJMImIatTy6u--9w>
+    <xmx:VOmUaTDdLq5RBzoTLHHWuRnpyxRvDui6RqAy_SPTRJ0FEkVz_wQoeQwB>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 17:18:57 -0500 (EST)
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH 00/24] vfs: require filesystems to explicitly
- opt-in to lease support
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <177136286957.643511.1991968143318289235.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Feb 2026 21:14:29 +0000
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-In-Reply-To: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: luisbg@kernel.org, salah.triki@gmail.com, nico@fluxnic.net,
- hch@infradead.org, jack@suse.cz, al@alarsen.net, viro@zeniv.linux.org.uk,
- brauner@kernel.org, dsterba@suse.com, clm@fb.com, xiang@kernel.org,
- chao@kernel.org, zbestahu@gmail.com, jefflexu@linux.alibaba.com,
- dhavale@google.com, lihongbo22@huawei.com, guochunhai@vivo.com,
- jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
- hirofumi@mail.parknet.co.jp, dwmw2@infradead.org, richard@nod.at,
- shaggy@kernel.org, konishi.ryusuke@gmail.com, slava@dubeyko.com,
- almaz.alexandrovich@paragon-software.com, mark@fasheh.com,
- jlbec@evilplan.org, joseph.qi@linux.alibaba.com, hubcap@omnibond.com,
- martin@omnibond.com, miklos@szeredi.hu, amir73il@gmail.com,
- phillip@squashfs.org.uk, cem@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
- chuck.lever@oracle.com, alex.aring@gmail.com, agruenba@redhat.com,
- corbet@lwn.net, willy@infradead.org, ericvh@kernel.org, lucho@ionkov.net,
- asmadeus@codewreck.org, linux_oss@crudebyte.com, xiubli@redhat.com,
- idryomov@gmail.com, trondmy@kernel.org, anna@kernel.org, sfrench@samba.org,
- pc@manguebit.org, ronniesahlberg@gmail.com, sprasad@microsoft.com,
- tom@talpey.com, bharathsm@microsoft.com, hansg@kernel.org,
- jfs-discussion@lists.sourceforge.net, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, gfs2@lists.linux.dev, linux-mm@kvack.org,
- linux-mtd@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nilfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
- ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, v9fs@lists.linux.dev,
- samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, ntfs3@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-btrfs@vger.kernel.org
+From: NeilBrown <neilb@ownmail.net>
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "syzbot" <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>,
+ gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ viro@zeniv.linux.org.uk
+Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
+In-reply-to: <177131956603.8396.12634282713089317@noble.neil.brown.name>
+References: <6993b6a3.050a0220.340abe.0775.GAE@google.com>, <>,
+ <20260217-fanshop-akteur-af571819f78b@brauner>,
+ <177131956603.8396.12634282713089317@noble.neil.brown.name>
+Date: Wed, 18 Feb 2026 09:18:53 +1100
+Message-id: <177136673378.8396.7219915415554001211@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-Hello:
+On Tue, 17 Feb 2026, NeilBrown wrote:
+> On Tue, 17 Feb 2026, Christian Brauner wrote:
+> > On Mon, Feb 16, 2026 at 04:30:27PM -0800, syzbot wrote:
+> > > Hello,
+> > >=20
+> > > syzbot found the following issue on:
+> > >=20
+> > > HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git://gi=
+t.k..
+> > > git tree:       upstream
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D15331c02580=
+000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dac00553de86=
+d6bf0
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D0ea5108a1f5fb=
+4fcc2d8
+> > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e=
+25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D146b295a5=
+80000
+> > >=20
+> > > Downloadable assets:
+> > > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets=
+/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71e9c/vmli=
+nux-0f2acd31.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/b18643058ceb=
+/bzImage-0f2acd31.xz
+> > > mounted in repro: https://storage.googleapis.com/syzbot-assets/bbfed090=
+77d3/mount_1.gz
+> > >   fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=3D10=
+6b295a580000)
+> > >=20
+> > > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > > Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
+> >=20
+> > Neil, is this something you have time to look into?
+>=20
+> The reproducer appears to mount a gfs2 filesystem and mkdir 3
+> directories:
+>   ./file1
+>   ./file1/file4
+>   ./file1/file4/file7
+>=20
+> and somewhere in there it crashes because vfs_mkdir() returns a
+> non-error dentry for which ->d_parent->d_inode is not locked and
+> end_creating_path() tries to up_write().
+>=20
+> Presumably either ->d_parent has changed or the inode was unlocked?
+>=20
+> gfs2_mkdir() never returns a dentry, so it must be returning NULL.
+>=20
+> It's weird - but that is no surprise.
+>=20
+> I'll try building a kernel myself and see if the reproducer still fires.
+> if so some printk tracing my reveal something.
 
-This series was applied to jaegeuk/f2fs.git (dev)
-by Christian Brauner <brauner@kernel.org>:
+Unfortunately that didn't work out.
+Using the provided vmlinux and root image and repro, and a syzkaller I
+compiled from current git, I cannot trigger the crash.
 
-On Thu, 08 Jan 2026 12:12:55 -0500 you wrote:
-> Yesterday, I sent patches to fix how directory delegation support is
-> handled on filesystems where the should be disabled [1]. That set is
-> appropriate for v6.19. For v7.0, I want to make lease support be more
-> opt-in, rather than opt-out:
-> 
-> For historical reasons, when ->setlease() file_operation is set to NULL,
-> the default is to use the kernel-internal lease implementation. This
-> means that if you want to disable them, you need to explicitly set the
-> ->setlease() file_operation to simple_nosetlease() or the equivalent.
-> 
-> [...]
+I'll have another look at the code but I don't hold out a lot of hope.
 
-Here is the summary with links:
-  - [f2fs-dev,01/24] fs: add setlease to generic_ro_fops and read-only filesystem directory operations
-    https://git.kernel.org/jaegeuk/f2fs/c/ca4388bf1d9e
-  - [f2fs-dev,02/24] affs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/663cdef61a27
-  - [f2fs-dev,03/24] btrfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f9688474e413
-  - [f2fs-dev,04/24] erofs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f8902d3df893
-  - [f2fs-dev,05/24] ext2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/ccdc2e0569f5
-  - [f2fs-dev,06/24] ext4: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/20747a2a29c6
-  - [f2fs-dev,07/24] exfat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/b8ca02667552
-  - [f2fs-dev,08/24] f2fs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/9e2ac6ddb397
-  - [f2fs-dev,09/24] fat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/a9acc8422ffb
-  - [f2fs-dev,10/24] gfs2: add a setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/3b514c333390
-  - [f2fs-dev,11/24] jffs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/c275e6e7c085
-  - [f2fs-dev,12/24] jfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/7dd596bb35e5
-  - [f2fs-dev,13/24] nilfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f46bb13dc5d9
-  - [f2fs-dev,14/24] ntfs3: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6aaa1d6337b5
-  - [f2fs-dev,15/24] ocfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f15d3150279d
-  - [f2fs-dev,16/24] orangefs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/136b43aa4b16
-  - [f2fs-dev,17/24] overlayfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/94a3f60af5dc
-  - [f2fs-dev,18/24] squashfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dfd8676efe43
-  - [f2fs-dev,19/24] tmpfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f5a3446be277
-  - [f2fs-dev,20/24] udf: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dbe8d57d1483
-  - [f2fs-dev,21/24] ufs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/545b4144d804
-  - [f2fs-dev,22/24] xfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6163b5da2f5e
-  - [f2fs-dev,23/24] filelock: default to returning -EINVAL when ->setlease operation is NULL
-    https://git.kernel.org/jaegeuk/f2fs/c/2b10994be716
-  - [f2fs-dev,24/24] fs: remove simple_nosetlease()
-    https://git.kernel.org/jaegeuk/f2fs/c/51e49111c00b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+NeilBrown
