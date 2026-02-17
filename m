@@ -1,112 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB9A8C1F
-	for <gfs2@lists.linux.dev>; Fri, 13 Feb 2026 21:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0965C13B
+	for <gfs2@lists.linux.dev>; Tue, 17 Feb 2026 00:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771016605; cv=none; b=tXp0gYu7xDGdHZpze59RSYxB+Afoe5CYdTfQBm4rn2LVKDczUwzJGDSBc8+QlGIx/xIQAp3IiRI/RdoNuLgopt2mf9HZyrTJrLUsSsVMM/x5SUUEUY5X5aXBbipBBAhbWB2MjNgvaQ9+OOvrr0HvCQ7zEM2qaQp+HHN0mQEZBLY=
+	t=1771288230; cv=none; b=tksrfN6BLXb261kuF0ouc6oLIb7VqhHhiEBfghpgD0DXBtsMcq2jOJMu3z096z7vdXioAAAA7zBbPIwHq7q7jM9LuRre7SUw4T+okrJGt5HAflJkWqHpp2nDSWDD6sqFcd/yIuA744VrNcannVxY1GjK84NiOY1Zr6ioB97jDwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771016605; c=relaxed/simple;
-	bh=r38H8eLl4lKmz96ayMJg0B2RxOcVqxUeAat+Bqym31U=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=uLmtrImwwxabE6rZ6BWKqYSeYEwouHrlTKdQ9BSu/IqM+a7WsMRibQsLbZZzWujO5pmonvjgByfYQMFvoZ9bP9FAL6TAcyIpewe5ySGW6xkpYfr5ZKBFgsv0PtTJ10kPkgd3Icd2EwL52deLwjxaSCe8Bw1h2t0vsO5Iww/llSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HuSvRB60; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HuSvRB60"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771016603;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=r38H8eLl4lKmz96ayMJg0B2RxOcVqxUeAat+Bqym31U=;
-	b=HuSvRB60DddThvCOJQnB9DA2U6hpx3kTWtT/D1VVwoFobJ67scD5VzHYgZbxtZfmC0UIuK
-	L+ba28dj+0WjDDyH+yxlzMChzHIdcJn9YY/IEffCYYfrxzyHQ9RtDKYz7FzC2cPG/6tUcy
-	G31AJ9LE//OeMedRrDeWc6G7LA4LqJc=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-Ew-890AoNbuNnQP5xmIsYg-1; Fri, 13 Feb 2026 16:03:21 -0500
-X-MC-Unique: Ew-890AoNbuNnQP5xmIsYg-1
-X-Mimecast-MFC-AGG-ID: Ew-890AoNbuNnQP5xmIsYg_1771016600
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-59e16c11f49so1036141e87.0
-        for <gfs2@lists.linux.dev>; Fri, 13 Feb 2026 13:03:21 -0800 (PST)
+	s=arc-20240116; t=1771288230; c=relaxed/simple;
+	bh=fA+PAPwqtgQVDnSTHzxOVSJe3IbBS3YkxXEFVMhqb2k=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KR0C8vhuN5v22K4h+zIrEt0dxfDP+qaX/wDljjSasg2nZM62owcIQTnfh+TCIlZ5FcAkoHpCbsNQzN5JbpxEkpGKgwReB48rp1wkNgzUuBhDoL8xnPurEpgFPJNv2T4QDUPNwAgIPwDCaJNwJGlzyry++6utn4GmE8Qqi60mGDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-6795b040001so27035506eaf.0
+        for <gfs2@lists.linux.dev>; Mon, 16 Feb 2026 16:30:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771016600; x=1771621400;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r38H8eLl4lKmz96ayMJg0B2RxOcVqxUeAat+Bqym31U=;
-        b=NVhQmD6l0F3i6ZOX5oUxcPXXT9W3UudG0QOLLJajGilx53nBJY6xCQyopgDT1TzFvt
-         PSu9CB4/aIlpITKmUUjzPbNksrk7Qokpp/TAP3UuJYGFDpKuvMcmHsuJV3mSkjBnfckN
-         eNyfZupZhMFA14DePzR0sPZwJ+uNJ0w8QFxEYNc9Rvm7bddFNaGom2v98tBbjtCbzD+c
-         L4GuPJ1+OTZoA3vGBTM8nOjT9iC7zGmaZNWIQg6Fv1CDBCFfOM6qArjvS/9kxFrKKt0+
-         XQg12TgLSb7NylvcAIhG8XL2CtXrOLp168Y2/KhR66PgPru2lwzBk7WBbabEx4r89ioB
-         tIHw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6k3snq66eEGa2kP4Y0DBd6h6XPe48zh5VVPfUopyxT5dBG/0j5X2wzEnsLOHpU1gOd6Qr@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx6uIq8LAZ2wOmuQxRa5ct9tXC0Qtzdmqa54YaSDYtyISmgwnMr
-	nt7l41S3Drqm7XAf1R6ag9bnuHeCrubQVZHfaa6g6xfiWS4DIytuD+WKgs/co0bDe3GP+Anl3EZ
-	4boACcsaIY9AdW4lqHnJCdzi1g1xVWOouS4+on6hMvZfA7CPzj60QXFkRrsJFiM2MvQxeinPW54
-	EAHcLmaVVLMWkk/CrmAv87SwFM/SWnbQ==
-X-Gm-Gg: AZuq6aLLj61Vz0AvB2eOSadyfecS8KjiRXWCRz38KCUqWWX67tF9x/TR9mcQvuJUxqu
-	QT/C9madAxC6Nr5qHYq8KLWJF/PWYbH6/mjZZEC2wcL2fFCfxvf29mSVObh9UGtJDcKIfh8K6qG
-	8A1NM7jUHoxW7DsUxU/anSW3yElwZTmCgWwqGeZI/2+G/mMGK/hc6p4cSK0gSpQZYKlVjjckY9e
-	MMxg8Qf2ocqiNXHaBtUtAemROE+J7ioowKv6M7P
-X-Received: by 2002:a05:6512:32c3:b0:59e:46c6:9081 with SMTP id 2adb3069b0e04-59f6d34c80dmr210939e87.2.1771016600012;
-        Fri, 13 Feb 2026 13:03:20 -0800 (PST)
-X-Received: by 2002:a05:6512:32c3:b0:59e:46c6:9081 with SMTP id
- 2adb3069b0e04-59f6d34c80dmr210929e87.2.1771016599486; Fri, 13 Feb 2026
- 13:03:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771288227; x=1771893027;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EogSuO0ftbI594l3InRmFgd5c8hh0uBqGBuQamWLThY=;
+        b=MnLch63sRIiHW2UXxm5xunT1dhrgwSycEAaJhOxvdxI+Q9wisANxpxNRXKG4FG538R
+         97NZQaSyeycVWHvYjHNDlyhNaYvG+FOgcipDudEnzBiLhDK5ESZ84NlCysFusyyHDV2M
+         ns40AvhoJ+8waJxoww73efIEE+ZHM52tvRcpr7uLZlbt3MAiMsxFQuDF/kMfMjfhZZvP
+         +4F1Hkd6Xu6Pp673nnkIuiABR0Y0Eb/1hYqWdBDLZ8zZUWsOEGZsDL5W1S8eNjcG1NgH
+         4t75qVxMq0pbvPncMAZldiD6kkAoX+CiFJj+X0hUVK8tMtysdMdlJkqWXBuvsyvuCNlE
+         y+hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMWu2n40fRAMA6b6VkInROa34da3/d02A+Ghi1ju1L3xDBqbVjb9I6gCeyYpRmmpscRXtq@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxl0biGa5SIO1KGGjHm+IuL5zQw2OZQlLQu3YQL5B5nI3pAL4q4
+	CXvoSiwlnR3XQZ1ZFJ1+E3NIc0rg2PejbxLNEbzeaiMsafXyRd/U6RIfkT1jwTqtwcfZdIMQF+X
+	0rD+roXIvmcgdbJtVooD/71Bs/NGTvWHvmZ4hIhu510w4hvXqZNswvixc2dk=
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Alexander Aring <aahringo@redhat.com>
-Date: Fri, 13 Feb 2026 16:03:08 -0500
-X-Gm-Features: AZwV_QgZDC4BMfr_62OBKQIGw1rPOpj8cinGnFyTwRxTcGMVGoVWq9ZzvvqAjuA
-Message-ID: <CAK-6q+gVhsKKPPax52nju8HXPApPyO9zE_jUygDxvhF8BT8P9Q@mail.gmail.com>
-Subject: [LSF/MM ATTEND] distributed file locking
-To: lsf-pc@lists.linux-foundation.org
-Cc: linux-fsdevel@vger.kernel.org, linux-nfs <linux-nfs@vger.kernel.org>, 
-	gfs2 <gfs2@lists.linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NGK8ViLrxOzf8kKJNeXyUIDoLn4a4-D5cWbm4LeC9Wc_1771016600
-X-Mimecast-Originator: redhat.com
+X-Received: by 2002:a05:6820:4c15:b0:676:9ba8:e486 with SMTP id
+ 006d021491bc7-67767198f38mr7030847eaf.21.1771288227606; Mon, 16 Feb 2026
+ 16:30:27 -0800 (PST)
+Date: Mon, 16 Feb 2026 16:30:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6993b6a3.050a0220.340abe.0775.GAE@google.com>
+Subject: [syzbot] [gfs2?] WARNING in filename_mkdirat
+From: syzbot <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>
+To: brauner@kernel.org, gfs2@lists.linux.dev, jack@suse.cz, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello,
 
-this proposal for LSF/MM aims to start an initial process to discuss
-improving the distributed file locking API in file_operations.
-Initially the file locking API, used from the user space via flock()
-or fcntl(), was not designed for distributed locking. There are known
-issues e.g. specifying a process id but missing additional information
-about the distributed entity where the process is running.
+syzbot found the following issue on:
 
-There should be a way for users to opt into additional distributed
-locking extensions that provide specific distributed locking info or
-even introduce a new file ops distributed locking API. Designing such
-new behaviour requires community effort to become aware of all
-distributed locking use cases in the Linux kernel. Examples of those
-users include DLM, NFS or CIFS.
+HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15331c02580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ac00553de86d6bf0
+dashboard link: https://syzkaller.appspot.com/bug?extid=0ea5108a1f5fb4fcc2d8
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146b295a580000
 
-A recent proposal [0] suggested offering the file locking API only to
-the user through a virtual filesystem, using DLM as the distributed
-lock manager backend for now. The filesystem's concept can be extended
-to offer other backends and allow experiments with new "distributed"
-file locking API extensions until the community agrees on and proposes
-a stable API.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71e9c/vmlinux-0f2acd31.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b18643058ceb/bzImage-0f2acd31.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/bbfed09077d3/mount_1.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=106b295a580000)
 
-This proposal discusses an exotic and very specific topic: distributed
-file locking, which tries to map to the existing file locking API.
-Users working on distributed file systems are aware of the challenges
-involved. Solving those long-standing challenges will be a lengthy
-process. It might be time to start improving this situation.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
 
-Please feel free to share your thoughts on this topic.
+------------[ cut here ]------------
+DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x0, magic = 0xffff88804a18c9b8, owner = 0x0, curr 0xffff888000ec2480, list empty
+WARNING: kernel/locking/rwsem.c:1381 at __up_write kernel/locking/rwsem.c:1380 [inline], CPU#0: syz.0.53/5774
+WARNING: kernel/locking/rwsem.c:1381 at up_write+0x2d6/0x410 kernel/locking/rwsem.c:1643, CPU#0: syz.0.53/5774
+Modules linked in:
+CPU: 0 UID: 0 PID: 5774 Comm: syz.0.53 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__up_write kernel/locking/rwsem.c:1380 [inline]
+RIP: 0010:up_write+0x388/0x410 kernel/locking/rwsem.c:1643
+Code: cc 8b 49 c7 c2 c0 eb cc 8b 4c 0f 44 d0 48 8b 7c 24 08 48 c7 c6 20 ee cc 8b 48 8b 14 24 4c 89 f1 4d 89 e0 4c 8b 4c 24 10 41 52 <67> 48 0f b9 3a 48 83 c4 08 e8 ea 60 0a 03 e9 67 fd ff ff 48 c7 c1
+RSP: 0000:ffffc90006407d80 EFLAGS: 00010246
+RAX: ffffffff8bcceba0 RBX: ffff88804a18c9b8 RCX: ffff88804a18c9b8
+RDX: 0000000000000000 RSI: ffffffff8bccee20 RDI: ffffffff9014bf50
+RBP: ffff88804a18ca10 R08: 0000000000000000 R09: ffff888000ec2480
+R10: ffffffff8bcceba0 R11: ffffed1009431939 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff88804a18c9b8 R15: 1ffff11009431938
+FS:  00007f9e11bfe6c0(0000) GS:ffff88808ca62000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c000d54e20 CR3: 0000000041f2c000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ inode_unlock include/linux/fs.h:1038 [inline]
+ end_dirop fs/namei.c:2947 [inline]
+ end_creating include/linux/namei.h:126 [inline]
+ end_creating_path fs/namei.c:4962 [inline]
+ filename_mkdirat+0x305/0x510 fs/namei.c:5271
+ __do_sys_mkdirat fs/namei.c:5287 [inline]
+ __se_sys_mkdirat+0x35/0x150 fs/namei.c:5284
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9e10d9bf79
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f9e11bfe028 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 00007f9e11016090 RCX: 00007f9e10d9bf79
+RDX: 00000000000001c0 RSI: 0000200000000140 RDI: ffffffffffffff9c
+RBP: 00007f9e10e327e0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f9e11016128 R14: 00007f9e11016090 R15: 00007ffffd54f8b8
+ </TASK>
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	49 c7 c2 c0 eb cc 8b 	mov    $0xffffffff8bccebc0,%r10
+   7:	4c 0f 44 d0          	cmove  %rax,%r10
+   b:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
+  10:	48 c7 c6 20 ee cc 8b 	mov    $0xffffffff8bccee20,%rsi
+  17:	48 8b 14 24          	mov    (%rsp),%rdx
+  1b:	4c 89 f1             	mov    %r14,%rcx
+  1e:	4d 89 e0             	mov    %r12,%r8
+  21:	4c 8b 4c 24 10       	mov    0x10(%rsp),%r9
+  26:	41 52                	push   %r10
+* 28:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2d:	48 83 c4 08          	add    $0x8,%rsp
+  31:	e8 ea 60 0a 03       	call   0x30a6120
+  36:	e9 67 fd ff ff       	jmp    0xfffffda2
+  3b:	48                   	rex.W
+  3c:	c7                   	.byte 0xc7
+  3d:	c1                   	.byte 0xc1
 
-- Alex
 
-[0] https://lore.kernel.org/linux-fsdevel/20260213180014.614646-1-aahringo@redhat.com
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
