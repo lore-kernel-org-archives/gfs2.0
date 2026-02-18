@@ -1,166 +1,95 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CF619A288
-	for <gfs2@lists.linux.dev>; Tue, 17 Feb 2026 22:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC1E2BD030
+	for <gfs2@lists.linux.dev>; Wed, 18 Feb 2026 13:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771366743; cv=none; b=dMUwWPj7Vz5uwExKKczPFKNkpodw63/b2Qb6uHKpp7gmTX7gKTQ+5Ez2b7umVWuaq1nbKVeJYyPHFczn7TTBDdodcO1GnNoQ5IH1g22HsPO9WLdimdWwatMv/TLE3ZwoLUsjKi2LwGiwjGAHeBOyA8DYJ6mcMmQi4pckD9LpEzM=
+	t=1771420830; cv=none; b=q6V5DFbLh6kpMR6Y2ni3VVH+7ROcjaUtFaJaLWNDJMXmODs3MvEmUgAtYss3gLcynSm6Lr7vnr5jMc1lCpCFMN6GOp3KRm3ysW6UvXBTO04Vxtfmh6NHvRHILY1rZyZsaFKxjc8XhrRCzE4EnOIN6fXJs+yIFbGqqqg+GT/m3Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771366743; c=relaxed/simple;
-	bh=lm7iwONb7FGSy3u3bCtG88NlrAlCB411P2BG0uMcprw=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=W3A1VO3yESl10M0WCX1f+aCbRC+j99hOe8J1dS8JK+RueGG0Zw7armWHY7lcs0Qe/89DxgUjQlieZpAdR1a6Tz4Ytci6urLjv77tst5qXWsvmwFNLihFkScPQTRCljyhvHycNW2x/qSO36UMg9F37Fpk9mqgyQD9kIFZJ5u7bqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=NiCaIJEn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qYDdxUQy; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="NiCaIJEn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qYDdxUQy"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E30BE7A0123;
-	Tue, 17 Feb 2026 17:19:00 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 17 Feb 2026 17:19:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1771366740; x=1771453140; bh=u2H8p40L5wckMyaw3R8Ixd82jhqlRVZNb3Y
-	AhJWKOws=; b=NiCaIJEnlbCLt8nh4j6+Kw2IEztZVFT0EFbp4f9SqrJOTe3GQh8
-	1EfSL3oGgUo5XTxevqzHCM9SA+C8J8Q1mvY3ZIODzHuvJ5KT4v8OkbCp3GN2L4SB
-	d90Tk8znyZBwZS+al/+1sGFyHGcY6Jn4JKFK6R4s2k45llS39gpWwkBijPzGYbNV
-	2iqYe0Eo3q9e8moxC5qk0mVLjGXCS3sulO7TmFQzwOGvrU1O2e80BZVaJxIvum6P
-	3wer/21B1atwr3PKAhU44YK+nuww0JaV3jdhPGa20VkD6GMxy1Zl3GvAUMcj03U/
-	J6Y/BFVi4c+JdIoYmo1eNWBbJV0Gi5FPrhQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771366740; x=
-	1771453140; bh=u2H8p40L5wckMyaw3R8Ixd82jhqlRVZNb3YAhJWKOws=; b=q
-	YDdxUQy+djCLT5zGJrpSxXYmrF2I8MGajtH65H5EuQBeZ71jMbYsoXotP4gl23ze
-	WKuZr3xNIpgqUOfxp166xNmEGF55u49YKx5g8a7H4wiq171EIhfqguxw/aWExWcT
-	aARxohu0vGlJONI+gmDVKL3cIoTVTYfVn2gyojnMS17ma8fDaxy9ciMp73DtXHRZ
-	Rpvro6RLvYI/JK2X/I8Nq80QMNddtJxA/+WZmJrLLuiGZnjtktlPF/gZ/oU/WIRy
-	XNdLcNOqEiB3rfGdRTlOVEhvq4fFDN7Nh9sBFiJIZuGIi2gkBgSNMX/Og6OE8MAq
-	KXciUfLu6dqauRnAXkhXA==
-X-ME-Sender: <xms:VOmUaQSN27c3M1uLt7h55EQ-LUBK8dvVC6mvtlslbX-pOq6vMstIoA>
-    <xme:VOmUaeNYfhK2gD4SartlmVPL0Y8pboCMSGE7EnJLwgXuzhdVpdRNw_4BiJ-O2ng_R
-    72DnuAu1_i9QstHwykvEOeeUpmdfuZyphs3WhNXxooqT6jRSg>
-X-ME-Received: <xmr:VOmUaejG8vcnvIPQoC5zQl2DHCpQLfg4L8KVdFnZVkFGGejHLGWgLCmsLUm0BrDE6252If2J91eCEtF7aRPwpb78mAFNJ3MJ9WoRGebZAD0U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtleegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegouf
-    hushhpvggtthffohhmrghinhculdegledmnecujfgurheptgfgggfhvfevufgjfhffkfhr
-    sehtqhertddttdejnecuhfhrohhmpefpvghilheurhhofihnuceonhgvihhlsgesohifnh
-    hmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffhfffkeegjeejtdffueekjeff
-    feeljedtvdekveduuddtudeiieeuhefhheehnecuffhomhgrihhnpehshiiikhgrlhhlvg
-    hrrdgrphhpshhpohhtrdgtohhmpdhgohhoghhlvggrphhishdrtghomhenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmh
-    grihhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtoh
-    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehshiiisghothdotdgvrgehuddtkegrudhfhehfsgegfhgttgdvugeksehshiii
-    khgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhmpdhrtghpthhtohepjhgrtghkse
-    hsuhhsvgdrtgiipdhrtghpthhtohepghhfshdvsehlihhsthhsrdhlihhnuhigrdguvghv
-    pdhrtghpthhtohepsghrrghunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsh
-    ihiihkrghllhgvrhdqsghughhssehgohhoghhlvghgrhhouhhpshdrtghomh
-X-ME-Proxy: <xmx:VOmUabkHv7bDWpfhyBUTtYItEuy2is3QSqzBhJECUEfpk1rLHVoVoA>
-    <xmx:VOmUaai4eHDdZ-LS1Ct9qts6r1RPheeabcYkgqyDcTrKL-VIplxRKQ>
-    <xmx:VOmUaeGQonTpUMlWXH5vYOG-hFbDn5Z5a8_tqqc6U8Ntn1bIvEb49A>
-    <xmx:VOmUacut68CqZQ9WfiLDH0UhG9PKxh2jkDcq0HSJMImIatTy6u--9w>
-    <xmx:VOmUaTDdLq5RBzoTLHHWuRnpyxRvDui6RqAy_SPTRJ0FEkVz_wQoeQwB>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Feb 2026 17:18:57 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1771420830; c=relaxed/simple;
+	bh=CEAGDoFoVMhjoXBVlBcYRZzvdefsgxvfjmpYRLBAWFo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OfHgq79omVfdTy2KViQ0CiQ6Veq9nBUiZS0gzwQikLHRZ/mJ9WUjbhJgZosQi9czDaS1aMJAuOrF0RbRjYnAbZuq5UrJsgLlLo87mpfokbQ3yv3VXTF0h0BaqTPICT1uExj54ey2fE2IJiz+aY2yr8dciVm0zN8ydq8p2bgLKu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-40efa542b8aso44609035fac.2
+        for <gfs2@lists.linux.dev>; Wed, 18 Feb 2026 05:20:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771420828; x=1772025628;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cnbsdVL0Z6XBcVjkAppqJTHMjSnIX3jPUvVn18hraFU=;
+        b=OmjPZnyqXlHoTDm2gmjvJhck9dV42Qz+MmGPLFTfYTxGVYaTNW+9jst2hB3wz/D4Uv
+         /oHMRk8voqX5+AKnqBoJNExNGvj7jYlIg0e8KBAQJWW6b6i4EeJJvgbbv5xWrTKvDUdn
+         MrSuH+pNrS4sJcxNtVjix51sUOO5o1SqVqOKp/ZqyeJ13wrDQgN4n+Dq/JaPT6I3rwHX
+         7p6hlIi9Uo11s0dgaSI//XLCLh52i6MpDLkEig9bjL26RO1ATKkZOUGjMFsHNQ/HnV9C
+         djcCPmiUPFq6BGyScfUCO86VosfREh4vpqFB90QRfjdwWjpfbXKIclSRC0wIFHxPvbjk
+         BDKg==
+X-Gm-Message-State: AOJu0YyCDB4ECfVllXUdXVw2q7hv9W+01bvBg6gTdOEUqvnyiGHfaW74
+	K0U2gR0YlykTHzhR2sn444ZvLYECSA7hS9Cr/mPUkjX25WBsdhMd5FlOQwLQ69rrVq1X/SxzC8E
+	CsWc8t+3oCAbfPMINmrUB742k9/UnAXNl3qod1I2fIffALuCjb4/f9iZwv5o=
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "syzbot" <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>,
- gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- viro@zeniv.linux.org.uk
-Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
-In-reply-to: <177131956603.8396.12634282713089317@noble.neil.brown.name>
-References: <6993b6a3.050a0220.340abe.0775.GAE@google.com>, <>,
- <20260217-fanshop-akteur-af571819f78b@brauner>,
- <177131956603.8396.12634282713089317@noble.neil.brown.name>
-Date: Wed, 18 Feb 2026 09:18:53 +1100
-Message-id: <177136673378.8396.7219915415554001211@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+X-Received: by 2002:a05:6820:151b:b0:65f:1012:69c5 with SMTP id
+ 006d021491bc7-679a748c16bmr876795eaf.76.1771420827892; Wed, 18 Feb 2026
+ 05:20:27 -0800 (PST)
+Date: Wed, 18 Feb 2026 05:20:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6995bc9b.050a0220.b01bb.0029.GAE@google.com>
+Subject: [syzbot] Monthly gfs2 report (Feb 2026)
+From: syzbot <syzbot+list6cba931c478e5ba16b4e@syzkaller.appspotmail.com>
+To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 17 Feb 2026, NeilBrown wrote:
-> On Tue, 17 Feb 2026, Christian Brauner wrote:
-> > On Mon, Feb 16, 2026 at 04:30:27PM -0800, syzbot wrote:
-> > > Hello,
-> > >=20
-> > > syzbot found the following issue on:
-> > >=20
-> > > HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git://gi=
-t.k..
-> > > git tree:       upstream
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D15331c02580=
-000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dac00553de86=
-d6bf0
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D0ea5108a1f5fb=
-4fcc2d8
-> > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e=
-25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D146b295a5=
-80000
-> > >=20
-> > > Downloadable assets:
-> > > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets=
-/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
-> > > vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71e9c/vmli=
-nux-0f2acd31.xz
-> > > kernel image: https://storage.googleapis.com/syzbot-assets/b18643058ceb=
-/bzImage-0f2acd31.xz
-> > > mounted in repro: https://storage.googleapis.com/syzbot-assets/bbfed090=
-77d3/mount_1.gz
-> > >   fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=3D10=
-6b295a580000)
-> > >=20
-> > > IMPORTANT: if you fix the issue, please add the following tag to the co=
-mmit:
-> > > Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
-> >=20
-> > Neil, is this something you have time to look into?
->=20
-> The reproducer appears to mount a gfs2 filesystem and mkdir 3
-> directories:
->   ./file1
->   ./file1/file4
->   ./file1/file4/file7
->=20
-> and somewhere in there it crashes because vfs_mkdir() returns a
-> non-error dentry for which ->d_parent->d_inode is not locked and
-> end_creating_path() tries to up_write().
->=20
-> Presumably either ->d_parent has changed or the inode was unlocked?
->=20
-> gfs2_mkdir() never returns a dentry, so it must be returning NULL.
->=20
-> It's weird - but that is no surprise.
->=20
-> I'll try building a kernel myself and see if the reproducer still fires.
-> if so some printk tracing my reveal something.
+Hello gfs2 maintainers/developers,
 
-Unfortunately that didn't work out.
-Using the provided vmlinux and root image and repro, and a syzkaller I
-compiled from current git, I cannot trigger the crash.
+This is a 31-day syzbot report for the gfs2 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/gfs2
 
-I'll have another look at the code but I don't hold out a lot of hope.
+During the period, 2 new issues were detected and 1 were fixed.
+In total, 41 issues are still open and 43 have already been fixed.
 
-NeilBrown
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  1902    Yes   INFO: task hung in __gfs2_lookup
+                   https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
+<2>  1444    Yes   kernel BUG in gfs2_glock_nq (2)
+                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
+<3>  1148    Yes   kernel BUG in gfs2_jindex_free (2)
+                   https://syzkaller.appspot.com/bug?extid=150563285f78ac3e9bd4
+<4>  626     Yes   WARNING in vfs_setxattr (3)
+                   https://syzkaller.appspot.com/bug?extid=5ce48a14916462cec450
+<5>  401     Yes   BUG: corrupted list in list_lru_add
+                   https://syzkaller.appspot.com/bug?extid=092ef2e75c24d23f33c4
+<6>  240     Yes   WARNING in do_mknodat (3)
+                   https://syzkaller.appspot.com/bug?extid=0cee785b798102696a4b
+<7>  211     Yes   WARNING in chown_common
+                   https://syzkaller.appspot.com/bug?extid=04c2672c56fbb9401640
+<8>  157     Yes   KASAN: slab-use-after-free Read in gfs2_invalidate_folio
+                   https://syzkaller.appspot.com/bug?extid=3a36aeabd31497d63f6e
+<9>  146     Yes   KASAN: slab-use-after-free Write in gfs2_qd_dealloc (3)
+                   https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
+<10> 126     Yes   INFO: task hung in block_invalidate_folio (2)
+                   https://syzkaller.appspot.com/bug?extid=85194ada5aabdfff265b
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
