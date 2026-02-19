@@ -1,139 +1,105 @@
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DED3271E8
-	for <gfs2@lists.linux.dev>; Thu, 19 Feb 2026 07:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960022222B2;
+	Thu, 19 Feb 2026 08:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771485990; cv=none; b=it+hgT+evCuaTVpRv+Xd0KY8ZrEFejWhpfGLsIaBr9YY/Gg7Zfu1XDww01yaXoFo8hNWI2J8ILattUHR2n7N5tnT6VW8N+1a8wAb5hikQpEXmEmuHicv0K0mxZJqBC7axPE/tzJzsOBAHdm6XwcRKmIoIhZWgqAcj7kGAtTheE4=
+	t=1771488574; cv=none; b=CAxzBP0tz+pGvN2w6GgN0HjsV4bYIvc65hrIVd71jN57xcS/tBCTb0OBIoWXUDSMuP6drSxTh0TOoH4YUJCExAFVuksq46zagKUf1udmvNj0GfpslklTVclji0n2Fn4ejzXbE0O66EwqYHq7rlnJW/xkpi82lFBDOLRhbhUPk00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771485990; c=relaxed/simple;
-	bh=d7tX339UUt2N4n7H/0cWHIR30theTfZmsg7UJ5LhH+E=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=cCgjQLIJzAZhem1suIxAqncfKiTEmMlYrt9vl9j6EjuWn3UXcP54O008anBXGiIst/4MXpE9One2O0ucSWKXBsDCgyRQIT996sZq2UMPNAYtlS+2BLi2LhGkNzRe7q5UFnRsXXaGh2oW4iPjYksttjIGbOIg0nPZsZCFYilU2zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-677d059c0d4so9176831eaf.3
-        for <gfs2@lists.linux.dev>; Wed, 18 Feb 2026 23:26:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771485988; x=1772090788;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=91+WVkCDRs7290LF9M6RNmtTe9b1ikHVhcqIknyWWUc=;
-        b=lzCpNgWO51wOuCTJRIuc27jS/ikb8xSzJAS550B/pNln41gumgBXhVACc2vTWmfa/3
-         okNaUuaWe9X7VUKYG66RicIpp68zHb8NLz9QHRbrQpnaME9LlrWuKERUM2dbFKTSHW7r
-         4wBQSZba9y/DH5Yxi1MnwkMCvEsHZKA2G49mQ4csjFN0vXeOuR8y+DHGo6IX5YPG3Ra2
-         n2pKinlj11UGLEtzWZzHNaG515+HzM+gjPTMVSKObIaxZ08KAa5S1sfDEZ5sh03vPcgC
-         yY1viUDf3Vj1Kpdcvc40QFLhImDYntq5moVFevQK04Zqxhoggf1nSjZmF3V490PTyghP
-         Utgw==
-X-Forwarded-Encrypted: i=1; AJvYcCXn3kp7t/lWL6imFjlcqlh0rQ+1x8th+Wpyv0T0k7ZUzwdfPCnEu4Q4vSDMlHodNkdOmPo5@lists.linux.dev
-X-Gm-Message-State: AOJu0YyoRZR3qMLoYeLftYcbGJn9U7/4E5JKOcSfV0Gcu5SDF69pr1FM
-	rm/kiifKvwW3KZvYRBCekvJhV9dbOg9D8p6XXuVEnAwE9s8PYk5ig/Bd3aQiUK4sjE6LEDBuFbB
-	lg7U92+ovEQSj7VnmZ1Yo+8mOCKF449fsuAfiyWobsTw8YODX/s+PVSw9c2U=
+	s=arc-20240116; t=1771488574; c=relaxed/simple;
+	bh=yhMVar4nIHmgs69JaNMjCmYfk4vX3AzkEmoK1e7RXS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oTy+YH1MrDDeS+XQqPyX1JcY1hPYhjNfh19miPUVh2QOAuQRJjyY5cH0gXIEdUmY4o/LpazFStgr1y9XFxtCirXE3tUSbxCNOE5xuXkvlFmQ/oA1fw03EQx0hyV8kWSE8ZPvaGo+o50S03H9WKQ6SIus11unTTXPWVKjLhvP+A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quhL+pIY; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quhL+pIY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DAAC4CEF7;
+	Thu, 19 Feb 2026 08:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771488574;
+	bh=yhMVar4nIHmgs69JaNMjCmYfk4vX3AzkEmoK1e7RXS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=quhL+pIYCUh71eAYtIMpqgZ6kQMAglJuy7bKKYNGr3EcY0bwqbVJm57D0wIZ3lcPc
+	 lF3LRRnT1nuNcu7snE+R4beR78PmcKGsXc+wpW3VPFy4D33E/QfutLPw2qEorYo9xm
+	 xVnUG21xHdrvdHwGe6TSg1VpQrRHbkQScDLNBlAOAYF1KnA1I+yskDF4DL9NA4dH/l
+	 w6X+8Lw1yYwumB/GRuzv4Zf0h0jvZXqa/6n0LweHYl/Yyroyh38RdKxs+pEjlMf8Ks
+	 6720Yc20il+QIZljVjdUhhSDPbVUBsPgRZZ1e+pTfyHZ9okakTWdCkKPg0vE30UPcA
+	 +8+dID4384Gbg==
+Date: Thu, 19 Feb 2026 09:09:29 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: syzbot <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>, 
+	gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
+Message-ID: <20260219-kitzeln-vielmehr-22b6ce51bf5a@brauner>
+References: <6993b6a3.050a0220.340abe.0775.GAE@google.com>
+ <>
+ <20260217-fanshop-akteur-af571819f78b@brauner>
+ <177131956603.8396.12634282713089317@noble.neil.brown.name>
+ <177136673378.8396.7219915415554001211@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:151b:b0:677:bd4a:8f79 with SMTP id
- 006d021491bc7-679a71c9a20mr2415713eaf.20.1771485987661; Wed, 18 Feb 2026
- 23:26:27 -0800 (PST)
-Date: Wed, 18 Feb 2026 23:26:27 -0800
-In-Reply-To: <6993b6a3.050a0220.340abe.0775.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6996bb23.a70a0220.2c38d7.0122.GAE@google.com>
-Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
-From: syzbot <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>
-To: brauner@kernel.org, gfs2@lists.linux.dev, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, neil@brown.name, 
-	neilb@ownmail.net, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <177136673378.8396.7219915415554001211@noble.neil.brown.name>
 
-syzbot has found a reproducer for the following issue on:
+On Wed, Feb 18, 2026 at 09:18:53AM +1100, NeilBrown wrote:
+> On Tue, 17 Feb 2026, NeilBrown wrote:
+> > On Tue, 17 Feb 2026, Christian Brauner wrote:
+> > > On Mon, Feb 16, 2026 at 04:30:27PM -0800, syzbot wrote:
+> > > > Hello,
+> > > > 
+> > > > syzbot found the following issue on:
+> > > > 
+> > > > HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git://git.k..
+> > > > git tree:       upstream
+> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=15331c02580000
+> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=ac00553de86d6bf0
+> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=0ea5108a1f5fb4fcc2d8
+> > > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> > > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146b295a580000
+> > > > 
+> > > > Downloadable assets:
+> > > > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
+> > > > vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71e9c/vmlinux-0f2acd31.xz
+> > > > kernel image: https://storage.googleapis.com/syzbot-assets/b18643058ceb/bzImage-0f2acd31.xz
+> > > > mounted in repro: https://storage.googleapis.com/syzbot-assets/bbfed09077d3/mount_1.gz
+> > > >   fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=106b295a580000)
+> > > > 
+> > > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > > Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
+> > > 
+> > > Neil, is this something you have time to look into?
+> > 
+> > The reproducer appears to mount a gfs2 filesystem and mkdir 3
+> > directories:
+> >   ./file1
+> >   ./file1/file4
+> >   ./file1/file4/file7
+> > 
+> > and somewhere in there it crashes because vfs_mkdir() returns a
+> > non-error dentry for which ->d_parent->d_inode is not locked and
+> > end_creating_path() tries to up_write().
+> > 
+> > Presumably either ->d_parent has changed or the inode was unlocked?
+> > 
+> > gfs2_mkdir() never returns a dentry, so it must be returning NULL.
+> > 
+> > It's weird - but that is no surprise.
+> > 
+> > I'll try building a kernel myself and see if the reproducer still fires.
+> > if so some printk tracing my reveal something.
+> 
+> Unfortunately that didn't work out.
+> Using the provided vmlinux and root image and repro, and a syzkaller I
+> compiled from current git, I cannot trigger the crash.
+> 
+> I'll have another look at the code but I don't hold out a lot of hope.
 
-HEAD commit:    956b9cbd7f15 Merge tag 'kbuild-fixes-7.0-1' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14c81ffa580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=65722f41f7edc17e
-dashboard link: https://syzkaller.appspot.com/bug?extid=0ea5108a1f5fb4fcc2d8
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1622495a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1600e95a580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-956b9cbd.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f0b3757a15ed/vmlinux-956b9cbd.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c564e8613b4e/bzImage-956b9cbd.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/2e0152c5e6ec/mount_1.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=141eb15a580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x0, magic = 0xffff88804665f818, owner = 0x0, curr 0xffff888035922480, list empty
-WARNING: kernel/locking/rwsem.c:1381 at __up_write kernel/locking/rwsem.c:1380 [inline], CPU#0: syz.0.30/5574
-WARNING: kernel/locking/rwsem.c:1381 at up_write+0x2d6/0x410 kernel/locking/rwsem.c:1643, CPU#0: syz.0.30/5574
-Modules linked in:
-CPU: 0 UID: 0 PID: 5574 Comm: syz.0.30 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__up_write kernel/locking/rwsem.c:1380 [inline]
-RIP: 0010:up_write+0x388/0x410 kernel/locking/rwsem.c:1643
-Code: cc 8b 49 c7 c2 80 eb cc 8b 4c 0f 44 d0 48 8b 7c 24 08 48 c7 c6 e0 ed cc 8b 48 8b 14 24 4c 89 f1 4d 89 e0 4c 8b 4c 24 10 41 52 <67> 48 0f b9 3a 48 83 c4 08 e8 0a 0c 0b 03 e9 67 fd ff ff 48 c7 c1
-RSP: 0018:ffffc90006407d80 EFLAGS: 00010246
-RAX: ffffffff8bcceb60 RBX: ffff88804665f818 RCX: ffff88804665f818
-RDX: 0000000000000000 RSI: ffffffff8bccede0 RDI: ffffffff9014e210
-RBP: ffff88804665f870 R08: 0000000000000000 R09: ffff888035922480
-R10: ffffffff8bcceb60 R11: ffffed1008ccbf05 R12: 0000000000000000
-R13: dffffc0000000000 R14: ffff88804665f818 R15: 1ffff11008ccbf04
-FS:  00007fe0f01196c0(0000) GS:ffff88808ca5b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe0f0118ff8 CR3: 000000004158f000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- inode_unlock include/linux/fs.h:1038 [inline]
- end_dirop fs/namei.c:2947 [inline]
- end_creating include/linux/namei.h:126 [inline]
- end_creating_path fs/namei.c:4962 [inline]
- filename_mkdirat+0x305/0x510 fs/namei.c:5271
- __do_sys_mkdir fs/namei.c:5293 [inline]
- __se_sys_mkdir+0x34/0x150 fs/namei.c:5290
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe0ef19c629
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe0f0119028 EFLAGS: 00000246 ORIG_RAX: 0000000000000053
-RAX: ffffffffffffffda RBX: 00007fe0ef416090 RCX: 00007fe0ef19c629
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000040
-RBP: 00007fe0ef232b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fe0ef416128 R14: 00007fe0ef416090 R15: 00007ffff03e4318
- </TASK>
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	49 c7 c2 80 eb cc 8b 	mov    $0xffffffff8bcceb80,%r10
-   7:	4c 0f 44 d0          	cmove  %rax,%r10
-   b:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
-  10:	48 c7 c6 e0 ed cc 8b 	mov    $0xffffffff8bccede0,%rsi
-  17:	48 8b 14 24          	mov    (%rsp),%rdx
-  1b:	4c 89 f1             	mov    %r14,%rcx
-  1e:	4d 89 e0             	mov    %r12,%r8
-  21:	4c 8b 4c 24 10       	mov    0x10(%rsp),%r9
-  26:	41 52                	push   %r10
-* 28:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2d:	48 83 c4 08          	add    $0x8,%rsp
-  31:	e8 0a 0c 0b 03       	call   0x30b0c40
-  36:	e9 67 fd ff ff       	jmp    0xfffffda2
-  3b:	48                   	rex.W
-  3c:	c7                   	.byte 0xc7
-  3d:	c1                   	.byte 0xc1
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+There's at least a proper C repro now.
