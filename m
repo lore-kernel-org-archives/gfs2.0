@@ -1,208 +1,182 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB04238C29
-	for <gfs2@lists.linux.dev>; Thu, 19 Feb 2026 21:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8839319B5A7
+	for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 15:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771537549; cv=none; b=lgoeULTN1JTP+FXJP2papq8eS6TPsWBKopW15xncpiOkYQM+qaASIsgT3xFOmcxYLhXn2lGUeQwLdXnv4JIXwOwgIm8HRYHxvZd26NOWnHMFKrGXTRWtg6Ml4Mqs+uHVOoBMMFqUuhRecHb9Yk2L6uDNzEQSQ1bGXQYGlVYg0cI=
+	t=1771686015; cv=none; b=Dp91kEb/YZt8gLWbUbLBXh2A3Olfv949KuxrixzsIbRp0vWQoJOXqT1PGimGjkxJX06orTjwyjm63EHLyyk4og7DUKAd3+2vVr3w+//HyK0j3I8WfTXqk8ICmalpfbkY6zv6YE6TUOHc9n0/i05M3zTrGQfVagMdRUldPZ9aGfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771537549; c=relaxed/simple;
-	bh=ly3qBAXwjEhv+qeI0w00JXn+ZbeKzuvxdcn+WjKFB0w=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=BRh0VnTupoiNf8XJnwpID56zTyFKGN1mCvjaJJaqj4G+QZZd4kfzoK4VPr0MKDIfU7aZn5gZQ8NQmRfTkFWVFmqL7gp3zXs2hCmsQSGo3uVI4YZWiAsG8YqrBbtLuLyw6tpZ+pgra+eNWYcBtmd3+x7AaEruqwL+NPfo58k9N1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=I0cnulyW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DYF/8y9Z; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	s=arc-20240116; t=1771686015; c=relaxed/simple;
+	bh=QvKBTacd5z2P43CbYauz1u/x08KHhA7f2Nkz0BaL8og=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=prhgsRp/Gw5Gbvifi+1v2JRoH7CEzV964xAKQvEF/tKcDAxW/g8a3y2xcA3eO4vt+8BnKr1eO0RcwCtDpJ9h5ylD8Yhvv+i+rjbeSkY5/kiaFlNfL3N4ctu48uxoujMjaTi2B+UbV/pihgHoJVHEu9akiiYifUvCcP1EqWxbWv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNCCeRMu; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="I0cnulyW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DYF/8y9Z"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id DA21F14000F3;
-	Thu, 19 Feb 2026 16:45:46 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 19 Feb 2026 16:45:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1771537546; x=1771623946; bh=lM6k202zrI0eU9oty7kDeQMYg4/NxTHQwl4
-	SflOk00U=; b=I0cnulyWNAZIF6IrlT4b4m4yRr/BYmbXLIsroJtCztSOJi3XGky
-	fGlj22M2hnJMxpr3B3fU8UOWFsd8h3D8h8H/zwYNg0059YuENYmxoqK4gmAmyB9Y
-	PQ35ZudKFk7KZUVgSlXCiztmjVXKoMH9b0xJJuu7rYZKLfoBUQ4o4VSx+bsXY/Ra
-	oPZa2XGsPTqRX+xnbOd4tsiF3pTR6s/tv9/uQ84FOyRIFgYsh1kkcjbFHRGJYFPc
-	XaHJ2TqpKjE4A3A1JUZCYsA061GdbzeJZMdR2WcFYI8ciO6Siv4GVfVHgqGztYnw
-	QqWkW2GNX2OpXILDGVAd85cIHa1USArvong==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771537546; x=
-	1771623946; bh=lM6k202zrI0eU9oty7kDeQMYg4/NxTHQwl4SflOk00U=; b=D
-	YF/8y9ZN616sV7XznnjNFyTVFYK1WIS9L39eM4bFbUTNXUJmcroIN6N3v5AtJIsb
-	BkJ2O5JJfwYhrYuoXNLISVUxxdd/7rf3DqMZFlN7c3hcVb5oDc2HxHNgQnn+ik/8
-	rBJQk5WzpzBzDJhORg1it+nVhbCNAK41HOhCAEdwQ5Q4jSvie94L3ZcpqkWC+Qog
-	jomZG+UXZ3pJJuwmJc378lMRVcGWMHrCkkmJ/cznSg8Mn5k3RnufGloZV6zYpwAi
-	VTmmhYzhBwunvCsK9XNcOqLuK6yrJJDeWKeRDjK32uQMkJF3nZIClk5piQZKxd5M
-	J/VMw/Or9t8GyTUPFKm2w==
-X-ME-Sender: <xms:ioSXaSxYEujFP8A-yLDa9UO9hFBTw1RR_nxavO9d7CIoHM7qGAEudw>
-    <xme:ioSXaUSKmZTuoxuhEr9ss6vHJPumjE0PFk2lJdezEI3CfzW1ApjlgxG6Elz4b0Hys
-    dhYLfF04YUuRG-iqDMhm4Qfzwm2NNIj2ncUQ7Me2sGgEC_fqg>
-X-ME-Received: <xmr:ioSXafJfCTr7Y2BhdkGK-kCOFSD6N2OKc8NXTSStxBtP4xQrEWbmtHfNp_BVi5HDjfduDKWVy6QmGi0ext0hRw7AAQwjHUw8MbE3ugEiXI-j>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdeiieehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegouf
-    hushhpvggtthffohhmrghinhculdegledmnecujfgurheptgfgggfhvfevufgjfhffkfhr
-    sehtqhertddttdejnecuhfhrohhmpefpvghilheurhhofihnuceonhgvihhlsgesohifnh
-    hmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffhfffkeegjeejtdffueekjeff
-    feeljedtvdekveduuddtudeiieeuhefhheehnecuffhomhgrihhnpehshiiikhgrlhhlvg
-    hrrdgrphhpshhpohhtrdgtohhmpdhgohhoghhlvggrphhishdrtghomhenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmh
-    grihhlrdhnvghtpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtoh
-    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehshiiisghothdotdgvrgehuddtkegrudhfhehfsgegfhgttgdvugeksehshiii
-    khgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhmpdhrtghpthhtohepjhgrtghkse
-    hsuhhsvgdrtgiipdhrtghpthhtoheprghgrhhuvghnsggrsehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopehgfhhsvdeslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhope
-    gsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshiiikhgrlhhlvghr
-    qdgsuhhgshesghhoohhglhgvghhrohhuphhsrdgtohhm
-X-ME-Proxy: <xmx:ioSXabVWuzMljQtrK0f7VEYQp-msGrknKv_j6yvZjdZGXBZEaE4c3Q>
-    <xmx:ioSXaTRLAcXaoKX9RMm9F_Ly48T5KO3nblbExThquf47UME5j1PniA>
-    <xmx:ioSXaTBDhtlFnGVVFjSvBewbborAa_8KJKvNhsfJzOYVpXcX7cQL4g>
-    <xmx:ioSXaSL_FcZ0l55PDLvqfnE9bPc5hwNDCyiNerEYNv9pZASi5ubnVg>
-    <xmx:ioSXaYyhpsFOG_2284PyGcEsd7EKQeqAdu18mxifedb_BfbfkpIN4NnI>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Feb 2026 16:45:43 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNCCeRMu"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ab077e3f32so12518725ad.3
+        for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 07:00:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771686013; x=1772290813; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
+        b=XNCCeRMuyqePWSwM6QDXEhpQgu6PLC7k1WpzzCCFfo4nnTEKjmajTDp0jvX4raQ+GR
+         HMt5haSQj6FmgCoj/Znelt5/t3ycUDljLdM/cH3nE7sUFkt+otvzbkWXxD9jIK7vjGR/
+         Daw8yP0pxlZBgGB9fTkLHrcyfVOFeMxJ9WNfY786wOl5yQn5KEZzuRM/FuAfN2lOOz1+
+         NvxALA4YIMlmvs3wHACHS3yFXcjD7aE3hpcf7rAckRFVdfPNRgKU0pJM7FvW0ohxrXht
+         uULlzBVxpMUm9WBIEYKIv5U1SM+J+hxC0tPwuaGWA1uTGP9PQHbu/4OWXWANeVrFLf36
+         DWqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771686013; x=1772290813;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
+        b=kAu7IhdRLT8OnuY7YpoR1qfYU0gfWtLtnapunplhTjAggJUUCQa/aNoHoxyFDW6AnP
+         bhdXGQj5nSyKQXUTKYD1zPPzdY0CQ7bd9LVBMMl/BxPkCRpOL1sIRBIQz6OvCxXQaMZd
+         kxddXhhsybaRkBTKg+aoBbZ+kZqKCWxEQ1Ij39XE/NXgv64ZF0AIlO02Pw2ds6u/oXqq
+         h588L9vetF++6if+WqqrfsN/H0TrZEAOEmzM1X4Lw+/oZkhOxZM5zNuwBb7ma9vgYA7x
+         TFQSkIj2n+kjIxUQjkJMUtB+Ogfb8gT3vBsbB2O4XoqkM0P3T/qjBmEr6F07gv75AZ0G
+         yjYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVTBAhcg3qmb2TjIDtRo1c9n6NHF8fYYZwoDkJHsK4mIpnGxqiJaCpFBBKipSnCYLurETp@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnugPGdA9kBREnImGSxuHn8cAvla5ehgusxzVWkwFYPkjFOysz
+	TCzeVdv2Pr6qyeNQ84UDEYSgzEOrleDimHsq+Jt7CSCV9ETUxfCafFTy
+X-Gm-Gg: AZuq6aKYCkMI9FvpaVbKL4TE0JTkM2C3qx1VDnkE5f2PFKPEcitEBGtCNcF0WvH55gb
+	WpnJkc3JCGmqW7CxfzDxrsGo4yiiEpEAc9Xpa8tnEEegf7bNIBAbWuWx0CM0YMBj2hdTSvghmFF
+	qAupC1QMP5Y3iwWQieBs/dLQtIMo3xgCrkS4wkT/fAbIpmJKg4hW//Sq4NQbIKSugFhPHp7n0Ao
+	KqzyNBpkK3veJlZYHdRa0/lrrI8M/R27hNz0piRvmuV6HAbroZmAKbToHROBVnhDQt2e5qa7IDb
+	g5CkeWo2ZuesvxyWWu62v/h3DbTraZC7N/iTB1Rgn04H3otawqc+ZoTlUUeE+o2rk86RMjUPtXe
+	9NpAUusqCjSLt1JJNHUtxdFoqNs1v24L8aQ6KpJjYevqy3qElIBKh/V7wVVokrO3VPp2KYNICK+
+	0hbqCryTb5U9h0AdliqSn2XO4s5f5y1kPi5cjXFGU9ArrHfYRGKDjru8Y=
+X-Received: by 2002:a17:902:cf07:b0:2a9:322e:2473 with SMTP id d9443c01a7336-2ad7457e58dmr34715235ad.48.1771686012796;
+        Sat, 21 Feb 2026 07:00:12 -0800 (PST)
+Received: from toolbx ([103.230.182.3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f4a4sm23730205ad.79.2026.02.21.06.59.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Feb 2026 07:00:11 -0800 (PST)
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	chuck.lever@oracle.com,
+	alex.aring@gmail.com,
+	arnd@arndb.de,
+	adilger@dilger.ca,
+	mjguzik@gmail.com,
+	smfrench@gmail.com,
+	richard.henderson@linaro.org,
+	mattst88@gmail.com,
+	linmag7@gmail.com,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	idryomov@gmail.com,
+	amarkuze@redhat.com,
+	slava@dubeyko.com,
+	agruenba@redhat.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	sfrench@samba.org,
+	pc@manguebit.org,
+	ronniesahlberg@gmail.com,
+	sprasad@microsoft.com,
+	tom@talpey.com,
+	bharathsm@microsoft.com,
+	shuah@kernel.org,
+	miklos@szeredi.hu,
+	hansg@kernel.org
+Subject: [PATCH v4 2/4] kselftest/openat2: test for OPENAT2_REGULAR flag
+Date: Sat, 21 Feb 2026 20:45:44 +0600
+Message-ID: <20260221145915.81749-3-dorjoychy111@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260221145915.81749-1-dorjoychy111@gmail.com>
+References: <20260221145915.81749-1-dorjoychy111@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Christian Brauner" <brauner@kernel.org>,
- Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
-Cc: "syzbot" <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>,
- gfs2@lists.linux.dev, jack@suse.cz, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- viro@zeniv.linux.org.uk
-Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
-In-reply-to: <20260219-kitzeln-vielmehr-22b6ce51bf5a@brauner>
-References: <6993b6a3.050a0220.340abe.0775.GAE@google.com>, <>,
- <20260217-fanshop-akteur-af571819f78b@brauner>,
- <177131956603.8396.12634282713089317@noble.neil.brown.name>,
- <177136673378.8396.7219915415554001211@noble.neil.brown.name>,
- <20260219-kitzeln-vielmehr-22b6ce51bf5a@brauner>
-Date: Fri, 20 Feb 2026 08:45:40 +1100
-Message-id: <177153754005.8396.8777398743501764194@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Content-Transfer-Encoding: 8bit
 
+Just a happy path test.
 
-[gfs2 maintainer an list added  - Hi Andreas!]
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+---
+ .../testing/selftests/openat2/openat2_test.c  | 37 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-On Thu, 19 Feb 2026, Christian Brauner wrote:
-> On Wed, Feb 18, 2026 at 09:18:53AM +1100, NeilBrown wrote:
-> > On Tue, 17 Feb 2026, NeilBrown wrote:
-> > > On Tue, 17 Feb 2026, Christian Brauner wrote:
-> > > > On Mon, Feb 16, 2026 at 04:30:27PM -0800, syzbot wrote:
-> > > > > Hello,
-> > > > >=20
-> > > > > syzbot found the following issue on:
-> > > > >=20
-> > > > > HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git:=
-//git.k..
-> > > > > git tree:       upstream
-> > > > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D15331c0=
-2580000
-> > > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dac00553=
-de86d6bf0
-> > > > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D0ea5108a1=
-f5fb4fcc2d8
-> > > > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078d=
-a43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > > > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D146b2=
-95a580000
-> > > > >=20
-> > > > > Downloadable assets:
-> > > > > disk image (non-bootable): https://storage.googleapis.com/syzbot-as=
-sets/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
-> > > > > vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71e9c/=
-vmlinux-0f2acd31.xz
-> > > > > kernel image: https://storage.googleapis.com/syzbot-assets/b1864305=
-8ceb/bzImage-0f2acd31.xz
-> > > > > mounted in repro: https://storage.googleapis.com/syzbot-assets/bbfe=
-d09077d3/mount_1.gz
-> > > > >   fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=
-=3D106b295a580000)
-> > > > >=20
-> > > > > IMPORTANT: if you fix the issue, please add the following tag to th=
-e commit:
-> > > > > Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
-> > > >=20
-> > > > Neil, is this something you have time to look into?
-> > >=20
-> > > The reproducer appears to mount a gfs2 filesystem and mkdir 3
-> > > directories:
-> > >   ./file1
-> > >   ./file1/file4
-> > >   ./file1/file4/file7
-> > >=20
-> > > and somewhere in there it crashes because vfs_mkdir() returns a
-> > > non-error dentry for which ->d_parent->d_inode is not locked and
-> > > end_creating_path() tries to up_write().
-> > >=20
-> > > Presumably either ->d_parent has changed or the inode was unlocked?
-> > >=20
-> > > gfs2_mkdir() never returns a dentry, so it must be returning NULL.
-> > >=20
-> > > It's weird - but that is no surprise.
-> > >=20
-> > > I'll try building a kernel myself and see if the reproducer still fires.
-> > > if so some printk tracing my reveal something.
-> >=20
-> > Unfortunately that didn't work out.
-> > Using the provided vmlinux and root image and repro, and a syzkaller I
-> > compiled from current git, I cannot trigger the crash.
-> >=20
-> > I'll have another look at the code but I don't hold out a lot of hope.
->=20
-> There's at least a proper C repro now.
->=20
+diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
+index 0e161ef9e9e4..e8847f7d416c 100644
+--- a/tools/testing/selftests/openat2/openat2_test.c
++++ b/tools/testing/selftests/openat2/openat2_test.c
+@@ -320,8 +320,42 @@ void test_openat2_flags(void)
+ 	}
+ }
+ 
++#ifndef OPENAT2_REGULAR
++#define OPENAT2_REGULAR 040000000
++#endif
++
++#ifndef EFTYPE
++#define EFTYPE 134
++#endif
++
++void test_openat2_regular_flag(void)
++{
++	if (!openat2_supported) {
++		ksft_test_result_skip("Skipping %s as openat2 is not supported\n", __func__);
++		return;
++	}
++
++	struct open_how how = {
++		.flags = OPENAT2_REGULAR | O_RDONLY
++	};
++
++	int fd = sys_openat2(AT_FDCWD, "/dev/null", &how);
++
++	if (fd == -ENOENT) {
++		ksft_test_result_skip("Skipping %s as there is no /dev/null\n", __func__);
++		return;
++	}
++
++	if (fd != -EFTYPE) {
++		ksft_test_result_fail("openat2 should return EFTYPE\n");
++		return;
++	}
++
++	ksft_test_result_pass("%s succeeded\n", __func__);
++}
++
+ #define NUM_TESTS (NUM_OPENAT2_STRUCT_VARIATIONS * NUM_OPENAT2_STRUCT_TESTS + \
+-		   NUM_OPENAT2_FLAG_TESTS)
++		   NUM_OPENAT2_FLAG_TESTS + 1)
+ 
+ int main(int argc, char **argv)
+ {
+@@ -330,6 +364,7 @@ int main(int argc, char **argv)
+ 
+ 	test_openat2_struct();
+ 	test_openat2_flags();
++	test_openat2_regular_flag();
+ 
+ 	if (ksft_get_fail_cnt() + ksft_get_error_cnt() > 0)
+ 		ksft_exit_fail();
+-- 
+2.53.0
 
-Yes - and with the new C repro I can trigger the bug.
-
-The problem is in gfs2.  gfs2_create_inode() calls d_instantiate()
-before unlock_new_inode().  This is bad.  d_instantiate_new() should be
-used, which makes sure the two things happen in the correct order.
-
-Key to understanding the problem is knowing that unlock_new_inode()
-calls lockdep_annotate_inode_mutex_key() which (potentially) calls=20
-  init_rwsem(&inode->i_rwsem);
-
-So if anyone has locked the inode before unlock_new_inode() is called,
-the lock is lost when i_rwsem is reinitialised.
-
-The reproducer calls mkdir("a") and mkdir("a/b") concurrently from
-separate threads.  The second mkdir() often fails (I assume) because "a"
-cannot be found.  But if that second mkdir() runs just after gfs2 has
-called d_instantiate(), then the lookup of "a" will succeed and so the
-inode will be locked ready for mkdir..  Then the mkdir("a") completes
-calling unlock_new_inode() which reinitialised i_rwsem.  When
-mkdir("a/b") comes to lock the parent, it finds that it isn't locked any
-more.
-
-There is non-trivial code between the d_instantiate() call and the
-unlock_new_inode() call which I do not understand.  So I will not
-propose a patch.  I don't know if that code should be after
-d_instantiate_new(), or before it.
-
-So I'll leave that to Andreas.
-
-Thanks,
-NeilBrown
