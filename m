@@ -1,63 +1,63 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8839319B5A7
-	for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 15:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B38156677
+	for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 15:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771686015; cv=none; b=Dp91kEb/YZt8gLWbUbLBXh2A3Olfv949KuxrixzsIbRp0vWQoJOXqT1PGimGjkxJX06orTjwyjm63EHLyyk4og7DUKAd3+2vVr3w+//HyK0j3I8WfTXqk8ICmalpfbkY6zv6YE6TUOHc9n0/i05M3zTrGQfVagMdRUldPZ9aGfY=
+	t=1771686030; cv=none; b=VQMYfyqoMjfrQHrafmiYsqzMKlCOgGw4yCdoi2FQVXOLkqLH5OYICtuIpcQrZ5/qMEo6MsKkU+yXQqAyUpFfMLrmYfcRUPproTO9FmzFOUIKr1WpckSKV+RP2tfGZ5OJr668cZlvIxV1/8GN5vk5y+a2UgkMGKhh6OFEp3Vc2bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771686015; c=relaxed/simple;
-	bh=QvKBTacd5z2P43CbYauz1u/x08KHhA7f2Nkz0BaL8og=;
+	s=arc-20240116; t=1771686030; c=relaxed/simple;
+	bh=Q9dm8LTnk+DFIEJAAB7tpFWixf8EizWYmak8EK7I1tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prhgsRp/Gw5Gbvifi+1v2JRoH7CEzV964xAKQvEF/tKcDAxW/g8a3y2xcA3eO4vt+8BnKr1eO0RcwCtDpJ9h5ylD8Yhvv+i+rjbeSkY5/kiaFlNfL3N4ctu48uxoujMjaTi2B+UbV/pihgHoJVHEu9akiiYifUvCcP1EqWxbWv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNCCeRMu; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=gFHoQH5lwZFCzzwu/pcmkhlfx4X7O5sOGnNA9Z/2ekjpwphSNiFxTqu5fLEYkLgDHInWoreL49tKVm3A/7gFe3sYX4Erj/xZ5ZtINe9woWpIMUahJuosL+95KwAHO7ebmqIgaq43wMAmhAf19kOHodDgqfvmc7vOOpLj1QF1xpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvGOVJXZ; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNCCeRMu"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ab077e3f32so12518725ad.3
-        for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 07:00:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvGOVJXZ"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ad22a5e245so20703925ad.2
+        for <gfs2@lists.linux.dev>; Sat, 21 Feb 2026 07:00:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771686013; x=1772290813; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1771686027; x=1772290827; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
-        b=XNCCeRMuyqePWSwM6QDXEhpQgu6PLC7k1WpzzCCFfo4nnTEKjmajTDp0jvX4raQ+GR
-         HMt5haSQj6FmgCoj/Znelt5/t3ycUDljLdM/cH3nE7sUFkt+otvzbkWXxD9jIK7vjGR/
-         Daw8yP0pxlZBgGB9fTkLHrcyfVOFeMxJ9WNfY786wOl5yQn5KEZzuRM/FuAfN2lOOz1+
-         NvxALA4YIMlmvs3wHACHS3yFXcjD7aE3hpcf7rAckRFVdfPNRgKU0pJM7FvW0ohxrXht
-         uULlzBVxpMUm9WBIEYKIv5U1SM+J+hxC0tPwuaGWA1uTGP9PQHbu/4OWXWANeVrFLf36
-         DWqQ==
+        bh=Q4HfR25bhfBsIe8RbNyIL8PstGgybd8nsB9r91rb4k4=;
+        b=UvGOVJXZjb33obihmsl96oNUMCqdXHrkl3P0BJ8zHfl6a2PMel/LxqRQ0I8L8tO9wq
+         plciI/qcfuMmwQrW7SpWVdIB2tZKe1IeyF1G+AvYQDdUqWhU0xlrojixN6+xGXH7K28Q
+         eeSJZszZLcsAVZk1OVINVbuJjcGkSfdruH1cKUsk8hnp8TKaeR0TWJXvfPy53wFB0Bg6
+         R5gcmu1QXtR0efxuLE01zjdAIKqU4ElZkWXITz2YG8nTFtAh8Da4eXmp70/i7ZnB7pBA
+         V2Uu2ks0hiZ+/uzGYT2gdm1FwL5cURjEbeHoSI3H9I9M2l1c27SR2kI1LEQ8iy3VVDRb
+         Kuug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771686013; x=1772290813;
+        d=1e100.net; s=20230601; t=1771686027; x=1772290827;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/Vj99fOR8e2nvanig9cWTi+niKOe1ygt4TyyqPTa8nU=;
-        b=kAu7IhdRLT8OnuY7YpoR1qfYU0gfWtLtnapunplhTjAggJUUCQa/aNoHoxyFDW6AnP
-         bhdXGQj5nSyKQXUTKYD1zPPzdY0CQ7bd9LVBMMl/BxPkCRpOL1sIRBIQz6OvCxXQaMZd
-         kxddXhhsybaRkBTKg+aoBbZ+kZqKCWxEQ1Ij39XE/NXgv64ZF0AIlO02Pw2ds6u/oXqq
-         h588L9vetF++6if+WqqrfsN/H0TrZEAOEmzM1X4Lw+/oZkhOxZM5zNuwBb7ma9vgYA7x
-         TFQSkIj2n+kjIxUQjkJMUtB+Ogfb8gT3vBsbB2O4XoqkM0P3T/qjBmEr6F07gv75AZ0G
-         yjYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVTBAhcg3qmb2TjIDtRo1c9n6NHF8fYYZwoDkJHsK4mIpnGxqiJaCpFBBKipSnCYLurETp@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnugPGdA9kBREnImGSxuHn8cAvla5ehgusxzVWkwFYPkjFOysz
-	TCzeVdv2Pr6qyeNQ84UDEYSgzEOrleDimHsq+Jt7CSCV9ETUxfCafFTy
-X-Gm-Gg: AZuq6aKYCkMI9FvpaVbKL4TE0JTkM2C3qx1VDnkE5f2PFKPEcitEBGtCNcF0WvH55gb
-	WpnJkc3JCGmqW7CxfzDxrsGo4yiiEpEAc9Xpa8tnEEegf7bNIBAbWuWx0CM0YMBj2hdTSvghmFF
-	qAupC1QMP5Y3iwWQieBs/dLQtIMo3xgCrkS4wkT/fAbIpmJKg4hW//Sq4NQbIKSugFhPHp7n0Ao
-	KqzyNBpkK3veJlZYHdRa0/lrrI8M/R27hNz0piRvmuV6HAbroZmAKbToHROBVnhDQt2e5qa7IDb
-	g5CkeWo2ZuesvxyWWu62v/h3DbTraZC7N/iTB1Rgn04H3otawqc+ZoTlUUeE+o2rk86RMjUPtXe
-	9NpAUusqCjSLt1JJNHUtxdFoqNs1v24L8aQ6KpJjYevqy3qElIBKh/V7wVVokrO3VPp2KYNICK+
-	0hbqCryTb5U9h0AdliqSn2XO4s5f5y1kPi5cjXFGU9ArrHfYRGKDjru8Y=
-X-Received: by 2002:a17:902:cf07:b0:2a9:322e:2473 with SMTP id d9443c01a7336-2ad7457e58dmr34715235ad.48.1771686012796;
-        Sat, 21 Feb 2026 07:00:12 -0800 (PST)
+        bh=Q4HfR25bhfBsIe8RbNyIL8PstGgybd8nsB9r91rb4k4=;
+        b=oTXJk/Y0vx+m86Siwicg9XZbsFs4DNXHWOQ1cxZJg4qQvBc8GOd/ZX+Cv9+IjNHnGB
+         LykDxiTb+y+4n0huLU6ZGGmSbjc1CcbWMzzy1AzLhYemLG6ymGBabVMwQTr245i/+5gd
+         i1WZKugKU1+xkx0M4Oscldid+ShptcR8vMDjBg6mgT1N2uZYHrjPfpUDDe/R+vtsgJp0
+         j68GP8QrJZB5HEW2MKAPenOB2clW8N+XSJodqwKaKgdsiklFfKrcglBWyWu/lABcHyye
+         SyvbVbhaQJAJkFSaaofQiNPvVBob5x0IDfWzP5F28Y8hA53nTef9sy76S3JBsv0tRnuW
+         TSeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBjvs5YkJN+aqDJVpZxWYvN3EpKOPrVoMbEncq/6QMeFVDqU3OwJ0I6WE32ZNxG5o7T+6v@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4TR/0F1vhuCJvJDHfvwtVIR0HI7nVPacY+PH/Q2WTQN166eLH
+	O9scALJeIQAxnMJWg6DVbphrPBAbqeJTuCEDYng42DpG4kT00klU+QnE
+X-Gm-Gg: AZuq6aKE3iIKqL3sAj38FjeGbuZ8m1Wgr7ikIMDyE1rEF4gCR6WmgRSktLpMJ76jEqw
+	EfCS1qsFJI+Ufd2tyh/GyL6olDSZcHu+NkDExkGi12EAvK/7/9XMhOv7aGJogSSpAbn9ArOpK+P
+	7Tk6uLKucB3+lP+XnxmFqCiWfeQ62AvFr9xrXsR00XqpSouokAhgaWeWz3Ru8WSu0RA/eteuaGB
+	UHptfoQmBFuU85nXnFutQbheC94KpmyIp7RhCU/zlkAkBdMud1OD08JJ26JcF7akXi6BF0d4vO2
+	tGWyTUEb60TxSMCmAy/9+kWLxKTFlEKnzN9rAxI0W2wK0OaW1RBoAxPtISthBAMMTn0cCTEpAmO
+	g+/5biHPxLlMHQOpOZitXDZ1+F/MtqIEqbb7M8LvTxn10BnDi1pP7MW8iSApD20LBQCtlT3/SUb
+	8ftuaii/dGcNX/Ahoy+Evdr9fUjKg88gGJ4XfvB6ztw962x4Ka6HsF7uQ=
+X-Received: by 2002:a17:903:3510:b0:2a0:fb1c:144c with SMTP id d9443c01a7336-2ad743fe17amr28627765ad.5.1771686027291;
+        Sat, 21 Feb 2026 07:00:27 -0800 (PST)
 Received: from toolbx ([103.230.182.3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f4a4sm23730205ad.79.2026.02.21.06.59.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f4a4sm23730205ad.79.2026.02.21.07.00.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Feb 2026 07:00:11 -0800 (PST)
+        Sat, 21 Feb 2026 07:00:27 -0800 (PST)
 From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 To: linux-fsdevel@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -100,9 +100,9 @@ Cc: linux-kernel@vger.kernel.org,
 	shuah@kernel.org,
 	miklos@szeredi.hu,
 	hansg@kernel.org
-Subject: [PATCH v4 2/4] kselftest/openat2: test for OPENAT2_REGULAR flag
-Date: Sat, 21 Feb 2026 20:45:44 +0600
-Message-ID: <20260221145915.81749-3-dorjoychy111@gmail.com>
+Subject: [PATCH v4 3/4] sparc/fcntl.h: convert O_* flag macros from hex to octal
+Date: Sat, 21 Feb 2026 20:45:45 +0600
+Message-ID: <20260221145915.81749-4-dorjoychy111@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260221145915.81749-1-dorjoychy111@gmail.com>
 References: <20260221145915.81749-1-dorjoychy111@gmail.com>
@@ -114,69 +114,73 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Just a happy path test.
+Following the convention in include/uapi/asm-generic/fcntl.h and other
+architecture specific arch/*/include/uapi/asm/fcntl.h files.
 
 Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 ---
- .../testing/selftests/openat2/openat2_test.c  | 37 ++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ arch/sparc/include/uapi/asm/fcntl.h | 36 ++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 0e161ef9e9e4..e8847f7d416c 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -320,8 +320,42 @@ void test_openat2_flags(void)
- 	}
- }
+diff --git a/arch/sparc/include/uapi/asm/fcntl.h b/arch/sparc/include/uapi/asm/fcntl.h
+index bb6e9fa94bc9..33ce58ec57f6 100644
+--- a/arch/sparc/include/uapi/asm/fcntl.h
++++ b/arch/sparc/include/uapi/asm/fcntl.h
+@@ -2,23 +2,23 @@
+ #ifndef _SPARC_FCNTL_H
+ #define _SPARC_FCNTL_H
  
-+#ifndef OPENAT2_REGULAR
-+#define OPENAT2_REGULAR 040000000
-+#endif
-+
-+#ifndef EFTYPE
-+#define EFTYPE 134
-+#endif
-+
-+void test_openat2_regular_flag(void)
-+{
-+	if (!openat2_supported) {
-+		ksft_test_result_skip("Skipping %s as openat2 is not supported\n", __func__);
-+		return;
-+	}
-+
-+	struct open_how how = {
-+		.flags = OPENAT2_REGULAR | O_RDONLY
-+	};
-+
-+	int fd = sys_openat2(AT_FDCWD, "/dev/null", &how);
-+
-+	if (fd == -ENOENT) {
-+		ksft_test_result_skip("Skipping %s as there is no /dev/null\n", __func__);
-+		return;
-+	}
-+
-+	if (fd != -EFTYPE) {
-+		ksft_test_result_fail("openat2 should return EFTYPE\n");
-+		return;
-+	}
-+
-+	ksft_test_result_pass("%s succeeded\n", __func__);
-+}
-+
- #define NUM_TESTS (NUM_OPENAT2_STRUCT_VARIATIONS * NUM_OPENAT2_STRUCT_TESTS + \
--		   NUM_OPENAT2_FLAG_TESTS)
-+		   NUM_OPENAT2_FLAG_TESTS + 1)
+-#define O_APPEND	0x0008
+-#define FASYNC		0x0040	/* fcntl, for BSD compatibility */
+-#define O_CREAT		0x0200	/* not fcntl */
+-#define O_TRUNC		0x0400	/* not fcntl */
+-#define O_EXCL		0x0800	/* not fcntl */
+-#define O_DSYNC		0x2000	/* used to be O_SYNC, see below */
+-#define O_NONBLOCK	0x4000
++#define O_APPEND	0000000010
++#define FASYNC		0000000100	/* fcntl, for BSD compatibility */
++#define O_CREAT		0000001000	/* not fcntl */
++#define O_TRUNC		0000002000	/* not fcntl */
++#define O_EXCL		0000004000	/* not fcntl */
++#define O_DSYNC		0000020000	/* used to be O_SYNC, see below */
++#define O_NONBLOCK	0000040000
+ #if defined(__sparc__) && defined(__arch64__)
+-#define O_NDELAY	0x0004
++#define O_NDELAY	0000000004
+ #else
+-#define O_NDELAY	(0x0004 | O_NONBLOCK)
++#define O_NDELAY	(0000000004 | O_NONBLOCK)
+ #endif
+-#define O_NOCTTY	0x8000	/* not fcntl */
+-#define O_LARGEFILE	0x40000
+-#define O_DIRECT        0x100000 /* direct disk access hint */
+-#define O_NOATIME	0x200000
+-#define O_CLOEXEC	0x400000
++#define O_NOCTTY	0000100000	/* not fcntl */
++#define O_LARGEFILE	0001000000
++#define O_DIRECT        0004000000 /* direct disk access hint */
++#define O_NOATIME	0010000000
++#define O_CLOEXEC	0020000000
+ /*
+  * Before Linux 2.6.33 only O_DSYNC semantics were implemented, but using
+  * the O_SYNC flag.  We continue to use the existing numerical value
+@@ -32,12 +32,12 @@
+  *
+  * Note: __O_SYNC must never be used directly.
+  */
+-#define __O_SYNC	0x800000
++#define __O_SYNC	0040000000
+ #define O_SYNC		(__O_SYNC|O_DSYNC)
  
- int main(int argc, char **argv)
- {
-@@ -330,6 +364,7 @@ int main(int argc, char **argv)
+-#define O_PATH		0x1000000
+-#define __O_TMPFILE	0x2000000
+-#define OPENAT2_REGULAR	0x4000000
++#define O_PATH		0100000000
++#define __O_TMPFILE	0200000000
++#define OPENAT2_REGULAR	0400000000
  
- 	test_openat2_struct();
- 	test_openat2_flags();
-+	test_openat2_regular_flag();
- 
- 	if (ksft_get_fail_cnt() + ksft_get_error_cnt() > 0)
- 		ksft_exit_fail();
+ #define F_GETOWN	5	/*  for sockets. */
+ #define F_SETOWN	6	/*  for sockets. */
 -- 
 2.53.0
 
