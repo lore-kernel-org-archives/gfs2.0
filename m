@@ -1,197 +1,270 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EDA26A1AF
-	for <gfs2@lists.linux.dev>; Mon, 23 Feb 2026 15:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781293E8C7A;
+	Wed, 25 Feb 2026 17:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771861016; cv=none; b=k9lfa4lc5wwEoDMCD9TZXU1es5S5JBr95BmJf5yut8xRqyA/Hl8X4hFlfoYy+dcRrvg9RZ6jh2buqy9W6ROvV8twUFRx0UQifM0U5ilaoNGLN+QLwj3RAeSZsLzyFWv6UuJCg5lBImkr7hVX0UQijrUkiWfuNSDhRvZ6jkFmoxM=
+	t=1772042327; cv=none; b=mXLsJt+1rxtLIBSZ9RN9AItxmpmYU0SOAHS1gTZKG1cm4iTtjfnAYQS76Pu6uemWHjKm332VhZ4VEOB0r+x8xQk6RUQODx/nGEwvxcNgSw0INcjNJLhh9Gda8Fhmy8JLgAN0VW4KErE6PEb9M6g502++KrzC08ejQkHL7lsCvX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771861016; c=relaxed/simple;
-	bh=QgzwhWHfL5HE5kt8p7liWozM4mZ4QkXl1YM7DII1drc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i5GZU1PPOjZV6esV+7Vqis1QYTzrLmPLLX2XLF/2jFeNXM2LnBIuVDOjIQ0NqalmymnAO3GxyEQ+TUC1wTsCCsBSS+t7hmw1+BDSWOfbOWdMtvq6FutVpBf03iZgehF6V5INFgU964JXU985VHiVYTQx1kpuRlDrYKfeMepWQQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZEjb/jJU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772042327; c=relaxed/simple;
+	bh=v0gF9Yip5vqOARGERS15X+Fy4jzc8bSZ5q+f4+jXpUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CcrNxUTr7XjM9ykc8C3dwWr6hgItqCOLnFpTguLmnoS+iRAWIexPNDqwWWw8yQvEP4S7pFsuyhMpQ8/e4yRRjGFzJwtYoheBIjVQ6clYvvsIJZnrJE28QyuPmh86GagjoB0UxEYcHdze4TD2EjTtUGjBb/RIW7qZoOuE48qta/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zu8JNqj/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZEjb/jJU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771861013;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Ya8PzuLzaDTAGKlZ38+DN9SYivC4DKKpFUaUgf5j0k=;
-	b=ZEjb/jJURKcLPiDBaPpKhWjRdFBidLVcZ+OBlEehSodSwCuT0TFBKqaqBOVxPmCZVh89lk
-	glZH4IAKzkakLUnVlvaG8QvwNO4IATJH7Wdta5SrnrSE1RSbukqASgv/SFYjnIjUUyxTnc
-	focdxFQ0+1U8cFVct9nR5jWgGQhq3hs=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-JWlJElaIP9CH_FeFSykJ8A-1; Mon, 23 Feb 2026 10:36:52 -0500
-X-MC-Unique: JWlJElaIP9CH_FeFSykJ8A-1
-X-Mimecast-MFC-AGG-ID: JWlJElaIP9CH_FeFSykJ8A_1771861012
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7985333d204so4463487b3.0
-        for <gfs2@lists.linux.dev>; Mon, 23 Feb 2026 07:36:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771861012; x=1772465812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2Ya8PzuLzaDTAGKlZ38+DN9SYivC4DKKpFUaUgf5j0k=;
-        b=PZrwYlQaRKXS4n8OjSCOm8PwE5Cgen9NY3xbFMwwYGg2JVJlGYqzZa7jo7opeywxd9
-         k3AwsmafTZUDzB6WiOEj0q9lCAwj+SXNC9pBkiPmjrlytImM0a+atRyE45FVCtT0fkCq
-         yyGIKg4r4OYKLWin8nSX57Sb70hSjghpQQ34q5z+vEZRJooGu+mIzxQ78Wore5U5J/os
-         cjzw2Y8YI2S8rNhKx0nzC369s1trP3pGoSlvAi4jMyEYn3ZQTBvimnVlCfqz/YoSrkQB
-         lvWwFqodmZj/+VXfgAkuIgszMgqx4uylbjAvxW/QipI1PVR+XPEfvo0nGEQVDwEa3wUZ
-         ZScA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLEc1tT3n7+7xIkWJ6hOhhIyWX7teCqDR+9MVynBOutFIqxG8AEtJxiICwgLaQ6qT0+xmt@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUDAsZHytWDtOuOW685lgmpg7PRMV3I5c0TS7dfnMKHtLNaZF9
-	MyV78NuSUlK0Q4OFE9U5SuTs7Jzdp/Z55zhnulh4E8ndaNYs+Tv0MvjXJMUXlK9ZEQSbshBiK8o
-	7FJv/ugJqiByMrvjAUO9k/k4gevCRoN27p9c7ynTGXjFL2TbYtCvcNtTO5Gzv1tlI+raPm5ccwh
-	ybIojFcjt9XVsZqqsKZq9uwNYzU3ozWQ==
-X-Gm-Gg: ATEYQzyWMRmTPTJKZSnp/LzE9GhjlBUbw+fl+ojDslhDEFCZn7vMBIpX5n61qp2AsXm
-	AbvRlUDfnnwZ58YCT5qnTuuaWo6B7IakQs9EJuYkF5feSreUWi9Vsy/bLhHW7hLq6k2j+uHM42v
-	w4jOWoJjCL7yp+gZcCbssgFCtiGNoRje+nZIUd+/ikdpA76xukvIN6R3NKgtsNvaTlbWQbASPGI
-	AsP4pa3xIlt1NaYEfEZ/fX2mSZM/TBaJrMqT2+YCzI/cXnyAEkjddY+2mq1NtKP6w==
-X-Received: by 2002:a53:ac8f:0:b0:64c:9750:6b1b with SMTP id 956f58d0204a3-64c97506b96mr860691d50.40.1771861011978;
-        Mon, 23 Feb 2026 07:36:51 -0800 (PST)
-X-Received: by 2002:a53:ac8f:0:b0:64c:9750:6b1b with SMTP id
- 956f58d0204a3-64c97506b96mr860664d50.40.1771861011520; Mon, 23 Feb 2026
- 07:36:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zu8JNqj/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D58C19421;
+	Wed, 25 Feb 2026 17:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772042327;
+	bh=v0gF9Yip5vqOARGERS15X+Fy4jzc8bSZ5q+f4+jXpUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zu8JNqj/+hKCuwHWQmCTVK1tpzyAwq+TjOic7LMbDsxpza4QKAWhfMSzlUs+0RVaB
+	 dVEVQkTrA/nffg0WU/RbRyizDjK8x/ZZIKCxA+UXJEwWrxt5Wpbq5rQUCtJM3nvtLx
+	 q+JxJeiHbsMLzLZ6iqjDQWOSGmPTmUhRf/ziwKMKjrPhiDtm/w8nMJInDFHB/sHrXC
+	 Do+b3hGxgat3Nv8fAK0fCFQp3tHzsLTxU+5lrdqimLhUJMr6yJEnnwPFXJhST7BjVB
+	 rb299g0C9pNfUgE11c2kcpJ0CTepo+iR7WwwBYjEhjklyRu8LgjuGzc8b730qjqJ6p
+	 y/a4iv4wHRlTw==
+Date: Wed, 25 Feb 2026 12:58:45 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
+	Anders Larsen <al@alarsen.net>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
+	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
+Message-ID: <aZ84VRrRVyGEzSJn@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <6993b6a3.050a0220.340abe.0775.GAE@google.com> <20260217-fanshop-akteur-af571819f78b@brauner>
- <177131956603.8396.12634282713089317@noble.neil.brown.name>
- <177136673378.8396.7219915415554001211@noble.neil.brown.name>
- <20260219-kitzeln-vielmehr-22b6ce51bf5a@brauner> <177153754005.8396.8777398743501764194@noble.neil.brown.name>
-In-Reply-To: <177153754005.8396.8777398743501764194@noble.neil.brown.name>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Mon, 23 Feb 2026 16:36:39 +0100
-X-Gm-Features: AaiRm53sUjN8-cTwnNFToBiYpkAXEz9qZd9i7Z7AVLKQMvcvaqFgVcKnPAsHhs4
-Message-ID: <CAHc6FU4jJ16g8nLdBdUhZDa+q0P2BJqU-5BxLAF0xWgj4ZpixA@mail.gmail.com>
-Subject: Re: [syzbot] [gfs2?] WARNING in filename_mkdirat
-To: NeilBrown <neil@brown.name>
-Cc: Christian Brauner <brauner@kernel.org>, gfs2@lists.linux.dev, 
-	syzbot <syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com>, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WXVzA25eSxzcoIPnB9niQIAdck2M8RCEY4Bj2UVVSQs_1771861012
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="BuvfweD5MaN+t/uz"
+Content-Disposition: inline
+In-Reply-To: <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
 
-On Thu, Feb 19, 2026 at 10:45=E2=80=AFPM NeilBrown <neilb@ownmail.net> wrot=
-e:
-> On Thu, 19 Feb 2026, Christian Brauner wrote:
-> > On Wed, Feb 18, 2026 at 09:18:53AM +1100, NeilBrown wrote:
-> > > On Tue, 17 Feb 2026, NeilBrown wrote:
-> > > > On Tue, 17 Feb 2026, Christian Brauner wrote:
-> > > > > On Mon, Feb 16, 2026 at 04:30:27PM -0800, syzbot wrote:
-> > > > > > Hello,
-> > > > > >
-> > > > > > syzbot found the following issue on:
-> > > > > >
-> > > > > > HEAD commit:    0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of =
-git://git.k..
-> > > > > > git tree:       upstream
-> > > > > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D153=
-31c02580000
-> > > > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dac0=
-0553de86d6bf0
-> > > > > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D0ea51=
-08a1f5fb4fcc2d8
-> > > > > > compiler:       Debian clang version 21.1.8 (++20251221033036+2=
-078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > > > > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1=
-46b295a580000
-> > > > > >
-> > > > > > Downloadable assets:
-> > > > > > disk image (non-bootable): https://storage.googleapis.com/syzbo=
-t-assets/d900f083ada3/non_bootable_disk-0f2acd31.raw.xz
-> > > > > > vmlinux: https://storage.googleapis.com/syzbot-assets/b7d134e71=
-e9c/vmlinux-0f2acd31.xz
-> > > > > > kernel image: https://storage.googleapis.com/syzbot-assets/b186=
-43058ceb/bzImage-0f2acd31.xz
-> > > > > > mounted in repro: https://storage.googleapis.com/syzbot-assets/=
-bbfed09077d3/mount_1.gz
-> > > > > >   fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.lo=
-g?x=3D106b295a580000)
-> > > > > >
-> > > > > > IMPORTANT: if you fix the issue, please add the following tag t=
-o the commit:
-> > > > > > Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.=
-com
-> > > > >
-> > > > > Neil, is this something you have time to look into?
-> > > >
-> > > > The reproducer appears to mount a gfs2 filesystem and mkdir 3
-> > > > directories:
-> > > >   ./file1
-> > > >   ./file1/file4
-> > > >   ./file1/file4/file7
-> > > >
-> > > > and somewhere in there it crashes because vfs_mkdir() returns a
-> > > > non-error dentry for which ->d_parent->d_inode is not locked and
-> > > > end_creating_path() tries to up_write().
-> > > >
-> > > > Presumably either ->d_parent has changed or the inode was unlocked?
-> > > >
-> > > > gfs2_mkdir() never returns a dentry, so it must be returning NULL.
-> > > >
-> > > > It's weird - but that is no surprise.
-> > > >
-> > > > I'll try building a kernel myself and see if the reproducer still f=
-ires.
-> > > > if so some printk tracing my reveal something.
-> > >
-> > > Unfortunately that didn't work out.
-> > > Using the provided vmlinux and root image and repro, and a syzkaller =
-I
-> > > compiled from current git, I cannot trigger the crash.
-> > >
-> > > I'll have another look at the code but I don't hold out a lot of hope=
-.
-> >
-> > There's at least a proper C repro now.
-> >
->
-> Yes - and with the new C repro I can trigger the bug.
->
-> The problem is in gfs2.  gfs2_create_inode() calls d_instantiate()
-> before unlock_new_inode().  This is bad.  d_instantiate_new() should be
-> used, which makes sure the two things happen in the correct order.
->
-> Key to understanding the problem is knowing that unlock_new_inode()
-> calls lockdep_annotate_inode_mutex_key() which (potentially) calls
->   init_rwsem(&inode->i_rwsem);
->
-> So if anyone has locked the inode before unlock_new_inode() is called,
-> the lock is lost when i_rwsem is reinitialised.
->
-> The reproducer calls mkdir("a") and mkdir("a/b") concurrently from
-> separate threads.  The second mkdir() often fails (I assume) because "a"
-> cannot be found.  But if that second mkdir() runs just after gfs2 has
-> called d_instantiate(), then the lookup of "a" will succeed and so the
-> inode will be locked ready for mkdir..  Then the mkdir("a") completes
-> calling unlock_new_inode() which reinitialised i_rwsem.  When
-> mkdir("a/b") comes to lock the parent, it finds that it isn't locked any
-> more.
->
-> There is non-trivial code between the d_instantiate() call and the
-> unlock_new_inode() call which I do not understand.  So I will not
-> propose a patch.  I don't know if that code should be after
-> d_instantiate_new(), or before it.
->
-> So I'll leave that to Andreas.
 
-Thanks a lot, Neil, I've added a fix to for-next.
+--BuvfweD5MaN+t/uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Andreas
+On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
+> Setting ->setlease() to a NULL pointer now has the same effect as
+> setting it to simple_nosetlease(). Remove all of the setlease
+> file_operations that are set to simple_nosetlease, and the function
+> itself.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/9p/vfs_dir.c        |  2 --
+>  fs/9p/vfs_file.c       |  2 --
+>  fs/ceph/dir.c          |  2 --
+>  fs/ceph/file.c         |  1 -
+>  fs/fuse/dir.c          |  1 -
+>  fs/gfs2/file.c         |  2 --
+>  fs/libfs.c             | 18 ------------------
+>  fs/nfs/dir.c           |  1 -
+>  fs/nfs/file.c          |  1 -
+>  fs/smb/client/cifsfs.c |  1 -
+>  fs/vboxsf/dir.c        |  1 -
+>  fs/vboxsf/file.c       |  1 -
+>  include/linux/fs.h     |  1 -
+>  13 files changed, 34 deletions(-)
+> 
 
+<snip>
+
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266beecf31e9d2667af7a9684 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_block *s)
+>  }
+>  EXPORT_SYMBOL(alloc_anon_inode);
+>  
+> -/**
+> - * simple_nosetlease - generic helper for prohibiting leases
+> - * @filp: file pointer
+> - * @arg: type of lease to obtain
+> - * @flp: new lease supplied for insertion
+> - * @priv: private data for lm_setup operation
+> - *
+> - * Generic helper for filesystems that do not wish to allow leases to be set.
+> - * All arguments are ignored and it just returns -EINVAL.
+> - */
+> -int
+> -simple_nosetlease(struct file *filp, int arg, struct file_lease **flp,
+> -		  void **priv)
+> -{
+> -	return -EINVAL;
+> -}
+> -EXPORT_SYMBOL(simple_nosetlease);
+> -
+>  /**
+>   * simple_get_link - generic helper to get the target of "fast" symlinks
+>   * @dentry: not used here
+> diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b76ddf28f4f59a1c8a015e2 100644
+> --- a/fs/nfs/dir.c
+> +++ b/fs/nfs/dir.c
+> @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations = {
+>  	.open		= nfs_opendir,
+>  	.release	= nfs_closedir,
+>  	.fsync		= nfs_fsync_dir,
+> -	.setlease	= simple_nosetlease,
+>  };
+>  
+>  const struct address_space_operations nfs_dir_aops = {
+> diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f88529551b0f0287920960ac62 100644
+> --- a/fs/nfs/file.c
+> +++ b/fs/nfs/file.c
+> @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operations = {
+>  	.splice_read	= nfs_file_splice_read,
+>  	.splice_write	= iter_file_splice_write,
+>  	.check_flags	= nfs_check_flags,
+> -	.setlease	= simple_nosetlease,
+>  	.fop_flags	= FOP_DONTCACHE,
+>  };
+>  EXPORT_SYMBOL_GPL(nfs_file_operations);
+
+Hey Jeff,
+
+I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
+(similar but different due to your series that requires opt-in via
+.setlease).
+
+Bisect first pointed out this commit:
+10dcd5110678 nfs: properly disallow delegation requests on directories
+
+And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
+so lstat() on parent dir (of file that I touch) gets -EINVAL.
+
+So its a confluence of NFS's dir delegations and your setlease changes.
+
+If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
+is seen by doing (lstat reproducer that gemini spit out for me is
+attached):
+
+$ touch /mnt/share41/test
+$ strace ./lstat /mnt/share41
+...
+lstat("/mnt/share41", 0x7ffec0d79920)   = -1 EINVAL (Invalid argument)
+
+If I immediately re-run it works:
+...
+lstat("/mnt/share41", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+
+I'm not sure what the proper fix is yet, but I feel like you've missed
+that NFS itself can be (re)exported?
+
+Thanks,
+Mike
+
+--BuvfweD5MaN+t/uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="lstat.c"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+    // 1. Check if the filename was provided via argv
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    struct stat file_stats;
+
+    // 2. Pass the filename to the lstat syscall
+    if (lstat(argv[1], &file_stats) < 0) {
+        perror("lstat error");
+        return EXIT_FAILURE;
+    }
+
+    // 3. Display some basic metadata
+    printf("Information for: %s\n", argv[1]);
+    printf("---------------------------\n");
+    printf("File Size: \t\t%lld bytes\n", (long long)file_stats.st_size);
+    printf("Number of Links: \t%ld\n", (long)file_stats.st_nlink);
+    printf("File inode: \t\t%ld\n", (long)file_stats.st_ino);
+
+    // 4. Determine file type using macros
+    printf("File Type: \t\t");
+    if (S_ISLNK(file_stats.st_mode)) printf("Symbolic Link\n");
+    else if (S_ISREG(file_stats.st_mode)) printf("Regular File\n");
+    else if (S_ISDIR(file_stats.st_mode)) printf("Directory\n");
+    else printf("Other\n");
+
+    return EXIT_SUCCESS;
+}
+
+--BuvfweD5MaN+t/uz--
