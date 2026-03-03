@@ -1,164 +1,102 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D4C39B950
-	for <gfs2@lists.linux.dev>; Tue,  3 Mar 2026 10:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A4533F5A4
+	for <gfs2@lists.linux.dev>; Tue,  3 Mar 2026 12:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772534093; cv=none; b=gBFqBZVpe4zs4c/AVAMIAzdFKFgv3gBdH41r6/jVxxz1lyrrIGFGAIsINZ5IYvN4m63BQb2or1z2KdHCD9cdVxAIqsAAXjk3kpdR4+c9bC+NMkC6CeL2BZdoh/Ky+t9qxTgmofrF6N118qTQ58jRK4wUBREQsYwOv4A4sFk8TZw=
+	t=1772541166; cv=none; b=McGrEHmIQ9eCQeZr5O/ujL89BMoWGHFOIoNuxz/wjn47GhMP7+WxvVSwUvIQOrX+6QYndOI8qyT+pFardN73YGNhSSqVPX6pgNsD6ablCvDqeyPsWuDrW6HqJaeWjmHoSVboODse0cErjfyzWDu2q4dyORlbE9y0u08aR5/r7hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772534093; c=relaxed/simple;
-	bh=xOXiQzAtrNWDiR7AO50veb6qdtBrMAe4XfXWWLiNxX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzptoQcQbbkhbD9n6eQOQ/80+EHuUwkOQlIMdsp2DSxCW4V79mncyigb0bKjEj5SGKMQh1ujaG98bA7hmHS16FtOvijImCYM9rsfqWFK7cE+dfFzL8m24mrUCfThuZ9JNpPHlOlOzvf0Uogj/ultD9ZEtDVQ/mNfSr6/a77vVWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=03MCN+dR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=RFA4Hsw9; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=03MCN+dR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=RFA4Hsw9; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1772541166; c=relaxed/simple;
+	bh=DAsbkvWEurEl7FG/bk0zWpeDiH+kFLfDNlmqSJEZ1OI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wbkr9tTegyQ4OC6mff+Ryq3VQu6UBrRXqscy//go0g+idWKSTScV5wpLAf9iufuJgl+z1Qn1IZH+uzAgtH+39Z693e/YEnBML/1y3yR1cbwxsjhbwTEtvPK/bk1CSckA4SK+0QmE6327KubEjxfJhfzUghf5EN8dY3mzDuaCbJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a8dFu4S7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="03MCN+dR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RFA4Hsw9";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="03MCN+dR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RFA4Hsw9"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 097A53F91A;
-	Tue,  3 Mar 2026 10:34:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772534085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a8dFu4S7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772541164;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
-	b=03MCN+dR1GVa7o9znWI2olxlHaWCH06h06tIe9FA/qKtVOg0uo3eHyIlIojahXdqfHZkCT
-	/VaNr0VTeHaeDtBt9YCsPa4KdjKfjUrRPYW+n3IVC3PoCdKeqRgiZOxu+wUrlarOhOtGBX
-	L7x7AbNR9g5MQmcXTrfVyiBk7jn8I6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772534085;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
-	b=RFA4Hsw9cN7NoXU+etKkvj9XHg7IbEpOJNGzgfI8A/ptlUTmzCIQsIk80olHe09GcVmL2s
-	Am+0L1MMLdEJX8BQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772534085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
-	b=03MCN+dR1GVa7o9znWI2olxlHaWCH06h06tIe9FA/qKtVOg0uo3eHyIlIojahXdqfHZkCT
-	/VaNr0VTeHaeDtBt9YCsPa4KdjKfjUrRPYW+n3IVC3PoCdKeqRgiZOxu+wUrlarOhOtGBX
-	L7x7AbNR9g5MQmcXTrfVyiBk7jn8I6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772534085;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
-	b=RFA4Hsw9cN7NoXU+etKkvj9XHg7IbEpOJNGzgfI8A/ptlUTmzCIQsIk80olHe09GcVmL2s
-	Am+0L1MMLdEJX8BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED7373EA6C;
-	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DPkDOkS5pmluFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:44 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A025EA0B47; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: <linux-fsdevel@vger.kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	<linux-ext4@vger.kernel.org>,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org,
-	linux-aio@kvack.org,
-	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev
-Subject: [PATCH 11/32] gfs2: Don't zero i_private_data
-Date: Tue,  3 Mar 2026 11:34:00 +0100
-Message-ID: <20260303103406.4355-43-jack@suse.cz>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260303101717.27224-1-jack@suse.cz>
-References: <20260303101717.27224-1-jack@suse.cz>
+	bh=DAsbkvWEurEl7FG/bk0zWpeDiH+kFLfDNlmqSJEZ1OI=;
+	b=a8dFu4S7JefFGS+0kKamr7Vu2juHCbECEOM4LvUK4KrsLOmKKIQvnGTMf8pDGksBOPIUVy
+	wHvV7cZaxrillKvA+VZG/0cvGpNHc5SWpp7jLJu+WKMb/H2Ai1aCpNumQhHbd7jEGm/ZFs
+	GiqZhLRFQGzAkdbuT81Vla6cLZUgYqw=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-P8JaQwWqM4-xjqvz8Bdw1A-1; Tue, 03 Mar 2026 07:32:43 -0500
+X-MC-Unique: P8JaQwWqM4-xjqvz8Bdw1A-1
+X-Mimecast-MFC-AGG-ID: P8JaQwWqM4-xjqvz8Bdw1A_1772541163
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7962f1424d2so91087797b3.2
+        for <gfs2@lists.linux.dev>; Tue, 03 Mar 2026 04:32:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772541163; x=1773145963;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DAsbkvWEurEl7FG/bk0zWpeDiH+kFLfDNlmqSJEZ1OI=;
+        b=vvQ7ouYpmeqLseGe4XJkR4u2dgnfzU49sRZa06n87gPkl+OSjxgsoS2merMG/PoWCr
+         vfaO1ook1+/2JnVLodCpy6x5dUn/J7EqdJ/P27/KPNWhbWuAN3+d2g7WsW6WiPcckEKT
+         5x94YNB9jshk9uUgNJLXGAOESsFMFTb1Y2v0NAVLK/WDJ5YIBIq+kdlABpOB4TcUhHAH
+         wamTa4BvNWRnCtL/rsLv8oHOjh6xPrD/EnV6i91MVBUbFscNeOrbIkSG5qhYqRDPRncz
+         RDgJf2eb8fPagr7xwMd70JF8fKlsvMUV3YdTpPwdp0z4/H5nkYl2BUhSzdXH3vIK42rp
+         Lx4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV0lrBIYEOJx6iWtG+D988e9hrDSmnSw6pIE1/lH16rqmUzHawqRuCyi7gn1n2AIkp6mgfX@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzr8uTpT9/eAVUL7mmkQR/IAkREbPI1uj608TluiywVlgFERf2T
+	TI1Xw1CzMLtKDoXKfN3Dl8YlYvKzv3DZJSvbu8KJ6X8iDDblw6g46VRLzF5CjfKQE2oUPolAKWK
+	k58/5BoUs38lkVoYPl3WvIoCF3y36hckOC0O7vS7UbfyCB2Lm8+0YqCZC6fLeguhr2xlU+cnUbe
+	NMLNiQJstPcsIwbIWu3fcZOYg42861pA==
+X-Gm-Gg: ATEYQzyYT32s5g1yehL1PkpCexYlvsmnEXbx/fMMhPOXgoE9tlGsPymM3Q6EvlbYNbk
+	3ECxwnUeOQK2X3WEbK4RDPevL75m/YxHVEDHl7Kh1Acs9HGJ7vH8YsB/3f0W8Ty7hOIxTZU8Cbo
+	NvQKUKL1M91QzpqBGFpWxuXkntk0vMN5qLEkioVMxuRshihYOO6uA1m26GGWXYkU/FVC2rQrRvh
+	/0PLswQVeJrCGuqdxbXYSxxmRNS7au34i6O93IApgfkGRVmhixvVrQRhSkovkQQuw==
+X-Received: by 2002:a05:690c:4986:b0:798:61a4:e2cc with SMTP id 00721157ae682-798855a41d7mr139268287b3.34.1772541163337;
+        Tue, 03 Mar 2026 04:32:43 -0800 (PST)
+X-Received: by 2002:a05:690c:4986:b0:798:61a4:e2cc with SMTP id
+ 00721157ae682-798855a41d7mr139267957b3.34.1772541162941; Tue, 03 Mar 2026
+ 04:32:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=669; i=jack@suse.cz; h=from:subject; bh=xOXiQzAtrNWDiR7AO50veb6qdtBrMAe4XfXWWLiNxX8=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprknbtjHRMGivtKh5++SBYmELyG3KBGp9gefM MGDwJ6NPnGJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5JwAKCRCcnaoHP2RA 2fx1B/kBKNGudUfUYTJuii1aG06VLA/8KFxWPRhB/7z2V9FoDKcR1RHvsBw6gjXgvNcYsyAfcta Su7QOV47Wo9rvgttIYC1ZeAwkxwrURJzVbVIbPNxRaRTPY4iLGivNJQdohTBhrjCdGZxLpkpT3g NNhO8eouLhfk/wjZOkfKXPitXt5O5QT8p8AgMwxgekOB4Zh64imv/x4UHbDUgrDrFF6z5Ps50bx MIsbDXr8dS2nOk5TGRodIhxGCv7yBF+l8lS6Ss5ixIrl9uRQ18v0/rs38VQVcWkg4V8vExQ88S+ YdfbBGrMD5nC6yH7OLMjT08VmyZrxHtf8Rz0N+NBKLWxizrh
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -5.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-5.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,ZenIV.linux.org.uk,vger.kernel.org,mit.edu,gmail.com,suse.com,mail.parknet.co.jp,linux.dev,suse.de,kvack.org,suse.cz,redhat.com,lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_RATELIMIT(0.00)[to_ip_from(RLck8brw5hxmszoarioc7838it)];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
+References: <20260303101717.27224-1-jack@suse.cz> <20260303103406.4355-43-jack@suse.cz>
+In-Reply-To: <20260303103406.4355-43-jack@suse.cz>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 3 Mar 2026 13:32:31 +0100
+X-Gm-Features: AaiRm51g_TgIhOkGLCDR-668UB9OmDW-WHgYo8dNTw7KZZwkVFcUvPwu-AmQRn4
+Message-ID: <CAHc6FU61tUwnFf4pXWun_nLnL2jyUYHLKAN7C1hanbKk0GTZMA@mail.gmail.com>
+Subject: Re: [PATCH 11/32] gfs2: Don't zero i_private_data
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, 
+	Ted Tso <tytso@mit.edu>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+	David Sterba <dsterba@suse.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
+	Benjamin LaHaise <bcrl@kvack.org>, gfs2@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: RSFFvnGR_5hLNnAYdHcnQz1L1DX2u3Vcb_O7x_Iqckk_1772541163
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The zeroing is the only use within gfs2 so it is pointless.
+Jan,
 
-CC: Andreas Gruenbacher <agruenba@redhat.com>
-CC: gfs2@lists.linux.dev
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/gfs2/glock.c | 1 -
- 1 file changed, 1 deletion(-)
+On Tue, Mar 3, 2026 at 11:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> The zeroing is the only use within gfs2 so it is pointless.
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 2acbabccc8ad..b8a144d3a73b 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1149,7 +1149,6 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
- 		mapping->flags = 0;
- 		gfp_mask = mapping_gfp_mask(sdp->sd_inode->i_mapping);
- 		mapping_set_gfp_mask(mapping, gfp_mask);
--		mapping->i_private_data = NULL;
- 		mapping->writeback_index = 0;
- 	}
- 
--- 
-2.51.0
+"Remove the explicit zeroing of mapping->i_private_data since this
+field is no longer used."
+
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+
+Thanks,
+Andreas
 
