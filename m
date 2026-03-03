@@ -1,148 +1,164 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBDA2E7F0A
-	for <gfs2@lists.linux.dev>; Sun,  1 Mar 2026 15:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772378402; cv=pass; b=bheXzUA2WR7eLCwrPaY0qSjj+7gkbZjtdEcz+XFrsP0fX9vG9lgAQix5QGPX8afwfeTo7uCK50CKNTPO3Q+l3PZ/W8k76kWlXRU+t6BdhIt6rTF2JZChpNQHHXJDluBYqVNGBJrF5rQWPCtqiu09/s4ME2FR1gMTkz8GGHGaSCQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772378402; c=relaxed/simple;
-	bh=Fiwwjp3q58poFbwEi1UnSoyKncjAv5ZQQsyqXdz0VPE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rBSiB7M8JPYf7rX7RieXqaWJaMl/XwvC4J0bbTOMBbzMTB3FIpD/C0Ye/YUsNJDxIMCVVPXjfy3QNhXczN/4ZEzlGOnyyfKteEKN5/sfxgTDKdt9KucoB2CjTicJ6zi98ybO+kK5Aq5GrKtrDPJQhuLjaqg9gnvl6+t/uDG7fMM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eou9cqiZ; arc=pass smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D4C39B950
+	for <gfs2@lists.linux.dev>; Tue,  3 Mar 2026 10:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772534093; cv=none; b=gBFqBZVpe4zs4c/AVAMIAzdFKFgv3gBdH41r6/jVxxz1lyrrIGFGAIsINZ5IYvN4m63BQb2or1z2KdHCD9cdVxAIqsAAXjk3kpdR4+c9bC+NMkC6CeL2BZdoh/Ky+t9qxTgmofrF6N118qTQ58jRK4wUBREQsYwOv4A4sFk8TZw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772534093; c=relaxed/simple;
+	bh=xOXiQzAtrNWDiR7AO50veb6qdtBrMAe4XfXWWLiNxX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FzptoQcQbbkhbD9n6eQOQ/80+EHuUwkOQlIMdsp2DSxCW4V79mncyigb0bKjEj5SGKMQh1ujaG98bA7hmHS16FtOvijImCYM9rsfqWFK7cE+dfFzL8m24mrUCfThuZ9JNpPHlOlOzvf0Uogj/ultD9ZEtDVQ/mNfSr6/a77vVWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=03MCN+dR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=RFA4Hsw9; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=03MCN+dR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=RFA4Hsw9; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eou9cqiZ"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-56a987683baso3683161e0c.2
-        for <gfs2@lists.linux.dev>; Sun, 01 Mar 2026 07:20:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772378400; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RRccVATo0Bbc1h3hxksBXqBWrQ2OsKo3KsSbCmxEbW6Jhq03u9kRxUPg9T+wc9Sb4j
-         N2sYvalMhXnlBbuPpX5kAlx36fCGVJMXCHiTuWPsuSCClePfMKiA+RMlvVs0DIb+a/YM
-         Jqb/rzXy6LXrdzhOji7LQvk7e2HIzuMitUhby0gnEMqIsjLsJmMESAw+y3KdnmpFAEYl
-         goWHT6C2bRujsNCN9tyB4X+Zcsd8KwsA3FwL/XlHb156QE/TYz7YhpOfX8CXySY0sEzW
-         DBuVdiOOHTKEVO2ACZFCYtVLo0xsdLGcSqim35sh6gdL+FopSM6D3HZ4oCOMms0redji
-         dYkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Fiwwjp3q58poFbwEi1UnSoyKncjAv5ZQQsyqXdz0VPE=;
-        fh=/UzmyEiH2B7hPVhAOURvvG22XpwvCEFjB4xH/Y7yeTs=;
-        b=a7bqLUYAa35xxX9JkGhGRumueAgtpgL1CqBjKlMPknEYZumx7NwWll9YgH4ndDEKIS
-         6lZWbxGfhmlGx7aYzMPiXIi3HhsBixVqyOHaijp4Kl4am6+bccnr3+sgKTZ58u1roHdE
-         3Za5P91HnTs0W32pcha2dBrYYXhvMhFV6icRtC0cogh5vZVEm6eDePZ2Frx0XqYnGRRg
-         eIXB+FAlXZskzoug4dKOTmxjDaLa3J772j+RiywcLLyFeFdjMdQTH9tFP1Yal6AwvYb/
-         j7MSTmbQ5xvA4lBjWUomQuh79zGWh8dByYeZxbzNxN73j+yhplx2m+NcK73dl9M5Jhkh
-         S5Hg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772378400; x=1772983200; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fiwwjp3q58poFbwEi1UnSoyKncjAv5ZQQsyqXdz0VPE=;
-        b=eou9cqiZWk6qHGF2PZGx5GD8KewsY5HvCPPZvYtIlwRvb9AuNvnvwGrXbObPnv4ANW
-         FOObYbNZzJZmwMGMaZtgjCwr/Hf3Tsv2k0CgFpsN6u9MesHnH/XjcJFwd7kof5AsSEyJ
-         kctC9ReXA2f/xKwDt3P8E4OGLb9GfAz14waB1m3RgLDK9NTjMRjruNMn2LxI8bap/ATZ
-         0E7oMYGDnuxQXwDeuiOv9THy66HFlfizPDXlToMLVC9c3GRp8+T5YyGC3RyaFoqoeEg5
-         wDTQsrM6/So2usZg4RbE2jsL9ug+yJQLRj3lhpc3Ve28j8XBpz6Vsp9nb569XE5mEEUR
-         XlZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772378400; x=1772983200;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Fiwwjp3q58poFbwEi1UnSoyKncjAv5ZQQsyqXdz0VPE=;
-        b=gomZNKm6IbcW63tL3YMWRtketXkSlsZX8IpDDlLJdMn+Eokb+IO3mTuUcgGsi5wnp9
-         aH8MOQhHiZhP3Bs3D5Lkt6djRSmAKYuKpzqwZMK2O6/V14H7hVkryI0w8FLpJ/tQ8T+C
-         qzzGMmhLBFYbyUfedWV528QBOHh0EtPOzaamQr9YdTKivpq+neyvs42T4PHd8NEI/md4
-         1L+78QI4YI4SrxVaJH/hXwXUTIgMBX4f5cW+iDlNRPnQN6kTaeqo/NzaXZwY/mmticww
-         vVqnoKtpQyZmw2yRnbUC/ZQrXNYPo3aZg4/zomNzFXdlzyqiErwNPCTSXKFPaqifZFro
-         pQfA==
-X-Forwarded-Encrypted: i=1; AJvYcCW/BqioJw8eTchSHnS95AKUCtQIR3GWgU5RLM13RMn71ZEgb18SJM++yVyO4agP+zoPonYa@lists.linux.dev
-X-Gm-Message-State: AOJu0YwrwVJmtC+ddTnXxtKDS13vLymSWrrTUBYJ9y9iJe0k560Lz1pV
-	LIvSo/K1Aa7W7SLQxdgI3xdi1dVGy3B7TvXrDnxytQnPEnDsrbEQUgjywmeKNDGoJbmL1yR4s58
-	YBfQFYNQIvLrZhFsBzWgmTwgD1OShua8=
-X-Gm-Gg: ATEYQzwD4eSXvTgAhP+j6+t+81QUnXgHoZx05LzlIZDGRcMlps8DA7Me08/BRwqqmxC
-	SipAd+yO16JGnY1Udr+o3TcFzN9HVyUsj/QSVnC3rmi+Px2TIQklpv41IASq2okOwhxOgBusyIg
-	mjHG4e48oILdsvKc+3trzLCZtNgAKWoPCVs8JMMSfE27x6MH5O6JA9R/LM2HNeEeMXtdET7FMmX
-	7jh034xUtzNBkuRP4t/GdCYZPAdTcTjmtLQSNOv7+4IVcKAXe/AxQrlB0DWJN+MHKo6vxU1C3Nq
-	9H5lUXMsrHEq+CjRth2W1I426ZOR+RTyoxKFWTpUuw==
-X-Received: by 2002:a05:6102:160c:b0:5ff:1981:aba6 with SMTP id
- ada2fe7eead31-5ff31fab9ffmr5005001137.0.1772378400433; Sun, 01 Mar 2026
- 07:20:00 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="03MCN+dR";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RFA4Hsw9";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="03MCN+dR";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RFA4Hsw9"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 097A53F91A;
+	Tue,  3 Mar 2026 10:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
+	b=03MCN+dR1GVa7o9znWI2olxlHaWCH06h06tIe9FA/qKtVOg0uo3eHyIlIojahXdqfHZkCT
+	/VaNr0VTeHaeDtBt9YCsPa4KdjKfjUrRPYW+n3IVC3PoCdKeqRgiZOxu+wUrlarOhOtGBX
+	L7x7AbNR9g5MQmcXTrfVyiBk7jn8I6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534085;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
+	b=RFA4Hsw9cN7NoXU+etKkvj9XHg7IbEpOJNGzgfI8A/ptlUTmzCIQsIk80olHe09GcVmL2s
+	Am+0L1MMLdEJX8BQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
+	b=03MCN+dR1GVa7o9znWI2olxlHaWCH06h06tIe9FA/qKtVOg0uo3eHyIlIojahXdqfHZkCT
+	/VaNr0VTeHaeDtBt9YCsPa4KdjKfjUrRPYW+n3IVC3PoCdKeqRgiZOxu+wUrlarOhOtGBX
+	L7x7AbNR9g5MQmcXTrfVyiBk7jn8I6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534085;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IPthJE6VVMGk/qjtQ/G9eE0lKHs2glQSc7ppBVHf+S0=;
+	b=RFA4Hsw9cN7NoXU+etKkvj9XHg7IbEpOJNGzgfI8A/ptlUTmzCIQsIk80olHe09GcVmL2s
+	Am+0L1MMLdEJX8BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED7373EA6C;
+	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DPkDOkS5pmluFQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:44 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A025EA0B47; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	<linux-ext4@vger.kernel.org>,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	linux-aio@kvack.org,
+	Benjamin LaHaise <bcrl@kvack.org>,
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev
+Subject: [PATCH 11/32] gfs2: Don't zero i_private_data
+Date: Tue,  3 Mar 2026 11:34:00 +0100
+Message-ID: <20260303103406.4355-43-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260303101717.27224-1-jack@suse.cz>
+References: <20260303101717.27224-1-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260221145915.81749-1-dorjoychy111@gmail.com>
- <20260221145915.81749-2-dorjoychy111@gmail.com> <2f430eb613d4f6f6564f83d06f802ff47adea230.camel@kernel.org>
- <CAFfO_h7i86qdKZObdFpWd8Mh+8VXVMFYoGgYBgzomzhGJJFnEQ@mail.gmail.com>
- <ed5aeaa81ad9b87926fa7ebee0308aeb8df9f0ac.camel@kernel.org>
- <CAFfO_h5za6gV99TQS3pwHnf7zyCeVySn3CdRyV+_jFqjovGBqA@mail.gmail.com>
- <beead8bbff344ddfc279e0fc86db0dd5dd98562b.camel@kernel.org>
- <CAFfO_h4brg90tMNp6VAzs5Lo8Lbu=DK2csjDqr2zspOygKEFCg@mail.gmail.com> <73c8ea54bcda0b64093d84fe047914c0632c2d0c.camel@kernel.org>
-In-Reply-To: <73c8ea54bcda0b64093d84fe047914c0632c2d0c.camel@kernel.org>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Sun, 1 Mar 2026 21:19:49 +0600
-X-Gm-Features: AaiRm51DyMEBRNPI1HVDhCyC4qT7r77uNpEMtKgft97OSaudIMk11BvPwkDJ_3M
-Message-ID: <CAFfO_h59LQSjncu_4YE5YB+mt-FL2c1GN-jF_WtoKj1u43DcuA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] openat2: new OPENAT2_REGULAR flag support
-To: Jeff Layton <jlayton@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
-	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
-	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
-	bharathsm@microsoft.com, shuah@kernel.org, miklos@szeredi.hu, 
-	hansg@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=669; i=jack@suse.cz; h=from:subject; bh=xOXiQzAtrNWDiR7AO50veb6qdtBrMAe4XfXWWLiNxX8=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprknbtjHRMGivtKh5++SBYmELyG3KBGp9gefM MGDwJ6NPnGJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5JwAKCRCcnaoHP2RA 2fx1B/kBKNGudUfUYTJuii1aG06VLA/8KFxWPRhB/7z2V9FoDKcR1RHvsBw6gjXgvNcYsyAfcta Su7QOV47Wo9rvgttIYC1ZeAwkxwrURJzVbVIbPNxRaRTPY4iLGivNJQdohTBhrjCdGZxLpkpT3g NNhO8eouLhfk/wjZOkfKXPitXt5O5QT8p8AgMwxgekOB4Zh64imv/x4UHbDUgrDrFF6z5Ps50bx MIsbDXr8dS2nOk5TGRodIhxGCv7yBF+l8lS6Ss5ixIrl9uRQ18v0/rs38VQVcWkg4V8vExQ88S+ YdfbBGrMD5nC6yH7OLMjT08VmyZrxHtf8Rz0N+NBKLWxizrh
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -5.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-5.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,ZenIV.linux.org.uk,vger.kernel.org,mit.edu,gmail.com,suse.com,mail.parknet.co.jp,linux.dev,suse.de,kvack.org,suse.cz,redhat.com,lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_RATELIMIT(0.00)[to_ip_from(RLck8brw5hxmszoarioc7838it)];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
 
-On Sun, Mar 1, 2026 at 9:17=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wro=
-te:
->
-> On Sun, 2026-03-01 at 21:15 +0600, Dorjoy Chowdhury wrote:
-> > > >
-> > > > I only added a kselftest for the new flag in
-> > > > tools/testing/selftests/openat2/openat2_test.c in my second commit =
-in
-> > > > this patch series. Where are the fstests that I should add tests? I
-> > > > think you added the wrong URL above, probably a typo.
-> > > >
-> > > >
-> > >
-> > > I did indeed, sorry. They're here:
-> > >
-> > > https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
-> > >
-> >
-> > Thanks! This is a separate git repository, so I guess for both
-> > manpages and fstests I need to submit separate patch series for
-> > O_REGULAR. Do I need to wait first for this patch series to be merged?
-> > How does it work?
-> >
-> >
->
-> No, you can submit them in parallel, but they probably won't get merged
-> until the kernel patches go in.
->
+The zeroing is the only use within gfs2 so it is pointless.
 
-Alright. I can look into submitting patches in parallel. Thanks for
-all the info!
+CC: Andreas Gruenbacher <agruenba@redhat.com>
+CC: gfs2@lists.linux.dev
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/gfs2/glock.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Regards,
-Dorjoy
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 2acbabccc8ad..b8a144d3a73b 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1149,7 +1149,6 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
+ 		mapping->flags = 0;
+ 		gfp_mask = mapping_gfp_mask(sdp->sd_inode->i_mapping);
+ 		mapping_set_gfp_mask(mapping, gfp_mask);
+-		mapping->i_private_data = NULL;
+ 		mapping->writeback_index = 0;
+ 	}
+ 
+-- 
+2.51.0
+
