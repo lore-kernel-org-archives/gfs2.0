@@ -1,160 +1,340 @@
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B3307AD5
-	for <gfs2@lists.linux.dev>; Thu,  5 Mar 2026 06:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03870313558;
+	Thu,  5 Mar 2026 19:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772692768; cv=none; b=cgW3gjKlw+UeLbs+H/8Ad0X7ZmNB9oanX1ecQCYioMqcrwv3PbKYJYde2NqOESdO7Os5yQ1/SfCL9Arqf8U1pKtGt/PimC3bXjc5BHbkw1rFwnCcoOxZH24kqndpTKGXfFWhNcb1tJk8Nl/TmP6NTFuq5dQ3SJkgH1Uka0vJDeM=
+	t=1772738753; cv=none; b=MjmNzA8Gb2jsI+P3kg+yHWe84q8oNi/8sMdoYjazF8sCSKeyXVtfwF3Rfy7yhd9ulpvGcMaOBEJpAPOqDMS4MsZlJEG0MZK2d5JCVtRcy3rKaPOKzDITsZCHHHDbDNUFsYgpRC1PtIJsdXKkpG1Qeau/zlqCAbD/78jBl/ObQtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772692768; c=relaxed/simple;
-	bh=5atin/QyTMJPaHN908vw3jHVrcVvtUrPmM/HRy6F4Nc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OIA5UwC5jWDSZnIBJ/mNetxhpbGPe+191Ty3cXToR8Lau+Vk6RzhCi0lX5vUY6wsS/DRKDARa41UZel7huq+RYK+N6cjD6K2009zTSWn4d3TQ/Lgko6CKrmXSCNOLYklP/MkaqN29hc+KF6CcsGplG0M7p5ccW3jJGGhO5+iqEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7d4c6bb79a5so36280586a34.0
-        for <gfs2@lists.linux.dev>; Wed, 04 Mar 2026 22:39:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772692765; x=1773297565;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T69q03Ql39fiZ9I4Pdgi0mPljH+4/RNKrqL5XYzH1fU=;
-        b=JbmA1Onr8KeHuGnBgst7lCM6fYDsX5dTHngben9frTvWhpPg6DU8dZJcPkHouiJG3l
-         /mKSZhBHEEx6wC4Ioq0N31SMY0Kd+RsuUWy6XFro65P9+W3Dy0KdfhrsX4B+ZfHx++j2
-         akgBatMUAHp5VS+MrL4UMgTUB8uU1KhfcMXGYalANYJvo5hP/R5am7UO1+PIiYmF282m
-         uF0WeGnJ+HBBbCgmLojeUcDDX/LkQ6wCdaSMwslIvSP9CnBIKfiE+v8WCJXUuXBYgRmI
-         iaycD2m1/e7drnMqO2MrXOwzPwFTisELlAeEtls2W6oelpvXpSy7yIJXOvXyWOPwvSzo
-         heNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWioFPj5BIhuYuKwVu9O4NCO8lfdDyvtGSpQKxPidvY5X1HkZSji9yk/tFLWZiO3rXAmCH2@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOo8v4Dv1N3oCXIdzc53U/LdCE7hz5fCLi9FveSb6tZ3wNRI4p
-	cVwvF9Mnm7OTJHo2MTdrqO18VjhunddvUvDUT8qDIfmi/gO/dyZWnSvmZrRfLp7HqvozRxjU/rK
-	EcVJDLpJJpkmSI1EgZnT3kMYUF/dBTXe+Ggs0Die0RbMgMVStyYZuW6B6ZmE=
+	s=arc-20240116; t=1772738753; c=relaxed/simple;
+	bh=vmlzEK3fLdHi0cfmhsSQFqvNzFA4ibJrsdtaMQ6FsMM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Wmt+awwq8+LlfPBf2Lh62UCp7yegpDt8lt0N7VMIFMPoiTjGDYnBKZagaa+/fiMoveLJJykQIoC1JPzi+4GX/J5+zJKWaHEHILkQE+H5Fu/sPC79KaFgQrCaq6ZDs15XZzuQ6SI7TRu1X4KXwMsql4WGrAuVigJoYzSFJr3KxM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGM2saNl; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGM2saNl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D37C116C6;
+	Thu,  5 Mar 2026 19:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772738752;
+	bh=vmlzEK3fLdHi0cfmhsSQFqvNzFA4ibJrsdtaMQ6FsMM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=TGM2saNldwviAIDLOQ1P8x7SOFo+tMXmvPb99Ysn3VNHwOFLT0Dhkqu45iWUuL7z3
+	 LyYZ7qS4ipT3j1fgXJruoVMe0lYMx2J113EB9Q7XnMqjXPyaKkftQdmBZZDxeK/try
+	 VucQb2bczVK5Sy8w3LwHGwLHaz4q3c5zROVLu1JLYdaPjrfO6jLrmxU9WuGDL0e1LI
+	 sHnQE0ur6k+hc/akW5Ahil4lbe5t0rsnVRm5eLw8o0eC57sRaPKJgWj6ayg0q4hDq0
+	 UIBUEOcDE/heTYNO07ncOYaV2Qsqr/pzwPBkNzbenDaZRszh71tzddVIzBoAx0CRXU
+	 b/biJfAV4c7KQ==
+Message-ID: <c21702a39cd751eaf0463e8c20e8e0a4b6f4d3e5.camel@kernel.org>
+Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
+From: Jeff Layton <jlayton@kernel.org>
+To: Mike Snitzer <snitzer@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki
+ <salah.triki@gmail.com>,  Nicolas Pitre <nico@fluxnic.net>, Christoph
+ Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Anders Larsen	
+ <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner	 <brauner@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason
+ <clm@fb.com>,  Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue
+ Hu <zbestahu@gmail.com>, Jeffle Xu	 <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li	 <lihongbo22@huawei.com>, Chunhai
+ Guo <guochunhai@vivo.com>, Jan Kara	 <jack@suse.com>, Theodore Ts'o
+ <tytso@mit.edu>, Andreas Dilger	 <adilger.kernel@dilger.ca>, Jaegeuk Kim
+ <jaegeuk@kernel.org>, OGAWA Hirofumi	 <hirofumi@mail.parknet.co.jp>, David
+ Woodhouse <dwmw2@infradead.org>,  Richard Weinberger	 <richard@nod.at>,
+ Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi	
+ <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh
+ <mark@fasheh.com>, Joel Becker	 <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Mike Marshall	 <hubcap@omnibond.com>, Martin
+ Brandenburg <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>,
+ Amir Goldstein <amir73il@gmail.com>, Phillip Lougher	
+ <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, Hugh Dickins	
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew
+ Morton	 <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>,
+ Sungjong Seo	 <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>,
+ Chuck Lever	 <chuck.lever@oracle.com>, Alexander Aring
+ <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, Jonathan
+ Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)"	 <willy@infradead.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, Christian
+ Schoenebeck	 <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, Ilya
+ Dryomov	 <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, Anna
+ Schumaker	 <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo
+ Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N	 <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Bharath SM	 <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev, 	devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, 	linux-xfs@vger.kernel.org,
+ linux-mm@kvack.org, gfs2@lists.linux.dev, 	linux-doc@vger.kernel.org,
+ v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org
+Date: Thu, 05 Mar 2026 14:25:42 -0500
+In-Reply-To: <aaiyWlJelhHju741@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+	 <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
+	 <aZ84VRrRVyGEzSJn@kernel.org>
+	 <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
+	 <aaiyWlJelhHju741@kernel.org>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
+ n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
+ egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
+ T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
+ 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
+ YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
+ VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
+ cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
+ CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
+ LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
+ MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
+ gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
+ 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
+ R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
+ rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
+ ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
+ Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
+ lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
+ iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
+ QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
+ YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
+ wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
+ LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
+ 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
+ c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
+ LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
+ TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
+ 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
+ xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
+ +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
+ Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
+ BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
+ N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
+ naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
+ RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
+ FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
+ 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
+ P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
+ aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
+ T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
+ dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
+ 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
+ kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
+ uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
+ AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
+ FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
+ 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
+ sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
+ qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
+ sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
+ IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
+ UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
+ dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
+ EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
+ apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
+ M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
+ dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
+ 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
+ jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
+ flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
+ BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
+ AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
+ 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
+ HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
+ 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
+ uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
+ DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
+ CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
+ Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
+ AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
+ aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
+ f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1c9e:b0:679:e595:ff30 with SMTP id
- 006d021491bc7-67b17750586mr3093380eaf.36.1772692765699; Wed, 04 Mar 2026
- 22:39:25 -0800 (PST)
-Date: Wed, 04 Mar 2026 22:39:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a9251d.a70a0220.2f119.0003.GAE@google.com>
-Subject: [syzbot] [exfat?] [gfs2?] WARNING in filename_symlinkat
-From: syzbot <syzbot+2ed46b6b748df855347f@syzkaller.appspotmail.com>
-To: brauner@kernel.org, gfs2@lists.linux.dev, jack@suse.cz, 
-	linkinjeon@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, sj1557.seo@samsung.com, 
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+On Wed, 2026-03-04 at 17:29 -0500, Mike Snitzer wrote:
+> On Wed, Mar 04, 2026 at 11:59:32AM -0500, Jeff Layton wrote:
+> > On Wed, 2026-02-25 at 12:58 -0500, Mike Snitzer wrote:
+> > > On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
+> > > > Setting ->setlease() to a NULL pointer now has the same effect as
+> > > > setting it to simple_nosetlease(). Remove all of the setlease
+> > > > file_operations that are set to simple_nosetlease, and the function
+> > > > itself.
+> > > >=20
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > > ---
+> > > >  fs/9p/vfs_dir.c        |  2 --
+> > > >  fs/9p/vfs_file.c       |  2 --
+> > > >  fs/ceph/dir.c          |  2 --
+> > > >  fs/ceph/file.c         |  1 -
+> > > >  fs/fuse/dir.c          |  1 -
+> > > >  fs/gfs2/file.c         |  2 --
+> > > >  fs/libfs.c             | 18 ------------------
+> > > >  fs/nfs/dir.c           |  1 -
+> > > >  fs/nfs/file.c          |  1 -
+> > > >  fs/smb/client/cifsfs.c |  1 -
+> > > >  fs/vboxsf/dir.c        |  1 -
+> > > >  fs/vboxsf/file.c       |  1 -
+> > > >  include/linux/fs.h     |  1 -
+> > > >  13 files changed, 34 deletions(-)
+> > > >=20
+> > >=20
+> > > <snip>
+> > >=20
+> > > > diff --git a/fs/libfs.c b/fs/libfs.c
+> > > > index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266b=
+eecf31e9d2667af7a9684 100644
+> > > > --- a/fs/libfs.c
+> > > > +++ b/fs/libfs.c
+> > > > @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_=
+block *s)
+> > > >  }
+> > > >  EXPORT_SYMBOL(alloc_anon_inode);
+> > > > =20
+> > > > -/**
+> > > > - * simple_nosetlease - generic helper for prohibiting leases
+> > > > - * @filp: file pointer
+> > > > - * @arg: type of lease to obtain
+> > > > - * @flp: new lease supplied for insertion
+> > > > - * @priv: private data for lm_setup operation
+> > > > - *
+> > > > - * Generic helper for filesystems that do not wish to allow leases=
+ to be set.
+> > > > - * All arguments are ignored and it just returns -EINVAL.
+> > > > - */
+> > > > -int
+> > > > -simple_nosetlease(struct file *filp, int arg, struct file_lease **=
+flp,
+> > > > -		  void **priv)
+> > > > -{
+> > > > -	return -EINVAL;
+> > > > -}
+> > > > -EXPORT_SYMBOL(simple_nosetlease);
+> > > > -
+> > > >  /**
+> > > >   * simple_get_link - generic helper to get the target of "fast" sy=
+mlinks
+> > > >   * @dentry: not used here
+> > > > diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> > > > index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b7=
+6ddf28f4f59a1c8a015e2 100644
+> > > > --- a/fs/nfs/dir.c
+> > > > +++ b/fs/nfs/dir.c
+> > > > @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations =
+=3D {
+> > > >  	.open		=3D nfs_opendir,
+> > > >  	.release	=3D nfs_closedir,
+> > > >  	.fsync		=3D nfs_fsync_dir,
+> > > > -	.setlease	=3D simple_nosetlease,
+> > > >  };
+> > > > =20
+> > > >  const struct address_space_operations nfs_dir_aops =3D {
+> > > > diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> > > > index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f8852=
+9551b0f0287920960ac62 100644
+> > > > --- a/fs/nfs/file.c
+> > > > +++ b/fs/nfs/file.c
+> > > > @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operation=
+s =3D {
+> > > >  	.splice_read	=3D nfs_file_splice_read,
+> > > >  	.splice_write	=3D iter_file_splice_write,
+> > > >  	.check_flags	=3D nfs_check_flags,
+> > > > -	.setlease	=3D simple_nosetlease,
+> > > >  	.fop_flags	=3D FOP_DONTCACHE,
+> > > >  };
+> > > >  EXPORT_SYMBOL_GPL(nfs_file_operations);
+> > >=20
+> > > Hey Jeff,
+> > >=20
+> > > I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
+> > > (similar but different due to your series that requires opt-in via
+> > > .setlease).
+> > >=20
+> > > Bisect first pointed out this commit:
+> > > 10dcd5110678 nfs: properly disallow delegation requests on directorie=
+s
+> > >=20
+> > > And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
+> > > so lstat() on parent dir (of file that I touch) gets -EINVAL.
+> > >=20
+> > > So its a confluence of NFS's dir delegations and your setlease change=
+s.
+> > >=20
+> > > If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
+> > > is seen by doing (lstat reproducer that gemini spit out for me is
+> > > attached):
+> > >=20
+> > > $ touch /mnt/share41/test
+> > > $ strace ./lstat /mnt/share41
+> > > ...
+> > > lstat("/mnt/share41", 0x7ffec0d79920)   =3D -1 EINVAL (Invalid argume=
+nt)
+> > >=20
+> > > If I immediately re-run it works:
+> > > ...
+> > > lstat("/mnt/share41", {st_mode=3DS_IFDIR|0777, st_size=3D4096, ...}) =
+=3D 0
+> > >=20
+> > > I'm not sure what the proper fix is yet, but I feel like you've misse=
+d
+> > > that NFS itself can be (re)exported?
+> > >=20
+> > >=20
+> >=20
+> > My apologies. I missed seeing this last week.
+> >=20
+> > That's a very simple reproducer! That's very strange behavior,
+> > especially since NFS4 does provide a setlease operation:
+> >=20
+> > const struct file_operations nfs4_file_operations =3D {
+> > 	[...]
+> > 	.setlease       =3D nfs4_setlease,
+> > 	[...]
+> > };
+>=20
+> Huh, not sure how I missed nfs4_setlease...
+>=20
+> > I'm not sure why this would cause lstat() to return -EINVAL.
+>=20
+> Likewise, especially given nfs4_setlease
+>=20
+> > What's happening on the wire when this occurs?
+> >=20
+> > I'll plan to take a look here soon either way.
+>=20
+> I'll have to revisit myself, been a bit.
+>=20
+> Will let you know.
+>=20
 
-syzbot found the following issue on:
+Thanks. I just tested your reproducer. I have a nfsv4.2 mount on one
+host that is reexported, and mounted the reexport on a different host
+with "-o vers=3D4.1".
 
-HEAD commit:    ecc64d2dc9ff Merge tag 'sysctl-7.00-fixes-rc3' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1754b5aa580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c5c49ee0942d1cdb
-dashboard link: https://syzkaller.appspot.com/bug?extid=2ed46b6b748df855347f
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=123dbe4a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15c99b5a580000
+It seems to work for me. It's possible I don't have something set up
+the same way though:
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-ecc64d2d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/86a2ecaacd1b/vmlinux-ecc64d2d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b1dad86775e5/bzImage-ecc64d2d.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/1d38e5a93707/mount_4.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=17c57006580000)
+$ touch /mnt/scratch/test ; ./lstat /mnt/scratch/test
+Information for: /mnt/scratch/test
+---------------------------
+File Size:              0 bytes
+Number of Links:        1
+File inode:             272
+File Type:              Regular File
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2ed46b6b748df855347f@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) && !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE)): count = 0x0, magic = 0xffff8880460da1f8, owner = 0x0, curr 0xffff8880371624c0, list empty
-WARNING: kernel/locking/rwsem.c:1381 at __up_write kernel/locking/rwsem.c:1380 [inline], CPU#0: syz.0.31/5575
-WARNING: kernel/locking/rwsem.c:1381 at up_write+0x2d6/0x410 kernel/locking/rwsem.c:1643, CPU#0: syz.0.31/5575
-Modules linked in:
-CPU: 0 UID: 0 PID: 5575 Comm: syz.0.31 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__up_write kernel/locking/rwsem.c:1380 [inline]
-RIP: 0010:up_write+0x388/0x410 kernel/locking/rwsem.c:1643
-Code: cc 8b 49 c7 c2 80 eb cc 8b 4c 0f 44 d0 48 8b 7c 24 08 48 c7 c6 e0 ed cc 8b 48 8b 14 24 4c 89 f1 4d 89 e0 4c 8b 4c 24 10 41 52 <67> 48 0f b9 3a 48 83 c4 08 e8 5a 83 0b 03 e9 67 fd ff ff 48 c7 c1
-RSP: 0018:ffffc9000298fd80 EFLAGS: 00010246
-RAX: ffffffff8bcceb60 RBX: ffff8880460da1f8 RCX: ffff8880460da1f8
-RDX: 0000000000000000 RSI: ffffffff8bccede0 RDI: ffffffff901501f0
-RBP: ffff8880460da250 R08: 0000000000000000 R09: ffff8880371624c0
-R10: ffffffff8bcceb60 R11: ffffed1008c1b441 R12: 0000000000000000
-R13: dffffc0000000000 R14: ffff8880460da1f8 R15: 1ffff11008c1b440
-FS:  00007fbd46c406c0(0000) GS:ffff88808ca58000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fbd45de9e80 CR3: 00000000412ea000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- inode_unlock include/linux/fs.h:1038 [inline]
- end_dirop fs/namei.c:2947 [inline]
- end_creating include/linux/namei.h:126 [inline]
- end_creating_path fs/namei.c:4962 [inline]
- filename_symlinkat+0x222/0x410 fs/namei.c:5642
- __do_sys_symlinkat fs/namei.c:5660 [inline]
- __se_sys_symlinkat+0x4e/0x2b0 fs/namei.c:5655
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbd45d9c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbd46c40028 EFLAGS: 00000246 ORIG_RAX: 000000000000010a
-RAX: ffffffffffffffda RBX: 00007fbd46016090 RCX: 00007fbd45d9c799
-RDX: 00002000000003c0 RSI: 0000000000000007 RDI: 0000200000000240
-RBP: 00007fbd45e32bd9 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbd46016128 R14: 00007fbd46016090 R15: 00007ffcbe33eb58
- </TASK>
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	49 c7 c2 80 eb cc 8b 	mov    $0xffffffff8bcceb80,%r10
-   7:	4c 0f 44 d0          	cmove  %rax,%r10
-   b:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
-  10:	48 c7 c6 e0 ed cc 8b 	mov    $0xffffffff8bccede0,%rsi
-  17:	48 8b 14 24          	mov    (%rsp),%rdx
-  1b:	4c 89 f1             	mov    %r14,%rcx
-  1e:	4d 89 e0             	mov    %r12,%r8
-  21:	4c 8b 4c 24 10       	mov    0x10(%rsp),%r9
-  26:	41 52                	push   %r10
-* 28:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2d:	48 83 c4 08          	add    $0x8,%rsp
-  31:	e8 5a 83 0b 03       	call   0x30b8390
-  36:	e9 67 fd ff ff       	jmp    0xfffffda2
-  3b:	48                   	rex.W
-  3c:	c7                   	.byte 0xc7
-  3d:	c1                   	.byte 0xc1
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+--=20
+Jeff Layton <jlayton@kernel.org>
