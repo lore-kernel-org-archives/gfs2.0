@@ -1,64 +1,70 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A1839935B
-	for <gfs2@lists.linux.dev>; Tue, 10 Mar 2026 12:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5EF3AF67D
+	for <gfs2@lists.linux.dev>; Tue, 10 Mar 2026 13:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773147251; cv=none; b=bid1aEzPyOxa+7+W/vNsep05upsy0If+wVn5QuVaf+qMu9kKNLiEyg4UqoyJPf+7sOGeJuGtgVl9piATrPdFO7XOM0QU8zD0r3l1s5QL5225pD7AmHGBaRKrIjHHpK4WEfmxRas4tmsiq12jMQNP+bwa81fLIOH3Ms73oyODavk=
+	t=1773148929; cv=none; b=qV1f9nykvJZ+E+AKYmYMEzR5ykHV459lVay4SWBLD39xEXvznsiEerizggJyCZ7ZnxlHfX49OYTQYOXGxMLznEWZqHHP0jBEMBgxz/KmR5u2rkkqHngT8Ohn1KDyX6cXW5k47H1P/9ggeCI7aA8hI0ySJwcOcxJmab1gsoKHTDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773147251; c=relaxed/simple;
-	bh=TgoJchP8+G/BTHDKgmEWupOwORUqE0/FZPIUEYu9Z9g=;
+	s=arc-20240116; t=1773148929; c=relaxed/simple;
+	bh=7C48eJwQxF2SZSyojjO4eehKdtPdDBqSboD/LkVXOwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8aG2LM7VCS7Wz/IwNrBrr/g2hJpOCimE/HhTxau7hSPVSkC1fpjczhL9EllTL9PKpyYJNgCILnKCg3iPRfyJNrS9GCFhQ0fhXSXLhGoKANeN99o6QGg/s0sEAT48CQM94OlDa/v2z9SZxY7+XSsgauHZI6rUq241V13ubvDBzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KXQoTynz; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=IiJsggJODEXdpzY4uV3Yya6e+xQjryZbqmRIymGWm3g2FhVwxZsRF6Y5YyKm08C/PVB2xWU32TD17xuU/4ziBCFMP9xXQ/Hm662c0JjsejSG5LyUFMnmMSsp1U7r1l2OY1Da4jsOQu9q+E1LDYgW9KvMy/tGhgnhGXL0UOlEPzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ADQQpd+b; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KXQoTynz"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae3f822163so83475ad.0
-        for <gfs2@lists.linux.dev>; Tue, 10 Mar 2026 05:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773147248; x=1773752048; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mm6hm+LHoMGo5Ew01sq1dP9YSITnoqIDxYFDqmtgvh0=;
-        b=KXQoTynzJbkjiUm+V2aKdtQekHCsQTLAk6TYwui2b0uXcoJxj6r318O9NEJ6YJe5NM
-         gg5C+u3qjuCh50ssp+c6Rbssbpnsq3g9FohngmeMkJ2NyysvjxrZXYbP8tc+hM295sam
-         YSqcAn3fYMLBwRZdFQjlmMtTlJTuZT0pOJYKyq7cUQ9x9SZ9P4vsnKQSN2Q7HdA34xgD
-         G7Caukn+0TLArLbM+8VqlND6tfR+A0p8trto9KpxEebgbwF13J+agbT28ej1kt6J+rzI
-         QsAEuVC7UNgKPEnMlLRkslC2GCue1mUAzAnoLfm0uFIrvWmmgqT+685zh6f0G7HhashM
-         2ZsQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ADQQpd+b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773148926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5/adDEbR57gUpYJcJq84OoDVxrrM3xMPFmZCRo0jKXM=;
+	b=ADQQpd+bpcMvyiI6BuK6I/AtlFPVjRaT1jbvm8x0bcg2sn4Mv+l/q+wGsOaa7zGZavpvJL
+	HOw6n0NTrJxN8BVrJlzy+3Oyq/AicE10gafpjzfnHFVMImjvlOy3qRSEO7jpexZVWETsUQ
+	RoRPrXnJkd5ZbUZ0X+x9wM3CIJYSD9c=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-0VbDJ3F0N0-XdGHv78m5Pg-1; Tue, 10 Mar 2026 09:22:05 -0400
+X-MC-Unique: 0VbDJ3F0N0-XdGHv78m5Pg-1
+X-Mimecast-MFC-AGG-ID: 0VbDJ3F0N0-XdGHv78m5Pg_1773148925
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd7ea0bb20so1450836485a.3
+        for <gfs2@lists.linux.dev>; Tue, 10 Mar 2026 06:22:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773147248; x=1773752048;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mm6hm+LHoMGo5Ew01sq1dP9YSITnoqIDxYFDqmtgvh0=;
-        b=uBpDjTCuX82YmaOFaL5ONEcG4Of6tQSfx6upQUyqw6HsrCLXwPNpOLczHKLzrMS7bo
-         MK6hYO+R4M/i9ujZRnb5V2gkjJcZJlIpLu8fO/f4rSCVvD1HhX3ADcYLRGUDhGcL4IWJ
-         CnynLcBPyopN1HYxVq0q+Kof22aGH9SCp2We6gMmnmQ25/bPzJXVAdo5UZ5+jTVMJI0m
-         Xvxv2/AyXL3uC764CYcOfFv8VDAUdySpuZF/0fekEuq42GEkJdVXQp58jxoaGjeJEGQb
-         +VQWvAkrr6VnRuE/A0YAiDgoHc8/WI2gaMHeV94FE1Nw5Xqxky5/yz00VEqUvLKd8S/Z
-         ytpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMowgagWrrm7XDO9X6g20NcfhOEz8XR0/oHFD8XZMR0CB4fxXRzC9UlbMrIxtNOMHI1xQm@lists.linux.dev
-X-Gm-Message-State: AOJu0YxP5G4DlkcjiCtHLfaX0fQQU2mZzHmhqpwn5oDiYZRzb1tx8LhO
-	sOSScsVZTRAplTY/Xjy8rG/7zaRNaQhi6nq20DUA2boi3JOM8kVlk3mSyXkKraQ2gg==
-X-Gm-Gg: ATEYQzxu4UImLZk4+1QFsyKv8GieqUi+w5pyOMN4LLxeQEpaHqVPTkyKhGhD8wERRoE
-	st8BofTRbcj7F470zhg9I8hLzeAivpfNsGTvqBTgI5zpqUYY/nEKbuprD09Dp1WeAbmWuthA3/b
-	Dx8nAnB6HT/zc1WXfj3/zby/WIThyKrSltYM7iJtTRF39t1zt+57ZH6JTq4oIGe26zrO7UoMvJ9
-	fi0og+b6b3IZe820bAbKsxhaQ910nNjBL2sW4JcVARnaSgYAZGy/zREUpECsHPdFZ1Z/9XPNHAN
-	BXef7MO2eRzTXcij3iZ1f5f+40wdB8ZzhUXnMkBI846A0Iu/m5srPCb+MFvRJfe1wmcAqaD9feu
-	l3EMSsUbWcHkoEkGDFAYzV40ZVLvjPqTPY7voo3sAez9KguxQZ2rnXuqlFvGb10SsUiKRYTI63u
-	87/MH3/UsBet2u53HElMi8ebrmZQ2Aq3CAP7TifGoKLjLDSZXWeIRaw3HU+w==
-X-Received: by 2002:a17:902:ebd2:b0:2ae:45bb:bc4e with SMTP id d9443c01a7336-2aea30ebe48mr3008685ad.24.1773147247400;
-        Tue, 10 Mar 2026 05:54:07 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e0cb73dsm12445679a12.11.2026.03.10.05.53.57
+        d=1e100.net; s=20230601; t=1773148925; x=1773753725;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5/adDEbR57gUpYJcJq84OoDVxrrM3xMPFmZCRo0jKXM=;
+        b=aGZ4bknf8Od8nnOqE9dB/p4zmwpM97bGNAEDsIGn3TFWR3I+VLC1tgcPkIIWVXUwW0
+         vCkk7D82Z40nSmUd8rPqfrnoS4OZ2yyAtLDdur7CDgrRej/o0QMR0Jj9ulMSj0mNtcGS
+         Bro/5ijHV2leuLTNpktFkvRPWD4RbMIZ1D8Hy4Uy9V+Z8pBsUsAgFvSVNfB7z3f/xobN
+         96JyWitQzJzNkD1EzRDZdpcCYHnrsbwLWYpH5yx76PgFlLZI+faHYLHnJtDZ0Fb0+SIY
+         tyLOS6n+YfVtlI6NCNIcgqYzBMs1T4qBHLHC1CHqhGjQGyx62cHqXGMW3ueDk+K5Lejm
+         V87w==
+X-Forwarded-Encrypted: i=1; AJvYcCUehuRQ4gXYPo+eoGI8IN3XB/6cGE9GlMkqR1dc9HNayeTQN6tIfD8Z9tTDOycs9+7ca+ly@lists.linux.dev
+X-Gm-Message-State: AOJu0YzLX93kv0ubHm55E+vdKl2hzNkHcq8D1eYePUWtz3xhNQkYeauR
+	RgBHEbeVcRW790NKuM0FQ5AzzoXeOIzhk/+k1/dzuiQl4dBVGJdWlCpsMRR+O8U1sYsSPk02Vlp
+	Edy51FuJoG2IlHp7KBB0PbSqAJQCC4/wcyHTz6bY3m9A76s5cK1QvQB8=
+X-Gm-Gg: ATEYQzxClpqo5JwA3EHuYqCJHMMJvGG06DFOQTsQPpGNvu64UB6JvRhSnroyQK4cwsM
+	gYTLDRqsjNvkm387MYQYPTgQL4pFEFZVaokMixPRJY+zlqLSCExzPCNHbkFAI6bhgOPCZ88KZGm
+	297TP+/uji7SzRH1RQCWiAI4uZrYsbk6R1uLmIzdvq+3iGjJA2v8W1Vdrk5O03mkNcBQHcaOOes
+	dSNGKmy79OgrZ3R4IgAfJIjj2mL0lhKwmjzY43bjDX6aI7bBQR5OsPMM1WjLDoX1Dy5rgbsnQZp
+	AlKxF5yZ0uujtiFZwYT1pNMAjTScgRUZP0EVYXsmrpVrTt8oev1Ybxuw6QRZ1AOKpL4KpRr6A8J
+	34Tc8d+V7iNa14sv0Nd3rxJrnaTl361jQVhzyE7RLZz/htP6L+BWYog7G
+X-Received: by 2002:a05:620a:3713:b0:8ca:1240:4991 with SMTP id af79cd13be357-8cd6d4f9469mr1830783185a.45.1773148924639;
+        Tue, 10 Mar 2026 06:22:04 -0700 (PDT)
+X-Received: by 2002:a05:620a:3713:b0:8ca:1240:4991 with SMTP id af79cd13be357-8cd6d4f9469mr1830766185a.45.1773148922638;
+        Tue, 10 Mar 2026 06:22:02 -0700 (PDT)
+Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd8576db0esm474754485a.47.2026.03.10.06.21.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 05:54:06 -0700 (PDT)
-Date: Tue, 10 Mar 2026 12:53:54 +0000
-From: Pranjal Shrivastava <praan@google.com>
+        Tue, 10 Mar 2026 06:22:01 -0700 (PDT)
+Date: Tue, 10 Mar 2026 09:21:58 -0400
+From: Brian Masney <bmasney@redhat.com>
 To: Philipp Hahn <phahn-oss@avm.de>
 Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
 	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
@@ -87,55 +93,50 @@ Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
 	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
 	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
 	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
-	Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH 46/61] vfio: Prefer IS_ERR_OR_NULL over manual NULL check
-Message-ID: <abAUYvx6VEdSmInm@google.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <abAa9vQg4BSxl1BJ@redhat.com>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: v2fZHRBAbHvQviTvrJ7a6srL69A_FjRJJsjfHDMspIA_1773148925
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
 
-On Tue, Mar 10, 2026 at 12:49:12PM +0100, Philipp Hahn wrote:
+On Tue, Mar 10, 2026 at 12:49:22PM +0100, Philipp Hahn wrote:
 > Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 > check.
 > 
-> Change generated with coccinelle.
+> Semantich change: Previously the code only printed the warning on error,
+
+Semantic ...
+
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
 > 
-> To: Alex Williamson <alex@shazbot.org>
-> Cc: kvm@vger.kernel.org
+> Change found with coccinelle.
+> 
+> To: Michael Turquette <mturquette@baylibre.com>
+> To: Stephen Boyd <sboyd@kernel.org>
+> To: Daniel Lezcano <daniel.lezcano@kernel.org>
+> To: Thomas Gleixner <tglx@kernel.org>
+> Cc: linux-clk@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/vfio/vfio_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 742477546b15d4dbaf9ebcfb2e67627db71521e0..d71922dfde5885967398deddec3e9e04b05adfec 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -923,7 +923,7 @@ vfio_ioctl_device_feature_mig_device_state(struct vfio_device *device,
->  
->  	/* Handle the VFIO_DEVICE_FEATURE_SET */
->  	filp = device->mig_ops->migration_set_state(device, mig.device_state);
-> -	if (IS_ERR(filp) || !filp)
-> +	if (IS_ERR_OR_NULL(filp))
->  		goto out_copy;
->  
->  	return vfio_ioct_mig_return_fd(filp, arg, &mig);
-> 
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+With the minor typo addressed:
 
-The cleanup alone looks fine, but I'm not sure if the maintainers would
-be happy about the tree-wide spam, since each patch might go through a
-different tree. I'd wait for Alex's preference/ack on that.
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 
-Thanks,
-Praan
