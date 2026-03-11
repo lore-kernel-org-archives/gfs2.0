@@ -1,110 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902753CEBBC
-	for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 10:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B0E2FD7BC
+	for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 13:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773225271; cv=none; b=u7bV+BTMevWaMYqEcxkVJnmU0eCNIOu8ap4EwL0vgAUskSIp3xqrGDWcnf4SeqP2PBB4aDN7ZlEMolTxAUf5YGgPt4tIPMWMC3qF0rUxNNDxwGSn/5zwu+e9jeLzpA9KIUhdfvLOHUJygal3Ro1DIeQlMUJNoccpKaEb9dXjSKc=
+	t=1773234970; cv=none; b=tT+4ijEmYqKRCdP2hDXCmqiD3KxXS86gqqrkZlLsx+gJOPm61sXDBPjVw4vs2eGX/qL5MeTgqfyei1lYBAvxV6VXpWHqMNhPjVg2pp862O2g7FjxrwvwMA4S6bg0g9s67eEb7DRxkxU+of12xTwA7y0uX7ZoRWdDTchftYkxDWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773225271; c=relaxed/simple;
-	bh=+lt/Tud5kdWa9caCp9BWChC8IZmh9vX+/c/JTZN/syM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EEebqF49HLrO42meX9E57lv8IqdbfKY7CPdgrtceFOU/77tQrR5IFdxK966RsJ5fsxF/rC6LPYn4TVpKUd7LJ7oTQk6LA38i8NmbUyQVzR22nooCxIZHoyKY6hQI/L8GTrq8LBWcEv4YT6U4KsMmstQkNQBuPo2iFBHVd+XkmME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ1CadJy; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ1CadJy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B96C4CEF7;
-	Wed, 11 Mar 2026 10:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773225271;
-	bh=+lt/Tud5kdWa9caCp9BWChC8IZmh9vX+/c/JTZN/syM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sZ1CadJyqWlXdi13rNN8erC1RFTPiATGhHtewk5blEzMxufLQsJSiC9AKM5/EkfbP
-	 uNjwD4s7Onr9xkXac/axvncFKrTtHq3YdnR47DDAlRxEyCb+eIrxj0jUD7rKUlxm4p
-	 eSafa3HEO9UCkUqRvQ2acPBIpbR1/MuVGTcjkc5o=
-Date: Wed, 11 Mar 2026 11:34:26 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: can-yildirim@ymail.ne.jp
-Cc: "security@kernel.org" <security@kernel.org>,
-	"gfs2@lists.linux.dev" <gfs2@lists.linux.dev>,
-	"aahringo@redhat.com" <aahringo@redhat.com>,
-	"teigland@redhat.com" <teigland@redhat.com>
-Subject: Re: Re: [vs] DLM debugfs information disclosure via
- non-null-terminated resource name
-Message-ID: <2026031131-botanist-babbling-b8d2@gregkh>
-References: <173757593.643632.1773164229041.ref@mail.yahoo.co.jp>
- <173757593.643632.1773164229041@mail.yahoo.co.jp>
- <2098115699.650906.1773192682434@mail.yahoo.co.jp>
- <2026031118-shower-darkened-3e3a@gregkh>
- <752863286.16555.1773224814491@mail.yahoo.co.jp>
+	s=arc-20240116; t=1773234970; c=relaxed/simple;
+	bh=bQRlE5OR+3/41N9B/xBGXfMeOTv3hgeQ2WrY6jcTpBY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T3GqgHlVDsOI44E0xyJcc+Vb68QWR9+I3wYlFBEqyzhegUkLdRdHudPBcHfyfiOgiagfLrp7qHqgseRQEI9HMuUWfRQoyzlUB7IzZSIYCWKkrumLPs90RzxfsuOlUPSYpot0ruAJgbMGP8AhNS2DwJGjnb6J91wXG0PCeVRe/uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5675d609621so11786910e0c.2
+        for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 06:16:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773234968; x=1773839768;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=34DR94e/1PAvLLEaib58vFA4GW0m5SGe6jvxchEhMek=;
+        b=cGM9IFR8o4aw96jU/Hcnojlep3gYrgZ4JGfapMjeeM47ugNRzMEq9hEX096hM9W5Rh
+         k8NMFrg9UlOT5ImsIvEyfAYuAcM+Y60KKAbyv4NK8lioDgVaP7T3m/Mzur5hCoDExvh7
+         mTkUQTixJIvwf1IG9B+qxyvSnT3q7JFBNy6zwwUTvO9Ls9R6AFCL2BdjheMxwgfqQ8rj
+         fN0xsfnp3KlBZpBjWhdnxB5thlWaRuMetE9VgXgWKxqgwQrQQ4MWKpS2OhgfQYQM9cKF
+         rVTVTzmY9dX6PK5drIFjyZYVuzWUZAX333Rdmh/TVVN9PAQSRzbpb9BXJiPIXc9ZeqCT
+         0ofQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDM8Ix1bQhcb79rETcSV501G8me2S0DzkqQdaGGP9lniU9AshatRtr+SxoK6z7nOFSlCcw@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZ+r7/MFo0vGZvsB1+Ej5R3tG7mJI8f75oFsNuP68r9Xepl9rS
+	oA5nZsuqVfI/49dDsQ/rBh2SSJiL257VBNZRRNdN8+TOe+oUA135d/HOjfioe7Y1oU0=
+X-Gm-Gg: ATEYQzxejLzHIxFnuQ0t/Td7OFIYn36RJ88E6q6zXqcTf9zoxSxxV69qT3w5AL2Gp1b
+	bokQEyB0BtDSdFhgBBc8bsi5HZQFnF8GLGtJwCAvMAtw2BG/NNHn11Q93f73y46BwwqDxks472U
+	MOmbm6woZjKfTfVJBpKMnKyY2ZqtMrc3ypTb+ySYYHNeU0z9NBTsbf1eGNnB6PGFIvYzpZkNWCY
+	PdMQKrbKVJRmby+zz7yABwMKEanwezmDcjTBYAWvdkThEbE+X7MmeE2CIzVnfsFcw7Xw26aCvlK
+	QqvFPDPouX8L5pNvkQVRCZVHtiz8A5mvQFAneIfSYKfr3dRj0n1dRmOTvqBJS8g9P5Hm1d1iqAK
+	4s/ZoPNRHY1yJi9EzJm3Uoqi7hYrIVQYFlZQ9m+ci1jeYvcFqTmW034TXUYX78vp7Kcz9yezcmK
+	Q2LGvI0IjKKL6nzFk8C9abIqvvLAUyJzD2j81KAvfBx/Xf0elAG+rAZT0EMbT9W/Xv
+X-Received: by 2002:a05:6122:4b14:b0:56a:f5d2:286b with SMTP id 71dfb90a1353d-56b47476003mr933944e0c.5.1773234968027;
+        Wed, 11 Mar 2026 06:16:08 -0700 (PDT)
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56b4645d11csm894859e0c.12.2026.03.11.06.16.07
+        for <gfs2@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 06:16:07 -0700 (PDT)
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-56739adfa1aso10524040e0c.0
+        for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 06:16:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXD5Kln1oKlJcj4/zlPapXog6tD3hDq2eyCCVboEDlNyNejS5jQHhreD+Hxzvf0fbpAyXzc@lists.linux.dev
+X-Received: by 2002:a05:6122:1d05:b0:55b:7494:177b with SMTP id
+ 71dfb90a1353d-56b4752d806mr922396e0c.10.1773234967338; Wed, 11 Mar 2026
+ 06:16:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <752863286.16555.1773224814491@mail.yahoo.co.jp>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 11 Mar 2026 14:15:56 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXQ8Q4jvkgFRJYhghz2BZRDC-9Mk6DbXxuaOc6C9DFHZQ@mail.gmail.com>
+X-Gm-Features: AaiRm52J84H77ROK64ZWWtJfaiCpnFeKyoSRmPbi-NC8CN6Ju1TJEFxJU9gZQQ8
+Message-ID: <CAMuHMdXQ8Q4jvkgFRJYhghz2BZRDC-9Mk6DbXxuaOc6C9DFHZQ@mail.gmail.com>
+Subject: Re: [PATCH 36/61] arch/sh: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
+	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	v9fs@lists.linux.dev, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 11, 2026 at 07:26:54PM +0900, can-yildirim@ymail.ne.jp wrote:
-> Hey Greg,
-> Nice to meet you...
+On Tue, 10 Mar 2026 at 12:56, Philipp Hahn <phahn-oss@avm.de> wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>
+> Change generated with coccinelle.
+>
+> To: Yoshinori Sato <ysato@users.sourceforge.jp>
+> To: Rich Felker <dalias@libc.org>
+> To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 
-Hi, and note, why the [vs] in the subject line?  This isn't vendor-sec,
-that list is long gone.  What caused that to show up here?
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-> > 日時：2026/03/11 水 15:42
-> > 件名：Re: [vs] DLM debugfs information disclosure via non-null-terminated resource name
-> > 
-> > 
-> > On Wed, Mar 11, 2026 at 10:31:22AM +0900, can-yildirim@ymail.ne.jp wrote:
-> > > Dear maintainers,
-> > > There is an possible information disclosure vulnerability in the DLM
-> > > subsystem's debugfs interface.
-> > 
-> > debugfs is, by default, only readable by root, and contains loads of
-> > stuff like this, as it's full of debug information on the system.  So
-> > much so that many systems do not enable it in their kernels, and others
-> > do not mount it at all.  So it's not really a problem overall from a
-> > security point of view.
-> > 
-> > > The issue resides in the function
-> > > print_format2_lock() in fs/dlm/debug_fs.c. When a resource name
-> > > is exactly DLM_RESNAME_MAXLEN bytes long and contains no null
-> > > byte, the %s format specifier in a seq_printf call reads beyond
-> > > the intended buffer, exposing adjacent kernel memory.
-> > 
-> > That's not good, can you just send a patch for this to the developers
-> > and mailing list and they can apply it like normal?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> While debugfs is indeed root-only and often disabled, this vulnerability specifically targets environments that do enable it and cannot migrate to userspace coordination systems like ZooKeeper or Redis due to resource constraints or legacy requirements. In those clustered environments (e.g., HPC, Pacemaker/DRBD setups), DLM is actively used, debugfs is present, and local root access can be chained with this leak to bypass KASLR and facilitate further exploitation. So while the overall risk is low, the impact in the specific niche where this code actually runs is real.
+Gr{oetje,eeting}s,
 
-If you have local root access, heck, just local access, KASLR is
-trivially leaked, that is not what KASLR is trying to protect from at
-all.
+                        Geert
 
-> On top of this, I would also suggest you looking at things i can`t even spell it`s name right once; IBM s390x architectures like(IBM Z/LinuxONE). These systems cost like hundreds of thousands to $15M+, and they power the world basically[Not an IBM advertisement btw, just some sprinkles]. 
-> On these platforms, stability and backward compatibility is nirvana dude,and you can't just "rewrite everything to use ZooKeeper". or build your own program[Was it chubby?chobby?chobani maybe idk] like Google did because they can. The kernel DLM is on the environments built and relied upon, debugfs is often present. A KASLR bypass on these systems isn't just an academic exercise... It's a real domino step towards to an infrastructure that literally cannot afford downtime, but still, some device like this somewhere in the world probably depends more or less on what you're currently probably laughing at, anyways...
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I do not understand what you are trying to say here at all, sorry.
-
-> So in short while this may seem like "just another debugfs something something something" from a desktop Linux perspective, the impact profile changes dramatically when you consider where this code actually runs in production.
-
-Then those production systems have worse problems if they are letting a
-local root user do whatever they want.
-
-> Also, i am not going to write or commit an patch, i wrote somethings about that but decision to commit/implement is something i don`t care at the moment.
-
-Please submit a patch if you feel this is something that should be fixed
-up.
-
-thanks,
-
-greg k-h
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
