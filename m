@@ -1,197 +1,138 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from omggw2001-vm0.mail.snz.yahoo.co.jp (omggw2001-vm0.mail.snz.yahoo.co.jp [124.83.188.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B1213FEE
-	for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 02:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194855; cv=pass; b=fOuzuR1yuLM6gnsMJBVIdFGhiIL+lsOHHqtnOsYNZNjGH8TnLdREG4n1JrFtxzJDtnE6y2RlTw+iCgfrxG4mbJ5+tDStW1W570SfyeO+BIl1HNWg+B2xaGCJoZz7he1tE2DQ0FGk6+nI5EJE3QH85j+BDW/a++w/RaavT/iK3Q8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194855; c=relaxed/simple;
-	bh=8UJnLa/DDQ+b65RDSHa97nR/Rm6zetnRjswOkVb13wc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXpJVfRbo4LlXCcOZcdMTSZguzp+cVIx0KISpfGfBR5GZsgpQoVAlwFx48a7FZe92mvAfCs4pISJzIGD35j4fUHxXz1jh6LAAkO/dRo3RdeyRnOvOMKB8uyqlSRY6aMKh1lACEP4J4hko00bjgaT9gA/dJ05ihAnODVVoWzn1po=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=G46rxFFc; arc=pass smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EF3299A84
+	for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 02:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.83.188.210
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773197785; cv=none; b=eqwx/k2LcztcMLOp0gMMkUG2UOhM4pnTmxo/aetoypZSwVxyLk6i6C7sGK0SnwPWxQ9NQvZ5PJQy62OfR1VfNwNo0nKXX538TZkDwH5ek2yXIBfWWF5REd1D0/D05aSRPpgSAbH11pcw0D96awleuEFyus6IMhKg3hjYBnqH7jM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773197785; c=relaxed/simple;
+	bh=7qTFlSQYjDvv4CndiZv8fQP3vWzXOkpwChzhzcFqr+w=;
+	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=rgm9KcyQxBa2QFzr2LaFWATEJXkX2N9M2CK47+Oz1uj64y/J6ijOEk4RGj7x1h1dO7Bq0hXXYd9SiO+cNbhGWDVXlsFqLcFOs74h0Y8cf/n6TEaSagYxMEI8FuW4He9kvt84ZVg3iMrWfD8zHiJioRFMPsqWgppqA8GtmXWyV7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ymail.ne.jp; spf=pass smtp.mailfrom=ymail.ne.jp; dkim=pass (2048-bit key) header.d=ymail.ne.jp header.i=@ymail.ne.jp header.b=K9vrH16p; arc=none smtp.client-ip=124.83.188.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ymail.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ymail.ne.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="G46rxFFc"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a0ff30b240so8038069e87.0
-        for <gfs2@lists.linux.dev>; Tue, 10 Mar 2026 19:07:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773194852; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I5RBQY0sjW6CCC8MUrc+yzMqCosHfUrFQXo0a+7GY/c/EFGRKwS5Ra2YMMMVAuZ4a8
-         /gdq5QHGBf6JPtfwmmT+bflwg228Milvk3aVDA6G9dRyKhZo1YPmkdc1bR6K0q/spNvh
-         T1bCz2205FeuEdo1K5oN6r/bwjjH34xMQLduzeN/O/V4Kftgy23MaGEMJqUMxX6CUM34
-         6DntfyehKlL+YdKQpP6YHNtcL9QXlesMWsynLVOPnV7uE1ExnC+5st3s7a1jsT8ELIRG
-         h2FXtgB4oo3M13Jotvemw5qZFt7klRcoobrru1wmDi/qU86XrovsVtiun0T/9S1ZIqYO
-         ITWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        fh=AZx7JeGrNLU/yovFI5wq5aZmK2WTKS9vT0MdpBFcfgU=;
-        b=J3KrGUhd9yC+a6IercerAJ0RGh/T/lD9vK4UOydgv3YRoXDoizM3cFiuU15TM5IAyd
-         CJtzAbTHygXl+XCXZOWVgzTvL48zTOY3UmyVRx99DG3eQaAMcGxdnQjxpULoouAz0yXT
-         lQ0XtwSaWxVnXV/FI1ImIsyTCpwBbQ3xQpoj6uOPI58gn5DTIVZRFBnEnjL6jNuOdphL
-         BOZPmpj6NNRlo14LE7CBqWULIk+qDtpUYQjGS5Y4A9c+eW7154S4t/Vo3/TjdUO/7hhv
-         t0voKOcr1TaxgIA4isp2QS7zrr4u0FXOa96m1bUuSht0aoMF/5nd/3k92hk9/+geJT0A
-         Lf7g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773194852; x=1773799652; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=G46rxFFcX1hnQKxUUrTijJdlDpB5OBfdKVt7tJqloBNXcNg5JAjWvjlGBTrQCSFpEL
-         kw5r/kEngKAkJ0pkN558AqUScugTYRjvdhsBLXq38oLpcnNpxGDuEjo6TpPJTbZMKzhC
-         YhKhvGGnSCYDK9QQnvadjQAxBlN7qho59qSI0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773194852; x=1773799652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
-        b=qXg48dUunyOHIdlsyKFcWx/z0lLPtZguDdOG+boNlj0DKIV+5HBQC716MEFVI/MKZA
-         aQWNVa2pwAYHWECR70qsTBM9LPYkV1VasAUr+brNIo2Tm6AEMo2tBgIhUvYCcFFGZkSt
-         UrXueT3hvXmsxvhbPdMgU1jpRNoJrTGshsD8o/XD2vvwmBSYH4IoYyyCJX2cMu2aKoBj
-         8lQHoLpNKeqyU76mI7qFV4c8S2rMxQCBcgFseBesGhLT5OeeIwigQLHxkXbe4+uYfWYn
-         YzHNqD6dsYdpZ7vK1jrzuH7eXtEK4f8rkMKOUuiYArlzim31aQ6D4/PyRHN4R+jtG9Hx
-         LzIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMQrbPixk0H+sGZn7lxSoQQNakCx4VOhDMJUzdAvUIpd+8SHt/45cpZ8+mp7WRFTx5kAaf@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw8OrZeQF2nPyVOJF+neJQ328V1cNMbD1pH08e5wkbCRYltJ3YB
-	RBbs3UnYyc18F5s/zfU3VLgTD7KUIX10E65RQtbuyf1jZaK6KTi6sWXUNTSF7nXacRCzIHrghvi
-	pzqQKRuB7vd0f4A4hTxhMlIKnus/nVwBG2nErqtTj
-X-Gm-Gg: ATEYQzynA+xf2JxKpQ58euHdeSbZFcK8JLXZBpK94VycSJOJzI4dK42x3m+6V2wWvz4
-	xCXFh6psM1M3j6A/DwMRxPYsJLgSt5a/w3rhJShxWtxeqFpHiaY0N7V1ASsYj78y2DsLJEzNyZV
-	CoAMs+UzJ2wJylwqRo9q/GHp88Y5bVBcXxWw0W8Tcg+sQgclBQwCp9Gr4h/LMOnPZQ0yKkFybpV
-	qHQh9dwni/dA4Hs1G+sR+YZQj2OKxheMN8X5gmI6254uopIaBf3DJSAJOOWsiF/heQ9F3PxD/1A
-	0rDckio7dw==
-X-Received: by 2002:ac2:4427:0:b0:5a1:3134:9bac with SMTP id
- 2adb3069b0e04-5a156cbd1bbmr169453e87.28.1773194852284; Tue, 10 Mar 2026
- 19:07:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ymail.ne.jp header.i=@ymail.ne.jp header.b="K9vrH16p"
+X-YMail-OSG: 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
+X-Sonic-MF: can-yildirim@ymail.ne.jp
+Received: from sonicgw.mail.gze.yahoo.co.jp by sonicconh5102.mail.kks.ynwp.yahoo.co.jp with HTTP; Wed, 11 Mar 2026 02:56:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773192682;
+	s=ymailnejp-202506; d=ymail.ne.jp;
+	h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:References:In-Reply-To:Message-ID:To:Reply-To:From:Date;
+	bh=hj2tP3BtZVowe/LVZfW8Xzq8z00EvqFOBSwZcV6Hn9k=;
+	b=K9vrH16pGqjKDXR0hR9q7SdH6n05OOHZCpjFr9qwPh9M+d/0B24QCHEIqXdLtBud
+	06cLc+um7eE8Qa9xw6L7YXfOHLAw/9EpeMmpvAIguSkHTD9fxvMebWswzJ6udy6Ptbx
+	Sc+gKQ9gsidy4QyQsAgnhFUaG3wHWbELw/4yAEf1qY6DQTVlOjRTSwCAL5mmx662ZZC
+	LK5MKO/W3h/aOCtz5qbcykq45YXSNQwkImRihmlbjZytwT1WizDHncuMJ2BIi16onoX
+	wVXcDVOz7C+1lPmmtFk16vnu+fG/UaSNH8JDxej91FrEJgrss5Drwe+Si6iP8YU036A
+	0wRzuxe+yw==
+Date: Wed, 11 Mar 2026 10:31:22 +0900 (JST)
+From: can-yildirim@ymail.ne.jp
+Reply-To: can-yildirim@ymail.ne.jp
+To: "security@kernel.org" <security@kernel.org>,
+	"gfs2@lists.linux.dev" <gfs2@lists.linux.dev>,
+	"aahringo@redhat.com" <aahringo@redhat.com>,
+	"teigland@redhat.com" <teigland@redhat.com>
+Message-ID: <2098115699.650906.1773192682434@mail.yahoo.co.jp>
+In-Reply-To: <173757593.643632.1773164229041@mail.yahoo.co.jp>
+References: <173757593.643632.1773164229041.ref@mail.yahoo.co.jp> <173757593.643632.1773164229041@mail.yahoo.co.jp>
+Subject: Re: [vs] DLM debugfs information disclosure via non-null-terminated
+ resource name
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Wed, 11 Mar 2026 11:07:21 +0900
-X-Gm-Features: AaiRm5028PWt8n-JnveiRgn8oYMksdR_-_nk4JOkvxMfplWs-GDr7RRk-OxICyw
-Message-ID: <CAGXv+5FQAVaJjqhv+Xq-ysOc4SHQn2mCNTgCAp8XocmWBWGGoA@mail.gmail.com>
-Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
-	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	v9fs@lists.linux.dev, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 10, 2026 at 9:57=E2=80=AFPM Philipp Hahn <phahn-oss@avm.de> wro=
-te:
->
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
->
-> Semantich change: Previously the code only printed the warning on error,
-> but not when the pointer was NULL. Now the warning is printed in both
-> cases!
->
-> Change found with coccinelle.
->
-> To: Michael Turquette <mturquette@baylibre.com>
-> To: Stephen Boyd <sboyd@kernel.org>
-> To: Daniel Lezcano <daniel.lezcano@kernel.org>
-> To: Thomas Gleixner <tglx@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/clk/clk.c               | 4 ++--
->  drivers/clocksource/timer-pxa.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b72=
-23d4488a9216ed1 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
->         unsigned long flags;
->         const struct clk_ops *ops;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
->                 return;
->
->         clk_debug_unregister(clk->core);
-> @@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
->  {
->         struct module *owner;
->
-> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+Dear maintainers,
+There is an possible information disclosure vulnerability in the DLM
+subsystem's debugfs interface. The issue resides in the function
+print_format2_lock() in fs/dlm/debug_fs.c. When a resource name
+is exactly DLM_RESNAME_MAXLEN bytes long and contains no null
+byte, the %s format specifier in a seq_printf call reads beyond
+the intended buffer, exposing adjacent kernel memory.
+Description:
+When printing lock information in format 2, the code does:
+seq_printf(s, "... "%s"\n", r->res_name);
+The res_name field is a fixed-size byte array of length
+r->res_length (bounded by DLM_RESNAME_MAXLEN) and is not
+guaranteed to be null-terminated. If an attacker creates a resource
+with a name of maximum length consisting entirely of non-null bytes
+(e.g., 64 'A's), the %s formatter will continue reading past the
+end of the res_name buffer until it encounters a null byte in
+kernel memory. This leaks the contents of the following memory,
+which may include kernel pointers, slab metadata, or other sensitive
+data.
+Impact:
+Local attacker on a system where
+DLM is used (e.g., clustered servers running GFS2/OCFS2 with
+dlm_controld) can read kernel memory beyond the resource name.
+This defeats KASLR, reveals heap layout, and may expose credentials
+or other secrets. The leak is a classic information disclosure that
+can be used as a building block for further privilege escalation.
+Initially;
+Create a DLM lockspace (e.g., via dlm_tool join test_ls).
+Acquire a lock on a resource with a 64-byte name of non-null
+bytes (e.g., 64 'A's) using dlm_ls_lock_wait.
+Read /sys/kernel/debug/dlm/test_ls/locks (format 2).
+Observe the 64 'A's followed by disclosed kernel memory.
+Proposed fix:
+Perhaps replacing the unbounded %s with a bounded %.*s using the known
+resource length.
+Side_Note: The exact line numbers
+may vary. Thinking of an usage like; %.*s with r->res_length to
+limit the output to the actual name length. Proper tabs should be
+used though.
 
-clk_get_optional() returns NULL if the clk isn't present.
+CVE request:
+Please assign a CVE ID for this vulnerability if applicable.
+ 
+Thank you for your attention. Please let me know if you need any
+further information.
+Best regards,
+Fatih Can Yildirim 
 
-Drivers would just pass this to clk_put(). Your change here would cause
-this pattern to emit a very big warning.
-
-I don't think this change should be landed.
-
-
-ChenYu
-
->                 return;
->
->         clk_prepare_lock();
-> diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-=
-pxa.c
-> index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a=
-4c0fb08ba11c8f9 100644
-> --- a/drivers/clocksource/timer-pxa.c
-> +++ b/drivers/clocksource/timer-pxa.c
-> @@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem=
- *base)
->
->         timer_base =3D base;
->         clk =3D clk_get(NULL, "OSTIMER0");
-> -       if (clk && !IS_ERR(clk)) {
-> +       if (!IS_ERR_OR_NULL(clk)) {
->                 clk_prepare_enable(clk);
->                 pxa_timer_common_init(irq, clk_get_rate(clk));
->         } else {
->
-> --
-> 2.43.0
->
->
