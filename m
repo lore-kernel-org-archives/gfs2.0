@@ -1,138 +1,144 @@
-Received: from omggw2001-vm0.mail.snz.yahoo.co.jp (omggw2001-vm0.mail.snz.yahoo.co.jp [124.83.188.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EF3299A84
-	for <gfs2@lists.linux.dev>; Wed, 11 Mar 2026 02:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.83.188.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A06918A6D4;
+	Wed, 11 Mar 2026 04:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773197785; cv=none; b=eqwx/k2LcztcMLOp0gMMkUG2UOhM4pnTmxo/aetoypZSwVxyLk6i6C7sGK0SnwPWxQ9NQvZ5PJQy62OfR1VfNwNo0nKXX538TZkDwH5ek2yXIBfWWF5REd1D0/D05aSRPpgSAbH11pcw0D96awleuEFyus6IMhKg3hjYBnqH7jM=
+	t=1773204586; cv=none; b=K1WQIxcK+274S/4Yob+0L8QqTWnTbH6JZTY2a91B5Fs2UGlJDBkW9z9RqjzEhPXkyCkQrfZDh0h3InO/B4lM38l9nRHl2idrlUDcwvBApwPhuIVsZCMXoVPT7NhPzOQ2AHc/fSFljcM5ao6JhkFuni+1HVGR7WJF6IKijwyGJFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773197785; c=relaxed/simple;
-	bh=7qTFlSQYjDvv4CndiZv8fQP3vWzXOkpwChzhzcFqr+w=;
-	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=rgm9KcyQxBa2QFzr2LaFWATEJXkX2N9M2CK47+Oz1uj64y/J6ijOEk4RGj7x1h1dO7Bq0hXXYd9SiO+cNbhGWDVXlsFqLcFOs74h0Y8cf/n6TEaSagYxMEI8FuW4He9kvt84ZVg3iMrWfD8zHiJioRFMPsqWgppqA8GtmXWyV7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ymail.ne.jp; spf=pass smtp.mailfrom=ymail.ne.jp; dkim=pass (2048-bit key) header.d=ymail.ne.jp header.i=@ymail.ne.jp header.b=K9vrH16p; arc=none smtp.client-ip=124.83.188.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ymail.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ymail.ne.jp
+	s=arc-20240116; t=1773204586; c=relaxed/simple;
+	bh=luNAMKvhT3g6lZj4Bklpxcu5kotaBTWCH9qLtXuXCaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iWiexXatlG0lDBTMMHKdtoF7FuzO2YGVnoVjgQZ0RnLl91hMAXEOtMpBAAQzRkAoDGVxUBLMqFIS4XwTQB6NzgImXWY8LqB64E3usefTgJcXVh1wATHLv3f/qa2wsUb4ksSAvkX5hCUrQHoX/IpgebZcx/LB3A8SkVtBQ+AlUgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=hwtIRhho; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ymail.ne.jp header.i=@ymail.ne.jp header.b="K9vrH16p"
-X-YMail-OSG: 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
-X-Sonic-MF: can-yildirim@ymail.ne.jp
-Received: from sonicgw.mail.gze.yahoo.co.jp by sonicconh5102.mail.kks.ynwp.yahoo.co.jp with HTTP; Wed, 11 Mar 2026 02:56:20 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773192682;
-	s=ymailnejp-202506; d=ymail.ne.jp;
-	h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:References:In-Reply-To:Message-ID:To:Reply-To:From:Date;
-	bh=hj2tP3BtZVowe/LVZfW8Xzq8z00EvqFOBSwZcV6Hn9k=;
-	b=K9vrH16pGqjKDXR0hR9q7SdH6n05OOHZCpjFr9qwPh9M+d/0B24QCHEIqXdLtBud
-	06cLc+um7eE8Qa9xw6L7YXfOHLAw/9EpeMmpvAIguSkHTD9fxvMebWswzJ6udy6Ptbx
-	Sc+gKQ9gsidy4QyQsAgnhFUaG3wHWbELw/4yAEf1qY6DQTVlOjRTSwCAL5mmx662ZZC
-	LK5MKO/W3h/aOCtz5qbcykq45YXSNQwkImRihmlbjZytwT1WizDHncuMJ2BIi16onoX
-	wVXcDVOz7C+1lPmmtFk16vnu+fG/UaSNH8JDxej91FrEJgrss5Drwe+Si6iP8YU036A
-	0wRzuxe+yw==
-Date: Wed, 11 Mar 2026 10:31:22 +0900 (JST)
-From: can-yildirim@ymail.ne.jp
-Reply-To: can-yildirim@ymail.ne.jp
-To: "security@kernel.org" <security@kernel.org>,
-	"gfs2@lists.linux.dev" <gfs2@lists.linux.dev>,
-	"aahringo@redhat.com" <aahringo@redhat.com>,
-	"teigland@redhat.com" <teigland@redhat.com>
-Message-ID: <2098115699.650906.1773192682434@mail.yahoo.co.jp>
-In-Reply-To: <173757593.643632.1773164229041@mail.yahoo.co.jp>
-References: <173757593.643632.1773164229041.ref@mail.yahoo.co.jp> <173757593.643632.1773164229041@mail.yahoo.co.jp>
-Subject: Re: [vs] DLM debugfs information disclosure via non-null-terminated
- resource name
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="hwtIRhho"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fVyvy3TbVz9v75;
+	Wed, 11 Mar 2026 05:49:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1773204574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jack6TdkHfubMZXj3t4BiSmX904hWsygllpLop+Gf9w=;
+	b=hwtIRhhoCxc2ZsNuUo0Icnvj7zQltMiaNclezRSyqc87wTc0wXe2NWtPTDDRE127dJXFTa
+	MCvirHZh8IiINxf7jg7PTdJYtUuDmCcpUYG4NR+HXoSIAKzshND6dvUCboZ1QPiY129i0p
+	vP6W/4Z8xKyvmGsmG0UVmuLtY8spR7CmaMu1rm8oyBUDj2N297M9U3vbYSmSuEgII2ps6v
+	EoQvRCIKwWGE9t+rxwSll9E6aSdYeE3eYYrNzVXpC0e5YOEIKqsC4w1Amkj3lkkGAd7FSr
+	N7xilzshuVk4hvo9TfDCZ4V5CdbP7DPW1inKdPlaPKLeY7uYE4a9QY7VVtwUug==
+Date: Wed, 11 Mar 2026 13:48:47 +0900
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>, 
+	Jeff Layton <jlayton@kernel.org>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, 
+	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+Message-ID: <2026-03-11-regular-sore-census-shops-DqYcUT@cyphar.com>
+References: <20260307140726.70219-1-dorjoychy111@gmail.com>
+ <20260307140726.70219-2-dorjoychy111@gmail.com>
+ <CALCETrXVBA9uGEUdQPEZ2MVdxjLwwcWi5kzhOr1NdOWSSRaROw@mail.gmail.com>
+ <801cf2c42b80d486726ea0a3774e52abcb158100.camel@kernel.org>
+ <CALCETrVt7o+7JCMfTX3Vu9PANJJgR8hB5Z2THcXzam61kG9Gig@mail.gmail.com>
+ <20260309-umsturz-herfallen-067eb2df7ec2@brauner>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bywgq3w2vtdgrqnx"
+Content-Disposition: inline
+In-Reply-To: <20260309-umsturz-herfallen-067eb2df7ec2@brauner>
 
-Dear maintainers,
-There is an possible information disclosure vulnerability in the DLM
-subsystem's debugfs interface. The issue resides in the function
-print_format2_lock() in fs/dlm/debug_fs.c. When a resource name
-is exactly DLM_RESNAME_MAXLEN bytes long and contains no null
-byte, the %s format specifier in a seq_printf call reads beyond
-the intended buffer, exposing adjacent kernel memory.
-Description:
-When printing lock information in format 2, the code does:
-seq_printf(s, "... "%s"\n", r->res_name);
-The res_name field is a fixed-size byte array of length
-r->res_length (bounded by DLM_RESNAME_MAXLEN) and is not
-guaranteed to be null-terminated. If an attacker creates a resource
-with a name of maximum length consisting entirely of non-null bytes
-(e.g., 64 'A's), the %s formatter will continue reading past the
-end of the res_name buffer until it encounters a null byte in
-kernel memory. This leaks the contents of the following memory,
-which may include kernel pointers, slab metadata, or other sensitive
-data.
-Impact:
-Local attacker on a system where
-DLM is used (e.g., clustered servers running GFS2/OCFS2 with
-dlm_controld) can read kernel memory beyond the resource name.
-This defeats KASLR, reveals heap layout, and may expose credentials
-or other secrets. The leak is a classic information disclosure that
-can be used as a building block for further privilege escalation.
-Initially;
-Create a DLM lockspace (e.g., via dlm_tool join test_ls).
-Acquire a lock on a resource with a 64-byte name of non-null
-bytes (e.g., 64 'A's) using dlm_ls_lock_wait.
-Read /sys/kernel/debug/dlm/test_ls/locks (format 2).
-Observe the 64 'A's followed by disclosed kernel memory.
-Proposed fix:
-Perhaps replacing the unbounded %s with a bounded %.*s using the known
-resource length.
-Side_Note: The exact line numbers
-may vary. Thinking of an usage like; %.*s with r->res_length to
-limit the output to the actual name length. Proper tabs should be
-used though.
 
-CVE request:
-Please assign a CVE ID for this vulnerability if applicable.
- 
-Thank you for your attention. Please let me know if you need any
-further information.
-Best regards,
-Fatih Can Yildirim 
+--bywgq3w2vtdgrqnx
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+MIME-Version: 1.0
 
+On 2026-03-09, Christian Brauner <brauner@kernel.org> wrote:
+> > > On Sat, 2026-03-07 at 10:56 -0800, Andy Lutomirski wrote:
+> > > > I think this needs more clarification as to what "regular" means,
+> > > > since S_IFREG may not be sufficient.  The UAPI group page says:
+> > > >
+> > > > Use-Case: this would be very useful to write secure programs that w=
+ant
+> > > > to avoid being tricked into opening device nodes with special
+> > > > semantics while thinking they operate on regular files. This is
+> > > > particularly relevant as many device nodes (or even FIFOs) come with
+> > > > blocking I/O (or even blocking open()!) by default, which is not
+> > > > expected from regular files backed by =E2=80=9Cfast=E2=80=9D disk I=
+/O. Consider
+> > > > implementation of a naive web browser which is pointed to
+> > > > file://dev/zero, not expecting an endless amount of data to read.
+> > > >
+> > > > What about procfs?  What about sysfs?  What about /proc/self/fd/17
+> > > > where that fd is a memfd?  What about files backed by non-"fast" di=
+sk
+> > > > I/O like something on a flaky USB stick or a network mount or FUSE?
+> > > >
+> > > > Are we concerned about blocking open?  (open blocks as a matter of
+> > > > course.)  Are we concerned about open having strange side effects?
+> > > > Are we concerned about write having strange side effects?  Are we
+> > > > concerned about cases where opening the file as root results in
+> > > > elevated privilege beyond merely gaining the ability to write to th=
+at
+> > > > specific path on an ordinary filesystem?
+>=20
+> I think this is opening up a barrage of question that I'm not sure are
+> all that useful. The ability to only open regular file isn't intended to
+> defend against hung FUSE or NFS servers or other random Linux
+> special-sauce murder-suicide file descriptor traps. For a lot of those
+> we have O_PATH which can easily function with the new extension. A lot
+> of the other special-sauce files (most anonymous inode fds) cannot even
+> be reopened via e.g., /proc.
+
+Indeed, I see OPENAT2_REGULAR as a way of optimising the tedious checks
+that userspace does using O_PATH+/proc/self/fd/$n re-opening when
+dealing with regular files.
+
+For the problem of stuck NFS handles and so on, an idea I've had on my
+backlog for a long time was RESOLVE_NO_REMOTE that would block those
+kinds of things. IMHO it doesn't make sense to block those things with
+an O_* flag because (especially in the NFS example) directory components
+can also cause the syscall to block indefinitely and so RESOLVE_* flags
+make more sense for this anyway. But in my mind this is a separate
+problem to OPENAT2_REGULAR.
+
+--=20
+Aleksa Sarai
+https://www.cyphar.com/
+
+--bywgq3w2vtdgrqnx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCabD0LxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQKJf60rfpRG8NhAD+MfneuLAodU+abMZdkBr7
+4vpiPGD5MeVFeZmtEvqdIWkBAJeNjed85hr2GgmqbPaY2CpOcPAXut4kYqaCB9lM
+lHcK
+=vDl9
+-----END PGP SIGNATURE-----
+
+--bywgq3w2vtdgrqnx--
