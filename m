@@ -1,197 +1,176 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39A33B47ED
-	for <gfs2@lists.linux.dev>; Thu, 12 Mar 2026 07:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBFB3B9DB7;
+	Thu, 12 Mar 2026 09:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773301855; cv=none; b=Z2C1rtUANzlSiBqEd11Z+2fegNDX6kL8Dwo45cX7KGI1QcMR4BmPqUsMCvrAIpjGUXKzmZ/EOEEZgH9/RHzET3fUfJpnn9m8gXlhx2MsLagD2BwAnPw3nuYnucMPyMSLIPIBiGmhdDyc+nxFxN8+/2f6YHrCE81+bcWruZRhIT8=
+	t=1773308299; cv=none; b=nCDgZBjVN9d8XFoh4QMkLwIis9KvgphiCIc75Wbnj3kVhTv7WpDVRZNxqE3NrENbkeiV4q2dllc+TMtIc4KGtpk2OR2Kuj8LQQNGeHUdp4e50KtmLTyeSrQ8EHiUZa/wCb52LGRIWEwf4pFqfhXAdC76D9tW+mY1crVqRRdfQ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773301855; c=relaxed/simple;
-	bh=r2PdE6HYGVzZYpXyEn5kett8unUMILRQGQuMPOiuUPo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UxXaCi8p/nq7b9P42petn/k+91pXHzPwjLNyVgcFdX+UNjv2pn2NaF5XrfXZXQtFdNeUlsj742D7GRkJ625pcWFru0Jwosqx2wM3fn8CbabF26VGRomgUX6rFOQ/mjcvTjhwqSA2DeNF4nIEntWl0FsscmakExnP5O0blcK2UZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82984c077b2so445201b3a.1
-        for <gfs2@lists.linux.dev>; Thu, 12 Mar 2026 00:50:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773301851; x=1773906651;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/LhKuHInA3JH1whpdNQPR6DLSzWmpT0VhZEHTHtHiaY=;
-        b=amaqFSluLurXGto8vMdG9YwbhaWs2X8KRuBSv249vGY//32jNwF1d4vlisTASYQq7T
-         ZCETORoI/dwn6wdf3UWkThi/mTgZXXFFzZe3s+HBVSjTbiqAHqYHQo8oHmKrxclPUXFD
-         5qTBkIPgBIdq1dWDKOCDt2lKMqLs46XFy0jT+Fr3v6j5Pihl1EY7pCbF/Nc0QsocyCu6
-         98JVbbtg4zbUuWrNh4D7NvSImx1iMSV14HgQ4gJX4NlfugxMs33Cri4Ie1zZGYHKHKyp
-         Cn2fwbjEXyw7hUZ1xsQL837Luv/pPcdAv7tRYhDv5Hfoh0br2j3Es3yPlhMSqcOluDSQ
-         lDJw==
-X-Forwarded-Encrypted: i=1; AJvYcCV06kZN7BUUcmbf/QLOTlCAVc2RO8QYMZ5hXAGpEKgB6Sr9746YfgufTynZBTd0n0iPhH7T@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1Y1GyfsNQnl0nGdmNFYWOsnQ/AgDDRibJALbwywzX/xCFbe2D
-	WLqd5pMhAxHp2/2o3xEOgmjUh9peaHr1Vu9lVkcEQDrO7GVbJe9RL1lWh7SaTl4KGFfMJg==
-X-Gm-Gg: ATEYQzzMJQnu53PqkNI8debrQeugXIwhrjJv768n1M4t/i5ja8iZ8yq+o5eJ4+aPZxX
-	gdEr3w2o2N8qPzHzXqLuXDqDHBroZt1pfb37ucjSn7pQd8kaTfVXY2wBuhDkt9FlNLYmTvutXJM
-	4jffc0GmxTL3G9egrplZ3lCI0iIPyyaOWFucwWp+g5t3hSWKzuRVHy3QAUnRQPXeRxWr5zAehZI
-	In00crJSS5lCiUtsle+eTN5x2kd3Cee5CV2s/7YlkI0dHJDECWUvVWSGuxmObMnwaG0FO+s/bdx
-	m8Z4wwykNg65vRERYoE+8EEGQU4/wcWbEPXSUy77ZNq9RQ2xoCOPHvP1F1dtPSwZePSKp+stCRO
-	q/zTdZPVcpzUymUtWRvCh/Jn+GGlPey74uL/P44Y7thOMUqLv2S1nj5s2ArKLgoJDYGDeR3vMCr
-	oZhaUYR5dosXGVpmxrhEn2RI7W5/QIR2a29vnor+6c8+/jcn9Wr9LUAP/IPtk=
-X-Received: by 2002:a05:6a00:410f:b0:824:a22c:c6d7 with SMTP id d2e1a72fcca58-829f6eadd45mr4698413b3a.18.1773301850980;
-        Thu, 12 Mar 2026 00:50:50 -0700 (PDT)
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com. [74.125.82.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0736e64bsm1973100b3a.50.2026.03.12.00.50.50
-        for <gfs2@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 00:50:50 -0700 (PDT)
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-126ea4e9694so1716954c88.1
-        for <gfs2@lists.linux.dev>; Thu, 12 Mar 2026 00:50:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXnPg/8Izf6flbsv1L7cXZHEGAKyEjJ5YWECqGCb7RfCs7213au853Eg6wGtW+GihzMTpSr@lists.linux.dev
-X-Received: by 2002:a05:6122:1b0f:b0:56a:9f03:1719 with SMTP id
- 71dfb90a1353d-56b47483c0fmr2043365e0c.7.1773301414536; Thu, 12 Mar 2026
- 00:43:34 -0700 (PDT)
+	s=arc-20240116; t=1773308299; c=relaxed/simple;
+	bh=yFvK4TL7xsQGtUZ3aYppmkhAkjRmfVgtLz+/kUGSF4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sjd7DuZMqTvm85uGS1W0pUS3PcFl1M0Z8zOF2eoW92TQ49ymzjx4r78BM2grac+ougr6g4ZwQJYo760X+OIvBAISuGITDUQE/KBmzfQ+PAVt62VUOJIeZJ+PHpkVVbpsywR4QnJFbcsVihnBHLuWiBjkmrpSid0ZlxkBUD3Qav0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=nEv3gFay; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="nEv3gFay"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4fWjGL4f51z9tQg;
+	Thu, 12 Mar 2026 10:38:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1773308282;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T4nPgKWUxbLSsXAZ7xnpvCJoD9xpuvM/yonZzi7ZuXE=;
+	b=nEv3gFayAZ9w4Dp1cWiq1UcmZbr+AVxZWSDwTVJzyq2a7dTgA8EWt3TPcSPeAw3jej6OXW
+	Pcy6WVyRafrQdwLnMhWua8km15WTIsPP2Egxk8ctZ2kwiHp04CE+ci72MIAnUbB2X3uFr2
+	m9TbgCaTUcnFmJKSHe98mj5hqI3Qzay9DRe0Umfx2oh7eNC/jG4i1DJ1cS6QrP9wELYs37
+	/9UaaXlTa5JuDMVGuxNl72vYPCySNn0PNn4gl11j4ufYX2X3WGume6qmtDEr6kyiwR0x9C
+	cxiPW6KyqQRJuzfkOfZeC+MVhuRec3d3eJIEUNq8AGc2z7YeAIhaADmP9uHRBQ==
+Date: Thu, 12 Mar 2026 18:37:10 +0900
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, chuck.lever@oracle.com, alex.aring@gmail.com, 
+	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+Message-ID: <2026-03-12-naughty-cyan-tower-bats-CiRzU7@cyphar.com>
+References: <20260307140726.70219-1-dorjoychy111@gmail.com>
+ <20260307140726.70219-2-dorjoychy111@gmail.com>
+ <CALCETrXVBA9uGEUdQPEZ2MVdxjLwwcWi5kzhOr1NdOWSSRaROw@mail.gmail.com>
+ <801cf2c42b80d486726ea0a3774e52abcb158100.camel@kernel.org>
+ <CALCETrVt7o+7JCMfTX3Vu9PANJJgR8hB5Z2THcXzam61kG9Gig@mail.gmail.com>
+ <20260309-umsturz-herfallen-067eb2df7ec2@brauner>
+ <2026-03-11-regular-sore-census-shops-DqYcUT@cyphar.com>
+ <CALCETrVMF3VBr0cuEYOg-M_u+hX77Jfdujv3ZMtLGCzHgOcsGA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260310153506.5181-1-fmancera@suse.de> <20260310153506.5181-2-fmancera@suse.de>
-In-Reply-To: <20260310153506.5181-2-fmancera@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 12 Mar 2026 08:43:23 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWj-7J5bMq=wpv12CGaV7xtq7=O3nLHLvOT_odxOE4ueA@mail.gmail.com>
-X-Gm-Features: AaiRm50vZ50YS2w5-6lod2s5W_kA6Ap8FK_nMN9HyVzDzz2AFRy7FAD50ZqnaYU
-Message-ID: <CAMuHMdWj-7J5bMq=wpv12CGaV7xtq7=O3nLHLvOT_odxOE4ueA@mail.gmail.com>
-Subject: Re: [PATCH 01/10 net-next v2] ipv6: convert CONFIG_IPV6 to built-in
- only and clean up Kconfigs
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, rbm@suse.com, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Selvin Xavier <selvin.xavier@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Saurav Kashyap <skashyap@marvell.com>, Javed Hasan <jhasan@marvell.com>, 
-	"maintainer:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <GR-QLogic-Storage-Upstream@marvell.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali <njavali@marvell.com>, 
-	Manish Rangankar <mrangankar@marvell.com>, Varun Prakash <varun@chelsio.com>, 
-	Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	David Ahern <dsahern@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	Jon Maloy <jmaloy@redhat.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Eric Biggers <ebiggers@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Luca Weiss <luca.weiss@fairphone.com>, Sven Peter <sven@kernel.org>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Gow <david@davidgow.net>, 
-	Kuan-Wei Chiu <visitorckw@gmail.com>, Ryota Sakamoto <sakamo.ryota@gmail.com>, 
-	Kir Chou <note351@hotmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Vikas Gupta <vikas.gupta@broadcom.com>, 
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>, 
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>, =?UTF-8?Q?Markus_Bl=C3=B6chl?= <markus@blochl.de>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>, 
-	"open list:INFINIBAND SUBSYSTEM" <linux-rdma@vger.kernel.org>, 
-	"open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>, 
-	"open list:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <linux-scsi@vger.kernel.org>, 
-	"open list:DISTRIBUTED LOCK MANAGER (DLM)" <gfs2@lists.linux.dev>, "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>, 
-	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>, 
-	"open list:NETFILTER" <coreteam@netfilter.org>, 
-	"open list:RXRPC SOCKETS (AF_RXRPC)" <linux-afs@lists.infradead.org>, 
-	"open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>, 
-	"open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="i7hwymh2jbrl5osk"
+Content-Disposition: inline
+In-Reply-To: <CALCETrVMF3VBr0cuEYOg-M_u+hX77Jfdujv3ZMtLGCzHgOcsGA@mail.gmail.com>
 
-Hi Fernando,
 
-On Tue, 10 Mar 2026 at 16:37, Fernando Fernandez Mancera
-<fmancera@suse.de> wrote:
-> Maintaining a modular IPv6 stack offers image size and memory savings
-> for specific setups, this benefit is outweighed by the architectural
-> burden it imposes on the subsystems on implementation and maintenance.
-> Therefore, drop it.
->
-> Change CONFIG_IPV6 from tristate to bool. Remove all Kconfig
-> dependencies across the tree that explicitly checked for IPV6=m. In
-> addition, remove MODULE_DESCRIPTION(), MODULE_ALIAS(), MODULE_AUTHOR()
-> and MODULE_LICENSE().
->
-> This is also replacing module_init() by device_initcall(). It is not
-> possible to use fs_initcall() as IPv4 does because that creates a race
-> condition on IPv6 addrconf.
->
-> Finally, modify the default configs from CONFIG_IPV6=m to CONFIG_IPV6=y
-> except for m68k as according to the bloat-o-meter the image is
-> increasing by 330KB~ and that isn't acceptable. Instead, disable IPv6 on
-> this architecture by default. This is aligned with m68k RAM requirements
-> and recommendations [1].
->
-> [1] http://www.linux-m68k.org/faq/ram.html
->
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+--i7hwymh2jbrl5osk
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 1/4] openat2: new OPENAT2_REGULAR flag support
+MIME-Version: 1.0
 
-Thanks for your patch!
+On 2026-03-11, Andy Lutomirski <luto@amacapital.net> wrote:
+> On Tue, Mar 10, 2026 at 9:49=E2=80=AFPM Aleksa Sarai <cyphar@cyphar.com> =
+wrote:
+> >
+> > On 2026-03-09, Christian Brauner <brauner@kernel.org> wrote:
+> > > > > On Sat, 2026-03-07 at 10:56 -0800, Andy Lutomirski wrote:
+> > > > > > I think this needs more clarification as to what "regular" mean=
+s,
+> > > > > > since S_IFREG may not be sufficient.  The UAPI group page says:
+> > > > > >
+> > > > > > Use-Case: this would be very useful to write secure programs th=
+at want
+> > > > > > to avoid being tricked into opening device nodes with special
+> > > > > > semantics while thinking they operate on regular files. This is
+> > > > > > particularly relevant as many device nodes (or even FIFOs) come=
+ with
+> > > > > > blocking I/O (or even blocking open()!) by default, which is not
+> > > > > > expected from regular files backed by =E2=80=9Cfast=E2=80=9D di=
+sk I/O. Consider
+> > > > > > implementation of a naive web browser which is pointed to
+> > > > > > file://dev/zero, not expecting an endless amount of data to rea=
+d.
+> > > > > >
+> > > > > > What about procfs?  What about sysfs?  What about /proc/self/fd=
+/17
+> > > > > > where that fd is a memfd?  What about files backed by non-"fast=
+" disk
+> > > > > > I/O like something on a flaky USB stick or a network mount or F=
+USE?
+> > > > > >
+> > > > > > Are we concerned about blocking open?  (open blocks as a matter=
+ of
+> > > > > > course.)  Are we concerned about open having strange side effec=
+ts?
+> > > > > > Are we concerned about write having strange side effects?  Are =
+we
+> > > > > > concerned about cases where opening the file as root results in
+> > > > > > elevated privilege beyond merely gaining the ability to write t=
+o that
+> > > > > > specific path on an ordinary filesystem?
+> > >
+> > > I think this is opening up a barrage of question that I'm not sure are
+> > > all that useful. The ability to only open regular file isn't intended=
+ to
+> > > defend against hung FUSE or NFS servers or other random Linux
+> > > special-sauce murder-suicide file descriptor traps. For a lot of those
+> > > we have O_PATH which can easily function with the new extension. A lot
+> > > of the other special-sauce files (most anonymous inode fds) cannot ev=
+en
+> > > be reopened via e.g., /proc.
+> >
+> > Indeed, I see OPENAT2_REGULAR as a way of optimising the tedious checks
+> > that userspace does using O_PATH+/proc/self/fd/$n re-opening when
+> > dealing with regular files.
+>=20
+> Can you give a brief decription or a link to what these checks are and
+> what problem they solve?
 
->  arch/m68k/configs/amiga_defconfig           | 45 +-------------------
->  arch/m68k/configs/apollo_defconfig          | 46 +-------------------
->  arch/m68k/configs/atari_defconfig           | 45 +-------------------
->  arch/m68k/configs/bvme6000_defconfig        | 45 +-------------------
->  arch/m68k/configs/hp300_defconfig           | 47 +--------------------
->  arch/m68k/configs/mac_defconfig             | 45 +-------------------
->  arch/m68k/configs/multi_defconfig           | 45 +-------------------
->  arch/m68k/configs/mvme147_defconfig         | 45 +-------------------
->  arch/m68k/configs/mvme16x_defconfig         | 45 +-------------------
->  arch/m68k/configs/q40_defconfig             | 45 +-------------------
->  arch/m68k/configs/sun3_defconfig            | 45 +-------------------
->  arch/m68k/configs/sun3x_defconfig           | 45 +-------------------
+There are a few variations, but in this particular case they are just
+doing fstat() and then checking whether the file is a regular file
+(i.e., S_IFREG) or not.
 
-Why are the stats not the same for each file?
+A container rootfs can contain arbitrary files (because container images
+are just tar archives, usually with no restrictions on inodes -- a fair
+few container runtimes assume that the devices cgroup is sufficient to
+protect against the container overwriting your rootfs). The S_IFREG
+check avoids an administrative process from being tricked into opening a
+block device or an endlessly-streaming FIFO -- if you also use
+RESOLVE_NO_XDEV you can also make sure that you don't land on procfs or
+sysfs by accident.
 
-> --- a/arch/m68k/configs/apollo_defconfig
-> +++ b/arch/m68k/configs/apollo_defconfig
+I will say that in a previous version of this patchset I said that I
+would prefer this be done with an allow-bitmask of S_IFMT rather than a
+single O_REGULAR toggle -- this would allow for usecases such as "only
+open a regular file or directory" (inode_type_can_chattr() from systemd
+is a practical example of this kind of usage) or "anything except for
+block/char devices", but the definition of S_IFBLK (S_IFCHR|S_IFDIR)
+makes this a little too ugly. :/
 
-> @@ -384,7 +343,6 @@ CONFIG_FB=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
->  CONFIG_LOGO=y
-> -# CONFIG_LOGO_LINUX_VGA16 is not set
+--=20
+Aleksa Sarai
+https://www.cyphar.com/
 
-Unrelated change.
+--i7hwymh2jbrl5osk
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  # CONFIG_LOGO_LINUX_CLUT224 is not set
->  CONFIG_HID=m
->  CONFIG_HIDRAW=y
+-----BEGIN PGP SIGNATURE-----
 
-> --- a/arch/m68k/configs/hp300_defconfig
-> +++ b/arch/m68k/configs/hp300_defconfig
+iJEEABYKADkWIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCabKJRRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQKJf60rfpRG+vawEA1WxGEhn5Rc+wid/VGVxs
+yznMgHiA2Xe1m0YMiUy78u4BAJfditiWc61238EqwnDAWlH4X0xzDBvmXWOUuex3
+vw0K
+=3QVZ
+-----END PGP SIGNATURE-----
 
-> @@ -386,8 +345,6 @@ CONFIG_FB=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
->  CONFIG_LOGO=y
-> -# CONFIG_LOGO_LINUX_MONO is not set
-> -# CONFIG_LOGO_LINUX_VGA16 is not set
-
-Two more.
-
->  CONFIG_HID=m
->  CONFIG_HIDRAW=y
->  CONFIG_UHID=m
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--i7hwymh2jbrl5osk--
