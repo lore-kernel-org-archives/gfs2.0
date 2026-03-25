@@ -1,71 +1,60 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA36DDCD
-	for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 06:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E83391859
+	for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 07:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774418716; cv=none; b=e8RH/rewr6W1lWzrceR5UrSXFUgOdXk0b+W40oeJ65oq7eRE8HYvCD3EVqhkwhJed6ECryR93MRN2G0+N2oSFqT+ciOrzOf4ho50fQPXi0U66eqhvYW/YJw5KoXt2f7aK9+kjM61NKZOqRWnOGxJPWboBqDJAnpOTbQTiQ278Lc=
+	t=1774425021; cv=none; b=dJxbzuNx6FANdRRtKGGFm14u/VIZIHvKAn2TkvAWagbdHtI3Vxhvc6jKC5bXcj88+uOdjk7+kYEhwiCWvv6BWZ1KE/tLSIoqBJgwIt+gl/x0LSIUfTYwc4EcDvtmhHSPmaW2Gx5oWnQ5nCX2v1LGstzQGtfC3ihuuycSKiYr86M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774418716; c=relaxed/simple;
-	bh=/4mxWxOqGckXCdBuwHyFJ5q+lUz9GVFn9INW9heN1mI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o/nF5LNZH2ZpKDrt44GruR6AZ67Grh4gss4BK6v0XVRi2D5KjrOGKa7OAq4Pu3ryKzc8oGzx4MxuVNlRmBBLuGSnL0pK5L2kZigocBzHzf8zKIKtRnoEdqD6MgAyYAIz053oWxTWaWxkmVEfazGSAC4Vge7bcbeINBFoUxdU44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXboCj3h; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774425021; c=relaxed/simple;
+	bh=ItR4Wz7mDYFAFoOIGIFJiYRlLqBqysbkbQMGJz1z0zY=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=cWXLp2Rvd8wY2L5erS0D29pYOxBtySvzupJfYzBYTxNE+xpv8em4zMpuBV1eQknhcK+FqerG1NPiFDr3JojVX0XcTfz04Pagg8A6Xc0K4hjg3UsgHPc8MlQxvK61lHg8KBjCuiJK2wcRQ5FUF3Kz9O0FOOUlou8zJ25rrpfVwGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=hr/nFKn+; arc=none smtp.client-ip=43.163.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXboCj3h"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-829a9d08644so2656222b3a.1
-        for <gfs2@lists.linux.dev>; Tue, 24 Mar 2026 23:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774418714; x=1775023514; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dc6uWoEfFNbFTheB/eDVqLTVVcoFwHuuAP4HhmTUaKY=;
-        b=CXboCj3hbmSBBv9TS4dZL9P5p884GqkMgl34DU2JUMjragZdVpKBO/ezwcdkT9dsHm
-         ggh5cLp/ACw4P4prKHhFlsnxOwh7rmO7PmR2DbH6GacvKK8b2Zs2+FMMY2kWAdywVuMJ
-         RgEVwp1olp+ritF86N0uwzDDvs0GihgTFNYb6Npfe0yS04kYCG8B0jLT+R3ay+4mcTuH
-         XcxZOuKsnq/d39+kXdDCS5jBdsQeo7gzjbwvHFr+DfkfxxdLappaJQPWi3EnTBbIt9HF
-         aY2njQyDQnG/oL1VNMfM943hGU8W1kJuEz0EN4WAqRLgDwQzPp3roHzEnuqu+t6a2kXb
-         LZZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774418714; x=1775023514;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dc6uWoEfFNbFTheB/eDVqLTVVcoFwHuuAP4HhmTUaKY=;
-        b=Kt5M5Ox8/I3z4Qw//zpofobkkauU93/eb8PP86B0nKhAJdYseV3fNZN5qTJGwYhLuq
-         NA4+noXrToM6+Ka+jo7z6eUBvD+nVsvNV218DE3jaZcDDz6qQWglAxU6+KU2tB8VktCw
-         acgd0Tb879wSQSChjZfu9Yf4BMq6dKm3faWCbF76uQxoORSspwCDLlreTyR43lGmEKrM
-         bevpk69EQND3fnFD3hfMHZYrzoZ/6NcmO4C0iFJbupKsfIh9tyWlcNtupMvWeGW340Xv
-         U39xyARmF3u23iaWk3JxgEpO6N/024jSqt/4/l/hQDPgVr72SJsxKp+QjZdQBx3EQi9K
-         1vdQ==
-X-Gm-Message-State: AOJu0YzZ0WdsK5/eJqn74dTPyYPcc1zK7kzCNsj7zAEeAynVYQ92VQxz
-	iAxMkGbsBYA6SJStfu/VQO4GNWxOwo6D53iPs8S+H52Cm/Kx7lX8n3SX
-X-Gm-Gg: ATEYQzyNCxsxmbn00toZORUs0ECLHhHbiQq9XqxY58YQG1kBi2bdKV5C2hZ50yltKu9
-	B6VPUsTPXtZzWU/qL1UyUJ/xkVU0YIbOtVrqSzZoTyomirKwYiC03NjPfsn86ibUIPbiqFJ0eqb
-	8qnnA99b9Pw3EaV9jvugzq6VPOEoNq8btbHcsbj3B8qd2uVksgmECHcI7vgQs/6VVDgTWG1+92p
-	ut3erPMGxVyAjlKhsat4Qxpvdu2AUVZBRrl4iaipZO55aiSA+EHDH7bPZ3xpejsNu65qEyQzQNh
-	tc3VqyTJ8slnt9rFg9aJ0biCij2Z4I7TOOSzs8T2HQ9urvka/bOabzFzi2OmKQ9dZE7O0pj79KS
-	rQubzNHGIeW3tBci3nFQLBVrVMNN7mgdI7oXQ9H77gxGZjvuG4t5448MclllAFv0PINcYSfEb6B
-	72ndRcy8s18oX7DwdKauBg283BH8HnUDzmzLJfDYHWWau2+DU/LrB4a5oiG2bOtXRjVjTfhAQMZ
-	JPnhBE/CpEHsFlwMQ==
-X-Received: by 2002:a05:6a00:448d:b0:828:d9a1:c604 with SMTP id d2e1a72fcca58-82c6de860e9mr2148875b3a.12.1774418714111;
-        Tue, 24 Mar 2026 23:05:14 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:4391:3576:53a6:e191])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409c681sm17104789b3a.37.2026.03.24.23.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 23:05:13 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="hr/nFKn+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1774425012; bh=9TGlAf3iCc70mwjpK02mImjzBwnDXECSAylRTpPKB90=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hr/nFKn+3UBa+ldK3rk/Hh7eLIcrtPEtRI1gwEvSEkqiYIXKylGixp3XLXPCWuIE+
+	 FG08q3mEKXe2kAeDhIvG3PMqmtzh/jdAAJBlX1AYUIdCU32FzqpKi1li5bwlU8TShX
+	 kqCfO+yVjxk2AyLMLUYJeresoDqnFtdwli6JMRok=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id C89BC431; Wed, 25 Mar 2026 15:50:09 +0800
+X-QQ-mid: xmsmtpt1774425009tsca3qcn2
+Message-ID: <tencent_2F5364A365496603BEE4457766F76146C505@qq.com>
+X-QQ-XMAILINFO: MJf32pulH481ViaztJ8HG2MpkX4jXOOqQXSxDw5o/+14xUaPhwRWgCtWj57fQn
+	 QcPTX6TMx3/NcZY9Xj66zBKN4WfPxkRifJV5YE6V2EH/fUi4ASLmvkNtT3eTdpwLKcwAgjCNhb8e
+	 ndyIuZhqFOG7hrl2rRwYe+8GBeJ1RS3deH/uf0RM4zjSbvKyDLm595R4mNTWvT0isFR7devlm6YY
+	 sjCgy+yR8UepR32E+/9XrlzG4Au1CVhqaWD7/s5qAisRUeq4hJU10Z52A6QP489GkkbVH/jxuolL
+	 fyjS4tHt5gjQopylMJuFIN/QYNlWIPehEaeKiQILp8ksdO+CqUgCdccKU8CtNQA3+8YYtDCG/VZ3
+	 2b2EepAVFaQKpr3g7cd4S2ybqldR9L+HPDXo8UhYqqjzng2vEZAsl03m6esRDASEUm2sQDdxJ5+P
+	 1K9FOEtiWVh9eIhbaU5Fqttn97sXIWWkyYIoOJ4Psp2Lmpew+FbGBEXYlJO0Uvz3bqn0/Ye7WuDv
+	 ahLq51QrMvZtzxkxbebBoDgFtqBNNrnWiRBT2KORGuHKH9GVxK3Yfb7sN11F93xML4RKQVhe8HY/
+	 v4bqd6T3S0Y3T218dcX2szfiHi5RxOK+S6ZUZqmBi9MXtjHi+GUrgCXvMrxPw0XkfUijb/64Fla2
+	 7fbdCJN708XGPs7YOPcS76/aGDrF4124ixS5s43+9KhyK14uUHt5y0E6cjVODd7tlAqJ0EDuLdua
+	 5TM+0TO2Cs0HY0HCvKsU/UeNggp/cpjM0uCMcqdm+daVlANRI0JmgK6iAjpQqG30nKHgTijn7PsL
+	 JlnTywJ3VUSbCKnVqa33VKKC9KT6Mcv1d+WugrByBnPeSSKluEMcbn+ijGOwSX0Qn8fRzx1dgFBC
+	 f5Ll1W2H5jwcdU1yUn+vdTPINHhEIkFeNjEwvJQvHumDjVb9FtJh1IKqzCm5maglXoo8inS/h0zQ
+	 9dBt6OJ0CNvkrnk5HX3CrSEAstsTxCyitU+y0g/CkE6oQy+fn9XoeYejGgc9uo9m/un5Hg+DxinH
+	 Om3GXUdezBVrKluA1qzCLXXJ76/Kk=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+b441db1854c360b83221@syzkaller.appspotmail.com
-Subject: [PATCH] gfs2: fix duplicate kmem_cache name on concurrent mounts
-Date: Wed, 25 Mar 2026 11:35:06 +0530
-Message-ID: <20260325060506.4868-1-kartikey406@gmail.com>
+	syzkaller-bugs@googlegroups.com
+Subject: [PATCH] gfs2: prevent corrupt data from entering jextent
+Date: Wed, 25 Mar 2026 15:50:10 +0800
+X-OQ-MSGID: <20260325075009.486224-2-eadavis@qq.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <69c19ef0.050a0220.3bf4de.00a9.GAE@google.com>
+References: <69c19ef0.050a0220.3bf4de.00a9.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -74,95 +63,65 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When gfs2_fill_super() creates the per-filesystem bufdata cache, it
-uses sd_fsname as part of the cache name:
+During the mount process, when the journal recovery is executed, the
+system blocks and waits for the recovery to complete. The issue reported
+in [1] involves the kernel thread responsible for journal recovery
+becoming blocked on a specific folio that had not yet been fully read.
+This folio was submitted via a bio chain containing an excessively large
+sector value; however, the submission failed during the process because
+the end-of-file (EOF) check for the bio failed. Consequently, the folio
+was never unlocked, which ultimately triggered the timeout issue reported
+in [1].
 
-  sdp->sd_bufdata = kmem_cache_create("gfs2-bufdata/<fsname>", ...);
+To address this, a check for the blocknr value has been added during the
+loading of journal extents from the disk. If the blocknr value exceeds
+the maximum sector value supported by the disk, it indicates that the
+data on the disk is corrupted; in such cases, the loading of the journal
+extent is immediately terminated.
 
-At this point sd_fsname is set from sd_table_name (e.g. "syz:syz"),
-which is the same for all concurrent mounts of the same device.
-The unique suffix (.s for spectator, .N for journal ID) is only
-added to sd_fsname AFTER wait_on_journal() completes, since the
-journal ID is assigned by the locking subsystem during mount.
+[1]
+INFO: task kworker/0:3:5963 blocked in I/O wait for more than 143 seconds.
+Workqueue: gfs2_recovery gfs2_recover_func
+Call Trace:
+ folio_wait_locked include/linux/pagemap.h:1245 [inline]
+ gfs2_jhead_process_page+0x175/0x670 fs/gfs2/lops.c:470
+ gfs2_find_jhead+0xbd2/0xd30 fs/gfs2/lops.c:586
+ gfs2_recover_func+0x6cf/0x1f60 fs/gfs2/recovery.c:459
 
-With multiple concurrent mounts of the same device (as triggered by
-syzkaller with procs:5), multiple calls to gfs2_fill_super() all try
-to create a cache named "gfs2-bufdata/syz:syz" before any of them
-reaches the point where sd_fsname becomes unique, triggering:
-
-  kmem_cache of name 'gfs2-bufdata/syz:syz' already exists
-  WARNING: mm/slab_common.c:112
-
-Fix this by moving the bufdata cache creation to after
-wait_on_journal() completes and sd_fsname has been updated with its
-unique suffix. Also move the fail_bufdata cleanup label accordingly
-in the error unwind path.
-
-Reported-by: syzbot+b441db1854c360b83221@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b441db1854c360b83221
-Fixes: 767e4de3ffce ("gfs2: per-filesystem bufdata cache")
-Tested-by: syzbot+b441db1854c360b83221@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Fixes: b50f227bddf1 ("GFS2: Clean up journal extent mapping")
+Reported-by: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9013411dc43f3582823a
+Tested-by: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
- fs/gfs2/ops_fstype.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ fs/gfs2/bmap.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index b44adb40635d..7f8e04c11494 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1198,17 +1198,9 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (!sdp->sd_delete_wq)
- 		goto fail_glock_wq;
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index 1cd8ec0bce83..d42307ab0684 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -2266,6 +2266,9 @@ int gfs2_map_journal_extents(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd)
+ 	u64 size;
+ 	int rc;
+ 	ktime_t start, end;
++	struct super_block *sb = sdp->sd_vfs;
++	sector_t maxsector = bdev_nr_sectors(sb->s_bdev);
++	u32 bshift = sdp->sd_fsb2bb_shift;
  
--	char *bufdata_name = kasprintf(GFP_KERNEL, "gfs2-bufdata/%s", sdp->sd_fsname);
--	sdp->sd_bufdata = kmem_cache_create(bufdata_name,
--					    sizeof(struct gfs2_bufdata),
--					    0, 0, NULL);
--	kfree(bufdata_name);
--	if (!sdp->sd_bufdata)
--		goto fail_delete_wq;
--
- 	error = gfs2_sys_fs_add(sdp);
- 	if (error)
--		goto fail_bufdata;
-+		goto fail_delete_wq;
- 
- 	gfs2_create_debugfs_file(sdp);
- 
-@@ -1255,6 +1247,15 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 		snprintf(sdp->sd_fsname, sizeof(sdp->sd_fsname), "%s.%u",
- 			 sdp->sd_table_name, sdp->sd_lockstruct.ls_jid);
- 
-+	char *bufdata_name = kasprintf(GFP_KERNEL, "gfs2-bufdata/%s", sdp->sd_fsname);
-+
-+	sdp->sd_bufdata = kmem_cache_create(bufdata_name,
-+					    sizeof(struct gfs2_bufdata),
-+					     0, 0, NULL);
-+	kfree(bufdata_name);
-+	if (!sdp->sd_bufdata)
-+		goto fail_sb;
-+
- 	error = init_inodes(sdp, DO);
- 	if (error)
- 		goto fail_sb;
-@@ -1304,6 +1305,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (sb->s_root)
- 		dput(sb->s_root);
- 	sb->s_root = NULL;
-+	kmem_cache_destroy(sdp->sd_bufdata);
- fail_locking:
- 	init_locking(sdp, &mount_gh, UNDO);
- fail_lm:
-@@ -1313,8 +1315,6 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- fail_debug:
- 	gfs2_delete_debugfs_file(sdp);
- 	gfs2_sys_fs_del(sdp);
--fail_bufdata:
--	kmem_cache_destroy(sdp->sd_bufdata);
- fail_delete_wq:
- 	destroy_workqueue(sdp->sd_delete_wq);
- fail_glock_wq:
+ 	start = ktime_get();
+ 	lblock_stop = i_size_read(jd->jd_inode) >> shift;
+@@ -2280,6 +2283,10 @@ int gfs2_map_journal_extents(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd)
+ 		rc = gfs2_block_map(jd->jd_inode, lblock, &bh, 0);
+ 		if (rc || !buffer_mapped(&bh))
+ 			goto fail;
++		if (bh.b_blocknr << bshift > maxsector) {
++			rc = -EIO;
++			goto fail;
++		}
+ 		rc = gfs2_add_jextent(jd, lblock, bh.b_blocknr, bh.b_size >> shift);
+ 		if (rc)
+ 			goto fail;
 -- 
 2.43.0
 
