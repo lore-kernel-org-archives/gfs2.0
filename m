@@ -1,127 +1,96 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E83391859
-	for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 07:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7270C3A6F1B
+	for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 10:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774425021; cv=none; b=dJxbzuNx6FANdRRtKGGFm14u/VIZIHvKAn2TkvAWagbdHtI3Vxhvc6jKC5bXcj88+uOdjk7+kYEhwiCWvv6BWZ1KE/tLSIoqBJgwIt+gl/x0LSIUfTYwc4EcDvtmhHSPmaW2Gx5oWnQ5nCX2v1LGstzQGtfC3ihuuycSKiYr86M=
+	t=1774433098; cv=none; b=T0ximmHzxir38sSKGd4f7eJgroDysZG7zvAK7ZZTIzXLtsJooviIZZKB6qNu6lLcMm2N4TpL94HynDzlhPkZ04mwfTj7Tv1tauAHJUQ87A7mEOVP3REeXBHZ76yL/RudYMDTyahFuROrGOBMu008sBzVfoTlyQlGUAMyaMNuThY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774425021; c=relaxed/simple;
-	bh=ItR4Wz7mDYFAFoOIGIFJiYRlLqBqysbkbQMGJz1z0zY=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=cWXLp2Rvd8wY2L5erS0D29pYOxBtySvzupJfYzBYTxNE+xpv8em4zMpuBV1eQknhcK+FqerG1NPiFDr3JojVX0XcTfz04Pagg8A6Xc0K4hjg3UsgHPc8MlQxvK61lHg8KBjCuiJK2wcRQ5FUF3Kz9O0FOOUlou8zJ25rrpfVwGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=hr/nFKn+; arc=none smtp.client-ip=43.163.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1774433098; c=relaxed/simple;
+	bh=2pKvnpl7QsnL4W2KzfrlKMQo3poisxvLy6X9biBNzBg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=CZHajr0OQr7O2ErOgcjQav0p/2akgysTsdlYL2Z4yvy+Evj9CS+ne3hyM+UTrQ1tBeSDu7P23fr3o9VkPAGZY1/Jp+e7bxEjbQSLsp0eIvFZGkmgECW4HnySS7vbxMMKVWfwf5rjf6TSHWOtmI1k1mzPSFe46qzUE/99k3Ntl5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YrX5HZ8X; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="hr/nFKn+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1774425012; bh=9TGlAf3iCc70mwjpK02mImjzBwnDXECSAylRTpPKB90=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hr/nFKn+3UBa+ldK3rk/Hh7eLIcrtPEtRI1gwEvSEkqiYIXKylGixp3XLXPCWuIE+
-	 FG08q3mEKXe2kAeDhIvG3PMqmtzh/jdAAJBlX1AYUIdCU32FzqpKi1li5bwlU8TShX
-	 kqCfO+yVjxk2AyLMLUYJeresoDqnFtdwli6JMRok=
-Received: from lxu-ped-host.. ([111.198.231.89])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id C89BC431; Wed, 25 Mar 2026 15:50:09 +0800
-X-QQ-mid: xmsmtpt1774425009tsca3qcn2
-Message-ID: <tencent_2F5364A365496603BEE4457766F76146C505@qq.com>
-X-QQ-XMAILINFO: MJf32pulH481ViaztJ8HG2MpkX4jXOOqQXSxDw5o/+14xUaPhwRWgCtWj57fQn
-	 QcPTX6TMx3/NcZY9Xj66zBKN4WfPxkRifJV5YE6V2EH/fUi4ASLmvkNtT3eTdpwLKcwAgjCNhb8e
-	 ndyIuZhqFOG7hrl2rRwYe+8GBeJ1RS3deH/uf0RM4zjSbvKyDLm595R4mNTWvT0isFR7devlm6YY
-	 sjCgy+yR8UepR32E+/9XrlzG4Au1CVhqaWD7/s5qAisRUeq4hJU10Z52A6QP489GkkbVH/jxuolL
-	 fyjS4tHt5gjQopylMJuFIN/QYNlWIPehEaeKiQILp8ksdO+CqUgCdccKU8CtNQA3+8YYtDCG/VZ3
-	 2b2EepAVFaQKpr3g7cd4S2ybqldR9L+HPDXo8UhYqqjzng2vEZAsl03m6esRDASEUm2sQDdxJ5+P
-	 1K9FOEtiWVh9eIhbaU5Fqttn97sXIWWkyYIoOJ4Psp2Lmpew+FbGBEXYlJO0Uvz3bqn0/Ye7WuDv
-	 ahLq51QrMvZtzxkxbebBoDgFtqBNNrnWiRBT2KORGuHKH9GVxK3Yfb7sN11F93xML4RKQVhe8HY/
-	 v4bqd6T3S0Y3T218dcX2szfiHi5RxOK+S6ZUZqmBi9MXtjHi+GUrgCXvMrxPw0XkfUijb/64Fla2
-	 7fbdCJN708XGPs7YOPcS76/aGDrF4124ixS5s43+9KhyK14uUHt5y0E6cjVODd7tlAqJ0EDuLdua
-	 5TM+0TO2Cs0HY0HCvKsU/UeNggp/cpjM0uCMcqdm+daVlANRI0JmgK6iAjpQqG30nKHgTijn7PsL
-	 JlnTywJ3VUSbCKnVqa33VKKC9KT6Mcv1d+WugrByBnPeSSKluEMcbn+ijGOwSX0Qn8fRzx1dgFBC
-	 f5Ll1W2H5jwcdU1yUn+vdTPINHhEIkFeNjEwvJQvHumDjVb9FtJh1IKqzCm5maglXoo8inS/h0zQ
-	 9dBt6OJ0CNvkrnk5HX3CrSEAstsTxCyitU+y0g/CkE6oQy+fn9XoeYejGgc9uo9m/un5Hg+DxinH
-	 Om3GXUdezBVrKluA1qzCLXXJ76/Kk=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
-Cc: agruenba@redhat.com,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com
-Subject: [PATCH] gfs2: prevent corrupt data from entering jextent
-Date: Wed, 25 Mar 2026 15:50:10 +0800
-X-OQ-MSGID: <20260325075009.486224-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <69c19ef0.050a0220.3bf4de.00a9.GAE@google.com>
-References: <69c19ef0.050a0220.3bf4de.00a9.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YrX5HZ8X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774433093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2pKvnpl7QsnL4W2KzfrlKMQo3poisxvLy6X9biBNzBg=;
+	b=YrX5HZ8X0M9/znR6q7d2CTBV8pCg41w8OpfbNiNVYcUhuM+CUryIid7+jYoF3gAbWO1ejb
+	HIYgDU4uaus2/Hs0EeOwk6YqoMVCx9/TOyD7BPZGKn1hpIf06Yzg8e7J/qLKIWicHL4d7N
+	/3MqmCoWeejxYt3jHtx+s87gfNgdXLk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-375-fhJBPWMlObKC3oS_nJiP9w-1; Wed, 25 Mar 2026 06:04:51 -0400
+X-MC-Unique: fhJBPWMlObKC3oS_nJiP9w-1
+X-Mimecast-MFC-AGG-ID: fhJBPWMlObKC3oS_nJiP9w_1774433090
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43b7ec737c1so2028585f8f.1
+        for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 03:04:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774433090; x=1775037890;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2pKvnpl7QsnL4W2KzfrlKMQo3poisxvLy6X9biBNzBg=;
+        b=bAAPXUn7G0jXtU0dygBisoUY4o4ZwliPDY+6vkSQfrvhHnV6lOo3lzIRDnTY5frnWS
+         XqLH/WVFucYAsJnePrfGHHz5/eLSXZeDSatoiqKjzkwnN6qXuRKjzoGBVqI5EyBjS6u+
+         D98V9z86WfTVQAScKR8iggWUT0lX8BkIlw2S/O210g0u0d1R7oc+QQsJM6O/tJXUPe85
+         fNGlBP3Fd69nZ7QpEiKqlW3hH/5UyW3PTNgFvq5JvJD9ESnrRE3XW2JQg5XsrLaJ6B6e
+         XlBzWSnh6wyeRtrdOONAkZ0ehvAIGyhj95gKq+Lc7qeJnzVsBqPwT00s2EgKfmyEAcTF
+         6qGg==
+X-Gm-Message-State: AOJu0Yy1/ulCsmSKovDfZqYuCaLDyUo0bkYfqust9bJV83HJs6KJs26M
+	90qqtnpZDYUMKF8FrcvSx384BYC6Lzo7cfaBKmZy6j+2BVkN+dnitEqAp/1anghlxDnHtFYm0ap
+	BsfW8pJlXy+v5+mNLqgYy8Tbnc2Y9K3ObqC+J+qyuDtDu2L2XL88O8WjonW363MKT0AKG9bVbiH
+	s0DU+mrKzK9LsisQhoxQEoDK+bqwwg948jfzIXvQ==
+X-Gm-Gg: ATEYQzyp/2LJVkWEbDHNGIcpKDI0d6HbxNbcaY01YHSJ4Yhlq5fsnOzSPJycixA3Rrg
+	z4zSFg2LgUTPxZu18TEL2L4RkOMUGTk7rVIVgWFE4IRJbsTMuaBGIZIMxH843ile3m0h7zzuKxg
+	5dfRoSF3lC9RU1+jIRs8hDSdRoChZ9Zbw9VbSNkEXxyM7Y8DwrZIjsoNEFlKOysG7Ye+o2wjiUz
+	nQ1gGVBYY2wOM7+SZBEDHpg5cKXMy/Hf5RlaOB04InTKDKF9/H6RXDzHdQXgcFuyTog3zU8DBpI
+	IeljiNOt00pZtKZRzrsHjXmKNlR0TN5A3d1hpdWw5egJlu09vid8kdSEmX+1AFiv4wuIEoDve/b
+	OiWyjb+7ZhfkJejJLenAxOlD52d7JtuQELlvhtnOKDV+GELrx3dUecW4pZmL3iHwEtxLyl7Sevd
+	CD78rdag==
+X-Received: by 2002:a5d:588a:0:b0:43b:86ce:27a6 with SMTP id ffacd0b85a97d-43b8898d428mr4216963f8f.9.1774433090314;
+        Wed, 25 Mar 2026 03:04:50 -0700 (PDT)
+X-Received: by 2002:a5d:588a:0:b0:43b:86ce:27a6 with SMTP id ffacd0b85a97d-43b8898d428mr4216912f8f.9.1774433089810;
+        Wed, 25 Mar 2026 03:04:49 -0700 (PDT)
+Received: from [192.168.1.167] (cpc76484-cwma10-2-0-cust967.7-3.cable.virginm.net. [82.31.203.200])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b878a7b87sm7815904f8f.25.2026.03.25.03.04.48
+        for <gfs2@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 03:04:49 -0700 (PDT)
+Message-ID: <97d6101d-b6bd-4701-953c-8655eb91da11@redhat.com>
+Date: Wed, 25 Mar 2026 10:04:48 +0000
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Andrew Price <anprice@redhat.com>
+Subject: Heads-up: gfs2-utils.git and dlm.git will be moving
+To: gfs2@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Fj4RFl4bRr4foLJ82XyCD4OiTf7Mrww7TzOz-P8ExmM_1774433090
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-During the mount process, when the journal recovery is executed, the
-system blocks and waits for the recovery to complete. The issue reported
-in [1] involves the kernel thread responsible for journal recovery
-becoming blocked on a specific folio that had not yet been fully read.
-This folio was submitted via a bio chain containing an excessively large
-sector value; however, the submission failed during the process because
-the end-of-file (EOF) check for the bio failed. Consequently, the folio
-was never unlocked, which ultimately triggered the timeout issue reported
-in [1].
+Hi all,
 
-To address this, a check for the blocknr value has been added during the
-loading of journal extents from the disk. If the blocknr value exceeds
-the maximum sector value supported by the disk, it indicates that the
-data on the disk is corrupted; in such cases, the loading of the journal
-extent is immediately terminated.
+Note: this relates to the gfs2-utils and dlm userspace projects. The kernel trees are not moving.
 
-[1]
-INFO: task kworker/0:3:5963 blocked in I/O wait for more than 143 seconds.
-Workqueue: gfs2_recovery gfs2_recover_func
-Call Trace:
- folio_wait_locked include/linux/pagemap.h:1245 [inline]
- gfs2_jhead_process_page+0x175/0x670 fs/gfs2/lops.c:470
- gfs2_find_jhead+0xbd2/0xd30 fs/gfs2/lops.c:586
- gfs2_recover_func+0x6cf/0x1f60 fs/gfs2/recovery.c:459
+As pagure.io is being decommissioned in June, gfs2-utils.git and dlm.git will need to move to a different host fairly soon. The new location is planned to be gitlab.com based on the requirements of our CI infrastructure and on its familiarity to us RHEL/CentOS Stream developers.
 
-Fixes: b50f227bddf1 ("GFS2: Clean up journal extent mapping")
-Reported-by: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9013411dc43f3582823a
-Tested-by: syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
----
- fs/gfs2/bmap.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+As with the current host, if you don't have an account there to open MRs it will still be possible to submit patches to the mailing list. I will follow up with the final details when we know them along with instructions for updating your git clones to the new locations.
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 1cd8ec0bce83..d42307ab0684 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -2266,6 +2266,9 @@ int gfs2_map_journal_extents(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd)
- 	u64 size;
- 	int rc;
- 	ktime_t start, end;
-+	struct super_block *sb = sdp->sd_vfs;
-+	sector_t maxsector = bdev_nr_sectors(sb->s_bdev);
-+	u32 bshift = sdp->sd_fsb2bb_shift;
- 
- 	start = ktime_get();
- 	lblock_stop = i_size_read(jd->jd_inode) >> shift;
-@@ -2280,6 +2283,10 @@ int gfs2_map_journal_extents(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd)
- 		rc = gfs2_block_map(jd->jd_inode, lblock, &bh, 0);
- 		if (rc || !buffer_mapped(&bh))
- 			goto fail;
-+		if (bh.b_blocknr << bshift > maxsector) {
-+			rc = -EIO;
-+			goto fail;
-+		}
- 		rc = gfs2_add_jextent(jd, lblock, bh.b_blocknr, bh.b_size >> shift);
- 		if (rc)
- 			goto fail;
--- 
-2.43.0
+Cheers,
+Andy
 
