@@ -1,139 +1,158 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115A938E5E1
-	for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 23:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DC42868A7
+	for <gfs2@lists.linux.dev>; Thu, 26 Mar 2026 00:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774482862; cv=pass; b=pLNGdccBryMk7pdhTZAE8S73Ii0jLXRMbTsalSWLVYrf/W8bdIoa5FKFZ2D4MSXP+DPJw++A1XdXWxB0ZEh2dGmoz9IDO4seNCcJxqN6mB8e5p6kciB/aQi5bpPTLdnAaN62XLQS33LdRUfEawF/WSdggEdn+jp4DY69Wsl3MAs=
+	t=1774484226; cv=pass; b=hZVqLhxOZNhkCnwPQmBdpFofL0yW/XEGsALOpwqqR/npylQPJaIEi53qGx9wJpQ1lamMXavHi1qjpV0as4GVQUi0GbinGU7PJhT3VxDSpCIhJ1ytijoydz1BxbNsHs3OKKgc9Xx+VvJWQ1Z3jWP63NuQZOygHjtpoEe3gPMgmLI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774482862; c=relaxed/simple;
-	bh=Cmt7t9af9r91jM2YotNPUOFMc+Jt7S9bb7Sd3CLM7IY=;
+	s=arc-20240116; t=1774484226; c=relaxed/simple;
+	bh=phS3IJli2t/FV99ktGizqLCYwv3l0LjIFEj8T4i780Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mrq2VPlz5IYVFptH1umvwXh95U5/VKymKHO0dSE5FlYT20MJj1Aprn80OwpX03gXx6Veb+GCOtpdzavLR3XMCLo8hcCVhRX6Dxj24cwqwrzsxGiqrc4fUqii2UP9I2SkI9cJTk0UseV4Sy9iBbNFS3508xVwSBKQzBgkCVLcegk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VmOZffWw; arc=pass smtp.client-ip=209.85.128.181
+	 To:Cc:Content-Type; b=GrAkfImJEEJAVPznEO+WBW5IEYBdJLa+83qGoP2nzFVQxMS/ZjDBxzXqhR03uqtdphlexMvQxMQhlF2AlSF/9sFRPXmqfQz+ubg62kHMPMhC9/Tt02iIH0GlpOQZ9T7IYeLXBXpWrgt+LmIpRI8TH0RHn0qJuAycyb72hI/7T5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+dzQf7y; arc=pass smtp.client-ip=74.125.224.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VmOZffWw"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79800183233so4488717b3.1
-        for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 16:54:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774482860; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+dzQf7y"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64e8c7f5082so490941d50.0
+        for <gfs2@lists.linux.dev>; Wed, 25 Mar 2026 17:17:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774484220; cv=none;
         d=google.com; s=arc-20240605;
-        b=TXA/Bj0nL3z/CaWj3/ZSx4p72rnMr0QX6DLTAz5W5C2H+EkZ/ki1dwePkQHpgn5cJw
-         LUKdwNNsKgEH05zPFm7RqKhG/ScJitD46j87uJ9McdPynQfUpXkcNGhSLwrrDHl+xLzQ
-         hxeoCLEflL5YcMQvBXF04OLO2Ol2iY0SUkvHdWXWorOtQMf3rvj2Os5q9q936f41mN4i
-         H+XgH+eRYVw9uSbM+YXYrAX4F4E2lXH+FqPLOXoVyPrUrIPR0amjI7WOFR0TdKFukyA8
-         ltHhNQt3wZjgJo3jlhXywSM4mDJFe5iV3dqrzIsF0XzOZplyRRZJzzbRLpIFfr8BtDlX
-         rGKQ==
+        b=ijSgxYuEHZ0GstxXkJ/fzG2EEShJG6f/eppHfceIn/UF36EESvwTxNYw+dFfnvxBGk
+         QvoGympqzKvaOh1iQYGJEYDkpDn1X8ydXjQV7dgUNI55KUGfBxsmh1xUzViEJiE1Rslw
+         I9JY6cbbDGSQQ7BqrbzJR9Qvp5i6lVIpa/HUOBUjiVKL9Mo9d/Ny4LQi+9c4mSyWnn5U
+         cfpAGumgLHuKEp80SAV0kdkJqkjB6GqpyjAHTOzOIzJ8LMYhtaraaxZB4qrh9mIgPak1
+         n+Hml3Ht1ePSATwA/sgr8e0GWJ27QmgLL/riFP7uIjviGYpjU1ZR4GzN9JhAPV1tU5+r
+         IvNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=hn2h3lzm4taz4/nrMi56nooNgDl1NkRBfkgit91qChc=;
-        fh=OSVWPD2bctoNObtxUVLdUTmkpFYDSVEt1ebgMw+Bi08=;
-        b=B4FVCtDky4GXhwSG6udJSh6R0ePHZ0bmSKr+IAoHpbtbnziFxuNTXPUyPpuLZG0l1f
-         72IrWwvyYW9OTnEdEiI93i5bh4Wm9EymTaud68fFFvkOjiGh3UEEGAGsssVEG9ZScxe1
-         grXaFDjqA0uQqVJtZiWcerrufL0d3CEurhF0/0PMSepdeoDakMlMkutvqFJ38699zKIR
-         QUFYbqFmc5XU9E4yopj0yZc7BinMLUmFZNJWOD6e7FoSfT+Ee3iAJhLBgiwEAQ0bJUV0
-         JMekmO0uj4wrm6xcQ5caPHmepM0lS7IT8BAVdvli3lPmAZi/u9lL6rIinDAF9l1IAdof
-         a90g==;
+        bh=JF4acbbSt5E73IKAZSEOEPirPhAB/yqaiKbDvN7a8Pk=;
+        fh=xduXSkFGzmi1grN7qXykA8DXQbvM9x8sys57JdMwOA8=;
+        b=lFsj40sj+gitbPSyObqUeArBXl3DHmasQqMb1yJZLEaOIuL1rkQjBPxQWGCJcgkDm/
+         KgiX7sv//XhlYaIHK7iNYxO7njPjT+z4Px1f4ib9BOU9sAwwN9IT/EYt1BxNKFcVCO3H
+         rDUFppq/4Edl+Yxd8BBhJuJU47tbetje6CRzST5v5Uc6sJQKCYYEYXWAtKYUtDRNiyx0
+         h+wCaAZLp4lhUS/hD3WYhv9lKyi3vzTn5ubiKs2jwEQsQE6b8KGDT/BQ7JJ/+uIeKz0m
+         kvdNQlzS5NAf1b7ynsx9Hlo6wuOWRY9QTdPMBaQYDZEGeLral2z3gsbwLgtPuy3S17Ac
+         opug==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774482860; x=1775087660; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1774484220; x=1775089020; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hn2h3lzm4taz4/nrMi56nooNgDl1NkRBfkgit91qChc=;
-        b=VmOZffWwnoCpztsOF1V9p4EC+GYZxmkSrm4Ed5FK/eN7BWIwQcJ+0Vdz8C3P6S6dnK
-         EQCdKjAoxoSQzocuBl8x715I6vWjRI5cka06xv1TTREMSTACNOb6hXHe+cqB6O7T7xCa
-         KIYwwWGNc6//1gpKyGILg1GrDN7IPKONQO2yKhkALIduP0vfvTODDTjGWVDm+pIhYZ5V
-         s+OAA2hTIcGAPml6DzfBHvjQcziSwnXY/NRvJeW+1cAjzguPBiE19MDgJZwbDV6pq1S0
-         GJurs91EZINWYzyLQ42fHh/EluioM83VYewGGKZD6xkfWGxp2FaX7it4n0J14yDVXrD5
-         4Azg==
+        bh=JF4acbbSt5E73IKAZSEOEPirPhAB/yqaiKbDvN7a8Pk=;
+        b=W+dzQf7y3eqUTFMDQJGjqGkyShDrfpV6l4754FHW688/t/Wah1hv/2n+G39E1zxOtA
+         vpLz2lbyAs6eh940do8FGGkRf/KKM6iFzirms10Pcl389Ih7P4jb8avQo1kDDMj3skWa
+         tT7Hsel80DfXKkN06D90DJQfNlFEKI/HgC/ZUQsS8wC/EVeQiHuE/HAGsVDIXr+FIo8H
+         cjQceu7w9kfLe3a7pdHfYmyFKVEKmHFWCxkOoS8wPQwvBewXOx8fA3dTO2lXmgISZgPg
+         a56zG6LtV5UFo6afUR0fvZLutQc4boW7oX/t/7L+T60NHuCZRIBgdsMesrJhEoNuURnr
+         iLKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774482860; x=1775087660;
+        d=1e100.net; s=20251104; t=1774484220; x=1775089020;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hn2h3lzm4taz4/nrMi56nooNgDl1NkRBfkgit91qChc=;
-        b=LdCX0GMsU+BJRsPu022zw04wZAVsyoNNNlomzE071j4isPzEbykctctNr1JUT/voy4
-         iBt7kIhekZ5eAnmuI/QmW9Krzuc3ASYcbeZNwI0qKJeyJfHGLrdhKStUMSOgQ+2wcEWG
-         1WMHWBBoeTVgf19Qsemia87yFXCOZX0la0iicIHwIx8pFYZ6aodcXul0aMvRFLUxlOJZ
-         oCnghHKkVD2K8HU/GjqATpqXXSkUYhQjpvaE3/iqCdefDy1jBKbS0CKHlOdYZW/vJEL5
-         XvQEBPEfaufm55R4HZXppXkWXMlD6eNR8zw8dJ7XVNfy3ncKw0AOb9HexA5vj/Eh9rX2
-         PhOg==
-X-Forwarded-Encrypted: i=1; AJvYcCVSHCaz6ZnfZ5VVgeYqHsKhJW47FOMvqDUNBdcQTUef8izb/KaWxMF4dY7+pEY84rwHRbbz@lists.linux.dev
-X-Gm-Message-State: AOJu0YzPY0RwW+920/byb070Bxbm3YmoDOrvo+Wg+8xz8IYZHnW7BOfJ
-	VHqAZzzx6acWuujmVVsAG88BUNEALzBDiVGH1W1Ga2b/j+6txO8parc4+2000r3dswSp16z9ZA1
-	2NL0qonwwN7bwnnO7AbHd91tVOtfVeAo=
-X-Gm-Gg: ATEYQzxoJyg0XzJmYBlDovHwnkL1J5A+h+FnQKtecDoLeiMCpdMS2DSzhtlhPBMkTVZ
-	VtyAYtX1WnO31ZpEeUbDCm70hOqurLqnC4d6FP+8h/zmOaw0y2I1SRCDFZKnGxMMM0CFdGbtGqU
-	2p86UUEZL9RmSECq3ou0PPdhlmbF7TF3DCTflFmIAWk5IvohvKpLRcu64q4ZJ1e2X+RE8EG5ZZe
-	qnLA4MHZ83UOFDw3C+lEX0VHE/CYo0NfeuAlH8F5h7Yif64sL7DKEa+0W8Y7pRF4m6gfBqTrjaH
-	hNa27NaNpBfpsm8Ycxp4ZxEtNu1iqo0EuElnbW6JBhdzz290hYyS2vxYW0/1w2EDb9xXo/q+ejt
-	72ILTvF4=
-X-Received: by 2002:a05:690c:388:b0:796:2f6c:70b7 with SMTP id
- 00721157ae682-79ac2f69fbdmr89859277b3.27.1774482860109; Wed, 25 Mar 2026
- 16:54:20 -0700 (PDT)
+        bh=JF4acbbSt5E73IKAZSEOEPirPhAB/yqaiKbDvN7a8Pk=;
+        b=COrMEAXDCyK9FvpaBTyQG+xcDM+7+S3udGG9ZhCdBv3dGIG1721fwiaTKa0RznLdv8
+         hYv6BCRylEZYyI+EGqh7d2prHbOk4wUe1t+dUdeBrjeqF2JB1wae55+k9qliwAuS0I+S
+         /JGC1bmNY0+oO+PxBmOTdYEkepyHrOLPi+6flK8Bm3Ocxdhngf+OmhZMy1Z0787vvW/h
+         NEOxF95c5DYnecPEZEic2uguvzR20HlAvUekYWuQH5RkfkgshhynskmwLuyDN2SVRXFR
+         8CEr9cNuX26yaBNn8XJaS4IleCaseaP0l/u7lLh00rpSBYOGkDKV1L8HilL+uIFTuAZL
+         MVjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhgQchESrhi/mwJ+H9K7x5hbFuiHCTVfI9PCIeS7CJVScz65ASoYVWBYTObHfScCZbTKJX@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtyV4S3Wf6YwuHz69lyiZuvGM5FOpgIbblH1gIXnYSsYvACPlJ
+	/Opa0FneTmASlpHmU66+PfnicXcT7bC27TerVX/3/crMWQ1JXilGoAfD70yy4dDCEfiGN6KbrI+
+	x/pKKQOhk/u9IoN7k+lzkZ9s8+Hk6yig=
+X-Gm-Gg: ATEYQzyhNIsEneTeBQCO5uj6lnV1YHra9h4DJbvl1QazHQJOMUb659AFLVVUwR2Mb/v
+	p3DM6DoU5DBQgZzqu6XNcIFtkJvtbeDaF9uRrJfEFOUWPlp5BJAdXUVdTgr0ELw3NNF9sQ+M2o3
+	SISPQ+qoncWsisF6WMfAVZU+g0qIIaAEQYUmic3XJo206dPXr7PZX8eIYIN8w7/XTNrYB8mxjqz
+	Q7ib96/j0f7SnCFJShBFFz/RuxFAjUUMZeCwVnaOvCZtXPt1cpHpNTshq4tuDSa+ahHzuliM+zw
+	yws7OJTFs3x8/KkInUPklgKurRSgA17X7GwJCaiBqg4cJeL6d+S5XgDXxGXpnWPhG6pL4clD
+X-Received: by 2002:a53:d017:0:b0:64e:a8fc:a29a with SMTP id
+ 956f58d0204a3-64ee60792a6mr4893790d50.21.1774484220067; Wed, 25 Mar 2026
+ 17:17:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260324033959.1456418-1-kartikey406@gmail.com>
- <acKjtaMVQS_d0Esi@casper.infradead.org> <CADhLXY5fxo_fOUTZv_DoHn3FJr6dFkKhRopzCLQYCKEjat71Zw@mail.gmail.com>
- <CAHc6FU5YouqqiyPgPsNshw50NCEiptzf=yePwEujGKu8NtHA7Q@mail.gmail.com>
-In-Reply-To: <CAHc6FU5YouqqiyPgPsNshw50NCEiptzf=yePwEujGKu8NtHA7Q@mail.gmail.com>
+References: <20260325060506.4868-1-kartikey406@gmail.com> <b15d7b72-134a-4e00-8220-5482e1ae2489@redhat.com>
+In-Reply-To: <b15d7b72-134a-4e00-8220-5482e1ae2489@redhat.com>
 From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Thu, 26 Mar 2026 05:24:09 +0530
-X-Gm-Features: AQROBzDOsi3f48dMWSHBVxaHIpw59YGDseLWM9gs3A235IHhWiZ11jS9sUdaARQ
-Message-ID: <CADhLXY4cahmyYEYvKaBXQddmermnDBpjbgAzt5roqGVvzcPGYw@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix hung task in gfs2_jhead_process_page
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+9013411dc43f3582823a@syzkaller.appspotmail.com
+Date: Thu, 26 Mar 2026 05:46:49 +0530
+X-Gm-Features: AQROBzBy1nIQ7Fi1-fKGZWcKceFt_GYXBEy7njhYldFAl1e-isn7uwCG_ndVDJA
+Message-ID: <CADhLXY5Hghaqhiw+mdHRhuzdxBCwYO-_FX2oRdNiBtVStXY+8A@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: fix duplicate kmem_cache name on concurrent mounts
+To: Andrew Price <anprice@redhat.com>
+Cc: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzbot+b441db1854c360b83221@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 25, 2026 at 7:12=E2=80=AFAM Andreas Gruenbacher <agruenba@redha=
-t.com> wrote:
+On Wed, Mar 25, 2026 at 11:28=E2=80=AFPM Andrew Price <anprice@redhat.com> =
+wrote:
 >
+> On 25/03/2026 06:05, Deepanshu Kartikey wrote:
+> > When gfs2_fill_super() creates the per-filesystem bufdata cache, it
+> > uses sd_fsname as part of the cache name:
+> >
+> >   sdp->sd_bufdata =3D kmem_cache_create("gfs2-bufdata/<fsname>", ...);
+> >
+> > At this point sd_fsname is set from sd_table_name (e.g. "syz:syz"),
+> > which is the same for all concurrent mounts of the same device.
+> > The unique suffix (.s for spectator, .N for journal ID) is only
+> > added to sd_fsname AFTER wait_on_journal() completes, since the
+> > journal ID is assigned by the locking subsystem during mount.
+> >
+> > With multiple concurrent mounts of the same device (as triggered by
+> > syzkaller with procs:5), multiple calls to gfs2_fill_super() all try
+> > to create a cache named "gfs2-bufdata/syz:syz" before any of them
+> > reaches the point where sd_fsname becomes unique, triggering:
+> >
+> >   kmem_cache of name 'gfs2-bufdata/syz:syz' already exists
+> >   WARNING: mm/slab_common.c:112
+> >
+> > Fix this by moving the bufdata cache creation to after
+> > wait_on_journal() completes and sd_fsname has been updated with its
+> > unique suffix. Also move the fail_bufdata cleanup label accordingly
+> > in the error unwind path.
 >
-> How about something like this?
+> I don't think the description is accurate as the patch moves the kmem_cac=
+he_create() to after the gfs2_sys_fs_add(), which fails the mount cleanly o=
+n a duplicate lock table instead of triggering a warning.
 >
-> --- a/fs/gfs2/bmap.c
-> +++ b/fs/gfs2/bmap.c
-> @@ -2210,7 +2210,7 @@ void gfs2_free_journal_extents(struct gfs2_jdesc *j=
-d)
->   * @dblock: The physical block at start of new extent
->   * @blocks: Size of extent in fs blocks
->   *
-> - * Returns: 0 on success or -ENOMEM
-> + * Returns: 0 on success, or an error code
->   */
+> That said, 767e4de3ffce ("gfs2: per-filesystem bufdata cache") is likely =
+to get pulled out of for-next as it was more of a debugging aid so it's pro=
+bably not worth a v2.
 >
->  static int gfs2_add_jextent(struct gfs2_jdesc *jd, u64 lblock, u64
-> dblock, u64 blocks)
-> @@ -2219,6 +2219,8 @@ static int gfs2_add_jextent(struct gfs2_jdesc
-> *jd, u64 lblock, u64 dblock, u64 b
->
->      if (!list_empty(&jd->extent_list)) {
->          jext =3D list_last_entry(&jd->extent_list, struct
-> gfs2_journal_extent, list);
-> +        if (jext->lblock + jext->blocks !=3D lblock)
-> +            return -EINVAL;
->          if ((jext->dblock + jext->blocks) =3D=3D dblock) {
->              jext->blocks +=3D blocks;
->              return 0;
->
-> Thanks,
-> Andreas
+> Andy
 >
 
-Thanks for the clarification. It looks good.
+Hi Andy,
 
-I have sent the patch v2
+Thank you for the explanation.
 
-Deepanshu
+I went back and traced through the code more carefully. The real
+protection comes from gfs2_sys_fs_add() which calls
+kobject_init_and_add() with sd_table_name =E2=80=94 this fails cleanly
+when a duplicate mount is attempted since the sysfs path already
+exists.
+
+The bug was that kmem_cache_create() was called BEFORE
+gfs2_sys_fs_add(), so concurrent mounts both created a cache
+with the same name before either reached the duplicate check.
+Moving the cache creation to after gfs2_sys_fs_add() means
+duplicate mounts are rejected cleanly there first.
+
+I also understand now why sd_fsname uniqueness is not the real
+fix =E2=80=94 with lock_nolock, ls_jid comes from mount options and
+can be the same (jid=3D0) for all concurrent mounts, so
+sd_fsname would still be "syz:syz.0" for all of them.
+
+Thanks for your time,
+Deepanshu Kartikey
