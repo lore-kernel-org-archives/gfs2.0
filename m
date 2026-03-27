@@ -1,50 +1,50 @@
-Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE732298CC4
-	for <gfs2@lists.linux.dev>; Thu, 26 Mar 2026 16:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537D235DA50
+	for <gfs2@lists.linux.dev>; Fri, 27 Mar 2026 23:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774544313; cv=none; b=C1U966zZMsn8exzoidJ2wHQlV5gmNV47LxMeUG42o1tHj5tXSO0vspehiiurLtANi5tTYSD0h1fQ5VKG0DOHjpZkNnSJFANyctdvEDjPrkeK7raQiLOwaRaOXLcQvb+gdA5l0ZAJ8IA7lIkKwTEXUCxsKqJf0GzjmkwdVz9pLX0=
+	t=1774654471; cv=none; b=Ud4qb1gLeL+d4M83oaGl01F3J4R2JQnewv0Kws/1U+rgOlC653DND92D8PdI+MgLBVO5s3ll5Gx3CJ2+S67sWYpvyN17KJRcv/iECtoXwKSagUEPn4yot2IQWWMngKDicop9bR+belD7MQq1S0B8ZcjKisIIMPBF+UWWBLnlugs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774544313; c=relaxed/simple;
-	bh=vg+Dsz7kKeFbvLWtAWrE8pPOOW/ro5rw+FfnaAbN+fM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=prcFhWv/HCg7y8HvMTBHOMRmee9z4p2Sza7Ag7Dq/sXq8Nh5W/sx3DJyh4Q6mnxSmhWQnQoz9rnNOFF7X/YBmDm0GA9BVqVjD5XD9HF5ZvhS7wjz+Zp5LNm0dE7ed+C1RoNbjZuMJl1Yu1OsPG0i3VbkFL1dGz/K9EedS9HKI0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.80
+	s=arc-20240116; t=1774654471; c=relaxed/simple;
+	bh=rxOyZBMkA/sKo3vf4M5jTJw2ObgA6L4wwxeOiDXRYZg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GYgtK7pIoRQpAL5hdlqsacWGTjj+90LPL07Q/2PePKkZwqE/4MR7M7qYYwKHOzo+2hz7OgD2rFmECDNLDUc1dqyn/Z6WaqR9T/yg8wb+zXqkmtqryq3EQVyfEEm4jAm2gNYAi0xxng6punwNeLVsK+l/vesYqKlEEHVN+DlNGIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-41702ea8343so1777813fac.0
-        for <gfs2@lists.linux.dev>; Thu, 26 Mar 2026 09:58:31 -0700 (PDT)
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-67e07123bb5so5284313eaf.0
+        for <gfs2@lists.linux.dev>; Fri, 27 Mar 2026 16:34:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774544310; x=1775149110;
+        d=1e100.net; s=20251104; t=1774654469; x=1775259269;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=y4cY7kRHLWfzYTA9mMntgGdoQF2os7HWGtEb9i5vcsM=;
-        b=sap9JmZTv8cD7IT7Ht14hgiiGjoOiOl4G8X/ek0Jt0rw2bRPmqCI8EhZQd+LhTE3mi
-         9frVySAQwbbiur25qDH77WkoPvlHfVHWFUq8DDKxiOKlIEbTF9hnYovPwGOvdF3gHAsH
-         QlMVNfz0gPsLGgwLkcGwNyJn6JgEniC6lz4J57G44KS1KyGbPh8m656R0V3EBfebw9iz
-         7AEDcEMRKyW4CNz3DR1xkk6gsuZfdyPxRWXtTVfixgCodh5gyf/VsZ5lGhrvEROCDDin
-         OXwrT0aysaRTDcg07x9y5zBAhAXSLDpG+BBeaFI5oN0KFF1gQmkxMGFnx5g0R+pnaqn5
-         VFVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKfpy7hSNpgPCnkfuDOvDZN6V3xCsr5pHH5UqhC3Bw5RL60kJcKiVXNnMPPHHg5YWYuLCN@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3nWjNYHQftuLQ8+4b/MBaqNoXos6xYFieuEXpsWyOL7nMNEFc
-	GmJrPzFgxmmgUZe6GR8E2CC320dmB4qe/xM74+PsnTxSOvHF9x9bzFrYOExgFfsLpfLXcdrp5yH
-	MH44vQrh309OVAj+TnxlsyB2LqLWBsKBGcjSq1ONHW15mUKeOYbae5xK2CUI=
+        bh=wzHOenVg2egQCerYa+qYHv/FatVLL4IjQVJn2JqlhoU=;
+        b=nZV4L87hbdAiVhNeHx/EKTQq9kS4CK4rZxYMINzFx8f/sYEjIS+v9T9xno0NP4xP/m
+         Wk6Jet+2mnykZLenuv22UdWXyruWo1Iy4zAwycaMBF8xiiSJ6m4vHXY5/uMhfktGzRju
+         KLTgMuKCeswiJ+ohU6YXv1DrG8ovQ8IyXy59IyerhAZ30keX0lmF0FTMCX4EAzuvWHHo
+         VoSxc7D6y7/oeZggrBSmqttI28dpc9l0C88GmpUtXBumFq6OJHUR6KkMD263WK5K0MOM
+         k9Z2GqPiYxSkorNEFs8SYgMKQnk+GLnfWAaJUOWHIdZCUfWEnh4cKy+j6UIIpXtfiBvx
+         rntg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCSlu6rCMJojPgGbBqdJG7jKTa5ix2ElU13t9TX2a4I/WLimyQ5tVvBOLixTqDJ3wW7k49@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZq14nwtK9zfz7xwumeD5nUbGMqKS6w/LeWynPGpcEb5UiHves
+	63jNewLTQGqaEcf0EzvqvLoBnx+8jd6xVtMcLdTOwgOPojZFzTBYUou/W+WD0gpUg95KaGJHUwZ
+	17/HJx16k8F4P71I40x7Bi2B/AERAB+xCbint0OaqjiyWgtL8py2v09HJuvc=
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:81f:b0:67c:1fc7:daa6 with SMTP id
- 006d021491bc7-67dff39eedfmr3990964eaf.10.1774544310544; Thu, 26 Mar 2026
- 09:58:30 -0700 (PDT)
-Date: Thu, 26 Mar 2026 09:58:30 -0700
+X-Received: by 2002:a05:6820:3087:b0:67e:2c8:c0c0 with SMTP id
+ 006d021491bc7-67e187531demr2311313eaf.58.1774654469292; Fri, 27 Mar 2026
+ 16:34:29 -0700 (PDT)
+Date: Fri, 27 Mar 2026 16:34:29 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c565b6.a70a0220.3d5e5.000a.GAE@google.com>
-Subject: [syzbot] [gfs2?] kernel BUG in gfs2_trans_add_revoke
-From: syzbot <syzbot+b17a83b050e9617376f0@syzkaller.appspotmail.com>
+Message-ID: <69c71405.a70a0220.128fd0.000c.GAE@google.com>
+Subject: [syzbot] [gfs2?] WARNING in gfs2_put_super (2)
+From: syzbot <syzbot+c5e536ca62b3854e739b@syzkaller.appspotmail.com>
 To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
@@ -53,54 +53,54 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    785f0eb2f85d Add linux-next specific files for 20260320
+HEAD commit:    66ba480978ce Add linux-next specific files for 20260325
 git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=11c08b52580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c584910d0d74158d
-dashboard link: https://syzkaller.appspot.com/bug?extid=b17a83b050e9617376f0
+console output: https://syzkaller.appspot.com/x/log.txt?x=1056d752580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5782739fc9debc4
+dashboard link: https://syzkaller.appspot.com/bug?extid=c5e536ca62b3854e739b
 compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a1f7fd9c1a63/disk-785f0eb2.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/6c138da87c25/vmlinux-785f0eb2.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/4d1be64e56db/bzImage-785f0eb2.xz
+disk image: https://storage.googleapis.com/syzbot-assets/771dba450de5/disk-66ba4809.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d25fd753a911/vmlinux-66ba4809.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a61db95be18c/bzImage-66ba4809.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b17a83b050e9617376f0@syzkaller.appspotmail.com
+Reported-by: syzbot+c5e536ca62b3854e739b@syzkaller.appspotmail.com
 
-RBP: 00007ffd277b4f80 R08: 00007ffd277b5f80 R09: 00000000ffffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffd277b6010
-R13: 00007fd855832050 R14: 000000000008c299 R15: 00007ffd277b6050
- </TASK>
-gfs2: fsid=syz:syz.0: about to withdraw this file system
+BUG gfs2-bufdata/syz:syz (Not tainted): Objects remaining on __kmem_cache_shutdown()
+-----------------------------------------------------------------------------
+Object 0xffff8880246d8460 @offset=1120
+Slab 0xffffea000091b600 objects=36 used=1 fp=0xffff8880246d8000 flags=0xfff00000000200(workingset|node=0|zone=1|lastcpupid=0x7ff)
+Disabling lock debugging due to kernel taint
 ------------[ cut here ]------------
-kernel BUG at fs/gfs2/trans.c:321!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 9715 Comm: syz-executor Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
+1
+WARNING: mm/slub.c:1231 at __slab_err+0x15/0x20 mm/slub.c:1231, CPU#1: syz-executor/5843
+Modules linked in:
+CPU: 1 UID: 0 PID: 5843 Comm: syz-executor Tainted: G    B               syzkaller #0 PREEMPT(full) 
+Tainted: [B]=BAD_PAGE
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:gfs2_trans_add_revoke+0xd1/0xe0 fs/gfs2/trans.c:321
-Code: 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc cc 89 d9 80 e1 07 80 c1 03 38 c1 7c e3 48 89 df e8 d7 80 0a fe eb d9 e8 a0 1a a1 fd 90 <0f> 0b 66 66 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90
-RSP: 0018:ffffc90007607998 EFLAGS: 00010293
-RAX: ffffffff842536e0 RBX: ffff88802a9439c0 RCX: ffff88802db05b80
-RDX: 0000000000000000 RSI: ffff8880346d4070 RDI: ffff88807b910000
-RBP: ffff88806a0ac650 R08: ffffffff90123cf7 R09: 1ffffffff202479e
-R10: dffffc0000000000 R11: fffffbfff202479f R12: ffff8880346d4088
-R13: dffffc0000000000 R14: ffff8880346d4070 R15: ffff88807b910000
-FS:  0000555573c27500(0000) GS:ffff888125548000(0000) knlGS:0000000000000000
+RIP: 0010:__slab_err+0x15/0x20 mm/slub.c:1231
+Code: 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 e8 5b 01 00 00 bf 05 00 00 00 be 01 00 00 00 e8 cc 99 5e 00 90 <0f> 0b 90 e9 53 75 8b 0a cc 66 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90003f17bf8 EFLAGS: 00010093
+RAX: ffffffff8186d52a RBX: ffffc90003f17c20 RCX: ffff888076570000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffffffff9323f0a7 R09: 1ffffffff2647e14
+R10: dffffc0000000000 R11: fffffbfff2647e15 R12: ffff88802b0c81c8
+R13: ffffea000091b600 R14: ffffea0000a42850 R15: ffff88802b0c8180
+FS:  0000555577af5500(0000) GS:ffff88812554a000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1ac2744a90 CR3: 0000000076a06000 CR4: 00000000003526f0
+CR2: 0000200000a49030 CR3: 00000000678d8000 CR4: 00000000003526f0
 Call Trace:
  <TASK>
- __gfs2_ail_flush+0x12c/0x220 fs/gfs2/glops.c:78
- gfs2_ail_flush+0xbd/0x100 fs/gfs2/glops.c:152
- evict_linked_inode fs/gfs2/super.c:1368 [inline]
- gfs2_evict_inode+0x743/0x1130 fs/gfs2/super.c:1434
- evict+0x61e/0xb10 fs/inode.c:846
- gfs2_evict_inodes fs/gfs2/ops_fstype.c:1760 [inline]
- gfs2_kill_sb+0x2bb/0x430 fs/gfs2/ops_fstype.c:1786
+ free_partial mm/slub.c:7940 [inline]
+ __kmem_cache_shutdown+0x13b/0x2a0 mm/slub.c:7983
+ kmem_cache_destroy+0x8e/0x170 mm/slab_common.c:569
+ gfs2_put_super+0x83f/0x890 fs/gfs2/super.c:642
+ generic_shutdown_super+0x13d/0x2d0 fs/super.c:646
+ kill_block_super+0x44/0x90 fs/super.c:1725
  deactivate_locked_super+0xbc/0x130 fs/super.c:476
  cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
  task_work_run+0x1d9/0x270 kernel/task_work.c:233
@@ -109,31 +109,18 @@ Call Trace:
  exit_to_user_mode_loop+0xed/0x480 kernel/entry/common.c:98
  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:238 [inline]
  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:269 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
- do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ syscall_exit_to_user_mode include/linux/entry-common.h:328 [inline]
+ do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd85579d9d7
+RIP: 0033:0x7fd5f7b9d9d7
 Code: a2 c7 05 1c fd 24 00 00 00 00 00 eb 96 e8 e1 12 00 00 90 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 e8 ff ff ff f7 d8 64 89 02 b8
-RSP: 002b:00007ffd277b4ec8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007fd855832050 RCX: 00007fd85579d9d7
-RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffd277b4f80
-RBP: 00007ffd277b4f80 R08: 00007ffd277b5f80 R09: 00000000ffffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffd277b6010
-R13: 00007fd855832050 R14: 000000000008c299 R15: 00007ffd277b6050
+RSP: 002b:00007ffde2411ff8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 00007fd5f7c32050 RCX: 00007fd5f7b9d9d7
+RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffde24120b0
+RBP: 00007ffde24120b0 R08: 00007ffde24130b0 R09: 00000000ffffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffde2413140
+R13: 00007fd5f7c32050 R14: 0000000000049ffd R15: 00007ffde2413180
  </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_trans_add_revoke+0xd1/0xe0 fs/gfs2/trans.c:321
-Code: 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc cc 89 d9 80 e1 07 80 c1 03 38 c1 7c e3 48 89 df e8 d7 80 0a fe eb d9 e8 a0 1a a1 fd 90 <0f> 0b 66 66 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90
-RSP: 0018:ffffc90007607998 EFLAGS: 00010293
-RAX: ffffffff842536e0 RBX: ffff88802a9439c0 RCX: ffff88802db05b80
-RDX: 0000000000000000 RSI: ffff8880346d4070 RDI: ffff88807b910000
-RBP: ffff88806a0ac650 R08: ffffffff90123cf7 R09: 1ffffffff202479e
-R10: dffffc0000000000 R11: fffffbfff202479f R12: ffff8880346d4088
-R13: dffffc0000000000 R14: ffff8880346d4070 R15: ffff88807b910000
-FS:  0000555573c27500(0000) GS:ffff888125548000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1ac2744a90 CR3: 0000000076a06000 CR4: 00000000003526f0
 
 
 ---
