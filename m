@@ -1,47 +1,40 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from out30-87.freemail.mail.aliyun.com (out30-87.freemail.mail.aliyun.com [115.124.30.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2907E36E46D
-	for <gfs2@lists.linux.dev>; Thu,  2 Apr 2026 07:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FD534FF58
+	for <gfs2@lists.linux.dev>; Fri,  3 Apr 2026 05:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775115365; cv=none; b=t/QiuPW4Paazgx4abU+ywUP27ZX4j9zeal5tpmabo9uCOk3kjVjlmO7QE/RgzC1dTlLbtxbSZcKX5/lz8Jac8+GtqTBGxM3SFXVUx/rOB9xkUMsnYXKajCohimJcbsjtVe4Ll749HA93NaBpnS0AVzCWaXwQHntAITL6oOTpOeo=
+	t=1775195575; cv=none; b=Zvwr4QLNQ7emW96EvBa514EGm0ZNZX41fAY1ja9okvm3QLPFfvbGExZ5A4hkLdTQbkvMEPshxAiXBlFlzOxTxN1VFswqoh/8djra95df+Mp1jfycbHBEeQ6Vhr0qbQDMzfzfqna59ihknCUfxdLTQ2J/Gt8WW9uZr9MukhEcT/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775115365; c=relaxed/simple;
-	bh=voZxXb0nzUYMSaDpByUiiWHoQORZIN6uR+pGlzVG9GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pJzA2ZPUchRoQaymHbjINPI2az0QcYvHM38fMmpGlE49taTwXQsdMyAI+7nwYY9mkSpm90VzIby+2ayAj5gC3txCHQrRyWyBubUYRHF7JcPJZbguKQewuC0F3b/vgk42eHctH6jsi7SMQpBnB3gfKyOGgTm/ZuCdCyrgGhK+rB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=OqnNNQRf; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1775195575; c=relaxed/simple;
+	bh=K+1Vk/EScwzbYzFH2PwVne4ZUe89t9TnyUXhoOtmmeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oEiPK/ViRGSAL8inDpBQGy9zfb/PYG0xd5+LVtQYQYQS9HAVb8NI6sacO4PxUsD0DxB3j8ztZGwnWO+LoKYGDhD4tM+4+uBtyeC5FprgfEz/2YXBS7wsksfX90GJCFX4HFGLRktn18ofdZMTTupEWvVu8W1uU39VOw4OQW1xU+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=gmVeGRpR; arc=none smtp.client-ip=115.124.30.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="OqnNNQRf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1775115351;
-	bh=gvrzPZvzUWNx+NmbMapce3hFaFvLUroRIvga08y6Ud4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=OqnNNQRfokoXpjlEa1Sl2pOMgI4mEmnrp5fWr6rpvF57pgoZxVoifGPj3A9EwnUA6
-	 VyR6u5VwGk6/3tcQXWF5KbL8Y+OV5CjXdW+FnLOWpGIlGLnkNqCtKWzeVRMTxzEMZa
-	 nSU1dK+jmf4g/3GuaV6xmy1BzmZsp8Eq5qhW5RF8=
-X-QQ-mid: zesmtpip4t1775115328t2fea1b7d
-X-QQ-Originating-IP: ylAYJahzFHRQmjephlvyKCnY9w2X+XwtGq+AX+Kp83k=
-Received: from uos-PC ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 02 Apr 2026 15:35:27 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 13073563863070807553
-EX-QQ-RecipientCnt: 6
-From: Morduan Zang <zhangdandan@uniontech.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="gmVeGRpR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=aliyun.com; s=s1024;
+	t=1775195570; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=F14/zbN3MzqJprfKOVCmDvcD1KixWC33CEkNXyYB7Nc=;
+	b=gmVeGRpRRGQ726WvlKFryE3bYc0pgItGc7uVetIWnJdKFLYLS2R7QMnsPIAY2moFujewS8vMrqB4G/pNHeQzI5aGJ6zfFzkhyBownmR5mgTmTVhL6/u3V59a2EdiWMcL+wff0wBrveHXSlAGAOMe7bbfKuRJa0Of6CeuJ/6xdhA=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07357557|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.031584-0.000368737-0.968047;FP=10562964253813786066|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ruohanlan@aliyun.com;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---0X0JIJ0c_1775195566;
+Received: from Ubuntu24(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X0JIJ0c_1775195566 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Apr 2026 13:52:49 +0800
+From: Ruohan Lan <ruohanlan@aliyun.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
 Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot+b17a83b050e9617376f0@syzkaller.appspotmail.com,
-	zhangdandan@uniontech.com,
-	Zhan Jun <zhanjun@uniontech.com>
-Subject: [PATCH] gfs2: fix kernel BUG in __gfs2_ail_flush during withdraw
-Date: Thu,  2 Apr 2026 15:35:24 +0800
-Message-ID: <90A5E3D4005798DC+20260402073525.24496-1-zhangdandan@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.6.y 1/2] gfs2: Improve gfs2_consist_inode() usage
+Date: Fri,  3 Apr 2026 13:51:53 +0800
+Message-ID: <20260403055154.4206-1-ruohanlan@aliyun.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -49,76 +42,211 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NJdlL7FGabLoH5uRkO0Aj6SGDsgWdWAbJIefsFMbesSoCru6RLmmM+4v
-	86eXQTEr+34Y9COAU+7AIIPqPBEEebJZWfxJDtTVy5VeSaZiMczoD0YQ9G+h9MCasACvFJa
-	BxCcIljyy4FdWWzuKRCKtR4Glzbi3zhQ50pZY4+gDP4dknMge76/sHgKjQmBGUsfLy1EfCH
-	UUbtcrr7FEb/LpRHLtl7qdVo2ff/va9AYiHtLAkyNOheyt3owpr3iH+1jBItJx57V3ghgi7
-	8hXG5amJnYvfXeeElrH+aKu6XtuF2/hsVkSBClfntCri1ZjA9mbZny8m5P4AqTYrWV71jzL
-	rMBcRO14j5sgugu/dDyAhqOeCh4wr5VkkmKfoVnvCfX47zb5t5dutneXzcf7zkFASZj6HMo
-	po5nn127PyGLBNrmi+743k9yRTeT6cPg7tg5aLSwbi5ZdpdotGrD21Zx6FI5AUc0glxxKH0
-	GO3MAvDivztxv9X85qIWiA3w2eOXLg1V0DSc1OImgCR0qYPWLTTrWnil4PEuDovzP//1gaj
-	Q5FYJJFkl+JzhIdqmYM+fm8MF3CqbreNDIXnT+5tW6PwsovRNcQL+jxDCIaDDtuDK4u3GVZ
-	7mP8/82djVAMMj47CjOezm9vfmHrRg//O0GcxUNV9eWKUx7sUbnnc3kdz6Kf2OoIQNw273d
-	9vWkVy4idYEP25ikA02myssxykFXbNcwlztLqz7HwBLode+EcZL/2ObXdn3QeBQrNdJgpFv
-	ao+aJcC34ybbDH/7EZJAwPIuKmMBqYdc0AUMzf8w8dlMHu91mAk+WdhgR/zhiwfvWLStpob
-	WE3BACackVNoRMOPY54+5bVbirRvCTmqgXGusFJBhN5ONmXB1OWCIgkBHM12JX5Q97wazrY
-	SAWwj1xMInAcas6e0DfhHfwyBApvJ25/BFUiSml6c7QKtK50FIhKvz6wEQ50okhMk1Ncvzl
-	PYLOiluFAKriUm4XDFCwlp+BHmrujRnduv9rHEu3VzPzAiuJeWH+UgkFaa9cN2Sr9xAo+kA
-	DdAZkZFm371yky1ZWSWHHBQAhlKkIy4Tcp5qtierGZyRj6IZKJa25Fn5Iq1MJdfZQp5ba//
-	SxMqjmef/naVSGjCssrhkw5j5ElyBm1NQ==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-RECHKSPAM: 0
 
-From: Zhan Jun <zhanjun@uniontech.com>
+From: Andrew Price <anprice@redhat.com>
 
-When __gfs2_ail_flush() finds an AIL buffer in unexpected state
-(dirty/pinned/locked) and fsync is false, it calls gfs2_ail_error(),
-which withdraws the filesystem.
+[ Upstream commit 10398ef57aa189153406c110f5957145030f08fe ]
 
-However, the code then falls through and still calls
-gfs2_trans_add_revoke(). That function asserts that bd->bd_list must be
-empty:
+gfs2_consist_inode() logs an error message with the source file and line
+number. When we jump before calling it, the line number becomes less
+useful as it no longer relates to the source of the error. To aid
+troubleshooting, replace the gotos with the gfs2_consist_inode() calls
+so that the error messages are more informative.
 
-  BUG_ON(!list_empty(&bd->bd_list));
-
-During withdraw this can be false because the same bufdata may still be
-on a transaction buffer list, which triggers the reported BUG at
-fs/gfs2/trans.c:321.
-
-Fix this by skipping revoke addition after gfs2_ail_error(). Also avoid
-asserting gl_ail_count==0 once the filesystem is withdrawn, because
-buffers skipped for revoke can legitimately remain on the AIL list.
-
-Reported-by: syzbot+b17a83b050e9617376f0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b17a83b050e9617376f0
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 ---
- fs/gfs2/glops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/gfs2/dir.c   | 31 +++++++++++++++++--------------
+ fs/gfs2/glops.c | 34 ++++++++++++++++++++--------------
+ fs/gfs2/xattr.c | 28 ++++++++++++++++------------
+ 3 files changed, 53 insertions(+), 40 deletions(-)
 
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 3a2a10d6d43d..c252400e5999 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -562,15 +562,18 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 	int ret = 0;
+ 
+ 	ret = gfs2_dirent_offset(GFS2_SB(inode), buf);
+-	if (ret < 0)
+-		goto consist_inode;
+-
++	if (ret < 0) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	offset = ret;
+ 	prev = NULL;
+ 	dent = buf + offset;
+ 	size = be16_to_cpu(dent->de_rec_len);
+-	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1))
+-		goto consist_inode;
++	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1)) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	do {
+ 		ret = scan(dent, name, opaque);
+ 		if (ret)
+@@ -582,8 +585,10 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		dent = buf + offset;
+ 		size = be16_to_cpu(dent->de_rec_len);
+ 		if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size,
+-				      len, 0))
+-			goto consist_inode;
++				      len, 0)) {
++			gfs2_consist_inode(GFS2_I(inode));
++			return ERR_PTR(-EIO);
++		}
+ 	} while(1);
+ 
+ 	switch(ret) {
+@@ -597,10 +602,6 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		BUG_ON(ret > 0);
+ 		return ERR_PTR(ret);
+ 	}
+-
+-consist_inode:
+-	gfs2_consist_inode(GFS2_I(inode));
+-	return ERR_PTR(-EIO);
+ }
+ 
+ static int dirent_check_reclen(struct gfs2_inode *dip,
+@@ -609,14 +610,16 @@ static int dirent_check_reclen(struct gfs2_inode *dip,
+ 	const void *ptr = d;
+ 	u16 rec_len = be16_to_cpu(d->de_rec_len);
+ 
+-	if (unlikely(rec_len < sizeof(struct gfs2_dirent)))
+-		goto broken;
++	if (unlikely(rec_len < sizeof(struct gfs2_dirent))) {
++		gfs2_consist_inode(dip);
++		return -EIO;
++	}
+ 	ptr += rec_len;
+ 	if (ptr < end_p)
+ 		return rec_len;
+ 	if (ptr == end_p)
+ 		return -ENOENT;
+-broken:
++
+ 	gfs2_consist_inode(dip);
+ 	return -EIO;
+ }
 diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index ba61649368bf..70c998b80e86 100644
+index 4a169c60bce6..2ec0b6871ae9 100644
 --- a/fs/gfs2/glops.c
 +++ b/fs/gfs2/glops.c
-@@ -74,11 +74,13 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
- 			if (fsync)
- 				continue;
- 			gfs2_ail_error(gl, bh);
-+			continue;
- 		}
- 		gfs2_trans_add_revoke(sdp, bd);
- 		nr_revokes--;
- 	}
--	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
-+	GLOCK_BUG_ON(gl, !fsync && !gfs2_withdrawn(sdp) &&
-+		     atomic_read(&gl->gl_ail_count));
- 	spin_unlock(&sdp->sd_ail_lock);
- 	gfs2_log_unlock(sdp);
+@@ -412,10 +412,14 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	struct inode *inode = &ip->i_inode;
+ 	bool is_new = inode->i_state & I_NEW;
+ 
+-	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr)))
+-		goto corrupt;
+-	if (unlikely(!is_new && inode_wrong_type(inode, mode)))
+-		goto corrupt;
++	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
++	if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_no_formal_ino = be64_to_cpu(str->di_num.no_formal_ino);
+ 	inode->i_mode = mode;
+ 	if (is_new) {
+@@ -451,26 +455,28 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
+ 	gfs2_set_inode_flags(inode);
+ 	height = be16_to_cpu(str->di_height);
+-	if (unlikely(height > sdp->sd_max_height))
+-		goto corrupt;
++	if (unlikely(height > sdp->sd_max_height)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_height = (u8)height;
+ 
+ 	depth = be16_to_cpu(str->di_depth);
+-	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
+-		goto corrupt;
++	if (unlikely(depth > GFS2_DIR_MAX_DEPTH)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip))
+-		goto corrupt;
+-
++	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	if (S_ISREG(inode->i_mode))
+ 		gfs2_set_aops(inode);
+ 
+ 	return 0;
+-corrupt:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
  }
+ 
+ /**
+diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
+index 2117011c8c57..27b9dd1179c2 100644
+--- a/fs/gfs2/xattr.c
++++ b/fs/gfs2/xattr.c
+@@ -96,30 +96,34 @@ static int ea_foreach_i(struct gfs2_inode *ip, struct buffer_head *bh,
+ 		return -EIO;
+ 
+ 	for (ea = GFS2_EA_BH2FIRST(bh);; prev = ea, ea = GFS2_EA2NEXT(ea)) {
+-		if (!GFS2_EA_REC_LEN(ea))
+-			goto fail;
++		if (!GFS2_EA_REC_LEN(ea)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		if (!(bh->b_data <= (char *)ea && (char *)GFS2_EA2NEXT(ea) <=
+-						  bh->b_data + bh->b_size))
+-			goto fail;
+-		if (!gfs2_eatype_valid(sdp, ea->ea_type))
+-			goto fail;
++						  bh->b_data + bh->b_size)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
++		if (!gfs2_eatype_valid(sdp, ea->ea_type)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		error = ea_call(ip, bh, ea, prev, data);
+ 		if (error)
+ 			return error;
+ 
+ 		if (GFS2_EA_IS_LAST(ea)) {
+ 			if ((char *)GFS2_EA2NEXT(ea) !=
+-			    bh->b_data + bh->b_size)
+-				goto fail;
++			    bh->b_data + bh->b_size) {
++				gfs2_consist_inode(ip);
++				return -EIO;
++			}
+ 			break;
+ 		}
+ 	}
+ 
+ 	return error;
+-
+-fail:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
 -- 
-2.50.1
+2.43.0
 
