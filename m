@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EE53C9EF1
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEB73CCFB5
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091960; cv=none; b=OLD3prfSjC51204Fo8NlcHIoOPzgnwWFQnp4GBLPJ31QdW08qgUbLL2I1TeP8+rMFHbXlafypn+1wYzlFPBIxMojLoLo80v7HVTpTOBqH4A+nQU52wpKJ/9ZZzE7ePlGWqr29/5pL6QU0KlqbARfb7zaIkGYGvI3fPa/vaeDvwE=
+	t=1776091961; cv=none; b=NymsPo9SptohEB3XB3hCGcuxp5DOhV2ZSRJqW8omIslGbD+xF+kU+GTH1m5ds5gGtdp3hyY6/Xwj5MLXtMeB6ZakILAfwpTT2zq6jog+9EO1859ZCgRCLcWy5c92gJzd2ClR1XVmYIxFS68vTrEKHcbN1/51IYdUY7fm5CvtsXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091960; c=relaxed/simple;
-	bh=JwDIMFMkFH1rY1jl3IzZnukUSflOIt6LsXLJYgeMG0Q=;
+	s=arc-20240116; t=1776091961; c=relaxed/simple;
+	bh=Wba1hFI3PGwWy5I7+oXG3vV76q2wvDP05zIDzXVpQpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=I+jBAvYfg/Qxvotrqg8S/AkqD1hopSWrPQDXKwdBZjQFY8qxWU3WbMBQPPXniSBcKLJfo/v/SyDWweedD5NMGxxzadchpQnekxuMymikBpuxXZ0ruisnr+n8QvLCnbtGXq8AqUHsNbvJMBpqu/gjCZKu1dK54D4JtRcVscSRwWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tg/C80oH; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=q2nzU6pINPA40wB1QHlfmXfNvgyN4UPo1Xv4aHiGp3Ycmc0P2JZCLdoTY2M6tVwn3GJtc3hHTKdpabUkvAv1bSb+bgJHe65oJp6m7U9I2/1RngE5HNpc6ZfBf6gZn8Uc2jkvYh5G67TE+03GB5mEuTRU+1lOeNauwz3vlaCFoak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TBhKS2Ny; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tg/C80oH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TBhKS2Ny"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776091958;
+	s=mimecast20190719; t=1776091959;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Cd6hJ9W2bN7CZbdsxP9h/bvR1jwEjqbWd3OUE3VyRk=;
-	b=Tg/C80oHlDxKQdjTjaf0pj4GZBIAWpSbwrHGms6oDiV/eQCvVb73B9anrYguNRU8TJHKNw
-	VrucYqkzeuqgVdjGeQ7IEMvzZE9K4pGE7n3HUwzUnbvN/D0b1frN2H8Byfbux9+Eg8hIWp
-	2iX2so9aKga7nb4W3bwQXUsuBd/WKv0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=PNMXYJ3T/RVZCsekQuTrpSMuoh7fnJllZdVHtZC46IA=;
+	b=TBhKS2Ny08qpHQK7c3q+/rKhfjbzL4ZBQogxgOKRc0xcADwWV9rKJGnuAM4STX6BrlaHt2
+	DonFlOwVvMLXmn6koJ3yXJUnlbF6L+66z88hmeLd6ykdJdvhXoJhJlnovQu97lKKU7lfg5
+	9LHTNGXYJeuCFWz3nZk48sfvW3hrWjA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-MIUbxlKzNrOACV7LonO-2w-1; Mon,
- 13 Apr 2026 10:52:34 -0400
-X-MC-Unique: MIUbxlKzNrOACV7LonO-2w-1
-X-Mimecast-MFC-AGG-ID: MIUbxlKzNrOACV7LonO-2w_1776091953
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-VUsOuNPGPKyWxuIzoiTLOg-1; Mon,
+ 13 Apr 2026 10:52:37 -0400
+X-MC-Unique: VUsOuNPGPKyWxuIzoiTLOg-1
+X-Mimecast-MFC-AGG-ID: VUsOuNPGPKyWxuIzoiTLOg_1776091956
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AAB711955DB2
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:33 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 740341800BEB
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:36 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.156])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B6D6719560AB;
-	Mon, 13 Apr 2026 14:52:32 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 807FB19560AB;
+	Mon, 13 Apr 2026 14:52:35 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 13/18] gfs2: add some missing log locking
-Date: Mon, 13 Apr 2026 16:52:06 +0200
-Message-ID: <20260413145211.881752-14-agruenba@redhat.com>
+Subject: [PATCH 15/18] gfs2: inode directory consistency checks
+Date: Mon, 13 Apr 2026 16:52:08 +0200
+Message-ID: <20260413145211.881752-16-agruenba@redhat.com>
 In-Reply-To: <20260413145211.881752-1-agruenba@redhat.com>
 References: <20260413145211.881752-1-agruenba@redhat.com>
 Precedence: bulk
@@ -58,107 +58,70 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EO09_WlyNnZEa1M-lqEf2wXNF6Ekf3XfW0yz9JeWKD4_1776091953
+X-Mimecast-MFC-PROC-ID: dH1dah8uV9DgV8Ogt44GRIlweMIgM1J9qvc926EglvM_1776091956
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
-gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
-but these functions require exclusion against concurrent transactions.
+In gfs2_dinode_in(), only allow directories to have the GFS2_DIF_EXHASH
+flag set.  This will prevent other parts of the code from treating
+regular inodes as directories based on the presence of that flag.
 
-To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
-gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
-flushing functions and __gfs2_log_flush().
+In sweep_bh_for_rgrps() and __gfs2_free_blocks(), check if the
+GFS2_DIF_EXHASH flag is set instead of checking if i_depth is non-zero.
+This matches what the directory code does.  (The i_depth checks were
+introduced in commit 6d3117b412951 ("GFS2: Wipe directory hash table
+metadata when deallocating a directory").)
 
-Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/log.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ fs/gfs2/bmap.c  | 2 +-
+ fs/gfs2/glops.c | 5 +++++
+ fs/gfs2/rgrp.c  | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 31ee7a0e86a2..a96f9b9331e8 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1053,14 +1053,15 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
- }
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index fdcac8e3f2ba..89b043f70651 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -1539,7 +1539,7 @@ static int sweep_bh_for_rgrps(struct gfs2_inode *ip, struct gfs2_holder *rd_gh,
+ 			revokes = jblocks_rqsted;
+ 			if (meta)
+ 				revokes += end - start;
+-			else if (ip->i_depth)
++			else if (ip->i_diskflags & GFS2_DIF_EXHASH)
+ 				revokes += sdp->sd_inptrs;
+ 			ret = gfs2_trans_begin(sdp, jblocks_rqsted, revokes);
+ 			if (ret)
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index aff7e890bf60..28f32424ee64 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -457,6 +457,11 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
  
- /**
-- * gfs2_log_flush - flush incore transaction(s)
-+ * __gfs2_log_flush - flush incore transaction(s)
-  * @sdp: The filesystem
-  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
-  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
-  *
-  */
- 
--void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
-+			     u32 flags)
- {
- 	struct gfs2_trans *tr = NULL;
- 	unsigned int reserved_blocks = 0, used_blocks = 0;
-@@ -1068,7 +1069,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	unsigned int first_log_head;
- 	unsigned int reserved_revokes = 0;
- 
--	down_write(&sdp->sd_log_flush_lock);
- 	trace_gfs2_log_flush(sdp, 1, flags);
- 
- repeat:
-@@ -1180,7 +1180,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 		gfs2_assert_withdraw(sdp, used_blocks < reserved_blocks);
- 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
- 	}
--	up_write(&sdp->sd_log_flush_lock);
- 	gfs2_trans_free(sdp, tr);
- 	trace_gfs2_log_flush(sdp, 0, flags);
- 	return;
-@@ -1201,6 +1200,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	goto out_end;
- }
- 
-+void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+{
-+	down_write(&sdp->sd_log_flush_lock);
-+	__gfs2_log_flush(sdp, gl, flags);
-+	up_write(&sdp->sd_log_flush_lock);
-+}
++	if (!S_ISDIR(inode->i_mode) && (ip->i_diskflags & GFS2_DIF_EXHASH)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
 +
- /**
-  * gfs2_merge_trans - Merge a new transaction into a cached transaction
-  * @sdp: the filesystem
-@@ -1332,19 +1338,25 @@ int gfs2_logd(void *data)
- 			break;
+ 	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 8a97ca734afc..7ada7707e99a 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -2529,7 +2529,7 @@ void __gfs2_free_blocks(struct gfs2_inode *ip, struct gfs2_rgrpd *rgd,
+ 	rgrp_unlock_local(rgd);
  
- 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_JFLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_JFLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
+ 	/* Directories keep their data in the metadata address space */
+-	if (meta || ip->i_depth || gfs2_is_jdata(ip))
++	if (meta || (ip->i_diskflags & GFS2_DIF_EXHASH) || gfs2_is_jdata(ip))
+ 		gfs2_journal_wipe(ip, bstart, blen);
+ }
  
- 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 		    gfs2_ail_flush_reqd(sdp)) {
- 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
- 
- 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
 -- 
 2.53.0
 
