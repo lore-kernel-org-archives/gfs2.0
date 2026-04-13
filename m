@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E770C3E0249
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6683CCFB5
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091958; cv=none; b=ILGe92HUwxsw1u5SUyu978iopAHIliaI72CfqmGIfDbgbP+V4CcNcJoh5uHoIocKbf7GVO1nIeVYaBU82V6Zmlub94q2ib6JywwYOwmm/iywO0/Aj5vsd+SOl8u1fqfAAO1e17hX44LTX7tYCEimIIcd2jBdMvMHBwk6pMiwSok=
+	t=1776091959; cv=none; b=iHJ66yLSm4+MsZ+hENujMItyTGkk/m+8Hqk+hjBHUtfK8bUOhpNnb0lNBrBhRMbNQAYZkW7gKAol53SVmP8EEGg+5s/0euA/C56+671bXLlj2STNnA3OAvSyI2Wbtb8xxxooYvc3cZv5nLA9GG/MfZmUCMLF8y7TeS4Fk23Onnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091958; c=relaxed/simple;
-	bh=lX6f1msYi71LOcAxZEPo+piH+vMFbES6mXnjHRQUMFE=;
+	s=arc-20240116; t=1776091959; c=relaxed/simple;
+	bh=tKrMtYDkXOCBOMwM9C2EpS6+J3h7gGpgWO25a6yPzXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=HXyUm5Q8cbxDLyvcBgPv0MW5Dgms9pmNQ+0yN92glPCJngLAN2cJaDpsAgwUivlmNrS9PI7XWvUQi69HscFttHF1C/RJBhrOXZkASa4K1MhiFOEvGcfUIcUFkvBh79uwKI2cbvNrsxKqsdsmWfYQP20gkssxkGlHH1nOTOfJ8jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E1AwpJeE; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=oQSzYzGMjHcrKRLieeY8WWmA97Sp2e78/A9Dfi/zL2kwSWt/0I8I7opZeb7HDPVlfzwYfPWpYD2mxiGOPbhfDBNxe1nmMX62qWfY8g445dhmfSLZLChFXZ7lN86evPDtlzIynYbEX1p5dUJgUOlsDHU0GDF1/KD3zql6sLKey7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gF5xKxVW; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E1AwpJeE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gF5xKxVW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776091956;
+	s=mimecast20190719; t=1776091957;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/m749zS8fULm0m7CSTIk6fChOS0S311fGmbUP4JIUQg=;
-	b=E1AwpJeE7UILGUBarz6xHkTjf1t/oxNpLVOonHb9e6t60DctE5n/dML/uz4cp2ok32v4Nd
-	V9sE9krEmGmODyPWKglVmxJmIi0Dm1JTVTVM396F+c2uiSpV8vf2albQRCLeD0esEtrWys
-	7lKVZ5KIINKiqohUYbcP6G30btv3HQw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=O4rhi9G1+MZsHjsM6k56eDd1kz6XDz68R9b0w7jECww=;
+	b=gF5xKxVWgsOZDdtoLj4+TXueHDCtqVqdhCMRiylG02FxsuvAjOGfLlr+EXrw6pc7srxMSG
+	4RWNYsgc/r/OoTJNxd5HxVomtKOPfZBbGKCiwDv0thrxIP2LJSOPK9ci/iABIjtooN8p1a
+	RUWbuU4mUJP15oLswvYKB0rkHyioEyQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-lI_FO2z2Ol-FW__TdQu4Rw-1; Mon,
- 13 Apr 2026 10:52:33 -0400
-X-MC-Unique: lI_FO2z2Ol-FW__TdQu4Rw-1
-X-Mimecast-MFC-AGG-ID: lI_FO2z2Ol-FW__TdQu4Rw_1776091952
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-456-FOTb548fP2WJxlL3d3QqrA-1; Mon,
+ 13 Apr 2026 10:52:36 -0400
+X-MC-Unique: FOTb548fP2WJxlL3d3QqrA-1
+X-Mimecast-MFC-AGG-ID: FOTb548fP2WJxlL3d3QqrA_1776091955
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4BB0B19560A7
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:32 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B8EB1955F29
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:35 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.156])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5820E19560B1;
-	Mon, 13 Apr 2026 14:52:31 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 219EB19560AB;
+	Mon, 13 Apr 2026 14:52:33 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 12/18] gfs2: fix address space truncation during withdraw
-Date: Mon, 13 Apr 2026 16:52:05 +0200
-Message-ID: <20260413145211.881752-13-agruenba@redhat.com>
+Subject: [PATCH 14/18] gfs2: gfs2_log_flush withdraw fixes
+Date: Mon, 13 Apr 2026 16:52:07 +0200
+Message-ID: <20260413145211.881752-15-agruenba@redhat.com>
 In-Reply-To: <20260413145211.881752-1-agruenba@redhat.com>
 References: <20260413145211.881752-1-agruenba@redhat.com>
 Precedence: bulk
@@ -58,136 +58,91 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nTiWe0crY7y199VK2veXccr100lMTCYtTq_R5k5GiRQ_1776091952
+X-Mimecast-MFC-PROC-ID: N-xihrSskU-iwm4eqXBK_sYj8gO3asHlbO_IYfQ_oKQ_1776091955
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-When a withdrawn filesystem's inodes are being evicted, the address spaces of
-those inodes still need to be truncated but we can no longer start new
-transactions.  We still don't want gfs2_invalidate_folio() to race with
-gfs2_log_flush(), so take a read lock on sdp->sd_log_flush_lock in that case.
-(It may not be obvious, but gfs2_invalidate_folio() is a jdata-only address
-space operation.)
+When a withdraw occurs in gfs2_log_flush() and we are left with an unsubmitted
+bio, fail that bio.  Otherwise, the bh's in that bio will remain locked and
+gfs2_evict_inode() -> truncate_inode_pages() -> gfs2_invalidate_folio() ->
+gfs2_discard() will hang trying to discard the locked bh's.
+
+In addition, when gfs2_log_flush() fails to submit a new transaction, unpin the
+buffers in the failing transaction like gfs2_remove_from_journal() does.  If
+any of the bd's are on the ail2 list, leave them there and do_withdraw() ->
+gfs2_withdraw_glocks() -> inode_go_inval() -> truncate_inode_pages() ->
+gfs2_invalidate_folio() -> gfs2_discard() will remove them.  They will be freed
+in gfs2_release_folio().
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/log.c   | 17 +++++++++++------
- fs/gfs2/super.c | 41 ++++++++++++++++++++++++++++-------------
- 2 files changed, 39 insertions(+), 19 deletions(-)
+ fs/gfs2/log.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 8397d34527a4..31ee7a0e86a2 100644
+index a96f9b9331e8..3a01d4e7667a 100644
 --- a/fs/gfs2/log.c
 +++ b/fs/gfs2/log.c
-@@ -1024,17 +1024,22 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
- 		trace_gfs2_pin(bd, 0);
- 		atomic_dec(&sdp->sd_log_pinned);
- 		list_del_init(&bd->bd_list);
--		if (meta == REMOVE_META)
--			tr->tr_num_buf_rm++;
--		else
--			tr->tr_num_databuf_rm++;
--		set_bit(TR_TOUCHED, &tr->tr_flags);
-+		if (tr) {
-+			if (meta == REMOVE_META)
-+				tr->tr_num_buf_rm++;
-+			else
-+				tr->tr_num_databuf_rm++;
-+			set_bit(TR_TOUCHED, &tr->tr_flags);
-+		}
- 		was_pinned = 1;
- 		brelse(bh);
+@@ -983,33 +983,38 @@ static void empty_ail1_list(struct gfs2_sbd *sdp)
  	}
- 	if (bd) {
- 		if (bd->bd_tr) {
--			gfs2_trans_add_revoke(sdp, bd);
-+			if (tr)
-+				gfs2_trans_add_revoke(sdp, bd);
-+			else
-+				 gfs2_remove_from_ail(bd);
- 		} else if (was_pinned) {
- 			bh->b_private = NULL;
- 			kmem_cache_free(gfs2_bufdata_cachep, bd);
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index e4219a04d16e..83b5bab56377 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1339,27 +1339,44 @@ static int gfs2_truncate_inode_pages(struct inode *inode)
- 	struct gfs2_sbd *sdp = GFS2_SB(inode);
- 	struct address_space *mapping = &inode->i_data;
- 	bool need_trans = gfs2_is_jdata(ip) && mapping->nrpages;
--	int ret;
-+	int ret = 0;
- 
- 	/*
- 	 * Truncating a jdata inode address space may create revokes in
- 	 * truncate_inode_pages() -> gfs2_invalidate_folio() -> ... ->
- 	 * gfs2_remove_from_journal(), so we need a transaction here.
- 	 *
--	 * FIXME: During a withdraw, no new transactions can be created.
--	 * In that case, we skip the truncate, but that doesn't help because
--	 * truncate_inode_pages_final() will then call gfs2_invalidate_folio()
--	 * again, and outside of a transaction.
-+	 * During a withdraw, no new transactions can be created.  We still
-+	 * take the log flush lock to prevent truncate from racing with
-+	 * gfs2_log_flush().
- 	 */
- 	if (need_trans) {
- 		ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
- 		if (ret)
--			return ret;
-+			down_read(&sdp->sd_log_flush_lock);
- 	}
- 	truncate_inode_pages(mapping, 0);
--	if (need_trans)
--		gfs2_trans_end(sdp);
--	return 0;
-+	if (need_trans) {
-+		if (ret)
-+			up_read(&sdp->sd_log_flush_lock);
-+		else
-+			gfs2_trans_end(sdp);
-+	}
-+	return ret;
-+}
-+
-+static void gfs2_truncate_inode_pages_final(struct inode *inode)
-+{
-+	struct gfs2_inode *ip = GFS2_I(inode);
-+	struct gfs2_sbd *sdp = GFS2_SB(inode);
-+	struct address_space *mapping = &inode->i_data;
-+	bool need_lock = gfs2_is_jdata(ip) && mapping->nrpages;
-+
-+	if (need_lock)
-+		down_read(&sdp->sd_log_flush_lock);
-+	truncate_inode_pages_final(mapping);
-+	if (need_lock)
-+		up_read(&sdp->sd_log_flush_lock);
  }
  
- /*
-@@ -1398,10 +1415,8 @@ static int evict_linked_inode(struct inode *inode, struct gfs2_holder *gh)
+-static void gfs2_trans_drain_list(struct list_head *list)
++static void gfs2_trans_drain_list(struct gfs2_sbd *sdp, struct list_head *list)
+ {
+ 	struct gfs2_bufdata *bd;
  
- clean:
- 	ret = gfs2_truncate_inode_pages(inode);
--	if (ret)
--		return ret;
- 	truncate_inode_pages(metamapping, 0);
--	return 0;
-+	return ret;
+ 	while (!list_empty(list)) {
+ 		bd = list_first_entry(list, struct gfs2_bufdata, bd_list);
++		struct buffer_head *bh = bd->bd_bh;
++
++		WARN_ON_ONCE(!buffer_pinned(bh));
++		clear_buffer_pinned(bh);
++		trace_gfs2_pin(bd, 0);
++		atomic_dec(&sdp->sd_log_pinned);
+ 		list_del_init(&bd->bd_list);
+-		if (!list_empty(&bd->bd_ail_st_list))
+-			gfs2_remove_from_ail(bd);
+-		kmem_cache_free(gfs2_bufdata_cachep, bd);
++		brelse(bh);
+ 	}
  }
  
  /**
-@@ -1472,7 +1487,7 @@ static void gfs2_evict_inode(struct inode *inode)
- out:
- 	if (gfs2_holder_initialized(&gh))
- 		gfs2_glock_dq_uninit(&gh);
--	truncate_inode_pages_final(&inode->i_data);
-+	gfs2_truncate_inode_pages_final(inode);
- 	if (ip->i_qadata)
- 		gfs2_assert_warn(sdp, ip->i_qadata->qa_ref == 0);
- 	gfs2_rs_deltree(&ip->i_res);
+  * gfs2_trans_drain - drain the buf and databuf queue for a failed transaction
++ * @sdp: the filesystem
+  * @tr: the transaction to drain
+  *
+  * When this is called, we're taking an error exit for a log write that failed
+  * but since we bypassed the after_commit functions, we need to remove the
+  * items from the buf and databuf queue.
+  */
+-static void gfs2_trans_drain(struct gfs2_trans *tr)
++static void gfs2_trans_drain(struct gfs2_sbd *sdp, struct gfs2_trans *tr)
+ {
+ 	if (!tr)
+ 		return;
+-	gfs2_trans_drain_list(&tr->tr_buf);
+-	gfs2_trans_drain_list(&tr->tr_databuf);
++	gfs2_trans_drain_list(sdp, &tr->tr_buf);
++	gfs2_trans_drain_list(sdp, &tr->tr_databuf);
+ }
+ 
+ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
+@@ -1185,7 +1190,11 @@ static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
+ 	return;
+ 
+ out_withdraw:
+-	gfs2_trans_drain(tr);
++	if (sdp->sd_jdesc->jd_log_bio) {
++		bio_io_error(sdp->sd_jdesc->jd_log_bio);
++		sdp->sd_jdesc->jd_log_bio = NULL;
++	}
++	gfs2_trans_drain(sdp, tr);
+ 	/**
+ 	 * If the tr_list is empty, we're withdrawing during a log
+ 	 * flush that targets a transaction, but the transaction was
 -- 
 2.53.0
 
