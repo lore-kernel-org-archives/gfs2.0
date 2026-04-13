@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A243DDDDD
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668283C9EF1
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091961; cv=none; b=RqFhIJ4bMUnpu/CF/qSucuuGN6MEtb+odB0gw23xouE4Yk1i966wWdKdamyXVFIZuQ1f6W8mUqBd1MEI2JcfWQI627V9Xl0FOaL7PVO0uyXsmtwsAmh3F192N1VPCL9Sva6rRMVEXgObd8r0QCqEC4SHKRqzGJX37+vfkFoSbok=
+	t=1776091964; cv=none; b=E6Z4bNcoohm8HET11c5fr0si7VYAV0NsSCSq7H8sS9lQZ9/59J6XNUcm6kOOVs1Lp4jEovVrX/eg5YAzzI6VdHZzMqZNAyBrhBzN78aWnKXFQUSj1oRQXfSAlIJvVPD2bfJgUZPD9lmh3xSqzJsoYTmAivTTOa+7Q1TSxVMBSxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091961; c=relaxed/simple;
-	bh=WlDu/lkBdjhtb/hHbPdDiF30qsc7e6haHoXwFf9h3yg=;
+	s=arc-20240116; t=1776091964; c=relaxed/simple;
+	bh=L7q4lqLNraxR2WMeeg6kdNnWspqih69Fa5c0UV+PV70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=uNDAKTfhAWwAuWJV8vjeTJw33v1UlFZkzcCBAaTcPwESHA4A0CAr0onnGn01WCgQiPYYY/9AVuOU60i7dlJGaWfAADaLv3p4p+6HfQE5Md0TLa4pA6eMVK1dWXBLowaz8IGjIeT28YJvJz3CgnHEnEuzNn04ofhV8zFoA8Xt7C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FcWbvv6S; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=AYB6NJQHTwZkW7UG9KrhIa/GI+CdokF3kCd66JDJ/d+QfkzfBlcBQBeVtO1Wacs90tyMd8NGzFwyynBTBKVbXfVwPiQz7Dy0a4mHHDKBG740Z2pA8z6Y1dxsIqJNlN+D1Ttech7ZgLUXAt1ojz1bM1fOsmGKuatVXHOJ/WdKcSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PawKxA91; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FcWbvv6S"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PawKxA91"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776091960;
+	s=mimecast20190719; t=1776091962;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RgXZE03y641KP+NXIMxfrR0GwgDQo2utYEN2HkolrQc=;
-	b=FcWbvv6SwvXDYHcsX7MXrXly7+uv83HGBs8vDaWGmlUimg460HcKV6X7lRFGxR2cfaJ/zQ
-	RfLHHZ25OndnFKYo46jUaUA8RybGlWSet8wePMopwDBOPc6Kzr8Kyl6FmUzaOZMxh2rMIm
-	1xShQmyqzPXUiU37BUa2780oFQMHPvM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=gwtQS+j+rYAiG/WZSitGpQo+KxEgaL+WkvXFyBFe3Ng=;
+	b=PawKxA91D8AlN2OTwghKPAcZWeeZDm/GTT+IVI4rqnGshGBt6A79k1YYn6w89ckP6373h9
+	mn/3WJ3HJiPr06su+H1fG5YjSqHv6PItSVb0jv4/wtYu+6jynpwUX3ApQEpTE35zjB5Foy
+	ykfN+IAuBTcnUglNk+8hXOOzwtZnujI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-SZmDTWSqO3elpZkfOzpY2Q-1; Mon,
- 13 Apr 2026 10:52:38 -0400
-X-MC-Unique: SZmDTWSqO3elpZkfOzpY2Q-1
-X-Mimecast-MFC-AGG-ID: SZmDTWSqO3elpZkfOzpY2Q_1776091958
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-w1bGzDwDMPq8c1OfYX47Mg-1; Mon,
+ 13 Apr 2026 10:52:40 -0400
+X-MC-Unique: w1bGzDwDMPq8c1OfYX47Mg-1
+X-Mimecast-MFC-AGG-ID: w1bGzDwDMPq8c1OfYX47Mg_1776091959
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DB6BD1800BC1
-	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:37 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7287318011FF
+	for <gfs2@lists.linux.dev>; Mon, 13 Apr 2026 14:52:39 +0000 (UTC)
 Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.156])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF7F819560AB;
-	Mon, 13 Apr 2026 14:52:36 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7580219560AB;
+	Mon, 13 Apr 2026 14:52:38 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 16/18] gfs2: wait for withdraw earlier during unmount
-Date: Mon, 13 Apr 2026 16:52:09 +0200
-Message-ID: <20260413145211.881752-17-agruenba@redhat.com>
+Subject: [PATCH 17/18] gfs2: hide error messages after withdraw
+Date: Mon, 13 Apr 2026 16:52:10 +0200
+Message-ID: <20260413145211.881752-18-agruenba@redhat.com>
 In-Reply-To: <20260413145211.881752-1-agruenba@redhat.com>
 References: <20260413145211.881752-1-agruenba@redhat.com>
 Precedence: bulk
@@ -58,42 +58,32 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6SFR_eQKANxnQ_9QIP9ZvwGg0pB_Pfp0g8mDaBkcvNQ_1776091958
+X-Mimecast-MFC-PROC-ID: aIX3uuzy6ZR0Ya7umDoiD0TfNHQHf2USgWdv981Ns4k_1776091959
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-During an unmount, wait for potential withdraw to complete before calling
-gfs2_make_fs_ro().  This will allow gfs2_make_fs_ro() to skip much of its work.
+In gfs2_evict_inode(), don't issue error messages once a withdraw has already
+occurred.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/super.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/gfs2/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 83b5bab56377..b0b0bc5c9d20 100644
+index b0b0bc5c9d20..938d271ae226 100644
 --- a/fs/gfs2/super.c
 +++ b/fs/gfs2/super.c
-@@ -596,6 +596,9 @@ static void gfs2_put_super(struct super_block *sb)
- 	}
- 	spin_unlock(&sdp->sd_jindex_spin);
+@@ -1483,7 +1483,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 	if (gfs2_rs_active(&ip->i_res))
+ 		gfs2_rs_deltree(&ip->i_res);
  
-+	/* Wait for withdraw to complete */
-+	flush_work(&sdp->sd_withdraw_work);
-+
- 	if (!sb_rdonly(sb))
- 		gfs2_make_fs_ro(sdp);
- 	else {
-@@ -605,8 +608,6 @@ static void gfs2_put_super(struct super_block *sb)
- 		gfs2_quota_cleanup(sdp);
- 	}
- 
--	flush_work(&sdp->sd_withdraw_work);
--
- 	/*  At this point, we're through modifying the disk  */
- 
- 	/*  Release stuff  */
+-	if (ret && ret != -EROFS)
++	if (ret && !gfs2_withdrawn(sdp) && ret != -EROFS)
+ 		fs_warn(sdp, "gfs2_evict_inode: %d\n", ret);
+ out:
+ 	if (gfs2_holder_initialized(&gh))
 -- 
 2.53.0
 
