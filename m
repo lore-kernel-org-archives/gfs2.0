@@ -1,63 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F633E47B;
-	Thu, 16 Apr 2026 02:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D4B3AEF26;
+	Thu, 16 Apr 2026 11:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776308072; cv=none; b=qDJ/srKgbugFAlbwwu3NyBNcjC9f2Gk5SieYvK+d7Qicg+ge2BOI4QzkzfCqgUay88vpGRmxFva1d793FZWM0xeQ7NbrN8rurW/uqUk2gupIzsm+ADMZSN8SYLZERo43J6tmfkRDoQi7/bN8pcUXxsf10lKZ6aspd0hSJsip6Ys=
+	t=1776339722; cv=none; b=h8cNYBM0iKK01pycufCXveisqXEQib+p8KOlYVIyGVMBGI3ibr4sKPmSXMRrhkCHjUe5A+K8kgaIJG69EVw8sl6mIGyyxPb6axB4Yf3pyMBN05cNQb6DXEya5QCOrVTCxOT9oi4h3BJP1+d0gKtPHLw94R7F1QExG7DF0EKNYcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776308072; c=relaxed/simple;
-	bh=++5RHM3i53gNj9fV+W4ANCL2rgu4/Gp6pCBZUL9/33g=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=b4cQUfiZyzBVYIfQ0IjeMVU9tsJab8xr8MhxKTc+yoRsgeTaKYpyT777qRcsVQ0/7C3WBMz63zpDp1Iw9L+eb5Pc9kCTN2mE+ppNWaAbQ3w1qkMwKlo6ZnIvJPR4fQYUIV3nKwhQVJkng6FHgnoenEX4scg4cAEmqZJK2EwiNRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RblNiBEs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776339722; c=relaxed/simple;
+	bh=q3t+BJxkXr+ZxgM2h5B9CO/tSr/WWi4WVN5HEqQFxqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rsE+JnkPKy+34dlhulAhebSr5o5VEt7b7nufvJhd9PAeMVZ0cT1rU9g/Tmer86t/DL5Qu2qmegEh5zhBQUQ+zVgH1u+9YWj5WNjq56KmTNOSwY3EP8u+T5QjRhwjoHGfm2EPSC2Egbwdy1JZ6+ag82tXnFva3Y2rNm0ha/ltOiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=Efx22gDg; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RblNiBEs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4B2C19424;
-	Thu, 16 Apr 2026 02:54:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776308072;
-	bh=++5RHM3i53gNj9fV+W4ANCL2rgu4/Gp6pCBZUL9/33g=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=RblNiBEscuZfl0t895f/plDRx9xgKH0gCsXgfBoa771kiaTtdyW64kJFSt7cYfGWI
-	 k4yjmNpvQJT+Lrh5f3DkRSxlb8vLa8zWPVq9osT24cNY/ve3YA78p+9xCq3tFZ6Nn7
-	 ohVcD7FtYVvGDWMMHlPKS2xYEiI2K/ZfUgXrJoWxR1OXIsVYUYoKAcnUfI601r9l2J
-	 vZUq7MPy8cByqRw+MGiiRqI1bnz8JRVTNdmGJieli1LbH/B3Nm1BXN2SlumV9taZb0
-	 8aX6xteuNpHWE8Oo8jy/up4sQWqW6HxRiTgGd+RBD/lvdCcvNOtEBxSzqQdcd8o2py
-	 HPUnPKXNHBosw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF26380A964;
-	Thu, 16 Apr 2026 02:54:02 +0000 (UTC)
-Subject: Re: [GIT PULL] gfs2 changes for 7.1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260414121908.887366-1-agruenba@redhat.com>
-References: <20260414121908.887366-1-agruenba@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260414121908.887366-1-agruenba@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-7.1
-X-PR-Tracked-Commit-Id: 74b4dbb946060a3233604d91859a9abd3708141d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4da0dd95be3b0321bf9687fb1a3c2fed3319c032
-Message-Id: <177630804077.2583492.17061721265928570621.pr-tracker-bot@kernel.org>
-Date: Thu, 16 Apr 2026 02:54:00 +0000
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="Efx22gDg"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4fxGLy35gqz9tyP;
+	Thu, 16 Apr 2026 13:41:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1776339706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ocUUntbXmmQloQOXTxlmrYLQwvM7r/1WClhRvHiQMzY=;
+	b=Efx22gDgWgUgExobnRTIo2/TOPPsFYpyR/DVqOSJxLXMmaecgjnJzVRQNXGvXflS3JlEh0
+	J90GgNUiRvKnF4cZBjoNRpEbwkr7AjObQbuAcNa2tUava0LpXKgBmZValW7dKFaNdpntBw
+	jNN+VKwK6FopkuwCTKzWQ6wcbQ4XreY1j0dwRo4pm/P49DLtWqX0wQ3ml0rbjC3bXl2ixi
+	rz5fSaMDElFxmYbgJf1Dc2jznngbuD8ooYL/bjprO8mI/xIbL7I2Yp0+F0OBRq2gXweuSD
+	D/RwW2sT9gDXafGYsS1HSCmdvWMAMAbxv1QuMhgEY6ffcE+0a1qiS9KpgjWBLA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of cyphar@cyphar.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=cyphar@cyphar.com
+Date: Thu, 16 Apr 2026 21:41:12 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
+	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
+	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+Message-ID: <2026-04-16-selfless-milky-wasps-shin-p6liRL@cyphar.com>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260328172314.45807-2-dorjoychy111@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y4sat5dvbvjuuxwb"
+Content-Disposition: inline
+In-Reply-To: <20260328172314.45807-2-dorjoychy111@gmail.com>
+X-Rspamd-Queue-Id: 4fxGLy35gqz9tyP
 
-The pull request you sent on Tue, 14 Apr 2026 14:19:07 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-7.1
+--y4sat5dvbvjuuxwb
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+MIME-Version: 1.0
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4da0dd95be3b0321bf9687fb1a3c2fed3319c032
+On 2026-03-28, Dorjoy Chowdhury <dorjoychy111@gmail.com> wrote:
+> This flag indicates the path should be opened if it's a regular file.
+> This is useful to write secure programs that want to avoid being
+> tricked into opening device nodes with special semantics while thinking
+> they operate on regular files. This is a requested feature from the
+> uapi-group[1].
+>=20
+> A corresponding error code EFTYPE has been introduced. For example, if
+> openat2 is called on path /dev/null with OPENAT2_REGULAR in the flag
+> param, it will return -EFTYPE. EFTYPE is already used in BSD systems
+> like FreeBSD, macOS.
+>=20
+> When used in combination with O_CREAT, either the regular file is
+> created, or if the path already exists, it is opened if it's a regular
+> file. Otherwise, -EFTYPE is returned.
+>=20
+> When OPENAT2_REGULAR is combined with O_DIRECTORY, -EINVAL is returned
+> as it doesn't make sense to open a path that is both a directory and a
+> regular file.
+>=20
+> [1]: https://uapi-group.org/kernel-features/#ability-to-only-open-regular=
+-files
+>=20
+> Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+> ---
 
-Thank you!
+Aside from the nit below, feel free to take a
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Reviewed-by: Aleksa Sarai <aleksa@amutable.com>
+
+> diff --git a/fs/open.c b/fs/open.c
+> index 681d405bc61e..a6f445f72181 100644
+> --- a/fs/open.c
+> +++ b/fs/open.c
+> @@ -960,7 +960,7 @@ static int do_dentry_open(struct file *f,
+>  	if (f->f_mapping->a_ops && f->f_mapping->a_ops->direct_IO)
+>  		f->f_mode |=3D FMODE_CAN_ODIRECT;
+> =20
+> -	f->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC);
+> +	f->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | OPENAT2_REGUL=
+AR);
+
+It's not clear to me why you dropped this, I didn't see a review
+mentioning it either. (General note: Ideally the cover letter changelog
+would mention who suggested a change in brackets after the changelog
+line so it's easier to track where a change might've come from.)
+
+I would personally keep it since O_DIRECTORY is not dropped (I do find
+it interesting that O_EXCL is dropped too -- you could imagine a
+userspace program wanting to know that the file was opened with O_EXCL,
+though it provides you very little information).
+
+--=20
+Aleksa Sarai
+https://www.cyphar.com/
+
+--y4sat5dvbvjuuxwb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCaeDK2BsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQKJf60rfpRG+0aQEAmwzPPQPnvabbHhUf0fph
+pJ6P46S5QXpATvNGjZyCr+8BAJ6lJf8lp5gf9hbdzip1EZghre/B+AfvsiTxQSXn
+uF4A
+=Z/uP
+-----END PGP SIGNATURE-----
+
+--y4sat5dvbvjuuxwb--
