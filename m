@@ -1,102 +1,145 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9584E3BD222
-	for <gfs2@lists.linux.dev>; Thu, 16 Apr 2026 13:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.185
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776347570; cv=none; b=VB0y5ef9HdGH9RQMF+AWUITJblg7sGBM9psdFvkA20rIw94QSE/HkBt2vUbvDrQ6WTAq2+S8xijbaqpXm/i5yFt9S32dN8VCAi41Dn1F1G2YJl8sFBwl5LjXX8KfI8k85n2A+wYQRiXBeOTpuRKFDdjmJvsLsymQ4AFAkY8S3LI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776347570; c=relaxed/simple;
-	bh=fR/tBoBER6gaLeI/7QI7VQve0Bl/0GNLwOyUMXYytLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZH+OpXVVTyEbXKmAFHSf2+tGnpeGzokcoZsW+kslxZKx/EBf2TO/A1CcfgDcyz1U0L4pFSO9HKunL8BJi5ZaUS2Jyyaikrym5kJ81teNmH/5FPTREUUOD9dG+vQFUNj9yzgjJBsK/nJxEkZd+DTPdTCU/zl8t77sO4Vp37mNZhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=Bm77yj7r; arc=none smtp.client-ip=195.121.94.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC1C3DE441
+	for <gfs2@lists.linux.dev>; Thu, 16 Apr 2026 14:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776349302; cv=pass; b=DybybFCyVayoHbF9WUsAzlbyDYR8xL6GJjSH/uTIazHY13kSkyMTAT8sH5cNh55S1EZNEqj4uQs9+HPMQ9a3uXXneTQoi3Z5nQbPi0LBN7swdmCRI+DMEBxwCP2sKzENSu84upIKs01HLRttHY7JNd04VProyiZPmY7gYiEkVfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776349302; c=relaxed/simple;
+	bh=MPSStrB5WQZXjuD8LVCQJRe2/QVXDyCuUjmphyPyAE8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=GPqajYoGVz7/Ogw6B89TG6IBSzlzNtwkqZjowSQ4n7+9yjgPEx0ISv8RCP1i4mHSKNf2GJl0Mrd4uTzUbtJsZ1ovMM3zTWFL9UL2V4GqjOwbmThk4y2Y1Q7LDNAigfpdCTu5WeIwAO2pgr4aUVLVd1bD7WeRTZh5lhiMb5EUY44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OeMPlua3; arc=pass smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="Bm77yj7r"
-X-KPN-MessageId: 85cdf846-399b-11f1-8ff3-005056999439
-Received: from smtp.kpnmail.nl (unknown [10.31.155.8])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 85cdf846-399b-11f1-8ff3-005056999439;
-	Thu, 16 Apr 2026 15:52:35 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OeMPlua3"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-56f72d27e7eso602936e0c.0
+        for <gfs2@lists.linux.dev>; Thu, 16 Apr 2026 07:21:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776349300; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MoH3d41DXyExSn2lFgM6jo7Mjy8oa7kIYBXaiKb7ug2jj6XOuPUS68bjyB0IcoUt5f
+         GM/JO9Wo956cHDeolvb5xNKolBBJOLAlpTqhG49T9HKIQuW3RE7pnQp8myKo+QHVH0fQ
+         U9w/fDdfbCdSuDAhpKD0/w3YAyCMe8Usld/ND4hNxlMVmqY1IG8VpKXI7K5/ANbkFCFa
+         yKA+tCHpbtLf4GMZCtthD0EGOBpLnAdu0RQXP/qlS685CP4lthOl2ZxXECFhLHpfJefX
+         6TwZECssqdOA1L2crocSL8D+vK1gGjAtxcnDYSJuWfAd+AoPlbVWNu75hD2htrh2IOCh
+         y+RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lO8+zS1qnuU0zyUegMfTKGfj9Y7WBTQIob4jJAeuR1I=;
+        fh=2a6B3cuvTyBZEw0/wP1nabV5ea2fR4T0MQ4L3RemejI=;
+        b=B+VgEd9SmRBfuU56K1ZAxz+YMjJ7jZAWUZhOVa2WHGpNvA+WJZimqSJOmUwALwQdy0
+         suZgGLraD5PC2Q51age+ILWHhx6SvG5sg4ZNLA4lbGracVHUM++YlvRztrWwFIxXLDlk
+         AwaWgOlZjuHrgKDQSLbPWlxvJtAbxyB4IrE5KJRiOFlPeLWA4+e9N1rD1YFstuiMrwq6
+         Q7siix29EiArdtT44caIuJA1Jk2PMiCoYGYBeOroxGl6sg+WC+1RYIOQC90mV1JNcn4Y
+         QY1JbPUYjTAlWoaBsPhCkLYGgXPYWBLHJ7p0tIzWzhmcTMx8uVUlXizhv8Oty6Q5XHsd
+         A0LA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=RY3GV0svFcqA7cCPfaszOdrLtyZzjsraL0boACERiuo=;
-	b=Bm77yj7rU+vFVFKmploFWuopQ4KP+9igOSdE0V5MOiwez+S33NTIsehbR1j0n6dXZu41MUPS/90DQ
-	 YhiuMN1WLzUHU7KpmkEat0WYXoQzkIz8Og/kG5wSV2/5ImE1mxpiGGvI5aK76Tz7l80BRMAFs7nQ1d
-	 CPy7X5zk9GXk51USXbyPp8KeSZ/XK3amZfb8WI4J3fSYe6UCbfx0iSIoOZXd3LiT/tBj6AwPFuYgQA
-	 47Dytq6I7Yj7kQ4xjO4wXCZ2Nf5ipmHIPOVpcdHgNgLT53voKuqg0g3vuodBDCXAjAmrXvngNNtamV
-	 eZk1FD/joeTHZPZTENk6OuS8hVJLjRQ==
-X-KPN-MID: 33|SKts585cr2zFmJQ8YyKkgci4hPBI42ksYs/aslJTT0Xxn/5/EiobnXRqyHnOzvH
- sdJqHs49lRVAWOLYzfVfJBbhGeUXrowLvqdkHsEcuCm0=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|EO0iyE5VadVg69F0c4xTu20RSvoYNTh4lUdRxSkFOravu4ka0cNe+tq1cWW2Zay
- NHnz46xH6R3GRJWVTZMYDPA==
-Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 85299d3e-399b-11f1-9c0b-00505699d6e5;
-	Thu, 16 Apr 2026 15:52:34 +0200 (CEST)
-Date: Thu, 16 Apr 2026 15:52:34 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
-	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
-	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
-	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
-Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
-Message-ID: <aeDpIgfDaIKEaBcL@lt-jori.localdomain>
-Mail-Followup-To: Jori Koolstra <jkoolstra@xs4all.nl>, 
-	Dorjoy Chowdhury <dorjoychy111@gmail.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
-	adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
-	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
-	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
-References: <20260328172314.45807-1-dorjoychy111@gmail.com>
- <20260328172314.45807-2-dorjoychy111@gmail.com>
+        d=gmail.com; s=20251104; t=1776349300; x=1776954100; darn=lists.linux.dev;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lO8+zS1qnuU0zyUegMfTKGfj9Y7WBTQIob4jJAeuR1I=;
+        b=OeMPlua3Z3TT5Q1TqctrFMg1ptjPcOLwMAet1GqQdTFpZk5lq8GU5WCpvI4IF3Dlu/
+         tDswPokH+ud26HlGSQN5J8xEV0JmiOc8GqyFAiQiOYG93asF27LuUokElBNr5rG5Q+A1
+         oy7j9jlLnhAOITEZzRUgSvJ4FklKoszHcubZTj5PYeQ4pl/xfJsgcGw/p1wV16GIFvgp
+         KEQrc7wEVrguUBOcBA2kM7WFHE1PuBq9AAbTY550Pd3Dwfbh18Z/0wSFm20W2NWdS85R
+         Dc1eFfuuWv1DMv+QkSm1wPI6y7gsu32yABSesdgidHIN9oJV42XG9mi+sEHhrrAP2D+r
+         xWqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776349300; x=1776954100;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lO8+zS1qnuU0zyUegMfTKGfj9Y7WBTQIob4jJAeuR1I=;
+        b=n+rPp2yk03zyIjfWsBGoS2CD0fzWm7bqhNt9Fm0Nq2uyViNiB/UWpzznb9/nZRI/sd
+         2UY+moOsrbut8noscQLlLU3husxBqUEWDw0O4Ms6axMjPU8TjLnfw55dP8uWyVEAG6SA
+         MPsb+FbaxMsdw975tckwt0WCquy1ndYfkxuGuRb2rhTFLoG5N5HDcwtcA7hpUfriCF3o
+         AM2oDF0M7XtWTFzhQTX9BAHO6e//glq7MzN+c5w9o3PrkLnB0vD4xEBnkJ1IvYgEoko+
+         micXLBxESwu2NwX+1qvpfCtQ0A9jndJctrGEwcXK+bgU8pBjOnajfS2epLiJnIyxL5Kj
+         W9Xg==
+X-Forwarded-Encrypted: i=1; AFNElJ/jWbX0Bo4kxPfPNwadYpa5O14WWz7qT3cEbIDeyZFo5GI7uS037GozsCy7T0NS3xueqcYe@lists.linux.dev
+X-Gm-Message-State: AOJu0YykuYK+5nn/TOkdCE4lzTCMPWiYnjOfsy8+81zSGTeGdVP6eo0T
+	4/n4n7+m2HQIpokFWrtcs6RTZldt4cimMXdIR+NvmYzTR+dpvyg+ouzWb8CDzNfUADVho+kBUFv
+	U8o/EK0mc+NFMrlWHSP57v47nOosTfRo=
+X-Gm-Gg: AeBDiesrPUibifmO7MmJEtb4pK0JyuVy3zcqjrZ5U+0Th0IxmvIs60biq9UFps3z1I4
+	2nIT9/Q616zHwyKfVeK5uMC8HFmFB/c9t1YDztOU/oeQMECPXuxEXfzCRzmz5wyAY+5B2mQI2hI
+	UqN3p2hmLidOUjd6psbWh+JxtyKEc0wd94L+U54zX/LDjZjbtDIbCKoARBOsMzNaWLfoO7RRg2F
+	EInDeSNmuLxyE9YnRfgObcZ5wLqv2kEMnHYYAu8GkYz8EEB7cgQsxPXxIjP0SYqj669t2URTSrN
+	VzF5TRlC7X5SZ98/LvY4EoJFwB5U2w08NURjV8Ek0A==
+X-Received: by 2002:a05:6122:608f:b0:56a:8f7c:49aa with SMTP id
+ 71dfb90a1353d-56f94725c32mr1843622e0c.4.1776349300022; Thu, 16 Apr 2026
+ 07:21:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260328172314.45807-2-dorjoychy111@gmail.com>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260328172314.45807-2-dorjoychy111@gmail.com> <aeDpIgfDaIKEaBcL@lt-jori.localdomain>
+In-Reply-To: <aeDpIgfDaIKEaBcL@lt-jori.localdomain>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Thu, 16 Apr 2026 20:21:28 +0600
+X-Gm-Features: AQROBzCVSNvQ07toCtw3F1sHPLg5Z_-nre3iq90Dw0MflD8nQqdsL_RQ56rFZc0
+Message-ID: <CAFfO_h6pkyX=uN5uoXda6toTtT6KsahfBNBLom9i21HdZ7JOmQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
+To: Jori Koolstra <jkoolstra@xs4all.nl>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com, 
+	alex.aring@gmail.com, arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, 
+	smfrench@gmail.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, tsbogend@alpha.franken.de, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, 
+	andreas@gaisler.com, idryomov@gmail.com, amarkuze@redhat.com, 
+	slava@dubeyko.com, agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, 
+	sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
+	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 28, 2026 at 11:22:22PM +0600, Dorjoy Chowdhury wrote:
-> diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/uapi/asm/fcntl.h
-> index 50bdc8e8a271..fe488bf7c18e 100644
-> --- a/arch/alpha/include/uapi/asm/fcntl.h
-> +++ b/arch/alpha/include/uapi/asm/fcntl.h
-> @@ -34,6 +34,7 @@
->  
->  #define O_PATH		040000000
->  #define __O_TMPFILE	0100000000
-> +#define OPENAT2_REGULAR	0200000000
+On Thu, Apr 16, 2026 at 7:52=E2=80=AFPM Jori Koolstra <jkoolstra@xs4all.nl>=
+ wrote:
+>
+> On Sat, Mar 28, 2026 at 11:22:22PM +0600, Dorjoy Chowdhury wrote:
+> > diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/u=
+api/asm/fcntl.h
+> > index 50bdc8e8a271..fe488bf7c18e 100644
+> > --- a/arch/alpha/include/uapi/asm/fcntl.h
+> > +++ b/arch/alpha/include/uapi/asm/fcntl.h
+> > @@ -34,6 +34,7 @@
+> >
+> >  #define O_PATH               040000000
+> >  #define __O_TMPFILE  0100000000
+> > +#define OPENAT2_REGULAR      0200000000
+> >
+>
+> I don't quite understand why we are adding OPENAT2_REGULAR inside the
+> O_* flag range. Wasn't this supposed to be only supported for openat2()?
+> If so, I don't see the need to waste an O_* flag bit. But maybe I am
+> missing something.
 >
 
-I don't quite understand why we are adding OPENAT2_REGULAR inside the
-O_* flag range. Wasn't this supposed to be only supported for openat2()?
-If so, I don't see the need to waste an O_* flag bit. But maybe I am
-missing something.
+Yes, OPENAT2_REGULAR is only supported for openat2. I am not sure if I
+got a specific review to not add OPENAT2_REGULAR in the O_* flag 32
+bit range. But as far as I understand, for the old open system calls
+we can't easily add new O_* flags as the older codepaths don't strip
+off unknown bits which openat2 does. It's not easy to add new O_*
+flags for the old open system calls since that could break userspace
+programs. So I guess it's okay to add OPENAT2_REGULAR in the 32 bits
+range anyway? (Also lots of code paths take 32bit flags param right
+now and those would need changing to take uint64_t instead but this is
+of course not a reason to not add the new flag outside of the 32
+bits).
 
-Thanks,
-Jori.
+Regards,
+Dorjoy
