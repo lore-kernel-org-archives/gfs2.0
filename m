@@ -1,69 +1,60 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6A35FF6E
-	for <gfs2@lists.linux.dev>; Sat, 18 Apr 2026 13:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512F83750D7;
+	Mon, 20 Apr 2026 03:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776517868; cv=none; b=sapAxgG1b88Jfd8GtNtCVHRUJEw361mzvADocMNDmI2VlzB3cjAftJOxykMGP36SSO01r2/RrkIA17mSVwN9XEYOHCIVhQWjqa6jixhMq29h16sTqZbE7L7HFwAeS2rw4fW8gtSHczdMnfUv/wstN8iehhYwQFXxW6eW/rEAe8Q=
+	t=1776655145; cv=none; b=U1A98wZov7EwS7UW5GSuAmuwYQ2zx94usEkr/uI8rb2aVqzj1uh8/cPIpsSI8jhPF5cH0cjleD1jYNXoXuxeMhz68pN7T3YLLkIZDrkEZ9+4j1VEziKNfECol32Pi7Ovdgs13idPM3PehddN+0MS+pKxGIllkgler8pQwbdBcP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776517868; c=relaxed/simple;
-	bh=+xkPi3Ts+vZPFs6LV6P2y7SlqE1SPgnlAU7DIjbAE+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HFgwG8IBm01Q3QE4VgNdGc82NRi3LLS7yw1P1jaA0HHbNIDkge3mgHzKDmPEjWlmubuTu5GJQZza8QBytHWb+kDrd2J2JsVv2ve97ByVRYNigFOWeNjYiKDGW+si7eW6VWRf2+WEESltg8ch/DD+6nRSA149K1zsEvfKlaFbLZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goZcNswm; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776655145; c=relaxed/simple;
+	bh=1bxUidDXnuX4Rrmsk0OJ2++qsMgWu032Ens3VIhCm0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=amOvOLCXwtIst2lcRscK2CTBEBjOSSO2r6ieLCBVa3smTbDseAMiH5TrEnAHXA+QiC+RBjgUC/TX/qbr0ruL2KWYk/bEeWv7Xm+sAkvJmNmD4/aorAgCxMRjn9X/G5rKsf6QUWAA7ws0SflO37c3nUMF8MuMgbXI0HQ281qKA8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cG512nBl; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goZcNswm"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4887ca8e529so11468515e9.0
-        for <gfs2@lists.linux.dev>; Sat, 18 Apr 2026 06:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776517865; x=1777122665; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qy9Y3Izl0t2648U+SRfDngw68zD0TyRucNL5CZqQfL4=;
-        b=goZcNswmlee0zBtVMVczvWvT9BJ/WMD/Eg0/Tlt40m8Ljwg95gC8aUeFVUN3KqP5Qo
-         BkiFNCDVT9cwfiM/xg2HqPGo8pTJHCUSqBJ6+runmRUGWr9bzUv9KaaUTltn7/2a+LtS
-         BqM9jUgbi2pg/hue/7MG6vvF4MeFqYLFwUGj3VFWxF6iz3px52kxUDcry0/EvI48PsqF
-         cyooZIB/SUFoOyEa87gr+Gg2RO6w9qw2pMn3wfn7QUwgCFjoif7YL9GJWMNltfu6YyYO
-         qUXBQkDg6o3IWCk77jn+36VvN11ODuNkcGWoYESqeneE+g8TTQXrJkLFju7x381/wwpv
-         12XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776517865; x=1777122665;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qy9Y3Izl0t2648U+SRfDngw68zD0TyRucNL5CZqQfL4=;
-        b=Kz9VAk9NjOuhlda/3XwasMANVHqjBGbG2sH9UxRNKRciIVk/k0G6SIbXI17jwkPIDz
-         AlrX0Sq0DrLVLE96J7ZqxKi1BnbEeLi4dgENowgHDYrFNhdo3VHrF5c33PpBIjoc+C4O
-         +ZB1HPRFMSFx79ewMu0WRMdfQ8AmKPsLe9THEWuJPSduvqNpPYCWlHQ7Sfzs+wtAbQl4
-         j7newdb8yxbdIIWLS9n8ZrUFRPFkIy3cJIAQLP9H3R+akw6XYe3Q6dLewvd7Hv6P+AkN
-         qeIwkxMWnSddejXctL9j6U+5ZAN6l97dwFfkB4iaL+tJoi4+9jEqlqH4Dz4MTI1uZQbH
-         Y2Zg==
-X-Gm-Message-State: AOJu0Yx3fbJG4yvPJKaqNqOEPRjX0iOeAtYSYV2mnDQyW+W/VAujt7gF
-	y3JZRQaRL7MIx3yv8Xtqstf+OFjec1OH1M4n+KUNAU6xHBVs4887bi8nTqf27q0=
-X-Gm-Gg: AeBDieuTOaNxy4+I3vqE+wWHuGSZ/k2ffbj/7a8iBQ/EfXIZ3FEParglClQrlenLwyb
-	I6KhPx1tfHi0tM0DgcDa0A9LYmPNK2sD733QF6oP1Mm2XBlMOA2TLX3TXZgvucgTD6IrD8fSEMB
-	B2R/3frWXWoNUa40Lm3F1csUyqiNkSfbGYzqzWRO1AZYyJniTckHcOfX7TVd8jgFrwaiUa6VE0p
-	KpPiEvk0Zj9sAu8brtRANWaE+uFXfUv8nK+qMjRFKoI26pdbquxmVdfpfUn4Rd78c8YrHL2GEd1
-	PP8ERA/O0uExsQKRpCnQ7mzXyd8E/zDBS4zgjf2kRtfpelfO1r8KXSzLq06CMKHb7d1Ho+SC3en
-	6+geKIUPZABc72sqU2IA/p99v4JjRzsPozwrNHcNtN/fTr3IrSywmovhXyMemf+LB5rn8uoZcOB
-	f+xgQ=
-X-Received: by 2002:a05:600c:6089:b0:487:22ad:403e with SMTP id 5b1f17b1804b1-488fb8ba594mr86850415e9.14.1776517864809;
-        Sat, 18 Apr 2026 06:11:04 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4c221cdsm13191103f8f.0.2026.04.18.06.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2026 06:11:04 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: agruenba@redhat.com
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cG512nBl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776655143; x=1808191143;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1bxUidDXnuX4Rrmsk0OJ2++qsMgWu032Ens3VIhCm0E=;
+  b=cG512nBlTGBKGiIqEM36lMUzau4VdDJtoayIz8T6qsWSTupqbagUZWHu
+   ZScsqF+IBq35VrtxqRnEOPIZQwjhEgK4f2dsTc9zMnmymjb9dyeXyQFH1
+   QKIyiPPM1VnTbWbUJplHY+9AIQGVZAaHmgp8scjWAiOaFlkYvcgizDzjR
+   p2XqUoahE7IPruxOBJrDa6yTk1WIzSt8tLQ0E1tptv4IZC7xYwwHzWfUd
+   1K980RlAuuHmpKgcO/Hwv5dsLaWdvk24hSC6gDmHspIgL8Hk0aqEwhCfA
+   0Re1ZXVp5oWwgRaeBIGldWjeVU2aXVipjOhMoVx/4ScFFqakWlukMRSgz
+   w==;
+X-CSE-ConnectionGUID: Zrc9NWZ0RjGkgjYhJTm6vw==
+X-CSE-MsgGUID: nVG9Uwt+QgSKu5F2raEP2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="80153592"
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; 
+   d="scan'208";a="80153592"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2026 20:19:02 -0700
+X-CSE-ConnectionGUID: oAjuM7i7ScaGz4zFrO+pgg==
+X-CSE-MsgGUID: E1jeWM3iRXqbP7yLfpKP3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,189,1770624000"; 
+   d="scan'208";a="225097829"
+Received: from qat-server-366.sh.intel.com ([10.67.116.195])
+  by fmviesa009.fm.intel.com with ESMTP; 19 Apr 2026 20:19:00 -0700
+From: Jie Wang <jie.wang@intel.com>
+To: agruenba@redhat.com,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org
 Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com
-Subject: [PATCH] gfs2: replace WARN_ON_ONCE with fs_warn in rgblk_free
-Date: Sat, 18 Apr 2026 13:11:03 +0000
-Message-ID: <20260418131103.1058618-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	linux-rt-devel@lists.linux.dev,
+	Jie Wang <jie.wang@intel.com>,
+	syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: fix quota init duplicate scan
+Date: Mon, 20 Apr 2026 11:06:22 +0000
+Message-Id: <20260420110622.9742-1-jie.wang@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -72,41 +63,103 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Tristan Madani <tristan@talencesecurity.com>
+gfs2_quota_init() checks for duplicate quota_change IDs while holding
+qd_lock and the quota hash bucket bitlock. That path used
+gfs2_qd_search_bucket(), which takes a lockref reference
+via lockref_get_not_dead().
 
-rgblk_free() triggers WARN_ON_ONCE when gfs2_rbm_from_block() fails
-due to a block number outside the resource group bounds. This can be
-triggered by a corrupted filesystem image, causing unnecessary kernel
-warnings.
+On PREEMPT_RT this may sleep, which is not allowed under the bucket
+bitlock, triggering "sleeping function called from invalid context".
 
-Replace WARN_ON_ONCE with fs_warn() to provide a more informative
-diagnostic message while avoiding the kernel warning.
+Use a no-ref bucket lookup in this path, then continue duplicate handling
+without taking a lockref there.
 
-Reported-by: syzbot+3e2c95229d1ab81a0bfd@syzkaller.appspotmail.com
-Fixes: 5b924ae2b7b4 ("GFS2: fix rgrp end rounding problem for bsize < page size")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Also save the current qc pointer before iterator advance, and clear that
+saved slot on duplicate so the correct on-disk entry is zeroed.
+
+This patch fixes a bug reported by syzbot.
+
+Reported-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=642d0561f78362d67d3f
+Tested-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Signed-off-by: Jie Wang <jie.wang@intel.com>
 ---
- fs/gfs2/rgrp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/gfs2/quota.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 26d6c1eea5591..7707c1b1082f8 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -2266,8 +2266,11 @@ static void rgblk_free(struct gfs2_sbd *sdp, struct gfs2_rgrpd *rgd,
- 	struct gfs2_bitmap *bi, *bi_prev = NULL;
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 5290865f27f1..0191ba211670 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -275,6 +275,25 @@ static struct gfs2_quota_data *gfs2_qd_search_bucket(unsigned int hash,
+ 	return NULL;
+ }
  
- 	rbm.rgd = rgd;
--	if (WARN_ON_ONCE(gfs2_rbm_from_block(&rbm, bstart)))
-+	if (gfs2_rbm_from_block(&rbm, bstart)) {
-+		fs_warn(sdp, "rgblk_free: block %llu outside rgrp\n",
-+			(unsigned long long)bstart);
- 		return;
++/*
++ * Lookup variant for callers which already hold qd_lock + bucket lock.
++ */
++static struct gfs2_quota_data *
++gfs2_qd_search_bucket_noref(unsigned int hash, const struct gfs2_sbd *sdp, struct kqid qid)
++{
++	struct gfs2_quota_data *qd;
++	struct hlist_bl_node *h;
++
++	hlist_bl_for_each_entry_rcu(qd, h, &qd_hash_table[hash], qd_hlist) {
++		if (!qid_eq(qd->qd_id, qid))
++			continue;
++		if (qd->qd_sbd == sdp)
++			return qd;
 +	}
- 	while (blen--) {
- 		bi = rbm_bi(&rbm);
- 		if (bi != bi_prev) {
++
++	return NULL;
++}
++
+ 
+ static int qd_get(struct gfs2_sbd *sdp, struct kqid qid,
+ 		  struct gfs2_quota_data **qdp)
+@@ -1435,6 +1454,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 		for (y = 0; y < sdp->sd_qc_per_block && slot < sdp->sd_quota_slots;
+ 		     y++, slot++) {
+ 			struct gfs2_quota_data *old_qd, *qd;
++			struct gfs2_quota_change *dup_qc = qc;
+ 			s64 qc_change = be64_to_cpu(qc->qc_change);
+ 			u32 qc_flags = be32_to_cpu(qc->qc_flags);
+ 			enum quota_type qtype = (qc_flags & GFS2_QCF_USER) ?
+@@ -1458,23 +1478,22 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 
+ 			spin_lock(&qd_lock);
+ 			spin_lock_bucket(hash);
+-			old_qd = gfs2_qd_search_bucket(hash, sdp, qc_id);
++			old_qd = gfs2_qd_search_bucket_noref(hash, sdp, qc_id);
++			spin_unlock_bucket(hash);
+ 			if (old_qd) {
+ 				fs_err(sdp, "Corruption found in quota_change%u"
+ 					    "file: duplicate identifier in "
+ 					    "slot %u\n",
+ 					    sdp->sd_jdesc->jd_jid, slot);
+ 
+-				spin_unlock_bucket(hash);
+ 				spin_unlock(&qd_lock);
+-				qd_put(old_qd);
+ 
+ 				gfs2_glock_put(qd->qd_gl);
+ 				kmem_cache_free(gfs2_quotad_cachep, qd);
+ 
+ 				/* zero out the duplicate slot */
+ 				lock_buffer(bh);
+-				memset(qc, 0, sizeof(*qc));
++				memset(dup_qc, 0, sizeof(*dup_qc));
+ 				mark_buffer_dirty(bh);
+ 				unlock_buffer(bh);
+ 
+@@ -1483,6 +1502,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 			BUG_ON(test_and_set_bit(slot, sdp->sd_quota_bitmap));
+ 			list_add(&qd->qd_list, &sdp->sd_quota_list);
+ 			atomic_inc(&sdp->sd_quota_count);
++			spin_lock_bucket(hash);
+ 			hlist_bl_add_head_rcu(&qd->qd_hlist, &qd_hash_table[hash]);
+ 			spin_unlock_bucket(hash);
+ 			spin_unlock(&qd_lock);
 -- 
-2.47.3
+2.34.1
 
