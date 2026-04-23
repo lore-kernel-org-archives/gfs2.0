@@ -1,132 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-82.freemail.mail.aliyun.com (out30-82.freemail.mail.aliyun.com [115.124.30.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6166F2D0C94
-	for <gfs2@lists.linux.dev>; Wed, 22 Apr 2026 12:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D6522D4C3
+	for <gfs2@lists.linux.dev>; Thu, 23 Apr 2026 03:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776860121; cv=none; b=C5OqERw7DxDSR5FTgkG9g59nLU+2BlNRGfKVGf4Tzu0Z8PCWiedbKT0BwQ3sJ9md9KUVm5085nLYh3E33fTJzOoXwVkKENLZv+41xpC2NWQKGCCkwfmHfziAnX9yMycrlifAxygGzY+/hG3zsKJB/wvH63rYr9VJ6eYapJ4HzR0=
+	t=1776914441; cv=none; b=LoPeNzAvtX3Oglh2AhIRNrDR/CScy7SAxq2vxXw//kSs/h9b++M+LsqvKFd9qXsbk6tTl5keOgd5tbhQ4t/tQsHH2ck12N9T3sxTV/xZuyXsmZpNxXgAEveEFcp3RYe3isRe/eJajL/7eDFBAN89lKdgeIAwmUC4Ww1mKG4xacw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776860121; c=relaxed/simple;
-	bh=rl5ttTB+5z7n8iszQNoA+98gom704EMdiWE3tNhYlMA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CtA35RkAschKRGXjezYTUH/fch1QAaqlSDdGpjEQ1p5tOiB4f9f4tW7oj28XYEMEAThOhv+LLdS6PwAHOZE99A/yLOiIvCrbLoshG/lnXpKOVE2UO4dGKIwHSJf4Gwu7sjJvm08JWKS1l0fHcpPVkUUS4zG57ywMCi8n4zWGJnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QejuzHdV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776914441; c=relaxed/simple;
+	bh=I8hELIny7FNKUVBOWrMq/lhxyBAmeuZhX2S/0Uv9MEs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Bcxci17TrO1XxZKG9ZhnO2X412xYfAUmCohojrF78DoUlSmvYJ690V2PzQilOjTwyLF4n10ACTlJDrIudRxdm+t6l/XaoLj6Qutbx0BVeAq8pdiQIQ5Twqv56c0nlGK5WtZBjJwAXr98AvYWKH1TrMhIr8B0KoaUCKCYrcP/jjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=F6ZWyAM2; arc=none smtp.client-ip=115.124.30.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QejuzHdV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776860119;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ypYS6lP+i3uWpu48VgfJsPtf+ABeQ7z9yqYNYwxZrNs=;
-	b=QejuzHdVNlaLNyOZQFzcWDL8D+oOlx5090gb29M++vQmwgh3cg+3cVnKhV4/dWxhVZGh37
-	Y/SVSISrFERy404fJy/YXrnYQ9M9dbW4wuLux8hv7odr3UdFUKem1zxaCRb9vm/6Hk87Ky
-	nvrdHagqDQrtUrpbGddRVduQNJ6e+qE=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-Nag1F-4WNxuqWBn_TIQqdQ-1; Wed, 22 Apr 2026 08:15:18 -0400
-X-MC-Unique: Nag1F-4WNxuqWBn_TIQqdQ-1
-X-Mimecast-MFC-AGG-ID: Nag1F-4WNxuqWBn_TIQqdQ_1776860117
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b4530a90fdso108108595ad.1
-        for <gfs2@lists.linux.dev>; Wed, 22 Apr 2026 05:15:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776860117; x=1777464917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ypYS6lP+i3uWpu48VgfJsPtf+ABeQ7z9yqYNYwxZrNs=;
-        b=KsvG5wPSBUinR43IlOYSEZx9pZRllCQLRYn9GjTNFzkUYOoZiBG6lg85zwXZs1rbww
-         MmRb5/y48Qi7HXOeNEysriQpe+EU7E7ZbIgqolN8I1kzh5hBIXnmwFvMRE46L5PuBld1
-         +6NZIb7q1pCklsEOvwLa4OBSPh40b9KMCJme3ea3mBNEicAeRukmiOD4/Rr+DGe26V9N
-         XR6IFtsYZIlPFBB+J5F24GPzz72LNpjD4rX6l1ANgGBuIwRBd4dWI+TKzfhYSSvkupFH
-         cb87BT+BnrSsRIRWJ+ts8nPdT1mqB+pV0hwfKVFvOYq1LbO/OyTjiMAoC6kl69pSXAH6
-         Dz6g==
-X-Forwarded-Encrypted: i=1; AFNElJ+Oy5G797ViDu0HiYXEtW1lTcwpj1bPf/Uuis9NGb2ihIdBOM/a6ZcjFpmql5Q7i8B53rgs@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjIYH09LvYEKeivBKf0zw9sAJy7gxv4X/RljzxqISJIOQrRFmq
-	qr5LOulnIb1/E/z9RGSyM5oCjuQ5yIWm9Lnoz3bxP+SGBKWLSvoaEicYgiON0EpfKabtnF4zHHN
-	3n6lF/PsF4QQ6Z+cpxx2cOXwq2+q+rumDrlT27aisWEWkboyaYlwoAqVu/562ne8odopjSqSuFh
-	ZNhI0SWZvAtI0JZF9iMcOpIwiyJIfKhg==
-X-Gm-Gg: AeBDievX95soky5k1qjN63JMaNEqL+ZBGEWJGPUo8TeDT80j14dfDaqiQJJrmfCIwfo
-	y5F4sahsB0o9EDNMTscE38VqU1yRNps42nCghi8OzYmq+kYljsGcug9I19XxtMGTKStdz/4K3Bb
-	9Ly3cWZpsQuI7BP08CxTrBBbsaMmj+fembRlMaYASstChqgPnZYyp6B1dGKTGmdq8f2Fy1peGOq
-	OwcziBMydSG6oyf48aMrGF0WiKnLx2gvdEmo4ypvj1V6xl0FHQsbobQmGX4J7/lbLOREiPctGGD
-X-Received: by 2002:a17:902:9696:b0:2b0:4fb6:85ce with SMTP id d9443c01a7336-2b5f9f7cec4mr160647645ad.21.1776860117159;
-        Wed, 22 Apr 2026 05:15:17 -0700 (PDT)
-X-Received: by 2002:a17:902:9696:b0:2b0:4fb6:85ce with SMTP id
- d9443c01a7336-2b5f9f7cec4mr160647295ad.21.1776860116609; Wed, 22 Apr 2026
- 05:15:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="F6ZWyAM2"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=aliyun.com; s=s1024;
+	t=1776914437; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=1TVO0IAj8sUuaMrJ+zElAkcm6qSIuAxDoIvGoa6chdA=;
+	b=F6ZWyAM22BlptiSsQiLk0viVlpzs1kbDp+rnj3JlFE6C+fNZ8FFWNTEASjKYN9bw4/0h6IBWaSxQj2Cyc2N5jTqy/c7FRRtG7nxmDW6aVwdmtTRwxkDPt5HTFeN0klPzWQY8uW8MQNbfIWfD2+XKE6uRRIg0DKdEceZkt8plLZo=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07358088|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0586597-0.00734281-0.933998;FP=6914912296662133975|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ruohanlan@aliyun.com;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---0X1YFzfZ_1776914426;
+Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X1YFzfZ_1776914426 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Apr 2026 11:20:36 +0800
+From: Ruohan Lan <ruohanlan@aliyun.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: gfs2@lists.linux.dev,
+	Andrew Price <anprice@redhat.com>,
+	syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 5.10.y] gfs2: Validate i_depth for exhash directories
+Date: Thu, 23 Apr 2026 11:20:02 +0800
+Message-Id: <20260423032002.2803528-1-ruohanlan@aliyun.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHc6FU5vQWtHNotdA5cjxF6iE4kFRj1E9K55+BBss256KaaKyw@mail.gmail.com>
- <20260421163207.48565-1-jie.wang@intel.com> <20260421163207.48565-3-jie.wang@intel.com>
-In-Reply-To: <20260421163207.48565-3-jie.wang@intel.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 22 Apr 2026 14:15:03 +0200
-X-Gm-Features: AQROBzADzjA5yQaiPXjfyOVDpsiXeklWiS6dREnm1MV7hFEvZ0CgssEceXOhfeo
-Message-ID: <CAHc6FU4VNTMJT3cVbaUr_gUSe4=wo2tNP2XT-XbxzqEyaRh_sQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] gfs2: move quota_init qc iterator increment
-To: Jie Wang <jie.wang@intel.com>
-Cc: bigeasy@linutronix.de, clrkwllms@kernel.org, gfs2@lists.linux.dev, 
-	linux-rt-devel@lists.linux.dev, rostedt@goodmis.org, 
-	syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OI6ghlCt3vyuEDmXTy3vdt27djSeM6QK0i3xGYK1bQ0_1776860117
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 21, 2026 at 10:44=E2=80=AFAM Jie Wang <jie.wang@intel.com> wrot=
-e:
-> Move qc++ from the loop body into the for-loop increment
-> expression in gfs2_quota_init().
->
-> This keeps iterator progression explicit and avoids mixing pointer
-> advance with duplicate-slot handling in the loop body.
->
-> Signed-off-by: Jie Wang <jie.wang@intel.com>
-> ---
->  fs/gfs2/quota.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> index df1cb99c3344..b9e13fe286be 100644
-> --- a/fs/gfs2/quota.c
-> +++ b/fs/gfs2/quota.c
-> @@ -1447,7 +1447,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
->
->                 qc =3D (struct gfs2_quota_change *)(bh->b_data + sizeof(s=
-truct gfs2_meta_header));
->                 for (y =3D 0; y < sdp->sd_qc_per_block && slot < sdp->sd_=
-quota_slots;
-> -                    y++, slot++) {
-> +                    y++, slot++, qc++) {
->                         struct gfs2_quota_data *old_qd, *qd;
->                         s64 qc_change =3D be64_to_cpu(qc->qc_change);
->                         u32 qc_flags =3D be32_to_cpu(qc->qc_flags);
-> @@ -1455,7 +1455,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
->                                                 USRQUOTA : GRPQUOTA;
->                         struct kqid qc_id =3D make_kqid(&init_user_ns, qt=
-ype,
->                                                       be32_to_cpu(qc->qc_=
-id));
-> -                       qc++;
->                         if (!qc_change)
->                                 continue;
->
-> --
-> 2.34.1
->
+From: Andrew Price <anprice@redhat.com>
 
-Thanks, I'll add this to for-next once -rc1 is out.
+[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
 
-Andreas
+A fuzzer test introduced corruption that ends up with a depth of 0 in
+dir_e_read(), causing an undefined shift by 32 at:
+
+  index = hash >> (32 - dip->i_depth);
+
+As calculated in an open-coded way in dir_make_exhash(), the minimum
+depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
+invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
+
+So we can avoid the undefined behaviour by checking for depth values
+lower than the minimum in gfs2_dinode_in(). Values greater than the
+maximum are already being checked for there.
+
+Also switch the calculation in dir_make_exhash() to use ilog2() to
+clarify how the depth is calculated.
+
+Tested with the syzkaller repro.c and xfstests '-g quick'.
+
+Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+[ To maintain consistency in error handling in gfs2_dinode_in(),
+use "goto corrupt" in v5.10. ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+---
+ fs/gfs2/dir.c   | 6 ++----
+ fs/gfs2/glops.c | 4 ++++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 4517ffb7c13d..7b11f7b7151a 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -60,6 +60,7 @@
+ #include <linux/crc32.h>
+ #include <linux/vmalloc.h>
+ #include <linux/bio.h>
++#include <linux/log2.h>
+ 
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -910,7 +911,6 @@ static int dir_make_exhash(struct inode *inode)
+ 	struct qstr args;
+ 	struct buffer_head *bh, *dibh;
+ 	struct gfs2_leaf *leaf;
+-	int y;
+ 	u32 x;
+ 	__be64 *lp;
+ 	u64 bn;
+@@ -977,9 +977,7 @@ static int dir_make_exhash(struct inode *inode)
+ 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
+ 	gfs2_add_inode_blocks(&dip->i_inode, 1);
+ 	dip->i_diskflags |= GFS2_DIF_EXHASH;
+-
+-	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
+-	dip->i_depth = y;
++	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
+ 
+ 	gfs2_dinode_out(dip, dibh->b_data);
+ 
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 87f811088466..a4050468fecc 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -11,6 +11,7 @@
+ #include <linux/bio.h>
+ #include <linux/posix_acl.h>
+ #include <linux/security.h>
++#include <linux/log2.h>
+ 
+ #include "gfs2.h"
+ #include "incore.h"
+@@ -452,6 +453,9 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	depth = be16_to_cpu(str->di_depth);
+ 	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
+ 		goto corrupt;
++	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
++	    depth < ilog2(sdp->sd_hash_ptrs))
++		goto corrupt;
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-- 
+2.43.0
 
