@@ -1,121 +1,165 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C7337F002
-	for <gfs2@lists.linux.dev>; Thu, 23 Apr 2026 05:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776922506; cv=pass; b=kKPrM2R3H8nIMIm+fRSsf7SJBaJDE8zTHMD6hMiQBXUc+ow+qIqtCQUHepnVFXAlmkKTgsdyRb7MnxucfMOzb9UiTsXgnYgJpPU/5/2YaOg8WMukpUDHv3cNZF3lDwZZXXJkenAUvu13Ds20ybZQ373CwjsQs5zoQU1yhGzRD7o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776922506; c=relaxed/simple;
-	bh=nlovYeV1hp2rTBH4voPl8L4aUf+dnj2AJsurzi7qv1c=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=vCNjAooAXMtiprChQ2VBKAYTy/RMnHAfyz1PP/8ZXpOYUocBzVZv6FXXY3GYytM2sGSFIQI6JhN8ipEufIWGJTTY4/flzEYdGEurZ0pfDzGqYmUBu1HHhUxXwiMXuSUPlLAKo5xF1bZ7WBfeF7LKq4UU/KeAWeoAEqgRWIrvx5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PFaf3TfW; arc=pass smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041FB2868A9;
+	Thu, 23 Apr 2026 05:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776923538; cv=none; b=GVnvWECKLSrRPoq1cFQCAFbmMlyBpj5x08qDrNzUY9/L8LQMztMg7np+zVPxHcpkLLkx1W9ty2FmGmQdZMSVx1nuoHXKHcj6ithQzC8CngcTGUD1/uhLoWPIz82Fe5sJaVJuULx3J+ptG5mKnSwhX7uUMHtxwSeldU/fO/CT1E8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776923538; c=relaxed/simple;
+	bh=rKTzlYIzGEU/GP3toG2KejY1cHr+1TxjOTyx9Ez3Mpk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iGrnEFhGF9Wj6ulqIZ1av505pibkQAadyTu8Tajr/bts5SeW/2Sf7nFEFESzcIWNDXcEdQqdhyO9MmNQa1i78YsZN+xeBhTmcL+gfNGw/y87KFD+FU0M/g+9R1EOI06dN/04F1VtBZlGJkoPrRMJn/PQ2w/KwdcxKF0ht+aBmPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QgPmazqg; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PFaf3TfW"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7991db3dc98so69106807b3.0
-        for <gfs2@lists.linux.dev>; Wed, 22 Apr 2026 22:35:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776922504; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NCQcBRcW5ULQx43mx/qIdph0dxpbvh0/35/ekxHVMvGKVXDxSSpPJIKpiMZ86mb4cY
-         VlCmi2qDA0Bs22Xe0PoFjq5ARJKrxipUq0EoX40sxTC/R6/zo7BrIYk0TXQlQoWMzros
-         R9Mj8cGALCY/Lqs2ltXLEuBa5BmTsvi6QpEv5/y3n5BMosbIfrIlgpuRM9Vcvz8kIhvt
-         h1gCbUjrukk6t79KlUxiErpJThSqlK7KedE11GeTbFnDG22HgfDxwYqqXx2xnBBux6RQ
-         9C5tnWq2WpkvTr4KUVPlcHxHTEWHPWQAhdM0Gs+cjFqru98nbqkaIH34HZlYwCiwjw9I
-         6QdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=wHFYFFLNnFneINlGhMongHRhlLkwjKQT0tklhJvyskk=;
-        fh=JXPem03tfFl/MdxcNFT0iYtbxBTgthb4mcn2KjA+wWk=;
-        b=jEzyzFJuyDKBcyKOPa+aJ7IslDDgau6NX37T6qz40j9OvJuxWN4OlI38medPs5NTS7
-         JN+4BQD1oRLW+UHhLrTJufEq47yDM+Yk8bx3WRVj1kNTsv9E2Dcq+1RKgm6Xoeg2oWFa
-         bAP4CgqQ8we07IqVvWeGpBTy1XaCfaskzz3ULmSy5lCcIqDq3cLprx4CxR8gNLXN6Ebn
-         9YM/7Y8LHm51+upXNCa+FeeUzFF5ZoR5hWfMRIFekgWiNxIDOxaT7e2nGjlkwnxyaEzo
-         dUQdMZTAR5THDp+Po+sl85xJIwnN9Mo8PlHMk2r9/N+KUBHi0dodkTXDL9T1AdBzSK9C
-         qklA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776922504; x=1777527304; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wHFYFFLNnFneINlGhMongHRhlLkwjKQT0tklhJvyskk=;
-        b=PFaf3TfWACCou6u87pKdoi1IJQ18i5MVWYDyjX6o1a0BJqvtXc/iA5GKire+YbRtkI
-         qfkf9ltGD6rYiiYIHS2M/JdACmunXJdW2/yt4Z2saDwOiI8kW41xqlsTqCwiomLjiNVK
-         jtjF61yShKm5h4QipisoaIaGdsI4ERCbpGoybtN2xsuSoxbJzVUonKHiPP2P5EkEuA1k
-         DOHFwUwVNkHASNG2nFQTiFsseJ6Ym1vpQpdYEvGqqkjkUFG7WACn1svFAI0h9JFR1Jz6
-         xKW3jpK9Spw5d0CwhAbpb6CKJJ78CiJl5ANwxnpnoiCVN7RbwnwZ2FET4VYAlbieUw4N
-         qrSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776922504; x=1777527304;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wHFYFFLNnFneINlGhMongHRhlLkwjKQT0tklhJvyskk=;
-        b=Hxf4IhHGY4ViryXG5ikDk8w1EsKLA9/73obQz/yvRVuy9J+802LhMlYvcZzxDEgqPL
-         bJJadMlCmiiPy0suY8EvaILXv02w9iuAXAi0Fcsn33tJ8CWHGLUCG5XGiALgKXQu4MEi
-         dPfN2gj3fXzGzQLfZ/2KgSuFPnWjH1kwArzxxKtL1EBkIp35lJPoOX4zh09gt6SnD7T9
-         Y6qq6iqxwIY8V8NyePgfw0b/RZ+soTHbHEdUd3lKDlzr7UnIxhSZvr7ol2rodSO5SZud
-         6qbdMtflD8CRTzMAEpX6k8yMEfuMQ0QEGmmFdcKpEBFiEUo582lf+6tZHgwlJhKu0dHk
-         9nJg==
-X-Gm-Message-State: AOJu0YxRpdSBTsU1VJ0HdXuUTghf9cr0KBXX4rimec5g+UaBwIynkH68
-	+HfGZp3Fhznb5T3Lz1GpiPbd7oWLFa1VWJxX8Ol+ZQYj4WBYYekhWSKKY9TJkxG1cWxzKV/dz9k
-	1e3zZAaN8Twey+02YvWaPFBiIAB+AWpA=
-X-Gm-Gg: AeBDieumE2Q7zmgPLv+DkZ4GfRbcitNoBPdzCfmLvsY58ZAZzNO3DuBE3nMe+JEOCzi
-	dEavd/52u7ucwelttVHbD5RWiyiyG79t53RuEdg0XuIFtW0nC9qfOFtyWwNxVL4XlhGQI9bnsaL
-	T2esJyzuenCVDGdmGruhtPst5wJTs+JNuBb4ySsOjgzCbUwSypRsDvjwtjQWE2MoT8N5bRIgpmk
-	dG5TG80h8OthsPFFFiF8u5TYIwkoygTEDDPRCk6wm5fiH3miLiF9yrrq4YvGG2w2ISuCs8ktxWT
-	G62OMWDqUcZZU27ZrzH8
-X-Received: by 2002:a05:690c:4992:b0:7b3:edc7:9b8f with SMTP id
- 00721157ae682-7b9eccec11amr260553967b3.0.1776922504466; Wed, 22 Apr 2026
- 22:35:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QgPmazqg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776923537; x=1808459537;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rKTzlYIzGEU/GP3toG2KejY1cHr+1TxjOTyx9Ez3Mpk=;
+  b=QgPmazqg3qU9g0bT4RiD9On3ZrwUvj2Mn7o8TuT+KvrD1YGr3nS0eqNv
+   mvyzC+CEg7Sm8v3IbN7XXKsHv4MX6H/Z6uhBKlOwxc9ZIqtbj50VePNar
+   oObjFWMOEH9iFUHrUQ/74ByBN+DvGx4HSXGGgY7LN5vBaEk2PWhuS+JUa
+   K+vxNl4uPZq0IWTDcMGQJh8bPwZnBLa92zV1XWeVCcXU/Ym9Iz5IW4e8e
+   gq3BBymQu44EXWUSh82YkIrar2p4ppu6FObO45doSz8+SlChPVMzrxbFO
+   xO+GBibZQ04Gh/dcDo0uKxdb+7AYwjN45UyzxOIU778tonp9reZ87z7ko
+   w==;
+X-CSE-ConnectionGUID: NQwV1K4uRCej2XGbQMiO4Q==
+X-CSE-MsgGUID: 27loXouTTrm4HEuuUOFKXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="81747554"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
+   d="scan'208";a="81747554"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 22:52:16 -0700
+X-CSE-ConnectionGUID: cSaCokB5Q623OCkARR85HA==
+X-CSE-MsgGUID: f4Cf/74SQgyDdoKAcj+J7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
+   d="scan'208";a="234349390"
+Received: from qat-server-366.sh.intel.com ([10.67.116.195])
+  by fmviesa004.fm.intel.com with ESMTP; 22 Apr 2026 22:52:14 -0700
+From: Jie Wang <jie.wang@intel.com>
+To: agruenba@redhat.com
+Cc: bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	gfs2@lists.linux.dev,
+	jie.wang@intel.com,
+	linux-rt-devel@lists.linux.dev,
+	rostedt@goodmis.org,
+	syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Subject: [PATCH v3] gfs2: fix quota init duplicate scan
+Date: Thu, 23 Apr 2026 13:39:34 +0000
+Message-Id: <20260423133934.118970-1-jie.wang@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAHc6FU5Zx4jQ9_c7wtJeeSF=V895hwCa47OvK0Qm_oFGK1YbPg@mail.gmail.com>
+References: <CAHc6FU5Zx4jQ9_c7wtJeeSF=V895hwCa47OvK0Qm_oFGK1YbPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Ginger <ginger.jzllee@gmail.com>
-Date: Thu, 23 Apr 2026 13:34:52 +0800
-X-Gm-Features: AQROBzBaqQqFQaWabV6inclLIjBjcfbJjkonKQq4T5Mn_5OXxBX-QVbo4gp6yBc
-Message-ID: <CAGp+u1ZE7UsQ4sSUHBKQXU8x3M_jwK=ek1urSjEtd3jXQGFmVg@mail.gmail.com>
-Subject: [bug report] Potential order violation in fs/dlm/midcomms.c, between
- 'dlm_midcomms_addr()' and 'dlm_midcomms_exit()'
-To: aahringo@redhat.com, teigland@redhat.com
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Dear Linux kernel maintainers,
+gfs2_quota_init() checks for duplicate quota_change IDs while holding
+qd_lock and the quota hash bucket bitlock. That path used
+gfs2_qd_search_bucket(), which takes a lockref reference via
+lockref_get_not_dead().
 
-My research-based static analyzer found a potential atomicity bug
-within the 'fs/dlm' subsystem, more specifically, in
-'fs/dlm/midcomms.c'.
+On PREEMPT_RT this may sleep, which is not allowed under the bucket
+bitlock, triggering "sleeping function called from invalid context".
 
-Kernel version: long-term kernel v6.18.9
+Use a no-ref bucket lookup in this path, then continue duplicate
+handling without taking a lockref there.
 
-Potential concurrent triggering executions:
-T0:
-dlm_midcomms_addr
-    --> node = kmalloc(sizeof(*node))
-    --> hlist_add_head_rcu(&node->hlist, &node_hash[r]); [t0]
-    --> node->debugfs = dlm_create_debug_comms_file(nodeid, node); [t3]
+Refactor gfs2_qd_search_bucket() to build on top of the no-ref helper
+so lookup traversal stays in one place.
 
-T1:
-dlm_midcomms_exit
-   --> hlist_for_each_entry_rcu(node, &node_hash[i], hlist) [t1]
-   --> dlm_delete_debug_comms_file(node->debugfs); [t2]
+This patch fixes a bug reported by syzbot.
 
-In T0, the freshly allocated midcomms_node is first added to the
-globally visible 'node_hash' list, and then has its 'debugfs' field
-set up.
-In this case, in T1, the exit function can first iterate over the
-'node_hash' list and access a 'debugfs' field that has not been set up
-yet.
-The concurrent buggy order is t0 -> t1 -> t2 -> t3, causing order violation.
+Reported-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=642d0561f78362d67d3f
+Tested-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
+Signed-off-by: Jie Wang <jie.wang@intel.com>
+---
+v3:
+- Keep spin_unlock_bucket(hash) in the if (old_qd) path.
+- Drop the extra spin_lock_bucket(hash) before insertion.
+ 
+ fs/gfs2/quota.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-Please kindly check at your convenience. Thank you for your time and
-consideration.
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 5290865f27f1..934397248fe7 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -254,9 +254,13 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, str
+ 	return NULL;
+ }
+ 
+-static struct gfs2_quota_data *gfs2_qd_search_bucket(unsigned int hash,
+-						     const struct gfs2_sbd *sdp,
+-						     struct kqid qid)
++/*
++ * Lookup variant for callers which already hold qd_lock + bucket lock.
++ */
++static struct gfs2_quota_data *
++gfs2_qd_search_bucket_noref(unsigned int hash,
++			    const struct gfs2_sbd *sdp,
++			    struct kqid qid)
+ {
+ 	struct gfs2_quota_data *qd;
+ 	struct hlist_bl_node *h;
+@@ -264,12 +268,22 @@ static struct gfs2_quota_data *gfs2_qd_search_bucket(unsigned int hash,
+ 	hlist_bl_for_each_entry_rcu(qd, h, &qd_hash_table[hash], qd_hlist) {
+ 		if (!qid_eq(qd->qd_id, qid))
+ 			continue;
+-		if (qd->qd_sbd != sdp)
+-			continue;
+-		if (lockref_get_not_dead(&qd->qd_lockref)) {
+-			list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
++		if (qd->qd_sbd == sdp)
+ 			return qd;
+-		}
++	}
++
++	return NULL;
++}
++
++static struct gfs2_quota_data *
++gfs2_qd_search_bucket(unsigned int hash, const struct gfs2_sbd *sdp, struct kqid qid)
++{
++	struct gfs2_quota_data *qd;
++
++	qd = gfs2_qd_search_bucket_noref(hash, sdp, qid);
++	if (qd && lockref_get_not_dead(&qd->qd_lockref)) {
++		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
++		return qd;
+ 	}
+ 
+ 	return NULL;
+@@ -1458,7 +1472,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 
+ 			spin_lock(&qd_lock);
+ 			spin_lock_bucket(hash);
+-			old_qd = gfs2_qd_search_bucket(hash, sdp, qc_id);
++			old_qd = gfs2_qd_search_bucket_noref(hash, sdp, qc_id);
+ 			if (old_qd) {
+ 				fs_err(sdp, "Corruption found in quota_change%u"
+ 					    "file: duplicate identifier in "
+@@ -1467,7 +1481,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 
+ 				spin_unlock_bucket(hash);
+ 				spin_unlock(&qd_lock);
+-				qd_put(old_qd);
+ 
+ 				gfs2_glock_put(qd->qd_gl);
+ 				kmem_cache_free(gfs2_quotad_cachep, qd);
+-- 
+2.34.1
 
-Best regards,
-Ginger
