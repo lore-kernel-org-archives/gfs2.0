@@ -1,155 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992E145A05;
-	Thu, 23 Apr 2026 12:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6A141C6A
+	for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 04:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776947729; cv=none; b=aIPk30cLBx/YvXGPwrNmb/tKcBklPceAQNgLkNX0aYkOshKB5mxLdecFGLTFPgv+ZDYme0us5z5J7+vT0rkzFh3apQQ/vHGUeoy5zvLuPaKcVsbb3sTiuVFynf/GZzQX2e2AFd4fglcbZ46yKthZ9eE9X+IFZ9l3eRxoDhWVzlM=
+	t=1777003650; cv=none; b=tJocyfQ1IxDnF1YRfzcRvtcv4IDYLGQrYiDj7U6JUGl7dkBldcclKGQJ9akN/3zXwin9qViKgBJDUqzHlEJyNdgoRfVjWwRzdQACsypUkeQTYzoJAcF4snke+/hSJsSuZ5IzelrYczGX8uihjGcABPFq1usCT+JFjrhxRPNLSug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776947729; c=relaxed/simple;
-	bh=fgET4WMinVp/sWHJ7Z42x9/VB2GETJfml8E2Z2LxvOg=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type; b=ncgktSmWx//99B1jWWrVkSbOhnKTD6iexTVQJyIRgnEi/VjKE1bvnOgAfZt+gFtoerFx4pMGjoeAPvfdKi/VjzcdSX1JnmEhW/GcEO8frVjqMTFxHLqZ4fzBV0/Xfv1iBTG0gGVtccEm1b3blOGGOUiEsrFeGBiDBr2qpX79nTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC7MqcQw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777003650; c=relaxed/simple;
+	bh=OSrfRAoSSYSXcrxQaAwYIGgyrwjGtp7UD1HVOTmMqTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZN2jyOAug2aBtmnlfzr4adjVd4h6TfcVNBW7JhQbdp+eTVf5dbs5BsbunbQucn4y+CZfNcci+EW7bBeiOso5Y+wvWrpsLeMd008TXS0RtNeYHcr3Ekb+koxsfvQYaHH2NxkuGKZx0zzgE9WIfBQ/FVo52DkxUYSpaqkUe67hoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=X7GUBKdd; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC7MqcQw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0498FC2BCAF;
-	Thu, 23 Apr 2026 12:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776947729;
-	bh=fgET4WMinVp/sWHJ7Z42x9/VB2GETJfml8E2Z2LxvOg=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=KC7MqcQwyHkw+Hxm17XvheBdjY6K2ANs6xfub8AFERzjPhvk57ZSvB6HTnoWd8W5s
-	 gzgp0gSGPR7DJ4xCl02CaJu7nQPMSN5UmMZAHyiGO+GfYtAMHtCLeXPIzT7CuZFm9b
-	 yhypLZTydydGv2eM/pdNKYzuBaE79MbumKy8E4o8=
-Subject: Patch "gfs2: Validate i_depth for exhash directories" has been added to the 5.10-stable tree
-To: agruenba@redhat.com,anprice@redhat.com,gfs2@lists.linux.dev,gregkh@linuxfoundation.org,ruohanlan@aliyun.com,sashal@kernel.org,syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Apr 2026 14:35:06 +0200
-In-Reply-To: <20260423032002.2803528-1-ruohanlan@aliyun.com>
-Message-ID: <2026042306-depletion-overstock-6779@gregkh>
+	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="X7GUBKdd"
+Received: from localhost.localdomain (unknown [IPV6:240c:c001:1:2e07:80f7:50e8:7109:ab97])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3bf9301b1;
+	Fri, 24 Apr 2026 12:07:15 +0800 (GMT+08:00)
+From: Wxm-233 <2200013188@stu.pku.edu.cn>
+To: agruenba@redhat.com,
+	gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	Wxm-233 <2200013188@stu.pku.edu.cn>
+Subject: [PATCH] gfs2: keep per-bio end_io when splitting journal head reads
+Date: Fri, 24 Apr 2026 12:06:56 +0800
+Message-ID: <20260424040656.1366-1-2200013188@stu.pku.edu.cn>
+X-Mailer: git-send-email 2.45.2.windows.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+X-HM-Tid: 0a9dbdaba30803a1kunm726cce9b2e45b
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaH0wfVhgYQ0MfGkpCHUkdTlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJT0sYQRhLS0pBSkFJHktMQUNLHUxBTkseQ0FMSktCQRoZQk
+	xZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=X7GUBKddAgvlfqG1/cH/iwJlfGkfoROkafvoE3bcJmtIzschlOwV/ZKl0I/gfe1Np41A2DVZ+8wpwIgOvBOpOGkejALJZX0YkO0fXRlfdTU/C1PqZQGTSswYQiAVH+vxqAfD7/QVG1u7wA/qJGu2XnCvN/6A+Kx5JE85ukqnEI4=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
+	bh=9KJPtjao3PZB+rhi1RvsN6oGksFrGlxqTnMxud0d6P8=;
+	h=date:mime-version:subject:message-id:from;
 
+gfs2_find_jhead() can split a folio across two bios when part of the
+folio is already queued in the current bio and the remaining blocks
+need a new bio.
 
-This is a note to let you know that I've just added the patch titled
+That split path currently calls bio_chain(new, prev).  But journal read
+bios need to retain gfs2_end_log_read() and bi_private so that each bio
+completes its own folios with folio_end_read().  Replacing the new
+bio's completion handler with the block layer chaining callback breaks
+that expectation, and fuzzing workloads can hit a BUG in bio_chain()
+on this path.
 
-    gfs2: Validate i_depth for exhash directories
+Keep the per-bio completion state for the new bio and only submit the
+previous bio.
 
-to the 5.10-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     gfs2-validate-i_depth-for-exhash-directories.patch
-and it can be found in the queue-5.10 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From stable+bounces-240403-greg=kroah.com@vger.kernel.org Thu Apr 23 05:20:44 2026
-From: Ruohan Lan <ruohanlan@aliyun.com>
-Date: Thu, 23 Apr 2026 11:20:02 +0800
-Subject: gfs2: Validate i_depth for exhash directories
-To: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org
-Cc: gfs2@lists.linux.dev, Andrew Price <anprice@redhat.com>, syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com, Andreas Gruenbacher <agruenba@redhat.com>, Ruohan Lan <ruohanlan@aliyun.com>
-Message-ID: <20260423032002.2803528-1-ruohanlan@aliyun.com>
-
-From: Andrew Price <anprice@redhat.com>
-
-[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
-
-A fuzzer test introduced corruption that ends up with a depth of 0 in
-dir_e_read(), causing an undefined shift by 32 at:
-
-  index = hash >> (32 - dip->i_depth);
-
-As calculated in an open-coded way in dir_make_exhash(), the minimum
-depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
-invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
-
-So we can avoid the undefined behaviour by checking for depth values
-lower than the minimum in gfs2_dinode_in(). Values greater than the
-maximum are already being checked for there.
-
-Also switch the calculation in dir_make_exhash() to use ilog2() to
-clarify how the depth is calculated.
-
-Tested with the syzkaller repro.c and xfstests '-g quick'.
-
-Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[ To maintain consistency in error handling in gfs2_dinode_in(),
-use "goto corrupt" in v5.10. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wxm-233 <2200013188@stu.pku.edu.cn>
 ---
- fs/gfs2/dir.c   |    6 ++----
- fs/gfs2/glops.c |    4 ++++
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ fs/gfs2/lops.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/gfs2/dir.c
-+++ b/fs/gfs2/dir.c
-@@ -60,6 +60,7 @@
- #include <linux/crc32.h>
- #include <linux/vmalloc.h>
- #include <linux/bio.h>
-+#include <linux/log2.h>
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index 6586963..3d0fad3 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -481,12 +481,16 @@ static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
+ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs,
+ 				  sector_t sector, blk_opf_t opf)
+ {
++	bio_end_io_t *end_io = prev->bi_end_io;
++	void *private = prev->bi_private;
+ 	struct bio *new;
  
- #include "gfs2.h"
- #include "incore.h"
-@@ -910,7 +911,6 @@ static int dir_make_exhash(struct inode
- 	struct qstr args;
- 	struct buffer_head *bh, *dibh;
- 	struct gfs2_leaf *leaf;
--	int y;
- 	u32 x;
- 	__be64 *lp;
- 	u64 bn;
-@@ -977,9 +977,7 @@ static int dir_make_exhash(struct inode
- 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
- 	gfs2_add_inode_blocks(&dip->i_inode, 1);
- 	dip->i_diskflags |= GFS2_DIF_EXHASH;
--
--	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
--	dip->i_depth = y;
-+	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
- 
- 	gfs2_dinode_out(dip, dibh->b_data);
- 
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -11,6 +11,7 @@
- #include <linux/bio.h>
- #include <linux/posix_acl.h>
- #include <linux/security.h>
-+#include <linux/log2.h>
- 
- #include "gfs2.h"
- #include "incore.h"
-@@ -452,6 +453,9 @@ static int gfs2_dinode_in(struct gfs2_in
- 	depth = be16_to_cpu(str->di_depth);
- 	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
- 		goto corrupt;
-+	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
-+	    depth < ilog2(sdp->sd_hash_ptrs))
-+		goto corrupt;
- 	ip->i_depth = (u8)depth;
- 	ip->i_entries = be32_to_cpu(str->di_entries);
- 
+ 	new = bio_alloc(prev->bi_bdev, nr_iovecs, opf, GFP_NOIO);
+ 	bio_clone_blkg_association(new, prev);
+ 	new->bi_iter.bi_sector = sector;
+-	bio_chain(new, prev);
++	/* Each journal read bio must complete its own folios. */
++	new->bi_end_io = end_io;
++	new->bi_private = private;
+ 	submit_bio(prev);
+ 	return new;
+ }
+-- 
+2.45.2.windows.1
 
-
-Patches currently in stable-queue which might be from ruohanlan@aliyun.com are
-
-queue-5.10/gfs2-validate-i_depth-for-exhash-directories.patch
