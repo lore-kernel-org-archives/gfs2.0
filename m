@@ -1,85 +1,116 @@
-Received: from mail-m8221.xmail.ntesmail.com (mail-m8221.xmail.ntesmail.com [156.224.82.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D023F54D3
-	for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 20:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.82.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C5527453
+	for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 22:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777063947; cv=none; b=O32T4MnnALt2tPqDFeMI06ZhZ9w3CEw7Y4iOxPY5GZOFDC8JQ8DJyzp+cAu071WcAeYZf0sHyYHJUzFjJnO2E38JPItdnM4krsYGaYzzubr7iUp5CtO2xyu3Vcvk4RfAq26lY9LWf+B/Wsl/lYrWREujq9l2xFH7Vmm7DuLnxiM=
+	t=1777068768; cv=none; b=kBc/BlrwGydT2acAUK4+9vX34KCcsF+vv+/yMv4Zm3FlP31RDDCwM0f9dFJZ9M3e9rLXSOLZweEYZu8DuO7nTHQoT+Y8gVFQNGXKfxTuWf6BnPtGwmx948rDAJwraDbIV5zPVFTQYwPByYLkQw76ti4WLVO99B1ohFYIIQSr2II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777063947; c=relaxed/simple;
-	bh=uzVua+V4FP5/GUJ/Tncf81zDLP6aqQ6bBdYUSdFz574=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH/zD8/CHVcVPGzjLGzOPB2mF7zzOefnR5URkei9NgPhLqsBr408NYSrj0hW0QtcI88GMKYByL/LZty+UpN2m7qKG8zDRhvBWF1zssa5cQvltcQhvQMvPzYSu04coQ5zhJJDmPF9NH9CFXZiToTgA3lSMppTWrFsOiBcdM/bj10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=f8hQaqk8; arc=none smtp.client-ip=156.224.82.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1777068768; c=relaxed/simple;
+	bh=wIaRuK8gLS386f9UQ92xDRFn4p5F59WSxno8IU7xsI8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fzGy5BUgirrQCHLGG/mY6RThanglIgVNWBI0ySkHFc8YQwX43w0mkbfPNE1O3z7P7rx96BpBJnXUp2wUVZg5O3Mh1yrbABxWSHP906yvh+AatbdhG5yAxgGa0Y0RJhoU9u5ivFFzI5xMjRq735+lTyyerBe+Y7kwAz+JTDDJI3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NRLnyrTL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="f8hQaqk8"
-Received: from localhost.localdomain (unknown [IPV6:240c:c001:1:2e07:24a2:230c:7edb:52d4])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3c147fd05;
-	Sat, 25 Apr 2026 04:52:15 +0800 (GMT+08:00)
-From: Wxm-233 <2200013188@stu.pku.edu.cn>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gfs2: keep per-bio end_io when splitting journal head reads
-Date: Sat, 25 Apr 2026 04:51:30 +0800
-Message-ID: <20260424205130.686-1-2200013188@stu.pku.edu.cn>
-X-Mailer: git-send-email 2.45.2.windows.1
-In-Reply-To: <CAHc6FU5C-qu_mtN8FnXy3nY_jnskDr2EQqESqCrwU4MrDy9_VQ@mail.gmail.com>
-References: <CAHc6FU5C-qu_mtN8FnXy3nY_jnskDr2EQqESqCrwU4MrDy9_VQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NRLnyrTL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777068766;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0CiVP/phT3FjS7h7YodKuSuIf2r0CER9NTg1CV7qNJE=;
+	b=NRLnyrTL6DKAwutN4360ytivqDaNpSWQcWeAUmW6OX7JjptcqqJQ7ClOsLEzG8c4O14Yia
+	gREZUierZcVP+h+37UyG+6kXw/6Y9pjJgtq6yAjKrFpBc8y9/gLskQ7ZLK9a72C7vRkTAH
+	CveFgFmRxa10p7p9/E8GhsW/8LK9Xbg=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-VAl0bqWnMnW5Oi6PO-iHAQ-1; Fri, 24 Apr 2026 18:12:44 -0400
+X-MC-Unique: VAl0bqWnMnW5Oi6PO-iHAQ-1
+X-Mimecast-MFC-AGG-ID: VAl0bqWnMnW5Oi6PO-iHAQ_1777068764
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7900fc7033bso222687077b3.1
+        for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 15:12:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777068764; x=1777673564;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0CiVP/phT3FjS7h7YodKuSuIf2r0CER9NTg1CV7qNJE=;
+        b=pMN8607VBKXP/qz1zTciHnGk4O2nNjCzBntiB/ldW/CVyZXLaeVQ1yvFe1OW2/9H3L
+         lAwH0zBI2E6eudpefjHxMF+lCoXJQj7CDONhvf0wPypytDMFxxj1SxidItq9sPuE3tu5
+         vNiGkNSzWqGt1Ot27e2epUT3U3e9YvYNXfG/FcXMuEVlackWkbrwi+pu2SXGpHy9Nukk
+         QimR0NXgIYqw22vuc8GhVvJ3N0Ad+EmqSqEwQbrOrDb6XVsUTVjHk6urKV//xCqsQdUW
+         /IgparZ20m/hsRJWKcHT0x3SxMA6ijcrCTBnui/6AJeNqtZCnJLlonRvwXCt3akD/2Nz
+         n7MQ==
+X-Gm-Message-State: AOJu0YxnIaIzbUmVq8h5xh6KbinLkug5m25TRD7PGJZsnTFcNm9GogEj
+	rKo4WUWJ1H2BRH8ON27b3u83wukeQcvAl8e6/v65dn+O5zQ2bDxVyoL32WACJMTkFWDVMdorIfb
+	FfChoPQZ1bwT634Gyvg33x/42y34dQAb9c3OeAcBtdTIgeI7xpU4ltiIUSyv7fOMcuLEBPFJGKd
+	2pX5ijj66NA90SqleCHhAB6cAWQsW4qg==
+X-Gm-Gg: AeBDiesG9s9t9eupD1qAJS3gByW2xEzpq+KhP+CcI0xDpJ2ugA90Wo+BT+73W7RwXxk
+	PvjNAqc6fc2iRIpAq4/F5SUmdQWtQHFfZ0K9iGdJD+Xkpe80Cg1pl4AQ178CQkzoXgHlXCpjHxR
+	Di8NzrVQreeCG0gvHlU1w8SigErwqdLOW4jWYXt+BIaxNndScfHxREUSd78y2RP1cfoSfmt5oHz
+	QTwl8S8r6lDIBBNxg3adz/LZzYbMmA+J0muCkll6rJ8FLmQ2otmQw90mzmz7lohK9hNea8+4DB8
+X-Received: by 2002:a05:690c:d95:b0:7b4:6f40:639 with SMTP id 00721157ae682-7b9ed3d1a9dmr263127897b3.17.1777068764121;
+        Fri, 24 Apr 2026 15:12:44 -0700 (PDT)
+X-Received: by 2002:a05:690c:d95:b0:7b4:6f40:639 with SMTP id
+ 00721157ae682-7b9ed3d1a9dmr263127697b3.17.1777068763642; Fri, 24 Apr 2026
+ 15:12:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9dc143bc3403a1kunm4794f96f64dae
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQkwZVkwaSxhJT0wfTk0aT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJT0sYQRhLS0pBSkFJHktMQUlPGklBSUhLGEFMHh8ZQU5JH0
-	9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=f8hQaqk8ARMtIRqzjMXLMUdqA/NFl5Ay3zq5qoR7m/j8ZB5sIu+Wk+L4+Rr4FtDdrLvU9CzA3moNwKarxiamnfyv+RxKgA+k6O8mVITu/kr7oC/1OhwTHWc4g6ruRm2P0dJhmx2rwCEmXNXwG2vPeNLfu/Qk4pWjHQKlAOoWG/g=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
-	bh=9sOrqAkWYQcCR51xw8Ny9D9oCO0KmESkW9m9XzhlU8I=;
-	h=date:mime-version:subject:message-id:from;
+References: <CAHc6FU5C-qu_mtN8FnXy3nY_jnskDr2EQqESqCrwU4MrDy9_VQ@mail.gmail.com>
+ <20260424205130.686-1-2200013188@stu.pku.edu.cn>
+In-Reply-To: <20260424205130.686-1-2200013188@stu.pku.edu.cn>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Sat, 25 Apr 2026 00:12:32 +0200
+X-Gm-Features: AQROBzAxKuaz-dCqlugEvyPHAXm9i6JeYngfxr-1pzXC2B3xo23KNTjhAjjCnxQ
+Message-ID: <CAHc6FU5bDO21eusfH9Vcb0E65BWkvbqVSADZ9O41zCX6-1i3aw@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: keep per-bio end_io when splitting journal head reads
+To: Wxm-233 <2200013188@stu.pku.edu.cn>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: sJk4BBXQlf5wHB5qBMmMCPyBgMxpTy-IZHHLNNEEGSc_1777068764
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
+On Fri, Apr 24, 2026 at 10:52=E2=80=AFPM Wxm-233 <2200013188@stu.pku.edu.cn=
+> wrote:
+> Hi Andreas,
+>
+> Thanks for pointing me to commit 469d71512d13 ("Revert "gfs2: Fix use
+> of bio_chain"").
+>
+> I had missed that revert. After looking at it again, I agree that my
+> patch direction was wrong, so I will drop that patch.
+>
+> What I can say about the trigger so far is:
+>
+> - we reproduced this on 6.18.5
 
-Thanks for pointing me to commit 469d71512d13 ("Revert "gfs2: Fix use
-of bio_chain"").
+Okay, commit 469d71512d13 ("Revert "gfs2: Fix use of bio_chain"") was
+added to v6.18.7, so no surprise there.
 
-I had missed that revert. After looking at it again, I agree that my
-patch direction was wrong, so I will drop that patch.
-
-What I can say about the trigger so far is:
-
-- we reproduced this on 6.18.5
-- the report came from a syzkaller-style fuzzing run
-- the crash happens during GFS2 journal recovery, not on a normal data
-  path
-- the stack is:
-
-    gfs2_recover_func()
-      -> gfs2_find_jhead()
-      -> gfs2_chain_bio()
-      -> bio_chain()
-
-From the code path, it appears to happen during journal head lookup
-when the read enters the split-bio case in gfs2_find_jhead().
-
-However, I do not yet have a minimized standalone reproducer that I am
-confident is correct. The "last executing programs" section in the log
-does not isolate the responsible operation reliably enough, so at the
-moment I can only describe it as being triggered by mounting a crafted
-GFS2 image generated during fuzzing, which then enters journal
-recovery and hits this path.
-
-I will go back and try to extract a concrete reproducer / test case
-before following up further.
+> - the report came from a syzkaller-style fuzzing run
+> - the crash happens during GFS2 journal recovery, not on a normal data
+>   path
+> - the stack is:
+>
+>     gfs2_recover_func()
+>       -> gfs2_find_jhead()
+>       -> gfs2_chain_bio()
+>       -> bio_chain()
+>
+> From the code path, it appears to happen during journal head lookup
+> when the read enters the split-bio case in gfs2_find_jhead().
 
 Thanks,
-Wxm-233
+Andreas
+
