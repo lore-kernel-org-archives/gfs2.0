@@ -1,110 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F94211A09;
-	Mon, 27 Apr 2026 14:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3663722A4FC
+	for <gfs2@lists.linux.dev>; Mon, 27 Apr 2026 15:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777300156; cv=none; b=GHZbunpnT0wofU74BQJm0mYx79vJEwWaBiZ/+Lg0XJ07nASzWLkllpA4Wnja++ycWsI6YCagyGhvR+joakPHdh/iYq/zL+AQSfXXR6hMdSUby7BkFLciQLZwCXPxSL95NWaD/g5/B/o0LjPLbn3CtnYxk/XfgTHi22eovORUdZw=
+	t=1777305586; cv=none; b=JCiIVLDRcqk0TePWCnYLu/mgNzdiIEZvHzXKOjrzVmoYRwlRLlpvyg9ZisHk1hFcC934pKIQeFMe/RymmLZuDiGPwJLvy04lmItyXPmNBP54M96iOpAg/91ro6qQpj75z48HCyiLIQVvD8quZybMkUD20kqIM7K6I95+Z7arkpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777300156; c=relaxed/simple;
-	bh=IeJ6/tR47YZBKRTpElig6fYdm36HLG0LBoH4pMTb9Do=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JmzqZYFXfXoQz+6ZOb7nZOQZ0X6QZAzNDg+el6eqWg/uzvALD5QVyojpH6wlFWOKOjX7efNXe3j5hLjhln6DtBsWWbQ/UyhkjlZxUwpmzLs36qr9ibP49NG5TdFShWy5n2XC6Jk/TgMG6QzAzhp3844Db9jKQggTxYyVtTcbtJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gaVW7JqJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777305586; c=relaxed/simple;
+	bh=YwXsMYDjBwBqS+PhBeDTqzfjgshPQ0qmYywqFSLsdRg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=AXQWjXB/Vbq+OvNC4lRRjy9A4ldLcYXbVM2Xa4CVG4QfktlhjWgnMNAjGWFSv5DO+D5pmhnYTv+/TgfNNJ4ubj/GJCkPQ5xTRFKZ5Hzu88jm8STUYnK9SPiVT0ikyDzFqd99JNnYMzLZ5H/a8wTmfx2+RrVVPuGd1MIx2aVGGVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gio7awlA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gaVW7JqJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8724C19425;
-	Mon, 27 Apr 2026 14:29:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777300156;
-	bh=IeJ6/tR47YZBKRTpElig6fYdm36HLG0LBoH4pMTb9Do=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gaVW7JqJIhjsWuA02RrbXUpEKeg6fJmXF6/fbacFtpWNkW9wvYSePbUoq2NW3ABF6
-	 fhDez9OSFGCU+Z3afcKIJptioaH4pyvHDG6jEZ/Xrr6msoWANBUyoZ3eToGL/j87fQ
-	 PS/ePP+Y4IkrFLp4PrVmepomLIKsv/gyxmo2xcynsHgUqOnIYNBsNHvLHWfVI7EWH3
-	 n4psZS6wQ+lShVCxjogKc6xX+dTYrQf7IOQ2sLO0fVQi8biaGDNEhsY4N4tl9lbxkV
-	 +g3rV6DxqjNrShnGDPLGfHQ6iP53NrjUhUgP77FIadDMSuuyaRQ254A6sKvts12Qrx
-	 FQNtBApDmEeRA==
-Date: Mon, 27 Apr 2026 16:29:03 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
-	Florian Weimer <fweimer@redhat.com>
-Cc: Alejandro Colomar <alx@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, 
-	jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, 
-	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, tsbogend@alpha.franken.de, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, 
-	idryomov@gmail.com, amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
-	shuah@kernel.org, miklos@szeredi.hu, hansg@kernel.org
-Subject: Re: [PATCH v6 1/4] openat2: new OPENAT2_REGULAR flag support
-Message-ID: <20260427-begreifbar-sandbank-84e3990e7c37@brauner>
-References: <20260328172314.45807-1-dorjoychy111@gmail.com>
- <20260328172314.45807-2-dorjoychy111@gmail.com>
- <lhuzf2oy1me.fsf@oldenburg.str.redhat.com>
- <CAFfO_h5B=Ox9S=Xc=az2vQwowffohch-mkvSggYAfNXaVuv5GA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gio7awlA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777305584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=z0kVUmN4jVe+6ftwrEgsZeam8zv7oNL4IpsuZFAHPnY=;
+	b=gio7awlASAXuglwA64Mv2UX71nF1G994erdqRdaDL2kFOtSDo9i6ml7EqGecCiBykg7hxX
+	wqDpEFXJQPkEuP1nQiCA8P0wJYEWhIDOV+fENw+/ElUUTYj5cfW2htcKYIGCWatiFjPRMe
+	oSNSSTymlTLoU8ms5cVf61CoIPErSlA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-eEI0T4YOM9y_NxEz3YGPxg-1; Mon,
+ 27 Apr 2026 11:59:42 -0400
+X-MC-Unique: eEI0T4YOM9y_NxEz3YGPxg-1
+X-Mimecast-MFC-AGG-ID: eEI0T4YOM9y_NxEz3YGPxg_1777305582
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E02B319560B5
+	for <gfs2@lists.linux.dev>; Mon, 27 Apr 2026 15:59:41 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 623E7300070A;
+	Mon, 27 Apr 2026 15:59:41 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev
+Subject: [PATCH RESEND v7.1-rc1 0/4] dlm: pending DLM patches
+Date: Mon, 27 Apr 2026 11:59:31 -0400
+Message-ID: <20260427155935.2415989-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ov7xeg8QSx9deSolAf273u-c486yCpZxGvRuotXUMqk_1777305582
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFfO_h5B=Ox9S=Xc=az2vQwowffohch-mkvSggYAfNXaVuv5GA@mail.gmail.com>
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, Apr 27, 2026 at 08:17:43PM +0600, Dorjoy Chowdhury wrote:
-> On Mon, Apr 27, 2026 at 7:28 PM Florian Weimer <fweimer@redhat.com> wrote:
-> >
-> > * Dorjoy Chowdhury:
-> >
-> > > diff --git a/include/uapi/asm-generic/errno.h b/include/uapi/asm-generic/errno.h
-> > > index 92e7ae493ee3..bd78e69e0a43 100644
-> > > --- a/include/uapi/asm-generic/errno.h
-> > > +++ b/include/uapi/asm-generic/errno.h
-> > > @@ -122,4 +122,6 @@
-> > >
-> > >  #define EHWPOISON    133     /* Memory page has hardware error */
-> > >
-> > > +#define EFTYPE               134     /* Wrong file type for the intended operation */
-> > > +
-> > >  #endif
-> >
-> > This is what POSIX says about EFTYPE, in the Rationale for System
-> > Interfaces:
-> >
-> > “
-> > [EFTYPE]
-> >     This error code was proposed in earlier proposals as "Inappropriate
-> >     operation for file type", meaning that the operation requested is
-> >     not appropriate for the file specified in the function call. This
-> >     code was proposed, although the same idea was covered by [ENOTTY],
-> >     because the connotations of the name would be misleading. It was
-> >     pointed out that the fcntl() function uses the error code [EINVAL]
-> >     for this notion, and hence all instances of [EFTYPE] were changed to
-> >     this code.
-> > ”
-> >
-> > So I'm not sure if reusing this name is a good idea.
-> >
-> 
-> Thanks for pointing this out. I had started out the patch series with
-> ENOTREGULAR and it was discussed that EFTYPE was a better and more
-> generic error code which is also used in BSD systems like FreeBSD[1]
-> and MacOS[2]. I also agree that EFTYPE makes sense. We can of course
-> change to something else if everyone agrees.
-> 
-> cc Christian Brauner who originally suggested EFTYPE for input on this.
-> 
-> [1]: https://man.freebsd.org/cgi/man.cgi?errno(2)
-> [2]: https://developer.apple.com/documentation/foundation/posixerror/eftype
+Hi David,
 
-Given that both the bsds and macos already use that is there a good
-reason to return ENOTTY for this other than a standard we ignore most of
-the time anyway? I'm honestly asking.
+here are the pending DLM patches for dlm/next.
+
+- using srcu list iterations to be aligned with lockdep
+- fixing an issue with hardened kernel and lvb bytearray
+  in dlm_callback that is copied to user address space
+- fixing an issue with concurrent DLM requests and the
+  midcomms sendqueue is out of order that ends in ref
+  counting issues
+- cleanup midcomms node creation by moving debugfs
+  assignment before adding it to the node hash to
+  avoid issues that debugfs is not initialiazed if
+  concurrent users iterate over the hash.
+
+- Alex
+
+Alexander Aring (2):
+  dlm: fix add msg handle in send_queue ordered
+  dlm: init per node debugfs before add to node hash
+
+Li RongQing (1):
+  dlm: use hlist_for_each_entry_srcu for SRCU protected lists
+
+Ziyi Guo (1):
+  dlm: add usercopy whitelist to dlm_cb cache
+
+ fs/dlm/lowcomms.c | 12 ++++++++----
+ fs/dlm/memory.c   |  4 +++-
+ fs/dlm/midcomms.c | 21 +++++++++++++--------
+ 3 files changed, 24 insertions(+), 13 deletions(-)
+
+-- 
+2.43.0
+
