@@ -1,116 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C5527453
-	for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 22:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48930DED0
+	for <gfs2@lists.linux.dev>; Mon, 27 Apr 2026 13:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777068768; cv=none; b=kBc/BlrwGydT2acAUK4+9vX34KCcsF+vv+/yMv4Zm3FlP31RDDCwM0f9dFJZ9M3e9rLXSOLZweEYZu8DuO7nTHQoT+Y8gVFQNGXKfxTuWf6BnPtGwmx948rDAJwraDbIV5zPVFTQYwPByYLkQw76ti4WLVO99B1ohFYIIQSr2II=
+	t=1777295728; cv=none; b=c+WiIEqQdHBxBFZ9I/RsVgy6TtuggLWrfRAEwtSYmbuwgo8OF2x+np0F98LaJ/mtg5kB37RS8qAC86k5GMIHFgM7hzzKpEnUANFQyLKAheVGkSBGbOZIWHsQbxB8cpmx9yDEbE/QzbwlLfSeB33F+aR9X2An1v74YBU63fHwnSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777068768; c=relaxed/simple;
-	bh=wIaRuK8gLS386f9UQ92xDRFn4p5F59WSxno8IU7xsI8=;
+	s=arc-20240116; t=1777295728; c=relaxed/simple;
+	bh=jbo3zMg5htUbtG7GY9KiX3ONo6eKpWv7OwyU5Jw63Hg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fzGy5BUgirrQCHLGG/mY6RThanglIgVNWBI0ySkHFc8YQwX43w0mkbfPNE1O3z7P7rx96BpBJnXUp2wUVZg5O3Mh1yrbABxWSHP906yvh+AatbdhG5yAxgGa0Y0RJhoU9u5ivFFzI5xMjRq735+lTyyerBe+Y7kwAz+JTDDJI3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NRLnyrTL; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=Z2ULSPKC0pIXBgLgyIKkYCZQI3KmeO9bFhHnFIQxnTCCqjiHqmjZap8D0whZpNBu0/I2MW73AutOH2+2WB8Gyan+mCR37CbQ5XDED37wNZGHZqQExZRqoSuzhnXTDDySjutTsrH83P1a6kLwErAOWFz+u4KfKZalNU1GBtJ6DBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K6L2Da1F; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NRLnyrTL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K6L2Da1F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777068766;
+	s=mimecast20190719; t=1777295726;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0CiVP/phT3FjS7h7YodKuSuIf2r0CER9NTg1CV7qNJE=;
-	b=NRLnyrTL6DKAwutN4360ytivqDaNpSWQcWeAUmW6OX7JjptcqqJQ7ClOsLEzG8c4O14Yia
-	gREZUierZcVP+h+37UyG+6kXw/6Y9pjJgtq6yAjKrFpBc8y9/gLskQ7ZLK9a72C7vRkTAH
-	CveFgFmRxa10p7p9/E8GhsW/8LK9Xbg=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vPAfG5FAYkF5imXbnU13cXJBeGWWXPo9LmWS7h5w/hU=;
+	b=K6L2Da1FdLhg+VWetSnpfTqoj/lz4hn1yfFy77DQmPeiHFiyoEqmZgEeKmRx3Q8DdDN77x
+	Wy8DWN5WejOFqNbsWG4ArMSG0l53JUUHm5BUPZ85yZAjKuK0UDXiNHyetw/Q7/SJQlmsIj
+	uws+T7+B3guZQFda9oMYzjYJtVS67x8=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-VAl0bqWnMnW5Oi6PO-iHAQ-1; Fri, 24 Apr 2026 18:12:44 -0400
-X-MC-Unique: VAl0bqWnMnW5Oi6PO-iHAQ-1
-X-Mimecast-MFC-AGG-ID: VAl0bqWnMnW5Oi6PO-iHAQ_1777068764
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7900fc7033bso222687077b3.1
-        for <gfs2@lists.linux.dev>; Fri, 24 Apr 2026 15:12:44 -0700 (PDT)
+ us-mta-623-LDL8uhrINlmsmYqf8cNZKQ-1; Mon, 27 Apr 2026 09:15:24 -0400
+X-MC-Unique: LDL8uhrINlmsmYqf8cNZKQ-1
+X-Mimecast-MFC-AGG-ID: LDL8uhrINlmsmYqf8cNZKQ_1777295723
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-389fef1b721so44055291fa.2
+        for <gfs2@lists.linux.dev>; Mon, 27 Apr 2026 06:15:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777068764; x=1777673564;
+        d=1e100.net; s=20251104; t=1777295723; x=1777900523;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0CiVP/phT3FjS7h7YodKuSuIf2r0CER9NTg1CV7qNJE=;
-        b=pMN8607VBKXP/qz1zTciHnGk4O2nNjCzBntiB/ldW/CVyZXLaeVQ1yvFe1OW2/9H3L
-         lAwH0zBI2E6eudpefjHxMF+lCoXJQj7CDONhvf0wPypytDMFxxj1SxidItq9sPuE3tu5
-         vNiGkNSzWqGt1Ot27e2epUT3U3e9YvYNXfG/FcXMuEVlackWkbrwi+pu2SXGpHy9Nukk
-         QimR0NXgIYqw22vuc8GhVvJ3N0Ad+EmqSqEwQbrOrDb6XVsUTVjHk6urKV//xCqsQdUW
-         /IgparZ20m/hsRJWKcHT0x3SxMA6ijcrCTBnui/6AJeNqtZCnJLlonRvwXCt3akD/2Nz
-         n7MQ==
-X-Gm-Message-State: AOJu0YxnIaIzbUmVq8h5xh6KbinLkug5m25TRD7PGJZsnTFcNm9GogEj
-	rKo4WUWJ1H2BRH8ON27b3u83wukeQcvAl8e6/v65dn+O5zQ2bDxVyoL32WACJMTkFWDVMdorIfb
-	FfChoPQZ1bwT634Gyvg33x/42y34dQAb9c3OeAcBtdTIgeI7xpU4ltiIUSyv7fOMcuLEBPFJGKd
-	2pX5ijj66NA90SqleCHhAB6cAWQsW4qg==
-X-Gm-Gg: AeBDiesG9s9t9eupD1qAJS3gByW2xEzpq+KhP+CcI0xDpJ2ugA90Wo+BT+73W7RwXxk
-	PvjNAqc6fc2iRIpAq4/F5SUmdQWtQHFfZ0K9iGdJD+Xkpe80Cg1pl4AQ178CQkzoXgHlXCpjHxR
-	Di8NzrVQreeCG0gvHlU1w8SigErwqdLOW4jWYXt+BIaxNndScfHxREUSd78y2RP1cfoSfmt5oHz
-	QTwl8S8r6lDIBBNxg3adz/LZzYbMmA+J0muCkll6rJ8FLmQ2otmQw90mzmz7lohK9hNea8+4DB8
-X-Received: by 2002:a05:690c:d95:b0:7b4:6f40:639 with SMTP id 00721157ae682-7b9ed3d1a9dmr263127897b3.17.1777068764121;
-        Fri, 24 Apr 2026 15:12:44 -0700 (PDT)
-X-Received: by 2002:a05:690c:d95:b0:7b4:6f40:639 with SMTP id
- 00721157ae682-7b9ed3d1a9dmr263127697b3.17.1777068763642; Fri, 24 Apr 2026
- 15:12:43 -0700 (PDT)
+        bh=vPAfG5FAYkF5imXbnU13cXJBeGWWXPo9LmWS7h5w/hU=;
+        b=GspO7wUb/zGRkb00gJ6gB6CM09C38/FdovvTA3uRY6Xh/PzOVU0yJ9T2ZlibuL7pEX
+         g52rQc3IDRd4OtiQMsonwS4gTNUUa/jTSAS7Yt6PTkoXk/SxF7Q1zpV+/WoX3x9P/GYm
+         q4pjqloQ/Cf9rxAFefLxCiwOSZ9eUjLFhLJsrz4qBV0T3d9ZlC3/Ah9rEUvGTRj8tbGz
+         7oi7oixG1oF4fKeZNx7dDEYeFoO2fHZz873vcI9RV/Iiqkgzbk6zILDdmHxdYXLiQcZE
+         xqXYxekcxfokGEccRYUTkQRiyugbxbamok1pNmITLDot95OGkpYv+K/A4ap3gjdI6w31
+         ST7g==
+X-Forwarded-Encrypted: i=1; AFNElJ+oNsAzKwvNjqNg3U0QSJ/tKChsHhivk6U3Fs9ctpXf9Mr7K7K/6miDK5JLNGJqiNXeovpf@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOOGAp6n7J/+EHs3BUA61ndRHtLHli+ULynrCXRMa5M4irfMKo
+	J07oD6YN9fWYm2i1HYBxOHP4FsCxNDn5GD3ZG5rt8tiXYnTZhlh873jR39VJf6FHGJLZYldY0yi
+	PQ3TDrBoOvYhzs2G2xfY7VCyUK4+7egENkLW0S9ra+qKpdUSrThUkD+cNd0RBrGKLEh8j6fMAdZ
+	CoWOFhDgskh++frzj9gDeA3VqnNI3IJA==
+X-Gm-Gg: AeBDiev1iFvI3pVHQViwDn2aJ56v7W5+uKjI3Su/F6P5OXOg+Wf9rVj+XLdFWo+bhPz
+	bpjKJzfT/pQpY88fTjbNP5wmoUGHMExFsyWfsnfMENgqiixJE7E26pqMQmRH8bkQWm9ZxVXk081
+	YGfJOrDHRrGGhmyQsfsXTLdNUjejhbVOFZuXtYx0yq+368IErbpBIfI14wOjFDTh6Mrj+i7kD9W
+	brkuh68BvVKoux6cbc0k6U58JzGeLeVTA4Se5pWfB2rNmwY/g==
+X-Received: by 2002:a05:651c:4184:b0:38e:a8ef:b48 with SMTP id 38308e7fff4ca-38ec7ab589amr98647451fa.21.1777295722935;
+        Mon, 27 Apr 2026 06:15:22 -0700 (PDT)
+X-Received: by 2002:a05:651c:4184:b0:38e:a8ef:b48 with SMTP id
+ 38308e7fff4ca-38ec7ab589amr98647371fa.21.1777295722419; Mon, 27 Apr 2026
+ 06:15:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHc6FU5C-qu_mtN8FnXy3nY_jnskDr2EQqESqCrwU4MrDy9_VQ@mail.gmail.com>
- <20260424205130.686-1-2200013188@stu.pku.edu.cn>
-In-Reply-To: <20260424205130.686-1-2200013188@stu.pku.edu.cn>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Sat, 25 Apr 2026 00:12:32 +0200
-X-Gm-Features: AQROBzAxKuaz-dCqlugEvyPHAXm9i6JeYngfxr-1pzXC2B3xo23KNTjhAjjCnxQ
-Message-ID: <CAHc6FU5bDO21eusfH9Vcb0E65BWkvbqVSADZ9O41zCX6-1i3aw@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: keep per-bio end_io when splitting journal head reads
-To: Wxm-233 <2200013188@stu.pku.edu.cn>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <CAGp+u1ZE7UsQ4sSUHBKQXU8x3M_jwK=ek1urSjEtd3jXQGFmVg@mail.gmail.com>
+In-Reply-To: <CAGp+u1ZE7UsQ4sSUHBKQXU8x3M_jwK=ek1urSjEtd3jXQGFmVg@mail.gmail.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Mon, 27 Apr 2026 09:15:08 -0400
+X-Gm-Features: AVHnY4IPoCGgHB4w-0-zHpmDFPpTPtzNsuGb-H_Cs7qeC6f1wo0VJptdRDAL7AY
+Message-ID: <CAK-6q+ijZLm5KPaF_o8L=KyWcuMouri+=67cSQN4Mf-O7D-_LA@mail.gmail.com>
+Subject: Re: [bug report] Potential order violation in fs/dlm/midcomms.c,
+ between 'dlm_midcomms_addr()' and 'dlm_midcomms_exit()'
+To: Ginger <ginger.jzllee@gmail.com>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: sJk4BBXQlf5wHB5qBMmMCPyBgMxpTy-IZHHLNNEEGSc_1777068764
+X-Mimecast-MFC-PROC-ID: onrxQO3Liwo07z_J5mHqxekwyoS2X4TYvmtlrsYNka0_1777295723
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 24, 2026 at 10:52=E2=80=AFPM Wxm-233 <2200013188@stu.pku.edu.cn=
-> wrote:
-> Hi Andreas,
->
-> Thanks for pointing me to commit 469d71512d13 ("Revert "gfs2: Fix use
-> of bio_chain"").
->
-> I had missed that revert. After looking at it again, I agree that my
-> patch direction was wrong, so I will drop that patch.
->
-> What I can say about the trigger so far is:
->
-> - we reproduced this on 6.18.5
+Hi Ginger,
 
-Okay, commit 469d71512d13 ("Revert "gfs2: Fix use of bio_chain"") was
-added to v6.18.7, so no surprise there.
-
-> - the report came from a syzkaller-style fuzzing run
-> - the crash happens during GFS2 journal recovery, not on a normal data
->   path
-> - the stack is:
+On Thu, Apr 23, 2026 at 1:35=E2=80=AFAM Ginger <ginger.jzllee@gmail.com> wr=
+ote:
 >
->     gfs2_recover_func()
->       -> gfs2_find_jhead()
->       -> gfs2_chain_bio()
->       -> bio_chain()
+> Dear Linux kernel maintainers,
 >
-> From the code path, it appears to happen during journal head lookup
-> when the read enters the split-bio case in gfs2_find_jhead().
+> My research-based static analyzer found a potential atomicity bug
+> within the 'fs/dlm' subsystem, more specifically, in
+> 'fs/dlm/midcomms.c'.
+>
+> Kernel version: long-term kernel v6.18.9
+>
+> Potential concurrent triggering executions:
+> T0:
+> dlm_midcomms_addr
+>     --> node =3D kmalloc(sizeof(*node))
+>     --> hlist_add_head_rcu(&node->hlist, &node_hash[r]); [t0]
+>     --> node->debugfs =3D dlm_create_debug_comms_file(nodeid, node); [t3]
+>
+> T1:
+> dlm_midcomms_exit
+>    --> hlist_for_each_entry_rcu(node, &node_hash[i], hlist) [t1]
+>    --> dlm_delete_debug_comms_file(node->debugfs); [t2]
+>
+> In T0, the freshly allocated midcomms_node is first added to the
+> globally visible 'node_hash' list, and then has its 'debugfs' field
+> set up.
+> In this case, in T1, the exit function can first iterate over the
+> 'node_hash' list and access a 'debugfs' field that has not been set up
+> yet.
+> The concurrent buggy order is t0 -> t1 -> t2 -> t3, causing order violati=
+on.
+>
+> Please kindly check at your convenience. Thank you for your time and
+> consideration.
 
-Thanks,
-Andreas
+Thanks for the report. I looked into it and midcomms_exit() is called
+in module init/exit functions. I believe the case above can't happen,
+but I created a patch to change the behaviour to initialize the
+debugfs field in nodes at first before adding it to the node_hash.
+This avoids such an issue in potential future changes.
+
+Thanks.
+
+- Alex
 
