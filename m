@@ -1,169 +1,108 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F56311956
-	for <gfs2@lists.linux.dev>; Mon, 11 May 2026 15:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD2F25B0A3
+	for <gfs2@lists.linux.dev>; Tue, 12 May 2026 06:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511988; cv=none; b=oakYUOm/Bmx9ldvdl58rSLhLUonMmFK7DmN9Ffip/ri/nV+8QKkrbpWqfEtQod7/KxoWTwgjdJt5L/udBqnq3h5o9lbBHaTrd9wIs+YtIAO7C+O1c1xE4FodldRXnSBlZiezSGb+By4qE2/XP3KSm+flfyeh1vWRSQjlUs1L9UU=
+	t=1778567245; cv=none; b=Yz4bBmeEWX6YeIwZ7xjRqmUBMSZhIfbuLftCc7EvldLZvTbUjDZt3nKxGK/FxjhVSMAW0wFOmdRCwVpG0kaCM7uMTAl6Cu3FDKte0sxZiMej5ZUaj0TIxPpo725dlxRo/a3gA/yL7adJ/74bRKLCAtv2009kFo7NQP3DSuASpeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778511988; c=relaxed/simple;
-	bh=brx2KU/wiL/+yEW1kVqcUcRlwslsylQYZPQHGPmw6F0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fig8RWNx/KPV/KPutKA71+3W+TkCh+x7s8iS2aX7eLbqVHv4MfXJ8/QUBup6EAB/656/qIlWnTpxOpD7Gc2lVk2CITosQ0/h9h/+5fznsHE4U3kGstt8PRP8Jb0v2dmeDpZTJE9cO/tP7U4ftjGHMbNVd6eZrx04AgGeV9ThtDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKguzuCM; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKguzuCM"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-44e5624c053so2502593f8f.2
-        for <gfs2@lists.linux.dev>; Mon, 11 May 2026 08:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778511985; x=1779116785; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=34xvstp0JQmDP7OVPMLpiQZ8QCDJwr5lw4b5Z1m4HQA=;
-        b=qKguzuCM2ppHqQ4QCE3oE2lHs8PfIGqdZ0CcsHI6ZtwzCqejGyT4u8QdBkOzfuNBOW
-         VFL2KTV+5wpyVRg5bfiqaatLXOkQs526/uwOAJYz5ALeao43E6XDkNq6/wbyVl6+GKtj
-         AVx94j2NpHKc4HRCx/CMqU1UNMbv/lcyt6UoNKST6JtfYa6xzE4oEZj9YQZnrcCTsPIW
-         5n/4YkLYQfKMZjan3AesS9V9RDWQxqe8nWK2eIxCumCuAbRFXRjBCqPQdmvTyRXro+Vn
-         /Rvv36b+SmgvdjwT/XKuIlUfXvwJUKu7atO4U/sqxxGsf7Fl4BID9KrXPfDsPZBaasZ/
-         G/2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778511985; x=1779116785;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=34xvstp0JQmDP7OVPMLpiQZ8QCDJwr5lw4b5Z1m4HQA=;
-        b=FOM7wB9QyFRLMtEg10femyaoCW1pJTeyPk8t7lTzJa0eVNBJEsO1lhyiY8F5jVQm09
-         2hB+y2FhYrPpQsTvH47xioAfoG4mCTFpYVRRbWGeDL46vI/KuceiX5Eo46WgAhgqJDpc
-         lsbcnwGP2dI+7UcTRw3xAalPj9nWjCqY3FOjn3ThJGJQWbbwuAClJNiDsWeMM/LwnURf
-         Wm1eq/gNyoVdLcEVR5AafJao8eVe9W68EJcv7DfGVM7eq1kJ9EUNBqC4EFh4viXn/JTk
-         9oOlKQTIqqTfFOFG1yMLuc6hWMWdxMo381KBEgwfddSFjCmyPbvyIkruz/EaOb4gyETu
-         wLJw==
-X-Forwarded-Encrypted: i=1; AFNElJ9PfZPQdKDEl2daz/jUzCR1TZRnr35ZSmC2/liO0gfiANQsrdLmbxNgmjCnjfvB2XXmP7lD@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMk0neIOiKRWh3Gzdi1BlxMXMDrTEgEqGLacDuOPZVKUjimDN1
-	x5AB03twCt1rBVM/8WYJknKgDy/UW3OODZJnnE5nlkb7oaY2/cH+dvA0
-X-Gm-Gg: Acq92OFS3M9M60xHzUfPytUbAkbVNUUq2wWUL6Urd48vfCH/wGcdrcYmhIM/019Bgjh
-	uRlIOr/L1Unkvjh1sGhIq69UqSyxqyosHXaeay5X2SDYyAZ3D0npVPL4tQwBnQpgip8YPeErxo6
-	0KNu9TIPx23YseqdHIpZCUsSfaE0lcp2bzdqRnRx5Ud4TSokRB8CDYWvdpBcoGr/dZi0zq4D8LM
-	a/ZyxabHsXcjUPEgScRUTh4VcgAbAkiHkQAKGJsDQtYPLNeXGJY0msg1O4+1uZYN0Cs43L2kAci
-	jXBhSOa1wlq+gcio7EXyu+qw5OPmg7dYwqPo7ddz4OHcLYcOVNgECnH4tnqq5R1RqSZBkYgYer7
-	r7QFwHly4yPzDRQhweFfm2xQqh7zDb2R8iUvuOxTv6mAWhdakrG4NdbD4u9td6aj9NYlUzZh/g0
-	elw5nMpdCFZwdLkPQb5H/ALSVqJ7HRJls/6wG4lIjovRjn0TUs
-X-Received: by 2002:a5d:54c9:0:b0:43d:73d4:b34 with SMTP id ffacd0b85a97d-4515b525080mr27913475f8f.16.1778511984482;
-        Mon, 11 May 2026 08:06:24 -0700 (PDT)
-Received: from alessandro-pc.station ([2a01:827:18f0:5400:54d6:8261:974:e7b0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548eb75c29sm25720099f8f.9.2026.05.11.08.06.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 08:06:23 -0700 (PDT)
-Date: Mon, 11 May 2026 17:06:20 +0200
-From: Alessandro Zanni <alessandrozanni.dev@gmail.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>, 
-	linux-kernel@vger.kernel.org, gfs2@lists.linux.dev, 
-	syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-Subject: Re: [PATCH] fs: gfs2: fix sleeping function called from invalid
- context
-Message-ID: <o3jsp54o4n6v7qokxdg3rrvthrz37gqmmgc4fzbnfc36iv6ehw@iwsgmnh5i7tx>
-References: <20260429081516.566812-1-alessandro.zanni87@gmail.com>
- <CAHc6FU7ciE1yUDxM0RaksAEHf8S1msBGxN0qcmSy+Z7kBjyQPw@mail.gmail.com>
+	s=arc-20240116; t=1778567245; c=relaxed/simple;
+	bh=tFLvmSxp4htg8B4KZDDmMq/bcP6GsrTV6SVZmFUptD4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IuxWXkz5Ry8249Cg+zP9LSFab0Vwvsu2lew6U91BBtAPgKzTi8Bm5L5S25IFtMkydR26lzmrWThUbZQ9j8K1GA+NI3Y6bO/Z0ODElN8y4lGwbPInn0981NRcJKW6PqtKzvlp6V7UBQgFbH5Weay//3F4jwW3k8OCNeZ1acPUX8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn; spf=pass smtp.mailfrom=mails.ucas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
+Received: from fric.. (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowABniN80yAJqsrLCEA--.13642S2;
+	Tue, 12 May 2026 14:27:00 +0800 (CST)
+From: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
+To: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Steven Whitehouse <swhiteho@redhat.com>,
+	Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
+Subject: [PATCH] gfs2: Fix recursive quota glock locking in do_sync
+Date: Tue, 12 May 2026 06:26:59 +0000
+Message-Id: <20260512062659.2037092-1-xujiakai24@mails.ucas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU7ciE1yUDxM0RaksAEHf8S1msBGxN0qcmSy+Z7kBjyQPw@mail.gmail.com>
+X-CM-TRANSID:rQCowABniN80yAJqsrLCEA--.13642S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww1xuw47WF4rAFWUWrWUtwb_yoW8urW8pr
+	4DC3WfX3WDJrWIgayaqr4FvF1rK3yxuF1UGFZ7CrnxZrs8trsavryvyw4qqF1Fqrs3JFnY
+	gFyqqrsxGw1DCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUjwSdDUUUUU==
+X-CM-SenderInfo: 50xmxthndljko6pdxz3voxutnvoduhdfq/
 
-On Mon, May 04, 2026 at 01:27:12PM +0200, Andreas Gruenbacher wrote:
-> Alessandro,
-> 
-> On Wed, Apr 29, 2026 at 10:15 AM Alessandro Zanni
-> <alessandro.zanni87@gmail.com> wrote:
-> > The issue arises on a PREEMPT kernel because gfs2_quota_init
-> > calls gfs2_qd_search_bucket while holding a bit spinlock and
-> > triggering a "sleeping function called from invalid context"
-> > bug.
-> >
-> > This patch refactors the quota initialization by splitting the
-> > lock into separate locks, moving the search outside the atomic
-> > section and using RCU lock for a safe access without holding the
-> > bit spinlock.
-> >
-> > Modifications of this patch:
-> > 1. Use rcu_read_lock() around the invocation of the function
-> >    gfs2_qd_search_bucket() for the search.
-> > 2. Add the spin_lock() around the insertion into the hash table
-> >    and lists.
-> > 3. Remove the usage of unused spin_unlock().
-> 
-> How is this better than Jie Wang's fix from April 23?
-> 
-> https://lore.kernel.org/gfs2/CAHc6FU7DLZrunqxQkY35voRraBxUG=wNucn_3s7LqF1BdrxzCg@mail.gmail.com/T/#m37764558ab05e4166ad27abf85576cd67957cbfb
-> 
-> I've had Jie Wang's fix applied already, and I've now also updated for-next.
-> 
-> > Fixes: de0d95c26c41c ("gfs2: Check quota consistency on mount")
-> > Reported-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=642d0561f78362d67d3f
-> > Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-> > ---
-> >  fs/gfs2/quota.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> > index 5290865f27f1..48516cbc8b49 100644
-> > --- a/fs/gfs2/quota.c
-> > +++ b/fs/gfs2/quota.c
-> > @@ -1456,17 +1456,15 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
-> >                         qd->qd_slot = slot;
-> >                         qd->qd_slot_ref = 1;
-> >
-> > -                       spin_lock(&qd_lock);
-> > -                       spin_lock_bucket(hash);
-> > +                       rcu_read_lock();
-> >                         old_qd = gfs2_qd_search_bucket(hash, sdp, qc_id);
-> > +                       rcu_read_unlock();
-> >                         if (old_qd) {
-> >                                 fs_err(sdp, "Corruption found in quota_change%u"
-> >                                             "file: duplicate identifier in "
-> >                                             "slot %u\n",
-> >                                             sdp->sd_jdesc->jd_jid, slot);
-> >
-> > -                               spin_unlock_bucket(hash);
-> > -                               spin_unlock(&qd_lock);
-> >                                 qd_put(old_qd);
-> >
-> >                                 gfs2_glock_put(qd->qd_gl);
-> > @@ -1480,6 +1478,8 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
-> >
-> >                                 continue;
-> >                         }
-> > +                       spin_lock(&qd_lock);
-> > +                       spin_lock_bucket(hash);
-> >                         BUG_ON(test_and_set_bit(slot, sdp->sd_quota_bitmap));
-> >                         list_add(&qd->qd_list, &sdp->sd_quota_list);
-> >                         atomic_inc(&sdp->sd_quota_count);
-> > --
-> > 2.47.3
-> >
-> 
-> Thanks,
-> Andreas
->
+During GFS2 unmount, do_sync() in gfs2_quota_sync() may try to re-acquire
+quota data glocks that the current process already holds (from earlier
+file operations that performed quota accounting). The GFS2 glock layer's
+add_to_queue() detects this as recursive locking via the trap_recursive
+mechanism and hits BUG().
 
-Sorry for the delay.
+Fix this by checking gfs2_glock_is_locked_by_me() before each
+gfs2_glock_nq_init() call in do_sync(). If the current process already
+holds the glock, skip the acquisition. The cleanup path is updated to
+only call gfs2_glock_dq_uninit() on holders that were actually acquired.
 
-This patch seems already ok to me because it maintains atomicity with search and
-insertion within the same critical section, bypassing the PREEMPT_RT sleep bug by
-avoiding the lockref call while holding the bit-spinlock.
+Fixes: 1e72c0f7c40e ("GFS2: Clean up gfs2_adjust_quota() and do_glock()")
+Signed-off-by: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
+---
+ fs/gfs2/quota.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-So, ignore mine.
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 91e9975d25e8..f2a09869ee8f 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -929,6 +929,19 @@ static int do_sync(unsigned int num_qd, struct gfs2_quota_data **qda,
+ 	sort(qda, num_qd, sizeof(struct gfs2_quota_data *), sort_qd, NULL);
+ 	inode_lock(&ip->i_inode);
+ 	for (qx = 0; qx < num_qd; qx++) {
++		/*
++		 * If we already hold this quota glock (because do_sync was
++		 * called from a context where quota glocks are already held,
++		 * such as during unmount), skip the recursive acquisition.
++		 *
++		 * We mark the holder with a NULL glock pointer so the cleanup
++		 * path knows not to release it.
++		 */
++		if (gfs2_glock_is_locked_by_me(qda[qx]->qd_gl)) {
++			memset(&ghs[qx], 0, sizeof(ghs[qx]));
++			continue;
++		}
++
+ 		error = gfs2_glock_nq_init(qda[qx]->qd_gl, LM_ST_EXCLUSIVE,
+ 					   GL_NOCACHE, &ghs[qx]);
+ 		if (error)
+@@ -990,7 +1003,8 @@ static int do_sync(unsigned int num_qd, struct gfs2_quota_data **qda,
+ 	gfs2_glock_dq_uninit(&i_gh);
+ out_dq:
+ 	while (qx--)
+-		gfs2_glock_dq_uninit(&ghs[qx]);
++		if (ghs[qx].gh_gl)
++			gfs2_glock_dq_uninit(&ghs[qx]);
+ 	inode_unlock(&ip->i_inode);
+ 	kfree(ghs);
+ 	gfs2_log_flush(glock_sbd(ip->i_gl), ip->i_gl,
+-- 
+2.34.1
 
-Regards,
-Alessandro
