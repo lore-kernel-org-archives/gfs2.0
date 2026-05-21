@@ -1,98 +1,89 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC5040855
-	for <gfs2@lists.linux.dev>; Sun, 17 May 2026 02:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877053859FA;
+	Thu, 21 May 2026 10:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778983401; cv=none; b=U5O128osWBddxKcFvKYKCmKK2N5Bdbafo4AsGZgl5WH0af5AWi8gDoHC8kH6jXmbMsa30WlI0+UMxdHRqBD5GiqBgmq80V+pbRsP9wCu799hutBV/jdlfdfN2+sC88Zk7DkxpolKFKeJg6TfXivdx5UZ6W/ZrZIf7BoiYPWBurI=
+	t=1779360849; cv=none; b=AiwPHxNfR/8E5vElKjlBZ+GtAytjkb01jMwdufSnxogVZBeepLEtATAMLG/jfuCVp7aPVUjZQikAk/t6jgrFqz4c85kMnJ37P7yPwbPqmT4L+2Uc8uT8cVMfX0cviwFkvmrlAAlw4qnwWvH5/r7g3jM3Ql4EZ8UOUKVgk9Tl1Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778983401; c=relaxed/simple;
-	bh=OZaF65CAxpQhqrTwoAcvSbsy6bo+yvZQtd4kOuTOz/Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZSvnh/K8qFUOSUMaRLWAIZG1p3wAwkngGCffNDmxV1j1gmO8Lzb5OtY4y1F+iz+WXQb7Me3IOBdgwYAqsDVYOf99Uhe7wDGWD+hKkM5xuIpfZfq8QSw3sZX44Ko3v8c2S8ZDm97RIrqJkElf1re0Gi6uQkfuvVmQNDpU8UkS+qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CAIgwEQj; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1779360849; c=relaxed/simple;
+	bh=tMnuYwHgo7w7gPx8laBi+vh4biK3BacbRE3N0c3HULA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=axyV6XOy9rnkopkiUzgQlJzH80gVIDis2YjiL0TxlZ1Qp4eHJW1LIkHtHJryI8ClKe3bnE3Cz3unmbpFCQHkLT/Pdga2LsI2dusfEBreHSGtAr5Ei3dDbuFilLNoud3ks+MyKqltDJJcq+n141622JrR513e4K86hYo44V33nfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8rOS1cG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CAIgwEQj"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778983396; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=QXS3hNbrZ4Nzu6OYlroIi+JUoZXxAzaSbf2a0n1gpr8=;
-	b=CAIgwEQjMlM9CL95IW/nRTAXdwnvLFXMYgtoAMznHZ7MBZg4i8p2nCSdn2URpSCBuuPCgPYbPzsetateJmhTeZJMd9jrtURasgcRw0KU7rGuziRpgdT7x0xB26N71NHn6AN0ZqmoqLyfBk2gt7OH+x6mDSLVQScmdPNUz8pVKyw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0X30jt-c_1778983395;
-Received: from localhost(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0X30jt-c_1778983395 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 17 May 2026 10:03:15 +0800
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-To: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] dlm: fix buffer overflow from negative len in dlm_search_rsb_tree
-Date: Sun, 17 May 2026 10:03:15 +0800
-Message-Id: <20260517020315.1064253-1-joseph.qi@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8rOS1cG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284D11F000E9;
+	Thu, 21 May 2026 10:53:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779360848;
+	bh=hReAb/JnSiPheNetMpN9KuPDi9ArATr3SUITGa4P4hY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A8rOS1cGqyEFWheeZg7Gevs8sfK5NeBIFPOWaiaMtEpuax0stwjgnfBRYXfe42fw+
+	 PkNdqWpTczhnsT+5zzafbfYYvZnE4lsb8LCl3MbH4SiEBUzeWbsTW/TwyEUH0EIWI7
+	 rXjTEEae4IQY/alXlNlwPRciBuM89DudZ/0g8hE6byUVFb4DnQ8vNmVB3OHZAvQaOL
+	 XbhBeyiBJWf6wy9ijtvnhwfR525PNDcFDIE5KN6Tbtkp0Pynq0S6/Wx6IaNQC4z55O
+	 nUvMijOU4uSW0CyHmDv2UcBnjr0lOBq1iiL/FkAZ6Ns5OmsYyneoVPjm5n+3fraI/R
+	 kde4w0nv6lkqw==
+Date: Thu, 21 May 2026 12:53:56 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org, 
+	Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com, 
+	alex.aring@gmail.com, arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, 
+	smfrench@gmail.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
+	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, trondmy@kernel.org, 
+	anna@kernel.org, sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
+	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, shuah@kernel.org, 
+	miklos@szeredi.hu, hansg@kernel.org
+Subject: Re: [PATCH v6 0/4] OPENAT2_REGULAR flag support for openat2
+Message-ID: <20260521-grube-leitfaden-0e5420c9bedc@brauner>
+References: <20260328172314.45807-1-dorjoychy111@gmail.com>
+ <20260416-abgraben-seeweg-a44ce660957f@brauner>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260416-abgraben-seeweg-a44ce660957f@brauner>
 
-commit 080e5563f878 only checks for len > DLM_RESNAME_MAXLEN, which does
-not catch negative values. While the input 'len' can be negative and a
-negative int passed to memcpy() is implicitly converted to a large
-size_t, causing a stack buffer overflow on the key[] array.
+On Thu, Apr 16, 2026 at 03:07:12PM +0200, Christian Brauner wrote:
+> On Sat, 28 Mar 2026 23:22:21 +0600, Dorjoy Chowdhury wrote:
+> > I came upon this "Ability to only open regular files" uapi feature suggestion
+> > from https://uapi-group.org/kernel-features/#ability-to-only-open-regular-files
+> > and thought it would be something I could do as a first patch and get to
+> > know the kernel code a bit better.
+> > 
+> > The following filesystems have been tested by building and booting the kernel
+> > x86 bzImage in a Fedora 43 VM in QEMU. I have tested with OPENAT2_REGULAR that
+> > regular files can be successfully opened and non-regular files (directory, fifo etc)
+> > return -EFTYPE.
+> > - btrfs
+> > - NFS (loopback)
+> > - SMB (loopback)
+> > 
+> > [...]
+> 
+> - I've added an explanation why OPENAT2_REGULAR is only needed for some
+>   ->atomic_open() implementers but not others. What I don't like is that
+>   we need all that custom handling in there but it's managable.
+> 
+> - I dropped the topmost style conversions. They really don't belong
+>   there and if we switch to something better we should use (1 << <nr>).
+> 
+> - I split the EFTYPE errno introduction into a separate patch.
 
-Fix this by changing the 'len' parameter type from int to unsigned int.
-This ensures negative values from callers are implicitly converted to
-large unsigned values that are caught by the existing
-len > DLM_RESNAME_MAXLEN check.
-
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
----
- fs/dlm/lock.c | 6 ++++--
- fs/dlm/lock.h | 4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c381e1028446..373abdb4354a 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -622,12 +622,14 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
- 	return 0;
- }
- 
--int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
--			struct dlm_rsb **r_ret)
-+int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name,
-+			unsigned int len, struct dlm_rsb **r_ret)
- {
- 	char key[DLM_RESNAME_MAXLEN] = {};
-+
- 	if (len > DLM_RESNAME_MAXLEN)
- 		return -EINVAL;
-+
- 	memcpy(key, name, len);
- 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
- 	if (*r_ret)
-diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
-index b23d7b854ed4..c75975937331 100644
---- a/fs/dlm/lock.h
-+++ b/fs/dlm/lock.h
-@@ -31,8 +31,8 @@ void resume_scan_timer(struct dlm_ls *ls);
- int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
- 		      int len, unsigned int flags, int *r_nodeid, int *result);
- 
--int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
--			struct dlm_rsb **r_ret);
-+int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name,
-+			unsigned int len, struct dlm_rsb **r_ret);
- 
- void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list);
- void dlm_purge_mstcpy_locks(struct dlm_rsb *r);
--- 
-2.39.3
-
+So I've massaged this series a bit in that I moved OPENAT2_REGULAR into
+the upper 64-bit and internally use a __O_REGULAR bit. After having
+thought about it makes a lot more sense to move the openat2() only
+features into the upper 32-bit for the uapi space. I also ported the
+selftests to the TEST* framework to fit with Aleksa's recent rework.
