@@ -1,155 +1,95 @@
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E83368D5B
-	for <gfs2@lists.linux.dev>; Thu, 21 May 2026 15:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779378578; cv=pass; b=cU4aBp1GTjkjCykVIiOIIAMbm8UrC+5Sm4Wg69BHPWrXcMC8iPs4FSwyCHQYNn5QU3lv1zkO9HHjsevydur20uGqlv0JrhflNQZBSgX8t4MdCXmE+Oih352oZSNPhtSWhWXwywvG8biuo1ckrnYxE4FSGPQVTJ4HyI8p2ayxcAY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779378578; c=relaxed/simple;
-	bh=oTJGeDYTACLQP4b7lcnYS7MF/F8SkeHi472hQfd2CPw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gnoed14J5rO2QVUiQu2qylOOQv+fUAo63srtZYhmNFy0rBhCeFYd60eMd3OfWrngvV44bCub6YHyaewELgi/WZ+WLvsuWGjyljDIHTFqXttVRPAAn7Ug/DjMPAhK/ipPAy4GkU7LwwrOVF3ycgid2jRO2C1wkDEs3ULosAPeBl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePH9aMjB; arc=pass smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePH9aMjB"
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-631a7868228so4345364137.0
-        for <gfs2@lists.linux.dev>; Thu, 21 May 2026 08:49:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779378575; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jyFyqdIDqWvhXklSgTdfFt+uCxfWXI+8NTmMJcw7lsL73UXHUOeqz//121PWLWDLxY
-         oZR9SfjWSvZx88eyXaQoAsuQ4MLr3ksBm/TplkKaU23Dghd4Ebc2ymLbZ+BnLZ57uUh7
-         0CTY/22Cpb8KDNFe6UJ5L7GdVJ/Faq5LN5iteGrX1aQi71roxIcWcQibd0C9jrApywYn
-         cfd8xfc86/pk3+JF5NH4/fpfKJJDp1fML9leeuvs9wTSKqw4zLabWh/YWJSH2UXh/SqD
-         GWewOjMr3NzRgz87QKGjrea46OCbZXw9CWT+coM3Ftz1EOJKVUvlK9e5r4m2StMRrv+Y
-         mLTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BTiKHHtH6isAoh5+/ntoHPqjIgkFbjjbM7Qgllx7bcY=;
-        fh=w+rJyS/uOj8qO/hqZ/Wc5H7yuvNoTSJ3FxFhYR9FaeA=;
-        b=iwtEBGURT/zMmT6hS8jKn4W9pSrrN/l9xj6G0e6EkpX/YJZ1OA7zUvsH5f8NMwE0ws
-         CJdczihc5Ckvn59xkVV4MDju+6V4/XCixaKLsWyHE9igV6J+ByReveln2IIuPYErgRBf
-         fTSp80Kc4CT22H2/Sg/9GCqniN+xaPEkKh/df7QnJL/Npjga01AfVPLpZMkf61VAqn37
-         TvJx7iCxBXwMe6QV4E+Oa9hUWRniJNL4Z2KGk8z4uGVc5zN5/tEQyoPuwqTT0L25jk+x
-         BxYysI4EE/Cs1UD4K99KQzknLWITvqK6WJGCfCTFNdu7dBtrkbEVZ3Df8LmTeW1A7Y4L
-         wbrg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779378575; x=1779983375; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BTiKHHtH6isAoh5+/ntoHPqjIgkFbjjbM7Qgllx7bcY=;
-        b=ePH9aMjBkrkGY8hyd9qeuxJInQTbvZGmr+QQs1fjdYIqlwhYf+Wc7i/BE4v51+HuE7
-         oATd/aGoNVOVeOHp/lpsb6Szfi0CUmNPcyeJ/IpSGgnvtGF2IsQ+OiJtBKmbTiNJEdrv
-         UkeQK00q/N34D6QwKn+SEUt15MBXoW0U7zC+ksAYB3SL9rkZ/4q6Ky8azi5+MRRGvoHI
-         OYZLUfGEzW35dfmbpivsfFxJOm3o4mhkaTTfeYZ9kNbDZyX6oPhtgPyXaCjkUtYepR1d
-         zGqtS5T9G+3IaK8noemPiFKwjIO+/C8ksscomNeU/pd4KdXOYdzO7nic9Lhh1BfhKDrT
-         m/Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779378575; x=1779983375;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BTiKHHtH6isAoh5+/ntoHPqjIgkFbjjbM7Qgllx7bcY=;
-        b=lYrzNaC6GOL7Gy9CUTJWW7nGkvPj/4G7DKOZewvazBu4oSL+Iz0xynVI4ZtjNOn+Mv
-         yru9k4oTodnem4A4z2pCRxelGpa/rHPKwiVCJJT7D9f34tIGU5mEhe3zNg1Y6jdIxhTP
-         v12qhIkVnM1QRMjuNEYvLM7VQuV1rdlucPTQ36McyA2mo411AXH8730mmFmhcpXKib/7
-         Scavwpg1OSQNhrbiFybNGETELdpIlizszwdFtLOKel6qS3eUdYVOVulDA8jpvemadSA9
-         eHvkDXv8BXIpmvtxUx6oHa9cOmYBsz/yDeCUGRk7JfOvQXKkdYMHb9hpc01qV++vabpu
-         Mv5A==
-X-Forwarded-Encrypted: i=1; AFNElJ8zJPeQOFMyp2jkFhAcup/mW7WaU0bmzi9KRPjgX9xT7RCQOnScJ/olR3EDRKhWjYBROGQq@lists.linux.dev
-X-Gm-Message-State: AOJu0YwYcVMlVIroNPg6gOrZ3fDbcSqFUp7KqrhzA9GyoBX9UW9ejF18
-	diKc5oMyPDakkIh22Dp9Sh50f4nUqNv1anNrA+pJ/QhxopLwDplH4wr6HulsDw9Jfzi6GnwktrS
-	Wv/TbZviXi2mQgwcPhFCygSiW4ECfOi8=
-X-Gm-Gg: Acq92OE93sWCf1fbTnpF6JMidErSkea+jHbiTUbpNKXMPh+WXDW2GAgMQjvyYxV/Qab
-	npnQ+cZpWD11ZLmlrkCCK1Enmwv9+MkevqzIzlDooCpCb9m836npwchpiDmRSA2KfDvjqyWalbm
-	yr8ICYsuCkb2Mwz6ja7K1yefjaOCrZlbUDuA4ZWQ6kuB7h2gXL46OXgxmfmDvCa3NbCt/Cp0D5P
-	LLGsE4Zqh8tKeCDaIyzNfvPRPG1i1p3ZeZxAZWxOfbK5M7dX6fvf42iB3uFeFcTTvyFT502hlt8
-	2uWzMOsJk3DT+pmepQ5aWxYcG1mBKVdHEt2uw+MlwhpGy9t05MBN07k=
-X-Received: by 2002:a05:6102:1591:b0:650:a9f6:4d29 with SMTP id
- ada2fe7eead31-67390b66b29mr2592164137.13.1779378575543; Thu, 21 May 2026
- 08:49:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1881323D2A1
+	for <gfs2@lists.linux.dev>; Fri, 22 May 2026 09:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779443053; cv=none; b=sVEiA4LBMxJTJJI870tpTGewlOTM9fgWxtcyGUhg/UaffRYDpYzZDtCX2x5M+ln0v9fNYO1Wxq7OllHP/b5BiUF0+EPxqQUV6kISFlI939+jTX/BJysMsFADAqFVldW2Ek6OYVNDhaU1SoSpTbveionzoEzIp3nSK3B+MT/kBiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779443053; c=relaxed/simple;
+	bh=9/OoYbJrCL//kiSb4MsyIPFutjEKgOPFPTI2qY/4THs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JkOX5EZkZW4wS7LyKVSMQnQS6p1WessjRSeXfq1P2zam/SWBjE5x9mSPh3PnCp6kU1voXs00J8Vnt2Ouf/+G/Je+G0xpaNbsaqS2iX1NBI6dfK4JW0yE9dKF5mUQdeqQy5q2KJEYgp2fq73l8DD+raEMZ0oCCPUC4zuWraRzzKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: c49d60aa55c211f1aa26b74ffac11d73-20260522
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:407150ed-0cd7-48d4-b61c-32b20d479861,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:867a7645d5cb4e1dde6879f3ae3276ca,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: c49d60aa55c211f1aa26b74ffac11d73-20260522
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1834196271; Fri, 22 May 2026 17:44:03 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: agruenba@redhat.com,
+	swhiteho@redhat.com,
+	gregkh@linuxfoundation.org,
+	rpeterso@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>
+Subject: [PATCH] gfs2: Fix use-after-free in gfs2_remove_from_journal()
+Date: Fri, 22 May 2026 17:43:59 +0800
+Message-Id: <20260522094359.114049-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260328172314.45807-1-dorjoychy111@gmail.com>
- <20260416-abgraben-seeweg-a44ce660957f@brauner> <20260521-grube-leitfaden-0e5420c9bedc@brauner>
-In-Reply-To: <20260521-grube-leitfaden-0e5420c9bedc@brauner>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Thu, 21 May 2026 21:49:23 +0600
-X-Gm-Features: AVHnY4JMLUcx8yOSfS2Q9vtP8tvb48vFjP_vPMN644Wd5G5CD5CLlCbq3u4DVJI
-Message-ID: <CAFfO_h4Em26Hfbv-DWF+9dNS8TBuGpfWjWFBUhLr7jYCKzj3_Q@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] OPENAT2_REGULAR flag support for openat2
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, 
-	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, 
-	arnd@arndb.de, adilger@dilger.ca, mjguzik@gmail.com, smfrench@gmail.com, 
-	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, davem@davemloft.net, andreas@gaisler.com, idryomov@gmail.com, 
-	amarkuze@redhat.com, slava@dubeyko.com, agruenba@redhat.com, 
-	trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
-	bharathsm@microsoft.com, shuah@kernel.org, miklos@szeredi.hu, 
-	hansg@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 21, 2026 at 4:54=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> On Thu, Apr 16, 2026 at 03:07:12PM +0200, Christian Brauner wrote:
-> > On Sat, 28 Mar 2026 23:22:21 +0600, Dorjoy Chowdhury wrote:
-> > > I came upon this "Ability to only open regular files" uapi feature su=
-ggestion
-> > > from https://uapi-group.org/kernel-features/#ability-to-only-open-reg=
-ular-files
-> > > and thought it would be something I could do as a first patch and get=
- to
-> > > know the kernel code a bit better.
-> > >
-> > > The following filesystems have been tested by building and booting th=
-e kernel
-> > > x86 bzImage in a Fedora 43 VM in QEMU. I have tested with OPENAT2_REG=
-ULAR that
-> > > regular files can be successfully opened and non-regular files (direc=
-tory, fifo etc)
-> > > return -EFTYPE.
-> > > - btrfs
-> > > - NFS (loopback)
-> > > - SMB (loopback)
-> > >
-> > > [...]
-> >
-> > - I've added an explanation why OPENAT2_REGULAR is only needed for some
-> >   ->atomic_open() implementers but not others. What I don't like is tha=
-t
-> >   we need all that custom handling in there but it's managable.
-> >
-> > - I dropped the topmost style conversions. They really don't belong
-> >   there and if we switch to something better we should use (1 << <nr>).
-> >
-> > - I split the EFTYPE errno introduction into a separate patch.
->
-> So I've massaged this series a bit in that I moved OPENAT2_REGULAR into
-> the upper 64-bit and internally use a __O_REGULAR bit. After having
-> thought about it makes a lot more sense to move the openat2() only
-> features into the upper 32-bit for the uapi space. I also ported the
-> selftests to the TEST* framework to fit with Aleksa's recent rework.
+The function calls brelse(bh) but then continues to access
+the buffer head through bh->b_private, clear_buffer_dirty(),
+and clear_buffer_uptodate().
 
-Thanks for fixing up!
+After brelse() decreases the reference count, the buffer head
+may be freed, making the subsequent accesses use-after-free.
 
-Regards,
-Dorjoy
+Fix by moving the brelse(bh) call to the end of the function,
+after all accesses to bh have been completed.
+
+Fixes: e93b100931a4 ("GFS2: Fix slab memory leak in gfs2_bufdata")
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+---
+ fs/gfs2/log.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 78bba8cc10b8..a92c84146de9 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1038,7 +1038,6 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
+ 			set_bit(TR_TOUCHED, &tr->tr_flags);
+ 		}
+ 		was_pinned = 1;
+-		brelse(bh);
+ 	}
+ 	if (bd) {
+ 		if (bd->bd_tr) {
+@@ -1056,6 +1055,8 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
+ 	}
+ 	clear_buffer_dirty(bh);
+ 	clear_buffer_uptodate(bh);
++	if (was_pinned)
++		brelse(bh);
+ }
+ 
+ /**
+-- 
+2.25.1
+
