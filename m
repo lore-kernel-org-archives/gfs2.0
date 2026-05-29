@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FC131F9B4
-	for <gfs2@lists.linux.dev>; Fri, 29 May 2026 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080271DDA18
+	for <gfs2@lists.linux.dev>; Fri, 29 May 2026 13:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780060796; cv=none; b=m1yxDJlBPXqH8wod7ShpL5zm3B642QI7uUO6d2cA8jJDM/OjQfEY8VEeCEAi9vmbbDIYOlCCmF3S5fE24MvUG8v0u/9Oa6rwIIVghdjECWTqkr2Xdq1Dllg/U1Qgve47O6a2BY0Ihfyn/ETzSz3J2X7kaiWuYRlK/SxkBXOdSlU=
+	t=1780061117; cv=none; b=XiUcePKPITF5ya2hFYayk1L03GD5LA81OTIs9YkMX9ehE2+39LgCN/HfncdPhEvDojqDBS6MVA4dLFC713R22ir8YbrmX+J3nV4zk2p9E4+vlUH2tCQPTWNu2eGsobwkwjLos4nkeehcUbNInr58WG5S7A9NHCKwt2VvNHvff1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780060796; c=relaxed/simple;
-	bh=o9dT1GCzFnD4RakUDPWqB5BrmylODm9qfKsB3V7IVmE=;
+	s=arc-20240116; t=1780061117; c=relaxed/simple;
+	bh=y/WutNbUhRCx+h2S3eL+geBB6+MuqNiIAFDbYVWCrpc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NDIXY62bmJyuvYZvV6TuZzsQlwQGWH0I+GNhoobCLAl9ZP5itIb+YmFUCZ3dutwrCqykHVz0ItRjktpiflYyrSg2jMVAWgM1tiAOhTeFIgC/IKyqf3PSfPrC+pDgK6eI7GoC1BP5P/PXiBchYs2nwJLx3mxVRcLxTGKV3w1bU/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W+bu5lvk; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=i0Lt6EuAh90XDWl6rxR78+mDLvzmDroaGaAeG32QqhVx02cmGgz06SrRw3v2Nx61PyuzTNXCKiBaK9LCS19L74ckBtIr5PiVcKK97UYyuqgxPjX4WwG9w2sOAspZd9A+xAvarSirGaY5499av3md4S1n7jOoJXSJvrnx5GMVGes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MABMQka4; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W+bu5lvk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MABMQka4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780060793;
+	s=mimecast20190719; t=1780061115;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o9dT1GCzFnD4RakUDPWqB5BrmylODm9qfKsB3V7IVmE=;
-	b=W+bu5lvkMyq/LYxjSYfgdVCh32eLgBtJY9MQVmOo2onPwgFjVi/QgT/LU1EOFNi9/gci4D
-	h2CZsJw+2jLldtFy5yCWcJHrPfBgIP6/itGDY07ZDqbvIM4eUIrsxvOf3oHxP5wSLUdSvc
-	CGJSqgUD452/sNhPUg2YgCaiylN++8A=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=y/WutNbUhRCx+h2S3eL+geBB6+MuqNiIAFDbYVWCrpc=;
+	b=MABMQka4P3ev+3JPPbh25Mm9bP5CzIyU/6eMOf6O5qPr2gb5pz4QNPhXyc5OCWYtv0UETW
+	8tghEPDQ9hK6lStjXCfDsp997e2EjCmb/PEBb5KJudrOadXOVkcx0TgZvRdW9feBllNpZH
+	HY2yq5dRh+1VJlFRHFQzXFJBLskB7NU=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-DtHvcXaMNSqkqJVu8dY0Qw-1; Fri, 29 May 2026 09:19:52 -0400
-X-MC-Unique: DtHvcXaMNSqkqJVu8dY0Qw-1
-X-Mimecast-MFC-AGG-ID: DtHvcXaMNSqkqJVu8dY0Qw_1780060790
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-395246cabc4so58159181fa.3
-        for <gfs2@lists.linux.dev>; Fri, 29 May 2026 06:19:51 -0700 (PDT)
+ us-mta-42--DjSzlwMMyat1HrtA08Pig-1; Fri, 29 May 2026 09:25:13 -0400
+X-MC-Unique: -DjSzlwMMyat1HrtA08Pig-1
+X-Mimecast-MFC-AGG-ID: -DjSzlwMMyat1HrtA08Pig_1780061112
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-393d5b5ae63so51715821fa.3
+        for <gfs2@lists.linux.dev>; Fri, 29 May 2026 06:25:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780060790; x=1780665590;
+        d=1e100.net; s=20251104; t=1780061112; x=1780665912;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=o9dT1GCzFnD4RakUDPWqB5BrmylODm9qfKsB3V7IVmE=;
-        b=hRoryBPzX2fS3I7qRVaQovOALNB/xmIazXgFUkA4/WdypOb6yINDJOPI/hJNmNEJ9P
-         J5JCRKqa2E2eHvm/XovtynmMCW52rsPdG+HqjITaVfJ1Cx/aFby85pzAoNs4KdtBuUTr
-         OZVxQRpT1OEhlhV0lA5lxwPT9gW5dtkJcXAYehOvKjAcfOxoBP3lB2hQZ0MPQGk6gVTN
-         q0OzIcheW9fFSJRjr0cqUr6VrkeQLp1J7cXpoQTwFUVkxi13SCAXpf/lne2KvFjsKvTD
-         a2fAcZNFU0UIUX0BQ7g0FsKxD7KAUXU/JTpS/wBptu0k+3hiFtfnSMrCP3XmDGOHfo4S
-         3g4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8fSH8eKVJVkCkbOWoEpUWH2ZHFTuqz7k4MZ4qz5PiyE3Kw7yk7iIrcIZCkvAM9qViLqbOm@lists.linux.dev
-X-Gm-Message-State: AOJu0Yynp2YsGkOjmxVTOjTKz6Qp2D8B9EQlDkKdrVdC+ciUoh0ABH01
-	KW/BLTwe6+25UC3a7/U/MvcEqiOAqwD8CIpQ1FpnX0p3HzrQxzoRjZ+IyZlmF+70GJ7nDUcLWNi
-	pCOvZrIZKI/dUsvblJpg1Jl38ECuCb2wvCkH5czUxDkiUspLVURQNsA/khi6dRMwvs7oWy9K9d1
-	dQIDyin5QhpkoC727ec+PynAQ5h57E9g==
-X-Gm-Gg: Acq92OE7QSDia7CzSonq95e4HPiKEbgI35FXppiuXmQryW+lS1iB6XSPLSLNdcfz/de
-	xaXXNntqwuvaXgjVNAUwVs2dWMF/z5W2ARNN48tSXAYbbDZgUxn+D0Y6PuwtgowgK5pOMN3c4jw
-	Q47MGwDHk9qnX4doHNJNwEifUmwx9sCSvyGGzNCWUTFNkb7yGmuE5QICLjAI50xgvCM1oQHqolC
-	1QJJ0vKLkUto4DSLlpu334z26ytlnlGl+UOkLSl3fidRpZjRYU=
-X-Received: by 2002:a2e:91d6:0:b0:38e:83bc:1573 with SMTP id 38308e7fff4ca-396539c20b2mr6747661fa.24.1780060790009;
-        Fri, 29 May 2026 06:19:50 -0700 (PDT)
-X-Received: by 2002:a2e:91d6:0:b0:38e:83bc:1573 with SMTP id
- 38308e7fff4ca-396539c20b2mr6747501fa.24.1780060789433; Fri, 29 May 2026
- 06:19:49 -0700 (PDT)
+        bh=y/WutNbUhRCx+h2S3eL+geBB6+MuqNiIAFDbYVWCrpc=;
+        b=eEYppTPrIjp3n8dblL5xqP96AeoQyL1jtYHDn6uBNcBdGiS8VfuFFEcBcZrFobLeWb
+         dVg8mUaoVCVr5B6EqY+w4apZb+xYupeGO2DBkdf6MtVdYfouYVU5kPkEyN/vQHMAikfW
+         7QsFo2MUfF2Iztb2s+XFaoHJNHqvvAmo/ocEd/PPvsxZoUQ7nD1hAbMLZO95xcjTMFQq
+         /30gNO+cejxS+zeBiEPIZndVvUGZrSWuH7R0xkdXJTqWs2MyjoHX4P6XJJnt3D8f3+Cr
+         fW3RKWO5Lj0JnlO2FtH5oozqnNcQMn8kdIKDAe9pcNrH4eDJT5dR2OOsCW3hSwd01mhv
+         2Spw==
+X-Forwarded-Encrypted: i=1; AFNElJ/L6ZGp6QY9UyFHl5BH3UVszjlPyaVfZtKJv0IVlz48eZH1ojZnZ1ihRmKKKwiXzvs/RZrF@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNzcYPIivHrcjR6G6gbYeqX6ro12wQ3DIHBXNZ91o1gMzsMz18
+	xw02zCiBCRMKBKb/JIIMuT+qgaxa1mxDWhPu0CgtlM3C4kJ5owmVwb9bEIB9gdiWML/rHbyv1WO
+	OPfnOu1blXLJC8KdV5thEw/EQTLBSWWfOMPYnEek0Vl37HhC/BAekG4wZtoUKBY4OXQopP37Srx
+	OzfkCS1t4XCmwfmY4gxxrJo1bqb/bjlXC5pfvNW77f
+X-Gm-Gg: Acq92OFaki2L0HWCR/NN/6PLHzX1d1B9tRAC5O6xDWgMJOqUmYqvztPXbdiBXGc2Kkq
+	GBodBrAblED6cXm3NnCouo0sMl6BQyEZkSNKWe21ZdEMKGJJjqjRPNxroilvuaKvq7GcNA3AVfF
+	cqEJytB9Q8NCOoox31IF5XNj/N63yk9mkNnzXZBSzP9aYy5tB6ZhUhEAoKIiXuZ98NNIrPiz+BS
+	0dSHwHVFg7eOO3Bd4y9TLb7e+kbt3eLdaT7TqFZoDCwvmQ05ao=
+X-Received: by 2002:a05:6512:3da4:b0:5aa:b6b:7970 with SMTP id 2adb3069b0e04-5aa594b4ea0mr983131e87.44.1780061111779;
+        Fri, 29 May 2026 06:25:11 -0700 (PDT)
+X-Received: by 2002:a05:6512:3da4:b0:5aa:b6b:7970 with SMTP id
+ 2adb3069b0e04-5aa594b4ea0mr983114e87.44.1780061111309; Fri, 29 May 2026
+ 06:25:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -69,84 +69,87 @@ MIME-Version: 1.0
 References: <20260517020315.1064253-1-joseph.qi@linux.alibaba.com>
  <CAK-6q+jvaQx6y_tOzks3utBWaTRjvVnDWrznBYRfWjTQBcefBA@mail.gmail.com>
  <CAK-6q+iC3AgX7r2fZkvDJHibS0oqTwVCF4ZgV-1OFkV0d=R2Vw@mail.gmail.com>
- <CAK-6q+hPM=+fXkPSbr60Y6S1O_RfYGBUeL3mfVu0H1ymZ0gp6w@mail.gmail.com> <464dd360-f4b9-4c47-90ac-2d1f558814a9@linux.alibaba.com>
-In-Reply-To: <464dd360-f4b9-4c47-90ac-2d1f558814a9@linux.alibaba.com>
+ <CAK-6q+hPM=+fXkPSbr60Y6S1O_RfYGBUeL3mfVu0H1ymZ0gp6w@mail.gmail.com> <2026052626-galley-glitch-dcd9@gregkh>
+In-Reply-To: <2026052626-galley-glitch-dcd9@gregkh>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Fri, 29 May 2026 09:19:38 -0400
-X-Gm-Features: AVHnY4LdC5Ob4ByLJJ_9I4_a0ni6G67eh032uDWtvf5TRlCEC8CXirjya3e7WKI
-Message-ID: <CAK-6q+iW+_Hyui2KPUhLpFZtDFY1WnPu3ybr2gHPJYBZh4eaQw@mail.gmail.com>
+Date: Fri, 29 May 2026 09:24:59 -0400
+X-Gm-Features: AVHnY4Kcb5eF6s09kj3qj5rm81QBvrvdBt--Wu8MeTQ4MnBZVnVHbhMjIQK5CK4
+Message-ID: <CAK-6q+ibs=hWiCPGKNdELdgiqq5kpmwDfUJdMTQkbrGGP4yHUA@mail.gmail.com>
 Subject: Re: [PATCH v2] dlm: fix buffer overflow from negative len in dlm_search_rsb_tree
-To: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: cve@kernel.org, David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, gregkh@kernel.org
+To: Greg KH <gregkh@kernel.org>
+Cc: Joseph Qi <joseph.qi@linux.alibaba.com>, cve@kernel.org, 
+	David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ddGTBkzK5jwsc8Ps9IbrHYlP1UMWSRVEyx8tYhcjeN4_1780060790
+X-Mimecast-MFC-PROC-ID: RvgfF0Es5LDHsqoKc7YFdiFpEx1H5lg0FM4cGwsJJyo_1780061112
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Tue, May 26, 2026 at 9:01=E2=80=AFPM Joseph Qi <joseph.qi@linux.alibaba.=
-com> wrote:
+On Tue, May 26, 2026 at 12:09=E2=80=AFPM Greg KH <gregkh@kernel.org> wrote:
 >
->
->
-> On 5/26/26 9:58 PM, Alexander Aring wrote:
+> On Tue, May 26, 2026 at 09:58:32AM -0400, Alexander Aring wrote:
 > > Hi,
 > >
 > > On Mon, May 25, 2026 at 1:39=E2=80=AFPM Alexander Aring <aahringo@redha=
 t.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On Mon, May 25, 2026 at 10:27=E2=80=AFAM Alexander Aring <aahringo@red=
-hat.com> wrote:
-> >>>
-> >>> Hi,
-> >>>
-> >>> On Sat, May 16, 2026 at 10:03=E2=80=AFPM Joseph Qi <joseph.qi@linux.a=
-libaba.com> wrote:
-> >>>>
-> >>>> commit 080e5563f878 only checks for len > DLM_RESNAME_MAXLEN, which =
-does
-> >>>
-> >>> check with checkpath, it reports an error regarding how this commit
-> >>> reference is done.
-> >>>
-> >>
-> >> This also addresses CVE-2026-43125 [0].
-> >>
-> >> - Alex
-> >>
-> >> [0] https://lore.kernel.org/linux-cve-announce/2026050619-CVE-2026-431=
-25-c9f9@gregkh/
+> > >
+> > > Hi,
+> > >
+> > > On Mon, May 25, 2026 at 10:27=E2=80=AFAM Alexander Aring <aahringo@re=
+dhat.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > On Sat, May 16, 2026 at 10:03=E2=80=AFPM Joseph Qi <joseph.qi@linux=
+.alibaba.com> wrote:
+> > > > >
+> > > > > commit 080e5563f878 only checks for len > DLM_RESNAME_MAXLEN, whi=
+ch does
+> > > >
+> > > > check with checkpath, it reports an error regarding how this commit
+> > > > reference is done.
+> > > >
+> > >
+> > > This also addresses CVE-2026-43125 [0].
+> > >
+> > > - Alex
+> > >
+> > > [0] https://lore.kernel.org/linux-cve-announce/2026050619-CVE-2026-43=
+125-c9f9@gregkh/
 > >
 > > cc the right folks cve@kernel.org as described in the kernel documentat=
 ion.
-> >
+>
+> For what?
+>
+
+because
+
+"If the CVE assignment team misses a specific fix that any user feels
+should have a CVE assigned to it, please email them at
+<cve@kernel.org> and the team there will work with you on it." [0]
+
+The initial fix did not resolve CVE-2026-43125, there are additional
+changes are required.
+
 > > There is another patch required for CVE-2026-43125 [0].
 > >
 > > Joseph I think for v3 you should cc also cve@kernel.org and mention
 > > this in your commit msg.
-> >
 >
-> This is indeed found when I backport this CVE into our tree.
-> But I think it is a different case so I just send to upstream first.
+> Why doesn't this deserve a different CVE id when it lands in the public
+> trees?
 >
 
-In my opinion the first patch did not fix the vulnerability described
-in CVE-2026-43125, but with your additional changes it does. This
-means it is the same case.
+because the vulnerability described in CVE-2026-43125 is the same, I'm
+also not sure I cc "cve@kernel.org" that the team there will work with
+me on it as the kernel doc told me. :)
 
-A different case would be if -EINVAL is returned and we cannot recover
-from it (e.g., deadlock or something, but probably not a CVE). That is
-a different case, DLM is mostly currently running in a local
-environment, which is why I am not very worried about it. I have it on
-my list to check. I wrote once a scapy module [0] to create and feed
-DLM messages to discover such things; it might be a starting point.
+thanks.
 
 - Alex
 
-[0] https://github.com/alexaring/scapy/commits/dlm/
+[0] https://docs.kernel.org/process/cve.html
 
