@@ -1,87 +1,47 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8396164AA4
-	for <gfs2@lists.linux.dev>; Sat, 30 May 2026 12:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C0D329C6D;
+	Sat, 30 May 2026 16:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780142993; cv=none; b=kwopBNTKTQXWks8cPmqUJ750gPTS55X0z1N75HoXR4G/xoOhCLgMwgdyvwIzJFqibI2fbsS3xuko7jL7t/nlgrrvaUp6ptt9oUL/3u8DWWm9pUbbQIet5zxHUOM2QcF2rARyJuEOSo6yxQYfxoDiYhipexW1GkChIzSRXqaJnqI=
+	t=1780157730; cv=none; b=XCxrK/Bf2LwKe88l9HuGlLwKE54vnkUQArZPBkVBCU+sMhcgeG8we4g10DZhEH82FNeRAoG8/aEoDeRqqj/Wguw2d0oJiPlz8yCwNND1VaDCUiBUwihMlcy6jrqf050t3SHy421fD4d7JWdxxk0f1jr9WDgP4s78xxqCA8dFnLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780142993; c=relaxed/simple;
-	bh=eIif9K4k1g+wQ3Og2LQrtLla4l8gzfEr6uE9TdZHQ9A=;
+	s=arc-20240116; t=1780157730; c=relaxed/simple;
+	bh=ZEjhVkTzEZe02lpF1D5FVpB0PktFr8q11+aU7ABZ8iw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mUTAfZMz0de6RChwHZpp4ra+MbPVU/1oHcHfq7ElD+sLTmbqSBcQPgLrWG150UYwAPCfKzQaEAt8sCBUuJv6toX++PUgqsI3ca6qi7QBE82O49SJ2rKomvn17ZLv1bwYWahh26jZ0TL1sbKfUgwqzLMFIpkLMRSvWEJ3kF3rm44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=G+uWDakR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fhE47yb4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jKJBh7e7; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=C5ZcxEDp; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=gDWCfR0zLuhgQkwjCaHNtsBr0hmmysulmH/eMh6jBAGqZK7mvo0ySjgdxKKJBH8zo8V15c9b9UH5DvwcBc4Az1MVJJOQ2a5/86zpC1zDqGr9L0P/e6ElTmFrgXg9zVTQOtPNCpwcghkGrHg4QjVVm0/rh/Bk2WeXbUxd+8Vc9Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jysGEgbq; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="G+uWDakR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fhE47yb4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jKJBh7e7";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="C5ZcxEDp"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B64B76B91B;
-	Sat, 30 May 2026 12:09:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780142991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7qPyPnY68h4XGTAPDdeJSBgBU4zBavbMWJ/aD2NKD3Q=;
-	b=G+uWDakR3psEWVR+JGX5DRbHdGz1bqhV1zn4nLJuN2fewgdPNQDpf8AgzaFVJGIoEFxgZQ
-	HIBAv4oVEuZzBu5cGKJvCYmwpqZ2myyMip+6rMg0J0rRoDyf2trjVIPgfR9vu/baDHGubG
-	fv87vgc3PuVFFpDuyfDgVWmmk8fEMxQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780142991;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7qPyPnY68h4XGTAPDdeJSBgBU4zBavbMWJ/aD2NKD3Q=;
-	b=fhE47yb4ZO29poQugGfQ4DOpDrvIZ4g7/fNSdxJHlVvoD6VXQmf+ULzba5jKuRRNthS17O
-	IyQiQC1iawrpkiCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jKJBh7e7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=C5ZcxEDp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780142989; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7qPyPnY68h4XGTAPDdeJSBgBU4zBavbMWJ/aD2NKD3Q=;
-	b=jKJBh7e7KTgCH4vBP7XHvwCCeKI0ufuVhxDBr3y4WDnJL7ym+x10SKeNI3jDVbcq0/NJEh
-	7m2Byi9PgYIo6uN+UV/kFyKru12EArlWmz18CfT0FMI8zwonelYhABcpkx37QkL2fGJJxH
-	aYvylVTAK204m3L8mpPJqzcfVJUti14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780142989;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7qPyPnY68h4XGTAPDdeJSBgBU4zBavbMWJ/aD2NKD3Q=;
-	b=C5ZcxEDpRtnV+9wSSB+AlrxSNsTRc+BeZezN7KEDubsa2RvMTG2aTmrbwUUrNaoz7bNHLs
-	9IFZcJJCy8cL5RDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD111779A7;
-	Sat, 30 May 2026 12:09:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id am0+Ko3TGmrvVgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Sat, 30 May 2026 12:09:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6F26DA0EBD; Sat, 30 May 2026 14:09:41 +0200 (CEST)
-Date: Sat, 30 May 2026 14:09:41 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH v2 24/34] gfs2: Remove use of b_end_io in
- gfs2_meta_read_endio()
-Message-ID: <bowj5ekdjodcabs54zgceka5u5eyvgxermwyerttxyj4whutxg@iea6aqy5hfwj>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jysGEgbq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OoUzWgK9VbS7ydruAlaYlubDCeG8VBUFAExW/DqXEFc=; b=jysGEgbqg/Z0nUgD7wTZmtRPQU
+	N1+8o8aA4/veyX1X+ITuBZ/Df/7pSYKneKz0DdNY3pW81BEKUkVhzW0fFFj6ltI/9AHLCW2MuJ52q
+	8KfCehwmjK91sN0/DQzrERIACHYkhKItx0w88Uc2h68vwynWtqlcC5uoNAENUOQWH3SWamiy2+am1
+	3n/gFMeQQpCKev3mTl8A6TYNMZvcv7RmaxluHfx9pMkrgJ/nAVYng4XC6x186PkYuJR5r3qfymns5
+	GNEQOSPg55uevIiDzBoQfEr00c4SZIPogfITIY27p6rDyiyA9g/wcc4IUhEsf6J7ZnIxx5CZSWpo5
+	OKVZhSaA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wTMLH-000000088qW-0TYY;
+	Sat, 30 May 2026 16:15:19 +0000
+Date: Sat, 30 May 2026 17:15:18 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	linux-fsdevel@vger.kernel.org,
+	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
+Subject: Re: [PATCH v2 33/34] buffer: Change calling convention for
+ end_buffer_read_sync()
+Message-ID: <ahsNFkp_9q8PhLFc@casper.infradead.org>
 References: <20260528173150.1093780-1-willy@infradead.org>
- <20260528173150.1093780-25-willy@infradead.org>
+ <20260528173150.1093780-34-willy@infradead.org>
+ <2lbdmkqnz62wulcq576mvhjwiirgky6vpyvpjwxkpm275qf7a4@zlkck3bcyqby>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -90,88 +50,33 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260528173150.1093780-25-willy@infradead.org>
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: B64B76B91B
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:email,linux.dev:email,infradead.org:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
+In-Reply-To: <2lbdmkqnz62wulcq576mvhjwiirgky6vpyvpjwxkpm275qf7a4@zlkck3bcyqby>
 
-On Thu 28-05-26 18:31:37, Matthew Wilcox (Oracle) wrote:
-> All buffer heads submitted by gfs2_submit_bhs() use
-> end_buffer_read_sync() so we can call it directly.
+On Sat, May 30, 2026 at 02:07:40PM +0200, Jan Kara wrote:
+> On Thu 28-05-26 18:31:46, Matthew Wilcox (Oracle) wrote:
+> > Unify end_buffer_read_sync() and __end_buffer_read_notouch()
+> > by requiring the caller put the refcount on the buffer.  The only caller
+> > is in the gfs2_meta_read() path, and there we can put the refcount
+> > after locking the buffer.
+> > 
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: gfs2@lists.linux.dev
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/gfs2/meta_io.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> It seems a bit sad to keep end_buffer_read_sync() alive only for gfs2
+> metadata reading path but let's leave that for another time. Feel free to
+> add:
 > 
-> diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-> index d407dd476e72..df5f05054f6e 100644
-> --- a/fs/gfs2/meta_io.c
-> +++ b/fs/gfs2/meta_io.c
-> @@ -212,7 +212,7 @@ static void gfs2_meta_read_endio(struct bio *bio)
->  		do {
->  			struct buffer_head *next = bh->b_this_page;
->  			len -= bh->b_size;
-> -			bh->b_end_io(bh, !bio->bi_status);
-> +			end_buffer_read_sync(bh, bio->bi_status == BLK_STS_OK);
->  			bh = next;
->  		} while (bh && len);
->  	}
-> @@ -275,7 +275,6 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
->  		unlock_buffer(bh);
->  		flags &= ~DIO_WAIT;
->  	} else {
-> -		bh->b_end_io = end_buffer_read_sync;
->  		get_bh(bh);
->  		bhs[num++] = bh;
->  	}
-> @@ -288,7 +287,6 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
->  			unlock_buffer(bh);
->  			brelse(bh);
->  		} else {
-> -			bh->b_end_io = end_buffer_read_sync;
->  			bhs[num++] = bh;
->  		}
->  	}
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Reviewed-by: Jan Kara <jack@suse.cz>
+
+Thanks!  I agree that we've got two entry points (end_buffer_read_sync()
+and bh_end_async_write()) each with one caller, and I'd be happier if
+we could make both of them go away.
+
+I keep reminding myself that we'd be better off converting gfs2 to iomap
+than improving buffer.c to fit gfs2's needs.
+
+As far as I can tell (... and I am so not an expert in gfs2), the main
+thing we'd need to add to iomap to handle gfs2_meta_aops is the ability to
+set REQ_META | REQ_PRIO.  Maybe that's an AS_METADATA flag on the mapping?
+
+But maybe there's code elsewhere in gfs2 that depends on there being
+buffer heads for the metadata address_space folios?
