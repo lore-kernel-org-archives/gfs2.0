@@ -1,108 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82C939A7E1;
-	Sat, 30 May 2026 10:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26E33AC0C3
+	for <gfs2@lists.linux.dev>; Sat, 30 May 2026 11:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780136771; cv=none; b=PvGEp9432ZCERdpHWk6AFfK77yGDvMjQP1apEOsz0CMQhXbB0SKKvnXkORvkrD8wRzXBF5vx5zA24CFxryJWmx3vI7BHlCOxyK9El18WajOFRE5m7sr54ZuwEx8wXlEV20AA+2nHniIf9uY+Z9v+cPR0ld+LF8FMBWoC6MCGoQk=
+	t=1780141633; cv=none; b=GKLTSZwhH5YkcLG7Wl6ylXD/cLEzx/akBYvul1OhHakAl+GV3o5F6igolI6savsrgbM8S3HLfrQujYYcEH4m5BCC7O9zJqGg0LtTpgOlSHZAMDqOaJwSLvGw0wd69S1oM/jkhSh0syv1oBZt5hxygzinrcsvxvPDofWShRHKYbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780136771; c=relaxed/simple;
-	bh=I1APy0nWCxVtH0Idy7yic1P9oq98orO4OLHjiF7hHJs=;
+	s=arc-20240116; t=1780141633; c=relaxed/simple;
+	bh=V6C5RUeVFjtwty2vmgUj0afme604NqLopOHKzNTBVN0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=koYwZza5ZD67N3NpdjgVT9e7YwfD2M6aVo3whKQV2YGYxwVeMBHaIpSzqcZgf2F6D/2DIdzccifYojo2B3cbFuG+mJtb3dWs8aDpeDOYxyjGwnp2UVYFVWntCe3P+EedOm5VkuhaY5yvCYW8EtugUJEvlcTHbB+qGUgwm8xmaM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8nFO6jF; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKsKVbN6xCPrlZRV69qAbaV4HcDUnQgV7KkwodnrlRAmZaZh0AXakaxpLj+6fFeooSzEAOXTgNw8n0P8xOhK5OlDAImC8a8dn56CX2GpxIwrYyMXs7ow91GjM3eG6EgQkxEm4HSMjxPPmLV1GZ6R+yjVxoHb4/8kvAlGrZuy8rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=TBohJ5Dc; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YZ7Qben3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qlaekfih; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=BdWTiAln; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8nFO6jF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BC91F00893;
-	Sat, 30 May 2026 10:26:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780136770;
-	bh=8SsoQMJ2L9qL3dTHMCt7hipvqyVOaqhcGkmfloj8FRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=B8nFO6jFHVf/YmV6Y8jjFxEOtGNe99G5VoB2urDhZX+WnyueaS7/WS3MJYqsmbW7Y
-	 biWrVI7QtjeTs4QE0PmNepSHpGA/4HDd+F6qoCDUEB8WGaKshBot0b64IYCN01k2er
-	 hfhlp/dJiIsZm5ZyOWkj9Drl0s/gBjfNLACMHzcQJ8mkYnxxPx/yebJn0pMqhG3IuG
-	 NHnaECcyrpJLaAzVCpiC31kPDjoiD+PyKp1GaASkvgTS9u8rcAnqbEDAD4hQPXx8Cr
-	 eJ/pOko3q/zd0LgsC5ZNeN8fCnWHqqQrnWTmcbqcl2L0f2Ld9B8G+UKjwvsFiJio3t
-	 2zLUDdlRdPN/g==
-Date: Sat, 30 May 2026 09:36:11 +0200
-From: Greg KH <gregkh@kernel.org>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>, cve@kernel.org,
-	David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dlm: fix buffer overflow from negative len in
- dlm_search_rsb_tree
-Message-ID: <2026053054-democracy-mower-0a5f@gregkh>
-References: <20260517020315.1064253-1-joseph.qi@linux.alibaba.com>
- <CAK-6q+jvaQx6y_tOzks3utBWaTRjvVnDWrznBYRfWjTQBcefBA@mail.gmail.com>
- <CAK-6q+iC3AgX7r2fZkvDJHibS0oqTwVCF4ZgV-1OFkV0d=R2Vw@mail.gmail.com>
- <CAK-6q+hPM=+fXkPSbr60Y6S1O_RfYGBUeL3mfVu0H1ymZ0gp6w@mail.gmail.com>
- <2026052626-galley-glitch-dcd9@gregkh>
- <CAK-6q+ibs=hWiCPGKNdELdgiqq5kpmwDfUJdMTQkbrGGP4yHUA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="TBohJ5Dc";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YZ7Qben3";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qlaekfih";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="BdWTiAln"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BE3A367B47;
+	Sat, 30 May 2026 11:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780141630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vACZbfk4xvqXgBsT4L7dXRn+jvGPWoWD7VlSaxBajoY=;
+	b=TBohJ5Dcb3fGUK4ktHN5X2qj2v/4fO/gK1qeftu7Q2t3g3IYy+KIAQ7odwUUx+XVyTYOJP
+	wYec8bWLnByI1QrsHFTqYhJOOYUGNbwWlrzXpNUO3LgivDjxltFlAxor/geZkMVAsqjJIC
+	XkLRiwfWdsLobOy3zWHl0wrMCyB9FJg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780141630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vACZbfk4xvqXgBsT4L7dXRn+jvGPWoWD7VlSaxBajoY=;
+	b=YZ7Qben3UyYaCZT6+ssPqbRXOhAOU0G8hW+4ZrGpIverz8RMhdXJFV5j2Z9CoMcyf3M+CO
+	Ero8p6hJowvA3WDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qlaekfih;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BdWTiAln
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780141628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vACZbfk4xvqXgBsT4L7dXRn+jvGPWoWD7VlSaxBajoY=;
+	b=qlaekfihZjDF5aV++69HEQX/NBiaI6pftM5NKd5ZmUNlzpM/aUSjskLapWT9kXx9aJR3CJ
+	ABps3cgsbvmKNjx7b1tHS4dC79Dx0INBrMTK0sRyZP8NpgftZXbSZzpMBjj4jbqMvWn+2b
+	YW/qUj4RwPvMcNgf/mgANzp6xlTb8tU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780141628;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vACZbfk4xvqXgBsT4L7dXRn+jvGPWoWD7VlSaxBajoY=;
+	b=BdWTiAlnwBWrZmufwSPEbMtas6CO54Wl6JkdFhuJyrG5wjBgF6fBCzc43TulW/g7kwStM/
+	H/m5u6OIv2EVyHCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B670D779A7;
+	Sat, 30 May 2026 11:47:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SFiJLDzOGmp1QQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Sat, 30 May 2026 11:47:08 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 577F6A0EBD; Sat, 30 May 2026 13:47:00 +0200 (CEST)
+Date: Sat, 30 May 2026 13:47:00 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH v2 22/34] gfs2: Convert gfs2_metapath_ra to bh_submit()
+Message-ID: <c2yofxqkmjlbjury266556qxqqhmloff43v65tyht6prfbqa56@z5swhbodxfy5>
+References: <20260528173150.1093780-1-willy@infradead.org>
+ <20260528173150.1093780-23-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+ibs=hWiCPGKNdELdgiqq5kpmwDfUJdMTQkbrGGP4yHUA@mail.gmail.com>
+In-Reply-To: <20260528173150.1093780-23-willy@infradead.org>
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: BE3A367B47
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,linux.dev:email,suse.com:email];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
 
-On Fri, May 29, 2026 at 09:24:59AM -0400, Alexander Aring wrote:
-> Hi,
+On Thu 28-05-26 18:31:35, Matthew Wilcox (Oracle) wrote:
+> Avoid an extra indirect function call by using bh_submit() instead
+> of submit_bh().  Also simplify the control flow now that the buffer
+> refcount is not put by bh_end_read().
 > 
-> On Tue, May 26, 2026 at 12:09 PM Greg KH <gregkh@kernel.org> wrote:
-> >
-> > On Tue, May 26, 2026 at 09:58:32AM -0400, Alexander Aring wrote:
-> > > Hi,
-> > >
-> > > On Mon, May 25, 2026 at 1:39 PM Alexander Aring <aahringo@redhat.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Mon, May 25, 2026 at 10:27 AM Alexander Aring <aahringo@redhat.com> wrote:
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > On Sat, May 16, 2026 at 10:03 PM Joseph Qi <joseph.qi@linux.alibaba.com> wrote:
-> > > > > >
-> > > > > > commit 080e5563f878 only checks for len > DLM_RESNAME_MAXLEN, which does
-> > > > >
-> > > > > check with checkpath, it reports an error regarding how this commit
-> > > > > reference is done.
-> > > > >
-> > > >
-> > > > This also addresses CVE-2026-43125 [0].
-> > > >
-> > > > - Alex
-> > > >
-> > > > [0] https://lore.kernel.org/linux-cve-announce/2026050619-CVE-2026-43125-c9f9@gregkh/
-> > >
-> > > cc the right folks cve@kernel.org as described in the kernel documentation.
-> >
-> > For what?
-> >
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: gfs2@lists.linux.dev
+
+Looks good to me. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/gfs2/bmap.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
 > 
-> because
+> diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+> index b3d7fcd95f03..d158c4b7413d 100644
+> --- a/fs/gfs2/bmap.c
+> +++ b/fs/gfs2/bmap.c
+> @@ -304,14 +304,15 @@ static void gfs2_metapath_ra(struct gfs2_glock *gl, __be64 *start, __be64 *end)
+>  		rabh = gfs2_getbuf(gl, be64_to_cpu(*t), CREATE);
+>  		if (trylock_buffer(rabh)) {
+>  			if (!buffer_uptodate(rabh)) {
+> -				rabh->b_end_io = end_buffer_read_sync;
+> -				submit_bh(REQ_OP_READ | REQ_RAHEAD | REQ_META |
+> -					  REQ_PRIO, rabh);
+> -				continue;
+> +				bh_submit(rabh,
+> +					REQ_OP_READ | REQ_RAHEAD | REQ_META |
+> +					REQ_PRIO,
+> +					bh_end_read);
+> +			} else {
+> +				unlock_buffer(rabh);
+>  			}
+> -			unlock_buffer(rabh);
+>  		}
+> -		brelse(rabh);
+> +		put_bh(rabh);
+>  	}
+>  }
+>  
+> -- 
+> 2.47.3
 > 
-> "If the CVE assignment team misses a specific fix that any user feels
-> should have a CVE assigned to it, please email them at
-> <cve@kernel.org> and the team there will work with you on it." [0]
-> 
-> The initial fix did not resolve CVE-2026-43125, there are additional
-> changes are required.
-
-That CVE describes the specific issue that that patch fixes.  If there
-are additional issues that this patch does not resolve, then it deserves
-a new CVE for the new fix, OR you should add the new sha1 to the old CVE
-entry.
-
-Where is the new fix?
-
-thanks,
-
-greg k-h
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
