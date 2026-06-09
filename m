@@ -1,115 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0371A680A;
-	Mon,  1 Jun 2026 05:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C694071DE
+	for <gfs2@lists.linux.dev>; Tue,  9 Jun 2026 00:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780292823; cv=none; b=Q8kiQS31FzG9imMuEPYA6BvsHAQlXPlhC96Czf5ed9zDkSf042nE6lUqUagmtbY9Nxz5bODj1OzVZ9nHa+FRuaVG+lqCjiBl2qNM3g+AdR66k8RLyTEelq2uPfplHm8Z9i8tijo7REM0gpFwqjqwfp4VEV9sZDIR9NHj+1r3A/A=
+	t=1780964196; cv=none; b=pJE8ncnNPDgczUacT2DFjGywcHvVlY6P6Pgr/BBJGueZWx/7ZBSqjc1Y0qjHFfxRhbYGpcs9mXtnD8aqYh8Didu0LTEW1/+lsegnwywKna7XK25KmUz+hSLSvNTJDO6d8Eu0YUIarsvHeD9nKXOSOUWr8tBmb+NaCCjnzboSFtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780292823; c=relaxed/simple;
-	bh=ebvo+7Stwwiu9kJCve4vVDLTJDcRURLnzzg8xW7fpB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mj7sMGnHLpyI2iIab9XDm7NUiuHgYDWnWNgEd+kVS1C481d+nUqFQRXqtVtCGGFVV5gb3rJiqFRfA8ser3amMYSUAr5K05wvgCDXwnZW5ts57GpwGvvQ21uOnf6XJG2sjTLH5A+kFt6dpZLH3QQwa14MvMuHas4ZQ7h/sLkGKrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWYq0cCW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780964196; c=relaxed/simple;
+	bh=5o+mmGxAO44qkT5zAs8rUM3kK4gwSWAOBVe+MYaaAuQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0M0tPkaqEVa02Ul0toykxQY7MXQysIoFcF3SYCl28qgdgmmPi53xOsuirmHhI/ey5P15gz/1G4mF5Bk9SWJvgQ3AYNbYessV+QzKd/X6CADYSeXLIDOPQwSPXXgg10bpqHbxQiNftpK6UGidKWetzA548Yh9kVjxiwVdFU9YNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=YIpu99OH; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWYq0cCW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00D91F00899;
-	Mon,  1 Jun 2026 05:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780292822;
-	bh=rknCMjyFw5GicY8J9tL3c4sxuSkYpgvi2rVaLLFwW+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EWYq0cCWZNFidf/rBVmsLJKmdU0ELN68APKuMexrvyhOXUFBZJzdNu4zULqEE1HPC
-	 SyZt5WFyGdJ7Us1HvdP74w65GF0szNgcaudPf/Tz8pLsoBhyoASvWCaoYEWe9dDavB
-	 5HiXV4P1oOjAzOADwKJymlPsHKlTkn8Y2zzKdjIw=
-Date: Mon, 1 Jun 2026 07:46:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: agruenba@redhat.com, swhiteho@redhat.com, rpeterso@redhat.com,
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
-	zhongling0719@126.com
-Subject: Re: [PATCH] gfs2: Fix use-after-free in gfs2_remove_from_journal()
-Message-ID: <2026060157-ranked-purify-579b@gregkh>
-References: <20260601021813.15468-1-zenghongling@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="YIpu99OH"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-915bf8800a2so279523085a.0
+        for <gfs2@lists.linux.dev>; Mon, 08 Jun 2026 17:16:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1780964194; x=1781568994; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mVzi6kVKWqrswrr7dI9LgvPOeuZkBiCyiPO701KNxfc=;
+        b=YIpu99OHKXA/MAERSAED+hd8LSE6qOXJpsvovyQyRcNdK7ALpVKt1rOfk+ZZjbO6Wh
+         h/sl6b3IFGxhXG5o1JzCk/X8iBBXIlg6W+QAiflPCo9a4UTqUbMGVK4Cp3UfdZLkSeZI
+         sjt7ifmdZsskWp+R1jWTxFwm8ifDDjjtzp1iRqEz+NZma+g5AYQewxh+erTvoUwihf7v
+         fmHtKsrY9QcqMzkexfexXB4uAwbBnDW+1J7GhyJ4VyS7SsGSHS9vJ7UIFrL0timHoxk5
+         lgxkDrQYDuINlNQEb+vS0J2n2vbB2Ip94vBP9H4dpZgbXgyWfV7PTZJ8vNguU2vGe41p
+         mhKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780964194; x=1781568994;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mVzi6kVKWqrswrr7dI9LgvPOeuZkBiCyiPO701KNxfc=;
+        b=Pj4ngSGuL8cS9Ni/+NrWFiTtMw2v4d9Uyc3dP9kjLpLWaoQu9uT3Z5o0LPmmCxq9Xe
+         HB0H3G1kyoWx7q1gk5DKzRoFGVkyGiviue2jEDJEqfgYAILmCeZFYE1x7s7cn9OrqMLd
+         n/zlffwXlxvl0YOOY7bKc+d5xXef4zHtJCyJPAfqy60MMc2lXTnGgnLuM3UMCemFoEXZ
+         6mW1l9vtF/L+I7AclqvX14iKqtSrlFIjCGionMwxXXb6xo4yRy9EITTxxKpGzUyxx4Bp
+         nfZ4WVfdDNAmvVzM/68kCwzuahcBtORxBCQNFDdiXTI715OLNyfAlZlDTInVe4uCIU3h
+         cbOA==
+X-Forwarded-Encrypted: i=1; AFNElJ8qPUUzbiYSTlNK5+9RtGS+oHnNm95XfzKLUtCKTVbrc9cX2xCbUlLguzrgQSdQ+7nIijBi@lists.linux.dev
+X-Gm-Message-State: AOJu0YwV0s2aYOlcjoema7rtBwd4ZDfwuhQmNJjcAE3VSzOQaKhjg6db
+	fw+qalFDEj8LGFpTGAsylDwsMh5AYnQCD3nXwXRPilJxlbQPCTc3JbaM37A//zCMFQ0=
+X-Gm-Gg: Acq92OHltGgdWsGEZOqaWIzNxX7GTu2byQCmnABZwH/KQ6OBaTopQhut9AmCWAHlvq+
+	jMrVV2SVhecl6qU6qacli79aVyT7axnxyCZZ+9hNsHzUOuR9NkSFpZELaQlVjcZPLI/19lOzmad
+	oiM49Asz++xEua0BjimgZH6OmCYJKQyh0fYhaDkLm8iP2rQ5nvwHjOuKSiH3VHBp9VXXsUjmDPh
+	QBOxQtpb2K0oihpFY8lR7fHq4kz7T2OpGNo8xg9qStbmkCmWuFBSTVVTS6KAL63o1Oo4yeFqFXz
+	cQMmywLgPajDf3w2ou3T39/BV/dR10MVixZRuBC4cX/vduwdzfOFq6O2wzjQ1jH7al2iDAdH6DH
+	NpeuckgxiYzG/KaFBZzNJ/t67Yz4ljc/mMWvKoTt55mR1hH65z+9/P9d/GyBYtZTGBH2+t1wTHa
+	saqRYa/SGi82b6lO+6i8aw+WqG5Tt77PGrTHtPocKrxickaTMP
+X-Received: by 2002:a05:620a:800f:b0:915:db15:4e3d with SMTP id af79cd13be357-915db155b5cmr700851985a.21.1780964194197;
+        Mon, 08 Jun 2026 17:16:34 -0700 (PDT)
+Received: from localhost ([161.35.96.86])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9158a411333sm2013631585a.46.2026.06.08.17.16.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jun 2026 17:16:33 -0700 (PDT)
+From: Samuel Moelius <sam.moelius@trailofbits.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
+	David Teigland <teigland@redhat.com>,
+	gfs2@lists.linux.dev (open list:DISTRIBUTED LOCK MANAGER (DLM)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] dlm: validate userspace lock resource name length
+Date: Tue,  9 Jun 2026 00:16:29 +0000
+Message-ID: <20260609001538.1235326.296e93c4065a.dlm-user-short-lock-name-oob@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601021813.15468-1-zenghongling@kylinos.cn>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 01, 2026 at 10:18:12AM +0800, Hongling Zeng wrote:
-> The function calls brelse(bh) but then continues to access
-> the buffer head through bh->b_private, clear_buffer_dirty(),
-> and clear_buffer_uptodate().
-> 
-> After brelse() decreases the reference count, the buffer head
-> may be freed, making the subsequent accesses use-after-free.
-> 
-> Fix by moving the brelse(bh) call to the end of the function,
-> after all accesses to bh have been completed.
-> 
-> Fixes: e93b100931a4 ("GFS2: Fix slab memory leak in gfs2_bufdata")
-> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-> ---
->  fs/gfs2/log.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-> index 78bba8cc10b8..a92c84146de9 100644
-> --- a/fs/gfs2/log.c
-> +++ b/fs/gfs2/log.c
-> @@ -1038,7 +1038,6 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
->  			set_bit(TR_TOUCHED, &tr->tr_flags);
->  		}
->  		was_pinned = 1;
-> -		brelse(bh);
->  	}
->  	if (bd) {
->  		if (bd->bd_tr) {
-> @@ -1056,6 +1055,8 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
->  	}
->  	clear_buffer_dirty(bh);
->  	clear_buffer_uptodate(bh);
-> +	if (was_pinned)
-> +		brelse(bh);
->  }
->  
->  /**
-> -- 
-> 2.25.1
-> 
+The DLM userspace device accepts a flexible resource name after
+`struct dlm_write_request`.  `device_write()` bounded the total write
+size, but did not verify that `i.lock.namelen` was covered by the bytes
+actually supplied by the write.
 
-Hi,
+A short `DLM_USER_LOCK` request can therefore claim a full
+`DLM_RESNAME_MAXLEN` resource name while providing no name bytes.  The
+request path later hashes and copies the claimed name length, reading
+past the `memdup_user_nul()` allocation.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Reject non-conversion lock requests whose claimed resource name length
+exceeds the flexible name payload supplied with the write.  Valid lock
+requests with complete names are unchanged.  Track the payload length
+before compat conversion so 32-bit requests keep using their own request
+header size.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Assisted-by: Codex:gpt-5.5-cyber-preview
+Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+---
+ fs/dlm/user.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+diff --git a/fs/dlm/user.c b/fs/dlm/user.c
+index a8ed4c8fdc5b..205364329ce3 100644
+--- a/fs/dlm/user.c
++++ b/fs/dlm/user.c
+@@ -511,6 +511,7 @@ static ssize_t device_write(struct file *file, const char __user *buf,
+ 			    size_t count, loff_t *ppos)
+ {
+ 	struct dlm_user_proc *proc = file->private_data;
++	size_t name_payload = 0;
+ 	struct dlm_write_request *kbuf;
+ 	int error;
+ 
+@@ -544,6 +545,7 @@ static ssize_t device_write(struct file *file, const char __user *buf,
+ 
+ 		if (count > sizeof(struct dlm_write_request32))
+ 			namelen = count - sizeof(struct dlm_write_request32);
++		name_payload = namelen;
+ 
+ 		k32buf = (struct dlm_write_request32 *)kbuf;
+ 
+@@ -560,7 +562,13 @@ static ssize_t device_write(struct file *file, const char __user *buf,
+ 
+ 		compat_input(kbuf, k32buf, namelen);
+ 		kfree(k32buf);
++	} else {
++		if (count > sizeof(*kbuf))
++			name_payload = count - sizeof(*kbuf);
+ 	}
++#else
++	if (count > sizeof(*kbuf))
++		name_payload = count - sizeof(*kbuf);
+ #endif
+ 
+ 	/* do we really need this? can a write happen after a close? */
+@@ -570,6 +578,15 @@ static ssize_t device_write(struct file *file, const char __user *buf,
+ 		goto out_free;
+ 	}
+ 
++	if (kbuf->cmd == DLM_USER_LOCK &&
++	    !(kbuf->i.lock.flags & DLM_LKF_CONVERT)) {
++		if (kbuf->i.lock.namelen > name_payload ||
++		    kbuf->i.lock.namelen > DLM_RESNAME_MAXLEN) {
++			error = -EINVAL;
++			goto out_free;
++		}
++	}
++
+ 	error = -EINVAL;
+ 
+ 	switch (kbuf->cmd)
+-- 
+2.43.0
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
