@@ -1,77 +1,50 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1B03A7F54
-	for <gfs2@lists.linux.dev>; Tue, 16 Jun 2026 15:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0FF395AF0
+	for <gfs2@lists.linux.dev>; Wed, 17 Jun 2026 09:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622323; cv=none; b=k95V+KFgpbo/pDqpwS0tXwSaR2Sa1NjdPE6syltpkAk8ubRddEXwUiPlnxcBmOWcsOu8FiVj5UBUbTLrSE+Z1d9KN0sypoobu4lI2lhC72hq6Mp29rqXpOIO+IMBFddL+ztGMImiXi87XRbahRG29glHhDKzzZ9N3ZtYYoUMSn0=
+	t=1781686919; cv=none; b=UB98Fw8LRoW3LcV4vAjvu0XYPwl/Ryr8aGlsnzDlEXi61LNaKGamPDEQG2bqSFQ67gHcrVQy8SP77A8yUbaQOkA45XsGn7l/6YWeD0u1fyVbAvN9i9JfL2lgdFFtozmU54fcrTBF+moDdM7PguK8TYYWvpu6nzTvzA4LEgKignI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622323; c=relaxed/simple;
-	bh=JEOLSZ1AJjN3AaMIcahaAX2ySPe5GUtyp0G050zEmnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T0CLm+33Okxnx2JgxwLUOogQzNksJ8RZwqCv3jIUQwCj7ZLV4UQengAy3bMgQJCOFJ5QTnGkVzIWUGYKfyj0s4cz9TGzWijBIMrusNQmduSIGatVIfw8pPpWF/SBgs32Ag8EKYShUyvjyg0ckP50gN4DpuF9SXvvJ30oGTuOejs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbaDkfWW; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbaDkfWW"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-397e391cb2aso41485841fa.2
-        for <gfs2@lists.linux.dev>; Tue, 16 Jun 2026 08:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781622320; x=1782227120; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jlLTtSeNFufiChT+v/pvFzDbVk/DIrJgt+8tFHA9RhY=;
-        b=lbaDkfWWHyE61gbvCXBMYk3SP5R8A4DpVua1HxoU0h/GBf0o447sJhE3j4n3cOBazy
-         J/6lGCv2JRBaZSYPHrs51af41g4giGWb6kHMLaBOH4pQMp1Qyy2vNysiA4GMWiuIXl3G
-         L59NJJK/y4JjiatYZ8Zd/lcAMY4ikCPikhLAvcSr5wDDj3cKeLVp9P+5AbirIVJ99R64
-         TmzhAYLcablzabZ1dUAy/ksH4z9iDxnLrkftKnCgLwf93cE7KBhOO5O56rYZA6pRmg2v
-         4tGvSA28cSX3tpUa1wLGusZVWNLsK/33gMO5L7/5fevuSZJqQTL3z0qc1N27ZsjEyqa/
-         KwEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781622320; x=1782227120;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jlLTtSeNFufiChT+v/pvFzDbVk/DIrJgt+8tFHA9RhY=;
-        b=B+JAPAZXnIkrNKlrlx/Wsy7bdd4LBXP4Uk4mItJnde6CitceRdKi8smi15h0TKU7Ck
-         4GeEOMmzpnCsaxlONDy2MFt6W9JIfqMSvekIbNCpW+yh6Dc5InbBQ9hS86+BnbYdDsOp
-         6/Edv2ymzCpQLglQEB6fuYqnOp6flv8t4aomVkpBlEsmcFUmn5RUlRN7iKicWBPI93tU
-         kwAwDMwdSr/XweEVKEpgRv77it4QSINZf9ANqobwf9rAchHzxQdMoCk1GZDoV6/nT3rH
-         csyfoCUyGpe7LXuyIXVLy4WC13jeEcjGxcco0TQdMmTs8rK9596EbN7ggvxBAsd1i8R4
-         ur1g==
-X-Forwarded-Encrypted: i=1; AFNElJ//lrYI8ucUBi5ffgxu/4VBx4LGiSeDde8ZejkEQ0svXPdi8UHi7dBOtNkrccdNXMOGsjsT@lists.linux.dev
-X-Gm-Message-State: AOJu0YzumX31NtVkCt7yzNH6a/Qy5SEnY/9TMxHEOf+ZOzL0mFtg0r6y
-	nVRI7SC1c6Zgl2J8pr7634WNBG6Z4YkBdEA3iHu+gaUwzU1jaLzO3PaZ
-X-Gm-Gg: Acq92OGUw6FfWnqAnGg3/H2+WoW79T4owz53BiO8SpCaLm932s4mwI0b7MFAoigCNi1
-	QEi7IOEfRwWoF9STuR/6PCCfJRke1j/lNQiWjfWIctLLIWeu5E5QXy0n401Xi5Uk67Ht4PQXAgw
-	JZhlzjcGY/ZIWkixYPkYCp5GKjmahDNlyqbRQYS+PnawuJJmPb/D5Qc2XYc4v/ikgKVkR1/s//N
-	kGF5SgD7PgztWJ3NQ+1YGgsjS2P+xw3fVUdfC0v6zvTkld5x46MnWYIfbqFdKHczarxDCbtH3KK
-	aa9W8A0PXlEOOHvKcufCqYGhgKW+23CVKbslmEvj1FJbITMZxShqc1BRP14hVgdboy5THsD0LZR
-	fwykautxbrE+gzJHiRWjXuJNYCvdGHrJJttIa9jqQJjzjN1Wa2udlzAg8RSOWORC5UA9w1MSv9E
-	/E9O66SB8o7sonQy6nlk45XiNJ/y3cUfeYwZvnWFHTgqbPXRgjzjyedVpvktrC2CO629E=
-X-Received: by 2002:a2e:bba5:0:b0:38e:83a6:d37 with SMTP id 38308e7fff4ca-3993ef57664mr24550401fa.13.1781622319750;
-        Tue, 16 Jun 2026 08:05:19 -0700 (PDT)
-Received: from cherrypc.astra-academy.ru (109-252-17-231.nat.spd-mgts.ru. [109.252.17.231])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3995c191cd8sm7765001fa.20.2026.06.16.08.05.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 08:05:19 -0700 (PDT)
-From: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	gfs2@lists.linux.dev,
+	s=arc-20240116; t=1781686919; c=relaxed/simple;
+	bh=9/OoYbJrCL//kiSb4MsyIPFutjEKgOPFPTI2qY/4THs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GRq/h7dza0C6zNJ18ib2UL8g+w/UhrGhWOamDqulbd7z5AK6FIQ/3qO2JSReUUr/Bul/7oeRlfNqTUR5PYOzBEzFAQdvIRuDIHzyTVn/PlAbqK3LQus0yNa8pcn+qNNTDYt7FPHP4i8QOtVAu7QaIBwNUn8/2rp9XRvPAwrm1i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 2d1c3ea46a2b11f1aa26b74ffac11d73-20260617
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:4042869d-f967-4c02-a626-2bac9b899792,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:0f34688fb48a7ecf7247636f46d3e22c,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2d1c3ea46a2b11f1aa26b74ffac11d73-20260617
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1609382198; Wed, 17 Jun 2026 17:01:49 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: agruenba@redhat.com,
+	swhiteho@redhat.com,
+	gregkh@linuxfoundation.org,
+	rpeterso@redhat.com
+Cc: gfs2@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Christine Caulfield <ccaulfie@redhat.com>,
-	cluster-devel@redhat.com,
-	lvc-project@linuxtesting.org,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1/6.6/6.12] dlm: prevent NPD when writing a positive value to event_done
-Date: Tue, 16 Jun 2026 18:05:34 +0300
-Message-ID: <20260616150535.810849-1-nazarkalashnikov0@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>
+Subject: [PATCH] gfs2: Fix use-after-free in gfs2_remove_from_journal()
+Date: Wed, 17 Jun 2026 17:01:43 +0800
+Message-Id: <20260617090143.735219-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -80,44 +53,43 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+The function calls brelse(bh) but then continues to access
+the buffer head through bh->b_private, clear_buffer_dirty(),
+and clear_buffer_uptodate().
 
-commit 8e2bad543eca5c25cd02cbc63d72557934d45f13 upstream.
+After brelse() decreases the reference count, the buffer head
+may be freed, making the subsequent accesses use-after-free.
 
-do_uevent returns the value written to event_done. In case it is a
-positive value, new_lockspace would undo all the work, and lockspace
-would not be set. __dlm_new_lockspace, however, would treat that
-positive value as a success due to commit 8511a2728ab8 ("dlm: fix use
-count with multiple joins").
+Fix by moving the brelse(bh) call to the end of the function,
+after all accesses to bh have been completed.
 
-Down the line, device_create_lockspace would pass that NULL lockspace to
-dlm_find_lockspace_local, leading to a NULL pointer dereference.
-
-Treating such positive values as successes prevents the problem. Given
-this has been broken for so long, this is unlikely to break userspace
-expectations.
-
-Fixes: 8511a2728ab8 ("dlm: fix use count with multiple joins")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Fixes: e93b100931a4 ("GFS2: Fix slab memory leak in gfs2_bufdata")
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 ---
-Backport fix for CVE-2025-23131
- fs/dlm/lockspace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/log.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
-index 7b4b6977dcd6..ee11a70def92 100644
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -576,7 +576,7 @@ static int new_lockspace(const char *name, const char *cluster,
- 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 78bba8cc10b8..a92c84146de9 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1038,7 +1038,6 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
+ 			set_bit(TR_TOUCHED, &tr->tr_flags);
+ 		}
+ 		was_pinned = 1;
+-		brelse(bh);
+ 	}
+ 	if (bd) {
+ 		if (bd->bd_tr) {
+@@ -1056,6 +1055,8 @@ void gfs2_remove_from_journal(struct buffer_head *bh, int meta)
+ 	}
+ 	clear_buffer_dirty(bh);
+ 	clear_buffer_uptodate(bh);
++	if (was_pinned)
++		brelse(bh);
+ }
  
- 	error = do_uevent(ls, 1);
--	if (error)
-+	if (error < 0)
- 		goto out_recoverd;
- 
- 	/* wait until recovery is successful or failed */
+ /**
 -- 
-2.47.3
+2.25.1
+
