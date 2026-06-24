@@ -1,94 +1,112 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE373A451F
-	for <gfs2@lists.linux.dev>; Tue, 23 Jun 2026 20:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B3C3CC7DF;
+	Wed, 24 Jun 2026 17:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782246750; cv=none; b=bdR3pzFdMyCZRN5noiKxQilpus6A5xoXVzsPewMMeJrqkCmlYlL/9/C8c0aZtqsP1/OkW4cGuUyn5HxXdzDRaYOwJpAT7ReGjsfKMIG3LKr9svELobd6a7I3xIV6WYHSxs7Y42s8OGHh0OE0MIWIX3Q+b1qhN1C0PBJI4id3Ci0=
+	t=1782322969; cv=none; b=PIiI20ZX4AqqU4EneXjQQAwctmeUo+gK1Z/n71feRVkvhb9pncNXjfMAs69qzXMc6EdceHuvWgqPgkXYq6F+feDDpgPrtfak0m2DmTn74AhKg/7p4JUObr5EipQwBArbVZSEodyHoVqr/y4eUGGaBCbT6lCzLE1bIZHhXLY1s+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782246750; c=relaxed/simple;
-	bh=mnzHS0GCmXVYmBGZridCOB+oZo6g9Nz6PEbvJD7h8Ys=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Btjb4KQjhj79G9WpkLI7E5lEWA2biaz87IphddV3+pBzNtOiDv8HHmkChIO24D7uLTBxEOwG5RAZeuoyJBXU3O4+iguVO5z148IIoFo5i6jX0kCFF/vjPGP2V0wCeR0ZPJ9EbjGs8M5OTSGXG5SMRTPHXJOaEQHI4eLrDk2g+es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4862fcd9a3cso348710b6e.2
-        for <gfs2@lists.linux.dev>; Tue, 23 Jun 2026 13:32:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782246748; x=1782851548;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FVwZLNKrxLaOEaJmtOUd3myfwyVDer1HLneCqBWOqR0=;
-        b=E/Xvl5YD3BetJxyfWzq/95SmtN69/Ju+jOadmVNRqKrVNaQjwyon83iinG32MYsl48
-         usWTwSZW2WrE7nEuNGQmVYbFog14RHyGFvCtEPGFzi5n3rB6zk1swjiVHPKpOL5lLdx8
-         KP+e9Pd0KHsZINtk6Nrx9m0J2MeAfBcq2hI8YqDyfut7CTiC261y5vfek7Khu/76NVRH
-         YWBmWHP6BMB6B9SW7ZSh3kqd7Bp6quSKB4/GVH6XjoLS83TS0jwIEAq6t6s3Z7wxxjU9
-         5oTtEoXF83XxnK9gFPXMlW8dj/HlS3ehRXcFOYnS2I+PmlyiSsoSlFhLnM8xLa4mRmh9
-         dkpQ==
-X-Gm-Message-State: AOJu0Yy54rLnAGTfz6fcFOP3gjmh8fBSablmfl2adQqw7aOsTPRvdtxx
-	wzQEUt0rG5pNuJrR7A+BKR0KHJcIfWJU9BhXKNyEIzamLCxbRzgcsSGHYb1WayWT4QW+GalwVrP
-	pNVrOsM2q4hgyulmWPN3iLnA6Kd2E8G+bUUq+zii9qsPfjaco6CcxUPI3Lp0=
+	s=arc-20240116; t=1782322969; c=relaxed/simple;
+	bh=2ZycE3Xs0J5KLMwS+1EP6QccRLENONtX1HayvXH1Hbk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=atLtzgTjzruJlpnqo9/VV1fSGhToPGPu3L7m7KMFU+oK20gACSbf67YFxSEGbXp3hZnCyyFNKuy/w6/ufh1HzWiuJ5/1TFJ8KDfqk8sY3SdNBBpQcSgnW9X9nAn2YNz+kcij1qR2XMSmEGHT+YBcHDfeyINZAOv3hX4s5GDoeps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JqlOnzJa; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JqlOnzJa"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=4ElqMcyD4SnoVaQLQg03XYigTcdoKEg/OF55QxzEAiY=; b=JqlOnzJae0InaYPAqvmaT+XGXF
+	NE3lCHDU5phMBdzAM0HLvga9mK44xqUP0uku/iiapVYmuLjOEM+VKVi+h7bwd8BB16qeT4l/lfmIg
+	2SIx6fLUOWfTVym/Me6CJgOXR1ipgT/pe0/F1t9vo8he1xfBSlllk6a/u0RpRimgPl7UA194cMa64
+	yzePfkpVxA92FFtp86Kn552jKOUeI4t/GsTykC34EA+ZlWt1C/fN6/dsKhH0qJBAuNVx75rbPSvfc
+	dd1VSfF91HTtSS3fxrHwadeNMYE0Azmzg1MOxzcSKVwVQX1CEV7zE5P9buW9h7bJ0DMTPeblo5bex
+	FJA0OTSQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wcRcT-00000008SR5-2ov3;
+	Wed, 24 Jun 2026 17:42:37 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	fuse-devel@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	ntfs3@lists.linux.dev
+Subject: [PATCH] iomap: Remove FGP_NOFS from iomap_get_folio()
+Date: Wed, 24 Jun 2026 18:42:26 +0100
+Message-ID: <20260624174228.2015893-1-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c3cb:b0:490:6550:1e2f with SMTP id
- 5614622812f47-49065502833mr641533b6e.41.1782246748216; Tue, 23 Jun 2026
- 13:32:28 -0700 (PDT)
-Date: Tue, 23 Jun 2026 13:32:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a3aed5c.b0c80a11.da7f.0003.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Jun 2026)
-From: syzbot <syzbot+listbdd7bcec77794732beb4@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello gfs2 maintainers/developers,
+FGP_NOFS is legacy; filesystems should be using memalloc_nofs_save/restore
+instead.  We have it here in iomap because it was buried in
+grab_cache_page_write_begin() and we didn't want to change this behaviour
+as part of the folio transition.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+I have tested this with XFS and see no issues.  Other filesystems (cc'd)
+may need to make adjustments.  Please test with lockdep enabled.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 28 issues are still open and 44 have already been fixed.
-There are also 5 low-priority issues.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 77      Yes   kernel BUG in do_qc
-                  https://syzkaller.appspot.com/bug?extid=bad65435361712796381
-<2> 76      Yes   KASAN: slab-use-after-free Read in folio_evictable (3)
-                  https://syzkaller.appspot.com/bug?extid=4c7590f1cee06597e43a
-<3> 75      Yes   INFO: task hung in gfs2_recover_journal (4)
-                  https://syzkaller.appspot.com/bug?extid=9013411dc43f3582823a
-<4> 50      Yes   WARNING in gfs2_ri_update (2)
-                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<5> 35      Yes   general protection fault in gfs2_glock_dq (2)
-                  https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
-<6> 22      No    kernel BUG in gfs2_trans_add_revoke
-                  https://syzkaller.appspot.com/bug?extid=b17a83b050e9617376f0
-<7> 2361    Yes   INFO: task hung in __gfs2_lookup
-                  https://syzkaller.appspot.com/bug?extid=8a86bdd8c524e46ff97a
-<8> 110     Yes   kernel BUG in gfs2_quota_cleanup (3)
-                  https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-<9> 96      Yes   kernel BUG in qd_put (3)
-                  https://syzkaller.appspot.com/bug?extid=0423714c06c369318794
-
+Cc: "Darrick J. Wong" <djwong@kernel.org> (iomap)
+Cc: Jens Axboe <axboe@kernel.dk> (block)
+Cc: Namjae Jeon <linkinjeon@kernel.org> (exfat, ntfs)
+Cc: Sungjong Seo <sj1557.seo@samsung.com> (exfat)
+Cc: Yuezhang Mo <yuezhang.mo@sony.com> (exfat)
+Cc: Miklos Szeredi <miklos@szeredi.hu> (fuse)
+Cc: Andreas Gruenbacher <agruenba@redhat.com> (gfs2)
+Cc: Hyunchul Lee <hyc.lee@gmail.com> (ntfs)
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com> (ntfs3)
+Cc: Carlos Maiolino <cem@kernel.org> (xfs)
+Cc: Damien Le Moal <dlemoal@kernel.org> (zonefs)
+Cc: Naohiro Aota <naohiro.aota@wdc.com> (zonefs)
+Cc: Johannes Thumshirn <jth@kernel.org> (zonefs)
+Cc: linux-xfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-block@vger.kernel.org
+Cc: fuse-devel@lists.linux.dev
+Cc: gfs2@lists.linux.dev
+Cc: ntfs3@lists.linux.dev
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/iomap/buffered-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 8d4806dc46d4..27bc2455a98d 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -768,7 +768,7 @@ EXPORT_SYMBOL_GPL(iomap_is_partially_uptodate);
+  */
+ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+ {
+-	fgf_t fgp = FGP_WRITEBEGIN | FGP_NOFS;
++	fgf_t fgp = FGP_WRITEBEGIN;
+ 
+ 	if (iter->flags & IOMAP_NOWAIT)
+ 		fgp |= FGP_NOWAIT;
+-- 
+2.47.3
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
