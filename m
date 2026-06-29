@@ -1,135 +1,186 @@
-Received: from send100.i.mail.ru (send100.i.mail.ru [89.221.237.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2529D285CAD;
-	Sat, 27 Jun 2026 16:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.221.237.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE123033DA
+	for <gfs2@lists.linux.dev>; Mon, 29 Jun 2026 20:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782579510; cv=none; b=ojfIUCYCiE5+xPe0dXObFzqdMGdoSGken3k0yXaIqBnn9Tk8ns4C1hTVuYufFxD1JwYswpm4fIt9/hDC3LBpremdt2LrXal8Y79OeBnv37Iwooa/rG5TtZSV+As1xNjKJo8Kvqf1ROekKDNMkvJGYt6gz1u1hMgEkmDX8EzkshA=
+	t=1782766103; cv=none; b=SUMMbkUOVnTm1DrMPrlYyg/QZegEfgSYs7ns+EYFgenNodvyVepAxZi0KLk4P7nMaNF+ax8brP6/F3xdH+htYnNiAdX0CPf6Q3i2FRhXILrQu5j9eGyxuBJPRSzEPaajGo6WuL9V1a8Cj81VuDrJhgWkkKZt6Mj6zsLniDrFlzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782579510; c=relaxed/simple;
-	bh=u9S4B6a8VjHL4FDi1UBPwXINLyUpmPIVH3qUbW64Zig=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QlLJppXZvvAn6Ss38DzZeqq/OlD60iI2qFO1m7w0bapYQr0+Vf5t4jb0YGtUkK5hpmUUBbTrWe6dacjPUSaBMPB6cmDsbIP/TAIEmPiILmwMBtNDvdjCg281Sfde2T1naKIsu+PxWD22Md5ZNK2On+gtOM5amjc6/hpMr8u1IsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mail.ru; spf=pass smtp.mailfrom=mail.ru; dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b=tWBgbpfX; dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b=EHAT5CVM; arc=none smtp.client-ip=89.221.237.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mail.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b="tWBgbpfX";
-	dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b="EHAT5CVM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
-	s=mail4; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:X-Cloud-Ids;
-	bh=12VCEfEpSTnv3MtNJOLbdyS4O1xD0+2mBF05DrnlJgQ=; t=1782579506; x=1782669506; 
-	b=tWBgbpfXq1TTulIUEezBkypaBUh7qmShtTXpvsYHO2vLWfBoIMMXV0KzH+f8I8OeQsbG9NJu/0o
-	/lA3klyztajIxgtN8jx0LTVCt9De49mevamxM4ZIkmN2qMhO68NH725rnB3SZRbZMqgcJG/pQ43U3
-	JRgnSED3ycyzOBaEbRBPnBGBMfCuF4r5SbMLX9lGrARNSY6dkg0KW7JtX0Ezm7z4HqniLqhqPwE4K
-	KlfTj2dMs1U+iMREU2At/zjxdnTF4HKquualI5xQIE4/1g+oopI+I8cJNhhrLOpPqA1ggVWr5OJn7
-	3mAjrwuk2CyAwwdz3BGebNmNv0ocNCyDI10A==;
-Received: from [10.113.2.44] (port=34082 helo=send151.i.mail.ru)
-	by exim-fallback-7db886947c-jfr2j with esmtp (envelope-from <listdansp@mail.ru>)
-	id 1wdW7e-00000000EbU-1ECx; Sat, 27 Jun 2026 19:43:14 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
-	s=mail4; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:From:Sender:Reply-To:To:Cc:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
-	X-Cloud-Ids:Disposition-Notification-To;
-	bh=12VCEfEpSTnv3MtNJOLbdyS4O1xD0+2mBF05DrnlJgQ=; t=1782578594; x=1782668594; 
-	b=EHAT5CVMmJWfKQ6yB9nplGlAFyjTkDc2u9LONxFHO1bQTWv2lj51TUylJwqZQGOijJNQxxKuLNz
-	Y48w1qlAJOhNYadXzsJP8Zp4oMIawX8UFRGIa7mlhtXuO/DvX3GnWUt+WBdRnmPx8K6IN/HpHMGH/
-	ITx/QraqPvi7CESaX5ADEvEj/GFfmZqtvgXk4kuq6JOgsMZ2juvxpvihdUlie3K0ip+FcXrpGg5ZF
-	GdecRI4pHPk/kdbBxVf1XiowSrv/G2ZU41ZfwroshOE2acE9LhLCwrcgI3iJhe4l6YwkTo4WCXhbl
-	25draukHNvr0uiHYw/sITQ5FYf5CS8fJ/ClA==;
-Received: by exim-smtp-78b8b8c574-mttf2 with esmtpa (envelope-from <listdansp@mail.ru>)
-	id 1wdW7T-00000000WnP-0tHT; Sat, 27 Jun 2026 19:43:03 +0300
-From: Danila Chernetsov <listdansp@mail.ru>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: Danila Chernetsov <listdansp@mail.ru>,
-	David Teigland <teigland@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH v2] dlm: validate lock modes in recovery messages
-Date: Sat, 27 Jun 2026 16:42:11 +0000
-Message-Id: <20260627164211.134982-1-listdansp@mail.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260627161721.129861-1-listdansp@mail.ru>
-References: <20260627161721.129861-1-listdansp@mail.ru>
+	s=arc-20240116; t=1782766103; c=relaxed/simple;
+	bh=OUbVhrc+t2rO3ZhCZdch38euvYjsDV/+O8hDPwb4sc0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=qqeDqYXFKu5FeXbzOOb5jDEtt9g2Ynud0Ota/cN8HClwbkb/E7PDd9ujsEKt2lyJbXYj7G7VvlKxw533UT43NHXmMOMCFUCibrviTRi3r/0CtYtoKq1rKW9OVPR1YuV7YfXswvsuP8a18Y2F0ov2z7EfKegyaah7Nw0Egw3hjtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-48e5de5a23cso4885107b6e.0
+        for <gfs2@lists.linux.dev>; Mon, 29 Jun 2026 13:48:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782766101; x=1783370901;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oFwE3U6RLu7L0JrfkTqLMYih01tklGk8gkOxfzJFLJ4=;
+        b=ns05P1EVGndlDG/6mrXHDXyUdZXKsYVQ3KKkmd9JuOSmdf1XVqkvm9krTRl6VAAD6Z
+         eOHVMCcwF6Jn/dWbpbMvl+exXmPO5TaPdVUY3zuH6OVUOlX5aUEZvV9saFuQH4EUMBv/
+         dahTyCUXEmXk8ruYD5skyPehRhajRXAZpm76y3WNd/U13TOjwOssd/i8nbNeeHSKttGR
+         CWfEeslvY6/YaaqLVY7/L0kf5W5VivMV0lGz8XZJGh139jgo/neUWGjbkjSgGuUK7z9F
+         xghNZeucBtb/aoQeyjtypFvdjQHjUhYQimanEvo7Yx1XTLf3dMjTyLY80XXsRkMIkyre
+         +rdg==
+X-Forwarded-Encrypted: i=1; AFNElJ/xUiiENYD+it5B/XiXGddk5Qu2jAvIE7rakM6GwRF2pIh4fM4bg1705+4UqPtK+WyCAa4V@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbLTQY8rQXHE0YrIgXreswBB6mCyO4NylHvQhrTqeQ1PZYBPyS
+	RlJCpJVvNNCHjrY8Cj/jT1yAWFB73EH6zdgjw93b7kJu/TIOUkU0lshiBvhRXVV40Fe3CpOZyhC
+	JKf7Q/hU80qsjzQAdkWWhmLhZEC9+lhzjo1h/yVNCfVimipSYqKRJa5jh0H4=
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailru-Src: smtp
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD918D6BB028DF8CB61525AEE36BB2062474470531DE4816542182A05F5380850400B49814DA136993A3DE06ABAFEAF6705A81937E9D93765388516D4EB2A802F64DE2E4F11C3090EAD
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7D3E352D4AD7EBF54EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637AC83A81C8FD4AD23D82A6BABE6F325AC2E85FA5F3EDFCBAA7353EFBB553375667A8D271431AA2D755F040100554B2BE00AECC46AA362946B1045FF463A6A754A8EEF46B7454FC60B9742502CCDD46D0D0839144E5BB460BAF6B57BC7E64490618DEB871D839B73339E8FC8737B5C224915519F706774CB6ACC7F00164DA146DAFE8445B8C89999729449624AB7ADAF37F6B57BC7E64490611E7FA7ABCAF51C92176DF2183F8FC7C0F9892FFADCC82CE38941B15DA834481F9449624AB7ADAF37BA3038C0950A5D3613377AFFFEAFD2691661749BA6B97735E0359D86951506AA7B076A6E789B0E97A8DF7F3B2552694AD5FFEEA1DED7F25D49FD398EE364050F437C869540D2AB0F436E4CC186B5AB2DB3661434B16C20ACC84D3B47A649675FE827F84554CEF5019E625A9149C048EE9ECD01F8117BC8BEE2021AF6380DFAD18AA50765F790063735872C767BF85DA227C277FBC8AE2E8B6D5978F13CF55F0A75ECD9A6C639B01B4E70A05D1297E1BBCB5012B2E24CD356
-X-B7AD71C0: 6FEFE4C63DFE2D851629A3278334FCEC2AD323669803AD9FE6E38E9349F0B9667F35BAA83BD2469459E970AB7D0E9FF0
-X-C1DE0DAB: 0D63561A33F958A53B31342874CC5B155002B1117B3ED696841053EFFE880216484B8D70797403F6823CB91A9FED034534781492E4B8EEAD37F46C620FF2CAEEC79554A2A72441328621D336A7BC284946AD531847A6065A17B107DEF921CE79BDAD6C7F3747799A
-X-C8649E89: 1C3962B70DF3F0AD73CAD6646DEDE191716CD42B3DD1D34CB8C0E004AB9358F525B6776AC983F447FC0B9F89525902EE6F57B2FD27647F25E66C117BDB76D659714797C67397DA9B89F0C74F1DE277446DD1BE6A5EB7B27897B11BB2ADCDC8FCEC867B1762F49EEFB8341EE9D5BE9A0A07629BF80C8413A2964ACCCFA6D8B3470568C83604E6C60A721D270AA2B885D14C41F94D744909CE04437D853D7CD20871FE3B1D98EC473624A389F0E278DBF4
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+ObcCpyrx6l7KImUglyhkEat/+ysWwi0gdhEs0JGjl6ggRWTy1haxBpVdbIX1nthFXMZebaIdHP2ghjoIc/363UZI6Kf1ptIMVRSZSJkMhZtMUts3V6BVurk=
-X-Mailru-Sender: 4CE1109FD677D277A25EA9D9B320DF5360C5F37B160A0A87B951B70A5BD4BD8E43BB109172E94817C655969879B08F79C53BD13D3F6EEB2F3DDE9B364B0DF289C95E31D8FCF52BE1594FB4C9F0DBF4120D4ABDE8C577C2ED
-X-Mras: Ok
-X-Mailru-Src: fallback
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B4FA133F958ACA88638E64B5B6F18F8E395F4284038122D8BB049FFFDB7839CE9EC8994B5FF94C90420243087173F5EC76CB422B20AD978E4235466F4EF61FEA02331D1819EA0C466F
-X-7FA49CB5: 0D63561A33F958A5198CFA790F7BDDA35002B1117B3ED6969A20CA0F2D272E0B3D1B8CC3424EAECF02ED4CEA229C1FA827C277FBC8AE2E8B54F520D093A0DF28
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+OYcBso8Zm+oliTz8oZwnDrFsY77LZRcHyw5ht0smWrfSeTW5FiI8avd9v29gUBslpEZ9wIMwqVP4jLQVQ+dVm7x9BpDHadBV9RMjI809PraZjmI79EXTy1Ma6V3oQYPYnw==
-X-Mailru-MI: 20000000020000000000000800
-X-Mras: Ok
+X-Received: by 2002:a05:6808:3089:b0:489:f088:5f70 with SMTP id
+ 5614622812f47-495eae01c05mr934536b6e.12.1782766100970; Mon, 29 Jun 2026
+ 13:48:20 -0700 (PDT)
+Date: Mon, 29 Jun 2026 13:48:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a42da14.b42ede87.8e801.0000.GAE@google.com>
+Subject: [syzbot] [gfs2?] general protection fault in _find_first_zero_bit
+From: syzbot <syzbot+cb79de2cc8b76fbf474f@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The DLM recovery path restores lock state from rcom_lock messages
-received from remote nodes. The lock modes in these messages are
-copied directly into the local lkb state without validating that they
-are within the valid DLM lock mode range.
+Hello,
 
-The rest of the DLM code assumes that lkb_rqmode and lkb_grmode
-contain valid lock modes. In particular, LVB callback handling in
-dlm_may_skip_callback() uses lock modes as indexes into the
-dlm_lvb_operations array:
+syzbot found the following issue on:
 
-    dlm_lvb_operations[prev_mode + 1][mode + 1]
+HEAD commit:    51cb1aa1250c Merge tag 'loongarch-7.2' of git://git.kernel..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10748efa580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=86ba763b42fa66a
+dashboard link: https://syzkaller.appspot.com/bug?extid=cb79de2cc8b76fbf474f
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12b7c246580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1205b6b1580000
 
-An invalid lock mode received during recovery could therefore result in
-an out-of-bounds read during subsequent LVB callback processing.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/edf195a1627e/disk-51cb1aa1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/e282a4f3a85b/vmlinux-51cb1aa1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a485374265d8/bzImage-51cb1aa1.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/82f270d69c7c/mount_0.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=17b48efa580000)
 
-Validate rl_rqmode and rl_grmode before storing them into the local LKB
-state. This preserves the lock mode invariant required by the rest of
-the DLM code.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+cb79de2cc8b76fbf474f@syzkaller.appspotmail.com
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 5755 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
+RIP: 0010:_find_first_zero_bit+0x29/0xb0 lib/find_bit.c:149
+Code: 90 f3 0f 1e fa 41 57 41 56 41 55 41 54 53 48 85 f6 74 46 48 89 f3 49 89 fe 49 bf 00 00 00 00 00 fc ff df 48 89 f8 48 c1 e8 03 <42> 80 3c 38 00 74 08 4c 89 f7 e8 b8 55 7c fd 49 8b 06 48 83 f8 ff
+RSP: 0018:ffffc9000365f6c0 EFLAGS: 00010256
+RAX: 0000000000000000 RBX: 000000000000f800 RCX: 0000000000000000
+RDX: ffff888034374c40 RSI: 000000000000f800 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006cbecc R12: ffff888058d1d3f0
+R13: ffff888034374c38 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff888125223000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8b8a06ea00 CR3: 000000000e746000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ find_first_zero_bit include/linux/find.h:391 [inline]
+ slot_get fs/gfs2/quota.c:355 [inline]
+ qdsb_get+0x133/0x340 fs/gfs2/quota.c:522
+ gfs2_quota_hold+0x191/0x5c0 fs/gfs2/quota.c:606
+ gfs2_dinode_dealloc+0x176/0x3f0 fs/gfs2/inode.c:488
+ evict_unlinked_inode fs/gfs2/super.c:1329 [inline]
+ gfs2_evict_inode+0x11cd/0x1400 fs/gfs2/super.c:1479
+ evict+0x624/0xb50 fs/inode.c:825
+ gfs2_put_super+0x300/0x860 fs/gfs2/super.c:618
+ generic_shutdown_super+0x13d/0x2d0 fs/super.c:647
+ kill_block_super+0x44/0x90 fs/super.c:1665
+ deactivate_locked_super+0xbc/0x130 fs/super.c:477
+ cleanup_mnt+0x3d3/0x460 fs/namespace.c:1317
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x73a/0x2360 kernel/exit.c:1004
+ do_group_exit+0x22d/0x2f0 kernel/exit.c:1147
+ __do_sys_exit_group kernel/exit.c:1158 [inline]
+ __se_sys_exit_group kernel/exit.c:1156 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1156
+ x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8b89f9ce59
+Code: Unable to access opcode bytes at 0x7f8b89f9ce2f.
+RSP: 002b:00007ffc5b7df378 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007f8b8a03233c RCX: 00007f8b89f9ce59
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000016 R08: 0000000000000000 R09: 00007f8b8a0322ca
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc5b7e0630
+R13: 00007f8b8a0322ca R14: 0000555582f544e8 R15: 00007ffc5b7e49d0
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:_find_first_zero_bit+0x29/0xb0 lib/find_bit.c:149
+Code: 90 f3 0f 1e fa 41 57 41 56 41 55 41 54 53 48 85 f6 74 46 48 89 f3 49 89 fe 49 bf 00 00 00 00 00 fc ff df 48 89 f8 48 c1 e8 03 <42> 80 3c 38 00 74 08 4c 89 f7 e8 b8 55 7c fd 49 8b 06 48 83 f8 ff
+RSP: 0018:ffffc9000365f6c0 EFLAGS: 00010256
+RAX: 0000000000000000 RBX: 000000000000f800 RCX: 0000000000000000
+RDX: ffff888034374c40 RSI: 000000000000f800 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006cbecc R12: ffff888058d1d3f0
+R13: ffff888034374c38 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff888125223000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8b8a06ea00 CR3: 000000000e746000 CR4: 0000000000350ef0
+----------------
+Code disassembly (best guess):
+   0:	90                   	nop
+   1:	f3 0f 1e fa          	endbr64
+   5:	41 57                	push   %r15
+   7:	41 56                	push   %r14
+   9:	41 55                	push   %r13
+   b:	41 54                	push   %r12
+   d:	53                   	push   %rbx
+   e:	48 85 f6             	test   %rsi,%rsi
+  11:	74 46                	je     0x59
+  13:	48 89 f3             	mov    %rsi,%rbx
+  16:	49 89 fe             	mov    %rdi,%r14
+  19:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
+  20:	fc ff df
+  23:	48 89 f8             	mov    %rdi,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 38 00       	cmpb   $0x0,(%rax,%r15,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 f7             	mov    %r14,%rdi
+  34:	e8 b8 55 7c fd       	call   0xfd7c55f1
+  39:	49 8b 06             	mov    (%r14),%rax
+  3c:	48 83 f8 ff          	cmp    $0xffffffffffffffff,%rax
 
-Fixes: e7fd41792fc0 ("[DLM] The core of the DLM for GFS2/CLVM")
-Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+
 ---
-Changes in v2:
-- Fixed an incorrect patch subject from the previous submission.
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- fs/dlm/lock.c | 4 ++++
- 1 file changed, 4 insertions(+)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index c381e1028446..3be1d6007e35 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -5529,6 +5529,10 @@ static int receive_rcom_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- {
- 	struct rcom_lock *rl = (struct rcom_lock *) rc->rc_buf;
- 
-+	if (rl->rl_rqmode < DLM_LOCK_IV || rl->rl_rqmode > DLM_LOCK_EX ||
-+	    rl->rl_grmode < DLM_LOCK_IV || rl->rl_grmode > DLM_LOCK_EX)
-+		return -EINVAL;
-+
- 	lkb->lkb_nodeid = le32_to_cpu(rc->rc_header.h_nodeid);
- 	lkb->lkb_ownpid = le32_to_cpu(rl->rl_ownpid);
- 	lkb->lkb_remid = le32_to_cpu(rl->rl_lkid);
--- 
-2.25.1
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
