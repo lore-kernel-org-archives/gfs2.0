@@ -1,98 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97DB1A3AB0
-	for <gfs2@lists.linux.dev>; Fri,  3 Jul 2026 11:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783079152; cv=none; b=AdoYUQ0PSi2W3TapFx711rXZym0dXiyXJbVfbEHUETSkkWvwVvbPzxC9yFkEobuzRjkQ5o5+j+CmHY6LeHB1rE7wk1EQFyrzIAVxD70fFBCox2/7m8kvN2Bx1QF+BLGFhTA++WEmrT+3FN1jYRUDCV/fP4nQDQ6guhCE8HH+tGU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783079152; c=relaxed/simple;
-	bh=GeUDSjrHAWkuRRsR++4INezbx04TBh6B1L1rO/GgWvo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA073594A
+	for <gfs2@lists.linux.dev>; Sat,  4 Jul 2026 00:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783123651; cv=pass; b=kgUSl5gcpB6zlRRt5h47zbUnJKMBzxUCdxMbJ2xmhxw09nhMFAkAdo4U5kp1RQX6yHcOQOYCTJox2XWEpO9awpjY1N33XvrpxEzn+pkwcGLlQ0JnDd6RUYFFnobEifWgowecllczTBt5XF82o6NsKBGlxlLCudJ26ITbPRhtUHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783123651; c=relaxed/simple;
+	bh=vDHlcWmL4Cd5UT42ugQTjRnKNbXE5dy2ocFAsQoM96Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tn1UfLcJcf1mms2svVQGs1VeE72KWetzcBORpyyer0DUS95fwo5E7/wtuzHykQKza8n1cgJ6q7jFELFmsC8RgLaTRC92lYkzW8yZyymFyy80jfFSbi7P9cUlVnuV1vS4JeuOGj5fC2BaHNF/lhujZ5uDzQvDQZYdCoTIu9gJIw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fLyBr8UH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=LD72R5dNcYbvQvGNyUWFSlZy8w+vPXzyEERDZDpCZWU89J9xzBFz773aNWu92FTbA5Y91A05WUqv9N5bAPcIF3W2aqKkLQWbLFvLtb1qxhub41QWuh1I/YBlJDTQfgzygnGVC+1un5ArVc+qLzyrou9A4aMhHhqu96zD38dgGgU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBbA/JmH; arc=pass smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fLyBr8UH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783079150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GeUDSjrHAWkuRRsR++4INezbx04TBh6B1L1rO/GgWvo=;
-	b=fLyBr8UHrSEqg9mX1jWuNKlo7oMOf4wjm4nQy29h5hs9u9Q2mYus9sOv08VUwyflg3FS1m
-	eLvdaR6OqWFv67rXVtlEvgWjTVCPX2CRI5vXnVRrfC2LzJalZNr69iFMeLwg90Oe7TmAh9
-	WPB6CmlvLK7W5vcSlNnmyZhSUQvl3bk=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-A4_6ZKc_P527_rVt0nPDuA-1; Fri, 03 Jul 2026 07:45:49 -0400
-X-MC-Unique: A4_6ZKc_P527_rVt0nPDuA-1
-X-Mimecast-MFC-AGG-ID: A4_6ZKc_P527_rVt0nPDuA_1783079149
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-808a9e51918so12604827b3.2
-        for <gfs2@lists.linux.dev>; Fri, 03 Jul 2026 04:45:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783079148; x=1783683948;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBbA/JmH"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4703bc0a99aso600246f8f.3
+        for <gfs2@lists.linux.dev>; Fri, 03 Jul 2026 17:07:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783123648; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bk6jh9dRuhZvbhqeLSYq2o6f8Ro6GyvhLn/rWgfQc0cN0ydj4r79FfqmdM860hSK6h
+         fmnScNDVxqvmaO1XVOLv9JziMWrqCBWIySDW0yqt2X2drIX5c9ukK7b+IeiG2U8giGJZ
+         dG6sGwLk7zh50qvrI69soME4O0gbRM9t9Xhlm9a2rAhZVuKABS1AAROxbKxA+ahh7M0x
+         8tTr1yaJsTytE2OANhtkjJkQSt51eB/jiUhUqY/SgXAUbz4p87aLX770Jzfm4qPRVXgm
+         gWV/6rLFp3ip/B/oCbqxdAbiqgjFAy5uHKToBy6cwxy2UtrvSu7I1hVtBJhjDtWC30T/
+         r6zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vDHlcWmL4Cd5UT42ugQTjRnKNbXE5dy2ocFAsQoM96Q=;
+        fh=EFl9CUqSVB5jQkop2n+LP3m+jCZH4GV5YoCSIXdGQ9A=;
+        b=qVI0IXuBtBddoRv6ZdCklkFzLugFSnsALgvq1+eTctYFMrj4nt22fRA4+U7HDrVmuM
+         68PHKZJ8sfFWdgt3WpGGPC1g4WjfIYwt/sDo1fMAgSWq242sj/XCEnTDuFCLkum9O61r
+         9028fySa2b8IN5zfwe9LNOAMwo6CuJF8FZH8bNzxxnQhma/yBPVvgBSNQQqL5i+FRE2N
+         re1vZ/xLbUmJxWqaJqyKWIWq7dEjIQ7/CxJxd6QTFGmZ6RTWbJ+89ZVnf+k+djOzfPt/
+         1eZZVQrdImHSk0lxC07oovWCaqyLwUPR34DcTwJS0DAPGDNRMqb3p/pzBjKi6Ko9YBQC
+         wnNA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783123648; x=1783728448; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GeUDSjrHAWkuRRsR++4INezbx04TBh6B1L1rO/GgWvo=;
-        b=NmcnswFPth4P/b4WcXUWgEI7aKXEgWY4e4FKiXiwR3/6ste15cgGjBv91MtPYELXlG
-         fE5m+2a7o7hBAQADHnpKqNO0vTESeGzdjGD/sf3b99NsHq+PtWO5XhiWse5VvrvxMtbg
-         S+bwqnTdkfEhJ44MRLHP9oAbu2o8IaoxjXEEHz+MHnHhDH/qBy/cbgCrSHakjxfhVoZ/
-         0Eaq49EI7qdIkShourngW3pWJvlsrZbJndTVPYB/8ug/DiwEdYyl23/BCrD61/lBPRW3
-         vviRQnxhM0j1ods/kMc+7YgmvDJh5MLJD7qdDobjULmeOuPkc/DZpLsSSsDNZYApf9cJ
-         t47A==
-X-Forwarded-Encrypted: i=1; AHgh+Rq380YqGv7KvU1AAvu9iQPw2fZLMh75m4JZBI4s/CXgHq+nkxuhvoH3eKITL2o3lHqjy+Jg@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmoXWH2XrP3kRAz266V+erydMS+G5J/OckI9YQcMA2S7HxY6WL
-	gV+Qk/mGiYtgOJGxKJCrqdYyLQpJ0arKzGoGoYzwnBCww5Tm27NVUx9RC5uJJ84HbKOXpV0tblM
-	dy479oxi2RbOV5+DPCFE5g0YkCXD1I5W4pGJDzLEqgrvZAOFnlUghG/N9IvvKcV3l+knlKJNs+G
-	N+dvwc1xWIl2o503TB/4mH3miEyNHOOQ==
-X-Gm-Gg: AfdE7clMKL0ZX7Z2AflHRrtvwUwvA1j6zdrYzd048vUct3JmD/5WVFuVm9wM8mue9Qt
-	d6DjiKrkbPGKwNo8d3M+fYqwi/CquTXQLMNmXis6qLTGOpNp5F2JbbSNW2G1cOhfknsaFXauqw9
-	qpIAcIfqenLu+23Ta+onjfqgi1u/rXt8hvL1XpsWxIFaCzshCQNjYKYpaizm99jBvbxyv6ElmMD
-	GRFmqMdBHDRtmBpQzB1qY/6xIU9CI1pFGIuTvwntYYRXoh9eOcFDkQ=
-X-Received: by 2002:a05:690c:6e0f:b0:806:1ec8:9626 with SMTP id 00721157ae682-812eae80545mr104664727b3.39.1783079148586;
-        Fri, 03 Jul 2026 04:45:48 -0700 (PDT)
-X-Received: by 2002:a05:690c:6e0f:b0:806:1ec8:9626 with SMTP id
- 00721157ae682-812eae80545mr104664337b3.39.1783079148147; Fri, 03 Jul 2026
- 04:45:48 -0700 (PDT)
+        bh=vDHlcWmL4Cd5UT42ugQTjRnKNbXE5dy2ocFAsQoM96Q=;
+        b=LBbA/JmHuNiBUUPzuZUic/1JhXsx/jqf/OapY9sgx9jihJBTe3q7sMm++hQpKtwIrX
+         gTU5zYYjX7y6RKxHFEbPxRqboYISe9embdg2mOHIrHRyPAFns7cBwYJ+2pJ4KSZE/oHw
+         SlN5D6H6X1EFA8grDPxenJjI309Qwfxaa7oik1rGaVLQwpT7k4Up9KECKzRVDGILBzaT
+         CafTHNztnnHWPw1XfxG/RWZBq5eRtwPkhoWNwZ6n3lxEck5rqZYAUpW4R4RH/h9dZTcB
+         VZ6C93ZOLSMq/4DqZXw67DNkzRT6bckeBWrk845bC8f7q2BjzMe438FvoJ7jorLpk8T5
+         CgVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783123648; x=1783728448;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vDHlcWmL4Cd5UT42ugQTjRnKNbXE5dy2ocFAsQoM96Q=;
+        b=qR91IpxJeUq31adcawi2lzkW4CM+YWN6/6iGwmSUTVzO1XMJwZ3Z7eElcTaSNbfOiE
+         Y2tcpKc24GbEmmjc1eUl3DAsJUXb16BLYl0sSpe8MVysKu9Oa3Ort6PRa9LNiOSgr8Uw
+         gtweb5oxKptLoSTXQ3UDrzHBioHcrekCmUV7muHZRSb8ympQ5+bpvVXlEXrEkUOT4eRx
+         DihSQH9Qz1oyuO8w0S1GeNUDIf8pmPabnxXHR/MRVdxvcXMoxhETrUX5ufH0TaAEWY/M
+         KA6t+bpOS60/ueyamDEsTFZtkQ7OHMcS39FYEG+FVWLKjWalMm/Wt719EqeFAbx73ehH
+         1eKw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqmg0kXa6rma3sTM5jDP+cjT95uxmCtuzvruHCMJCmvFmfJ1+7fp4Niu1OLuqXeZVgcf/am@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFgV0ORjpwwu1HKz93b3SWtWWYY6i2UkqYogxTnsF+Q9jK7NNt
+	FVu4IeZkvBGydvWxpMJ5UEnJWZ582RMd01DFVgHHaP2XM/xukeV7C+2RcIdPxPoYuuzXLwfF5xB
+	fCGl/5ORTYS1D+l5EKl9wuX6WsyE5sL8=
+X-Gm-Gg: AfdE7cnmeX0z6hbLGZgRSQj6CbGOC9/PtNcINetKW1953w66vKn3N01y7ZzIYNB11Wh
+	afTgJeOL2LAeXa8qgYvpMPDYpyTKfn8TYFMngQDG8IvRxXCKg2W9knnlCx3TixqOVa+Jb5bYlzU
+	qrSl3OSq2edNxbSGeGMqeYDBTIz7N2mgwt8S8vp/HZRiSP0b68AVVN4+Me45MD1F7MoPZqhGI5w
+	dmYczdGJRzMtIUnjkuGfdzOemkwI+PATBaRhktLx05js0Kpa6qzwXt7rCEu3YIyXYF9ZQDAAVa9
+	TZzgrAZjAS2rpjeu3YSZv13qcFCAYjiwOoDo65L2ydry4KJxHIqG
+X-Received: by 2002:a5d:64c8:0:b0:472:c426:2ce9 with SMTP id
+ ffacd0b85a97d-47aa9699811mr1527073f8f.12.1783123647923; Fri, 03 Jul 2026
+ 17:07:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260701000949.1666714-1-joannelkoong@gmail.com> <20260701000949.1666714-13-joannelkoong@gmail.com>
-In-Reply-To: <20260701000949.1666714-13-joannelkoong@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 3 Jul 2026 13:45:36 +0200
-X-Gm-Features: AVVi8CdOnoIEUsSqGG1Lvbx5AQnAbjO-BXv_ely4Zi6OZQFZeWID1WZjNQSTcpA
-Message-ID: <CAHc6FU76J-YYRd2B=ZPN2DMabQjkzgG9qSzbP_S1s9AsSJNh=w@mail.gmail.com>
+References: <20260701000949.1666714-1-joannelkoong@gmail.com>
+ <20260701000949.1666714-13-joannelkoong@gmail.com> <CAHc6FU76J-YYRd2B=ZPN2DMabQjkzgG9qSzbP_S1s9AsSJNh=w@mail.gmail.com>
+In-Reply-To: <CAHc6FU76J-YYRd2B=ZPN2DMabQjkzgG9qSzbP_S1s9AsSJNh=w@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 3 Jul 2026 17:07:15 -0700
+X-Gm-Features: AVVi8CdQdofMwGUqV4tTaAHxeI2fygjInGMJJOumzbFcOuGU31GOE644YhYA5nA
+Message-ID: <CAJnrk1YmAjfSvkX5M0mu_ts_7APbp+Zfrz0KU6BMgM5fxN568g@mail.gmail.com>
 Subject: Re: [PATCH v2 12/18] gfs2: convert iomap ops to ->iomap_next()
-To: Joanne Koong <joannelkoong@gmail.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: brauner@kernel.org, hch@lst.de, djwong@kernel.org, willy@infradead.org, 
 	hsiangkao@linux.alibaba.com, linux-fsdevel@vger.kernel.org, 
 	linux-xfs@vger.kernel.org, 
 	"open list:GFS2 FILE SYSTEM" <gfs2@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mN-LCUHQYA8Vxaj1bhp_bV7K2y5Vfe1MyFp1ZnWkpBg_1783079149
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Joanne,
+On Fri, Jul 3, 2026 at 4:45=E2=80=AFAM Andreas Gruenbacher <agruenba@redhat=
+.com> wrote:
+>
+> Joanne,
+>
+> you say in the cover letter that
+>
+> >This series is submitted against Christian's vfs iomap tree, and is base=
+d
+> > on top of the current head of his tree (commit f2727952b21d1).
+>
+> which repository and branch is that? It's not vfs.iomap in
+> git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git; I don't
+> have a proper merge point.
 
-you say in the cover letter that
+Hi Andreas,
 
->This series is submitted against Christian's vfs iomap tree, and is based
-> on top of the current head of his tree (commit f2727952b21d1).
-
-which repository and branch is that? It's not vfs.iomap in
-git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git; I don't
-have a proper merge point.
+This is on the vfs-7.3.iomap branch [1] on the vfs tree. This was on
+top of commit f2727952b21d1 ("iomap: add a separate bio_set for
+iomap_split_ioend") but it looks like that branch has since been
+rebased, as I don't see that commit hash there anymore. If it makes it
+easier, I've pushed the changes to a github repo [2] that's on top of
+v7.2-rc1 in the main linux tree. Sorry for the confusion, I'll include
+a link to a pullable branch in future versions.
 
 Thanks,
-Andreas
+Joanne
 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=3Dvf=
+s-7.3.iomap
+[2] https://github.com/joannekoong/linux/commits/iomap_iter_next_v2/
