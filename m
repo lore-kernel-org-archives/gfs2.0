@@ -1,126 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A08A2F5491
-	for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 18:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C263264E0
+	for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 19:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784227091; cv=none; b=WJ5fxsoJlrhZzS4iVroB+S5yTyZLfB/Lln4uiz06edj35rirRD+SeNIMtT8LN9U48lWqOnDQXXQpnzS3AGwxjaOTEx+gleTgj0Z/ivhQJCRhY5hCXbYKzEOujzfaHsBQpRLpfYByD/e7bdwiRk55qvGfeTx8Q3Hy0pD0fWrkbVg=
+	t=1784230106; cv=none; b=DjcDvHw+bTmSGYo0JV7RDzOimg1wG+LIl9wJeo1GO1cVpKNcL1b8G5Amn4wM/UvJuxT8NpUzxlBTrBRf/GGvBIG9ySPF65jAim6+fAlbcpie9D6fcehqWFjRJ69WijYeLR7OC5Cm+c+kmECpKniMAcjjXxER11tbgB+gRk5i7gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784227091; c=relaxed/simple;
-	bh=99sv31NHwv6wbIAv7+ODM/fKFD6UsahfozkexNjfqhU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rI/HB4G8wJlxxpIRFI0CcvERyWnJbI6uIuafgZC8qOUmOlR+3OqDYFoUQmtlAt6wNP+ftgp+YdY2Wn+pvqzfMezUoQU5u8LGUfRnIZkgpMY1/Ib/8/UgaPt7fewSz68B+FHJ5sa7Vmi0tCZUBxmtWE7LRr51KshTApg5VHfc4RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dgaad8Xs; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1784230106; c=relaxed/simple;
+	bh=poZj2vS5t78mgcLh09V0sVThl5FWVeOwOQVTwEDNBEY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=fxG4UgKTyuednK+Q+GW1cIK/8Ata/auH1PUaBKbsCmrcv+5EmPNpaHErnH9SAvRAAaWyrEFqwKXhRIfi8f/XjINdz0UMtBfJiZKXBtL5MI8uDouJk4xOokL7k0XKvRuYOGHVCTBi4+vC210gsLXrue21DcDoL4Ty6MghLvdMJfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CKqTJY99; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dgaad8Xs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CKqTJY99"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784227089;
+	s=mimecast20190719; t=1784230103;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ujX4wyirRrkY8+HhjimOu4AbJOKpKNwAetNRUfMyvSk=;
-	b=dgaad8XsnRv3RRxKkABJlybdFmmuZoEETwEpl4uYff5qNugavbBYHWHIYbJZt5Zm8jwvAJ
-	+MVo94Nrm5eIPqP4u3aQ9k4/pbZdezeoHH0zkM9nmBJp0R5ssIYx3H9E8VchIPR6rxkb9d
-	aTloF9IydT938kCVklVPQeAp//neAmg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-juMwAC22OLentDopxPwZkg-1; Thu, 16 Jul 2026 14:38:07 -0400
-X-MC-Unique: juMwAC22OLentDopxPwZkg-1
-X-Mimecast-MFC-AGG-ID: juMwAC22OLentDopxPwZkg_1784227086
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493ce4b7777so53159205e9.3
-        for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 11:38:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784227086; x=1784831886;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ujX4wyirRrkY8+HhjimOu4AbJOKpKNwAetNRUfMyvSk=;
-        b=KL41OA5HHX+qKhgHkQNbK1db25hCJhhweaUl9OSYukGaj3nmKdrcl44h5ERROrOTKD
-         GRovS4PiEmLWM7gQJUnoRJZqcAT9x4dSb2SFqP8s7ja0eZXo8VVHS4Dsn+D8L5yGX4ie
-         Ep6JQUYq1IKc9NfobA8VXTs4itQ1uEddRlys0B/2UIq8XTb/eMVzYqIlnOEw25RLugxA
-         iWkNSxHDxzBBD94fnxOoexCPbYSq8Rh3i/nzkxNIDV/rIGehBI5bD448iuAmN+PHazKB
-         NKjNZGCixrZulMHxaqDEt7k6JwWYB1h8DMe4CiGIb4OM/bZmKaT6CUyZjE2lMMDkDDXl
-         aFxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrtVv8p1BaLECiJ1xrr7xIWYCGy6YCclV/jrNy7ZmIeydq1mC3LJa13XELvJm/wHThWwxmf@lists.linux.dev
-X-Gm-Message-State: AOJu0YxSwjvjQf6tLbH/0npkQeLKjpOx6Cxc/UmgrUUOQqsuf89BmMJD
-	YudOCq1h4PuZievxI0FEd8ans7mfzawxKHw8ea6bVrF113iamkWitUmDyXO1/SIF0OnF9wwGkWt
-	jknWTmQ1qaApyD3JWRFcGnFBkAJbrUG0PxVB/zHU0BXqMY7hOsHkHyG1oc2Y0EueTSoXyT49heV
-	uR1acVvkics1SNOsjmDqPT/InFIbT7BA==
-X-Gm-Gg: AfdE7cmH6vdoyuNETrX6Ce6m1OQKlGSL1fqpxyQHKvWO/Q3htLj+ULuyj00iWiF8Z3Z
-	2Tn7R/R/Ol06I9LLsHtsmdS+hrCW4dxsMTo4x/y98VpwfAxBblYiHbbm/+QemPeUzBC40AYYzn6
-	iKOJdtnY3xKK5GS7z+s4BPS8oL1Mf/TEZrWA2HZU8sBJ8oMj/LGkNomcehlPBBGwoLxEcaKh+Wv
-	5qnRSGwcibqj9Mb
-X-Received: by 2002:a05:600c:1f94:b0:493:e52f:6ee1 with SMTP id 5b1f17b1804b1-4953bfffbc8mr94584895e9.0.1784227086407;
-        Thu, 16 Jul 2026 11:38:06 -0700 (PDT)
-X-Received: by 2002:a05:600c:1f94:b0:493:e52f:6ee1 with SMTP id
- 5b1f17b1804b1-4953bfffbc8mr94584685e9.0.1784227086080; Thu, 16 Jul 2026
- 11:38:06 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4O2K+iDTmNzYDuZZjYN9GUe3hW8G9+1opzLpXvj5EOU=;
+	b=CKqTJY99sZ3yopQCvMlVXbomIm9+PJTEAjPfYJow7fmtekYtNJZIG/G5sQK/yZPdVw40Du
+	V3Kmq+KylROAFCsa9YbXdZiOH3acBMcxhcnVbXNyvQ+8mRxNxIM7UitriJ8h+YDU9u8j2s
+	hAYCihLF3FHpTuG4uUeaxBFxMlr6AFU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-VBBsqKf6MFajl3yXG3BvCw-1; Thu,
+ 16 Jul 2026 15:28:20 -0400
+X-MC-Unique: VBBsqKf6MFajl3yXG3BvCw-1
+X-Mimecast-MFC-AGG-ID: VBBsqKf6MFajl3yXG3BvCw_1784230099
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 318B91955E89
+	for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 19:28:19 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A577E3003EFC;
+	Thu, 16 Jul 2026 19:28:18 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev
+Subject: [PATCH] dlm: fix variable key length lookup
+Date: Thu, 16 Jul 2026 15:28:14 -0400
+Message-ID: <20260716192814.72174-1-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260627161721.129861-1-listdansp@mail.ru> <20260627164211.134982-1-listdansp@mail.ru>
-In-Reply-To: <20260627164211.134982-1-listdansp@mail.ru>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 16 Jul 2026 14:37:53 -0400
-X-Gm-Features: AUfX_mwcjxGHlYvpXDWvVYoZzJpbZmZ6hsKnF8Wh8wKsB5B4riylx-BvQvwjH7w
-Message-ID: <CAK-6q+icgD9fK5bqjQtVn89DhsyYOxhO4KsNDzBhw9Sv_8sHXw@mail.gmail.com>
-Subject: Re: [PATCH v2] dlm: validate lock modes in recovery messages
-To: Danila Chernetsov <listdansp@mail.ru>
-Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NDSDt9HJCaBmvfl4y_3PNOJC3RX0xLCfcxOSekFPHP0_1784227086
+X-Mimecast-MFC-PROC-ID: QrQq8PB9Y8Jy-ENspYi5X0Qe-m2nR66SlK_LINNABTU_1784230099
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi,
+Before commit 6c648035cbe7 ("dlm: switch to use rhashtable for rsbs")
+the rsb hashtable was dynamic key length. Accidentally it was changed to
+switch to static key length which can end in different results. We
+fixing this back to the original behaviour by adding the necessary
+functionality to rhashtable to handle the objects and lookups as dynamic
+key lengths.
 
-On Sat, Jun 27, 2026 at 1:04=E2=80=AFPM Danila Chernetsov <listdansp@mail.r=
-u> wrote:
->
-> The DLM recovery path restores lock state from rcom_lock messages
-> received from remote nodes. The lock modes in these messages are
-> copied directly into the local lkb state without validating that they
-> are within the valid DLM lock mode range.
->
-> The rest of the DLM code assumes that lkb_rqmode and lkb_grmode
-> contain valid lock modes. In particular, LVB callback handling in
-> dlm_may_skip_callback() uses lock modes as indexes into the
-> dlm_lvb_operations array:
->
->     dlm_lvb_operations[prev_mode + 1][mode + 1]
->
-> An invalid lock mode received during recovery could therefore result in
-> an out-of-bounds read during subsequent LVB callback processing.
->
-> Validate rl_rqmode and rl_grmode before storing them into the local LKB
-> state. This preserves the lock mode invariant required by the rest of
-> the DLM code.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: e7fd41792fc0 ("[DLM] The core of the DLM for GFS2/CLVM")
-> Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+Fixes: 6c648035cbe7 ("dlm: switch to use rhashtable for rsbs")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/config.c       | 30 ++++++++++++++++++++++++++++--
+ fs/dlm/dlm_internal.h |  5 +++++
+ fs/dlm/lock.c         |  6 ++++--
+ 3 files changed, 37 insertions(+), 4 deletions(-)
 
-Acked-by: Alexander Aring <aahringo@redhat.com>
-
-> ---
-> Changes in v2:
-> - Fixed an incorrect patch subject from the previous submission.
-
-ehm yes, for some reason this was under spam. This is a better version.
-
-Thanks.
-
-- Alex
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 53cd332930423..6c5c3f049b33a 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -64,11 +64,37 @@ static void release_node(struct config_item *);
+ static struct configfs_attribute *comm_attrs[];
+ static struct configfs_attribute *node_attrs[];
+ 
++static u32 rsb_hashfn(const void *data, u32 len, u32 seed)
++{
++	const struct dlm_rsb_key *key = data;
++
++	return jhash(key->name, key->len, 0);
++}
++
++static u32 rsb_obj_hashfn(const void *data, u32 len, u32 seed)
++{
++	const struct dlm_rsb *r = data;
++
++	return r->res_hash;
++}
++
++static int rsb_obj_cmpfn(struct rhashtable_compare_arg *arg, const void *obj)
++{
++	const struct dlm_rsb_key *key = arg->key;
++	const struct dlm_rsb *r = obj;
++
++	if (key->len != r->res_length)
++		return -1;
++
++	return memcmp(&r->res_name, key->name, key->len);
++}
++
+ const struct rhashtable_params dlm_rhash_rsb_params = {
+ 	.nelem_hint = 3, /* start small */
+-	.key_len = DLM_RESNAME_MAXLEN,
+-	.key_offset = offsetof(struct dlm_rsb, res_name),
+ 	.head_offset = offsetof(struct dlm_rsb, res_node),
++	.hashfn = rsb_hashfn,
++	.obj_hashfn = rsb_obj_hashfn,
++	.obj_cmpfn = rsb_obj_cmpfn,
+ 	.automatic_shrinking = true,
+ };
+ 
+diff --git a/fs/dlm/dlm_internal.h b/fs/dlm/dlm_internal.h
+index 9df842421ae06..74c2e77d1b553 100644
+--- a/fs/dlm/dlm_internal.h
++++ b/fs/dlm/dlm_internal.h
+@@ -340,6 +340,11 @@ struct dlm_rsb {
+ 	char			res_name[DLM_RESNAME_MAXLEN+1];
+ };
+ 
++struct dlm_rsb_key {
++	char name[DLM_RESNAME_MAXLEN];
++	size_t len;
++};
++
+ /* dlm_master_lookup() flags */
+ 
+ #define DLM_LU_RECOVER_DIR	1
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index d73c4aed1f8ac..2609e4fdeba84 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -625,12 +625,14 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
+ int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name,
+ 			unsigned int len, struct dlm_rsb **r_ret)
+ {
+-	char key[DLM_RESNAME_MAXLEN] = {};
++	struct dlm_rsb_key key = {
++		.len = len,
++	};
+ 
+ 	if (len > DLM_RESNAME_MAXLEN)
+ 		return -EINVAL;
+ 
+-	memcpy(key, name, len);
++	memcpy(key.name, name, len);
+ 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
+ 	if (*r_ret)
+ 		return 0;
+-- 
+2.43.0
 
