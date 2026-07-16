@@ -1,92 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C052C3382DC
-	for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 18:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A08A2F5491
+	for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 18:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784226862; cv=none; b=jjdTsoiMafJ2tCkucPpIpi1S967dGvF7CHes7SYLBPn8/8p6s2v5McLXeFYYRH5B7Kj/1NzkWONcm50TXKVBq1xSOoJECQ5sn3Sl1PM6Jgs2b+IClr+txNv1QwSIvvUDGq/GH0ss+qeP8XkcMhheRGvBIWr4MynX7mYa6Iyeoa8=
+	t=1784227091; cv=none; b=WJ5fxsoJlrhZzS4iVroB+S5yTyZLfB/Lln4uiz06edj35rirRD+SeNIMtT8LN9U48lWqOnDQXXQpnzS3AGwxjaOTEx+gleTgj0Z/ivhQJCRhY5hCXbYKzEOujzfaHsBQpRLpfYByD/e7bdwiRk55qvGfeTx8Q3Hy0pD0fWrkbVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784226862; c=relaxed/simple;
-	bh=VeCTio51MpzR/+I3EhFL0EM4fgMtTnmN0R5K1/J0uHY=;
+	s=arc-20240116; t=1784227091; c=relaxed/simple;
+	bh=99sv31NHwv6wbIAv7+ODM/fKFD6UsahfozkexNjfqhU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NphIhhe9YXC8PwOZw7sexSQfzq9S3DYbNi4NgrFKgR8fCYp6XJvJvIKOdkgPtqn2ZpDThZy883pxkRAa5h7xX6dJ0GcuHUUgmSbkxLdYjFYior5Wo6U5HK+NHKTkthFw/JWkpOL2fytw51HO8eEi/FUDtNyfvlkcVfmmjyX4GDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cuq0KZMV; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=rI/HB4G8wJlxxpIRFI0CcvERyWnJbI6uIuafgZC8qOUmOlR+3OqDYFoUQmtlAt6wNP+ftgp+YdY2Wn+pvqzfMezUoQU5u8LGUfRnIZkgpMY1/Ib/8/UgaPt7fewSz68B+FHJ5sa7Vmi0tCZUBxmtWE7LRr51KshTApg5VHfc4RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dgaad8Xs; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cuq0KZMV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dgaad8Xs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784226859;
+	s=mimecast20190719; t=1784227089;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DbRVF81ffLi24DwJe7aZIuIDZ+mqKmveWoNDZp3NzVE=;
-	b=Cuq0KZMVq2m9KgDiXIVkwVAxesNWl6un0cRu6ZDqQnjC5W/8G6LGh0HjxfTk6pL4gZmHTQ
-	LB5CFYlj/gcYSPFK/EiEPD5FQT7mnBXh52xMU9Iv5mLXHiFmAjGnLUXYp2MxRnMN8jgdqJ
-	4Q8JhB2aM+27/DBqt+FOaJxvIt/4ie8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ujX4wyirRrkY8+HhjimOu4AbJOKpKNwAetNRUfMyvSk=;
+	b=dgaad8XsnRv3RRxKkABJlybdFmmuZoEETwEpl4uYff5qNugavbBYHWHIYbJZt5Zm8jwvAJ
+	+MVo94Nrm5eIPqP4u3aQ9k4/pbZdezeoHH0zkM9nmBJp0R5ssIYx3H9E8VchIPR6rxkb9d
+	aTloF9IydT938kCVklVPQeAp//neAmg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-7GpfpG8GMBOHufHGndMauA-1; Thu, 16 Jul 2026 14:34:17 -0400
-X-MC-Unique: 7GpfpG8GMBOHufHGndMauA-1
-X-Mimecast-MFC-AGG-ID: 7GpfpG8GMBOHufHGndMauA_1784226856
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-493d742c668so54396265e9.2
-        for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 11:34:17 -0700 (PDT)
+ us-mta-216-juMwAC22OLentDopxPwZkg-1; Thu, 16 Jul 2026 14:38:07 -0400
+X-MC-Unique: juMwAC22OLentDopxPwZkg-1
+X-Mimecast-MFC-AGG-ID: juMwAC22OLentDopxPwZkg_1784227086
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493ce4b7777so53159205e9.3
+        for <gfs2@lists.linux.dev>; Thu, 16 Jul 2026 11:38:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784226856; x=1784831656;
+        d=1e100.net; s=20251104; t=1784227086; x=1784831886;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DbRVF81ffLi24DwJe7aZIuIDZ+mqKmveWoNDZp3NzVE=;
-        b=Hh9siPfW8oAL26q9H/Az4j+8VPdQNmym1kjrsmgp2dAP7W5mYfF4GGMRWpn1YU5k+i
-         H/TsFyHYKyEC0kf1JZGta1190SY5EbYrNOQPEGkj8nzu135aOZL8OUH2pHoWB8jbBPXv
-         08mQecu2kLVhtBaMeoBidNH0k71SiWiNsWpEZ08V16JrFJH9m69ql/zGmx2f7ZfnB5FG
-         dY2yGhW3wZWCfL6yctlwglNPnasUFVNGHQbdIbwKbUVXxZqiZK0j9i7A9IYixG1ajvVM
-         HUduxwS8RVimnlwBbXyKppozNhweWsztPPAns6bUTYuGbUpjesd3Tg5a3kboyPF1RqUS
-         g1EQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5lPp+TROOv+siJMmYwneJxx/ooRZKaU6NSBdVUOzhcZiw1Tq/liDdfaiDWXsnE60I4BdT@lists.linux.dev
-X-Gm-Message-State: AOJu0YwyqO/+gu/vZYMeWffcpuoSObN9FZBG7Y19YSDl6taYskNqUxZp
-	4X1+az689PU+KIwLjaoGpqTkZTWHhO0F+w84jwwpWHYunCVEYFwZB6eFJBokGvfe71D+SmvRJIc
-	sRKFWISuDARHbtDTgnvK2lmAaYSuQQl4bwq0ksixX3uWSpSc8bESSiSwDmFpOY7iK6+xDzSQ07t
-	vcCOi4mMVJTbe75J4vPFnh6Bop82FfYA==
-X-Gm-Gg: AfdE7cniTKZrCh1wAniuAWrP4OT8jlnIqZlfG7ZwGLkku5F8c3fYnjBvbCkeHPUCf4v
-	uhQhQkGH3NYY1qmzTRXqtcAP+VwCg5bEUyigYbj6Csls0Z/Jo1cokImcJCSFfBDre4InCUNNz7J
-	NMm6IK4JuFE882cHLlb0lxZbsUEz0VJJRiPlIYFBsjhUjcdX8AYG/XLIuLvy6OrVxFhbIekGE3r
-	fkQit1bvvOYlZ1Y
-X-Received: by 2002:a05:600c:34c9:b0:492:3e44:214b with SMTP id 5b1f17b1804b1-4953905c59emr139195135e9.13.1784226856504;
-        Thu, 16 Jul 2026 11:34:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:34c9:b0:492:3e44:214b with SMTP id
- 5b1f17b1804b1-4953905c59emr139194825e9.13.1784226856177; Thu, 16 Jul 2026
- 11:34:16 -0700 (PDT)
+        bh=ujX4wyirRrkY8+HhjimOu4AbJOKpKNwAetNRUfMyvSk=;
+        b=KL41OA5HHX+qKhgHkQNbK1db25hCJhhweaUl9OSYukGaj3nmKdrcl44h5ERROrOTKD
+         GRovS4PiEmLWM7gQJUnoRJZqcAT9x4dSb2SFqP8s7ja0eZXo8VVHS4Dsn+D8L5yGX4ie
+         Ep6JQUYq1IKc9NfobA8VXTs4itQ1uEddRlys0B/2UIq8XTb/eMVzYqIlnOEw25RLugxA
+         iWkNSxHDxzBBD94fnxOoexCPbYSq8Rh3i/nzkxNIDV/rIGehBI5bD448iuAmN+PHazKB
+         NKjNZGCixrZulMHxaqDEt7k6JwWYB1h8DMe4CiGIb4OM/bZmKaT6CUyZjE2lMMDkDDXl
+         aFxQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrtVv8p1BaLECiJ1xrr7xIWYCGy6YCclV/jrNy7ZmIeydq1mC3LJa13XELvJm/wHThWwxmf@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSwjvjQf6tLbH/0npkQeLKjpOx6Cxc/UmgrUUOQqsuf89BmMJD
+	YudOCq1h4PuZievxI0FEd8ans7mfzawxKHw8ea6bVrF113iamkWitUmDyXO1/SIF0OnF9wwGkWt
+	jknWTmQ1qaApyD3JWRFcGnFBkAJbrUG0PxVB/zHU0BXqMY7hOsHkHyG1oc2Y0EueTSoXyT49heV
+	uR1acVvkics1SNOsjmDqPT/InFIbT7BA==
+X-Gm-Gg: AfdE7cmH6vdoyuNETrX6Ce6m1OQKlGSL1fqpxyQHKvWO/Q3htLj+ULuyj00iWiF8Z3Z
+	2Tn7R/R/Ol06I9LLsHtsmdS+hrCW4dxsMTo4x/y98VpwfAxBblYiHbbm/+QemPeUzBC40AYYzn6
+	iKOJdtnY3xKK5GS7z+s4BPS8oL1Mf/TEZrWA2HZU8sBJ8oMj/LGkNomcehlPBBGwoLxEcaKh+Wv
+	5qnRSGwcibqj9Mb
+X-Received: by 2002:a05:600c:1f94:b0:493:e52f:6ee1 with SMTP id 5b1f17b1804b1-4953bfffbc8mr94584895e9.0.1784227086407;
+        Thu, 16 Jul 2026 11:38:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:1f94:b0:493:e52f:6ee1 with SMTP id
+ 5b1f17b1804b1-4953bfffbc8mr94584685e9.0.1784227086080; Thu, 16 Jul 2026
+ 11:38:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260627161721.129861-1-listdansp@mail.ru>
-In-Reply-To: <20260627161721.129861-1-listdansp@mail.ru>
+References: <20260627161721.129861-1-listdansp@mail.ru> <20260627164211.134982-1-listdansp@mail.ru>
+In-Reply-To: <20260627164211.134982-1-listdansp@mail.ru>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 16 Jul 2026 14:34:02 -0400
-X-Gm-Features: AUfX_mwa-qRqltPCdXNb6fPXSKr2TvHPSsy-Th62HURzMMTnLAIz12EOCQ8-o7g
-Message-ID: <CAK-6q+jdpOMPzNmC6C33z2hfq+5S8PGC2gizqf6mtZPWwZZuJQ@mail.gmail.com>
-Subject: Re: [PATCH] dlm: The core of the DLM for GFS2/CLVM
+Date: Thu, 16 Jul 2026 14:37:53 -0400
+X-Gm-Features: AUfX_mwcjxGHlYvpXDWvVYoZzJpbZmZ6hsKnF8Wh8wKsB5B4riylx-BvQvwjH7w
+Message-ID: <CAK-6q+icgD9fK5bqjQtVn89DhsyYOxhO4KsNDzBhw9Sv_8sHXw@mail.gmail.com>
+Subject: Re: [PATCH v2] dlm: validate lock modes in recovery messages
 To: Danila Chernetsov <listdansp@mail.ru>
 Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	lvc-project@linuxtesting.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pSQhDHwvEgpYPetOyftPMHs71g7oKdNpr8UH7e2Uihk_1784226856
+X-Mimecast-MFC-PROC-ID: NDSDt9HJCaBmvfl4y_3PNOJC3RX0xLCfcxOSekFPHP0_1784227086
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Sat, Jun 27, 2026 at 12:18=E2=80=AFPM Danila Chernetsov <listdansp@mail.=
-ru> wrote:
+On Sat, Jun 27, 2026 at 1:04=E2=80=AFPM Danila Chernetsov <listdansp@mail.r=
+u> wrote:
 >
 > The DLM recovery path restores lock state from rcom_lock messages
 > received from remote nodes. The lock modes in these messages are
@@ -114,14 +114,13 @@ ru> wrote:
 
 Acked-by: Alexander Aring <aahringo@redhat.com>
 
-This issue dates back to the initial DLM commit, and we've never
-implemented validation for many DLM message fields.
+> ---
+> Changes in v2:
+> - Fixed an incorrect patch subject from the previous submission.
 
-I am sure there are more issues like that; a follow-up patch should
-clean up or revisit this whole part of DLM and validate messages at
-the lower message parsing level...
-I will add this to my list for follow-up patches to improve this
-situation in DLM.
+ehm yes, for some reason this was under spam. This is a better version.
+
+Thanks.
 
 - Alex
 
