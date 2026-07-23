@@ -1,152 +1,91 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7163DEAF2
-	for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 07:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784790729; cv=pass; b=UZOoM93MUmewlG3+DHQDmSbw9lbPhjrV9iPlAHiOcfyeFAvlufKmEHDQ8BFLL58A6yr2Ry1cDUC+bOd9WIC0zOx/BBXAc3BlH9rnkgSnj9hjQXeO6DdsXv27s9FCoYGdjy6q3Sh9e4wITH6u0fHw0LZEPjnhBm3Uc7X4lUWaHV8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784790729; c=relaxed/simple;
-	bh=5NiWOGnxsMKR6Y7Ktao+SroKZ3GKM9CKFPaVhFIzaB0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U14KOYFjikolFhpSKOeaxppR74Usz6ivhhK4Y4ZY4deg6QBGH+zIIeNCpz3/NB5uhaxkh0MUlEApOpaK/LdiWqZhaYB3FtfAwm8JBcDuF4kFxTTlNdruuRcGsQwETMvX1F8Gf5rwEHSJdxtUTX59QgOODMAICk5vzWe2Xp9kdxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AupAQtnX; arc=pass smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B4F339386
+	for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 17:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784828760; cv=none; b=cWuvtYv6+z/DdzjWTZPDhGIGzNgYDr5YChOdkPTKCDZeSTJNlQNFG37ZK5HqV93hm6M/mqyhYuLeNSeGYmJz6VJjMiuSh1Kns0IO5Qi4nx494QWrkth3uqebJnoj4NSj44BvwUwa5iHbEhW0AQFNhqJVCEdXc98i2CWdx/4m+FE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784828760; c=relaxed/simple;
+	bh=fl/FOGqYobiKDUNccpI+Pf+dJvrY236pC8iJt+0oyS0=;
+	h=Message-ID:From:Date:Subject:To:Cc; b=UMW2obCJDuSIAkbUmsLx7ccxZ/bjV9uJTJQifK66Yopc45lJMfMFUASngQAQumxgMEE8hoNC1yEReBnF2iEpsEePcx85xkJyVZB0xZ2XwsHw9zYRzakVRQt+tobzImxniXmnjZxc6SnUJCQYf2yOfQW4Y25QMlXiGjREw6sapOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CfE8acb8; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AupAQtnX"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1c52d920b8so44877566b.2
-        for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 00:12:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784790724; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z4H6D9VuXwVMkTgrtteqwXPGlLWoZyMGtb49lmHaCiBmsa0BYrVz9FgxuKB/MwfxBk
-         TBfFnRUs4h7QVyshAx0lNz//yHfk2WnWJpmUXQwQLD3jR0vzA1x3ywA72FwUTj8TCH8z
-         6PEcRXnO0ua2Lax5R1vZ3rSohhnjysuOLyYr8sPdOC3PyICar1pyYerVe8wizyKIid1p
-         MSeM3Ag2eqWCem6V5YwzwVWFjQ9Gv7RISyPzbtdnVCyZHsvrn7UgDZmN0kXC8SWTzAY6
-         8t5XMTJLN0EJjBm+cInwUNMGktMseWFJ1ggw2rpZf8TftzOkF5+ceFj8nER9G7A8rL1K
-         +9Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=67tBP+uVC+SaNQnmOv5yOW1I9ePYbjiEsgc1u662Y84=;
-        fh=rCdFjFpIx+qCLEm4YtESHU3wnfxKMLpam206mlDiQe8=;
-        b=TelAI9KvqH7gtMsShsYXXGi81KO8yozaOFKD+iLgPay62tcBH+oWbpSBYpDnqfAePb
-         YU+7CpTqVb0hR4sr07jgakdqBI5vEPfZZ852ZMAc2ZvBSejpcKG1OWSDdHLKbTnz6/xM
-         eiZlV6zyMtcp6uhekXcZaiLdp5QK/+p4g0OGVLlw9FROOZqovdcKJLLO+/0ccEeBuva6
-         X8hgKhLhCOChnzpsUXOj+yp9m8ufrVm3LCRDNkKobA7PZIEVM9uc3PgB9nhdFGr3vW9w
-         MPlK+pGMc42+13yQXci6OQAjRzgIhGm+7UcINekAOrXB16QgQ+vj15puANRus2vueTkH
-         ya5g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CfE8acb8"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493f6de72faso6426765e9.0
+        for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 10:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784790724; x=1785395524; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=67tBP+uVC+SaNQnmOv5yOW1I9ePYbjiEsgc1u662Y84=;
-        b=AupAQtnX9D9xAcvuf6CQ0vyRCF5RRWv75IXcZQG1noN+bT80uwj1rhucIXvXsaW+HH
-         OntfKfFA4D4ppRlqeiC4h8Ov6Nm9R4OSXT3GpPUaEOuYcyLKjxvWb2w60dr389QtDSSU
-         p6sZ9Ysw6obOJ3TrYksq5hxbC5hxltBJ9EzNonhfAYs4XbK0u+kaLg/CWmOHUcd2kt1t
-         r8hdkH6v/v19G9mUpwciXDLw1DQPHfyquTjBRj6CjqC/vpm2eDMxYMzvZUFbES2KWKho
-         wxq+FrABCF5NsdQKAeAredsyASzPFlcY3DUIiLAAy0zToFC6297QYCj7zFObqP3VrEpv
-         uADw==
+        d=gmail.com; s=20251104; t=1784828757; x=1785433557; darn=lists.linux.dev;
+        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EoEf6SKJZR0m2wcWdEcK528rlss2au1PBz6HySzO+OY=;
+        b=CfE8acb8Dwqkj2Bf7pFJWxK0D5nvm9CEzWVXXSu5YgwHcBMsPk7gQafMVNbUtStNnw
+         7G/1jlOWMDTPJGJBC3ndqkpRrgFYC1jbdTiiANmTGCuoocWrRiBC2ATSc77YRAw3AGle
+         QLbX90vua7TWIseZ1jhBmLhsOjf3Esnm+NFfjl2ZYRIeETXTN+/JBqBlINMdSMqsGTOT
+         4I38ylqzJk5LrV0WOgJeLdoh8ccriKPbpPgzabV//eV6GnqURPac0qF5p9UWI2XBvZY9
+         hw+nrW+gTMfNJ4BRNgsQgukr5rFodeFFtDe+fB8DBkjTbldd6Nyw+1S3xKGLwEURwUiJ
+         L9nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784790724; x=1785395524;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=67tBP+uVC+SaNQnmOv5yOW1I9ePYbjiEsgc1u662Y84=;
-        b=Fw1faQP6OrQWTPwudQEzGcjH2bMEBcfjxZxDrrZ0hJYCSKoAxd16jk2tH4f5ZR++tY
-         ZHrEw3zCjG5Jb4FQuqn7RELiIQ52kqZrNLBaMKb9F5CXCp9mGd54X8/9SoSAT8PDUWBX
-         2gIea6nFOKtD+4meYlLYOPdBVBxD4xCk8bPAGC5QtgNckxmoo1wJokZJXVgRzGCsklTQ
-         9+rfXHxxNUZmTZcvQgTDFVy/z8hjHj+8HCJfW4mJk5Sfevym71cbqwM/7dxlTQJvANE0
-         l+8oqaOVYNx2nnWvRC9c8o837wSjOzWrrV2aDAHm1sC+gTMdj//HJgeRm1sCLI5NaFA9
-         JtvA==
-X-Forwarded-Encrypted: i=1; AHgh+RqucSR6E5FISAoLr/R6y1be3C0m8bCh/sSEeWMk1JR84LiRhzJVatvetjdUH3Oj3RYaly+5@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw2ufBWfD7lTEJP8OUaJy5IqFEEeWNicIhTrYGBBMfrGmg11Jbt
-	oJSVXSPdjFrP5Jc4/GRDSCjnj3c+3hmn6IeSSsMw/XPbpFYBISh2i1JQgCIxYxQIllCyBgRSErI
-	xAhdJYosnqxmYFX9E/8WZm6vg7N/8ooOSAdux5sVkHw==
-X-Gm-Gg: AR+sD11btbBRcvy9CSi0QljXiAzKQfvG6JElA0upUPKmREnWMyMNOZJs0AZhmdICLc/
-	YJyaUis3tjhe3SCbbrycSOGzRs0Vrlw6tccya9JRavqJfUhY4A8U1QEHqhO9ZFHfx8hdYQRCyhh
-	qoz6B+FWnjvH3o+4CZUPPDfxgMoU4ZlLVQlON04TklbdNXlZfgLvxuU5ujcetK9Iaom5ucKD92u
-	ahQmI+IdXydI24UXX/zkB/IFsofIfmo43Rrn18xsoIdhufY0tzFQzl1yrjy7js=
-X-Received: by 2002:a17:907:72c6:b0:c16:5855:6594 with SMTP id
- a640c23a62f3a-c1c509a88a8mr78873066b.55.1784790723811; Thu, 23 Jul 2026
- 00:12:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784828757; x=1785433557;
+        h=cc:to:subject:date:from:message-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EoEf6SKJZR0m2wcWdEcK528rlss2au1PBz6HySzO+OY=;
+        b=HlZGxkXCvryp4fHsBYdhoPteDiMzxjpKTMrO9wtf/OgAfwEzQC4tehQ4+APE5gfd2J
+         67/i6IlzwozEBO6MwBwm2bvrXWxBr/9nOPo5F33Sg3h2E4ZH1ycyY+C0YB2HKVY0z5dY
+         AvSGuDtvQdpYbrey82HtF2fGK3JUAbtdxojWKe2zxHx/bz8RBF2SUHD78sMwKIcTBgUR
+         GL1ZqnPDaGwrWrc3I0eg+EmNH/edOO+TNxSZJvB2u8N6qzBrKbxdQPxRvyhXJW2gGXE0
+         v7BHwxaHD3qE150oDSXKoYw07IM4UPHxLm6os/JjbnRIRceNJS4lc9Q9c3LEo4TWk8Cc
+         K9nA==
+X-Gm-Message-State: AOJu0Yw8/uSulFc6xQmQ56hTfllB6tEZGI7hexCqzU06Xv+nl9odpAyj
+	fWFwbl/aVzT8bOJQEYv55/SYhgk2gQ6pMkgLW+Gqru2MWtDxUy7xxGOgXkhNQOpBtEQ=
+X-Gm-Gg: AR+sD13/hBLRyBW58ik9hdKKKVLmxeBAFD4UPQhhOzZfUxf/rspyGYegoYLx+CIsS0j
+	A/7baxQgj0RdHNt9JRylMKapW0vzTmfx2h0BMdMkiErAkQ04FZCt3hgcLh+bRukeo9/rjtaYWFZ
+	7B3MYhRQJfvuJm1eAbmWArgTp3YkdI6vnr3+rDwht0uaHWh4N9QraFOahFNOkYgG46VsKREW9zf
+	aLpwOo8z4GcHJCwKU9YIYdxrHLO9e2Qr7NvNIsP7XxMYXAQvaY+KRpLXcn1ODgbT0yzUJUbs+kS
+	3ME4IbT1p/yCZM2yFu/XoYnQTMS8RCJ31AkhISL657ZmHU7/c0L60yME2euVPJAJcWdi94ha6MP
+	nxbYvTNS4CzDMy776qBksR3EvVYOm4MRyW7Stu62uJAvkbX/ZGFYkJSFbvad0ZQaqPknHyUD3aN
+	lrOTqujVFUfP/hBwnC8Bg=
+X-Received: by 2002:a05:600c:3041:b0:495:501a:fcf8 with SMTP id 5b1f17b1804b1-4957459b978mr29089055e9.9.1784828757035;
+        Thu, 23 Jul 2026 10:45:57 -0700 (PDT)
+Received: from parche_gfs2.eml ([171.22.87.132])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957af16f72sm11435155e9.0.2026.07.23.10.45.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:45:56 -0700 (PDT)
+Message-ID: <6a625354.5dfca4bd.1b689f.2446@mx.google.com>
+From: Adrian Garcia Casado <adriangarciacasado42@gmail.com>
+Date: Thu, 23 Jul 2026 19:44:47 +0200
+Subject: [PATCH] gfs2: add missing __rcu annotation to i_gl in incore.h
+To: gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+    agruenba@redhat.com
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <CANypQFasb8voDrg=O9xJikYHdRFeupb5VP2VeJaZ_wFNMoGr2Q@mail.gmail.com>
- <20260710092933.3631376-1-r772577952@gmail.com>
-In-Reply-To: <20260710092933.3631376-1-r772577952@gmail.com>
-From: Jiaming Zhang <r772577952@gmail.com>
-Date: Thu, 23 Jul 2026 15:11:18 +0800
-X-Gm-Features: AUfX_myo1Vjbatxc8KRRJByNYdmMhAyb2kEPWuIuJa3znpiRChKHuTJVgaf5nmg
-Message-ID: <CANypQFY_AYRXuiO++tQuZfdnb4mmM4dbkBJ93xD1BmVYL3bRvQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: stop logd and quotad before kill_sb log flush
-To: agruenba@redhat.com, gfs2@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, syzkaller@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Signed-off-by: Adrian Garcia Casado <adriangarciacasado42@gmail.com>
+---
+ fs/gfs2/incore.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Jiaming Zhang <r772577952@gmail.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=8810=E6=
-=97=A5=E5=91=A8=E4=BA=94 17:29=E5=86=99=E9=81=93=EF=BC=9A
->
-> gfs2_kill_sb() issues a synchronous log flush before stopping the gfs2_lo=
-gd and
-> gfs2_quotad kthreads. Given a corrupted filesystem image, that flush can =
-spend a
-> long time while holding sd_log_flush_lock. Since the background threads a=
-re
-> still alive at that point, gfs2_logd can be woken and block on sd_log_flu=
-sh_lock
-> in gfs2_logd(), and gfs2_quotad can block on the same lock through
-> gfs2_statfs_sync() -> __gfs2_trans_begin(). The threads can then remain i=
-n
-> uninterruptible sleep long enough to trigger the hung task.
->
-> Stop the background threads before the kill_sb log flush. gfs2_destroy_th=
-reads()
-> waits for both kthreads to exit via kthread_stop_put(), so after it retur=
-ns
-> there is no live logd or quotad thread that can wait behind sd_log_flush_=
-lock.
->
-> Closes: https://lore.kernel.org/lkml/CANypQFasb8voDrg=3DO9xJikYHdRFeupb5V=
-P2VeJaZ_wFNMoGr2Q@mail.gmail.com/
-> Assisted-by: Codex:gpt-5.5-xhigh
-> Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
-> ---
->  fs/gfs2/ops_fstype.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-> index 9b9e70f14d25..d087845a75d6 100644
-> --- a/fs/gfs2/ops_fstype.c
-> +++ b/fs/gfs2/ops_fstype.c
-> @@ -1776,6 +1776,8 @@ static void gfs2_kill_sb(struct super_block *sb)
->                 return;
->         }
->
-> +       gfs2_destroy_threads(sdp);
-> +
->         gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_SYNC | GFS2_LFC_KIL=
-L_SB);
->         dput(sdp->sd_root_dir);
->         dput(sdp->sd_master_dir);
-> --
-> 2.43.0
->
+diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
+index 614657778..16df75336 100644
+--- a/fs/gfs2/incore.h
++++ b/fs/gfs2/incore.h
+@@ -392,7 +392,7 @@ struct gfs2_inode {
+ 	u64 i_generation;
+ 	u64 i_eattr;
+ 	unsigned long i_flags;		/* GIF_... */
+-	struct gfs2_glock *i_gl;
++	struct gfs2_glock __rcu *i_gl;
+ 	struct gfs2_holder i_iopen_gh;
+ 	struct gfs2_qadata *i_qadata; /* quota allocation data */
+ 	struct gfs2_holder i_rgd_gh;
+-- 
+2.47.3
 
-Friendly ping. Please let me know if there's anything you'd like me to chan=
-ge.
 
-Best Regards,
-Jiaming Zhang
