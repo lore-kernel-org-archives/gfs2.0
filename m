@@ -1,702 +1,193 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E990381E9B;
-	Thu, 23 Jul 2026 04:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784781031; cv=none; b=S0jCNRJ9mJ3urlKQ1el1iog1M9i7niq0uC/wbuol36cue0sume2W8Ggxeyu3F9kgDm9J7PlDSnwudlcvlxMlfE465a1h6WLSqd7SqbbjnWL2pm40Smq+TBvgCFPhSk20NpnXfjep6I5FY/kZ/NR3pWIXPERvfjsVeaY8gwFsQGE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784781031; c=relaxed/simple;
-	bh=/MZ/5EaJWA91eOibIRH6JcvSOCUjfhQBj0kTkJmcEQQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rrpCuIGLr/2oQDNySjp66M8x1cJXSAMdtsm4qECCSvhRBSWQe4hV2q0yqq+OLT3vrT3ygM49JfuOfAzd89H5964MPVDA6Q4IwtxT0DMJirEijd6/trERoilB4nLw6kvU0AjdtVS8C8JGtxEBEj5WxyWqTcfUEOBpsavUWEVzg68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cKJQTTDe; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3493E274E
+	for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 07:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784790687; cv=pass; b=ZC6UnUwqQublqq7NBjqcNrCaCkQDh3XiLJGwNYAq5/FStyiggDeELTh3lByb1OSejzs07Svk3gD6/Fgx58gpS4FHY+AW+ZtXUMFYCiezbYgyn8zT5OH3O03pf9YtUUC1qxzSiG/ZC4Ii8+g+bA5lcPdeqcX4XmFCVCHMgYxFwX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784790687; c=relaxed/simple;
+	bh=izblklCfX3mlIOXUg0YT/dJ+XEHqli5azo9A+2NJYSw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jaNRt58ifxsg7MpJ7Hw0/9qJ+JUg3GywogwTZTN8l1qVPbmImH8rX3VVErejzTUULGvyyUcqvEVk2qY8dO91+3t4TA5wq48QhOvLhyAMT8RDl9BQZLxdzeyB+l1xceNmDBHPU5xtQyWO1JUMjFhViDUbDMDZndz1OuIdf4h3BFg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CtVkpFrN; arc=pass smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cKJQTTDe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784781010; x=1816317010;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/MZ/5EaJWA91eOibIRH6JcvSOCUjfhQBj0kTkJmcEQQ=;
-  b=cKJQTTDeK6pf0edmiyG8qrTSy1zMv2rx8z8/m2K4Z9FG4axdjH/Fhawz
-   ikcDbLcoEKIqeGozPXPBUVtSJ0ZN27+9tj+QHUFFbKgBxGPG57jJQiUtV
-   RoUdq/ggLo5AiErc/vRmafMO7Bidy6DjC1MCZYDZlWu2cT+TaYlGLwOcQ
-   GgZCBQ1WggWz3yvpzlKAif4SpePIYYNp8MuadHxVm+SzLCNYS0ZXgnbXq
-   OksU+l2WsnlXI/Io/+4K50DnzbLtnJ7LhkNZcWVM88VTxQwo+rwZT6M0v
-   Ptp2q0GUD5no73hPZCjXybMJN9UsL0Luu/Dv/XXNE3hxTgelFyIPwpoGI
-   A==;
-X-CSE-ConnectionGUID: J6Svr8xwSXKeqgD5Ht6f3w==
-X-CSE-MsgGUID: 5Q/Xnxh3TQWDQ3NzCsXjYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="72969153"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="72969153"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 21:29:52 -0700
-X-CSE-ConnectionGUID: RZdq46dBRMiFvWaV8nEBjA==
-X-CSE-MsgGUID: SBIOWl/vRWCDRCQfIcFy7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="251979357"
-Received: from qat-server-366.sh.intel.com ([10.239.92.77])
-  by fmviesa009.fm.intel.com with ESMTP; 22 Jul 2026 21:29:50 -0700
-From: Jie Wang <jie.wang@intel.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Jie Wang <jie.wang@intel.com>
-Subject: [PATCH] gfs2: convert quota data hash table to an rhashtable
-Date: Thu, 23 Jul 2026 12:16:17 +0000
-Message-Id: <20260723121617.3775271-1-jie.wang@intel.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CtVkpFrN"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c15cb6f5c12so59419066b.0
+        for <gfs2@lists.linux.dev>; Thu, 23 Jul 2026 00:11:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784790681; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JQj3m9xJACbm6cn9EQrz+7AIn6qjHHPd9KnRh82SU3co1q2GqWRYrG5Yh/Opdusn7I
+         rvg6eu+IyQ0y6FZM0N3SbVmDU1osz4bIM4R/UpauYID59bouKCgVD8HiEIsg8ZtxcCYu
+         1T+AKhB1qaxhCQZk2z/sfxwfIicKlUxJrgXjHFvoaOSqWiN9II6cCjesxWvFReO91E5/
+         +uJyywjrXddUPR14LNTs4pxL4DZIh98/onrPkiG7L0Vtu4XY9DXf7izozTW2qcAhBFjf
+         xWayL+da4REo9eoI5qXC3oJ46uLy9lxz5I8kcci/CYcSv8pCnp1xcFT7JqpreWXyjTfh
+         mlDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zfBTtydsINhPmhdGmRbCcZlHwfscEB9iD0uPUM7TzXw=;
+        fh=nyzhBcot83zT6kdAfxnmMhyJxPpZRWbWxhHBRZVl8Vg=;
+        b=sPWEdhHv3hDgMpZ+T1IkcegDbR4oAAYEzvA0lCUcta7T250HYkiY32tC7Mh3unUfI4
+         77DCaPi52Gc2hk0jzBQ0HxiR7lm0zTEqovASOD1mHPO2ufirM1nuMGLhp2Srcmr6udYa
+         sfh8zoupgOhb+wCJZcqEAGwWgK6lXRYr4hx7kZ+VGoFkTytu1pJeuRg9HERiUnAN5M2c
+         y8S7a5WtC0iZiP+bpDH57tkF6TQQFTm/iv6yNHhzLcQrrRgZDAowkKvByivAyyfy+qOu
+         235dKk5h1UBAKIPj8/MDKRUcfNqNX7OI8X/tbMY3/PlOORUzmy3FqVWaWKXTflqhy5MP
+         PTEA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784790681; x=1785395481; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zfBTtydsINhPmhdGmRbCcZlHwfscEB9iD0uPUM7TzXw=;
+        b=CtVkpFrNPxG0lC4apprI8mbBRdFhXE4cbgop38meF7bsoLnGB3JmGkJYkTARUpo5Bo
+         2Oc5UAP7+UlWq7uYrqadDHTbytl8o3eVzlRA9ZFDGge/dAwJVylLS5zJXBdsUvAoNKSL
+         esqEhYMiN5F2R4yitSFYneqmB7A5P1GExhxANKElhE12liIemTTEreLDdMTKkfd14CTB
+         KJwBqDbrCQkeX0pLbGPSzKrREzT6JgiLSVvxLv83rof8mnTdTUYJqa1wMEJFkabcizRu
+         olhJ5wvAvGD629OED/BbHm/8sohixpPWCTWZcJ6xju5EsnSwDmSrGH5yUDgqvNYjLDxk
+         XMoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784790681; x=1785395481;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zfBTtydsINhPmhdGmRbCcZlHwfscEB9iD0uPUM7TzXw=;
+        b=rbKWBN4X90fBeagcJxTkicdUlljk9Bbu55u4x64MRWu9bmmHacVziT+jg+l2ZIJ+YK
+         7Y2nTI2aVEHnGZfpGAktLy/tOsM+psd/pzCYVKcqE5At9YDHDJ+yRJQ2vwudX47o+T7c
+         N59OtcZ9k/gS/G91HH7hZRAKx/0Vu6Mqstbk40C3xSiagmw2T2v6JUmrXgpIZ4XZwVU5
+         5YJj3G1F2PB2OVWzoX1h33+Gb/A6UpBGy4fb6IxN5/NA35VXKPtYb6J6xTm5n/3gt3av
+         ZhsuKex17idqb9yF8PQzrmKE0/QT00meFF2PWjdxXcCzRsxqIX6ot8Fy8RSrx4wWI7Im
+         6oaw==
+X-Forwarded-Encrypted: i=1; AHgh+RqxviboYU42ZMtflvlVc7rDUn4ce/sXb8K5ly8TjEdVur2zKorS3Tt+owMUzLeGAC+l7A/v@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUBHC8Zz3alIgRYlSawgCTmZ8QOUQ4TVaajSq7F3vp0FZoVq+A
+	mYpHFenB6zR6jAeUWdI5c6MEbYysW508BYvR7KKadTWGNitBWNm1DjRQGczt029IQWemSlMiyT2
+	ifcXOf9QeHR4fHi8FFTCoX/r7BDtt5oI=
+X-Gm-Gg: AR+sD10FjdK2xyqyew+G7ax4kbuFHgcJgQUvaJCFAPae6rbqLGda46ZsX9qemrB979x
+	SWkkeI0NUHROxDE9z+meExkMTGJQIb9tMEHCupciwqoSCh9E+k7XRbgql2FMfyD2n0w7yA+TS5U
+	3wEkTDnvSXLiVV9teRCxc7zNl+xEVcmQmwHldfQyxYUPbcyGaSRhZp5d6UgvOFFuBGqZbAgz8ok
+	XkvdIWFsMAO2QgMGO1PjX3h0rZG3m0sb1bSEpo4y3u2uu9Zt+ZRSc3/PmnJGDI=
+X-Received: by 2002:a17:907:c705:b0:c16:44c3:5a1e with SMTP id
+ a640c23a62f3a-c1c50d176cbmr78475566b.63.1784790680541; Thu, 23 Jul 2026
+ 00:11:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <74871a78-5243-4898-8e63-92e918912980@redhat.com> <20260706180003.2124317-1-r772577952@gmail.com>
+In-Reply-To: <20260706180003.2124317-1-r772577952@gmail.com>
+From: Jiaming Zhang <r772577952@gmail.com>
+Date: Thu, 23 Jul 2026 15:10:34 +0800
+X-Gm-Features: AUfX_mwPnqmMBMWdKJ66LyMUpkptmu9t1rSpdg_jQKv2KoRFDgP0cZ6BKZv59hQ
+Message-ID: <CANypQFZTFMxk5W4d3GViW6T1Nkxua3nVk3RNx0fie-26fpmXSg@mail.gmail.com>
+Subject: Re: [PATCH v2] gfs2: reject oversized dinode sizes before i_size_write
+To: anprice@redhat.com, agruenba@redhat.com, gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzkaller@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-qd_hash_table is an array of hlist_bl heads whose per-bucket lock is a
-bit-spinlock (hlist_bl_lock()).  On PREEMPT_RT a bit-spinlock is not
-turned into an rtmutex and keeps preemption disabled, and
-lockref_get_not_dead() may take the sleeping qd_lockref.lock, so the
-reference-taking lookup in qd_get() is not allowed while the bucket lock
-is held.
+Jiaming Zhang <r772577952@gmail.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=887=E6=
+=97=A5=E5=91=A8=E4=BA=8C 02:00=E5=86=99=E9=81=93=EF=BC=9A
 
-Convert qd_hash_table to an rhashtable, like gl_hash_table.  rhashtable
-lookups only need rcu_read_lock(), which does not disable preemption on
-PREEMPT_RT, so a reference-taking lookup is safe in any context.  This
-removes the bucket bit-spinlock, the per-object qd_hash field,
-gfs2_qd_hash() and the no-ref lookup variant that only existed to avoid
-taking a reference under the bucket lock.
+Hi,
 
-As rhashtable does not allow duplicate keys, qd_get() now follows
-find_insert_glock(): if it finds a quota_data that is being disposed of,
-it waits for gfs2_qd_dispose() to remove it and retries the insertion.
+>
+> A corrupted GFS2 image can store a dinode size that is larger than what V=
+FS
+> i_size can represent. gfs2_dinode_in() reads the on-disk di_size as a u64=
+ and
+> writes it directly into inode->i_size. If the value is larger than S64_MA=
+X, the
+> incore i_size becomes negative. That negative value can bypass the existi=
+ng
+> stuffed inode size check:
+>
+> inode->i_size > gfs2_max_stuffed_size(ip)
+>
+> Later, gfs2_quotad may try to sync the quota file and unstuff the quota i=
+node.
+> gfs2_unstuffer_folio() reads the negative i_size into an unsigned length =
+and
+> passes it to memcpy(), turning it into a huge copy size and triggering a
+> out-of-bound issue.
+>
+> Reject dinodes whose size exceeds sb->s_maxbytes before storing the value=
+ in
+> inode->i_size. Also make the stuffed inode check use the raw on-disk size=
+ while
+> it is still unsigned.
+>
+> Fixes: 70376c7ff312 ("gfs2: Always check inode size of inline inodes")
+> Closes: https://lore.kernel.org/lkml/CANypQFaF6bvORKKbRALvEL0k_epFaneFiOQ=
+qco4gjdmKVbdURg@mail.gmail.com/
+> Assisted-by: Codex:gpt-5.5-xhigh
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
+> ---
+> Changes in v2:
+> - Drop the defensive unstuffing changes in bmap.c.
+>
+>  fs/gfs2/glops.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+> index 28f32424ee64..8c5d257451d5 100644
+> --- a/fs/gfs2/glops.c
+> +++ b/fs/gfs2/glops.c
+> @@ -393,11 +393,16 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, co=
+nst void *buf)
+>         umode_t mode =3D be32_to_cpu(str->di_mode);
+>         struct inode *inode =3D &ip->i_inode;
+>         bool is_new =3D inode_state_read_once(inode) & I_NEW;
+> +       u64 size =3D be64_to_cpu(str->di_size);
+>
+>         if (unlikely(ip->i_no_addr !=3D be64_to_cpu(str->di_num.no_addr))=
+) {
+>                 gfs2_consist_inode(ip);
+>                 return -EIO;
+>         }
+> +       if (unlikely(size > (u64)inode->i_sb->s_maxbytes)) {
+> +               gfs2_consist_inode(ip);
+> +               return -EIO;
+> +       }
+>         if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
+>                 gfs2_consist_inode(ip);
+>                 return -EIO;
+> @@ -418,7 +423,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, cons=
+t void *buf)
+>         i_uid_write(inode, be32_to_cpu(str->di_uid));
+>         i_gid_write(inode, be32_to_cpu(str->di_gid));
+>         set_nlink(inode, be32_to_cpu(str->di_nlink));
+> -       i_size_write(inode, be64_to_cpu(str->di_size));
+> +       i_size_write(inode, size);
+>         gfs2_set_inode_blocks(inode, be64_to_cpu(str->di_blocks));
+>         atime.tv_sec =3D be64_to_cpu(str->di_atime);
+>         atime.tv_nsec =3D be32_to_cpu(str->di_atime_nsec);
+> @@ -462,7 +467,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, cons=
+t void *buf)
+>                 return -EIO;
+>         }
+>
+> -       if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(=
+ip)) {
+> +       if (gfs2_is_stuffed(ip) && size > gfs2_max_stuffed_size(ip)) {
+>                 gfs2_consist_inode(ip);
+>                 return -EIO;
+>         }
+> --
+> 2.43.0
+>
 
-Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Jie Wang <jie.wang@intel.com>
----
- fs/gfs2/incore.h |  12 ++-
- fs/gfs2/main.c   |  10 +-
- fs/gfs2/quota.c  | 247 ++++++++++++++++++++++++-----------------------
- fs/gfs2/quota.h  |   3 +-
- 4 files changed, 145 insertions(+), 127 deletions(-)
+Friendly ping. Please let me know if there's anything you'd like me to chan=
+ge.
 
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 614657778..7a487ea62 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -441,14 +441,18 @@ enum {
- 	QDF_QMSG_QUIET          = 4,
- };
- 
-+/* rhashtable key, hashed by value; keep it free of padding. */
-+struct gfs2_qd_hash_key {
-+	struct gfs2_sbd *qd_sbd;
-+	struct kqid qd_id;
-+};
-+
- struct gfs2_quota_data {
--	struct hlist_bl_node qd_hlist;
-+	struct rhash_head qd_node;
-+	struct gfs2_qd_hash_key qd_key;
- 	struct list_head qd_list;
--	struct kqid qd_id;
--	struct gfs2_sbd *qd_sbd;
- 	struct lockref qd_lockref;
- 	struct list_head qd_lru;
--	unsigned qd_hash;
- 
- 	unsigned long qd_flags;		/* QDF_... */
- 
-diff --git a/fs/gfs2/main.c b/fs/gfs2/main.c
-index 9d6571935..25fd8d35c 100644
---- a/fs/gfs2/main.c
-+++ b/fs/gfs2/main.c
-@@ -78,12 +78,15 @@ static int __init init_gfs2_fs(void)
- 
- 	gfs2_str2qstr(&gfs2_qdot, ".");
- 	gfs2_str2qstr(&gfs2_qdotdot, "..");
--	gfs2_quota_hash_init();
- 
--	error = gfs2_sys_init();
-+	error = gfs2_quota_hash_init();
- 	if (error)
- 		return error;
- 
-+	error = gfs2_sys_init();
-+	if (error)
-+		goto fail_sys;
-+
- 	error = list_lru_init(&gfs2_qd_lru);
- 	if (error)
- 		goto fail_lru;
-@@ -218,6 +221,8 @@ static int __init init_gfs2_fs(void)
- 	list_lru_destroy(&gfs2_qd_lru);
- fail_lru:
- 	gfs2_sys_uninit();
-+fail_sys:
-+	gfs2_quota_hash_exit();
- 	return error;
- }
- 
-@@ -251,6 +256,7 @@ static void __exit exit_gfs2_fs(void)
- 	kmem_cache_destroy(gfs2_glock_cachep);
- 
- 	gfs2_sys_uninit();
-+	gfs2_quota_hash_exit();
- }
- 
- MODULE_DESCRIPTION("Global File System");
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 91e9975d2..1a4d677e2 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -52,9 +52,7 @@
- #include <linux/lockref.h>
- #include <linux/list_lru.h>
- #include <linux/rcupdate.h>
--#include <linux/rculist_bl.h>
--#include <linux/bit_spinlock.h>
--#include <linux/jhash.h>
-+#include <linux/rhashtable.h>
- #include <linux/vmalloc.h>
- 
- #include "gfs2.h"
-@@ -73,40 +71,28 @@
- 
- #define GFS2_QD_HASH_SHIFT      12
- #define GFS2_QD_HASH_SIZE       BIT(GFS2_QD_HASH_SHIFT)
--#define GFS2_QD_HASH_MASK       (GFS2_QD_HASH_SIZE - 1)
- 
--/* Lock order: qd_lock -> bucket lock -> qd->lockref.lock -> lru lock */
--/*                     -> sd_bitmap_lock                              */
-+/* Lock order: qd_lock -> qd->lockref.lock -> lru lock */
-+/*                     -> sd_bitmap_lock               */
- static DEFINE_SPINLOCK(qd_lock);
- struct list_lru gfs2_qd_lru;
- 
--static struct hlist_bl_head qd_hash_table[GFS2_QD_HASH_SIZE];
-+static struct rhashtable qd_hash_table;
- 
--static unsigned int gfs2_qd_hash(const struct gfs2_sbd *sdp,
--				 const struct kqid qid)
--{
--	unsigned int h;
--
--	h = jhash(&sdp, sizeof(struct gfs2_sbd *), 0);
--	h = jhash(&qid, sizeof(struct kqid), h);
--
--	return h & GFS2_QD_HASH_MASK;
--}
--
--static inline void spin_lock_bucket(unsigned int hash)
--{
--        hlist_bl_lock(&qd_hash_table[hash]);
--}
-+static const struct rhashtable_params qd_hash_params = {
-+	.nelem_hint = GFS2_QD_HASH_SIZE * 3 / 4,
-+	.key_len = sizeof(struct gfs2_qd_hash_key),
-+	.key_offset = offsetof(struct gfs2_quota_data, qd_key),
-+	.head_offset = offsetof(struct gfs2_quota_data, qd_node),
-+};
- 
--static inline void spin_unlock_bucket(unsigned int hash)
--{
--        hlist_bl_unlock(&qd_hash_table[hash]);
--}
-+/* Waited on by qd_find_insert() while a matching quota_data is disposed of. */
-+static DECLARE_WAIT_QUEUE_HEAD(qd_wait);
- 
- static void gfs2_qd_dealloc(struct rcu_head *rcu)
- {
- 	struct gfs2_quota_data *qd = container_of(rcu, struct gfs2_quota_data, qd_rcu);
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 
- 	kmem_cache_free(gfs2_quotad_cachep, qd);
- 	if (atomic_dec_and_test(&sdp->sd_quota_count))
-@@ -115,15 +101,14 @@ static void gfs2_qd_dealloc(struct rcu_head *rcu)
- 
- static void gfs2_qd_dispose(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 
- 	spin_lock(&qd_lock);
- 	list_del(&qd->qd_list);
- 	spin_unlock(&qd_lock);
- 
--	spin_lock_bucket(qd->qd_hash);
--	hlist_bl_del_rcu(&qd->qd_hlist);
--	spin_unlock_bucket(qd->qd_hash);
-+	rhashtable_remove_fast(&qd_hash_table, &qd->qd_node, qd_hash_params);
-+	wake_up(&qd_wait);
- 
- 	if (!gfs2_withdrawn(sdp)) {
- 		gfs2_assert_warn(sdp, !qd->qd_change);
-@@ -216,7 +201,7 @@ void gfs2_qd_shrinker_exit(void)
- 
- static u64 qd2index(struct gfs2_quota_data *qd)
- {
--	struct kqid qid = qd->qd_id;
-+	struct kqid qid = qd->qd_key.qd_id;
- 	return (2 * (u64)from_kqid(&init_user_ns, qid)) +
- 		((qid.type == USRQUOTA) ? 0 : 1);
- }
-@@ -226,7 +211,7 @@ static u64 qd2offset(struct gfs2_quota_data *qd)
- 	return qd2index(qd) * sizeof(struct gfs2_quota);
- }
- 
--static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, struct kqid qid)
-+static struct gfs2_quota_data *qd_alloc(struct gfs2_sbd *sdp, struct kqid qid)
- {
- 	struct gfs2_quota_data *qd;
- 	int error;
-@@ -235,12 +220,11 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, str
- 	if (!qd)
- 		return NULL;
- 
--	qd->qd_sbd = sdp;
-+	qd->qd_key.qd_sbd = sdp;
-+	qd->qd_key.qd_id = qid;
- 	lockref_init(&qd->qd_lockref);
--	qd->qd_id = qid;
- 	qd->qd_slot = -1;
- 	INIT_LIST_HEAD(&qd->qd_lru);
--	qd->qd_hash = hash;
- 
- 	error = gfs2_glock_get(sdp, qd2index(qd),
- 			      &gfs2_quota_glops, CREATE, &qd->qd_gl);
-@@ -254,75 +238,96 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, str
- 	return NULL;
- }
- 
--/*
-- * Lookup variant for callers which already hold qd_lock + bucket lock.
-- */
--static struct gfs2_quota_data *
--gfs2_qd_search_bucket_noref(unsigned int hash,
--			    const struct gfs2_sbd *sdp,
--			    struct kqid qid)
-+/* Wait condition for qd_find_insert(): the key is free or now holds a live qd. */
-+static bool qd_dispose_done(const struct gfs2_qd_hash_key *key)
- {
- 	struct gfs2_quota_data *qd;
--	struct hlist_bl_node *h;
--
--	hlist_bl_for_each_entry_rcu(qd, h, &qd_hash_table[hash], qd_hlist) {
--		if (!qid_eq(qd->qd_id, qid))
--			continue;
--		if (qd->qd_sbd == sdp)
--			return qd;
--	}
-+	bool done;
- 
--	return NULL;
-+	rcu_read_lock();
-+	qd = rhashtable_lookup_fast(&qd_hash_table, key, qd_hash_params);
-+	/* Advisory read of the dead state; re-validated by the caller. */
-+	done = !qd || !data_race(__lockref_is_dead(&qd->qd_lockref));
-+	rcu_read_unlock();
-+	return done;
- }
- 
-+/*
-+ * Look up the quota_data for the given key and take a reference.  If a new
-+ * quota_data is supplied, insert it when the key is absent.  Like
-+ * find_insert_glock(), the lookup is RCU-only, so the reference can be taken
-+ * even on PREEMPT_RT.  Returns the existing (referenced) quota_data, NULL if
-+ * the new one was inserted or nothing was found, or an ERR_PTR on insertion
-+ * failure.
-+ */
- static struct gfs2_quota_data *
--gfs2_qd_search_bucket(unsigned int hash, const struct gfs2_sbd *sdp, struct kqid qid)
-+qd_find_insert(const struct gfs2_qd_hash_key *key, struct gfs2_quota_data *new)
- {
- 	struct gfs2_quota_data *qd;
- 
--	qd = gfs2_qd_search_bucket_noref(hash, sdp, qid);
--	if (qd && lockref_get_not_dead(&qd->qd_lockref)) {
--		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
--		return qd;
-+again:
-+	rcu_read_lock();
-+	if (new)
-+		qd = rhashtable_lookup_get_insert_fast(&qd_hash_table,
-+						       &new->qd_node,
-+						       qd_hash_params);
-+	else
-+		qd = rhashtable_lookup_fast(&qd_hash_table, key, qd_hash_params);
-+	if (!IS_ERR_OR_NULL(qd) && !lockref_get_not_dead(&qd->qd_lockref)) {
-+		/*
-+		 * The matching quota_data is being disposed of.  rhashtable
-+		 * cannot hold a duplicate key, so wait for gfs2_qd_dispose() to
-+		 * remove it (or replace it with a live one) and retry.
-+		 */
-+		rcu_read_unlock();
-+		if (!new)
-+			return NULL;
-+		wait_event(qd_wait, qd_dispose_done(key));
-+		goto again;
- 	}
-+	rcu_read_unlock();
- 
--	return NULL;
-+	if (!IS_ERR_OR_NULL(qd))
-+		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
-+	return qd;
- }
- 
--
- static int qd_get(struct gfs2_sbd *sdp, struct kqid qid,
- 		  struct gfs2_quota_data **qdp)
- {
-+	struct gfs2_qd_hash_key key = {
-+		.qd_sbd = sdp,
-+		.qd_id = qid,
-+	};
- 	struct gfs2_quota_data *qd, *new_qd;
--	unsigned int hash = gfs2_qd_hash(sdp, qid);
- 
--	rcu_read_lock();
--	*qdp = qd = gfs2_qd_search_bucket(hash, sdp, qid);
--	rcu_read_unlock();
--
--	if (qd)
-+	qd = qd_find_insert(&key, NULL);
-+	if (qd) {
-+		*qdp = qd;
- 		return 0;
-+	}
- 
--	new_qd = qd_alloc(hash, sdp, qid);
-+	new_qd = qd_alloc(sdp, qid);
- 	if (!new_qd)
- 		return -ENOMEM;
- 
--	spin_lock(&qd_lock);
--	spin_lock_bucket(hash);
--	*qdp = qd = gfs2_qd_search_bucket(hash, sdp, qid);
--	if (qd == NULL) {
--		*qdp = new_qd;
--		list_add(&new_qd->qd_list, &sdp->sd_quota_list);
--		hlist_bl_add_head_rcu(&new_qd->qd_hlist, &qd_hash_table[hash]);
--		atomic_inc(&sdp->sd_quota_count);
-+	qd = qd_find_insert(&key, new_qd);
-+	if (IS_ERR(qd)) {
-+		gfs2_glock_put(new_qd->qd_gl);
-+		kmem_cache_free(gfs2_quotad_cachep, new_qd);
-+		return PTR_ERR(qd);
- 	}
--	spin_unlock_bucket(hash);
--	spin_unlock(&qd_lock);
--
- 	if (qd) {
- 		gfs2_glock_put(new_qd->qd_gl);
- 		kmem_cache_free(gfs2_quotad_cachep, new_qd);
-+	} else {
-+		qd = new_qd;
-+		spin_lock(&qd_lock);
-+		list_add(&qd->qd_list, &sdp->sd_quota_list);
-+		atomic_inc(&sdp->sd_quota_count);
-+		spin_unlock(&qd_lock);
- 	}
-+	*qdp = qd;
- 
- 	return 0;
- }
-@@ -330,7 +335,7 @@ static int qd_get(struct gfs2_sbd *sdp, struct kqid qid,
- 
- static void __qd_hold(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	gfs2_assert(sdp, qd->qd_lockref.count > 0);
- 	qd->qd_lockref.count++;
- }
-@@ -343,7 +348,7 @@ static void qd_put(struct gfs2_quota_data *qd)
- 		return;
- 
- 	BUG_ON(__lockref_is_dead(&qd->qd_lockref));
--	sdp = qd->qd_sbd;
-+	sdp = qd->qd_key.qd_sbd;
- 	if (unlikely(!test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags))) {
- 		lockref_mark_dead(&qd->qd_lockref);
- 		spin_unlock(&qd->qd_lockref.lock);
-@@ -360,7 +365,7 @@ static void qd_put(struct gfs2_quota_data *qd)
- 
- static int slot_get(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	unsigned int bit;
- 	int error = 0;
- 
-@@ -383,7 +388,7 @@ static int slot_get(struct gfs2_quota_data *qd)
- 
- static void slot_hold(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 
- 	spin_lock(&sdp->sd_bitmap_lock);
- 	gfs2_assert(sdp, qd->qd_slot_ref);
-@@ -393,7 +398,7 @@ static void slot_hold(struct gfs2_quota_data *qd)
- 
- static void slot_put(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 
- 	spin_lock(&sdp->sd_bitmap_lock);
- 	gfs2_assert(sdp, qd->qd_slot_ref);
-@@ -406,7 +411,7 @@ static void slot_put(struct gfs2_quota_data *qd)
- 
- static int bh_get(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	struct inode *inode = sdp->sd_qc_inode;
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	unsigned int block, offset;
-@@ -461,7 +466,7 @@ static int bh_get(struct gfs2_quota_data *qd)
- 
- static void bh_put(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	struct buffer_head *bh = NULL;
- 
- 	spin_lock(&qd->qd_lockref.lock);
-@@ -518,7 +523,7 @@ static void qdsb_put(struct gfs2_quota_data *qd)
- static void qd_unlock(struct gfs2_quota_data *qd)
- {
- 	spin_lock(&qd->qd_lockref.lock);
--	gfs2_assert_warn(qd->qd_sbd, test_bit(QDF_LOCKED, &qd->qd_flags));
-+	gfs2_assert_warn(qd->qd_key.qd_sbd, test_bit(QDF_LOCKED, &qd->qd_flags));
- 	clear_bit(QDF_LOCKED, &qd->qd_flags);
- 	spin_unlock(&qd->qd_lockref.lock);
- 	qdsb_put(qd);
-@@ -677,16 +682,16 @@ static int sort_qd(const void *a, const void *b)
- 	const struct gfs2_quota_data *qd_a = *(const struct gfs2_quota_data **)a;
- 	const struct gfs2_quota_data *qd_b = *(const struct gfs2_quota_data **)b;
- 
--	if (qid_lt(qd_a->qd_id, qd_b->qd_id))
-+	if (qid_lt(qd_a->qd_key.qd_id, qd_b->qd_key.qd_id))
- 		return -1;
--	if (qid_lt(qd_b->qd_id, qd_a->qd_id))
-+	if (qid_lt(qd_b->qd_key.qd_id, qd_a->qd_key.qd_id))
- 		return 1;
- 	return 0;
- }
- 
- static void do_qc(struct gfs2_quota_data *qd, s64 change)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	struct gfs2_inode *ip = GFS2_I(sdp->sd_qc_inode);
- 	struct gfs2_quota_change *qc = qd->qd_bh_qc;
- 	bool needs_put = false;
-@@ -721,9 +726,9 @@ static void do_qc(struct gfs2_quota_data *qd, s64 change)
- 		slot_hold(qd);
- 
- 		qc->qc_flags = 0;
--		if (qd->qd_id.type == USRQUOTA)
-+		if (qd->qd_key.qd_id.type == USRQUOTA)
- 			qc->qc_flags = cpu_to_be32(GFS2_QCF_USER);
--		qc->qc_id = cpu_to_be32(from_kqid(&init_user_ns, qd->qd_id));
-+		qc->qc_id = cpu_to_be32(from_kqid(&init_user_ns, qd->qd_key.qd_id));
- 	}
- 	qc->qc_change = cpu_to_be64(x);
- 
-@@ -907,7 +912,7 @@ static int gfs2_adjust_quota(struct gfs2_sbd *sdp, loff_t loc,
- static int do_sync(unsigned int num_qd, struct gfs2_quota_data **qda,
- 		   u64 sync_gen)
- {
--	struct gfs2_sbd *sdp = (*qda)->qd_sbd;
-+	struct gfs2_sbd *sdp = (*qda)->qd_key.qd_sbd;
- 	struct gfs2_inode *ip = GFS2_I(sdp->sd_quota_inode);
- 	struct gfs2_alloc_parms ap = {};
- 	unsigned int data_blocks, ind_blocks;
-@@ -1037,7 +1042,7 @@ static int update_qd(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd)
- static int do_glock(struct gfs2_quota_data *qd, int force_refresh,
- 		    struct gfs2_holder *q_gh)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	struct gfs2_inode *ip = GFS2_I(sdp->sd_quota_inode);
- 	struct gfs2_holder i_gh;
- 	int error;
-@@ -1122,7 +1127,7 @@ int gfs2_quota_lock(struct gfs2_inode *ip, kuid_t uid, kgid_t gid)
- 
- static bool need_sync(struct gfs2_quota_data *qd)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 	struct gfs2_tune *gt = &sdp->sd_tune;
- 	s64 value, change, limit;
- 	unsigned int num, den;
-@@ -1210,13 +1215,13 @@ void gfs2_quota_unlock(struct gfs2_inode *ip)
- 
- static void print_message(struct gfs2_quota_data *qd, char *type)
- {
--	struct gfs2_sbd *sdp = qd->qd_sbd;
-+	struct gfs2_sbd *sdp = qd->qd_key.qd_sbd;
- 
- 	if (sdp->sd_args.ar_quota != GFS2_QUOTA_QUIET) {
- 		fs_info(sdp, "quota %s for %s %u\n",
- 			type,
--			(qd->qd_id.type == USRQUOTA) ? "user" : "group",
--			from_kqid(&init_user_ns, qd->qd_id));
-+			(qd->qd_key.qd_id.type == USRQUOTA) ? "user" : "group",
-+			from_kqid(&init_user_ns, qd->qd_key.qd_id));
- 	}
- }
- 
-@@ -1253,8 +1258,8 @@ int gfs2_quota_check(struct gfs2_inode *ip, kuid_t uid, kgid_t gid,
- 	for (x = 0; x < ip->i_qadata->qa_qd_num; x++) {
- 		qd = ip->i_qadata->qa_qd[x];
- 
--		if (!(qid_eq(qd->qd_id, make_kqid_uid(uid)) ||
--		      qid_eq(qd->qd_id, make_kqid_gid(gid))))
-+		if (!(qid_eq(qd->qd_key.qd_id, make_kqid_uid(uid)) ||
-+		      qid_eq(qd->qd_key.qd_id, make_kqid_gid(gid))))
- 			continue;
- 
- 		spin_lock(&qd->qd_lockref.lock);
-@@ -1274,7 +1279,7 @@ int gfs2_quota_check(struct gfs2_inode *ip, kuid_t uid, kgid_t gid,
- 				if (!test_and_set_bit(QDF_QMSG_QUIET,
- 						      &qd->qd_flags)) {
- 					print_message(qd, "exceeded");
--					quota_send_warning(qd->qd_id,
-+					quota_send_warning(qd->qd_key.qd_id,
- 							   sdp->sd_vfs->s_dev,
- 							   QUOTA_NL_BHARDWARN);
- 				}
-@@ -1285,7 +1290,7 @@ int gfs2_quota_check(struct gfs2_inode *ip, kuid_t uid, kgid_t gid,
- 			   time_after_eq(jiffies, qd->qd_last_warn +
- 					 gfs2_tune_get(sdp, gt_quota_warn_period)
- 					 * HZ)) {
--			quota_send_warning(qd->qd_id,
-+			quota_send_warning(qd->qd_key.qd_id,
- 					   sdp->sd_vfs->s_dev, QUOTA_NL_BSOFTWARN);
- 			print_message(qd, "warning");
- 			error = 0;
-@@ -1314,8 +1319,8 @@ void gfs2_quota_change(struct gfs2_inode *ip, s64 change,
- 	for (x = 0; x < ip->i_qadata->qa_qd_num; x++) {
- 		qd = ip->i_qadata->qa_qd[x];
- 
--		if (qid_eq(qd->qd_id, make_kqid_uid(uid)) ||
--		    qid_eq(qd->qd_id, make_kqid_gid(gid))) {
-+		if (qid_eq(qd->qd_key.qd_id, make_kqid_uid(uid)) ||
-+		    qid_eq(qd->qd_key.qd_id, make_kqid_gid(gid))) {
- 			do_qc(qd, change);
- 		}
- 	}
-@@ -1407,7 +1412,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 	unsigned int blocks = size >> sdp->sd_sb.sb_bsize_shift;
- 	unsigned int x, slot = 0;
- 	unsigned int found = 0;
--	unsigned int hash;
- 	unsigned int bm_size;
- 	struct buffer_head *bh;
- 	u64 dblock;
-@@ -1458,8 +1462,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 			if (!qc_change)
- 				continue;
- 
--			hash = gfs2_qd_hash(sdp, qc_id);
--			qd = qd_alloc(hash, sdp, qc_id);
-+			qd = qd_alloc(sdp, qc_id);
- 			if (qd == NULL)
- 				goto fail_brelse;
- 
-@@ -1469,21 +1472,24 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 			qd->qd_slot = slot;
- 			qd->qd_slot_ref = 1;
- 
--			spin_lock(&qd_lock);
--			spin_lock_bucket(hash);
--			old_qd = gfs2_qd_search_bucket_noref(hash, sdp, qc_id);
-+			rcu_read_lock();
-+			old_qd = rhashtable_lookup_get_insert_fast(&qd_hash_table,
-+					&qd->qd_node, qd_hash_params);
-+			rcu_read_unlock();
- 			if (old_qd) {
-+				gfs2_glock_put(qd->qd_gl);
-+				kmem_cache_free(gfs2_quotad_cachep, qd);
-+
-+				if (IS_ERR(old_qd)) {
-+					error = PTR_ERR(old_qd);
-+					goto fail_brelse;
-+				}
-+
- 				fs_err(sdp, "Corruption found in quota_change%u"
- 					    "file: duplicate identifier in "
- 					    "slot %u\n",
- 					    sdp->sd_jdesc->jd_jid, slot);
- 
--				spin_unlock_bucket(hash);
--				spin_unlock(&qd_lock);
--
--				gfs2_glock_put(qd->qd_gl);
--				kmem_cache_free(gfs2_quotad_cachep, qd);
--
- 				/* zero out the duplicate slot */
- 				lock_buffer(bh);
- 				memset(qc, 0, sizeof(*qc));
-@@ -1492,11 +1498,10 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 
- 				continue;
- 			}
-+			spin_lock(&qd_lock);
- 			BUG_ON(test_and_set_bit(slot, sdp->sd_quota_bitmap));
- 			list_add(&qd->qd_list, &sdp->sd_quota_list);
- 			atomic_inc(&sdp->sd_quota_count);
--			hlist_bl_add_head_rcu(&qd->qd_hlist, &qd_hash_table[hash]);
--			spin_unlock_bucket(hash);
- 			spin_unlock(&qd_lock);
- 
- 			found++;
-@@ -1820,10 +1825,12 @@ const struct quotactl_ops gfs2_quotactl_ops = {
- 	.set_dqblk	= gfs2_set_dqblk,
- };
- 
--void __init gfs2_quota_hash_init(void)
-+int __init gfs2_quota_hash_init(void)
- {
--	unsigned i;
-+	return rhashtable_init(&qd_hash_table, &qd_hash_params);
-+}
- 
--	for(i = 0; i < GFS2_QD_HASH_SIZE; i++)
--		INIT_HLIST_BL_HEAD(&qd_hash_table[i]);
-+void gfs2_quota_hash_exit(void)
-+{
-+	rhashtable_destroy(&qd_hash_table);
- }
-diff --git a/fs/gfs2/quota.h b/fs/gfs2/quota.h
-index 988f38dc5..dc4ed280c 100644
---- a/fs/gfs2/quota.h
-+++ b/fs/gfs2/quota.h
-@@ -63,6 +63,7 @@ int __init gfs2_qd_shrinker_init(void);
- void gfs2_qd_shrinker_exit(void);
- extern struct list_lru gfs2_qd_lru;
- 
--void __init gfs2_quota_hash_init(void);
-+int __init gfs2_quota_hash_init(void);
-+void gfs2_quota_hash_exit(void);
- 
- #endif /* __QUOTA_DOT_H__ */
--- 
-2.34.1
-
+Best Regards,
+Jiaming Zhang
