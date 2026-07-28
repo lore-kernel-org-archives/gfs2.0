@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA05C382F0C
-	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB4B381AF4
+	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785256899; cv=none; b=PQ4JT6m32/5Urh40l8hlDVE1D8gDHxX29dnHTydtd3lZQAZ5R9wS0L518CIE11gdodOfTgzimRZwonDzXZMDDC/CIcY9nEPS/w4BjA2AJJMxDeAQUIuyLNPQDfoSVZfpHouTU8n/bCvWbQHgQu2lbNqNvbqy8HzK7+oAFo6mfy4=
+	t=1785256901; cv=none; b=NOXI+/KJc8eD3ylkae2O+Oy43f9+VpcLIvufGapXy3paUl3s5avHsAArF+i22HNHNFjiPlK25q/fWgZsAFv4BSj9X2gHrBr3/seKEd+8BdzeERraQtktIK/KYTEL84NtL5ylEnOsvmjpkpnGaC9J821m+kdGdrwL3lXrFDrNxLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785256899; c=relaxed/simple;
-	bh=YWF9yfyLFlr3SYWEaZANgY8pDU9Q4p26avFGxLtjdOU=;
+	s=arc-20240116; t=1785256901; c=relaxed/simple;
+	bh=7q+oA4DsXUxZXn47mfdyIkabLeR72YwEkVFpNm3EgvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=k4beeajnifK/QzO99WJ6JN2UFid+CBJRVrkOQiphe3HVG1BQ53GnTI3rCqScydrKUQLvBJj6HUXWLCugnhPcxDq5ChEDqIYIZkd8t4fJ2JO6GScRWtRHaVybzfRppvJilNvFfdRE/Q16Iuzf9tjLPEAnaa/BwaBYTo79xQE6Hz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nm1z2Avo; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=JhQg0ClK+Kwes77nXk5cDd27j4UHEviOHkGnGNujVxtOKciYIEXD7RPbBHOV+AGNQS1xF+AHU/nw0A8N25AqNyDh5jxv3Kh92DPYO0Mg0Cf3/NMATFaLuUmLJzX774WLuRPZBwLcwLsWJha6YmCwOQ/b985z+CWwbI0dJteJsT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xp6Q+EvL; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nm1z2Avo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xp6Q+EvL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785256896;
+	s=mimecast20190719; t=1785256898;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Udkb8Nhf280Ty+0cWPxhELmxNsjfIcqnK9mFd5zjf7Q=;
-	b=Nm1z2AvoRiohMH1ND6XUjv6NdgVLkeJVEyYuvz3kxcqlVN8pj1UwScybolIAGLCSZ6m4sf
-	1sQm0gU0E7x8/+jp295QxS7ZPka8VinqRCVCO673wjpYfNSZAGCTXB2h0PuXtZWGMwAn6R
-	hR7ZVSZQzxkROXDZZzHJHuc93eXs5H0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=qR29AApdHEMS8/PXphA3n4mFYgUmKoNPegdwxaT60ww=;
+	b=Xp6Q+EvLPC0zXQX2Qhv6xgT3POkcntHCxnTYOgrwT5AkC2ERQ12U7jFpxOtQ2+wxqJmCrs
+	0KoRuMFEscsX/vA05KUvYQguJBfwRlZAcAGYfukfgjA8nHlPNs9Q/pLQsn8nX/oweBzP+N
+	biEItHm71K38dQaEvPu2hDc1LHSbcW8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-Awxr6kb8MCS0WLFLZViYCA-1; Tue,
- 28 Jul 2026 12:41:35 -0400
-X-MC-Unique: Awxr6kb8MCS0WLFLZViYCA-1
-X-Mimecast-MFC-AGG-ID: Awxr6kb8MCS0WLFLZViYCA_1785256894
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-0zAP5aQAPBK59rdgfWuDlw-1; Tue,
+ 28 Jul 2026 12:41:36 -0400
+X-MC-Unique: 0zAP5aQAPBK59rdgfWuDlw-1
+X-Mimecast-MFC-AGG-ID: 0zAP5aQAPBK59rdgfWuDlw_1785256895
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C60A1956043
-	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:34 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA659180056E
+	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:35 +0000 (UTC)
 Received: from pasta.redhat.com (unknown [10.44.48.20])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E4C8300019F;
-	Tue, 28 Jul 2026 16:41:33 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D4864300019F;
+	Tue, 28 Jul 2026 16:41:34 +0000 (UTC)
 From: Andreas Gruenbacher <agruenba@redhat.com>
 To: gfs2@lists.linux.dev
 Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 3/4] gfs2: Skip dlm unlocks earlier
-Date: Tue, 28 Jul 2026 18:41:23 +0200
-Message-ID: <20260728164127.791843-4-agruenba@redhat.com>
+Subject: [PATCH 4/4] gfs2: Remove the glock lru list and shrinker
+Date: Tue, 28 Jul 2026 18:41:24 +0200
+Message-ID: <20260728164127.791843-5-agruenba@redhat.com>
 In-Reply-To: <20260728164127.791843-1-agruenba@redhat.com>
 References: <20260728164127.791843-1-agruenba@redhat.com>
 Precedence: bulk
@@ -58,108 +58,431 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B76LhB440CRobnqHpU_vasRFCDQ5wOtYHJgL9cp9Byo_1785256894
+X-Mimecast-MFC-PROC-ID: xpoA8ZCUV77cCOyHR3FwFNgMBUj6owm2lMmr20aAgwY_1785256895
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-When we were still caching unreferenced glocks, evicting all the cached inodes
-in gfs2_kill_sb() did put the unreferenced glocks onto the glock lru list, and
-they would be freed in gfs2_gl_hash_clear().  We could set the
-SDF_SKIP_DLM_UNLOCK flag in gfs2_gl_hash_clear() to indicate to gdlm_put_lock()
-to skip unlocking glocks explicitly when possible.  Now, glocks are demoted and
-dropped immediately though, so to allow gdlm_put_lock() to skip unnecessary
-unlocking, we need to set some "unmount" flag before calling
-gfs2_evict_inodes().  We can use the existing SDF_KILL flag for that if we set
-it before calling gfs2_evict_inodes() in gfs2_kill_sb().
+We are no longer keeping unreferences glocks around, so remove the
+now-obsolete glock lru list and shrinker.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
- fs/gfs2/glock.c      | 2 --
- fs/gfs2/incore.h     | 1 -
- fs/gfs2/lock_dlm.c   | 2 +-
- fs/gfs2/ops_fstype.c | 2 +-
- fs/gfs2/sys.c        | 2 --
- 5 files changed, 2 insertions(+), 7 deletions(-)
+ fs/gfs2/glock.c      | 201 ++-----------------------------------------
+ fs/gfs2/glock.h      |   2 +-
+ fs/gfs2/incore.h     |   6 +-
+ fs/gfs2/main.c       |   1 -
+ fs/gfs2/ops_fstype.c |   3 +-
+ fs/gfs2/super.c      |   2 +-
+ fs/gfs2/trace_gfs2.h |   1 -
+ 7 files changed, 15 insertions(+), 201 deletions(-)
 
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index f00dcae426c5..eee1f31a41f0 100644
+index eee1f31a41f0..558c8c660a3d 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -2152,8 +2152,6 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
+@@ -66,9 +66,6 @@ static void request_demote(struct gfs2_glock *gl, unsigned int state,
+ 			   unsigned long delay, bool remote);
+ 
+ static struct dentry *gfs2_root;
+-static LIST_HEAD(lru_list);
+-static atomic_t lru_count = ATOMIC_INIT(0);
+-static DEFINE_SPINLOCK(lru_lock);
+ 
+ #define GFS2_GL_HASH_SHIFT      15
+ #define GFS2_GL_HASH_SIZE       BIT(GFS2_GL_HASH_SHIFT)
+@@ -158,9 +155,9 @@ void gfs2_glock_free(struct gfs2_glock *gl) {
+ void gfs2_glock_free_later(struct gfs2_glock *gl) {
+ 	struct gfs2_sbd *sdp = glock_sbd(gl);
+ 
+-	spin_lock(&lru_lock);
+-	list_add(&gl->gl_lru, &sdp->sd_dead_glocks);
+-	spin_unlock(&lru_lock);
++	spin_lock(&sdp->sd_dead_lock);
++	list_add(&gl->gl_dead, &sdp->sd_dead_glocks);
++	spin_unlock(&sdp->sd_dead_lock);
+ 	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
+ 		wake_up(&sdp->sd_kill_wait);
+ }
+@@ -172,8 +169,8 @@ static void gfs2_free_dead_glocks(struct gfs2_sbd *sdp)
+ 	while(!list_empty(list)) {
+ 		struct gfs2_glock *gl;
+ 
+-		gl = list_first_entry(list, struct gfs2_glock, gl_lru);
+-		list_del_init(&gl->gl_lru);
++		gl = list_first_entry(list, struct gfs2_glock, gl_dead);
++		list_del(&gl->gl_dead);
+ 		__gfs2_glock_free(gl);
+ 	}
+ }
+@@ -191,30 +188,6 @@ struct gfs2_glock *gfs2_glock_hold(struct gfs2_glock *gl)
+ 	return gl;
+ }
+ 
+-static void gfs2_glock_add_to_lru(struct gfs2_glock *gl)
+-{
+-	spin_lock(&lru_lock);
+-	list_move_tail(&gl->gl_lru, &lru_list);
+-
+-	if (!test_bit(GLF_LRU, &gl->gl_flags)) {
+-		set_bit(GLF_LRU, &gl->gl_flags);
+-		atomic_inc(&lru_count);
+-	}
+-
+-	spin_unlock(&lru_lock);
+-}
+-
+-static void gfs2_glock_remove_from_lru(struct gfs2_glock *gl)
+-{
+-	spin_lock(&lru_lock);
+-	if (test_bit(GLF_LRU, &gl->gl_flags)) {
+-		list_del_init(&gl->gl_lru);
+-		atomic_dec(&lru_count);
+-		clear_bit(GLF_LRU, &gl->gl_flags);
+-	}
+-	spin_unlock(&lru_lock);
+-}
+-
+ /*
+  * Enqueue the glock on the work queue.  Passes one glock reference on to the
+  * work queue.
+@@ -241,7 +214,6 @@ static void __gfs2_glock_put(struct gfs2_glock *gl)
+ 
+ 	lockref_mark_dead(&gl->gl_lockref);
+ 	spin_unlock(&gl->gl_lockref.lock);
+-	gfs2_glock_remove_from_lru(gl);
+ 	GLOCK_BUG_ON(gl, !list_empty(&gl->gl_holders));
+ 	if (mapping) {
+ 		truncate_inode_pages_final(mapping);
+@@ -1065,8 +1037,6 @@ static struct gfs2_glock *find_insert_glock(struct lm_lockname *name,
+ out:
+ 	rcu_read_unlock();
+ 	finish_wait(wq, &wait.wait);
+-	if (gl)
+-		gfs2_glock_remove_from_lru(gl);
+ 	return gl;
+ }
+ 
+@@ -1879,125 +1849,6 @@ void gfs2_glock_complete(struct gfs2_glock *gl, int ret)
+ 	spin_unlock(&gl->gl_lockref.lock);
+ }
+ 
+-static int glock_cmp(void *priv, const struct list_head *a,
+-		     const struct list_head *b)
+-{
+-	struct gfs2_glock *gla, *glb;
+-
+-	gla = list_entry(a, struct gfs2_glock, gl_lru);
+-	glb = list_entry(b, struct gfs2_glock, gl_lru);
+-
+-	if (glock_number(gla) > glock_number(glb))
+-		return 1;
+-	if (glock_number(gla) < glock_number(glb))
+-		return -1;
+-
+-	return 0;
+-}
+-
+-static bool can_free_glock(struct gfs2_glock *gl)
+-{
+-	struct gfs2_sbd *sdp = glock_sbd(gl);
+-
+-	return !test_bit(GLF_LOCK, &gl->gl_flags) &&
+-	       !gl->gl_lockref.count &&
+-	       (!test_bit(GLF_LFLUSH, &gl->gl_flags) ||
+-		test_bit(SDF_KILL, &sdp->sd_flags));
+-}
+-
+-/**
+- * gfs2_dispose_glock_lru - Demote a list of glocks
+- * @list: The list to dispose of
+- *
+- * Disposing of glocks may involve disk accesses, so that here we sort
+- * the glocks by number (i.e. disk location of the inodes) so that if
+- * there are any such accesses, they'll be sent in order (mostly).
+- *
+- * Must be called under the lru_lock, but may drop and retake this
+- * lock. While the lru_lock is dropped, entries may vanish from the
+- * list, but no new entries will appear on the list (since it is
+- * private)
+- */
+-
+-static unsigned long gfs2_dispose_glock_lru(struct list_head *list)
+-__releases(&lru_lock)
+-__acquires(&lru_lock)
+-{
+-	struct gfs2_glock *gl;
+-	unsigned long freed = 0;
+-
+-	list_sort(NULL, list, glock_cmp);
+-
+-	while(!list_empty(list)) {
+-		gl = list_first_entry(list, struct gfs2_glock, gl_lru);
+-		if (!spin_trylock(&gl->gl_lockref.lock)) {
+-add_back_to_lru:
+-			list_move(&gl->gl_lru, &lru_list);
+-			continue;
+-		}
+-		if (!can_free_glock(gl)) {
+-			spin_unlock(&gl->gl_lockref.lock);
+-			goto add_back_to_lru;
+-		}
+-		list_del_init(&gl->gl_lru);
+-		atomic_dec(&lru_count);
+-		clear_bit(GLF_LRU, &gl->gl_flags);
+-		freed++;
+-		gl->gl_lockref.count++;
+-		if (gl->gl_state != LM_ST_UNLOCKED)
+-			request_demote(gl, LM_ST_UNLOCKED, 0, false);
+-		gfs2_glock_queue_work(gl, 0);
+-		spin_unlock(&gl->gl_lockref.lock);
+-		cond_resched_lock(&lru_lock);
+-	}
+-	return freed;
+-}
+-
+-/**
+- * gfs2_scan_glock_lru - Scan the LRU looking for locks to demote
+- * @nr: The number of entries to scan
+- *
+- * This function selects the entries on the LRU which are able to
+- * be demoted, and then kicks off the process by calling
+- * gfs2_dispose_glock_lru() above.
+- */
+-
+-static unsigned long gfs2_scan_glock_lru(unsigned long nr)
+-{
+-	struct gfs2_glock *gl, *next;
+-	LIST_HEAD(dispose);
+-	unsigned long freed = 0;
+-
+-	spin_lock(&lru_lock);
+-	list_for_each_entry_safe(gl, next, &lru_list, gl_lru) {
+-		if (!nr--)
+-			break;
+-		if (can_free_glock(gl))
+-			list_move(&gl->gl_lru, &dispose);
+-	}
+-	if (!list_empty(&dispose))
+-		freed = gfs2_dispose_glock_lru(&dispose);
+-	spin_unlock(&lru_lock);
+-
+-	return freed;
+-}
+-
+-static unsigned long gfs2_glock_shrink_scan(struct shrinker *shrink,
+-					    struct shrink_control *sc)
+-{
+-	if (!(sc->gfp_mask & __GFP_FS))
+-		return SHRINK_STOP;
+-	return gfs2_scan_glock_lru(sc->nr_to_scan);
+-}
+-
+-static unsigned long gfs2_glock_shrink_count(struct shrinker *shrink,
+-					     struct shrink_control *sc)
+-{
+-	return vfs_pressure_ratio(atomic_read(&lru_count));
+-}
+-
+-static struct shrinker *glock_shrinker;
+-
+ /**
+  * glock_hash_walk - Call a function for glock in a hash bucket
+  * @examiner: the function
+@@ -2068,33 +1919,12 @@ static void thaw_glock(struct gfs2_glock *gl)
+ 	if (!lockref_get_not_dead(&gl->gl_lockref))
+ 		return;
+ 
+-	gfs2_glock_remove_from_lru(gl);
+ 	spin_lock(&gl->gl_lockref.lock);
+ 	set_bit(GLF_HAVE_REPLY, &gl->gl_flags);
+ 	gfs2_glock_queue_work(gl, 0);
+ 	spin_unlock(&gl->gl_lockref.lock);
+ }
+ 
+-/**
+- * clear_glock - look at a glock and see if we can free it from glock cache
+- * @gl: the glock to look at
+- *
+- */
+-
+-static void clear_glock(struct gfs2_glock *gl)
+-{
+-	gfs2_glock_remove_from_lru(gl);
+-
+-	spin_lock(&gl->gl_lockref.lock);
+-	if (!__lockref_is_dead(&gl->gl_lockref)) {
+-		gl->gl_lockref.count++;
+-		if (gl->gl_state != LM_ST_UNLOCKED)
+-			request_demote(gl, LM_ST_UNLOCKED, 0, false);
+-		gfs2_glock_queue_work(gl, 0);
+-	}
+-	spin_unlock(&gl->gl_lockref.lock);
+-}
+-
+ /**
+  * gfs2_glock_thaw - Thaw any frozen glocks
+  * @sdp: The super block
+@@ -2141,20 +1971,17 @@ void gfs2_withdraw_glocks(struct gfs2_sbd *sdp)
+ }
+ 
+ /**
+- * gfs2_gl_hash_clear - Empty out the glock hash table
++ * gfs2_wait_glocks - Wait for the remaining glocks to go away
+  * @sdp: the filesystem
+  *
+  * Called when unmounting the filesystem.
+  */
+ 
+-void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
++void gfs2_wait_glocks(struct gfs2_sbd *sdp)
+ {
  	unsigned long start = jiffies;
  	bool timed_out = false;
  
--	set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
+-	glock_hash_walk(clear_glock, sdp);
 -	flush_workqueue(sdp->sd_glock_wq);
- 	glock_hash_walk(clear_glock, sdp);
- 	flush_workqueue(sdp->sd_glock_wq);
+-
+ 	while (!timed_out) {
+ 		wait_event_timeout(sdp->sd_kill_wait,
+ 				   !atomic_read(&sdp->sd_glock_disposal),
+@@ -2277,8 +2104,6 @@ static const char *gflags2str(char *buf, const struct gfs2_glock *gl)
+ 		*p++ = 'F';
+ 	if (!list_empty(&gl->gl_holders))
+ 		*p++ = 'q';
+-	if (test_bit(GLF_LRU, gflags))
+-		*p++ = 'L';
+ 	if (gl->gl_object)
+ 		*p++ = 'o';
+ 	if (test_bit(GLF_BLOCKING, gflags))
+@@ -2438,17 +2263,6 @@ int __init gfs2_glock_init(void)
+ 	if (ret < 0)
+ 		return ret;
  
+-	glock_shrinker = shrinker_alloc(0, "gfs2-glock");
+-	if (!glock_shrinker) {
+-		rhashtable_destroy(&gl_hash_table);
+-		return -ENOMEM;
+-	}
+-
+-	glock_shrinker->count_objects = gfs2_glock_shrink_count;
+-	glock_shrinker->scan_objects = gfs2_glock_shrink_scan;
+-
+-	shrinker_register(glock_shrinker);
+-
+ 	for (i = 0; i < GLOCK_WAIT_TABLE_SIZE; i++)
+ 		init_waitqueue_head(glock_wait_table + i);
+ 
+@@ -2457,7 +2271,6 @@ int __init gfs2_glock_init(void)
+ 
+ void gfs2_glock_exit(void)
+ {
+-	shrinker_free(glock_shrinker);
+ 	rhashtable_destroy(&gl_hash_table);
+ }
+ 
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index 6341ac9b863f..8b9e22befefb 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -263,7 +263,7 @@ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl);
+ bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later);
+ void gfs2_cancel_delete_work(struct gfs2_glock *gl);
+ void gfs2_flush_delete_work(struct gfs2_sbd *sdp);
+-void gfs2_gl_hash_clear(struct gfs2_sbd *sdp);
++void gfs2_wait_glocks(struct gfs2_sbd *sdp);
+ void gfs2_withdraw_glocks(struct gfs2_sbd *sdp);
+ void gfs2_glock_thaw(struct gfs2_sbd *sdp);
+ void gfs2_glock_free(struct gfs2_glock *gl);
 diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 61465777826a..6098447866d9 100644
+index 6098447866d9..dadb4d3c9d3d 100644
 --- a/fs/gfs2/incore.h
 +++ b/fs/gfs2/incore.h
-@@ -601,7 +601,6 @@ enum {
- 	SDF_DEMOTE		= 5,
- 	SDF_NOJOURNALID		= 6,
- 	SDF_RORECOVERY		= 7, /* read only recovery */
--	SDF_SKIP_DLM_UNLOCK	= 8,
- 	SDF_FORCE_AIL_FLUSH     = 9,
- 	SDF_FREEZE_INITIATOR	= 10,
- 	SDF_KILL		= 15,
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 7828ad0b6f5a..ab7ac8e634bf 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -347,7 +347,7 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	 * DLM_LOCK_PW mode, the lock value block (LVB) would be lost.
- 	 */
+@@ -321,7 +321,6 @@ enum {
+ 	GLF_INITIAL			= 10,
+ 	GLF_HAVE_FROZEN_REPLY		= 11,
+ 	GLF_INSTANTIATE_IN_PROG		= 12, /* instantiate happening now */
+-	GLF_LRU				= 13,
+ 	GLF_OBJECT			= 14, /* Used only for tracing */
+ 	GLF_BLOCKING			= 15,
+ 	GLF_TRY_TO_EVICT		= 17, /* iopen glocks only */
+@@ -355,7 +354,7 @@ struct gfs2_glock {
+ 	unsigned long gl_tchange;
+ 	void *gl_object;
  
--	if (test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags) &&
-+	if (test_bit(SDF_KILL, &sdp->sd_flags) &&
- 	    (!gl->gl_lksb.sb_lvbptr || gl->gl_state != LM_ST_EXCLUSIVE)) {
- 		gfs2_glock_free_later(gl);
- 		return;
+-	struct list_head gl_lru;
++	struct list_head gl_dead;
+ 	struct list_head gl_ail_list;
+ 	atomic_t gl_ail_count;
+ 	atomic_t gl_revokes;
+@@ -833,6 +832,9 @@ struct gfs2_sbd {
+ 	struct list_head sd_ail1_list;
+ 	struct list_head sd_ail2_list;
+ 
++	/* glocks */
++	spinlock_t sd_dead_lock;
++
+ 	/* For quiescing the filesystem */
+ 	struct gfs2_holder sd_freeze_gh;
+ 	struct mutex sd_freeze_mutex;
+diff --git a/fs/gfs2/main.c b/fs/gfs2/main.c
+index 9d65719353fa..36c9c06e91ac 100644
+--- a/fs/gfs2/main.c
++++ b/fs/gfs2/main.c
+@@ -52,7 +52,6 @@ static void gfs2_init_glock_once(void *foo)
+ 	struct gfs2_glock *gl = foo;
+ 
+ 	INIT_LIST_HEAD(&gl->gl_holders);
+-	INIT_LIST_HEAD(&gl->gl_lru);
+ 	INIT_LIST_HEAD(&gl->gl_ail_list);
+ 	atomic_set(&gl->gl_ail_count, 0);
+ 	atomic_set(&gl->gl_revokes, 0);
 diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 9b9e70f14d25..71e9dedd8b88 100644
+index 71e9dedd8b88..718e0da7dfce 100644
 --- a/fs/gfs2/ops_fstype.c
 +++ b/fs/gfs2/ops_fstype.c
-@@ -1783,6 +1783,7 @@ static void gfs2_kill_sb(struct super_block *sb)
- 	sdp->sd_master_dir = NULL;
- 	shrink_dcache_sb(sb);
+@@ -123,6 +123,8 @@ static struct gfs2_sbd *init_sbd(struct super_block *sb)
+ 	INIT_LIST_HEAD(&sdp->sd_ail1_list);
+ 	INIT_LIST_HEAD(&sdp->sd_ail2_list);
  
-+	set_bit(SDF_KILL, &sdp->sd_flags);
- 	gfs2_evict_inodes(sb);
++	spin_lock_init(&sdp->sd_dead_lock);
++
+ 	init_rwsem(&sdp->sd_log_flush_lock);
+ 	atomic_set(&sdp->sd_log_in_flight, 0);
+ 	init_waitqueue_head(&sdp->sd_log_flush_wait);
+@@ -1300,7 +1302,6 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	init_locking(sdp, &mount_gh, UNDO);
+ fail_lm:
+ 	complete_all(&sdp->sd_journal_ready);
+-	gfs2_gl_hash_clear(sdp);
+ 	gfs2_lm_unmount(sdp);
+ fail_debug:
+ 	gfs2_delete_debugfs_file(sdp);
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 4d854556b529..06302c29340f 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -638,7 +638,7 @@ static void gfs2_put_super(struct super_block *sb)
+ 	gfs2_clear_rgrpd(sdp);
+ 	gfs2_jindex_free(sdp);
+ 	/*  Take apart glock structures and buffer lists  */
+-	gfs2_gl_hash_clear(sdp);
++	gfs2_wait_glocks(sdp);
+ 	iput(sdp->sd_inode);
+ 	gfs2_delete_debugfs_file(sdp);
  
- 	/*
-@@ -1790,7 +1791,6 @@ static void gfs2_kill_sb(struct super_block *sb)
- 	 * destroy_workqueue()) to ensure that any delete work that
- 	 * may be running will also see the SDF_KILL flag.
- 	 */
--	set_bit(SDF_KILL, &sdp->sd_flags);
- 	gfs2_flush_delete_work(sdp);
- 	destroy_workqueue(sdp->sd_delete_wq);
- 
-diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c
-index 7051db9dbea0..ea2c7b9e4a77 100644
---- a/fs/gfs2/sys.c
-+++ b/fs/gfs2/sys.c
-@@ -80,7 +80,6 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
- 		     "No Journal ID:            %d\n"
- 		     "Mounted RO:               %d\n"
- 		     "RO Recovery:              %d\n"
--		     "Skip DLM Unlock:          %d\n"
- 		     "Force AIL Flush:          %d\n"
- 		     "FS Freeze Initiator:      %d\n"
- 		     "FS Frozen:                %d\n"
-@@ -109,7 +108,6 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
- 		     test_bit(SDF_NOJOURNALID, &f),
- 		     (sb_rdonly(sdp->sd_vfs) ? 1 : 0),
- 		     test_bit(SDF_RORECOVERY, &f),
--		     test_bit(SDF_SKIP_DLM_UNLOCK, &f),
- 		     test_bit(SDF_FORCE_AIL_FLUSH, &f),
- 		     test_bit(SDF_FREEZE_INITIATOR, &f),
- 		     test_bit(SDF_FROZEN, &f),
+diff --git a/fs/gfs2/trace_gfs2.h b/fs/gfs2/trace_gfs2.h
+index 6fd39fcdd00e..bc40320ef239 100644
+--- a/fs/gfs2/trace_gfs2.h
++++ b/fs/gfs2/trace_gfs2.h
+@@ -56,7 +56,6 @@
+ 	{(1UL << GLF_HAVE_REPLY),		"r" },		\
+ 	{(1UL << GLF_INITIAL),			"a" },		\
+ 	{(1UL << GLF_HAVE_FROZEN_REPLY),	"F" },		\
+-	{(1UL << GLF_LRU),			"L" },		\
+ 	{(1UL << GLF_OBJECT),			"o" },		\
+ 	{(1UL << GLF_BLOCKING),			"b" },		\
+ 	{(1UL << GLF_INSTANTIATE_NEEDED),	"n" },		\
 -- 
 2.55.0
 
