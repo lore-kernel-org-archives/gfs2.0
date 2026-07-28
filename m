@@ -1,97 +1,89 @@
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6190C3161A2
-	for <gfs2@lists.linux.dev>; Sat, 25 Jul 2026 04:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B75C34041B
+	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784953955; cv=none; b=Ugsqo0RZdJ8kzDic3rddo4+99TPkjnqauAj5jxTFwyN2aWor5hP+xGfYG40NBmrFt4Hiwr40af+pPuF5U0uJaHERZLK8Vrj4LVfnAZCqkJLMrGP6Cvpvf5PPfjs/z4LDgnVNiJJOaY84IuFxI403qET6DiONypx9qCg5y2n5srQ=
+	t=1785256896; cv=none; b=eTfChhV/3YbQIld4uHHiPhIId8zkKyJXgsi+7L9K1gVUjssjkGrMpv0mbgPPFlC5/8as+2v94hWdsgmZyS+RETrUIZMbo+JLr2cys4bMhrfr7n1ZF/LnI6LRNgfpyHc7USHf9mbajjCiqhfc+6EjXhEmGf+MmC95BO+T1U4AxX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784953955; c=relaxed/simple;
-	bh=nAiq5DaK/mC2rcxPVx/KQSKaqafm15dANkazvi6C6Bw=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ItrgzDst9Ou9crea/oPBRUvhUIdtJRalF7PHY9jMVwhfwfKNWwL4zb5yeGsAQHfV0W/UZXjepj160wN0B6NNhLFl41QhRNdg24krVBhSlP+/BNKkZEz1+1zQ/ptjLE0ATSoml54i7sl3jVEDHLedxBW6wiwTzbRioiNFWmEirmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-456bbfa4cb3so834679fac.1
-        for <gfs2@lists.linux.dev>; Fri, 24 Jul 2026 21:32:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784953953; x=1785558753;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MQteYqC+HhJqci7msQYrWvz5EEODpw+0M1ujSXo1q8M=;
-        b=sH9LEhyCj7nnROLDB5pZwGE1icxq1FBmCN3qZDAhXbfTFFg9+enqNAaD8S0JvQhWub
-         4ti5bwyFeXMAI4MBuuiR8zkJ+Oh2J4DB+KJT0r5HirvZOa5ukaEvnN5hC0EL7T5lyJRd
-         1L6Qt6DJCCUGoHBM2HwvoBRXceiP+M3Uq1BeR/qn/15Mx+jJzaXKzdetRCP2O8C6QB7k
-         tkO2w9RuQJfJoAVikgApB6eDKnOqIEMJkpHWHRBdu9KbSjTlwV1zAhTMw0l7XHoUXN5H
-         En+l7hSBXusMpMk2rCduXAnKH1+DJaJHfgjHe0QuOD6YWt5P9QTm3GWO1FhNFQaThxvV
-         qxMw==
-X-Gm-Message-State: AOJu0YxJQX7aDf10+Z+1vAoYgLq4/qFpEKgu32BHKfQ99I3EtTgH+qUq
-	5ck2Q965Ik/3o8WeSlTu6qmaClk2apKZR0ueEbHwwkneojL6LPPccQzaxHkjdKtFqbUwJmo/cMf
-	PvsMLmZpIOTur5mYBYg0o+SJE9+VRoDkUl89mxpPQAUrI9wGIZQnatjeUQW0=
+	s=arc-20240116; t=1785256896; c=relaxed/simple;
+	bh=h43SupSyGiWpYve5+dTnum+YvuJh7v7mH+hMvZ1vSho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=YzV2X6RmvaDR/FGdFFKnRjsQFeIGp1Je8qNSxFjPUF+RUe0wwTWRrOrr5tJtImQqwSys7yh2/Xtq2l6jh9afvgEAdDmscjeEgU0A1EbVE752Cw7caWjslPIno77U8vCc9T7llzuNLU7m82h5f4yU1DeFtpgADR98Up27tm2eScw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VeTJfqFa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VeTJfqFa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785256894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8rBOBeD6eqcZgb1535Xbm/mLgkj0tNbqvMO6douXuoY=;
+	b=VeTJfqFaj0WGgFNuxM4gzWeiWmR75DeBEBIu2Mri4w7HpTl21uTGfPZm+apuX4Zv/y1pOJ
+	L0gAkirwXEDhV9PIvr5k8FrWiyGgOsVo/MKeztIpXa+Rn4q1NPBQtc7BsYy4m4bsddU5HY
+	PUCm12GP+VqZhsJ7PSplKQo04CZu+u0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-il2mSdvWO6KDPqD4yhzPhw-1; Tue,
+ 28 Jul 2026 12:41:32 -0400
+X-MC-Unique: il2mSdvWO6KDPqD4yhzPhw-1
+X-Mimecast-MFC-AGG-ID: il2mSdvWO6KDPqD4yhzPhw_1785256892
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B41FC195608F
+	for <gfs2@lists.linux.dev>; Tue, 28 Jul 2026 16:41:31 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.44.48.20])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BD779300019F;
+	Tue, 28 Jul 2026 16:41:30 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 1/4] gfs2: Enable automatic glock hash table shrinking
+Date: Tue, 28 Jul 2026 18:41:21 +0200
+Message-ID: <20260728164127.791843-2-agruenba@redhat.com>
+In-Reply-To: <20260728164127.791843-1-agruenba@redhat.com>
+References: <20260728164127.791843-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2385:b0:4a4:c73:9f3 with SMTP id
- 5614622812f47-4ab69f88242mr1128034b6e.3.1784953953146; Fri, 24 Jul 2026
- 21:32:33 -0700 (PDT)
-Date: Fri, 24 Jul 2026 21:32:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a643c61.a2ea2cc8.fbad6.000f.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Jul 2026)
-From: syzbot <syzbot+list2ec66fdfb7edb190b85f@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JcJG2IV1wsRlJ__bK_genBLu4U4opibRxkJBIAU3YfA_1785256892
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello gfs2 maintainers/developers,
+All of the examiner functions passed to glock_hash_walk() can deal with glock
+hash table resizes and the resulting repeat visiting of glocks, so we can allow
+automatic glock hash table shrinking.
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
-
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 26 issues are still open and 46 have already been fixed.
-There are also 6 low-priority issues.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  415     Yes   KASAN: stack-out-of-bounds Read in gfs2_dump_glock
-                   https://syzkaller.appspot.com/bug?extid=7efd59a5a532c57037e6
-<2>  94      Yes   kernel BUG in do_qc
-                   https://syzkaller.appspot.com/bug?extid=bad65435361712796381
-<3>  53      Yes   WARNING in gfs2_ri_update (2)
-                   https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<4>  44      Yes   general protection fault in gfs2_glock_dq (2)
-                   https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
-<5>  31      No    kernel BUG in gfs2_trans_add_revoke
-                   https://syzkaller.appspot.com/bug?extid=b17a83b050e9617376f0
-<6>  10      No    KASAN: slab-use-after-free Read in gfs2_ail_drain
-                   https://syzkaller.appspot.com/bug?extid=84a21b16aba9f279d96a
-<7>  1466    Yes   kernel BUG in gfs2_glock_nq (2)
-                   https://syzkaller.appspot.com/bug?extid=70f4e455dee59ab40c80
-<8>  152     Yes   kernel BUG in gfs2_quota_cleanup (3)
-                   https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-<9>  99      Yes   kernel BUG in qd_put (3)
-                   https://syzkaller.appspot.com/bug?extid=0423714c06c369318794
-<10> 12      No    kernel BUG in gfs2_unpin
-                   https://syzkaller.appspot.com/bug?extid=0c5024a57ccf4017c187
-
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/glock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index b8a144d3a73b..0a93824424d5 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -78,6 +78,7 @@ static const struct rhashtable_params ht_parms = {
+ 	.key_len = offsetofend(struct lm_lockname, ln_type),
+ 	.key_offset = offsetof(struct gfs2_glock, gl_name),
+ 	.head_offset = offsetof(struct gfs2_glock, gl_node),
++	.automatic_shrinking = true,
+ };
+ 
+ static struct rhashtable gl_hash_table;
+-- 
+2.55.0
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
