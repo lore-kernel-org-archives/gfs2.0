@@ -1,141 +1,241 @@
-Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6AC449B29
-	for <gfs2@lists.linux.dev>; Fri, 31 Jul 2026 17:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D64E1EEA3C
+	for <gfs2@lists.linux.dev>; Sat,  1 Aug 2026 22:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518074; cv=none; b=RTevQGQ+VEybXeYqbE9xktRWYII3irgeHybkx2iGuIcu6LzfVUHm6dUDpljryMq7a6GMHC98xuR6Uyz+Z7v4jOAo/RCfmuW8xUDjblQlaB+gSW35RY+Bta21sAC3hvq06eoJn9lEwJmjCMUv43bYm8sr9rP9tUOxlou3wuXUKME=
+	t=1785621670; cv=none; b=Xyte/5dBJE6ZJdT4alx2W4KTx3tgtQKeYkRYV8/hUaYeKahfouR1/3JDKMYyFoKHtap/qG0xSOv1QAqaSBvqe34QTzJqNbRWjaJ6PKgr7se95LgYmHoW6HS/H2+QawdqOnqtJ6lEUEtr/EXRIA82pLHDdxPq1EXoVcoawdiNFY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518074; c=relaxed/simple;
-	bh=hnlKnsrIMGRxavFKBceHDuGhYvRRGhbLnXMNEd0OrBM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=IMXRHoDyAY1MRiEtGK0W3utDeKL2rSutkJb7UBYeVWubni7sa+xGCYuLO9u8ZaOXhZ3GNfIDO+T9A/PLfBkqXKJ70s4QK9YaEGHhcqrMlmbH5XRgVtKbYDGFHgyFX/gGv4WTqwFFTJ4WehlLpmhQNmGGzWdsravXAbHJSjr13QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-4ab4f78b9f4so1517878b6e.2
-        for <gfs2@lists.linux.dev>; Fri, 31 Jul 2026 10:14:31 -0700 (PDT)
+	s=arc-20240116; t=1785621670; c=relaxed/simple;
+	bh=5kc6aoUsPCWVQ7ZpkvBoTWz6LMN5kOsplmsUduRg5zA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m3Xt6TuDn5X3McXM4CZ+JFdbdm8GNdG0DaMhOb59AQKkd11MlXNy8hCR+A+y57g4xsxqFQy9R0VUA+QPlNoZQdjfFtGPh4iw+YkbYZAHo+NK/5s8KwjG808rh74K2NK6Z3Y3XLeGJqw/b1hL0eCbs11QRcCh6vHv75mqjjkjZyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yp1bIPoe; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yp1bIPoe"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-81ed000b507so19828467b3.0
+        for <gfs2@lists.linux.dev>; Sat, 01 Aug 2026 15:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785621666; x=1786226466; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5qxson1aVl1hwzPiVPzIspxxMcycj2MEcHwvaNE0XYM=;
+        b=Yp1bIPoeaVd8BVAqwFm1weaFcm/cw6oCq+ryzz9vfZ+12D0U6T2kWL86eN2RXoh55C
+         R1cSvHATRtqSsS8+btpJHVJEDtSmnA80GEbMgMCUXvk7Nd3LHLJchVp4y2cZsa00lE4I
+         YZdViiIIB8RVtOPzrIMKBz/wCYqjOvU+jJOmvOcYFPa0squ7ypMBZmNtQPhxHbwEy8L2
+         CZqtAVtjswai37FdAXAnxFpUBr3Y07sfjThV/Nr42Dxvb2dJR6TrUDHqp99ejnY9eePR
+         GwtQ3gKEomOjyFNElb57OFLrs7E8soiu5pdxvk8sY81TKoWCcDhvaF/bkuDqibB0Om/q
+         vGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785518071; x=1786122871;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y/64JuiEqi94j506cuIciDVsPEU8nZBUvLfJTByWCl4=;
-        b=NMVK3GVpjc+rNNbajb+2UN2isuMON1zuugEiYkgDUrnRTmhJN0Di8IAdowGaXlSBwD
-         6yWe3qe04RYLwPfjISCprIdL0CPOnwSJi7vma7qJB7ZLcPyK8qdjfFmVJ/QrpH6tPaS4
-         KNyj5f2ZFl8vzQDm+oOCvzjZvmUo6YA23xVOIcN8HAwpVhzkOjr2bMlFblcDadvT95wj
-         97fZEKdhOTnImDY4Rw22RUgW+a1k7teMqidKe0SK1UXjSmXEWVyGHwvA4SB79w1lY4ug
-         PIJb9cTR/pOYFbO9Y+tKDvAsfwpCFxtQu+AVNmx+cjQEDkTpcbppV3OGCavRs+a8Alwu
-         UYgg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/zhVvINULJZvRS7PTLhvNh1HJyAQRGAEgD5rKH3JWbSnQVzws3ClqFGBgjFOfUxYNbR6v@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzHS4xxXC7rAQ9jl+VzmeoIzvOkMLH8u3ay2wK7OMREtyXLd3q
-	7ytGkundotDqLjhQRWj1B5cOaoBpcwtpoVV6kdzqQTrYz2ur/1CbarUtQGJwAlapAYeqBy4iEKN
-	QAQdEatPFV9CqoG2NVS6lQpqyeYb3D/xgQCPtBNXxaRA3Id7xtWIvkNLTJ7o=
+        d=1e100.net; s=20251104; t=1785621666; x=1786226466;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5qxson1aVl1hwzPiVPzIspxxMcycj2MEcHwvaNE0XYM=;
+        b=EWzDVYXQ1ZezIU4ElCFiwEVIHHWReJ87zJTQh1V0zi4NhF41a6N0WkXjiBVeMgKgG7
+         z5Bt6BEV3H7cU/C64h86LMm5V5NMR71473+x+qh8tsPJNT3De55VqQ+n6g8hZHiOSU3L
+         K5FxyAhit3xR52nphixiDPMLmf69jnKgCf68RfCGqdb25VNOFWarYdGT/MbllYotH0EU
+         YlXr/JdkzoNwEwM/bqiBmmp/1lh1M6vychEFiuB9+z/iIzajs+OAZiUFQZK1fni/ywz5
+         SnQs1rPcOELpNBmIsJKMGcJMIowyfTlWocEAxSfMHJmUc5VVgsXJlkw79eHmXMGgRoFP
+         BEjA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2usYzLyq+KlMBcVL/8qR56DxCsJQzo7/JIiLTrAN07x01fUD6wU+zn31VveLFKCW1PkUh@lists.linux.dev
+X-Gm-Message-State: AOJu0YwF2QlzLMeWkGM1Vk5E5RSru48iWZs02rZ/UGprsdRS6zhjtOve
+	peDjRXYbF89/g+mYCC6kLxIiUq+jD6CBYCCDEstxzf9nrWoPQRsEfQRI
+X-Gm-Gg: AR+sD114kxECtw8lMikjWTKyDZZyRFQ6xlxyS3CiG2Pud1eR2/Us75U3tVIYn6T+L+Q
+	T1OqJ8JMPogoKltm9kOIvr7g3066oCeYk0lYlSasSFUOXygkxfGGOQojZ7oPHfLMwYn2lHA328O
+	qbQFw0TDfjmaosfeIPTr2aFCaGmFeAbF6pcu5s9F8fRHTWOX2J9eUZe05LQQs+2kY2oXdrmDoyS
+	7WPJQG5YT8EM78f5MNpcRZHdut0K7azHG1ZTIrfEQV869Ji2oYM2mmJvzpLVFOJm7G1j9TbL67b
+	vgONKYOOI4yOIovWYHEdCv/K2E2mHoUusGKUjcIAPRO12ONhv7KtYIId7uBjJfiMgSg57kd5ofH
+	Yhcmw5HObhv/HmsDpuXRuEKjwhc+gEhcjk21ValdQWmWKt0IYdciVtDpcJHJQmx3ZfoTGWVJS/H
+	xs9u8ng5bjQ0YsIi2UJjPCKw3VFApLuAV+bq5o0Rp28Nvmm5Qczmo5nYlcJLyWsi76CbylCMte1
+	44zcWA=
+X-Received: by 2002:a05:690c:60c6:b0:81e:45a6:bd53 with SMTP id 00721157ae682-81fd4a4996fmr64558587b3.8.1785621666321;
+        Sat, 01 Aug 2026 15:01:06 -0700 (PDT)
+Received: from syssplab.cs.fiu.edu (nat1.cs.fiu.edu. [131.94.134.89])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd0d6fbbsm29903767b3.25.2026.08.01.15.01.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Aug 2026 15:01:05 -0700 (PDT)
+From: Chao Shi <coshi036@gmail.com>
+To: Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-fsdevel@vger.kernel.org
+Cc: Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Bob Copeland <me@bobcopeland.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	linux-ext4@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	linux-karma-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Chao Shi <coshi036@gmail.com>
+Subject: [PATCH 00/19] buffer: stop clearing BH_Uptodate when a write fails
+Date: Sat,  1 Aug 2026 18:00:44 -0400
+Message-ID: <cover.1785621505.git.coshi036@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1247:b0:496:9b3:486 with SMTP id
- 5614622812f47-4af5e2fc1b2mr1287674b6e.14.1785518071042; Fri, 31 Jul 2026
- 10:14:31 -0700 (PDT)
-Date: Fri, 31 Jul 2026 10:14:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6cd7f7.2d659fcc.1d46f5.019a.GAE@google.com>
-Subject: [syzbot] [gfs2?] WARNING in dlm_lowcomms_close
-From: syzbot <syzbot+04dfbd15d442517e713a@syzkaller.appspotmail.com>
-To: aahringo@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, teigland@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+When a metadata write fails, the buffer_head completion handlers clear
+BH_Uptodate.  The buffer still holds exactly the data the filesystem asked
+to be written - it is the disk that is stale, not the buffer - and saying
+otherwise has consequences:
 
-syzbot found the following issue on:
+  - mark_buffer_dirty() has a WARN_ON_ONCE(!buffer_uptodate(bh)), so a
+    filesystem that dirties the buffer again to retry the write trips it.
+    That is the warning that started this.
 
-HEAD commit:    3708dd948844 Merge tag 'pm-7.2-rc6' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12b1caea580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=04dfbd15d442517e713a
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1020a5b9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13057a49580000
+  - a buffer that is not up to date gets re-read from disk, which silently
+    replaces the data the filesystem was trying to write with the stale
+    on-disk copy.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3708dd94.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/57f69e2a6e3b/vmlinux-3708dd94.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3511d4246fb6/bzImage-3708dd94.xz
+  - the state is not self consistent while it lasts: the window between the
+    write completing and BH_Uptodate being cleared is visible to anyone
+    holding the folio lock.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+04dfbd15d442517e713a@syzkaller.appspotmail.com
+BH_Write_EIO already records that the last write failed.  This series moves
+every consumer over to it, then removes the clears.
 
-dlm: closing connection to node 1
-------------[ cut here ]------------
-!con
-WARNING: fs/dlm/lowcomms.c:1455 at dlm_lowcomms_close+0x3d/0x21b fs/dlm/lowcomms.c:1455, CPU#1: syz.0.18/5929
-Modules linked in:
-CPU: 1 UID: 0 PID: 5929 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:dlm_lowcomms_close+0x3d/0x21b fs/dlm/lowcomms.c:1455
-Code: 89 ee 48 c7 c7 00 eb eb 8b e8 8f 61 fc ff e8 da f8 ff ff 31 f6 89 ef 41 89 c4 e8 9e 0f a1 01 48 85 c0 75 1b e8 d4 77 e4 00 90 <0f> 0b 90 44 89 e7 bb fe ff ff ff e8 43 f8 ff ff e9 b5 01 00 00 48
-RSP: 0018:ffffc9000383fbd8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff82c6f9c4
-RDX: ffff888033a52540 RSI: ffffffff8125e92c RDI: ffff888033a52540
-RBP: 0000000000000001 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: 0000000000000001 R14: ffffed1005244e10 R15: 0000000000000001
-FS:  0000555565d9e500(0000) GS:ffff8880d5eda000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b33163fff CR3: 000000002cf16000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- dlm_midcomms_close+0x312/0x590 fs/dlm/midcomms.c:1443
- drop_comm+0x62/0x1a0 fs/dlm/config.c:556
- client_drop_item+0xa6/0x100 fs/configfs/dir.c:970
- configfs_rmdir+0x5d3/0x950 fs/configfs/dir.c:1567
- vfs_rmdir fs/namei.c:5381 [inline]
- vfs_rmdir+0x328/0x8a0 fs/namei.c:5354
- filename_rmdir+0x31a/0x5c0 fs/namei.c:5438
- __do_sys_rmdir fs/namei.c:5461 [inline]
- __se_sys_rmdir fs/namei.c:5458 [inline]
- __x64_sys_rmdir+0x46/0x70 fs/namei.c:5458
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa842f9e019
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc8c738bb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000054
-RAX: ffffffffffffffda RBX: 00007fa843225fa0 RCX: 00007fa842f9e019
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000040
-RBP: 00007fa84303500c R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa843225fac R14: 00007fa843225fa0 R15: 00007fa843225fa0
- </TASK>
+Patches 1-3 are groundwork.  Matthew's patch 1 removes b_page.  Patches 2
+and 3 let a buffer_head point at memory outside the page cache and use that
+for jbd2's shadow buffers, which today sit on a slab folio - a slab folio
+overloads ->mapping, so mark_buffer_write_io_error() cannot be called on
+them at all.  That is what blocked the jbd2 conversion.
+
+Patches 4-5 make BH_Write_EIO safe to leave set: clear it in bforget() and
+discard it on invalidate, so a freed or reused block does not inherit
+somebody else's write error.
+
+Patches 6-18 convert the consumers, one filesystem at a time: the two core
+helpers in fs/buffer.c, then adfs, ext2, omfs, exfat, fat, ext4, ocfs2,
+gfs2 and jbd2.  Patch 19 removes the clears.
+
+Every patch builds on its own and the tree behaves identically at each step
+until patch 19, because a failed write currently sets BH_Write_EIO and
+clears BH_Uptodate together.
+
+Four things are worth a second look, and I would rather point at them than
+let you find them:
+
+  - gfs2 (patch 15) is not a pure conversion.  gfs2_end_log_write_bh()
+    already marks BH_Write_EIO without clearing BH_Uptodate, so the two ail
+    checks are blind to log write errors today and start catching them.
+    Jan and I agreed that is the desired fix rather than a regression, but
+    it is a real behaviour change for gfs2.
+
+  - ocfs2 (patch 14) has a check that turns the filesystem read-only when a
+    buffer whose previous write failed is handed back to a transaction.  It
+    sits inside an if (!buffer_uptodate(bh)) that goes dead, so it has to be
+    hoisted or ocfs2 silently stops making that check.  The code in that
+    patch is Jan's.
+
+  - after patch 19, BH_Write_EIO stays set until the buffer is written
+    again, forgotten or invalidated.  So a site like ext4's itable sync
+    (patch 12) now reports on every subsequent sync rather than only on the
+    write that failed.  That is intended, and matches what ocfs2 has always
+    done with this flag.
+
+  - the read path changes too.  __bread_gfp() and bh_uptodate_or_lock()
+    currently re-read a buffer whose write failed, replacing the
+    filesystem's data with the stale on-disk copy.  After patch 19 they
+    return the in-memory data.  Better, but different.
+
+On the original report: patch 19 provably closes that WARN for the write
+error case, since the state it warns about can no longer be produced that
+way.  I could not reproduce the WARN itself with fail_make_request, which
+fails synchronously at submit; the original came from a fuzzer injecting
+delayed error completions, which is what opens the window.  So there is no
+ready reproducer to offer, only the argument.
+
+Based on vfs.git vfs.all, because Jan's "fs: Fix missed inode write during
+fsync" series is in it and rewrites __ext4_handle_dirty_metadata(), which
+patch 12 touches.
+
+Testing: built and booted with all of the above filesystems enabled;
+checkpatch --strict clean on all 19; each patch built individually.
+Patches 2 and 3 were validated by crashing with sysrq-b during ext4
+data=journal,journal_checksum traffic engineered to force copy-out into
+b_frozen_data, then replaying the journal on the next mount - recovery
+completed, file contents matched, e2fsck -fn clean, and an instrumented
+build confirmed the folio-less path was actually taken.  I have not
+exercised the adfs, omfs or exfat paths beyond compiling them.
+
+The conversion was asked for here:
+  https://lore.kernel.org/linux-fsdevel/xaqwfkwjnp7h2lg7ir6wy2tnyay26t3im3ftkdl64rhys3rhmu@lc5vfh5tc2f5/
+and the shape of it was settled in the two exchanges after it:
+  https://lore.kernel.org/linux-fsdevel/CACd_6n17-pJuNoCLsstP7goocedrr5F8T8BwTjRUNx8frKEPgA@mail.gmail.com/
+  https://lore.kernel.org/linux-fsdevel/bnchcfog427eo3bxt5h6qautlq7sb2o4ww7cjgad73biycdn5f@np7qkbyqizup/
+Per-filesystem maintainers were not on that thread, hence the summary above.
+
+The earlier attempt at this, which Jan correctly rejected, was
+  https://lore.kernel.org/linux-fsdevel/20260430053645.1466196-1-coshi036@gmail.com/
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Chao Shi (18):
+  buffer: allow a buffer_head to point at memory outside the page cache
+  jbd2: point the shadow buffer at the frozen data directly
+  buffer: clear BH_Write_EIO when a buffer is forgotten
+  buffer: discard BH_Write_EIO along with the rest of the buffer state
+  buffer: detect metadata write errors with buffer_write_io_error()
+  adfs: check for a directory write error with buffer_write_io_error()
+  ext2: check for an xattr block write error with
+    buffer_write_io_error()
+  omfs: check for an inode write error with buffer_write_io_error()
+  exfat: check for a directory write error with buffer_write_io_error()
+  fat: check for a metadata write error with buffer_write_io_error()
+  ext4: check for a metadata write error with buffer_write_io_error()
+  ocfs2: check for a metadata write error with buffer_write_io_error()
+  ocfs2: check for a stale write error before reusing a metadata buffer
+  gfs2: check for a metadata write error with buffer_write_io_error()
+  jbd2: report journal write errors with BH_Write_EIO
+  jbd2: assert on a failed write, not on a buffer that is not up to date
+  ext4, jbd2: report fast commit write errors with BH_Write_EIO
+  buffer: stop clearing BH_Uptodate when a write fails
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Matthew Wilcox (Oracle) (1):
+  buffer_head: Remove b_page
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+ fs/adfs/dir.c               |  2 +-
+ fs/buffer.c                 | 26 +++++++++++++++++---------
+ fs/exfat/misc.c             |  2 +-
+ fs/ext2/xattr.c             |  2 +-
+ fs/ext4/ext4_jbd2.c         |  2 +-
+ fs/ext4/fast_commit.c       |  2 +-
+ fs/ext4/mmp.c               |  2 +-
+ fs/fat/misc.c               |  2 +-
+ fs/gfs2/log.c               |  4 ++--
+ fs/gfs2/lops.c              |  2 +-
+ fs/jbd2/commit.c            | 20 +++++++++++++-------
+ fs/jbd2/journal.c           | 21 +++++++++++++++------
+ fs/jbd2/transaction.c       |  2 +-
+ fs/ocfs2/buffer_head_io.c   | 12 +++++++-----
+ fs/ocfs2/journal.c          | 25 +++++++++++++------------
+ fs/omfs/inode.c             |  4 ++--
+ include/linux/buffer_head.h |  7 ++-----
+ 17 files changed, 80 insertions(+), 57 deletions(-)
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+base-commit: 05c09c9c8a79d5539fef30d42e732eba90a15dcf
+-- 
+2.43.0
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
