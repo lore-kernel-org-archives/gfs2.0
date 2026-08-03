@@ -1,157 +1,189 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93683D2FFC
-	for <gfs2@lists.linux.dev>; Sat,  1 Aug 2026 22:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4313A352002
+	for <gfs2@lists.linux.dev>; Mon,  3 Aug 2026 16:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785621700; cv=none; b=hTOKeywuvVNnH7zEpJ4LpgNte1jfqN6d2NDCB9ozck6A6Wjamd6kZYlqVplamIPjonywep7xF4ele909LINk03EOv17tBMTRQX4dpbbW0Tk9B3IWC7E3H2Y9QcWIagwvs7gTsX+FtaeIzkDym9NDDseBnvz6Mao9WIIJKwH7T40=
+	t=1785773021; cv=none; b=HeLlXmXcxvS56Rpwz7B7qfjp95nVrm75Ab4zKo4iEE32IAjZN20wx5YnB4B2Qezwa8xy2tjKYEjwK8GiU5Gq5qBTXJrbXTAFJMUl7Ol6CoMemRk4gnOQERHRhb1+VfJ9bVgbM4Oo3y4Il40zEk9dRGbd7ZXTVNvhvmMqYGUTcG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785621700; c=relaxed/simple;
-	bh=EXr243hgt49VO+NVV7qJVCHwNBqwGmV0A3daLRpsT44=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0rDarxQAakNaUYm4V7kUmvv/cCwFIW91REFcwXx5iZTxBLjh4S2ebuFCnR9gKSBqWADAjJ38o45FnLh88UpiXIIn112KvlXvZkK1a3M6fKONQqT74v+dDJn4gBJfH0QqsdEI0d+ngIdSCdRkOoWw0vQQJzAQ+E6hRSbODZpnUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fXek0qee; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785773021; c=relaxed/simple;
+	bh=fxgrDFn2ovPuwPObF4his0gLm+ifitfZ5D4aJhwPHd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K9SM7RG3O7b/h30ncJ1BiBKLFU0teXwZWqyfqIv+S+jU0L0XfAdmXyjrxicGrm1zYNGjlVd27ewD55dLm+N/LGjOJlux8PZ73Kd1DDRJNBipKGVULCy4epnslpPdW/J8IRbPrtJTL5q8ksEBGMSa3GpLaddBC6z51t9WUBqTTKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=J1DOmKlw; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YHLwkzkk; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zj08XAoS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=g00+0xcM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fXek0qee"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7dbcb505578so19120427b3.3
-        for <gfs2@lists.linux.dev>; Sat, 01 Aug 2026 15:01:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785621697; x=1786226497; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/eXvH9gfEzZ90R61WLxV17LvM97s4H8IYIhHdEQdhoQ=;
-        b=fXek0qee6qabBs3XBEa7UxPPHb6bKEsGisza2jbAqMHSRc/h0Yraje51JL5+x3oYpq
-         VEScjDf7CTtoGsv0bxutzk4Hz4YTpQXqwT89Gv9w5nKexFDW1gS5zI8I3v0M1TLS4RUa
-         ko0LI6/CHeKMO+6no0MB9nk+CV+AoeIK/4wFMvAqVbLjW1i/BJ5FcfDXwxjqBOD2uh9M
-         whadCi+nhTMxCMEqN/TdsI3ChrcDGe57SX/scGCqkTeNDyPE/nnIm2Hoa3gJIEHweGp/
-         czeQPB0cwOc1tmk+2ft/OSRqgrPqUNFBZn/ytpjpVKz5htu00yabZfYjbjhYC0PBIhwG
-         s5Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785621697; x=1786226497;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/eXvH9gfEzZ90R61WLxV17LvM97s4H8IYIhHdEQdhoQ=;
-        b=lY2WU20vcgYnmF6PzlI4MV3D2jh21KTMLqxH84/Dxk3BfPyzCF7xPJC2WW7T1sdy4r
-         tKED4Tc/U0Q+ztfuiFCr9YWRti7akhWdFkUAiti69kjLYXlaesD/5V3oOb97MeN4/zUh
-         GfUDRa4XGf1lRhFReeCZD8g6BGSX8yAokjov8oIGsrKBhPUlaT20YkcKa33AojOUFZuc
-         2CPKXgkjWOMCLk/vN8anO5xOlz+mUzT/wUO4OnJ1sPxfBPV8L54RiGgiY46SHAONkyWV
-         kAuOyui93S0jh5iMO3AROmenakkjVPOeSyvkBg1Egh90aZUEcP02PGQJqDov6LGckOqR
-         CI4w==
-X-Forwarded-Encrypted: i=1; AHgh+RrOc6t+60q1X49eoBcAUAkPO1INmnhrE/XkHg8ALvIZWSl35UUPHoubp6S7HSzI7RgEs5eB@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9cSnzWP91DlusoHQsnQ9xvjBKFkG3+fcLbq0FQX9FhBKtD6KS
-	yAYHsWN0Kufy21eDXA+L1D6+FMQtSxOgsjRhj3BP6H3LUVhDYgaahEpH
-X-Gm-Gg: AR+sD11mZ5I4qTaoqiU7BbwqTFL2ZT2Qa1z88ue1MqHqRbcXzHrv+D2T81gHLtt7rGI
-	svb+xM+mvtmxZ/JLG+fVwm8zBV5JAgJGTJKId+OZXILJVa2Ya8NNCu5SDLSJf1UpEdJb3Vwr66n
-	zXMQsAjRxbWNyUbZpk2Jf2bEQNu7zmNQYr1ANyjFbyKNbC36Co7iknJXAf0XpiQvcs18lnT6K/t
-	217XjbOnrDJ5XWe5nZSbO42UCwo29DmxJzYW4bFCVPXgOvTyZnhG03XnIx1mPoPUkLM5l0uD3mC
-	jbCtCc5e7F453g9zhzM8Aco9Eq7hRKdOGhqt57v5G7l0sURc/as6I+bx3fV6YasTU37V15cnvUX
-	5hKE7xqHrXZiikPMqPsma9oOeO3uICcTnNvSfNCk984jX2w1AuMdl94oxrmVctfCqApdNOJku91
-	DMBOcrpYp6OqHTpSC5rjqcCbl32c4zjoj//2TeRxLPBsOBDQFoJp8nwEXWyA4jLElJMyrGVbuyh
-	Q39BcD4ZmHkyn7izw==
-X-Received: by 2002:a05:690c:6601:b0:81e:c7e5:df5d with SMTP id 00721157ae682-81fd4b51de3mr65716127b3.17.1785621697195;
-        Sat, 01 Aug 2026 15:01:37 -0700 (PDT)
-Received: from syssplab.cs.fiu.edu (nat1.cs.fiu.edu. [131.94.134.89])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fcd0d6fbbsm29903767b3.25.2026.08.01.15.01.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Aug 2026 15:01:36 -0700 (PDT)
-From: Chao Shi <coshi036@gmail.com>
-To: Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-fsdevel@vger.kernel.org
-Cc: Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Bob Copeland <me@bobcopeland.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	linux-ext4@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	gfs2@lists.linux.dev,
-	linux-karma-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Chao Shi <coshi036@gmail.com>
-Subject: [PATCH 19/19] buffer: stop clearing BH_Uptodate when a write fails
-Date: Sat,  1 Aug 2026 18:01:03 -0400
-Message-ID: <3aa278c3b75de2bca8a94ec0c0e40922b1170881.1785621505.git.coshi036@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1785621505.git.coshi036@gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="J1DOmKlw";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YHLwkzkk";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zj08XAoS";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="g00+0xcM"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 44BDC3DF7;
+	Mon,  3 Aug 2026 16:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785773012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gMIViUzrrSvUd0khSjNT+ysqZzR3xemsqastuCXEw+I=;
+	b=J1DOmKlwR1Naz+UeDLmHtpuxWxBw7BKVOXGqYlqIKL0CkkQ7GSFiOiYoSEkpywep5Z/nsu
+	jryu+3bS13lEDaOWu+1eqLWhjukv04Vp1offOJnQ5cRpgEH8T2xJbZyUdK6GoExclE7mrc
+	Ei6Z4eilfMXuRMIt/6KxWGQkc5nROrw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785773012;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gMIViUzrrSvUd0khSjNT+ysqZzR3xemsqastuCXEw+I=;
+	b=YHLwkzkkRSKLL1mosl3DfxxYHnH9tOvkrDmZYgB7RSpQFuNA9nrk/4we4vLp8Po4+rBek8
+	1CdL/NcZUB03D1CQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zj08XAoS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g00+0xcM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785773008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gMIViUzrrSvUd0khSjNT+ysqZzR3xemsqastuCXEw+I=;
+	b=zj08XAoStTVaL46Y5CWSSDI1F+mtSpbz4XRU+XihIwOCgcB+dDEeIlBmyBdN2sjmcYwVoS
+	9bzbyIq03MR3wfXiKQ4Ang74Tu05L0HumtppWWsG4ejyNYG1vxXBkilgYmqpcNmJ12RVAl
+	bMx/h9kI2rSBlNZkGrL0giDcUPE8UAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785773008;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gMIViUzrrSvUd0khSjNT+ysqZzR3xemsqastuCXEw+I=;
+	b=g00+0xcMj9bDSe4BASQkEFi0kGsx9jaHn8SfFau+jk52acyy1Q1kpAXux990T5PPei098j
+	mKsS9gm7h5MYf+DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36BCD779A1;
+	Mon,  3 Aug 2026 16:03:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CRlVDdC7cGqeIAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Aug 2026 16:03:28 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id D3903A13A4; Mon, 03 Aug 2026 18:03:23 +0200 (CEST)
+Date: Mon, 3 Aug 2026 18:03:23 +0200
+From: Jan Kara <jack@suse.cz>
+To: Chao Shi <coshi036@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Matthew Wilcox <willy@infradead.org>, 
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Baokun Li <libaokun@linux.alibaba.com>, 
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Zhang Yi <yi.zhang@huawei.com>, Bob Copeland <me@bobcopeland.com>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+	Yuezhang Mo <yuezhang.mo@sony.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	linux-ext4@vger.kernel.org, ocfs2-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+	linux-karma-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/19] buffer_head: Remove b_page
+Message-ID: <opz7bk3tmzyejeqkxyjhm6siyud6rsefjz7cu3y4benupb4yyf@jx7t75od2vyt>
 References: <cover.1785621505.git.coshi036@gmail.com>
+ <e0780ecfda9137d5755b4ac3e227152bf4c7983c.1785621505.git.coshi036@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0780ecfda9137d5755b4ac3e227152bf4c7983c.1785621505.git.coshi036@gmail.com>
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,suse.com:email,infradead.org:email];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[suse.cz,kernel.org,zeniv.linux.org.uk,infradead.org,vger.kernel.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,bobcopeland.com,samsung.com,sony.com,mail.parknet.co.jp,fasheh.com,evilplan.org,redhat.com,lists.linux.dev,lists.sourceforge.net];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,infradead.org:email,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Score: -2.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 44BDC3DF7
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-A buffer whose write failed still holds exactly the data the filesystem
-asked to be written.  It is the disk that is out of date, not the buffer.
-Clearing BH_Uptodate says the opposite, and callers act on it:
+On Sat 01-08-26 18:00:45, Chao Shi wrote:
+> From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> 
+> All users except bh_offset() have been converted to use b_folio instead.
+> Convert bh_offset() and remove b_page.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Signed-off-by: Chao Shi <coshi036@gmail.com>
 
- - mark_buffer_dirty() has a WARN_ON_ONCE(!buffer_uptodate(bh)).  A
-   filesystem that dirties the buffer again after a failed write - which is
-   the normal way to retry - trips it.  That is the warning this series
-   started from.
+Looks good. Feel free to add:
 
- - a buffer that is not up to date gets re-read from disk, which replaces
-   the data the filesystem was trying to write with the stale on-disk copy,
-   silently.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
- - the window between the write completing and the buffer being marked not
-   up to date is visible to anyone holding the folio lock, so the state is
-   not even self consistent while it lasts.
+								Honza
 
-BH_Write_EIO already records the failure, and by now every place in the
-tree that needs to know about it tests that flag instead: the two core
-helpers in this file, adfs, exfat, ext2, ext4, fat, gfs2, jbd2, ocfs2 and
-omfs, converted one filesystem at a time in the preceding patches.  The
-private completion handlers in jbd2 and ext4 fast commit were converted
-along with their waiters.  Nothing is left that reads BH_Uptodate to find
-out whether a write failed, so the clears can go.
-
-Found by FuzzNvme.
-
-Signed-off-by: Chao Shi <coshi036@gmail.com>
----
- fs/buffer.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/fs/buffer.c b/fs/buffer.c
-index ac978d9090c2..0002f0736398 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -207,7 +207,6 @@ void bh_end_write(struct bio *bio)
- 	} else {
- 		buffer_io_error(bh, ", lost sync page write");
- 		mark_buffer_write_io_error(bh);
--		clear_buffer_uptodate(bh);
- 	}
- 	unlock_buffer(bh);
- }
-@@ -441,7 +440,6 @@ void bh_end_async_write(struct bio *bio)
- 	} else {
- 		buffer_io_error(bh, ", lost async page write");
- 		mark_buffer_write_io_error(bh);
--		clear_buffer_uptodate(bh);
- 	}
- 
- 	first = folio_buffers(folio);
+> ---
+>  include/linux/buffer_head.h | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+> index fd2c7115c054..699970b4bbf2 100644
+> --- a/include/linux/buffer_head.h
+> +++ b/include/linux/buffer_head.h
+> @@ -59,10 +59,7 @@ struct address_space;
+>  struct buffer_head {
+>  	unsigned long b_state;		/* buffer state bitmap (see above) */
+>  	struct buffer_head *b_this_page;/* circular list of page's buffers */
+> -	union {
+> -		struct page *b_page;	/* the page this bh is mapped to */
+> -		struct folio *b_folio;	/* the folio this bh is mapped to */
+> -	};
+> +	struct folio *b_folio;		/* the folio this bh is mapped to */
+>  
+>  	sector_t b_blocknr;		/* start block number */
+>  	size_t b_size;			/* size of mapping */
+> @@ -172,7 +169,7 @@ static __always_inline int buffer_uptodate(const struct buffer_head *bh)
+>  
+>  static inline unsigned long bh_offset(const struct buffer_head *bh)
+>  {
+> -	return (unsigned long)(bh)->b_data & (page_size(bh->b_page) - 1);
+> +	return (unsigned long)(bh)->b_data & (folio_size(bh->b_folio) - 1);
+>  }
+>  
+>  /* If we *know* page->private refers to buffer_heads */
+> -- 
+> 2.43.0
+> 
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
