@@ -1,43 +1,44 @@
-Received: from va-2-17.ptr.blmpb.com (va-2-17.ptr.blmpb.com [209.127.231.17])
+Received: from va-2-47.ptr.blmpb.com (va-2-47.ptr.blmpb.com [209.127.231.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D44370D5E
-	for <gfs2@lists.linux.dev>; Tue,  4 Aug 2026 15:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074DE3515C9
+	for <gfs2@lists.linux.dev>; Tue,  4 Aug 2026 15:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785856049; cv=none; b=oXUcvwa7vvOOnbZOlJ+CP9aUtJdlrlfdPwUEwNvB4lsbmq9lVQfQU9Z8Px1r66KHqPgHKbJmXK/vuxawONTZsbt5k7bexv/4HQdEjgza86Cx1Na4c5lSDaAtA92gE6yDHmrwb4NSBCXDyy/Lsd4BdfZMGHHuQeOPVcUtd+i+2Gk=
+	t=1785857483; cv=none; b=bOkzEKe87FFu24VOGgwkjmutjk6prrRAPledR9vdZ+DvGVlmYvDaLykozVQ6uZ+btWbtmgD51slUPO0tZ0pn4tLdxUCYN7xVtS42KtcuZRdqYokWIG8RP/ApisBPM+UWyXDCP70x+QESJUfd6+C7lBOak9UP+GSvY0BG0D1uxW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785856049; c=relaxed/simple;
-	bh=3vCX73HTin8OMhCLrL4mg1udeBnAS0Z1tTY+9wzBoW4=;
-	h=To:Subject:Mime-Version:Cc:Date:Content-Type:References:From:
-	 Message-Id:In-Reply-To; b=X6nA1zjs2tE/GBiXXVOoL4Exrl0Oxkj5m2Va5MLEfPnJ1KcOu/lepCxj9B0TpFjQpCOuJ7G9X2n7KPoZvJ4lDyiVSAg8ILBrcsPFNZDwNLbr7ccYRqSMjYmZimiZYb64I+koW5LzSKCY2ZVDwh+5wZxpgtwjIh0TRL3nH/T+vbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fygo.io; spf=pass smtp.mailfrom=fygo.io; dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b=hWciGx/n; arc=none smtp.client-ip=209.127.231.17
+	s=arc-20240116; t=1785857483; c=relaxed/simple;
+	bh=by/fcGncfc5OCuRW9skgJuC6t1LUujBBm0TnhfUwb/o=;
+	h=From:Mime-Version:References:To:Cc:In-Reply-To:Content-Type:
+	 Subject:Date:Message-Id; b=UldMhdcPrWxYbilJEvzbeqbsJ0Z97csueU/fObcFE30mvdhBH+KouyoNF7w6UjsW8rdTIv5QJTUjISJ7A+HKQsCn1fq3UoazRBSEBHLaCd7bvwaeN2gJthGV3NJLIcawQb9BCgU/jf5QwbbELm8jP0peQzkGD5tZ+V9HP0X1v4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fygo.io; spf=pass smtp.mailfrom=fygo.io; dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b=euw8Hfe9; arc=none smtp.client-ip=209.127.231.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fygo.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fygo.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b="hWciGx/n"
+	dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b="euw8Hfe9"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1785856033;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1785857464;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=aTkMnMJBZbmBk8aXgbvQ0jabgPpSOlUfMkXtPY+IHFY=;
- b=hWciGx/nfSr6Hw5Z64Z2T3Z5ANa+tTAGOmZIvBkd9YhOh9q5nVKiFYBbmu2+8mwtGf7Rpr
- v6ZKlDEVMbUd6752vqSdIZxr8aGtnx1gp0KOOfPc8CfEMIv3l6xB9LaL1gDEGxnvxtzFd3
- 2DiI/V4z0yWJYiCRcKLnrhkdkO0/7v42/ljEU3GGL6rMpqB4ztTeOOz9wQXY0lHQuXTiPD
- 2ZKXLeD7kBDLDrn3KoKExk/wd5Y6haSQlj89wFXxRZTGCJEWmyaL/sZcTiMGqgw+jjbNgo
- Su7dhb354fuaJvhWkgCzW4p0RJXstOl7HrscXFC91/s8ZMUNAlouz74tYp59Gw==
+ bh=LX/Wg0tks/cc/fTlAyp1t5QsfNTLQnLsZm1iWKs61Hs=;
+ b=euw8Hfe9zlE4dKSwWSGjPHpD1X+DCz38LT6s0DsrO8ZRHaCJXTSXSCSLrs9bG3IF75n5nR
+ nInnxDU4rVSUc5Phrmlu4bRo1Z9Ibr2/Kx628xpu0XqSc4GPlxgULOmSg6TuTBPLdgnIaB
+ wZl/0JsxB9khWCAGOpkbHWQqVaJMpEaXdhX56YUVpJmiHyIIOR/mSYvICXyYkgehZM9CbT
+ dNx+dxBY360Cdtd3bOWox8lgL6OEhDmi/FpZbNoArlEJC9QASuTTNvn7GMLexoeMO73U0S
+ 1EH+YzRG+67JSLg5VbmhwIQZs56nqz59yMKX8wGnARnwTr57Om/1hK6HiwGz0A==
 Reply-To: yukuai@fygo.io
-To: "Christoph Hellwig" <hch@lst.de>, "Jan Kara" <jack@suse.cz>, 
-	"yu kuai" <yukuai@fygo.io>
-Subject: Re: [RFC PATCH v1 1/3] blk-cgroup: add helpers for bio cgroup state
+From: "yu kuai" <yukuai@fygo.io>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Received: from [192.168.1.104] ([39.182.0.181]) by smtp.larksuite.com with ESMTPS; Tue, 04 Aug 2026 15:07:11 +0000
+References: <20260804065313.2092022-1-yukuai@kernel.org> <20260804065313.2092022-3-yukuai@kernel.org> <a677f581-344b-4d99-846d-a00801e26033@linux.dev> <20260804133208.GB8078@lst.de>
+Received: from [192.168.1.104] ([39.182.0.181]) by smtp.larksuite.com with ESMTPS; Tue, 04 Aug 2026 15:31:03 +0000
+User-Agent: Mozilla Thunderbird
+To: "Christoph Hellwig" <hch@lst.de>, "Tao Cui" <cui.tao@linux.dev>, 
+	"yu kuai" <yukuai@fygo.io>
 Cc: "Yu Kuai" <yukuai@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, 
 	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
 	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
@@ -53,49 +54,81 @@ Cc: "Yu Kuai" <yukuai@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
 	"Alison Schofield" <alison.schofield@intel.com>, 
 	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
 	"Andreas Gruenbacher" <agruenba@redhat.com>, 
-	"Matthew Wilcox" <willy@infradead.org>, 
+	"Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, 
 	"Andrew Morton" <akpm@linux-foundation.org>, 
 	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
-	"Nilay Shroff" <nilay@linux.ibm.com>, "Tao Cui" <cui.tao@linux.dev>, 
-	<cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>, 
-	<linux-bcache@vger.kernel.org>, <dm-devel@lists.linux.dev>, 
-	<linux-raid@vger.kernel.org>, <nvdimm@lists.linux.dev>, 
-	<virtualization@lists.linux.dev>, <gfs2@lists.linux.dev>, 
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-Date: Tue, 4 Aug 2026 23:07:03 +0800
+	"Nilay Shroff" <nilay@linux.ibm.com>, <cgroups@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-block@vger.kernel.org>, <linux-bcache@vger.kernel.org>, 
+	<dm-devel@lists.linux.dev>, <linux-raid@vger.kernel.org>, 
+	<nvdimm@lists.linux.dev>, <virtualization@lists.linux.dev>, 
+	<gfs2@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260804133208.GB8078@lst.de>
+X-Lms-Return-Path: <lba+26a7205b8+265e26+lists.linux.dev+yukuai@fygo.io>
 Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26a720020+e59529+lists.linux.dev+yukuai@fygo.io>
-References: <20260804065313.2092022-1-yukuai@kernel.org> <20260804065313.2092022-2-yukuai@kernel.org> <prx5s4rwbgoeh7wtgyo7vwydh5iwqn6qc2utamowirsplspfmp@e3eteq5xwuyf> <20260804132527.GA8078@lst.de>
-From: "yu kuai" <yukuai@fygo.io>
-Message-Id: <a780016f-8f94-4337-b700-786f5487ca3f@fygo.io>
-User-Agent: Mozilla Thunderbird
-In-Reply-To: <20260804132527.GA8078@lst.de>
 X-Original-From: yu kuai <yukuai@fygo.io>
+Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
+Date: Tue, 4 Aug 2026 23:30:55 +0800
+Message-Id: <0fc5dd22-7a8d-43f0-8555-d2ca966efff6@fygo.io>
 
 Hi,
 
-=E5=9C=A8 2026/8/4 21:25, Christoph Hellwig =E5=86=99=E9=81=93:
-> On Tue, Aug 04, 2026 at 12:52:16PM +0200, Jan Kara wrote:
->> Mostly looks good. Just I think bio_blkcg() should gracefully handle the
->> case where bio->bi_blkg is NULL (and return NULL in that case). That way
->> you can also get rid of somewhat odd pattern:
+=E5=9C=A8 2026/8/4 21:32, Christoph Hellwig =E5=86=99=E9=81=93:
+> On Tue, Aug 04, 2026 at 05:19:24PM +0800, Tao Cui wrote:
+>> While reading 2/3, one spot in bio_pinned_blkg() made me wonder, so I
+>> gave it a try =E2=80=94 and the WARN_ON_ONCE triggers every time for me.
 >>
->> 	if (!bio_blkg(bio))
->> 		return ...;
->> 	do something with bio_blkcg(bio)
+>> I may well be missing something, but my worry is that the bio's ref on
+>> the blkg keeps the object alive, not its entry in the radix tree.
+>> blkg_destroy() runs throtl_pd_offline (which only schedules an async
+>> flush) before radix_tree_delete(), so the queued bio ends up dispatched
+>> (blk_throtl_dispatch_work_fn -> blk_cgroup_bio_start ->
+>> bio_pinned_blkg) after the blkg is already gone from the tree, and
+>> blkg_lookup() returns NULL.
 >>
->> You can then just check bio_blkcg(bio) directly which is much more obvio=
-us.
-> Yes.  Looking at the whole series I'm also not sure that this makes too
-> much sense as a split out patch as the next one touches more than half
-> of the callsite anyway.
+>> I applied the series and wrote a small reproducer:
+>>
+>>    - null_blk, cgroup v2, a child cgroup with io.max rbps=3D4096;
+>>    - a read issued in the child cgroup gets throttled and queued, pinnin=
+g
+>>      the blkg;
+>>    - migrate the reader out and rmdir the cgroup; the queued bio is then
+>>      flushed after the blkg has left the tree.
+> Can you add this to blktests?
+>
+>> Maybe keeping the pinned blkg pointer in the bio would sidestep this, so
+>> the lookup can't miss?
 
-Yes, this make sense, I'm trying not to cook a huge patch, but patch 2 is g=
-row
-much bigger than I was expected. Unless I figure out a nicer way to split p=
-atch 2,
-I'll merge them in the next version.
+The problem here is that blkg_destroy can be called while blkg is still pin=
+ned
+by blkg_get, in this case remove the cgroup directly remove the blkg from r=
+adix
+tree, that's why blkg_lookup can't find this blkg anymore, and the extra bl=
+kg ref
+is leaked :(
+
+> That would grow the bio, which we try hard to avoid.  I think the way to
+> avoid this is to have active/passive refcounts on the blkg, where an
+> active one keeps it in the radix tree, but a 0 passive one would prevent
+> the caller from getting a new reference to it.  The users who rely on the
+> pin for the I/O completion path would then just keep the active reference
+> and use a pure lookup without getting a new passive reference in the
+> completion path.  This would remove the need for BIO_BLKG_REF which
+> feels a bit kludgy and eats up precious bio flag space.
+
+The problem here is that remove a cgroup can also remove the blkg from radi=
+x tree,
+even through it still has active refcounts. I think this can be fixed by ch=
+ecking
+the cgroup online_pin first, if it's zero, we can search the blkg from the
+request_queue blkg list, where blkg will not be removed until blkg_free_wor=
+kfn().
+What's better, if we can convert the blkg list to hash table with key as bl=
+k-cgroup,
+it will be much better as we can lookup from this table instead of blkcg ra=
+dix tree.
 
 >
 --=20
