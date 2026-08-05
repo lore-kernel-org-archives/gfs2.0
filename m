@@ -1,95 +1,96 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AC53CB8F1
-	for <gfs2@lists.linux.dev>; Wed,  5 Aug 2026 19:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA26E3D75C6
+	for <gfs2@lists.linux.dev>; Wed,  5 Aug 2026 20:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785956565; cv=pass; b=COb7T246FEsZqfP7OsPLmcxdWSQpW8tW59MO2pdIVe0MuiFGRpqByXlp+sr9qBa/5O6PccotnC6Swq9NhlAtxzl7QVZ3axiYU91Hr3qDCqheJ04nXHRG3rATpyemPAESZc/Z3U3I20vD4bpKeoPPFh7yVBwKtPJr4QLbXftXPS0=
+	t=1785960515; cv=pass; b=Gg2AvHv47Qbi+zevdLJUOecodxx3eBYdWSMAerZ9ZNXgfbhaP5Sw7K2J78GA9gk5C9oITUq80MqQiqtOG7VWVrGPoBrZLxol8kWUh5wg6iU/VCioWhRmf3BAQaAtXN1YSgpO1n4OVDrPQC9BRI2O+gAEtAeZ8SyviQ0Bp/Avztk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785956565; c=relaxed/simple;
-	bh=ZkwANXvB/ZU9t3LgTT3w1mAN0VeV9gy04VEToUnWNWY=;
+	s=arc-20240116; t=1785960515; c=relaxed/simple;
+	bh=dcnH6nAMoToD8W2PlOqGbdIQ0CwYDRECs1EnTxefy+o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t2KuRDOwwpmiZZazjlCHFi7MbUsSksRQmIOgd/q93H6I3M2EM7aCQVjSrQXWxaV7HNrA91LJRITTbLhz+f3/s2U8gLGf9RdTZdyTUbzafjrS+d4liBH8O39JuGHAsFpSmcRHj9cQoVIkCQsBRaxFHrAFGWME2DMYVRR8dzd+YQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BozGXhom; arc=pass smtp.client-ip=209.85.208.46
+	 To:Cc:Content-Type; b=ZwoQzY7rACC8PRecVmT2Y9nozOr2W++tWanf0vu0y9tXbX5aKjFACwo05vZalAMEWLkMUBV8saOAKNsU9bZTuqFbY4NlCrcv40iXlnMIDbopEyqi8E53419yOqTHMvTnLyCOYb7Do9xTxwI7zpJduFpaqJWRFnJIfwctitVlEN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DNxYErtu; arc=pass smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BozGXhom"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a17cb94b26so1453198a12.3
-        for <gfs2@lists.linux.dev>; Wed, 05 Aug 2026 12:02:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785956559; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DNxYErtu"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-69fc9f25118so1534900a12.2
+        for <gfs2@lists.linux.dev>; Wed, 05 Aug 2026 13:08:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785960511; cv=none;
         d=google.com; s=arc-20260327;
-        b=Os58cD9KobSybAz0UOH31y4fYlST5kpMJiF/Gu/M89ju/HowZ/4b4jjvf1zjchPxDO
-         OOqqfeo3SiTi02kzGt5ODMDkrt8tF63fPccFTnmPaG0pZH/s+gnAQqU7PqFJ8825vbF0
-         Ven//bSGu4gIqedY7fzPo6oZ9lVTw25MlY/iTcBkLkqaE6MIXqsHkN59thMek4rcJNcc
-         dKkEdCjjGMprs+3PRjL4dnSz8uItKnoyZOqM3MdSL9vYsBv12G0EtqdtYvl+vQddHodV
-         htffhMF9SXiVypb3yhDGaEFTLWuuL38n5sYKg5QAJyOJfPcVB6tP5e3Qi3BasUoU6NPt
-         r7uw==
+        b=idVUyRVilJbFb2/GQQE1ic5bP04MfyaLeZ5hnV4eSuX7G5LlH88XtH8F0khKV/DhYp
+         8wlLggTICDW/QlbvBW+vhwzQHEFAEK6pnwh7dPRNkpUyMZXKQdo7gsve7n4iqjX2R+rj
+         J18gmZY7rmgGLoVt9kwFFoM1Ftby38bj9GwiZSpYW7Z5ZraQZWd9el4FhzTAnGIvmSDf
+         FfBwH4ILAM37EnkeknmFApuaX6QkzyzfDzJXbwlzskaktykBPZpERVB+3dmesRK4x5V7
+         OKKJAXxuBo2XWB7C/ZXq8rZOME4DV4W9qlH0xIHfc3ve/2adgRcrkFgB/P5y4FMXWE9g
+         RxJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=yjE4xnT39vpf/cIgIYUv/kq7g7oy4MnCKn9bbbuZ18Q=;
-        fh=yz7jIgtAQsGWskuDoPw5cqRdLa+07KWzpUNOjo21y5o=;
-        b=pBF4s6RCL8XTuvUhZyY2NOymyTz/e2VPeC1Wm92OC3yEbrTFIONBECt1BHNryfHvv9
-         z6BnJO52RSVwY6qhCjGY2nWhg/NgAIcy/haidltoGiz8K7yiGoJTUddulyLMEklg45Ps
-         BeOs7BYAIrePI8T9eEJfyFdZKDuLKICVJ9/h6M59XZ4uN7h2p8j3lBkycRESnNw7b/xF
-         +dTNX8VcUKuImkzgUe/ARITF7t7DkCY+Bq7DiNKqpQ3rD/771FKbAru1OxxmuUGKqGmr
-         HT5RV+RePja60yjNbBcHHi0umJc+32r4t6B0xwOvnroB1NezZkHX3e1XvOMmtc2KtPoF
-         5UcQ==;
+        bh=ynrqdlhZ91y0Zv8KPKDZQ6wEEWPqJVnZyD9Ks4Cipks=;
+        fh=8J3YmPwbYr2PMDdvu9m6nNXA2dAdwEfTBwb/7lbLo+4=;
+        b=lcMTUJTCMis03DHi/eFR1xGLIfVTyfgiq763RbRgEf/HbvlSJpkY+uPGDxraScAaDy
+         JR5sFSF0m8zTsfNdsNmJRjrmYDqCze8L3k+yohOVI/MYXE2tmJxhMvhJmvEwGFk7tFvW
+         Vlzwgws3Ee1Q9VDCeUdflo+dy8kog5qK+MSRtj+N90ed0gd4MUTemA5PkOBnytyO354e
+         w74FEv9JL3Z77W8ajJiTYUPxpuv3aD+UG9Et7wG3qFDj65J8+ZGhKNFmGw04JW3/X8FJ
+         DAeOiPzkJx8m8Lkwr6G1aheGRJ+AhjuA2XJ1D96oU33/410fgTBmUpx1PJTvIN0NXLE0
+         ndYA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785956559; x=1786561359; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1785960511; x=1786565311; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=yjE4xnT39vpf/cIgIYUv/kq7g7oy4MnCKn9bbbuZ18Q=;
-        b=BozGXhomFP2lRRmxVDp8nCFYnznDWPGkczqnIN9QNvu/5VJDs0+kCnGwy1NQ7ZrPLW
-         +3EY+S9W6qUYn83hT/AnyPkE95qP6ZmK2CeIixy1p0qe0HJ9lh7YUWJFyQvmvSXku6Tn
-         Wj6q4DZJS05LHOt4OgGeoN9UbK/Or8irfrDNjCFlbGEF9VsFpMNduReYhing9VXDsKgb
-         2pECzNna3Ohns4lMs6k4KYWb8yU9XmrAHWceV7RtkGFX9vVUp39WbKuVe+3+EEaA77yu
-         VnTLmwNV8Ca/2o5+HCZzDD6J68OzdCxxclLGNvjVa+FZCt44KiWEgXPe9PswSeu6Q2j6
-         fd/Q==
+        bh=ynrqdlhZ91y0Zv8KPKDZQ6wEEWPqJVnZyD9Ks4Cipks=;
+        b=DNxYErtu9Qff+tSwBlU1FJQhHv4Aypb9fGn5dfXZoh+8/SbwUXuAYzeSapEQhFzDwu
+         Vjw0eO4gnXJ13CDFVrU1tgGd3ZnfD2XezBpyo3C0+BmAW3X9G7oVhV/uuINLFvHNFP7Z
+         msRjJ4wnGMK8P0xw6q6Uf4DBsUP8Y1PwcRReDGFgmIL9W4Mg+ZOVdqwN433bSzO1wMez
+         3tj4LJ+MhDWCpSaJhBEQxZx9ysuYlIGylKy7ZCCy2hITw8AtyDs+85KGqD2INr0BATwc
+         xq5lyiuHNdvQ5gX/9LagwuSV5D0yxhET3+Y+o09mx1ZouAtkIQ9wqbRXHq0y6SBnB3Y4
+         36bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785956559; x=1786561359;
+        d=1e100.net; s=20251104; t=1785960511; x=1786565311;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yjE4xnT39vpf/cIgIYUv/kq7g7oy4MnCKn9bbbuZ18Q=;
-        b=CDRnaPM4p+Aspg2i/Yu31cNsKLDdwCqcBu4IzkwRXUkotW4q0DEtyGf4mUjm6FbaGn
-         xrax1L7X09RESd+rxvXtGqW5RPFJk3JrXxKwpSIjnLmIbx1XZlvyvWWP5C1pxtJ9AV5d
-         sfMJxLaGReS+1L7Tzatyz4xyD7PtfbAldUXrdCqq9QTJwMJG+XgPiSuU7XKR69sxNvI8
-         F0eOD5U0nNNGtKIizIk56/8/7qpCb+ssFvW86qjMgXeHA7YSea9EFkm7VtWF5bqXZXhj
-         nALrd8PRa2/BRv+3u9ddtWJdiMOxZfBDZ6vdMPZI7P1uP1SM7JmGitnQ8at+/OU557MI
-         XuYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqomAg8lD/DLot2LTdCl3Dw+WSWCCl5uNxE8PZLq8nKDAsdOowv/3z8TNhgQ64pAbTg/kM7@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjtS2d1kZ9/kjARYEbo041O/BdZJWaF4xB0l4w/v0Ab9y7s9zz
-	CcSeHdKoOLu1idoCpV7WiIqu3u7d0D3lYD2JrW6swJq1wXDk6RXs0D9zdxh9jYmOXtQlVxM+RS0
-	rsTZa2Hd7fe5e4DwBf8nS/5sSZRMQvQ0=
-X-Gm-Gg: AR+sD11dSYOmr6m2zxMI/inNy3/Msp3ALlmG/J2TU7LbIZxEUwq56oYum0GYA9wPCX1
-	6Q2qxX3eSPbH6Y7itFZ7tO5WQS/vvSsRvAI37Muj0osnlEeE94X49EEo7Gz9vIzIp+pq1CcoRla
-	Ngcv1k1shpllmNT4WgfY9oJFch+oRJ1QhITg6iKkKawhexEZFhfLtzK/UVv9qIspHXz4tzxh70p
-	Lki4383X8O5M0l1JMIu1TGJs2w+paZVPEAh1j4FUG/VoKAAE9Z9eW6cUFjnv0CKiouLCImHpvP/
-	0jOG+syD2M2RGIWhlgE5OVY6O0DV4FOG5T2aVgQiQKH9
-X-Received: by 2002:a05:6402:324d:b0:6a0:ecc9:79ad with SMTP id
- 4fb4d7f45d1cf-6a14f27eb8cmr4200909a12.20.1785956559020; Wed, 05 Aug 2026
- 12:02:39 -0700 (PDT)
+        bh=ynrqdlhZ91y0Zv8KPKDZQ6wEEWPqJVnZyD9Ks4Cipks=;
+        b=cHq+RYBiMG2xVF/6WxkOVi4Qli+bXpsdu8NsIYdieo5cwOR+s1yiA1cmv1VxS0tii+
+         9zBZrJL2xTaJEPn+S7u9eU8vNVWnrCv6NlTUwmOUDj3xUYdOdkOYAzhFm4TyX7ydwbpd
+         AI525LK7yB5V/JoGc8z1Ccs4D37/caDVqh3jhBND5ELluNU5S8kvrVk724njCfSowiYb
+         oxG1Tct7j2NclsDAzMNsE5MzaCVoHZodNfp6peQYcPI6L4XdzQQPd0aMTBRiHEQXUqUO
+         nIKrTxROs7fVjJBrzgy6ht0h/roVx23Y42ydWqrJoXhQYYYES7Wt8CXNuxqf4oxDqaju
+         TWdA==
+X-Forwarded-Encrypted: i=1; AHgh+RqG2ZjBrrwWee7miMgNXwcO+i25XzmjCqWkBE2krlM0xEk7T6PPspohIgOWnObqluFXMiwa@lists.linux.dev
+X-Gm-Message-State: AOJu0YzxzlsxXLseSZ2KxQKWDKZlbPeS6XrQNJHM/7sFVOyP4HtpUnK3
+	sZpLOzBInRrDkniFnIH67HiA8fzKXOHlLm8d0Qcs97L3K4NuUkREjbG33NGwCH/te+bnGKtwn67
+	KqroND2/pucwEcelPm9uOcZYRBHcM4Eo=
+X-Gm-Gg: AR+sD10etrDvYDLo3PY8U1RD6yxL1ipi1bxWIdFvAhUimFxC4GdySJx4Q4JTPOLRUN2
+	DtCS8WHZAf2PfuwV12sB80zm5NYLI/c7EUZ1Q8N7pOAaBaPk0U7LYcFz+SDZDU15ZoWH3x5sL/o
+	4pCphehZVGb5W2rxlY3j8SYBgRTTXzQhma3lVeBGom/pNeI4BiGUj1wbVksL0u/KhyFjC122eaE
+	7y/4bIp5xFIGIiumKTZvSMnxXvN/5no7c1zvNbHO+IaFWt4vmL2u/sKdHUqlJpsSRFVsgZyuJSW
+	x3xpW2PMhapS7EgkwJJQB61vfe3I9KDjyoWPhgZC4Hk/
+X-Received: by 2002:a05:6402:5416:b0:6a0:926e:f8f9 with SMTP id
+ 4fb4d7f45d1cf-6a14f07bbc4mr5124454a12.2.1785960510703; Wed, 05 Aug 2026
+ 13:08:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1785621505.git.coshi036@gmail.com> <2824f30bbc43e6a0b318564fa641228e9a096e37.1785621505.git.coshi036@gmail.com>
- <aqyhnzlgxo4x2v6bfpi43ueoob2drnpcxkmy7fpx3i7bcrvkzj@rm2bn66enfc3>
-In-Reply-To: <aqyhnzlgxo4x2v6bfpi43ueoob2drnpcxkmy7fpx3i7bcrvkzj@rm2bn66enfc3>
+References: <cover.1785621505.git.coshi036@gmail.com> <41c6fee66724e374d4682124a1eb80041e22efb9.1785621505.git.coshi036@gmail.com>
+ <z5jfe6bsxhgqqgjtxcm7ass2fslc4ynizvpmzlqxtr6rrfaopu@fxzntlxafmxj>
+In-Reply-To: <z5jfe6bsxhgqqgjtxcm7ass2fslc4ynizvpmzlqxtr6rrfaopu@fxzntlxafmxj>
 From: Chris S <coshi036@gmail.com>
-Date: Wed, 5 Aug 2026 15:02:27 -0400
-X-Gm-Features: AUfX_mw6M87toR509y6pAXXK646xUVHCYetXkG3wp8ZS--BnNZ1uTuGmAkGSoO8
-Message-ID: <CACd_6n1YDk=S1MWd=7TH29mTcyiijLQn8jZOyjGo=p9yduZ06Q@mail.gmail.com>
-Subject: Re: [PATCH 03/19] jbd2: point the shadow buffer at the frozen data directly
+Date: Wed, 5 Aug 2026 16:08:18 -0400
+X-Gm-Features: AUfX_mxgWX_SrUpIktUbfQ75eZAdB8HOgpBdd-DDrx5djXTy8AE98I_F_BmiHsU
+Message-ID: <CACd_6n0GGwW16bU2PguYhCou8v0q3K5tU=tLS=QfknpUkQinYA@mail.gmail.com>
+Subject: Re: [PATCH 02/19] buffer: allow a buffer_head to point at memory
+ outside the page cache
 To: Jan Kara <jack@suse.cz>
 Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
@@ -107,124 +108,141 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi Jan,
+Thanks - changelog reworded along those lines in v2: a folio-less buffer is
+a narrow thing, most of the buffer_head API will not tolerate one -
+touch_buffer(), the async read completion path and plenty more - and it is
+the job of whoever builds such a buffer to keep it away from all of that.
+NULL only buys us that getting it wrong fails loudly instead of quietly
+following a slab folio's ->mapping.  Reviewed-by carried; the code itself
+is unchanged.
 
-Thanks for the suggestion - done in v2.  new_folio, new_offset and the
-frozen flag are all gone; folio_set_bh() moved into the one path that
-still needs it, and the two copy-out paths just set new_bh->b_data.
-b_folio is already NULL out of alloc_buffer_head(), so nothing has to
-clear it either.
+On your folio_mapping() question: it is the right call in general, just not
+on this path, for the reason Matthew gave - it would hand back a
+swap_address_space if a buffer ever sat on a swap cache folio.  v2 does
+make that switch, but in a new patch, v2's 04, rather than in this one; my
+reply to Matthew has why it cannot be done here.  And agreed on forming the
+bio directly for these temporary bhs eventually - that is a bigger cleanup
+than this series.
 
 Chao
 
-On Tue, Aug 4, 2026 at 4:28=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+On Mon, Aug 3, 2026 at 12:13=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
 >
-> On Sat 01-08-26 18:00:47, Chao Shi wrote:
-> > When a metadata buffer has to be copied out before it can be journalled=
-,
-> > jbd2_journal_write_metadata_buffer() writes jh->b_frozen_data rather th=
-an
-> > the page cache copy.  b_frozen_data is kmalloc()ed, so folio_set_bh() m=
-akes
-> > the shadow buffer point at a slab folio.
+> On Sat 01-08-26 18:00:46, Chao Shi wrote:
+> > jbd2 builds a temporary buffer_head to write out the frozen copy of a
+> > metadata block, and that copy lives in slab memory.  Today jbd2 points =
+the
+> > temporary buffer at the slab folio backing it.  A slab folio's ->mappin=
+g is
+> > not an address_space, so anything that follows bh->b_folio->mapping the=
+re
+> > gets garbage rather than NULL; mark_buffer_write_io_error() does exactl=
+y
+> > that, and we are about to start calling it on this buffer.
 > >
-> > That is not something the buffer_head layer can reason about.  A slab f=
-olio
-> > overloads ->mapping, so a shadow buffer looks like it belongs to an
-> > address_space when it does not.  buffer_set_crypto_ctx() already has to=
- use
-> > folio_mapping() to avoid tripping over this, and it is the reason
-> > mark_buffer_write_io_error() cannot be called on a shadow buffer today.
+> > Rather than teach every such helper about slab folios, allow bh->b_foli=
+o to
+> > be NULL and let b_data point straight at the memory.  Code that needs t=
+he
+> > folio has to check.  There are two places in this file:
 > >
-> > Point the shadow buffer at the frozen data itself instead: leave b_foli=
-o
-> > NULL and set b_data.  The previous patch taught fs/buffer.c to submit s=
-uch
-> > a buffer.  The two commit-path checksum helpers are the only other user=
-s of
-> > the shadow buffer's contents, and they take the data directly rather th=
-an
-> > kmapping a folio that is already mapped.
+> >  - __bh_submit() adds the data by virtual address using
+> >    bio_add_virt_nofail(), and skips the cgroup accounting: a buffer tha=
+t is
+> >    not in the page cache has no owning folio to attribute writeback to.
 > >
-> > Note that the shadow buffer must not be passed to bh_offset() while
-> > b_folio is NULL.  All four callers that can see one are handled here an=
-d in
-> > the previous patch.
+> >  - buffer_set_crypto_ctx() returns early.  fscrypt has no interest in a
+> >    buffer that is not part of a file mapping, which is why it already
+> >    returns when folio_mapping() comes back NULL.
 > >
-> > Tested with ext4 mounted data=3Djournal,journal_checksum on a metadata_=
-csum
-> > filesystem, writing files whose every block begins with the JBD2 magic =
-so
-> > that escaping forces the copy-out, then crashing with sysrq-b without
-> > unmounting and replaying the journal on the next mount.  Recovery
-> > completed, the file contents matched, e2fsck -fn was clean, and an
-> > instrumented build confirmed the b_folio =3D=3D NULL path was taken.
+> > Nothing sets b_folio to NULL yet, so this patch is a no-op on its own.
+> >
+> > This is deliberately not a general capability.  Buffers over highmem ha=
+ve
+> > no permanent kernel virtual address, which is why folio_set_bh() record=
+s a
+> > folio and an offset instead of an address.  A folio-less buffer_head is
+> > only valid over memory that is always mapped, and must not be passed to
+> > bh_offset().
+>
+> There are much more things you cannot do with a bh that doesn't have vali=
+d
+> b_folio - touch_buffer(), end_buffer_async_read(), ... and many more. But
+> that's a bussiness of the code that sets up such temporary bhs. I agree
+> that setting b_folio to NULL will if nothing else lead to much more obvio=
+us
+> failures than when we accidentally get slab folio. So I'd prefer we updat=
+e
+> the description a bit in this direction but otherwise feel free to add:
+>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+>
+>                                                                 Honza
+>
 > >
 > > Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > > Signed-off-by: Chao Shi <coshi036@gmail.com>
->
-> ...
->
-> > diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> > index 09efa337649e..9e4cb04587b4 100644
-> > --- a/fs/jbd2/journal.c
-> > +++ b/fs/jbd2/journal.c
-> > @@ -329,6 +329,7 @@ int jbd2_journal_write_metadata_buffer(transaction_=
-t *transaction,
-> >       struct buffer_head *new_bh;
-> >       struct folio *new_folio;
-> >       unsigned int new_offset;
-> > +     bool frozen =3D false;
-> >       struct buffer_head *bh_in =3D jh2bh(jh_in);
-> >       journal_t *journal =3D transaction->t_journal;
+> > ---
+> >  fs/buffer.c | 17 +++++++++++++----
+> >  1 file changed, 13 insertions(+), 4 deletions(-)
 > >
-> > @@ -354,8 +355,7 @@ int jbd2_journal_write_metadata_buffer(transaction_=
-t *transaction,
-> >        * we use that version of the data for the commit.
+> > diff --git a/fs/buffer.c b/fs/buffer.c
+> > index be8b57a635cd..04fcc34e4fa6 100644
+> > --- a/fs/buffer.c
+> > +++ b/fs/buffer.c
+> > @@ -1099,12 +1099,16 @@ EXPORT_SYMBOL(__bforget);
+> >  static void buffer_set_crypto_ctx(struct bio *bio, const struct buffer=
+_head *bh,
+> >                                 gfp_t gfp_mask)
+> >  {
+> > -     const struct address_space *mapping =3D folio_mapping(bh->b_folio=
+);
+> > +     const struct address_space *mapping;
+> >
+> >       /*
+> >        * The ext4 journal (jbd2) can submit a buffer_head it directly c=
+reated
+> > -      * for a non-pagecache page.  fscrypt doesn't care about these.
+> > +      * for memory that is not in the page cache at all.  fscrypt does=
+n't
+> > +      * care about these.
 > >        */
-> >       if (jh_in->b_frozen_data) {
-> > -             new_folio =3D virt_to_folio(jh_in->b_frozen_data);
-> > -             new_offset =3D offset_in_folio(new_folio, jh_in->b_frozen=
-_data);
-> > +             frozen =3D true;
-> >               do_escape =3D jbd2_data_needs_escaping(jh_in->b_frozen_da=
-ta);
-> >               if (do_escape)
-> >                       jbd2_data_do_escape(jh_in->b_frozen_data);
-> > @@ -400,13 +400,22 @@ int jbd2_journal_write_metadata_buffer(transactio=
-n_t *transaction,
-> >               jh_in->b_frozen_triggers =3D jh_in->b_triggers;
+> > +     if (!bh->b_folio)
+> > +             return;
+> > +     mapping =3D folio_mapping(bh->b_folio);
+> >       if (!mapping)
+> >               return;
+> >       fscrypt_set_bio_crypt_ctx(bio, mapping->host,
+> > @@ -1142,7 +1146,11 @@ static void __bh_submit(struct buffer_head *bh, =
+blk_opf_t opf,
+> >       bio->bi_iter.bi_sector =3D bh->b_blocknr * (bh->b_size >> 9);
+> >       bio->bi_write_hint =3D write_hint;
 > >
-> >  copy_done:
-> > -             new_folio =3D virt_to_folio(jh_in->b_frozen_data);
-> > -             new_offset =3D offset_in_folio(new_folio, jh_in->b_frozen=
-_data);
-> > +             frozen =3D true;
-> >               jbd2_data_do_escape(jh_in->b_frozen_data);
+> > -     bio_add_folio_nofail(bio, bh->b_folio, bh->b_size, bh_offset(bh))=
+;
+> > +     if (bh->b_folio)
+> > +             bio_add_folio_nofail(bio, bh->b_folio, bh->b_size,
+> > +                                  bh_offset(bh));
+> > +     else
+> > +             bio_add_virt_nofail(bio, bh->b_data, bh->b_size);
+> >
+> >       bio->bi_end_io =3D end_bio;
+> >       bio->bi_private =3D bh;
+> > @@ -1152,7 +1160,8 @@ static void __bh_submit(struct buffer_head *bh, b=
+lk_opf_t opf,
+> >
+> >       if (wbc) {
+> >               wbc_init_bio(wbc, bio);
+> > -             wbc_account_cgroup_owner(wbc, bh->b_folio, bh->b_size);
+> > +             if (bh->b_folio)
+> > +                     wbc_account_cgroup_owner(wbc, bh->b_folio, bh->b_=
+size);
 > >       }
 > >
-> >  escape_done:
-> > -     folio_set_bh(new_bh, new_folio, new_offset);
-> > +     if (frozen) {
-> > +             /*
-> > +              * b_frozen_data is slab memory, not page cache.  Point t=
-he
-> > +              * buffer at it directly rather than at a slab folio, who=
-se
-> > +              * ->mapping is not an address_space.
-> > +              */
-> > +             new_bh->b_folio =3D NULL;
-> > +             new_bh->b_data =3D jh_in->b_frozen_data;
-> > +     } else {
-> > +             folio_set_bh(new_bh, new_folio, new_offset);
-> > +     }
->
-> Can we please simplify the flow in this function? folio_set_bh() is now
-> done only for a single branch in this function. You can move it there and
-> completely avoid new_folio, new_offset, and frozen variables (you just ne=
-ed
-> to set new_bh->b_data in the two branches where frozen data is used).
->
->                                                                 Honza
+> >       blk_crypto_submit_bio(bio);
+> > --
+> > 2.43.0
+> >
 > --
 > Jan Kara <jack@suse.com>
 > SUSE Labs, CR
