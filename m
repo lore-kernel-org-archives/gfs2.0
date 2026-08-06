@@ -1,244 +1,306 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8CD431A4F
-	for <gfs2@lists.linux.dev>; Thu,  6 Aug 2026 09:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DAD397929
+	for <gfs2@lists.linux.dev>; Thu,  6 Aug 2026 16:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786008144; cv=none; b=DVo2H7SRfCVSE4mNf5VhsBR5O5LHdAq/EG563T0PVXOL0vxsFJrPWgeYJxkZ34J1y3CVaHRY1+04QYNXbLFsqvkf0Odjw3lXdk9PJI97H0J8xLaxE5AaTXXAxXzOJSlhzV5msTFnEwHGbjQnwL6K87y0owUlfTlEKa11xmhw9G0=
+	t=1786035535; cv=none; b=bOZWaukv0SdjSzynHi9kX9+no0CZECAirrbL6giIH+RrOtw+oh74LFjXTybeXetT/WXq1AlEh8SfpE0QpMQwT0kxywPv+v+pvbGoMOH5fsxfCM4oeD6W78OGLhpf0vZXtbMhedhhUYuiPt9W8gnyVNVa3hWov5dj80/Q4KbiV5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786008144; c=relaxed/simple;
-	bh=eAkOXZtlwNYjPhDGjyZtRke2iyDCQ2QqdzoXZFHQk1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=peYCzunsIpHhDshU1aF5XVT+lomJrzEhIgdwsnO/Eor2xAAPFseNaM3dlZNUiRYHirpt4JsD9Olr9tbXxw7qo9cbiKqYkqljlTY3XPIaetOVOiueUsa8qSXWueQpVj5N9q4n1Shv6XyJI/MjGUQw/GH6Jnz54qFDWB1MEfO9QGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ECoCOaKX; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1786035535; c=relaxed/simple;
+	bh=mvM/DC9CQyMBW3yHCRsmcgBHyjUfYXhbAAzHDYJ+e9U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y/0oy1nu/LuU2TLDImYGOMSt+S5nubO8UMAlM/ZAkqPJU6xpnphZF3BRTfnMkB5cEcU63w/Mg9iPGxGSp21ajGvQq0W8z82fvyAqQ40nGpFwumWth+lPEbsScjOIQLpInBN87LezTS0M1YYsnA/0nMvdUQPtG2azm5kWkjrzWzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjhBmk7O; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ECoCOaKX"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-472326ca506so1329685f8f.2
-        for <gfs2@lists.linux.dev>; Thu, 06 Aug 2026 02:22:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjhBmk7O"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5bf9466412fso1911380e0c.1
+        for <gfs2@lists.linux.dev>; Thu, 06 Aug 2026 09:58:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1786008140; x=1786612940; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Pcnhqt0EtUylxXGbjqsf+1Pc4DS5YZiCgI0VutNek2Q=;
-        b=ECoCOaKXbYlFGAyOrJGA/zMVLSzl9yHDgt8sVuDLjWiS0vUZf6mts1nwPN4C8dhIyM
-         jSYUfMp5PWS0ifTSno2CDIsH6pM4IwcuPSOeDcTWvGrsQnKVz1LHewRn8nT/uR6edeEs
-         l8st+h3lhgVc6mFzplvfRE5bv7Q6EaH6ZHw+NwWr3mG95ud13rmraAbjccbfOIGR93Op
-         cXIsNq0/wt8dlW7+mNTTcL8gYRc8XAisSPnk0aJc0LuRHeeChL4Nvm/gO6KauHv2cu+g
-         143TQCFWLRYhrTDb3eKY29y80p9ZDWKIIQ07zE3zCxzHRQ1h9As0IgPlj2aI3QZ8t5kF
-         esmA==
+        d=gmail.com; s=20251104; t=1786035532; x=1786640332; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G/9XTgSPVqgohCJtk8emfPisGpE2CTuNA9XLEHalOB4=;
+        b=DjhBmk7OMYEy51O3TAJn3EPhMcAqzD96bM+eELT4zTcyvwLSg9eEGTa5rZN+HHu8Ky
+         4YmHkLCho8jKW5fHibZU2UOFD33QFDHUc8ZHqVEEiGdpegO5yiXkOwm6Lg+fbaP/T7mF
+         SW/NW908G1YY0GczEP3lwAqaK3XP+aq6VG3kd9h9n0qZcdSBm8ItBXQkYyyN+X51eqU5
+         l3p35/GEiJgSK/b7JD+IxWkBFCuY+MiAHKPQMSOa41RHa1TdJA1NENCZZK1YBUHF/Nxw
+         t16LFEkuUJPV6FBiu85OuMWDoAflu99ZvWZdAUOq2b2D2uabiXesoNGehudVt1er+L1k
+         Zw5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786008140; x=1786612940;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pcnhqt0EtUylxXGbjqsf+1Pc4DS5YZiCgI0VutNek2Q=;
-        b=W4IrphzOzQbiiAqUwy28Z8Ushs6nS4/RlpKonsGo7CzNWoGet5svl2MBI8rGNYIqCt
-         s8c6wYLoH8PKbBRnsxk4faL1GDxYjgY4TlVaYkuZ25jtCS0D2A+1e9XQY+MOcH1TwAIn
-         rx+A3IyhauFMDLgggCZfp+T7cW3TfE2tWKDF2vpyRbDZF1rmEyIB0lK209BNWlqyPfeT
-         q8i15+8TzF8aY0DahI3xah/3U/B9CjJUBdaiH/8TKNHyOjkPD1AvSUcNwZDBuiruCvHf
-         2oA86qFXEcMXjwcoe29WNmoLabnXMYxbgB1gJXqeH5Cu6dbIIc0W0My+4E1DNl3WmId1
-         cIrQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roe9+DlkjrZj/58OJYhfHkFefERA41GpsMAHdNwDoW3Hgul5QWA/2SMQOWObeAI04MS3sAs@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyz0zQ4JsTp0FyyyOn3QREDuNsJwGw/Alu26HCJV9GjDzm85quo
-	qnkJghETAkIxTrsB9V8eOXZMaKhueSeI0ES6k0Zh/5SaJ/74fCF9r1woAlWgEN3iPdY=
-X-Gm-Gg: AR+sD134Pe44G56Ej9g5unlSTDY5wNNq3MuFC0JNrDageecO1mdjhBsU5GN466v+E8/
-	mGA8wyV+VbJYJhLGDl1FHiRNDPA7PyWOl2yGGCjgf1z24kaGINZTUD9WnHzSRaiOcpLYP9EbB7X
-	RZLC+YG6w21wCD72yg9KNbtg+23AaPMuyzwjSofqyiaHpjvKP0h0bHzEjgn84IZO1LI3ZMGgNMy
-	wbZJ3xhyvwe49v8qOgLOcTACa6CPFTbGBBvcMjc5SYfWDssWECfe4xKrO8Su61V40pSfYcTO5t7
-	tOY2+zCr2ONLV0ECX6WYoU/1Co790ngu0AIOWqdYni1J//z8puNQTL6Rb93cP1J34s817HeSBVA
-	Som94jFOIfPvtXaJl7gD4k4WNzm9z128Q1y8sR9vLToKydx2xLt3FwXkp1y8OJ0b8EQxa62F5u9
-	wnmIwqGD6edQBOArjstJ8nBmAA2a7jeTGT+gz8e0HLWbGfKF9hMvzjnW4uziEbAds4
-X-Received: by 2002:a5d:624a:0:b0:47f:9750:26cc with SMTP id ffacd0b85a97d-47fec630b5cmr16574414f8f.23.1786008139632;
-        Thu, 06 Aug 2026 02:22:19 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff7b31975sm4112794f8f.33.2026.08.06.02.22.17
+        d=1e100.net; s=20251104; t=1786035532; x=1786640332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G/9XTgSPVqgohCJtk8emfPisGpE2CTuNA9XLEHalOB4=;
+        b=tD2shu/yaBFUeNQ8XMfd1OISaNIDJOBD4DUVhbEm7BHOT4gp2I6kDF3kBHJs69seAu
+         UkcetvLbVqSynIFC78UIH2EzKvATwa64ZmKJhAPyrvcRUP3Nt5SeFHvrL+pagfFEM921
+         2gaRGSLxeajTlU7WAjg7RE1BMUacH0pc4VlNuV3P3yEsaTZ/Q99iwHSqyqm+2wuYprCy
+         3l3EH3JcAuqXyo6QrskAMgw7zKlTp3mBIzJqpzXIHqLpYfj5u2Uq4GWXSl2FrseyxsUG
+         VGuSZpgDpKjkUs8CZL9hclfOzcEhH/M7hSlJJPt6684X87rs3c3CpLlO+1mcfbbExOwb
+         AKgg==
+X-Forwarded-Encrypted: i=1; AHgh+RqiGrsG36u6l7mJb15J2f1c8xyaLrdbqI7CebEgsfAv2Yj22XcRv3OnYdp9cKaSLFmfOGo4@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywgu244Ccr4tIrTVfj/N56ToA8+qTuI6uiu3qD5ZhJI2iSsfJL2
+	/Qmxzc8MS6RMsZPVwWnVmiQ36MJICeL8iut1FxIHzNp4A7wZMwwgx+EO
+X-Gm-Gg: AR+sD10vd7Pns9NgU/15k5c7rH3NgdmNurktX382urv1gkLjYT69bufN1Vu+8rMz+Ps
+	I3JbYoKxwAtxMJ6/toxqwHknD24dOSncLYfFthCsgqspsv1yExz35C4I46ojYIE1FY+2nPXs4ba
+	JvoeywtGU4G9vCmIjWm5/+qrx9zAZ2Dl20ubdi0lpionQepn5URS2KpbMs3gW7SIivKyr2eHjpB
+	k0G6qss3pUrM1rRqNloepp1zXJ1L6XOfPpeT1yWYPX5wUIKGjEwh5cNbuSaDUrWnvnAXAOWAAun
+	iddG8S/QxQ3T2OhoK2Bq+gsEujCDPkikMRS3vAdG3iw7kN0d3+7Lw2zNdRIDxpHXIzYXwDPHtBj
+	f5H87ASY+P0RV33ayVZBNl0oekUIe5ru74iraKsCkyfcUsG6oYb8OK/KjrD3cGabrBZsWn8XsPw
+	BZDAHc5KKfCTKHt5gswR1PEgdLZIse97a/bzVrjPqsDpgxRA+3vCpLfSp/rc5TFUejxcxQYAgQT
+	L5yI40=
+X-Received: by 2002:a05:6122:390b:b0:55b:d85:5073 with SMTP id 71dfb90a1353d-5c3d9115c77mr2283685e0c.4.1786035532313;
+        Thu, 06 Aug 2026 09:58:52 -0700 (PDT)
+Received: from syssplab.cs.fiu.edu (nat1.cs.fiu.edu. [131.94.134.89])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c3d05c594fsm3706321e0c.8.2026.08.06.09.58.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 02:22:18 -0700 (PDT)
-Date: Thu, 6 Aug 2026 11:22:16 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Yu Kuai <yukuai@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, Yu Kuai <yukuai@fygo.io>, 
-	Josef Bacik <josef@toxicpanda.com>, Coly Li <colyli@fygo.io>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Alasdair Kergon <agk@redhat.com>, 
-	Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, 
-	Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>, Tao Cui <cui.tao@linux.dev>, 
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev, 
-	linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, virtualization@lists.linux.dev, 
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Message-ID: <anRPSKHWo59GPIA0@localhost.localdomain>
-References: <20260804065313.2092022-1-yukuai@kernel.org>
- <20260804065313.2092022-3-yukuai@kernel.org>
+        Thu, 06 Aug 2026 09:58:51 -0700 (PDT)
+From: Chao Shi <coshi036@gmail.com>
+To: Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-fsdevel@vger.kernel.org
+Cc: Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Zhang Yi <yi.zhang@huaweicloud.com>,
+	Bob Copeland <me@bobcopeland.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	linux-ext4@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Chao Shi <coshi036@gmail.com>
+Subject: [PATCH v2 00/21] buffer: stop clearing BH_Uptodate when a write fails
+Date: Thu,  6 Aug 2026 12:58:23 -0400
+Message-ID: <cover.1785951556.git.coshi036@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ltojthlavrpt3nkl"
-Content-Disposition: inline
-In-Reply-To: <20260804065313.2092022-3-yukuai@kernel.org>
+Content-Transfer-Encoding: 8bit
+
+When a metadata write fails, the buffer_head completion handlers clear
+BH_Uptodate.  The buffer still holds exactly the data the filesystem asked
+to be written - it is the disk that is stale, not the buffer - and saying
+otherwise has consequences:
+
+  - mark_buffer_dirty() has a WARN_ON_ONCE(!buffer_uptodate(bh)), so a
+    filesystem that dirties the buffer again to retry the write trips it.
+    That is the warning that started this.
+
+  - a buffer that is not up to date gets re-read from disk, which silently
+    replaces the data the filesystem was trying to write with the stale
+    on-disk copy.
+
+  - the state is not self consistent while it lasts: the window between the
+    write completing and BH_Uptodate being cleared is visible to anyone
+    holding the folio lock.
+
+BH_Write_EIO already records that the last write failed.  This series moves
+every consumer over to it, then stops write completion touching BH_Uptodate
+at all.
+
+Patches 1-4 are groundwork.  Matthew's patch 1 removes b_page.  Patches 2
+and 3 let a buffer_head point at memory outside the page cache and use that
+for jbd2's shadow buffers, which today sit on a slab folio - a slab folio
+overloads ->mapping, so mark_buffer_write_io_error() cannot be called on
+them at all.  That is what blocked the jbd2 conversion.  Patch 4 then drops
+the folio_mapping() call that was only there to cope with those slab
+folios.
+
+Patches 5-6 make BH_Write_EIO safe to leave set: clear it in bforget() and
+discard it on invalidate, so a freed or reused block does not inherit
+somebody else's write error.
+
+Patches 7-19 convert the consumers, one filesystem at a time: the two core
+helpers in fs/buffer.c, then adfs, ext2, omfs, exfat, fat, ext4, ocfs2,
+gfs2 and jbd2.  Patch 20 stops write completion touching BH_Uptodate.
+Patch 21 moves the point at which BH_Write_EIO is cleared from submission
+to successful completion.
+
+Every patch builds on its own and the tree behaves identically at each step
+until patch 20, because a failed write currently sets BH_Write_EIO and
+clears BH_Uptodate together.
+
+Changes since v1:
+
+  - 02: changelog reworked - a folio-less buffer is a narrow thing that
+    most of the buffer_head API will not tolerate, and keeping it away from
+    all of that is the caller's job; NULL just makes getting it wrong loud
+    instead of quiet (Jan).
+
+  - 03: jbd2_journal_write_metadata_buffer() simplified.  folio_set_bh() is
+    now needed on one path only, so it moved there and new_folio,
+    new_offset and the flag that chose between them are gone (Jan).  The two
+    checksum helpers now use a new kmap_local_bh()/kunmap_local_bh() pair
+    instead of open coding the folio test (Matthew).  The pair does not map
+    a folio-less buffer at all: that memory is always mapped, and under
+    CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP mapping it would hand back one page,
+    which is not enough for a block bigger than a page.
+
+  - 04 is new: read bh->b_folio->mapping directly instead of via
+    folio_mapping(), which would hand fscrypt a swap_address_space if a
+    buffer ever sat on a swap cache folio (Matthew).  It is a separate patch
+    after 03 on purpose - folio_mapping() is also what turns a slab folio
+    into NULL, so doing this before jbd2 stops using slab folios would leave
+    a window where this path reads slab-internal state as an address_space.
+
+  - 17, 19: the jbd2 and ext4 fast commit completion handlers stop setting
+    BH_Uptodate as well, and their local flag is renamed to match
+    fs/buffer.c.  ext4's debug messages now describe the write rather than
+    the buffer's contents (Jan).
+
+  - 18: the assertion in jbd2_freeze_jh_data() keeps testing BH_Uptodate,
+    which is what it is really about; only its message changes.  v1
+    converted it to BH_Write_EIO, which was wrong - a buffer with a failed
+    write still has valid data here and will be written again (Jan).
+
+  - 20: write completion no longer sets BH_Uptodate either.  Checked rather
+    than assumed: an instrumented build with
+    WARN_ONCE(success && !buffer_uptodate(bh)) in all four write completion
+    handlers, exercised over ext4 in two configurations - data=journal with
+    journal_checksum, and fast_commit with -o sync - never fired.  That is
+    ext4 evidence only: vfat and exfat were in the same run, but neither
+    reached a mount in that image.
+
+  - 21 is new (Jan): clear BH_Write_EIO on successful write completion
+    instead of on resubmission, and drop the clear from __bh_submit().  As
+    well as being the more honest point to clear it, this closes the case
+    Sahiko raised, where a task's write fails and another task's
+    resubmission clears the flag before the first task looks at it.
+
+  - Jan's Reviewed-by added to v1's 1, 2, 4, 5, 6, 8, 12, 13, 14, which are
+    v2's 1, 2, 5, 6, 7, 9, 13, 14, 15.  The code in those is unchanged; some
+    of their changelogs are reworded so that they no longer describe where
+    BH_Write_EIO gets cleared, which patch 21 moves.
+
+Three things are worth a second look, and I would rather point at them than
+let you find them:
+
+  - gfs2 (patch 16) is not a pure conversion.  gfs2_end_log_write_bh()
+    already marks BH_Write_EIO without clearing BH_Uptodate, so the two ail
+    checks are blind to log write errors today and start catching them.
+    Jan and I agreed that is the desired fix rather than a regression, but
+    it is a real behaviour change for gfs2.
+
+  - ocfs2 (patch 14).  ocfs2_write_block() has never removed a block from
+    the cluster uptodate cache when its write failed, because the buffer was
+    not locally uptodate and so the stale entry could do no harm.  After
+    patch 20 it is uptodate, and ocfs2_read_blocks() - which decides whether
+    to go to disk on the cluster cache alone - stops returning -EIO for such
+    a block and hands back the in-memory copy instead.  Jan asked for ocfs2
+    maintainer eyes on that; the ask stands, and I cannot test a real
+    cluster here.
+
+  - after patch 20, BH_Write_EIO stays set until the buffer is written
+    successfully, forgotten or invalidated.  So a site like ext4's itable
+    sync (patch 13) now reports on every subsequent sync rather than only on
+    the write that failed.  That is intended, and matches what ocfs2 has
+    always done with this flag.  The read path changes too: __bread_gfp()
+    and bh_uptodate_or_lock() stop re-reading a buffer whose write failed,
+    and return the in-memory data instead.
+
+Zhang Yi pointed out on v1 that ext4_buffer_uptodate() exists for exactly
+this reason: it puts BH_Uptodate back on a buffer whose write failed, so
+that ext4 does not go and re-read a block whose in-memory copy is the good
+one.  That is this series' argument, open coded in one filesystem, and it
+can go once the generic behaviour is fixed.  Jan noted there are more such
+workarounds about.  I have left every one of them alone here, so that this
+series stays a behaviour change rather than a cleanup.
+
+On the original report: patch 20 provably closes that WARN for the write
+error case, since the state it warns about can no longer be produced that
+way.  I could not reproduce the WARN itself with fail_make_request, which
+fails synchronously at submit; the original came from a fuzzer injecting
+delayed error completions, which is what opens the window.  So there is no
+ready reproducer to offer, only the argument.
+
+Based on vfs.git vfs.all, because Jan's "fs: Fix missed inode write during
+fsync" series is in it and rewrites __ext4_handle_dirty_metadata(), which
+patch 13 touches.
+
+Testing: each of the 21 patches built individually, warning free;
+checkpatch --strict clean.  The jbd2 shadow buffer changes were validated by
+crashing with sysrq-b during ext4 data=journal,journal_checksum traffic
+engineered to force copy-out into b_frozen_data, then replaying the journal
+on the next mount - recovery completed, contents matched, e2fsck -fn clean,
+and an instrumented build confirmed the folio-less path was taken.  Write
+error detection was compared against an unpatched build under injected write
+errors: same error reports, same journal abort, same read-only remount, same
+errno to userspace.  All of that is ext4, and so jbd2 underneath it; the
+adfs, ext2, exfat, fat, gfs2, ocfs2 and omfs conversions are compile tested
+only.
+
+v1: https://lore.kernel.org/linux-fsdevel/cover.1785621505.git.coshi036@gmail.com/
+
+The conversion was asked for here:
+  https://lore.kernel.org/linux-fsdevel/xaqwfkwjnp7h2lg7ir6wy2tnyay26t3im3ftkdl64rhys3rhmu@lc5vfh5tc2f5/
 
 
---ltojthlavrpt3nkl
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH v1 2/3] blk-cgroup: store blkcg in bio instead of blkg
-MIME-Version: 1.0
+Chao Shi (20):
+  buffer: allow a buffer_head to point at memory outside the page cache
+  jbd2: point the shadow buffer at the frozen data directly
+  buffer: read the folio's mapping directly in buffer_set_crypto_ctx()
+  buffer: clear BH_Write_EIO when a buffer is forgotten
+  buffer: discard BH_Write_EIO along with the rest of the buffer state
+  buffer: detect metadata write errors with buffer_write_io_error()
+  adfs: check for a directory write error with buffer_write_io_error()
+  ext2: check for an xattr block write error with
+    buffer_write_io_error()
+  omfs: check for an inode write error with buffer_write_io_error()
+  exfat: check for a directory write error with buffer_write_io_error()
+  fat: check for a metadata write error with buffer_write_io_error()
+  ext4: check for a metadata write error with buffer_write_io_error()
+  ocfs2: check for a metadata write error with buffer_write_io_error()
+  ocfs2: check for a stale write error before reusing a metadata buffer
+  gfs2: check for a metadata write error with buffer_write_io_error()
+  jbd2: report journal write errors with BH_Write_EIO
+  jbd2: say what jbd2_freeze_jh_data()'s assertion is actually checking
+  ext4, jbd2: report fast commit write errors with BH_Write_EIO
+  buffer: stop touching BH_Uptodate on write completion
+  buffer: clear BH_Write_EIO when a write succeeds, not when one starts
 
-Hi Kuai.
+Matthew Wilcox (Oracle) (1):
+  buffer_head: Remove b_page
 
-On Tue, Aug 04, 2026 at 02:53:12PM +0800, Yu Kuai <yukuai@kernel.org> wrote:
-> From: Yu Kuai <yukuai@fygo.io>
->=20
-> A bio currently stores a queue-local blkg reference.  This forces bio
-> association and remap paths to look up or create a blkg even when the bio
-> will never enter a blkcg policy.
->=20
-> Store the blkcg css association in the bio instead, and derive the blkg
-> from the bio's blkcg and current bdev when a policy needs it.  The first
-> successful policy lookup pins the blkg, records the pin with BIO_BLKG_REF,
-> and drops it from bio_clear_blkcg() or when bio_set_dev() changes the
-> lookup key.
->=20
-> Keep lookup-only users from creating missing blkgs by using
-> bio_blkg_lookup(), and rename the bio cgroup association helpers to match
-> the stored blkcg state.
-
-I assume this should be OK due to limited lifetime of bios -- this would
-not lead no possibly indefinite accumulation of offlined blkcgs,
-correct?
-
-> -void bio_associate_blkg_from_css(struct bio *bio,
-> +void bio_associate_blkcg_from_css(struct bio *bio,
->  				 struct cgroup_subsys_state *css)
->  {
-> -	if (bio_blkg(bio))
-> -		blkg_put(bio_blkg(bio));
-> +	struct blkcg *blkcg;
-> =20
-> -	if (css && css->parent) {
-> -		bio->bi_blkg =3D blkg_tryget_closest(bio, css);
-> -	} else {
-> -		blkg_get(bdev_get_queue(bio->bi_bdev)->root_blkg);
-> -		bio->bi_blkg =3D bdev_get_queue(bio->bi_bdev)->root_blkg;
-> -	}
-> +	if (!css || !css->parent)
-> +		css =3D &blkcg_root.css;
-> +
-> +	blkcg =3D css_to_blkcg(css);
-> +	if (bio_blkcg(bio) =3D=3D blkcg)
-> +		return;
-> +
-> +	css_get(css);	<---
-> +	bio_clear_blkcg(bio);
-> +	bio->bi_blkcg =3D blkcg;
->  }
-> -EXPORT_SYMBOL_GPL(bio_associate_blkg_from_css);
-> +EXPORT_SYMBOL_GPL(bio_associate_blkcg_from_css);
-
-[skip to next comment below now]
-
-And here yet another (any) reference to same css is taken 2nd time.
-
-[skip after next comment below :)]
+ fs/adfs/dir.c               |  2 +-
+ fs/buffer.c                 | 37 ++++++++++++++++++++-----------------
+ fs/exfat/misc.c             |  2 +-
+ fs/ext2/xattr.c             |  2 +-
+ fs/ext4/ext4_jbd2.c         |  2 +-
+ fs/ext4/fast_commit.c       | 12 ++++++------
+ fs/ext4/mmp.c               |  2 +-
+ fs/fat/misc.c               |  2 +-
+ fs/gfs2/log.c               |  4 ++--
+ fs/gfs2/lops.c              |  4 +++-
+ fs/jbd2/commit.c            | 22 +++++++++++-----------
+ fs/jbd2/journal.c           | 31 ++++++++++++++++++-------------
+ fs/jbd2/transaction.c       |  2 +-
+ fs/ocfs2/buffer_head_io.c   | 12 +++++++-----
+ fs/ocfs2/journal.c          | 25 +++++++++++++------------
+ fs/omfs/inode.c             |  4 ++--
+ include/linux/buffer_head.h | 36 +++++++++++++++++++++++++++++++-----
+ 17 files changed, 120 insertions(+), 81 deletions(-)
 
 
-> =20
->  /**
-> - * bio_associate_blkg - associate a bio with a blkg
-> + * bio_associate_blkcg - associate a bio with a blkcg
->   * @bio: target bio
->   *
-> - * Associate @bio with the blkg found from the bio's css and request_que=
-ue.
-> - * If one is not found, bio_lookup_blkg() creates the blkg.  If a blkg is
-> - * already associated, the css is reused and association redone as the
-> - * request_queue may have changed.
-> + * Associate @bio with the blkcg found from the bio's css.  If a blkcg is
-> + * already associated, keep it as blkcg association is not queue-local.
->   */
-> -void bio_associate_blkg(struct bio *bio)
+base-commit: 05c09c9c8a79d5539fef30d42e732eba90a15dcf
+-- 
+2.43.0
 
-
-> +void bio_associate_blkcg(struct bio *bio)
->  {
->  	struct cgroup_subsys_state *css;
-> =20
->  	if (blk_op_is_passthrough(bio->bi_opf))
->  		return;
-> =20
-> -	if (bio_blkg(bio)) {
-> -		css =3D bio_blkcg_css(bio);
-> -		bio_associate_blkg_from_css(bio, css);
-> -	} else {
-> -		rcu_read_lock();
-> -		css =3D blkcg_css();
-> -		if (!css_tryget_online(css))
-> -			css =3D NULL;
-> -		rcu_read_unlock();
-> +	if (bio_blkcg(bio))
-> +		return;
-> =20
-> -		bio_associate_blkg_from_css(bio, css);
-> -		if (css)
-> -			css_put(css);
-> -	}
-> +	rcu_read_lock();
-> +	css =3D blkcg_css();
-> +	if (!css_tryget_online(css))	<---
-> +		css =3D NULL;
-> +	rcu_read_unlock();
-> +
-> +	bio_associate_blkcg_from_css(bio, css);
-> +	if (css)
-> +		css_put(css);
->  }
-> -EXPORT_SYMBOL_GPL(bio_associate_blkg);
-> +EXPORT_SYMBOL_GPL(bio_associate_blkcg);
-
-next:
-Here you take (online) reference to the blkcg->css.
-
-[return back to previous comment]
-
-
-after:
-Ideally, no tasks should be in offlined (blk)cgs, so the `current` would
-not resolve to blkcg_css() returning an offlined blkcgs. OTOH, it's
-generally good not to do _new_ associations to an offlined blkcg.
-Which is why I think this logic would better fit to
-bio_associate_blkcg_from_css()
-
-
-0.02=E2=82=AC,
-Michal
-
-
---ltojthlavrpt3nkl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCanRSRBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ahf+gEA5FtU8iXyQA9tlhJdWJEf
-nyf1IBDUt4tisH7UDE8KiSEBAP5BK6FXkSftml/wn918ol1iwizfBzFhephd2gZc
-e3UL
-=GgwG
------END PGP SIGNATURE-----
-
---ltojthlavrpt3nkl--
