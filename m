@@ -1,64 +1,64 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2648F3A382F
-	for <gfs2@lists.linux.dev>; Thu,  6 Aug 2026 16:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5743B5E19
+	for <gfs2@lists.linux.dev>; Thu,  6 Aug 2026 16:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035541; cv=none; b=a6EqRvyCirqiQwuLVozgd6/5y5gxff/Aol2kOtupERiv63BKnKGrpRcugp3MbTHXms0xnK8fauyfJS+77akKHdvbdGt3wDUC6gZuUiczVQCs0Eyx8FHHw2pJ5J5EdaHNI+r+lKfk4eHXbyXOEbEO3QQDwrGEHUyGhGOaJgKJkx4=
+	t=1786035546; cv=none; b=XDezi/0o6iGczw8TVBM7wgiQUZhPwLRGBCPpcXK1hLkcUkb9vx8eM+DeW2eKT+X5dBgwYH1cb5RN9qsY8OT7DKNvjvWLRYk5Kpk84e5nYpE4s1HwfIaSKkw5oxJD+yhXhPAcTqganErllB7Ec9sc1euE1LJZWXMCtCyExuoJMQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035541; c=relaxed/simple;
-	bh=lzP4aegwZTPCQw0cJ3VVWrrvdN+pa1Cx+PvabTKZT/0=;
+	s=arc-20240116; t=1786035546; c=relaxed/simple;
+	bh=hjREzgpzo5QzVUOXcfPLZusIOE1tYvynFiHWCGrfyGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlIefpwoimzVpwkf+/xUaSeo9fIbUJ7f171ReNlACMo6GA1+VxUSXY1fHCKWNRfqdMyT6+2aT4SzUFV6dO5qB47VRfkNgXtsAwTnAiihokVGGpDk7FyEt3d35fHoeWgxVHeBhLdT944nF0DLS8cVNTkl48kLr8jZIktgXn+Z8AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJzDELcI; arc=none smtp.client-ip=209.85.221.177
+	 MIME-Version; b=FuzrohzSIT4q9rMD4uX2ph0ao6GTiz22NE6ZH2gSPz7bLdTzIE9KBBA38NWYJ3pWBu55dTwfkhjOZD0WHVf9F2yLf5NcYkfq0I4UnCiu/lnfTkVlyB4a3lEXlVnY6NvMv8vYkEck2DMmFPr5U+I3upLD/cJ2kyftzGkbNF4r16Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UyT8GRhb; arc=none smtp.client-ip=209.85.221.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJzDELcI"
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5bf5370d38fso785398e0c.2
-        for <gfs2@lists.linux.dev>; Thu, 06 Aug 2026 09:59:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UyT8GRhb"
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5c375a9e76cso1468291e0c.0
+        for <gfs2@lists.linux.dev>; Thu, 06 Aug 2026 09:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786035539; x=1786640339; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1786035543; x=1786640343; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l4wawGSh1ayASvpYyyNUW0xG9j87AeVkrycNAPRNAqw=;
-        b=XJzDELcI4pug1LxySpab90YPd69esyVfLAO4wCMgQvZDB3PmPaSmBt4JSlEsl7IGxx
-         546OPzAFUIX1DFoRJbqRJohihg5gNTth3hk5NtkXgJYcelSJHh1OZgdR9Y1b4a2D8+hs
-         CS9nsJTCLuceqX7IlIalmK1Q7wZTgZXewHwJzN2I3NYncRQIMQ/ZfsUWG6x0bjQhCPq+
-         W0VBKwb9ooawFRANHRUxPkxsj5/Htrm/37SPpFpR7K5+DlBRaGJ60zVd2oU0HSwWdVXN
-         UuwRG+6jWOyZEkGDdN9m6Isl4QikZHt4V1I9BQoyZKP/3q4TOBQv4NmpHjeZMv5hTCuD
-         PXxA==
+        bh=k3JV3rYlfmcwigTL3Ipqk1+R5zcTkEoUEmgylrQxXIQ=;
+        b=UyT8GRhbw/EJSbdhB7zqLsZRgYF0JF6ODsKR7myYU/NYrkv/Cs3eUv9FKLtteQjW+1
+         iohZct22Mfdfy2WlwV/duPaN6Vc1YKNrQfKelqCGZQybA6A1ARXGSbTrMP3bBX75Izst
+         JfbUvL+fSEYECLHwn7P+14bH6wcpTPIUOWW8MyP6mT8nkj1rmFCgiwE1KQ3l0mYhPMJ3
+         7Pal8G8VcqwpiHeYXTyiFK/P9ZRU/b6B8Gefv5UNaUiZ5wEcR6yaw1uw/lSVgHqafiXE
+         Uk5c/VkCCBSNZdNKVL2V/1sSTmSbnI74jViLltVKfQ8zuLZ7bj6rH9IrUw/3MRINhEO1
+         yDdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786035539; x=1786640339;
+        d=1e100.net; s=20251104; t=1786035543; x=1786640343;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l4wawGSh1ayASvpYyyNUW0xG9j87AeVkrycNAPRNAqw=;
-        b=YXCRshLzfI6Yil20Xpq+2ADYrTFU6ibDPCDsDgOL8fwVkNxNrn5/LIimPV0KJF9SxG
-         AVkr9dt7spLujwhUxQZay7HwU7cRhHG2wf0hiQWkoJ4dWDXmtQve5K+OC+S/IAfPPn6k
-         g1cBm89yj0kBNC87R7RnTxO8JRc8Irkr3fCjztEpwIslUX4hmBjwKr8opL+ydTB5CGqE
-         vTRFqGFjGwZL9wKTpO3sYqMkTTKQJQuLJGi+zcP42aQwp4clkTdBjmYa3FOd7pa4o0Vf
-         JTFChWzxu1+g3NrRePMyDGnOJhKvSaa2mUuKGdBy0wpyJrRwBgGsF/gp2gfn1T0gSvyG
-         9/hg==
-X-Forwarded-Encrypted: i=1; AHgh+RrvLRmWnxd+AqVlwOT9t468XnqFzI77fUy3IyvTIE2vjpF3MR+mmzVPZTn4LVCcoIFm9C1/@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3RQZa7oabMs5wR5VEJaCeIgjqbEGAvl70MSdsT7+lzH9JawMW
-	2sWK4hP+D56Xmar778LtvzrT5gVTuH7cCDgCLTzgMYUR+8Xo19HMMPxG
-X-Gm-Gg: AR+sD12VC0HKkZk+I2LvdTxV74u9nKjN31fKcRc23tbKADGMoRC/CEfQynfelcf7EE5
-	7Q7EbuUsmRzMbLokTwrW3Y5jZTDgy55BVefDyL8IXD33j3Xe3xMFJC7/NdpW/wUyWyyI7wLkhxt
-	pTZ9O8drbGGjVEzyBvu9llOWS7/psyVo7Te7KJOgT159/fbi9ZFAqlcWwgy4Qt4GhKnsPsNud+b
-	wUQdi1MchuturBaTpGUVQ6x/Xj+4knUc1IU6ADwTKFUiDoIcyGhK2j9QbokcrrnWwspP86FQQav
-	d+JqVeBRALYBO07D+/HlAVLyBdI8zQtHut92dInp+ygMZbTSoY6BcAIqMthL+u/6uDKgO/oWUJ6
-	MdmE9rr1NUj2YTj67Xenqv8IxN/bStsKv0QCCdZSbx0PL9avUgy1nePKHEuwG6QBk0fNBQUG3d8
-	a+v/px0CiHJQcnk6WpmrOJSGFuTHuiHBOnOXYF4mz5mEbrZhY8KqhV0ZlUjk3ObeaOuuqWnKCY6
-	2w4cbY=
-X-Received: by 2002:a05:6123:2c7:b0:5bd:faa8:74e1 with SMTP id 71dfb90a1353d-5c3d92900f0mr2224979e0c.13.1786035539083;
-        Thu, 06 Aug 2026 09:58:59 -0700 (PDT)
+        bh=k3JV3rYlfmcwigTL3Ipqk1+R5zcTkEoUEmgylrQxXIQ=;
+        b=H1jyMjsYyWDLVMRwFKXIKaGuvBTqtBtpBPPnBq4gjlMTtkSawOs4w0PHx8+XXfzlt+
+         N1wdh7Vk0q7EC7yDENcAGDrmDRQS1Pe6Y0pGnbARp3Ta611OsC0Hr7OeoGiI/IUnhSJb
+         ZkaoZLgPv+rsDFQAF1d1MME7dO/ygFvgL374Cae1K/iiOlXLH5Fq4/TcIXyHrKWN9cRl
+         pdEC402gjdwe/kRwUOTOpKPClmM6G02YA7cs/LM8l5l5NR6eRkdaLQyFfMhumr/O1YFB
+         +ptIWhLBvkY+MDGYuVHSORbFgbhQyUmxhbC8plwfg72QAiMsWMXYMUeF9FUOMvMU5nif
+         RnnA==
+X-Forwarded-Encrypted: i=1; AHgh+RqdQyiYrAawu3vmTfzrcGud59lfsbF6D4Psq4MBtpvDqRxt3rGA9+OSlrcfIYjoTNFr03sf@lists.linux.dev
+X-Gm-Message-State: AOJu0YwhLS+O8q148rLYqDGOkl473TI44YTA1WD5Y3+0TpxmSIdcbUDV
+	1lzzc9KnCOhtnbKodwItaiumYgcw1C0xds1C1wIsfWC5dO6U/g3gT5tR
+X-Gm-Gg: AR+sD109s6yTT7vVt9CCX5n8i3GKgJEnQKdJPaiM8ZK4eZ/nES4PLaNyVmA9gxsSG8F
+	HBN2npEEFgKxEBiud/K3or1EkSao5JgW2AXYf0GkcT9kGuRlYAl/2g3AJJT0RUGHGfy6/f/QWht
+	aZ8/ai/Pg98Rr29J02nXm8ptulHlso3erPeCQ/YuTYU4VTBa4V/bDHyLB1UwAi7n5wLkxp20/Yt
+	O3ryzplxcgQybJ1iJ25c5P/705iP6porihgVzrV+CFtESx2V7k72/XQY/5/csgLryqxugLwxVoa
+	HNAnYcPRU+GX9wiRlZt6PmE0EHVHMGHFypZs4MMO4kufInhw+n1Rx4/ajNEJu5Q+NWrGCVdbAh8
+	ia5bhWviO2zqGkEsr/0PjxgDLV/LkmN4IB4Lye89baHJ5EUS2MJXWgVylXr+VjpFaJLPWgIZAgP
+	a4bb5MG+e881NM0CpABw/Wki4j5EgSUUqxzdF5DdTQ1EoXd3TiHFFslCcJ2Yjjr/ozhYAEKWGCf
+	HKEs1U=
+X-Received: by 2002:a05:6122:8b8d:b0:5bd:ecad:8f80 with SMTP id 71dfb90a1353d-5c3f9e68046mr593111e0c.2.1786035543192;
+        Thu, 06 Aug 2026 09:59:03 -0700 (PDT)
 Received: from syssplab.cs.fiu.edu (nat1.cs.fiu.edu. [131.94.134.89])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c3d05c594fsm3706321e0c.8.2026.08.06.09.58.57
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c3d05c594fsm3706321e0c.8.2026.08.06.09.59.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 09:58:58 -0700 (PDT)
+        Thu, 06 Aug 2026 09:59:02 -0700 (PDT)
 From: Chao Shi <coshi036@gmail.com>
 To: Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
@@ -87,9 +87,9 @@ Cc: Theodore Ts'o <tytso@mit.edu>,
 	linux-kernel@vger.kernel.org,
 	Chao Shi <coshi036@gmail.com>,
 	Weidong Zhu <weizhu@fiu.edu>
-Subject: [PATCH v2 01/21] buffer_head: Remove b_page
-Date: Thu,  6 Aug 2026 12:58:24 -0400
-Message-ID: <e9d168901578902bffe78ac8b5dfaf1210ee7fb3.1785951556.git.coshi036@gmail.com>
+Subject: [PATCH v2 02/21] buffer: allow a buffer_head to point at memory outside the page cache
+Date: Thu,  6 Aug 2026 12:58:25 -0400
+Message-ID: <bb6fab2111a48d7ba61887fc1372362576fce6e6.1785951556.git.coshi036@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1785951556.git.coshi036@gmail.com>
 References: <cover.1785951556.git.coshi036@gmail.com>
@@ -101,44 +101,91 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+jbd2 builds a temporary buffer_head to write out the frozen copy of a
+metadata block, and that copy lives in slab memory.  Today jbd2 points the
+temporary buffer at the slab folio backing it.  A slab folio's ->mapping is
+not an address_space, so anything that follows bh->b_folio->mapping there
+gets garbage rather than NULL; mark_buffer_write_io_error() does exactly
+that, and we are about to start calling it on this buffer.
 
-All users except bh_offset() have been converted to use b_folio instead.
-Convert bh_offset() and remove b_page.
+Rather than teach every such helper about slab folios, allow bh->b_folio to
+be NULL and let b_data point straight at the memory.  Code that needs the
+folio has to check.  There are two places in this file:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Chao Shi <coshi036@gmail.com>
+ - __bh_submit() adds the data by virtual address using
+   bio_add_virt_nofail(), and skips the cgroup accounting: a buffer that is
+   not in the page cache has no owning folio to attribute writeback to.
+
+ - buffer_set_crypto_ctx() returns early.  fscrypt has no interest in a
+   buffer that is not part of a file mapping, which is why it already
+   returns when the folio has no mapping.
+
+Nothing sets b_folio to NULL yet, so this patch is a no-op on its own.
+
+A buffer_head without a folio is a narrow thing, not a new general
+capability.  Most of the buffer_head API assumes a folio and will fault or
+corrupt state without one - touch_buffer(), bh_offset(), the async read
+completion path, and plenty more - so it is up to whoever builds such a
+buffer to keep it away from all of that.  What NULL buys us is that getting
+it wrong fails loudly instead of quietly following a slab folio's
+overloaded ->mapping.  It is also only valid over memory that is always
+mapped: buffers over highmem have no permanent kernel virtual address,
+which is why folio_set_bh() records a folio and an offset instead.
+
+Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Signed-off-by: Chao Shi <coshi036@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
 ---
- include/linux/buffer_head.h | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/buffer.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index fd2c7115c054..699970b4bbf2 100644
---- a/include/linux/buffer_head.h
-+++ b/include/linux/buffer_head.h
-@@ -59,10 +59,7 @@ struct address_space;
- struct buffer_head {
- 	unsigned long b_state;		/* buffer state bitmap (see above) */
- 	struct buffer_head *b_this_page;/* circular list of page's buffers */
--	union {
--		struct page *b_page;	/* the page this bh is mapped to */
--		struct folio *b_folio;	/* the folio this bh is mapped to */
--	};
-+	struct folio *b_folio;		/* the folio this bh is mapped to */
- 
- 	sector_t b_blocknr;		/* start block number */
- 	size_t b_size;			/* size of mapping */
-@@ -172,7 +169,7 @@ static __always_inline int buffer_uptodate(const struct buffer_head *bh)
- 
- static inline unsigned long bh_offset(const struct buffer_head *bh)
+diff --git a/fs/buffer.c b/fs/buffer.c
+index be8b57a635cd..04fcc34e4fa6 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -1099,12 +1099,16 @@ EXPORT_SYMBOL(__bforget);
+ static void buffer_set_crypto_ctx(struct bio *bio, const struct buffer_head *bh,
+ 				  gfp_t gfp_mask)
  {
--	return (unsigned long)(bh)->b_data & (page_size(bh->b_page) - 1);
-+	return (unsigned long)(bh)->b_data & (folio_size(bh->b_folio) - 1);
- }
+-	const struct address_space *mapping = folio_mapping(bh->b_folio);
++	const struct address_space *mapping;
  
- /* If we *know* page->private refers to buffer_heads */
+ 	/*
+ 	 * The ext4 journal (jbd2) can submit a buffer_head it directly created
+-	 * for a non-pagecache page.  fscrypt doesn't care about these.
++	 * for memory that is not in the page cache at all.  fscrypt doesn't
++	 * care about these.
+ 	 */
++	if (!bh->b_folio)
++		return;
++	mapping = folio_mapping(bh->b_folio);
+ 	if (!mapping)
+ 		return;
+ 	fscrypt_set_bio_crypt_ctx(bio, mapping->host,
+@@ -1142,7 +1146,11 @@ static void __bh_submit(struct buffer_head *bh, blk_opf_t opf,
+ 	bio->bi_iter.bi_sector = bh->b_blocknr * (bh->b_size >> 9);
+ 	bio->bi_write_hint = write_hint;
+ 
+-	bio_add_folio_nofail(bio, bh->b_folio, bh->b_size, bh_offset(bh));
++	if (bh->b_folio)
++		bio_add_folio_nofail(bio, bh->b_folio, bh->b_size,
++				     bh_offset(bh));
++	else
++		bio_add_virt_nofail(bio, bh->b_data, bh->b_size);
+ 
+ 	bio->bi_end_io = end_bio;
+ 	bio->bi_private = bh;
+@@ -1152,7 +1160,8 @@ static void __bh_submit(struct buffer_head *bh, blk_opf_t opf,
+ 
+ 	if (wbc) {
+ 		wbc_init_bio(wbc, bio);
+-		wbc_account_cgroup_owner(wbc, bh->b_folio, bh->b_size);
++		if (bh->b_folio)
++			wbc_account_cgroup_owner(wbc, bh->b_folio, bh->b_size);
+ 	}
+ 
+ 	blk_crypto_submit_bio(bio);
 -- 
 2.43.0
 
