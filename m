@@ -1,120 +1,167 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF4427F4F5
-	for <gfs2@lists.linux.dev>; Fri, 14 Aug 2026 02:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F48E344DAE;
+	Fri, 14 Aug 2026 06:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786675814; cv=none; b=ESHI3kL4NJuih0dwqEYIqPDo2uba4LYPWadISTe1s4p3kln5eLjwgejNAFHOyjHLzLcrE9jN/5UftGLaCmI8MiKI/flvcXtu/iauhc/1Di+B+lajvhm6/LbHi5faOSZfc2GjUUXGhuOSksLutTDiSPlng/RSkMnzIGe3UC+E3pk=
+	t=1786689947; cv=none; b=PjUkBlOaNPr/BzJjCcL6mu3C3KOa+TKmzXBMYtyguzLX90KGtI/n6IS5NNxr+QoexhXvZRiCaSDndmuMb11LsdKOeFYebisJJy9JQxc6ykNDOV0rSfB4OfF2y1nwSiSmDPSpiI7typn534EpRtPYUryd4PbSH8fHcYgZbu014j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786675814; c=relaxed/simple;
-	bh=eR3jUjuO1Za+ASq0DovLqz8rhT6iu8+6w/M182r1Rhc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lzvhThsUreTT3bojtK4NQ3Bw9XF7zT5OZuIkuHXOck3b3Sa5TlOLnknm9lslFgoGpeJ62B1f9qVzy9xWwEDELOmBurVCMUZSda4dBoMypwPzTaFS1GWO513Ff0Im0Nbu6v33PrtistuQLsm4ihVSz/QzH4i5uLbYUbQyOyqLCYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qICH6FeF; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qICH6FeF"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8efbafa1bacso2861726d6.1
-        for <gfs2@lists.linux.dev>; Thu, 13 Aug 2026 19:50:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786675812; x=1787280612; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LRwc7YlERJIorjY1Ibj5XixURn1upo7Jd/C+eZrxYAo=;
-        b=qICH6FeFHJoVjIE1GaZ3gTh4FXjM8hX5cat4+JfXkiMVBxPc5exSDdOAg5rtOVgSEj
-         a4CT/tBH39Ohb0dedloa7EsRs1mx4H8hxF8detohMx7Z4eZ+6u28lufBlg4a+0FCxDkY
-         q1uEOSYlBrNLKioUhOQ0LZw2SCx094wn2llbyeM7T6LWMnJjc4nOisWlajm0LSLqgS+m
-         H4uap4odB355Lo9Fues+tInKd5zyRpw5eJJT77axStd17KyMKBym8zlqHfIAJCjpC1HX
-         EbNkDPoH1yGFM6p8rWTDOoWkMJteNJN5BhOjTEJu4EoErr8imPQRt04LvsUwMyS8WAnT
-         xI1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786675812; x=1787280612;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LRwc7YlERJIorjY1Ibj5XixURn1upo7Jd/C+eZrxYAo=;
-        b=Fdkl7Bq1mmloEh6R7ZTtPWjSLZnwAnSrYTjm2yYYEQ4A/Xi63TlVMvUt88pj/i+GA9
-         8ci1qZsjjPXL6p2vBdmCdonofP0QdA+UrWmS14v9qsUR1kTyk3jCI1mxqeJKJmVbAGkF
-         XCHhR8MqAnZOy5dwtaa5jot4piXLe94KHqy/iq+NlVBdJtbs4m+xpXjowX5eAUIwJHd2
-         Vo5OZMrtohrgCn38s5RKsB8zHE28ARjjcEYPX7aH2CTHTULLoQkSvSDrsLAbY+hrv7Ho
-         nAj9XhubD8MlpD4ZcZf91KBmjWB6WWcLR0c0nLqtTQCcQfe6cr8YkekagsHfJYEgMsUr
-         stZg==
-X-Gm-Message-State: AOJu0YxKsHM2stBYtodmJeZQmes3HSssWMZpmHdgZoeDRrkjNmwHie4S
-	kLl4/Z5mgLLPDP4iWNkmvfA8may1Ieu/zhYbDE3nJpAlHWbmStjzUh97
-X-Gm-Gg: AR+sD11/PVCX54gJro17PfAH4590hgBz2LLDLIThAeSsx9aC20iGm7O+3jy3xV0Oe6+
-	+vQkrSuIvbN4RrYaEsftVS9Ty8weTb3LrXildEh+o5Kib49L7aJjRigVLE8dusJOG3jZ+p3/rJi
-	X8cPSevWhybHcsg7P5HjmH3cpD09AIFeTK65lghlVMhp8wzd2pe6pCHWrjpPr7NR48VGfvOCT/I
-	4mtNf75BpquKQfjmBuuD0mb5U2xyK6rHOVzbc+F2qBwNpmqPs5MyQpBHn0UnvFk5uqoobqN3VJJ
-	6TndIHlXcbniOET7ygZpOSi4heAY3cJDjNgdbd6iZ2CVgDmmWvRL69lOqzZzhLjTZIPakt63+XI
-	YQlC35mA/yI177iFJYyrFn6gk+vCSDh1Lw59PHHWQi0RTcgd6JlL58oRLNmQajkFJ8VbwrIszxo
-	AZHx2SD6rNbnARW+QYce8Rlc9yOkJHoOsJxq8dIEQQysfb+GvtnSUj3XXyyPZOWWx90WKW+76rG
-	V36Q9ctNRfP5M8apg==
-X-Received: by 2002:a05:6214:5402:b0:8ef:aad6:dada with SMTP id 6a1803df08f44-90a91d4a10fmr34127936d6.20.1786675811868;
-        Thu, 13 Aug 2026 19:50:11 -0700 (PDT)
-Received: from i4-l-hqh5357-03.ad.psu.edu ([130.203.139.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a935a2bf4sm4949026d6.49.2026.08.13.19.50.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 19:50:11 -0700 (PDT)
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Subject: [PATCH] gfs2: Fix use-after-free in glockfd iterator
-Date: Thu, 13 Aug 2026 22:49:33 -0400
-Message-ID: <20260814024933.2791706-1-shuangpeng.kernel@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1786689947; c=relaxed/simple;
+	bh=zduZt5Yh8aK/cbqDe9szF+IP3dE7uqQwAz10EKTvkpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VTUrimSUQYBw8tSAxhgJIqMWrE+hZooS75hgNOIr63ixyxFpfDvzu9t/rYL6mYC6PB9CmSk1sYpb9xMBUDROGzz1S8PBYsSW/pfmtAXdxsYGQT0lh8PeufFfKHMWHg+wwl2xEPnZnZsz/UFwKwXLz6swjcN42kEym7fHC5uEvMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 61FB168BFE; Fri, 14 Aug 2026 08:45:37 +0200 (CEST)
+Date: Fri, 14 Aug 2026 08:45:37 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Yu Kuai <yukuai@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
+	Tao Cui <cui.tao@linux.dev>, Jan Kara <jack@suse.cz>,
+	Ming Lei <ming.lei@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>, Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>, cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
+	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
+	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/4] blk-cgroup: store blkcg in bio before
+ blkcg_mutex conversion
+Message-ID: <20260814064537.GA9355@lst.de>
+References: <20260811064744.1139446-1-yukuai@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811064744.1139446-1-yukuai@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-gfs2_glockfd_seq_stop() drops the file and task references held by
-the iterator, but leaves both pointers unchanged. seq_file can invoke the
-iterator again after stop, for example after a bounded read followed by a
-rewind.
+What tree does this apply to?  I get failures both for Jens'
+for-7.3/block and for-next trees in bfq-cgroups.c and bio.c
 
-The next start then drops the stale task reference again in
-gfs2_glockfd_next_task(), and can similarly drop the stale file reference
-in gfs2_glockfd_next_file(). A duplicate task put can queue the task_struct
-for RCU freeing before fget_task_next() uses it.
-
-Clear both pointers when releasing their references so later iterator
-callbacks cannot put them again.
-
-Fixes: 4480c27ca3ea ("gfs2: Add glockfd debugfs file")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
----
- fs/gfs2/glock.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index b8a144d3a73b..283c5701dc1a 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -2734,10 +2734,14 @@ static void gfs2_glockfd_seq_stop(struct seq_file *seq, void *iter_ptr)
- {
- 	struct gfs2_glockfd_iter *i = seq->private;
- 
--	if (i->file)
-+	if (i->file) {
- 		fput(i->file);
--	if (i->task)
-+		i->file = NULL;
-+	}
-+	if (i->task) {
- 		put_task_struct(i->task);
-+		i->task = NULL;
-+	}
- }
- 
- static void gfs2_glockfd_seq_show_flock(struct seq_file *seq,
--- 
-2.43.0
-
+On Tue, Aug 11, 2026 at 02:47:40PM +0800, Yu Kuai wrote:
+> From: Yu Kuai <yukuai@fygo.io>
+> 
+> This RFC remains a preparatory series for the blkcg_mutex conversion
+> proposed in the related blkcg_mutex RFC v2 series [1].  That conversion
+> moves queue-local blkg topology synchronization from q->queue_lock to
+> q->blkcg_mutex, which is awkward while bios directly store queue-local
+> blkg references.
+> 
+> v1 made the stored bio association queue-independent by replacing bi_blkg
+> with bi_blkcg, but a bio-owned blkg reference still had to be recovered by
+> looking up the bio's blkcg and current request_queue.  Tao Cui reported that
+> cgroup removal deletes a dying blkg from the per-blkcg radix tree before a
+> throttled bio drops its reference.  A later lookup for that pinned blkg then
+> fails, triggers the warning in bio_pinned_blkg(), and leaks the reference.
+> 
+> v2 makes request_queue the authoritative lookup owner before converting the
+> bio association.  A queue-owned rhashtable, keyed by the blkcg CSS ID, keeps
+> dying blkgs discoverable until their references drain while q->blkg_list
+> remains available for ordered walks.  The bio conversion then stores and
+> pins the blkcg CSS, lazily creates a blkg only for users which need one, and
+> uses lookup-only access for completion and accounting paths which already
+> own a blkg reference.  Async bio punt state is finally moved from blkg to
+> blkcg so punting alone does not instantiate a queue-local blkg.
+> 
+> Changes since v1:
+> 
+>   - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+>     shared request_queue is rebound, instead of treating root_blkg == NULL
+>     as completion of asynchronous blkg teardown.
+>   - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+>     request_queue rhashtable keyed by blkcg->css.id, as suggested by
+>     Christoph Hellwig.  Keep dying pinned blkgs in the hash until
+>     blkg_release() so bio-owned references remain discoverable.
+>   - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara and
+>     Christoph Hellwig, and make bio_blkcg() naturally return NULL for an
+>     unassociated bio.
+>   - Rework patch 3 so blkg_lookup_create() acquires the bio-owned reference,
+>     falls back to a live parent when creation or tryget fails, and updates
+>     bi_blkcg when the returned blkg belongs to an ancestor.
+>   - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+>     is already set.  Use bio_blkg() in the BFQ and IOCOST merge paths which
+>     may need to create a blkg, while keeping blk_cgroup_bio_start() and
+>     completion paths lookup-only.
+>   - Move CSS online-reference handling into
+>     bio_associate_blkcg_from_css(), including fallback to the root blkcg, so
+>     bio_associate_blkcg() does not take a redundant reference.
+>   - Keep the v1 async bio punt conversion as patch 4 and document that
+>     async_bio_lock protects async_bios.
+> 
+> Previous versions:
+>   v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+> 
+> Related series:
+>   [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+>       https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+> 
+> Yu Kuai (4):
+>   blk-cgroup: wait for old blkgs to leave queue before disk rebind
+>   blk-cgroup: use a request_queue rhashtable for blkg lookup
+>   blk-cgroup: store blkcg in bio instead of blkg
+>   blk-cgroup: move async bio punt state to blkcg
+> 
+>  Documentation/admin-guide/cgroup-v2.rst |   2 +-
+>  block/bfq-cgroup.c                      |  16 +-
+>  block/bfq-iosched.c                     |  19 +-
+>  block/bio.c                             |  22 +-
+>  block/blk-cgroup-fc-appid.c             |  10 +-
+>  block/blk-cgroup.c                      | 348 ++++++++++++++----------
+>  block/blk-cgroup.h                      |  82 ++++--
+>  block/blk-core.c                        |   9 +-
+>  block/blk-crypto-fallback.c             |   2 +-
+>  block/blk-iocost.c                      |  12 +-
+>  block/blk-iolatency.c                   |  11 +-
+>  block/blk-ioprio.c                      |   2 +-
+>  block/blk-throttle.c                    |   2 +-
+>  block/blk-throttle.h                    |   2 +-
+>  drivers/md/bcache/request.c             |   2 +-
+>  drivers/md/dm.c                         |   2 +-
+>  drivers/md/md.c                         |   2 +-
+>  drivers/nvdimm/nd_virtio.c              |   2 +-
+>  fs/gfs2/lops.c                          |   3 +-
+>  include/linux/bio.h                     |  26 +-
+>  include/linux/blk_types.h               |   9 +-
+>  include/linux/blkdev.h                  |   2 +
+>  include/linux/writeback.h               |   2 +-
+>  mm/page_io.c                            |  13 +-
+>  24 files changed, 357 insertions(+), 245 deletions(-)
+> 
+> 
+> base-commit: f2690679ecf3a3151688ebef766dd2512ff95854
+> -- 
+> 2.51.0
+---end quoted text---
