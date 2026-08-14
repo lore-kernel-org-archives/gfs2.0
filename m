@@ -1,100 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5940D37E5F4;
-	Thu, 13 Aug 2026 19:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF4427F4F5
+	for <gfs2@lists.linux.dev>; Fri, 14 Aug 2026 02:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786649113; cv=none; b=Ppb0OGs1HAw4WQTnYjby6Ml9TTcctdZu0wWkQh8eTGgm1fMnnSFTIyntoW1cdydcqbvF/83QGmoNfjoRygEY6VGDrQCqJ77ku3qUnmwVkLK1uSsMDy49ogixuDcV3aytFQjCswuS+TTerqhxrJzZm0QrrzQN+2yBjYCHTSRMuqA=
+	t=1786675814; cv=none; b=ESHI3kL4NJuih0dwqEYIqPDo2uba4LYPWadISTe1s4p3kln5eLjwgejNAFHOyjHLzLcrE9jN/5UftGLaCmI8MiKI/flvcXtu/iauhc/1Di+B+lajvhm6/LbHi5faOSZfc2GjUUXGhuOSksLutTDiSPlng/RSkMnzIGe3UC+E3pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786649113; c=relaxed/simple;
-	bh=6ckX8TBN9F4koDpmJ3VXPg8frlr2wRrtyoiXs/hAf2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LQNnnTccGG7It3/CKZz1fhWrZYXrAr3GhKzr8Pzjuy4yBGIC9YSPqzX1gAIkwdKv94Hj0AF5eYYgw+9d141Ns2L7AitSGXfdQopCK9jxBFyTZ8PZ8ked1qPbZlktHFcPSbQcSvEA6Wgqky1EZYW/vvY/z6zrhrOdCRLi9csH4zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXEH6pBC; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786675814; c=relaxed/simple;
+	bh=eR3jUjuO1Za+ASq0DovLqz8rhT6iu8+6w/M182r1Rhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lzvhThsUreTT3bojtK4NQ3Bw9XF7zT5OZuIkuHXOck3b3Sa5TlOLnknm9lslFgoGpeJ62B1f9qVzy9xWwEDELOmBurVCMUZSda4dBoMypwPzTaFS1GWO513Ff0Im0Nbu6v33PrtistuQLsm4ihVSz/QzH4i5uLbYUbQyOyqLCYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qICH6FeF; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXEH6pBC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786649112; x=1818185112;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6ckX8TBN9F4koDpmJ3VXPg8frlr2wRrtyoiXs/hAf2s=;
-  b=EXEH6pBCZT1h6t4HhRrBSPgOHCPH1KHS5OM/Y1kj3GWwGvFbxTXkaobg
-   HbrDnz4Oy2hrZ1tYVhWarWgNWlIA/VwvfSN8HyWF23yke+mJGFoKinHVK
-   /qWMwZHcT36ybhCALG4KZEWQXw76+8DTrYi1mitAbR/x2WzJGJGUneBwo
-   UEB+LCCiZpsypX1uijgXV5C+Uanx0d+PliqMmuS22bEIMJOX1A90u/ito
-   1sw2FqQ392BTMYYMySjCfBwWRJ/V/yDWB+OGCc9PaZspxwZeJWcJbrUpu
-   N4RMsfcykybGcBb26yeSt2RwNYxPM0M/b9OaIxhK+qrM344C0/vk+gfsl
-   w==;
-X-CSE-ConnectionGUID: bVqx9nuTS/CgSm5/b+R4/A==
-X-CSE-MsgGUID: ui2VKfUOSRmjB9jH0oek4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="90909157"
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="90909157"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 12:25:12 -0700
-X-CSE-ConnectionGUID: Oqpf11YdSs6L1N3EWL++bQ==
-X-CSE-MsgGUID: Q5MnzNdXTLCvEt61Epmvzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; 
-   d="scan'208";a="269215252"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 13 Aug 2026 12:25:10 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wub35-00000000WM2-2krK;
-	Thu, 13 Aug 2026 19:25:07 +0000
-Date: Fri, 14 Aug 2026 03:24:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jiaming Zhang <r772577952@gmail.com>, agruenba@redhat.com,
-	gfs2@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, r772577952@gmail.com,
-	linux-kernel@vger.kernel.org, syzkaller@googlegroups.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] gfs2: validate stuffed inode size before unstuffing
-Message-ID: <202608140317.5gzCSRj5-lkp@intel.com>
-References: <20260705140620.1732914-1-r772577952@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qICH6FeF"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8efbafa1bacso2861726d6.1
+        for <gfs2@lists.linux.dev>; Thu, 13 Aug 2026 19:50:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786675812; x=1787280612; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LRwc7YlERJIorjY1Ibj5XixURn1upo7Jd/C+eZrxYAo=;
+        b=qICH6FeFHJoVjIE1GaZ3gTh4FXjM8hX5cat4+JfXkiMVBxPc5exSDdOAg5rtOVgSEj
+         a4CT/tBH39Ohb0dedloa7EsRs1mx4H8hxF8detohMx7Z4eZ+6u28lufBlg4a+0FCxDkY
+         q1uEOSYlBrNLKioUhOQ0LZw2SCx094wn2llbyeM7T6LWMnJjc4nOisWlajm0LSLqgS+m
+         H4uap4odB355Lo9Fues+tInKd5zyRpw5eJJT77axStd17KyMKBym8zlqHfIAJCjpC1HX
+         EbNkDPoH1yGFM6p8rWTDOoWkMJteNJN5BhOjTEJu4EoErr8imPQRt04LvsUwMyS8WAnT
+         xI1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786675812; x=1787280612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LRwc7YlERJIorjY1Ibj5XixURn1upo7Jd/C+eZrxYAo=;
+        b=Fdkl7Bq1mmloEh6R7ZTtPWjSLZnwAnSrYTjm2yYYEQ4A/Xi63TlVMvUt88pj/i+GA9
+         8ci1qZsjjPXL6p2vBdmCdonofP0QdA+UrWmS14v9qsUR1kTyk3jCI1mxqeJKJmVbAGkF
+         XCHhR8MqAnZOy5dwtaa5jot4piXLe94KHqy/iq+NlVBdJtbs4m+xpXjowX5eAUIwJHd2
+         Vo5OZMrtohrgCn38s5RKsB8zHE28ARjjcEYPX7aH2CTHTULLoQkSvSDrsLAbY+hrv7Ho
+         nAj9XhubD8MlpD4ZcZf91KBmjWB6WWcLR0c0nLqtTQCcQfe6cr8YkekagsHfJYEgMsUr
+         stZg==
+X-Gm-Message-State: AOJu0YxKsHM2stBYtodmJeZQmes3HSssWMZpmHdgZoeDRrkjNmwHie4S
+	kLl4/Z5mgLLPDP4iWNkmvfA8may1Ieu/zhYbDE3nJpAlHWbmStjzUh97
+X-Gm-Gg: AR+sD11/PVCX54gJro17PfAH4590hgBz2LLDLIThAeSsx9aC20iGm7O+3jy3xV0Oe6+
+	+vQkrSuIvbN4RrYaEsftVS9Ty8weTb3LrXildEh+o5Kib49L7aJjRigVLE8dusJOG3jZ+p3/rJi
+	X8cPSevWhybHcsg7P5HjmH3cpD09AIFeTK65lghlVMhp8wzd2pe6pCHWrjpPr7NR48VGfvOCT/I
+	4mtNf75BpquKQfjmBuuD0mb5U2xyK6rHOVzbc+F2qBwNpmqPs5MyQpBHn0UnvFk5uqoobqN3VJJ
+	6TndIHlXcbniOET7ygZpOSi4heAY3cJDjNgdbd6iZ2CVgDmmWvRL69lOqzZzhLjTZIPakt63+XI
+	YQlC35mA/yI177iFJYyrFn6gk+vCSDh1Lw59PHHWQi0RTcgd6JlL58oRLNmQajkFJ8VbwrIszxo
+	AZHx2SD6rNbnARW+QYce8Rlc9yOkJHoOsJxq8dIEQQysfb+GvtnSUj3XXyyPZOWWx90WKW+76rG
+	V36Q9ctNRfP5M8apg==
+X-Received: by 2002:a05:6214:5402:b0:8ef:aad6:dada with SMTP id 6a1803df08f44-90a91d4a10fmr34127936d6.20.1786675811868;
+        Thu, 13 Aug 2026 19:50:11 -0700 (PDT)
+Received: from i4-l-hqh5357-03.ad.psu.edu ([130.203.139.71])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a935a2bf4sm4949026d6.49.2026.08.13.19.50.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 19:50:11 -0700 (PDT)
+From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Subject: [PATCH] gfs2: Fix use-after-free in glockfd iterator
+Date: Thu, 13 Aug 2026 22:49:33 -0400
+Message-ID: <20260814024933.2791706-1-shuangpeng.kernel@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705140620.1732914-1-r772577952@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jiaming,
+gfs2_glockfd_seq_stop() drops the file and task references held by
+the iterator, but leaves both pointers unchanged. seq_file can invoke the
+iterator again after stop, for example after a bounded read followed by a
+rewind.
 
-kernel test robot noticed the following build warnings:
+The next start then drops the stale task reference again in
+gfs2_glockfd_next_task(), and can similarly drop the stale file reference
+in gfs2_glockfd_next_file(). A duplicate task put can queue the task_struct
+for RCU freeing before fget_task_next() uses it.
 
-[auto build test WARNING on gfs2/for-next]
-[also build test WARNING on linus/master v7.2-rc7 next-20260812]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Clear both pointers when releasing their references so later iterator
+callbacks cannot put them again.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jiaming-Zhang/gfs2-validate-stuffed-inode-size-before-unstuffing/20260813-232845
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git for-next
-patch link:    https://lore.kernel.org/r/20260705140620.1732914-1-r772577952%40gmail.com
-patch subject: [PATCH] gfs2: validate stuffed inode size before unstuffing
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260814/202608140317.5gzCSRj5-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260814/202608140317.5gzCSRj5-lkp@intel.com/reproduce)
+Fixes: 4480c27ca3ea ("gfs2: Add glockfd debugfs file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+---
+ fs/gfs2/glock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608140317.5gzCSRj5-lkp@intel.com/
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index b8a144d3a73b..283c5701dc1a 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -2734,10 +2734,14 @@ static void gfs2_glockfd_seq_stop(struct seq_file *seq, void *iter_ptr)
+ {
+ 	struct gfs2_glockfd_iter *i = seq->private;
+ 
+-	if (i->file)
++	if (i->file) {
+ 		fput(i->file);
+-	if (i->task)
++		i->file = NULL;
++	}
++	if (i->task) {
+ 		put_task_struct(i->task);
++		i->task = NULL;
++	}
+ }
+ 
+ static void gfs2_glockfd_seq_show_flock(struct seq_file *seq,
+-- 
+2.43.0
 
-All warnings (new ones prefixed by >>):
-
->> Warning: fs/gfs2/bmap.c:55 function parameter 'size' not described in 'gfs2_unstuffer_folio'
->> Warning: fs/gfs2/bmap.c:55 function parameter 'size' not described in 'gfs2_unstuffer_folio'
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
