@@ -1,298 +1,144 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013049.outbound.protection.outlook.com [40.107.201.49])
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718B32FD1AA
-	for <gfs2@lists.linux.dev>; Thu, 20 Aug 2026 01:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787189723; cv=fail; b=U1Blc7WbYWozd2K4QW+HQgvl/vZtcujDoEeA5nfy4ftg5rHE70e3vf4R6lScF8fhEL/CnfvIe1wQXwGYSydZ/caJapJytCdrp8gdZN3hSF6X41YRMFjICtxqraNfFVIysXqCZbikPHZTV4JEOt+aY3uEIGIEd7X6kR5r3OW/xEg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787189723; c=relaxed/simple;
-	bh=VI9+2+8wZjUa7JAQ7DXJXPUKY0PVW35ZEW4A5ckR7xU=;
-	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:References:
-	 In-Reply-To:MIME-Version; b=UtI61W9tk+YOvYsxWQe/XelfQPUt8ryT0eKRer9yfJEmsEWEosRw3ScpAxZLmgOV9tuXX8AacYqVREtEM4wqbZflGc8ifOZBJqaCt891H/Wk6/nB+5vYJVCO7nA2MrNr7K82s3m/eAApGZ9yChGsiRdHAqHY4nA0evTpvBc4WDo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a+1pmHiT; arc=fail smtp.client-ip=40.107.201.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BB0376A12
+	for <gfs2@lists.linux.dev>; Thu, 20 Aug 2026 04:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787199786; cv=none; b=kN26AiptzAbgDfT82Q+fjhWlf3Ao60OvArX221gPlUZtZGWBTPkSwhxZqRh4XCI1aR+C8i08n+zd8PlanPkseyRbsCzvJYzhRGBVfm9ROeHLH6uQIGWVRiHjTQKHyQV/M1LTQU1g+NmCueQGhF0nillCK9B6yLqqWaQ5F7DeIs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787199786; c=relaxed/simple;
+	bh=6BlpT8JN5aJlHP7+FCNsHkF2VI/kIKNpCjTjsd3gH+8=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=a3yOysPz61KARrt7cn0r+ACENKVP/rJg6iY/uwoz6pFRiLzOY1SeViZ9reWZ8amADxWIbS8y5ewXiNUUSEMLCYAS5EG2V9dNAtTundTigBrcz03TX0FWJUCK7o+jeHDnpQiH+/WJPAaQ3AU62+wkMN5dppm7qOjHD83mo58Qy+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=AYbTuFhY; arc=none smtp.client-ip=162.62.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a+1pmHiT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EpeWjUlWtrqzRz0obPk2ikVib7qO4NNhqsvStuIDquLqwLeect0w+u4YTrvcygHCmmPHgVboH5t5HiaFPmlJGzhoyxbHmnbRSou6Bd3sOaL0zDO/Zc286o0qGB2UwB/TlEtBFXwduOSvYjXPojTwcKlnwXQjOjwb5V8eh4CPTLM+HU3GcX/cTEyJ3wmvgkqOOYv2usgD5PnkHGJOVL34YGxHRd/at82VpXaPG7YOCbJNXfMf8mTkMgo0eEuCflIYP5u4otXE0vM60LtxpI2x9Fra6ZhBZ90VO8z5EC0nmdfc+g/PCOwz8OODpe4AFys8P5ugZIht239Jtkbjgwz2iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wb9cq9xFl+iZwFMULQrdIc3QLx1Te8+93RQTxgSZ1IM=;
- b=hLrfpm+LDU+xR02XNUjfPkQ+dPO6zdSt49faHlF3e52FqCdgmo7RWV5IDGwBvzZYFvfQbitFtm3w3Tc3AAElkFD0U9uQdmejraRyVTOCVWFSs2UKBWjNX0xg4q3YoNVBwhR1OUKsi4vu4Tdap2G0f6HR7G7e2fqp7TKpvjOIRvUA05U5zvFB8W0TJCkE7HBBxdBnUjTLqLkJu1uXdqGBtwue9LqGuZPI0G+YZENMfvkESaUtGk51tcUBMLD5wYQ8mEiKlm+8xohA0pWZjqViTZKFQk91B2spJYu0ySTzlIFmdHUgQeij//dV6B2qxCycujGkOqNZzfUDa8xUUweWRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wb9cq9xFl+iZwFMULQrdIc3QLx1Te8+93RQTxgSZ1IM=;
- b=a+1pmHiTzpcFr9dDV/en+O2VJTg8VlHbMWKEAENsts3FYx1XmOF5+3LlBUSm4hJMSNSyIajITwzxZXPTIYdch4l8qbl/jX9+ktNzioRcinopiHzAf22xz0DpQhOTRfnfHFCcMQ/W4sl+dVSIGexpLwS5gePm5x3hPJqGVBtgw2kQPRfq5ok1dlrzlRFOEJ+UGKDYztWs60XJGlQekvyAbU8VOP6PtUqDsVYI5kohIi0WuRO7ff0eI5GUrKVgNfp8fqgwIhnVXmISM/BhWi+YMGiGUTkxt7/lt4v0DU+YXiT3f8aTcQ5WJam9QZNHa5arx91eHFTHWOAoQy2/5oEk0A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS7PR12MB5741.namprd12.prod.outlook.com (2603:10b6:8:70::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.8; Thu, 20 Aug 2026 01:35:06 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
- 01:35:05 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 21:35:04 -0400
-Message-Id: <DKTDVK2AL7WA.QI1IO4DKEQJ4@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [syzbot] [mm?] [gfs2?] WARNING in read_rindex_entry
-Cc: <apopple@nvidia.com>, <byungchul@sk.com>, <david@kernel.org>,
- <gfs2@lists.linux.dev>, <gourry@gourry.net>, <joshua.hahnjy@gmail.com>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <matthew.brost@intel.com>, <rakie.kim@sk.com>,
- <syzkaller-bugs@googlegroups.com>, <ying.huang@linux.alibaba.com>
-To: "Andrew Morton" <akpm@linux-foundation.org>, "syzbot"
- <syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com>, "Vlastimil Babka"
- <vbabka@kernel.org>
-X-Mailer: aerc 0.22.0
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="AYbTuFhY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1787199774; bh=OXRmnuz5ZMfJwMTMAGg3K+NGWRx+85asi7BTWGREPBA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AYbTuFhYPUIHpatitmCPSCKe0rzgAFVMou3ILS88I/mGMR+luvIz1SrgaOvj3TUzF
+	 zE6QVnWOtoe7tULFyKVZHyQdv+Jx8QWruNCjldgisLTfXPTS9Biv01ipU648rUFEz3
+	 817PZAIrjry0rp8QivnqLj/MbRpj9eQ1AuVdb0Yw=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 56603215; Thu, 20 Aug 2026 12:21:38 +0800
+X-QQ-mid: xmsmtpt1787199698t5wm9axdy
+Message-ID: <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJ+U3yi7+TQIx+TTklNSKs7GKtNTXxTWC3i/vcI1IjR3MIm6ywSJ
+	 Tb6dXO9jMLfX2bpQAU4jnavDKAq7oZ4qQDxSjDD7xpR10SkHJbOUsuNmA151uD/FEj3L5L22+tdP
+	 AtqVasGWVmJUol+/ySSLTdx+qI1AoPijMEPVbWeNSqh2j5RD/ZiESgF1EAbNjZFQFQF2Ujr9afFj
+	 nAYBK1sdmWxFGzUznAoR8W4skNqh72ElKhbK1cUw80N4JeJDleq3avnpB2wwKpJT62/ZP2H1n+c2
+	 JyeqV4FfdN1trgxhIcqeiRWuhr0VSrxU6gm0QeFSRY2+D/ENhPQChCNcrX5svWy/tEHU1hfeL/ZQ
+	 8MA9zHWql28CXiqlBwwyl37yVc/JbyjoSr3rVjgKxjFIj4zbBj08C8QDov1wmOY0csLgXds3NBcx
+	 DcWbs0u1qP9F0KTLwQBcAW2Cxfi3hOLOXI0kzecBA7POI05azWXm7qq7fzXclUqr3gXlFrQBEQrG
+	 nLcwFpvNkm59nIObbjkuFDhEgHiqSP4YZP1BlLli6dd/QblUdGjcQqfNDwFXiNWmTiOdqolnCzdV
+	 gW7y2GLN+ofuQ93Uf60lTfF1e6xxR+/HdGuYtMcI9tWaS2nUDfYDm5hb1X6KIUA9rK9KOyX3DL/+
+	 ueNkfZSG7k25rRYA/zoHAWhEMCpI/6KAlpBVrU5dTDmYOHwf6FuRkOuonejXfB09UV4+oeSnn9kf
+	 H5f/CnlZgOIsNA1SYoXMRBCmrw0ub4qZQsffB64J4aV1NiUPE83Ox0SOo79oAan0yhHGUWkQeG4f
+	 +ObXrDqKeFubqUDTo/ZwxMA6iu17kbZkXiKHEo7lu4vCIDDx4sMyC4pDo5GGU7gZLTb5qOn0Zk6R
+	 BYhPmM7h4soiD6YOzB2aCBP2toVFGyMrx9Dy/jTjF/3RR3W6y3bHIPV1oEAHC4Bz5wOKulUvRU5R
+	 FR4zcqHQDRYruMFl3honc/q3QaCqNjQZpxc+FEeUyasrWzOw1cBDw54/6fSvU+cBNmK4qUbhbAxl
+	 tJEZ56/T7HyQsM2mQ7F9aDS8kbiOwXXlgMrbE+cWxxbP2hNdF+iNBawZHKhFNUWeyv3esfgvlmYO
+	 rWk8l4
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	swhiteho@redhat.com,
+	akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	byungchul@sk.com,
+	david@kernel.org,
+	gfs2@lists.linux.dev,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	rakie.kim@sk.com,
+	syzkaller-bugs@googlegroups.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com
+Subject: [PATCH] gfs2: valid the length of rgrp header
+Date: Thu, 20 Aug 2026 12:21:38 +0800
+X-OQ-MSGID: <20260820042137.518834-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
 References: <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
- <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org>
-In-Reply-To: <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org>
-X-ClientProxiedBy: MN0P220CA0004.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:52e::15) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS7PR12MB5741:EE_
-X-MS-Office365-Filtering-Correlation-Id: 570c8c1d-14d1-4d9b-59c8-08defe5b432a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|10067099003|56012099006|6133799003|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	1oohi+GHpsei+hk6RW2vQcs2C3g9vNoRZ3yasX/X8mst6902NkGMRAgNQR5LBwUn8o9I8QJSEZC+GrwvJCD/gFKIEbxdF33lHTcjtx8UkMkOAiYgf60i+Jk4pAD0ORd//QmTdNj2lfqrYh4QD6sqi4DuLr1J9ldVnU+33rhv7GG3af5yY7vBDFMGb69iVqRxRWBfGNeGpdWDWbG7/o3ltI+AkbeL6HfYUFrZAyQd4kEWXgNvnRtEPWdBBHYScoNz14dps2thtg92WloYuELN+e461Ho9Bm/nBQSutm+QoH9jkGGLip5a8HVmx0DuDBbaFI1zXLxj5gopBM/TIvTFnVLS+kHZm7H3hWEZXHY1VqQ03CvW3ghuGgcTWU05Ps2bvT1hBhFe8GFmUvIQwgiAVe3Ju9rkd3CclH7UkbDtdCzhLbQoo50bH2Bie/IduqUdQtXRx4PnNKjjctc6pqLXBSBeP/7ANWpWnBF12b+HMqObExSbIv0NYlAoFyvsxTE4Q/cKC4/4PrkofVXz8d0MKBRsx6qZlxFCFBDMVzFXBWsK59nLmfIaNPbYigGdurdogntFpAUBZhevnwqB1se1ukGEaqfXCNATzmbAG/G8mudB/HjRc/JW/DIU9Fk180RNXRA9zj1CXI+2j28dIj5vaIiheVivwgY9KEsPq75sSkA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(10067099003)(56012099006)(6133799003)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VXN4NjRMQVcyeURjSlVRazUyUlFrU2Jvb21iOFFkUFROK09CZ20zNjFzVlN6?=
- =?utf-8?B?SGNoL3F1UFNFZ3VDV3hXUkFDbEZscXZVclNuT25xTVRrUklCWktjbWdnN1JT?=
- =?utf-8?B?aHhwMTJ1ZTR3YnFEYllXY2phUUdqRWhSbExzaW1PeWVQcUVDQWFOakdXSXNt?=
- =?utf-8?B?ZExYeU9iSkpjL3l1WjB5WEhqNEQwZXhTMFlUUk03Vk0ycHFTR3hnZTYzV3lh?=
- =?utf-8?B?SFhZUEhEV0lCYURFQTFhUldIUkdFWE1yWmg5MktnL3FwakVqMHNsaUJCUjZ0?=
- =?utf-8?B?UG5scE1rOWN3ZDhsOTBoTUgxclUrTUJ6QmtsRWdncHJzQ1hYY0NBN0tPalpM?=
- =?utf-8?B?STFHNE1IREJyWmNnVVdacUp4akRzS1NGQUFmNjNqSktadFF6azBDcFh1elF1?=
- =?utf-8?B?aExNdlBoWXJTQnc1QnA2Y3hsbEkvTWlyV0pVV3lvdlNCU04xbXUyTzN4aGNB?=
- =?utf-8?B?b1VLMUg0Qy9NUHQ2aGdFd2lEWVBEcDRsVWQvV0FnZSs5cFR1UHM1c1hJUmRN?=
- =?utf-8?B?OG5iM2JsT0NNNkNDMXVNREx6SFpTWnhNZHBrbGZ1NGx0Ui9BVS9jV1FZRVJL?=
- =?utf-8?B?VFZsb2V0b2dVb2VHZ1Z3YkJvODN3WDMxckt0bHBRV2pyOHdOaGlpKzBORXFz?=
- =?utf-8?B?aW1uMTRHV0NNemc5SVVWY1FzYzlITEJKL1VTZGl1WjJhby9ZRTJPTUV6dk03?=
- =?utf-8?B?eFZCeDZFQW9Sdy8xZ3lMeXFTcVlCeEg3amdOMWQzRmVFUHpSanQxb2JrLzc0?=
- =?utf-8?B?WFFCRDFsaElMamxxNys2b3QralZkUTNYMWIzNEI2b0ZTRWtJM0pUbHB5MmYy?=
- =?utf-8?B?Vk1jZnlSZFpiRktsSU9WQTN6VGNsbk9KeEdqRWc4MVZyWGExQzFOT0d3VmxO?=
- =?utf-8?B?SXlRbEJVVzVWc0Zua0FyOGNZQnhaMkR6L2dNVmN4eGpjMTVtZFd0SDJNRVFr?=
- =?utf-8?B?d3hXc2EwV1M0WlZyaytUeTRySkxqeXBGYitsVUFnWG1oZGF4dUFNZzArUUFK?=
- =?utf-8?B?d1F4K1hTTUJVeUY0OWlFS3N1K2ZBWDRtZVFMdHpYVkpHTDlsVHFTdWlxVEhp?=
- =?utf-8?B?d0VGWElzUVVUZzV5MHhwZEgxeUYxT1lzejBrOFNGeXBqaThRTjRGL2ExZ0Za?=
- =?utf-8?B?S09OYWFHdFB5eFU2ZGV4WkpJa2xlRjB1TTdsRlRCcHhJMCtlMGRVWFJzWXVZ?=
- =?utf-8?B?TWhHMUN3NFMxL2svd3pST1cwOHhoQWY1R1RQWFFZZS9sOXhUZjk3SXVPaDBt?=
- =?utf-8?B?WkZQVW1VVkd2STlsMHFxaVlCKysveG9ZUEpRUXZwQWRiWm5ObDVYdkdMYlF0?=
- =?utf-8?B?SWhySWpSMGtOR29MaVY1dGt5VVRwSjRYR1BtSW1rVE9XRzcyZVovY2h5b1Ro?=
- =?utf-8?B?SkZIelQzMXkwQXRRNTU5aGlJaW5rU3ZXVS9FK1Y5dkpXYXBMTXY2UTRwZC9v?=
- =?utf-8?B?Rk9YOE0zZkhFdzUrWFpFb05IeEI5a0VVd2I4akt4bFE2cEo0UVdKRVV4ZndU?=
- =?utf-8?B?MGlOYVdvY0hTWXhoOTIxbmNOK2pNM2pQVENaeE8zc3J6MzRsc3dlU1U4U3JJ?=
- =?utf-8?B?RE5lU0JYZENiRWduSWNiOFU2Y3R1ZmduK24rZVR3d2lObk5FaWpjcXRySnRF?=
- =?utf-8?B?eHZjMFcwZzM4dmFVRUtOd0l2bE5aWlZZS1V3T0MzWUhhRE1KZ3NzdUxPdGxS?=
- =?utf-8?B?NFZKVUtHRWVpQWg5UmM5QnIvK2NYMXFjVng3R3FLMUpkMGRJcXJPZjI3RU9a?=
- =?utf-8?B?eU9PeWNkQlRyM3NXeko1SFRWTDBVbEJ6ZnhRVVpsOXlScGJKWHFhZElselpt?=
- =?utf-8?B?ZzJRVk1xTUNJdzZ3SStsMHk3aThOU2dtdG04aVp3L3hvcXRDSEhUKzlOdnVC?=
- =?utf-8?B?YmVmYnZqeGlWQm5LcHFZMEc3bWE5RWcvdGxDbDN6UnRnVU1seERTRXNaQVph?=
- =?utf-8?B?dC9ETzJEZ2pzQlhWSFE0Q0xZQlp5NG90YVdSSGs1MDZDZzVXZ1NzYUc5WUs5?=
- =?utf-8?B?ZFVUa2NFVjVjVUZCNjhsY1ZPZXJKOVJmK3A4a0N5a1BTZDF0WFNiSzVSams5?=
- =?utf-8?B?cXlKZW9oYVlGa29LMDUvUlp4NnhCeUtFTUw3M0NDQVlnWkdaSjVESS8rVm8v?=
- =?utf-8?B?cGZYMjVzS21kcDNNeVI4bm1MSzk2OE9hUGJOVVcybzJRaC9uUm56WlpvT1Q2?=
- =?utf-8?B?VEpFRFJsaWpzZVpENnBkNkZaWlJnQXJWZGwyaHRwVHhzZG4vMDFqM1JXVWtM?=
- =?utf-8?B?ZzBHMzVFaFpRdTBRTnYvdGNwT3NsaTFyWXR5dURXS2JXQnhPMkVBd2tTSWhZ?=
- =?utf-8?Q?ZTjEWpCOLB1Ac29M/c?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 570c8c1d-14d1-4d9b-59c8-08defe5b432a
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 01:35:05.6644
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N0advEY9Hfd8e4aj7lkxC0ooJ1dib/bURwOLrWgJCfGjluy/DN9pTgOuHoObv3hh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5741
+Content-Transfer-Encoding: 8bit
 
-On Wed Aug 19, 2026 at 8:14 PM EDT, Andrew Morton wrote:
-> On Wed, 19 Aug 2026 15:49:42 -0700 syzbot <syzbot+9d20c3ad7d29227de28d@sy=
-zkaller.appspotmail.com> wrote:
->
->> Hello,
->>=20
->> syzbot found the following issue on:
->>=20
->> HEAD commit:    15ef2f78c49d Merge tag 'input-for-v7.2-rc7' of git://git=
-.k..
->> git tree:       upstream
->> console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D108712795800=
-00
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Da0fdc3b56674=
-6377
->> dashboard link: https://syzkaller.appspot.com/bug?extid=3D9d20c3ad7d2922=
-7de28d
->> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for =
-Debian) 2.44
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1487127958=
-0000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D100d2a255800=
-00
->>=20
->> Downloadable assets:
->> disk image: https://storage.googleapis.com/syzbot-assets/c2a8c7d3a889/di=
-sk-15ef2f78.raw.xz
->> vmlinux: https://storage.googleapis.com/syzbot-assets/2da78afed345/vmlin=
-ux-15ef2f78.xz
->> kernel image: https://storage.googleapis.com/syzbot-assets/c4ffd97e4708/=
-bzImage-15ef2f78.xz
->> mounted in repro: https://storage.googleapis.com/syzbot-assets/eaa412081=
-2b6/mount_0.gz
->>   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=
-=3D17f52a25580000)
->>=20
->> IMPORTANT: if you fix the issue, please add the following tag to the com=
-mit:
->> Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
->
-> Thanks.  Mounting an intentionally corrupted fs image, I assume.
->
-> It appears that GFS2 forgot to validate the `ri_length' which it read
-> from disk.  That gets used in compute_bitstructs()->kzalloc_objs() and
-> the memory allocator didn't like the excessively-sized allocation
-> attempt.
+When mounting a deliberately corrupted filesystem image, an excessively
+large rgrp header length is used in a call to kzalloc_objs() within
+compute_bitstructs(), and the memory allocator cannot handle such a large
+allocation request. This triggers [1].
 
-+Vlastimil
+Add a check for the rgrp header length to avoid [1].
 
-This makes me question my recent patch[1] that returns NULL for kmalloc
-sizes bigger than KMALLOC_MAX_SIZE. It masks this issue.
+[1]
+WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2dc0 mm/page_alloc.c:5280, CPU#1: syz-executor256/5629
+Call Trace:
+ alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+ ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
+ __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
+ __do_kmalloc_node mm/slub.c:5322 [inline]
+ __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
+ _kmalloc_noprof include/linux/slab.h:992 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
+ read_rindex_entry+0x4a1/0x1250 fs/gfs2/rgrp.c:931
+ gfs2_ri_update+0x6f/0x3b0 fs/gfs2/rgrp.c:1001
+ gfs2_rindex_update+0x40b/0x480 fs/gfs2/rgrp.c:1051
+ init_inodes+0x1f78/0x2790 fs/gfs2/ops_fstype.c:872
+ gfs2_fill_super+0x1d3d/0x2cf0 fs/gfs2/ops_fstype.c:1250
+ get_tree_bdev_flags+0x38c/0x620 fs/super.c:1640
+ gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1332
+ vfs_get_tree+0x92/0x320 fs/super.c:1700
+ fc_mount fs/namespace.c:1198 [inline]
 
-Probably, we should use __GFP_NOWARN for the GadgetFS warn[2] like
-Andrew suggested, since the caller does not care the NULL from kmalloc()
-is caused by invalid input or ENOMEM.
+Fixes: bb8d8a6f54c1 ("[GFS2] Fix sign problem in quota/statfs and cleanup _host structures")
+Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
+Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ fs/gfs2/rgrp.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-For this one, GFS2 needs to validate the ri_length.
-
-
-[1] https://lore.kernel.org/all/20260817-limit_kmalloc_size-v1-1-5bef487701=
-cc@nvidia.com/
-[2] https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@google.co=
-m/
->
->> gfs2: fsid=3D.: Now mounting FS (format 1801)...
->> gfs2: fsid=3D..0: journal 0 mapped with 18 extents in 0ms
->> gfs2: fsid=3D..0: first mount done, others may mount
->> ------------[ cut here ]------------
->> 1
->> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2d=
-c0 mm/page_alloc.c:5280, CPU#1: syz-executor256/5629
->> Modules linked in:
->> CPU: 1 UID: 0 PID: 5629 Comm: syz-executor256 Not tainted syzkaller #0 P=
-REEMPT(full)=20
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS =
-Google 07/16/2026
->> RIP: 0010:__alloc_frozen_pages_noprof+0x2427/0x2dc0 mm/page_alloc.c:5280
->> Code: e9 8d fb ff ff 31 d2 be 28 12 00 00 48 c7 c7 a0 64 e1 8b e8 5b 8c =
-69 ff 2e 2e 2e 31 c0 e9 02 ed ff ff c6 05 54 c1 9d 0e 01 90 <0f> 0b 90 e9 6=
-f df ff ff 48 c7 c7 80 ae d3 8e 45 89 f7 44 8b 74 24
->> RSP: 0018:ffffc9000345f0e0 EFLAGS: 00010246
->> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
->> RDX: 0000000000000000 RSI: 1ffff9200068be36 RDI: 0000000000040d40
->> RBP: 000000000000000b R08: 0000000000000005 R09: 0000000000000009
->> R10: 000000000000000b R11: 0000000000000000 R12: 0000000000040d40
->> R13: 1ffff9200068be74 R14: ffffffff9b759444 R15: 0000000000000001
->> FS:  000055556d263400(0000) GS:ffff888123ee1000(0000) knlGS:000000000000=
-0000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 000055886dbe9978 CR3: 000000003394d000 CR4: 0000000000350ef0
->> Call Trace:
->>  <TASK>
->>  alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
->>  ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
->>  __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
->>  __do_kmalloc_node mm/slub.c:5322 [inline]
->>  __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
->>  _kmalloc_noprof include/linux/slab.h:992 [inline]
->>  _kzalloc_noprof include/linux/slab.h:1309 [inline]
->>  compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
->>  read_rindex_entry+0x4a1/0x1250 fs/gfs2/rgrp.c:931
->>  gfs2_ri_update+0x6f/0x3b0 fs/gfs2/rgrp.c:1001
->>  gfs2_rindex_update+0x40b/0x480 fs/gfs2/rgrp.c:1051
->>  init_inodes+0x1f78/0x2790 fs/gfs2/ops_fstype.c:872
->>  gfs2_fill_super+0x1d3d/0x2cf0 fs/gfs2/ops_fstype.c:1250
->>  get_tree_bdev_flags+0x38c/0x620 fs/super.c:1640
->>  gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1332
->>  vfs_get_tree+0x92/0x320 fs/super.c:1700
->>  fc_mount fs/namespace.c:1198 [inline]
->>  do_new_mount_fc fs/namespace.c:3765 [inline]
->>  do_new_mount fs/namespace.c:3841 [inline]
->>  path_mount+0x7d0/0x23d0 fs/namespace.c:4161
->>  do_mount fs/namespace.c:4174 [inline]
->>  __do_sys_mount fs/namespace.c:4390 [inline]
->>  __se_sys_mount fs/namespace.c:4367 [inline]
->>  __x64_sys_mount+0x293/0x310 fs/namespace.c:4367
->>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->>  do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
->>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> RIP: 0033:0x7ff9e8de99ea
->> Code: 56 53 b8 9d 00 00 00 0f 05 83 f8 ea 75 a2 c7 05 a4 30 0a 00 00 00 =
-00 00 eb 96 e8 51 05 00 00 90 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 f=
-f ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
->> RSP: 002b:00007ffc770eecc8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
->> RAX: ffffffffffffffda RBX: 00007ffc770eece0 RCX: 00007ff9e8de99ea
->> RDX: 0000200000000040 RSI: 0000200000000100 RDI: 00007ffc770eece0
->> RBP: 0000200000000100 R08: 00007ffc770eed20 R09: 0000000000000000
->> R10: 0000000000008cd3 R11: 0000000000000246 R12: 0000200000000040
->> R13: 0000000000000004 R14: 0000000000000003 R15: 00007ffc770eed20
->>  </TASK>
->>=20
->>=20
->> ---
->> This report is generated by a bot. It may contain errors.
->> See https://goo.gl/tpsmEJ for more information about syzbot.
->> syzbot engineers can be reached at syzkaller@googlegroups.com.
->>=20
->> syzbot will keep track of this issue. See:
->> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->>=20
->> If the report is already addressed, let syzbot know by replying with:
->> #syz fix: exact-commit-title
->>=20
->> If you want syzbot to run the reproducer, reply with:
->> #syz test: git://repo/address.git branch-or-commit-hash
->> If you attach or paste a git patch, syzbot will apply it before testing.
->>=20
->> If you want to overwrite report's subsystems, reply with:
->> #syz set subsystems: new-subsystem
->> (See the list of subsystem names on the web dashboard)
->>=20
->> If the report is a duplicate of another one, reply with:
->> #syz dup: exact-subject-of-another-report
->>=20
->> If you want to undo deduplication, reply with:
->> #syz undup
-
-
-
-
---=20
-Best Regards,
-Yan, Zi
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 5988a165a830..53d097ce668e 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -899,6 +899,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 	struct gfs2_rindex buf;
+ 	int error;
+ 	struct gfs2_rgrpd *rgd;
++	size_t size;
+ 
+ 	if (pos >= i_size_read(&ip->i_inode))
+ 		return 1;
+@@ -917,6 +918,13 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 	rgd->rd_sbd = sdp;
+ 	rgd->rd_addr = be64_to_cpu(buf.ri_addr);
+ 	rgd->rd_length = be32_to_cpu(buf.ri_length);
++
++	size = rgd->rd_length * sizeof(struct gfs2_bitmap);
++	if (get_order(size) > MAX_PAGE_ORDER) {
++		error = -EINVAL;
++		goto fail;
++	}
++
+ 	rgd->rd_data0 = be64_to_cpu(buf.ri_data0);
+ 	rgd->rd_data = be32_to_cpu(buf.ri_data);
+ 	rgd->rd_bitbytes = be32_to_cpu(buf.ri_bitbytes);
+-- 
+2.43.0
 
