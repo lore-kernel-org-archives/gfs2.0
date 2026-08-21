@@ -1,317 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E726E357CEA
-	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 12:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4EF471D09
+	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 12:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787316597; cv=none; b=KMUo26giXQ5Svu2l7MxxLHqngognbje2OMjGTFquRaxk1loBPatlebuOTdeeVoHbMa3/Un5OvUqX69XlHE+7d4ZZGY0pe0dyk2p4REjjv85lygy3RoBsZJvJH+TOFWicQ4VfB/Gav/sqmMAC4U1PKFgOAo9TY71+zGduVYdsj+8=
+	t=1787316875; cv=none; b=C1w4rMUkZ4iLgRE8Giw5rOqqmy4hS5A+iwxjGdGsjDzxY3HSd/pwXtqffnXSRVDOzsS6OZiUuRatSkkYwZwcDI48GisGMfElLdPmLaAvxzcOIaJoRZI3bEcL8rmYbp2PkKJfAlOu0PObYzfRxicRjMh2CPg/B8/TgJTo8/UVtZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787316597; c=relaxed/simple;
-	bh=ai7uJ/Bp3B7k7gqjdZG7kEQ3Rd98EsyvAnFZEz0/shU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PIYzqTFEKlaznJzy0SgvU+N80ovv9/3z193y9NKS75rd2OTh4JDqJUaczuhMFQ/X7GE8q6sJ6tOwXbXSoUjTVjfzFW0mjxYMi76GwT+vKCqcGbdkUoJPLpVjc74BwqsGgs+f6cKIvH2ZixfoiLDwIShpYmRril70yM7uXlB1DCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cz5pyGE7; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1787316875; c=relaxed/simple;
+	bh=1qHc1vG+5eFC+XMUvGsfkxVTjPKBUO/DSjc8eaOqMJ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMuG8IFZQ5L2gZetKCUD9s0y3TYkxSDbjuzX4kxidqVQBvzTPBUOPCaI03pGHrC4hdMgRm2PhxS6xIJh9ka0H0utpqUDv40TeCe9vOyGoQOSW2yzd104/h/FPgasTgOqSF2Hu76JBYH8xF4ZBadSRXihNLqw2SZXkZatWz88YFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ClW0ENRr; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cz5pyGE7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ClW0ENRr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787316593;
+	s=mimecast20190719; t=1787316872;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3wsLc+kCmVuiTNnIgEiiFPeO1wE1TwVCD2+t4+B/gEQ=;
-	b=cz5pyGE7BnrrfDpKR8tCWWS5bSRqQx422vIa6c/C8uZCnJbyNnek2dvG0W3qF5cfI9obkA
-	TOyxQvPHdJJr8AdT5a4Iawj6NyJxcZhRXJFJuh2j3aQ1FS8R9qOJMiynM0GIhmDOV9FdWw
-	d0MHTUfqd4iQdNZzjdKSLq8wg5xb3f0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-3raF9grjPtShuaxpPSeESA-1; Fri,
- 21 Aug 2026 08:49:49 -0400
-X-MC-Unique: 3raF9grjPtShuaxpPSeESA-1
-X-Mimecast-MFC-AGG-ID: 3raF9grjPtShuaxpPSeESA_1787316588
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C6DED1955F20;
-	Fri, 21 Aug 2026 12:49:47 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.44.48.197])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E2D5D18005BB;
-	Fri, 21 Aug 2026 12:49:45 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Edward Adam Davis <eadavis@qq.com>,
-	gfs2@lists.linux.dev,
-	syzbot <syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com>
-Subject: Re: [syzbot] [mm?] [gfs2?] WARNING in read_rindex_entry
-Date: Fri, 21 Aug 2026 14:49:43 +0200
-Message-ID: <20260821124944.1648686-1-agruenba@redhat.com>
-In-Reply-To: <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org>
-References: <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org> <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
+	bh=T3T0DA5j0vwcwUo9HIMuCVlwa1ONI5AchHTxjE6rvQY=;
+	b=ClW0ENRr0SKnR1vPRfriR0uw0as8k/CXALmMG9BQsnaHQHARf7jF3kHlTCJB5rGM3UJ6uh
+	hFzf6PxC2P6DzFr08BJBDFBdbL1+KPjR9E42e/fwaajyG7dXvc6Vm/RmZv/ONRKb4V2owl
+	1iC/R3qK5sKQuNkIPVdFCgyCN7edqWs=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-516-NZJeaVrqMEyLX_l0eDN40g-1; Fri, 21 Aug 2026 08:54:31 -0400
+X-MC-Unique: NZJeaVrqMEyLX_l0eDN40g-1
+X-Mimecast-MFC-AGG-ID: NZJeaVrqMEyLX_l0eDN40g_1787316871
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66cebffd238so870212d50.2
+        for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 05:54:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787316871; x=1787921671;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T3T0DA5j0vwcwUo9HIMuCVlwa1ONI5AchHTxjE6rvQY=;
+        b=U8xbuS+LGsIprmXF0r5qdtX7c50VmQWLt8XLnWl3zr1uV0Ocm5nx/dU35xiuyaWPM8
+         RKHbQrC95pPODLEyc07rGQxuqs+naTXOianWfWrB6THmvG4xX1sAbXoIOmDNb6c0hM+R
+         /2zTAImb96QgCqc85HckmgS6WMuRE4NMJLjZOr9ya1hTNXen2cW4Yp1thFRPt0jX7V/4
+         WrY1wvKvakTYUof+OWnfrICYsu3JC4yKFh9cU/ImKtO6z5je+8M1wwmId6yipjyKftK7
+         1qyh14UnLCnZ4lpqITThpx45Ev9SgYdPbbmzuPpva9lS5rUOoc4y/o4W1qzcVwlUmB1U
+         Ywkw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7REJpyVbayU3v5pYj6kBUb+r6nr3IaHT1VUWvYhipsQ3j5zigH2ieLMLLDKxBYEjUuXVw@lists.linux.dev
+X-Gm-Message-State: AFuF++krGB3aRl0xyH4/RcQuN+kBIzJMhvunuHJOBNngEVJsHntqlib5
+	0RboOsiVOairWSpdPgl9TxOZrE6GzJr7ucAtrL1r8v3cHfwmLCqS0/4oj/QOEiFbJdYDxyQlBKp
+	BTpbUWnNJa37Ijs7ogtDaqVH98TDWANATv1LWm47QLrN92eXFXzk1sxxZ2gfTZg5mCucxBD1vVe
+	QKF+Ws8uY7KWvahYuRW3Y5Ve9LQxWG6w==
+X-Gm-Gg: AR+sD13mgf51AVi/gVk/742GAMo86Tt7TG3gmoQQa01wabOCx+mbCXpmagFYGfi+dI0
+	CDq/dCBZmXLuZvEvQkHR5deObDxpH5g6svzCOcbjeYea0k6qffyupmWVMJ8zfV3qdqpcI7gmqwu
+	8XSBwEDl53jyy3Wg2d5anXTgjxKZN9GTjt1qEKYEo57eTUSe0oV5X63Q+QXpZzXGecDeJbIucsd
+	d9f/02HCShnLcMh3m/cX1CETO8A10SRpFpx9AvuVb0a
+X-Received: by 2002:a53:ce8f:0:b0:66c:e3eb:9443 with SMTP id 956f58d0204a3-66ce4ac2100mr1991126d50.31.1787316870689;
+        Fri, 21 Aug 2026 05:54:30 -0700 (PDT)
+X-Received: by 2002:a53:ce8f:0:b0:66c:e3eb:9443 with SMTP id
+ 956f58d0204a3-66ce4ac2100mr1991100d50.31.1787316870126; Fri, 21 Aug 2026
+ 05:54:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 1
-X-Mimecast-MFC-PROC-ID: OHbXSN-_5YkhvZag90mDsf2DJ9YnaodjnRhV0Vlxr5Y_1787316588
+References: <6a863306.ae6ddae5.3da009.0013.GAE@google.com> <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
+In-Reply-To: <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Fri, 21 Aug 2026 14:54:19 +0200
+X-Gm-Features: AcwNN1WdIh2VqMnJFVL8XqYKLmq06uENKjCJ84-TLUojbAOKdvIO7i189zyeTag
+Message-ID: <CAHc6FU4HnRSQmtLyTJsZ=qio7NEBFbkN=Y2GyG46=nn_TYi1pQ@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: valid the length of rgrp header
+To: Edward Adam Davis <eadavis@qq.com>
+Cc: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com, swhiteho@redhat.com, 
+	akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@kernel.org, gfs2@lists.linux.dev, gourry@gourry.net, 
+	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vbhRDgohBQQ-Kwi0C4CLucIbdVT0ieJyf_c98l6fI7s_1787316871
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 20, 2026 at 2:24 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> On Wed, 19 Aug 2026 15:49:42 -0700 syzbot <syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com> wrote:
-> > Hello,
-> >
-> > syzbot found the following issue on:
-> >
-> > HEAD commit:    15ef2f78c49d Merge tag 'input-for-v7.2-rc7' of git://git.k..
-> > git tree:       upstream
-> > console+strace: https://syzkaller.appspot.com/x/log.txt?x=10871279580000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=a0fdc3b566746377
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
-> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14871279580000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=100d2a25580000
-> >
-> > Downloadable assets:
-> > disk image: https://storage.googleapis.com/syzbot-assets/c2a8c7d3a889/disk-15ef2f78.raw.xz
-> > vmlinux: https://storage.googleapis.com/syzbot-assets/2da78afed345/vmlinux-15ef2f78.xz
-> > kernel image: https://storage.googleapis.com/syzbot-assets/c4ffd97e4708/bzImage-15ef2f78.xz
-> > mounted in repro: https://storage.googleapis.com/syzbot-assets/eaa4120812b6/mount_0.gz
-> >   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=17f52a25580000)
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+On Thu, Aug 20, 2026 at 6:37=E2=80=AFAM Edward Adam Davis <eadavis@qq.com> =
+wrote:
+> When mounting a deliberately corrupted filesystem image, an excessively
+> large rgrp header length is used in a call to kzalloc_objs() within
+> compute_bitstructs(), and the memory allocator cannot handle such a large
+> allocation request. This triggers [1].
 >
-> Thanks.  Mounting an intentionally corrupted fs image, I assume.
+> Add a check for the rgrp header length to avoid [1].
 >
-> It appears that GFS2 forgot to validate the `ri_length' which it read
-> from disk.  That gets used in compute_bitstructs()->kzalloc_objs() and
-> the memory allocator didn't like the excessively-sized allocation
-> attempt.
+> [1]
+> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2dc=
+0 mm/page_alloc.c:5280, CPU#1: syz-executor256/5629
+> Call Trace:
+>  alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+>  ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
+>  __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
+>  __do_kmalloc_node mm/slub.c:5322 [inline]
+>  __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
+>  _kmalloc_noprof include/linux/slab.h:992 [inline]
+>  _kzalloc_noprof include/linux/slab.h:1309 [inline]
+>  compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
+>  read_rindex_entry+0x4a1/0x1250 fs/gfs2/rgrp.c:931
+>  gfs2_ri_update+0x6f/0x3b0 fs/gfs2/rgrp.c:1001
+>  gfs2_rindex_update+0x40b/0x480 fs/gfs2/rgrp.c:1051
+>  init_inodes+0x1f78/0x2790 fs/gfs2/ops_fstype.c:872
+>  gfs2_fill_super+0x1d3d/0x2cf0 fs/gfs2/ops_fstype.c:1250
+>  get_tree_bdev_flags+0x38c/0x620 fs/super.c:1640
+>  gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1332
+>  vfs_get_tree+0x92/0x320 fs/super.c:1700
+>  fc_mount fs/namespace.c:1198 [inline]
+>
+> Fixes: bb8d8a6f54c1 ("[GFS2] Fix sign problem in quota/statfs and cleanup=
+ _host structures")
+> Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D9d20c3ad7d29227de28d
+> Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> ---
+>  fs/gfs2/rgrp.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+> index 5988a165a830..53d097ce668e 100644
+> --- a/fs/gfs2/rgrp.c
+> +++ b/fs/gfs2/rgrp.c
+> @@ -899,6 +899,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+>         struct gfs2_rindex buf;
+>         int error;
+>         struct gfs2_rgrpd *rgd;
+> +       size_t size;
+>
+>         if (pos >=3D i_size_read(&ip->i_inode))
+>                 return 1;
+> @@ -917,6 +918,13 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+>         rgd->rd_sbd =3D sdp;
+>         rgd->rd_addr =3D be64_to_cpu(buf.ri_addr);
+>         rgd->rd_length =3D be32_to_cpu(buf.ri_length);
+> +
+> +       size =3D rgd->rd_length * sizeof(struct gfs2_bitmap);
+> +       if (get_order(size) > MAX_PAGE_ORDER) {
+> +               error =3D -EINVAL;
+> +               goto fail;
+> +       }
+> +
+>         rgd->rd_data0 =3D be64_to_cpu(buf.ri_data0);
+>         rgd->rd_data =3D be32_to_cpu(buf.ri_data);
+>         rgd->rd_bitbytes =3D be32_to_cpu(buf.ri_bitbytes);
+> --
+> 2.43.0
 
-Thanks for looking into this.  This commit (attached below) from the
-for-later branch should prevent that from happening:
+Thanks. The patch I've pushed to 'for-later' for validating the
+resource group geometry [*] should prevent this from happening in the
+first place.
 
-https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9/-/merge_requests/8684#note_3716004816
+[*] https://lore.kernel.org/gfs2/20260821124944.1648686-1-agruenba@redhat.c=
+om/
 
-Thanks,
 Andreas
-
---
-
-gfs2: Improve resource group validation and error handling
-
-Validate the resource group boundaries, check against the device size, simplify
-the initialization logic, and check for resource group overlaps.
-
-Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
-Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/rgrp.c | 123 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 65 insertions(+), 58 deletions(-)
-
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index f6048a73e5c3..3ac751eea055 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -745,6 +745,7 @@ void gfs2_clear_rgrpd(struct gfs2_sbd *sdp)
- 
- /**
-  * compute_bitstructs - Compute the bitmap sizes
-+ * @sb: The superblock
-  * @rgd: The resource group descriptor
-  *
-  * Calculates bitmap descriptors, one for each block that contains bitmap data
-@@ -752,84 +753,74 @@ void gfs2_clear_rgrpd(struct gfs2_sbd *sdp)
-  * Returns: errno
-  */
- 
--static int compute_bitstructs(struct gfs2_rgrpd *rgd)
-+static int compute_bitstructs(struct super_block *sb, struct gfs2_rgrpd *rgd)
- {
- 	struct gfs2_sbd *sdp = rgd->rd_sbd;
- 	struct gfs2_bitmap *bi;
--	u32 length = rgd->rd_length; /* # blocks in hdr & bitmap */
-+	u32 expected_length;
- 	u32 bytes_left, bytes;
-+	u64 data_end;
- 	int x;
- 
--	if (!length)
--		return -EINVAL;
-+	/*
-+	 * The first resource group block has a gfs2_rgrp header; the remaining
-+	 * blocks have a gfs2_meta_header header.  The rest of each block is
-+	 * filled with bitmap data.
-+	 */
-+
-+	if (rgd->rd_addr <= (GFS2_SB_ADDR >> sdp->sd_fsb2bb_shift)) {
-+		gfs2_consist_rgrpd(rgd);
-+		return -EIO;
-+	}
-+	if (check_add_overflow(rgd->rd_data0, rgd->rd_data, &data_end) ||
-+	    rgd->rd_data == 0 || data_end > sb_bdev_nr_blocks(sb)) {
-+		gfs2_consist_rgrpd(rgd);
-+		return -EIO;
-+	}
-+	if (rgd->rd_bitbytes != DIV_ROUND_UP(rgd->rd_data, GFS2_NBBY)) {
-+		gfs2_consist_rgrpd(rgd);
-+		return -EIO;
-+	}
-+	expected_length = DIV_ROUND_UP(rgd->rd_bitbytes +
-+		sizeof(struct gfs2_rgrp) - sizeof(struct gfs2_meta_header),
-+		sdp->sd_sb.sb_bsize - sizeof(struct gfs2_meta_header));
-+	if (rgd->rd_length != expected_length) {
-+		gfs2_consist_rgrpd(rgd);
-+		return -EIO;
-+	}
-+	if (rgd->rd_data0 < rgd->rd_addr + rgd->rd_length) {
-+		gfs2_consist_rgrpd(rgd);
-+		return -EIO;
-+	}
- 
--	rgd->rd_bits = kzalloc_objs(struct gfs2_bitmap, length, GFP_NOFS);
-+	rgd->rd_bits = kzalloc_objs(struct gfs2_bitmap, rgd->rd_length, GFP_NOFS);
- 	if (!rgd->rd_bits)
- 		return -ENOMEM;
- 
- 	bytes_left = rgd->rd_bitbytes;
- 
--	for (x = 0; x < length; x++) {
-+	for (x = 0; x < rgd->rd_length; x++) {
- 		bi = rgd->rd_bits + x;
- 
- 		bi->bi_flags = 0;
--		/* small rgrp; bitmap stored completely in header block */
--		if (length == 1) {
--			bytes = bytes_left;
--			bi->bi_offset = sizeof(struct gfs2_rgrp);
-+		if (x == 0) {
-+			/* header block */
- 			bi->bi_start = 0;
--			bi->bi_bytes = bytes;
--			bi->bi_blocks = bytes * GFS2_NBBY;
--		/* header block */
--		} else if (x == 0) {
--			bytes = sdp->sd_sb.sb_bsize - sizeof(struct gfs2_rgrp);
- 			bi->bi_offset = sizeof(struct gfs2_rgrp);
--			bi->bi_start = 0;
--			bi->bi_bytes = bytes;
--			bi->bi_blocks = bytes * GFS2_NBBY;
--		/* last block */
--		} else if (x + 1 == length) {
--			bytes = bytes_left;
--			bi->bi_offset = sizeof(struct gfs2_meta_header);
--			bi->bi_start = rgd->rd_bitbytes - bytes_left;
--			bi->bi_bytes = bytes;
--			bi->bi_blocks = bytes * GFS2_NBBY;
--		/* other blocks */
- 		} else {
--			bytes = sdp->sd_sb.sb_bsize -
--				sizeof(struct gfs2_meta_header);
-+			/* bitmap-only block */
-+			struct gfs2_bitmap *prev = bi - 1;
-+
-+			bi->bi_start = prev->bi_start + prev->bi_bytes;
- 			bi->bi_offset = sizeof(struct gfs2_meta_header);
--			bi->bi_start = rgd->rd_bitbytes - bytes_left;
--			bi->bi_bytes = bytes;
--			bi->bi_blocks = bytes * GFS2_NBBY;
- 		}
--
-+		bytes = sdp->sd_sb.sb_bsize - bi->bi_offset;
-+		if (bytes > bytes_left)
-+			bytes = bytes_left;
-+		bi->bi_bytes = bytes;
-+		bi->bi_blocks = bytes * GFS2_NBBY;
- 		bytes_left -= bytes;
- 	}
--
--	if (bytes_left) {
--		gfs2_consist_rgrpd(rgd);
--		return -EIO;
--	}
--	bi = rgd->rd_bits + (length - 1);
--	if ((bi->bi_start + bi->bi_bytes) * GFS2_NBBY != rgd->rd_data) {
--		gfs2_lm(sdp,
--			"ri_addr=%llu "
--			"ri_length=%u "
--			"ri_data0=%llu "
--			"ri_data=%u "
--			"ri_bitbytes=%u "
--			"start=%u len=%u offset=%u\n",
--			(unsigned long long)rgd->rd_addr,
--			rgd->rd_length,
--			(unsigned long long)rgd->rd_data0,
--			rgd->rd_data,
--			rgd->rd_bitbytes,
--			bi->bi_start, bi->bi_bytes, bi->bi_offset);
--		gfs2_consist_rgrpd(rgd);
--		return -EIO;
--	}
--
- 	return 0;
- }
- 
-@@ -864,6 +855,7 @@ static int rgd_insert(struct gfs2_rgrpd *rgd)
- {
- 	struct gfs2_sbd *sdp = rgd->rd_sbd;
- 	struct rb_node **newn = &sdp->sd_rindex_tree.rb_node, *parent = NULL;
-+	struct rb_node *prevn;
- 
- 	/* Figure out where to put new node */
- 	while (*newn) {
-@@ -882,6 +874,19 @@ static int rgd_insert(struct gfs2_rgrpd *rgd)
- 	rb_link_node(&rgd->rd_node, parent, newn);
- 	rb_insert_color(&rgd->rd_node, &sdp->sd_rindex_tree);
- 	sdp->sd_rgrps++;
-+
-+	prevn = rb_prev(&rgd->rd_node);
-+	if (prevn) {
-+		struct gfs2_rgrpd *prev =
-+			rb_entry(prevn, struct gfs2_rgrpd, rd_node);
-+
-+		if (prev->rd_data0 + prev->rd_data > rgd->rd_addr) {
-+			fs_err(sdp, "overlapping resource groups.\n");
-+			rb_erase(&rgd->rd_node, &sdp->sd_rindex_tree);
-+			return -ENOENT;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -928,7 +933,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
- 	if (error)
- 		goto fail;
- 
--	error = compute_bitstructs(rgd);
-+	error = compute_bitstructs(sdp->sd_vfs, rgd);
- 	if (error)
- 		goto fail_glock;
- 
-@@ -944,7 +949,9 @@ static int read_rindex_entry(struct gfs2_inode *ip)
- 		return 0;
- 	}
- 
--	error = 0; /* someone else read in the rgrp; free it and ignore it */
-+	/* If someone else read in the rgrp, free it and ignore it. */
-+	if (error == -EEXIST)
-+		error = 0;
- fail_glock:
- 	gfs2_glock_put(rgd->rd_gl);
- 
--- 
-2.55.0
 
