@@ -1,136 +1,147 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49003126B2
-	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 02:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC903546CF
+	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 04:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787279350; cv=none; b=f8ibaMtIAWDgVAK+syn/6eisquBVyK8HziTKskCBljNAhtaVkh3Vzsna5cMShHSQdSurHbNjqcgLlWCIUoERl6COKLwCXjB5p693L0I+X+F3rOerIug/uv+l2qaG9IMH3hQLxEtWRGl5BcgksvPAE1KII//K5wo5aFgbj7wTBrU=
+	t=1787285371; cv=none; b=LFqxWk31ASjzHYzzaJrQTC384wny9tehJMXW5G2hfw1zr4WaiJvckbr/o+kOxpaG0nmuoRUy5wryGNvJKquKcpPHpaAHSNB/cF2+oyyS63nXlO1ontptS/kwGWEvsv6qcZB3uS8h+mnzjYpHKZhM5dakm0Z25jaInboX2PH1Rwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787279350; c=relaxed/simple;
-	bh=vry3klap9u4GjQNVsbX+2L8vo2NtkD7sLGYczUDYo14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g/P0wBDft6R1Vgoy9nXTjwI1mZn+6ZmhTR3YrHhPZ2UhSz043Gc4RoTeum2RyqVJxcgQbDpnMYyY2UWKOIXEyyuntL/xA8S3yNedfjp7WdFltg7fphmRR62a80za4arrlAjC+b7Sqy09vOZPFGU08gT5Zk/ZsnpHSGXMFzoZ4xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m+Kcls1N; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m+Kcls1N"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d0407aedd6so6056175ad.0
-        for <gfs2@lists.linux.dev>; Thu, 20 Aug 2026 19:29:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787279348; x=1787884148; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=45NBjTXP85L2NWWZj0GIgJ+kRVkTLutBHdaU4FJg9VE=;
-        b=m+Kcls1NhmubYwItegc71Sjav8CQaiFK/O4HQTX6bnBt9T/IaCNQMD+h/XMH4uQu5L
-         jqMsLfVvINCgxlfb9DhGZ/n9VTFO/C/kwlMmtcMBJ5+C8R2rrDNGBLNjATotdKDSm5u2
-         oGIo9lA+IPQpo+uj6ylKwt5hTYrzbexOZjvxXm6Usxb0teBxj9ss86JVXX4PwQ8wimZ5
-         OujqwO+puv8JbZNRaWwREJkO8OEQyRW6xSF5PKMEzVihByVHsXws1KvguLgn29r/LLLh
-         y24s5CE92tfDmrSWT2qdKumDhODOnfL0bKQsGUYpHQk3Ns7x8/WHofPjfwhW4GA26PIg
-         CC2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787279348; x=1787884148;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=45NBjTXP85L2NWWZj0GIgJ+kRVkTLutBHdaU4FJg9VE=;
-        b=G81A0bnJL0IfTce0qRdruCsvhFCCHIC5oKz8dEaHCo+g2pTkPLgYdmItVQc5JDS5xA
-         i846wNYLu0/gS3AwSY1zL8Jy+A7Q1mx/4fwx3afd+qIl+3rW1Kk/sGjZIrfclZqcTuzf
-         SiBiX4Dta1CB+ZaL8IzkTRqu12M1ir+U9mK6lCUCX/FYxshV7CXZIFk39LpxEEv3Ojp/
-         S8Frawc0gJ/VegRCHzHebHtwl2QvTy5xJoPz1YCm7NLbkL57HJjDyx61APxAYgIogFkZ
-         MV6XqBGufFM5da2YgKhMg0VsJ3VyTmhCqINniMyHv7MMqomMGRcrlori6MBwZFnoMbYZ
-         FObw==
-X-Gm-Message-State: AOJu0Yyz1j3bvl5UEuE1BrFPVzgd5F16dy0dW6vmvbtxl1nlxXG9+6VL
-	KrVwr3mW+WRO6Bgl/cuhr3o89EX3Hu7aT7oO6RgTmQNAfkwUDkLR1vr83Z1KpdGqAgc=
-X-Gm-Gg: AR+sD126ZUiT9zkiO+NfvOmhKUzqFVJJm5muSZ2hxx2HqXZwH/GLqBeYcVckBEXOLFF
-	d1AD/YSFMiQawfQtLnluYfELSFLIJEaVXd1yOOJmkpEso6DuPVwJBG45r133Vtcs3LLx5rVOx4c
-	pY8RyMln5g7RivzDb7/aQMmx0dm56+gySWPM6aDpB8hVP36CdvTDttdNata1gPH/D6cZSxbT6I6
-	X4nbC/Aw5iy/KBeEfOcdYCdmqSjZz1kMGYOntUtjOBgBo9zYX+D5JtFjFunmzTzRPU7d9DhY+qU
-	94qX2CPDDWtDXPNOBynPeMarMfHwIME7alH78HjECih521cFmhoeHwbnZe8B8nmERvYZTIVLl97
-	Hqxgb8qGv1xZdI2rJ9hyO3gc3dXWNrWC2HUodeDavCJFwCiqTYRt2pD3hfcn0vTcs9Gb3MBTTer
-	MqA21h+7SI8b5DhUEZBUNnwgWSPLrJJCVpvWsaxfqxbDkK8yeZnDtHjJ+cfAghmD1psDL2XAZNt
-	TRM4uu314qKBeenNcliHyNvBqs=
-X-Received: by 2002:a17:903:388d:b0:2d5:c099:16e2 with SMTP id d9443c01a7336-2d64b0b8244mr63255175ad.13.1787279347785;
-        Thu, 20 Aug 2026 19:29:07 -0700 (PDT)
-Received: from localhost.localdomain ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62e3a19a7sm13135725ad.55.2026.08.20.19.29.05
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 20 Aug 2026 19:29:07 -0700 (PDT)
-From: Aohan Mei <ljp1205831794@gmail.com>
-To: gfs2@lists.linux.dev
-Cc: aahringo@redhat.com,
-	teigland@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Aohan Mei <henrymei@tencent.com>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] dlm: fix RCOM_LOOKUP length underflow
-Date: Fri, 21 Aug 2026 10:28:42 +0800
-Message-ID: <20260821022846.56812-1-ljp1205831794@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1787285371; c=relaxed/simple;
+	bh=Zn08BJYhDzL9izbxJ3XvVAsrUhts4LMdOoekAAdyZ8g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=Fko8jcEXryooWRYd2fgApJ0z9HZqNHW/HGzPZbrn09eo73qmRmkdSEV4lKK0oiNr5qfaUYgeJiY8r5kMIA0fx9b6FPk8iXQnWtMEXnF9L2EQXhvdJpvH8OxjUF3CSoYP49ZXop7BjhYQjmt5BXdGkWKSfcjx2LD3/snbdpjtdQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.190.129.65])
+	by mtasvr (Coremail) with SMTP id _____wAnPnxxz4dq0JuwAA--.10903S3;
+	Fri, 21 Aug 2026 12:09:22 +0800 (CST)
+Received: from stitch$zju.edu.cn ( [10.190.129.65] ) by
+ ajax-webmail-mail-app3 (Coremail) ; Fri, 21 Aug 2026 12:09:21 +0800
+ (GMT+08:00)
+Date: Fri, 21 Aug 2026 12:09:21 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Jiacheng Xu" <stitch@zju.edu.cn>
+To: "Andreas Gruenbacher" <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] gfs2: protect sysfs callbacks from superblock
+ teardown
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
+ 20260617(6f868824) Copyright (c) 2002-2026 www.mailtech.cn zju.edu.cn
+In-Reply-To: <dae9f1e.152f1.1a018d2dd73.Coremail.stitch@zju.edu.cn>
+References: <dae9f1e.152f1.1a018d2dd73.Coremail.stitch@zju.edu.cn>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <6a91508.162bd.1a0228251e8.Coremail.stitch@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:zS_KCgC3ondxz4dq5eaNBA--.24694W
+X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwQJC2qGXxcNSAAEsg
+X-CM-DELIVERINFO: =?B?Ux/CXAXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
+	egW9p9QbwFO/M6dbbDVJYHFkb1AEHLTqNgeaU4mDDDwRXWJiz0fZ8vIG5yhQg+VUJrFyn2
+	KcHBEN3ZBUOCIuhqsA4ylLwckuSJmZGcwj1ZhjYPlpBv4tJTD8aoICBsEA1/gA==
+X-Coremail-Antispam: 1Uk129KBj93XoWxXF48Zry8Jr1kKFWUJw15WrX_yoWrur1rpF
+	4qv3y5Gr4kJr17uwsIk3WrWa4rW3yfuFW7Arn2gw17Ar98trsagFyft3W8Zr4UGw4qyw1Y
+	qF40qasI9ryDWFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPGb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF
+	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
+	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Jr0_Gr1l6VACY4xI67k04243AbIYCTnIWIevJa73UjIFyTuYvj
+	xU2_HjUUUUU
 
-From: Aohan Mei <henrymei@tencent.com>
-
-receive_rcom_lookup() derives the resource name length from the
-peer-supplied 16-bit h_length header field:
-
-    int len = le16_to_cpu(rc_in->rc_header.h_length) -
-              sizeof(struct dlm_rcom);
-
-The 3.1 receive path only bounds h_length to the range
-[sizeof(struct dlm_header), DLM_MAX_SOCKET_BUFSIZE] in
-dlm_validate_incoming_buffer(), and the RCOM case in
-dlm_midcomms_receive_buffer_3_1() performs no further length check
-despite its "length already checked" comment.  A peer can therefore
-send an RCOM_LOOKUP message whose h_length is smaller than
-sizeof(struct dlm_rcom) (48).  The subtraction is evaluated in size_t
-arithmetic and wraps, and the result is assigned to an int as a
-negative value.
-
-Both consumers of that length only guard the upper bound
-(len > DLM_RESNAME_MAXLEN), which a negative len passes as a signed
-comparison:
-
-- with rc_id == 0xffffffff, len reaches dlm_dump_rsb_name() ->
-  dlm_search_rsb_tree(), where memcpy() converts it to a huge size_t
-  and overflows the on-stack 64-byte key buffer;
-- otherwise len reaches dlm_master_lookup() -> _dlm_master_lookup(),
-  where jhash() converts it to a huge u32 and reads out of bounds.
-
-Drop the message when the computed name length falls outside
-[0, DLM_RESNAME_MAXLEN], which is exactly the range valid lookups
-use.
-
-Fixes: e7fd41792fc0 ("[DLM] The core of the DLM for GFS2/CLVM")
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Cc: stable@vger.kernel.org
-Assisted-by: CodeBuddy:Kimi-K3
-Signed-off-by: Aohan Mei <henrymei@tencent.com>
----
- fs/dlm/rcom.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
-index be1a71a6303a..14d5ab658f60 100644
---- a/fs/dlm/rcom.c
-+++ b/fs/dlm/rcom.c
-@@ -385,6 +385,9 @@ static void receive_rcom_lookup(struct dlm_ls *ls,
- 	int len = le16_to_cpu(rc_in->rc_header.h_length) -
- 		sizeof(struct dlm_rcom);
- 
-+	if (len < 0 || len > DLM_RESNAME_MAXLEN)
-+		return;
-+
- 	/* Old code would send this special id to trigger a debug dump. */
- 	if (rc_in->rc_id == cpu_to_le64(0xFFFFFFFF)) {
- 		log_error(ls, "receive_rcom_lookup dump from %d", nodeid);
--- 
-2.43.7
+VGhlIEdGUzIgc3lzZnMgZmlsZXMgYmVjb21lIHZpc2libGUgYmVmb3JlIGZpbGxfc3VwZXIoKSBj
+b21wbGV0ZXMgYW5kCnJlbWFpbiBwcmVzZW50IHVudGlsIGFmdGVyIGZpbGVzeXN0ZW0gcmVzb3Vy
+Y2VzIGhhdmUgYmVlbiByZWxlYXNlZC4KQ29uc2VxdWVudGx5LCBjYWxsYmFja3MgdGhhdCBhY2Nl
+c3MgcXVvdGEsIHN0YXRmcywgZ2xvY2sgb3Igam91cm5hbApzdGF0ZSBjYW4gcmFjZSB3aXRoIG1v
+dW50IGZhaWx1cmUgcm9sbGJhY2sgb3IgdW5tb3VudCB0ZWFyZG93bi4KClRoZSBxdW90YSByZWZy
+ZXNoIGZpeCB3YXMgb3JpZ2luYWxseSBzZW50IGFzIGEgc3RhbmRhbG9uZSBbUEFUQ0hdLiBUaGlz
+CnZlcnNpb24gZm9sZHMgaXQgaW50byBhIGNvbXBsZXRlIHNlcmllcyBhbmQgYWRkcyB0aGUgY29y
+cmVzcG9uZGluZwpsaWZldGltZSBwcm90ZWN0aW9uIGZvciB0aGUgb3RoZXIgYWZmZWN0ZWQgc3lz
+ZnMgY2FsbGJhY2tzLgoKQWxsIGNhbGxiYWNrcyB1c2UgZG93bl9yZWFkX3RyeWxvY2soKSBvbiBz
+X3Vtb3VudCBhbmQgdmVyaWZ5IFNCX0FDVElWRS4KUmV0dXJuaW5nIC1FQUdBSU4gYXZvaWRzIGRl
+YWRsb2NrIHdoZW4gbW91bnQgZmFpbHVyZSBvciB1bm1vdW50IGhvbGRzCnRoZSB3cml0ZSBzaWRl
+IG9mIHNfdW1vdW50IHdoaWxlIHJlbW92aW5nIHRoZSBzeXNmcyBmaWxlcy4KCkNoYW5nZXMgaW4g
+djI6Ci0gRm9sZGVkIHRoZSBvcmlnaW5hbCBxdW90YSByZWZyZXNoIGZpeCBpbnRvIGEgZml2ZS1w
+YXRjaCBzZXJpZXMuCi0gQWRkZWQgc3RhdGZzX3N5bmMsIHF1b3RhX3N5bmMsIGRlbW90ZV9ycSBh
+bmQgc3RhdHVzIGZpeGVzLgoKSmlhY2hlbmcgWHUgKDUpOgogIGdmczI6IHByb3RlY3QgcXVvdGEg
+cmVmcmVzaCBmcm9tIHN1cGVyYmxvY2sgdGVhcmRvd24KICBnZnMyOiBwcm90ZWN0IHN0YXRmcyBz
+eW5jIHN5c2ZzIGNhbGxiYWNrCiAgZ2ZzMjogcHJvdGVjdCBxdW90YSBzeW5jIHN5c2ZzIGNhbGxi
+YWNrCiAgZ2ZzMjogcHJvdGVjdCBkZW1vdGUgcmVxdWVzdHMgZHVyaW5nIHN1cGVyYmxvY2sgdGVh
+cmRvd24KICBnZnMyOiBwcm90ZWN0IHN0YXR1cyBzeXNmcyByZWFkcyBkdXJpbmcgdGVhcmRvd24K
+CiBmcy9nZnMyL3F1b3RhLmMgfCAxOSArKysrKysrKysrKysrKy0KIGZzL2dmczIvc3lzLmMgICB8
+IDY1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0KIDIg
+ZmlsZXMgY2hhbmdlZCwgNzYgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkKCgpiYXNlLWNv
+bW1pdDogMGYyM2Q1NmYxN2ZkZmM3ZGI2OWQ1MWY2NGM4YjkxYmJhYjk0N2FhOQotLSAKMi4yNS4x
+Cgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6ICJKaWFjaGVuZyBYdSIgPHN0
+aXRjaEB6anUuZWR1LmNuPgo+IOWPkemAgeaXtumXtDoyMDI2LTA4LTE5IDE1OjAxOjA3ICjmmJ/m
+nJ/kuIkpCj4g5pS25Lu25Lq6OiAiQW5kcmVhcyBHcnVlbmJhY2hlciIgPGFncnVlbmJhQHJlZGhh
+dC5jb20+Cj4g5oqE6YCBOiBnZnMyQGxpc3RzLmxpbnV4LmRldiwgbGludXgta2VybmVsQHZnZXIu
+a2VybmVsLm9yZwo+IOS4u+mimDogW1BBVENIXSBnZnMyOiBGaXggTlVMTCBwb2ludGVyIGRlcmVm
+ZXJlbmNlIGluIHF1b3RhIHJlZnJlc2gKPiAKPiBUaGUgR0ZTMiBzeXNmcyBmaWxlcyBhcmUgcmVn
+aXN0ZXJlZCBiZWZvcmUgaW5pdF9pbm9kZXMoKSBjb21wbGV0ZXMuCj4gQ29uc2VxdWVudGx5LCB0
+aGUgcXVvdGFfcmVmcmVzaF91c2VyIGFuZCBxdW90YV9yZWZyZXNoX2dyb3VwIHN5c2ZzCj4gYXR0
+cmlidXRlcyBjYW4gYmUgYWNjZXNzZWQgd2hpbGUgc2RwLT5zZF9xdW90YV9pbm9kZSBoYXMgbm90
+IGJlZW4KPiBpbml0aWFsaXplZCB5ZXQuCj4gCj4gQSBjb25jdXJyZW50IHdyaXRlIHRvIHF1b3Rh
+X3JlZnJlc2hfdXNlciBtYXkgdGhlbiBjYWxsIGRvX2dsb2NrKCksIHdoaWNoCj4gZGVyZWZlcmVu
+Y2VzIHNkcC0+c2RfcXVvdGFfaW5vZGUuIFRoaXMgY2FuIHJlc3VsdCBpbiBhIE5VTEwgcG9pbnRl
+ciBkZXJlZmVyZW5jZSAKPiBpbiBkb19nbG9jaygpLiBUaGUgc2FtZSBjYWxsYmFjayBjYW4gYWxz
+byByYWNlIHdpdGggc3VwZXJibG9jawo+IHRlYXJkb3duIGFuZCBhY2Nlc3MgZGF0YSBhZnRlciB0
+aGUgZmlsZXN5c3RlbSBoYXMgc3RhcnRlZCB0byBzaHV0IGRvd24uCj4gCj4gTW92aW5nIHN5c2Zz
+IHJlZ2lzdHJhdGlvbiBhZnRlciBpbml0X2lub2RlcygpIHdvdWxkIGF2b2lkIHRoZSBpbml0aWFs
+aXphdGlvbgo+IHdpbmRvdywgYnV0IGlzIG5vdCBzdWl0YWJsZSBiZWNhdXNlIHRoZSBsb2NrIG1h
+bmFnZXIgbWF5IG5lZWQgdGhlIEdGUzIKPiBzeXNmcyBmaWxlcyBkdXJpbmcgdGhlIHJlbWFpbmlu
+ZyBtb3VudCBzZXF1ZW5jZS4KPiAKPiBTZXJpYWxpemUgZ2ZzMl9xdW90YV9yZWZyZXNoKCkgd2l0
+aCB0aGUgc3VwZXJibG9jayBsaWZldGltZSBpbnN0ZWFkLgo+IEFjcXVpcmUgc191bW91bnQgZm9y
+IHJlYWRpbmcgYmVmb3JlIGFjY2Vzc2luZyBxdW90YSBkYXRhLiBNb3VudCBmYWlsdXJlIGFuZAo+
+IHVubW91bnQgcGF0aHMgaG9sZCBzX3Vtb3VudCBmb3Igd3JpdGluZywgc28gdGhpcyBwcmV2ZW50
+cyB0aGUgY2FsbGJhY2sgZnJvbQo+IHJ1bm5pbmcgd2hpbGUgdGhlIHN1cGVyYmxvY2sgaXMgYmVp
+bmcgaW5pdGlhbGl6ZWQgb3IgZGVzdHJveWVkLgo+IAo+IFVzZSBkb3duX3JlYWRfdHJ5bG9jaygp
+IGluc3RlYWQgb2YgZG93bl9yZWFkKCkgYmVjYXVzZSB0aGUgbW91bnQgZmFpbHVyZQo+IHBhdGgg
+bWF5IGFscmVhZHkgaG9sZCBzX3Vtb3VudCBmb3Igd3JpdGluZyB3aGlsZSByZW1vdmluZyB0aGUg
+c3lzZnMgZmlsZXMuCj4gUmV0dXJuaW5nIC1FQUdBSU4gYWxsb3dzIHRoZSBzeXNmcyB3cml0ZSB0
+byBmYWlsIHdpdGhvdXQgaW50cm9kdWNpbmcgYQo+IGRlYWRsb2NrLgo+IAo+IEFsc28gdmVyaWZ5
+IFNCX0FDVElWRSBhZnRlciBhY3F1aXJpbmcgdGhlIHJlYWQgbG9jaywgc2luY2UgdGhlIHN5c2Zz
+Cj4gYXR0cmlidXRlcyBiZWNvbWUgdmlzaWJsZSBiZWZvcmUgdGhlIHN1cGVyYmxvY2sgaXMgZnVs
+bHkgYWN0aXZlLgo+IAo+IFRoZSByZXByb2R1Y2VyIG9mIHRoZSBpc3N1ZSBpcyBhdHRhY2hlZC4g
+QWZ0ZXIgYXBwbHlpbmcgdGhpcyBwYXRjaCwgCj4gdGhlIHJlcHJvZHVjZXIgbm8gbG9uZ2VyIHRy
+aWdnZXJzIHRoZSBrZXJuZWwgY3Jhc2guIAo+IAo+IFNpZ25lZC1vZmYtYnk6IEppYWNoZW5nIFh1
+IDxzdGl0Y2hAemp1LmVkdS5jbj4KPiBUZXN0ZWQtYnk6IEppYWNoZW5nIFh1IDxzdGl0Y2hAemp1
+LmVkdS5jbj4KPiAtLS0KPiBmcy9nZnMyL3F1b3RhLmMgfCAxOSArKysrKysrKysrKysrKysrKyst
+Cj4gMSBmaWxlIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBk
+aWZmIC0tZ2l0IGEvZnMvZ2ZzMi9xdW90YS5jIGIvZnMvZ2ZzMi9xdW90YS5jCj4gaW5kZXggMDAx
+YzhiMzljYTU1Li5kNTA1MzRlZDkzNzkgMTAwNjQ0Cj4gLS0tIGEvZnMvZ2ZzMi9xdW90YS5jCj4g
+KysrIGIvZnMvZ2ZzMi9xdW90YS5jCj4gQEAgLTEzODQsMTkgKzEzODQsMzYgQEAgaW50IGdmczJf
+cXVvdGFfc3luYyhzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiLCBpbnQgdHlwZSkKPiAKPiBpbnQgZ2Zz
+Ml9xdW90YV9yZWZyZXNoKHN0cnVjdCBnZnMyX3NiZCAqc2RwLCBzdHJ1Y3Qga3FpZCBxaWQpCj4g
+ewo+ICsgICAgIHN0cnVjdCBzdXBlcl9ibG9jayAqc2IgPSBzZHAtPnNkX3ZmczsKPiAgICAgICBz
+dHJ1Y3QgZ2ZzMl9xdW90YV9kYXRhICpxZDsKPiAgICAgICBzdHJ1Y3QgZ2ZzMl9ob2xkZXIgcV9n
+aDsKPiAgICAgICBpbnQgZXJyb3I7Cj4gCj4gKyAgICAgLyoKPiArICAgICAgKiBUaGUgc3lzZnMg
+ZmlsZXMgYXJlIGNyZWF0ZWQgYmVmb3JlIGZpbGxfc3VwZXIgY29tcGxldGVzLiBBdm9pZAo+ICsg
+ICAgICAqIGJsb2NraW5nIG9uIHNfdW1vdW50IGJlY2F1c2UgdGhlIG1vdW50IGZhaWx1cmUgcGF0
+aCByZW1vdmVzIHRoZQo+ICsgICAgICAqIHN5c2ZzIGZpbGVzIHdoaWxlIGhvbGRpbmcgaXQgZm9y
+IHdyaXRpbmcuCj4gKyAgICAgICovCj4gKyAgICAgaWYgKCFkb3duX3JlYWRfdHJ5bG9jaygmc2It
+PnNfdW1vdW50KSkKPiArICAgICAgICAgICAgIHJldHVybiAtRUFHQUlOOwo+ICsKPiArICAgICBp
+ZiAoIShzYi0+c19mbGFncyAmIFNCX0FDVElWRSkpIHsKPiArICAgICAgICAgICAgIGVycm9yID0g
+LUVBR0FJTjsKPiArICAgICAgICAgICAgIGdvdG8gb3V0X3VubG9jazsKPiArICAgICB9Cj4gKwo+
+ICAgICAgIGVycm9yID0gcWRfZ2V0KHNkcCwgcWlkLCAmcWQpOwo+ICAgICAgIGlmIChlcnJvcikK
+PiAtICAgICAgICAgICAgIHJldHVybiBlcnJvcjsKPiArICAgICAgICAgICAgIGdvdG8gb3V0X3Vu
+bG9jazsKPiAKPiAgICAgICBlcnJvciA9IGRvX2dsb2NrKHFkLCBGT1JDRSwgJnFfZ2gpOwo+ICAg
+ICAgIGlmICghZXJyb3IpCj4gICAgICAgICAgICAgZ2ZzMl9nbG9ja19kcV91bmluaXQoJnFfZ2gp
+Owo+IAo+ICAgICAgIHFkX3B1dChxZCk7Cj4gCj4gK291dF91bmxvY2s6Cj4gKyAgICAgdXBfcmVh
+ZCgmc2ItPnNfdW1vdW50KTsKPiAgICAgICByZXR1cm4gZXJyb3I7Cj4gfQo=
 
