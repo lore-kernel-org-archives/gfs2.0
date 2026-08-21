@@ -1,152 +1,150 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E9542AF98
-	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 08:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.237.72.81
+Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA743002DD
+	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 08:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787299680; cv=none; b=haTWe1OhWoJhW3AZGLqkhqwgSLjkgY4i0Ez5r7F9Xza76+1DQwQplTqDNNCwuRplKJ8I4f5ThFLko2Tt1ZjpvOKRZw+ieSCBSYqpe1zqk7Dmwbh/kkxqJcxNV20E23XLmns7TgCkRSWEwpI62LnXKNFcbAJb7skqrLkfjE5vBtE=
+	t=1787302075; cv=none; b=g5fH0lOB3D/kr8ELr32y3pnt/e+/0kgWPNTxPa7LGOMRBgP4S7ls/p1bXM5uInbLi+xIGdqvdF5Vm6UFScoHp6CuwTX+OuEz7+qGqeKQvfrGhZfvlJvoTvJQcsn4m2tJFsiyVx2sIiAlNPynOfcaSDRoux/ZaNu0b671WlpJgt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787299680; c=relaxed/simple;
-	bh=eq6wG2rxlnsCTXnhZfCUV1ycijioK5JyumnjJS2oXrk=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=db1aSBSYha4703jECSGBmnYlNrwBnT/LQAcFvO1e61CQfm96TnOyFiVvJW+5P/mra9Y5UlhG1i6BVYgzkDX9k8GFeqfevJwZXdXDzLsKk5WCNa0cFgDYcqXS+6GtFV3ohdSiNgofHzmnm11TT2syy74bhCDEsOoUQJkTqaZ8tMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.237.72.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.190.129.65])
-	by mtasvr (Coremail) with SMTP id _____wDXoX1PB4hqummxAA--.12617S3;
-	Fri, 21 Aug 2026 16:07:44 +0800 (CST)
-Received: from stitch$zju.edu.cn ( [10.190.129.65] ) by
- ajax-webmail-mail-app1 (Coremail) ; Fri, 21 Aug 2026 16:07:43 +0800
- (GMT+08:00)
-Date: Fri, 21 Aug 2026 16:07:43 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Jiacheng Xu" <stitch@zju.edu.cn>
-To: "Andreas Gruenbacher" <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [PATCH] gfs2: avoid sysfs freeze and unmount lock inversion
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
- 20260617(6f868824) Copyright (c) 2002-2026 www.mailtech.cn zju.edu.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1787302075; c=relaxed/simple;
+	bh=O1ZTLIoo6Vjt6O0krePAej0tYjPgqkSyWHb2JYo6ReY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FJ8xRdNhFBCUD8g0sj+yhGVyAik6WIat2F8MrChxM0zWTYs60kRpxDyptRW7CG+iGvUNXhQRDcQf3X9+fCBmK+33+5lcav6+pmCNKRnEYzqUx9dARvpUjQf65p4Vx4IA9AlQHaOJ6OwrQ0OsmLYvB/Zan90GcUtLkVmP9qRJfL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4a49f09233dso691558b6e.2
+        for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 01:47:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787302072; x=1787906872;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=17i1DjAlI1eKRN4kR7G73skA2928LySzI999roIf94g=;
+        b=nQTOvKZXJxfgdfxzf6uEISimmP1F7hwrlDqewT9qc+HCqv3QcGZ02NwfLlXykOeDab
+         fDq5o/ZUAuF1fXGpovAzC6NwIHxxrjYme+T2B2LM/2HL7RNps7GE90tZLljklYGTm4v/
+         K8F0LfgLs+PtOxG3pwobbaTLrsTsQBN2hmvokPLcURBJHBThcejh//R6cY2xgFiGnP12
+         oHit/5ZoOZnKHXMmERwbzd9JVsagK/ZfgDx5X4CjD00WYWmn2Xo2Jj8wHJD79B0+oa1o
+         OQ2i0j0TC7+ejQ5PLvSPkcecXmBeaK0rwHylTHNbl4zSEFlkIO0FyTv04C138o44jC8l
+         DlJg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3Um6rRFjAMxMYHf/piIbH2v72jPaaUz806qQGj24qd2DLREkdlzE7/8bQTZ/8MOf+i3ek@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyq+4tMFpZI05pKhUOPNDO9zETkwhbaZjUZZkYiYhMujd11GYW1
+	LuxeHMqMVugw+4AiAsQueoEI4uR875KmyT+s+OO/2Dgtd8Uv6CKUf8xDYNNgVJLqnROR62pQSFI
+	IWg/Se8fsD7tl2b0DkdceSAHIUjkBgVxthmW2hW6aTGfwaNo+EhQY8VS+rYM=
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-ID: <3dd32003.17b68.1a0235c8d0f.Coremail.stitch@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:yy_KCgAnvKZPB4hqnywJBA--.50391W
-X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwMKC2qHsJcDeQAEs1
-X-CM-DELIVERINFO: =?B?G28wFAXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
-	egWwPWW0XmXVmWsTmudtWHNpqP23dG6licKjAc4ZI2E3mBMcMfziBpZg0jn/H4WgasTOhb
-	TndcuM18iuFEVqMkhulxDXDjttmajDhjC5tVH4a1P+yUmA3HsPTNm756h2Yasg==
-X-Coremail-Antispam: 1Uk129KBj93XoWxCr1DXryDWF1UurW7ZF17XFc_yoWrtFWkpF
-	4qy345Gr4kJr17WrsxCF48K343Kw4kZFyUG3yfW3Wav3W3twnaqas7AF1F9FWUArZ7Gw18
-	uw4UGFZIkrWUurXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPCb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF
-	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
-	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vI
-	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
-	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
-	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UMVCEFcxC0VAYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU86OJ7UUUUU==
+X-Received: by 2002:a05:6808:5242:b0:4ab:2764:1911 with SMTP id
+ 5614622812f47-4b2ef4570d0mr5290035b6e.19.1787302072388; Fri, 21 Aug 2026
+ 01:47:52 -0700 (PDT)
+Date: Fri, 21 Aug 2026 01:47:52 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8810b8.ae6ddae5.3da009.002f.GAE@google.com>
+Subject: [syzbot] [gfs2?] WARNING in dlm_lowcomms_connect_node
+From: syzbot <syzbot+d451adc04b34fbabccf2@syzkaller.appspotmail.com>
+To: aahringo@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, teigland@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-VGhlIGdmczIgZnJlZXplIHN5c2ZzIGNhbGxiYWNrIHJ1bnMgd2l0aCBrZXJuZnMgYWN0aXZlIHBy
-b3RlY3Rpb24gaGVsZC4KZnJlZXplX3N1cGVyKCkgYW5kIHRoYXdfc3VwZXIoKSBtYXkgYWNxdWly
-ZSBzYi0+c191bW91bnQuCgpBdCB0aGUgc2FtZSB0aW1lLCB0aGUgdW5tb3VudCBwYXRoIGhvbGRz
-IHNfdW1vdW50IGFuZCBjYWxscwpnZnMyX3N5c19mc19kZWwoKSwgd2hpY2ggZHJhaW5zIHRoZSBz
-YW1lIGtlcm5mcyBub2RlLiBUaGlzIGNyZWF0ZXMgYW4KQUJCQSBkZXBlbmRlbmN5OgoKZnJlZXpl
-X3N0b3JlKCkgICAgICAga2VybmZzIGFjdGl2ZSAtPiBzX3Vtb3VudApnZnMyX3B1dF9zdXBlcigp
-ICAgICBzX3Vtb3VudCAtPiBrZXJuZnMgYWN0aXZlCgpCcmVhayB0aGUgYWN0aXZlIHByb3RlY3Rp
-b24gYmVmb3JlIGFjY2Vzc2luZyBzX3Vtb3VudC4gU2luY2UgdGhpcyBhbGxvd3MKdW5tb3VudCB0
-byBwcm9jZWVkIGNvbmN1cnJlbnRseSwgYWNxdWlyZSBhbiBhY3RpdmUgc3VwZXJibG9jayByZWZl
-cmVuY2UKd2hpbGUgaG9sZGluZyBzX3Vtb3VudCBmb3IgcmVhZGluZy4gUmVsZWFzZSB0aGF0IHJl
-ZmVyZW5jZSBmcm9tCmdmczJfZnJlZXplX3dxIHNvIGEgZmluYWwgc3VwZXJibG9jayByZWZlcmVu
-Y2UgY2Fubm90IGVudGVyCmdmczJfcHV0X3N1cGVyKCkgZnJvbSB0aGUgc3lzZnMgY2FsbGJhY2sg
-aXRzZWxmLgoKUmV0dXJuIC1FQUdBSU4gaWYgdGhlIHN1cGVyYmxvY2sgaXMgYmVpbmcgbW91bnRl
-ZCwgdW5tb3VudGVkLCBvciBvdGhlcndpc2UKaGFzIHNfdW1vdW50IGhlbGQuIFJlamVjdCBpbnZh
-bGlkIGZyZWV6ZSB2YWx1ZXMgYmVmb3JlIHRha2luZyBhbnkKcmVmZXJlbmNlcyBvciBjaGFuZ2lu
-ZyBzeXNmcyBhY3RpdmUgcHJvdGVjdGlvbi4KCkZpeGVzOiBiM2I5NGZhYTVmZTUgKCJbR0ZTMl0g
-VGhlIGNvcmUgb2YgR0ZTMiIpClNpZ25lZC1vZmYtYnk6IEppYWNoZW5nIFh1IDxzdGl0Y2hAemp1
-LmVkdS5jbj4KCi0tLQpmcy9nZnMyL3N5cy5jIHwgODQgKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0KMSBmaWxlIGNoYW5nZWQsIDc2IGlu
-c2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvZ2ZzMi9zeXMuYyBi
-L2ZzL2dmczIvc3lzLmMKaW5kZXggZWEyYzdiOWU0YTc3Li43OGJjMzEwYmUxZmIgMTAwNjQ0Ci0t
-LSBhL2ZzL2dmczIvc3lzLmMKKysrIGIvZnMvZ2ZzMi9zeXMuYwpAQCAtMTEsMTEgKzExLDE0IEBA
-CiNpbmNsdWRlIDxsaW51eC9zcGlubG9jay5oPgojaW5jbHVkZSA8bGludXgvY29tcGxldGlvbi5o
-PgojaW5jbHVkZSA8bGludXgvYnVmZmVyX2hlYWQuaD4KKyNpbmNsdWRlIDxsaW51eC9zbGFiLmg+
-CiNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4KI2luY2x1ZGUgPGxpbnV4L2tvYmplY3QuaD4KKyNp
-bmNsdWRlIDxsaW51eC9zeXNmcy5oPgojaW5jbHVkZSA8bGludXgvdWFjY2Vzcy5oPgojaW5jbHVk
-ZSA8bGludXgvZ2ZzMl9vbmRpc2suaD4KI2luY2x1ZGUgPGxpbnV4L2Jsa2Rldi5oPgorI2luY2x1
-ZGUgPGxpbnV4L3dvcmtxdWV1ZS5oPgoKI2luY2x1ZGUgImdmczIuaCIKI2luY2x1ZGUgImluY29y
-ZS5oIgpAQCAtMzMsNiArMzYsMjQgQEAgc3RydWN0IGdmczJfYXR0ciB7CiAgICAgIHNzaXplX3Qg
-KCpzdG9yZSkoc3RydWN0IGdmczJfc2JkICosIGNvbnN0IGNoYXIgKiwgc2l6ZV90KTsKfTsKCisv
-KiBGb3J3YXJkIGRlY2xhcmF0aW9uIGZvciBmcmVlemVfc3RvcmUoKSwgZGVmaW5lZCB3aXRoIHRo
-ZSBvdGhlciBhdHRyaWJ1dGVzLiAqLworc3RhdGljIHN0cnVjdCBnZnMyX2F0dHIgZ2ZzMl9hdHRy
-X2ZyZWV6ZTsKKworc3RydWN0IGdmczJfc3lzZnNfc2JfcmVmIHsKKyAgICAgc3RydWN0IHdvcmtf
-c3RydWN0IHdvcms7CisgICAgIHN0cnVjdCBzdXBlcl9ibG9jayAqc2I7Cit9OworCitzdGF0aWMg
-dm9pZCBnZnMyX3N5c2ZzX3NiX3JlZl9wdXQoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQorewor
-ICAgICBzdHJ1Y3QgZ2ZzMl9zeXNmc19zYl9yZWYgKnJlZiA9CisgICAgICAgICAgICAgY29udGFp
-bmVyX29mKHdvcmssIHN0cnVjdCBnZnMyX3N5c2ZzX3NiX3JlZiwgd29yayk7CisgICAgIHN0cnVj
-dCBzdXBlcl9ibG9jayAqc2IgPSByZWYtPnNiOworCisgICAgIGRlYWN0aXZhdGVfc3VwZXIoc2Ip
-OworICAgICBrZnJlZShyZWYpOworfQorCnN0YXRpYyBzc2l6ZV90IGdmczJfYXR0cl9zaG93KHN0
-cnVjdCBrb2JqZWN0ICprb2JqLCBzdHJ1Y3QgYXR0cmlidXRlICphdHRyLAogICAgICAgICAgICAg
-ICAgICAgICAgICBjaGFyICpidWYpCnsKQEAgLTE1Myw2ICsxNzQsOSBAQCBzdGF0aWMgc3NpemVf
-dCBmcmVlemVfc2hvdyhzdHJ1Y3QgZ2ZzMl9zYmQgKnNkcCwgY2hhciAqYnVmKQoKc3RhdGljIHNz
-aXplX3QgZnJlZXplX3N0b3JlKHN0cnVjdCBnZnMyX3NiZCAqc2RwLCBjb25zdCBjaGFyICpidWYs
-IHNpemVfdCBsZW4pCnsKKyAgICAgc3RydWN0IHN1cGVyX2Jsb2NrICpzYiA9IHNkcC0+c2RfdmZz
-OworICAgICBzdHJ1Y3QgZ2ZzMl9zeXNmc19zYl9yZWYgKnJlZiA9IE5VTEw7CisgICAgIHN0cnVj
-dCBrZXJuZnNfbm9kZSAqa247CiAgICAgIGludCBlcnJvciwgbjsKCiAgICAgIGVycm9yID0ga3N0
-cnRvaW50KGJ1ZiwgMCwgJm4pOwpAQCAtMTYyLDIzICsxODYsNjcgQEAgc3RhdGljIHNzaXplX3Qg
-ZnJlZXplX3N0b3JlKHN0cnVjdCBnZnMyX3NiZCAqc2RwLCBjb25zdCBjaGFyICpidWYsIHNpemVf
-dApsZW4pCiAgICAgIGlmICghY2FwYWJsZShDQVBfU1lTX0FETUlOKSkKICAgICAgICAgICAgcmV0
-dXJuIC1FUEVSTTsKCisgICAgIGlmIChuICE9IDAgJiYgbiAhPSAxKQorICAgICAgICAgICAgIHJl
-dHVybiAtRUlOVkFMOworCisgICAgIC8qCisgICAgICAqIFRoZSBzeXNmcyBjYWxsYmFjayBub3Jt
-YWxseSBob2xkcyBrbi0+YWN0aXZlLiAgQnJlYWsgdGhhdAorICAgICAgKiBkZXBlbmRlbmN5IGJl
-Zm9yZSB0YWtpbmcgc191bW91bnQsIG90aGVyd2lzZSB1bm1vdW50IGNhbiB3YWl0IGZvcgorICAg
-ICAgKiB0aGlzIGNhbGxiYWNrIHdoaWxlIHRoZSBjYWxsYmFjayB3YWl0cyBmb3Igc191bW91bnQu
-CisgICAgICAqLworICAgICBrbiA9IHN5c2ZzX2JyZWFrX2FjdGl2ZV9wcm90ZWN0aW9uKCZzZHAt
-PnNkX2tvYmosCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJmdmczJf
-YXR0cl9mcmVlemUuYXR0cik7CisgICAgIGlmICgha24pCisgICAgICAgICAgICAgcmV0dXJuIC1F
-Tk9ERVY7CisKKyAgICAgcmVmID0ga21hbGxvY19vYmooKnJlZik7CisgICAgIGlmICghcmVmKSB7
-CisgICAgICAgICAgICAgZXJyb3IgPSAtRU5PTUVNOworICAgICAgICAgICAgIGdvdG8gb3V0X3Vu
-YnJlYWs7CisgICAgIH0KKyAgICAgSU5JVF9XT1JLKCZyZWYtPndvcmssIGdmczJfc3lzZnNfc2Jf
-cmVmX3B1dCk7CisgICAgIHJlZi0+c2IgPSBzYjsKKworICAgICAvKgorICAgICAgKiBQaW4gdGhl
-IHN1cGVyYmxvY2sgYmVmb3JlIHJ1bm5pbmcgYW4gb3BlcmF0aW9uIHdoaWNoIG1heSB3YWl0IGZv
-cgorICAgICAgKiBzX3Vtb3VudC4gIFJlbGVhc2UgdGhlIHBpbiBmcm9tIGEgc2VwYXJhdGUgd29y
-ayBpdGVtIHNvIGEgbGFzdAorICAgICAgKiByZWZlcmVuY2UgY2Fubm90IGVudGVyIGdmczJfcHV0
-X3N1cGVyKCkgb24gdGhlIHN5c2ZzIGNhbGwgcGF0aC4KKyAgICAgICovCisgICAgIGlmICghZG93
-bl9yZWFkX3RyeWxvY2soJnNiLT5zX3Vtb3VudCkpIHsKKyAgICAgICAgICAgICBlcnJvciA9IC1F
-QUdBSU47CisgICAgICAgICAgICAgZ290byBvdXRfdW5icmVhazsKKyAgICAgfQorICAgICBpZiAo
-IShzYi0+c19mbGFncyAmIFNCX0FDVElWRSkpIHsKKyAgICAgICAgICAgICB1cF9yZWFkKCZzYi0+
-c191bW91bnQpOworICAgICAgICAgICAgIGVycm9yID0gLUVBR0FJTjsKKyAgICAgICAgICAgICBn
-b3RvIG91dF91bmJyZWFrOworICAgICB9CisgICAgIGF0b21pY19pbmMoJnNiLT5zX2FjdGl2ZSk7
-CisgICAgIHVwX3JlYWQoJnNiLT5zX3Vtb3VudCk7CisKICAgICAgc3dpdGNoIChuKSB7CiAgICAg
-IGNhc2UgMDoKLSAgICAgICAgICAgICBlcnJvciA9IHRoYXdfc3VwZXIoc2RwLT5zZF92ZnMsIEZS
-RUVaRV9IT0xERVJfVVNFUlNQQUNFLCBOVUxMKTsKKyAgICAgICAgICAgICBlcnJvciA9IHRoYXdf
-c3VwZXIoc2IsIEZSRUVaRV9IT0xERVJfVVNFUlNQQUNFLCBOVUxMKTsKICAgICAgICAgICAgYnJl
-YWs7CiAgICAgIGNhc2UgMToKLSAgICAgICAgICAgICBlcnJvciA9IGZyZWV6ZV9zdXBlcihzZHAt
-PnNkX3ZmcywgRlJFRVpFX0hPTERFUl9VU0VSU1BBQ0UsIE5VTEwpOworICAgICAgICAgICAgIGVy
-cm9yID0gZnJlZXplX3N1cGVyKHNiLCBGUkVFWkVfSE9MREVSX1VTRVJTUEFDRSwgTlVMTCk7CiAg
-ICAgICAgICAgIGJyZWFrOwotICAgICBkZWZhdWx0OgotICAgICAgICAgICAgIHJldHVybiAtRUlO
-VkFMOwogICAgICB9CgotICAgICBpZiAoZXJyb3IpIHsKKyAgICAgaWYgKGVycm9yKQogICAgICAg
-ICAgICBmc193YXJuKHNkcCwgImZyZWV6ZSAlZCBlcnJvciAlZFxuIiwgbiwgZXJyb3IpOwotICAg
-ICAgICAgICAgIHJldHVybiBlcnJvcjsKLSAgICAgfQoKLSAgICAgcmV0dXJuIGxlbjsKKyAgICAg
-LyogTm8gc2RwIGFjY2VzcyBpcyBhbGxvd2VkIGFmdGVyIGFjdGl2ZSBwcm90ZWN0aW9uIGlzIHJl
-c3RvcmVkLiAqLworICAgICBzeXNmc191bmJyZWFrX2FjdGl2ZV9wcm90ZWN0aW9uKGtuKTsKKyAg
-ICAgLyogZ2ZzMiBtb2R1bGUgdGVhcmRvd24gZHJhaW5zIHRoaXMgcXVldWUgYmVmb3JlIHVubG9h
-ZGluZyB0aGUgbW9kdWxlLiAqLworICAgICBxdWV1ZV93b3JrKGdmczJfZnJlZXplX3dxLCAmcmVm
-LT53b3JrKTsKKworICAgICByZXR1cm4gZXJyb3IgPyBlcnJvciA6IGxlbjsKKworb3V0X3VuYnJl
-YWs6CisgICAgIHN5c2ZzX3VuYnJlYWtfYWN0aXZlX3Byb3RlY3Rpb24oa24pOworICAgICBrZnJl
-ZShyZWYpOworICAgICByZXR1cm4gZXJyb3I7Cn0KCnN0YXRpYyBzc2l6ZV90IHdpdGhkcmF3X3No
-b3coc3RydWN0IGdmczJfc2JkICpzZHAsIGNoYXIgKmJ1ZikK
+Hello,
 
+syzbot found the following issue on:
+
+HEAD commit:    21d6ac051080 Merge branch 'for-next/core' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=14bbea25580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d1128bc53f2ef7f3
+dashboard link: https://syzkaller.appspot.com/bug?extid=d451adc04b34fbabccf2
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/88380e2ddcb9/disk-21d6ac05.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/5dba5c2896b7/vmlinux-21d6ac05.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/52ac739e37e0/Image-21d6ac05.gz.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d451adc04b34fbabccf2@syzkaller.appspotmail.com
+
+dlm: ls1: dlm_recover 15333067685668308026
+------------[ cut here ]------------
+WARNING: fs/dlm/lowcomms.c:557 at dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558, CPU#0: dlm_recoverd/4971
+Modules linked in:
+CPU: 0 UID: 0 PID: 4971 Comm: dlm_recoverd Not tainted syzkaller #0 PREEMPT 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558
+lr : __find_con fs/dlm/lowcomms.c:274 [inline]
+lr : nodeid2con fs/dlm/lowcomms.c:305 [inline]
+lr : dlm_lowcomms_connect_node+0x114/0x1f8 fs/dlm/lowcomms.c:556
+sp : ffff8000933b7b20
+x29: ffff8000933b7b20 x28: 0000000000000002 x27: 0000000000000001
+x26: ffff0000ee849000 x25: ffff0000ef82f480 x24: dfff800000000000
+x23: 0000000000000000 x22: ffff80008e8f5c50 x21: 0000000000000002
+x20: ffff800088ed2bc0 x19: 0000000000000000 x18: 00000000ffffffff
+x17: ffff80008a7d6000 x16: 0000000000000003 x15: ffff80008a35fda0
+x14: ffff80008a5d5e28 x13: ffff0000cf590000 x12: ffff0000cf590000
+x11: 00000000000000c8 x10: 0000000000000003 x9 : 0000000000000000
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff80008aa48520 x4 : 0000000000000004 x3 : 0000000000000001
+x2 : ffff80008a468b28 x1 : ffff0000cf590000 x0 : 0000000000000000
+Call trace:
+ dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558 (P)
+ add_remote_member fs/dlm/member.c:313 [inline]
+ dlm_add_member fs/dlm/member.c:334 [inline]
+ dlm_recover_members+0xe98/0x1c48 fs/dlm/member.c:607
+ ls_recover fs/dlm/recoverd.c:151 [inline]
+ do_ls_recovery fs/dlm/recoverd.c:360 [inline]
+ dlm_recoverd+0x594/0x1d20 fs/dlm/recoverd.c:430
+ kthread+0x304/0x3d4 kernel/kthread.c:436
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:838
+irq event stamp: 46
+hardirqs last  enabled at (45): [<ffff800086930818>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline]
+hardirqs last  enabled at (45): [<ffff800086930818>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:198
+hardirqs last disabled at (46): [<ffff80008690b3d0>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:445
+softirqs last  enabled at (42): [<ffff800080f722fc>] dlm_create_root_list fs/dlm/recoverd.c:72 [inline]
+softirqs last  enabled at (42): [<ffff800080f722fc>] ls_recover fs/dlm/recoverd.c:141 [inline]
+softirqs last  enabled at (42): [<ffff800080f722fc>] do_ls_recovery fs/dlm/recoverd.c:360 [inline]
+softirqs last  enabled at (42): [<ffff800080f722fc>] dlm_recoverd+0x584/0x1d20 fs/dlm/recoverd.c:430
+softirqs last disabled at (40): [<ffff800080f721ec>] dlm_create_root_list fs/dlm/recoverd.c:65 [inline]
+softirqs last disabled at (40): [<ffff800080f721ec>] ls_recover fs/dlm/recoverd.c:141 [inline]
+softirqs last disabled at (40): [<ffff800080f721ec>] do_ls_recovery fs/dlm/recoverd.c:360 [inline]
+softirqs last disabled at (40): [<ffff800080f721ec>] dlm_recoverd+0x474/0x1d20 fs/dlm/recoverd.c:430
+---[ end trace 0000000000000000 ]---
+dlm: ls1: dlm_recover_members error -2
+dlm: ls1: do_ls_recovery 15333067685668308026 error -2
+dlm: ls1: dlm_recover 15333067685668308027
+dlm: ls1: add member 1
+dlm: ls1: dlm_recover_members 1 nodes
+dlm: ls1: generation 1 slots 1 1:1
+dlm: ls1: dlm_recover_directory
+dlm: ls1: dlm_recover_directory 0 in 0 new
+dlm: ls1: dlm_recover 15333067685668308027 generation 1 done: 10 ms
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
