@@ -1,150 +1,317 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA743002DD
-	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 08:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E726E357CEA
+	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 12:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787302075; cv=none; b=g5fH0lOB3D/kr8ELr32y3pnt/e+/0kgWPNTxPa7LGOMRBgP4S7ls/p1bXM5uInbLi+xIGdqvdF5Vm6UFScoHp6CuwTX+OuEz7+qGqeKQvfrGhZfvlJvoTvJQcsn4m2tJFsiyVx2sIiAlNPynOfcaSDRoux/ZaNu0b671WlpJgt0=
+	t=1787316597; cv=none; b=KMUo26giXQ5Svu2l7MxxLHqngognbje2OMjGTFquRaxk1loBPatlebuOTdeeVoHbMa3/Un5OvUqX69XlHE+7d4ZZGY0pe0dyk2p4REjjv85lygy3RoBsZJvJH+TOFWicQ4VfB/Gav/sqmMAC4U1PKFgOAo9TY71+zGduVYdsj+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787302075; c=relaxed/simple;
-	bh=O1ZTLIoo6Vjt6O0krePAej0tYjPgqkSyWHb2JYo6ReY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FJ8xRdNhFBCUD8g0sj+yhGVyAik6WIat2F8MrChxM0zWTYs60kRpxDyptRW7CG+iGvUNXhQRDcQf3X9+fCBmK+33+5lcav6+pmCNKRnEYzqUx9dARvpUjQf65p4Vx4IA9AlQHaOJ6OwrQ0OsmLYvB/Zan90GcUtLkVmP9qRJfL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4a49f09233dso691558b6e.2
-        for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 01:47:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787302072; x=1787906872;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=17i1DjAlI1eKRN4kR7G73skA2928LySzI999roIf94g=;
-        b=nQTOvKZXJxfgdfxzf6uEISimmP1F7hwrlDqewT9qc+HCqv3QcGZ02NwfLlXykOeDab
-         fDq5o/ZUAuF1fXGpovAzC6NwIHxxrjYme+T2B2LM/2HL7RNps7GE90tZLljklYGTm4v/
-         K8F0LfgLs+PtOxG3pwobbaTLrsTsQBN2hmvokPLcURBJHBThcejh//R6cY2xgFiGnP12
-         oHit/5ZoOZnKHXMmERwbzd9JVsagK/ZfgDx5X4CjD00WYWmn2Xo2Jj8wHJD79B0+oa1o
-         OQ2i0j0TC7+ejQ5PLvSPkcecXmBeaK0rwHylTHNbl4zSEFlkIO0FyTv04C138o44jC8l
-         DlJg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr3Um6rRFjAMxMYHf/piIbH2v72jPaaUz806qQGj24qd2DLREkdlzE7/8bQTZ/8MOf+i3ek@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyq+4tMFpZI05pKhUOPNDO9zETkwhbaZjUZZkYiYhMujd11GYW1
-	LuxeHMqMVugw+4AiAsQueoEI4uR875KmyT+s+OO/2Dgtd8Uv6CKUf8xDYNNgVJLqnROR62pQSFI
-	IWg/Se8fsD7tl2b0DkdceSAHIUjkBgVxthmW2hW6aTGfwaNo+EhQY8VS+rYM=
+	s=arc-20240116; t=1787316597; c=relaxed/simple;
+	bh=ai7uJ/Bp3B7k7gqjdZG7kEQ3Rd98EsyvAnFZEz0/shU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PIYzqTFEKlaznJzy0SgvU+N80ovv9/3z193y9NKS75rd2OTh4JDqJUaczuhMFQ/X7GE8q6sJ6tOwXbXSoUjTVjfzFW0mjxYMi76GwT+vKCqcGbdkUoJPLpVjc74BwqsGgs+f6cKIvH2ZixfoiLDwIShpYmRril70yM7uXlB1DCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cz5pyGE7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cz5pyGE7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787316593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wsLc+kCmVuiTNnIgEiiFPeO1wE1TwVCD2+t4+B/gEQ=;
+	b=cz5pyGE7BnrrfDpKR8tCWWS5bSRqQx422vIa6c/C8uZCnJbyNnek2dvG0W3qF5cfI9obkA
+	TOyxQvPHdJJr8AdT5a4Iawj6NyJxcZhRXJFJuh2j3aQ1FS8R9qOJMiynM0GIhmDOV9FdWw
+	d0MHTUfqd4iQdNZzjdKSLq8wg5xb3f0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-3raF9grjPtShuaxpPSeESA-1; Fri,
+ 21 Aug 2026 08:49:49 -0400
+X-MC-Unique: 3raF9grjPtShuaxpPSeESA-1
+X-Mimecast-MFC-AGG-ID: 3raF9grjPtShuaxpPSeESA_1787316588
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C6DED1955F20;
+	Fri, 21 Aug 2026 12:49:47 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.44.48.197])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E2D5D18005BB;
+	Fri, 21 Aug 2026 12:49:45 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Edward Adam Davis <eadavis@qq.com>,
+	gfs2@lists.linux.dev,
+	syzbot <syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com>
+Subject: Re: [syzbot] [mm?] [gfs2?] WARNING in read_rindex_entry
+Date: Fri, 21 Aug 2026 14:49:43 +0200
+Message-ID: <20260821124944.1648686-1-agruenba@redhat.com>
+In-Reply-To: <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org>
+References: <20260819171409.e30eed94c3f7eb44b38e5ec7@linux-foundation.org> <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:5242:b0:4ab:2764:1911 with SMTP id
- 5614622812f47-4b2ef4570d0mr5290035b6e.19.1787302072388; Fri, 21 Aug 2026
- 01:47:52 -0700 (PDT)
-Date: Fri, 21 Aug 2026 01:47:52 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8810b8.ae6ddae5.3da009.002f.GAE@google.com>
-Subject: [syzbot] [gfs2?] WARNING in dlm_lowcomms_connect_node
-From: syzbot <syzbot+d451adc04b34fbabccf2@syzkaller.appspotmail.com>
-To: aahringo@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, teigland@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: OHbXSN-_5YkhvZag90mDsf2DJ9YnaodjnRhV0Vlxr5Y_1787316588
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On Thu, Aug 20, 2026 at 2:24 AM Andrew Morton <akpm@linux-foundation.org> wrote:
+> On Wed, 19 Aug 2026 15:49:42 -0700 syzbot <syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com> wrote:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    15ef2f78c49d Merge tag 'input-for-v7.2-rc7' of git://git.k..
+> > git tree:       upstream
+> > console+strace: https://syzkaller.appspot.com/x/log.txt?x=10871279580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=a0fdc3b566746377
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14871279580000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=100d2a25580000
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/c2a8c7d3a889/disk-15ef2f78.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/2da78afed345/vmlinux-15ef2f78.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/c4ffd97e4708/bzImage-15ef2f78.xz
+> > mounted in repro: https://storage.googleapis.com/syzbot-assets/eaa4120812b6/mount_0.gz
+> >   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=17f52a25580000)
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+>
+> Thanks.  Mounting an intentionally corrupted fs image, I assume.
+>
+> It appears that GFS2 forgot to validate the `ri_length' which it read
+> from disk.  That gets used in compute_bitstructs()->kzalloc_objs() and
+> the memory allocator didn't like the excessively-sized allocation
+> attempt.
 
-syzbot found the following issue on:
+Thanks for looking into this.  This commit (attached below) from the
+for-later branch should prevent that from happening:
 
-HEAD commit:    21d6ac051080 Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=14bbea25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d1128bc53f2ef7f3
-dashboard link: https://syzkaller.appspot.com/bug?extid=d451adc04b34fbabccf2
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
+https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9/-/merge_requests/8684#note_3716004816
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Thanks,
+Andreas
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/88380e2ddcb9/disk-21d6ac05.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/5dba5c2896b7/vmlinux-21d6ac05.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/52ac739e37e0/Image-21d6ac05.gz.xz
+--
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d451adc04b34fbabccf2@syzkaller.appspotmail.com
+gfs2: Improve resource group validation and error handling
 
-dlm: ls1: dlm_recover 15333067685668308026
-------------[ cut here ]------------
-WARNING: fs/dlm/lowcomms.c:557 at dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558, CPU#0: dlm_recoverd/4971
-Modules linked in:
-CPU: 0 UID: 0 PID: 4971 Comm: dlm_recoverd Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558
-lr : __find_con fs/dlm/lowcomms.c:274 [inline]
-lr : nodeid2con fs/dlm/lowcomms.c:305 [inline]
-lr : dlm_lowcomms_connect_node+0x114/0x1f8 fs/dlm/lowcomms.c:556
-sp : ffff8000933b7b20
-x29: ffff8000933b7b20 x28: 0000000000000002 x27: 0000000000000001
-x26: ffff0000ee849000 x25: ffff0000ef82f480 x24: dfff800000000000
-x23: 0000000000000000 x22: ffff80008e8f5c50 x21: 0000000000000002
-x20: ffff800088ed2bc0 x19: 0000000000000000 x18: 00000000ffffffff
-x17: ffff80008a7d6000 x16: 0000000000000003 x15: ffff80008a35fda0
-x14: ffff80008a5d5e28 x13: ffff0000cf590000 x12: ffff0000cf590000
-x11: 00000000000000c8 x10: 0000000000000003 x9 : 0000000000000000
-x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : ffff80008aa48520 x4 : 0000000000000004 x3 : 0000000000000001
-x2 : ffff80008a468b28 x1 : ffff0000cf590000 x0 : 0000000000000000
-Call trace:
- dlm_lowcomms_connect_node+0x14c/0x1f8 fs/dlm/lowcomms.c:558 (P)
- add_remote_member fs/dlm/member.c:313 [inline]
- dlm_add_member fs/dlm/member.c:334 [inline]
- dlm_recover_members+0xe98/0x1c48 fs/dlm/member.c:607
- ls_recover fs/dlm/recoverd.c:151 [inline]
- do_ls_recovery fs/dlm/recoverd.c:360 [inline]
- dlm_recoverd+0x594/0x1d20 fs/dlm/recoverd.c:430
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:838
-irq event stamp: 46
-hardirqs last  enabled at (45): [<ffff800086930818>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline]
-hardirqs last  enabled at (45): [<ffff800086930818>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:198
-hardirqs last disabled at (46): [<ffff80008690b3d0>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:445
-softirqs last  enabled at (42): [<ffff800080f722fc>] dlm_create_root_list fs/dlm/recoverd.c:72 [inline]
-softirqs last  enabled at (42): [<ffff800080f722fc>] ls_recover fs/dlm/recoverd.c:141 [inline]
-softirqs last  enabled at (42): [<ffff800080f722fc>] do_ls_recovery fs/dlm/recoverd.c:360 [inline]
-softirqs last  enabled at (42): [<ffff800080f722fc>] dlm_recoverd+0x584/0x1d20 fs/dlm/recoverd.c:430
-softirqs last disabled at (40): [<ffff800080f721ec>] dlm_create_root_list fs/dlm/recoverd.c:65 [inline]
-softirqs last disabled at (40): [<ffff800080f721ec>] ls_recover fs/dlm/recoverd.c:141 [inline]
-softirqs last disabled at (40): [<ffff800080f721ec>] do_ls_recovery fs/dlm/recoverd.c:360 [inline]
-softirqs last disabled at (40): [<ffff800080f721ec>] dlm_recoverd+0x474/0x1d20 fs/dlm/recoverd.c:430
----[ end trace 0000000000000000 ]---
-dlm: ls1: dlm_recover_members error -2
-dlm: ls1: do_ls_recovery 15333067685668308026 error -2
-dlm: ls1: dlm_recover 15333067685668308027
-dlm: ls1: add member 1
-dlm: ls1: dlm_recover_members 1 nodes
-dlm: ls1: generation 1 slots 1 1:1
-dlm: ls1: dlm_recover_directory
-dlm: ls1: dlm_recover_directory 0 in 0 new
-dlm: ls1: dlm_recover 15333067685668308027 generation 1 done: 10 ms
+Validate the resource group boundaries, check against the device size, simplify
+the initialization logic, and check for resource group overlaps.
 
-
+Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
+Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/gfs2/rgrp.c | 123 ++++++++++++++++++++++++++-----------------------
+ 1 file changed, 65 insertions(+), 58 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index f6048a73e5c3..3ac751eea055 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -745,6 +745,7 @@ void gfs2_clear_rgrpd(struct gfs2_sbd *sdp)
+ 
+ /**
+  * compute_bitstructs - Compute the bitmap sizes
++ * @sb: The superblock
+  * @rgd: The resource group descriptor
+  *
+  * Calculates bitmap descriptors, one for each block that contains bitmap data
+@@ -752,84 +753,74 @@ void gfs2_clear_rgrpd(struct gfs2_sbd *sdp)
+  * Returns: errno
+  */
+ 
+-static int compute_bitstructs(struct gfs2_rgrpd *rgd)
++static int compute_bitstructs(struct super_block *sb, struct gfs2_rgrpd *rgd)
+ {
+ 	struct gfs2_sbd *sdp = rgd->rd_sbd;
+ 	struct gfs2_bitmap *bi;
+-	u32 length = rgd->rd_length; /* # blocks in hdr & bitmap */
++	u32 expected_length;
+ 	u32 bytes_left, bytes;
++	u64 data_end;
+ 	int x;
+ 
+-	if (!length)
+-		return -EINVAL;
++	/*
++	 * The first resource group block has a gfs2_rgrp header; the remaining
++	 * blocks have a gfs2_meta_header header.  The rest of each block is
++	 * filled with bitmap data.
++	 */
++
++	if (rgd->rd_addr <= (GFS2_SB_ADDR >> sdp->sd_fsb2bb_shift)) {
++		gfs2_consist_rgrpd(rgd);
++		return -EIO;
++	}
++	if (check_add_overflow(rgd->rd_data0, rgd->rd_data, &data_end) ||
++	    rgd->rd_data == 0 || data_end > sb_bdev_nr_blocks(sb)) {
++		gfs2_consist_rgrpd(rgd);
++		return -EIO;
++	}
++	if (rgd->rd_bitbytes != DIV_ROUND_UP(rgd->rd_data, GFS2_NBBY)) {
++		gfs2_consist_rgrpd(rgd);
++		return -EIO;
++	}
++	expected_length = DIV_ROUND_UP(rgd->rd_bitbytes +
++		sizeof(struct gfs2_rgrp) - sizeof(struct gfs2_meta_header),
++		sdp->sd_sb.sb_bsize - sizeof(struct gfs2_meta_header));
++	if (rgd->rd_length != expected_length) {
++		gfs2_consist_rgrpd(rgd);
++		return -EIO;
++	}
++	if (rgd->rd_data0 < rgd->rd_addr + rgd->rd_length) {
++		gfs2_consist_rgrpd(rgd);
++		return -EIO;
++	}
+ 
+-	rgd->rd_bits = kzalloc_objs(struct gfs2_bitmap, length, GFP_NOFS);
++	rgd->rd_bits = kzalloc_objs(struct gfs2_bitmap, rgd->rd_length, GFP_NOFS);
+ 	if (!rgd->rd_bits)
+ 		return -ENOMEM;
+ 
+ 	bytes_left = rgd->rd_bitbytes;
+ 
+-	for (x = 0; x < length; x++) {
++	for (x = 0; x < rgd->rd_length; x++) {
+ 		bi = rgd->rd_bits + x;
+ 
+ 		bi->bi_flags = 0;
+-		/* small rgrp; bitmap stored completely in header block */
+-		if (length == 1) {
+-			bytes = bytes_left;
+-			bi->bi_offset = sizeof(struct gfs2_rgrp);
++		if (x == 0) {
++			/* header block */
+ 			bi->bi_start = 0;
+-			bi->bi_bytes = bytes;
+-			bi->bi_blocks = bytes * GFS2_NBBY;
+-		/* header block */
+-		} else if (x == 0) {
+-			bytes = sdp->sd_sb.sb_bsize - sizeof(struct gfs2_rgrp);
+ 			bi->bi_offset = sizeof(struct gfs2_rgrp);
+-			bi->bi_start = 0;
+-			bi->bi_bytes = bytes;
+-			bi->bi_blocks = bytes * GFS2_NBBY;
+-		/* last block */
+-		} else if (x + 1 == length) {
+-			bytes = bytes_left;
+-			bi->bi_offset = sizeof(struct gfs2_meta_header);
+-			bi->bi_start = rgd->rd_bitbytes - bytes_left;
+-			bi->bi_bytes = bytes;
+-			bi->bi_blocks = bytes * GFS2_NBBY;
+-		/* other blocks */
+ 		} else {
+-			bytes = sdp->sd_sb.sb_bsize -
+-				sizeof(struct gfs2_meta_header);
++			/* bitmap-only block */
++			struct gfs2_bitmap *prev = bi - 1;
++
++			bi->bi_start = prev->bi_start + prev->bi_bytes;
+ 			bi->bi_offset = sizeof(struct gfs2_meta_header);
+-			bi->bi_start = rgd->rd_bitbytes - bytes_left;
+-			bi->bi_bytes = bytes;
+-			bi->bi_blocks = bytes * GFS2_NBBY;
+ 		}
+-
++		bytes = sdp->sd_sb.sb_bsize - bi->bi_offset;
++		if (bytes > bytes_left)
++			bytes = bytes_left;
++		bi->bi_bytes = bytes;
++		bi->bi_blocks = bytes * GFS2_NBBY;
+ 		bytes_left -= bytes;
+ 	}
+-
+-	if (bytes_left) {
+-		gfs2_consist_rgrpd(rgd);
+-		return -EIO;
+-	}
+-	bi = rgd->rd_bits + (length - 1);
+-	if ((bi->bi_start + bi->bi_bytes) * GFS2_NBBY != rgd->rd_data) {
+-		gfs2_lm(sdp,
+-			"ri_addr=%llu "
+-			"ri_length=%u "
+-			"ri_data0=%llu "
+-			"ri_data=%u "
+-			"ri_bitbytes=%u "
+-			"start=%u len=%u offset=%u\n",
+-			(unsigned long long)rgd->rd_addr,
+-			rgd->rd_length,
+-			(unsigned long long)rgd->rd_data0,
+-			rgd->rd_data,
+-			rgd->rd_bitbytes,
+-			bi->bi_start, bi->bi_bytes, bi->bi_offset);
+-		gfs2_consist_rgrpd(rgd);
+-		return -EIO;
+-	}
+-
+ 	return 0;
+ }
+ 
+@@ -864,6 +855,7 @@ static int rgd_insert(struct gfs2_rgrpd *rgd)
+ {
+ 	struct gfs2_sbd *sdp = rgd->rd_sbd;
+ 	struct rb_node **newn = &sdp->sd_rindex_tree.rb_node, *parent = NULL;
++	struct rb_node *prevn;
+ 
+ 	/* Figure out where to put new node */
+ 	while (*newn) {
+@@ -882,6 +874,19 @@ static int rgd_insert(struct gfs2_rgrpd *rgd)
+ 	rb_link_node(&rgd->rd_node, parent, newn);
+ 	rb_insert_color(&rgd->rd_node, &sdp->sd_rindex_tree);
+ 	sdp->sd_rgrps++;
++
++	prevn = rb_prev(&rgd->rd_node);
++	if (prevn) {
++		struct gfs2_rgrpd *prev =
++			rb_entry(prevn, struct gfs2_rgrpd, rd_node);
++
++		if (prev->rd_data0 + prev->rd_data > rgd->rd_addr) {
++			fs_err(sdp, "overlapping resource groups.\n");
++			rb_erase(&rgd->rd_node, &sdp->sd_rindex_tree);
++			return -ENOENT;
++		}
++	}
++
+ 	return 0;
+ }
+ 
+@@ -928,7 +933,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 	if (error)
+ 		goto fail;
+ 
+-	error = compute_bitstructs(rgd);
++	error = compute_bitstructs(sdp->sd_vfs, rgd);
+ 	if (error)
+ 		goto fail_glock;
+ 
+@@ -944,7 +949,9 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 		return 0;
+ 	}
+ 
+-	error = 0; /* someone else read in the rgrp; free it and ignore it */
++	/* If someone else read in the rgrp, free it and ignore it. */
++	if (error == -EEXIST)
++		error = 0;
+ fail_glock:
+ 	gfs2_glock_put(rgd->rd_gl);
+ 
+-- 
+2.55.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
