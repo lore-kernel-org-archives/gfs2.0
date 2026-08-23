@@ -1,168 +1,201 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4EF471D09
-	for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 12:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E9049362B;
+	Sun, 23 Aug 2026 13:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787316875; cv=none; b=C1w4rMUkZ4iLgRE8Giw5rOqqmy4hS5A+iwxjGdGsjDzxY3HSd/pwXtqffnXSRVDOzsS6OZiUuRatSkkYwZwcDI48GisGMfElLdPmLaAvxzcOIaJoRZI3bEcL8rmYbp2PkKJfAlOu0PObYzfRxicRjMh2CPg/B8/TgJTo8/UVtZE=
+	t=1787491886; cv=none; b=K7G42sm2XMa/MZkrxgGrnjzrZbVQvjJahHSVqj4vyn5FT9panQ40MkZM79T6GUnbKNJ42GsNIDo180VUFqYu/i6HQlajwR12CEDdHmDDaDk/WT9p5hTYzGqazWww6O/Tbj7cDQYd8z+z+v8oOEjjykXwFnwVns2cHUF4uewhwBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787316875; c=relaxed/simple;
-	bh=1qHc1vG+5eFC+XMUvGsfkxVTjPKBUO/DSjc8eaOqMJ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uMuG8IFZQ5L2gZetKCUD9s0y3TYkxSDbjuzX4kxidqVQBvzTPBUOPCaI03pGHrC4hdMgRm2PhxS6xIJh9ka0H0utpqUDv40TeCe9vOyGoQOSW2yzd104/h/FPgasTgOqSF2Hu76JBYH8xF4ZBadSRXihNLqw2SZXkZatWz88YFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ClW0ENRr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787491886; c=relaxed/simple;
+	bh=vgGCCPxWtkN4aN8rAezO9LPEiaShs/wqSj7iyXliD4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q5MwwgCkgaOpFyMX9OnE3oxCqgvRkghIE3MhcniAj9yoYNKk04X94vpTNgyeQgnwccPXJhM0t7lsyp3+SxL4ztqgpB7UiORbaSZsLEUoGGF1ILgFxkreOeXRsXqn1TFpE7NWNAB9dk/NZcTb2APF/mtsVzcnVMAlsGpLIwXXEbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TV9Q5meh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ClW0ENRr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787316872;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T3T0DA5j0vwcwUo9HIMuCVlwa1ONI5AchHTxjE6rvQY=;
-	b=ClW0ENRr0SKnR1vPRfriR0uw0as8k/CXALmMG9BQsnaHQHARf7jF3kHlTCJB5rGM3UJ6uh
-	hFzf6PxC2P6DzFr08BJBDFBdbL1+KPjR9E42e/fwaajyG7dXvc6Vm/RmZv/ONRKb4V2owl
-	1iC/R3qK5sKQuNkIPVdFCgyCN7edqWs=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-NZJeaVrqMEyLX_l0eDN40g-1; Fri, 21 Aug 2026 08:54:31 -0400
-X-MC-Unique: NZJeaVrqMEyLX_l0eDN40g-1
-X-Mimecast-MFC-AGG-ID: NZJeaVrqMEyLX_l0eDN40g_1787316871
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66cebffd238so870212d50.2
-        for <gfs2@lists.linux.dev>; Fri, 21 Aug 2026 05:54:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787316871; x=1787921671;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T3T0DA5j0vwcwUo9HIMuCVlwa1ONI5AchHTxjE6rvQY=;
-        b=U8xbuS+LGsIprmXF0r5qdtX7c50VmQWLt8XLnWl3zr1uV0Ocm5nx/dU35xiuyaWPM8
-         RKHbQrC95pPODLEyc07rGQxuqs+naTXOianWfWrB6THmvG4xX1sAbXoIOmDNb6c0hM+R
-         /2zTAImb96QgCqc85HckmgS6WMuRE4NMJLjZOr9ya1hTNXen2cW4Yp1thFRPt0jX7V/4
-         WrY1wvKvakTYUof+OWnfrICYsu3JC4yKFh9cU/ImKtO6z5je+8M1wwmId6yipjyKftK7
-         1qyh14UnLCnZ4lpqITThpx45Ev9SgYdPbbmzuPpva9lS5rUOoc4y/o4W1qzcVwlUmB1U
-         Ywkw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7REJpyVbayU3v5pYj6kBUb+r6nr3IaHT1VUWvYhipsQ3j5zigH2ieLMLLDKxBYEjUuXVw@lists.linux.dev
-X-Gm-Message-State: AFuF++krGB3aRl0xyH4/RcQuN+kBIzJMhvunuHJOBNngEVJsHntqlib5
-	0RboOsiVOairWSpdPgl9TxOZrE6GzJr7ucAtrL1r8v3cHfwmLCqS0/4oj/QOEiFbJdYDxyQlBKp
-	BTpbUWnNJa37Ijs7ogtDaqVH98TDWANATv1LWm47QLrN92eXFXzk1sxxZ2gfTZg5mCucxBD1vVe
-	QKF+Ws8uY7KWvahYuRW3Y5Ve9LQxWG6w==
-X-Gm-Gg: AR+sD13mgf51AVi/gVk/742GAMo86Tt7TG3gmoQQa01wabOCx+mbCXpmagFYGfi+dI0
-	CDq/dCBZmXLuZvEvQkHR5deObDxpH5g6svzCOcbjeYea0k6qffyupmWVMJ8zfV3qdqpcI7gmqwu
-	8XSBwEDl53jyy3Wg2d5anXTgjxKZN9GTjt1qEKYEo57eTUSe0oV5X63Q+QXpZzXGecDeJbIucsd
-	d9f/02HCShnLcMh3m/cX1CETO8A10SRpFpx9AvuVb0a
-X-Received: by 2002:a53:ce8f:0:b0:66c:e3eb:9443 with SMTP id 956f58d0204a3-66ce4ac2100mr1991126d50.31.1787316870689;
-        Fri, 21 Aug 2026 05:54:30 -0700 (PDT)
-X-Received: by 2002:a53:ce8f:0:b0:66c:e3eb:9443 with SMTP id
- 956f58d0204a3-66ce4ac2100mr1991100d50.31.1787316870126; Fri, 21 Aug 2026
- 05:54:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TV9Q5meh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5E21F00A3E;
+	Sun, 23 Aug 2026 13:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787491884;
+	bh=zsSjjn7DLVrE+cmbB2WIsuyMJH7KSRD8XhZ3lqxHxTc=;
+	h=From:To:Cc:Subject:Date;
+	b=TV9Q5meh3pwHXqjStt1RaCQzxfSQ/sLyIC6aPeQbDgn8M+12n2iTRWIgCmgx4u/Cq
+	 i6MfKXjSUVw3ny9D9Wt6xb2kveiUodxsZPgjrJf0bFj/hA3C+/CE9npDXJ9iPmJHYB
+	 47gUnRlOotDIkz6qidAHuIIUGgooXOqUzMVV8xqKgGV7Grz7GhrQwFKyRdsttNV1oZ
+	 DY05Oo7QYT+QlOjKCSl4VBvA1lRxrkUxc0mhWOcMgNGfEJK3z/HrU60Nn33qgSbgIv
+	 nigBw1iTObQb89JTmWUVK2ziFz56GKSVqSCdnI8uzig2wuONiTvVc2+NJbGyjAr7xE
+	 7XqOGKI2SqJ9g==
+From: Yu Kuai <yukuai@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Yu Kuai <yukuai@fygo.io>,
+	Christoph Hellwig <hch@lst.de>,
+	Tao Cui <cui.tao@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
+Date: Sun, 23 Aug 2026 21:30:42 +0800
+Message-ID: <20260823133045.970199-1-yukuai@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <6a863306.ae6ddae5.3da009.0013.GAE@google.com> <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
-In-Reply-To: <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 21 Aug 2026 14:54:19 +0200
-X-Gm-Features: AcwNN1WdIh2VqMnJFVL8XqYKLmq06uENKjCJ84-TLUojbAOKdvIO7i189zyeTag
-Message-ID: <CAHc6FU4HnRSQmtLyTJsZ=qio7NEBFbkN=Y2GyG46=nn_TYi1pQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: valid the length of rgrp header
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com, swhiteho@redhat.com, 
-	akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gfs2@lists.linux.dev, gourry@gourry.net, 
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vbhRDgohBQQ-Kwi0C4CLucIbdVT0ieJyf_c98l6fI7s_1787316871
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 20, 2026 at 6:37=E2=80=AFAM Edward Adam Davis <eadavis@qq.com> =
-wrote:
-> When mounting a deliberately corrupted filesystem image, an excessively
-> large rgrp header length is used in a call to kzalloc_objs() within
-> compute_bitstructs(), and the memory allocator cannot handle such a large
-> allocation request. This triggers [1].
->
-> Add a check for the rgrp header length to avoid [1].
->
-> [1]
-> WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2dc=
-0 mm/page_alloc.c:5280, CPU#1: syz-executor256/5629
-> Call Trace:
->  alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
->  ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
->  __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
->  __do_kmalloc_node mm/slub.c:5322 [inline]
->  __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
->  _kmalloc_noprof include/linux/slab.h:992 [inline]
->  _kzalloc_noprof include/linux/slab.h:1309 [inline]
->  compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
->  read_rindex_entry+0x4a1/0x1250 fs/gfs2/rgrp.c:931
->  gfs2_ri_update+0x6f/0x3b0 fs/gfs2/rgrp.c:1001
->  gfs2_rindex_update+0x40b/0x480 fs/gfs2/rgrp.c:1051
->  init_inodes+0x1f78/0x2790 fs/gfs2/ops_fstype.c:872
->  gfs2_fill_super+0x1d3d/0x2cf0 fs/gfs2/ops_fstype.c:1250
->  get_tree_bdev_flags+0x38c/0x620 fs/super.c:1640
->  gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1332
->  vfs_get_tree+0x92/0x320 fs/super.c:1700
->  fc_mount fs/namespace.c:1198 [inline]
->
-> Fixes: bb8d8a6f54c1 ("[GFS2] Fix sign problem in quota/statfs and cleanup=
- _host structures")
-> Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D9d20c3ad7d29227de28d
-> Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> ---
->  fs/gfs2/rgrp.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-> index 5988a165a830..53d097ce668e 100644
-> --- a/fs/gfs2/rgrp.c
-> +++ b/fs/gfs2/rgrp.c
-> @@ -899,6 +899,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
->         struct gfs2_rindex buf;
->         int error;
->         struct gfs2_rgrpd *rgd;
-> +       size_t size;
->
->         if (pos >=3D i_size_read(&ip->i_inode))
->                 return 1;
-> @@ -917,6 +918,13 @@ static int read_rindex_entry(struct gfs2_inode *ip)
->         rgd->rd_sbd =3D sdp;
->         rgd->rd_addr =3D be64_to_cpu(buf.ri_addr);
->         rgd->rd_length =3D be32_to_cpu(buf.ri_length);
-> +
-> +       size =3D rgd->rd_length * sizeof(struct gfs2_bitmap);
-> +       if (get_order(size) > MAX_PAGE_ORDER) {
-> +               error =3D -EINVAL;
-> +               goto fail;
-> +       }
-> +
->         rgd->rd_data0 =3D be64_to_cpu(buf.ri_data0);
->         rgd->rd_data =3D be32_to_cpu(buf.ri_data);
->         rgd->rd_bitbytes =3D be32_to_cpu(buf.ri_bitbytes);
-> --
-> 2.43.0
+From: Yu Kuai <yukuai@fygo.io>
 
-Thanks. The patch I've pushed to 'for-later' for validating the
-resource group geometry [*] should prevent this from happening in the
-first place.
+This is the first formal, non-RFC posting of the preparatory series for
+the blkcg_mutex conversion proposed in the related blkcg_mutex RFC v2
+series [1].  That conversion moves queue-local blkg topology
+synchronization from q->queue_lock to q->blkcg_mutex, which is awkward
+while bios directly store queue-local blkg references.
 
-[*] https://lore.kernel.org/gfs2/20260821124944.1648686-1-agruenba@redhat.c=
-om/
+RFC v1 made the stored bio association queue-independent by replacing
+bi_blkg with bi_blkcg, but a bio-owned blkg reference still had to be
+recovered by looking up the bio's blkcg and current request_queue.  Tao Cui
+reported that cgroup removal deletes a dying blkg from the per-blkcg radix
+tree before a throttled bio drops its reference.  A later lookup for that
+pinned blkg then fails, triggers the warning in bio_pinned_blkg(), and
+leaks the reference.
 
-Andreas
+RFC v2 makes request_queue the authoritative lookup owner before converting
+the bio association.  A queue-owned rhashtable, keyed by the blkcg CSS ID,
+keeps dying blkgs discoverable until their references drain while
+q->blkg_list remains available for ordered walks.  The bio conversion then
+stores and pins the blkcg CSS, lazily creates a blkg only for users which
+need one, and uses lookup-only access for completion and accounting paths
+which already own a blkg reference.  Async bio punt state is finally moved
+from blkg to blkcg so punting alone does not instantiate a queue-local
+blkg.
 
+Changes since RFC v3:
+
+  - Drop the RFC prefix.
+  - Add Christoph Hellwig's Reviewed-by to patch 1.
+  - Add Tao Cui's Reviewed-by to patch 2.
+  - In patch 2, relax blkg_lookup_any()/blkg_lookup() to also allow
+    q->queue_lock as an alternative to the RCU read lock.
+
+Changes since RFC v2:
+
+  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
+    -stable, as suggested by Christoph Hellwig.
+  - Rebase onto the latest for-7.3/block branch.
+  - In the new patch 1, note that the remaining q->blkg_list walkers are
+    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
+    the queue_lock-to-blkcg_mutex conversion.
+  - In the new patch 1, explain the list_empty case in blkg_release(), and
+    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
+    does not acquire a reference.
+
+Changes since RFC v1:
+
+  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+    shared request_queue is rebound, instead of treating root_blkg == NULL
+    as completion of asynchronous blkg teardown.
+  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+    request_queue rhashtable keyed by blkcg->css.id, as suggested by
+    Christoph Hellwig.  Keep dying pinned blkgs in the hash until
+    blkg_release() so bio-owned references remain discoverable.
+  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara and
+    Christoph Hellwig, and make bio_blkcg() naturally return NULL for an
+    unassociated bio.
+  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned reference,
+    falls back to a live parent when creation or tryget fails, and updates
+    bi_blkcg when the returned blkg belongs to an ancestor.
+  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+    is already set.  Use bio_blkg() in the BFQ and IOCOST merge paths which
+    may need to create a blkg, while keeping blk_cgroup_bio_start() and
+    completion paths lookup-only.
+  - Move CSS online-reference handling into
+    bio_associate_blkcg_from_css(), including fallback to the root blkcg, so
+    bio_associate_blkcg() does not take a redundant reference.
+  - Keep the v1 async bio punt conversion as patch 4 and document that
+    async_bio_lock protects async_bios.
+
+Previous versions:
+  RFC v3: https://lore.kernel.org/r/20260818070641.756747-1-yukuai@kernel.org
+  RFC v2: https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
+  RFC v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+
+Related series:
+  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+
+Yu Kuai (3):
+  blk-cgroup: use a request_queue rhashtable for blkg lookup
+  blk-cgroup: store blkcg in bio instead of blkg
+  blk-cgroup: move async bio punt state to blkcg
+
+ Documentation/admin-guide/cgroup-v2.rst |   2 +-
+ block/bfq-cgroup.c                      |  16 +-
+ block/bfq-iosched.c                     |  19 +-
+ block/bio.c                             |  22 +-
+ block/blk-cgroup-fc-appid.c             |  10 +-
+ block/blk-cgroup.c                      | 339 ++++++++++++++----------
+ block/blk-cgroup.h                      |  92 +++++--
+ block/blk-core.c                        |   9 +-
+ block/blk-crypto-fallback.c             |   2 +-
+ block/blk-iocost.c                      |  12 +-
+ block/blk-iolatency.c                   |  11 +-
+ block/blk-ioprio.c                      |   2 +-
+ block/blk-throttle.c                    |   2 +-
+ block/blk-throttle.h                    |   2 +-
+ drivers/md/bcache/request.c             |   2 +-
+ drivers/md/dm.c                         |   2 +-
+ drivers/md/md.c                         |   2 +-
+ drivers/nvdimm/nd_virtio.c              |   2 +-
+ fs/gfs2/lops.c                          |   3 +-
+ include/linux/bio.h                     |  26 +-
+ include/linux/blk_types.h               |   9 +-
+ include/linux/blkdev.h                  |   2 +
+ include/linux/writeback.h               |   2 +-
+ mm/page_io.c                            |  13 +-
+ 24 files changed, 366 insertions(+), 237 deletions(-)
+
+-- 
+2.51.0
