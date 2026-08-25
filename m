@@ -1,101 +1,232 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A45F390C89
-	for <gfs2@lists.linux.dev>; Wed, 26 Aug 2026 06:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153638F945;
+	Wed, 26 Aug 2026 07:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787724862; cv=none; b=nVJQuRXI0ElDUqIRVF+eYdJ7JG8I2AZoPNPkEdgMoTtxBTQXCGpLjh2jJHw/SZaTbj8aA70YvVwxZh5Lzp92AnEXW02Cs9wbHASJhqp+Q/XUHz6reLFdCASXx0sP+Krso9+XiuPOmKwhNXKKT3dor1ej0rUjGcXbl0Bak1qyrYw=
+	t=1787730609; cv=none; b=Y7z3S11nYoFGdSHfG2PAsWSIR8yKt4Yzz6A4jg0z6GOymgStmtk1eKfHAy7G4LJvR9dUrmuDoWJDjrPiOkr2hXwQhypQRQoaMavPpEgFf5m/foyHy7KAubZkNzErokoP9jI5OJDTmML/6t63xhI3fcrCTebYwAuHp3MaxePusEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787724862; c=relaxed/simple;
-	bh=rYv65aHzJx7zpsHNKefen4yv3ZXwkoOdogAEAqvc2YA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XZaSFOKOzmVB2y9IyqvSogjI7pemVEQ/59xpGgnX/hw/EWsBrtcW7YoIS6Krn+RZuwfC1HV3WSQEYwzx2JFmDDos2aXn6lDHfmfX1NrZt/WAjHU89lxRjdWiupIcC+Ecdu4fpUYTJVRSWjfrEqSnnfmZ2iP9wi7uYCLFvVcBgmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5cd8ed06a11511f19a56ed5b684f684d-20260826
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:84a169bb-9a61-42ac-b7ff-b03e29d6821c,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:4d4de799795018303924e1e098e3d0e4,BulkI
-	D:nil,BulkQuantity:0,SF:102|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:n
-	il,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LE
-	S:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5cd8ed06a11511f19a56ed5b684f684d-20260826
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2030714239; Wed, 26 Aug 2026 14:14:14 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] gfs2: validate file type in glockfd iterator
-Date: Wed, 26 Aug 2026 14:14:10 +0800
-Message-Id: <20260826061410.1378510-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1787730609; c=relaxed/simple;
+	bh=/USUiUer2BhYo2LEKC+QSsOIR/yVyqPkcbr9uk6jFKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=of5BJgvWD7fj2wOpyj1IyXPu/nhebJ7K0pP4fScnKPbRzemQJHEcHz46mMaTEAMOpLHqqyNupHgdykgbVirf2H5IGMuIyVsu5GFV/fQv6m14Cl8n5DAWsXsotlpCnyKtilJYpgpT6uqz8Zt3vQKPpe758+EK75J3GhT8jnztNto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1UA75Abw; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gZLeVzhx; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XW6gcqHR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=/Zv2i9tk; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1UA75Abw";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gZLeVzhx";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XW6gcqHR";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="/Zv2i9tk"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 981E087351;
+	Wed, 26 Aug 2026 07:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1787730601; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S2YAhMtG8uFdapykVU1pxCQGl20ZoAPCN+wmYAeKcPM=;
+	b=1UA75Abw0TpUE89hXpAsxVccjAYd2IAhlicK1AmGNDTJb2gvCukIN3C7WiCQKPKLMJa2hq
+	0hcS4pWHXm6YPp2Jxm9gjypDjWyorZ1myuAXT0IduYAHBrp9ZVnV7fYqrXQ6oPu5Wll+vS
+	eSMcehDQjofjakPQd3ut8vQWkNUlcfE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1787730601;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S2YAhMtG8uFdapykVU1pxCQGl20ZoAPCN+wmYAeKcPM=;
+	b=gZLeVzhxgowMPXQCqWWsfRHeo/dWVgLOHzcWBiZ5x0AYMwywiSfJESK04SqdyBoRRwYIi/
+	BAd7udDjGSXX+cCw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1787730597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S2YAhMtG8uFdapykVU1pxCQGl20ZoAPCN+wmYAeKcPM=;
+	b=XW6gcqHRCtlLuH1nMPKIacpqY7mibISnObfF66CxihDbAM4tl29LC+fLIO0ICc5eHTdXR2
+	zWrn47pG7ZgqICMrcPMK1Gjbi2C83SKU0fDsbR58QxYIPlIfWF2sJ6GUhtK4bBYHuV5hWv
+	oXXz/3vRYuxSiqbrENCkzc1NvQenlvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1787730597;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S2YAhMtG8uFdapykVU1pxCQGl20ZoAPCN+wmYAeKcPM=;
+	b=/Zv2i9tk5nh2gUBKCOgxUlSCkfm8Q/1jm9aZu8rKwSUYKePrXlYEWwi3eDdU3QPCUP37SQ
+	sK59n/+EZRsrlpAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6200D13680;
+	Wed, 26 Aug 2026 07:49:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jaHtF6Oajmr9CwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 26 Aug 2026 07:49:55 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7D034A13BD; Tue, 25 Aug 2026 19:19:04 +0200 (CEST)
+Date: Tue, 25 Aug 2026 19:19:04 +0200
+From: Jan Kara <jack@suse.cz>
+To: Chao Shi <coshi036@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Matthew Wilcox <willy@infradead.org>, 
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Baokun Li <libaokun@linux.alibaba.com>, 
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Zhang Yi <yi.zhang@huawei.com>, Zhang Yi <yi.zhang@huaweicloud.com>, 
+	Bob Copeland <me@bobcopeland.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	linux-ext4@vger.kernel.org, ocfs2-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Weidong Zhu <weizhu@fiu.edu>
+Subject: Re: [PATCH v2 17/21] jbd2: report journal write errors with
+ BH_Write_EIO
+Message-ID: <e2wjbsip4hixztwcxx5kbvwrplwefyche5gsawnw33z4ei2vxa@7ecnu3nb3xjp>
+References: <cover.1785951556.git.coshi036@gmail.com>
+ <c700983eea955429d927791fe5fb9ffe6cf11056.1785951556.git.coshi036@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c700983eea955429d927791fe5fb9ffe6cf11056.1785951556.git.coshi036@gmail.com>
+X-Spam-Score: -2.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	URIBL_BLOCKED(0.00)[suse.com:email,fiu.edu:email,suse.cz:email,imap1.dmz-prg2.suse.org:helo];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	TAGGED_RCPT(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	R_RATELIMIT(0.00)[to_ip_from(RLhn4jw3wthgom179184pqozfe)];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.cz,kernel.org,zeniv.linux.org.uk,infradead.org,vger.kernel.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,huaweicloud.com,bobcopeland.com,samsung.com,sony.com,mail.parknet.co.jp,fasheh.com,evilplan.org,redhat.com,lists.linux.dev,fiu.edu];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.com:email]
 
-The gfs2_glockfd_seq_show_flock() function assumes all file descriptors
-with inodes on the GFS2 superblock have file->private_data pointing to
-struct gfs2_file. This is incorrect for:
+On Thu 06-08-26 12:58:40, Chao Shi wrote:
+> The journal's own write completion handler,
+> journal_end_buffer_io_sync(), reports a failed write by clearing
+> BH_Uptodate, and the three places that wait for journal writes look for
+> that.  This series is removing that convention: a buffer whose write failed
+> still holds the data that was supposed to reach the disk, and saying it is
+> not up to date makes callers rewrite, re-read or WARN over data that was
+> never wrong.
+> 
+> Set BH_Write_EIO instead, with mark_buffer_write_io_error(), and test it in
+> journal_wait_on_commit_record() and in the two commit-phase waits.
+> 
+> The handler stops touching BH_Uptodate in either direction.  Setting it on
+> success was never needed: every caller marks the buffer up to date before
+> submitting the write, because a buffer with no valid data is not something
+> you can write out.  The local flag is renamed to match what it now means.
+> 
+> The two changes have to go together, because commit phase 4 waits on a
+> mixed list: descriptor blocks are submitted with
+> journal_end_buffer_io_sync(), while revoke blocks go through
+> write_dirty_buffer() and land in bh_end_write().  bh_end_write() already
+> sets BH_Write_EIO, so converting the consumer alone would keep working for
+> revoke blocks and silently stop detecting failed descriptor writes.  With
+> the handler converted, both halves of the list report the same way.
+> 
+> mark_buffer_write_io_error() is safe on all of these buffers.  The shadow
+> buffers from jbd2_journal_write_metadata_buffer() have no folio and no
+> associated mapping, so it does nothing beyond setting the flag.  Descriptor
+> and commit blocks are ordinary buffers on the journal device, and marking
+> the journal's mapping with the error is what write_dirty_buffer() already
+> does for revoke blocks on the same device.
+> 
+> Acked-by: Weidong Zhu <weizhu@fiu.edu>
+> Signed-off-by: Chao Shi <coshi036@gmail.com>
 
-- O_PATH files: private_data is NULL
-- Special files (FIFO, socket, device): private_data points to
-  different structures
+Looks good. Feel free to add:
 
-The glockfd iterator only checks that the inode's superblock matches,
-which allows these files to pass through. This can lead to NULL pointer
-dereference or invalid private_data access when accessing private_data.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Add an f_op check so we only process files using gfs2_file_fops before
-accessing private_data.
+								Honza
 
-Fixes: 56535dc695f8 ("gfs2: Add flocks to glockfd debugfs file")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
----
- fs/gfs2/glock.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index d59ea71a84db..b210c97cde45 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -2562,10 +2562,16 @@ static void gfs2_glockfd_seq_stop(struct seq_file *seq, void *iter_ptr)
- static void gfs2_glockfd_seq_show_flock(struct seq_file *seq,
- 					struct gfs2_glockfd_iter *i)
- {
--	struct gfs2_file *fp = i->file->private_data;
--	struct gfs2_holder *fl_gh = &fp->f_fl_gh;
-+	struct gfs2_file *fp;
-+	struct gfs2_holder *fl_gh;
- 	struct lm_lockname gl_name = { .ln_type = LM_TYPE_RESERVED };
- 
-+	if (i->file->f_op != &gfs2_file_fops)
-+		return;
-+
-+	fp = i->file->private_data;
-+	fl_gh = &fp->f_fl_gh;
-+
- 	if (!READ_ONCE(fl_gh->gh_gl))
- 		return;
- 
+> ---
+>  fs/jbd2/commit.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+> index 0c85af91f9b2..cd7ef783bd36 100644
+> --- a/fs/jbd2/commit.c
+> +++ b/fs/jbd2/commit.c
+> @@ -32,14 +32,12 @@
+>  static void journal_end_buffer_io_sync(struct bio *bio)
+>  {
+>  	struct buffer_head *bh;
+> -	bool uptodate = bio_endio_bh(bio, &bh);
+> +	bool success = bio_endio_bh(bio, &bh);
+>  	struct buffer_head *orig_bh = bh->b_private;
+>  
+>  	BUFFER_TRACE(bh, "");
+> -	if (uptodate)
+> -		set_buffer_uptodate(bh);
+> -	else
+> -		clear_buffer_uptodate(bh);
+> +	if (!success)
+> +		mark_buffer_write_io_error(bh);
+>  	if (orig_bh) {
+>  		clear_and_wake_up_bit(BH_Shadow, &orig_bh->b_state);
+>  	}
+> @@ -169,7 +167,7 @@ static int journal_wait_on_commit_record(journal_t *journal,
+>  	clear_buffer_dirty(bh);
+>  	wait_on_buffer(bh);
+>  
+> -	if (unlikely(!buffer_uptodate(bh)))
+> +	if (unlikely(buffer_write_io_error(bh)))
+>  		ret = -EIO;
+>  	put_bh(bh);            /* One for getblk() */
+>  
+> @@ -834,7 +832,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+>  		wait_on_buffer(bh);
+>  		cond_resched();
+>  
+> -		if (unlikely(!buffer_uptodate(bh)))
+> +		if (unlikely(buffer_write_io_error(bh)))
+>  			err = -EIO;
+>  		jbd2_unfile_log_bh(bh);
+>  		stats.run.rs_blocks_logged++;
+> @@ -877,7 +875,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+>  		wait_on_buffer(bh);
+>  		cond_resched();
+>  
+> -		if (unlikely(!buffer_uptodate(bh)))
+> +		if (unlikely(buffer_write_io_error(bh)))
+>  			err = -EIO;
+>  
+>  		BUFFER_TRACE(bh, "ph5: control buffer writeout done: unfile");
+> -- 
+> 2.43.0
+> 
 -- 
-2.25.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
