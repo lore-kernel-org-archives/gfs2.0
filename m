@@ -1,97 +1,136 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD5743CED8
-	for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 12:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448DE42E421
+	for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 12:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787661166; cv=none; b=O6ASuhJQaRWuQYeHi8+DsDEsGAe2DRaZ/fwKLiPZ5dY7cH0IBc5SB9u/s91fDPMYi87wt25Ijyd2mcEER5tzB2EvQx6nFxGBmZq0D/H0eftyNIeimDyWV8xgt+hsFAgvjk2BP/yCOK7Om6Jxm7XGDtHbgwR9y/Ly1icAFzr+dk8=
+	t=1787661177; cv=none; b=sAdSGOyUku1pau4CdKf5oGxz3Tp5+UuV3fAJ3gZjc2JZTCRi56hecsEiboGXmhrkzijvxp9oD53TphFcdGjThvUUF1L5AoRsO0kZY4nL56zpb9lm7a1/k5GSDgfe9moFrijNvQMhjKHWQdDhtQ0bIRoXAFWRrdAARF3rob2ibCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787661166; c=relaxed/simple;
-	bh=o3anankbo7fFs/ujEO7jUKJUUIIx3U807nAC0s4ZG98=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Nhjv+NSIia66SVuPqkZelmV7n7kQX6QZv6Upo6xz/G+xoJ/xEqRPgPJl3INGPPW/1cvWGUKL94j7GxNvndI+Q+/FOykNd/76kN32yhMtnFWoy1eT1sdzW7xh1ikMF27KHZcF7bk+7yMDGJvWZHnwFmKaJU5A9leoQL4qlL+OYsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4a49f09233fso889438b6e.0
-        for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 05:32:44 -0700 (PDT)
+	s=arc-20240116; t=1787661177; c=relaxed/simple;
+	bh=M8uzU3Aqp/1CuSsptAirP4P6I3joyhvmWRiIDDD/B2Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pigGBUgjcn8O4fUKuJkhpp71+JqMkZKVV+Bcwxy7PpwRclH0XObrD5DSyW9f1ZlP2eBWrTs3Rzh3++CaCziTsphUPKgwPRX1ueghgfF95FzcZ9OC4wB/wtku1zIJZ70XSt7WqvpfX1MHz/kOccIfiVPDA6AYGRBQp0/JLJIPdg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OBkkCOX8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OBkkCOX8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787661172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IPRObTmEZKyvm6vBWaRxlO8NbXdKA+J+omeMfbVA/Lw=;
+	b=OBkkCOX8oIuUym3AVheOayz0IXuWeKWT8B4V5hFd+YG2WCyE4OqNr2F0foApPvWawGJs8l
+	ND32JQWSpk4Z4mS3EqZMP8MhXusYyYZkPvrpvRolRhiXMSfFCPlRQaCrSekwSSMi3Qh6CF
+	519hqfJJGlhyZsoo2gkzECcnKtNyILg=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-EJIxp1MANAWKU-2ban9oCw-1; Tue, 25 Aug 2026 08:32:50 -0400
+X-MC-Unique: EJIxp1MANAWKU-2ban9oCw-1
+X-Mimecast-MFC-AGG-ID: EJIxp1MANAWKU-2ban9oCw_1787661170
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-66cc65a15dfso10498372d50.0
+        for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 05:32:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787661163; x=1788265963;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1787661170; x=1788265970;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MmFpIrXQaDPQSOcxIkYv2/4Zf9P6UAxmpzlTyr5OikM=;
-        b=hKTeN/gAjYcXV9EadyxZ4s3xRREK9OJniTnF2KmY+0nhA7OXhQmjUy18SZ+GBBPYVd
-         mhyCoGx/ZdKdWDvMHPZ5Id3ysYvXqaPdA2igwOGidJoOQ52/IplfWH2Mn619gi52nlIp
-         llo4kWthlFXL0MQHTxIWbwLOeX5CFc+3GdxsOkZdy31jOG58PsZHM2/X9IOBiZyyoh8J
-         fL2vqJjFqjF1zGFxXsX0v+jkWlN0J5dwlhSNfEN1hgEuei+l5YILrDdiffGutv3uv0Zf
-         2OCcbejCkrm9VuIR14gi682br4UWfrzu0KuYWuQvpbTClE+gq2Xdcn/iEl+Ad0Baphky
-         Um1Q==
-X-Gm-Message-State: AFuF++n+nYbcPx6enThQqMBGK+/AhA3BEWiO045SYcpBpzCdAyhL3Weg
-	75hP/mWy7LoZ0E1Rxq6hLHaTaQOBWDBeRZO0kPhoc/4I7Jtm2AVW0L/PrjM0ivtAEY739IMT47M
-	wRrBlqHtTGum3TScbZFQ3Yjb1XjBB43el8+JpqdSpe9qR1EZKYf7LoNNnfyc=
+        bh=IPRObTmEZKyvm6vBWaRxlO8NbXdKA+J+omeMfbVA/Lw=;
+        b=ZUZinPLYC+KF/BrEhxIb6rNxhbMoYV2HYO69AW4x0fhMsObwLgxt2x++NeLrkpXWsE
+         Rib2hUJGbI/2carq1SmzAvXnxkHjB3LWzkuE48vv5MaYG/qXJKLIKZF34XjbJn2NJpLa
+         I0ccXGS8sPm38gUILkB22Q0fx9LrUeGk5M9hphsjLc3w1gus5SO2H3DrZG1bbCU7IV1R
+         BV/wraFWw4GiivAgaRStrKn5iHB5hVx3hSkGFtzPJW0s9k8hFek3nSz46ni3cyaA3CWN
+         dkgCge+1rgj6W0PYUxqgtPZwyj1xUZTFqpiBYWhKM+i/fUa/QpbGFgfdFVA8z/a80UnB
+         RYoA==
+X-Forwarded-Encrypted: i=1; AHgh+RpZSBNbJtK+SrKJjXLlbfdd34EmT381/Xkp1GU+WfxW/fFkfe70GB8zQ0Qjvw6DdAdfSbFs@lists.linux.dev
+X-Gm-Message-State: AFuF++l60qfTbMzchcM4X4IADjIR7pg91cWAWNXPy3+Jwm6IITEO8ppE
+	RU0KiNUHx5C369G2ITpjlAqCD5C9s5E/58GAoX0Sxf0xr3INTIOYny6i8IniThPGVnbba9ydvmW
+	ZMkA8XraiWrAiArFluiKpH2TB7AllFiKZBbsQqsoHGDe4+aypfXqJRoOBkoDyiAEhlRtkIGcZFF
+	S6lNt23tewmUa9wuP1zJRQzWFa6VJhGg==
+X-Gm-Gg: AR+sD11Gi1AgzcmhYbjngrgoDKumZ3ZxwN+rDM8FwqlWNpIMpTjkHgam8Ir0uSho5O6
+	nOlhZFn988/002dAz5VHcT4dpSueccQph9C2DJtg9/fPb7/UQOly6yKWz/6AOLAfIJfZm/4ngPv
+	deTHF6o3muq8um+8oNQFSwQ4VJe8mF0T1XWJBbNeQq2De5f9HSZOkP3+f8HtpxUQph4P9KQ6yxR
+	W3dtn1RW2+7ZSl+c+Glpeo7rcr9tDv8yoMSImjVQxDB
+X-Received: by 2002:a05:690e:1b4a:b0:66c:7f92:176c with SMTP id 956f58d0204a3-66ce49d463emr9970710d50.2.1787661170149;
+        Tue, 25 Aug 2026 05:32:50 -0700 (PDT)
+X-Received: by 2002:a05:690e:1b4a:b0:66c:7f92:176c with SMTP id
+ 956f58d0204a3-66ce49d463emr9970696d50.2.1787661169714; Tue, 25 Aug 2026
+ 05:32:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2f0d:b0:4ab:224d:6dd6 with SMTP id
- 5614622812f47-4b35059f7a2mr4745797b6e.15.1787661163230; Tue, 25 Aug 2026
- 05:32:43 -0700 (PDT)
-Date: Tue, 25 Aug 2026 05:32:43 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8d8b6b.a5a502ce.31d34.0064.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Aug 2026)
-From: syzbot <syzbot+listfa0a756e488ba124ea13@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20260825015501.633078-1-zenghongling@kylinos.cn>
+In-Reply-To: <20260825015501.633078-1-zenghongling@kylinos.cn>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 25 Aug 2026 14:32:37 +0200
+X-Gm-Features: AcwNN1XP1t7k1_DlEJUC9PdFBgn2lfUsyuwWijLKZOvRz1bm7IRYBgwAS4qIx3Y
+Message-ID: <CAHc6FU7NwTZ1gAcX2zyg2yg+2BQq=JtjVTwNNfuh_wASDqEceA@mail.gmail.com>
+Subject: Re: [PATCH v2] gfs2: move brelse() after buffer head accesses
+To: Hongling Zeng <zenghongling@kylinos.cn>
+Cc: anprice@redhat.com, swhiteho@redhat.com, gregkh@linuxfoundation.org, 
+	rpeterso@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	zhongling0719@126.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: UDHw5iluIWkOPrrzD5vkQI-01yVeBHgCH-kn8yqr3Sw_1787661170
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello gfs2 maintainers/developers,
+On Tue, Aug 25, 2026 at 3:55=E2=80=AFAM Hongling Zeng <zenghongling@kylinos=
+.cn> wrote:
+> The brelse() call happens before all buffer head accesses are complete.
+> While the reference counting prevents a real use-after-free in practice,
+> this pattern is error-prone for future maintenance.
+>
+> Move the brelse() call to the end of the function to make the intent
+> clearer and eliminate potential static analysis warnings.
+>
+> Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
+> Suggested-by: Andrew Price <anprice@redhat.com>
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+> ---
+>  Change in v2:
+>  -Correct the commit.
+> ---
+>  fs/gfs2/log.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+> index 78bba8cc10b8..a92c84146de9 100644
+> --- a/fs/gfs2/log.c
+> +++ b/fs/gfs2/log.c
+> @@ -1038,7 +1038,6 @@ void gfs2_remove_from_journal(struct buffer_head *b=
+h, int meta)
+>                         set_bit(TR_TOUCHED, &tr->tr_flags);
+>                 }
+>                 was_pinned =3D 1;
+> -               brelse(bh);
+>         }
+>         if (bd) {
+>                 if (bd->bd_tr) {
+> @@ -1056,6 +1055,8 @@ void gfs2_remove_from_journal(struct buffer_head *b=
+h, int meta)
+>         }
+>         clear_buffer_dirty(bh);
+>         clear_buffer_uptodate(bh);
+> +       if (was_pinned)
+> +               brelse(bh);
+>  }
+>
+>  /**
+> --
+> 2.25.1
+>
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
+Merged, thanks.
 
-During the period, 2 new issues were detected and 0 were fixed.
-In total, 26 issues are still open and 47 have already been fixed.
-There are also 10 low-priority issues.
+Andreas
 
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  115     Yes   INFO: task hung in do_uevent
-                   https://syzkaller.appspot.com/bug?extid=b114bbe890d76037877c
-<2>  100     Yes   kernel BUG in do_qc
-                   https://syzkaller.appspot.com/bug?extid=bad65435361712796381
-<3>  79      Yes   KASAN: slab-use-after-free Read in folio_evictable (3)
-                   https://syzkaller.appspot.com/bug?extid=4c7590f1cee06597e43a
-<4>  77      Yes   INFO: task hung in gfs2_recover_journal (4)
-                   https://syzkaller.appspot.com/bug?extid=9013411dc43f3582823a
-<5>  54      Yes   WARNING in gfs2_ri_update (2)
-                   https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<6>  52      Yes   general protection fault in gfs2_glock_dq (2)
-                   https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
-<7>  20      No    KASAN: slab-use-after-free Read in gfs2_ail_drain
-                   https://syzkaller.appspot.com/bug?extid=84a21b16aba9f279d96a
-<8>  14      Yes   WARNING in filename_symlinkat
-                   https://syzkaller.appspot.com/bug?extid=2ed46b6b748df855347f
-<9>  156     Yes   kernel BUG in gfs2_quota_cleanup (3)
-                   https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-<10> 102     Yes   kernel BUG in qd_put (3)
-                   https://syzkaller.appspot.com/bug?extid=0423714c06c369318794
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
