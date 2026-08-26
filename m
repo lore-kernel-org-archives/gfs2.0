@@ -1,136 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448DE42E421
-	for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 12:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A45F390C89
+	for <gfs2@lists.linux.dev>; Wed, 26 Aug 2026 06:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787661177; cv=none; b=sAdSGOyUku1pau4CdKf5oGxz3Tp5+UuV3fAJ3gZjc2JZTCRi56hecsEiboGXmhrkzijvxp9oD53TphFcdGjThvUUF1L5AoRsO0kZY4nL56zpb9lm7a1/k5GSDgfe9moFrijNvQMhjKHWQdDhtQ0bIRoXAFWRrdAARF3rob2ibCI=
+	t=1787724862; cv=none; b=nVJQuRXI0ElDUqIRVF+eYdJ7JG8I2AZoPNPkEdgMoTtxBTQXCGpLjh2jJHw/SZaTbj8aA70YvVwxZh5Lzp92AnEXW02Cs9wbHASJhqp+Q/XUHz6reLFdCASXx0sP+Krso9+XiuPOmKwhNXKKT3dor1ej0rUjGcXbl0Bak1qyrYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787661177; c=relaxed/simple;
-	bh=M8uzU3Aqp/1CuSsptAirP4P6I3joyhvmWRiIDDD/B2Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pigGBUgjcn8O4fUKuJkhpp71+JqMkZKVV+Bcwxy7PpwRclH0XObrD5DSyW9f1ZlP2eBWrTs3Rzh3++CaCziTsphUPKgwPRX1ueghgfF95FzcZ9OC4wB/wtku1zIJZ70XSt7WqvpfX1MHz/kOccIfiVPDA6AYGRBQp0/JLJIPdg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OBkkCOX8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OBkkCOX8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787661172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IPRObTmEZKyvm6vBWaRxlO8NbXdKA+J+omeMfbVA/Lw=;
-	b=OBkkCOX8oIuUym3AVheOayz0IXuWeKWT8B4V5hFd+YG2WCyE4OqNr2F0foApPvWawGJs8l
-	ND32JQWSpk4Z4mS3EqZMP8MhXusYyYZkPvrpvRolRhiXMSfFCPlRQaCrSekwSSMi3Qh6CF
-	519hqfJJGlhyZsoo2gkzECcnKtNyILg=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-EJIxp1MANAWKU-2ban9oCw-1; Tue, 25 Aug 2026 08:32:50 -0400
-X-MC-Unique: EJIxp1MANAWKU-2ban9oCw-1
-X-Mimecast-MFC-AGG-ID: EJIxp1MANAWKU-2ban9oCw_1787661170
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-66cc65a15dfso10498372d50.0
-        for <gfs2@lists.linux.dev>; Tue, 25 Aug 2026 05:32:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787661170; x=1788265970;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IPRObTmEZKyvm6vBWaRxlO8NbXdKA+J+omeMfbVA/Lw=;
-        b=ZUZinPLYC+KF/BrEhxIb6rNxhbMoYV2HYO69AW4x0fhMsObwLgxt2x++NeLrkpXWsE
-         Rib2hUJGbI/2carq1SmzAvXnxkHjB3LWzkuE48vv5MaYG/qXJKLIKZF34XjbJn2NJpLa
-         I0ccXGS8sPm38gUILkB22Q0fx9LrUeGk5M9hphsjLc3w1gus5SO2H3DrZG1bbCU7IV1R
-         BV/wraFWw4GiivAgaRStrKn5iHB5hVx3hSkGFtzPJW0s9k8hFek3nSz46ni3cyaA3CWN
-         dkgCge+1rgj6W0PYUxqgtPZwyj1xUZTFqpiBYWhKM+i/fUa/QpbGFgfdFVA8z/a80UnB
-         RYoA==
-X-Forwarded-Encrypted: i=1; AHgh+RpZSBNbJtK+SrKJjXLlbfdd34EmT381/Xkp1GU+WfxW/fFkfe70GB8zQ0Qjvw6DdAdfSbFs@lists.linux.dev
-X-Gm-Message-State: AFuF++l60qfTbMzchcM4X4IADjIR7pg91cWAWNXPy3+Jwm6IITEO8ppE
-	RU0KiNUHx5C369G2ITpjlAqCD5C9s5E/58GAoX0Sxf0xr3INTIOYny6i8IniThPGVnbba9ydvmW
-	ZMkA8XraiWrAiArFluiKpH2TB7AllFiKZBbsQqsoHGDe4+aypfXqJRoOBkoDyiAEhlRtkIGcZFF
-	S6lNt23tewmUa9wuP1zJRQzWFa6VJhGg==
-X-Gm-Gg: AR+sD11Gi1AgzcmhYbjngrgoDKumZ3ZxwN+rDM8FwqlWNpIMpTjkHgam8Ir0uSho5O6
-	nOlhZFn988/002dAz5VHcT4dpSueccQph9C2DJtg9/fPb7/UQOly6yKWz/6AOLAfIJfZm/4ngPv
-	deTHF6o3muq8um+8oNQFSwQ4VJe8mF0T1XWJBbNeQq2De5f9HSZOkP3+f8HtpxUQph4P9KQ6yxR
-	W3dtn1RW2+7ZSl+c+Glpeo7rcr9tDv8yoMSImjVQxDB
-X-Received: by 2002:a05:690e:1b4a:b0:66c:7f92:176c with SMTP id 956f58d0204a3-66ce49d463emr9970710d50.2.1787661170149;
-        Tue, 25 Aug 2026 05:32:50 -0700 (PDT)
-X-Received: by 2002:a05:690e:1b4a:b0:66c:7f92:176c with SMTP id
- 956f58d0204a3-66ce49d463emr9970696d50.2.1787661169714; Tue, 25 Aug 2026
- 05:32:49 -0700 (PDT)
+	s=arc-20240116; t=1787724862; c=relaxed/simple;
+	bh=rYv65aHzJx7zpsHNKefen4yv3ZXwkoOdogAEAqvc2YA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XZaSFOKOzmVB2y9IyqvSogjI7pemVEQ/59xpGgnX/hw/EWsBrtcW7YoIS6Krn+RZuwfC1HV3WSQEYwzx2JFmDDos2aXn6lDHfmfX1NrZt/WAjHU89lxRjdWiupIcC+Ecdu4fpUYTJVRSWjfrEqSnnfmZ2iP9wi7uYCLFvVcBgmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5cd8ed06a11511f19a56ed5b684f684d-20260826
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:84a169bb-9a61-42ac-b7ff-b03e29d6821c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:4d4de799795018303924e1e098e3d0e4,BulkI
+	D:nil,BulkQuantity:0,SF:102|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:n
+	il,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LE
+	S:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5cd8ed06a11511f19a56ed5b684f684d-20260826
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2030714239; Wed, 26 Aug 2026 14:14:14 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] gfs2: validate file type in glockfd iterator
+Date: Wed, 26 Aug 2026 14:14:10 +0800
+Message-Id: <20260826061410.1378510-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260825015501.633078-1-zenghongling@kylinos.cn>
-In-Reply-To: <20260825015501.633078-1-zenghongling@kylinos.cn>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 25 Aug 2026 14:32:37 +0200
-X-Gm-Features: AcwNN1XP1t7k1_DlEJUC9PdFBgn2lfUsyuwWijLKZOvRz1bm7IRYBgwAS4qIx3Y
-Message-ID: <CAHc6FU7NwTZ1gAcX2zyg2yg+2BQq=JtjVTwNNfuh_wASDqEceA@mail.gmail.com>
-Subject: Re: [PATCH v2] gfs2: move brelse() after buffer head accesses
-To: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: anprice@redhat.com, swhiteho@redhat.com, gregkh@linuxfoundation.org, 
-	rpeterso@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	zhongling0719@126.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UDHw5iluIWkOPrrzD5vkQI-01yVeBHgCH-kn8yqr3Sw_1787661170
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 25, 2026 at 3:55=E2=80=AFAM Hongling Zeng <zenghongling@kylinos=
-.cn> wrote:
-> The brelse() call happens before all buffer head accesses are complete.
-> While the reference counting prevents a real use-after-free in practice,
-> this pattern is error-prone for future maintenance.
->
-> Move the brelse() call to the end of the function to make the intent
-> clearer and eliminate potential static analysis warnings.
->
-> Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-> Suggested-by: Andrew Price <anprice@redhat.com>
-> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-> ---
->  Change in v2:
->  -Correct the commit.
-> ---
->  fs/gfs2/log.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-> index 78bba8cc10b8..a92c84146de9 100644
-> --- a/fs/gfs2/log.c
-> +++ b/fs/gfs2/log.c
-> @@ -1038,7 +1038,6 @@ void gfs2_remove_from_journal(struct buffer_head *b=
-h, int meta)
->                         set_bit(TR_TOUCHED, &tr->tr_flags);
->                 }
->                 was_pinned =3D 1;
-> -               brelse(bh);
->         }
->         if (bd) {
->                 if (bd->bd_tr) {
-> @@ -1056,6 +1055,8 @@ void gfs2_remove_from_journal(struct buffer_head *b=
-h, int meta)
->         }
->         clear_buffer_dirty(bh);
->         clear_buffer_uptodate(bh);
-> +       if (was_pinned)
-> +               brelse(bh);
->  }
->
->  /**
-> --
-> 2.25.1
->
+The gfs2_glockfd_seq_show_flock() function assumes all file descriptors
+with inodes on the GFS2 superblock have file->private_data pointing to
+struct gfs2_file. This is incorrect for:
 
-Merged, thanks.
+- O_PATH files: private_data is NULL
+- Special files (FIFO, socket, device): private_data points to
+  different structures
 
-Andreas
+The glockfd iterator only checks that the inode's superblock matches,
+which allows these files to pass through. This can lead to NULL pointer
+dereference or invalid private_data access when accessing private_data.
+
+Add an f_op check so we only process files using gfs2_file_fops before
+accessing private_data.
+
+Fixes: 56535dc695f8 ("gfs2: Add flocks to glockfd debugfs file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+---
+ fs/gfs2/glock.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index d59ea71a84db..b210c97cde45 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -2562,10 +2562,16 @@ static void gfs2_glockfd_seq_stop(struct seq_file *seq, void *iter_ptr)
+ static void gfs2_glockfd_seq_show_flock(struct seq_file *seq,
+ 					struct gfs2_glockfd_iter *i)
+ {
+-	struct gfs2_file *fp = i->file->private_data;
+-	struct gfs2_holder *fl_gh = &fp->f_fl_gh;
++	struct gfs2_file *fp;
++	struct gfs2_holder *fl_gh;
+ 	struct lm_lockname gl_name = { .ln_type = LM_TYPE_RESERVED };
+ 
++	if (i->file->f_op != &gfs2_file_fops)
++		return;
++
++	fp = i->file->private_data;
++	fl_gh = &fp->f_fl_gh;
++
+ 	if (!READ_ONCE(fl_gh->gh_gl))
+ 		return;
+ 
+-- 
+2.25.1
 
