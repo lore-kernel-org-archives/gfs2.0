@@ -1,117 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097453B993A
-	for <gfs2@lists.linux.dev>; Thu, 27 Aug 2026 08:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D733B3E835E
+	for <gfs2@lists.linux.dev>; Thu, 27 Aug 2026 09:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787817911; cv=none; b=EGaJsPd4PKjRx8claW0YPoWB0LU3OdRzfCYqiqAlyWWw589c8meXAzZyvXAwOt/Q01rAp/0CHaOvBdRH/sRq1k1Fx+3P8tq2ndS4p1524MI3OwsSrgtmL6xK7Up/pDqEQwn24udhjsXNWWBDgk6QLZQiwFfJnlvec0/R6vUg4ro=
+	t=1787821612; cv=none; b=PFPldSWJP6qP2WNI45nGdRxQCEWcvUT1M6yPqggeESPCPXP2ev4W9S9owcA0aBMIhz0xU8gnimBLXFdqfAieVUroHYY6uDUAz4ePNpJ+9OFJ4UcvGnW0MESz1w+jlgAeQK558HgLRTtAAOHUH3Gldl/Um4unYioDz/YZq0lVaQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787817911; c=relaxed/simple;
-	bh=oCHlrU9PYmt9yzqxa3asUHOexrGAA0lr63AtxPgvHsQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptt2bKy40oTUKEqOCls/nhrMUe1NXCT66rpslXnpw8blTv4PG/9voIAmsdZ0+HQQbbHqduT9rbQkVxVklhT1KslU8R6y/sxTfzOKBhL4UpWXWWYj8LLl0N4QVkhxT/TLCtgDOsk2vWWf8dUVbIsUxmSqoAZr2nw96FnQNXJJT0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XnXVrP9t; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1787821612; c=relaxed/simple;
+	bh=8W2TZU7hf0bBc8S6oSJTogkd/v18T2vhjg24AiPdsG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=cY0sqNtb7LACuEJkmyY+/+o22+p+gyc9CcBZZlVlpY8mmaNzzVxDPYo8HAw6EH3S3yJls8UIEzkUxTOf2VWjiyf3tjq64knxAhOAlnrupzMAKFOugTJ8MBqKIbaPxaoUAwYye1ciyHK8df7Yhgdr1cL9W3w1c6iit8UmRBOt158=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F4Uu6u+f; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XnXVrP9t"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F4Uu6u+f"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787817904;
+	s=mimecast20190719; t=1787821604;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=azhbdQCZEFVE/DWcZ3GrL9ze7Hy93ahYH6cH+iy53kc=;
-	b=XnXVrP9t868R2R7qPf+sO2g9oxSA3HD95evX6HZhdie+FB/wnbBEswuniJZfiWcrq+OVsu
-	0eA0KTuYhkvl7pzkFoPAaIdDObftjdVVZxmBhLWVTTmT+abwc2ZihcoTnTfGKtY3nU8Ni/
-	//gj6eq1P22n5UrlJvb99fHIVuMIWGs=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-Gyw2NUaHPGidbUaQBCS6sQ-1; Thu, 27 Aug 2026 04:05:02 -0400
-X-MC-Unique: Gyw2NUaHPGidbUaQBCS6sQ-1
-X-Mimecast-MFC-AGG-ID: Gyw2NUaHPGidbUaQBCS6sQ_1787817902
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-836c8fc09cfso69167347b3.1
-        for <gfs2@lists.linux.dev>; Thu, 27 Aug 2026 01:05:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787817902; x=1788422702;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=azhbdQCZEFVE/DWcZ3GrL9ze7Hy93ahYH6cH+iy53kc=;
-        b=icZw/CDvljweUxEAsNGjfQ3HkJP7hwRfoshwBrW5nHcHnlNPzMDHECnCBSN0bP+J1d
-         SnYrXh5dPab9uNpLi6u1p+jxTyk6jtFj3bBw20Fx4ACPirB6oYjkXMp+yDunUQ99TaEz
-         wN6vJJqKEO2tE9HtfbeE4WJIFd6fJ/zRPJGijaYgEEKfuwyX0bUSNundwegZQ84wYrt3
-         xpJhvxJJb5w+JiLtiAPBSyGDqpGWgsQ1pzKI77WafllQhI5jqwpSt9s7Oq9rFsnUUR7l
-         IifFRDzcGFD1c0Wxx4pEAHQmEEhcOiMEpvAkcdpwx9lo8ZlrffqWJmdI4HmB/SWucOUv
-         6xRw==
-X-Gm-Message-State: AFuF++nnsba5+fmFLJQ5w2YKIVmzim9pJ6iM1s4IAJUedmjlDO2SkTuw
-	bQZ8E7nJAHOqXSw0dyuiuTOOZ7wdAKDrFErQ9oJfZmp5zSY33+ppx80iHbu647+o7IPPFobsJti
-	AuGbTtoZ68sRvMcrHRnH30thk0/7/J5G6hg8wd1BuWE3NAkeKNN7no0Ktp7VFK8nkre1ltVQE1P
-	YJeY7wrayf6RVCmFoSUPo7SSJOvGIFIQ==
-X-Gm-Gg: AR+sD12MIL1kuWktlMxL/6gMHvsYdj+ogRdbkTpoJXXYjmIEz15c17JbOHNWzfQpzcE
-	MNyEqul9PErnRv05zRtArREkptbpyCs7F0K57YqeEZZLsxKkIUG2BZDi+EBRJkUqXd7N8m1ND7a
-	CiRqECJU5jkvzyY2Cz7wUd+oNn93qmHPYv9hI2HNHXdfFRzKvIY7eki+E7sDiOKCoIwRkGs5afU
-	YBBaSwURFxO7z1/uJiqjPicG9R0RRLJvRQN+je8+yac
-X-Received: by 2002:a05:690e:414a:b0:66d:16ff:2126 with SMTP id 956f58d0204a3-66d25792f27mr4527159d50.30.1787817902316;
-        Thu, 27 Aug 2026 01:05:02 -0700 (PDT)
-X-Received: by 2002:a05:690e:414a:b0:66d:16ff:2126 with SMTP id
- 956f58d0204a3-66d25792f27mr4527128d50.30.1787817901739; Thu, 27 Aug 2026
- 01:05:01 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CCRQ4gsLG/cMbjBIzvct3Pui215swoUP3SncBxGf6Xk=;
+	b=F4Uu6u+f8SzDiyJ80z9P0AHAqruMe9PxuS9Q1c8zuX+XBmSneo2Gvf84mc5E+mzAZLt+La
+	IjWwgMfAXOHS05Zw8JIRlhZFfh7a9JIZLXh6bGx9zpRleWsGJg+41z+4UuJdEQHLjkai4l
+	0MrdrwXy/Dfxk42vSj35IqDlcp03Z60=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-c_JVaFbrNQq6OKZYKj_BgQ-1; Thu,
+ 27 Aug 2026 05:06:40 -0400
+X-MC-Unique: c_JVaFbrNQq6OKZYKj_BgQ-1
+X-Mimecast-MFC-AGG-ID: c_JVaFbrNQq6OKZYKj_BgQ_1787821600
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C3B891955F11;
+	Thu, 27 Aug 2026 09:06:39 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.44.32.182])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6D7A21956044;
+	Thu, 27 Aug 2026 09:06:38 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	syzbot+cb79de2cc8b76fbf474f@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: No quotas for meta inodes
+Date: Thu, 27 Aug 2026 11:06:37 +0200
+Message-ID: <20260827090637.676820-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260630041432.96776-1-kartikey406@gmail.com>
-In-Reply-To: <20260630041432.96776-1-kartikey406@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 27 Aug 2026 10:04:50 +0200
-X-Gm-Features: AcwNN1VRjrrgLiEOz0SquCK7V-ix5FDPB5DR501AiLqy7SgyohwvvMuNsxm_shs
-Message-ID: <CAHc6FU7x5By1YusP4RF0DEDe2sWAf6A-p09gxSstDvTsLkQsKw@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix null-ptr-deref in gfs2_quota_hold during unmount
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+cb79de2cc8b76fbf474f@syzkaller.appspotmail.com
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CVFhQhGmJdbn1Z6lAsujQtzw4FjM3GwFoDXREewbb2A_1787817902
+X-Mimecast-MFC-PROC-ID: YsZsjDS_ZvVsYxmqYqAh50VbCuot1F1dSWoDAlwiaJI_1787821600
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Tue, Jun 30, 2026 at 6:14=E2=80=AFAM Deepanshu Kartikey
-<kartikey406@gmail.com> wrote:
-> gfs2_quota_cleanup() frees sd_quota_bitmap early in gfs2_put_super()
-> before the iput() calls that can trigger inode eviction. When an unlinked
-> inode is evicted during unmount, it goes through:
->
->   gfs2_evict_inode() -> gfs2_dinode_dealloc() -> gfs2_quota_hold()
->     -> qdsb_get() -> slot_get() -> find_first_zero_bit(sd_quota_bitmap)
->
-> If sd_quota_bitmap has already been freed by gfs2_quota_cleanup(), this
-> results in a null pointer dereference:
->
->   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->   _find_first_zero_bit+0x29/0xb0 lib/find_bit.c:149
->   slot_get fs/gfs2/quota.c:355
->   qdsb_get+0x133/0x340 fs/gfs2/quota.c:522
->   gfs2_quota_hold+0x191/0x5c0 fs/gfs2/quota.c:606
->   gfs2_dinode_dealloc+0x176/0x3f0 fs/gfs2/inode.c:488
->   gfs2_evict_inode+0x11cd/0x1400 fs/gfs2/super.c:1479
->   gfs2_put_super+0x300/0x860 fs/gfs2/super.c:618
+Inodes on the meta filesystem (mount -o meta) can never have quotas, so skip
+them entirely in the quota code.  This avoids allocating ip->i_qadata
+unnecessarily.
 
-This is happening when the metadata part of a gfs2 filesystem is
-mounted (mount -o meta), the statfs inode is unlinked, and the
-metadata filesystem is unmounted. This is not a useful operation; it
-will leave an inconsistent filesystem. The kernel should nevertheless
-cope with it.
+Without this fix, unlinking meta inodes like "statfs" on the meta filesystem
+will result in a NULL pointer dereference at unmount time:
 
-An appropriate fix would be to skip metadata inodes in the quota code.
-I will post a patch.
+  gfs2_evict_inode() -> gfs2_dinode_dealloc() -> gfs2_quota_hold()
+    -> qdsb_get() -> slot_get() -> find_first_zero_bit(sd_quota_bitmap)
 
-Thanks,
-Andreas
+Unlinking inodes on the meta filesystem isn't a useful operation, but it still
+shouldn't cause the kernel to misbehave.
+
+Reported-by: syzbot+cb79de2cc8b76fbf474f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cb79de2cc8b76fbf474f
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+---
+ fs/gfs2/quota.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index b62431724eea..dbfc21693dd5 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -562,6 +562,8 @@ int gfs2_qa_get(struct gfs2_inode *ip)
+ 
+ 	if (sdp->sd_args.ar_quota == GFS2_QUOTA_OFF)
+ 		return 0;
++	if (ip->i_diskflags & GFS2_DIF_SYSTEM)
++		return 0;
+ 
+ 	spin_lock(&inode->i_lock);
+ 	if (ip->i_qadata == NULL) {
+@@ -605,7 +607,7 @@ int gfs2_quota_hold(struct gfs2_inode *ip, kuid_t uid, kgid_t gid)
+ 		return 0;
+ 
+ 	error = gfs2_qa_get(ip);
+-	if (error)
++	if (error || !ip->i_qadata)
+ 		return error;
+ 
+ 	qd = ip->i_qadata->qa_qd;
+-- 
+2.55.0
 
