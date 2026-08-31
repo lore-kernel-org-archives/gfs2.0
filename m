@@ -1,143 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBEE3E120C;
-	Mon, 31 Aug 2026 08:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593B23C1F57
+	for <gfs2@lists.linux.dev>; Mon, 31 Aug 2026 10:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788164576; cv=none; b=LSGavYLK2Z0MmoUqNQ/qxVbntJVrObcaF6xvctL+KbnMWCjRXJqkf7KnSNPAC2iWSMCeOeFvkhO01DedRSzoIaRAF5LypM2HU+6goLHzOCvZEyWq6gLLPPMWn+LaoHRxA2R6YU51XkJGo+D3iDWctXo4Suxhe3hX7RlnOAp4wRI=
+	t=1788173675; cv=none; b=uZDNAvRpUGDjWSSOqT7qJlq7YaXhdQZbud3X0Dtk0ieAk+W1Md+zWoO8hozxcZaGDXlbw5wQKtBH9k7it+9BsAfYBsfOdSIKdF3kwvICIL0SvYQE3xIGfB0WxglxLc2Kfdoi/ljvZ9eJQ9lPRb268SwCls0DxWhQGKer2bkpxro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788164576; c=relaxed/simple;
-	bh=wnOb710GDzXvB78jABPqDFMRlLh8C3NnDR9JYFb6Gvo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=n1bjO5deoVe1SfpRYRo6jbMcGaqQkYjmOuKa20eWV4oNP+7CHTy0sTewAS4bNFAJGMAbFoioI/MKND3N74wLy8SkKep3kbKJg+wWCjSuhlq9GYnpmPu2rvPAYUeuviD7Gn/HhEQuR6NlBiP9f1GntFp3c7dFCVAqyBsveARP70Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDuLGYij; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788173675; c=relaxed/simple;
+	bh=TFNu8EnMdDhDnRdTdI6WOtz4htgP2HuJyYVuuH2HnXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W4ZkavpXWsXwQ7MJ/BOaN1hHAjDe4/wOIqBUfSbo2GRyksQ6owKWFVw8O7ak2FI00qtAyv8zdcojL5zGjPJBFZFVW4HQ0SOYqHIK5SGijXwQeCXx0dlVjRrWFWqCAU5bYi0zmTzgJ2/Zwmn2Wqfm3nUP4cgoi/e4B8AZkEpasj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O23YbQv+; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDuLGYij"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734C01F000E9;
-	Mon, 31 Aug 2026 08:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788164574;
-	bh=lmGgmlxDbGLbhuLXzpdjg1bjgsmwZj4DcRmR+5yii2Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=kDuLGYijTZY4L/lJ/eKPEPZ79jZ7Xzmksn4BPj95fcn4/heyZX5sB2+cMA38oBDso
-	 6JiwxxbpqX3bnt+aDaYhdskRY0eL3Elp2ksONcUTyVNV1yDn40MOWzowF4/4iQkzpX
-	 FUSGofyobRO9WCZ7d7+xpLahTeq+0fu4OdkWhOsrufaSThIk5kbwJwdQ9YJ5Q1xDNA
-	 kR4jaXnYHcWCmBy+b7/VhvLvCK6Me5gvxHj/PJ1rGpI+P8epCwSyDdHQCO5RMKeTBV
-	 W52ImWhGYlJDU0FChhsUy6to3arDCcjLQYzjxxGO6D4zx/2cdFUAG4ATb69hZtdThq
-	 hgWE7GVrWnesQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
- Chao Shi <coshi036@gmail.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, 
- Andreas Dilger <adilger.kernel@dilger.ca>, 
- Baokun Li <libaokun@linux.alibaba.com>, 
- Ojaswin Mujoo <ojaswin@linux.ibm.com>, 
- Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>, 
- Zhang Yi <yi.zhang@huaweicloud.com>, Bob Copeland <me@bobcopeland.com>, 
- Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
- Yuezhang Mo <yuezhang.mo@sony.com>, 
- OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Mark Fasheh <mark@fasheh.com>, 
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Andreas Gruenbacher <agruenba@redhat.com>, linux-ext4@vger.kernel.org, 
- ocfs2-devel@lists.linux.dev, gfs2@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <cover.1785951556.git.coshi036@gmail.com>
-References: <cover.1785951556.git.coshi036@gmail.com>
-Subject: Re: [PATCH v2 00/21] buffer: stop clearing BH_Uptodate when a
- write fails
-Message-Id: <20260831-lauwarm-gedruckt-salzkartoffel-67b444e6977e@brauner>
-Date: Mon, 31 Aug 2026 10:20:39 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O23YbQv+"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce98cb8165so32313865ad.1
+        for <gfs2@lists.linux.dev>; Mon, 31 Aug 2026 03:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788173674; x=1788778474; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zQNiu9TZQ10x49ZJ9yma2tHLImqVrjgDfm3we0pmhDw=;
+        b=O23YbQv+NeO5i7PpFj9xEZm++banVMeGbMXXU+NLHw9d5SdnHFaktBhxlRQtYA5W2n
+         3q7CYQmguAoOkc3eyQC7bmotdM/6X9+4tHQ0rJrwhSRUGE56GyvWl2hykAG6H7l5ZcmD
+         ONQikZ40BjS3xmtq4bjINl+tsfzjYbbSWxuEjuaJIsUfUTAyMmEw4gBzeCclFD/R+j4M
+         F9d/oDV8mU8p0kUznVi9rOGLahDcQk5uLgkWfi/4vnoqxjaODJtonGAiuoU+J5Xch3DB
+         3vNwhQ1/W/91uxlwU2hU4cInUvP9h4UuvXmjZXFQrzdeazT1Kwl2EJ6tAFFo112vdNHk
+         btKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788173674; x=1788778474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zQNiu9TZQ10x49ZJ9yma2tHLImqVrjgDfm3we0pmhDw=;
+        b=hRtfVH4LGJFK2XzAQFHvRiTh7X4r71cyqoI8ALM+l2gQ0Q4UJj1ZRXPoCE6/atsqdT
+         xVqah6tGHk/5IM9uNHwj3R1Snt/sfziU4moXnm93zaCZQ3axFME09D+DInSu09nSFTiI
+         9ALTAJxZ70kXwhY2wP/jGL47gGh2RleBYt8uETd2NVzBXY2+S9GHuYG1C4NQOshWzcBZ
+         Ig7MrsgK7j3rF6f4PCGgoO8kMorlA5bKBoKXYkCgmJ0bAM8+sG7KtBA8/m1rcH1mcPhM
+         n1Mc1rf/KDeklfEerx2a6VdXyMGWfxAYgaY0jlr0vfUJBIE6GzruSvlQxOA4e1LwTs6e
+         7ddw==
+X-Forwarded-Encrypted: i=1; AKwUvBx6W8hukYE9MxoNBUWGvXXBtVLjVLNQO3xUvXWvmWLFEu66MLL3tGywsvPNYGTYphzu3mCA@lists.linux.dev
+X-Gm-Message-State: AFuF++l5pDuwzJhxtmOunztiHfA/JS75EF4I8wfJ9ATuUkc+Lg2onK2Z
+	rqW5mIjtYo7Q6Xrd3a56glBS85HUyAm+8EGyEU9X905NUyd+Y3BTq3WY
+X-Gm-Gg: AYBFou2S4kGm414GlmMB7xy++68igKLspG4gZSdLf8VZ8xfB2X0UMF1SI2yChiAufuD
+	HQbHt2r0nRw6px4y3gLgVYq7eUZ2PCUo70m3R23u3nEiKrwl27XtntTwUveq+jr2M/5D5n1iWUG
+	X8PJzM100MG308fJV8flmu6xM99WAz+KT5hr20iRIU+YMSaCCgNkl7vB3xU7SPUtRri6GloTBJX
+	lKgxcTCec8EkUc6P8egG1aTiLevlWr8BWiTrk9Fz40VOwWTQltDpDF0H54ocBgihx9MId7nDeQh
+	5ntv5jzIDde+P4TqG5jSDHmvUQ5iYRdGa4ShOMWDkH5xscMMEe8+/C+3RTpr5Z9RUZ696DxbW7n
+	j6vU0ayngfoVrLJMh72AVtxJMpnC8WN6LsIjgfrYhB5nZwBxtGoNOxZsq3rF3uyUcv+lBtspl3r
+	puVkNVj8fEuz1oJHhTnXkjgIoeAh4WsRxzzVWPmIy8iqnv91rt2iCReiTQbD0+1yrXRpygfSQ=
+X-Received: by 2002:a17:902:e949:b0:2d6:dcf3:b754 with SMTP id d9443c01a7336-2d91afa062bmr62301885ad.7.1788173673289;
+        Mon, 31 Aug 2026 03:54:33 -0700 (PDT)
+Received: from ustb520lab-MS-7E07.. ([115.25.44.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d8f6a92239sm23720745ad.70.2026.08.31.03.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 03:54:32 -0700 (PDT)
+From: Jiaming Zhang <r772577952@gmail.com>
+To: agruenba@redhat.com,
+	gfs2@lists.linux.dev
+Cc: anprice@redhat.com,
+	linux-kernel@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	Jiaming Zhang <r772577952@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] gfs2: reject oversized dinode sizes before i_size_write
+Date: Mon, 31 Aug 2026 18:54:25 +0800
+Message-ID: <20260831105425.622254-1-r772577952@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3922; i=brauner@kernel.org;
- h=from:subject:message-id; bh=wnOb710GDzXvB78jABPqDFMRlLh8C3NnDR9JYFb6Gvo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRNtbzJ87J41a5rDh88SrxLj019wMf7ZdaNyWoRf36K7
- 5nGYlVR2VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR0V8M/7PsK/maZ50rW/Aw
- se7TNPM5UrPXVnCy82ZtVAs3EXx0LZKRYYvaOo7NJmWzWpcEBVrvZ7rOsdFfq4dnq69PApPHBjt
- fbgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Thu, 06 Aug 2026 12:58:23 -0400, Chao Shi wrote:
-> buffer: stop clearing BH_Uptodate when a write fails
-> 
-> When a metadata write fails, the buffer_head completion handlers clear
-> BH_Uptodate.  The buffer still holds exactly the data the filesystem asked
-> to be written - it is the disk that is stale, not the buffer - and saying
-> otherwise has consequences:
-> 
-> [...]
+A corrupted GFS2 image can store a dinode size that is larger than what VFS
+i_size can represent. gfs2_dinode_in() reads the on-disk di_size as a u64 and
+writes it directly into inode->i_size. If the value is larger than S64_MAX, the
+incore i_size becomes negative. That negative value can bypass the existing
+stuffed inode size check:
 
-Tbh, the commit message reads a bit LLMy. It would be nice if people
-could take the time - provided they have sufficient language skills - to
-massage the artificial tone out of them.
+inode->i_size > gfs2_max_stuffed_size(ip)
 
+Later, gfs2_quotad may try to sync the quota file and unstuff the quota inode.
+gfs2_unstuffer_folio() reads the negative i_size into an unsigned length and
+passes it to memcpy(), turning it into a huge copy size and triggering a
+out-of-bound issue.
+
+Reject dinodes whose size exceeds sb->s_maxbytes before storing the value in
+inode->i_size. Also make the stuffed inode check use the raw on-disk size while
+it is still unsigned.
+
+Fixes: 70376c7ff312 ("gfs2: Always check inode size of inline inodes")
+Closes: https://lore.kernel.org/lkml/CANypQFaF6bvORKKbRALvEL0k_epFaneFiOQqco4gjdmKVbdURg@mail.gmail.com/
+Assisted-by: Codex:gpt-5.5-xhigh
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
 ---
+ fs/gfs2/glops.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Applied to the vfs-7.4.bh branch of the vfs/vfs.git tree.
-Patches in the vfs-7.4.bh branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.4.bh
-
-[01/21] buffer_head: Remove b_page
-        https://git.kernel.org/vfs/vfs/c/719ecb98ffe7
-[02/21] buffer: allow a buffer_head to point at memory outside the page cache
-        https://git.kernel.org/vfs/vfs/c/8deae2284976
-[03/21] jbd2: point the shadow buffer at the frozen data directly
-        https://git.kernel.org/vfs/vfs/c/5febcba29792
-[04/21] buffer: read the folio's mapping directly in buffer_set_crypto_ctx()
-        https://git.kernel.org/vfs/vfs/c/14cbade7d773
-[05/21] buffer: clear BH_Write_EIO when a buffer is forgotten
-        https://git.kernel.org/vfs/vfs/c/d59fe9111f4f
-[06/21] buffer: discard BH_Write_EIO along with the rest of the buffer state
-        https://git.kernel.org/vfs/vfs/c/bbcd6f7456b2
-[07/21] buffer: detect metadata write errors with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/7032ded0a1fa
-[08/21] adfs: check for a directory write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/613e12102111
-[09/21] ext2: check for an xattr block write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/583913a40f2e
-[10/21] omfs: check for an inode write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/a269f6fade99
-[11/21] exfat: check for a directory write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/4a53ece574b5
-[12/21] fat: check for a metadata write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/a93ff8e2e398
-[13/21] ext4: check for a metadata write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/0f44b420e6c7
-[14/21] ocfs2: check for a metadata write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/3f90f64f8187
-[15/21] ocfs2: check for a stale write error before reusing a metadata buffer
-        https://git.kernel.org/vfs/vfs/c/a87462d7b604
-[16/21] gfs2: check for a metadata write error with buffer_write_io_error()
-        https://git.kernel.org/vfs/vfs/c/47552ff5ebf9
-[17/21] jbd2: report journal write errors with BH_Write_EIO
-        https://git.kernel.org/vfs/vfs/c/0c6c46fbf4d8
-[18/21] jbd2: say what jbd2_freeze_jh_data()'s assertion is actually checking
-        https://git.kernel.org/vfs/vfs/c/50cf8c8e532c
-[19/21] ext4, jbd2: report fast commit write errors with BH_Write_EIO
-        https://git.kernel.org/vfs/vfs/c/a49d8a9d5d49
-[20/21] buffer: stop touching BH_Uptodate on write completion
-        https://git.kernel.org/vfs/vfs/c/1f2304e87b83
-[21/21] buffer: clear BH_Write_EIO when a write succeeds, not when one starts
-        https://git.kernel.org/vfs/vfs/c/e038f1016c6f
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 28f32424ee64..8c5d257451d5 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -393,11 +393,16 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	umode_t mode = be32_to_cpu(str->di_mode);
+ 	struct inode *inode = &ip->i_inode;
+ 	bool is_new = inode_state_read_once(inode) & I_NEW;
++	u64 size = be64_to_cpu(str->di_size);
+ 
+ 	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr))) {
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+ 	}
++	if (unlikely(size > (u64)inode->i_sb->s_maxbytes)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+@@ -418,7 +423,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	i_uid_write(inode, be32_to_cpu(str->di_uid));
+ 	i_gid_write(inode, be32_to_cpu(str->di_gid));
+ 	set_nlink(inode, be32_to_cpu(str->di_nlink));
+-	i_size_write(inode, be64_to_cpu(str->di_size));
++	i_size_write(inode, size);
+ 	gfs2_set_inode_blocks(inode, be64_to_cpu(str->di_blocks));
+ 	atime.tv_sec = be64_to_cpu(str->di_atime);
+ 	atime.tv_nsec = be32_to_cpu(str->di_atime_nsec);
+@@ -462,7 +467,7 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 		return -EIO;
+ 	}
+ 
+-	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
++	if (gfs2_is_stuffed(ip) && size > gfs2_max_stuffed_size(ip)) {
+ 		gfs2_consist_inode(ip);
+ 		return -EIO;
+ 	}
+-- 
+2.43.0
 
