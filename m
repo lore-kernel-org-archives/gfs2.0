@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5816B4A2626;
-	Mon, 31 Aug 2026 13:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9FF52FE30;
+	Mon, 31 Aug 2026 13:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183732; cv=none; b=NQUoOCZ9ygdzr8oVgDrDY/6vMZwEi2ruk3l3IkKDqmDblrIcOtOBRjzwVoK82jxU/CstvFMhrwn3SLywf3lBYH8ByNIzNs0IEfFC+jk7cASQDlF6p6r4GXA0LXy7jbIWIoqMoGbX2v7e7114xc7wN/Xm/lNZRF2mm9KPsNA6D2Q=
+	t=1788183896; cv=none; b=BTQKVB17R87+JEbTSm7iUuyOCHiwuVk/XUkFrAk4VDO+XFnE4uTuB4FOZdPoN0+0/UMLTkX1k3HPb6KYbUTfMlJdw3Z0y+S4eSC5lReInXyxgxVpkyVVnL96oP+kGil9Mae+S8QQQC9IYZ0LxTofCUhr6XILNqPrlZPtrZcc7GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183732; c=relaxed/simple;
-	bh=rChy5yORFZLbGdCKUD+L2vUNSqVemFPiciulI6OKzP8=;
+	s=arc-20240116; t=1788183896; c=relaxed/simple;
+	bh=pWVrIfQqLAccbmTRp9KFZ50pC0QRAdK48IRU5dqnAvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ugcsWp9SfD4blrvL6kReeMZdsorO/GPh2mBYlsZkQ4ChGkbpVFtwzoxa1YeyrsHwQGH7ybGdsHppobhqf80LxS2lM2K4/h1MpYGni5BY9dTLAwmnXxchtdGnQdNxxrxkfF+VcMOKxjBcvaB3dJfBSA7NH16dmzsa675HI+aEERM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UjC+fQX+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=rbLXkD4fdxCaAyGs4vERvHgE8IjnDaD6T2XN1bAJ58KD92V0RvhgzBwRRUfSXI/HlTmg0AcHEiD33lpTmEbFlLZzzw6pF9ceV2yM0bmbPZA4FMFW/Ggla9q75Xvm61HaDa/eHkc2NpnirlnnjYTA1q1Mya0ANgND7PMA1+fXwXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoyNZTR6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UjC+fQX+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46891F00ACF;
-	Mon, 31 Aug 2026 13:42:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoyNZTR6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6220A1F00ACF;
+	Mon, 31 Aug 2026 13:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183729;
-	bh=0lX08l6+JGXjAp4QhgpbFwoFZyK327OPTv0iRmjeCZM=;
+	s=k20260515; t=1788183893;
+	bh=LvMxCM6wRPBIoXKwbKzfHcKD7X2x3OPIJ+Qrdx73ImU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UjC+fQX+NhzkFwm57UbkqH6qK03/0ca+Mn53lec3haFhAz1fsfhUwP8o/QM/4aiTS
-	 sASbBT7wsyCuhBdsiGwpCFJ+LAMjadnFtPQLDyf8mS/uTSOFsKuz9Jf8YWNJ/yNPA6
-	 72LN9R1UONNhitfHgSKbUvfudRsGqxn2V4kIHAZPDLFFa+EzWf8LebMT07tl1w00WN
-	 XaEC5VVzagOwbrVyNKNrr8CHEQ7SbTN5EhoCSIjfvF28389tqvs67yGv9KaK4KPUDe
-	 stvBwHCU3Cne7/iAaeMDy6qlnvhidfngsSzxw/6up3uXNFNT5K3Ohm9/OZBjDOFtOF
-	 FnOyo5m83MwMA==
+	b=SoyNZTR64vnljVC5xAae8pXLnmaI4W6J1QpPuXuB10yTQVyPoZK5i46O4l5ddjmww
+	 OC7RUjR0pFfATF/ALvsfjqKmwzJ85iUc8pVA33lh7baOzIOmG2bRmPHA8Nhm5KuMdM
+	 93xunY3cdkfjEXQC6UkiQqZCDgNLpFmfYamSOgNX2WzeHEJAYClWa+eiV63mVup1fj
+	 W2y0z97ZEbYkx6bit+yDNzCQu6jSXgocwlfa29ahmEqzGaX1S4L5nI/vTXH0Uq9+Qd
+	 RJ+A+4MBgxM1dctQz0slmEYk3J6EAGRMIymkfZGORVV8SCPkriSxEcDu6N3wjt62Td
+	 P/uel6YnCEmrA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jie Wang <jie.wang@intel.com>,
-	syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	gfs2@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] gfs2: fix quota init duplicate scan
-Date: Mon, 31 Aug 2026 09:24:57 -0400
-Message-ID: <20260831133314.4125787-269-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] dlm: add usercopy whitelist to dlm_cb cache
+Date: Mon, 31 Aug 2026 09:26:34 -0400
+Message-ID: <20260831133314.4125787-366-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -53,459 +53,390 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jie Wang <jie.wang@intel.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit b99a1f0f18ee50445907f55069e88bcfd8947383 ]
+[ Upstream commit b5314f2c6654a3616fd72777deb1ca766cc50618 ]
 
-gfs2_quota_init() checks for duplicate quota_change IDs while holding
-qd_lock and the quota hash bucket bitlock. That path used
-gfs2_qd_search_bucket(), which takes a lockref reference via
-lockref_get_not_dead().
+The dlm_cb slab cache is created with kmem_cache_create(), which
+provides no usercopy whitelist. When a callback carries LVB data,
+dlm_user_add_ast() copies the LVB into the inline lvbptr[] array within
+the slab-allocated struct dlm_callback and redirects ua->lksb.sb_lvbptr
+to point to it. copy_result_to_user() then calls copy_to_user() with
+this pointer. With CONFIG_HARDENED_USERCOPY enabled, this triggers
+usercopy_abort().
 
-On PREEMPT_RT this may sleep, which is not allowed under the bucket
-bitlock, triggering "sleeping function called from invalid context".
+Switch to kmem_cache_create_usercopy() with a whitelist covering the
+lvbptr field.
 
-Use a no-ref bucket lookup in this path, then continue duplicate
-handling without taking a lockref there.
-
-Refactor gfs2_qd_search_bucket() to build on top of the no-ref helper
-so lookup traversal stays in one place.
-
-This patch fixes a bug reported by syzbot.
-
-Reported-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=642d0561f78362d67d3f
-Tested-by: syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-Signed-off-by: Jie Wang <jie.wang@intel.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Acked-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `gfs2: fix quota init duplicate scan`
+# Stable Backport Analysis: `dlm: add usercopy whitelist to dlm_cb
+cache`
 
-**Local tree:** Linux **6.18.43** (`git describe HEAD` → `v6.18.43`,
-`make kernelversion` → `6.18.43`)
-
-**Mainline fix commit:** `b99a1f0f18ee` (not present in this tree; `git
-merge-base --is-ancestor` → exit 1)
+**Local tree:** `v6.18.43-1-gc7f0dac02d232` (kernel version **6.18.43**)
+**Upstream commit:** `b5314f2c6654a`
+**Stable-prepared commit (not in HEAD):** `82278e846311c`
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: PARSE THE SUBJECT LINE
-**Record:** `[gfs2] [fix] quota init duplicate scan` — GFS2 quota
-initialization path; explicit bug fix.
+### Step 1.1: Parse the subject line
+**Record:** `[dlm]` `[add]` — Add a usercopy whitelist to the `dlm_cb`
+slab cache so `copy_to_user()` from inline LVB data in slab-allocated
+`struct dlm_callback` objects is permitted under
+`CONFIG_HARDENED_USERCOPY`.
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+### Step 1.2: Parse all commit message tags
 **Record:**
-- **Reported-by:** syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-  (fuzzer-found, high priority)
-- **Closes:**
-  https://syzkaller.appspot.com/bug?extid=642d0561f78362d67d3f
-- **Tested-by:** syzbot+642d0561f78362d67d3f@syzkaller.appspotmail.com
-- **Signed-off-by:** Jie Wang (author), Andreas Gruenbacher (GFS2
-  maintainer)
-- No Fixes: tag (expected for manual review)
-- No Cc: stable tag (expected; not a negative signal)
+- **Fixes:** — not present (expected for manual review)
+- **Reported-by:** — none
+- **Tested-by:** — none
+- **Reviewed-by:** — none
+- **Acked-by:** Alexander Aring `<aahringo@redhat.com>` (DLM maintainer)
+- **Link:** — none
+- **Cc: stable:** — none
+- **Signed-off-by:** Ziyi Guo (author), Alexander Aring, David Teigland;
+  ignore pipeline-added Sasha Levin SOB
 
-**Notable patterns:** syzbot report + Tested-by syzbot = reproducible,
-syscall-reachable bug.
+Notable: maintainer Acked-by, no syzbot/fuzzer report.
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
+### Step 1.3: Analyze commit body
 **Record:**
-- **Bug:** `gfs2_quota_init()` calls `gfs2_qd_search_bucket()` while
-  holding `qd_lock` and the quota hash bucket bitlock. That helper calls
-  `lockref_get_not_dead()`, which on PREEMPT_RT can sleep.
-- **Symptom:** `BUG: sleeping function called from invalid context` at
-  `lockref_get_not_dead()` → `rt_spin_lock()`.
-- **Root cause:** Taking a lockref reference (which may acquire
-  `lockref->lock` as a sleeping RT spinlock) under a bit_spinlock
-  context that forbids sleeping.
-- **Fix approach:** Add `gfs2_qd_search_bucket_noref()` for callers
-  already holding locks; use it in the duplicate-scan path; refactor
-  `gfs2_qd_search_bucket()` to call the noref helper first.
+- **Bug:** `dlm_cb` cache created with `kmem_cache_create()` has no
+  usercopy whitelist. When an AST callback carries LVB data,
+  `dlm_user_add_ast()` copies LVB into inline `lvbptr[]` inside a slab
+  `struct dlm_callback` and repoints `ua->lksb.sb_lvbptr` to it.
+  `copy_result_to_user()` then `copy_to_user()`s from that pointer.
+- **Symptom:** With `CONFIG_HARDENED_USERCOPY`, this triggers
+  `usercopy_abort()`.
+- **Root cause:** Slab object pointer used for userspace copy without
+  declaring a usercopy-whitelisted region at cache creation time.
+- **Version info:** none in message.
 
-### Step 1.4: DETECT HIDDEN BUG FIXES
-**Record:** Not hidden — this is an explicit PREEMPT_RT correctness bug
-fix, not cleanup. The removal of `qd_put(old_qd)` is part of the fix:
-the noref lookup does not take a reference, so the prior `qd_put()` was
-balancing an unnecessary `lockref_get_not_dead()`.
+### Step 1.4: Detect hidden bug fixes
+**Record:** Not disguised — this is an explicit bug fix. The failure
+mode (`usercopy_abort()` → `BUG()`) is a kernel panic, not a cosmetic
+cleanup.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: INVENTORY THE CHANGES
+### Step 2.1: Inventory the changes
 **Record:**
-- **Files:** `fs/gfs2/quota.c` only (+23 / -10 lines in mainline commit;
-  ~33 lines total with context)
-- **Functions modified:** new `gfs2_qd_search_bucket_noref()`,
-  refactored `gfs2_qd_search_bucket()`, `gfs2_quota_init()`
-- **Scope:** Single-file, surgical fix
+- **Files:** `fs/dlm/memory.c` (+3 / -1)
+- **Function:** `dlm_memory_init()`
+- **Scope:** Single-file, surgical fix (4 net lines)
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+### Step 2.2: Code flow change per hunk
 **Record:**
-- **Hunk 1 (`gfs2_qd_search_bucket_noref`):** Before: no separate noref
-  lookup. After: pure hash-bucket traversal returning a match without
-  refcount/LRU manipulation.
-- **Hunk 2 (`gfs2_qd_search_bucket`):** Before: inline traversal +
-  `lockref_get_not_dead()` under caller's lock context. After: delegates
-  traversal to noref helper, then takes lockref only when caller is not
-  already under bitlock (RCU or unlocked paths).
-- **Hunk 3 (`gfs2_quota_init`):** Before: `gfs2_qd_search_bucket()`
-  under `qd_lock` + bucket bitlock → can sleep on RT; then
-  `qd_put(old_qd)`. After: `gfs2_qd_search_bucket_noref()` under locks
-  (no sleep); no `qd_put()` since no ref was taken.
+- **Before:** `cb_cache = kmem_cache_create("dlm_cb", ...)` — no
+  usercopy region declared.
+- **After:** `cb_cache = kmem_cache_create_usercopy("dlm_cb", ...,
+  offsetof(struct dlm_callback, lvbptr), sizeof_field(struct
+  dlm_callback, lvbptr), ...)` — whitelists only the `lvbptr[]` field
+  for userspace copies.
+- **Path affected:** Init-time cache creation; runtime path is userspace
+  DLM AST delivery with LVB copy.
 
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-**Record:** **Category:** Synchronization / invalid context (PREEMPT_RT
-lock nesting violation). **Mechanism:** `lockref_get_not_dead()` slow
-path does `spin_lock(&lockref->lock)` which becomes a sleeping mutex on
-PREEMPT_RT, called while `preempt_count: 1` and holding `hlist_bl`
-bitlock via `spin_lock_bucket()`.
+### Step 2.3: Bug mechanism
+**Record:** **Category:** Memory safety / hardened usercopy enforcement.
+**Mechanism:** `copy_to_user()` from `cb->lvbptr` (inside SLUB object)
+fails `__check_object_size()` in `mm/slub.c` because the cache has no
+`useroffset`/`usersize`, leading to `usercopy_abort("SLUB object",
+"dlm_cb", ...)`.
 
-### Step 2.4: ASSESS THE FIX QUALITY
-**Record:** Fix is obviously correct and minimal. Refactoring
-`gfs2_qd_search_bucket()` to share traversal logic avoids duplication.
-Removing `qd_put(old_qd)` is correct (no ref acquired). Low regression
-risk: only changes the duplicate-detection path under locks; normal
-`qd_get()` paths still use the ref-taking wrapper outside the
-problematic quota-init context. **Regression risk:** LOW.
+Verified call chain:
+1. `dlm_add_cb()` → `dlm_user_add_ast()` (user locks)
+2. `dlm_user_add_ast()` sets `cb->lkb_lksb->sb_lvbptr = cb->lvbptr` when
+   `copy_lvb` is true
+3. `device_read()` → `copy_result_to_user()` → `copy_to_user(buf+len,
+   ua->lksb.sb_lvbptr, DLM_USER_LVB_LEN)`
+
+### Step 2.4: Fix quality assessment
+**Record:** Fix is obviously correct and minimal. Whitelisting only
+`lvbptr[]` is the established kernel pattern (same author fixed orangefs
+identically). Low regression risk — only expands permitted copy region
+for the exact field intentionally copied to userspace. No lock-order or
+API changes.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: BLAME THE CHANGED LINES
-**Record:** Buggy `gfs2_qd_search_bucket()` call in `gfs2_quota_init()`
-at line 1461 and the function body at lines 257–275 both blame to
-`5d324e5159d9e` (v6.18-rc8 merge base in this tree). The duplicate-scan
-logic is present throughout the 6.18.y series.
+### Step 3.1: Blame the changed lines
+**Record:** Current `cb_cache` creation at lines 51–53 blame to
+`5d324e5159d9e` (v6.18-rc8 import). Inline `lvbptr[DLM_USER_LVB_LEN]` in
+`struct dlm_callback` and the `copy_lvb` redirect in
+`dlm_user_add_ast()` are present in this tree at the same baseline.
+Exact introduction commit of inline `lvbptr` not recoverable from this
+tree's shallow `fs/dlm/` history.
 
-### Step 3.2: FOLLOW THE FIXES: TAG
-**Record:** No Fixes: tag present. N/A.
+### Step 3.2: Follow Fixes: tag
+**Record:** N/A — no `Fixes:` tag.
 
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-**Record:** Recent `fs/gfs2/quota.c` commits in this tree:
-`1d47922b98046` (slab UAF in qd_put), `32c3960b42124` (wait_event in
-gfs2_quotad). Patch went through v1→v2→v3 on lore; v3 is the committed
-version. v2 was a 2-patch series but v3 is standalone.
+### Step 3.3: Related file history
+**Record:** Fix commit `82278e846311c` exists in repo but is **not** an
+ancestor of HEAD. Upstream mainline commit `b5314f2c6654a`. Nearby
+upstream DLM commit `a1ed04430f805` (SRCU list change) is unrelated.
+This usercopy fix is standalone within its 2/4 series position.
 
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-**Record:** No prior Jie Wang gfs2 commits visible in this stable tree's
-limited history. Andreas Gruenbacher (maintainer) signed off on mainline
-commit.
+### Step 3.4: Author's other commits
+**Record:** Ziyi Guo authored the same class of fix for orangefs
+(`f855f4ab123b2`). Alexander Aring (Acked-by) is DLM maintainer who
+resent the patch in v7.1-rc1 series.
 
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-**Record:** No dependencies. Standalone fix. `git apply --check` of the
-quota.c portion applies cleanly to 6.18.43.
+### Step 3.5: Dependencies
+**Record:** No dependencies. Patch is 2/4 in a series but only touches
+`memory.c` cache creation; does not require patch 1/4 (SRCU hlist
+change). `git apply --check` on the diff against current tree:
+**APPLY_OK**.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-**Record:** `b4 dig -c b99a1f0f18ee` →
-https://patch.msgid.link/20260423133934.118970-1-jie.wang@intel.com
-(v3). Series: v1 (Apr 20), v2 (Apr 21, 2 patches), v3 (Apr 23,
-standalone). Andreas Gruenbacher reviewed v2 ("looking good except for
-one minor detail") and v3 thread includes his reply. No explicit "Cc:
-stable" found in mbox.
+### Step 4.1: Original patch discussion
+**Record:** `b4 dig -c 82278e846311c` →
+https://patch.msgid.link/20260427155935.2415989-3-aahringo@redhat.com
+**Series revisions:** v1 from Ziyi Guo (2026-02-12); v7.1-rc1 resend
+(2026-04-27, patch 2/4).
+**Reviewer feedback:** No replies in saved mbox with stable nominations,
+NAKs, or Tested-by.
 
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-**Record:** `b4 dig -w`: CC'd gfs2@lists.linux.dev, linux-rt-
-devel@lists.linux.dev, bigeasy@linutronix.de (RT), rostedt@goodmis.org,
-clrkwllms@kernel.org, syzbot. Appropriate RT and GFS2 maintainers
-involved.
+### Step 4.2: Reviewers from b4 dig -w
+**Record:** CC'd: Alexander Aring, teigland@redhat.com,
+gfs2@lists.linux.dev. Appropriate DLM/GFS2 audience; maintainer Acked-by
+present.
 
-### Step 4.3: SEARCH FOR THE BUG REPORT
-**Record:** Syzkaller bug 642d0561f78362d67d3f — status: fixed. 13
-crashes. Label: prio:high. Stack trace confirms:
-- `gfs2_quota_init` → `gfs2_qd_search_bucket` → `lockref_get_not_dead` →
-  `rt_spin_lock`
-- Triggered during `mount()` of GFS2 on `PREEMPT_RT`
-- Secondary `gfs2_assert_warn` in `gfs2_qd_dispose` after duplicate
-  detection (from improper `qd_put` in broken path)
-- Reproducer: crafted GFS2 image with duplicate quota_change identifiers
+### Step 4.3: Bug report search
+**Record:** No Reported-by, syzbot, or bugzilla links. Bug is logically
+reproducible: any DLM userspace client reading AST results with LVB on a
+`CONFIG_HARDENED_USERCOPY=y` kernel.
 
-### Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-**Record:** v2 had a second patch ("move quota_init qc iterator
-increment") — not needed; v3 is self-contained.
+### Step 4.4: Related patches / series
+**Record:** Part of 4-patch DLM series; this patch is self-contained.
+Same bug class as orangefs usercopy whitelist fix by same author.
 
-### Step 4.5: CHECK STABLE MAILING LIST HISTORY
-**Record:** lore.kernel.org stable search blocked by bot protection.
-Could not verify stable-list discussion. Not a factor in the decision.
+### Step 4.5: Stable mailing list
+**Record:** No stable-list discussion found in saved mbox thread.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-**Record:** `gfs2_qd_search_bucket_noref()` (new),
-`gfs2_qd_search_bucket()` (refactored), `gfs2_quota_init()` (call site
-change).
+### Step 5.1: Key functions
+**Record:** `dlm_memory_init()` (modified); affected runtime:
+`dlm_allocate_cb()`, `dlm_user_add_ast()`, `copy_result_to_user()`,
+`device_read()`.
 
-### Step 5.2: TRACE CALLERS
+### Step 5.2: Callers
 **Record:**
-- `gfs2_quota_init()` ← `gfs2_make_fs_rw()` ← `gfs2_fill_super()` ←
-  mount syscall
-- `gfs2_qd_search_bucket()` also called from `qd_get()` (lines 286, 298)
-  — but `qd_get()`'s locked call at line 298 is a separate path; this
-  fix targets only the quota-init duplicate-scan path as reported
+- `dlm_allocate_cb()` ← `dlm_get_cb()` ← `dlm_user_add_ast()`
+- `dlm_user_add_ast()` ← `dlm_add_cb()` when `DLM_DFL_USER_BIT` set
+  (userspace locks)
+- `device_read()` ← DLM char device `read` ioctl path (`/dev/dlm_*`),
+  userspace syscall
 
-### Step 5.3: TRACE CALLEES
-**Record:** `gfs2_qd_search_bucket_noref()` → RCU hlist traversal only
-(no locks). `gfs2_qd_search_bucket()` → noref helper +
-`lockref_get_not_dead()` + `list_lru_del_obj()`.
+### Step 5.3: Callees
+**Record:** `kmem_cache_create_usercopy()`, `kmem_cache_alloc()`,
+`copy_to_user()`, `memcpy()`.
 
-### Step 5.4: FOLLOW THE CALL CHAIN
-**Record:** `mount()` → `gfs2_fill_super()` → `gfs2_make_fs_rw()` →
-`gfs2_quota_init()` — reachable from userspace via mount syscall.
-Requires `CONFIG_GFS2_FS` + `PREEMPT_RT` + duplicate quota_change
-entries (corruption or crafted image).
+### Step 5.4: Call chain / reachability
+**Record:** Userspace opens DLM device → lock with `DLM_LKF_VALBLK` →
+AST completion with LVB copy needed (`dlm_may_skip_callback()` sets
+`copy_lvb=1` for user locks) → userspace `read()` on device →
+`copy_to_user()` from slab `lvbptr`. **Reachable from userspace** via
+DLM device read on clusters using GFS2/DLM userspace (CONFIG_DLM=m/y).
 
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-**Record:** `qd_get()` at line 298 also calls `gfs2_qd_search_bucket()`
-under `spin_lock_bucket()`. Same theoretical RT issue, but not reported
-by syzbot and not addressed by this patch. Out of scope for this
-backport decision.
+### Step 5.5: Similar patterns
+**Record:** Identical pattern in `fs/orangefs/orangefs-cache.c`,
+`net/core/skbuff.c`, `kernel/fork.c`, etc. Well-established hardened-
+usercopy fix approach.
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE (6.18.43)
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-**Record:** **YES.** Current `fs/gfs2/quota.c` at lines 1461 and 257–275
-matches the pre-fix code exactly. Fix commit `b99a1f0f18ee` is **not**
-an ancestor of HEAD.
+### Step 6.1: Does buggy code exist?
+**Record:** **YES.** `fs/dlm/memory.c` lines 51–53 still use
+`kmem_cache_create()`. `struct dlm_callback` has `unsigned char
+lvbptr[DLM_USER_LVB_LEN]` at `dlm_internal.h:236`. `dlm_user_add_ast()`
+redirect at `user.c:223–226`. Fix commit `82278e846311c` is **not** in
+HEAD.
 
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-**Record:** **Clean apply expected.** `git apply --check` of the quota.c
-diff from `b99a1f0f18ee` succeeded with no errors on 6.18.43.
+### Step 6.2: Backport complications
+**Record:** **Clean apply** — verified with `git apply --check`. No
+conflicting changes in `fs/dlm/memory.c`.
 
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-**Record:** No prior fix for this syzbot bug found. Related recent fix
-`1d47922b98046` (qd_put UAF) is separate.
+### Step 6.3: Related fixes already present?
+**Record:** None. `git log --grep='usercopy whitelist' -- fs/dlm/`
+returns nothing on HEAD.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-**Record:** **Subsystem:** fs/gfs2 (GFS2 cluster filesystem).
-**Criticality:** IMPORTANT — affects GFS2/PREEMPT_RT users; mount path
-is critical.
+### Step 7.1: Subsystem criticality
+**Record:** **fs/dlm** — Distributed Lock Manager. **IMPORTANT** for
+cluster filesystem users (GFS2, OCFS2, corosync/pacemaker stacks). Not
+universal like mm/net core, but critical for cluster deployments.
 
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-**Record:** Active in 6.18.y (recent quota fixes in this tree). GFS2 is
-a production cluster filesystem used in RHEL and similar distributions.
+### Step 7.2: Subsystem activity
+**Record:** DLM actively maintained (Red Hat/David Teigland tree).
+Recent upstream usercopy fix in 2026.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: DETERMINE WHO IS AFFECTED
-**Record:** Users with `CONFIG_GFS2_FS` + `CONFIG_PREEMPT_RT` mounting
-GFS2 filesystems where `gfs2_quota_init()` encounters duplicate
-quota_change entries. Cluster/enterprise RT deployments are the primary
-real-world audience.
+### Step 8.1: Who is affected
+**Record:** Users of DLM userspace API (`CONFIG_DLM`) on kernels built
+with `CONFIG_HARDENED_USERCOPY=y`. Affects cluster nodes running GFS2
+and similar workloads using value-block (LVB) locks.
 
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-**Record:** GFS2 mount on PREEMPT_RT kernel when quota_change file
-contains duplicate identifiers. Syzbot crafts this condition; real-world
-trigger is quota file corruption during mount/recovery. Unprivileged
-users can trigger via `mount()` if permitted to mount crafted images.
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-**Record:** `BUG: sleeping function called from invalid context` —
-kernel WARN/BUG on RT. Mount may fail or leave quota subsystem in
-inconsistent state (secondary assertion in `gfs2_qd_dispose`).
-**Severity: HIGH** (invalid context bug, mount failure, potential
-follow-on corruption).
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
+### Step 8.2: Trigger conditions
 **Record:**
-- **Benefit:** HIGH for GFS2+RT users — prevents mount-time kernel bug
-  on corruption recovery path; syzbot-verified
-- **Risk:** LOW — ~33 lines, single file, applies cleanly, maintainer-
-  reviewed, no API changes
-- **Ratio:** Strong benefit, minimal risk → backport warranted
+- `CONFIG_DLM` enabled
+- `CONFIG_HARDENED_USERCOPY` enabled (present in multiple arch
+  defconfigs; default-on when `HARDENED_USERCOPY_DEFAULT_ON` is set)
+- Userspace lock operation with LVB (`DLM_LKF_VALBLK`)
+- AST completion where LVB must be copied back (`copy_lvb=1`)
+- Userspace `read()` on DLM device to receive AST
+
+**Likelihood:** Real for hardened cluster kernels using LVB locks — not
+theoretical.
+
+### Step 8.3: Failure mode severity
+**Record:** `usercopy_abort()` in `mm/usercopy.c:86–102` calls `BUG()` —
+**kernel panic**. **Severity: CRITICAL.**
+
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** HIGH — prevents kernel panic on legitimate DLM userspace
+  operation
+- **Risk:** VERY LOW — 3-line whitelist addition, field-scoped,
+  maintainer-acked, proven pattern
+- **Ratio:** Strongly favors backport
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: COMPILE THE EVIDENCE
+### Step 9.1: Evidence compile
 
-**FOR backporting:**
-- Syzbot-reported, reproducible, Tested-by syzbot
-- Real PREEMPT_RT invalid-context bug (sleeping under bitlock)
-- Mount-path reachable from userspace
-- Buggy code confirmed present in 6.18.43; fix not yet applied
-- Small, surgical, applies cleanly
-- GFS2 maintainer (Gruenbacher) signed off
-- Fixes kernel BUG/WARN and prevents mount failures on RT
+**FOR backport:**
+- Real bug with kernel panic (`BUG()` via `usercopy_abort`)
+- Userspace-reachable via DLM device read
+- Small, surgical, maintainer-acked fix
+- Applies cleanly to 6.18.43
+- Buggy code confirmed present; fix not yet applied
+- Same fix class already accepted upstream (orangefs precedent)
 
-**AGAINST backporting:**
-- Requires PREEMPT_RT + GFS2 (narrower than universal)
-- Duplicate quota entries needed to hit the exact path
-  (corruption/crafted FS)
-- `qd_get()` has a similar pattern not fixed here (pre-existing,
-  separate issue)
+**AGAINST backport:**
+- Requires `CONFIG_DLM` + `CONFIG_HARDENED_USERCOPY` (not all kernels)
+- No explicit user/syzbot report in commit message
+- Part of a 4-patch series (but this patch is standalone)
 
-**UNRESOLVED:**
-- Exact commit that introduced duplicate-scan logic (shallow stable
-  history)
-- Stable mailing list discussion (lore blocked)
+**Unresolved:** Exact kernel version that introduced inline `lvbptr`
+(not needed for decision — code is in 6.18.43).
 
-Neither unresolved item affects the YES decision.
+### Step 9.2: Stable rules checklist
+1. Obviously correct and tested? **PASS** — mechanism clear; maintainer
+   Acked-by; no Tested-by
+2. Fixes real bug? **PASS** — hardened usercopy abort on valid DLM
+   operation
+3. Important issue? **PASS** — kernel panic (CRITICAL)
+4. Small and contained? **PASS** — 4 lines, 1 file
+5. No new features/APIs? **PASS** — internal cache metadata only
+6. Can apply to local tree? **PASS** — clean apply verified
 
-### Step 9.2: STABLE RULES CHECKLIST
-1. Obviously correct and tested? **PASS** — syzbot Tested-by; maintainer
-   SOB; clear mechanism
-2. Fixes a real bug affecting users? **PASS** — syzbot, 13 crashes,
-   mount path
-3. Important issue? **PASS** — invalid context BUG on PREEMPT_RT, mount
-   failure (HIGH)
-4. Small and contained? **PASS** — 1 file, ~33 lines
-5. No new features or APIs? **PASS** — internal refactor + call-site fix
-   only
-6. Can apply to local tree? **PASS** — `git apply --check` succeeded
+### Step 9.3: Exception categories
+**Record:** None directly, but this is a hardened-usercopy compatibility
+fix analogous to accepted build/runtime fixes for
+`CONFIG_HARDENED_USERCOPY` users.
 
-### Step 9.3: EXCEPTION CATEGORIES
-**Record:** None applicable (not device ID, quirk, DT, build, or docs).
-Standard bug fix.
-
-### Step 9.4: DECISION RATIONALE
-
-For **Linux 6.18.43**, this commit should be backported. The buggy code
-is present, the fix is absent, and the failure is a verified PREEMPT_RT
-invalid-context bug in the GFS2 mount path. The patch is small, self-
-contained, applies cleanly, and meets all stable-kernel criteria.
+### Step 9.4: Decision rationale
+For **6.18.43**, the buggy code path exists, the failure mode is a
+kernel panic on a legitimate userspace DLM operation when hardened
+usercopy is enabled, and the fix is minimal, maintainer-reviewed, and
+applies cleanly. This meets all stable-kernel criteria.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed subject, tags: syzbot Reported-by, Closes, Tested-by,
-  author + maintainer SOB
-- [Phase 1] Commit body describes PREEMPT_RT sleep-under-bitlock bug in
-  `gfs2_quota_init()`
-- [Phase 2] Diff: 1 file, 3 hunks, new `gfs2_qd_search_bucket_noref()`,
-  refactored search, quota_init call change, removed `qd_put(old_qd)`
-- [Phase 2] Read `lib/lockref.c:143-161`: `lockref_get_not_dead()` uses
-  `spin_lock(&lockref->lock)` on slow path
-- [Phase 3] `git describe HEAD` → v6.18.43; `make kernelversion` →
-  6.18.43
-- [Phase 3] `git blame` lines 1461, 257-275 → present since v6.18-rc8
-  merge in this tree
-- [Phase 3] `git merge-base --is-ancestor b99a1f0f18ee HEAD` → exit 1
-  (fix NOT in tree)
-- [Phase 3] `git apply --check` of fix diff → success (clean apply)
-- [Phase 4] `b4 dig -c b99a1f0f18ee` → v3 lore thread found
-- [Phase 4] `b4 dig -a` → v1/v2/v3 series; v3 is final standalone
-  version
-- [Phase 4] `b4 dig -w` → gfs2, linux-rt-devel, RT maintainers CC'd
-- [Phase 4] `/tmp/gfs2_quota_fix.mbox`: Gruenbacher reviewed v2
-  ("looking good")
-- [Phase 4] Syzkaller bug page: 13 crashes, prio:high, fix commit
-  b99a1f0f18ee, PREEMPT_RT stack trace
-- [Phase 5] `grep gfs2_quota_init`: called from `fs/gfs2/super.c:149`
-  during `gfs2_make_fs_rw()`
-- [Phase 5] `grep gfs2_qd_search_bucket`: 4 call sites; fix changes only
-  quota_init duplicate path
-- [Phase 6] Grep confirmed buggy code at lines 1461, 269-271 in current
+- **[Phase 1]** Parsed commit message and tags from user query and `git
+  show b5314f2c6654a`
+- **[Phase 2]** Read diff; traced `dlm_user_add_ast()` →
+  `copy_result_to_user()` in `fs/dlm/user.c`
+- **[Phase 2]** Confirmed `usercopy_abort()` calls `BUG()` in
+  `mm/usercopy.c:86–102`
+- **[Phase 2]** Confirmed SLUB usercopy check in `mm/slub.c:8275–8281`
+- **[Phase 3]** `git describe HEAD` → v6.18.43; fix `82278e846311c` NOT
+  ancestor of HEAD
+- **[Phase 3]** `git apply --check` on patch → APPLY_OK
+- **[Phase 3]** `git blame` on `lvbptr` field and copy path — present in
   tree
-- [Phase 6] `git diff HEAD b99a1f0f18ee -- fs/gfs2/quota.c`: only quota-
-  fix portion needed for backport (other mainline diffs are unrelated)
-- [Phase 7] PREEMPT_RT exists in tree (`kernel/Kconfig.preempt:
-  PREEMPT_RT`)
-- [Phase 8] Failure mode: BUG sleeping-in-invalid-context, severity HIGH
-- UNVERIFIED: Exact introduction commit of duplicate-scan logic (shallow
-  history)
-- UNVERIFIED: Stable mailing list discussion (lore blocked by bot
-  protection)
+- **[Phase 4]** `b4 dig -c 82278e846311c` → lore URL found
+- **[Phase 4]** `b4 dig -a` → v1 and v7.1-rc1 revisions
+- **[Phase 4]** `b4 dig -w` → maintainers CC'd
+- **[Phase 4]** Saved mbox `/tmp/dlm_usercopy.mbox` — no stable/Tested-
+  by/NAK replies
+- **[Phase 5]** Traced callers: `dlm_add_cb` → `dlm_user_add_ast`;
+  `device_read` → `copy_result_to_user`
+- **[Phase 5]** Verified `copy_lvb` set in `dlm_may_skip_callback()` for
+  user LVB casts (`ast.c:101–108`)
+- **[Phase 6]** `fs/dlm/memory.c` still uses `kmem_cache_create()`
+  without usercopy whitelist
+- **[Phase 6]** `struct dlm_callback.lvbptr[DLM_USER_LVB_LEN]` at
+  `dlm_internal.h:236`
+- **[Phase 7]** `CONFIG_DLM` in `fs/dlm/Kconfig`; `DLM_USER_LVB_LEN` =
+  32 in `include/uapi/linux/dlm_device.h`
+- **[Phase 8]** `CONFIG_HARDENED_USERCOPY` documented in
+  `security/Kconfig.hardening`; enabled in multiple arch defconfigs
+- **UNVERIFIED:** Exact commit that introduced inline `lvbptr` (shallow
+  `fs/dlm/` history in this tree)
 
-**YES**The background check finished: `git merge-base --is-ancestor
-b99a1f0f18ee HEAD` returned exit code 1, so commit `b99a1f0f18ee`
-("gfs2: fix quota init duplicate scan") is **not** in this 6.18.43 tree.
-The buggy code is still present at `fs/gfs2/quota.c` line 1461.
+**YES****Verdict: YES** — backport to this tree (6.18.43).
 
-The backport analysis stands: **YES** — this fix should be backported to
-this tree.
+The DLM `dlm_cb` slab cache lacks a usercopy whitelist. When userspace
+AST callbacks copy LVB data from the inline `lvbptr[]` field in a slab-
+allocated `struct dlm_callback`, `copy_to_user()` under
+`CONFIG_HARDENED_USERCOPY` triggers `usercopy_abort()` → `BUG()` (kernel
+panic). The fix switches to `kmem_cache_create_usercopy()` whitelisting
+only `lvbptr[]` — a 4-line, maintainer-acked change that applies cleanly
+and is not yet in HEAD.The check confirmed commit `82278e846311c` is
+**not** in the current 6.18.43 tree — the fix still needs to be
+backported. That supports the **YES** verdict from the earlier analysis.
 
- fs/gfs2/quota.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ fs/dlm/memory.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 898fc3937b449..7a36a3fe5e6e6 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -254,9 +254,13 @@ static struct gfs2_quota_data *qd_alloc(unsigned hash, struct gfs2_sbd *sdp, str
- 	return NULL;
- }
+diff --git a/fs/dlm/memory.c b/fs/dlm/memory.c
+index 5c35cc67aca4c..ee55994ce90d8 100644
+--- a/fs/dlm/memory.c
++++ b/fs/dlm/memory.c
+@@ -48,8 +48,10 @@ int __init dlm_memory_init(void)
+ 	if (!rsb_cache)
+ 		goto rsb;
  
--static struct gfs2_quota_data *gfs2_qd_search_bucket(unsigned int hash,
--						     const struct gfs2_sbd *sdp,
--						     struct kqid qid)
-+/*
-+ * Lookup variant for callers which already hold qd_lock + bucket lock.
-+ */
-+static struct gfs2_quota_data *
-+gfs2_qd_search_bucket_noref(unsigned int hash,
-+			    const struct gfs2_sbd *sdp,
-+			    struct kqid qid)
- {
- 	struct gfs2_quota_data *qd;
- 	struct hlist_bl_node *h;
-@@ -264,12 +268,22 @@ static struct gfs2_quota_data *gfs2_qd_search_bucket(unsigned int hash,
- 	hlist_bl_for_each_entry_rcu(qd, h, &qd_hash_table[hash], qd_hlist) {
- 		if (!qid_eq(qd->qd_id, qid))
- 			continue;
--		if (qd->qd_sbd != sdp)
--			continue;
--		if (lockref_get_not_dead(&qd->qd_lockref)) {
--			list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
-+		if (qd->qd_sbd == sdp)
- 			return qd;
--		}
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct gfs2_quota_data *
-+gfs2_qd_search_bucket(unsigned int hash, const struct gfs2_sbd *sdp, struct kqid qid)
-+{
-+	struct gfs2_quota_data *qd;
-+
-+	qd = gfs2_qd_search_bucket_noref(hash, sdp, qid);
-+	if (qd && lockref_get_not_dead(&qd->qd_lockref)) {
-+		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
-+		return qd;
- 	}
- 
- 	return NULL;
-@@ -1458,7 +1472,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 
- 			spin_lock(&qd_lock);
- 			spin_lock_bucket(hash);
--			old_qd = gfs2_qd_search_bucket(hash, sdp, qc_id);
-+			old_qd = gfs2_qd_search_bucket_noref(hash, sdp, qc_id);
- 			if (old_qd) {
- 				fs_err(sdp, "Corruption found in quota_change%u"
- 					    "file: duplicate identifier in "
-@@ -1467,7 +1481,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 
- 				spin_unlock_bucket(hash);
- 				spin_unlock(&qd_lock);
--				qd_put(old_qd);
- 
- 				gfs2_glock_put(qd->qd_gl);
- 				kmem_cache_free(gfs2_quotad_cachep, qd);
+-	cb_cache = kmem_cache_create("dlm_cb", sizeof(struct dlm_callback),
++	cb_cache = kmem_cache_create_usercopy("dlm_cb", sizeof(struct dlm_callback),
+ 				     __alignof__(struct dlm_callback), 0,
++					 offsetof(struct dlm_callback, lvbptr),
++					 sizeof_field(struct dlm_callback, lvbptr),
+ 				     NULL);
+ 	if (!cb_cache)
+ 		goto cb;
 -- 
 2.53.0
 
