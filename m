@@ -1,108 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FB04766B8;
-	Mon, 31 Aug 2026 13:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819224BCAA9
+	for <gfs2@lists.linux.dev>; Mon, 31 Aug 2026 14:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184365; cv=none; b=FKOWMIB+g5+t5duzyYikFpKN+raFyJf6OKa0l6ZW9ITgElhrQlP9efWoQciwdNu/YFSOvK2L6dhQ79Ls//bGcweqpHHm5rh9D1FE8ifrJ9iYu7rQLfTfO8IGroTX0xRkyYb0JUHHFAC72ICqd4aTc6s1dj6IS3bip5CaJQG8Cz4=
+	t=1788185407; cv=none; b=MmezSjiHqkMC4qIE3UgoWmocY7whHw0Y2Nxtz7ZX0tV5ES/JHzgXMTViey6iXa5HSIOFWCRzflnn+U460Iru2Vf+KjNEDViXBzy0Lcw0B/7SZ/BOvk9dWaK3ZQtZLeU6uBf4GL6serV09TMlY3Pv7ujSF+yBwBwezB6T346aTA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184365; c=relaxed/simple;
-	bh=cIip9Z66Yiy0Xwq6y1y7qtFx/jql0j9kuQpAH7Ihcdc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pvdoVg4G6FKq3c9U+8k9X3CwmUSCyrMGcLpHtoeP8Lz/5SPfKavYbYOB3nG4sBqSV/zOzSq4AYm2PXcIR9rxlS7ggXA48KshMBSZjSWhhm5tgd2/VQKyIaZSjGXF+XPbDZIbgA4aJwaBr2JQJ5J7McKAl6yjPp0V95hgWThr0XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0W64eLU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788185407; c=relaxed/simple;
+	bh=2OTa5vFHZiOCswlLATKSWXrmSzZ3LfR3p7eYLycqjCA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bUsOEhfc85jERrG+sQl/sH4t+Xq5y08OBdMN2jORVUmxqwGNPVGU+HP4t/EsbKWINyEiAPvhVQ1vGxygJCiRdzpSuaOohcoBGpci42TQd/9NTiWymVpuOuCke7BlwkLrIppeVV81qO/W7oTOXJvHC2UkYxn3XJUN1qUKbQAZEEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z7KxFtNs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0W64eLU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986971F00ACF;
-	Mon, 31 Aug 2026 13:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184364;
-	bh=M3ArXLpvvpK2406PiFlTgTKded0BNHL3d2lE6hA0x2s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g0W64eLU9QJpWLKQJDU4JVXkmuTtQ8PmDt0ycrbZjrsvVIJ9+aDve3XcXbTK5RSlq
-	 ezRXzJFLuW9hjXaXqIH+pDDnzFsXY4mT1vCgdaaLqf256V3ArLfVmOExLJubgCh+vX
-	 6CHyR+cZ8n6wyoCIL2wZNlLWc5Ow3Xzt6g/I80jSXsW9a7vqJJAqW/zeGicDZzJ8Ky
-	 NiTMEeRonY+8574BHslDDQvwJ3krSDJPqPkQg2e1lilR5viZLp2/gOGBKQTTZLMLVB
-	 pPWmELZoWPKRC33zX5FBoEijYJZPvQ+7ODu221ZdnLWXOu9R/Js08n5sKfBf/LdxwS
-	 thVqQODErH+xA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jie Wang <jie.wang@intel.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] gfs2: move quota_init qc iterator increment
-Date: Mon, 31 Aug 2026 09:31:18 -0400
-Message-ID: <20260831133314.4125787-650-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
-References: <20260831133314.4125787-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z7KxFtNs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788185405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/RD6fAg9Gc9vKAefpCTRM0Xuo2vXeMUEPiIg8uFFGyM=;
+	b=Z7KxFtNswv3Cl0vUjH43hY3NaDhLSD9hcOnwY8L6UqMxm/jUoAPSpt0VoXs1ntLiXZdw47
+	s41DPUOc9o5ZDk3Vc4hbXqYx9xtpNx1v7oOXtS1CXl+5yrOoY0audthIQdAthmV5i2j5cg
+	AtJFVsiTavejP9vpqb7fPPfG230LzSY=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-MzdNxjKTNmSWPHOuS93Ucw-1; Mon, 31 Aug 2026 10:10:03 -0400
+X-MC-Unique: MzdNxjKTNmSWPHOuS93Ucw-1
+X-Mimecast-MFC-AGG-ID: MzdNxjKTNmSWPHOuS93Ucw_1788185403
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-836caf085e0so70479297b3.1
+        for <gfs2@lists.linux.dev>; Mon, 31 Aug 2026 07:10:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788185403; x=1788790203;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/RD6fAg9Gc9vKAefpCTRM0Xuo2vXeMUEPiIg8uFFGyM=;
+        b=J8Vz8BPc3SqCP7OMRCuHQTidu7kfi8a0JDHsb4DgSGSvQ0KoRIQoBE3AEGIwlKyqov
+         R/ceVk5zRqQtauKbd83jnWuAmF5dlWVq20MIpUhi6fW3dWxEnMjFxqkwqBnpSIz5I8iB
+         GhRy4eb/Y6R4ONN60ZFpJPY4PgV2UL+G/zkLNAa1R4hQ8Cgxhqr0zur814tXeyOh+hA7
+         rK5aOmMeYGpDdYMDrW1tSPYZX+fh0uFO7evQdpGrmwU5MEJqt2DIvYHFADBY/fwZVGOs
+         0zgCH4G9OYj6yK7wjjWWtiJGkAaqwpzKk4AeWqwOjW9uTlMlaBAVPjV6XDlSycPhLQuy
+         rklg==
+X-Gm-Message-State: AFuF++k1WxcHpm4G2KFNT1RpD3MQvK3kN1b6sgBUpAYnfrN+o1V7rdD1
+	4U2O7/7ZaavuCqVjBrcZNvqrX7Kbmp8dovyWUVAOb6EXfWozQrfFVK2t/GIjQlBuylvQQfqKIFO
+	5pp28PNAJ4JE33Kv0v+zSoa14+2ElVISIF2Y8kO9Zd6S/UbZl9Vd3O6ZPZnWzgvHuxocAqbW6ZC
+	zcgNLXiLaLNUN6N9RA42a0inR1wAzNRg==
+X-Gm-Gg: AYBFou24YnIx6lRSH2T08mgfLB7EdUQkYv4Hlnpa34IILAtI3q4nGaC+4a28tL9m2oo
+	X7zJBkAvLRCJutbIq8Py86hKCUYG6xeVbP9s8gBuyxn+kpFAnclL3nKPshU1fgPUWOsq5mlZEfR
+	YGk2X9tIyPfxTBwnbGz4rdQK5XuimnqAambebO8bMrkPLqY6SkgH3c/WxgTq8/W2LIYxVUHy/TL
+	gzQVffE2lWG6LOWMZ0dcJPW8SCU/02UuirqKhwpfuQQ
+X-Received: by 2002:a05:690e:244a:b0:66f:8255:9f4b with SMTP id 956f58d0204a3-66f8745a1a0mr286928d50.8.1788185402989;
+        Mon, 31 Aug 2026 07:10:02 -0700 (PDT)
+X-Received: by 2002:a05:690e:244a:b0:66f:8255:9f4b with SMTP id
+ 956f58d0204a3-66f8745a1a0mr286906d50.8.1788185402359; Mon, 31 Aug 2026
+ 07:10:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.48
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260505223319.5661-1-shofiqtest@gmail.com>
+In-Reply-To: <20260505223319.5661-1-shofiqtest@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Mon, 31 Aug 2026 16:09:51 +0200
+X-Gm-Features: AcwNN1V7E0fQbuEwbFljk0Gdwb07ZyOSF7BaQw4kP-0aSTU-pu0QlfUzibp1_h8
+Message-ID: <CAHc6FU7E4xiM7HZFBiv_i47iOhwFLg+0AYRaDU70tPFt7NB2Mw@mail.gmail.com>
+Subject: Re: [PATCH] fs: gfs2: Fix typos in comments
+To: Md Shofiqul Islam <shofiqtest@gmail.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: opa1QilrD2Hc4F2JLon0SzJC2HN3qQQq-FYdqbgnSrw_1788185403
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jie Wang <jie.wang@intel.com>
+On Wed, May 6, 2026 at 12:33=E2=80=AFAM Md Shofiqul Islam <shofiqtest@gmail=
+.com> wrote:
+> Fix spelling mistake in comments:
+>  - occured -> occurred (twice)
 
-[ Upstream commit 942202677f8f2ee448a6a2feb06aeeaf520342e3 ]
+Thanks for the patch. Could you resend with a signed-off-by header?
 
-Move qc++ from the loop body into the for-loop increment
-expression in gfs2_quota_init().
+Andreas
 
-This keeps iterator progression explicit and avoids mixing pointer
-advance with duplicate-slot handling in the loop body.
-
-Signed-off-by: Jie Wang <jie.wang@intel.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-The background `git log -S` search between v6.10 and v6.11 finished
-(~75s) but only surfaced merge/release commits, not the actual GFS2
-change — typical for this shallow stable checkout.
-
-What we could pin down: duplicate-slot zeroing first appears in
-**v6.11** (absent in v6.10, present in v6.11), so the `qc++` /
-`memset(qc)` ordering bug has been in 6.18.y since then. That’s enough
-context for the **YES** backport call; the exact introducing SHA isn’t
-available from this tree’s history.
-
- fs/gfs2/quota.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 7a36a3fe5e6e6..4620f586411a6 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -1447,7 +1447,7 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 
- 		qc = (struct gfs2_quota_change *)(bh->b_data + sizeof(struct gfs2_meta_header));
- 		for (y = 0; y < sdp->sd_qc_per_block && slot < sdp->sd_quota_slots;
--		     y++, slot++) {
-+		     y++, slot++, qc++) {
- 			struct gfs2_quota_data *old_qd, *qd;
- 			s64 qc_change = be64_to_cpu(qc->qc_change);
- 			u32 qc_flags = be32_to_cpu(qc->qc_flags);
-@@ -1455,7 +1455,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
- 						USRQUOTA : GRPQUOTA;
- 			struct kqid qc_id = make_kqid(&init_user_ns, qtype,
- 						      be32_to_cpu(qc->qc_id));
--			qc++;
- 			if (!qc_change)
- 				continue;
- 
--- 
-2.53.0
+> ---
+>  fs/gfs2/lock_dlm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
+> index 7828ad0b6..563bb90a3 100644
+> --- a/fs/gfs2/lock_dlm.c
+> +++ b/fs/gfs2/lock_dlm.c
+> @@ -434,7 +434,7 @@ static void gdlm_cancel(struct gfs2_glock *gl)
+>   * 10. gfs2_control sets control_lock lvb =3D new gen + bits for failed =
+jids
+>   * 12. gfs2_recover does journal recoveries for failed jids identified a=
+bove
+>   * 14. gfs2_control clears control_lock lvb bits for recovered jids
+> - * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
+ occured
+> + * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
+ occurred
+>   *     again) then do nothing, otherwise if recover_start > recover_bloc=
+k
+>   *     then clear BLOCK_LOCKS.
+>   *
+> @@ -812,7 +812,7 @@ static void gfs2_control_func(struct work_struct *wor=
+k)
+>
+>         /*
+>          * No more jid bits set in lvb, all recovery is done, unblock loc=
+ks
+> -        * (unless a new recover_prep callback has occured blocking locks
+> +        * (unless a new recover_prep callback has occurred blocking lock=
+s
+>          * again while working above)
+>          */
+>
+> --
+> 2.51.1
+>
 
