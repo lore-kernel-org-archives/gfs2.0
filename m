@@ -1,124 +1,143 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAEA3BD22B
-	for <gfs2@lists.linux.dev>; Fri, 28 Aug 2026 05:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787895980; cv=pass; b=Gl8l0z3CI0+ZPjwcIeMhSTMon4Od70BG08dC60U7h6De+a8JfdKzx+r3NVtTCePnyGPuv8gGSr5bh5AG+wkv4IEk9LS2ZohlsozhTRRhj0ST1M0B56mF1ZmuxkUfB41+inhtowSrcSAlCHz7FrQT4tUXZadQNTjITzaT3uiUhTc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787895980; c=relaxed/simple;
-	bh=3mzePdxBZU/3WYB/4lvrTeALz11TsrQx6TVNX0NuogU=;
-	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=GZURxZdvgyjlOvm5uFAGGmzOW6YVchlj7CafLx8j1+bsEGYYk86XKpop3WZmC2wsRUUeZ+u/4sIaN/p2Byz5AjAuvXXd0OFuVE3huEuIpfMox0yegWGtpd71/aYfooFthf3uiFS1aw4jFK/CtFeQHK6iGFIFOwLgvn8N1iZUg+c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=UI+/Stm4; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBEE3E120C;
+	Mon, 31 Aug 2026 08:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788164576; cv=none; b=LSGavYLK2Z0MmoUqNQ/qxVbntJVrObcaF6xvctL+KbnMWCjRXJqkf7KnSNPAC2iWSMCeOeFvkhO01DedRSzoIaRAF5LypM2HU+6goLHzOCvZEyWq6gLLPPMWn+LaoHRxA2R6YU51XkJGo+D3iDWctXo4Suxhe3hX7RlnOAp4wRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788164576; c=relaxed/simple;
+	bh=wnOb710GDzXvB78jABPqDFMRlLh8C3NnDR9JYFb6Gvo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=n1bjO5deoVe1SfpRYRo6jbMcGaqQkYjmOuKa20eWV4oNP+7CHTy0sTewAS4bNFAJGMAbFoioI/MKND3N74wLy8SkKep3kbKJg+wWCjSuhlq9GYnpmPu2rvPAYUeuviD7Gn/HhEQuR6NlBiP9f1GntFp3c7dFCVAqyBsveARP70Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDuLGYij; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="UI+/Stm4"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cacb8416a1so6200095ad.1
-        for <gfs2@lists.linux.dev>; Thu, 27 Aug 2026 22:46:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787895978; cv=none;
-        d=google.com; s=arc-20260327;
-        b=f6oaSMtL5ZnLEu+qQUqiot/Y2FUSENP/nXraQt8W51mk6GrXaUn5YJBPCDYL26sxeJ
-         jHh4ZB8ZAAXXcqzYr0EOKrYN8TdAc2npQ2lmhhlKFEd02M/KVcSt92pNhiGqNHscGEed
-         iVFdDVCQoiL9r1+5vi2iOn7cBYxqNsljpf/2EzgiCojQOgdThoKhPg4+Gu6K4+pJnhtI
-         TZhUdeI5k2vbOwsdF3d2iwulD1Ehc5qsdsTa1EWJme1yAU/fnuEj3OzT1lrZSNqFhBpY
-         owJybHJfDDe5Wn0epPCymx6IIUizoB4eu3ubeRW56hyZiuDFrfkzYkG5vo7cx9kWdJmH
-         V9Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=0GUepPC6eQwQ4aTuikrhpmMNCO3bQ+7a/vXwuKLRNKU=;
-        fh=ubRXaz14pvkyD9p4Xz2WTD/3UaW0pov+Ts8B5MkiHnc=;
-        b=j0LKBhRADlIXEtvm6h2BpinsJ/qnt3Xswum8+8fCYaHn5f4ybEr4PXC7MX66AL22SZ
-         z39FCG6gFItw8wbyfK7UdvI44Gh8itcW2TcSiRBVLoxvHLsM7ojBls0+QxGb3UzbUiL1
-         bFe4PYbNQjpsDWgOFsAZo4T+ruumk++MV5mGsawAnomTJJtsbxepHOTHOzFb+s2kZ5Qy
-         OyKkkyaRiwjWuQGrobtubhxR+hnF0fBPDm2c7UY7E16fgEJrvw1QXhp607auKCQWJftN
-         ihuoZbAXaxmpR5l7yGRTnfjhcm/fgWKAddnrvECXf1Dexx1jPBgHB2kGVKxO3S3RB7F+
-         DjpA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=berkeley.edu; s=google; t=1787895978; x=1788500778; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0GUepPC6eQwQ4aTuikrhpmMNCO3bQ+7a/vXwuKLRNKU=;
-        b=UI+/Stm4OtKMay2Un0qQftFsD0ZIGW3dwA6a3U/ah+29j206K9QiGrMX6IP3lMOxZQ
-         o462TWLrAf6tLiDIbYA/4p4liIqi0Qp+kLN0xrIRjI1OYOXEF7LIXX1TqbiAtrPRB5xI
-         cSA5Pi9DoadVYgogh7B8f5MoyzYjDU1GX34fiP/2EfF1EPfY2wONGG+zTwfjnelHDAIK
-         cetK+aXjBEDyY/SYkTIWb4S2RsKNHo4TMiNoUbksvHu4rzzrxkCWxnippOJrd6MqSS37
-         gv/L0rdSvMmdSDiTdgcGt+dKpGbkzCBgQLav1PcbYZB6W/bj3G+QWovH9bYyMLdHh3aR
-         44pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787895978; x=1788500778;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0GUepPC6eQwQ4aTuikrhpmMNCO3bQ+7a/vXwuKLRNKU=;
-        b=Nc2tPQFfnLwyWfI6GEIT2ujbHslE1HrZ9K+ErcTRRFDJrK2qBMWtpePM5fE504wEwt
-         RZEN6bRyeXv5HN3B9YKeDUe7TkE1DCSfxd+8xWxTYlBDEyoHzlBm57ix6+Y4FJZFR93d
-         3JxwVuLXkaTlotKOEvmTkIiOI0ttwbpwYwHYS7iMctryvrSqs0X0+QfttnVJdwSZGhJO
-         sjNT5Lby/vXgb8jngndUGW1MnZ4uiX1pm+NQ4TiiGtL2u9WM9xfDUCpz7MlZ9wTGdLLT
-         Dn32GGLXN7spHGciJpxIs241mvIZGKIOIcShi4J/BbuIJtAl5OwGYMwNap5nA+ihaN/E
-         quJA==
-X-Forwarded-Encrypted: i=1; AHgh+RqGMuJNpH5ksc/wK5xuFuEsIORmd9nF5/lYTQHmDIrz2wD2dC2+OmPZyR+mtFGwT4FpLIYA@lists.linux.dev
-X-Gm-Message-State: AFuF++lWvLaALpbxpgjcW0p5CCchwRaQRTBOnPGz2NJXX28K+BAMnarl
-	FnZrKu/EeIzb1ZiV4QNK3oYLC3rEbIePy5DlgnSLI1osjyFiZyb2SVFXy9ZPFmUgWQKG7hVBykC
-	ucmYo85PN4jwCuNlSoZ21DCLhR9QVYeWAJbtBcdp1
-X-Gm-Gg: AR+sD13lpUwoEMUVNAcguUGxnnZP0zP0tSJgWjVaoJWYAsjUTEXn4e7zqtDSt+4q6IQ
-	lkEpPen2WdmTB1gF7PKUKWJn6SlBGHdU40KyjtLBDXE9zUSy4t4jaexm8uDM/lA17SujyhBR5b/
-	A9dKK2omwkgFbkLIB2nuQSYtO3NzOYZVVD2kJNgX86EGYPbBWsxPkPRecjQBbpzE8oWrzKsZMD6
-	kngRAyAZoyOiFd1mXMGo1xXFECQIpHuMCR1eH+9HgSKgTQoHkM5YVbj7FnKOz+g1XkGDqiM0dhg
-	0fPSHVTqiZRtNJcYjstBdLyIo5WHdQJ/FOcyCHMdwETQ2gxuFpml/zslXW6Z9PIuhHAcxm26oGa
-	mgOsn4o0oV1xRMYovPXekyAQtBb4zdzZA
-X-Received: by 2002:a17:903:15cf:b0:2d7:1aeb:739 with SMTP id
- d9443c01a7336-2d74e1295c2mr86465035ad.13.1787895977223; Thu, 27 Aug 2026
- 22:46:17 -0700 (PDT)
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 27 Aug 2026 22:46:16 -0700
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 27 Aug 2026 22:46:16 -0700
-From: Farhad Alemi <farhad.alemi@berkeley.edu>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDuLGYij"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734C01F000E9;
+	Mon, 31 Aug 2026 08:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788164574;
+	bh=lmGgmlxDbGLbhuLXzpdjg1bjgsmwZj4DcRmR+5yii2Q=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=kDuLGYijTZY4L/lJ/eKPEPZ79jZ7Xzmksn4BPj95fcn4/heyZX5sB2+cMA38oBDso
+	 6JiwxxbpqX3bnt+aDaYhdskRY0eL3Elp2ksONcUTyVNV1yDn40MOWzowF4/4iQkzpX
+	 FUSGofyobRO9WCZ7d7+xpLahTeq+0fu4OdkWhOsrufaSThIk5kbwJwdQ9YJ5Q1xDNA
+	 kR4jaXnYHcWCmBy+b7/VhvLvCK6Me5gvxHj/PJ1rGpI+P8epCwSyDdHQCO5RMKeTBV
+	 W52ImWhGYlJDU0FChhsUy6to3arDCcjLQYzjxxGO6D4zx/2cdFUAG4ATb69hZtdThq
+	 hgWE7GVrWnesQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, 
+ Chao Shi <coshi036@gmail.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, 
+ Baokun Li <libaokun@linux.alibaba.com>, 
+ Ojaswin Mujoo <ojaswin@linux.ibm.com>, 
+ Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>, 
+ Zhang Yi <yi.zhang@huaweicloud.com>, Bob Copeland <me@bobcopeland.com>, 
+ Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
+ Yuezhang Mo <yuezhang.mo@sony.com>, 
+ OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Mark Fasheh <mark@fasheh.com>, 
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Andreas Gruenbacher <agruenba@redhat.com>, linux-ext4@vger.kernel.org, 
+ ocfs2-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <cover.1785951556.git.coshi036@gmail.com>
+References: <cover.1785951556.git.coshi036@gmail.com>
+Subject: Re: [PATCH v2 00/21] buffer: stop clearing BH_Uptodate when a
+ write fails
+Message-Id: <20260831-lauwarm-gedruckt-salzkartoffel-67b444e6977e@brauner>
+Date: Mon, 31 Aug 2026 10:20:39 +0200
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 27 Aug 2026 22:46:16 -0700
-X-Gm-Features: AcwNN1X4mXiwbv-zD7khlznKWnAht63BaDjhnKiIcjF9IZjcchKCLalWAp7F7Lo
-Message-ID: <CA+0ovCj14CqeH2qH-fxDdvdK3Tp=rgZM7opqOp0PkYS52RmOmQ@mail.gmail.com>
-Subject: [BUG] KASAN: use-after-free Read in gfs2_rgrp_go_instantiate
-To: Andreas Gruenbacher <agruenba@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>
-Cc: falemi@asu.edu, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-362b8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3922; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=wnOb710GDzXvB78jABPqDFMRlLh8C3NnDR9JYFb6Gvo=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRNtbzJ87J41a5rDh88SrxLj019wMf7ZdaNyWoRf36K7
+ 5nGYlVR2VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR0V8M/7PsK/maZ50rW/Aw
+ se7TNPM5UrPXVnCy82ZtVAs3EXx0LZKRYYvaOo7NJmWzWpcEBVrvZ7rOsdFfq4dnq69PApPHBjt
+ fbgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Hello,
+On Thu, 06 Aug 2026 12:58:23 -0400, Chao Shi wrote:
+> buffer: stop clearing BH_Uptodate when a write fails
+> 
+> When a metadata write fails, the buffer_head completion handlers clear
+> BH_Uptodate.  The buffer still holds exactly the data the filesystem asked
+> to be written - it is the disk that is stale, not the buffer - and saying
+> otherwise has consequences:
+> 
+> [...]
 
-As part of the kernel research at ASU's SEFCOM
-lab, we hit the crash below. Crash reports can be found here:
+Tbh, the commit message reads a bit LLMy. It would be nice if people
+could take the time - provided they have sufficient language skills - to
+massage the artificial tone out of them.
 
-  https://github.com/farhad-alemi/public_bug_reports/tree/main/177-kasan-use-after-free-read-in-gfs2-rgrp-go-instantiate/
+---
 
-  BUG: KASAN: use-after-free in gfs2_bit_search fs/gfs2/rgrp.c:188 [inline]
-  BUG: KASAN: use-after-free in gfs2_bitfit fs/gfs2/rgrp.c:249 [inline]
-  BUG: KASAN: use-after-free in count_unlinked fs/gfs2/rgrp.c:1159 [inline]
-  BUG: KASAN: use-after-free in gfs2_rgrp_go_instantiate+0xb0d/0x1340
-fs/gfs2/rgrp.c:1238
-  Read of size 8 at addr ffff888011445000 by task syz-executor/17182
-  Call Trace:
-   gfs2_rgrp_go_instantiate+0xb0d/0x1340 fs/gfs2/rgrp.c:1238
-   gfs2_instantiate+0x151/0x210 fs/gfs2/glock.c:442
-   gfs2_glock_holder_ready fs/gfs2/glock.c:1250 [inline]
-   gfs2_glock_wait+0x1b2/0x280 fs/gfs2/glock.c:1270
-   gfs2_glock_nq_init fs/gfs2/glock.h:253 [inline]
-   gfs2_inplace_reserve+0xc43/0x3420 fs/gfs2/rgrp.c:2093
-   do_sync+0x64b/0xca0 fs/gfs2/quota.c:948
+Applied to the vfs-7.4.bh branch of the vfs/vfs.git tree.
+Patches in the vfs-7.4.bh branch should appear in linux-next soon.
 
-Our reproducer.c is available upon request.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Happy to test a patch if that would help.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Regards,
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.4.bh
+
+[01/21] buffer_head: Remove b_page
+        https://git.kernel.org/vfs/vfs/c/719ecb98ffe7
+[02/21] buffer: allow a buffer_head to point at memory outside the page cache
+        https://git.kernel.org/vfs/vfs/c/8deae2284976
+[03/21] jbd2: point the shadow buffer at the frozen data directly
+        https://git.kernel.org/vfs/vfs/c/5febcba29792
+[04/21] buffer: read the folio's mapping directly in buffer_set_crypto_ctx()
+        https://git.kernel.org/vfs/vfs/c/14cbade7d773
+[05/21] buffer: clear BH_Write_EIO when a buffer is forgotten
+        https://git.kernel.org/vfs/vfs/c/d59fe9111f4f
+[06/21] buffer: discard BH_Write_EIO along with the rest of the buffer state
+        https://git.kernel.org/vfs/vfs/c/bbcd6f7456b2
+[07/21] buffer: detect metadata write errors with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/7032ded0a1fa
+[08/21] adfs: check for a directory write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/613e12102111
+[09/21] ext2: check for an xattr block write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/583913a40f2e
+[10/21] omfs: check for an inode write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/a269f6fade99
+[11/21] exfat: check for a directory write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/4a53ece574b5
+[12/21] fat: check for a metadata write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/a93ff8e2e398
+[13/21] ext4: check for a metadata write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/0f44b420e6c7
+[14/21] ocfs2: check for a metadata write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/3f90f64f8187
+[15/21] ocfs2: check for a stale write error before reusing a metadata buffer
+        https://git.kernel.org/vfs/vfs/c/a87462d7b604
+[16/21] gfs2: check for a metadata write error with buffer_write_io_error()
+        https://git.kernel.org/vfs/vfs/c/47552ff5ebf9
+[17/21] jbd2: report journal write errors with BH_Write_EIO
+        https://git.kernel.org/vfs/vfs/c/0c6c46fbf4d8
+[18/21] jbd2: say what jbd2_freeze_jh_data()'s assertion is actually checking
+        https://git.kernel.org/vfs/vfs/c/50cf8c8e532c
+[19/21] ext4, jbd2: report fast commit write errors with BH_Write_EIO
+        https://git.kernel.org/vfs/vfs/c/a49d8a9d5d49
+[20/21] buffer: stop touching BH_Uptodate on write completion
+        https://git.kernel.org/vfs/vfs/c/1f2304e87b83
+[21/21] buffer: clear BH_Write_EIO when a write succeeds, not when one starts
+        https://git.kernel.org/vfs/vfs/c/e038f1016c6f
+
