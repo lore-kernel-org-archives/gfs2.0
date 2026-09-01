@@ -1,54 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A1848CD5B
-	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 17:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F6D48C8C1
+	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 17:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788284847; cv=none; b=IQeylpVNU8aIm5dhoF255oSr1655Ou88Q9nLBqYPZ0Vs2tzhEYb+D9jcjDI7gfU83oyHitbVV97y9ppNNX0XSTl6HPI+kBMzJDBq+UP2mZfrLG9H5EkcFLjZUld6/zJzppQmTDnFuuRYDwjMViFlsYq7DfhP0qi9aW8X9vJIU/k=
+	t=1788284849; cv=none; b=bS947f7tlZbYs+ZH8Ay9iF0PtNNH3wa52DOjeTc+GTDSBQknAKg8S+L9Z07CW48k08gFqxYresHtPblEi6LKiCkyHf2ieIedEFyqN6jo/ShmJ/KskTfZvFQPQBHkqbC4V7X7l0UO1TFf8BxyJ+7W7bcr2s9ls21+YuoPBFsr8Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788284847; c=relaxed/simple;
-	bh=UNDj5nkYG87JsTv0AsAv3PBXtY2PMGFli9ekkjzzmdc=;
+	s=arc-20240116; t=1788284849; c=relaxed/simple;
+	bh=RYp2aWNXs0VU48yVSD1CEYHhUFCkLVsEoUf/CGIQ9pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=unN0OYY/y9rzOo3uAtDCChSpheoHOH7W/19o4QEjIGu5kh/7pKeGXMbktnMujuqSL9CGL+5LdD0You1+B4v8H61C5aGgfelIIauPku/N3hpcuZIy2be3AVbPJQqeE9PPIo938RP0Yo2KN8mz28bl4l4AntzA774/6jEqzr9kfE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cr1M+BgO; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=th7zmxxlieERrucXIEHqBMMSTl6zlDvmLj1ZmcSky9nDKornRxYNDM63/5JyU9qkkF+FM/pvNPE4CfaXwF7IrR88moXobXzCBjTfXJA5qVZ9ZV8F0yvpplTX0GqEZmoCVuCy5DMG4FeaGmDhaewNa3QpgwGdFGU+w7v9nDlmDTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EbOFFo2g; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cr1M+BgO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EbOFFo2g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788284845;
+	s=mimecast20190719; t=1788284847;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lY3V1l2Y9JppOzwi9QBhIgpg0oeqJ4H8iL9TRqfJyXY=;
-	b=cr1M+BgO5Qy1CVQsvpTzAUhWQjaGHkIpfAOrF+IRtazDqX4Bfp5wuUg++dezsVJoyRQD5c
-	gZI9ECbmx3cvPItA1szdcfcXG4wEG4q3Jh6VgK9rJk5B79u1Fs/97WS2NxhtgaQ1q9NpuQ
-	V1ju+skBiUah1N4RIynzkgvqkotasR0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=rcjR0OL/Ys8fh9BhxqIvzdpYnJTnUC4AjAUfzLDznmM=;
+	b=EbOFFo2g7s2l6tXraF2EoHudZTXJQgWFavKYxJQaWa7XdJPaTgjsEp/Bw0E1upRXW8Dmyv
+	nBljC7p7nsEn2POO+gl9qmSVmSJYozc6bfZsj81F6JD8oNSFdV4Lxz7BUJWUQKcJK/DZ3x
+	rwe2FRQLTjupjZvawdYnakKvVl4GCbM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-vkUp9jGKNj2rnxyg5r5jAA-1; Tue,
- 01 Sept 2026 13:47:23 -0400
-X-MC-Unique: vkUp9jGKNj2rnxyg5r5jAA-1
-X-Mimecast-MFC-AGG-ID: vkUp9jGKNj2rnxyg5r5jAA_1788284843
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-0uCrTNmkMsGh_cERmBYNig-1; Tue,
+ 01 Sept 2026 13:47:25 -0400
+X-MC-Unique: 0uCrTNmkMsGh_cERmBYNig-1
+X-Mimecast-MFC-AGG-ID: 0uCrTNmkMsGh_cERmBYNig_1788284844
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 305BB1801BE1
-	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 17:47:23 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 90A04195608B
+	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 17:47:24 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B216218005BD;
-	Tue,  1 Sep 2026 17:47:22 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E7FFC1803A59;
+	Tue,  1 Sep 2026 17:47:23 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: aahringo@redhat.com,
 	gfs2@lists.linux.dev
-Subject: [PATCH RESEND dlm/next 3/8] dlm: validate userspace lock resource name length
-Date: Tue,  1 Sep 2026 13:47:10 -0400
-Message-ID: <20260901174715.3825582-4-aahringo@redhat.com>
+Subject: [PATCH RESEND dlm/next 4/8] dlm: fix buffer overflow from negative len in dlm_search_rsb_tree
+Date: Tue,  1 Sep 2026 13:47:11 -0400
+Message-ID: <20260901174715.3825582-5-aahringo@redhat.com>
 In-Reply-To: <20260901174715.3825582-1-aahringo@redhat.com>
 References: <20260901174715.3825582-1-aahringo@redhat.com>
 Precedence: bulk
@@ -59,87 +59,68 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: y-uCKxJykrxUw7b9z6FQgFFvL7zIZgPjoegF4HQwBR8_1788284843
+X-Mimecast-MFC-PROC-ID: 4RlEinYVc3DBz4Ye_8gxZsquZWf_1ka8ZTM1_A6Jpnc_1788284844
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Samuel Moelius <sam.moelius@trailofbits.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-The DLM userspace device accepts a flexible resource name after
-`struct dlm_write_request`.  `device_write()` bounded the total write
-size, but did not verify that `i.lock.namelen` was covered by the bytes
-actually supplied by the write.
+commit 080e5563f878c ("dlm: validate length in dlm_search_rsb_tree")
+only checks for len > DLM_RESNAME_MAXLEN, which does not catch negative
+values. While the input 'len' can be negative and a negative int passed
+to memcpy() is implicitly converted to a large size_t, causing a stack
+buffer overflow on the key[] array.
 
-A short `DLM_USER_LOCK` request can therefore claim a full
-`DLM_RESNAME_MAXLEN` resource name while providing no name bytes.  The
-request path later hashes and copies the claimed name length, reading
-past the `memdup_user_nul()` allocation.
+Fix this by changing the 'len' parameter type from int to unsigned int.
+This ensures negative values from callers are implicitly converted to
+large unsigned values that are caught by the existing
+len > DLM_RESNAME_MAXLEN check.
 
-Reject non-conversion lock requests whose claimed resource name length
-exceeds the flexible name payload supplied with the write.  Valid lock
-requests with complete names are unchanged.  Track the payload length
-before compat conversion so 32-bit requests keep using their own request
-header size.
-
-Assisted-by: Codex:gpt-5.5-cyber-preview
 Acked-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/user.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ fs/dlm/lock.c | 6 ++++--
+ fs/dlm/lock.h | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index cd7e142ca670d..0b0a7e1bd1095 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -512,6 +512,7 @@ static ssize_t device_write(struct file *file, const char __user *buf,
- 			    size_t count, loff_t *ppos)
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index c381e10284465..373abdb4354a7 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -622,12 +622,14 @@ static int get_rsb_struct(struct dlm_ls *ls, const void *name, int len,
+ 	return 0;
+ }
+ 
+-int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
+-			struct dlm_rsb **r_ret)
++int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name,
++			unsigned int len, struct dlm_rsb **r_ret)
  {
- 	struct dlm_user_proc *proc = file->private_data;
-+	size_t name_payload = 0;
- 	struct dlm_write_request *kbuf;
- 	int error;
- 
-@@ -545,6 +546,7 @@ static ssize_t device_write(struct file *file, const char __user *buf,
- 
- 		if (count > sizeof(struct dlm_write_request32))
- 			namelen = count - sizeof(struct dlm_write_request32);
-+		name_payload = namelen;
- 
- 		k32buf = (struct dlm_write_request32 *)kbuf;
- 
-@@ -561,7 +563,13 @@ static ssize_t device_write(struct file *file, const char __user *buf,
- 
- 		compat_input(kbuf, k32buf, namelen);
- 		kfree(k32buf);
-+	} else {
-+		if (count > sizeof(*kbuf))
-+			name_payload = count - sizeof(*kbuf);
- 	}
-+#else
-+	if (count > sizeof(*kbuf))
-+		name_payload = count - sizeof(*kbuf);
- #endif
- 
- 	/* do we really need this? can a write happen after a close? */
-@@ -571,6 +579,15 @@ static ssize_t device_write(struct file *file, const char __user *buf,
- 		goto out_free;
- 	}
- 
-+	if (kbuf->cmd == DLM_USER_LOCK &&
-+	    !(kbuf->i.lock.flags & DLM_LKF_CONVERT)) {
-+		if (kbuf->i.lock.namelen > name_payload ||
-+		    kbuf->i.lock.namelen > DLM_RESNAME_MAXLEN) {
-+			error = -EINVAL;
-+			goto out_free;
-+		}
-+	}
+ 	char key[DLM_RESNAME_MAXLEN] = {};
 +
- 	error = -EINVAL;
+ 	if (len > DLM_RESNAME_MAXLEN)
+ 		return -EINVAL;
++
+ 	memcpy(key, name, len);
+ 	*r_ret = rhashtable_lookup_fast(rhash, &key, dlm_rhash_rsb_params);
+ 	if (*r_ret)
+diff --git a/fs/dlm/lock.h b/fs/dlm/lock.h
+index b23d7b854ed46..c75975937331c 100644
+--- a/fs/dlm/lock.h
++++ b/fs/dlm/lock.h
+@@ -31,8 +31,8 @@ void resume_scan_timer(struct dlm_ls *ls);
+ int dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *name,
+ 		      int len, unsigned int flags, int *r_nodeid, int *result);
  
- 	switch (kbuf->cmd)
+-int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name, int len,
+-			struct dlm_rsb **r_ret);
++int dlm_search_rsb_tree(struct rhashtable *rhash, const void *name,
++			unsigned int len, struct dlm_rsb **r_ret);
+ 
+ void dlm_recover_purge(struct dlm_ls *ls, const struct list_head *root_list);
+ void dlm_purge_mstcpy_locks(struct dlm_rsb *r);
 -- 
 2.43.0
 
