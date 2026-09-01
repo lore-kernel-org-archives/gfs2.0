@@ -1,367 +1,257 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013038.outbound.protection.outlook.com [40.93.196.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9639A045;
-	Tue,  1 Sep 2026 04:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE753371887
+	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 07:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788236398; cv=fail; b=Ps+e00TOaJ9qy7qwQ2cxhUvpSql5IGBiu8l1bUhM2xvilu81TObINZS7SiKvNvrZK3MhKu6RyCoNa3J1YJzfWbAWMrLZ3dzzI1TiL0abgq4z5LFZLS6ECsw2Xypp0OryPTatAEmtACy1Peb4KDUcjAXYieZ/LV45Z3dAdESwviI=
+	t=1788248816; cv=pass; b=XUfB9I0e/MT83tI+y3y/oIpK10SrN0XUfTnf9oDRw4yWmzOatSa08cM8pq+r8/jI+G02wfoUv/xvSoQaP0PMZqVGFQAQ3TkFlavYcuc1xd+qmGHaHxOLudFVndxQ0W2jBNwJNlA5w64Lgr7oq7XhnVkF8fBAl8Qs1ob2DIGW+Is=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788236398; c=relaxed/simple;
-	bh=t2zFKLSFvDzPq9uoVb8OuDxYvMsNXFWppqOOSax0e+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=p5+HMTGfzJr1R9klWLvQHzW9zffUTAmx4LibE4h4GU2/WF1VFJZQh9PD/1c8tWbHwfBfurIsuT3to61GaTtJ16KceoUBAFebqBvID5u+DolTH7vDHU9Y47DW/Z5vt/Cre4r3ot+N3BlUGLSYyfkbRnhOBYX3ERxySRjPWHUIuKE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LzyS9FUK; arc=fail smtp.client-ip=40.93.196.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1788248816; c=relaxed/simple;
+	bh=bChhXzbeBhbes45FfJAK24AsjmJ3Xgjhk77rbUpZzcY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=BR/xBxm8de7LxT34FJLjHBxNbrR0drf8cwhjdleDSwdXwiUdPSepga9BpHsxrAeXlbSPYos+LyjFaGfPVkkqWKT8Flzfct7SvmmkuJ8W/E8iKF8JodxoeVX/ATyHJxOVupPZiiqOXFOXfmG+18WRvnVvid6nkJXcvTBGv939Acw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B1W7l00X; arc=pass smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LzyS9FUK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CfG0grTfUdfuCo1X2UNZXMw1Iurn5ElPyM51jFC2+h4DDpZHFLtAPI1JRfgdPqdO6VsA8msCRYka3weUzaCG8btnpz7MT5MQ63PFa66btFDkQsJloDnDl4UK8BzjJz+34AuM/5355QSaFhSpAOQzR8HKkYn0+VUsfaAsNgg39Dvs9cGoTXVu5T+Tq4g9YEBqVTn+3Jut/mVTq3E1k2MFgA6BezrbslgArpVkyRiA8hVrEl4rqnxEYqL7CIXS+ijUMdRgqq6ahdIbF0wIx/LlfWlmjWbjBM2PpulQ6walZorKHJwKgEQ8KzNT7xs/IUAvYRFXiHcQK1FvMD1Mpnv/EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DUJdl8MgO/XaLh0D6b8m4zb2395MtzKMU9aIx7aiWXY=;
- b=VVPQ1kSK28j+6B3pGl8WWLSUaXmBISAokVPx1BnMK20rj5L6xHIcO1piTmTysl+SR56JGeQz3TZbA9m94395OnkVqa6mtOb1WCMcUVKZzYTy9nZ6j3PkQWm9RpjFVnzZoIqE3u5j9MhTswtp5lNO/kboAd0fQBn3eTrRMQXJ4hSCh4qhK4jCI97MtFn7q7rEOIUZQU4tyf21daYr5j29neerPJ+BirScq+SWhuio0zlUKWCXCB0uaPQun7IFNJfiwd1kOmpnslSSpUq/d3y7lwxVG7I59gjTQn9oeWzE20ClxjAZVPM5+cfQ3UussiMdHZMByadtMiYmJyLt4XDjRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DUJdl8MgO/XaLh0D6b8m4zb2395MtzKMU9aIx7aiWXY=;
- b=LzyS9FUK6r96sXmtnFw4SiA9ott3+klPqXIEIQQkmJosT+ZoI0Y+13RSQksRzHvVGgkvHDC4ZhKIhoMZvpyM7p96OjR6wDDkTVvWVJXEB1Z/31k9/vNtEV/fewqEbJXX6fPNT4tFAlztwyjT6uXjVV1yYZDDIY4j/DALIkhSGcc=
-Received: from SJ0PR05CA0125.namprd05.prod.outlook.com (2603:10b6:a03:33d::10)
- by SJ1PR12MB6025.namprd12.prod.outlook.com (2603:10b6:a03:48c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 04:19:48 +0000
-Received: from BY1PEPF00026967.namprd05.prod.outlook.com
- (2603:10b6:a03:33d:cafe::4) by SJ0PR05CA0125.outlook.office365.com
- (2603:10b6:a03:33d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.9 via Frontend Transport; Tue, 1
- Sep 2026 04:19:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BY1PEPF00026967.mail.protection.outlook.com (10.167.244.151) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Tue, 1 Sep 2026 04:19:48 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
- 2026 23:19:46 -0500
-Received: from [10.136.42.89] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Mon, 31 Aug 2026 23:19:40 -0500
-Message-ID: <d768d35f-4220-4a7e-9834-858e6a3f0a69@amd.com>
-Date: Tue, 1 Sep 2026 09:49:39 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B1W7l00X"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2020421077so666003066b.3
+        for <gfs2@lists.linux.dev>; Tue, 01 Sep 2026 00:46:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788248813; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PlHqWIUl6qLhtWBuvEvxZWQHbUP/MePhq4M3u55KrFn+zSmzxSeQtptp8s5d4mlRuU
+         3rCWkTsk2WGtc9gtQFhVywzmVvQfOjV7ScdFdNgPXl4OJmBGXZv8GSjheEVzIhLz1rLv
+         Y1bNU7Bj0dtEOWmBM0CS7a/QEGFt5CKbljwg6Jv+JUn/pEq3Vat3JauwCuF/kq5/fuqQ
+         Ctwa1Xgch08tNlr5/OaNtlfwKyD+AmmybVIzuV/JqM+uFqNQJ7KESuDkp+ujScu+x3c/
+         pkFsI/hpBZJdTmSh0BmGM1+1IOOefxOGpnctn+sGxxu01naTW2BTbHZHNyMJECoDDBGu
+         XGJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Ybk8qkBYVz+BvgMpglKGnqinvR4EkYYn1m3f60jBa+0=;
+        fh=ssVmdmy+GJnZtMwlv1HnDiiCTg0ur4jiR4YdJJe+7nM=;
+        b=dwM735aD6t8nf1tCIPXYv7n8AI430ELT3odIJ9NTIcuAmMZmMb0slFJODWXiMmr4Vk
+         erTEXSHcejxC8UG3aomlDzv8hKirNswjx7khgk650xjf/gIQu8++0JI3CcAf6LHOA6fA
+         pTVQLGRI9/AhvmGWi77cTaYuvW3FbcJcdSFm5Vrx8gIIwIvru5gYATbSHen+vTXnrdnN
+         4DPoXJTH5H/GYmqQPNNWWCku1eR2wBKuEwBx5nbk6vWZC2l8MzkwQ/kAWzJ3SbpIkpls
+         mJe+M9CIOQhZsO2XCNonv3+zWqIJC5LAaZSv9NNh08C5qduyLJATqIeg+L4qet+9zWj4
+         klXQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788248813; x=1788853613; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ybk8qkBYVz+BvgMpglKGnqinvR4EkYYn1m3f60jBa+0=;
+        b=B1W7l00XVi+QcIawAngKJS+Q8y67Y5Xs5PLrTL3pU3sMqQX9Rg5TRoDxMOw44DY192
+         /S6XYSHk196YuPoBq3xEX3KLwoGP+IWGv9OUeywcxM6QNQkVHnXblgFREmZahvSbiG/9
+         nojmWi7Cvk17SjHjxdJCO+eY2b9vmqXXMOMFhuse7M5ytspKoEOVCncxnZz31ctUFy+E
+         4OzCiSN5DTEsaA+B2L8+KJkAhNGIcKniEpmcEozhD94wOZn/F7Qm5vFEFkKdDXdIO1x2
+         7X6sn1xBfBZOgamlBJoBEysgvhQfGwCaUpaIsAUbJLaSFdDjpT8ADsXciCmlWmcoRGXN
+         3yWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788248813; x=1788853613;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Ybk8qkBYVz+BvgMpglKGnqinvR4EkYYn1m3f60jBa+0=;
+        b=UEPif8lJvlsdmPmqFgR5YflrqzHbIJmivti7meofghzK+JhzsD248vnS58gkITLeWg
+         m0RoDROguG3wSs0B50Danw0bJktKDEL/11cNMlDLSonaLS0tYHDIam1KcUf+6DyMsmqx
+         L/r6Ov8mLQpSxG1InZllQ+c79huV50PANnaxC+iQbGS8z0pWjDHoQZJuryN7kq4/sFhC
+         T8DRW+XAvU8ECl7eSVvXhjEGiXKDflZ9TIe1n/oDlVdZWJ2sn1qP24jlAk19tjoZgs60
+         kZQl5lKpePokeuitw+cumDhVsrMbKda+TaRZRcgDAqV7lt9LY+uto98flFJWhgl43Jkf
+         h0CQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrsRughWMo7EuZKewO5QurG7uM3NmlvtcOuwQg0xZ7VI2DBp4DR4icz3rwgO22Bq1HTdSa9@lists.linux.dev
+X-Gm-Message-State: AFuF++kkt/9YN+v0KnBqJAl/S3YOBJtA9wteKoCjRLFFpgfbEiXzglSa
+	JfOZ4PrPUEqAanB7B+D2W4NsdylPhEwjGzN0pO8FFuyn1dz8L7a+hYcVSDojESFUDw4c8MasdQi
+	TnpNdLgIiB9dFcsYQDrYydu7wSoxWk41CPClskJw=
+X-Gm-Gg: AR+sD12kCG3qAGTAupnYGvoOSPlT9RDfq3baSdmMmSHkUbANOslTMEutyygIf/WMKBg
+	LVYK7oKzZweDfj8Y/aeqRDbO0ZZWafJS8b+rwtq6+QumbBUqxQacTDG4SLSK6WQv2e3P1aYhfOP
+	6Vgo0IEonwH0K7I6oeccZFOL1jvbz2KLMtlz9sEib03ryVJ9V60lV/DBr4Goe4ocuzlWEZX1DTd
+	6CQ9JEyjjcC5g7PYn4UuB2nalyQaVfGP3jHOuX7zGyjHK8nI5qhbBAiSgg0rJ0xooV6aubJjYVA
+	C9itkkk+wTZb8rpLC4kV7IbPJrhKNrTOPx5GrlU0ZsPVag==
+X-Received: by 2002:a17:907:6d15:b0:c19:45e3:2f57 with SMTP id
+ a640c23a62f3a-c2556dab2c3mr2085222466b.9.1788248812456; Tue, 01 Sep 2026
+ 00:46:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/21] jbd2: point the shadow buffer at the frozen data
- directly
-To: Joseph Qi <jiangqi903@gmail.com>, Chao Shi <coshi036@gmail.com>, Jan Kara
-	<jack@suse.cz>, Christian Brauner <brauner@kernel.org>, Alexander Viro
-	<viro@zeniv.linux.org.uk>, Matthew Wilcox <willy@infradead.org>,
-	<linux-fsdevel@vger.kernel.org>
-CC: Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-	Baokun Li <libaokun@linux.alibaba.com>, Ojaswin Mujoo
-	<ojaswin@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi
-	<yi.zhang@huawei.com>, Zhang Yi <yi.zhang@huaweicloud.com>, Bob Copeland
-	<me@bobcopeland.com>, Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo
-	<sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, OGAWA Hirofumi
-	<hirofumi@mail.parknet.co.jp>, Mark Fasheh <mark@fasheh.com>, Joel Becker
-	<jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, Andreas
- Gruenbacher <agruenba@redhat.com>, <linux-ext4@vger.kernel.org>,
-	<ocfs2-devel@lists.linux.dev>, <gfs2@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Weidong Zhu <weizhu@fiu.edu>
-References: <cover.1785951556.git.coshi036@gmail.com>
- <6140cd23beb88e99f40eaeff4044a16213f6caab.1785951556.git.coshi036@gmail.com>
- <20d3b629-e052-492f-9a24-ee700b259c37@gmail.com>
-Content-Language: en-US
-From: "Aithal, Srikanth" <sraithal@amd.com>
-In-Reply-To: <20d3b629-e052-492f-9a24-ee700b259c37@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF00026967:EE_|SJ1PR12MB6025:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fd8c76e-a302-4c9c-67be-08df07e0429a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|1800799024|7416014|376014|6133799003|18002099003|22082099003|10067099003|4143699003|56012099006|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	cbAcEHEH53BBYfx6m+RUfUKvqbXX7DgxcTq8OqtINPeUWM9+F3TT/UlkLswR/tF76vcXr5mF5amaxE4C1eeUv9heZGw0fdhRz0Cd+kqnGnbCiNUdfqhQ1j+LoyudV9DlHY1itWth0pVzpnpAwvqo++ML1gR0dM3B10NdYcUFmtbJbo1Ql6jezV8LYdiqXy+aou+W8RS69f7X1kfXRSdbIXeNjk0YdhRCI+2Y+uWG6+v48krlU20noeDe4gs701JFsoVjzNrQNJuTITtS+Dm6sWkvShQf/AJ6FlgmExU6fjhv1jsXFR42/F9n/5rGsLNqZ+cqhv9nYXxKUzURKLJCsaWMZRd7mJ3+WyNLbDo/pArGoyzKLPEhA0AEMTE5aIZVMsajzg/R4hucNPuYo9VpkSqjepQXJINHV+drX0qb62lHKwzuomg/nRDQYtwDTa0xAj69THIT7h2zZQAbTwnYTc466cwGv00ftFI9tMzUsia8aLsgMgfpN5chaF3HPbfH8MW1yss7dS3RT4gyDU2NF6OPddu6u9jSkirYfaYiyJum4yeXBaYr1EHm9UiJ+6NhNVrQo1dmS26BFtK3peTykCAH9xqsJS5GWsJjAqILaq9BwBvP5yVTHLTPu1yIAASbbD4H1oXAIbQR4fjWBLcFwkohmrIg0PGDIGUQFACVedjIj628+1Nja+QDN221gmXprhBv0txJBHB+hL4qE3al/w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(1800799024)(7416014)(376014)(6133799003)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GN3C5igb6/XexOFJrCZ0CXFm1VEFOvTiuC8QFFvTfvOc8Z5SojVbCkuSxJVS3sf3/EJSjMr0HwQL6ifTHqYcdLzb5/jND47e8mF76dJDgPaG4Tsq3kYidxTF35Cxnq/gqjzeMY98UK9DE7ixLUUviSLBjKaCA4F2YaSDyZgCpEYaBlLIX+C5COIYKJ9DfPszmbjy4dq3N8e6k+D5U22HkRWV/7RsUQ/ICbPXnz/CIAs1TcVmG9XmrQ394otEKiDiN1keJnpU4HbnspWmaeqmkv0LEVUX5hzALYS2D0CVXYIVRNoi2YVGhWAJi/glCgaAeb2K4AYo+TOsftC3uildscn6KGVf/gogecqWOrf4EiMnd5bK/N2ftNYxJn2PzK6VZ7ZZQa8QBmw5H/klRsX0zjM9w//8LTeS1UrmAGf2793hRUexMAW0P6wSNmk0LHxb
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 04:19:48.0118
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fd8c76e-a302-4c9c-67be-08df07e0429a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF00026967.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6025
+From: Jiaming Zhang <r772577952@gmail.com>
+Date: Tue, 1 Sep 2026 15:46:11 +0800
+X-Gm-Features: AcwNN1W-XgI-hDA_lO_Ex1bXkithzpHNQMY79nABhi6TQB1qx3O7SU0pWG_pBhc
+Message-ID: <CANypQFa8u5Netk3O2-sb4fm3Mq8W7N292y8ZCP_YuZnrGtULiQ@mail.gmail.com>
+Subject: [Linux Kernel Bug] KASAN: use-after-free Read in gfs2_rgrp_go_instantiate
+To: agruenba@redhat.com, gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, syzkaller@googlegroups.com, 
+	r772577952@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/1/2026 9:07 AM, Joseph Qi wrote:
-> 
-> 
-> On 8/7/26 12:58 AM, Chao Shi wrote:
->> When a metadata buffer has to be copied out before it can be journalled,
->> jbd2_journal_write_metadata_buffer() writes jh->b_frozen_data rather than
->> the page cache copy.  b_frozen_data is kmalloc()ed, so folio_set_bh() makes
->> the shadow buffer point at a slab folio.
->>
->> That is not something the buffer_head layer can reason about.  A slab folio
->> overloads ->mapping, so a shadow buffer looks like it belongs to an
->> address_space when it does not.  buffer_set_crypto_ctx() already has to
->> work around this, and it is the reason mark_buffer_write_io_error() cannot
->> be called on a shadow buffer today.
->>
->> Point the shadow buffer at the frozen data itself instead: leave b_folio
->> NULL, which it already is out of alloc_buffer_head(), and set b_data.  The
->> previous patch taught fs/buffer.c to submit such a buffer.  folio_set_bh()
->> is now needed on only one path - the one that journals the page cache copy
->> directly - so it moves there, and new_folio, new_offset and the flag that
->> used to pick between them all go away.
->>
->> The two commit-path checksum helpers reach the shadow buffer's contents
->> through a new kmap_local_bh()/kunmap_local_bh() pair, which handle a buffer
->> with or without a folio.  Memory outside the page cache is always mapped,
->> so for those there is nothing to map or unmap.  Mapping it anyway would be
->> worse than pointless: with CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP,
->> kmap_local_page() hands back a one page mapping even for such memory, which
->> is not enough for a buffer bigger than a page.
->>
->> Tested with ext4 mounted data=journal,journal_checksum on a metadata_csum
->> filesystem, writing files whose every block begins with the JBD2 magic so
->> that escaping forces the copy-out, then crashing with sysrq-b without
->> unmounting and replaying the journal on the next mount.  Recovery
->> completed, the file contents matched, e2fsck -fn was clean, and an
->> instrumented build confirmed the b_folio == NULL path was taken.
->>
->> Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Acked-by: Weidong Zhu <weizhu@fiu.edu>
->> Signed-off-by: Chao Shi <coshi036@gmail.com>
->> ---
->>   fs/jbd2/commit.c            |  8 ++++----
->>   fs/jbd2/journal.c           | 29 +++++++++++++++++------------
->>   include/linux/buffer_head.h | 29 +++++++++++++++++++++++++++++
->>   3 files changed, 50 insertions(+), 16 deletions(-)
->>
->> diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
->> index 3029cb6f6d64..0c85af91f9b2 100644
->> --- a/fs/jbd2/commit.c
->> +++ b/fs/jbd2/commit.c
->> @@ -330,9 +330,9 @@ static __u32 jbd2_checksum_data(__u32 crc32_sum, struct buffer_head *bh)
->>   	char *addr;
->>   	__u32 checksum;
->>   
->> -	addr = kmap_local_folio(bh->b_folio, bh_offset(bh));
->> +	addr = kmap_local_bh(bh);
->>   	checksum = crc32_be(crc32_sum, addr, bh->b_size);
->> -	kunmap_local(addr);
->> +	kunmap_local_bh(bh, addr);
->>   
->>   	return checksum;
->>   }
->> @@ -357,10 +357,10 @@ static void jbd2_block_tag_csum_set(journal_t *j, journal_block_tag_t *tag,
->>   		return;
->>   
->>   	seq = cpu_to_be32(sequence);
->> -	addr = kmap_local_folio(bh->b_folio, bh_offset(bh));
->> +	addr = kmap_local_bh(bh);
->>   	csum32 = jbd2_chksum(j->j_csum_seed, (__u8 *)&seq, sizeof(seq));
->>   	csum32 = jbd2_chksum(csum32, addr, bh->b_size);
->> -	kunmap_local(addr);
->> +	kunmap_local_bh(bh, addr);
->>   
->>   	if (jbd2_has_feature_csum3(j))
->>   		tag3->t_checksum = cpu_to_be32(csum32);
->> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
->> index 09efa337649e..6e05dc47e20a 100644
->> --- a/fs/jbd2/journal.c
->> +++ b/fs/jbd2/journal.c
->> @@ -327,8 +327,6 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
->>   {
->>   	int do_escape = 0;
->>   	struct buffer_head *new_bh;
->> -	struct folio *new_folio;
->> -	unsigned int new_offset;
->>   	struct buffer_head *bh_in = jh2bh(jh_in);
->>   	journal_t *journal = transaction->t_journal;
->>   
->> @@ -348,24 +346,31 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
->>   	/* keep subsequent assertions sane */
->>   	atomic_set(&new_bh->b_count, 1);
->>   
->> +	/*
->> +	 * b_frozen_data is slab memory, not page cache, so when we use it the
->> +	 * shadow buffer gets no folio at all: b_folio stays NULL from the
->> +	 * allocation and b_data points straight at the copy.  Pointing it at
->> +	 * the slab folio instead would hand its overloaded ->mapping to
->> +	 * anything that goes looking for an address_space.
->> +	 */
->> +
->>   	spin_lock(&jh_in->b_state_lock);
->>   	/*
->>   	 * If a new transaction has already done a buffer copy-out, then
->>   	 * we use that version of the data for the commit.
->>   	 */
->>   	if (jh_in->b_frozen_data) {
->> -		new_folio = virt_to_folio(jh_in->b_frozen_data);
->> -		new_offset = offset_in_folio(new_folio, jh_in->b_frozen_data);
->>   		do_escape = jbd2_data_needs_escaping(jh_in->b_frozen_data);
->>   		if (do_escape)
->>   			jbd2_data_do_escape(jh_in->b_frozen_data);
->> +		new_bh->b_data = jh_in->b_frozen_data;
->>   	} else {
->> +		struct folio *folio = bh_in->b_folio;
->> +		unsigned int offset = offset_in_folio(folio, bh_in->b_data);
->>   		char *tmp;
->>   		char *mapped_data;
->>   
->> -		new_folio = bh_in->b_folio;
->> -		new_offset = offset_in_folio(new_folio, bh_in->b_data);
->> -		mapped_data = kmap_local_folio(new_folio, new_offset);
->> +		mapped_data = kmap_local_folio(folio, offset);
->>   		/*
->>   		 * Fire data frozen trigger if data already wasn't frozen. Do
->>   		 * this before checking for escaping, as the trigger may modify
->> @@ -379,8 +384,10 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
->>   		/*
->>   		 * Do we need to do a data copy?
->>   		 */
->> -		if (!do_escape)
->> +		if (!do_escape) {
->> +			folio_set_bh(new_bh, folio, offset);
->>   			goto escape_done;
->> +		}
->>   
->>   		spin_unlock(&jh_in->b_state_lock);
->>   		tmp = kmalloc(bh_in->b_size, GFP_NOFS | __GFP_NOFAIL);
->> @@ -391,7 +398,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
->>   		}
->>   
->>   		jh_in->b_frozen_data = tmp;
->> -		memcpy_from_folio(tmp, new_folio, new_offset, bh_in->b_size);
->> +		memcpy_from_folio(tmp, folio, offset, bh_in->b_size);
->>   		/*
->>   		 * This isn't strictly necessary, as we're using frozen
->>   		 * data for the escaping, but it keeps consistency with
->> @@ -400,13 +407,11 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
->>   		jh_in->b_frozen_triggers = jh_in->b_triggers;
->>   
->>   copy_done:
->> -		new_folio = virt_to_folio(jh_in->b_frozen_data);
->> -		new_offset = offset_in_folio(new_folio, jh_in->b_frozen_data);
->>   		jbd2_data_do_escape(jh_in->b_frozen_data);
->> +		new_bh->b_data = jh_in->b_frozen_data;
->>   	}
->>   
->>   escape_done:
->> -	folio_set_bh(new_bh, new_folio, new_offset);
->>   	new_bh->b_size = bh_in->b_size;
->>   	new_bh->b_bdev = journal->j_dev;
->>   	new_bh->b_blocknr = blocknr;
->> diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
->> index 699970b4bbf2..20b8fca1abfa 100644
->> --- a/include/linux/buffer_head.h
->> +++ b/include/linux/buffer_head.h
->> @@ -172,6 +172,35 @@ static inline unsigned long bh_offset(const struct buffer_head *bh)
->>   	return (unsigned long)(bh)->b_data & (folio_size(bh->b_folio) - 1);
->>   }
->>   
->> +/**
->> + * kmap_local_bh - Map the data of a buffer.
->> + * @bh: The buffer.
->> + *
->> + * Buffers usually live in the page cache, but a few are built over memory
->> + * which is not.  Those carry no folio and b_data is already a kernel address
->> + * which is always mapped, so there is nothing to do for them.  Pair with
->> + * kunmap_local_bh().
->> + *
->> + * Return: A pointer to the buffer's data.
->> + */
->> +static inline void *kmap_local_bh(const struct buffer_head *bh)
->> +{
->> +	if (!bh->b_folio)
->> +		return bh->b_data;
->> +	return kmap_local_folio(bh->b_folio, bh_offset(bh));
->> +}
->> +
->> +/**
->> + * kunmap_local_bh - Unmap the data of a buffer.
->> + * @bh: The buffer.
->> + * @addr: The address returned by kmap_local_bh().
->> + */
->> +static inline void kunmap_local_bh(const struct buffer_head *bh, void *addr)
->> +{
->> +	if (bh->b_folio)
->> +		kunmap_local(addr);
->> +}
->> +
->>   /* If we *know* page->private refers to buffer_heads */
->>   #define page_buffers(page)					\
->>   	({							\
-> 
-> When tested ocfs2 on next-20260831, I've encountered the following NULL
-> pointer dereference:
-> 
->    BUG: kernel NULL pointer dereference, address: 0000000000000000
->    RIP: 0010:__bh_submit.constprop.0+0x87/0x120
->    Call Trace:
->      jbd2_journal_commit_transaction+0x932/0x1b10
->      kjournald2+0xb2/0x250
-> 
-> Commit a2c924c240e7 ("buffer: set BIO_COMPLETE_IN_TASK for dropbehind
-> writeback") added an unconditional folio_test_dropbehind(bh->b_folio) in
-> __bh_submit(). But jbd2 shadow buffers have a NULL b_folio since commit
-> 5febcba29792 ("jbd2: point the shadow buffer at the frozen data
-> directly") made them point b_data at the kmalloced frozen data rather
-> than a folio. So submitting such a buffer during journal commit oopses.
-> 
-> A simple fix:
-> 
-> diff --git a/fs/buffer.c b/fs/buffer.c
-> index 427d8a817cd5..f46fa6413032 100644
-> --- a/fs/buffer.c
-> +++ b/fs/buffer.c
-> @@ -1106,7 +1106,8 @@ static void __bh_submit(struct buffer_head *bh, blk_opf_t opf,
->   
->   	bio = bio_alloc(bh->b_bdev, 1, opf, GFP_NOIO);
->   
-> -	if (folio_test_dropbehind(bh->b_folio) && op_is_write(opf))
-> +	if (bh->b_folio && folio_test_dropbehind(bh->b_folio) &&
-> +	    op_is_write(opf))
->   		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->   
->   	if (IS_ENABLED(CONFIG_FS_ENCRYPTION))
-> 
-> Thanks,
-> Joseph
+Dear Linux kernel developers and maintainers,
 
-We hit the same oops on next-20260831 during ext4 journal commit on an
-AMD VOLCANO machine (jbd2/nvme0n1p2-, RIP __bh_submit+0xa2). Unmodified
-next-20260831 reproduces it; next-20260828 on the same box does not.
-Joseph's one-liner on top of next-20260831 boots to login with no oops.
+We are writing to report an issue discovered in the GFS2 subsystem.  The
+issue is reproducible on the latest version of linux (v7.3-rc1, commit
+cee9395acd8043be0644b25c34bfa86623f2b935).  Below is the kernel report:
 
-Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+gfs2: fsid=syz:syz.0: Corruption found in quota_change0file: duplicate
+identifier in slot 224440
+gfs2: fsid=syz:syz.0: found 1 quota changes
+==================================================================
+BUG: KASAN: use-after-free in gfs2_bit_search fs/gfs2/rgrp.c:188 [inline]
+BUG: KASAN: use-after-free in gfs2_bitfit fs/gfs2/rgrp.c:249 [inline]
+BUG: KASAN: use-after-free in count_unlinked fs/gfs2/rgrp.c:1159 [inline]
+BUG: KASAN: use-after-free in gfs2_rgrp_go_instantiate+0xb0d/0x1340
+fs/gfs2/rgrp.c:1238
+Read of size 8 at addr ffff888027516000 by task syz-executor199/9470
 
-Thanks,
+CPU: 0 UID: 0 PID: 9470 Comm: syz-executor199 Not tainted 7.3.0-rc1
+#35 PREEMPT(full)
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix,
+1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x10e/0x190 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x153/0x7e0 mm/kasan/report.c:482
+ kasan_report+0x147/0x180 mm/kasan/report.c:595
+ gfs2_bit_search fs/gfs2/rgrp.c:188 [inline]
+ gfs2_bitfit fs/gfs2/rgrp.c:249 [inline]
+ count_unlinked fs/gfs2/rgrp.c:1159 [inline]
+ gfs2_rgrp_go_instantiate+0xb0d/0x1340 fs/gfs2/rgrp.c:1238
+ gfs2_instantiate+0x168/0x220 fs/gfs2/glock.c:415
+ gfs2_glock_holder_ready fs/gfs2/glock.c:1226 [inline]
+ gfs2_glock_wait+0x1d4/0x2a0 fs/gfs2/glock.c:1246
+ gfs2_glock_nq_init fs/gfs2/glock.h:253 [inline]
+ gfs2_inplace_reserve+0xc41/0x3330 fs/gfs2/rgrp.c:2093
+ do_sync+0x616/0xc60 fs/gfs2/quota.c:962
+ gfs2_quota_sync+0x359/0x460 fs/gfs2/quota.c:1372
+ gfs2_sync_fs+0x4c/0xb0 fs/gfs2/super.c:662
+ sync_filesystem+0xf1/0x240 fs/sync.c:56
+ generic_shutdown_super+0x77/0x2d0 fs/super.c:748
+ kill_block_super+0x44/0xa0 fs/super.c:1918
+ deactivate_locked_super+0xbc/0x110 fs/super.c:603
+ cleanup_mnt+0x425/0x4c0 fs/namespace.c:1317
+ task_work_run+0x1d4/0x260 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x708/0x22a0 kernel/exit.c:1008
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1151
+ __do_sys_exit_group kernel/exit.c:1162 [inline]
+ __se_sys_exit_group kernel/exit.c:1160 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1160
+ x64_sys_call+0x18c6/0x18d0 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x170/0x540 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5c39c96f2d
+Code: Unable to access opcode bytes at 0x7f5c39c96f03.
+RSP: 002b:00007ffc5256c978 EFLAGS: 00000206 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f5c39c96f2d
+RDX: 00000000000000e7 RSI: ffffffffffffffc0 RDI: 0000000000000001
+RBP: 00007ffc5256c9d0 R08: 0000000000000000 R09: 000000000003b2e1
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 0000000000000001 R14: 0000000000000001 R15: 00007f5c39d6a600
+ </TASK>
 
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x7effc363f
+pfn:0x27516
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+raw: 00fff00000000000 ffffea00009d6108 ffffea00009d86c8 0000000000000000
+raw: 00000007effc363f 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 0, migratetype Movable, gfp_mask
+0x140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), pid 9361, tgid 9361
+((udev-worker)), ts 96351902392
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x205/0x260 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x235b/0x23e0 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x209/0x5a0 mm/page_alloc.c:5436
+ alloc_pages_mpol+0x241/0x4a0 mm/mempolicy.c:2486
+ folio_alloc_mpol_noprof+0x39/0x160 mm/mempolicy.c:2505
+ vma_alloc_folio_noprof+0xdb/0x1e0 mm/mempolicy.c:2540
+ folio_prealloc+0x30/0x180 mm/memory.c:-1
+ wp_page_copy mm/memory.c:4007 [inline]
+ do_wp_page+0x119f/0x4b00 mm/memory.c:4472
+ handle_pte_fault mm/memory.c:6582 [inline]
+ __handle_mm_fault mm/memory.c:6707 [inline]
+ handle_mm_fault+0x15a7/0x36d0 mm/memory.c:6876
+ do_user_addr_fault+0xa7e/0x1360 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x71/0xd0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+page last free pid 9361 tgid 9361 ts 103418286503 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ free_unref_folios+0xd80/0x14c0 mm/page_alloc.c:3022
+ folios_put_refs+0x7b4/0x8a0 mm/folio.c:1034
+ free_pages_and_swap_cache+0x25e/0x440 mm/swap_state.c:592
+ __tlb_batch_free_encoded_pages mm/mmu_gather.c:138 [inline]
+ tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
+ tlb_flush_mmu+0x3a2/0x680 mm/mmu_gather.c:424
+ tlb_finish_mmu+0xf9/0x230 mm/mmu_gather.c:549
+ exit_mmap+0x473/0x9c0 mm/mmap.c:1328
+ __mmput+0x118/0x430 kernel/fork.c:1193
+ exit_mm+0x214/0x2e0 kernel/exit.c:614
+ do_exit+0x69b/0x22a0 kernel/exit.c:996
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1151
+ __do_sys_exit_group kernel/exit.c:1162 [inline]
+ __se_sys_exit_group kernel/exit.c:1160 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1160
+ x64_sys_call+0x18c6/0x18d0 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x170/0x540 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888027515f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888027515f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff888027516000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ^
+ ffff888027516080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff888027516100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
+
+Following is the root cause analysis for this issue, note that the
+analysis is performed with the assistance of LLM, but we try our best to
+ensure the accuracy.
+
+A rindex entry's ri_bitbytes is not checked against sb_bsize.
+compute_bitstructs() splits ri_bitbytes across the blocks of the resource
+group and gives the remainder to the last bitmap, whose length bi_bytes can
+then exceed the size of the block that stores it. gfs2_bitfit() scans past
+the end of that buffer, which KASAN reports as a use-after-free.
+
+To fix this issue, a bitmap that does not fit in the block that holds it
+should be rejected:
+
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 5988a165a830..689ff5a4e0df 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -804,6 +804,12 @@ static int compute_bitstructs(struct gfs2_rgrpd *rgd)
+  bi->bi_blocks = bytes * GFS2_NBBY;
+  }
+
++ /* A bitmap must fit in the block that holds it */
++ if (bytes > sdp->sd_sb.sb_bsize - bi->bi_offset) {
++ gfs2_consist_rgrpd(rgd);
++ return -EIO;
++ }
++
+  bytes_left -= bytes;
+  }
+
+
+The kernel console output, kernel config, syzkaller reproducer, and C
+reproducer are available at google drive:
+https://drive.google.com/drive/folders/11t4bHrvlPdnH0bQi0R1QTc6btCaoTZQE?usp=sharing
+
+Please let us know if any further information is required.
+
+Best Regards,
+Jiaming Zhang
