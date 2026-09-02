@@ -1,158 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274704A483B
-	for <gfs2@lists.linux.dev>; Wed,  2 Sep 2026 15:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EEC4AA41C;
+	Wed,  2 Sep 2026 16:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788361354; cv=none; b=GiZ8qQ8pr6eKE7u5OGuAuFffVyWcqfy+yYbYGN+rv89LS/Mu4IQtfhfO7aTAELRg+UbAVH18me2mJypuiU2ESro4nmPjBFVebfmPOKlPseaUqHffJNYnNssN8xuUksc1tyK1rsQo4Wnxg3S5k74VZJ0vgteD2uAUmzA0vgz4Shg=
+	t=1788367443; cv=none; b=RMbv+pybXvdMChink8TlATQmKsw1oqeOKba9vR8FC8LTA0TK2xbJoI2MDVCv16rrNxWUXb03MeWz/g/oCcMZ0zZkRtgiYyWFpa9cDrK5CjZ9XjAumLILJCGpCjZ5s0IQZRa1eZJPNIWFw8wpghxXRkV7k66UpoABB9diZ8VAVqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788361354; c=relaxed/simple;
-	bh=4hCdEHOD5c3EpnGTMHlUu8D7fgdaQakWWcnz0VXo2UQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sforKorwWeO7wulWGGJXH9aegBtFBU9yctjxVPZkraO/1/QNXOoig7e2pI/I1gMyanwAl2RoPodMBGyf32zsuonw4PBP7bxYj//6aGnSjo7A7dEoHg1tkI5NELz530kVpEwSn88Db8sMEMgD6NFIDx6zQbLvK7jpthrprismgZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FMHEYdga; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788367443; c=relaxed/simple;
+	bh=FnLu3w0vREYMeMJ2PF+fMJdDA4wLr0tZEu3rmJB3xPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gEZ5mGldQKlgUwCHC6nrcdJ2B8rgfG6Ho2t0yJ7IS+hOLgt2IHy0djVgBJrRRrU7Tq3pMshCeOmbYN3863HdsDfRh749NsKfi+LxRVS1B7MEH4Yc+gpXkrGQHZ8HZ67P3Swba0n1AIQb/in7hdEZwoKPz+Mmhz2Nx3GIS9qh3/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLQi0d3+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FMHEYdga"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788361346;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=om4eZ/680TZMrxF1o7QRaN/1jT9e+TXfBTQEkyPNCmY=;
-	b=FMHEYdgaCQBDpALaNskUyvogA8cNwPhTZI9ZiXmbDHDMUVCQ0Asd5YTKKVXbJf662vXotR
-	yiLF9Pd1LgrWpfyFci8YUXugfX6n2AmHCUbbEKE0USDQmA0OKWeOiRjb4ujU85FoHcH5sq
-	UYbll7afoN4w2HWB7Z4Mxitx2+eSdDk=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-fI3yRd5FPpm6ILFb5mSRCA-1; Wed, 02 Sep 2026 11:02:25 -0400
-X-MC-Unique: fI3yRd5FPpm6ILFb5mSRCA-1
-X-Mimecast-MFC-AGG-ID: fI3yRd5FPpm6ILFb5mSRCA_1788361344
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a3540f42beso3890441fa.2
-        for <gfs2@lists.linux.dev>; Wed, 02 Sep 2026 08:02:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788361344; x=1788966144;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=om4eZ/680TZMrxF1o7QRaN/1jT9e+TXfBTQEkyPNCmY=;
-        b=kh8KYsDpFmNT1tDeG9uwM9ugv4o44Lbiqk3qGMoqQdK9x5pNFXqQsfEZ3jU2q3IVZp
-         ictWP5VkwfwcwOO9ykMUOr2I0EuL4BDBQwqZj/nqn3JKzorffnA6myPwYj00AsOIAOrb
-         AIUjIeN+vpq5djVZc+X6WzXp3V/TMACUIqtWpvIdODsQbRI+mC6BV0neOZIidsEsqQvr
-         eiPVannGqTqpZd+RGUPe7jLEFUYEDdFUH7UxU4Qc5hpLwL0jeM2wML/3R+WRe1NxCGt1
-         JzTBe3h+fyUtpkp5d9BhQd+1wPn9BZGrOLxVHA37qSeBDbqiSdht8kgw86Cud8Ncbpps
-         LKrQ==
-X-Forwarded-Encrypted: i=1; AKwUvByIOXm2+aGJeL+W2ZX92G4y32UKa/v7nh/hhK4cS/lczuHG5rHr3tpTvCq6yzAr6kYb/xQq@lists.linux.dev
-X-Gm-Message-State: AFuF++kdeoBmM/Avp72+D9TBfcN77jdzjcxhdImZiF+exs792QylGdJx
-	e2J3mdCpL0dnMY7o3ID1vUzThVchxLfzvIQwAvHu3njJLiYxNOtIb3pFED4hawsX2sqx30BB8Tp
-	ov2a1NxGhgUIdWdzIrVC4YScYXZzlO8FjE2sahJeAol+SgOdxbqQ5a2G+3FZ7GN3BzNETcvw5RB
-	U/jLHC1kogvbukmc4Bl8u3EjYkGeGtidz86OPvqCiq
-X-Gm-Gg: AYBFou2XZBs92Jzgh9g8k2g2LHmft+6XIkteGyMXL8o4d0etHuFWePccIjiC3X1jNuD
-	IGz20+J9ciQVHXH06NPfNSau61NCTWvCp+mZl0s97wu1BjdKpqsWaYyrB1JFxaLEgvGDFwkv1i0
-	JjV97YmzsMkoTEu3pv6rW7hOvRQpv10Jmslo7DzcWQR0B+C4HJOdk7ifKt
-X-Received: by 2002:a2e:9a04:0:b0:396:7547:439e with SMTP id 38308e7fff4ca-3a34fd41f57mr13878471fa.7.1788361343850;
-        Wed, 02 Sep 2026 08:02:23 -0700 (PDT)
-X-Received: by 2002:a2e:9a04:0:b0:396:7547:439e with SMTP id
- 38308e7fff4ca-3a34fd41f57mr13878321fa.7.1788361343420; Wed, 02 Sep 2026
- 08:02:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLQi0d3+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF511F000E9;
+	Wed,  2 Sep 2026 16:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788367440;
+	bh=1t420v38hYbR7vS1gyz4h4LCb/FqGYHzmQoobLtMtno=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=DLQi0d3+X37Me//rRdJbCMcUB8gBj8LW3JtQRsX8BhFi7qX9ec7RuM6RQk2zs7Fir
+	 XOrNwKANWtOYg3zPI457Ok32jXuEy4mFAqEsVhx4OWSKYIPgphvuag57zIRUBMMIms
+	 pvUgaWqT/4cMZX4N8LytMx6vdGp2n6AIS3DCSyVDa065W6LiW3Cs34kcrK7pN9i/nu
+	 4cCRYLVN0V6r1F6ZLlqrIU9k98DDJGLb8eE5DgVKDKnv2lQuF3q5eQlHxmwvMko5pP
+	 mjR1TBzpYVcIVkuzYR3+SKyt6V0A9uIxZML/8zASzdQ9aFytk+SVRmpjDur1tQnK96
+	 Uxeqt859rGL2g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 73FAACE112A; Wed,  2 Sep 2026 09:44:00 -0700 (PDT)
+Date: Wed, 2 Sep 2026 09:44:00 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: Zqiang <qiang.zhang@linux.dev>, teigland@redhat.com,
+	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH] dlm: wait for outstanding SRCU callbacks to complete in
+ exit paths
+Message-ID: <edf662bb-3c76-44c1-806d-43980d94a492@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260901091836.16906-1-qiang.zhang@linux.dev>
+ <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
+ <b530646295a64f5e1cec5bfec5064f1fc79d3d9d@linux.dev>
+ <CAK-6q+hr12xynik0e5sm_s2z_W31F3X1rSovxHJ8R-4f42tSpQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260901091836.16906-1-qiang.zhang@linux.dev> <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
- <b530646295a64f5e1cec5bfec5064f1fc79d3d9d@linux.dev> <b686c4e5066aa11d7d868097b35e04db58190103@linux.dev>
- <CAK-6q+gET5NPczHYexcGXgptGTVnynYuVWzdbDkpsuvnbrymLA@mail.gmail.com> <2ff0e6ca8e1e05078a69dbd2b2ccd1e62fc4650f@linux.dev>
-In-Reply-To: <2ff0e6ca8e1e05078a69dbd2b2ccd1e62fc4650f@linux.dev>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 2 Sep 2026 11:02:12 -0400
-X-Gm-Features: AcwNN1Uhwe44GL1WoqPHmRji7SmzGB5HOuEKMZek4F9ItyxN1HMNrCmnAfT5LSk
-Message-ID: <CAK-6q+hfRsoznk9is9Z0XEkfhMjacw8urk7NkZ4cr=mw6HGwcg@mail.gmail.com>
-Subject: Re: [PATCH] dlm: wait for outstanding SRCU callbacks to complete in
- exit paths
-To: Zqiang <qiang.zhang@linux.dev>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rcu@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _dJFHeWONWo5pVTNrQ4PBYN46bqoSUA5dfHnM5e3wKg_1788361344
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK-6q+hr12xynik0e5sm_s2z_W31F3X1rSovxHJ8R-4f42tSpQ@mail.gmail.com>
 
-Hi,
-
-On Wed, Sep 2, 2026 at 10:49=E2=80=AFAM Zqiang <qiang.zhang@linux.dev> wrot=
-e:
->
+On Wed, Sep 02, 2026 at 10:30:15AM -0400, Alexander Aring wrote:
+> Hi,
+> 
+> On Wed, Sep 2, 2026 at 10:16 AM Zqiang <qiang.zhang@linux.dev> wrote:
 > >
-> > Hi,
-> >
-> > On Wed, Sep 2, 2026 at 10:30 AM Zqiang <qiang.zhang@linux.dev> wrote:
-> >
+> > >
+> > > Hi,
+> > >
+> > > On Tue, Sep 1, 2026 at 5:19 AM Zqiang <qiang.zhang@linux.dev> wrote:
 > > >
 > > > >
-> > >  > Hi,
-> > >  >
-> > >  > On Tue, Sep 1, 2026 at 5:19 AM Zqiang <qiang.zhang@linux.dev> wrot=
-e:
-> > >  >
-> > >  >
-> > >  > The dlm_lowcomms_exit() and dlm_midcomms_exit() iterate over the
-> > >  > srcu protected connection and node hash tables and hand each
-> > >  > element to call_srcu() for deferred freeing (connection_release()
-> > >  > and midcomms_node_release()). call_srcu() is asynchronous: the
-> > >  > callbacks are invoked only after an SRCU grace period, which may
-> > >  > happen after the exit function has already returned.
-> > >  >
-> > >  > These exit functions are reached from exit_dlm() on module unload.
-> > >  > Once they return, module teardown continues and the module text
-> > >  > may be unloaded while call_srcu() callbacks are still pending. Whe=
-n
-> > >  > such a callback finally runs, it executes freed module code and
-> > >  > touches the static SRCU domains that are being torn down, resultin=
-g
-> > >  > in a use-after-free.
+> > > > The dlm_lowcomms_exit() and dlm_midcomms_exit() iterate over the
+> > > >  srcu protected connection and node hash tables and hand each
+> > > >  element to call_srcu() for deferred freeing (connection_release()
+> > > >  and midcomms_node_release()). call_srcu() is asynchronous: the
+> > > >  callbacks are invoked only after an SRCU grace period, which may
+> > > >  happen after the exit function has already returned.
+> > > >
+> > > >  These exit functions are reached from exit_dlm() on module unload.
+> > > >  Once they return, module teardown continues and the module text
+> > > >  may be unloaded while call_srcu() callbacks are still pending. When
+> > > >  such a callback finally runs, it executes freed module code and
+> > > >  touches the static SRCU domains that are being torn down, resulting
+> > > >  in a use-after-free.
+> > > >
+> > > I thought again about this and in my opinion this is not possible as
+> > > it is already being handled by DEFINE_STATIC_SRCU() with a cleanup
+> > > handling when the module is unloaded.
+> >
+> > When the moudle unload, the srcu_module_going() will call cleanup_srcu_struct()
+> > and free_percpu(ssp->sda) to release resource. but we not call srcu_barrier(),
+> > the srcu_barrier() should be called before cleanup_srcu_struct().
+> >
+> >
+> > > I know that srcu subsystem does a lot of magic with modules init/exit
+> > > functionality to call init_srcu_struct() and cleanup_srcu_struct().
+> > > See
 > > >
-> > >  I should rephrase it:
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/module/main.c?h=v7.3-rc1#n2711
 > > >
-> > >  Due to missed call to the srcu_barrier(), when invoke cleanup_srcu_s=
-truct()
-> > >
-> > Then there need to be a MUST call of srcu_barrier() before
-> > cleanup_srcu_struct() every time.
->
-> If there are some call_srcu() call, the srcu_barrier() should be called b=
-efore cleanup_srcu_struct().
-> usually, when the cleanup_srcu_struct() run, we should ensure that there =
-are no pending SRCU callbacks
-> or ongoing SRCU grace periods at this time.
->
+> > > so this patch should be reverted. If they don't use a barrier there,
+> > > the fix should be in the SRCU subsystem, but I believe the current
+> > > SRCU implementation already handles this.
+> >
+> > The srcu_barrier() need to be called, there are some description
+> > from Documentation/RCU/rcubarrier.rst:
+> >
+> > rcu_barrier()
+> > -------------
+> >
+> > This situation can be handled by the rcu_barrier() primitive.  Rather
+> > than waiting for a grace period to elapse, rcu_barrier() waits for all
+> > outstanding RCU callbacks to complete.  Please note that rcu_barrier()
+> > does **not** imply synchronize_rcu(), in particular, if there are no RCU
+> > callbacks queued anywhere, rcu_barrier() is within its rights to return
+> > immediately, without waiting for anything, let alone a grace period.
+> >
+> > Pseudo-code using rcu_barrier() is as follows:
+> >
+> >    1. Prevent any new RCU callbacks from being posted.
+> >    2. Execute rcu_barrier().
+> >    3. Allow the module to be unloaded.
+> >
+> > There is also an srcu_barrier() function for SRCU, and you of course
+> > must match the flavor of srcu_barrier() with that of call_srcu().
+> > If your module uses multiple srcu_struct structures, then it must also
+> > use multiple invocations of srcu_barrier() when unloading that module.
+> > For example, if it uses call_rcu(), call_srcu() on srcu_struct_1, and
+> > call_srcu() on srcu_struct_2, then the following three lines of code
+> > will be required when unloading::
+> >
+> >   1  rcu_barrier();
+> >   2  srcu_barrier(&srcu_struct_1);
+> >   3  srcu_barrier(&srcu_struct_2);
+> > ....
+> 
+> yes, I can see this makes problems when there is kmem_cache involved
+> and you need to be sure it's being done before you destroy the
+> kmem_cache.
+> 
+> This is not the case here.
+> 
+> I looked more into srcu functionality "cleanup_srcu_struct()"
+> (srcutiny) and it does "flush_work(&ssp->srcu_work)", workfn is
+> "srcu_drive_gp()" and the comment states "Workqueue handler to drive
+> one grace period and invoke any callbacks that become ready as a
+> result."
+> 
+> In my opinion "cleanup_srcu_struct()" should be sure there are no
+> pending operations.
 
-For me, this is a MUST because who is maintaining something to know if
-it was ever called?
+If the user never passed this srcu_struct structure to call_srcu(),
+then there would be nothing to clean up.  Now, maybe all SRCU use cases
+are OK with the extra srcu_barrier() overhead at cleanup_srcu_struct()
+time, but as far as I know, that is still a "maybe".
 
-> there are another reason:
->
-> The midcomms_node_release() srcu callback can call call_rcu(), we must wa=
-it the all
-> call_rcu() to complete, because rcu_barrier() which in dlm_memory_exit() =
-is required
-> to successfully intercept these RCU callbacks.
->
+And of course, cleanup_srcu_struct() has no ability to prevent the
+user from doing a (buggy!) concurrent call to synchronize_srcu() or
+call_srcu(), which would defeat any attempt by cleanup_srcu_struct()
+to do this pending-operation cleanup.
 
-Yes, I can see why "nodes_srcu" is necessary as this has something to
-do with kmem_cache is being involed.
+Or am I missing your point?
 
-The "connections_srcu" is necessary for the above reason that the srcu
-API requires you to call srcu_barrier() before cleanup_srcu_struct()
-because for whatever reason we don't do that in cleanup_srcu_struct()
-as I understand it now.
-
-- Alex
-
+							Thanx, Paul
