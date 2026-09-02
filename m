@@ -1,188 +1,159 @@
-Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3BA32C8B
-	for <gfs2@lists.linux.dev>; Tue,  1 Sep 2026 23:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFD49B209
+	for <gfs2@lists.linux.dev>; Wed,  2 Sep 2026 13:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788303988; cv=none; b=b8CEc2jWpK/m5HJxUhDUENG1O/UGXYrtTtXAeJmk8jIFG/m1EpsSFSBrsBee5tG7+diVy7x+QEHMy/aIuIS0mmv/yXFOwKjqbyfKmBb+CK0iJ4N0UyF5edp5FLi3mKJtmDYdpawPjsDca4E+D6zI2dnGQ48gQR7dUMEHJBpzfwM=
+	t=1788355282; cv=none; b=ikOUcp2YA0uvhiLyyczo52X53bhPc1NRdIkO8ejZmenADbiou1ADNWUWUbDvNEhwfyh+c5wF/6h27xUsQ8ipcx19xTqDcOr4NWpru+2vC31iWWeasBtBESjIMD3Oj7TO+AZHEhzaecxjsQFrrR7jdXFXxadhgaaGSGh6ZWmsCe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788303988; c=relaxed/simple;
-	bh=fTTzUUef/giTP36AMBrK8vZ5Mt4Z0GkfdMC6ws30VT8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=MLiRdjmH/Vl0L3XUEFaOSWWr9VLHSuZB1lhfEQyAoGIToqmJKxrAqwDn7J89ynI1wD6DWD94oFEF4INMAQfAhOL7f584vR4ZwfBT03EkaxEuUmN5LI4IE6P/nPCoCGXJcsEKSnBl3SY7SNHwIB159YWzSHca7z1r9mrDvNT24JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f8.google.com with SMTP id 006d021491bc7-6b1ca037684so7365eaf.0
-        for <gfs2@lists.linux.dev>; Tue, 01 Sep 2026 16:06:26 -0700 (PDT)
+	s=arc-20240116; t=1788355282; c=relaxed/simple;
+	bh=CX4jXXsYiq4+K/WAEmy2HAUQc54C6pP3SiHUP0fLUOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t7uT5KKoqzW350lJ8ZVUzCPnLjVXMojW+4m65u6zqvfVJjbSmf/idKjX6saRxbk8PX3aAIH/PNYwun6Pu+HFqjNwPgz/PtZ3op1P2dkdSU8bt9Sv3M3ibYdXb3dJAJoO58rHxYsRCMNdcSr7ySQiz8w7FGieg2UThzVbqieEUAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X7b7EcwK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X7b7EcwK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788355280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WETgVeFgKR8QqwYjitWNqHJK5UZu3CUf41ydcXPg9og=;
+	b=X7b7EcwK8qJFvdQpSchOXStvAoLJBjWiwCJAVkVRDEaigjIsDnjqN0lSList4KwTMZMo7c
+	bAwox67/ZjV0k1P+oZIZQnWEhn2rtOwgEWgyFNQ/Sh2YTlr9odI37/z7rdWueV2ga4MB6I
+	/9qfPE7HZsoA0ZYP5QAobcrVxmueGqo=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-529-NFnwOSbhOhmOS64JUI2jjQ-1; Wed, 02 Sep 2026 09:21:19 -0400
+X-MC-Unique: NFnwOSbhOhmOS64JUI2jjQ-1
+X-Mimecast-MFC-AGG-ID: NFnwOSbhOhmOS64JUI2jjQ_1788355278
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a27721662eso4734501fa.1
+        for <gfs2@lists.linux.dev>; Wed, 02 Sep 2026 06:21:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788303986; x=1788908786;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1788355277; x=1788960077;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ToRfVoUbS7J82fWQO+yda+u6CrS6/cWnXChbMIIKU1Y=;
-        b=qRQAmBHOWdYsuiszYlC7PvVFx/IQHmvJDO5NIEm2ABka+bju7WAiMWhm6qDKa8KHP+
-         dFhUPKkljdt4g0lF7xMyIOLMPKQM1MSm3L3QosLYLBloPBV5qp23wQNqSQLEkiSk6CRD
-         weDvMaQtMD7laFiTOX4jGUP44AlkSJqIcPYbBwPeWwNaWbi446aYD+JRfYLKnFpyM2OR
-         yxI0mhPFeTv12snd7Rch/bzv3yDSnpBGc+EDBTBa/bipxiBPTm7hjim1/fx1guOl6H9J
-         8GM24Un3xIt1RrjfxE6w9jIQTG4YXdsVu03kDkdnm9lN53XGRfWB8/p4Oeic2YkoaWcS
-         HvuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq//MzfgiH8Pvm14ycNmR7bcDgOzTiCc2Z5WfzdaMHzxNwNeFaa4Iv04no6kWQowAgQhfaT@lists.linux.dev
-X-Gm-Message-State: AFuF++nmt31rbqXgfj9Yy13XtimABdxf4MF4VM7fV8EldNlZSzgMEPfW
-	NQijbswinSHPmkFv3Hw7uYJ9DsaKNJgXSYYHySJgtdBrcdMhwOkrk8x7W45m5oSei2CHrNI4Kph
-	TQPJ2K3TbhpV+6i3LUWG2CHHZOxbRUjDCAebXEl1Mhf9MtAGEztlyna5GzhM=
+        bh=WETgVeFgKR8QqwYjitWNqHJK5UZu3CUf41ydcXPg9og=;
+        b=d9LhqK4xD9rutlUEC2897EhmOGLGL+wbDTBdXEYImpjJ5Ky5elqzOqPl26xd8R4kcH
+         0+auUL+2e9F2mIgBBlRbPv4VI9mXf7eSKEazsuQL28QJCtY3+Q9v+lIOWV5ycdCG+3su
+         c6s+KdgCQtSAto6Pukx7cVXzcdLaAoS3oEjSGPoOOA86TYB6TzLSudehlJIqSDuak+ZG
+         4dFRI5b2OnbgHSm7t+q5kdu1GAkfbWFN/DyV1ofa6M/oVuDIsbG/avAW8HNfkcxxIyIB
+         RVosFRs4bJjy+LNzB/8YIfC6wqZh5BZ4rL9ms1+7mXOtTU5w2rZfBYQkO1NePqWEaxw0
+         vxow==
+X-Forwarded-Encrypted: i=1; AKwUvBzXtbY7Ms+h22VPEgh8Ib8GW1Ra2OGqVlcDD5pl6g6szk6Ggv3C30aWF3NH4x2HSjr89Yf1@lists.linux.dev
+X-Gm-Message-State: AFuF++l7HA1pvkTIsNyCb5SCBxh9zvXM3WLOHfaAp7KmsuLPvjAlboGL
+	VMftcy/3lIOL5nHHreZEB2e0cokvb7LGzQIzfVhyRpORMWccMJv4jIf0pCRZ9iUqtIiV1Aa0adf
+	Z5hSmZ8agzqGi3Iqjo3mS0mWN4Pa0JP3BqDuNIKvhnDoVrSZ5/t+DriYJ1W3vZzStA+fsYfkyNH
+	32bTvp3UIAiWc+KZRX9j9PFkaGRhfSZg==
+X-Gm-Gg: AYBFou1NJKW+DpbEvmzRBNMuaGZAsXnejl0ONifkFVWPcvJcLbsSsjf6KNJAcxmESgx
+	zAOSgX3OJhPPyYjqE9DU8gL6SEJY7tXb+kwOu6wqjAgmekSvX1/t+6hq+mxOPIgNFwRoKztyx1N
+	xaBCbTU6EQ/uWBLzWigwEOYR8+j3zu7DHYFzv3SbaHvV5E/yU3Z6CoIYPq
+X-Received: by 2002:a05:651c:41ca:b0:3a3:63a:baf8 with SMTP id 38308e7fff4ca-3a34fe23718mr11727581fa.3.1788355277514;
+        Wed, 02 Sep 2026 06:21:17 -0700 (PDT)
+X-Received: by 2002:a05:651c:41ca:b0:3a3:63a:baf8 with SMTP id
+ 38308e7fff4ca-3a34fe23718mr11727111fa.3.1788355276321; Wed, 02 Sep 2026
+ 06:21:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:3108:b0:6b1:afca:5c78 with SMTP id
- 006d021491bc7-6b48043ec63mr234212eaf.32.1788303985978; Tue, 01 Sep 2026
- 16:06:25 -0700 (PDT)
-Date: Tue, 01 Sep 2026 16:06:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a975a71.9266084e.bf0d7.0002.GAE@google.com>
-Subject: [syzbot] [gfs2?] general protection fault in gfs2_quota_lock
-From: syzbot <syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com>
-To: agruenba@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20260901091836.16906-1-qiang.zhang@linux.dev>
+In-Reply-To: <20260901091836.16906-1-qiang.zhang@linux.dev>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Wed, 2 Sep 2026 09:21:04 -0400
+X-Gm-Features: AcwNN1XQfrKRMkjAT-v4HHjnaOQ8UWFl-GmdYVXEnby5LRXI1Kj-CpyfJLPtdoA
+Message-ID: <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
+Subject: Re: [PATCH] dlm: wait for outstanding SRCU callbacks to complete in
+ exit paths
+To: Zqiang <qiang.zhang@linux.dev>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rcu@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: yfy08NY44xzbZjth2bvPXZOtZLiEukuj6ivlyrXxSLc_1788355278
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi,
 
-syzbot found the following issue on:
+On Tue, Sep 1, 2026 at 5:19=E2=80=AFAM Zqiang <qiang.zhang@linux.dev> wrote=
+:
+>
+> The dlm_lowcomms_exit() and dlm_midcomms_exit() iterate over the
+> srcu protected connection and node hash tables and hand each
+> element to call_srcu() for deferred freeing (connection_release()
+> and midcomms_node_release()). call_srcu() is asynchronous: the
+> callbacks are invoked only after an SRCU grace period, which may
+> happen after the exit function has already returned.
+>
+> These exit functions are reached from exit_dlm() on module unload.
+> Once they return, module teardown continues and the module text
+> may be unloaded while call_srcu() callbacks are still pending. When
+> such a callback finally runs, it executes freed module code and
+> touches the static SRCU domains that are being torn down, resulting
+> in a use-after-free.
+>
 
-HEAD commit:    89c07d98716a Add linux-next specific files for 20260831
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=13eafe25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3084bde934a7eb4b
-dashboard link: https://syzkaller.appspot.com/bug?extid=d84e35a320d14f8c270a
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167d3b79580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14c51379580000
+I thought again about this and in my opinion this is not possible as
+it is already being handled by DEFINE_STATIC_SRCU() with a cleanup
+handling when the module is unloaded.
+I know that srcu subsystem does a lot of magic with modules init/exit
+functionality to call init_srcu_struct() and cleanup_srcu_struct().
+See
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/efda3e96af9f/disk-89c07d98.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7cba3e147607/vmlinux-89c07d98.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/bf4b2e49d1cb/bzImage-89c07d98.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/85a2c905fb7a/mount_2.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=10c51379580000)
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ker=
+nel/module/main.c?h=3Dv7.3-rc1#n2711
 
-The issue was bisected to:
+so this patch should be reverted. If they don't use a barrier there,
+the fix should be in the SRCU subsystem, but I believe the current
+SRCU implementation already handles this.
 
-commit e65756f09826a87322479abc946ca11e6816a6ce
-Author: Andreas Gruenbacher <agruenba@redhat.com>
-Date:   Wed Aug 26 10:41:28 2026 +0000
+- Alex
 
-    gfs2: No quotas for meta inodes
+> Add an srcu_barrier() after the call_srcu() loop in each exit function
+> to wait for all outstanding callbacks of the respective SRCU domain to
+> complete before returning. In dlm_midcomms_exit() the barrier is issued
+> before dlm_lowcomms_exit() so that node callbacks are drained prior to
+> tearing down the lower layer.
+>
+> Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+> ---
+>  fs/dlm/lowcomms.c | 1 +
+>  fs/dlm/midcomms.c | 1 +
+>  2 files changed, 2 insertions(+)
+>
+> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> index 2aff1c7c17de..ea8353c4638d 100644
+> --- a/fs/dlm/lowcomms.c
+> +++ b/fs/dlm/lowcomms.c
+> @@ -1984,4 +1984,5 @@ void dlm_lowcomms_exit(void)
+>                 }
+>         }
+>         srcu_read_unlock(&connections_srcu, idx);
+> +       srcu_barrier(&connections_srcu);
+>  }
+> diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+> index 8964164600d2..045431524494 100644
+> --- a/fs/dlm/midcomms.c
+> +++ b/fs/dlm/midcomms.c
+> @@ -1178,6 +1178,7 @@ void dlm_midcomms_exit(void)
+>                 }
+>         }
+>         srcu_read_unlock(&nodes_srcu, idx);
+> +       srcu_barrier(&nodes_srcu);
+>
+>         dlm_lowcomms_exit();
+>  }
+> --
+> 2.17.1
+>
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=112f5c15580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=132f5c15580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=152f5c15580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
-Fixes: e65756f09826 ("gfs2: No quotas for meta inodes")
-
-capability: warning: `syz-executor311' uses deprecated v2 capabilities in a way that may be insecure
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000020: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000100-0x0000000000000107]
-CPU: 1 UID: 0 PID: 5636 Comm: syz-executor311 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:gfs2_quota_lock+0x103/0x7b0 fs/gfs2/quota.c:1105
-Code: 00 00 4d 89 fd 49 c1 ed 03 41 80 7c 1d 00 00 74 08 4c 89 ff e8 1e fd e7 fd 49 8b 3f 48 8d 87 00 01 00 00 48 89 c1 48 c1 e9 03 <0f> b6 0c 19 84 c9 0f 85 c9 05 00 00 8b b7 00 01 00 00 ba 08 00 00
-RSP: 0018:ffffc90003bcf8d0 EFLAGS: 00010202
-RAX: 0000000000000100 RBX: dffffc0000000000 RCX: 0000000000000020
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffffff907a487f R09: 1ffffffff20f490f
-R10: dffffc0000000000 R11: fffffbfff20f4910 R12: ffff888012189320
-R13: 1ffff110024312f9 R14: 00000000ffffffff R15: ffff8880121897c8
-FS:  000055558edf6400(0000) GS:ffff888124dcd000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000006a9ee0 CR3: 0000000073f60000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- gfs2_quota_lock_check fs/gfs2/quota.h:50 [inline]
- do_grow fs/gfs2/bmap.c:2117 [inline]
- gfs2_setattr_size+0x9df/0x1270 fs/gfs2/bmap.c:2198
- gfs2_setattr+0x269/0x430 fs/gfs2/inode.c:2138
- notify_change+0xbba/0xea0 fs/attr.c:556
- do_truncate+0x1c2/0x250 fs/open.c:68
- vfs_truncate+0x4b4/0x540 fs/open.c:118
- ksys_truncate+0xf3/0x1c0 fs/open.c:142
- __do_sys_truncate fs/open.c:154 [inline]
- __se_sys_truncate fs/open.c:152 [inline]
- __x64_sys_truncate+0x5b/0x70 fs/open.c:152
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f49688f2409
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd4cc3da68 EFLAGS: 00000246 ORIG_RAX: 000000000000004c
-RAX: ffffffffffffffda RBX: 0030656c69662f2e RCX: 00007f49688f2409
-RDX: 00007f49688f2409 RSI: 000000000008fff5 RDI: 0000200000000180
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffd4cc3db98
-R13: 0000000000000002 R14: 00007f49689b3c80 R15: 0000000000000002
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:gfs2_quota_lock+0x103/0x7b0 fs/gfs2/quota.c:1105
-Code: 00 00 4d 89 fd 49 c1 ed 03 41 80 7c 1d 00 00 74 08 4c 89 ff e8 1e fd e7 fd 49 8b 3f 48 8d 87 00 01 00 00 48 89 c1 48 c1 e9 03 <0f> b6 0c 19 84 c9 0f 85 c9 05 00 00 8b b7 00 01 00 00 ba 08 00 00
-RSP: 0018:ffffc90003bcf8d0 EFLAGS: 00010202
-RAX: 0000000000000100 RBX: dffffc0000000000 RCX: 0000000000000020
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffffff907a487f R09: 1ffffffff20f490f
-R10: dffffc0000000000 R11: fffffbfff20f4910 R12: ffff888012189320
-R13: 1ffff110024312f9 R14: 00000000ffffffff R15: ffff8880121897c8
-FS:  000055558edf6400(0000) GS:ffff888124dcd000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000006a9ee0 CR3: 0000000073f60000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	00 00                	add    %al,(%rax)
-   2:	4d 89 fd             	mov    %r15,%r13
-   5:	49 c1 ed 03          	shr    $0x3,%r13
-   9:	41 80 7c 1d 00 00    	cmpb   $0x0,0x0(%r13,%rbx,1)
-   f:	74 08                	je     0x19
-  11:	4c 89 ff             	mov    %r15,%rdi
-  14:	e8 1e fd e7 fd       	call   0xfde7fd37
-  19:	49 8b 3f             	mov    (%r15),%rdi
-  1c:	48 8d 87 00 01 00 00 	lea    0x100(%rdi),%rax
-  23:	48 89 c1             	mov    %rax,%rcx
-  26:	48 c1 e9 03          	shr    $0x3,%rcx
-* 2a:	0f b6 0c 19          	movzbl (%rcx,%rbx,1),%ecx <-- trapping instruction
-  2e:	84 c9                	test   %cl,%cl
-  30:	0f 85 c9 05 00 00    	jne    0x5ff
-  36:	8b b7 00 01 00 00    	mov    0x100(%rdi),%esi
-  3c:	ba                   	.byte 0xba
-  3d:	08 00                	or     %al,(%rax)
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
