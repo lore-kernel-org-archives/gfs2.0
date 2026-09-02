@@ -1,92 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFD49B209
-	for <gfs2@lists.linux.dev>; Wed,  2 Sep 2026 13:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0326749F109
+	for <gfs2@lists.linux.dev>; Wed,  2 Sep 2026 13:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788355282; cv=none; b=ikOUcp2YA0uvhiLyyczo52X53bhPc1NRdIkO8ejZmenADbiou1ADNWUWUbDvNEhwfyh+c5wF/6h27xUsQ8ipcx19xTqDcOr4NWpru+2vC31iWWeasBtBESjIMD3Oj7TO+AZHEhzaecxjsQFrrR7jdXFXxadhgaaGSGh6ZWmsCe4=
+	t=1788355515; cv=none; b=M59uQEmUxlzhOFrFR/DdFM0T3n8gWfA/sn8+JsCm+mFC5XUjZVrUcjFZ87KQMKZa6DwTok5hU21kLZHFNBM77WODFG1HeMmG1C36pQui0o7ZDI/A/yXQCiSkUK1M/ZwV0jzc/VmfmVtOgjZRI3mm7zn+ieLzbKM6p9D7gxE+IiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788355282; c=relaxed/simple;
-	bh=CX4jXXsYiq4+K/WAEmy2HAUQc54C6pP3SiHUP0fLUOs=;
+	s=arc-20240116; t=1788355515; c=relaxed/simple;
+	bh=1V4ue058AY3RtGPMrqxuELVFnwR59VitySPMsodXmVY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t7uT5KKoqzW350lJ8ZVUzCPnLjVXMojW+4m65u6zqvfVJjbSmf/idKjX6saRxbk8PX3aAIH/PNYwun6Pu+HFqjNwPgz/PtZ3op1P2dkdSU8bt9Sv3M3ibYdXb3dJAJoO58rHxYsRCMNdcSr7ySQiz8w7FGieg2UThzVbqieEUAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X7b7EcwK; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=Xdq60Inpsct+W1sM4Q/I6cRR/S6OiToRHGoZsgz+zRGT7LcQNUZmg0C8F3rkxrzK7G49SoRks4ddjx9B4IEKv0NuilAdNZ0V+1F0iIPRXFIWAnxGPGCqdr8VxkllAIHl13F2i3a/GMNxjNh3UQDYO/tdeewh0hY7O+MOumaeCKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZxOXfIvy; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X7b7EcwK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZxOXfIvy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788355280;
+	s=mimecast20190719; t=1788355512;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WETgVeFgKR8QqwYjitWNqHJK5UZu3CUf41ydcXPg9og=;
-	b=X7b7EcwK8qJFvdQpSchOXStvAoLJBjWiwCJAVkVRDEaigjIsDnjqN0lSList4KwTMZMo7c
-	bAwox67/ZjV0k1P+oZIZQnWEhn2rtOwgEWgyFNQ/Sh2YTlr9odI37/z7rdWueV2ga4MB6I
-	/9qfPE7HZsoA0ZYP5QAobcrVxmueGqo=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1V4ue058AY3RtGPMrqxuELVFnwR59VitySPMsodXmVY=;
+	b=ZxOXfIvy6M1P8mHOg0RY0QZ/hvKJwnrzbVJXzbOmOZGJgkfsTtQfwh+u6zg3HmzY5MmG0j
+	Vzn0q2IYOqj7JGL5oymAAWpiNVP6m56ibm8n5XA19ZJNLvLX7eis55Qb7pyxQIyjmpKnBB
+	/AofW4ZwOfUeUiVFoI6DF/mzmmYh0dc=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-NFnwOSbhOhmOS64JUI2jjQ-1; Wed, 02 Sep 2026 09:21:19 -0400
-X-MC-Unique: NFnwOSbhOhmOS64JUI2jjQ-1
-X-Mimecast-MFC-AGG-ID: NFnwOSbhOhmOS64JUI2jjQ_1788355278
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a27721662eso4734501fa.1
-        for <gfs2@lists.linux.dev>; Wed, 02 Sep 2026 06:21:18 -0700 (PDT)
+ us-mta-542-zhNC7o8eOqymfEKhkyeSpQ-1; Wed, 02 Sep 2026 09:25:11 -0400
+X-MC-Unique: zhNC7o8eOqymfEKhkyeSpQ-1
+X-Mimecast-MFC-AGG-ID: zhNC7o8eOqymfEKhkyeSpQ_1788355510
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-39b1a8b8bb1so4578521fa.2
+        for <gfs2@lists.linux.dev>; Wed, 02 Sep 2026 06:25:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788355277; x=1788960077;
+        d=1e100.net; s=20251104; t=1788355509; x=1788960309;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WETgVeFgKR8QqwYjitWNqHJK5UZu3CUf41ydcXPg9og=;
-        b=d9LhqK4xD9rutlUEC2897EhmOGLGL+wbDTBdXEYImpjJ5Ky5elqzOqPl26xd8R4kcH
-         0+auUL+2e9F2mIgBBlRbPv4VI9mXf7eSKEazsuQL28QJCtY3+Q9v+lIOWV5ycdCG+3su
-         c6s+KdgCQtSAto6Pukx7cVXzcdLaAoS3oEjSGPoOOA86TYB6TzLSudehlJIqSDuak+ZG
-         4dFRI5b2OnbgHSm7t+q5kdu1GAkfbWFN/DyV1ofa6M/oVuDIsbG/avAW8HNfkcxxIyIB
-         RVosFRs4bJjy+LNzB/8YIfC6wqZh5BZ4rL9ms1+7mXOtTU5w2rZfBYQkO1NePqWEaxw0
-         vxow==
-X-Forwarded-Encrypted: i=1; AKwUvBzXtbY7Ms+h22VPEgh8Ib8GW1Ra2OGqVlcDD5pl6g6szk6Ggv3C30aWF3NH4x2HSjr89Yf1@lists.linux.dev
-X-Gm-Message-State: AFuF++l7HA1pvkTIsNyCb5SCBxh9zvXM3WLOHfaAp7KmsuLPvjAlboGL
-	VMftcy/3lIOL5nHHreZEB2e0cokvb7LGzQIzfVhyRpORMWccMJv4jIf0pCRZ9iUqtIiV1Aa0adf
-	Z5hSmZ8agzqGi3Iqjo3mS0mWN4Pa0JP3BqDuNIKvhnDoVrSZ5/t+DriYJ1W3vZzStA+fsYfkyNH
-	32bTvp3UIAiWc+KZRX9j9PFkaGRhfSZg==
-X-Gm-Gg: AYBFou1NJKW+DpbEvmzRBNMuaGZAsXnejl0ONifkFVWPcvJcLbsSsjf6KNJAcxmESgx
-	zAOSgX3OJhPPyYjqE9DU8gL6SEJY7tXb+kwOu6wqjAgmekSvX1/t+6hq+mxOPIgNFwRoKztyx1N
-	xaBCbTU6EQ/uWBLzWigwEOYR8+j3zu7DHYFzv3SbaHvV5E/yU3Z6CoIYPq
-X-Received: by 2002:a05:651c:41ca:b0:3a3:63a:baf8 with SMTP id 38308e7fff4ca-3a34fe23718mr11727581fa.3.1788355277514;
-        Wed, 02 Sep 2026 06:21:17 -0700 (PDT)
-X-Received: by 2002:a05:651c:41ca:b0:3a3:63a:baf8 with SMTP id
- 38308e7fff4ca-3a34fe23718mr11727111fa.3.1788355276321; Wed, 02 Sep 2026
- 06:21:16 -0700 (PDT)
+        bh=1V4ue058AY3RtGPMrqxuELVFnwR59VitySPMsodXmVY=;
+        b=qIESanDJsAKbyaY+nQD+uD/kJGvbcvSNku1+0XggXIQ9TLrULo9O6jJXDQWL3FdoBV
+         SW31dJupNCr8bFq9ghRXukoKWhR5CicF/QRRmBVrp2Jtk4h6i1MsVsj9l2wEdnW0hyd2
+         dmtYx6b6Jo/boEWDMNDEJfPMDuPtwaCn+13MScTTa7qKzDR9ZbDxbw3A4UXThUm9NSjN
+         QOYHgCYVJ4XQw0XotRgNMeGMBswQ8kHg+n1vCbWXa+LhubyiSnyUMr2Tgjbmt6eg3Py0
+         uOqE5cfHWh1lgnFVwZ/FDNPR3X3eJwM9VWB1ZLzF49Bsx3wPaB+2nzHXGkJqIpok1EWS
+         Mpuw==
+X-Gm-Message-State: AFuF++mkUSrKItFh5AxzsQni4uP+1eDPRMzPI7/DWy/n6Jh3qmlIU74e
+	YpHSTRmDeC/0dwa7BCdnXSDhZ+ZTxhHevznkxLyF0kOnlgZGasgmzfV7Xi03LpI9kKwh3lLYxC+
+	yXkSzfyuGN13jfg859L+WSKF4Z6j+pA9crlZkH7cKTCxi1ZvNFwrrU/lpkj12PQhecy2PdpwD7v
+	6yWNa52NjRj36sZESXZnNn1DCtjMwbIQ==
+X-Gm-Gg: AYBFou0+qHLf4mBvDgOTjNbhP36XxHYsyg+O1cJm4AukcYHVlOcPOrr78nf2Jz92Uiq
+	3DtNK4pDHmBZrYkU6O8A1DNQFIof0trX1qh8wQykH2kVV2nJZYIRfJavTPptWJ8RQ3rwD4bnsvU
+	v379FGwkHI3mJUkwhLmSxprzE8k9wteHNaYe1ASLwR65Jz0fDrfuadlJcW
+X-Received: by 2002:a05:651c:1443:b0:3a3:1391:fb19 with SMTP id 38308e7fff4ca-3a34ff11646mr10568681fa.9.1788355509613;
+        Wed, 02 Sep 2026 06:25:09 -0700 (PDT)
+X-Received: by 2002:a05:651c:1443:b0:3a3:1391:fb19 with SMTP id
+ 38308e7fff4ca-3a34ff11646mr10568561fa.9.1788355509199; Wed, 02 Sep 2026
+ 06:25:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260901091836.16906-1-qiang.zhang@linux.dev>
-In-Reply-To: <20260901091836.16906-1-qiang.zhang@linux.dev>
+References: <20260901174715.3825582-1-aahringo@redhat.com> <20260901174715.3825582-8-aahringo@redhat.com>
+In-Reply-To: <20260901174715.3825582-8-aahringo@redhat.com>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Wed, 2 Sep 2026 09:21:04 -0400
-X-Gm-Features: AcwNN1XQfrKRMkjAT-v4HHjnaOQ8UWFl-GmdYVXEnby5LRXI1Kj-CpyfJLPtdoA
-Message-ID: <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
-Subject: Re: [PATCH] dlm: wait for outstanding SRCU callbacks to complete in
- exit paths
-To: Zqiang <qiang.zhang@linux.dev>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rcu@vger.kernel.org
+Date: Wed, 2 Sep 2026 09:24:57 -0400
+X-Gm-Features: AcwNN1XjwZrPwrKFBUauGbjERjVzUncK0FBoQtadWb6A-0XXzHdPkhhNrpLn2tg
+Message-ID: <CAK-6q+ia+XhKgXY9cGw1T0dbo6ptx8nb-uUqe8EdjySLDPysMw@mail.gmail.com>
+Subject: Re: [PATCH RESEND dlm/next 7/8] dlm: wait for outstanding SRCU
+ callbacks to complete in exit paths
+To: teigland@redhat.com
+Cc: gfs2@lists.linux.dev
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yfy08NY44xzbZjth2bvPXZOtZLiEukuj6ivlyrXxSLc_1788355278
+X-Mimecast-MFC-PROC-ID: 2ZGmGu_b5YzO_4_DZISyzlkg5NOKWjMAfx7AI2zuuQE_1788355510
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi David,
 
-On Tue, Sep 1, 2026 at 5:19=E2=80=AFAM Zqiang <qiang.zhang@linux.dev> wrote=
-:
+On Tue, Sep 1, 2026 at 1:47=E2=80=AFPM Alexander Aring <aahringo@redhat.com=
+> wrote:
+>
+> From: Zqiang <qiang.zhang@linux.dev>
 >
 > The dlm_lowcomms_exit() and dlm_midcomms_exit() iterate over the
 > srcu protected connection and node hash tables and hand each
@@ -102,23 +102,6 @@ On Tue, Sep 1, 2026 at 5:19=E2=80=AFAM Zqiang <qiang.zhang@linux.dev> wrote=
 > touches the static SRCU domains that are being torn down, resulting
 > in a use-after-free.
 >
-
-I thought again about this and in my opinion this is not possible as
-it is already being handled by DEFINE_STATIC_SRCU() with a cleanup
-handling when the module is unloaded.
-I know that srcu subsystem does a lot of magic with modules init/exit
-functionality to call init_srcu_struct() and cleanup_srcu_struct().
-See
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ker=
-nel/module/main.c?h=3Dv7.3-rc1#n2711
-
-so this patch should be reverted. If they don't use a barrier there,
-the fix should be in the SRCU subsystem, but I believe the current
-SRCU implementation already handles this.
-
-- Alex
-
 > Add an srcu_barrier() after the call_srcu() loop in each exit function
 > to wait for all outstanding callbacks of the respective SRCU domain to
 > complete before returning. In dlm_midcomms_exit() the barrier is issued
@@ -126,34 +109,13 @@ SRCU implementation already handles this.
 > tearing down the lower layer.
 >
 > Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-> ---
->  fs/dlm/lowcomms.c | 1 +
->  fs/dlm/midcomms.c | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index 2aff1c7c17de..ea8353c4638d 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-> @@ -1984,4 +1984,5 @@ void dlm_lowcomms_exit(void)
->                 }
->         }
->         srcu_read_unlock(&connections_srcu, idx);
-> +       srcu_barrier(&connections_srcu);
->  }
-> diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
-> index 8964164600d2..045431524494 100644
-> --- a/fs/dlm/midcomms.c
-> +++ b/fs/dlm/midcomms.c
-> @@ -1178,6 +1178,7 @@ void dlm_midcomms_exit(void)
->                 }
->         }
->         srcu_read_unlock(&nodes_srcu, idx);
-> +       srcu_barrier(&nodes_srcu);
->
->         dlm_lowcomms_exit();
->  }
-> --
-> 2.17.1
->
+> Acked-by: Alexander Aring <aahringo@redhat.com>
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+
+Please drop this patch for dlm/next as I currently see the patch
+series has not been applied yet to next.
+
+Thanks.
+
+- Alex
 
