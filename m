@@ -1,73 +1,175 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55B64A012F;
-	Wed,  2 Sep 2026 13:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0F74A2059
+	for <gfs2@lists.linux.dev>; Wed,  2 Sep 2026 14:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788356996; cv=none; b=SzjJT37mMyOeFLO4OiTt68zvkBnN1Ok97+rR00uypA14NPsY2rEVsMzDhw8/Iy2scrEcUc7u2yrwYMPX+5LGZf+0tDrckxkOQqhpFb4WfUU+RdBeJxktwd/Yg7ZloJjvqAzrC9AHeiHOUixML4mvRr4dOVseT1sAczNhZ1PXWYY=
+	t=1788358555; cv=none; b=rIG9L3OLzNcBYh4MMhuVoOzcIfsyCujF2yCawndzvKToanBJmnFTRUlfacd/K5vfr6rKkASIQGsx843G2pj3IK6lYlIMZhXHlHwLtkSC5M+0PyrwhbymJLOgDkmPgqRhw29UOh20DiLBzSVR4NgLkSIgbfNcU557TeWc5WfxNpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788356996; c=relaxed/simple;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V8PcdLCcOW5UyTUSM/YK3cXIfDbUL0ivLXVpSz45YKebN8iD2MH1DakOT6QiAHD5JtKl6Qp2BlZuRjDp75BmgR03fSsLA0DD9MRM7lLM+uEQCoUgth0VgHcF/KIXzXnRZclsCeZsYtavblI9gkqEpu+ElrLnxSo1UMOOhVfhI6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 2A61668BEB; Wed,  2 Sep 2026 15:49:51 +0200 (CEST)
-Date: Wed, 2 Sep 2026 15:49:50 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Yu Kuai <yukuai@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
-	Tao Cui <cui.tao@linux.dev>, Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] blk-cgroup: move async bio punt state to blkcg
-Message-ID: <20260902134950.GB22560@lst.de>
-References: <20260823133045.970199-1-yukuai@kernel.org> <20260823133045.970199-4-yukuai@kernel.org>
+	s=arc-20240116; t=1788358555; c=relaxed/simple;
+	bh=qUI1BXj/T7Olo0+sRw14nkhwV27mKpXf5s4YiHaq1sc=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=WeuFgY3EeK1C35MAP1Tlsgq02J+zqE+Qy29NnsuSqnf0RfIwsRcoQSCPyrIHxzY2nBit61sgGbTtM/+ZcRzsbBsrGUFBTWQN8N8X/1F7Wxg1UEUf+Z0JSrB8N+peu/bosuNnpxyCS0dbcsvONyWNeJ88qZPRiCbBUHmtMvA4EDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PsxsnBHg; arc=none smtp.client-ip=95.215.58.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PsxsnBHg"
+X-Envelope-To: gfs2@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=qUI1BXj/T7Olo0+sRw14nkhwV27mKpXf5s4YiHaq1sc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788358551; v=1; x=1788963351;
+ b=PsxsnBHgvyDIPYbEInGtPO5fZfaV22fxMKkYMRTdyN35o8/b3BqUHGLcPnXu4v3GyjDND3aA
+ IWAw5Kml9J6YdyKBdj9pmt6ce3DgpvKTJwnreqnsPX2+quXvXRBE54rgrJ3IOyCBtttuCmMazp0
+ q8mKobM/hfu5qmbT3jesQA1g=
+X-Envelope-To: gfs2@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 024c0cd5b61d1bef;
+	Wed, 02 Sep 2026 14:15:51 +0000
+X-Mizu-Trace-ID: 024c0cd5b61d1bef
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260823133045.970199-4-yukuai@kernel.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Date: Wed, 02 Sep 2026 14:15:51 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Zqiang" <qiang.zhang@linux.dev>
+Message-ID: <b530646295a64f5e1cec5bfec5064f1fc79d3d9d@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] dlm: wait for outstanding SRCU callbacks to complete in
+ exit paths
+To: "Alexander Aring" <aahringo@redhat.com>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rcu@vger.kernel.org
+In-Reply-To: <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
+References: <20260901091836.16906-1-qiang.zhang@linux.dev>
+ <CAK-6q+jFXsZpWHrm0CSa8Tr+P3qHDmWVQA+9stXViyUf48CuvA@mail.gmail.com>
 
-Looks good:
+>=20
+>=20Hi,
+>=20
+>=20On Tue, Sep 1, 2026 at 5:19 AM Zqiang <qiang.zhang@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> The dlm_lowcomms_exit() and dlm_midcomms_exit() iterate over the
+> >  srcu protected connection and node hash tables and hand each
+> >  element to call_srcu() for deferred freeing (connection_release()
+> >  and midcomms_node_release()). call_srcu() is asynchronous: the
+> >  callbacks are invoked only after an SRCU grace period, which may
+> >  happen after the exit function has already returned.
+> >=20
+>=20>  These exit functions are reached from exit_dlm() on module unload.
+> >  Once they return, module teardown continues and the module text
+> >  may be unloaded while call_srcu() callbacks are still pending. When
+> >  such a callback finally runs, it executes freed module code and
+> >  touches the static SRCU domains that are being torn down, resulting
+> >  in a use-after-free.
+> >=20
+>=20I thought again about this and in my opinion this is not possible as
+> it is already being handled by DEFINE_STATIC_SRCU() with a cleanup
+> handling when the module is unloaded.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+When the moudle unload, the srcu_module_going() will call cleanup_srcu_st=
+ruct()
+and free_percpu(ssp->sda) to release resource. but we not call srcu_barri=
+er(),
+the srcu_barrier() should be called before cleanup_srcu_struct().
 
+
+> I know that srcu subsystem does a lot of magic with modules init/exit
+> functionality to call init_srcu_struct() and cleanup_srcu_struct().
+> See
+>=20
+>=20https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/kernel/module/main.c?h=3Dv7.3-rc1#n2711
+>=20
+>=20so this patch should be reverted. If they don't use a barrier there,
+> the fix should be in the SRCU subsystem, but I believe the current
+> SRCU implementation already handles this.
+
+The srcu_barrier() need to be called, there are some description
+from Documentation/RCU/rcubarrier.rst:
+
+rcu_barrier()
+-------------
+
+This situation can be handled by the rcu_barrier() primitive.  Rather
+than waiting for a grace period to elapse, rcu_barrier() waits for all
+outstanding RCU callbacks to complete.  Please note that rcu_barrier()
+does **not** imply synchronize_rcu(), in particular, if there are no RCU
+callbacks queued anywhere, rcu_barrier() is within its rights to return
+immediately, without waiting for anything, let alone a grace period.
+
+Pseudo-code using rcu_barrier() is as follows:
+
+   1. Prevent any new RCU callbacks from being posted.
+   2. Execute rcu_barrier().
+   3. Allow the module to be unloaded.
+
+There is also an srcu_barrier() function for SRCU, and you of course
+must match the flavor of srcu_barrier() with that of call_srcu().
+If your module uses multiple srcu_struct structures, then it must also
+use multiple invocations of srcu_barrier() when unloading that module.
+For example, if it uses call_rcu(), call_srcu() on srcu_struct_1, and
+call_srcu() on srcu_struct_2, then the following three lines of code
+will be required when unloading::
+
+  1  rcu_barrier();
+  2  srcu_barrier(&srcu_struct_1);
+  3  srcu_barrier(&srcu_struct_2);
+....
+
+Thanks
+Zqiang
+
+>=20
+>=20- Alex
+>=20
+>=20>=20
+>=20> Add an srcu_barrier() after the call_srcu() loop in each exit funct=
+ion
+> >  to wait for all outstanding callbacks of the respective SRCU domain =
+to
+> >  complete before returning. In dlm_midcomms_exit() the barrier is iss=
+ued
+> >  before dlm_lowcomms_exit() so that node callbacks are drained prior =
+to
+> >  tearing down the lower layer.
+> >=20
+>=20>  Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+> >  ---
+> >  fs/dlm/lowcomms.c | 1 +
+> >  fs/dlm/midcomms.c | 1 +
+> >  2 files changed, 2 insertions(+)
+> >=20
+>=20>  diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> >  index 2aff1c7c17de..ea8353c4638d 100644
+> >  --- a/fs/dlm/lowcomms.c
+> >  +++ b/fs/dlm/lowcomms.c
+> >  @@ -1984,4 +1984,5 @@ void dlm_lowcomms_exit(void)
+> >  }
+> >  }
+> >  srcu_read_unlock(&connections_srcu, idx);
+> >  + srcu_barrier(&connections_srcu);
+> >  }
+> >  diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+> >  index 8964164600d2..045431524494 100644
+> >  --- a/fs/dlm/midcomms.c
+> >  +++ b/fs/dlm/midcomms.c
+> >  @@ -1178,6 +1178,7 @@ void dlm_midcomms_exit(void)
+> >  }
+> >  }
+> >  srcu_read_unlock(&nodes_srcu, idx);
+> >  + srcu_barrier(&nodes_srcu);
+> >=20
+>=20>  dlm_lowcomms_exit();
+> >  }
+> >  --
+> >  2.17.1
+> >
+>
