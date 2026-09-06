@@ -1,163 +1,103 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BED748164A
-	for <gfs2@lists.linux.dev>; Fri,  4 Sep 2026 12:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B64B41F34C
+	for <gfs2@lists.linux.dev>; Sun,  6 Sep 2026 08:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788525014; cv=none; b=iGfaVYteUj+6r7QKJXMHPT0C91FkogFqqqDSvFkqoIda2CcmeK70ok76WF/wYwPrY1mnjDJg9LaB7A6GL6rtF/hdFFnB7xAZPAVygcjgZr05N3acEdQrHpjnJRX0t0LkB84ehzOoMLBDDENN0bmuD6of3WKCCv1Hl3IEpxXxS28=
+	t=1788682110; cv=none; b=BQG5BrnqYh9RqwvUoiwrvIxRjpX0XX+Umx1rk0bxhiVvH/APx/V87/KcAeKdccNMqePONeGf1mlI7tf8Roe8YsGkH1No/ryJTCLlROYKaa/1RmW6fOYFPXrT+++GwcwOQYXQw87TJ1czu8UX3fzu254225G75XCzT+DSTpmPaiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788525014; c=relaxed/simple;
-	bh=I5BTR/HzEljtc2n+E1gWlsVC4e3Gg+56Gvfb2/y5hhk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KCYoUNxR0KWzyFO8cn+S8wH1YSw0iiNsKzrugoN51YwgWUMeNjbgqVP/k2PoKrQyRIO6+AChoHq0CTsxdyc+BX8wx4Jg76uHJB75O/mlcUnHjF9Mmsh/S2DLwXHauWsCjVyn+Pzpzvkm5ng0O+aNfyuvDAWLezTspJWm5rxjA/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ROEdWHaP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788682110; c=relaxed/simple;
+	bh=NGzEwkpI7KGONMiDBGgzyRVO0pyFXtozl5zfOCBSjdA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E3zz709NTCZu/aX3lE5bWNqgXR6YyQc0XBpIECqSBXddTUhJwezK5FIeQI6LfKXCizhMlVHqOpIhTTiyUlm02/tK631q8rWIqjZlLNhmWG0tW2yQNBqQ0zqUAh92sTftqzUtTwAQvMAyquIblnyIk2rtrFYp5GF//pQvpM6GTFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rasJDIri; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ROEdWHaP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788525010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XtgStQ72qjXy85OqcnWwLSAXMnFcnfmb4j7jwPWJOV0=;
-	b=ROEdWHaPI4W8wHX3xpulT/o23YPuCj1FEPzgHjVM9G6kFdwmVOo37EaG+1PRnvN/oM4lLe
-	bXebtC4tKfGwczp6SmWo/fS5T9nsTWDXuOtlOm0ZcTAsQFgzI79NZOLksDrafJAiK2Ofix
-	y1d3kyaykqEdoI4etx3tje5M/MzSghU=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-WlTl3krTNQyH-NxDRQalTQ-1; Fri, 04 Sep 2026 08:30:09 -0400
-X-MC-Unique: WlTl3krTNQyH-NxDRQalTQ-1
-X-Mimecast-MFC-AGG-ID: WlTl3krTNQyH-NxDRQalTQ_1788525009
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66c7115a286so1072543d50.2
-        for <gfs2@lists.linux.dev>; Fri, 04 Sep 2026 05:30:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rasJDIri"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d91ff7d9acso20688075ad.3
+        for <gfs2@lists.linux.dev>; Sun, 06 Sep 2026 01:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788682109; x=1789286909; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WqSPCtWUh7C6nv6WkXebRXj9+vzaBfle2tuzZHkfoh4=;
+        b=rasJDIriEeGCgzVsx51OOR8UzltDr78p9F/TCknQvLiojeW2SfVuBwraiu4/J2yw4q
+         WdskiunzEM99Zs3SC+nB3heJm5GroJAjSfTLG/L0Uxxvs/vMDDzqI7EB+oO+jd1ZtVJL
+         HjTb7QAdyI2fZ6Yaa3ZNhSLn82hC3vtpYrFThXat48/9gpuIzJJrSRj3j+Jenv3RhbP7
+         uf2nFm7O3njnoXr8kcid0o4rVfs0r++FuFceQ1yolbfPAci7Wh6bUKmGZl7/gpKySefz
+         xqLzAZyRnoTFbuW0yw9hBPOIZmOH5WY+1YksGVz3uyICl8bwUu+RJifrfPg8HJ27u2yV
+         VJPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788525009; x=1789129809;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XtgStQ72qjXy85OqcnWwLSAXMnFcnfmb4j7jwPWJOV0=;
-        b=sLfXp+9pHT4OsR+GFwnc+7ofe2A20896/uJQx0EUZu7P2DxZSkKn0xvPi6ql6fmiek
-         HC1YaI0+2srDyJPF199lntijrm4vAb/udsbUdl5bramYqLIbVwWccxdk5awIPsQq3Kkc
-         ZLq55Waz/mgdnhZGIEnU2sJs6IEk2ZKLoveaK/OFAnEjEypUHNd9qkgS4XxyLiR0vVeI
-         GXR8afya+kmKWPTnD5f/Gocm+N/QzdLZIXwj4hpXdDJFQDBrBdVn3aMy3VxihpnAjHjC
-         qnqzI0QZ3mYFw2V5gDQ3TAPfFPD6QsdVkReXwvSQ0PO3ETMor4P5JHhf79Xdt/FEZObf
-         hneQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxcFHAZPlLkn3ii6VDgg5Z4cFOSi27dExV4KotyFFUwcSBSfvFQvIu5GpuydiWZJ4gPvEDN@lists.linux.dev
-X-Gm-Message-State: AFuF++ke+bbgrpeHbnmeloEkDKrtOpo9q/DVCphIANmkGPdUyeY2d/U0
-	s9as28dGc2qAqHVHQ0xZ7G/U8YIzIXaFPvyM6pzMaQ6/00uDv56Hy7riPVEOQds9GaKwQRSwzm/
-	W++20KLR+i/7j+ojxRXLb/rfrsBYw+Q4h2oRQliWOhM2pq1KkjYiPauuDBOxCqwrgBdyNsykKKr
-	3EOPqyw4NXV+E6PdIOeLV+HwtVlWWMtA==
-X-Gm-Gg: AYBFou0M2gWAEeTsrIEp4RRESLL0eUg2G0w2tqFlmvqrFC8nCWZMAxtuSZoDvNKiV5r
-	N3ZJlNlb7eQIGpCLZYTdWJBl6XqA2BsT/XGnriuRuOFZENAAJl0mQn+UpFzTQ5F5OKrHdcZ+egz
-	FqMrmCncBjSggR504EG+KzbDK7tYj0Pb4n79Zff9qZAHs6czen7khj3wNa/IQ3n42UTfHrzBwE+
-	VANMyXM41D/Oep1xmX9kYbGcs0cqq4gxg4Egrecopxx
-X-Received: by 2002:a53:dd03:0:b0:66f:c1bc:c07b with SMTP id 956f58d0204a3-66fc1bccb91mr66224d50.67.1788525008566;
-        Fri, 04 Sep 2026 05:30:08 -0700 (PDT)
-X-Received: by 2002:a53:dd03:0:b0:66f:c1bc:c07b with SMTP id
- 956f58d0204a3-66fc1bccb91mr66213d50.67.1788525007971; Fri, 04 Sep 2026
- 05:30:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788682109; x=1789286909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WqSPCtWUh7C6nv6WkXebRXj9+vzaBfle2tuzZHkfoh4=;
+        b=qOCeiUafoEqfZP8PdYP0eXweVo68NV0Ov+S3GeKgRb017D1dPWq7+LoA0JRq2NA6L8
+         o6ydnuZZKAh8Chcb3lDA+9Cu4Mum6HjNAxzZK1+76iiWnyCNQTOuySr/toy52ONCtmo+
+         3sCnshUXVrW/8DiWfE9wI2h9bi14pxpsp+IU0ONO1a1bcxW0pRt4iIl9mMMDmDQ9PCc3
+         QCsJ+9ESj9+pdrrGyk7Hf1+62MHL9HOEa1omggJmF0bJQ5Ywbrz+ljjyIK836qDRSZnZ
+         YsdNHi9Cj8DeYclMU7fIJ7oy4vJitlUbuclJXo/uXI6ylknW97GlVd+DwlssseUsSUxV
+         OCJA==
+X-Gm-Message-State: AFuF++kV6TawQgXufPj9ow+JATGnD+Orct6rCWNcN9Ua7VTXd2CNk9KC
+	31cMQ3IMsJjITASCt/ZgIoVLQCDVLqthW0c28pX6fkpugokeDiDCVDVo
+X-Gm-Gg: AYBFou3UBgkHcmKReB98bnTZQEjIVJ3o96+fKqEKAPCx6YXAdKpj1AdPCUutuV0yYFX
+	5TMg5iBLSrpzoF9rEhsZO+n41QCFk99IzIC40c4wbmFhxVTrLUWVn+DzBkVVe9DIa17EwTHtCcR
+	SbnYjkYWVP8yiN96UDSjOKyZZ2JPPUUJTrk9httWg7yNKhd1R3zBZ18lotyonPmRxCKsvUG7vlR
+	sT5Qqpq4EJwebhXgupSoTEa3bZK7tZHw5HU4nFZQtQmuUemAEmIA84TSv6wQVYpzFXaakbqRbVK
+	xItrkwYMME0WPZPLgUCM4uds9GUYLojeGJEfXeq2s2hfoptxsgRecwjI8Yv1mh/PJ6SnMNsm5Iy
+	39cpn2rHAaaNWYGTJam7dMx6Gj5XrYUKQEKW/IQqyu1pA5PxwN8KumzkrLs/kwccebeqRI0XkmS
+	Y2xplj1jIans4OyDLd/0IubO2M9LBUhbMzOYlJutHZlkssoPnXICaiMNrD/XOD4hgAraDzMr/yh
+	vw1fb9dOmBuHYFNSVo=
+X-Received: by 2002:a17:90b:3b52:b0:38f:18f9:785 with SMTP id 98e67ed59e1d1-39b26101d25mr24779812a91.8.1788682108610;
+        Sun, 06 Sep 2026 01:08:28 -0700 (PDT)
+Received: from thangnn-ASUS.. ([2405:4802:1d38:5c70:7bb9:b8bf:8aa8:fb0d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08cacbb0sm20207422a91.13.2026.09.06.01.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 01:08:28 -0700 (PDT)
+From: ThangNN99 <ngocthang2710.1999@gmail.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev,
+	ThangNN99 <ngocthang2710.1999@gmail.com>,
+	syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
+Subject: [PATCH] gfs2: fix NULL deref in gfs2_quota_lock() for meta inodes
+Date: Sun,  6 Sep 2026 15:08:21 +0700
+Message-ID: <20260906080821.24403-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260904112429.39814-1-hemanth.selam@gmail.com>
-In-Reply-To: <20260904112429.39814-1-hemanth.selam@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Fri, 4 Sep 2026 14:29:57 +0200
-X-Gm-Features: AcwNN1UUnidSo_VDSIw3MRLX-0N_YQGsHOYA7b1CtjBhz2xIhMPaB_wEABGsBCc
-Message-ID: <CAHc6FU43bc6Fawpst1G_MhUuN9itSpoj10qguKpeNsBHeOyDNQ@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix typos in comments
-To: Hemanth Selam <hemanth.selam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: S6Vc7QTExDIIBK6uiHeJZ6bEtY5Q-6eLdfHcjgktT0A_1788525009
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 4, 2026 at 1:24=E2=80=AFPM Hemanth Selam <hemanth.selam@gmail.c=
-om> wrote:
-> Fix typos in comments, reported by scripts/checkpatch.pl using the
-> misspelling list in scripts/spelling.txt.  Only touches comments, no code
-> changes.
->
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
-> ---
->  fs/gfs2/bmap.c     | 2 +-
->  fs/gfs2/lock_dlm.c | 4 ++--
->  fs/gfs2/recovery.c | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-> index 73c626971163..8c734450c998 100644
-> --- a/fs/gfs2/bmap.c
-> +++ b/fs/gfs2/bmap.c
-> @@ -1212,7 +1212,7 @@ const struct iomap_ops gfs2_iomap_ops =3D {
->   * @inode: The inode
->   * @lblock: The logical block number
->   * @bh_map: The bh to be mapped
-> - * @create: True if its ok to alloc blocks to satify the request
-> + * @create: True if its ok to alloc blocks to satisfy the request
->   *
->   * The size of the requested mapping is defined in bh_map->b_size.
->   *
-> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-> index cef4bdee92a8..47eec0c13025 100644
-> --- a/fs/gfs2/lock_dlm.c
-> +++ b/fs/gfs2/lock_dlm.c
-> @@ -431,7 +431,7 @@ static void gdlm_cancel(struct gfs2_glock *gl)
->   * 10. gfs2_control sets control_lock lvb =3D new gen + bits for failed =
-jids
->   * 12. gfs2_recover does journal recoveries for failed jids identified a=
-bove
->   * 14. gfs2_control clears control_lock lvb bits for recovered jids
-> - * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
- occured
-> + * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
- occurred
->   *     again) then do nothing, otherwise if recover_start > recover_bloc=
-k
->   *     then clear BLOCK_LOCKS.
->   *
-> @@ -809,7 +809,7 @@ static void gfs2_control_func(struct work_struct *wor=
-k)
->
->         /*
->          * No more jid bits set in lvb, all recovery is done, unblock loc=
-ks
-> -        * (unless a new recover_prep callback has occured blocking locks
-> +        * (unless a new recover_prep callback has occurred blocking lock=
-s
->          * again while working above)
->          */
->
-> diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
-> index 616c46aa3434..27777497677f 100644
-> --- a/fs/gfs2/recovery.c
-> +++ b/fs/gfs2/recovery.c
-> @@ -155,7 +155,7 @@ int __get_log_header(struct gfs2_sbd *sdp, const stru=
-ct gfs2_log_header *lh,
->   * @blk: the block to look at
->   * @head: the log header to return
->   *
-> - * Read the log header for a given segement in a given journal.  Do a fe=
-w
-> + * Read the log header for a given segment in a given journal.  Do a few
->   * sanity checks on it.
->   *
->   * Returns: 0 on success,
-> --
-> 2.48.1
+gfs2_quota_hold() now treats a meta/system inode's NULL i_qadata as
+success, but gfs2_quota_lock() still dereferences it unconditionally
+afterwards. Bail out early when there is nothing to lock.
 
-Applied to for-next, thanks.
+Reported-by: syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d84e35a320d14f8c270a
+Fixes: 0025112796287599dc79c822ed37124582a0d68a ("gfs2: No quotas for meta inodes")
+Signed-off-by: ThangNN99 <ngocthang2710.1999@gmail.com>
+---
+ fs/gfs2/quota.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Andreas
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 3bbe5c78c793..0c7ea7375f6c 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1100,6 +1100,9 @@ int gfs2_quota_lock(struct gfs2_inode *ip, kuid_t uid, kgid_t gid)
+ 	error = gfs2_quota_hold(ip, uid, gid);
+ 	if (error)
+ 		return error;
++	/* Meta inodes never get quota data (see gfs2_qa_get()); nothing to lock. */
++	if (!ip->i_qadata)
++		return 0;
 
+ 	sort(ip->i_qadata->qa_qd, ip->i_qadata->qa_qd_num,
+ 	     sizeof(struct gfs2_quota_data *), sort_qd, NULL);
+--
+2.43.0
