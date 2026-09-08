@@ -1,135 +1,123 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C2544CF52;
-	Tue,  8 Sep 2026 21:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6F15908A9
+	for <gfs2@lists.linux.dev>; Tue,  8 Sep 2026 22:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902150; cv=none; b=RCt3A/q3aD27RMbDPP2Wjqwk79Vzgo6hyHu1FyUst3NGVv2z7DXTs7oYeGRS1XyPfm1LHoJHob/R6AVkwUc1mbvf3MGYYyzxGb9JP+hJwnryLA6hLRTvCEHazG2unYBhAlHHOWhpwbU/gak5oA1wY7xLqBuBh0/pa9H9qzNqgvw=
+	t=1788907119; cv=none; b=Yz6sfXevvcQIxhqfDwqPjy7+7qBZNC71PamEoVVA1SmDx73eslIJQeXpEYFj30caA3SuxU5jgFfWPJfOi5BWQtVXGKleiCbdzc33NgtpHEwM1L0SuIe7WRaTLhgFgmtHmfrNJgG6vNPEmZ2va2xctfvO1PghJs1+Rzv0lkK/mMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902150; c=relaxed/simple;
-	bh=5MDXUumeScR8/sobsnhrXNvNHeuF6zeNbOWojP43an0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dc+dGifLZlHJ2UZ1K/XVT7glzxIgqohtEV6xErS/2BKq9KEJVKQV+QXiX8chlw473oAr5cdEW0crP53HW+ZtnywqUhBPYmEF+fFA1EfMNo8hrZXbzbjZG47FzORj6b36Dld7BYmgHTqqjxW+HOrmzVOAhMWdLUHeUlxjlqfVTmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Wiaxj24Y; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1788907119; c=relaxed/simple;
+	bh=FC044eHYM2+RBC12+m4Qgu1/XwdZOQnrZVu8TffsGpc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EW51ZmigQ1sDt3gh5E9TFlxBigZYHKYq5/Q9njQd62oxV/XV3K8w3OV1ckwN6Y9ni1wayclqMGaB9+fXYbamic0X3y0GQOMT9Y4AQ9DQm9psI2pTo3IvtUxSkjor26ofLpP1ppqcTHNCpzBmuM5PEANGnQj3Ry5+x6tYkkFNSmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qjto6rUP; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Wiaxj24Y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=8aF6d5QbYLGDY2om4GTfaI0qkd0ggpTM0UzyIZrbAms=; b=Wiaxj24YEIRGGfe38XEeFU7Gwl
-	BvU3mFRKZXxYcMBJZ7dj/gnvQT2Ctr+atQJWn43PA4o/RS2QJXrjshhXAN97tQxlE0cqMculLW/aa
-	V+2IFHaOEHg/nZWFFVRxObeYf8uuTL14ZDT8q9Fvm+vHE1i7slz/lVYofxfEEEmS56J4HjW3YvAq1
-	nnELI1kbjtPDv4sF6WKoEI4Hfh5/pSyfKghClR+tBco8uxDzMHmvFeiVrkq12oW1RwC4iuYX4pGpM
-	H5UJQjBUWikiESgH3D9uaBDtg9By2oG/ot2FR0ae+qH9EJMjHjYwfcgATjYwKjSHx9tbUeg2GvgJz
-	7KAew0Mg==;
-Received: from 186-249-150-254.shared.desktop.com.br ([186.249.150.254] helo=[127.0.1.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1x43AP-00GhZP-HE; Tue, 08 Sep 2026 23:15:45 +0200
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-Date: Tue, 08 Sep 2026 18:16:16 -0300
-Subject: [PATCH 5/5] gfs2: check for errors from filemap_get_folio() in
- gfs2_jhead_process_page()
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qjto6rUP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788907113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ji7zioczppTe+3MGsUl6/c0jkx8Em0m0PBXcaDYGVJM=;
+	b=Qjto6rUPZ+vYA4XF8BQ3lIbYgM2hfm9rRzzxc0Rljk0N+Cf5BYVyKXc0NpvRacGpf3T9zv
+	yy9YlrLBZNN3CbmXBS4nJ8qvt/kkraKDdKo6IPeGgZbZxHnv9B85EeD8UKz61D9KS/HDJb
+	ItS2mcvy7p3SOtpX1TQ8Ie5w7vY2LrI=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-NQKX4vIJNZ6wnLGEpePFgA-1; Tue, 08 Sep 2026 18:38:32 -0400
+X-MC-Unique: NQKX4vIJNZ6wnLGEpePFgA-1
+X-Mimecast-MFC-AGG-ID: NQKX4vIJNZ6wnLGEpePFgA_1788907111
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-66d1d35738aso1905989d50.1
+        for <gfs2@lists.linux.dev>; Tue, 08 Sep 2026 15:38:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788907111; x=1789511911;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ji7zioczppTe+3MGsUl6/c0jkx8Em0m0PBXcaDYGVJM=;
+        b=V30rsCojwqpEDNkS3qRnJk8KrNSF8fRk0d0TRBkPGVOhW4dNoIzGxv+NKpVwEkyyp5
+         OvDlNvSRHIR8GsHXqEx+kc8ogh6UmHG73hZ5mx85HU6iM6/j+caz0HoGc+SfNDhnwuFu
+         QIiicA0JxCT7HDfZ5go8y2XzzEvIJRaVZxoD8XCXMvfzrPPnxfFomQuSvB972FOcFCql
+         LlsiZJ0ltLwGhdb2XZBgaYSJCrI9wGD42/tqTsGs4nBR+kpMYtJO2E2K9G8x4qBm8zu8
+         mwErNJdTYJf6AUBWOguUxS7tHhM16CalWc9pJuMvhgTotAyhu8Fnyau5ToGuV3DfhMRv
+         D5HQ==
+X-Gm-Message-State: AFuF++nB4JgCHUbyBh1C6G/H35EMtwJtg+F4WfZTqIdKZvUeKaFwFl1D
+	XJxto23ZUSL6bM3+cnSxSfyF9JS3qDpnDAT2mTVk0M9nVrGjGgoBxa2Uo8SEaAKFsXf68n88LgH
+	iL6QF/r1v8qFQjSJXsQ7NVf6BDwPqmXR8BaSwOUOKYERgHJ+3oT/XUH94vnPduh6fFhETR6J7ym
+	jZM2JE68e57boZTUmmwRSw1KgUmbxC9A==
+X-Gm-Gg: AYBFou11S7pY/9J8peQeyA20TEH3QwLtH7O3EwOmhEJDQG/mWlY0HzA9vtmMAUEQhSK
+	b7OO6yKpEMp26iCoZy1X+nObraklVW+Czc8ctWsF4o9dQLGhK/IpSAdLDb2QZDeQRiejQbtbn7H
+	I4U15/All+GYWOrg+6Gr6G4y1O5WXOSIQZMlLuom5B3CCSj4zk0e90Su20evJ/Qh5suIEpAQ4l3
+	IGrzo9TaAmfDv+HEdxN/ufbFj0UltNH/IXHEl/06btF
+X-Received: by 2002:a05:690e:144f:b0:66f:c1bc:4042 with SMTP id 956f58d0204a3-670f4a57464mr2702331d50.35.1788907111410;
+        Tue, 08 Sep 2026 15:38:31 -0700 (PDT)
+X-Received: by 2002:a05:690e:144f:b0:66f:c1bc:4042 with SMTP id
+ 956f58d0204a3-670f4a57464mr2702320d50.35.1788907110940; Tue, 08 Sep 2026
+ 15:38:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-gfs2_getbuf-error-checks-v1-5-7c59698f178f@igalia.com>
-References: <20260908-gfs2_getbuf-error-checks-v1-0-7c59698f178f@igalia.com>
-In-Reply-To: <20260908-gfs2_getbuf-error-checks-v1-0-7c59698f178f@igalia.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: kernel-dev@igalia.com, gfs2@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Mauricio Faria de Oliveira <mfo@igalia.com>
-X-Mailer: b4 0.14.2
+References: <20260906080821.24403-1-ngocthang2710.1999@gmail.com>
+In-Reply-To: <20260906080821.24403-1-ngocthang2710.1999@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Wed, 9 Sep 2026 00:38:20 +0200
+X-Gm-Features: AcwNN1V6U7-Oh-HSWs6kQWHmSLFyXz8cRWxpAuKbiRb6GtSDGrLDP-4NaQ7bA54
+Message-ID: <CAHc6FU6nzAQb9wGF8KfA1LuRH+eqVabNkZ3f3gc+_2rxasoRnw@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: fix NULL deref in gfs2_quota_lock() for meta inodes
+To: ThangNN99 <ngocthang2710.1999@gmail.com>
+Cc: gfs2@lists.linux.dev, 
+	syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8y3PVS0AJ4XrSmw3vYODWFcLW5YsbMkcpbXsen_94XQ_1788907111
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Let's check for a not-found folio pointer error, that is, ERR_PTR(-ENOENT),
-just in case, even though it is not expected (due to a previously acquired
-reference on the folio, per the function comment).
+On Sun, Sep 6, 2026 at 10:08=E2=80=AFAM ThangNN99 <ngocthang2710.1999@gmail=
+.com> wrote:
+> gfs2_quota_hold() now treats a meta/system inode's NULL i_qadata as
+> success, but gfs2_quota_lock() still dereferences it unconditionally
+> afterwards. Bail out early when there is nothing to lock.
+>
+> Reported-by: syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dd84e35a320d14f8c270a
+> Fixes: 0025112796287599dc79c822ed37124582a0d68a ("gfs2: No quotas for met=
+a inodes")
+> Signed-off-by: ThangNN99 <ngocthang2710.1999@gmail.com>
+> ---
+>  fs/gfs2/quota.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+> index 3bbe5c78c793..0c7ea7375f6c 100644
+> --- a/fs/gfs2/quota.c
+> +++ b/fs/gfs2/quota.c
+> @@ -1100,6 +1100,9 @@ int gfs2_quota_lock(struct gfs2_inode *ip, kuid_t u=
+id, kgid_t gid)
+>         error =3D gfs2_quota_hold(ip, uid, gid);
+>         if (error)
+>                 return error;
+> +       /* Meta inodes never get quota data (see gfs2_qa_get()); nothing =
+to lock. */
+> +       if (!ip->i_qadata)
+> +               return 0;
+>
+>         sort(ip->i_qadata->qa_qd, ip->i_qadata->qa_qd_num,
+>              sizeof(struct gfs2_quota_data *), sort_qd, NULL);
+> --
+> 2.43.0
+>
 
-If filemap_get_folio() returns an error, log it and return -EIO. The only
-caller is gfs2_chain_bio() (same file), twice, which can currently return
-errors, thus propagate the error.
+Applied, thanks.
 
-Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
----
- fs/gfs2/lops.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 192e71e630dce062361cc754f2ba878fa23c0a7f..78cadde990182223978ddbde2be25cfe963beabe 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -459,14 +459,21 @@ static bool gfs2_jhead_folio_search(struct gfs2_jdesc *jd,
-  * our references to the folio.
-  */
- 
--static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
--				    struct gfs2_log_header_host *head,
--				    bool *done)
-+static int gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
-+				   struct gfs2_log_header_host *head,
-+				   bool *done)
- {
-+	struct gfs2_sbd *sdp = GFS2_SB(jd->jd_inode);
- 	struct folio *folio;
- 
- 	folio = filemap_get_folio(jd->jd_inode->i_mapping, index);
- 
-+	/* This should not happen (see comment above), but check just in case */
-+	if (IS_ERR(folio)) {
-+		fs_err(sdp, "Error %ld getting folio.\n", PTR_ERR(folio));
-+		return -EIO;
-+	}
-+
- 	folio_wait_locked(folio);
- 	if (!folio_test_uptodate(folio))
- 		*done = true;
-@@ -476,6 +483,7 @@ static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
- 
- 	/* filemap_get_folio() and the earlier filemap_grab_folio() */
- 	folio_put_refs(folio, 2);
-+	return 0;
- }
- 
- static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs,
-@@ -572,7 +580,9 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- 				continue;
- 			}
- 
--			gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+			ret = gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+			if (ret)
-+				goto error;
- 			blocks_read += PAGE_SIZE >> bsize_shift;
- 			if (done)
- 				goto out;  /* found */
-@@ -583,7 +593,9 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- 	if (bio)
- 		submit_bio(bio);
- 	while (blocks_read < block) {
--		gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+		ret = gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+		if (ret)
-+			goto error;
- 		blocks_read += PAGE_SIZE >> bsize_shift;
- 	}
- 
-@@ -592,6 +604,7 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- 
- 	truncate_inode_pages(mapping, 0);
- 
-+error:
- 	return ret;
- }
- 
-
--- 
-2.47.3
+Andreas
 
