@@ -1,177 +1,213 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6333A530DE5
-	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 11:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14523D9552
+	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 12:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788952880; cv=none; b=q7lX1tv/nTp8SN8tokCBYIMVOg9VGOWfs35OqKXuAdccKMB1UBXKhoFxKgLu8R9J26YaiKnFSNtemLzQ/HJB1VCzDX3XJvRyNr2JW9IG8M8fFcBbI5yUsTyJo3p1GRiVQlPrVRnO0A7tvW5EdvzeR2y58rLcTePmKtDsf9GFTUI=
+	t=1788958185; cv=none; b=SGKeKME+tVpcDlHdBnmDjW80yBiJwBtuawEJcZmEC/Uk4gxti3EI0kg6m3PMVKsl5un9gbN+v1Cw8+UOZc9LITN8/y4CTsMNjzU6BhQ7nPp2FmkkC46TSpMwFKdpZ+s1TsUfKvVYs+froFIPutqLBlRpLi6ayk2L3mBmYQWIShM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788952880; c=relaxed/simple;
-	bh=ejKLOMfYN5cbTm0XLhNm/9cnSoVZpQ0xyMtLlfidjgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=InYeT9YocIrdV79Cv6CxrcRKDe2oM9PcK2e2kZC12Qrxso2+ba3q8gifWeceR5/53Ia1ZLaWnYTuJUJCFihuZed3AoHsHotkAkhmOOjeA2zg6bg9Bs3sAUVFGa76qjTp4FikK3OWCBtGjQz5pl//btCuhrbGZ/sSo16nx1DOq9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ee7LyE9w; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788958185; c=relaxed/simple;
+	bh=DBQWEHM3jrN2FVzsBxr3gsWXU+aylsZsZB+RFB3RsEs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KNZdy4bjY0+UrHEBpSmaBHtCZaBB3u6lkEIMuxU4L9U9sIgidS9A2Bi62uM7QHHnoU/+2HOKrO75jQfhp2K+tX9mTsLDdhYgR1CUQhkOOIn6AiPYgOIDWd+j1PivIi5x7hyOr6PIepmWRmFNKeew9IfIskwAUC6zUy3osNSfQwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=QHljj4VD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UMTn0Azr; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=P9RWyaRk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bDqeb262; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ee7LyE9w"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso5352359a91.3
-        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 04:21:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788952879; x=1789557679; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AUHFFioMah0sAuoQzwWsCFgryzdcGUF6ghThqp3wfNI=;
-        b=ee7LyE9w3jSWgAxAZ0qa47SbhVcbSKLp5QVY9NG7zYHvASrDyE26+mVqSYXRW4IaQj
-         rBxrQs4ffmv5oGCl4aqghPRhbytU8ibHOeN+qiQLwETlY3jD+CAZjPcJGlETSb0mDej8
-         zkuATtHKd9iDCNwUsS+rr7G/wemE1wWCr/jiMa41SIsfHHjHmv4+oCbyr3v/pxOvOc3U
-         xTpcp2VJ66InZRrJRE32FT2dIAer8q6YOLVPaiZcAOKr2kFH+6ucAQIbRH9egp2kdrSq
-         8B4H3pKOGd6xnxt2dcC2z9RF3WdvzzdkwxQsyFNKnsOlkLhFlV2hRZbFLPktpccnynpz
-         5iCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788952879; x=1789557679;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AUHFFioMah0sAuoQzwWsCFgryzdcGUF6ghThqp3wfNI=;
-        b=BLL3lE9cPQrHCY5cLcEqEvKtJYxxzEmY7LpNXQRTdLcyA2be4ZiSUaK3oaOuD+YvtK
-         3XNx4xX+v+Cx3xGAw8hbnmF8Po50guAh1SZXHF7DPx61dyhx2S8yEPDT658NUZ38YQRn
-         GhxEEypsthe8F38pJlleLiZD/l1/z52My2NBhU5xAfTzOn+muI6E2F2nq814ytGR86LH
-         NLDPj66C+1LRcaMWw7NMiMDmi5q2C81/3iqLj9PakqMWoLIEO9bTd3/V7WEXlTf7VAyr
-         bJUZny0vS7MW/OemDPKSBwedNDFlAUvlcdSY6Jr6kZr3wXftWIcMWq6ZknDEUoS++HSX
-         HbUA==
-X-Gm-Message-State: AFuF++kPO7WiO5lKGBToU4BhixCeK3NwN7Ey3HNkYBnFkFEFXvfKfH2i
-	JtpNbJxQnwJv/m/eoDJejCPlNLjbGEtptlxGBYrneOT1dBtfhTfalDwGuThh1I/2ngg=
-X-Gm-Gg: AYBFou0StY+pbbpYXSG4hrHFfC1a1W4gyqqqF3dcrX+iPOFEZQIJRb3h4zZWLFhPddy
-	hLKv2yDNSfov843lUMko+X2wH2dt2tW9W925sI0M9z5hzfVf+ll/Jrjuns3YWX1LOSF2554AiE+
-	5NowaZtZgDG6lfoSlfN12XguAaL2BwBN3gjK9rEiWb3mrXM+LOSMi86RXz+h+aKA6m3WLlRq2lV
-	ZzNnvwN5PHHIHP10hbBKwBcmcqYgBde3FtMdwxNz9Gei8CNsSzMycCx3eH5Q7AkwCQRER2ogvNI
-	Zf5yMNJBb5NB8pQ4e9yVvBnvNB5mzQW0LmXWtJciRO2gaXr8hNs/u21c7+5tcW82OCYbouLSN9W
-	/5oQ4tBNLcVAPleBfc1wicI+DEVa/dtYSd4nzxriy6h/RJbpIDrMpjcyQ//Fr6W3VNUMNkcusMH
-	K2zRIBkhZawbkb+cSqrduG0+1m1mlBicXzchu2jHdNdMtzLliFhnOxPCacTBCGapq+SYGYpbfcD
-	0g3UIDwH5XcbQgWurUTwO2CPtXF+YTjc+Q=
-X-Received: by 2002:a17:90a:1188:b0:39b:a8d8:985 with SMTP id 98e67ed59e1d1-39ba8d80b06mr5282578a91.12.1788952878427;
-        Wed, 09 Sep 2026 04:21:18 -0700 (PDT)
-Received: from LAPTOP-450UDG4J ([223.185.135.143])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b260cd2aasm31265258a91.3.2026.09.09.04.21.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 04:21:17 -0700 (PDT)
-From: Yogesh Gaur <yogeshgaur.83@gmail.com>
-To: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>
-Cc: gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	syzbot+da6dc573ce5e6624f505@syzkaller.appspotmail.com
-Subject: [PATCH] dlm: don't return a lkb that has no rsb from find_lkb()
-Date: Wed,  9 Sep 2026 16:51:08 +0530
-Message-ID: <20260909112108.2281-1-yogeshgaur.83@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.5
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="QHljj4VD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UMTn0Azr";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="P9RWyaRk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bDqeb262"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CC9FE1FB1B;
+	Wed,  9 Sep 2026 12:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788958178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zJ28I44WC1hV/fcazHq+zh9oF5Kw7tVrRZFS4+h4cIo=;
+	b=QHljj4VDlP/zthNypyuOZgp5uQVAkNR2bS4FPsPD65WnSVkqy5z/Z0n2qaGp9DbhLnHbWE
+	VMM6PkCHPE0+ZQxcgaQDEORJaTgsXSUE7jsoLOjOlGGYF8DaZWLK+v2Cs5m33qCt891DT/
+	d9IkwmaCNrlZRbXfQR6tZKNE55JiQ+w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788958178;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zJ28I44WC1hV/fcazHq+zh9oF5Kw7tVrRZFS4+h4cIo=;
+	b=UMTn0AzrPC9x95UVUz7027vim/arTY1o2Xmsp2UCwvXBBD/6CnuE1xrs7LHexyHHxhlyfb
+	6LroVzgY+KFUpkDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=P9RWyaRk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bDqeb262
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788958173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zJ28I44WC1hV/fcazHq+zh9oF5Kw7tVrRZFS4+h4cIo=;
+	b=P9RWyaRkvyLPw16YhLxAHejCRwsLfVqv7/3GPx3WGRjLnzPPi/npOA/WZymPjMfhXClIqz
+	O9Rp9p/d6OmPg5ZMTvHFoVxX7P6zOixrf6kK8iMQTaGHzORwrgUGaBeC5x6qa+k4Hx/MZw
+	RSJqNxWI7QRjP350AQqkyzJ4zWjLiRs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788958173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zJ28I44WC1hV/fcazHq+zh9oF5Kw7tVrRZFS4+h4cIo=;
+	b=bDqeb262wWtjF3eaCVsPNY07h/1D0dJZg4AZbVWzuSJGYEpFtKvJ3m74dChlukwGVMbl8N
+	t37clwbmpxWYXuAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A9FBC13185;
+	Wed,  9 Sep 2026 12:49:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WQ13Kd1VoWqZTQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 09 Sep 2026 12:49:33 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 38AC5A1341; Wed, 09 Sep 2026 14:49:33 +0200 (CEST)
+Date: Wed, 9 Sep 2026 14:49:33 +0200
+From: Jan Kara <jack@suse.cz>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-security-module@vger.kernel.org, jack@suse.cz, 
+	agruenba@redhat.com, mic@digikod.net, gnoack@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, aleksa@amutable.com, legion@kernel.org, 
+	djwong@kernel.org, ebiggers@kernel.org, sandeen@redhat.com
+Subject: Re: [PATCH 0/7] fs: preserve superblock inode walk positions across
+ lock drops
+Message-ID: <pblp6tof6t6otp5kzelc3pyu2y2si4e7i62kp63c5symdaqrd3@q7drqoro2b73>
+References: <20260909090112.790006-1-sunjunchao@bytedance.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909090112.790006-1-sunjunchao@bytedance.com>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: CC9FE1FB1B
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
 
-_create_lkb() publishes a new lkb in ls_lkbxa, which is what assigns its
-lkb_id:
+On Wed 09-09-26 17:01:05, Julian Sun wrote:
+> [Motivation]
+> 
+> We observed hung tasks in production during disk hotplug operations. A
+> kernel thread spends a long time in evict_inodes() while holding s_umount,
+> blocking other users of that lock and causing further stalls.
+> 
+> The problem is that evict_inodes() restarts its walk from the head of
+> sb->s_inodes every time it reschedules. When a large number of referenced
+> inodes remain near the head, each restart scans those inodes again without
+> making progress through that part of the list. The repeated scans can
+> delay eviction long enough to trigger hung-task reports. This is the same
+> problem that [1] attempted to address.
 
-	rv = xa_alloc(&ls->ls_lkbxa, &lkb->lkb_id, lkb, limit, GFP_ATOMIC);
+Thanks fro the patch! What's really unexpected is that there are many
+inodes with incremented refcount at the time when evict_inodes() is called.
+Did you have a look who's holding those references? Or is evict_inodes()
+called through the fs_bdev_mark_dead() call (as you mention "disk hotplug
+operations")? There the filesystem is in fact in use so what you describe
+makes some sense.
 
-but the lkb only gets an rsb later, once request_lock() has resolved the
-resource name and calls attach_lkb():
+								Honza
 
-	static void attach_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb)
-	{
-		hold_rsb(r);
-		lkb->lkb_resource = r;
-	}
-
-So between those two points the lkb is fully addressable by its lkb_id
-while lkb_resource is still NULL. find_lkb() will hand it out, and its
-callers all go straight for the rsb without checking:
-
-	r = lkb->lkb_resource;
-
-	hold_rsb(r);
-	lock_rsb(r);
-
-For the userspace API the lkid is simply whatever was written to the
-misc device, so a lkid can be aimed at a lkb that is still being built
-by another thread. hold_rsb() then reads res_flags off NULL:
-
-  BUG: KASAN: null-ptr-deref in rsb_flag fs/dlm/dlm_internal.h:386 [inline]
-  BUG: KASAN: null-ptr-deref in hold_rsb fs/dlm/lock.c:334 [inline]
-  BUG: KASAN: null-ptr-deref in unlock_lock fs/dlm/lock.c:3333 [inline]
-  BUG: KASAN: null-ptr-deref in dlm_user_unlock+0x2ab/0x690 fs/dlm/lock.c:5956
-  Read of size 8 at addr 0000000000000050 by task syz.3.570/7893
-   rsb_flag fs/dlm/dlm_internal.h:386 [inline]
-   hold_rsb fs/dlm/lock.c:334 [inline]
-   unlock_lock fs/dlm/lock.c:3333 [inline]
-   dlm_user_unlock+0x2ab/0x690 fs/dlm/lock.c:5956
-   device_user_unlock+0x1ca/0x260 fs/dlm/user.c:321
-   device_write+0x905/0xed0 fs/dlm/user.c:590
-
-Reject an unattached lkb in find_lkb() rather than in each caller. Every
-find_lkb() caller dereferences lkb->lkb_resource -- convert_lock(),
-unlock_lock() and cancel_lock() through the r = lkb->lkb_resource above,
-dlm_recover_process_copy() the same way, add_to_waiters() via
-lkb->lkb_resource->res_ls -- so none of them wants a half-built lkb, and
-a lkb without an rsb is not a lock anyone outside can name yet. Callers
-already handle find_lkb() failing.
-
-Testing lkb_resource under ls_lkbxa_lock next to the existing kref_read()
-check is enough. The value is not stable under that lock, as attach_lkb()
-does not take it, but it does not need to be: once a non-NULL rsb has
-been observed it stays attached for the life of the reference taken here,
-because detach_lkb() only runs from __put_lkb() on the last reference.
-Observing NULL while attach_lkb() races is the case being rejected, and
-the thread still inside request_lock() has not returned the lkid to
-anyone at that point.
-
-This is the null-ptr-deref only. The refcount warning syzbot reports in
-dlm_user_request() itself, where hold_lkb() runs on a lkb whose count
-already reached zero, is a separate race on an lkb that is past
-attach_lkb() and is not addressed here.
-
-The unchecked r = lkb->lkb_resource goes back to the original DLM
-import, but an untrusted lkid only became possible once the userspace
-device interface was added, so that is the tag below.
-
-Fixes: 597d0cae0f99 ("[DLM] dlm: user locks")
-Reported-by: syzbot+da6dc573ce5e6624f505@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=da6dc573ce5e6624f505
-Assisted-by: LLM
-Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
----
- fs/dlm/lock.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 2609e4fdeba8..73e92237fa07 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1554,9 +1554,17 @@ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
- 		/* check if lkb is still part of lkbxa under lkbxa_lock as
- 		 * the lkb_ref is tight to the lkbxa data structure, see
- 		 * __put_lkb().
-+		 *
-+		 * _create_lkb() publishes the lkb in lkbxa before
-+		 * attach_lkb() gives it an rsb, so a lkid that comes from
-+		 * outside can name a lkb that is still being built. Every
-+		 * caller here dereferences lkb->lkb_resource, so treat such
-+		 * a lkb as not found. Once an rsb has been seen it stays
-+		 * attached, as detach_lkb() only runs from __put_lkb() on
-+		 * the last reference and we are about to take one.
- 		 */
- 		read_lock_bh(&ls->ls_lkbxa_lock);
--		if (kref_read(&lkb->lkb_ref))
-+		if (kref_read(&lkb->lkb_ref) && lkb->lkb_resource)
- 			kref_get(&lkb->lkb_ref);
- 		else
- 			lkb = NULL;
+> [Approach]
+> 
+> This series introduces sb_for_each_inodes() for two purposes:
+> 
+>   1. Consolidate open-coded s_inodes walks behind a common entry point.
+>   2. Retain each walk's position across drops of s_inode_list_lock.
+> 
+> The iterator mechanism follows the approach used by cgroup task iteration,
+> such as css_task_iter_next(). Active iterators are registered on a separate
+> list, sb->s_inodes_iters. Before removing an inode from s_inodes, the
+> removal path advances any iterator whose next position points to that
+> inode. These updates are protected by s_inode_list_lock, so a walker can
+> drop the lock and later resume from its saved position.
+> 
+> Existing walkers, such as drop_pagecache_sb() and add_dquot_ref(), already
+> contain their own position-preserving logic: they carry an inode reference
+> across iterations so that they can resume after dropping the list lock.
+> Moving that responsibility into sb_for_each_inodes() simplifies these
+> callers and lets their callbacks focus on the per-inode work.
+> 
+> Patch 1 removes trailing whitespace from include/linux/fs.h.
+> Patch 2 introduces sb_for_each_inodes().
+> The remaining patches convert existing walks to the new interface.
+> remove_dquot_ref() and nr_blockdev_pages() are left unchanged: their
+> walks are simple and do not require the inode->i_lock locking imposed
+> by the callback interface. Converting them would add an unnecessary
+> lock/unlock overhead for every inode.
+> 
+> [Testing]
+> 
+> I tested this series with approximately 20 hours of xfstests case
+> execution, repeatedly running the auto group on ext4 and XFS, no new
+> issues were observed. And with this patch applied, the hung task that
+> previously occurred on every run no longer occurs.
+> 
+> [1] https://lore.kernel.org/all/20241118114508.1405494-1-yebin@huaweicloud.com/
+> 
+> Julian Sun (7):
+>   fs: remove trailing whitespace from include/linux/fs.h
+>   fs: introduce sb_for_each_inodes().
+>   block: use sb_for_each_inodes() in sync_bdevs()
+>   fs: use sb_for_each_inodes() API.
+>   gfs2: use sb_for_each_inodes() for cooperative eviction
+>   quota: use sb_for_each_inodes() in add_dquot_ref()
+>   landlock: use sb_for_each_inodes() when detaching a superblock
+> 
+>  block/bdev.c                   |  85 +++++++++----------
+>  fs/drop_caches.c               |  44 +++++-----
+>  fs/gfs2/ops_fstype.c           |  38 ++++-----
+>  fs/inode.c                     | 142 +++++++++++++++++++++++--------
+>  fs/quota/dquot.c               |  72 ++++++----------
+>  fs/super.c                     |   1 +
+>  include/linux/fs.h             |  29 +++++--
+>  include/linux/fs/super_types.h |   3 +-
+>  security/landlock/fs.c         | 150 +++++++++++++--------------------
+>  9 files changed, 295 insertions(+), 269 deletions(-)
+> 
+> -- 
+> 2.39.5
+> 
 -- 
-2.55.0.windows.5
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
