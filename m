@@ -1,62 +1,64 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191483B2FCC
-	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 09:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A7948A8B4
+	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 09:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944484; cv=none; b=t0r3j4euN+4vYflnLn33GQfycV9Nd3Ip36VK3Ir5Ca5uirmovGNVKVx717mStnTP9I8DESPHLjkx4SOUbvmnAuhB9RA0BSNIZGU0/nafxD65FaDYmt146xaj2UItg0isVu8WBTNjNjXUG9e/pZWu7tOtwnWhbMaaGP6N2vXIHNw=
+	t=1788944488; cv=none; b=kbqG6L43l7laDxT8M1ufr78m4voDSzKFbJkUwhkDukni9HNPbTsP/pA0QF1zyJ0+Oujf7Y7vkpRHbaLpno3k0tObqH8y67YsbKhVFTnsTYRzZh0x66Gcjfv6P1Nesdh4JA2mmwBMh63e7dWl2a4W4U8JLyXfoctBrbpu9wmUbNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944484; c=relaxed/simple;
-	bh=qIa/OOPRF8eUOfN7emCsEmTA8N7RP5NPcMNXTb2hiYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZuzyJdiXyugT3ct0ohkwkYD9sfc0mszHFjXY4ySHe86tpP0yucGyLzgO6653MPhBfhrZ6I8LjFLykEqDYxaqhZDxgGBlMJ7bOvzKcSRjCunWpcTGY9OKtC/5C99t1GTzilzO9E2Fo1vGd7/GGoohdZ9GVd9VYUx8V5LhAmrrGn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=XbqRKzkb; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1788944488; c=relaxed/simple;
+	bh=8dP7EXppDq/wK3CzTPpxRisk/j9Ptxr4Q+k72BLzYnw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aTYVuRD7YCtghFVQqOtB7K1n5UskL+2H8irUMF0x26FXPcsrQKLwFY3/mN00uzrYK/cRTXmZZ4dyc5Aw51iFqX+Mm+q9QY5sGMbBOq80TNqoR2kwQQTF0xy4ZeWM8PKPfLVt4N5PHmvaWzuEcXoPxiqy49V1rcH/Xi7RvwtJNUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=GgaMtumn; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="XbqRKzkb"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2db18e5cb56so54335675ad.0
-        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 02:01:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="GgaMtumn"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so5930501a91.2
+        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 02:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1788944476; x=1789549276; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oiZZoK2m1udHvSG78cGXbZoP5Fh5l1Q4IJu628L6gi0=;
-        b=XbqRKzkbKQZqsdeEPVQb1Ymv83n2Yiiu3fdskjn1xEHjBZB4xYNNZm8XK07S032F4q
-         bxniRo0zlafcY0fmdErRlZsaaam7UwJUA2aYqor4hvpAcGb+2UKuPSw9Z3Ei4Ntdb6+1
-         it3VyrebIsRT8qu9YQuFCTTTkHGiggeBWclWitxFIMVdejAxxFhQotY6XLM9atQRySBf
-         zBJZJA4XgYvLI4khzMN1UqNdPEZngVKf7FokjjEXvKpBIRMFLCU4WT44iIeug+e0al10
-         kE6uigpBVRLoQ96MrelGFPy8ocrkdkM9GXjCbH8HVPoXDair8AAnrqeLC2DhKs4x30tr
-         ZtOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788944476; x=1789549276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1788944480; x=1789549280; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oiZZoK2m1udHvSG78cGXbZoP5Fh5l1Q4IJu628L6gi0=;
-        b=GngpqXcIjINjl8jkt2wK4iLX8GbMlg6sNjS3KR776POV/B0pBhv9xqrdW9//C8t6Yf
-         Qi4eJmIrz9qLeU1xQaKjv32uVPci5IXsEUOnPhjeTnYigCnHIgQYRzzYQ2HnwSgaN1H1
-         Y6/92LZzK2PSCHRVIt1gCK7o8eXxs7hq94285Qgsvyg4C5s0TffEYSC2mkdFpwTHDbZR
-         BQZ0d7ycs4hRAmtir1k99cIvObeoXgW+/9DE0+LCcRnx5wJRprQ/GCTNbb4ncAN9J9hf
-         1YXz7pvDmiB0rFpJ+v3fRrFvM+2oQoVQL156ILIEY2MtFiA05LeKdgNMUG/1+V1OEiZX
-         PwDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy4iPRR6rcfsVNUZBPCOxNoxwUGmVtS0thK0NxVme8Hq9r0KR0yLLl45Yts4VtaugibIsat@lists.linux.dev
-X-Gm-Message-State: AFuF++nt2sN+IP2sPp5vnSU+/2a/fgfOHXuOr5ZEznRl7R9YWXaErCRt
-	3SW8oCJKbzaKlQ4uoAJwiRiF/buSyrUzHSTqpjBrES032yXKNmBUIr8CICc7lcDhfRE=
-X-Gm-Gg: AYBFou1KfbuETUJ+b9MJkSk2LtdgeHktCoFlPPXiYfogTx9gwZkEPhB5i2GP9Mw/iAD
-	5Vw7YkmdtkYWtu4yyV30t/W6UjvVVj8fURcfGEd9DoQuPu9fcp/KbdZx6qEC5aC/VCswAgsS9Mm
-	QPVwtsmkKVWbBWVQC/5EmcP68XQkkI1Vdc7xIyOUNVLVJRF86KIFLOdmEKvVBOE6K62/DCItkVR
-	GP53JGP1Rrb1HwoN568FEapMhJIGTMkyShLCpKT7W/NmbZMWQPMSnn/SG81eHzgiJ1H0nHQHoSB
-	OZCmX71aCO+2WPrgWlDoXpYHYxEe5jc//0wNPTHq5QXHAsufzRxAcKnWBbdhYkhjaIyXlAwihDf
-	S2mIcfYjhHtkbjdJItC0uPZOcYZhzh+W6Vpm7ApeQb0oejUj4bhFI6JYcBP/i/ds4XaHma/fCxt
-	bfhg2Jj5mtm4r6EMWM8gCJoE1hT6NlLgIVWm0Jv6XgPNMl4Uh3DJw6OwIpYs6XSBfgVWhR3I05H
-	kA=
-X-Received: by 2002:a17:90b:528e:b0:38e:ad9d:1161 with SMTP id 98e67ed59e1d1-39b25ee67f0mr51440982a91.0.1788944476217;
-        Wed, 09 Sep 2026 02:01:16 -0700 (PDT)
-Received: from localhost ([106.38.226.102])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2612d3f1sm30763517a91.13.2026.09.09.02.01.14
+        bh=/uqYjR8CIvsGBQZ1BYCg5wZAXr0c5gOLef28qhmkr+U=;
+        b=GgaMtumnM+LMJi/yblSRG5Pkf2PCQFCpzODYt0DePOZhWyE1JvuXSlOMyMs76qIvIU
+         dhxHcpBezFTlHb4S75Diimo9i0CvMNCeJ0ssqKHNRi9m4XhKJDdUUyjNCQbVNaEA+Cm3
+         8ntL1j+aQJ31RFprvvugdIPFnp4e6dm6Y90sHSNHpuQH05o9jl2pBQoEGkAl1wiTQY01
+         8XB4hnAMwe0Atf6MWrePlrITar8rgxijlcF/4wokc8ri7O3Xp1FzFh0IUGZqoE0mPu3w
+         6FOrwPXQBtRJid+PNB7yrEK+5f8ksospcDgaCzWhfJFlNEHrS6IDwp6EXB5U/BfeN3u8
+         FQxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788944480; x=1789549280;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/uqYjR8CIvsGBQZ1BYCg5wZAXr0c5gOLef28qhmkr+U=;
+        b=NiOR2Kr7lEOhwKKxcYbV6wskcQNJBBCOpbgzhTN+mpv7wjIRJRLt8F0JnQAvQnsgFm
+         hPlZS0HeTcUtCn5rNy2VIyV/W1LuN7g4ttGggwvvDXFcmspk5Ot2ipKSry7PQRM56UFn
+         fRKBXLT1wpH+KiKiY4G/xLXpaeRkFOQs987D/S/gkTtrHd0JTBxa0XXwAqyjCFbEMkwO
+         Xtnqlkmmv8GOuoZ25yyX+MeKqCWj8szfOLeeU4e754ttkAxxrvWWb37yEQ3kdtniSGCl
+         5xVRgwaV+ACC6b56MijCO4jqTK03PiqRgSbdvRbwDu8HjDSKt2L5t3iVuZ86HA0b6g2N
+         /OjA==
+X-Forwarded-Encrypted: i=1; AKwUvBzSr1eA64pXo50SYOOE6iLH3QL7ExRZqnEhsSim30TV9phZ+iB5DrMI1DMwSUTlc3utPV0/@lists.linux.dev
+X-Gm-Message-State: AFuF++kNkhbZqMCOC3/46wYKPoPvnz1xuo5VyheS66CniL9/jjHid+Oz
+	3P3/za/vkYFPlfujkOBwtIv8snd91jFBsVg7Xu1dke03bw2zsM7F7Tz1H2IUfXfCiE4=
+X-Gm-Gg: AYBFou21gFCOlw1mhbJ0gCAIRIH3cbJzao5wkZrqP8TYytSWH1pD9O1aK7OwOVANFNh
+	9xWj+mbMhIm0PZpvGNoBW7a8J5U2BNLFnNMHG4iWc/RnesB715/la0qSFYsID6Z5tFIDP5/gUsS
+	ZSZt7uzXNGGcKYFfzIKxDZUDg2PZtPXnm7inbLBu2F7gHSzYDjOowBqxn7JMrrZK2Elov5+59qh
+	Vvbn/Fr7JqKCoug5vY/91WO9A/XzlwEqOuLu8n5DEYeQ/yB1eGhCmsIlHVx2dwuwXwUcQxAVJ3d
+	WEYf8NK2w3yfpo4wwPpNkmrTLO49WBG4q3yq1JMYS8tRpU+Pg8BKDO6sMs3MSHa89g6IIfx57F0
+	FANVGx7YQ4G2h3eKQJUARHjonMZYi+oTPOPiqVVxSZAU+Laht3bElr9GiahDeZmlT0JTrIIr9YC
+	xSfEd+mfKmwV/wfCoq4yvsc3v6u/GZd+1fYvadJnqPJ71AntzbfddzmgjSSXoCBOGMW2viR5phL
+	Z0=
+X-Received: by 2002:a17:90b:2542:b0:398:9beb:5c17 with SMTP id 98e67ed59e1d1-39b2620a2bfmr47341861a91.18.1788944480190;
+        Wed, 09 Sep 2026 02:01:20 -0700 (PDT)
+Received: from localhost ([106.38.226.219])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2615039asm31433140a91.15.2026.09.09.02.01.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 02:01:15 -0700 (PDT)
+        Wed, 09 Sep 2026 02:01:19 -0700 (PDT)
 From: Julian Sun <sunjunchao@bytedance.com>
 To: linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
@@ -74,10 +76,12 @@ Cc: jack@suse.cz,
 	djwong@kernel.org,
 	ebiggers@kernel.org,
 	sandeen@redhat.com
-Subject: [PATCH 0/7] fs: preserve superblock inode walk positions across lock drops
-Date: Wed,  9 Sep 2026 17:01:05 +0800
-Message-Id: <20260909090112.790006-1-sunjunchao@bytedance.com>
+Subject: [PATCH 1/7] fs: remove trailing whitespace from include/linux/fs.h
+Date: Wed,  9 Sep 2026 17:01:06 +0800
+Message-Id: <20260909090112.790006-2-sunjunchao@bytedance.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260909090112.790006-1-sunjunchao@bytedance.com>
+References: <20260909090112.790006-1-sunjunchao@bytedance.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -86,76 +90,69 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[Motivation]
+Remove trailing whitespace before introducing the inode iterator API.
+This avoids unrelated whitespace changes from automatic editor cleanup
+in the following patches. This also fixes formatting issues in fs.h
+reported by scripts/checkpatch.pl.
 
-We observed hung tasks in production during disk hotplug operations. A
-kernel thread spends a long time in evict_inodes() while holding s_umount,
-blocking other users of that lock and causing further stalls.
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+---
+ include/linux/fs.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-The problem is that evict_inodes() restarts its walk from the head of
-sb->s_inodes every time it reschedules. When a large number of referenced
-inodes remain near the head, each restart scans those inodes again without
-making progress through that part of the list. The repeated scans can
-delay eviction long enough to trigger hung-task reports. This is the same
-problem that [1] attempted to address.
-
-[Approach]
-
-This series introduces sb_for_each_inodes() for two purposes:
-
-  1. Consolidate open-coded s_inodes walks behind a common entry point.
-  2. Retain each walk's position across drops of s_inode_list_lock.
-
-The iterator mechanism follows the approach used by cgroup task iteration,
-such as css_task_iter_next(). Active iterators are registered on a separate
-list, sb->s_inodes_iters. Before removing an inode from s_inodes, the
-removal path advances any iterator whose next position points to that
-inode. These updates are protected by s_inode_list_lock, so a walker can
-drop the lock and later resume from its saved position.
-
-Existing walkers, such as drop_pagecache_sb() and add_dquot_ref(), already
-contain their own position-preserving logic: they carry an inode reference
-across iterations so that they can resume after dropping the list lock.
-Moving that responsibility into sb_for_each_inodes() simplifies these
-callers and lets their callbacks focus on the per-inode work.
-
-Patch 1 removes trailing whitespace from include/linux/fs.h.
-Patch 2 introduces sb_for_each_inodes().
-The remaining patches convert existing walks to the new interface.
-remove_dquot_ref() and nr_blockdev_pages() are left unchanged: their
-walks are simple and do not require the inode->i_lock locking imposed
-by the callback interface. Converting them would add an unnecessary
-lock/unlock overhead for every inode.
-
-[Testing]
-
-I tested this series with approximately 20 hours of xfstests case
-execution, repeatedly running the auto group on ext4 and XFS, no new
-issues were observed. And with this patch applied, the hung task that
-previously occurred on every run no longer occurs.
-
-[1] https://lore.kernel.org/all/20241118114508.1405494-1-yebin@huaweicloud.com/
-
-Julian Sun (7):
-  fs: remove trailing whitespace from include/linux/fs.h
-  fs: introduce sb_for_each_inodes().
-  block: use sb_for_each_inodes() in sync_bdevs()
-  fs: use sb_for_each_inodes() API.
-  gfs2: use sb_for_each_inodes() for cooperative eviction
-  quota: use sb_for_each_inodes() in add_dquot_ref()
-  landlock: use sb_for_each_inodes() when detaching a superblock
-
- block/bdev.c                   |  85 +++++++++----------
- fs/drop_caches.c               |  44 +++++-----
- fs/gfs2/ops_fstype.c           |  38 ++++-----
- fs/inode.c                     | 142 +++++++++++++++++++++++--------
- fs/quota/dquot.c               |  72 ++++++----------
- fs/super.c                     |   1 +
- include/linux/fs.h             |  29 +++++--
- include/linux/fs/super_types.h |   3 +-
- security/landlock/fs.c         | 150 +++++++++++++--------------------
- 9 files changed, 295 insertions(+), 269 deletions(-)
-
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index f9d1e05e8ae6..09c4db5e9ae0 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -296,7 +296,7 @@ struct iattr {
+  */
+ #define FILESYSTEM_MAX_STACK_DEPTH 2
+ 
+-/** 
++/**
+  * enum positive_aop_returns - aop return codes with specific semantics
+  *
+  * @AOP_WRITEPAGE_ACTIVATE: Informs the caller that page writeback has
+@@ -306,7 +306,7 @@ struct iattr {
+  * 			    be a candidate for writeback again in the near
+  * 			    future.  Other callers must be careful to unlock
+  * 			    the page if they get this return.  Returned by
+- * 			    writepage(); 
++ *			    writepage();
+  *
+  * @AOP_TRUNCATED_PAGE: The AOP method that was handed a locked page has
+  *  			unlocked it and the page might have been truncated.
+@@ -1315,8 +1315,10 @@ struct file *get_file_active(struct file **f);
+ 
+ #define	MAX_NON_LFS	((1UL<<31) - 1)
+ 
+-/* Page cache limit. The filesystems should put that into their s_maxbytes 
+-   limits, otherwise bad things can happen in VM. */ 
++/*
++ * Page cache limit. The filesystems should put that into their s_maxbytes
++ * limits, otherwise bad things can happen in VM.
++ */
+ #if BITS_PER_LONG==32
+ #define MAX_LFS_FILESIZE	((loff_t)ULONG_MAX << PAGE_SHIFT)
+ #elif BITS_PER_LONG==64
+@@ -2285,7 +2287,7 @@ int sync_inode_metadata(struct inode *inode, int wait);
+ struct file_system_type {
+ 	const char *name;
+ 	int fs_flags;
+-#define FS_REQUIRES_DEV		1 
++#define FS_REQUIRES_DEV		1
+ #define FS_BINARY_MOUNTDATA	2
+ #define FS_HAS_SUBTYPE		4
+ #define FS_USERNS_MOUNT		8	/* Can be mounted by userns root */
+@@ -2907,7 +2909,7 @@ ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos);
+ extern ssize_t kernel_write(struct file *, const void *, size_t, loff_t *);
+ extern ssize_t __kernel_write(struct file *, const void *, size_t, loff_t *);
+ extern struct file * open_exec(const char *);
+- 
++
+ /* fs/dcache.c -- generic fs support functions */
+ extern bool is_subdir(struct dentry *, struct dentry *);
+ extern bool path_is_under(const struct path *, const struct path *);
 -- 
 2.39.5
 
