@@ -1,87 +1,72 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA074968FF
-	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 09:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6333A530DE5
+	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 11:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944510; cv=none; b=rgQeeLT7v85o31ngMOhbnakalPbgXNovJ7iUA6YC8+vO6qBesB+/HVqVI56HiEpoPtitplNeJUkepphA0nJSFKAF/nbI4zQ/2bw3f1af56b6R7p1BF3prkz5cWx7vnZqJbBkHpNpcYb4NZhcMQzu5DvKo7RbK+DoJRqAmLT9/Bg=
+	t=1788952880; cv=none; b=q7lX1tv/nTp8SN8tokCBYIMVOg9VGOWfs35OqKXuAdccKMB1UBXKhoFxKgLu8R9J26YaiKnFSNtemLzQ/HJB1VCzDX3XJvRyNr2JW9IG8M8fFcBbI5yUsTyJo3p1GRiVQlPrVRnO0A7tvW5EdvzeR2y58rLcTePmKtDsf9GFTUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944510; c=relaxed/simple;
-	bh=8FHBC5gbFeIC4E/lA238Bv5TaDRS4lUM54i1wq/3L1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d5oDQuxJt7e4BfjsGZ5N2a53lVEPEFdmCQ6YHRVjFr+XehXnqOHQhGUXRSAcUEe4gBeB972RvqS8naYL9kYATb5lNsx78m/V+Chtj875T9NwnqA16I6tj3wFgmlG1BYp0P5FeV98ntqcCMXOqNwl5nlWiphDwspEnrtZyudy14c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Of5Eg7gb; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1788952880; c=relaxed/simple;
+	bh=ejKLOMfYN5cbTm0XLhNm/9cnSoVZpQ0xyMtLlfidjgU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=InYeT9YocIrdV79Cv6CxrcRKDe2oM9PcK2e2kZC12Qrxso2+ba3q8gifWeceR5/53Ia1ZLaWnYTuJUJCFihuZed3AoHsHotkAkhmOOjeA2zg6bg9Bs3sAUVFGa76qjTp4FikK3OWCBtGjQz5pl//btCuhrbGZ/sSo16nx1DOq9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ee7LyE9w; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Of5Eg7gb"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8692be1cda4so95647b3a.1
-        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 02:01:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ee7LyE9w"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso5352359a91.3
+        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 04:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1788944505; x=1789549305; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zE9gpwYGcyFTdwIyA0S+65+Mdt3hWydj4aldKyaFgJI=;
-        b=Of5Eg7gbyMb3oyudoVn8H/5VlOZskFbXVv6nAAspLAvNoJJFkcOKTSL47JtFs9cikJ
-         q4MteLjbk0XHHWB4BGT/gzUFcQDYTAAL/EhEWv7Ug4VfTmMUtSvxsFBXzzA0mXsxKFf5
-         nxXgHCUcWgR3ly87TXIbAGJovzsYuBoD7tcMeI7UEYXsIeepU8XihbywWjKSN2p9NFq+
-         mrpyZez3Xs/Z6UnKaQNxn+d2s7rfJuFvBAtCzIoV9BdZkoNMsOE1ZKBFrPLoTZ/TWdHx
-         9rYdOQmwclyInCYd3KkJEbrZ2FkeenlwuQUbs1JC6cuev1uBJu7krXoGzssEojT8kssy
-         +IKg==
+        d=gmail.com; s=20251104; t=1788952879; x=1789557679; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AUHFFioMah0sAuoQzwWsCFgryzdcGUF6ghThqp3wfNI=;
+        b=ee7LyE9w3jSWgAxAZ0qa47SbhVcbSKLp5QVY9NG7zYHvASrDyE26+mVqSYXRW4IaQj
+         rBxrQs4ffmv5oGCl4aqghPRhbytU8ibHOeN+qiQLwETlY3jD+CAZjPcJGlETSb0mDej8
+         zkuATtHKd9iDCNwUsS+rr7G/wemE1wWCr/jiMa41SIsfHHjHmv4+oCbyr3v/pxOvOc3U
+         xTpcp2VJ66InZRrJRE32FT2dIAer8q6YOLVPaiZcAOKr2kFH+6ucAQIbRH9egp2kdrSq
+         8B4H3pKOGd6xnxt2dcC2z9RF3WdvzzdkwxQsyFNKnsOlkLhFlV2hRZbFLPktpccnynpz
+         5iCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788944505; x=1789549305;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zE9gpwYGcyFTdwIyA0S+65+Mdt3hWydj4aldKyaFgJI=;
-        b=s5Fc++Vp4nIzFZn+Tn86nmbTBQ9avxRTU3hrDtgfNEhdhawHYsFNOF34N+/hjLZDb0
-         2vafXAf3yEwKEsg3oxfPLAFVqeAQddIQXHdTAe0NRV77m9MKjoFjYf+gpouV6rtioDzl
-         HxTh0gGSL7htMtiarykrorxp8p+Nuk6VY0ZFAt1AaGstaaK/7UULzVoM0DzQMkeA9J9E
-         FKgAHgvUQvBpCkC6V6INAgWKJn3wCLvL2xGHFnm2C4wnYgfK9tTxWO11c66DupHwHvNz
-         jd7xgbPEWmplV8PMjBvWbcRhdG7uhoHD9oWyCuLe8DkF7l8kwuH42pjl1FXgU8bNLk36
-         fTsA==
-X-Forwarded-Encrypted: i=1; AKwUvBwekJ0MxIElsy0hypdqe0Ej4QprtCltiU+M668dBE6kRTSr8zEnuUjoD3x4OpG1ol/In1tc@lists.linux.dev
-X-Gm-Message-State: AFuF++mp4gsPBLZB+3aVUlC6hTvzTnbrdHet9zEcmARfcktdnPuxzbvg
-	SDw/uSjNgN9YAW4M9x8RiL0u05bFWVC2qh8WDylvK4EyrYxAIxhVj286W8+N6K+eQIg=
-X-Gm-Gg: AYBFou0/pJvIFxK4hAMQA+sUwDdDUFiyNEUcGR6AZePTkA5TmSf2AgnAKLSv5JEUD7Q
-	3f3ddtPtPilWxWyu54iRWnoIjPFTrj1MYogZcil7sc4tkhFFmyJGYgBLLha9LZKmYqIzFTGQKvd
-	oGh28Bp8FfaJb7Bg1M4A4jiRHwXekn7ZrTSilD+DjCvZ8wvuoRr51T1WfdTFMcA14HVAcW0bw2d
-	nl37dwYpbaMaoeiy3rFLGrZTPiBTudmxXDviErxykCVykbPF1bxPeUIZne8HVgy6xV1CJrdHTjY
-	UospYydyhglp0kv22f2haU4FzlvYzM31BNW/d7xWS7362gwP8BI34mwNN7yceVnHFmdgAF1npFX
-	zlEbxQ/Eh7mkTRDjU69ic9WOamTK/5Wv8i8FVWFyJq9c9tT2o/Jlci260LifC9vk4D1DdC5/oz2
-	UBo1o1gIkmm9rGXf1/cGdf1n7P+KQXdvGOmMrVCxx476ee7u1/lzYiEl7pm+H4CHlHy7mPnEm52
-	p0=
-X-Received: by 2002:a05:6a00:909a:b0:857:7317:cff1 with SMTP id d2e1a72fcca58-8616a168525mr51310976b3a.18.1788944504640;
-        Wed, 09 Sep 2026 02:01:44 -0700 (PDT)
-Received: from localhost ([106.38.226.231])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-868d1e4ff97sm483493b3a.17.2026.09.09.02.01.43
+        d=1e100.net; s=20251104; t=1788952879; x=1789557679;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AUHFFioMah0sAuoQzwWsCFgryzdcGUF6ghThqp3wfNI=;
+        b=BLL3lE9cPQrHCY5cLcEqEvKtJYxxzEmY7LpNXQRTdLcyA2be4ZiSUaK3oaOuD+YvtK
+         3XNx4xX+v+Cx3xGAw8hbnmF8Po50guAh1SZXHF7DPx61dyhx2S8yEPDT658NUZ38YQRn
+         GhxEEypsthe8F38pJlleLiZD/l1/z52My2NBhU5xAfTzOn+muI6E2F2nq814ytGR86LH
+         NLDPj66C+1LRcaMWw7NMiMDmi5q2C81/3iqLj9PakqMWoLIEO9bTd3/V7WEXlTf7VAyr
+         bJUZny0vS7MW/OemDPKSBwedNDFlAUvlcdSY6Jr6kZr3wXftWIcMWq6ZknDEUoS++HSX
+         HbUA==
+X-Gm-Message-State: AFuF++kPO7WiO5lKGBToU4BhixCeK3NwN7Ey3HNkYBnFkFEFXvfKfH2i
+	JtpNbJxQnwJv/m/eoDJejCPlNLjbGEtptlxGBYrneOT1dBtfhTfalDwGuThh1I/2ngg=
+X-Gm-Gg: AYBFou0StY+pbbpYXSG4hrHFfC1a1W4gyqqqF3dcrX+iPOFEZQIJRb3h4zZWLFhPddy
+	hLKv2yDNSfov843lUMko+X2wH2dt2tW9W925sI0M9z5hzfVf+ll/Jrjuns3YWX1LOSF2554AiE+
+	5NowaZtZgDG6lfoSlfN12XguAaL2BwBN3gjK9rEiWb3mrXM+LOSMi86RXz+h+aKA6m3WLlRq2lV
+	ZzNnvwN5PHHIHP10hbBKwBcmcqYgBde3FtMdwxNz9Gei8CNsSzMycCx3eH5Q7AkwCQRER2ogvNI
+	Zf5yMNJBb5NB8pQ4e9yVvBnvNB5mzQW0LmXWtJciRO2gaXr8hNs/u21c7+5tcW82OCYbouLSN9W
+	/5oQ4tBNLcVAPleBfc1wicI+DEVa/dtYSd4nzxriy6h/RJbpIDrMpjcyQ//Fr6W3VNUMNkcusMH
+	K2zRIBkhZawbkb+cSqrduG0+1m1mlBicXzchu2jHdNdMtzLliFhnOxPCacTBCGapq+SYGYpbfcD
+	0g3UIDwH5XcbQgWurUTwO2CPtXF+YTjc+Q=
+X-Received: by 2002:a17:90a:1188:b0:39b:a8d8:985 with SMTP id 98e67ed59e1d1-39ba8d80b06mr5282578a91.12.1788952878427;
+        Wed, 09 Sep 2026 04:21:18 -0700 (PDT)
+Received: from LAPTOP-450UDG4J ([223.185.135.143])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b260cd2aasm31265258a91.3.2026.09.09.04.21.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 02:01:44 -0700 (PDT)
-From: Julian Sun <sunjunchao@bytedance.com>
-To: linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-security-module@vger.kernel.org
-Cc: jack@suse.cz,
-	agruenba@redhat.com,
-	mic@digikod.net,
-	gnoack@google.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	aleksa@amutable.com,
-	legion@kernel.org,
-	djwong@kernel.org,
-	ebiggers@kernel.org,
-	sandeen@redhat.com
-Subject: [PATCH 7/7] landlock: use sb_for_each_inodes() when detaching a superblock
-Date: Wed,  9 Sep 2026 17:01:12 +0800
-Message-Id: <20260909090112.790006-8-sunjunchao@bytedance.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260909090112.790006-1-sunjunchao@bytedance.com>
-References: <20260909090112.790006-1-sunjunchao@bytedance.com>
+        Wed, 09 Sep 2026 04:21:17 -0700 (PDT)
+From: Yogesh Gaur <yogeshgaur.83@gmail.com>
+To: Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>,
+	syzbot+da6dc573ce5e6624f505@syzkaller.appspotmail.com
+Subject: [PATCH] dlm: don't return a lkb that has no rsb from find_lkb()
+Date: Wed,  9 Sep 2026 16:51:08 +0530
+Message-ID: <20260909112108.2281-1-yogeshgaur.83@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -90,192 +75,103 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert hook_sb_delete() to sb_for_each_inodes() and release each
-callback's inode reference outside s_inode_list_lock. This removes the
-prev_inode reference used to preserve the walk position while retaining
-the synchronization with release_inode() and the final wait for pending
-inode releases.
+_create_lkb() publishes a new lkb in ls_lkbxa, which is what assigns its
+lkb_id:
 
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+	rv = xa_alloc(&ls->ls_lkbxa, &lkb->lkb_id, lkb, limit, GFP_ATOMIC);
+
+but the lkb only gets an rsb later, once request_lock() has resolved the
+resource name and calls attach_lkb():
+
+	static void attach_lkb(struct dlm_rsb *r, struct dlm_lkb *lkb)
+	{
+		hold_rsb(r);
+		lkb->lkb_resource = r;
+	}
+
+So between those two points the lkb is fully addressable by its lkb_id
+while lkb_resource is still NULL. find_lkb() will hand it out, and its
+callers all go straight for the rsb without checking:
+
+	r = lkb->lkb_resource;
+
+	hold_rsb(r);
+	lock_rsb(r);
+
+For the userspace API the lkid is simply whatever was written to the
+misc device, so a lkid can be aimed at a lkb that is still being built
+by another thread. hold_rsb() then reads res_flags off NULL:
+
+  BUG: KASAN: null-ptr-deref in rsb_flag fs/dlm/dlm_internal.h:386 [inline]
+  BUG: KASAN: null-ptr-deref in hold_rsb fs/dlm/lock.c:334 [inline]
+  BUG: KASAN: null-ptr-deref in unlock_lock fs/dlm/lock.c:3333 [inline]
+  BUG: KASAN: null-ptr-deref in dlm_user_unlock+0x2ab/0x690 fs/dlm/lock.c:5956
+  Read of size 8 at addr 0000000000000050 by task syz.3.570/7893
+   rsb_flag fs/dlm/dlm_internal.h:386 [inline]
+   hold_rsb fs/dlm/lock.c:334 [inline]
+   unlock_lock fs/dlm/lock.c:3333 [inline]
+   dlm_user_unlock+0x2ab/0x690 fs/dlm/lock.c:5956
+   device_user_unlock+0x1ca/0x260 fs/dlm/user.c:321
+   device_write+0x905/0xed0 fs/dlm/user.c:590
+
+Reject an unattached lkb in find_lkb() rather than in each caller. Every
+find_lkb() caller dereferences lkb->lkb_resource -- convert_lock(),
+unlock_lock() and cancel_lock() through the r = lkb->lkb_resource above,
+dlm_recover_process_copy() the same way, add_to_waiters() via
+lkb->lkb_resource->res_ls -- so none of them wants a half-built lkb, and
+a lkb without an rsb is not a lock anyone outside can name yet. Callers
+already handle find_lkb() failing.
+
+Testing lkb_resource under ls_lkbxa_lock next to the existing kref_read()
+check is enough. The value is not stable under that lock, as attach_lkb()
+does not take it, but it does not need to be: once a non-NULL rsb has
+been observed it stays attached for the life of the reference taken here,
+because detach_lkb() only runs from __put_lkb() on the last reference.
+Observing NULL while attach_lkb() races is the case being rejected, and
+the thread still inside request_lock() has not returned the lkid to
+anyone at that point.
+
+This is the null-ptr-deref only. The refcount warning syzbot reports in
+dlm_user_request() itself, where hold_lkb() runs on a lkb whose count
+already reached zero, is a separate race on an lkb that is past
+attach_lkb() and is not addressed here.
+
+The unchecked r = lkb->lkb_resource goes back to the original DLM
+import, but an untrusted lkid only became possible once the userspace
+device interface was added, so that is the tag below.
+
+Fixes: 597d0cae0f99 ("[DLM] dlm: user locks")
+Reported-by: syzbot+da6dc573ce5e6624f505@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=da6dc573ce5e6624f505
+Assisted-by: LLM
+Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
 ---
- security/landlock/fs.c | 150 +++++++++++++++++------------------------
- 1 file changed, 60 insertions(+), 90 deletions(-)
+ fs/dlm/lock.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index 30aa6ce13590..3dcde8cbfb6a 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -1369,110 +1369,80 @@ static void hook_inode_free_security_rcu(void *inode_security)
- 
- /* Super-block hooks */
- 
--/*
-- * Release the inodes used in a security policy.
-- *
-- * Cf. fsnotify_unmount_inodes() and evict_inodes()
-- */
--static void hook_sb_delete(struct super_block *const sb)
-+static int hook_sb_delete_inode_iter_cb(struct inode *inode, void *data)
- {
--	struct inode *inode, *prev_inode = NULL;
-+	struct landlock_object *object;
-+	struct super_block *sb = inode->i_sb;
- 
--	if (!landlock_initialized)
--		return;
-+	if (!atomic_read(&inode->i_count)) {
-+		spin_unlock(&inode->i_lock);
-+		return 0;
-+	}
- 
--	spin_lock(&sb->s_inode_list_lock);
--	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
--		struct landlock_object *object;
-+	rcu_read_lock();
-+	object = rcu_dereference(landlock_inode(inode)->object);
-+	if (!object) {
-+		rcu_read_unlock();
-+		spin_unlock(&inode->i_lock);
-+		return 0;
-+	}
-+	/* Keeps a reference to this inode until the next loop walk. */
-+	__iget(inode);
-+	spin_unlock(&inode->i_lock);
- 
--		/* Only handles referenced inodes. */
--		if (!icount_read_once(inode))
--			continue;
-+	/*
-+	 * If there is no concurrent release_inode() ongoing, then we
-+	 * are in charge of calling iput() on this inode, otherwise we
-+	 * will just wait for it to finish.
-+	 */
-+	spin_lock(&object->lock);
-+	if (object->underobj == inode) {
-+		object->underobj = NULL;
-+		spin_unlock(&object->lock);
-+		rcu_read_unlock();
- 
- 		/*
--		 * Protects against concurrent modification of inode (e.g.
--		 * from get_inode_object()).
-+		 * Because object->underobj was not NULL,
-+		 * release_inode() and get_inode_object() guarantee
-+		 * that it is safe to reset
-+		 * landlock_inode(inode)->object while it is not NULL.
-+		 * It is therefore not necessary to lock inode->i_lock.
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 2609e4fdeba8..73e92237fa07 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -1554,9 +1554,17 @@ static int find_lkb(struct dlm_ls *ls, uint32_t lkid, struct dlm_lkb **lkb_ret)
+ 		/* check if lkb is still part of lkbxa under lkbxa_lock as
+ 		 * the lkb_ref is tight to the lkbxa data structure, see
+ 		 * __put_lkb().
++		 *
++		 * _create_lkb() publishes the lkb in lkbxa before
++		 * attach_lkb() gives it an rsb, so a lkid that comes from
++		 * outside can name a lkb that is still being built. Every
++		 * caller here dereferences lkb->lkb_resource, so treat such
++		 * a lkb as not found. Once an rsb has been seen it stays
++		 * attached, as detach_lkb() only runs from __put_lkb() on
++		 * the last reference and we are about to take one.
  		 */
--		spin_lock(&inode->i_lock);
-+		rcu_assign_pointer(landlock_inode(inode)->object, NULL);
- 		/*
--		 * Checks I_FREEING and I_WILL_FREE  to protect against a race
--		 * condition when release_inode() just called iput(), which
--		 * could lead to a NULL dereference of inode->security or a
--		 * second call to iput() for the same Landlock object.  Also
--		 * checks I_NEW because such inode cannot be tied to an object.
-+		 * At this point, we own the ihold() reference that was
-+		 * originally set up by get_inode_object() and the
-+		 * __iget() reference that we just set in this loop
-+		 * walk.  Therefore there are at least two references
-+		 * on the inode.
- 		 */
--		if (inode_state_read(inode) &
--		    (I_FREEING | I_WILL_FREE | I_NEW)) {
--			spin_unlock(&inode->i_lock);
--			continue;
--		}
-+		iput_not_last(inode);
-+	} else {
-+		spin_unlock(&object->lock);
-+		rcu_read_unlock();
-+	}
- 
--		rcu_read_lock();
--		object = rcu_dereference(landlock_inode(inode)->object);
--		if (!object) {
--			rcu_read_unlock();
--			spin_unlock(&inode->i_lock);
--			continue;
--		}
--		/* Keeps a reference to this inode until the next loop walk. */
--		__iget(inode);
--		spin_unlock(&inode->i_lock);
-+	spin_unlock(&sb->s_inode_list_lock);
-+	iput(inode);
-+	spin_lock(&sb->s_inode_list_lock);
- 
--		/*
--		 * If there is no concurrent release_inode() ongoing, then we
--		 * are in charge of calling iput() on this inode, otherwise we
--		 * will just wait for it to finish.
--		 */
--		spin_lock(&object->lock);
--		if (object->underobj == inode) {
--			object->underobj = NULL;
--			spin_unlock(&object->lock);
--			rcu_read_unlock();
-+	return 0;
-+}
- 
--			/*
--			 * Because object->underobj was not NULL,
--			 * release_inode() and get_inode_object() guarantee
--			 * that it is safe to reset
--			 * landlock_inode(inode)->object while it is not NULL.
--			 * It is therefore not necessary to lock inode->i_lock.
--			 */
--			rcu_assign_pointer(landlock_inode(inode)->object, NULL);
--			/*
--			 * At this point, we own the ihold() reference that was
--			 * originally set up by get_inode_object() and the
--			 * __iget() reference that we just set in this loop
--			 * walk.  Therefore there are at least two references
--			 * on the inode.
--			 */
--			iput_not_last(inode);
--		} else {
--			spin_unlock(&object->lock);
--			rcu_read_unlock();
--		}
-+/*
-+ * Release the inodes used in a security policy.
-+ *
-+ * Cf. fsnotify_unmount_inodes() and evict_inodes()
-+ */
-+static void hook_sb_delete(struct super_block *const sb)
-+{
-+	unsigned int flags = INODE_ITER_NORMAL;
- 
--		if (prev_inode) {
--			/*
--			 * At this point, we still own the __iget() reference
--			 * that we just set in this loop walk.  Therefore we
--			 * can drop the list lock and know that the inode won't
--			 * disappear from under us until the next loop walk.
--			 */
--			spin_unlock(&sb->s_inode_list_lock);
--			/*
--			 * We can now actually put the inode reference from the
--			 * previous loop walk, which is not needed anymore.
--			 */
--			iput(prev_inode);
--			cond_resched();
--			spin_lock(&sb->s_inode_list_lock);
--		}
--		prev_inode = inode;
--	}
--	spin_unlock(&sb->s_inode_list_lock);
-+	if (!landlock_initialized)
-+		return;
-+
-+	sb_for_each_inodes(sb, flags, hook_sb_delete_inode_iter_cb, NULL);
- 
--	/* Puts the inode reference from the last loop walk, if any. */
--	if (prev_inode)
--		iput(prev_inode);
- 	/* Waits for pending iput() in release_inode(). */
- 	wait_var_event(&landlock_superblock(sb)->inode_refs,
- 		       !atomic_long_read(&landlock_superblock(sb)->inode_refs));
+ 		read_lock_bh(&ls->ls_lkbxa_lock);
+-		if (kref_read(&lkb->lkb_ref))
++		if (kref_read(&lkb->lkb_ref) && lkb->lkb_resource)
+ 			kref_get(&lkb->lkb_ref);
+ 		else
+ 			lkb = NULL;
 -- 
-2.39.5
+2.55.0.windows.5
 
