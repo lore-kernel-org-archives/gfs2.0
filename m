@@ -1,123 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6F15908A9
-	for <gfs2@lists.linux.dev>; Tue,  8 Sep 2026 22:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191483B2FCC
+	for <gfs2@lists.linux.dev>; Wed,  9 Sep 2026 09:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907119; cv=none; b=Yz6sfXevvcQIxhqfDwqPjy7+7qBZNC71PamEoVVA1SmDx73eslIJQeXpEYFj30caA3SuxU5jgFfWPJfOi5BWQtVXGKleiCbdzc33NgtpHEwM1L0SuIe7WRaTLhgFgmtHmfrNJgG6vNPEmZ2va2xctfvO1PghJs1+Rzv0lkK/mMQ=
+	t=1788944484; cv=none; b=t0r3j4euN+4vYflnLn33GQfycV9Nd3Ip36VK3Ir5Ca5uirmovGNVKVx717mStnTP9I8DESPHLjkx4SOUbvmnAuhB9RA0BSNIZGU0/nafxD65FaDYmt146xaj2UItg0isVu8WBTNjNjXUG9e/pZWu7tOtwnWhbMaaGP6N2vXIHNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907119; c=relaxed/simple;
-	bh=FC044eHYM2+RBC12+m4Qgu1/XwdZOQnrZVu8TffsGpc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EW51ZmigQ1sDt3gh5E9TFlxBigZYHKYq5/Q9njQd62oxV/XV3K8w3OV1ckwN6Y9ni1wayclqMGaB9+fXYbamic0X3y0GQOMT9Y4AQ9DQm9psI2pTo3IvtUxSkjor26ofLpP1ppqcTHNCpzBmuM5PEANGnQj3Ry5+x6tYkkFNSmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qjto6rUP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788944484; c=relaxed/simple;
+	bh=qIa/OOPRF8eUOfN7emCsEmTA8N7RP5NPcMNXTb2hiYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZuzyJdiXyugT3ct0ohkwkYD9sfc0mszHFjXY4ySHe86tpP0yucGyLzgO6653MPhBfhrZ6I8LjFLykEqDYxaqhZDxgGBlMJ7bOvzKcSRjCunWpcTGY9OKtC/5C99t1GTzilzO9E2Fo1vGd7/GGoohdZ9GVd9VYUx8V5LhAmrrGn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=XbqRKzkb; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qjto6rUP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788907113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ji7zioczppTe+3MGsUl6/c0jkx8Em0m0PBXcaDYGVJM=;
-	b=Qjto6rUPZ+vYA4XF8BQ3lIbYgM2hfm9rRzzxc0Rljk0N+Cf5BYVyKXc0NpvRacGpf3T9zv
-	yy9YlrLBZNN3CbmXBS4nJ8qvt/kkraKDdKo6IPeGgZbZxHnv9B85EeD8UKz61D9KS/HDJb
-	ItS2mcvy7p3SOtpX1TQ8Ie5w7vY2LrI=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-NQKX4vIJNZ6wnLGEpePFgA-1; Tue, 08 Sep 2026 18:38:32 -0400
-X-MC-Unique: NQKX4vIJNZ6wnLGEpePFgA-1
-X-Mimecast-MFC-AGG-ID: NQKX4vIJNZ6wnLGEpePFgA_1788907111
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-66d1d35738aso1905989d50.1
-        for <gfs2@lists.linux.dev>; Tue, 08 Sep 2026 15:38:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="XbqRKzkb"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2db18e5cb56so54335675ad.0
+        for <gfs2@lists.linux.dev>; Wed, 09 Sep 2026 02:01:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1788944476; x=1789549276; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oiZZoK2m1udHvSG78cGXbZoP5Fh5l1Q4IJu628L6gi0=;
+        b=XbqRKzkbKQZqsdeEPVQb1Ymv83n2Yiiu3fdskjn1xEHjBZB4xYNNZm8XK07S032F4q
+         bxniRo0zlafcY0fmdErRlZsaaam7UwJUA2aYqor4hvpAcGb+2UKuPSw9Z3Ei4Ntdb6+1
+         it3VyrebIsRT8qu9YQuFCTTTkHGiggeBWclWitxFIMVdejAxxFhQotY6XLM9atQRySBf
+         zBJZJA4XgYvLI4khzMN1UqNdPEZngVKf7FokjjEXvKpBIRMFLCU4WT44iIeug+e0al10
+         kE6uigpBVRLoQ96MrelGFPy8ocrkdkM9GXjCbH8HVPoXDair8AAnrqeLC2DhKs4x30tr
+         ZtOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788907111; x=1789511911;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ji7zioczppTe+3MGsUl6/c0jkx8Em0m0PBXcaDYGVJM=;
-        b=V30rsCojwqpEDNkS3qRnJk8KrNSF8fRk0d0TRBkPGVOhW4dNoIzGxv+NKpVwEkyyp5
-         OvDlNvSRHIR8GsHXqEx+kc8ogh6UmHG73hZ5mx85HU6iM6/j+caz0HoGc+SfNDhnwuFu
-         QIiicA0JxCT7HDfZ5go8y2XzzEvIJRaVZxoD8XCXMvfzrPPnxfFomQuSvB972FOcFCql
-         LlsiZJ0ltLwGhdb2XZBgaYSJCrI9wGD42/tqTsGs4nBR+kpMYtJO2E2K9G8x4qBm8zu8
-         mwErNJdTYJf6AUBWOguUxS7tHhM16CalWc9pJuMvhgTotAyhu8Fnyau5ToGuV3DfhMRv
-         D5HQ==
-X-Gm-Message-State: AFuF++nB4JgCHUbyBh1C6G/H35EMtwJtg+F4WfZTqIdKZvUeKaFwFl1D
-	XJxto23ZUSL6bM3+cnSxSfyF9JS3qDpnDAT2mTVk0M9nVrGjGgoBxa2Uo8SEaAKFsXf68n88LgH
-	iL6QF/r1v8qFQjSJXsQ7NVf6BDwPqmXR8BaSwOUOKYERgHJ+3oT/XUH94vnPduh6fFhETR6J7ym
-	jZM2JE68e57boZTUmmwRSw1KgUmbxC9A==
-X-Gm-Gg: AYBFou11S7pY/9J8peQeyA20TEH3QwLtH7O3EwOmhEJDQG/mWlY0HzA9vtmMAUEQhSK
-	b7OO6yKpEMp26iCoZy1X+nObraklVW+Czc8ctWsF4o9dQLGhK/IpSAdLDb2QZDeQRiejQbtbn7H
-	I4U15/All+GYWOrg+6Gr6G4y1O5WXOSIQZMlLuom5B3CCSj4zk0e90Su20evJ/Qh5suIEpAQ4l3
-	IGrzo9TaAmfDv+HEdxN/ufbFj0UltNH/IXHEl/06btF
-X-Received: by 2002:a05:690e:144f:b0:66f:c1bc:4042 with SMTP id 956f58d0204a3-670f4a57464mr2702331d50.35.1788907111410;
-        Tue, 08 Sep 2026 15:38:31 -0700 (PDT)
-X-Received: by 2002:a05:690e:144f:b0:66f:c1bc:4042 with SMTP id
- 956f58d0204a3-670f4a57464mr2702320d50.35.1788907110940; Tue, 08 Sep 2026
- 15:38:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788944476; x=1789549276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oiZZoK2m1udHvSG78cGXbZoP5Fh5l1Q4IJu628L6gi0=;
+        b=GngpqXcIjINjl8jkt2wK4iLX8GbMlg6sNjS3KR776POV/B0pBhv9xqrdW9//C8t6Yf
+         Qi4eJmIrz9qLeU1xQaKjv32uVPci5IXsEUOnPhjeTnYigCnHIgQYRzzYQ2HnwSgaN1H1
+         Y6/92LZzK2PSCHRVIt1gCK7o8eXxs7hq94285Qgsvyg4C5s0TffEYSC2mkdFpwTHDbZR
+         BQZ0d7ycs4hRAmtir1k99cIvObeoXgW+/9DE0+LCcRnx5wJRprQ/GCTNbb4ncAN9J9hf
+         1YXz7pvDmiB0rFpJ+v3fRrFvM+2oQoVQL156ILIEY2MtFiA05LeKdgNMUG/1+V1OEiZX
+         PwDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy4iPRR6rcfsVNUZBPCOxNoxwUGmVtS0thK0NxVme8Hq9r0KR0yLLl45Yts4VtaugibIsat@lists.linux.dev
+X-Gm-Message-State: AFuF++nt2sN+IP2sPp5vnSU+/2a/fgfOHXuOr5ZEznRl7R9YWXaErCRt
+	3SW8oCJKbzaKlQ4uoAJwiRiF/buSyrUzHSTqpjBrES032yXKNmBUIr8CICc7lcDhfRE=
+X-Gm-Gg: AYBFou1KfbuETUJ+b9MJkSk2LtdgeHktCoFlPPXiYfogTx9gwZkEPhB5i2GP9Mw/iAD
+	5Vw7YkmdtkYWtu4yyV30t/W6UjvVVj8fURcfGEd9DoQuPu9fcp/KbdZx6qEC5aC/VCswAgsS9Mm
+	QPVwtsmkKVWbBWVQC/5EmcP68XQkkI1Vdc7xIyOUNVLVJRF86KIFLOdmEKvVBOE6K62/DCItkVR
+	GP53JGP1Rrb1HwoN568FEapMhJIGTMkyShLCpKT7W/NmbZMWQPMSnn/SG81eHzgiJ1H0nHQHoSB
+	OZCmX71aCO+2WPrgWlDoXpYHYxEe5jc//0wNPTHq5QXHAsufzRxAcKnWBbdhYkhjaIyXlAwihDf
+	S2mIcfYjhHtkbjdJItC0uPZOcYZhzh+W6Vpm7ApeQb0oejUj4bhFI6JYcBP/i/ds4XaHma/fCxt
+	bfhg2Jj5mtm4r6EMWM8gCJoE1hT6NlLgIVWm0Jv6XgPNMl4Uh3DJw6OwIpYs6XSBfgVWhR3I05H
+	kA=
+X-Received: by 2002:a17:90b:528e:b0:38e:ad9d:1161 with SMTP id 98e67ed59e1d1-39b25ee67f0mr51440982a91.0.1788944476217;
+        Wed, 09 Sep 2026 02:01:16 -0700 (PDT)
+Received: from localhost ([106.38.226.102])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2612d3f1sm30763517a91.13.2026.09.09.02.01.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 02:01:15 -0700 (PDT)
+From: Julian Sun <sunjunchao@bytedance.com>
+To: linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-security-module@vger.kernel.org
+Cc: jack@suse.cz,
+	agruenba@redhat.com,
+	mic@digikod.net,
+	gnoack@google.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	aleksa@amutable.com,
+	legion@kernel.org,
+	djwong@kernel.org,
+	ebiggers@kernel.org,
+	sandeen@redhat.com
+Subject: [PATCH 0/7] fs: preserve superblock inode walk positions across lock drops
+Date: Wed,  9 Sep 2026 17:01:05 +0800
+Message-Id: <20260909090112.790006-1-sunjunchao@bytedance.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260906080821.24403-1-ngocthang2710.1999@gmail.com>
-In-Reply-To: <20260906080821.24403-1-ngocthang2710.1999@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 9 Sep 2026 00:38:20 +0200
-X-Gm-Features: AcwNN1V6U7-Oh-HSWs6kQWHmSLFyXz8cRWxpAuKbiRb6GtSDGrLDP-4NaQ7bA54
-Message-ID: <CAHc6FU6nzAQb9wGF8KfA1LuRH+eqVabNkZ3f3gc+_2rxasoRnw@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix NULL deref in gfs2_quota_lock() for meta inodes
-To: ThangNN99 <ngocthang2710.1999@gmail.com>
-Cc: gfs2@lists.linux.dev, 
-	syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8y3PVS0AJ4XrSmw3vYODWFcLW5YsbMkcpbXsen_94XQ_1788907111
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 6, 2026 at 10:08=E2=80=AFAM ThangNN99 <ngocthang2710.1999@gmail=
-.com> wrote:
-> gfs2_quota_hold() now treats a meta/system inode's NULL i_qadata as
-> success, but gfs2_quota_lock() still dereferences it unconditionally
-> afterwards. Bail out early when there is nothing to lock.
->
-> Reported-by: syzbot+d84e35a320d14f8c270a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3Dd84e35a320d14f8c270a
-> Fixes: 0025112796287599dc79c822ed37124582a0d68a ("gfs2: No quotas for met=
-a inodes")
-> Signed-off-by: ThangNN99 <ngocthang2710.1999@gmail.com>
-> ---
->  fs/gfs2/quota.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-> index 3bbe5c78c793..0c7ea7375f6c 100644
-> --- a/fs/gfs2/quota.c
-> +++ b/fs/gfs2/quota.c
-> @@ -1100,6 +1100,9 @@ int gfs2_quota_lock(struct gfs2_inode *ip, kuid_t u=
-id, kgid_t gid)
->         error =3D gfs2_quota_hold(ip, uid, gid);
->         if (error)
->                 return error;
-> +       /* Meta inodes never get quota data (see gfs2_qa_get()); nothing =
-to lock. */
-> +       if (!ip->i_qadata)
-> +               return 0;
->
->         sort(ip->i_qadata->qa_qd, ip->i_qadata->qa_qd_num,
->              sizeof(struct gfs2_quota_data *), sort_qd, NULL);
-> --
-> 2.43.0
->
+[Motivation]
 
-Applied, thanks.
+We observed hung tasks in production during disk hotplug operations. A
+kernel thread spends a long time in evict_inodes() while holding s_umount,
+blocking other users of that lock and causing further stalls.
 
-Andreas
+The problem is that evict_inodes() restarts its walk from the head of
+sb->s_inodes every time it reschedules. When a large number of referenced
+inodes remain near the head, each restart scans those inodes again without
+making progress through that part of the list. The repeated scans can
+delay eviction long enough to trigger hung-task reports. This is the same
+problem that [1] attempted to address.
+
+[Approach]
+
+This series introduces sb_for_each_inodes() for two purposes:
+
+  1. Consolidate open-coded s_inodes walks behind a common entry point.
+  2. Retain each walk's position across drops of s_inode_list_lock.
+
+The iterator mechanism follows the approach used by cgroup task iteration,
+such as css_task_iter_next(). Active iterators are registered on a separate
+list, sb->s_inodes_iters. Before removing an inode from s_inodes, the
+removal path advances any iterator whose next position points to that
+inode. These updates are protected by s_inode_list_lock, so a walker can
+drop the lock and later resume from its saved position.
+
+Existing walkers, such as drop_pagecache_sb() and add_dquot_ref(), already
+contain their own position-preserving logic: they carry an inode reference
+across iterations so that they can resume after dropping the list lock.
+Moving that responsibility into sb_for_each_inodes() simplifies these
+callers and lets their callbacks focus on the per-inode work.
+
+Patch 1 removes trailing whitespace from include/linux/fs.h.
+Patch 2 introduces sb_for_each_inodes().
+The remaining patches convert existing walks to the new interface.
+remove_dquot_ref() and nr_blockdev_pages() are left unchanged: their
+walks are simple and do not require the inode->i_lock locking imposed
+by the callback interface. Converting them would add an unnecessary
+lock/unlock overhead for every inode.
+
+[Testing]
+
+I tested this series with approximately 20 hours of xfstests case
+execution, repeatedly running the auto group on ext4 and XFS, no new
+issues were observed. And with this patch applied, the hung task that
+previously occurred on every run no longer occurs.
+
+[1] https://lore.kernel.org/all/20241118114508.1405494-1-yebin@huaweicloud.com/
+
+Julian Sun (7):
+  fs: remove trailing whitespace from include/linux/fs.h
+  fs: introduce sb_for_each_inodes().
+  block: use sb_for_each_inodes() in sync_bdevs()
+  fs: use sb_for_each_inodes() API.
+  gfs2: use sb_for_each_inodes() for cooperative eviction
+  quota: use sb_for_each_inodes() in add_dquot_ref()
+  landlock: use sb_for_each_inodes() when detaching a superblock
+
+ block/bdev.c                   |  85 +++++++++----------
+ fs/drop_caches.c               |  44 +++++-----
+ fs/gfs2/ops_fstype.c           |  38 ++++-----
+ fs/inode.c                     | 142 +++++++++++++++++++++++--------
+ fs/quota/dquot.c               |  72 ++++++----------
+ fs/super.c                     |   1 +
+ include/linux/fs.h             |  29 +++++--
+ include/linux/fs/super_types.h |   3 +-
+ security/landlock/fs.c         | 150 +++++++++++++--------------------
+ 9 files changed, 295 insertions(+), 269 deletions(-)
+
+-- 
+2.39.5
 
