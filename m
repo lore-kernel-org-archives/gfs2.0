@@ -1,307 +1,136 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56772351C1C
-	for <gfs2@lists.linux.dev>; Fri, 11 Sep 2026 03:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E0B3D4118
+	for <gfs2@lists.linux.dev>; Fri, 11 Sep 2026 06:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789097730; cv=none; b=W5RmyjA3a8cYeWj6/r0NPaGPNB/L7Bf9/78rIq7ENnrdd1V0LbVIrXNiqRJuW5iE9MSKC0MwPB3zInNmLBTeDtSiQk6mHv/K2N/hmmw8k46bhFI0vo+Yp5GZnNHngXFj4d6Kmv4NY+gsWpv8GVpSIwNa0EmL65pD4pE7Uo30zLk=
+	t=1789109661; cv=none; b=o/7TLAKI5WS98l8kRouDUH9h5qAT/EFKYnZ4GJdgSYUxZYHt1DFi+jNsHUq8rHxgEjXm8M3/DiyVw9bsnVDlwssAom4H+zhliyrYgBg81/eHzUJV+awcmazI/L+/GAaWuIyz2wQPl1/QsuXGGpKS16o4lKb7PNlEG7QkzZoWojg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789097730; c=relaxed/simple;
-	bh=Tu8pKOZMUv7MW57ziXM+jjfR2tJTZJ5OdKiSdiJIjOk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ei7rnRTs+uPdVTsB3J1kErqEyEMj6gz+k+69iNLPpDPaYCfqKntfB2M1nMIjA/qh15NGksfErjFp9QgiGPX+u6Zjn1jttPA7CETk0NGINAA+66b2/BWG0fM8ILRCJoloKuOZc4v2xIJNEJO4MxQyodfZI/VdIh7S6UutCr2qY60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=fFGWYMAJ; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1789109661; c=relaxed/simple;
+	bh=vry3klap9u4GjQNVsbX+2L8vo2NtkD7sLGYczUDYo14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I1zodiKwMyi2QsoIV0EbH7lo4NuLUCRDV2f8BcaB7esipCbeUjZ9h5vQh6oP9cf8Ovx0YELSnHQ7uKZm6uPerwa0KX/XRBDPGqrPsX2QY1aTdRZVEZPldG+y5sozM+fuIJiZflmpo5JVOdZPYpTn16SlCnSj8rCqknN8zpWyBN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GmX+/d4u; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="fFGWYMAJ"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4ae2cso458519a12.0
-        for <gfs2@lists.linux.dev>; Thu, 10 Sep 2026 20:35:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GmX+/d4u"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so531658a91.2
+        for <gfs2@lists.linux.dev>; Thu, 10 Sep 2026 23:54:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1789097729; x=1789702529; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fuXAmveLdtY834MnFfaJv8gpo2I0H6i9bOQiKf03dlw=;
-        b=fFGWYMAJMm49MKQUpE3/SNkqe7q23UHa7+rOkxXSKKAjghY9tf462Oa+iWAE7hfypV
-         gp+hSUHPwTBWWXFNJEHPINaAsWvQ4DqjmFyIbw2zO3m43oaSqoefLUsg/CFa3FKKLlZP
-         IBcBkfdDUu26QFpLQNZ3UFe1/Vr+Au+QhoEA/EQsAmDEHCnfv87htdSo9tRrpcBI4nq4
-         NeyrANDRLNaThz9xnZfeA+7QXNOCZoN7B/G0CENub2Fh3bcI3CxUmyrteJzIqponO3we
-         scHvcxFwzxkS5Q4Fp/ZZIdtX/Qwb8FFsWW1M9bSHRMIoQafI/TVddZstNIcOSptvNuyO
-         ghxg==
+        d=gmail.com; s=20251104; t=1789109649; x=1789714449; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=45NBjTXP85L2NWWZj0GIgJ+kRVkTLutBHdaU4FJg9VE=;
+        b=GmX+/d4uTOtA0nynWQICWCsMmd01j3t8x8P24FrxxtEdVstG/Oa1pDpcCyy36K+hf9
+         s07FOmhfVgA1tXeRH9/jq1vEba6iyYRlpbYhiUa5mns5uGGTvtUoL/jtYmLqQRgDx3/t
+         lsnW0aGsdGlucCkjRRJ4zhPF13roIjmLvbSCTxpT2C6c+zGjKIXMtv9y7NV2I58/gUvu
+         pFpCUt/MV7V371lIxCBQgLpCX4IptExIA79+IcW6ESFsx7WJoS9AWNuR2nakhZi0qzeM
+         vsm+iwa02TdGmHbexYC3UtHWiO51eswnBWQCdXoyN+YLoYtdgOfSFM/nEWd1z7NhCfrs
+         Q+eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789097729; x=1789702529;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fuXAmveLdtY834MnFfaJv8gpo2I0H6i9bOQiKf03dlw=;
-        b=k0Js+NwAQ894EBQxkebwZBIPO3fI9ZtyjSNoQHzUpURRwjLNsOW4xhpmij9dPu301R
-         u4ObgDvl29sQJTwENS21aVgZ/vAUaPsXrdLiG2CVdQIXk0mAkaH5FUKDqrGUxfF82aOS
-         zEOyPnDvKJ4ZHYrjoHpobam9IqSPc8FkpJN6CiG5hR9dTNoClyCyFDzDXXii48ZvaPbF
-         yxRcPAaUmdiT0Dusc1rS1I+PgDTFOdlbttPKHs6N7AplLv6+HFfajEMzdIzvG/aNjrk0
-         T4ccv1BChxMLI8FjuhVMd13sIubVfyXc2d9/7kdw/SpPQKfIecKwclobhyRggQDsWmNU
-         4ahg==
-X-Forwarded-Encrypted: i=1; AKwUvBzNWX9HpjdYr1Jhx7k2B+VYixu3nUiSnzsl0CWWvQ5q4d9ef8FlzuaSeHZub0BVonoVCHDj@lists.linux.dev
-X-Gm-Message-State: AFuF++ndQIzNse611aOd4ur7SG69BHi9FtWOAc5Kt1/Xv2mdveNuDNk1
-	bSDYJP04T01qlYtgjHv2pyuO7togjSiN8yO0iwdn7Yg2PTunl6pfO8lCKfRxuVJolR0=
-X-Gm-Gg: AYBFou0LGo9VgOkUT2vPHV+sGZS6PMh998Z+To1a2f6qez3aUu5YuaWzRWHi9Qerir2
-	DIQgwhAZ2KXwKcd6Nl6QNp8UEZ1dKhycJmlhiSo4mB1Rcw1Ew1h7Mvlx2eSB+iLvkYx9G+6DO9y
-	c5OXk+TDjI2lon6E/Kv5sCWvae6C3hF4MSqYirJaJNigLSBDWpfGtbET+wMMqez+PjL+TBO7XEd
-	KGPlpdcGsK7mxsY7BQ5WcZaB2d2YutA8igF+SnArw0bB+cGkNFr+ZgcE/tuXgrVmZTeNH51qdUK
-	oFWXuRegt6OU/WRtHIHxBUcTidIZjzgqJJRjF7YoXpiD1UURS0XV49vxb9ZjPA3VAoUrVnZziU2
-	TkehqGKgdfHWwpdjs1yQVRovnjKghAPRLWUM01m3ua/YKDiLWpT0bRDCkBQLTEkFAiiJ3ZFv+sR
-	ybZebufoHoesaFXliHqJuDXWLKhacFYh6mPP4m7DN0bk5tvkuahYO8sLydmQMZrm8PNkh7MdO9p
-	gZ6i0Ujg5JfSWzgA7UvfGoQiQBCSCeY90NLyMWDSV0=
-X-Received: by 2002:a05:6a21:113:b0:3cc:8f53:26c0 with SMTP id adf61e73a8af0-3daed31ac42mr4326967637.17.1789097728599;
-        Thu, 10 Sep 2026 20:35:28 -0700 (PDT)
-Received: from [100.81.12.150] ([61.213.176.55])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c65a8120sm472495a12.30.2026.09.10.20.35.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 20:35:28 -0700 (PDT)
-Message-ID: <1891f4ac-139e-4e9c-80ff-802ec2bb2844@bytedance.com>
-Date: Fri, 11 Sep 2026 11:35:23 +0800
+        d=1e100.net; s=20251104; t=1789109649; x=1789714449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=45NBjTXP85L2NWWZj0GIgJ+kRVkTLutBHdaU4FJg9VE=;
+        b=FKFk3zhCNj0eKEgXyBIUv5Zu0ei+Huu+mRipiqWE6WM1NGWumsif6/Vlw2Bfkjnt6F
+         3tA6TSCeiF8To6TD+6feK+BnTgxqxgw44lZtToalnD5v0497sslLj+VwhBdcH4fKzPMq
+         8a0cHifWjohmFvpe1L+0bJp0gA0DXEvOgBBYz1zcP6FmjTIQUBaUXIK51/01oFcehyEx
+         S+jE7PLIkbypnLfE7vJPPUBrp/bRd7KAt+p/6+7DMo43V0tUXz5FN2SMaPTd+pF8XsPM
+         sQmnQwiRi7MWm/m+4ybyAOs/NK2CWzMkiQV4CPALn3rSEGrRm9WPhEmE54ydOhlBHl+B
+         V69g==
+X-Gm-Message-State: AFuF++k5ckpZEKAmrLt6aAVPNVW8Sonz7Yk0dal/Bp58tvE81D17Z64t
+	jX0qql9wAUYE9jPK/F8d4iDjmogvg8IFlLRRzkUzGCNsC2nidQAuK9dgktgeRddm
+X-Gm-Gg: AYBFou1qvBIAPe3gmhEGfBSZrYJVKYNx+f2yaITBamhCuK+Ry5uTVXrmosSNzDP1SVj
+	4byKdCu7vp5GmoT43Bov/NyulQOYrl7JzoWDE7HrimK/1/5hg/ZL0QfDBApovXGDQ4k8vZUb7MI
+	rFQ+frVp/co1OMs1zIBRYkt7IS3NaIPLLKWPJ4nte3J3Ij7MtVG2HMHbFfMb8fOS6wmElmyPa8f
+	MP/u1XJRRh8Y+e9KXdQpg3hPhJazOef6xQ1xUoj8Ua4hvEADfz+WkuHwKrX/pL2udfpxTdR1DwZ
+	45VZRtB8hRqS9cbDJ0I4iHU/LSCMZuusyOjAia+wd1a8LlJoo5U2lUlPag0QHSymWWsGsNErmF1
+	YVLfEZDYV3bugCSFxj6B4qGl0BXgrf/iEEdyt2+mpmtx6lRjyONzjMy9sFBk8uOUkCUCKLLvbc4
+	I20OsoPhQpNCfgzx5JMfnOb+vOriNwTpVg95qs3zAKoBaBvgsjGDCVPVZs/aumjTdq/hMB5qJ6m
+	ktv2IYXrpcKV2H09fzO0Aq2B2xwLY9rTPyHFJnyFvma7ws=
+X-Received: by 2002:a17:90a:da8f:b0:38e:c232:9d3f with SMTP id 98e67ed59e1d1-39d9bc1007dmr3989259a91.5.1789109649253;
+        Thu, 10 Sep 2026 23:54:09 -0700 (PDT)
+Received: from localhost.localdomain ([117.88.121.68])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39da1ad5d79sm1830549a91.12.2026.09.10.23.54.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 23:54:08 -0700 (PDT)
+From: Aohan Mei <ljp1205831794@gmail.com>
+To: gfs2@lists.linux.dev
+Cc: aahringo@redhat.com,
+	teigland@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Aohan Mei <henrymei@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dlm: fix RCOM_LOOKUP length underflow
+Date: Fri, 11 Sep 2026 14:53:51 +0800
+Message-ID: <20260911065357.3511466-1-ljp1205831794@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] fs: introduce sb_for_each_inodes().
-To: Jan Kara <jack@suse.cz>
-Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- gfs2@lists.linux.dev, linux-security-module@vger.kernel.org,
- agruenba@redhat.com, mic@digikod.net, gnoack@google.com,
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
- aleksa@amutable.com, legion@kernel.org, djwong@kernel.org,
- ebiggers@kernel.org, sandeen@redhat.com
-References: <20260909090112.790006-1-sunjunchao@bytedance.com>
- <20260909090112.790006-3-sunjunchao@bytedance.com>
- <yhfoyto6skszguj447a7ifajl2r6qiwj5japcg2zsj2ooshi4r@tgkq5fadmyto>
-From: Julian Sun <sunjunchao@bytedance.com>
-In-Reply-To: <yhfoyto6skszguj447a7ifajl2r6qiwj5japcg2zsj2ooshi4r@tgkq5fadmyto>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/11/26 1:47 AM, Jan Kara wrote:
-> On Wed 09-09-26 17:01:07, Julian Sun wrote:
->> Add sb_for_each_inodes() to share s_inodes traversal and preserve its
->> position while s_inode_list_lock is dropped.
->>
->> Track active iterators on sb->s_inodes_iters and advance their saved
->> positions before unlinking an inode. Callbacks manage inode references
->> and per-inode work, allowing both normal walks and eviction to use the
->> same interface.
->>
->> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-> 
-> So I'm not generally opposed the to a superblock inode iterator idea but
-> what you have looks more complex than I'd expect. Also we shouldn't tie
-> that to the fix of the lockup in evict_inodes(). So first I'd just
-> concentrate on fixing that lockup, then we can have a look at the iterator
-> idea.
-> 
-> You can take some inspiration about inode iteration API from the Dave
-> Chinner's patch set [1]. That looked more like what I'd expect although
-> Christoph had some comments on it too.
-> 
-> Regarding the fix I'd just make evict_inodes() do what all other inode
-> iterators do when they decide to drop s_inode_list_lock - pin an inode in
-> the list by grabbing refcount and then resume from it.
+From: Aohan Mei <henrymei@tencent.com>
 
-Thanks for the feedback. I agree that we should fix the lockup separately,
-and I'll focus on that first.
+receive_rcom_lookup() derives the resource name length from the
+peer-supplied 16-bit h_length header field:
 
-I had seen Dave Chinner's series before. I'll revisit it and the review
-comments when working on the inode iteration API.>
-> 								Honza
-> 
-> [1] https://lore.kernel.org/all/20241002014017.3801899-1-david@fromorbit.com/
-> 
->> ---
->>   fs/inode.c                     | 93 ++++++++++++++++++++++++++++++++++
->>   fs/super.c                     |  1 +
->>   include/linux/fs.h             | 15 ++++++
->>   include/linux/fs/super_types.h |  3 +-
->>   4 files changed, 111 insertions(+), 1 deletion(-)
->>
->> diff --git a/fs/inode.c b/fs/inode.c
->> index ba7da39be4a3..b4279063a5dd 100644
->> --- a/fs/inode.c
->> +++ b/fs/inode.c
->> @@ -69,6 +69,15 @@ const struct address_space_operations empty_aops = {
->>   };
->>   EXPORT_SYMBOL(empty_aops);
->>   
->> +struct inode_iter {
->> +	struct list_head	iters_node;	/* sb->s_inodes_iters */
->> +	struct list_head	*next;		/* next node going to iterate */
->> +	unsigned int flags;
->> +	inode_iter_cb func;
->> +	void *data;
->> +	int ret;
->> +};
->> +
->>   static DEFINE_PER_CPU(unsigned long, nr_inodes);
->>   static DEFINE_PER_CPU(unsigned long, nr_unused);
->>   
->> @@ -641,12 +650,96 @@ void inode_sb_list_add(struct inode *inode)
->>   }
->>   EXPORT_SYMBOL_GPL(inode_sb_list_add);
->>   
->> +static void inode_sb_iter_start(struct super_block *sb, struct inode_iter *it,
->> +				unsigned int flags, inode_iter_cb fn, void *data)
->> +{
->> +	it->flags = flags;
->> +	it->func = fn;
->> +	it->data = data;
->> +	it->ret = 0;
->> +	spin_lock(&sb->s_inode_list_lock);
->> +	it->next = sb->s_inodes.next;
->> +	list_add(&it->iters_node, &sb->s_inodes_iters);
->> +}
->> +
->> +static void inode_sb_iter_end(struct inode_iter *it, struct super_block *sb)
->> +{
->> +	list_del(&it->iters_node);
->> +	spin_unlock(&sb->s_inode_list_lock);
->> +}
->> +
->> +static bool inode_sb_iter_next(struct inode_iter *it, struct super_block *sb)
->> +{
->> +	struct inode *inode = NULL;
->> +	int ret;
->> +
->> +	while (!inode && it->next != &sb->s_inodes) {
->> +		inode = list_entry(it->next, struct inode, i_sb_list);
->> +		if (it->flags & INODE_ITER_UNUSED) {
->> +			if (icount_read_once(inode)) {
->> +				it->next = it->next->next;
->> +				continue;
->> +			}
->> +
->> +			spin_lock(&inode->i_lock);
->> +			if (icount_read(inode)) {
->> +				spin_unlock(&inode->i_lock);
->> +				it->next = it->next->next;
->> +				continue;
->> +			}
->> +		} else {
->> +			spin_lock(&inode->i_lock);
->> +		}
->> +
->> +		if ((it->flags & INODE_ITER_NORMAL) &&
->> +		    (inode_state_read(inode) & (I_NEW | I_FREEING | I_WILL_FREE))) {
->> +			spin_unlock(&inode->i_lock);
->> +			it->next = it->next->next;
->> +			continue;
->> +		}
->> +
->> +		it->next = it->next->next;
->> +		ret = it->func(inode, it->data);
->> +		if (ret) {
->> +			it->ret = ret;
->> +			return false;
->> +		}
->> +
->> +		if (need_resched()) {
->> +			spin_unlock(&sb->s_inode_list_lock);
->> +			cond_resched();
->> +			spin_lock(&sb->s_inode_list_lock);
->> +		}
->> +	}
->> +
->> +	return it->next == &sb->s_inodes ? false : true;
->> +}
->> +
->> +int sb_for_each_inodes(struct super_block *sb, unsigned int flags,
->> +		       inode_iter_cb fn, void *data)
->> +{
->> +	struct inode_iter it;
->> +
->> +	inode_sb_iter_start(sb, &it, flags, fn, data);
->> +	while (inode_sb_iter_next(&it, sb))
->> +		;
->> +	inode_sb_iter_end(&it, sb);
->> +
->> +	return it.ret;
->> +}
->> +EXPORT_SYMBOL(sb_for_each_inodes);
->> +
->>   static inline void inode_sb_list_del(struct inode *inode)
->>   {
->>   	struct super_block *sb = inode->i_sb;
->> +	struct inode_iter *it;
->>   
->>   	if (!list_empty(&inode->i_sb_list)) {
->>   		spin_lock(&sb->s_inode_list_lock);
->> +		list_for_each_entry(it, &sb->s_inodes_iters, iters_node) {
->> +			if (it->next == &inode->i_sb_list)
->> +				it->next = inode->i_sb_list.next;
->> +		}
->>   		list_del_init(&inode->i_sb_list);
->>   		spin_unlock(&sb->s_inode_list_lock);
->>   	}
->> diff --git a/fs/super.c b/fs/super.c
->> index 05e443173038..3e069150c544 100644
->> --- a/fs/super.c
->> +++ b/fs/super.c
->> @@ -382,6 +382,7 @@ static struct super_block *alloc_super(struct file_system_type *type, int flags,
->>   	spin_lock_init(&s->s_roots_lock);
->>   	mutex_init(&s->s_sync_lock);
->>   	INIT_LIST_HEAD(&s->s_inodes);
->> +	INIT_LIST_HEAD(&s->s_inodes_iters);
->>   	spin_lock_init(&s->s_inode_list_lock);
->>   	INIT_LIST_HEAD(&s->s_inodes_wb);
->>   	spin_lock_init(&s->s_inode_wblist_lock);
->> diff --git a/include/linux/fs.h b/include/linux/fs.h
->> index 09c4db5e9ae0..f3176ab10e65 100644
->> --- a/include/linux/fs.h
->> +++ b/include/linux/fs.h
->> @@ -870,6 +870,21 @@ struct inode {
->>   	void			*i_private; /* fs or device private pointer */
->>   } __randomize_layout;
->>   
->> +enum inode_iter_flags_enum {
->> +	INODE_ITER_NORMAL = (1U << 1),  /* Exclude inodes with (I_NEW | I_FREEING | I_WILL_FREE). */
->> +	INODE_ITER_UNUSED = (1U << 2),  /* Only return inodes with (i_count == 0). */
->> +};
->> +
->> +/*
->> + *                             start          end
->> + *  inode->i_lock              locked         unlocked
->> + *  sb->s_inode_list_lock      locked         locked
->> + */
->> +typedef int (*inode_iter_cb) (struct inode *, void *);
->> +
->> +int sb_for_each_inodes(struct super_block *sb, unsigned int flags,
->> +		       inode_iter_cb fn, void *data);
->> +
->>   /*
->>    * i_state handling
->>    *
->> diff --git a/include/linux/fs/super_types.h b/include/linux/fs/super_types.h
->> index ecd96aeb1cee..1f81cc219b8e 100644
->> --- a/include/linux/fs/super_types.h
->> +++ b/include/linux/fs/super_types.h
->> @@ -269,9 +269,10 @@ struct super_block {
->>   	 */
->>   	int s_stack_depth;
->>   
->> -	/* s_inode_list_lock protects s_inodes */
->> +	/* s_inode_list_lock protects s_inodes and s_inodes_iters */
->>   	spinlock_t				s_inode_list_lock ____cacheline_aligned_in_smp;
->>   	struct list_head			s_inodes;	/* all inodes */
->> +	struct list_head			s_inodes_iters; /* all iterators */
->>   
->>   	spinlock_t				s_inode_wblist_lock;
->>   	struct list_head			s_inodes_wb;	/* writeback inodes */
->> -- 
->> 2.39.5
->>
+    int len = le16_to_cpu(rc_in->rc_header.h_length) -
+              sizeof(struct dlm_rcom);
 
-Thanks,
+The 3.1 receive path only bounds h_length to the range
+[sizeof(struct dlm_header), DLM_MAX_SOCKET_BUFSIZE] in
+dlm_validate_incoming_buffer(), and the RCOM case in
+dlm_midcomms_receive_buffer_3_1() performs no further length check
+despite its "length already checked" comment.  A peer can therefore
+send an RCOM_LOOKUP message whose h_length is smaller than
+sizeof(struct dlm_rcom) (48).  The subtraction is evaluated in size_t
+arithmetic and wraps, and the result is assigned to an int as a
+negative value.
+
+Both consumers of that length only guard the upper bound
+(len > DLM_RESNAME_MAXLEN), which a negative len passes as a signed
+comparison:
+
+- with rc_id == 0xffffffff, len reaches dlm_dump_rsb_name() ->
+  dlm_search_rsb_tree(), where memcpy() converts it to a huge size_t
+  and overflows the on-stack 64-byte key buffer;
+- otherwise len reaches dlm_master_lookup() -> _dlm_master_lookup(),
+  where jhash() converts it to a huge u32 and reads out of bounds.
+
+Drop the message when the computed name length falls outside
+[0, DLM_RESNAME_MAXLEN], which is exactly the range valid lookups
+use.
+
+Fixes: e7fd41792fc0 ("[DLM] The core of the DLM for GFS2/CLVM")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
+---
+ fs/dlm/rcom.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/dlm/rcom.c b/fs/dlm/rcom.c
+index be1a71a6303a..14d5ab658f60 100644
+--- a/fs/dlm/rcom.c
++++ b/fs/dlm/rcom.c
+@@ -385,6 +385,9 @@ static void receive_rcom_lookup(struct dlm_ls *ls,
+ 	int len = le16_to_cpu(rc_in->rc_header.h_length) -
+ 		sizeof(struct dlm_rcom);
+ 
++	if (len < 0 || len > DLM_RESNAME_MAXLEN)
++		return;
++
+ 	/* Old code would send this special id to trigger a debug dump. */
+ 	if (rc_in->rc_id == cpu_to_le64(0xFFFFFFFF)) {
+ 		log_error(ls, "receive_rcom_lookup dump from %d", nodeid);
 -- 
-Julian Sun <sunjunchao@bytedance.com>
+2.43.7
+
