@@ -1,108 +1,128 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079B53644A3
-	for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 06:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D415278156
+	for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 13:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789194382; cv=none; b=aCwRQMvzIKiN/F3EF9Tq/IKeF0XjyQRHWDPzE+aL8+7d6s3nR2BRynE8qVTpvlxPRQfimm9qGCGg6k6hO/W0srGkkEmsth1iwJWTuoDBtoh6jhS9JUijIJeB1Rg0w26YyjEwGyRAwciKKeriH8duZiEY1aVr8g78+QWBx6UzjUg=
+	t=1789220535; cv=none; b=XTxEpc6Vw/zJ2jsKtcr0ZtDkJJhtaYkYFiZDKwlVAVLRt9ZH7sZKtc5LIHdJpgk6tUmeJb6xYer6UkXLfW5x95zgG1gNrdYuAZRAe3tM1ANl5BW1dI4rVfW3gt/uqrGfa9/81Xz63mIgtaA1lHbINusbHd57dctM147v/G40QaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789194382; c=relaxed/simple;
-	bh=4+N7cdDhN3844Z1q8z+zFikbwV4LBr5lVJ1YjHeeoFs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g+B5lNAGYGfqCCuoj58Cb++V0GJDzISylL2vveEmc/FbZ0SUqtkgjdDYvA3b3Ea+EzBBU/OFXpZpXeMpUDk5STUQfzQ/TncfrJEVFLHbebbxZ+0glamCP5eMJd+4ESlKmaIbiIlapfbJlPTTjxEp5RrHASd1FO8erGyWsz1D9fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMsDVhm3; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789220535; c=relaxed/simple;
+	bh=vsuwVSiplWlIRMCHW7Lp26gGoJvpEBBWupkUOScc2fs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FyQeud8syRinA5zg2SsOh91yWKTW9Ax0drCLSRHynpR6u5Kr4rSV+nV0eE3RpOrkc3hKdi5qZ2A3Vusq+s2o6ylgWjxrMVOH5O9/SOuAn1QX6qG4MuTrGWo+GtV0OV7NGrTkokSsvq0vGiQrYA9Q110zINRjlbd+C1SJO1JgZug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NhCYm9Xe; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMsDVhm3"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso2499725e9.1
-        for <gfs2@lists.linux.dev>; Fri, 11 Sep 2026 23:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789194379; x=1789799179; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ztIntik1xeW8jWQz7bcwpnWQ4yK2/dDMrcPOzey+VHE=;
-        b=cMsDVhm3nH9K+Z4OvgEPInpEoT6ZZH2kkf3vj0SiWcJ/sQcXDigYn4iJqixpphvClz
-         /tOrxOKxh6YXA+GXDFdYD6stqCalBemPDHVm0jC/VVa000zVCUTKXleD/LkS3OF4CoNz
-         ysq87mGYLNxxw/icnMf1nMZz9ML/OzRaVNh07741wkxQTOo5UJ4GYMA2p88h9wp7ykMH
-         0GI8zXNg5YpPDHTCVVlIYGrqC0vHNPgaAHiXcQ2CBAAfKM/kj5jgfr56Hf4MMX58Zg83
-         Ma0cV2VhqqXBHuZcxWrRoc2bgWE/OLj9yPuuIpvDDKmdi0jJdtmFLVGuZGEtAaJZq2x4
-         kbCA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NhCYm9Xe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789220532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=87yNTtGOMF0MCh3k6ypybUnWZA7MEZgOnf1EeaRqydY=;
+	b=NhCYm9XeymYBXjnAqeDjlsq2rc9iNpeQVKn8jinn/KsqWSkuo0yOMYqWf5y+/n9sRd/kCJ
+	TfaJ5y/b5GwVeR0N97ZkAvy7aebebjZZ54RZAgf+DEIgdT5JODlBSl23FLGqEwi3CF1sti
+	IyqB0L1aVjettNV+3xr5V/BnEJXEKrk=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-gKZk0fdvPrKYG5ZffZC-KQ-1; Sat, 12 Sep 2026 09:42:11 -0400
+X-MC-Unique: gKZk0fdvPrKYG5ZffZC-KQ-1
+X-Mimecast-MFC-AGG-ID: gKZk0fdvPrKYG5ZffZC-KQ_1789220530
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-8823e0226edso32019147b3.1
+        for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 06:42:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789194379; x=1789799179;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ztIntik1xeW8jWQz7bcwpnWQ4yK2/dDMrcPOzey+VHE=;
-        b=GSujc+HR+jQDPDt8Q3prvJsnytQUyOsQLo9G2hMQ1G8LuE9mMBNHw6wIoOM9UJ6rUL
-         pNFhn5AU8qncI0Ec6o2I9Ze3zoeioj5SKQy8ptyOTWPNE80GR00KwcjWHb09p8MLhk+/
-         Q0RRjXNAzBtkoX/S6435Qi/S4ZgwCCvDuHacYY2/SyHRBX0Et5ZDzfEJ84N1JfKA6gOg
-         vA/lVkuirOZuX1Ka64Cl1LZNzQaTtUzaGw5XA0xGcLyucuJ4bJke0LXNMPDpkOaalsqN
-         jRAQoKKFdXQ0BHHLxUc44u0RcfnCFR1yPBMyOcuvBc9M99PJyUkXo2avZUVjTvXzl4mC
-         Drig==
-X-Forwarded-Encrypted: i=1; AKwUvBwzJP+j94tCc2Kaqt6M6KZgcvKngowQkoNGcmLu0nz/MhQJZnptmGDhvIeAQnHEzVfVefXC@lists.linux.dev
-X-Gm-Message-State: AFuF++ltqlXR2VbNNnw0yc5kMCngd78qbpWAmX9RoIWW8pCR9XxeCb/r
-	uQzuD9q6WGv9Qe4IkLzgp2VrJiv4bVcWEPWrdSdzSNIKMMjOSjlzwQ6o
-X-Gm-Gg: AYBFou2XdlXLVSCv/0RnhTRBzwo7A0V7KiI8zxUIc3jsmKr2+mFJ+ugCiBTjsCeOjt/
-	6SRAiMqKK7graEZ8S9hjV37BKK/Hx5ViEEBYgUlLcUd0BTr+Dwnhxj1UIE9mzpfqf/y018SeG5V
-	dU4uBLI9LFI+NPxNei57/wriqX7iDT5GP4mJD4V1VThumhM2z5VWMLGIV6/knajJEQjTmKVanMd
-	0xgYLGWz2e/YlHocIHTNEj/Fb27WATEpVdxjMshxc4CxU5tmzo9GLhgfGi2OXVDIInAmey6YBjs
-	O/Ax47JlrI/XfFjEWkcIg+D38T9KQpvzKRAEJMzUkmiIF8vyR6dEbpw1yIcRqNXQ3h4IQl443K0
-	YDJKKGaYKLn22DqW8X4NuFJY03hhAo3jMnW2aqI6nJngpZt20FY2IHLrcZKlhdwJXW+8p52dsE0
-	SO3uuTsV0EfTUBcygGqHXMrbCo4pWZhIzjXWxrV91Xg7JmgucuVLVLmR0XvYpzNzkFcU0OInRqf
-	4loA2ObIpsEIdoGe74W7YKeBvJxY8QOnlJnj/kb4rBNA1qnmdL7mAQlqJtJMmUYQGseWyrW4x62
-	Z63UTkuedy3jIe8xrdAhkj1K7QGg391Hj+9gFp0Z/Z7ptpD5KiQytJU/L9PDvhxunHsmTZd2OTG
-	56g==
-X-Received: by 2002:a05:600c:190b:b0:49c:dada:30b7 with SMTP id 5b1f17b1804b1-49e6caa6f6bmr12779215e9.2.1789194379075;
-        Fri, 11 Sep 2026 23:26:19 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-b260-f201-9983-e8c4-aff5-7a36.310.pool.telefonica.de. [2a02:3100:b260:f201:9983:e8c4:aff5:7a36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60adaeefsm130212965e9.12.2026.09.11.23.26.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 11 Sep 2026 23:26:18 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] gfs2: Fix the return value in gfs2_get_link() kernel-doc
-Date: Sat, 12 Sep 2026 08:26:14 +0200
-Message-Id: <20260912062614.42899-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20251104; t=1789220530; x=1789825330;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=87yNTtGOMF0MCh3k6ypybUnWZA7MEZgOnf1EeaRqydY=;
+        b=P+swPjjJvjt5UNH6UnMp543YYVqyKRE0YlPzIURAn1vUDZWm7yxaeee1T2WbFywQNg
+         laOz0PcYbG5LcCUsw8R8c+Il4I4Q35jsEjhbjNl3snEfEwAm5eP9QwgmKgJYYBmOROfc
+         7sVL5MskjUWVw4Ve6xTwWb2o/wsglY3xD+xie8NleAE3t45+RSSu9yUJGaW9t+PW4yCn
+         jzfLi/KQbBAqCgResDcfX1xNlJI9ttmiPcoiRoNBXhW8PwsMDZVqTQaCe21+n/s3lp4j
+         I0+oKw00mUGyJegkKbzsMDtENF2yU4E3ZuYr1tf21PUh5fi+cHqt56ULjylLOuQ+0ciY
+         xiqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy+J0uFg2xvlihREXDCcLNTthadwYV97qoD9FpqHv7A6Hrgm2hu2dEUEqyMvVhKnSroaYdD@lists.linux.dev
+X-Gm-Message-State: AFuF++kZ2OuDBdc8H27r0/kJYJeE2J9sTWGS8M3+iBahy8ay24daC6ih
+	J9uQfMdkkqqk7TS03Gwaksum9IgB50sTIImugRBIMAQlZ/vEn1QxCi2dZCk41mjo+MbhVG/U4DK
+	Wx5bJHtf1Ugi2yOTyHhqMZbB7wwoNAsvuw/sExbKCYyxJB6UjO8hwihM9FUJvPd2HZcGEvdEEWQ
+	CqkDLiOKdNoj6NKNIDKvoTd6apJJjQAw==
+X-Gm-Gg: AYBFou0CH9iH/nFPlhJALj4/QFDDnti1BTZFvcb5/yysUPuwIbgJgJbJV7xBmWTM+Hy
+	n4y2u3x16rjrUb8qkgwm6T/s/Yu/zZHvdNUzh1X1z5z8N9abPkLEXZNaSx4wPuZfUNA+WxDjwLN
+	+34Z/f/lg5t/aeiukB24CsOKaPIyv6obUXq+YD1mBVRk02coKMwq7vY+6TV/mhMsGCoE5AtHPFT
+	u9rME8IU6uO+Os3RZhMgS0T861CujafAn47KcrFsHvQ
+X-Received: by 2002:a05:690e:d43:b0:66f:c1bc:c077 with SMTP id 956f58d0204a3-671246cf55cmr3181932d50.63.1789220530508;
+        Sat, 12 Sep 2026 06:42:10 -0700 (PDT)
+X-Received: by 2002:a05:690e:d43:b0:66f:c1bc:c077 with SMTP id
+ 956f58d0204a3-671246cf55cmr3181922d50.63.1789220530046; Sat, 12 Sep 2026
+ 06:42:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260912062614.42899-1-kmehltretter@gmail.com>
+In-Reply-To: <20260912062614.42899-1-kmehltretter@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Sat, 12 Sep 2026 15:41:58 +0200
+X-Gm-Features: AcwNN1VkqudTxhzQveFbYQ4CrzcEuW6UG-ETzUb6nXW2-0Rd91KL7t0znM0RfIM
+Message-ID: <CAHc6FU6QnSb2fzqJQtpdehiE9DRfCoJY50Nw1YJBo4An=gkKig@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: Fix the return value in gfs2_get_link() kernel-doc
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, gfs2@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VdOtNY600hp7PwBVFqEVj0PEOyWqFl1o6nV67C9aiRo_1789220530
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-gfs2_get_link() returns the link target or an error pointer, but its
-kernel-doc still describes an integer status. The mismatch dates back to
-the change in its predecessor's follow_link calling convention.
+On Sat, Sep 12, 2026 at 8:26=E2=80=AFAM Karl Mehltretter <kmehltretter@gmai=
+l.com> wrote:
+> gfs2_get_link() returns the link target or an error pointer, but its
+> kernel-doc still describes an integer status. The mismatch dates back to
+> the change in its predecessor's follow_link calling convention.
+>
+> Describe the returned pointer and error value.
+>
+> Fixes: 680baacbca69 ("new ->follow_link() and ->put_link() calling conven=
+tions")
 
-Describe the returned pointer and error value.
+Actually, the problem was introduced in commit c177c2ac8c5a ("Switch
+gfs2 to nd_set_link()"). I've updated the description and applied the
+patch to for-next.
 
-Fixes: 680baacbca69 ("new ->follow_link() and ->put_link() calling conventions")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- fs/gfs2/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Andreas
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index f361876c5583353a1196ed35be1c95af33a90c02..d5e03ec89127254654dceaff56322ed617a3400a 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1900,7 +1900,7 @@ static int gfs2_rename2(struct mnt_idmap *idmap, struct inode *odir,
-  *
-  * This can handle symlinks of any size.
-  *
-- * Returns: 0 on success or error code
-+ * Returns: the link target on success, an ERR_PTR() on failure
-  */
- 
- static const char *gfs2_get_link(struct dentry *dentry,
--- 
-2.39.5 (Apple Git-154)
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  fs/gfs2/inode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+> index f361876c5583353a1196ed35be1c95af33a90c02..d5e03ec89127254654dceaff5=
+6322ed617a3400a 100644
+> --- a/fs/gfs2/inode.c
+> +++ b/fs/gfs2/inode.c
+> @@ -1900,7 +1900,7 @@ static int gfs2_rename2(struct mnt_idmap *idmap, st=
+ruct inode *odir,
+>   *
+>   * This can handle symlinks of any size.
+>   *
+> - * Returns: 0 on success or error code
+> + * Returns: the link target on success, an ERR_PTR() on failure
+>   */
+>
+>  static const char *gfs2_get_link(struct dentry *dentry,
+> --
+> 2.39.5 (Apple Git-154)
+>
 
