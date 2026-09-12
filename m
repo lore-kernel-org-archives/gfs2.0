@@ -1,128 +1,212 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-47.ptr.blmpb.com (va-2-47.ptr.blmpb.com [209.127.231.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D415278156
-	for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 13:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8253546DF
+	for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 14:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789220535; cv=none; b=XTxEpc6Vw/zJ2jsKtcr0ZtDkJJhtaYkYFiZDKwlVAVLRt9ZH7sZKtc5LIHdJpgk6tUmeJb6xYer6UkXLfW5x95zgG1gNrdYuAZRAe3tM1ANl5BW1dI4rVfW3gt/uqrGfa9/81Xz63mIgtaA1lHbINusbHd57dctM147v/G40QaI=
+	t=1789222913; cv=none; b=hl+gJ+oVGHI/aw4LUs5mdyvjqh4Vpn7bnxmuWaA5ZIaLQOMsRo/TE3NBId0r9mPDJzbvUPNLJfQEWzyoqQDJ5PVO+D2KSDBQwkOixf3+ptziQFDSvnMFrqvkNGZbnAs7jadFWTog5tx3l6K2wZ5ehGFOcBZyy2gzvQDtiejhI9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789220535; c=relaxed/simple;
-	bh=vsuwVSiplWlIRMCHW7Lp26gGoJvpEBBWupkUOScc2fs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FyQeud8syRinA5zg2SsOh91yWKTW9Ax0drCLSRHynpR6u5Kr4rSV+nV0eE3RpOrkc3hKdi5qZ2A3Vusq+s2o6ylgWjxrMVOH5O9/SOuAn1QX6qG4MuTrGWo+GtV0OV7NGrTkokSsvq0vGiQrYA9Q110zINRjlbd+C1SJO1JgZug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NhCYm9Xe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789222913; c=relaxed/simple;
+	bh=0wX6hOxSyzv13NfzbyN+AEPTOtfdE4C+hpqJPodyllQ=;
+	h=Subject:Mime-Version:Date:From:Content-Type:In-Reply-To:To:Cc:
+	 Message-Id:References; b=InuXiNLuYBYmEr+cUDnDvjc9d2R4m93kdZTyvnXwHzr/ljYzixXqa7gWIhvKDpiRoZpJ3LuEMkXDLNfE713jFIrSPyNIaZ3eaYn2hKKX1uLBJgdLCDPaYgszcMG0shCQoNwzDEQoXlunaAbVID8JERyZI+klVvP4rSO9aTbmjyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fygo.io; spf=pass smtp.mailfrom=fygo.io; dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b=P4hQdhsU; arc=none smtp.client-ip=209.127.231.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fygo.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fygo.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NhCYm9Xe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789220532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=87yNTtGOMF0MCh3k6ypybUnWZA7MEZgOnf1EeaRqydY=;
-	b=NhCYm9XeymYBXjnAqeDjlsq2rc9iNpeQVKn8jinn/KsqWSkuo0yOMYqWf5y+/n9sRd/kCJ
-	TfaJ5y/b5GwVeR0N97ZkAvy7aebebjZZ54RZAgf+DEIgdT5JODlBSl23FLGqEwi3CF1sti
-	IyqB0L1aVjettNV+3xr5V/BnEJXEKrk=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-gKZk0fdvPrKYG5ZffZC-KQ-1; Sat, 12 Sep 2026 09:42:11 -0400
-X-MC-Unique: gKZk0fdvPrKYG5ZffZC-KQ-1
-X-Mimecast-MFC-AGG-ID: gKZk0fdvPrKYG5ZffZC-KQ_1789220530
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-8823e0226edso32019147b3.1
-        for <gfs2@lists.linux.dev>; Sat, 12 Sep 2026 06:42:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789220530; x=1789825330;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=87yNTtGOMF0MCh3k6ypybUnWZA7MEZgOnf1EeaRqydY=;
-        b=P+swPjjJvjt5UNH6UnMp543YYVqyKRE0YlPzIURAn1vUDZWm7yxaeee1T2WbFywQNg
-         laOz0PcYbG5LcCUsw8R8c+Il4I4Q35jsEjhbjNl3snEfEwAm5eP9QwgmKgJYYBmOROfc
-         7sVL5MskjUWVw4Ve6xTwWb2o/wsglY3xD+xie8NleAE3t45+RSSu9yUJGaW9t+PW4yCn
-         jzfLi/KQbBAqCgResDcfX1xNlJI9ttmiPcoiRoNBXhW8PwsMDZVqTQaCe21+n/s3lp4j
-         I0+oKw00mUGyJegkKbzsMDtENF2yU4E3ZuYr1tf21PUh5fi+cHqt56ULjylLOuQ+0ciY
-         xiqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy+J0uFg2xvlihREXDCcLNTthadwYV97qoD9FpqHv7A6Hrgm2hu2dEUEqyMvVhKnSroaYdD@lists.linux.dev
-X-Gm-Message-State: AFuF++kZ2OuDBdc8H27r0/kJYJeE2J9sTWGS8M3+iBahy8ay24daC6ih
-	J9uQfMdkkqqk7TS03Gwaksum9IgB50sTIImugRBIMAQlZ/vEn1QxCi2dZCk41mjo+MbhVG/U4DK
-	Wx5bJHtf1Ugi2yOTyHhqMZbB7wwoNAsvuw/sExbKCYyxJB6UjO8hwihM9FUJvPd2HZcGEvdEEWQ
-	CqkDLiOKdNoj6NKNIDKvoTd6apJJjQAw==
-X-Gm-Gg: AYBFou0CH9iH/nFPlhJALj4/QFDDnti1BTZFvcb5/yysUPuwIbgJgJbJV7xBmWTM+Hy
-	n4y2u3x16rjrUb8qkgwm6T/s/Yu/zZHvdNUzh1X1z5z8N9abPkLEXZNaSx4wPuZfUNA+WxDjwLN
-	+34Z/f/lg5t/aeiukB24CsOKaPIyv6obUXq+YD1mBVRk02coKMwq7vY+6TV/mhMsGCoE5AtHPFT
-	u9rME8IU6uO+Os3RZhMgS0T861CujafAn47KcrFsHvQ
-X-Received: by 2002:a05:690e:d43:b0:66f:c1bc:c077 with SMTP id 956f58d0204a3-671246cf55cmr3181932d50.63.1789220530508;
-        Sat, 12 Sep 2026 06:42:10 -0700 (PDT)
-X-Received: by 2002:a05:690e:d43:b0:66f:c1bc:c077 with SMTP id
- 956f58d0204a3-671246cf55cmr3181922d50.63.1789220530046; Sat, 12 Sep 2026
- 06:42:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fygo-io.20200929.dkim.larksuite.com header.i=@fygo-io.20200929.dkim.larksuite.com header.b="P4hQdhsU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1789222896;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=m4/pESkF5aOOEVFDthMDfJ73cy1uGXqcU5VDQUIbEYU=;
+ b=P4hQdhsUiiZKl4BBgl8+BIj7vS3R1MykXPFxJrirwAf+lN3L5H9WaxzYpsigNf2NsMCEA6
+ 9UBDnB2RdIK7dlfCLMxemvBz0i3r4yNCskkfDz0Ba7CTRxbyGqWuzeG45dUqVRcOlri/Oq
+ 17rOkBFAbaf1aSyq8sofJSt+kRTpspnlthhQ28JtxS4ACyoj4dWx4XX/9SlD6YGYCh8rUk
+ u7mIMpxM+eO1lNw6+7+ezXRZGjg1R3z/4cy4ymgnfxWmot+bBDmREEekJ2TEujSjIp19b1
+ HB0gJrDQnhKzN0Faqz7A4014FAPWeEqCz8YQXtWuBCn8oNzYI99yxU64U73oDg==
+X-Lms-Return-Path: <lba+26aa55ff0+6b59bd+lists.linux.dev+yukuai@fygo.io>
+Subject: Re: [PATCH 2/3] blk-cgroup: store blkcg in bio instead of blkg
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260912062614.42899-1-kmehltretter@gmail.com>
-In-Reply-To: <20260912062614.42899-1-kmehltretter@gmail.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Sat, 12 Sep 2026 15:41:58 +0200
-X-Gm-Features: AcwNN1VkqudTxhzQveFbYQ4CrzcEuW6UG-ETzUb6nXW2-0Rd91KL7t0znM0RfIM
-Message-ID: <CAHc6FU6QnSb2fzqJQtpdehiE9DRfCoJY50Nw1YJBo4An=gkKig@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: Fix the return value in gfs2_get_link() kernel-doc
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VdOtNY600hp7PwBVFqEVj0PEOyWqFl1o6nV67C9aiRo_1789220530
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Received: from [192.168.1.104] ([39.182.0.161]) by smtp.larksuite.com with ESMTPS; Sat, 12 Sep 2026 14:21:35 +0000
+User-Agent: Mozilla Thunderbird
+Date: Sat, 12 Sep 2026 22:21:28 +0800
 Content-Transfer-Encoding: quoted-printable
+X-Original-From: yu kuai <yukuai@fygo.io>
+From: "yu kuai" <yukuai@fygo.io>
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <a123f309-6ec7-470f-b5b0-f08cca6d2627@linux.ibm.com>
+Reply-To: yukuai@fygo.io
+To: "Nilay Shroff" <nilay@linux.ibm.com>, "Jens Axboe" <axboe@kernel.dk>, 
+	"Tejun Heo" <tj@kernel.org>, "Josef Bacik" <josef@toxicpanda.com>, 
+	"Johannes Weiner" <hannes@cmpxchg.org>, 
+	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	"yu kuai" <yukuai@fygo.io>
+Cc: "Christoph Hellwig" <hch@lst.de>, "Tao Cui" <cui.tao@linux.dev>, 
+	"Jan Kara" <jack@suse.cz>, "Jonathan Corbet" <corbet@lwn.net>, 
+	"Shuah Khan" <skhan@linuxfoundation.org>, "Coly Li" <colyli@fygo.io>, 
+	"Kent Overstreet" <kent.overstreet@linux.dev>, 
+	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
+	"Mikulas Patocka" <mpatocka@redhat.com>, 
+	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
+	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
+	"Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, 
+	"Dan Williams" <djbw@kernel.org>, 
+	"Vishal Verma" <vishal.l.verma@intel.com>, 
+	"Dave Jiang" <dave.jiang@intel.com>, 
+	"Alison Schofield" <alison.schofield@intel.com>, 
+	"Ira Weiny" <iweiny@kernel.org>, 
+	"Andreas Gruenbacher" <agruenba@redhat.com>, 
+	"Matthew Wilcox" <willy@infradead.org>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
+	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
+	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
+	"Barry Song" <baohua@kernel.org>, 
+	"Youngjun Park" <youngjun.park@lge.com>, <cgroups@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-block@vger.kernel.org>, <linux-bcache@vger.kernel.org>, 
+	<dm-devel@lists.linux.dev>, <linux-raid@vger.kernel.org>, 
+	<nvdimm@lists.linux.dev>, <virtualization@lists.linux.dev>, 
+	<gfs2@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+Message-Id: <4701cbcb-b877-4902-a5b6-59836c345ae1@fygo.io>
+References: <20260823133045.970199-1-yukuai@kernel.org> <20260823133045.970199-3-yukuai@kernel.org> <49d724b8-57c6-48fc-8099-69cd1b072351@linux.ibm.com> <befbc177-f7f5-4c44-b02e-20a99fc64c0c@fygo.io> <a123f309-6ec7-470f-b5b0-f08cca6d2627@linux.ibm.com>
 
-On Sat, Sep 12, 2026 at 8:26=E2=80=AFAM Karl Mehltretter <kmehltretter@gmai=
-l.com> wrote:
-> gfs2_get_link() returns the link target or an error pointer, but its
-> kernel-doc still describes an integer status. The mismatch dates back to
-> the change in its predecessor's follow_link calling convention.
+Hi,
+
+=E5=9C=A8 2026/9/7 14:02, Nilay Shroff =E5=86=99=E9=81=93:
+> On 9/6/26 5:09 PM, yu kuai wrote:
+>> Hi,
+>>
+>> =E5=9C=A8 2026/9/6 18:56, Nilay Shroff =E5=86=99=E9=81=93:
+>>> On 8/23/26 7:00 PM, Yu Kuai wrote:
+>>>> @@ -257,20 +262,21 @@ static inline bool
+>>>> bio_issue_as_root_blkg(struct bio *bio)
+>>>> =C2=A0=C2=A0=C2=A0 * @blkcg: blkcg of interest
+>>>> =C2=A0=C2=A0=C2=A0 * @q: request_queue of interest
+>>>> =C2=A0=C2=A0=C2=A0 *
+>>>> =C2=A0=C2=A0=C2=A0 * Lookup a blkg for the @blkcg - @q pair, whether i=
+t is online or
+>>>> dying.
+>>>> =C2=A0=C2=A0=C2=A0 *
+>>>> - * Must be called in a RCU critical section.
+>>>> + * Must be called with either RCU read lock or queue_lock held.
+>>>> =C2=A0=C2=A0=C2=A0 *
+>>>> =C2=A0=C2=A0=C2=A0 * This does not acquire a reference.=C2=A0 The call=
+er must already hold
+>>>> one, or
+>>>> =C2=A0=C2=A0=C2=A0 * have the blkg pinned by I/O.
+>>>> =C2=A0=C2=A0=C2=A0 */
+>>>> =C2=A0=C2=A0 static inline struct blkcg_gq *blkg_lookup_any(struct blk=
+cg *blkcg,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct request_queue *q)
+>>>> =C2=A0=C2=A0 {
+>>>> -=C2=A0=C2=A0=C2=A0 RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 "blkg_lookup_any() requires an RCU read lock");
+>>>> +=C2=A0=C2=A0=C2=A0 RCU_LOCKDEP_WARN(!rcu_read_lock_held() &&
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 !lockdep_is_held(&q->queue_lock),
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 "blkg_lookup_any() requires an RCU read lock or
+>>>> queue_lock");
+>>>> =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return rhashtable_lookup(&=
+q->blkg_hash, &blkcg->css.id,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg_hash_params);
+>>>> =C2=A0=C2=A0 }
+>>>
+>>> The changes look good to me. However, rhashtable_lookup() is annotated
+>>> with __must_hold_shared(RCU). Since we now officially support Clang
+>>> context annotations in the block layer, compiling with the latest
+>>> Clang/LLVM generates a number of context warnings, for example:
+>>>
+>>> block/blk-cgroup.h:277:9: warning: calling function 'rhashtable_lookup'
+>>> requires holding __ctx_lock_RCU 'RCU' [-Wthread-safety-analysis]
+>>> =C2=A0=C2=A0 277 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retu=
+rn rhashtable_lookup(&q->blkg_hash,=20
+>>> &blkcg->css.id,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+>>>
+>>> The same warning is reported from several other block layer source
+>>> files that include blk-cgroup.h.
+>>>
+>>> This indicates that rhashtable_lookup() requires the RCU read lock
+>>> from Clang's context-analysis perspective. Looking at the call paths of
+>>> blkg_lookup_any(), it appears that not all callers hold
+>>> rcu_read_lock() when invoking it.
+>>
+>> I was not aware of the above clang warning, this should not be a real=20
+>> problem
+>> because queue_lock should have the same protection as rcu, and I was=20
+>> trying
+>> not to make this patch too complex.
+>>
+> I agree that this is not a runtime correctness issue when the lookup=20
+> is already
+> protected by q->queue_lock.
 >
-> Describe the returned pointer and error value.
+>> I add the rcu_read_lock() in the following patch to covert queue_lock=20
+>> to blkcg_mutex:
+>>
+>> [RFC PATCH v3 3/6] blk-cgroup: protect blkgs with blkcg_mutex - Yu=20
+>> Kuai=20
+>> <https://lore.kernel.org/all/20260823152926.1043863-4-yukuai@kernel.org/=
 >
-> Fixes: 680baacbca69 ("new ->follow_link() and ->put_link() calling conven=
-tions")
+>>
+>> Since this is related to compile warning, I'll move the rcu=20
+>> protection to this
+>> patch.
+>>
+> Since rhashtable_lookup() is annotated with __must_hold_shared(RCU),=20
+> Clang's
+> context analysis still reports warnings for these call paths. While this
+> doesn't cause a build failure (and only generates warning) when=20
+> CONFIG_WERROR
+> is not enabled, it could do so for configurations that enable=20
+> CONFIG_WERROR=3Dy.
+>
+> So IMO, moving the rcu_read_lock() protection into this patch makes=20
+> sense.
+> This would avoid introducing the Clang warnings/errors in this patch,=20
+> and then
+> you may accordingly adjust your subsequent series where the=20
+> q->queue_lock protection
+> is removed and the blkg lookup paths are protected by RCU.
+>
+> I also noticed that some paths already take q->queue_lock followed by=20
+> rcu_read_lock(),
+> so adding the RCU protection here should be consistent with those=20
+> existing paths.
 
-Actually, the problem was introduced in commit c177c2ac8c5a ("Switch
-gfs2 to nd_set_link()"). I've updated the description and applied the
-patch to for-next.
+Turns out Clang will still warn after adding rcu_read_lock(). I'm not famil=
+iar how this
+works, but AI told me this is related to inline helpers, And I'll have to a=
+dd the same
+__must_hold_shared(RCU) in rhashtable_lookup() for following inline callers=
+ to kill the
+warning:
 
+   static inline struct blkcg_gq *blkg_lookup_any(...)
+         __must_hold_shared(RCU);
+
+   static inline struct blkcg_gq *blkg_lookup(...)
+         __must_hold_shared(RCU);
+
+>
+> Thanks,
+> --Nilay
+
+--=20
 Thanks,
-Andreas
-
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  fs/gfs2/inode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-> index f361876c5583353a1196ed35be1c95af33a90c02..d5e03ec89127254654dceaff5=
-6322ed617a3400a 100644
-> --- a/fs/gfs2/inode.c
-> +++ b/fs/gfs2/inode.c
-> @@ -1900,7 +1900,7 @@ static int gfs2_rename2(struct mnt_idmap *idmap, st=
-ruct inode *odir,
->   *
->   * This can handle symlinks of any size.
->   *
-> - * Returns: 0 on success or error code
-> + * Returns: the link target on success, an ERR_PTR() on failure
->   */
->
->  static const char *gfs2_get_link(struct dentry *dentry,
-> --
-> 2.39.5 (Apple Git-154)
->
-
+Kuai
