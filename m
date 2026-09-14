@@ -1,325 +1,140 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCAA23643F;
-	Sun, 13 Sep 2026 13:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27261486637
+	for <gfs2@lists.linux.dev>; Mon, 14 Sep 2026 16:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789306237; cv=none; b=R0DpT39sM2RR/f4Y4RExnh8b7BRROYY73gUkxf60ziFtJJn/AbEQ6pXYwsaQBekjcM7GJlTcbmhE+JpLyL/YEjOAT2mld5wIBcd58PcUCIGzIHyGTUNkrgyRy+3pxCkL0ceqILeuyT4+K7N18mhuDiccKBYLp6wGTEZB2ImOVrc=
+	t=1789404246; cv=none; b=dhSx/p5BmzkxBF+7UzTmlr8p8MEzb+ICRjs6KaOmZMJcPwaW5PXNRoS7d/QhP7QOGh9IiosckX2wgzKQZTan9BcP2EvG7SdEhSWKNMDQEAgIgwmTN80i8VWcmYl9CJg+sKyvvNkAzc65EHXuFMhY3QRcnO33n0YOPlLDfuwuBeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789306237; c=relaxed/simple;
-	bh=J9hiblMOx3XvVdaM9J2BbPYlG8NGFT52bvA4fXddIg4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hxmNskmCHve4y8PIY7aWXFUvDFw8byJJ9odLlAIhWiTEE2NTXygwLo02k8B9vjNt84O+oigeod8wGuhQxbxzocTDjcHRGmmVovubjomcHohX07+SjODQlyZNr6Sy1GJuqvXIGKzMzoNFT44TH9HALxHKPBZE6QOt5kWgsJUr1aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kkCdYWnG; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789404246; c=relaxed/simple;
+	bh=B72i0TqWFDhyfs7iAPK30i8YZVrELBSfmsv2i7LPbl0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=M/OFPq3rNvC1poi2dUVzL33iT2eXXU0g4gUKlbTf48rIXdXZWFpt/zDINTg/Pgt+PD32/gfRxlPHsqQXzPKBD1fXRcEDsfb+KI9t5MO067ABvHVjrL7vc3bc7zxP3dgBaNmGr6nQMrF1wI8CAEL82fR0Gg+0M4+kgA9VKO+pP8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TrPrY+Qy; arc=none smtp.client-ip=209.85.222.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kkCdYWnG"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAVQkF1255664;
-	Sun, 13 Sep 2026 13:29:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+V/HIm
-	HSDz8kfFeEdbya+rI2+T3XQl9CUl1CtP6MnQY=; b=kkCdYWnGsL4dS89b7MgWSi
-	8GJVjDvIQ9h+M7k9j8tNkW942RE2zvWfRXzQr0qjMV4dHnmHq99pw1YTz+UTXy9/
-	/S2UyPagSL+3Nq+IIu97ne4NbyZ+AqdmWBXCba6AGvFf2ejDRurwYcHXw8QeTIyj
-	EyRPmRrcXkc6VeiZi55r7/FCsKGoutX6JFwfOme2x/bVj5SFDoAQSDC1qKdcXczB
-	FvcLTPegwmnY5jKb1mHlYiiwwO05cS1/iUHz1TjmycNOCk0ATqbKujf4ylqluy5c
-	liEEExomDNrLDNESynCU303UKrXLt/cSpMWD8aQW8BOy49f/6vTzDaCITCiAvP2Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxdpvp3k-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 13 Sep 2026 13:29:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAZ4oB544502;
-	Sun, 13 Sep 2026 13:29:41 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gnh2psqu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Sep 2026 13:29:41 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68DDTf2U23134818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 13 Sep 2026 13:29:41 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 445F958055;
-	Sun, 13 Sep 2026 13:29:41 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A64B58043;
-	Sun, 13 Sep 2026 13:29:27 +0000 (GMT)
-Received: from [9.61.162.129] (unknown [9.61.162.129])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 13 Sep 2026 13:29:26 +0000 (GMT)
-Message-ID: <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
-Date: Sun, 13 Sep 2026 18:59:25 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TrPrY+Qy"
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-934956beec8so639395885a.0
+        for <gfs2@lists.linux.dev>; Mon, 14 Sep 2026 09:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789404243; x=1790009043; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6vLuB0gCfwF6zDMyZTlgcVgD+YFlPOMK6K5wbE2DV94=;
+        b=TrPrY+QyXrwRH6d3AW0DGwqWCROP2C7OhhysaUJSLaO0/WEMqLMmbqC1oi+w9208OD
+         z03LYthsNB2KgXFbKTRkqkWun+tkQ69TumqUVyuW8YzxnGlGam9Mk9w144nAw4dZLxKw
+         gMqllficP5VZzt3JZkJt/01h/UXAoi7XVltAf+gDlbK3EHRGUKn6leSVB2vT9AXZm1eA
+         o6oj4vZLB2PS7YfKnj8Gasxk8VN6Kff8DNHiwdkzm67gSj1c5OmW4pNz2UmyPsyaSneo
+         IJauHuqx97Gl/Fq9WohljuewG2mneadbG/gwNTS/nufdZuVIvqGUIn/CdRcElX2i8Bxn
+         ikXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789404243; x=1790009043;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6vLuB0gCfwF6zDMyZTlgcVgD+YFlPOMK6K5wbE2DV94=;
+        b=SREV4aXM9bsP54fl/QYdSSFZ5Hf0f9tUruVcOc0MhJk7GfTVX57CJR/VE/tOrqiNr7
+         OeVriMxriz1oI8NcFzzA468SNa+cnA0d+lQX9Fl/si0fUDrADrAuxdOPGt9MR04/6IeG
+         hxOCqjLBlWhbniyIGtDyb7NuD4/ZwH/9Dwt9n4znqw76U147JQ6hmySX55dAunSstjYZ
+         Vni3KT4Rr2o0exGOejHQGj8tKkximE59Uf2CWgS/rRjRPlLt2uMw8GHmKYhKAJTOmiPa
+         80NlyvqHXbBY6KR5XhpPrI71MTPq5UyveFKtcKYUxHDC+/lZohaI4DDZW5QtLY1a0cSe
+         aNAA==
+X-Forwarded-Encrypted: i=1; AKwUvBzIFLngek4Rsd0JQxrMEBJIvUvuwt1F1bEdnuxhSwFD9pBNWm1Bvw9To6vGRA+EoR2A+x7d@lists.linux.dev
+X-Gm-Message-State: AFuF++m9C8482+yZbW2y+Sz9KcpSp2PPSMJhqBDz1hXR/5OxdNkAuZCq
+	2gtyT+eZNM6M6h+g8z3gkVZvYVoesfEZl/7iLyq/ePGACF3h4HCXclb8q2VbTX0BLFYRBcCNdia
+	NNQZgfw5BXmzWLA==
+X-Received: from qknrb22.prod.google.com ([2002:a05:620a:8d16:b0:93a:8de:9f99])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4409:b0:939:9c21:8ece with SMTP id af79cd13be357-93a29a192e5mr456272385a.42.1789404242566;
+ Mon, 14 Sep 2026 09:44:02 -0700 (PDT)
+Date: Mon, 14 Sep 2026 16:44:00 +0000
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] blk-cgroup: move async bio punt state to blkcg
-To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap
- <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Alasdair Kergon
- <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
-        Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling
- <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>
-Cc: Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
-        Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
-        dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-        gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, llvm@lists.linux.dev
-References: <cover.1789237876.git.yukuai@fygo.io>
- <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE4NiBTYWx0ZWRfXwV/0FqNA71UW
- 0pSFlqnYwSqWUYI6LgVLyKbNtIbqAXpKwLtlpplrS30cUDQsW2lRrlESKbbUK1oSAm5xS8Ylm55
- VNl+w9i9HLWFGn8vh9aZHnh6SAqmPz13WVaI6pKqA55iJdy5LNt9R1Wi94ijn02bhHTHKAe0eRP
- mp1vNvMZ7l2UiHUt58ZXQBMVs6hQdaaQ3nChJkoptBrQFIPGEirAwojONs4lZ6aHCKdNxRtzvJA
- VEaSWJbv7lVRD5sIfTWnm9jjRqkJZ32e7oiPfEo9MnPFWhdGetfmkOqDaQekF77ovy5LJRxmJm4
- GHgK/ALXAeVLOEPIBjf+qhG5iy+5XWRhZiTObq8UQ+HqyRjSELagks36ThrVEyBiln9x1oyRA3K
- 6RWEEkijXp9Vg20WYSpU+aj5P1ynIjIW9tHl7ChXZlM42/wLY0H0BiuqAYnMqScT+rA1lzv4TAc
- lKGFPo2jxo7pOUNxhDA==
-X-Proofpoint-GUID: jqEO1yjE93QiEpR2tJ-y2Cj8IdEumaS9
-X-Authority-Analysis: v=2.4 cv=DobDa2/+ c=1 sm=1 tr=0 ts=6aa6a547 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=DV5896PDfqYWo4ufmHUA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: vL8PPh6d47DxNDz6NH1gi_sDy5Mchg5w
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE4NiBTYWx0ZWRfX+u9bu0oOeNVm
- 0mm11mtP4XmiNfvfkDWefm6R0Hke5V/MZntTFgts27Fvw05oL4zedqtiD/PrbwZHmnddXxuaxEY
- eyOP6ZBuPFe31aD3IKoBDNy2zMXtA+0=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-13_04,2026-09-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609130186
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260914164400.2738350-1-edumazet@google.com>
+Subject: [PATCH] dlm: fix send buffer backpressure handling
+From: Eric Dumazet <edumazet@google.com>
+To: Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, gfs2@lists.linux.dev, 
+	Eric Dumazet <eric.dumazet@gmail.com>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/13/26 12:24 PM, Yu Kuai wrote:
-> From: Yu Kuai <yukuai@fygo.io>
-> 
-> blkcg_punt_bio_submit() currently queues punted bios on blkg->async_bios,
-> so it has to call bio_blkg() to find or create a queue-local blkg.  Bios
-> now carry and pin the blkcg css, so punted bio lifetime no longer needs to
-> be anchored by a blkg.
-> 
-> Keeping the punt state in blkg can instantiate a blkg even when no blkcg
-> policy is enabled, just to bounce submission from a shared kthread.  Move
-> async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
-> punted bios on bio_blkcg() for non-root cgroups.  Root or unassociated bios
-> are submitted directly.
-> 
-> This preserves the priority-inversion avoidance while preventing
-> blkcg_punt_bio_submit() from creating blkgs that are not needed by any
-> policy.
-> 
-> Signed-off-by: Yu Kuai <yukuai@fygo.io>
-> ---
->   block/blk-cgroup.c | 52 ++++++++++++++++++++++++++--------------------
->   block/blk-cgroup.h | 14 ++++++-------
->   2 files changed, 35 insertions(+), 31 deletions(-)
-> 
-> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-> index 59ccfefe16a8..aa3cee107ebe 100644
-> --- a/block/blk-cgroup.c
-> +++ b/block/blk-cgroup.c
-> @@ -180,14 +180,10 @@ static void blkg_free(struct blkcg_gq *blkg)
->   
->   static void __blkg_release(struct rcu_head *rcu)
->   {
->   	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
->   
-> -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> -	WARN_ON(!bio_list_empty(&blkg->async_bios));
-> -#endif
-> -
->   	blkg_free(blkg);
->   }
->   
->   /*
->    * A group is RCU protected, but having an rcu lock does not mean that one
-> @@ -226,23 +222,23 @@ static void blkg_release(struct percpu_ref *ref)
->   }
->   
->   #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
->   static struct workqueue_struct *blkcg_punt_bio_wq;
->   
-> -static void blkg_async_bio_workfn(struct work_struct *work)
-> +static void blkcg_async_bio_workfn(struct work_struct *work)
->   {
-> -	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
-> -					     async_bio_work);
-> +	struct blkcg *blkcg = container_of(work, struct blkcg, async_bio_work);
->   	struct bio_list bios = BIO_EMPTY_LIST;
->   	struct bio *bio;
->   	struct blk_plug plug;
->   	bool need_plug = false;
->   
-> -	/* as long as there are pending bios, @blkg can't go away */
-> -	spin_lock(&blkg->async_bio_lock);
-> -	bio_list_merge_init(&bios, &blkg->async_bios);
-> -	spin_unlock(&blkg->async_bio_lock);
-> +	/* as long as there are pending bios, @blkcg can't go away */
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		bio_list_merge_init(&bios, &blkcg->async_bios);
-> +	}
->
-Instead of using guard(spinlock)(...) here, I think we could use the
-simpler spin_lock()/spin_unlock() helpers. IMO, they are easier
-to read and reason about for these short critical sections.
+lowcomms.c tests and clears SOCKWQ_ASYNC_NOSPACE in con->sock->flags,
+but this bit has not been stored there for ten years.
 
->   	/* start plug only when bio_list contains at least 2 bios */
->   	if (bios.head && bios.head->bi_next) {
->   		need_plug = true;
->   		blk_start_plug(&plug);
-> @@ -259,19 +255,20 @@ static void blkg_async_bio_workfn(struct work_struct *work)
->    * cgroup.  Use this helper instead of submit_bio to punt the actual issuing to
->    * a dedicated per-blkcg work item to avoid such priority inversions.
->    */
->   void blkcg_punt_bio_submit(struct bio *bio)
->   {
-> -	struct blkcg_gq *blkg = bio_blkg(bio);
-> +	struct blkcg *blkcg = bio_blkcg(bio);
->   
-> -	if (blkg && blkg->parent) {
-> -		spin_lock(&blkg->async_bio_lock);
-> -		bio_list_add(&blkg->async_bios, bio);
-> -		spin_unlock(&blkg->async_bio_lock);
-> -		queue_work(blkcg_punt_bio_wq, &blkg->async_bio_work);
-> +	if (blkcg && cgroup_parent(blkcg->css.cgroup)) {
-> +		{
-> +			guard(spinlock)(&blkcg->async_bio_lock);
-> +			bio_list_add(&blkcg->async_bios, bio);
-> +		}
-> +		queue_work(blkcg_punt_bio_wq, &blkcg->async_bio_work);
+Commit 9cd3e072b0be ("net: rename SOCK_ASYNC_NOSPACE and
+SOCK_ASYNC_WAITDATA") mechanically renamed the two dlm users, then
+commit ceb5d58b2170 ("net: fix sock_wake_async() rcu protection") moved
+the bit from socket->flags to the RCU protected socket_wq->flags, where
+it is reachable only through sk_set_bit() and sk_clear_bit(), and is
+only maintained for sockets having SOCK_FASYNC set.  dlm uses kernel
+sockets, which never have SOCK_FASYNC set, and never sets the bit
+itself, so the test in send_to_sock() has been false ever since.
 
-Again same here, replace guard() with spin_lock() and spin_unlock()
-helpers.
+The consequence is that when sock_sendmsg() returns -EAGAIN because the
+socket send buffer is full, dlm no longer sets CF_APP_LIMITED, does not
+increment sk_write_pending, and does not return DLM_IO_END to wait for
+lowcomms_write_space().  It returns DLM_IO_RESCHED instead, and
+process_send_sockets() immediately requeues the send work.  A connection
+to a peer that is slow to drain thus keeps cycling through
+sock_sendmsg() and -EAGAIN, burning CPU, instead of sleeping until TCP
+reports that space is available again.
 
->   	} else {
-> -		/* Never bounce if there is no non-root blkg to queue on. */
-> +		/* Never bounce if there is no non-root blkcg to queue on. */
->   		submit_bio(bio);
->   	}
->   }
->   EXPORT_SYMBOL_GPL(blkcg_punt_bio_submit);
->   
-> @@ -350,15 +347,10 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
->   	blkg->q = disk->queue;
->   	INIT_LIST_HEAD(&blkg->q_node);
->   	blkg->blkcg = blkcg;
->   	blkg->blkcg_id = blkcg->css.id;
->   	blkg->iostat.blkg = blkg;
-> -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> -	spin_lock_init(&blkg->async_bio_lock);
-> -	bio_list_init(&blkg->async_bios);
-> -	INIT_WORK(&blkg->async_bio_work, blkg_async_bio_workfn);
-> -#endif
->   
->   	u64_stats_init(&blkg->iostat.sync);
->   	for_each_possible_cpu(cpu) {
->   		u64_stats_init(&per_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
->   		per_cpu_ptr(blkg->iostat_cpu, cpu)->blkg = blkg;
-> @@ -1399,10 +1391,16 @@ static void blkcg_css_free(struct cgroup_subsys_state *css)
->   		if (blkcg->cpd[i])
->   			blkcg_policy[i]->cpd_free_fn(blkcg->cpd[i]);
->   
->   	mutex_unlock(&blkcg_pol_mutex);
->   
-> +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		WARN_ON(!bio_list_empty(&blkcg->async_bios));
-> +	}
-> +#endif
+Test SOCK_NOSPACE instead.  This is the bit that lives in socket->flags,
+that TCP sets whenever sendmsg() returns -EAGAIN for lack of send buffer
+space (tcp_sendmsg_locked() and sk_stream_wait_memory()), and that
+lowcomms_write_space() already clears.  This restores the semantics dlm
+had before the bit moved.
 
-This is a slightly different case. At this point blkcg_css_free() is
-freeing the blkcg object after its final reference has gone away, so
-there should be no concurrent context accessing blkcg->async_bios.
-Therefore, I don't think we need to acquire async_bio_lock here just
-to perform the WARN_ON() check.
-The clang context annotation cannot infer this object-lifetime property
-and will therefore report an unprotected access. I think we should
-explicitly mark this access as context-unsafe.
+Also remove the clear_bit() of SOCKWQ_ASYNC_NOSPACE from
+lowcomms_write_space(), for the same reason.
 
-But wait, even better, we could introduce a bio_list_empty_careful() helper,
-similar to list_empty_careful(), for this purpose:
+SCTP connections are deliberately left as they are.  SCTP does not set
+SOCK_NOSPACE, and it never calls sk->sk_write_space(): sctp_wfree() ends
+up in sctp_wake_up_waiters(), which calls sctp_write_space() directly.
+lowcomms_write_space() is thus never invoked for an SCTP connection, and
+the test added here stays false, so send_to_sock() keeps returning
+DLM_IO_RESCHED as it does today.  This is the only safe behavior, as
+returning DLM_IO_END would wait for a callback that never comes.
 
-static inline bool bio_list_empty_careful(const struct bio_list *bl)
-	__context_unsafe(/* intentional lockless access to @bl->head */)
-{
-	return bl->head == NULL;
-}
+Fixes: ceb5d58b2170 ("net: fix sock_wake_async() rcu protection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ fs/dlm/lowcomms.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Then this could simply become:
-
-WARN_ON(!bio_list_empty_careful(&blkcg->async_bios));
-
->   	free_percpu(blkcg->lhead);
->   	kfree(blkcg);
->   }
->   
->   static struct cgroup_subsys_state *
-> @@ -1447,10 +1445,18 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
->   	}
->   
->   	spin_lock_init(&blkcg->lock);
->   	refcount_set(&blkcg->online_pin, 1);
->   	INIT_HLIST_HEAD(&blkcg->blkg_list);
-> +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> +	spin_lock_init(&blkcg->async_bio_lock);
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		bio_list_init(&blkcg->async_bios);
-> +	}
-> +	INIT_WORK(&blkcg->async_bio_work, blkcg_async_bio_workfn);
-> +#endif
-
-This is interesting. As you know, while an object is being allocated
-and before it is published, it can't be accessed concurrently. So
-guarding blkcg->async_bios with blkcg->async_bio_lock is not necessary
-here. Moreover, since blkcg is zero-initialized, we could simply remove
-both the guard(...) and the bio_list_init() call above.
-
-Thanks,
---Nilay
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 2aff1c7c17de..abe9ae4c643f 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
+ 	clear_bit(SOCK_NOSPACE, &con->sock->flags);
+ 
+ 	spin_lock_bh(&con->writequeue_lock);
+-	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
++	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
+ 		con->sock->sk->sk_write_pending--;
+-		clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
+-	}
+ 
+ 	lowcomms_queue_swork(con);
+ 	spin_unlock_bh(&con->writequeue_lock);
+@@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
+ 	if (ret == -EAGAIN || ret == 0) {
+ 		lock_sock(con->sock->sk);
+ 		spin_lock_bh(&con->writequeue_lock);
+-		if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
++		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
+ 		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
+ 			/* Notify TCP that we're limited by the
+ 			 * application window size.
+-- 
+2.55.0.1007.g17ff1f9808-goog
 
