@@ -1,96 +1,133 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0936B3D9DAA
-	for <gfs2@lists.linux.dev>; Thu, 17 Sep 2026 08:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6164256E055
+	for <gfs2@lists.linux.dev>; Thu, 17 Sep 2026 14:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633066; cv=none; b=Ys1x5MYL0gqRSKzvoNAN507XC5dxDmGLoT6yD1PDqR20yIfvK3KRfpqwBdZQ7/fjxI9cilN03Diis67jmZ8wWrr8UVAT4lPPZE1CUefAr1c84foBUZQhP8YAzPqqKgztaGtV13kzRrydawh1LH2DBTYZPOzUQcw8efDjkMVQY2c=
+	t=1789653902; cv=none; b=WwD4Nk4ZUi/mcF24gRehsd6NA+Z/V4ShONroyRLdQU1OJVLXUUY+nvjb2H5exNzhpiQtqjlM3BH0CSzviv9Vn8DySCcrWai/dDjM8+fppObYsuYpwZZVCFcJZkMc2cMJehYqAzlOWG/8hnpQyROK5Mkavnz1yJQ9p9hKh0Rp5ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633066; c=relaxed/simple;
-	bh=6Vua3enAHbmXaDGuGCt78TCaAfW6297ou862ewk7Tzs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q4F9ygSPyATMGkfly7Yqc2v6tjcIXUKnbfVRO3FO/IxQRY2uIAcRkmCXKu0QyxUeOJXrp5uE5LqI5BvP1NOa4MZzT8zNRPp5Dg6ILo7f/vk3RYc4LXhcJ+dF8Y8q9SkckxDNjOxyTDUeY54kFmSHZw4Kr6wDcof8yHbtnH/x8tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=MJrffqtS; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1789653902; c=relaxed/simple;
+	bh=Avy7am6+fJfuvUh+tazEtIBWfvo8Vd6W6MFK1TKmqBc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wj4N3aAHUiBemvTkeQqFoOn0vovoShrpnTeWiZP/4TfTnfqKKaRNMaHgFwia/0MstsPAhu9ix05dWZXg9SooEmGzagX6nUQ8fnnGYa90BiIw78idtpeib6vR+24fylWUOJguYawndpeiA9wLceR5CRYBpEMCT2RWj3XUskhhHSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MHBMnrHy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="MJrffqtS"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=DIZ//ngLWWGofSQmLjgUk3u/tZSditcABNCCKH8NojQ=;
-	b=MJrffqtSwkOpWLLUZHzJ+XbIJRz/JCj8WvAutpxznBt5IUXf3T1yyrv9ve5jdJXDPZdPFjVeS
-	snPiFGXylmr0fdRkkcUUj1tz6bGt2f4PvYtA7JlUCPbEPowlAjtQzvN/eRmN0EHAhds//6p+fnK
-	eRhIGbcZYLW7Mz/P9QWvzMk=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hlpHV6RqSzmV7C;
-	Thu, 17 Sep 2026 16:06:30 +0800 (CST)
-Received: from whupemk100018.china.huawei.com (unknown [7.152.184.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id 532B84057C;
-	Thu, 17 Sep 2026 16:17:30 +0800 (CST)
-Received: from dggphis33418.huawei.com (10.244.148.83) by
- whupemk100018.china.huawei.com (7.152.184.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 17 Sep 2026 16:17:29 +0800
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
-To: <cuigaosheng1@huawei.com>, <lujialin4@huawei.com>,
-	<gongruiqi1@huawei.com>, <aahringo@redhat.com>, <teigland@redhat.com>
-CC: <gfs2@lists.linux.dev>
-Subject: [PATCH -next] dlm: fix WARN_ON_ONCE in dlm_lowcomms_close when no connection exists
-Date: Thu, 17 Sep 2026 16:13:46 +0800
-Message-ID: <20260917081346.4078281-1-cuigaosheng1@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MHBMnrHy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789653900;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xmJLfsTM6OFmtf48VTrfiGdKPLkz8C4K3G1aJXyW/j8=;
+	b=MHBMnrHy44s2BbpTqpwLnIgwm4dys/r2hjsNnTqG5YO8TqZ+puHyv6yca7IQfWRw9W8vQh
+	S7OolHR3wbLmTG8Nahoay2/TB7AqzC5hwW8L62BcuQVvd0SN4q8oQb5+jjkf9YB+SSJXsn
+	viOJVnzsJPitg77RvnIdwWMEn7hLuk0=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-SZ0vRt_DP8O6L2HNu3ISWg-1; Thu, 17 Sep 2026 10:04:58 -0400
+X-MC-Unique: SZ0vRt_DP8O6L2HNu3ISWg-1
+X-Mimecast-MFC-AGG-ID: SZ0vRt_DP8O6L2HNu3ISWg_1789653897
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-66cdb701595so901426d50.1
+        for <gfs2@lists.linux.dev>; Thu, 17 Sep 2026 07:04:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789653897; x=1790258697;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xmJLfsTM6OFmtf48VTrfiGdKPLkz8C4K3G1aJXyW/j8=;
+        b=IkL3C3OBysibGyEJuZzmRhd39P1xasOzMdkbSIMRC4jAnFPC4TH0elA52sg33rIPv9
+         IgVrtoGOcUIH/gVjJ//4KjQ4Kcn6k2u/wC+/7UmGSynEpFsD+T8W2c+DL/z0fN7jURau
+         iBGTZ4FwXQGR4CDRcEF4TARjJHSSqq4MqFs9gFrOwqs5u1rkDmIISFaaLzGg51bLH6hf
+         itc8K2QzHiqPl/mTCgeWvZK7zqYss68Kj/mH9IVljJ7qH1D1Id7khpj9C9T+9iZszlLS
+         M3sjKa/hoKLe/fzHI//AngEoVZR6erJ+6c3AfOOmZ7cj+tbVj0uKavqaHPuMIW64ozx7
+         nTmQ==
+X-Gm-Message-State: AFuF++nKaBBQ/YAuLlUJDYT4Z6QyJwFyqjSUfoUWor6tV8azfk+vhxrF
+	VIL2o77ZwMbjVKpgNjXoPtTj7LZpF2jk8VMoVJR6kTR+jVn4TeJsmuPJxWPApakIkHexxEl2gfS
+	PqgDvPtxeeILLA2hx6SvvvZyC9CXBrKPXWCRgAqizPbdWA3n3Bi3wCEK+I+wpKYY3XqCNTZKYkf
+	gire/fCk/THyKJskkXNZzQt3XycwEwpA==
+X-Gm-Gg: AYBFou3e65C6rf9V03bQDiEvcRVowYKN0d3E1Nrn5yVnoJlxEXZ3PBZ8Sa1yUlM5JEn
+	dzG4U0c1NISe2clKTCF+jJW7raFR67SvC+eo9glhv/zZqHbtw3bI/Pd3dZJHEXTQUU0pIVd0u6z
+	Vhj8MnwSHQk0Sanb+DL57mPzwntTHdOV7aI7nunw2NyJirFsfvmbSAQEfBtYCTdg1Q6YZZE8qnM
+	v2MfBsYaES78uyvO0u47zp6/Duo1btZiJ+d2jIv1VhrFA==
+X-Received: by 2002:a53:c041:0:10b0:66e:6089:b3ab with SMTP id 956f58d0204a3-671632a39f1mr1668418d50.47.1789653897299;
+        Thu, 17 Sep 2026 07:04:57 -0700 (PDT)
+X-Received: by 2002:a53:c041:0:10b0:66e:6089:b3ab with SMTP id
+ 956f58d0204a3-671632a39f1mr1668404d50.47.1789653896745; Thu, 17 Sep 2026
+ 07:04:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- whupemk100018.china.huawei.com (7.152.184.13)
+References: <CAF9RqJ7jNhNNr1oYOeqpNiPGWEf0xWysz-D8N_yLVgmcJW17+Q@mail.gmail.com>
+In-Reply-To: <CAF9RqJ7jNhNNr1oYOeqpNiPGWEf0xWysz-D8N_yLVgmcJW17+Q@mail.gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Thu, 17 Sep 2026 16:04:45 +0200
+X-Gm-Features: AcwNN1VrJ3ziAQmlvBobZQJDGefBJ2CLQbI2G9TAapT1-hl9cKmYM1CK85MXZ5k
+Message-ID: <CAHc6FU5mA_99pwAM7ARKBzOy0Zd2hYiX0VVJaZS-h-DxDDu7Zg@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: fix comment typos in lock_dlm.c
+To: Ruslan Vagner <rusya92266@gmail.com>
+Cc: gfs2@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 3OFL0CTttFO7KrZHYLSjBrXpTMpKNfJ7sZ23rCxwTgI_1789653897
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Cui GaoSheng <cuigaosheng1@huawei.com>
+On Tue, Sep 15, 2026 at 2:56=E2=80=AFPM Ruslan Vagner <rusya92266@gmail.com=
+> wrote:
+> Fix the spelling in comments. No functional change.
 
-Since commit 7138c7903468 ("dlm: disallow different configs nodeid
-storages") a comm's nodeid is parsed from the configfs directory name,
-e.g. "mkdir .../comms/0" creates a comm with nodeid 0. rmdir on a comm
-whose addr was never written passes that nodeid through drop_comm()
-and dlm_midcomms_close() into dlm_lowcomms_close(), where nodeid2con()
-finds no connection in the hash table and WARN_ON_ONCE(!con) fires.
-With panic_on_warn enabled this turns a harmless lookup miss into a
-kernel panic that is reachable with two plain configfs operations:
+This has already been fixed in for-next:
 
-  mkdir /sys/kernel/config/dlm/c/comms/0
-  rmdir /sys/kernel/config/dlm/c/comms/0
+https://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git/commit/=
+?id=3D277536c882467e348173238e4ff701a4e4d2fb9e
 
-Having no connection for a configfs-provided nodeid is a legitimate
-state and not a kernel invariant violation. Before commit 6f0b0b5d7ae7
-("fs: dlm: remove dlm_node_addrs lookup list") this case was handled
-tolerantly with 'if (con)'. Downgrade the WARN_ON_ONCE to a plain
-check again and quietly return -ENOENT, which drop_comm() already
-ignores.
+Andreas
 
-Fixes: 6f0b0b5d7ae7 ("fs: dlm: remove dlm_node_addrs lookup list")
-Signed-off-by: Cui GaoSheng <cuigaosheng1@huawei.com>
----
- fs/dlm/lowcomms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index ea8353c4638d..93c98f1fd793 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1452,7 +1452,7 @@ int dlm_lowcomms_close(int nodeid)
- 
- 	idx = srcu_read_lock(&connections_srcu);
- 	con = nodeid2con(nodeid, 0);
--	if (WARN_ON_ONCE(!con)) {
-+	if (!con) {
- 		srcu_read_unlock(&connections_srcu, idx);
- 		return -ENOENT;
- 	}
--- 
-2.43.0
+> Signed-off-by: Ruslan Vagner <rusya92266@gmail.com>
+> ---
+>  fs/gfs2/lock_dlm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
+> index cef4bdee92a8..47eec0c13025 100644
+> --- a/fs/gfs2/lock_dlm.c
+> +++ b/fs/gfs2/lock_dlm.c
+> @@ -431,7 +431,7 @@ static void gdlm_cancel(struct gfs2_glock *gl)
+>   * 10. gfs2_control sets control_lock lvb =3D new gen + bits for failed =
+jids
+>   * 12. gfs2_recover does journal recoveries for failed jids identified a=
+bove
+>   * 14. gfs2_control clears control_lock lvb bits for recovered jids
+> - * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
+ occured
+> + * 15. gfs2_control checks if recover_block =3D=3D recover_start (step 3=
+ occurred
+>   *     again) then do nothing, otherwise if recover_start > recover_bloc=
+k
+>   *     then clear BLOCK_LOCKS.
+>   *
+> @@ -809,7 +809,7 @@ static void gfs2_control_func(struct work_struct *wor=
+k)
+>
+>         /*
+>          * No more jid bits set in lvb, all recovery is done, unblock loc=
+ks
+> -        * (unless a new recover_prep callback has occured blocking locks
+> +        * (unless a new recover_prep callback has occurred blocking lock=
+s
+>          * again while working above)
+>          */
+>
+> --
+> 2.54.0.windows.1
+>
 
