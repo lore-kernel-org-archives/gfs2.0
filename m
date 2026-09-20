@@ -1,193 +1,88 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9006C383999
-	for <gfs2@lists.linux.dev>; Sat, 19 Sep 2026 22:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F43A3E7BBD
+	for <gfs2@lists.linux.dev>; Sun, 20 Sep 2026 08:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789856566; cv=none; b=BHFxR1JDn1ZvvhKfrbv6MW2fEUKfO/w24qjtQYbz76UndtrYZXAzk3NjmRvI5J0QQq0v5TsBWuclQ8rLofHtvqZ5c+WUG/jfJ1M83vNGC2ODpelEOwHAC8Fnu273eE5xeYI/tMLmCu+HBFRUEZ5nNq2u29qCSpGNMBzPf8Di5Oo=
+	t=1789893098; cv=none; b=msTBTr//hpnAWE7WbzIH7LPW9kmCSEcebptFxvMoM1i9nVkPQwfRPHTCdPdsnfP//s9r1LC2xFE0YEb9YQ0NlZjRn60JS0B3IMXCLyMdjhf/QhPgKDH3QRBoYTQz6k/gfgYsghvrnzk8maHIm32eiN6OBHuOYpZSrKKR+R4Li5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789856566; c=relaxed/simple;
-	bh=FlgSJJtFUdWJ8tRsXp/CedR63jrFahGNk3apx+VitJ4=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=cqioiWGGwVP7TwfHAOH7YPAvIxWBlePpLdV8PpQ+oMjg6+Y5tqY2m/+MBB8EDvL3QUj0w5csdg39TVxUML75UZAIdGwgpkRBUZzfXazeHesiPtH1kRWBjndszvpPzQQ8OBMXQAqpSeGjlmJTZ902Gmlrf8790s+waVb7J3iMs/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=mt/4rTLw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LhDfVUXe; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="mt/4rTLw";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LhDfVUXe"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id B15A8EC009C;
-	Sat, 19 Sep 2026 18:22:42 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sat, 19 Sep 2026 18:22:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1789856562; x=1789942962; bh=+IpOH+u2KvI1sbyiO9548M7mDnShKIV0iIv
-	0cIo3Jbw=; b=mt/4rTLweXd+rVWfkWBFNqKUqlicTNnElFiLwacXkWaGEdzPOUt
-	qRHp/TKZze67YKMxduWCd2onlf4t/pP9mG4sZzc6wLu087ARsEb18St/pMYbuk7o
-	RNH+/J9XqElUnJMOi3rt6gs4iT0ees4NqDcnkPpp3QjJGuwLtWSLuKPJXV77mwlf
-	9pihN9+ZH6D+J3LS3xkA+/jGcUjYvyzbnqUceeQsrZEsQY8HK+Z3OSP2yBJsIr9I
-	rFsKh25L02FxHpkgtKrUxMlKpELiUlv0BFMKK4lvwGyAt9bBURkWRz6d1T/Keuqc
-	F2SSzocBpFCcPMSPBQyEqnIfUChY4nRBVIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789856562; x=
-	1789942962; bh=+IpOH+u2KvI1sbyiO9548M7mDnShKIV0iIv0cIo3Jbw=; b=L
-	hDfVUXeDVzEl545n6MmXRhqQSa9B5hJexcv3ZXeUOAJXNCkfdRkSRLqs1aa5nGZj
-	CQpvOqMiZGrPvI9SMMGnpHICLBCSCOgXz9LUaCP4pvJkh4VthpzFh4COcTmqK9f7
-	rF0jJs20RSbG7IMqkMOD/NT4bv7yM8cDyNNk6J9sy1ZGvOo8y34GDas6DGTrycQw
-	i232bnN+FFJ2pK464ClsotyEtdEZWYP/w6X0TNCYTIuWkEDp8GcwNfToF/RYTi9Z
-	zC6dyLz5aa7d4lJ5PTrMQXb1EkiWm8un1K5f/Cpsa0fR+xBqJ+aPxabXbR9uVpSB
-	Udhez9xB/K5TLcXq1xvow==
-X-ME-Sender: <xms:MguvahMo-B0L6PK2wgNlDaHacZvTwS-1gmGTiGyJs1nelC_59_RCBQ>
-    <xme:MguvalTT_79Q2XLSsoz_vsTfOWZu0WdKbrWPwNZLDReMBTZWwHLuC1hX3N_g8akOl
-    Qxs9DJlB8PkP2dtlePNWHPwj2neRUUsQssW7GVYuxc0CWN-Gg>
-X-ME-Received: <xmr:Mguvak53adxEN3gfbXgd7q84Za-0u2c35DPod7YC340Fwmk1U2lKEHrQ0KOB0VLyF1a4XBTxqUnkdpKPMULwYiSZJCaInxs>
-X-ME-Proxy-Cause: dmFkZTG1ofuJaJgESZYFIlGTak6lbeLZAYklKyn2ZaR+Jn1B6UL27Or9BJmC/6otW4XwrV
-    BbRl4MSqMUEo+ZAkzxR/zd+D8JVHb9xfDX2TNgXMXJW+dDdY2f2oip3FLijoM6pUj94/5u
-    aCkAw7uGD/d5TtxOzCP60gZmin6b/AwNMOOV/tEfU9DJSnk3aqLwtcPRXvX1yDr7Xp0II6
-    SrsZkX/iBwgTVoieoqKQwpgWOBz31GXJDJGObvAZ18irb5h0PDGAAsI6HF38dzKmnI55A1
-    St0hvpEyDESYGSfDGQ6z0dNhF5MUgARgMwdLI8+Ygm0PYVXp7sDLzZmMJgXsIb2jX/tkMT
-    +Dy1weYqGwzv3p0c96nktbwqNFCCDXAvV0bcwnjv/Po8fMfcFdq1BfGgqdukzAtBDESbrL
-    FGEOTLqdbd5YWNQxq8t8L7EvfYVbGI7Ory8y1POHxP5vaQWzWTb0dMPS+X2CtthyLejXHW
-    SU1xmqBdsdTGEP2nCIqIM2CTPJZVrXHJbXUOPSlSvEdE/Vm7C4ETX/dsHGWSC4yhQOl2R8
-    f6Hwe/PPG+PWAtLt/dAVCh5PDjt0p98Klj+lDyOHlU1eGJUnRX093BcSs/53iL7vrUnKsz
-    /+MamiiY6S0Jx3zxZIczlI4buLkZgWt8ZKTue0fOamDtbArDcotp88b6JeWA
-X-ME-Proxy: <xmx:MguvagaIu-QHgkvBBZpGkMXsHF2-dAIsdG9IBxS--TZhiQNH3HsrfQ>
-    <xmx:Mguvagbsu79kku_NfiOZj8r3qhySUDtUblceZwcjkFbfb0K-Y82Nrg>
-    <xmx:Mguvar2pBV4NC4F_N0NPcbfOBwOA0Aa45inVERStbBzkqj_Wd45QBg>
-    <xmx:MguvagZX41P2kFT6-jQh4Jogt12zegxWAHDe71Hwe0nKqup9XHn6dA>
-    <xmx:Mguval108GJxhL7aUhMPtkTNMbRrKesAIRdO2Rjlw60E1JzIt4dBBDPc>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 19 Sep 2026 18:22:36 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1789893098; c=relaxed/simple;
+	bh=8lAtYxsbh9XSCK/h97LLLPIQu2azj5WKFVETV22p1A0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pZl6HznY2rlaf+VppCHTH4lZamEg/eLLmzhoWd1tMZNswL2aPtE/KQ5eXV+N7pQx97a5rioxb6KvvFXi7HAfoZLHlEALfdtD9xH8uJhfcSJScqz8tObspI7qQ1BsnX8cjiLbfRatHbsIxEjcbC1g0RwEMPDoGZB14uHMsLaQR+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [117.147.104.32])
+	by mtasvr (Coremail) with SMTP id _____wCntizYma9qptImAQ--.24858S3;
+	Sun, 20 Sep 2026 16:31:22 +0800 (CST)
+Received: from localhost.localdomain (unknown [117.147.104.32])
+	by mail-app3 (Coremail) with SMTP id zS_KCgAHQXTSma9qV+dHBQ--.54809S2;
+	Sun, 20 Sep 2026 16:31:15 +0800 (CST)
+From: Jiacheng Xu <stitch@zju.edu.cn>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Jiacheng Xu <stitch@zju.edu.cn>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/4] gfs2: protect sysfs callbacks from superblock teardown
+Date: Sun, 20 Sep 2026 16:31:01 +0800
+Message-ID: <20260920083109.30798-1-stitch@zju.edu.cn>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Andreas Gruenbacher" <agruenba@redhat.com>
-Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Chuck Lever" <cel@kernel.org>,
- "Jeff Layton" <jlayton@kernel.org>, "Jori Koolstra" <jkoolstra@xs4all.nl>,
- "Mateusz Guzik" <mjguzik@gmail.com>,
- "Dorjoy Chowdhury" <dorjoychy111@gmail.com>,
- "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- gfs2@lists.linux.dev, "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>, ceph-devel@vger.kernel.org,
- "Paulo Alcantara" <pc@manguebit.org>, "Namjae Jeon" <linkinjeon@kernel.org>,
- linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] gfs2: simplify atomic_open handling.
-In-reply-to:
- <CAHc6FU4M59nodfn+NCDsr81Wdmvd1Ubw712FF56ekVWfe1+Nuw@mail.gmail.com>
-References: <20260919022441.3305170-1-neilb@ownmail.net>
-  <20260919022441.3305170-4-neilb@ownmail.net>
-  <CAHc6FU4M59nodfn+NCDsr81Wdmvd1Ubw712FF56ekVWfe1+Nuw@mail.gmail.com>
-Date: Sun, 20 Sep 2026 08:22:32 +1000
-Message-id: <178985655280.37859.6894749467886035489@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zS_KCgAHQXTSma9qV+dHBQ--.54809S2
+X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/
+X-CM-DELIVERINFO: =?B?f9+aQQXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
+	egWzO/wNhIP+pglnkLd0BnOsfDtOcHjOzq64m8aVDLtb0nHv56cT8BWJRDUtThYGkWp+Pf
+	LkD8QZ23s48MrbYdbPIbV7qDIvV0+iuJq/aMPg3U
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zr1rWF1UtFWkCFWfJFWrZwc_yoW8JFWUpF
+	srXrWFkr4UAF1xX3yfCayfua4rWw4rJ3W7X3s7WwnrCry3Xr17Cr1xKFW8Xr4UArs7tryj
+	vw1DZry3uFW8WagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvvb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuY
+	vjxU26pBDUUUU
 
-On Sun, 20 Sep 2026, Andreas Gruenbacher wrote:
-> Neil,
->=20
-> On Sat, Sep 19, 2026 at 4:31=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrote:
-> > From: NeilBrown <neil@brown.name>
-> >
-> > gfs2 incorrectly returns -EFTYPE for any non-regular when __O_REGULAR is
-> > in force.  A symlink might not be an error, and nfsd needs to know if a
-> > directory was found.
-> >
-> > Neither this check, or the following check for a directory is needed.
-> > Both cases are handled correctly by instantiating the dentry and passing
-> > it to finish_no_open() - the caller will interpret the type.
-> >
-> > Signed-off-by: NeilBrown <neil@brown.name>
-> > ---
-> >  fs/gfs2/inode.c | 17 ++++-------------
-> >  1 file changed, 4 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-> > index f361876c5583..7aa92bb31cf4 100644
-> > --- a/fs/gfs2/inode.c
-> > +++ b/fs/gfs2/inode.c
-> > @@ -738,19 +738,10 @@ static int gfs2_create_inode(struct inode *dir, str=
-uct dentry *dentry,
-> >         inode =3D gfs2_dir_search(dir, &dentry->d_name, !S_ISREG(mode) ||=
- excl);
-> >         error =3D PTR_ERR(inode);
-> >         if (!IS_ERR(inode)) {
-> > -               if (file && (file->f_flags & __O_REGULAR) &&
-> > -                   !S_ISREG(inode->i_mode)) {
-> > -                       iput(inode);
-> > -                       inode =3D NULL;
-> > -                       error =3D -EFTYPE;
-> > -                       goto fail_gunlock;
-> > -               }
-> > -               if (S_ISDIR(inode->i_mode)) {
-> > -                       iput(inode);
-> > -                       inode =3D NULL;
-> > -                       error =3D -EISDIR;
-> > -                       goto fail_gunlock;
-> > -               }
->=20
-> as you note below, when the inode exists but it isn't a regular file,
-> we won't even get here (gfs2_dir_search() will have returned
-> ERR_PTR(-EEXIST)). So the above two if statements are dead code, which
-> contradicts the patch description. Could you please fix that?
+The GFS2 sysfs files become visible before fill_super() completes and
+remain present during filesystem teardown. Protect quota refresh,
+statfs sync, quota sync and demote requests with a non-blocking read
+lock on s_umount, and require SB_ACTIVE before accessing their state.
 
-There are two different modes here: the "mode" that was requested and
-the "inode->i_mode" that was found.
-This branch will only be taken if "mode" is "S_IFREG", but the inode
-that is found could be anything.
+Changes in v3:
+- Rebase onto 518e5b794c06c0f0eb40df3e202274a66202c137.
+- Introduce super_trylock_shared_active() and super_unlock_active().
+- Move quota refresh locking into the user and group sysfs callbacks.
+- Use the shared helpers in statfs_sync, quota_sync and demote_rq.
+- Drop the status patch as requested by Andreas, in favor of his separate
+  fix: https://lore.kernel.org/gfs2/20260827190632.686583-1-agruenba@redhat.com/
 
->=20
-> > +               /*
-> > +                * This can only happen if "S_ISREG(mode) && !excl" so "f=
-ile"
-> > +                * cannot be NULL.
-> > +                */
->=20
-> Is that comment useful without removing the below NULL check for file?
+Previous version:
+https://lore.kernel.org/all/6a91508.162bd.1a0228251e8.Coremail.stitch@zju.edu.cn/
 
-Fair point.  I'll remove the NULL check.
+Jiacheng Xu (4):
+  gfs2: protect quota refresh from superblock teardown
+  gfs2: protect statfs sync sysfs callback
+  gfs2: protect quota sync sysfs callback
+  gfs2: protect demote requests during superblock teardown
 
-I'd feel more comfortable if gfs2_symlink(), gfs2_mkdir(), and
-gfs2_mknod() all passed "1" (or "true") for the "excl" arg.
-Then it would be even more obvious that we don't need to test
-for NULL, as all callers that pass a NULL file, pass a true excl.
-(you could remove the "!S_ISREG(mode) ||" which would make the code
-look cleaner).
-But that is beyond the scope of this patch.
+ fs/gfs2/sys.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 4 deletions(-)
 
-hmm... you could even pass "!file || excl" to gfs2_dir_search() to make
-it impossible to use file if it were NULL :-)
 
-Thanks,
-NeilBrown
-
->=20
-> >                 d_instantiate(dentry, inode);
-> >                 error =3D 0;
-> >                 if (file) {
-> > --
-> > 2.50.0.107.gf914562f5916.dirty
-> >
->=20
-> Thanks,
-> Andreas
->=20
->=20
+base-commit: 518e5b794c06c0f0eb40df3e202274a66202c137
+-- 
+2.51.0
 
