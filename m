@@ -1,34 +1,82 @@
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB193E9C18
-	for <gfs2@lists.linux.dev>; Sun, 20 Sep 2026 08:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203DE3939B1;
+	Sun, 20 Sep 2026 09:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789893110; cv=none; b=qdeJWWJreii9CJDHXpy+4OH+hYwn7d1APV9nE/Sw4cJI8AY7shuoSgN3VvdtoZgycKxeX5047mF9OBxf8h9MFtwV86YVIZcTZWxJwLUwYnUUv1omAENO38jj95OyJ3B651QaRa3c9vZWpX2TD9v3GhOxMJLtLAAfTay5+vPkB7s=
+	t=1789896245; cv=none; b=c3Iy+87PN5v50nRxnovGQRoZVgbQUgRRag6w2UjkCt4v/RcwApQbcEtN8lKxR6ExmP8EDM5YWlcxs/HnlwLlG0KGm0ntTb3XrMp02RJpJIZZRIX9oCr83FLLz0PozcbEsvo0Ct5Ujp8bLLYzeferyh9ZcndroMYlpkuBIaMfR9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789893110; c=relaxed/simple;
-	bh=sJYcwxctMXiLIvjjZSZKMGlbOPXMpp1oWismY7OL1zM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHfXSCfyUT/hqSSy6fRhb+rFUQjbrSeDn6tyNAK4r1Bq0z8vOendtLbSOC6rHGIPwn5smPD0iNTO8D4mxFUDnu5haQas7DDBE0g7mULu6M8/onv8ZQJ7EgHKxbx9KMgRWn704b1Lvj4+oKKptaEH55orPr2tgHxZUgbl6f8NVfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=162.243.161.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [117.147.104.32])
-	by mtasvr (Coremail) with SMTP id _____wCXkD_pma9qztImAQ--.24559S3;
-	Sun, 20 Sep 2026 16:31:37 +0800 (CST)
-Received: from localhost.localdomain (unknown [117.147.104.32])
-	by mail-app3 (Coremail) with SMTP id zS_KCgAHQXTSma9qV+dHBQ--.54809S6;
-	Sun, 20 Sep 2026 16:31:34 +0800 (CST)
-From: Jiacheng Xu <stitch@zju.edu.cn>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Jiacheng Xu <stitch@zju.edu.cn>,
+	s=arc-20240116; t=1789896245; c=relaxed/simple;
+	bh=NpsBroT/8a5poSPRtpeGWM1uOydviiavJJhsTPwpqa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DuKBw6Kq42CSNYqZ/26tSaWzFTVeCmbS9sMGwmPk9Il+bs9ZNGbTXipRL2SbHG/BHrBjZSZJfnp4qUC3sPNtsrWg0UJ9SGy3CbSgErCHFMP7l04gDA24bP3YA//v4oCemEC74NrgcQ0ur5qH1kao3LeRUoO6TO8y+purMi6IApM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjGRP7gw; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjGRP7gw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1B1F000FF;
+	Sun, 20 Sep 2026 09:23:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789896243;
+	bh=5Zw9rJKZMZuSI+1jUTLBTxzKxPkXx7fMF487IMc+57k=;
+	h=From:To:Cc:Subject:Date;
+	b=RjGRP7gw9J6P3KEqUaIB6cDxXJQhT8hzei8Jwh2Nn3InDNpo9Mho80D9CpQxhAVRK
+	 aBhXNLlHPQyd5p8OwuBQl5Iqrm0/6w5/yYfvlQIGUEQtf7jxe/WRjimLserbyQntBH
+	 TpxqEqB6k9BLGNGVl/gqE2RN+JqoOryIYV34aohaGRE/08b5kWBFErEa/nb8/oFK7u
+	 Yxti2M6U7/nf8NyXNH1gxEb0rmt2pFWMxr+9p3Kfc/FFEDxjmiKtBYrOtK4pn2F7Sh
+	 SzXiC4mt2ivvlO4ppZ0xGS/h8g7W7WplY1cCuGW6ztDxmtgwK1t+BJrwUfmJEY/fCA
+	 0h34u9P82y+2A==
+From: Yu Kuai <yukuai@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: Yu Kuai <yukuai@fygo.io>,
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Tao Cui <cuitao@kylinos.cn>,
+	linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
 	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] gfs2: protect demote requests during superblock teardown
-Date: Sun, 20 Sep 2026 16:31:05 +0800
-Message-ID: <20260920083109.30798-5-stitch@zju.edu.cn>
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v4 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
+Date: Sun, 20 Sep 2026 17:23:48 +0800
+Message-ID: <20260920092351.2434283-1-yukuai@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260920083109.30798-1-stitch@zju.edu.cn>
-References: <20260920083109.30798-1-stitch@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -36,79 +84,160 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgAHQXTSma9qV+dHBQ--.54809S6
-X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/
-X-CM-DELIVERINFO: =?B?Gn/BywXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
-	egWzO/wNhIP+pglnkLd0BnOseKeJr8bipqX23HM2eq1rHBHv56cT8BWJRDUtThYGkWp+Pf
-	LkD8QZ23s48MrbYdbPLtWmujtIG9rr2oMH3HiwlP
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF1rWF4Dur1rGw4kCFWDZFc_yoW8WrW7pr
-	4UC345ZF4kCrn8Xa1Ikr4rWw1rKayfJF12y397WwsrJF15XwnIg34fKFW8tFyrA3yxXryq
-	gFyYv39xCrWUGFcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvmb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
-	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
-	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZE
-	Xa7IU8x9N3UUUUU==
 
-The demote_rq sysfs callback can obtain a glock while unmount is
-tearing down the glock hash and destroying sd_glock_wq. The callback
-may then queue work through the destroyed workqueue.
+From: Yu Kuai <yukuai@fygo.io>
 
-Serialize the complete demote operation with s_umount and reject
-requests while the superblock is not active. trylock semantics avoid
-deadlocking with mount failure and unmount paths that remove sysfs.
+This is v4 of the preparatory series for the blkcg_mutex conversion
+proposed in the related series [1]. That conversion moves queue-local
+blkg topology synchronization from q->queue_lock to q->blkcg_mutex,
+which is awkward while bios directly store queue-local blkg references.
 
-Signed-off-by: Jiacheng Xu <stitch@zju.edu.cn>
----
- fs/gfs2/sys.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Storing a blkg also ties a bio to one request_queue. A remapped bio must
+drop that reference and recreate the association for the new queue even
+when no blkcg policy needs it. Dying blkgs add another complication:
+they disappear from the per-blkcg lookup tree before all pinned bio
+references drain.
 
-diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c
-index c5868354073a..c5c540fcce92 100644
---- a/fs/gfs2/sys.c
-+++ b/fs/gfs2/sys.c
-@@ -334,6 +334,7 @@ static ssize_t quota_refresh_group_store(struct gfs2_sbd *sdp, const char *buf,
- 
- static ssize_t demote_rq_store(struct gfs2_sbd *sdp, const char *buf, size_t len)
- {
-+	struct super_block *sb = sdp->sd_vfs;
- 	struct gfs2_glock *gl;
- 	const struct gfs2_glock_operations *glops;
- 	unsigned int glmode;
-@@ -367,14 +368,22 @@ static ssize_t demote_rq_store(struct gfs2_sbd *sdp, const char *buf, size_t len
- 		glops = gfs2_glops_list[gltype];
- 	if (glops == NULL)
- 		return -EINVAL;
-+
-+	if (!super_trylock_shared_active(sb))
-+		return -EAGAIN;
-+
- 	if (!test_and_set_bit(SDF_DEMOTE, &sdp->sd_flags))
- 		fs_info(sdp, "demote interface used\n");
- 	rv = gfs2_glock_get(sdp, glnum, glops, NO_CREATE, &gl);
- 	if (rv)
--		return rv;
-+		goto out_unlock;
- 	gfs2_glock_cb(gl, glmode);
- 	gfs2_glock_put(gl);
--	return len;
-+	rv = 0;
-+
-+out_unlock:
-+	super_unlock_active(sb);
-+	return rv ? rv : len;
- }
- 
- 
+Patch 1 makes request_queue the authoritative lookup owner. A
+queue-owned rhashtable keyed by the blkcg CSS ID keeps dying blkgs
+discoverable until their references drain, while q->blkg_list remains
+available for ordered walks.
+
+Patch 2 stores and pins the queue-independent blkcg CSS in each bio.
+Queue-local blkgs are created lazily by policy users, then pinned until
+the bio changes devices or releases its cgroup state. Completion and
+accounting paths which do not create a blkg remain lookup-only.
+
+Patch 3 moves async bio punt state from blkg to blkcg, so punting alone
+does not instantiate a queue-local blkg.
+
+Changes since v3:
+
+  - In patch 2, have blk_cgroup_bio_start() look up an online blkg under
+    RCU and hold a temporary reference for accounting. 
+  - In patch 2, dm may restore bi_flags without restoring that reference,
+    instead of fix this problem in dm, drop the blkg pin after
+    blk-throttle for bio-based drivers. This is safe because
+    blk-throttle is the only policy and blkg is not longer needed.
+  - Add Nilay Shroff's and Christoph Hellwig's Reviewed-by to patch 3.
+
+Changes since v2:
+
+  - Rebase onto the latest for-7.4/block branch.
+  - In patch 2, release BIO_BLKG_REF after bio accounting and before
+    entering a bio-based driver's ->submit_bio(), instead of filtering
+    the flag in dm_bio_record(). Add Nilay Shroff's Reviewed-by.
+  - In patch 3, replace scoped spinlock guards with explicit
+    spin_lock()/spin_unlock(), drop the redundant teardown check, and
+    rely on zero-initialization for async_bios before publication, as
+    suggested by Nilay Shroff and Christoph Hellwig.
+
+Changes since v1:
+
+  - Rebase onto the latest block-7.3 branch.
+  - In patch 2, require every blkg rhashtable lookup to run inside an
+    explicit RCU read-side critical section. Annotate blkg_lookup_any(),
+    blkg_lookup(), and recursive wrappers with __must_hold_shared(RCU)
+    so Clang thread-safety analysis verifies the contract.
+  - In patch 2, exclude BIO_BLKG_REF from the flags saved by
+    dm_bio_record(), since restoring an ownership bit cannot recreate
+    the associated blkg reference.
+  - In patch 3, use scoped spinlock guards for async_bios and annotate
+    the list with __guarded_by().
+  - Add Nilay Shroff's Reviewed-by to patch 1.
+
+Changes since RFC v3:
+
+  - Drop the RFC prefix.
+  - Add Christoph Hellwig's Reviewed-by to patch 1.
+  - Add Tao Cui's Reviewed-by to patch 2.
+  - In patch 2, relax blkg_lookup_any()/blkg_lookup() to also allow
+    q->queue_lock as an alternative to the RCU read lock.
+
+Changes since RFC v2:
+
+  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
+    -stable, as suggested by Christoph Hellwig.
+  - Rebase onto the latest for-7.3/block branch.
+  - In the new patch 1, note that the remaining q->blkg_list walkers are
+    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
+    the queue_lock-to-blkcg_mutex conversion.
+  - In the new patch 1, explain the list_empty case in blkg_release(), and
+    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
+    does not acquire a reference.
+
+Changes since RFC v1:
+
+  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+    shared request_queue is rebound, instead of treating root_blkg == NULL
+    as completion of asynchronous blkg teardown.
+  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+    request_queue rhashtable keyed by blkcg->css.id, as suggested by
+    Christoph Hellwig. Keep dying pinned blkgs in the hash until
+    blkg_release() so bio-owned references remain discoverable.
+  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara
+    and Christoph Hellwig, and make bio_blkcg() naturally return NULL for
+    an unassociated bio.
+  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned
+    reference, falls back to a live parent when creation or tryget fails,
+    and updates bi_blkcg when the returned blkg belongs to an ancestor.
+  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+    is already set. Use bio_blkg() in the BFQ and IOCOST merge paths which
+    may need to create a blkg, while keeping blk_cgroup_bio_start() and
+    completion paths lookup-only.
+  - Move CSS online-reference handling into
+    bio_associate_blkcg_from_css(), including fallback to the root blkcg,
+    so bio_associate_blkcg() does not take a redundant reference.
+  - Keep the v1 async bio punt conversion as patch 4 and document that
+    async_bio_lock protects async_bios.
+
+Previous versions:
+  - v3: https://lore.kernel.org/r/20260918041744.1526924-1-yukuai@kernel.org
+  - v2: https://lore.kernel.org/r/cover.1789237876.git.yukuai@fygo.io
+  - v1: https://lore.kernel.org/r/20260823133045.970199-1-yukuai@kernel.org
+  - RFC v3:
+    https://lore.kernel.org/r/20260818070641.756747-1-yukuai@kernel.org
+  - RFC v2:
+    https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
+  - RFC v1:
+    https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+
+Related series:
+  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+
+Yu Kuai (3):
+  blk-cgroup: use a request_queue rhashtable for blkg lookup
+  blk-cgroup: store blkcg in bio instead of blkg
+  blk-cgroup: move async bio punt state to blkcg
+
+ Documentation/admin-guide/cgroup-v2.rst |   2 +-
+ block/bfq-cgroup.c                      |  18 +-
+ block/bfq-iosched.c                     |  19 +-
+ block/bio.c                             |  22 +-
+ block/blk-cgroup-fc-appid.c             |  10 +-
+ block/blk-cgroup-rwstat.h               |   2 +-
+ block/blk-cgroup.c                      | 355 ++++++++++++++----------
+ block/blk-cgroup.h                      |  93 +++++--
+ block/blk-core.c                        |  17 +-
+ block/blk-crypto-fallback.c             |   2 +-
+ block/blk-iocost.c                      |  12 +-
+ block/blk-iolatency.c                   |  11 +-
+ block/blk-ioprio.c                      |   2 +-
+ block/blk-throttle.c                    |   3 +-
+ block/blk-throttle.h                    |   2 +-
+ drivers/md/bcache/request.c             |   2 +-
+ drivers/md/dm.c                         |   2 +-
+ drivers/md/md.c                         |   2 +-
+ fs/gfs2/lops.c                          |   3 +-
+ include/linux/bio.h                     |  26 +-
+ include/linux/blk_types.h               |   9 +-
+ include/linux/blkdev.h                  |   2 +
+ include/linux/writeback.h               |   2 +-
+ mm/page_io.c                            |  12 +-
+ 24 files changed, 396 insertions(+), 234 deletions(-)
+
+
+base-commit: 6aff7d30932eda1aa3e96364e73ec6fbcfbefe1a
 -- 
 2.51.0
-
