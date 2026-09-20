@@ -1,265 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526273E7159;
-	Sun, 20 Sep 2026 09:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B459245D5FE
+	for <gfs2@lists.linux.dev>; Sun, 20 Sep 2026 16:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789896275; cv=none; b=DgH322Mv7H0vqU1gKToHqkf7F+FEohlDqO2KLXRoLfM9Pk1W1yMXSmxhgqJtIKN2g04uFp50iUYuwMVXX/8MU15AsYdCtROpVZauU+DjrVhmcprwcGY/RxItuBKyAZEuuLpwZPYBIQikQ1i9PSUlA/4O4H6tFWAC0rjj6XAeLDQ=
+	t=1789921940; cv=none; b=C4BsM1mxT7pLSneV/FZC+UgVEWN5N+uEK3No4wXQkPscCgHYhElP1SU/tm2I9aLbIatYMlXzByLfjmfv6NuTjs7T5A+WWhR8OEiJBsxAg6OXKM4FVTCbDg243GJTwCttYq7XTinKO3J77jBQqwWcyH0WLJGet8fmt0tZPo20iUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789896275; c=relaxed/simple;
-	bh=on3mcQJpUjaDa2vebdVenVdHz0bZf2V2o53bti4YqtI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufhUsLLiNAZHLF9dD407KvjaqxpQChhAwdvECe28+k6Ueaos/VqJEGVxYixwoE/9r7DmiC6cgV0GnRP+4OmQGqwAftYm9EuhJxhtSubSRsdupeg5JAU6rS1zoO/SDZzvgTxciVlkScKhDsHzEPKHVHJbahvD9OXBGlXMHeAfMqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OopB1Mkw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789921940; c=relaxed/simple;
+	bh=+4YERuX/Tm4BEarMicY7oOWvS+xS/CmiXnLfQ+itnn8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DP8jBIFNnkCxlF56s25KUNfXxHPLXGfeFSbSHJ3AGqfq4f+yUXrIn91QSa1WosCGNmywRzZNsudXwKSKt2Y7yZeNjzs6oYUbGb126aaYeIk5S+pGlL/pPPPOWbdhLB+nQhi7MIWyYYcrD+4Tq8qYNMwKkdJlziNDQvStT+Rzddw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IPH/UlHc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OopB1Mkw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A5C1F00898;
-	Sun, 20 Sep 2026 09:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789896274;
-	bh=P0bHm3iAFJ2FAvo7Q79lhKrYFqfJ7Dsy6ioYDke8xPA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OopB1MkwmNP66l97NW/PpwUHNZl0w89lNP+o8JrKcD0jQOFEmM8f8vVum5nGuwlcM
-	 mpqlUqXrBg1gI0RYbkRVlNDpN6ERIxKgGGcoiAjp9hgJ0Tr+mXYSP8YgrP6P/dG3Cf
-	 RhpOPbP27LY3xqL56uGr7NrVWRslUPx6Dh8lrYyMxncsAaZc3NXDv23pw4cT8gRgOd
-	 u/1jXOUn3dnsUcxxKmN6ZyzQ31N9Rl0ZkbmowGsWBH+MfVB/iAYeLdV330E/ZINe+e
-	 J3wZFse1QIMTaeYcqqtZbfr47zVmw5NbxvS4EF4X6xFgBmBNcJ+vtR7GIo5kiMKbZF
-	 fp6CfuBLNutcA==
-From: Yu Kuai <yukuai@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>,
-	Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Cc: Yu Kuai <yukuai@fygo.io>,
-	Christoph Hellwig <hch@lst.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Tao Cui <cuitao@kylinos.cn>,
-	linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev,
-	linux-raid@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v4 3/3] blk-cgroup: move async bio punt state to blkcg
-Date: Sun, 20 Sep 2026 17:23:51 +0800
-Message-ID: <20260920092351.2434283-4-yukuai@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260920092351.2434283-1-yukuai@kernel.org>
-References: <20260920092351.2434283-1-yukuai@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IPH/UlHc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789921933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ElUqtRQzGRczK+6qtQzmlt/OBYAjwvyq42r0CytLLM=;
+	b=IPH/UlHcVsUic4V9o/HJERvOAnPve1FCYhoh8rfNL4qbSj5r5Tx4RuL15d+Yz/ddw14er8
+	+pUlMbhNzLMIXrG7z+Xdu5fpTWW4JhVJaGfOjj4Rv5nmrynV45u5/9vS0avhLymF+UVc3y
+	VWw62VoJao+vyFAUBEDjzqcz8KybpvM=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-8rNtfyM4MbqU7wklJ_3FIQ-1; Sun, 20 Sep 2026 12:32:12 -0400
+X-MC-Unique: 8rNtfyM4MbqU7wklJ_3FIQ-1
+X-Mimecast-MFC-AGG-ID: 8rNtfyM4MbqU7wklJ_3FIQ_1789921932
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66c70bf18a1so2372847d50.0
+        for <gfs2@lists.linux.dev>; Sun, 20 Sep 2026 09:32:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789921932; x=1790526732;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6ElUqtRQzGRczK+6qtQzmlt/OBYAjwvyq42r0CytLLM=;
+        b=MjZIkwY8QH7wluCVk8IZ3CRfk77OyZ4e6I8MjYXLN+MwQPuCfxD7hoX8SaI3iE2GNH
+         PJiwPdsL6zbgezMQDLY8bPCzSZAAUJfEm/EkvOLawdcE/OIflumW/DtVqJsgrE4cWbX9
+         mlky6/tr4gWdkqp5cOJ7MfdFCSl08RCuUqXNh9WXx6X6lkVzEkOO1kml/2ToyRQA7BmM
+         9+6ZL3F9kZPY/R0DcWEIWqZnsdJnevJqEWUT/wbHoypAgTB/RScxnHw08j8vILWQqD5Y
+         GWUpkW6rCVozTBeqn1PjuersLf5YQtnq3zY8vvgQikUKZN/oamJutbW/R/wvCo8/G8x3
+         0TMg==
+X-Forwarded-Encrypted: i=1; AKwUvBx7QAxBrrk3OT2EnX88t8u20WZ0miAzUwccwKMkFRcMcVUlXrJHo71c/5Y6AxcCIOFPrvOD@lists.linux.dev
+X-Gm-Message-State: AFuF++lYoe4X9m3tXDWMXD7SoVBMI1qdGzMGy7HtA7BOJVkmqmIP19BD
+	Ka+hI0TpRR3ymE6VkAz5Z3zWlYVCXwXlr5/ygV43MzTo5vuIJhPnHdnlSYPt8HXtvLrZKJRxQpP
+	pASjrEP/68m1a6liRUuQ/TNBfsYllSCdXrdRUHlaqILCvQFK2I4muJcDLLkWLD5Ve2rLGPnKvOq
+	76M5oetg1u21N2+/BZG/wlpWzX+ddsWQ==
+X-Gm-Gg: AYBFou2lSOAjwqeTzQTN+/3Dp7ubOUEBWNjPfJ0IDISyroApPWpMaxqSaws6WUFpKbz
+	JAAFE0slery5Ju0JpzKhqIa2OhE4PcDkuamuB8H6/Cws4CZK7xBlNDeVHxAV9hxq2nTrf5N8PNl
+	zxCa75gp8UxlB73pNSpAPvVP5BCRf7k4UGvdOf7IgAoOHIGrxavcAEVnBwFJo+Fi93R/0OI/aPp
+	jmi8D+Dvb8i8ILxZM4aPpEAX1Vvd+Pah76w9kRp+gw24w==
+X-Received: by 2002:a05:690e:1348:b0:671:50b8:aee4 with SMTP id 956f58d0204a3-6717fdf7f42mr2684428d50.77.1789921931917;
+        Sun, 20 Sep 2026 09:32:11 -0700 (PDT)
+X-Received: by 2002:a05:690e:1348:b0:671:50b8:aee4 with SMTP id
+ 956f58d0204a3-6717fdf7f42mr2684413d50.77.1789921931459; Sun, 20 Sep 2026
+ 09:32:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260919022441.3305170-1-neilb@ownmail.net> <20260919022441.3305170-4-neilb@ownmail.net>
+ <CAHc6FU4M59nodfn+NCDsr81Wdmvd1Ubw712FF56ekVWfe1+Nuw@mail.gmail.com> <178985655280.37859.6894749467886035489@noble.neil.brown.name>
+In-Reply-To: <178985655280.37859.6894749467886035489@noble.neil.brown.name>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Sun, 20 Sep 2026 18:31:59 +0200
+X-Gm-Features: AcwNN1WDWK2kuJ9juQym02aIIB-Y-9YWAPGC_3VkH8hMthBmOzCWtJtaHEAolhI
+Message-ID: <CAHc6FU4cD3fb13LE1-HOEnOoUNVdW1N3e892r7rFE9HJfztvhg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/14] gfs2: simplify atomic_open handling.
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, gfs2@lists.linux.dev, 
+	Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org, 
+	Paulo Alcantara <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kSbI2YDCVlyrppTBwLHPnMyKypJlDLtMhsDmXywn5I8_1789921932
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Yu Kuai <yukuai@fygo.io>
+On Sun, Sep 20, 2026 at 12:22=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrot=
+e:
+> On Sun, 20 Sep 2026, Andreas Gruenbacher wrote:
+> > Neil,
+> >
+> > On Sat, Sep 19, 2026 at 4:31=E2=80=AFAM NeilBrown <neilb@ownmail.net> w=
+rote:
+> > > From: NeilBrown <neil@brown.name>
+> > >
+> > > gfs2 incorrectly returns -EFTYPE for any non-regular when __O_REGULAR=
+ is
+> > > in force.  A symlink might not be an error, and nfsd needs to know if=
+ a
+> > > directory was found.
+> > >
+> > > Neither this check, or the following check for a directory is needed.
+> > > Both cases are handled correctly by instantiating the dentry and pass=
+ing
+> > > it to finish_no_open() - the caller will interpret the type.
+> > >
+> > > Signed-off-by: NeilBrown <neil@brown.name>
+> > > ---
+> > >  fs/gfs2/inode.c | 17 ++++-------------
+> > >  1 file changed, 4 insertions(+), 13 deletions(-)
+> > >
+> > > diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+> > > index f361876c5583..7aa92bb31cf4 100644
+> > > --- a/fs/gfs2/inode.c
+> > > +++ b/fs/gfs2/inode.c
+> > > @@ -738,19 +738,10 @@ static int gfs2_create_inode(struct inode *dir,=
+ struct dentry *dentry,
+> > >         inode =3D gfs2_dir_search(dir, &dentry->d_name, !S_ISREG(mode=
+) || excl);
+> > >         error =3D PTR_ERR(inode);
+> > >         if (!IS_ERR(inode)) {
+> > > -               if (file && (file->f_flags & __O_REGULAR) &&
+> > > -                   !S_ISREG(inode->i_mode)) {
+> > > -                       iput(inode);
+> > > -                       inode =3D NULL;
+> > > -                       error =3D -EFTYPE;
+> > > -                       goto fail_gunlock;
+> > > -               }
+> > > -               if (S_ISDIR(inode->i_mode)) {
+> > > -                       iput(inode);
+> > > -                       inode =3D NULL;
+> > > -                       error =3D -EISDIR;
+> > > -                       goto fail_gunlock;
+> > > -               }
+> >
+> > as you note below, when the inode exists but it isn't a regular file,
+> > we won't even get here (gfs2_dir_search() will have returned
+> > ERR_PTR(-EEXIST)). So the above two if statements are dead code, which
+> > contradicts the patch description. Could you please fix that?
+>
+> There are two different modes here: the "mode" that was requested and
+> the "inode->i_mode" that was found.
+> This branch will only be taken if "mode" is "S_IFREG", but the inode
+> that is found could be anything.
 
-blkcg_punt_bio_submit() currently queues punted bios on blkg->async_bios,
-so it has to call bio_blkg() to find or create a queue-local blkg.  Bios
-now carry and pin the blkcg css, so punted bio lifetime no longer needs to
-be anchored by a blkg.
+Ah right, we could be looking for a regular inode non-exclusively and
+get back any inode type.
 
-Keeping the punt state in blkg can instantiate a blkg even when no blkcg
-policy is enabled, just to bounce submission from a shared kthread.  Move
-async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
-punted bios on bio_blkcg() for non-root cgroups.  Root or unassociated bios
-are submitted directly.
+> >
+> > > +               /*
+> > > +                * This can only happen if "S_ISREG(mode) && !excl" s=
+o "file"
+> > > +                * cannot be NULL.
+> > > +                */
+> >
+> > Is that comment useful without removing the below NULL check for file?
+>
+> Fair point.  I'll remove the NULL check.
+>
+> I'd feel more comfortable if gfs2_symlink(), gfs2_mkdir(), and
+> gfs2_mknod() all passed "1" (or "true") for the "excl" arg.
+> Then it would be even more obvious that we don't need to test
+> for NULL, as all callers that pass a NULL file, pass a true excl.
+> (you could remove the "!S_ISREG(mode) ||" which would make the code
+> look cleaner).
+>
+> But that is beyond the scope of this patch.
 
-This preserves the priority-inversion avoidance while preventing
-blkcg_punt_bio_submit() from creating blkgs that are not needed by any
-policy.
+Yes, makes sense. I'll happily clean that up.
 
-Signed-off-by: Yu Kuai <yukuai@fygo.io>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-cgroup.c | 40 +++++++++++++++++-----------------------
- block/blk-cgroup.h | 14 ++++++--------
- 2 files changed, 23 insertions(+), 31 deletions(-)
+In fact, could just remove the two if statements in this patch queue?
+We can then clean up the rest on gfs2 for-next without causing a merge
+conflict.
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index aa84b603d4ce..43bd682f91a1 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -180,14 +180,10 @@ static void blkg_free(struct blkcg_gq *blkg)
- 
- static void __blkg_release(struct rcu_head *rcu)
- {
- 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
- 
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	WARN_ON(!bio_list_empty(&blkg->async_bios));
--#endif
--
- 	blkg_free(blkg);
- }
- 
- /*
-  * A group is RCU protected, but having an rcu lock does not mean that one
-@@ -226,23 +222,22 @@ static void blkg_release(struct percpu_ref *ref)
- }
- 
- #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
- static struct workqueue_struct *blkcg_punt_bio_wq;
- 
--static void blkg_async_bio_workfn(struct work_struct *work)
-+static void blkcg_async_bio_workfn(struct work_struct *work)
- {
--	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
--					     async_bio_work);
-+	struct blkcg *blkcg = container_of(work, struct blkcg, async_bio_work);
- 	struct bio_list bios = BIO_EMPTY_LIST;
- 	struct bio *bio;
- 	struct blk_plug plug;
- 	bool need_plug = false;
- 
--	/* as long as there are pending bios, @blkg can't go away */
--	spin_lock(&blkg->async_bio_lock);
--	bio_list_merge_init(&bios, &blkg->async_bios);
--	spin_unlock(&blkg->async_bio_lock);
-+	/* as long as there are pending bios, @blkcg can't go away */
-+	spin_lock(&blkcg->async_bio_lock);
-+	bio_list_merge_init(&bios, &blkcg->async_bios);
-+	spin_unlock(&blkcg->async_bio_lock);
- 
- 	/* start plug only when bio_list contains at least 2 bios */
- 	if (bios.head && bios.head->bi_next) {
- 		need_plug = true;
- 		blk_start_plug(&plug);
-@@ -259,19 +254,19 @@ static void blkg_async_bio_workfn(struct work_struct *work)
-  * cgroup.  Use this helper instead of submit_bio to punt the actual issuing to
-  * a dedicated per-blkcg work item to avoid such priority inversions.
-  */
- void blkcg_punt_bio_submit(struct bio *bio)
- {
--	struct blkcg_gq *blkg = bio_blkg(bio);
-+	struct blkcg *blkcg = bio_blkcg(bio);
- 
--	if (blkg && blkg->parent) {
--		spin_lock(&blkg->async_bio_lock);
--		bio_list_add(&blkg->async_bios, bio);
--		spin_unlock(&blkg->async_bio_lock);
--		queue_work(blkcg_punt_bio_wq, &blkg->async_bio_work);
-+	if (blkcg && cgroup_parent(blkcg->css.cgroup)) {
-+		spin_lock(&blkcg->async_bio_lock);
-+		bio_list_add(&blkcg->async_bios, bio);
-+		spin_unlock(&blkcg->async_bio_lock);
-+		queue_work(blkcg_punt_bio_wq, &blkcg->async_bio_work);
- 	} else {
--		/* Never bounce if there is no non-root blkg to queue on. */
-+		/* Never bounce if there is no non-root blkcg to queue on. */
- 		submit_bio(bio);
- 	}
- }
- EXPORT_SYMBOL_GPL(blkcg_punt_bio_submit);
- 
-@@ -350,15 +345,10 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
- 	blkg->q = disk->queue;
- 	INIT_LIST_HEAD(&blkg->q_node);
- 	blkg->blkcg = blkcg;
- 	blkg->blkcg_id = blkcg->css.id;
- 	blkg->iostat.blkg = blkg;
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	spin_lock_init(&blkg->async_bio_lock);
--	bio_list_init(&blkg->async_bios);
--	INIT_WORK(&blkg->async_bio_work, blkg_async_bio_workfn);
--#endif
- 
- 	u64_stats_init(&blkg->iostat.sync);
- 	for_each_possible_cpu(cpu) {
- 		u64_stats_init(&per_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
- 		per_cpu_ptr(blkg->iostat_cpu, cpu)->blkg = blkg;
-@@ -1447,10 +1437,14 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
- 	}
- 
- 	spin_lock_init(&blkcg->lock);
- 	refcount_set(&blkcg->online_pin, 1);
- 	INIT_HLIST_HEAD(&blkcg->blkg_list);
-+#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-+	spin_lock_init(&blkcg->async_bio_lock);
-+	INIT_WORK(&blkcg->async_bio_work, blkcg_async_bio_workfn);
-+#endif
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	INIT_LIST_HEAD(&blkcg->cgwb_list);
- #endif
- 	list_add_tail(&blkcg->all_blkcgs_node, &all_blkcgs);
- 
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index f68ea21958f5..7fee8555e713 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -75,18 +75,11 @@ struct blkcg_gq {
- 
- 	struct blkg_iostat_set __percpu	*iostat_cpu;
- 	struct blkg_iostat_set		iostat;
- 
- 	struct blkg_policy_data		*pd[BLKCG_MAX_POLS];
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	spinlock_t			async_bio_lock;
--	struct bio_list			async_bios;
--#endif
--	union {
--		struct work_struct	async_bio_work;
--		struct work_struct	free_work;
--	};
-+	struct work_struct		free_work;
- 
- 	atomic_t			use_delay;
- 	atomic64_t			delay_nsec;
- 	atomic64_t			delay_start;
- 	u64				last_delay;
-@@ -111,10 +104,15 @@ struct blkcg {
- 	/*
- 	 * List of updated percpu blkg_iostat_set's since the last flush.
- 	 */
- 	struct llist_head __percpu	*lhead;
- 
-+#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-+	spinlock_t			async_bio_lock;
-+	struct bio_list			async_bios __guarded_by(&async_bio_lock);
-+	struct work_struct		async_bio_work;
-+#endif
- #ifdef CONFIG_BLK_CGROUP_FC_APPID
- 	char                            fc_app_id[FC_APPID_LEN];
- #endif
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	struct list_head		cgwb_list;
--- 
-2.51.0
+Feel free to send a cleanup, or let me know if I should write that.
+
+> hmm... you could even pass "!file || excl" to gfs2_dir_search() to make
+> it impossible to use file if it were NULL :-)
+
+Right.
+
+Thanks,
+Andreas
 
