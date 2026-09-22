@@ -1,184 +1,120 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5322E7378
-	for <gfs2@lists.linux.dev>; Tue, 22 Sep 2026 01:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790039443; cv=pass; b=gLkSheGoIZmlezAWmCse2zTsEvHRK0wuZA9y+ZVcaCrteCOYA6ONMkv0bcOTcawpAd6wuosYTW+qpl9Jedceq2YXx1aOtaDrZc9SbNTQAB9bPKOMZxwAcKGX8V0X9Ks1wCEU9nS3BRdHlJWLpfp4huAPJewgTQv5AS+o7E8FUQ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790039443; c=relaxed/simple;
-	bh=rDphcxVK0cLwUUna1tpHZp2v6qK6oFhLgiPUmxWlUKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m0lLfGGE0BHRVRMpiAysvadCturrbwwWSLlHR3EtIsfZfmNPnuUoaAnY6ZxCtW6jM2aOmSg6m10aNV5xf8PzQpKYARsUPJ1Q9VvROiS93wcXgnmNvuVk1xZDkMSYhqE584Fj2iHYT9Yt0zd4AVEyJ1eLaSF3wr2TRRKVIB6QF9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qijog01E; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF37531600
+	for <gfs2@lists.linux.dev>; Tue, 22 Sep 2026 10:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790072879; cv=none; b=kzQE9hZO9jQAyPfG9NC7RiTRCk+uXna9+RwUNptSaRqyxVP3cdbCPPxHXIihssKOJvWLnxNHJz0uXVagIEfv2gKaaaXc3I6/IlKoTVuJNnzyWPel62XTC206TT3lPXgcC9Y/ixxNtVNQZnsXC+bhK3OEEuzPd4esMfxtquxx8RQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790072879; c=relaxed/simple;
+	bh=fm6/8YZBXjry/bEZ6PcMul9wyNDBYQXICZYH/zPw3HU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=YvhqoeDmlw0gVh/0i9jZkd0PoakHoWZ1HpF0qI2VPmWyW3Go6xUHE5NGU/2IbZKq2TjjWEiVQrSWUnaV0n20bZHXTGeoNJfvIGZ4Y1pDiQSOBTwc7WyfbPbBPsZMgDTnnm2P2zFZtZvN/W6pn3pPZIQT7VyzZadtTKs1ADUUQTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hLnzeK7N; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qijog01E"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76c9deeso42935041cf.1
-        for <gfs2@lists.linux.dev>; Mon, 21 Sep 2026 18:10:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790039440; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Jn4DM0P/iQZyawD8tET1RLXf+MrhsNVeAlgP3DC4H9UUhK+ALxDrUN1EqzJTeH19hb
-         Yg/x7nCyjGoeO89NJcSz8V/8A5uztmIXBC3trzhZ8TkBQ1PvYvyRm9tvg/D39yu3XF9M
-         wrHbh7LMrlXltcp/WwJ1U86RcNVKPS8Iqzao3Ev+SQvkpQOfF1aEWFIVxBip0uBGX8Hx
-         LmWysyjfWRY9zLOp0rOa82v09iUO7y/APZXTvYu1GBdD77MrqbuHXogEqFc11uomXm1x
-         /zSYv9gr6T4BdCl9/dRt0WVIZPDS4aGg55XxdyENfAwhEzuo2rpYmfWCvZ2EVi3RrDi4
-         mxNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
-        fh=DOvZVE/v+KghiM/6hKpaHtzlfu9xh0fjvQX6KWiGVg4=;
-        b=nHT0ZWab8oGK9rZSS5cxWlsNX+26kA6iOsMA3wdJ8ng6iPaXpawnHfT6g26JPmmvNS
-         YrSK1wQsLheza3oDTWrUMw5tzLzVVRfn4XxU8Sm76t+GAyHT1cqF44oF0UxUMwlhJqJx
-         VkebhHFxdEovU64BGceHmtJVERhusFamqoguadsBeUTS0EABcNrPeM5LT9lLz28/UvEN
-         KMbYkna/jY6/FyGWf2OKHNPjbfu+04UII4Isj1pqFthGik7RItzY9WFkphDAs91pJpK0
-         HcD3wkdlQCnosCNkwvk1EeJlvXGx7wsAtHO8ml2oXkmYNimbRyPEIz/CAJX7Zyok1YgI
-         9qKg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790039440; x=1790644240; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
-        b=qijog01E5z0xNzySItpC+6jBCCfZ0SzRN60gCi/MOKgIw4wbAN5StkhvFftXzcn18x
-         IYK7PumUJ+WRPhAXDryUTJkUUFFnNLkiI7O66ELq0QB6x5z2klP0cAsHfD9zvvy0S+s8
-         LqJvE0SYFHpw/oEJ7mnCic6w7QeedRXcDGoNwPhS7l3n77OWiq6NpHDLJZir3N3E+1dR
-         V8rGDQfeYg0cg/0rv9KM8Es1Qt2usa7rlo//jNnpUwz/lBOV3eaPxnUeozV/rlnoZEtH
-         xCEYieRN9CEA07N5uDaGD4NKA6+iB7GWAO2xwHkBoaWj9FamQoYaPMXCgtDU0iqSZl0W
-         YyXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790039440; x=1790644240;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
-        b=jxMkB+NEooJyltmk+vHvJm8ieTz6p4r0ywtGqXqarj2g4FEYbfzhrEIRVqN/a5BGod
-         +ROY6FvcFPqAlj+w510KrJ2dAYfQrJucF/mSKDw+razKR/tTIJcUVxzYyXxNc+kyJNFx
-         YYk6B5vVr4lqGo++aFOi+yupoa1avbUrRYCXBzeXTMcccpZbkCYDWbDRaukRClEYdfdu
-         2bzp6LuScDbly+PgqVISeb63EEG3MP8yGLFsBOh7vsL44Z4cZY3nlVMbujL7bPeWbCVV
-         Xex7VRHX6B5xVhc9mev6E5hubxTTdb9Pd1LDlRJrKNcyWHFpXx/bww0gTl7CrNpvSX+g
-         7tZw==
-X-Forwarded-Encrypted: i=1; AKwUvBxlZtLjjjDjBUdATkD+zkgxnVsYWSPBCzJwAAg1GaE/cGrM5+M1/KRDIhXG4fGVKzpOwp4J@lists.linux.dev
-X-Gm-Message-State: AFuF++l2AJ+zyDXU0FvD/bFSmlj3H8AaBtaXrm7Q+8x941jKPzYupq/r
-	LqJ+AcY2JOqAgEW8PDXqI3wmBprKxwUUPjrzlTvXqf9sBu0612pKX7snZZg2N4cA4RCQgORUlkW
-	nNbQPMnkngqTienszPcZew/PBjSexQJ4nmimOcDFV
-X-Gm-Gg: AYBFou2egzOXEIzqyOPWrJenBNz+A4yvpY38bEhRfkCfPyjjCn+9lCHKrX0k9JjPtgo
-	1j87Ox4Mp91d82GqWLCBjN4NH5TRv+x1k8bNklKJ6eEhB0icO1yqWCDSLNY+z5Fj3yu+Yglgm6t
-	eZTv5He0MS6LMgGce3PH0oEi5y2l7i5E9NynN4Rzr1HqKttF2+lzqTg9o14y7N+xoVnQANpZgTK
-	MHue5mQANjT/WFz0aVpg18phUqFxsbx9H0m7b3QmgZ/clvZUuC9pt4GCQsjwWWptiKQ8rcnM6SN
-	fOMTtC4gB1ktqGaN4t0NjyyFsOx2uT8gGImvFPjIgxT40RkTI3MnvX4K//KLW6snnt1U2dp/2LI
-	2cm2Vy0VXksfbxs9PIDBI2HS66j0chisWRxcqY9rXgxsujxGNbe92szu3VH00GnABJ7BLvg==
-X-Received: by 2002:a05:622a:2287:b0:52e:8ef:5960 with SMTP id
- d75a77b69052e-532d8e32ebfmr30057471cf.33.1790039439462; Mon, 21 Sep 2026
- 18:10:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hLnzeK7N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790072876;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6dRlcogDFnnw5ZddM5Q1WvilNHUEBgumSyfQmnJqhzg=;
+	b=hLnzeK7Nr2r0k3CSE7cGzoQZnicX8tL1yc3mS+QCixIjhYuL+v8JMkecZxsJl2hJwd+CMH
+	/3I5ozWXcv0XP2f2Kvfz+PdDpBecfVwhLDg5WL9KjUvC/ttre3A8EMOmYznKaweI7dqYr5
+	hKwiqYMlAWdDFhKwhOXqXwjrNIHzKYw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-dM-HID03MOa3jjWFtprZNw-1; Tue,
+ 22 Sep 2026 06:27:53 -0400
+X-MC-Unique: dM-HID03MOa3jjWFtprZNw-1
+X-Mimecast-MFC-AGG-ID: dM-HID03MOa3jjWFtprZNw_1790072872
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 723B5193E884;
+	Tue, 22 Sep 2026 10:27:52 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.44.48.10])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 06C3A1800348;
+	Tue, 22 Sep 2026 10:27:50 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: gfs2@lists.linux.dev
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	NeilBrown <neil@brown.name>
+Subject: [PATCH] gfs2: gfs2_create_inode excl cleanup
+Date: Tue, 22 Sep 2026 12:27:49 +0200
+Message-ID: <20260922102749.1610267-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260914164400.2738350-1-edumazet@google.com>
-In-Reply-To: <20260914164400.2738350-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 22 Sep 2026 03:10:27 +0200
-X-Gm-Features: AcwNN1XENI3C6DJEuWKSVfu123kER72zrEHAvPUuiU4gn9CTQlz-0sfrY4BfkQw
-Message-ID: <CANn89i+HYuqNO_ifR7XgpZO89r9ZRWk8MOVzezmDff5KfLMp7g@mail.gmail.com>
-Subject: Re: [PATCH] dlm: fix send buffer backpressure handling
-To: Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>, gfs2@lists.linux.dev, 
-	Eric Dumazet <eric.dumazet@gmail.com>, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: srg-J6miqBOKnbaghbajuZdt8gviizKoxLc2kh9xImw_1790072872
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, Sep 14, 2026 at 6:44=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> lowcomms.c tests and clears SOCKWQ_ASYNC_NOSPACE in con->sock->flags,
-> but this bit has not been stored there for ten years.
->
-> Commit 9cd3e072b0be ("net: rename SOCK_ASYNC_NOSPACE and
-> SOCK_ASYNC_WAITDATA") mechanically renamed the two dlm users, then
-> commit ceb5d58b2170 ("net: fix sock_wake_async() rcu protection") moved
-> the bit from socket->flags to the RCU protected socket_wq->flags, where
-> it is reachable only through sk_set_bit() and sk_clear_bit(), and is
-> only maintained for sockets having SOCK_FASYNC set.  dlm uses kernel
-> sockets, which never have SOCK_FASYNC set, and never sets the bit
-> itself, so the test in send_to_sock() has been false ever since.
->
-> The consequence is that when sock_sendmsg() returns -EAGAIN because the
-> socket send buffer is full, dlm no longer sets CF_APP_LIMITED, does not
-> increment sk_write_pending, and does not return DLM_IO_END to wait for
-> lowcomms_write_space().  It returns DLM_IO_RESCHED instead, and
-> process_send_sockets() immediately requeues the send work.  A connection
-> to a peer that is slow to drain thus keeps cycling through
-> sock_sendmsg() and -EAGAIN, burning CPU, instead of sleeping until TCP
-> reports that space is available again.
->
-> Test SOCK_NOSPACE instead.  This is the bit that lives in socket->flags,
-> that TCP sets whenever sendmsg() returns -EAGAIN for lack of send buffer
-> space (tcp_sendmsg_locked() and sk_stream_wait_memory()), and that
-> lowcomms_write_space() already clears.  This restores the semantics dlm
-> had before the bit moved.
->
-> Also remove the clear_bit() of SOCKWQ_ASYNC_NOSPACE from
-> lowcomms_write_space(), for the same reason.
->
-> SCTP connections are deliberately left as they are.  SCTP does not set
-> SOCK_NOSPACE, and it never calls sk->sk_write_space(): sctp_wfree() ends
-> up in sctp_wake_up_waiters(), which calls sctp_write_space() directly.
-> lowcomms_write_space() is thus never invoked for an SCTP connection, and
-> the test added here stays false, so send_to_sock() keeps returning
-> DLM_IO_RESCHED as it does today.  This is the only safe behavior, as
-> returning DLM_IO_END would wait for a callback that never comes.
->
-> Fixes: ceb5d58b2170 ("net: fix sock_wake_async() rcu protection")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  fs/dlm/lowcomms.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index 2aff1c7c17de..abe9ae4c643f 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-> @@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
->         clear_bit(SOCK_NOSPACE, &con->sock->flags);
->
->         spin_lock_bh(&con->writequeue_lock);
-> -       if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
-> +       if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
->                 con->sock->sk->sk_write_pending--;
-> -               clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
-> -       }
->
->         lowcomms_queue_swork(con);
->         spin_unlock_bh(&con->writequeue_lock);
-> @@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
->         if (ret =3D=3D -EAGAIN || ret =3D=3D 0) {
->                 lock_sock(con->sock->sk);
->                 spin_lock_bh(&con->writequeue_lock);
-> -               if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
-> +               if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
->                     !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
->                         /* Notify TCP that we're limited by the
->                          * application window size.
-> --
-> 2.55.0.1007.g17ff1f9808-goog
->
+Function gfs2_create_inode() is used for creating different types of
+inodes.  Regular inodes can be created exclusively or non-exclusively,
+while all other inode types are always created exclusively.
 
-Gentle ping ?
+Right now, gfs2_create_inode() checks the inode type to determine when
+creates should be exclusive; the excl argument is only set for regular
+files.  Change that to set the excl argument correctly for all inode
+types; this saves the inode type check in gfs2_create_inode().
 
-I have an ongoing series for net-next removing one cache line miss in
-TCP sendmsg() and ACK processing,
-blocked by this patch.
+Suggested-by: NeilBrown <neil@brown.name>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+---
+ fs/gfs2/inode.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-If you prefer, I can insert this patch into my net-next series.
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 2ec848b993d0..f748f8b3c73a 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -740,7 +740,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	if (error)
+ 		goto fail_gunlock;
+ 
+-	inode = gfs2_dir_search(dir, &dentry->d_name, !S_ISREG(mode) || excl);
++	inode = gfs2_dir_search(dir, &dentry->d_name, excl);
+ 	error = PTR_ERR(inode);
+ 	if (!IS_ERR(inode)) {
+ 		if (file && (file->f_flags & __O_REGULAR) &&
+@@ -1338,7 +1338,7 @@ static int gfs2_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	if (size >= gfs2_max_stuffed_size(GFS2_I(dir)))
+ 		return -ENAMETOOLONG;
+ 
+-	return gfs2_create_inode(dir, dentry, NULL, S_IFLNK | S_IRWXUGO, 0, symname, size, 0);
++	return gfs2_create_inode(dir, dentry, NULL, S_IFLNK | S_IRWXUGO, 0, symname, size, 1);
+ }
+ 
+ /**
+@@ -1356,7 +1356,7 @@ static struct dentry *gfs2_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ {
+ 	unsigned dsize = gfs2_max_stuffed_size(GFS2_I(dir));
+ 
+-	return ERR_PTR(gfs2_create_inode(dir, dentry, NULL, mode, 0, NULL, dsize, 0));
++	return ERR_PTR(gfs2_create_inode(dir, dentry, NULL, mode, 0, NULL, dsize, 1));
+ }
+ 
+ /**
+@@ -1372,7 +1372,7 @@ static struct dentry *gfs2_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ static int gfs2_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 		      struct dentry *dentry, umode_t mode, dev_t dev)
+ {
+-	return gfs2_create_inode(dir, dentry, NULL, mode, dev, NULL, 0, 0);
++	return gfs2_create_inode(dir, dentry, NULL, mode, dev, NULL, 0, 1);
+ }
+ 
+ /**
+-- 
+2.55.0
 
-Thanks.
