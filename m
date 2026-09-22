@@ -1,276 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C254F68B4
-	for <gfs2@lists.linux.dev>; Mon, 21 Sep 2026 21:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790025447; cv=none; b=oqyglkNcXNGyKsmwTp6U6fvO1j5yMFNdmOzCJArtIQwqQyk6aGYIWrdjMcjJNJ30HhtdxR0ROLcoukqLpqLDoQhRgDboF3y15ebSCY4HVNAKJAd63uL0aF0LiTlcqst8iT4g+NCao4h7r4BZM0g1zhzAHvEGDGSJG8BbFEe4ZL8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790025447; c=relaxed/simple;
-	bh=9E01pAg8oT9htHnqU80DkB8JhgUU71Qq3V8l9lt9LRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=KSzt4jpACIUEUD6aSCtcJ4azFNJlBHn3n0xSZjTTvUqca/v5Ro4J6UxhRQ/Hvj0gafRckBIs1C9Wuu9QADXVT+0OA44g8CK3iXZTv++SqRVmDTECowNmn9kxFTfMsGLkGmnrHV5F8ftS0Ygn+Lv9WIHVDkY8MZLQNCv/fiRuTSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KXZ3sdZY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5322E7378
+	for <gfs2@lists.linux.dev>; Tue, 22 Sep 2026 01:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790039443; cv=pass; b=gLkSheGoIZmlezAWmCse2zTsEvHRK0wuZA9y+ZVcaCrteCOYA6ONMkv0bcOTcawpAd6wuosYTW+qpl9Jedceq2YXx1aOtaDrZc9SbNTQAB9bPKOMZxwAcKGX8V0X9Ks1wCEU9nS3BRdHlJWLpfp4huAPJewgTQv5AS+o7E8FUQ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790039443; c=relaxed/simple;
+	bh=rDphcxVK0cLwUUna1tpHZp2v6qK6oFhLgiPUmxWlUKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m0lLfGGE0BHRVRMpiAysvadCturrbwwWSLlHR3EtIsfZfmNPnuUoaAnY6ZxCtW6jM2aOmSg6m10aNV5xf8PzQpKYARsUPJ1Q9VvROiS93wcXgnmNvuVk1xZDkMSYhqE584Fj2iHYT9Yt0zd4AVEyJ1eLaSF3wr2TRRKVIB6QF9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qijog01E; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KXZ3sdZY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790025444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BTGLw0u5wZsYdLeba0o67Y/uJV4wahD4Zjze/EY0qik=;
-	b=KXZ3sdZYCbJT3WzbOU3B/IcpDUwWg3JzQ+etEQR5leVaJ/85alwQLzuvc58KzUqLwSFKRq
-	MPAV0UOWZJzLY8xVFEIsqQpJOwx70hANhNBLaebUhUbPXeKQTNslcilXzK+8bKiUDx0nPM
-	rxxMzbohCZ580qvlZpTLTgyWj2B3OW8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-O7KXu9-qM42wMXQejxamoQ-1; Mon,
- 21 Sep 2026 17:17:20 -0400
-X-MC-Unique: O7KXu9-qM42wMXQejxamoQ-1
-X-Mimecast-MFC-AGG-ID: O7KXu9-qM42wMXQejxamoQ_1790025439
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB3721802670;
-	Mon, 21 Sep 2026 21:17:18 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.44.48.10])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 60D0F1956095;
-	Mon, 21 Sep 2026 21:17:13 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] fs/gfs2: prevent premature evict in prune_icache_sb
-Date: Mon, 21 Sep 2026 23:17:11 +0200
-Message-ID: <20260921211712.1563575-1-agruenba@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qijog01E"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76c9deeso42935041cf.1
+        for <gfs2@lists.linux.dev>; Mon, 21 Sep 2026 18:10:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790039440; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Jn4DM0P/iQZyawD8tET1RLXf+MrhsNVeAlgP3DC4H9UUhK+ALxDrUN1EqzJTeH19hb
+         Yg/x7nCyjGoeO89NJcSz8V/8A5uztmIXBC3trzhZ8TkBQ1PvYvyRm9tvg/D39yu3XF9M
+         wrHbh7LMrlXltcp/WwJ1U86RcNVKPS8Iqzao3Ev+SQvkpQOfF1aEWFIVxBip0uBGX8Hx
+         LmWysyjfWRY9zLOp0rOa82v09iUO7y/APZXTvYu1GBdD77MrqbuHXogEqFc11uomXm1x
+         /zSYv9gr6T4BdCl9/dRt0WVIZPDS4aGg55XxdyENfAwhEzuo2rpYmfWCvZ2EVi3RrDi4
+         mxNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
+        fh=DOvZVE/v+KghiM/6hKpaHtzlfu9xh0fjvQX6KWiGVg4=;
+        b=nHT0ZWab8oGK9rZSS5cxWlsNX+26kA6iOsMA3wdJ8ng6iPaXpawnHfT6g26JPmmvNS
+         YrSK1wQsLheza3oDTWrUMw5tzLzVVRfn4XxU8Sm76t+GAyHT1cqF44oF0UxUMwlhJqJx
+         VkebhHFxdEovU64BGceHmtJVERhusFamqoguadsBeUTS0EABcNrPeM5LT9lLz28/UvEN
+         KMbYkna/jY6/FyGWf2OKHNPjbfu+04UII4Isj1pqFthGik7RItzY9WFkphDAs91pJpK0
+         HcD3wkdlQCnosCNkwvk1EeJlvXGx7wsAtHO8ml2oXkmYNimbRyPEIz/CAJX7Zyok1YgI
+         9qKg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790039440; x=1790644240; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
+        b=qijog01E5z0xNzySItpC+6jBCCfZ0SzRN60gCi/MOKgIw4wbAN5StkhvFftXzcn18x
+         IYK7PumUJ+WRPhAXDryUTJkUUFFnNLkiI7O66ELq0QB6x5z2klP0cAsHfD9zvvy0S+s8
+         LqJvE0SYFHpw/oEJ7mnCic6w7QeedRXcDGoNwPhS7l3n77OWiq6NpHDLJZir3N3E+1dR
+         V8rGDQfeYg0cg/0rv9KM8Es1Qt2usa7rlo//jNnpUwz/lBOV3eaPxnUeozV/rlnoZEtH
+         xCEYieRN9CEA07N5uDaGD4NKA6+iB7GWAO2xwHkBoaWj9FamQoYaPMXCgtDU0iqSZl0W
+         YyXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790039440; x=1790644240;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u6Z2U4vAuJb/VjzAk0+RtK9FDIXwMhOB79JAT2yh+ek=;
+        b=jxMkB+NEooJyltmk+vHvJm8ieTz6p4r0ywtGqXqarj2g4FEYbfzhrEIRVqN/a5BGod
+         +ROY6FvcFPqAlj+w510KrJ2dAYfQrJucF/mSKDw+razKR/tTIJcUVxzYyXxNc+kyJNFx
+         YYk6B5vVr4lqGo++aFOi+yupoa1avbUrRYCXBzeXTMcccpZbkCYDWbDRaukRClEYdfdu
+         2bzp6LuScDbly+PgqVISeb63EEG3MP8yGLFsBOh7vsL44Z4cZY3nlVMbujL7bPeWbCVV
+         Xex7VRHX6B5xVhc9mev6E5hubxTTdb9Pd1LDlRJrKNcyWHFpXx/bww0gTl7CrNpvSX+g
+         7tZw==
+X-Forwarded-Encrypted: i=1; AKwUvBxlZtLjjjDjBUdATkD+zkgxnVsYWSPBCzJwAAg1GaE/cGrM5+M1/KRDIhXG4fGVKzpOwp4J@lists.linux.dev
+X-Gm-Message-State: AFuF++l2AJ+zyDXU0FvD/bFSmlj3H8AaBtaXrm7Q+8x941jKPzYupq/r
+	LqJ+AcY2JOqAgEW8PDXqI3wmBprKxwUUPjrzlTvXqf9sBu0612pKX7snZZg2N4cA4RCQgORUlkW
+	nNbQPMnkngqTienszPcZew/PBjSexQJ4nmimOcDFV
+X-Gm-Gg: AYBFou2egzOXEIzqyOPWrJenBNz+A4yvpY38bEhRfkCfPyjjCn+9lCHKrX0k9JjPtgo
+	1j87Ox4Mp91d82GqWLCBjN4NH5TRv+x1k8bNklKJ6eEhB0icO1yqWCDSLNY+z5Fj3yu+Yglgm6t
+	eZTv5He0MS6LMgGce3PH0oEi5y2l7i5E9NynN4Rzr1HqKttF2+lzqTg9o14y7N+xoVnQANpZgTK
+	MHue5mQANjT/WFz0aVpg18phUqFxsbx9H0m7b3QmgZ/clvZUuC9pt4GCQsjwWWptiKQ8rcnM6SN
+	fOMTtC4gB1ktqGaN4t0NjyyFsOx2uT8gGImvFPjIgxT40RkTI3MnvX4K//KLW6snnt1U2dp/2LI
+	2cm2Vy0VXksfbxs9PIDBI2HS66j0chisWRxcqY9rXgxsujxGNbe92szu3VH00GnABJ7BLvg==
+X-Received: by 2002:a05:622a:2287:b0:52e:8ef:5960 with SMTP id
+ d75a77b69052e-532d8e32ebfmr30057471cf.33.1790039439462; Mon, 21 Sep 2026
+ 18:10:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: iwLLX0dmHr3mwnZX-AZYbFPwG9sXvGVJk2ZBSdSjmkY_1790025439
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+References: <20260914164400.2738350-1-edumazet@google.com>
+In-Reply-To: <20260914164400.2738350-1-edumazet@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 22 Sep 2026 03:10:27 +0200
+X-Gm-Features: AcwNN1XENI3C6DJEuWKSVfu123kER72zrEHAvPUuiU4gn9CTQlz-0sfrY4BfkQw
+Message-ID: <CANn89i+HYuqNO_ifR7XgpZO89r9ZRWk8MOVzezmDff5KfLMp7g@mail.gmail.com>
+Subject: Re: [PATCH] dlm: fix send buffer backpressure handling
+To: Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, gfs2@lists.linux.dev, 
+	Eric Dumazet <eric.dumazet@gmail.com>, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Introduce a new I_NOPRUNE i_state flag for preventing prune_icache_sb()
-from pruning specific inodes.
+On Mon, Sep 14, 2026 at 6:44=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> lowcomms.c tests and clears SOCKWQ_ASYNC_NOSPACE in con->sock->flags,
+> but this bit has not been stored there for ten years.
+>
+> Commit 9cd3e072b0be ("net: rename SOCK_ASYNC_NOSPACE and
+> SOCK_ASYNC_WAITDATA") mechanically renamed the two dlm users, then
+> commit ceb5d58b2170 ("net: fix sock_wake_async() rcu protection") moved
+> the bit from socket->flags to the RCU protected socket_wq->flags, where
+> it is reachable only through sk_set_bit() and sk_clear_bit(), and is
+> only maintained for sockets having SOCK_FASYNC set.  dlm uses kernel
+> sockets, which never have SOCK_FASYNC set, and never sets the bit
+> itself, so the test in send_to_sock() has been false ever since.
+>
+> The consequence is that when sock_sendmsg() returns -EAGAIN because the
+> socket send buffer is full, dlm no longer sets CF_APP_LIMITED, does not
+> increment sk_write_pending, and does not return DLM_IO_END to wait for
+> lowcomms_write_space().  It returns DLM_IO_RESCHED instead, and
+> process_send_sockets() immediately requeues the send work.  A connection
+> to a peer that is slow to drain thus keeps cycling through
+> sock_sendmsg() and -EAGAIN, burning CPU, instead of sleeping until TCP
+> reports that space is available again.
+>
+> Test SOCK_NOSPACE instead.  This is the bit that lives in socket->flags,
+> that TCP sets whenever sendmsg() returns -EAGAIN for lack of send buffer
+> space (tcp_sendmsg_locked() and sk_stream_wait_memory()), and that
+> lowcomms_write_space() already clears.  This restores the semantics dlm
+> had before the bit moved.
+>
+> Also remove the clear_bit() of SOCKWQ_ASYNC_NOSPACE from
+> lowcomms_write_space(), for the same reason.
+>
+> SCTP connections are deliberately left as they are.  SCTP does not set
+> SOCK_NOSPACE, and it never calls sk->sk_write_space(): sctp_wfree() ends
+> up in sctp_wake_up_waiters(), which calls sctp_write_space() directly.
+> lowcomms_write_space() is thus never invoked for an SCTP connection, and
+> the test added here stays false, so send_to_sock() keeps returning
+> DLM_IO_RESCHED as it does today.  This is the only safe behavior, as
+> returning DLM_IO_END would wait for a callback that never comes.
+>
+> Fixes: ceb5d58b2170 ("net: fix sock_wake_async() rcu protection")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  fs/dlm/lowcomms.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> index 2aff1c7c17de..abe9ae4c643f 100644
+> --- a/fs/dlm/lowcomms.c
+> +++ b/fs/dlm/lowcomms.c
+> @@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
+>         clear_bit(SOCK_NOSPACE, &con->sock->flags);
+>
+>         spin_lock_bh(&con->writequeue_lock);
+> -       if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
+> +       if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
+>                 con->sock->sk->sk_write_pending--;
+> -               clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
+> -       }
+>
+>         lowcomms_queue_swork(con);
+>         spin_unlock_bh(&con->writequeue_lock);
+> @@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
+>         if (ret =3D=3D -EAGAIN || ret =3D=3D 0) {
+>                 lock_sock(con->sock->sk);
+>                 spin_lock_bh(&con->writequeue_lock);
+> -               if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
+> +               if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
+>                     !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
+>                         /* Notify TCP that we're limited by the
+>                          * application window size.
+> --
+> 2.55.0.1007.g17ff1f9808-goog
+>
 
-prune_icache_sb() prunes clean inodes under memory pressure ("direct
-reclaim").  An inode is considered clean when none of the i_state flags
-are set; the assumption is that evicting inodes that don't have any
-i_state flags set will be fairly cheap.
+Gentle ping ?
 
-Unfortunately, on gfs2, inodes can be clean in the sense that they won't
-require writing back to disk, but they may still have outstanding
-revokes (as indicated by the GLF_LFLUSH inode glock flag).  To evict one
-of those inodes, those outstanding revokes need to be written out first.
+I have an ongoing series for net-next removing one cache line miss in
+TCP sendmsg() and ACK processing,
+blocked by this patch.
 
-This requires flushing the log, which is already an expensive operation.
-When in data=ordered mode, all the ordered data needs to be written out
-before the log can be flushed, which makes things even worse.
+If you prefer, I can insert this patch into my net-next series.
 
-As previously discussed [*], we are currently also running into the
-following warning in iomap_writepages() when flushing ordered data:
-
-    /*
-     * Writeback from reclaim context should never happen except in the case
-     * of a VM regression so warn about it and refuse to write the data.
-     */
-    if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) ==
-                    PF_MEMALLOC))
-            return -EIO;
-
-So we need to prevent prune_icache_sb() from evicting inodes that have
-any outstanding revokes.  This patch achieves that by introducing a new
-I_NOPRUNE i_state flag.  When that new flag (or any other flag) is set,
-prune_icache_sb() will skip those inodes.
-
-In the filesystem code, we set and clear the I_NOPRUNE flag in sync with
-the GLF_LFLUSH inode glock flag.
-
-An alternative approach might be to allow filesystems to refuse evicting
-inodes that prune_icache_sb() has already selected.  This could be
-achieved by changing the ->evict_inode super operation to return a
-lru_status code or similar.  prune_icache_sb() would then have to
-resurrect inodes that were already marked I_FREEING and put them back
-onto the lru list.  This approach doesn't seem obviously better than
-introducing I_NOPRUNE, so I haven't pursued this any further.
-
-[*] https://lore.kernel.org/linux-fsdevel/CAHc6FU4tz8-HmEf2_XKT0NT8N=rv5OMcY79PxTACkXAVLOAUpg@mail.gmail.com/
-
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/incore.h   |  3 +++
- fs/gfs2/inode.c    |  2 +-
- fs/gfs2/log.c      | 43 +++++++++++++++++++++++++++++++++++++++++--
- fs/gfs2/lops.c     |  2 +-
- fs/gfs2/trans.c    |  4 ++--
- include/linux/fs.h |  3 ++-
- 6 files changed, 50 insertions(+), 7 deletions(-)
-
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 61465777826a..e37e5d057608 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -379,6 +379,9 @@ static inline u64 glock_number(const struct gfs2_glock *gl)
- 	return gl->gl_name.ln_number;
- }
- 
-+void glock_set_lflush(struct gfs2_glock *gl);
-+void glock_clear_lflush(struct gfs2_glock *gl);
-+
- enum {
- 	GIF_QD_LOCKED		= 1,
- 	GIF_SW_PAGED		= 3,
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 9fce2d3e8e7d..22b5b404b8d5 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -466,7 +466,7 @@ static void gfs2_final_release_pages(struct gfs2_inode *ip)
- 	truncate_inode_pages(&inode->i_data, 0);
- 
- 	if (atomic_read(&gl->gl_revokes) == 0) {
--		clear_bit(GLF_LFLUSH, &gl->gl_flags);
-+		glock_clear_lflush(gl);
- 		clear_bit(GLF_DIRTY, &gl->gl_flags);
- 	}
- }
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 78bba8cc10b8..1f0bb3da4df6 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -24,6 +24,7 @@
- #include "incore.h"
- #include "bmap.h"
- #include "glock.h"
-+#include "glops.h"
- #include "log.h"
- #include "lops.h"
- #include "meta_io.h"
-@@ -760,6 +761,44 @@ void gfs2_ordered_del_inode(struct gfs2_inode *ip)
- 	spin_unlock(&sdp->sd_ordered_lock);
- }
- 
-+void glock_set_lflush(struct gfs2_glock *gl)
-+{
-+	struct inode *inode;
-+
-+	set_bit(GLF_LFLUSH, &gl->gl_flags);
-+
-+	if (gl->gl_ops != &gfs2_inode_glops)
-+		return;
-+
-+	spin_lock(&gl->gl_lockref.lock);
-+	inode = gl->gl_object;
-+	if (inode && !(GFS2_I(inode)->i_diskflags & GFS2_DIF_SYSTEM)) {
-+		spin_lock(&inode->i_lock);
-+		inode_state_set(inode, I_NOPRUNE);
-+		spin_unlock(&inode->i_lock);
-+	}
-+	spin_unlock(&gl->gl_lockref.lock);
-+}
-+
-+void glock_clear_lflush(struct gfs2_glock *gl)
-+{
-+	struct inode *inode;
-+
-+	clear_bit(GLF_LFLUSH, &gl->gl_flags);
-+
-+	if (gl->gl_ops != &gfs2_inode_glops)
-+		return;
-+
-+	spin_lock(&gl->gl_lockref.lock);
-+	inode = gl->gl_object;
-+	if (inode && !(GFS2_I(inode)->i_diskflags & GFS2_DIF_SYSTEM)) {
-+		spin_lock(&inode->i_lock);
-+		inode_state_clear(inode, I_NOPRUNE);
-+		spin_unlock(&inode->i_lock);
-+	}
-+	spin_unlock(&gl->gl_lockref.lock);
-+}
-+
- void gfs2_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd)
- {
- 	struct buffer_head *bh = bd->bd_bh;
-@@ -772,14 +811,14 @@ void gfs2_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd)
- 	bd->bd_blkno = bh->b_blocknr;
- 	gfs2_remove_from_ail(bd); /* drops ref on bh */
- 	bd->bd_bh = NULL;
--	set_bit(GLF_LFLUSH, &gl->gl_flags);
-+	glock_set_lflush(gl);
- 	list_add(&bd->bd_list, &sdp->sd_log_revokes);
- }
- 
- void gfs2_glock_remove_revoke(struct gfs2_glock *gl)
- {
- 	if (atomic_dec_return(&gl->gl_revokes) == 0) {
--		clear_bit(GLF_LFLUSH, &gl->gl_flags);
-+		glock_clear_lflush(gl);
- 		gfs2_glock_put_async(gl);
- 	}
- }
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 6dabe73ad790..8363c02f8b9e 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -127,7 +127,7 @@ static void gfs2_unpin(struct gfs2_sbd *sdp, struct buffer_head *bh,
- 	list_add(&bd->bd_ail_st_list, &tr->tr_ail1_list);
- 	spin_unlock(&sdp->sd_ail_lock);
- 
--	clear_bit(GLF_LFLUSH, &bd->bd_gl->gl_flags);
-+	glock_clear_lflush(bd->bd_gl);
- 	trace_gfs2_pin(bd, 0);
- 	unlock_buffer(bh);
- 	atomic_dec(&sdp->sd_log_pinned);
-diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
-index 65cbe06e301a..7a9da7253246 100644
---- a/fs/gfs2/trans.c
-+++ b/fs/gfs2/trans.c
-@@ -222,7 +222,7 @@ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh)
- 	gfs2_assert(sdp, bd->bd_gl == gl);
- 	set_bit(TR_TOUCHED, &tr->tr_flags);
- 	if (list_empty(&bd->bd_list)) {
--		set_bit(GLF_LFLUSH, &bd->bd_gl->gl_flags);
-+		glock_set_lflush(bd->bd_gl);
- 		set_bit(GLF_DIRTY, &bd->bd_gl->gl_flags);
- 		gfs2_pin(sdp, bd->bd_bh);
- 		tr->tr_num_databuf_new++;
-@@ -287,7 +287,7 @@ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
- 	set_bit(TR_TOUCHED, &tr->tr_flags);
- 	if (!list_empty(&bd->bd_list))
- 		goto out_unlock;
--	set_bit(GLF_LFLUSH, &bd->bd_gl->gl_flags);
-+	glock_set_lflush(bd->bd_gl);
- 	set_bit(GLF_DIRTY, &bd->bd_gl->gl_flags);
- 	mh = (struct gfs2_meta_header *)bd->bd_bh->b_data;
- 	if (unlikely(mh->mh_magic != cpu_to_be32(GFS2_MAGIC))) {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index d10897b3a1e3..270aa3dead91 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -740,7 +740,8 @@ enum inode_state_flags_enum {
- 	I_CREATING		= (1U << 15),
- 	I_DONTCACHE		= (1U << 16),
- 	I_SYNC_QUEUED		= (1U << 17),
--	I_PINNING_NETFS_WB	= (1U << 18)
-+	I_PINNING_NETFS_WB	= (1U << 18),
-+	I_NOPRUNE		= (1U << 19)
- };
- 
- #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
--- 
-2.55.0
-
+Thanks.
