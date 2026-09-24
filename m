@@ -1,230 +1,264 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4333E3D8E
-	for <gfs2@lists.linux.dev>; Thu, 24 Sep 2026 09:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37F047DD72;
+	Thu, 24 Sep 2026 12:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790243599; cv=none; b=RymmTjh0c5xbCxK2R7RAVBnKDg+6ZtQBNYJmslblS02W83AptzvJUavh9BIY6GLC8PNZSJRyiUnWGjru4SUzzBY5BOaGlqgyD4irPaxUhIkPejmpSYUnHJM//m0eE8tQotltWOcGhF+E/OTEG2c6YfDtZjm8F1hwznR4G1bAWdU=
+	t=1790252725; cv=none; b=fmwx+ZVCKkWgrM2yCTZAqtdPF2dKgTG430eUPrBU1L4DFlUmeBMgUUBX6XlxFVbE6+Mmc0TC0bB6L29lgjAhOmzXC7wy6689fGb4BmDlE1lb2dzCWWMF9CvdwtKqsqd6GwCR/GPdBN6gbnVVzNxYZ1f6+gwNZ+2n/H+BsrFXS3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790243599; c=relaxed/simple;
-	bh=sPvIqqiWtLmfc6ErKi9GH1J5tWYpjjEbXoftcYlUFoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C4UKH8X9T6p08WK4wtxlUmiRWiChWojNOpFJFK/A75653GyF23j9uFKZ6kq7rZcpeFHDefvqwpnmj5i3uhV/bFYXBlrEC0DHclJ7civESChiQ9cmDw+efDujz371LAgkBoRpv8ZRg6JZ/VD+OZu7Y0KYvg4JhS11pfTnbPsK2ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OmCGSrzT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=PJIUnDFG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VfFtejpv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=yRELnrdM; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1790252725; c=relaxed/simple;
+	bh=01i9WejsLdiMX6G/FL2digLaVsJEX/S7apwqrd48yoc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CLvWg3t5ZLMY5MTIQhQEyJQ831gCwbWHNyAFBfdR5m+TJcpZIBnFv7qwmVdtfDnWhRAq5sWzCMQi/pjgZyD0ix57ra6lg13nXjpZPewW/+MjfUpvVLFvs2DD4NwI32B9yjQXUUHXLB2eBGzunlwnpThVNCh0Z1DluFUxl22xw+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1OYfSDc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OmCGSrzT";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="PJIUnDFG";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VfFtejpv";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="yRELnrdM"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1B77220085;
-	Thu, 24 Sep 2026 09:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790243576; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xW/01UYA2/+neWjdTd89el29ZEI2I1pCyls3/+dcHWM=;
-	b=OmCGSrzTOUTEICkTDiNwNf90fi0Zsp+KkVcf5hDXZGK+QFpEh4C+1cnhxxnIZObLUolhxY
-	NwabShn19MpXPvx8T+oKzkdbzmO3/GKKbrQOHTlDaPk1ebgpAb777XpR4SmmoRnJndV+sq
-	dJbZ6mdBG2gAXG0vlut3l7jUt51Q6gc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790243576;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xW/01UYA2/+neWjdTd89el29ZEI2I1pCyls3/+dcHWM=;
-	b=PJIUnDFGVo/PSy8sI1kbO1Mxdd+m61pWTAqWBnH+iMdyM3ROLh214EI4nGKFVlq93vXIP3
-	zGilbwKIsPFk0AAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790243572; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xW/01UYA2/+neWjdTd89el29ZEI2I1pCyls3/+dcHWM=;
-	b=VfFtejpvt4v2Sl8T+qmDufsfXJwvoNy2F6Szv6oi1Boh8F0LvBEKkm5n0JQzvvtNlj7aEi
-	mOc7v4ix89eHa41m6H9p1wgOlsndmqDxYWkKC9oRAoyosJnfdzqbZnlaDPOwanyEkG16Zd
-	C7mrUE80E3Wo5Sa9Jua7e5HrAu1cJUw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790243572;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xW/01UYA2/+neWjdTd89el29ZEI2I1pCyls3/+dcHWM=;
-	b=yRELnrdM7ZHNqYGqvsJJo2Q2PSQfHZD9IqzOJde1urQ0qkcCJqUDg5rRcSv+I45A5tsKuG
-	gp8i+f8Fdu9gBJCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF59A13668;
-	Thu, 24 Sep 2026 09:52:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DkwiLvPytGrAOgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 24 Sep 2026 09:52:51 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 68B36A132E; Thu, 24 Sep 2026 11:52:51 +0200 (CEST)
-Date: Thu, 24 Sep 2026 11:52:51 +0200
-From: Jan Kara <jack@suse.cz>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
-	Matthew Wilcox <willy@infradead.org>, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fs/gfs2: prevent premature evict in prune_icache_sb
-Message-ID: <v6c2tacifzt7e46fmlathfn5lgf54ae2qliq33ydhqkeudqnxc@r7dsaeww4yav>
-References: <20260921211712.1563575-1-agruenba@redhat.com>
- <rhj2uhowkjekxgi7tkxko5odxw3zikthtnlef5f5owrfjzrt3r@nul7b7ldcb2g>
- <CAHc6FU4Rf9-r8m8SSb=e0k0zyoFhQAdjupHMWvT6rStBshntug@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1OYfSDc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C15C1F000FF;
+	Thu, 24 Sep 2026 12:25:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790252723;
+	bh=i1wc7mco9mhAsE81iNGHYJRTKDBGIOxL8y/hhOoeRqI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=d1OYfSDcHGlPiGc5qF/mIK/jytBkjw5fGcsDZ1VUx+sv/BotsB4Gbwoq1cu7hUHCd
+	 ebi8x0Hi/vuszK/DnAaLZk6mhEUDFEcHPC3yt3vtvrzVu9FctxDsOJaD31ODnZf5lb
+	 ChvfGllTDpJYWfZ6LAmSYV9RHkzL63m2ZXjB1UST6QlBfGLODN1Vn7mfuzvgD+Tqwb
+	 uOwti8ANNX6yqa7JVdZHU6t9bIe3VR5EFA0SlzU3i4sgG0iQcyr+Ov3Mp3e8sOtJVK
+	 x0uTMHrBXBWk97skEgLp6ymm0kjxfhmUVoGVe9ti8T4e6hOqZx1ErzkYIDvdNwn3j5
+	 d0I/Yf/N8Sa0A==
+Message-ID: <0880c8baea48edbca372bd54060000b27dd5fcbb.camel@kernel.org>
+Subject: Re: [PATCH v2 01/14] VFS: revise and expand documentation for
+ atomic_open.
+From: Jeff Layton <jlayton@kernel.org>
+To: NeilBrown <neil@brown.name>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner
+	 <brauner@kernel.org>, Chuck Lever <cel@kernel.org>, Jori Koolstra
+	 <jkoolstra@xs4all.nl>, Mateusz Guzik <mjguzik@gmail.com>, Dorjoy Chowdhury
+	 <dorjoychy111@gmail.com>
+Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Andreas Gruenbacher	 <agruenba@redhat.com>, gfs2@lists.linux.dev, Ilya
+ Dryomov <idryomov@gmail.com>,  Alex Markuze <amarkuze@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org,  Paulo
+ Alcantara	 <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, 
+	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org
+Date: Thu, 24 Sep 2026 08:25:20 -0400
+In-Reply-To: <20260919022441.3305170-2-neilb@ownmail.net>
+References: <20260919022441.3305170-1-neilb@ownmail.net>
+	 <20260919022441.3305170-2-neilb@ownmail.net>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU4Rf9-r8m8SSb=e0k0zyoFhQAdjupHMWvT6rStBshntug@mail.gmail.com>
-X-Spam-Score: -3.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,suse.cz:email]
-X-Spam-Flag: NO
 
-On Wed 23-09-26 23:01:52, Andreas Gruenbacher wrote:
-> On Tue, Sep 22, 2026 at 1:22 PM Jan Kara <jack@suse.cz> wrote:
-> > Hello Andreas!
-> >
-> > On Mon 21-09-26 23:17:11, Andreas Gruenbacher wrote:
-> > > Introduce a new I_NOPRUNE i_state flag for preventing prune_icache_sb()
-> > > from pruning specific inodes.
-> > >
-> > > prune_icache_sb() prunes clean inodes under memory pressure ("direct
-> > > reclaim").  An inode is considered clean when none of the i_state flags
-> > > are set; the assumption is that evicting inodes that don't have any
-> > > i_state flags set will be fairly cheap.
-> > >
-> > > Unfortunately, on gfs2, inodes can be clean in the sense that they won't
-> > > require writing back to disk, but they may still have outstanding
-> > > revokes (as indicated by the GLF_LFLUSH inode glock flag).  To evict one
-> > > of those inodes, those outstanding revokes need to be written out first.
-> > >
-> > > This requires flushing the log, which is already an expensive operation.
-> > > When in data=ordered mode, all the ordered data needs to be written out
-> > > before the log can be flushed, which makes things even worse.
-> > >
-> > > As previously discussed [*], we are currently also running into the
-> > > following warning in iomap_writepages() when flushing ordered data:
-> > >
-> > >     /*
-> > >      * Writeback from reclaim context should never happen except in the case
-> > >      * of a VM regression so warn about it and refuse to write the data.
-> > >      */
-> > >     if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) ==
-> > >                     PF_MEMALLOC))
-> > >             return -EIO;
-> > >
-> > > So we need to prevent prune_icache_sb() from evicting inodes that have
-> > > any outstanding revokes.  This patch achieves that by introducing a new
-> > > I_NOPRUNE i_state flag.  When that new flag (or any other flag) is set,
-> > > prune_icache_sb() will skip those inodes.
-> > >
-> > > In the filesystem code, we set and clear the I_NOPRUNE flag in sync with
-> > > the GLF_LFLUSH inode glock flag.
-> > >
-> > > An alternative approach might be to allow filesystems to refuse evicting
-> > > inodes that prune_icache_sb() has already selected.  This could be
-> > > achieved by changing the ->evict_inode super operation to return a
-> > > lru_status code or similar.  prune_icache_sb() would then have to
-> > > resurrect inodes that were already marked I_FREEING and put them back
-> > > onto the lru list.  This approach doesn't seem obviously better than
-> > > introducing I_NOPRUNE, so I haven't pursued this any further.
-> >
-> > So for situations like this I've written a patch set to allow filesystem
-> > to mark inode for deferred reclaim (from a workqueue) [1]. Would that work
-> > for you? It will definitely solve your problems with warnings in memory
-> > allocator.
-> >
-> > I don't want to have two different mechanisms for the same issue so if my
-> > solution doesn't quite work for you, let's discuss how to make it better
-> > :).
-> 
-> thanks, this would solve some of my problems. In the gfs2 case, inodes
-> are only in "deferred reclaim" state for a while (while they have
-> outstanding revokes) before becoming directly reclaimable again. So
-> I'd also need a way to clear the I_DEFER_RECLAIM flag again.
+On Sat, 2026-09-19 at 12:06 +1000, NeilBrown wrote:
+> From: NeilBrown <neil@brown.name>
+>=20
+> atomic_open is a complex operation which different filesystems implement
+> quite differently.  The available documentation doesn't give clear
+> guidance on how it should be implemented.
+>=20
+> nfsd has a particular need to open only regular files, but to get
+> precise information about what was found if it wasn't a regular file.
+> This is slightly different to the syscall calling needs.  In particular
+> it suggests that __O_REGULAR shouldn't always result in -EFTYPE.
+>=20
+> In any case that does involve creating open state, using
+> finish_no_open() is simplest as it reduces the need to check
+> __O_REGULAR, O_DIRECTORY, O_NOFOLLOW.
+>=20
+> So refresh the documentation to give guidance on the choice between
+> finish_no_open, finish_open, and an error.  Efficiency always wins, but
+> when that isn't an issue, prefer finish_no_open().
+>=20
+> Also clarify the required behaviour when __O_REGULAR is given.  This
+> should return -EISDIR if a directory is found as nfsd needs this.  If a
+> symlink is found then __O_REGULAR does NOT apply: O_NOFOLLOW must be
+> used to decided if it is safe to not return the looked-up dentry.
+>=20
+> Signed-off-by: NeilBrown <neil@brown.name>
+> ---
+>  Documentation/filesystems/vfs.rst | 67 ++++++++++++++++++++++++++-----
+>  fs/namei.c                        |  3 ++
+>  2 files changed, 59 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystem=
+s/vfs.rst
+> index d3a93eec3945..00ada8cc85ae 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+> @@ -599,17 +599,62 @@ otherwise noted.
+> =20
+>  ``atomic_open``
+>  	called on the last component of an open.  Using this optional
+> -	method the filesystem can look up, possibly create and open the
+> -	file in one atomic operation.  If it wants to leave actual
+> -	opening to the caller (e.g. if the file turned out to be a
+> -	symlink, device, or just something filesystem won't do atomic
+> -	open for), it may signal this by returning finish_no_open(file,
+> -	dentry).  This method is only called if the last component is
+> -	negative or needs lookup.  Cached positive dentries are still
+> -	handled by f_op->open().  If the file was created, FMODE_CREATED
+> -	flag should be set in file->f_mode.  In case of O_EXCL the
+> -	method must only succeed if the file didn't exist and hence
+> -	FMODE_CREATED shall always be set on success.
+> +	method the filesystem can look up, create, truncate, and open
+> +	the file in one atomic operation.  This is needed if the
+> +	filesystem content can be changed asynchronously and
+> +	specifically if a negative dentry is not a guarantee that the
+> +	object doesn't exist.  It is also useful if it is possible to
+> +	perform combinations of revalidate, lookup, create, open, and
+> +	truncate more efficiently what with a sequence of individual
+> +	operations.
+> +
+> +	If the object found is not a file or directory, or if
+> +	lookup/create succeeded without establishing any "open" state,
+> +	then finish_no_open() should be called to confirm that the
+> +	dentry is ready to be handled by normal VFS processing.
+> +	FMODE_CREATED should be set in the "file" if the object was
+> +	created, and this will prevent further access permission checks,
+> +	or handling of O_TRUNC and O_EXCL.
+> +
+> +	If the lookup/create operation established some open state for a
+> +	file or directory, the open should be completed by calling
+> +	finish_open().  Passing NULL as the "open" function to
+> +	finish_open() is unlikely to be useful as that assumes that no
+> +	open state has been established.
+> +
+> +	atomic_open() may generate errors related to O_DIRECTORY,
+> +	__O_REGULAR, O_EXCL, O_NOFOLLOW but is not required to as the
+> +	caller will check those against the resulting dentry and
+> +	generate any error needed, possibly closing the file if it was
+> +	opened by finish_open().  atomic_open() is encouraged to handle
+> +	these flags only when doing so is more efficient than not.
+> +
+> +	If __O_REGULAR is handled, it should generate -EISDIR if the
+> +	name is known to be a directory or -EFTYPE if it is some other
+> +	non-regular file other than a symbolic link.  Handling of a
+> +	symbolic link should be guided by O_NOFOLLOW, not __O_REGULAR:
+> +	-ELOOP can be return if O_NOFOLLOW is set, otherwise the symlink
+> +	should be returned through finish_no_open().
+> +
+> +	The focus for atomic_open() is to provide the correct dentry and
+> +	to set FMODE_CREATED as accurately as possible.  If O_EXCL was
+> +	set, FMODE_CREATED should only be set if this operation
+> +	certainly created the object.  If O_EXCL was not set,
+> +	FMODE_CREATE should be set if it is possible that this operation
+> +	created the object.
+> +
+> +	This method is only called if the last component is negative or
+> +	needs lookup.  Cached positive dentries are still handled by
+> +	f_op->open().
+> +
+> +	If the dentry provided is negative (not in-lookup) and O_CREAT
+> +	isn't set, then there is no guarantee of exclusive access to the
+> +	dentry - another thread might call ->atomic_open() on the same
+> +	dentry at the same time.  If needed a filesystem can ensure this
+> +	doesn't happen by returning 0 from ->d_revalidate when that is
+> +	called with LOOKUP_OPEN on a negative dentry.  This will ensure
+> +	that ->atomic_open() only receives an in-lookup dentry, which
+> +	always ensures exclusive access.
+> =20
+>  ``tmpfile``
+>  	called in the end of O_TMPFILE open().  Optional, equivalent to
+> diff --git a/fs/namei.c b/fs/namei.c
+> index d95249dd527c..0f69abb3743b 100644
+> --- a/fs/namei.c
+> +++ b/fs/namei.c
+> @@ -5007,6 +5007,9 @@ static struct file *path_openat(struct nameidata *n=
+d,
+>  		error =3D -EINVAL;
+>  	}
+>  	fput_close(file);
+> +	if (error =3D=3D -EISDIR &&
+> +	    (op->open_flag & __O_REGULAR))
+> +		error =3D -EFTYPE;
+>  	if (error =3D=3D -EOPENSTALE) {
+>  		if (flags & LOOKUP_RCU)
+>  			error =3D -ECHILD;
+>=20
+> base-commit: 9189e6a6f89e32d3a604b221ea64e67e1a35957c
 
-Well, that's kind of the case for other filesystems as well. But since
-deferred reclaim is relatively cheap my current thinking was that if
-somebody did something expensive to the inode like allocating blocks
-(that's what triggers this for ext4, not sure what exactly triggers the
-state for GFS2), then we can afford also the additional small cost of
-offloading the reclaim to a workqueue (regardless whether it is really
-needed at the time reclaim actually happens). We just don't want to
-unconditionally offload because if someone is just statting millions of
-inodes on some filesystem, he's basically bound by the speed of reclaim on
-sufficiently fast storage and the additional delay of reclaim and the cost
-of offloading would become visible.
+It just keeps growing! But on a more serious note, it's better to have
+more clear verbiage here.
 
-> The I_DEFER_RECLAIM flag setting and clearing code would be racy and
-> ugly though, so I'm wondering if we can change the ->evict_inode()
-> super operation to return a DIRECT / DEFERRED status code instead. The
-> filesystem could then look at the filesystem-internal state and return
-> how to proceed with the inode. For example, fs2_evict_inode() would
-> probably request a DEFERED evict when GLF_LFLUSH is set, PF_MEMALLOC
-> is set, and PF_KSWAPD is not set.
-
-Right, but I really want filesystems to mess with process reclaim flags as
-little as possible because that smells with layering violation and
-generally tends to be fragile. In some code paths such as iput_final()
-or evict_inodes() I really prefer to be sure that the filesystem just frees
-the inode without having to check details of all the implementations making
-sure they don't do something stupid and offload when they shouldn't.
-
-So if we do something like this, I'd probably prefer explicit flag to
-->evict() telling that offloading is possible and in that case filesystem
-can return special value meaning it requests offloading and prune_icache()
-would handle that.
-
-Another problem I see with this scheme is that VFS is completely oblivious
-to the number of inodes for which reclaim will be deferred and so there's
-no chance for throttling places that create such inodes when the reclaim is
-getting overloaded.
-
-So overall I'd prefer we avoid all this complexity at least until we have a
-real-world case where the performance impact of unnecessary offloading is
-visible.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
