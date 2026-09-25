@@ -1,89 +1,108 @@
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A04471434
-	for <gfs2@lists.linux.dev>; Fri, 25 Sep 2026 12:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20454D5993;
+	Fri, 25 Sep 2026 16:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790339620; cv=none; b=c+jz2z7TYs2+Ns6m8O+QAEviIoxaWLb7E5U97DIPB3r4Y+nhTGW4HE8ejDxbXtCglZZmSfknMjT50QuhOfhezg5iYFVW9EORheQiQmq3xIaAsKObAwyQ+Wgb3yMvEOUypLg5EZq1xwICL8GApaEVWcKJwcNP9y0DY32/M2b+VhA=
+	t=1790352259; cv=none; b=eF0RSI3VCoBhav8+7zRnFCPjgzIbmMiH3TD18dgpqVszeBGxzU8JPXsjvf9hJG9NPHVSjZVzIJPTYcIutahjQnQkA3LgI6Q8JWYUEw42/jid2D4k243GBKyVShCIP/w4TuYHvPgiSanpuX71HfPIkWaIV+MqQr4QSn53U2fCdxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790339620; c=relaxed/simple;
-	bh=fUjQ52ag332CiUrQx7rmtoK/j5URJZjewRsvMLE4k6U=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=TW/vBj6VNSnKWRYO3im66x+9D0761CHi4x4F9QtCmFxHUpUPl2HV/YeuIZDWFskKaL+NlOTCRvubqZfP8rY81+SWRTWACm3ye6yr45ThLa4vv2E92022xTeIb4c88elz6j67BBsRpdFQZKC/QcKoRZg6lseDN+HcP91lus34Df4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-46f9dbad956so516440fac.2
-        for <gfs2@lists.linux.dev>; Fri, 25 Sep 2026 05:33:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790339618; x=1790944418;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mNU2C5KmBRcs2Ebwo4gD57Zy+MYfjXnr8InYiS34/8c=;
-        b=Dfnvfi/97Id0FJ0X6GgODUI4hqG/Q7OpGiXt2SJySC62HVxsTUaYdCaGFtZKwbxmJu
-         MLNPutag/oxZgj2guXy5SE2NzLB0GwsPojBfeeinvRatdRz5YnvCA2mW25aw/SfsdvaH
-         MH0fBFox95TjeXK0WXH3lKCdUx7e2iLJfbcFOf5KMBX1DUctb8xYp7f/a8caROMdTTzV
-         cMktzmp8SbbP7B8UuWJ7cAkJGmHcwopRu622L8OUe0QNjPmAY9bPXLQwpojGG8DJwWZK
-         y10ze09zK2NC1SYXE3zjFl6ZWc1hWo+Dipc3RaEX6RPZPEDUT1pb7i78CJQoyF2mOBL7
-         vJLQ==
-X-Gm-Message-State: AFuF++kZXD+NNWhUxpj27sVDqzuAkjCn4Aueb7D4fxEs9BUPL3ymTFuP
-	yraYRKJHPIW/5mMmqdrkXVmfevBz1llAwantIoAIfy7gylXu/vEUnRhHGFejrjrAPLeXowQ00sP
-	YLyUjJb1yr/QhPWEXH2s3nwpIDeMVfZ0Zv6oFZUgjbC0STLYWx5lbGXvgAj8=
+	s=arc-20240116; t=1790352259; c=relaxed/simple;
+	bh=IZ4F6iel9CQYqqk/dvStAas9CFSg4V10BDkGilw6Aw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MmR/FaFVO5tNXbCjoHNej+oPJOvJnbEOpzor8FvqnZ+DA/v9Yh7jfLGTyrqTZadSyCGcZVNZvEEmaVKRf0rzjGqyXLaFRWAXXX4g4Pq4NvfyqneMXA6B6gXzeuZGTbAstH+dnl1vXlPM3KTNRuIQ1IISPbjPA+8eYPnThudZAP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StglrGOe; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StglrGOe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E862A1F00893;
+	Fri, 25 Sep 2026 16:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790352255;
+	bh=xxKiFFCryCgBG+J9gLCduvIgJfvaHBPdrbmundnTLmM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=StglrGOep6ggfNeYlGrPooEOQ3IynWTiiVN8I5HxyD/o7tfrYcBSYaPMR0PJY+SSW
+	 gjH7cQkFI2CVkFLGDUyoY6qUnIHcDk8Da+xD0kjVmGAx8oWKaGtKMvaToawy1Y+lF9
+	 khVhbzzv60Nnf9cp1eH5oVv470PZ8RQSegqGFyuOFyv6jZ3feeP9sFoUpPi1PPzZ+4
+	 I7lJK/THcXYhhlr/Q/JEpUkrzr8RTp9e2GMzq6KkQneSTPgWkE60m48dzRUGpQufPR
+	 G9ilaHZBSlHz3mqTUcMLhvdTUc60a302yoFW8uKC5MFydpGX7X2w++deM3hmzt5VPc
+	 ZMTva6F1R9tEw==
+Date: Fri, 25 Sep 2026 18:04:08 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Dorjoy Chowdhury <dorjoychy111@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>, 
+	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	ceph-devel@vger.kernel.org, Paulo Alcantara <pc@manguebit.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org
+Subject: Re: [PATCH v2 01/14] fixes for vfs_lookup_open, and integration with
+ nfsd
+Message-ID: <20260925-diavortrag-zueinander-komitee-6bb18933f480@brauner>
+References: <20260919022441.3305170-1-neilb@ownmail.net>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:17aa:b0:4d6:90d4:6bc with SMTP id
- 5614622812f47-4d72cc3cba3mr6843640b6e.46.1790339617858; Fri, 25 Sep 2026
- 05:33:37 -0700 (PDT)
-Date: Fri, 25 Sep 2026 05:33:37 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab66a21.80e1c6cc.1e8e5f.0030.GAE@google.com>
-Subject: [syzbot] Monthly gfs2 report (Sep 2026)
-From: syzbot <syzbot+list410acf864b0ea39e7b49@syzkaller.appspotmail.com>
-To: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260919022441.3305170-1-neilb@ownmail.net>
 
-Hello gfs2 maintainers/developers,
+On Sat, Sep 19, 2026 at 12:06:04PM +1000, NeilBrown wrote:
+> Greetings.
+> 
+>  NFSv4 has an "OPEN" request which combines lookup and create and
+>  truncate and permission checks etc much like the open() syscall.  When
+>  nfsd implements this, I want it to share a much code as (reasonably)
+>  possible with the open() paths - in particular I want it to use lookup_open() 
+>  and so that it uses ->atomic_open() the same way that other code does.
+>  (Longer term I want to make some locking changes and having all the code
+>  central makes that easier.)
+>  vfs_lookup_open() is a step towards that  but it isn't quite ready yet.
+>  This series aims to make it ready, then use it.
+> 
+>  A particular issue is that using __O_REGULAR exactly meets the needs of
+>  nfsd (it doesn't want to open anything else) but the errors returned by
+>  __O_REGULAR aren't what nfsd needs.  nfsd needs to know if it was a
+>  directory, or a symlink, or something else.
+> 
+>  I don't think __O_REGULAR should cause symlinks to result in -EFTYPE.
+>  If a symlink is found, then it should be followed.  That is what
+>  happens with filesystems that don't support ->atomic_open, but some
+>  ->atomic_open handlers return -EFTYPE for symlinks when __O_REGULAR is
+>  present.  I think that O_NOFOLLOW can affect how symlink are handled,
+>  but where possible it is best to just return the symlink to the caller
+>  and let it figure out what to do.
+> 
+>  For directories, nfsd wants EISDIR rather than EFTYPE.  It may be that
+>  user-space could benefit from seeing EISDIR too, but that is a separate
+>  issue.  So I want ->atomic_open to return EISDIR (if it returns an
+>  error at all) rather than EFTYPE if a directory is found.  VFS code can
+>  then map that to EFTYPE if needed.
+> 
+>  So the first few patches in this series improve the documentation for
+>  atomic_open and then make changes to nfs, gfs2, ceph, cifs to better
+>  match this documentation.  I would appreciate an Ack-by (or whatever
+>  else might be appropriate) from fs maintainers for those.
+> 
+>  Subsequent patches make changes to vfs_lookup_open() and then to nfsd
+>  to use it.
+> 
+>  A significant change here is that opening a file with
+>  O_NONBLOCK|O_CREAT will result in -EWOULDBLOCK if a delegation
+>  exists on the parent directory - currently it blocks.
+>  Jeff - could you comment on that change (07/14)?
+> 
+>  There are quite a lot of changes here since my previous post,
+>  particularly the changes to various filesystems.
+>  I've stopped trying to return the dentry from vfs_lookup_open()
+>  in the error case - no-one liked that.
+> 
+>  Thanks for your time,
 
-This is a 31-day syzbot report for the gfs2 subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/gfs2
-
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 24 issues are still open and 47 have already been fixed.
-There are also 10 low-priority issues.
-
-Some of the still happening issues:
-
-Ref Crashes Repro Title
-<1> 103     Yes   kernel BUG in do_qc
-                  https://syzkaller.appspot.com/bug?extid=bad65435361712796381
-<2> 78      Yes   INFO: task hung in gfs2_recover_journal (4)
-                  https://syzkaller.appspot.com/bug?extid=9013411dc43f3582823a
-<3> 56      Yes   WARNING in gfs2_ri_update (2)
-                  https://syzkaller.appspot.com/bug?extid=7567dc5c8aa8f68bde74
-<4> 56      Yes   general protection fault in gfs2_glock_dq (2)
-                  https://syzkaller.appspot.com/bug?extid=5a5f492ccae698fd7434
-<5> 33      No    KASAN: slab-use-after-free Read in gfs2_ail_drain
-                  https://syzkaller.appspot.com/bug?extid=84a21b16aba9f279d96a
-<6> 172     Yes   kernel BUG in gfs2_quota_cleanup (3)
-                  https://syzkaller.appspot.com/bug?extid=af4d53576692f8956fd6
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+Neil, I'll take the vfs specific fixes onto vfs-7.4.lookup and then nfs
+can pull that all in?
