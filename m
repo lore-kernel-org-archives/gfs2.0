@@ -1,180 +1,231 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFFE5452BD;
-	Tue, 29 Sep 2026 15:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2373D890D
+	for <gfs2@lists.linux.dev>; Tue, 29 Sep 2026 21:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695350; cv=none; b=gI89ZKf4g9m1sC0xQTt5V+qPMtSUJfO/L0UN8XOt14YPLsuabubG1xPTltsQ/OXxa5hvv09R2JOj7U9dHFCPeapI+Q0j8HHfMDbFUtW9CjUyQigmNlw9NIdL5vIEd76oh/Dr6Qx0sDKHEq+0sWARN1YZls1DcN6SwRL2JbevpoU=
+	t=1790716522; cv=none; b=D2zj4wM6NfrKWJxD4caNJ7DdBiXrRBUj3AflqA4Q1GAuRltXz1mVP6S46gzaAI6cI2crd89+blWmTeFD9ct5o+rXKFWPPiYAQNJq+5c1qnicc+G7vMeqTHm4powQJrFvUrp14XMshl/azJDNZ7lbPbhmETaFHEtKKI18LSjxCE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790695350; c=relaxed/simple;
-	bh=XkkZPv8qL8cIATjpi2BapNjuxBGjOL3GtIaK5L9afqk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=N6ItBc3k/QSUC5T1xIyKXsdUkXPACp6fHACq/1OFJqskqxw4DPlH9LiluH4n6p80XXemoiTTeQxBxfEF1EUCd2cZgQq4d7cS5z3um3v0P7yC6SM2MGR1EKWVpwJeVvBGSEWTfovEkkKs5CZ5Y67lxD+HYc7eGFBgkSNp/Sz1Slw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anpnVCGK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790716522; c=relaxed/simple;
+	bh=N0Dp988DA5FrqQKAGAPeuZua2WfO2cuDyzKra12FUPA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TJTZlkKH/7TwJ1I2BVYB+smKfo1mtlJDPY5jgagdibjuDC3xK1aj+o+QCrzLRQ2PPISqJqjS2PJCzRZazpkS3t5QwWyjCfV8mG2P5U2rvWMxcjbj127JYc0pA9g4gjCKSExt+Q3VmpG1DxXMvouLF0BWnFEhMB9iBykQsXn/x6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxKTWzOa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anpnVCGK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD4A1F000FF;
-	Tue, 29 Sep 2026 15:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790695338;
-	bh=D/ibpmI5jg1a9kUxODZYU60ZnHvdobAWMypDGAeOo8U=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=anpnVCGKi06BDE9uCt53/px/V/Xclaq+d8LO4yKPPxUSJgf0wPpBbfQ0wAIHNm4vj
-	 8Vpn5/NxGqe11Gs10voadlisgh3IYeFXu3g+2SJ+7m3jil4LXAdac5/a4Xipc/L0uU
-	 uoM6DQpX+wkJM1Xtnp6/eELm3sKLoLKt7BKykQRKJe1I4BAVkcxtL+mbfq5coubEnd
-	 AY+5VfQvWQPP+hPh1TvjrAUVXIVRD2udsWqQvO1pm+PtRRNyRs2M8dIsyxgxYbw2fe
-	 VVLle+rliswZIrczTvPrFf+OJ3iwkeEU9REFJ1NId2+NyoFakGOZ6TSqsqwJWcI7hD
-	 VZ8XSrwjo6+2w==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 30CFCF40066;
-	Tue, 29 Sep 2026 11:22:16 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 29 Sep 2026 11:22:16 -0400
-X-ME-Sender: <xms:qNe7asNumxTZTAqOUMh5yjMfBOgOCMLTp1Im1fFQbesvZUO55nZ2oQ>
-    <xme:qNe7atwuBH0bTHFgDQgRZZI2gbAKYX8VhkuKJBPXxg_z5ueXA34isrO5kfjLkizmi
-    EFNvD4NKhvLofMkY7_rQhiAplvDhtlXfnLh2eIXdvSAvUoXwm8-jGE>
-X-ME-Proxy-Cause: dmFkZTGHwpvTWnenfdWwDpfZ0uSchfAvPs9YUs2fCTjyTe1/aaP/8o/CAtZEpuBnFlnr3l
-    qmTkjOPiHUmeNeOJhaD8lnKlk7EMaLK7X5jKQpwMypkRiS4dvAs3YrNT/c5V6Bk4Ga8MRb
-    xPq/javh4ijLGFfdkpos6GxlxyGT42Fwa0ltNIGopZ+Mq1Abfhj0eHx9Lz1wE2F5x+0msE
-    VuUjojmKduIXDgawsedlXFbIOAX2g6XJhtdhhvodBfsk+7R/r5zcjPGlwzTbqow/k0fhhB
-    KSkSmJEw1/zMzycRq5vhO53cykwQS/OPCRkkdIvcZDxPRXq49tm4EIS2v6w4wGkS37Tlih
-    UB9WCh5UmtBTKVoM5jZdVRPrR1i0Y/KGM6FHAXdqhHo3g4SwJzfP4kS1hl+kp6sqa3oe5B
-    09PI362u5aRRUNoro1OofwHkHSzL/FrFq/CJzhCpmp9MwcGwLzvwm0apSMBCms1xR1uIii
-    arKpKGXFmq7VC4eJ8+APDkopGyFyqzktnwewJR+EDrFxuv09iKewKqVtwVJeGBzDK6vRKq
-    muINJMxJgehj51nQY/hRISHFHFnxUA4qXxqSbYIxuozvMtbIXSmX4t9k0Hmo9w1FDElKMl
-    aRA8ntUnTlF314tfn5h0SudAXalF4N4JRAjlbU/knq2/TyidO7gi2AcylzGg
-X-ME-Proxy: <xmx:qNe7alTNQ8tP03wFnXG8YkXYzgfEyS3-F_ZZKA8_XLoQvUUQJAFCfg>
-    <xmx:qNe7ao_jrYdhgYHkVlRJV3PlHwP6Y0lqhmeeWnVQ7QeNozJaz2D9Iw>
-    <xmx:qNe7avd7MlJGAeGcMrOiqXfK2cDY7WCfVwKtuR1m2DAw7k5rWntO1A>
-    <xmx:qNe7atk68NlURP2riS5zADZafdyfWq3T06kwCJcHcbAilNf3Tw3wPA>
-    <xmx:qNe7aixKa69McjO_gKvG8A33X8ZmiyzjDY8l7fSWjGAQWfQLOOiD_yiI>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E740A780070; Tue, 29 Sep 2026 11:22:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxKTWzOa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790716516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2FSuhGLAGqzfcOIaBu8CiLsYRpspmlLc9U2mEqKrqN4=;
+	b=WxKTWzOa72ufoGIZOIDJvl15a92bQErKPv/urMgGUY9kYSH7m/ZOlYRaw/Z49syviDlzUb
+	zhoUl3/imcfpOTxHntO5ssnHVd9YGX3l2dfzSFUIRDaMoGL6kXKVeLXspYC4ojaxUR3f7o
+	qiZZeBBZiI5Sc7f4+OXcPLf69oPLick=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-159-_RY06a4KNw2flRsrx51IQA-1; Tue, 29 Sep 2026 17:15:14 -0400
+X-MC-Unique: _RY06a4KNw2flRsrx51IQA-1
+X-Mimecast-MFC-AGG-ID: _RY06a4KNw2flRsrx51IQA_1790716514
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-879b1d03d5fso75742987b3.0
+        for <gfs2@lists.linux.dev>; Tue, 29 Sep 2026 14:15:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790716514; x=1791321314;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2FSuhGLAGqzfcOIaBu8CiLsYRpspmlLc9U2mEqKrqN4=;
+        b=HLtVr74M9FoiBcrJOjUIZ3mBbE2iky9iOIu5BSCWhUOnb6Buxmgean6rvpBqhERIWh
+         TUKP9QW16jAf9dzcV5kYP8YySqJCorqE5+7SZSQp8FN4eWlh16ql7kMUuNFdCVwXO79L
+         iQkGh+TPdL99xsJ54XzqRMuqCqwLOleyTKx3WTQhNpt0poSAu5YE09v887Mv7cUDbiJx
+         iGRhUHGEu5JY9QUzxI50PK0E4HPNSdV/fXxPEgU2wF6/bE5G7k0gIvNsGA+FNGliU6DR
+         WiFZ1Pvsi0xqAV2ta2IwWYnnXzX30m7wSmxOCIykZvHSIkZYPVBkdmBZQJQGgChW7hkg
+         2ERw==
+X-Forwarded-Encrypted: i=1; AKwUvBwqMVz/P2BwKVEuzIzn9sn96475MyRl7/ZP0gF1d/n7eZCcSkmMw8/fhPagGJ0Ly+RyGia7@lists.linux.dev
+X-Gm-Message-State: AFq9FYKOnN7i8hOwZGa+fgHkGhrxJqQ5wK4Q3L6ZfBn5Dyhx8lhsX9wM
+	/SGf9zWg0rrrr5Y0gGolLlVrBY5OTMTxmK8IdYfHbjuY6A0SwTV2/S0yenrmazAGLnFUJBmuAXl
+	lth63n9cz1c6cn+bj7SlHFiYFNaly3tMK0HAxgDef8JMIdics6OrU6nfuIqy8BOyo+zT9qu5dPz
+	lMVlXOb5NWPTi1H8gapRtQiny89IVqIA==
+X-Gm-Gg: AYBFou1syRYd9J9O2z/85vosdQTD86iohY8lBAJcarZuTnmP24bC7i9mchzrimwPrBx
+	xR3se9PPQoeEFsXUg2Q0230MC0n3lOPSsvvu5/DsC8G7zSdrf1E1ZndsnoVCvdAgscSGXWWutYd
+	XZtNxGh5QSBF8En7Alu7EozHE0XDiM/3+xUkM/XWoW9zMZi+Qj6Zp1rC4istxFYq4r/N9ObAmFn
+	5phLJVHbSGNXaU72SsIrBhpVIgd/dND8VFAY0AeyxZoSg==
+X-Received: by 2002:a53:c841:0:b0:675:3ad8:5725 with SMTP id 956f58d0204a3-67644063cc1mr146760d50.61.1790716513926;
+        Tue, 29 Sep 2026 14:15:13 -0700 (PDT)
+X-Received: by 2002:a53:c841:0:b0:675:3ad8:5725 with SMTP id
+ 956f58d0204a3-67644063cc1mr146746d50.61.1790716513294; Tue, 29 Sep 2026
+ 14:15:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AozynqqzZJs-
-Date: Tue, 29 Sep 2026 08:21:55 -0700
-From: "Chuck Lever" <cel@kernel.org>
-To: "Eric Dumazet" <edumazet@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Simon Horman" <horms@kernel.org>,
- "Neal Cardwell" <ncardwell@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, edumazet@google.com,
- netdev@vger.kernel.org, "Alexander Aring" <aahringo@redhat.com>,
- "David Teigland" <teigland@redhat.com>, gfs2@lists.linux.dev,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Jakub Sitnicki" <jakub@cloudflare.com>,
- "Sabrina Dubroca" <sd@queasysnail.net>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>,
- "Matthieu Baerts" <matttbe@kernel.org>,
- "Mat Martineau" <martineau@kernel.org>,
- "Geliang Tang" <geliang@kernel.org>, mptcp@lists.linux.dev,
- "Wen Gu" <guwen@linux.alibaba.com>,
- "Dust Li" <dust.li@linux.alibaba.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, linux-nfs@vger.kernel.org,
- "Allison Henderson" <achender@kernel.org>, rds-devel@oss.oracle.com,
- "Philipp Reisner" <philipp.reisner@linbit.com>,
- "Lars Ellenberg" <lars.ellenberg@linbit.com>,
- =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
- "Jens Axboe" <axboe@kernel.dk>, drbd-dev@lists.linux.dev,
- "Keith Busch" <kbusch@kernel.org>, "Christoph Hellwig" <hch@lst.de>,
- "Sagi Grimberg" <sagi@grimberg.me>,
- "Chaitanya Kulkarni" <kch@nvidia.com>, linux-nvme@lists.infradead.org,
- "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>, ceph-devel@vger.kernel.org
-Message-Id: <9a68f8a0-474c-44f4-97fa-bbf05b6de529@app.fastmail.com>
-In-Reply-To: <20260929071743.23624-4-edumazet@kernel.org>
-References: <20260929071743.23624-1-edumazet@kernel.org>
- <20260929071743.23624-4-edumazet@kernel.org>
-Subject: Re: [PATCH v3 net-next 3/9] sunrpc: use sk_set_nospace() and
- sk_clear_nospace()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260921211712.1563575-1-agruenba@redhat.com> <rhj2uhowkjekxgi7tkxko5odxw3zikthtnlef5f5owrfjzrt3r@nul7b7ldcb2g>
+ <CAHc6FU4Rf9-r8m8SSb=e0k0zyoFhQAdjupHMWvT6rStBshntug@mail.gmail.com> <v6c2tacifzt7e46fmlathfn5lgf54ae2qliq33ydhqkeudqnxc@r7dsaeww4yav>
+In-Reply-To: <v6c2tacifzt7e46fmlathfn5lgf54ae2qliq33ydhqkeudqnxc@r7dsaeww4yav>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 29 Sep 2026 23:15:02 +0200
+X-Gm-Features: AclHuK_m6BXsIjSqEKF55PqZUMBSueUTteabMNeQfNqLlUUx7SCdfvrnfRnhWCs
+Message-ID: <CAHc6FU4X_2+J9R0rdBnuH5szyvJ0=Jm5U6-gTcU2-2ewnMO4uQ@mail.gmail.com>
+Subject: Re: [PATCH] fs/gfs2: prevent premature evict in prune_icache_sb
+To: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>, Matthew Wilcox <willy@infradead.org>, gfs2@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: djK-4yXJ4STt748WXLQXbc3K8KKjkg177bwXQ2yaxUI_1790716514
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Tue, Sep 29, 2026, at 12:17 AM, Eric Dumazet wrote:
-> Use the new helpers instead of open coding the SOCK_NOSPACE
-> manipulation, so that TCP can later maintain a cheaper private
-> copy of this bit.
+On Thu, Sep 24, 2026 at 11:53=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> On Wed 23-09-26 23:01:52, Andreas Gruenbacher wrote:
+> > On Tue, Sep 22, 2026 at 1:22=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+> > > Hello Andreas!
+> > >
+> > > On Mon 21-09-26 23:17:11, Andreas Gruenbacher wrote:
+> > > > Introduce a new I_NOPRUNE i_state flag for preventing prune_icache_=
+sb()
+> > > > from pruning specific inodes.
+> > > >
+> > > > prune_icache_sb() prunes clean inodes under memory pressure ("direc=
+t
+> > > > reclaim").  An inode is considered clean when none of the i_state f=
+lags
+> > > > are set; the assumption is that evicting inodes that don't have any
+> > > > i_state flags set will be fairly cheap.
+> > > >
+> > > > Unfortunately, on gfs2, inodes can be clean in the sense that they =
+won't
+> > > > require writing back to disk, but they may still have outstanding
+> > > > revokes (as indicated by the GLF_LFLUSH inode glock flag).  To evic=
+t one
+> > > > of those inodes, those outstanding revokes need to be written out f=
+irst.
+> > > >
+> > > > This requires flushing the log, which is already an expensive opera=
+tion.
+> > > > When in data=3Dordered mode, all the ordered data needs to be writt=
+en out
+> > > > before the log can be flushed, which makes things even worse.
+> > > >
+> > > > As previously discussed [*], we are currently also running into the
+> > > > following warning in iomap_writepages() when flushing ordered data:
+> > > >
+> > > >     /*
+> > > >      * Writeback from reclaim context should never happen except in=
+ the case
+> > > >      * of a VM regression so warn about it and refuse to write the =
+data.
+> > > >      */
+> > > >     if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) =
+=3D=3D
+> > > >                     PF_MEMALLOC))
+> > > >             return -EIO;
+> > > >
+> > > > So we need to prevent prune_icache_sb() from evicting inodes that h=
+ave
+> > > > any outstanding revokes.  This patch achieves that by introducing a=
+ new
+> > > > I_NOPRUNE i_state flag.  When that new flag (or any other flag) is =
+set,
+> > > > prune_icache_sb() will skip those inodes.
+> > > >
+> > > > In the filesystem code, we set and clear the I_NOPRUNE flag in sync=
+ with
+> > > > the GLF_LFLUSH inode glock flag.
+> > > >
+> > > > An alternative approach might be to allow filesystems to refuse evi=
+cting
+> > > > inodes that prune_icache_sb() has already selected.  This could be
+> > > > achieved by changing the ->evict_inode super operation to return a
+> > > > lru_status code or similar.  prune_icache_sb() would then have to
+> > > > resurrect inodes that were already marked I_FREEING and put them ba=
+ck
+> > > > onto the lru list.  This approach doesn't seem obviously better tha=
+n
+> > > > introducing I_NOPRUNE, so I haven't pursued this any further.
+> > >
+> > > So for situations like this I've written a patch set to allow filesys=
+tem
+> > > to mark inode for deferred reclaim (from a workqueue) [1]. Would that=
+ work
+> > > for you? It will definitely solve your problems with warnings in memo=
+ry
+> > > allocator.
+> > >
+> > > I don't want to have two different mechanisms for the same issue so i=
+f my
+> > > solution doesn't quite work for you, let's discuss how to make it bet=
+ter
+> > > :).
+> >
+> > thanks, this would solve some of my problems. In the gfs2 case, inodes
+> > are only in "deferred reclaim" state for a while (while they have
+> > outstanding revokes) before becoming directly reclaimable again. So
+> > I'd also need a way to clear the I_DEFER_RECLAIM flag again.
 >
-> No functional change intended.
+> Well, that's kind of the case for other filesystems as well. But since
+> deferred reclaim is relatively cheap my current thinking was that if
+> somebody did something expensive to the inode like allocating blocks
+> (that's what triggers this for ext4, not sure what exactly triggers the
+> state for GFS2), then we can afford also the additional small cost of
+> offloading the reclaim to a workqueue (regardless whether it is really
+> needed at the time reclaim actually happens). We just don't want to
+> unconditionally offload because if someone is just statting millions of
+> inodes on some filesystem, he's basically bound by the speed of reclaim o=
+n
+> sufficiently fast storage and the additional delay of reclaim and the cos=
+t
+> of offloading would become visible.
+
+Fair enough, let's see if we can get away without clearing I_DEFER_RECLAIM.
+
+> > The I_DEFER_RECLAIM flag setting and clearing code would be racy and
+> > ugly though, so I'm wondering if we can change the ->evict_inode()
+> > super operation to return a DIRECT / DEFERRED status code instead. The
+> > filesystem could then look at the filesystem-internal state and return
+> > how to proceed with the inode. For example, fs2_evict_inode() would
+> > probably request a DEFERED evict when GLF_LFLUSH is set, PF_MEMALLOC
+> > is set, and PF_KSWAPD is not set.
 >
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> ---
->  net/sunrpc/svcsock.c  | 4 ++--
->  net/sunrpc/xprtsock.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+> Right, but I really want filesystems to mess with process reclaim flags a=
+s
+> little as possible because that smells with layering violation and
+> generally tends to be fragile. In some code paths such as iput_final()
+> or evict_inodes() I really prefer to be sure that the filesystem just fre=
+es
+> the inode without having to check details of all the implementations maki=
+ng
+> sure they don't do something stupid and offload when they shouldn't.
 >
-> diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-> index 
-> 50e5e7f5b762de28c34d0f58cb0c6feb1e3ce79f..2d8cdee0798d540ba8eae589deaac5bd3ff889fa 
-> 100644
-> --- a/net/sunrpc/svcsock.c
-> +++ b/net/sunrpc/svcsock.c
-> @@ -792,11 +792,11 @@ static int svc_udp_has_wspace(struct svc_xprt 
-> *xprt)
->  	 * Set the SOCK_NOSPACE flag before checking the available
->  	 * sock space.
->  	 */
-> -	set_bit(SOCK_NOSPACE, &svsk->sk_sock->flags);
-> +	sk_set_nospace(svsk->sk_sk);
->  	required = atomic_read(&svsk->sk_xprt.xpt_reserved) + 
-> serv->sv_max_mesg;
->  	if (required*2 > sock_wspace(svsk->sk_sk))
->  		return 0;
-> -	clear_bit(SOCK_NOSPACE, &svsk->sk_sock->flags);
-> +	sk_clear_nospace(svsk->sk_sk);
->  	return 1;
->  }
-> 
-> diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-> index 
-> 7f60723fa64d84887e260e5e130e44cdbec6f850..b97c70c12f627630509510facfd3c3cf96ab6cb6 
-> 100644
-> --- a/net/sunrpc/xprtsock.c
-> +++ b/net/sunrpc/xprtsock.c
-> @@ -858,7 +858,7 @@ static int xs_nospace(struct rpc_rqst *req, struct 
-> sock_xprt *transport)
->  	if (xprt_connected(xprt)) {
->  		/* wait for more buffer space */
->  		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-> -		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +		sk_set_nospace(sk);
->  		sk->sk_write_pending++;
->  		xprt_wait_for_buffer_space(xprt);
->  	} else
-> @@ -1615,7 +1615,7 @@ static void xs_write_space(struct sock *sk)
-> 
->  	if (!sk->sk_socket)
->  		return;
-> -	clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +	sk_clear_nospace(sk);
-> 
->  	if (unlikely(!(xprt = xprt_from_sock(sk))))
->  		return;
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
+> So if we do something like this, I'd probably prefer explicit flag to
+> ->evict() telling that offloading is possible and in that case filesystem
+> can return special value meaning it requests offloading and prune_icache(=
+)
+> would handle that.
+>
+> Another problem I see with this scheme is that VFS is completely obliviou=
+s
+> to the number of inodes for which reclaim will be deferred and so there's
+> no chance for throttling places that create such inodes when the reclaim =
+is
+> getting overloaded.
+>
+> So overall I'd prefer we avoid all this complexity at least until we have=
+ a
+> real-world case where the performance impact of unnecessary offloading is
+> visible.
 
-For the svcsock.c hunks of this patch:
+Works for me.
 
-Acked-by: Chuck Lever <cel@kernel.org>
+Thanks,
+Andreas
 
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
