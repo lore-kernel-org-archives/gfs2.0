@@ -1,231 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2373D890D
-	for <gfs2@lists.linux.dev>; Tue, 29 Sep 2026 21:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EDC4E9C10
+	for <gfs2@lists.linux.dev>; Tue, 29 Sep 2026 22:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790716522; cv=none; b=D2zj4wM6NfrKWJxD4caNJ7DdBiXrRBUj3AflqA4Q1GAuRltXz1mVP6S46gzaAI6cI2crd89+blWmTeFD9ct5o+rXKFWPPiYAQNJq+5c1qnicc+G7vMeqTHm4powQJrFvUrp14XMshl/azJDNZ7lbPbhmETaFHEtKKI18LSjxCE8=
+	t=1790719458; cv=none; b=qdm/oGt0U88U/YuYc3TAIZvcVxPpvRsfspTrSwkY4rm4+BvzdX7/9oQSCMaD23Nukj58Cxxdw2631Hvu2aQsQsbTi/WM9v2OVr3C1mmKXVGXF4urTIIBN4nVe4KJ38D1V00i2Pe5YomldbdIuboIUwbbmFz3HVLVYK3YTRqFVec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790716522; c=relaxed/simple;
-	bh=N0Dp988DA5FrqQKAGAPeuZua2WfO2cuDyzKra12FUPA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TJTZlkKH/7TwJ1I2BVYB+smKfo1mtlJDPY5jgagdibjuDC3xK1aj+o+QCrzLRQ2PPISqJqjS2PJCzRZazpkS3t5QwWyjCfV8mG2P5U2rvWMxcjbj127JYc0pA9g4gjCKSExt+Q3VmpG1DxXMvouLF0BWnFEhMB9iBykQsXn/x6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxKTWzOa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790719458; c=relaxed/simple;
+	bh=16XFWo6ATwn43R7NHscr4K38O3/KMT8HyU7k+zgKqC0=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=Ia9Mg3WdRKHZEe6V3/gyfXqmTvAEnWRm0CvXDjZNYNZ3hJOJ2+KPZlNUD3gdWKX8nC5irrK1Y3GQ9HQxFg90thX4KsaArWcDWPzZjuqEMH+Y42okJ9typLHa6Szs6w1ea/5xEc3Iv19bUX0T6EjsyzJli6ufmsJQBYdvzErml4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=bB+M/pl1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K0L8THyR; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxKTWzOa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790716516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2FSuhGLAGqzfcOIaBu8CiLsYRpspmlLc9U2mEqKrqN4=;
-	b=WxKTWzOa72ufoGIZOIDJvl15a92bQErKPv/urMgGUY9kYSH7m/ZOlYRaw/Z49syviDlzUb
-	zhoUl3/imcfpOTxHntO5ssnHVd9YGX3l2dfzSFUIRDaMoGL6kXKVeLXspYC4ojaxUR3f7o
-	qiZZeBBZiI5Sc7f4+OXcPLf69oPLick=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-_RY06a4KNw2flRsrx51IQA-1; Tue, 29 Sep 2026 17:15:14 -0400
-X-MC-Unique: _RY06a4KNw2flRsrx51IQA-1
-X-Mimecast-MFC-AGG-ID: _RY06a4KNw2flRsrx51IQA_1790716514
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-879b1d03d5fso75742987b3.0
-        for <gfs2@lists.linux.dev>; Tue, 29 Sep 2026 14:15:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790716514; x=1791321314;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2FSuhGLAGqzfcOIaBu8CiLsYRpspmlLc9U2mEqKrqN4=;
-        b=HLtVr74M9FoiBcrJOjUIZ3mBbE2iky9iOIu5BSCWhUOnb6Buxmgean6rvpBqhERIWh
-         TUKP9QW16jAf9dzcV5kYP8YySqJCorqE5+7SZSQp8FN4eWlh16ql7kMUuNFdCVwXO79L
-         iQkGh+TPdL99xsJ54XzqRMuqCqwLOleyTKx3WTQhNpt0poSAu5YE09v887Mv7cUDbiJx
-         iGRhUHGEu5JY9QUzxI50PK0E4HPNSdV/fXxPEgU2wF6/bE5G7k0gIvNsGA+FNGliU6DR
-         WiFZ1Pvsi0xqAV2ta2IwWYnnXzX30m7wSmxOCIykZvHSIkZYPVBkdmBZQJQGgChW7hkg
-         2ERw==
-X-Forwarded-Encrypted: i=1; AKwUvBwqMVz/P2BwKVEuzIzn9sn96475MyRl7/ZP0gF1d/n7eZCcSkmMw8/fhPagGJ0Ly+RyGia7@lists.linux.dev
-X-Gm-Message-State: AFq9FYKOnN7i8hOwZGa+fgHkGhrxJqQ5wK4Q3L6ZfBn5Dyhx8lhsX9wM
-	/SGf9zWg0rrrr5Y0gGolLlVrBY5OTMTxmK8IdYfHbjuY6A0SwTV2/S0yenrmazAGLnFUJBmuAXl
-	lth63n9cz1c6cn+bj7SlHFiYFNaly3tMK0HAxgDef8JMIdics6OrU6nfuIqy8BOyo+zT9qu5dPz
-	lMVlXOb5NWPTi1H8gapRtQiny89IVqIA==
-X-Gm-Gg: AYBFou1syRYd9J9O2z/85vosdQTD86iohY8lBAJcarZuTnmP24bC7i9mchzrimwPrBx
-	xR3se9PPQoeEFsXUg2Q0230MC0n3lOPSsvvu5/DsC8G7zSdrf1E1ZndsnoVCvdAgscSGXWWutYd
-	XZtNxGh5QSBF8En7Alu7EozHE0XDiM/3+xUkM/XWoW9zMZi+Qj6Zp1rC4istxFYq4r/N9ObAmFn
-	5phLJVHbSGNXaU72SsIrBhpVIgd/dND8VFAY0AeyxZoSg==
-X-Received: by 2002:a53:c841:0:b0:675:3ad8:5725 with SMTP id 956f58d0204a3-67644063cc1mr146760d50.61.1790716513926;
-        Tue, 29 Sep 2026 14:15:13 -0700 (PDT)
-X-Received: by 2002:a53:c841:0:b0:675:3ad8:5725 with SMTP id
- 956f58d0204a3-67644063cc1mr146746d50.61.1790716513294; Tue, 29 Sep 2026
- 14:15:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="bB+M/pl1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K0L8THyR"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 0FA8FEC03DE;
+	Tue, 29 Sep 2026 18:04:14 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 29 Sep 2026 18:04:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1790719454; x=1790805854; bh=udynu9P+wS+IBpdZ3J1EX3YCm0KHojnwhA3
+	Wk7LL3nE=; b=bB+M/pl1KuNOZ+73qarfUJ2X09pm8e3Ms2GMYyVGt3Bc72/jZ8M
+	Cxl2qzipP0vap4eCKsrYB/tt9sthaKbKiEZQYuo9tpF+w9lgOcRPAkckV1p+bsLy
+	t9kvAsw0D1scFsRuETSn5D9/BUp/zCN83JppzmMfWgBI8NgaCjnMOh0AGpyBGlmZ
+	uNhMlWrBK+obvOrHe5neLt9cs1DXmQYQWpQhzVvX1wxqktoz8y4tXA94Ura0cvDE
+	k6P0MWcrkEf/hjvcAZRINBF0jfyeEiX/bEAsY56t7YgznGzoeWAggz0SEoAkXgUh
+	iiBOOddoHHIoXNVlFtM0A+o/0vE9wamOVZQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790719454; x=
+	1790805854; bh=udynu9P+wS+IBpdZ3J1EX3YCm0KHojnwhA3Wk7LL3nE=; b=K
+	0L8THyR6X7Z6bHyIydTB9BEFIHTxqL8C/kKG3XuL6IdDLnOb/l0yeVLhe1Gwy/ZB
+	8lTPcQDSVfW6eLo4cGfkuTigFfASqHi2UZcSBu6rqk9QHzpjk/xk7wnU1ZPZCsDz
+	MKPdoYJVPdcEPPPlWGRXO4Yqm6go3gXlVoLzKdSv0/17tBz6XWLzo4KfX0asBWzn
+	C3aBHVXkwaQL+/Ovdt7rZectrlTXR5B81DjT8R7EVxmNDUYNWFuYcPqtc9WIEFK2
+	XG9D2PT2OdB/tyV4BlBTFgWDNk2+yXFR+fHicpkamao2fFkr52LoTrVRQgzbIdhK
+	42av5CdGv0SQEZ7d2axwQ==
+X-ME-Sender: <xms:3TW8alwTWVt9ob_RkgrwOmlN9QcfZm7XvrxhfdBpXb8yKt1YkPO6PA>
+    <xme:3TW8alqaMFdp3n0ZRiNK5goh1lJFlb3hQ40FAd2CuZiRcEmOdrXLQFggfPxnuZeTB
+    -53Dhu89jlejLQSa9Y5sBtYDMAucPGMBZO2cGb6apPoPsPeAt8>
+X-ME-Received: <xmr:3TW8ageiEKDKDTtF5RVJfKNC9BRSSKrm_TjyyHwwRDbAztCVjubfbdT-j_j_Y9XsNjB7U3HIAsIZ4ML58H44Z3t6LsY_KKY>
+X-ME-Proxy-Cause: dmFkZTEhYeZ7AcnZkOHqvU57j7tfcy7G15Xx0OlemqmM5leZZUU3yVbuMGFNb1nJkB2m4E
+    eqGUZy/NzG+yPnx3+NKWvgMozSKTe3MvRESWT+GI2OBG8PASaJdaE1dPzULEQLY2R8Bfhe
+    XI7yt4hMoN0sjjhb4K2o6rB5XK5y64y9g34CUols03YSDdg7dUG8fvvkKQdGiIeF/qdwGF
+    tsk5zbextjtg+xXr+wyhsHxdCGAqnYmXWFPDoDRiLrAGOAjHfQUEOTtyoY/RMc+vzsUBEK
+    n/AvC2KHqJvp3zfUgac/REmEOcQMpRF++SV82tluAV9OhKm7GXUnHmHC5cDAgIV9bFI4Qm
+    HGqfL9IsTDCZ1lUX+RXj1bhlbLHsW2lart6MPyDKkjKYG0NQ8KCRCX77H/S3WL+6Fq23z5
+    FdK2EEmnvuMhG2wA3yvy+JjtGGxlF8DBbch944ckWqoOPm0S5BNl9BNKYmP8ePXMcEoZx9
+    rKj8Ye1ZesmUFiq0Ckqm4UBfYKYVMYf7q178mjbgz6HHOKVTPOjmyApx7Oco/U4Ky2g/8u
+    xEt1Vn2jVDmJvyfdM6X9vnigwSrNG0Xs+HlrH2NlxNGp3UuNRFZrg6EbFcfHQgLE4V+SU+
+    km3bB3zG48wAo9fKiWBaqm/8NCKSqn/gYONYLByalJo6iqD3sn77dlp6v2iw
+X-ME-Proxy: <xmx:3TW8ajj47CbipcBriqjEYjAxShVBXRRn1Fo_oQW2cOvaFyOmztcV0Q>
+    <xmx:3TW8amIEt3jt0LpSR_eQWrkT7dug5QJEzRUc30kBQwX-k2GcBaa7Ew>
+    <xmx:3TW8aoqR8ITAbSvccosTJu0DWEcPCv-dvz9vq1vVTS4r6SfeBGqoyw>
+    <xmx:3TW8ajqRjdq3SxmJglzyAZ--fXLZOakBBE4NaLIimuQPX0a4_UXmNg>
+    <xmx:3jW8ammR1vuHEasDxA3FES5K2HSaD3I4M3XDZol0tDSOjwA_p8yw4zAn>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 29 Sep 2026 18:04:07 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260921211712.1563575-1-agruenba@redhat.com> <rhj2uhowkjekxgi7tkxko5odxw3zikthtnlef5f5owrfjzrt3r@nul7b7ldcb2g>
- <CAHc6FU4Rf9-r8m8SSb=e0k0zyoFhQAdjupHMWvT6rStBshntug@mail.gmail.com> <v6c2tacifzt7e46fmlathfn5lgf54ae2qliq33ydhqkeudqnxc@r7dsaeww4yav>
-In-Reply-To: <v6c2tacifzt7e46fmlathfn5lgf54ae2qliq33ydhqkeudqnxc@r7dsaeww4yav>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 29 Sep 2026 23:15:02 +0200
-X-Gm-Features: AclHuK_m6BXsIjSqEKF55PqZUMBSueUTteabMNeQfNqLlUUx7SCdfvrnfRnhWCs
-Message-ID: <CAHc6FU4X_2+J9R0rdBnuH5szyvJ0=Jm5U6-gTcU2-2ewnMO4uQ@mail.gmail.com>
-Subject: Re: [PATCH] fs/gfs2: prevent premature evict in prune_icache_sb
-To: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, Matthew Wilcox <willy@infradead.org>, gfs2@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: djK-4yXJ4STt748WXLQXbc3K8KKjkg177bwXQ2yaxUI_1790716514
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: NeilBrown <neilb@ownmail.net>
+To: "Jori Koolstra" <jkoolstra@xs4all.nl>
+Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Chuck Lever" <cel@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, "Mateusz Guzik" <mjguzik@gmail.com>,
+ "Dorjoy Chowdhury" <dorjoychy111@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>, gfs2@lists.linux.dev,
+ "Ilya Dryomov" <idryomov@gmail.com>, "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, ceph-devel@vger.kernel.org,
+ "Paulo Alcantara" <pc@manguebit.org>, "Namjae Jeon" <linkinjeon@kernel.org>,
+ linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Subject:
+ Re: [PATCH v2 06/14] vfs: add some allowed open flags to vfs_lookup_open()
+In-reply-to: <113651329.602012.1790695136052@kpc.webmail.kpnmail.nl>
+References: <20260919022441.3305170-1-neilb@ownmail.net>
+  <20260919022441.3305170-7-neilb@ownmail.net>
+  <113651329.602012.1790695136052@kpc.webmail.kpnmail.nl>
+Date: Wed, 30 Sep 2026 08:04:02 +1000
+Message-id: <179071944284.37859.11007945820334867989@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-On Thu, Sep 24, 2026 at 11:53=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
-> On Wed 23-09-26 23:01:52, Andreas Gruenbacher wrote:
-> > On Tue, Sep 22, 2026 at 1:22=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-> > > Hello Andreas!
-> > >
-> > > On Mon 21-09-26 23:17:11, Andreas Gruenbacher wrote:
-> > > > Introduce a new I_NOPRUNE i_state flag for preventing prune_icache_=
-sb()
-> > > > from pruning specific inodes.
-> > > >
-> > > > prune_icache_sb() prunes clean inodes under memory pressure ("direc=
-t
-> > > > reclaim").  An inode is considered clean when none of the i_state f=
-lags
-> > > > are set; the assumption is that evicting inodes that don't have any
-> > > > i_state flags set will be fairly cheap.
-> > > >
-> > > > Unfortunately, on gfs2, inodes can be clean in the sense that they =
-won't
-> > > > require writing back to disk, but they may still have outstanding
-> > > > revokes (as indicated by the GLF_LFLUSH inode glock flag).  To evic=
-t one
-> > > > of those inodes, those outstanding revokes need to be written out f=
-irst.
-> > > >
-> > > > This requires flushing the log, which is already an expensive opera=
-tion.
-> > > > When in data=3Dordered mode, all the ordered data needs to be writt=
-en out
-> > > > before the log can be flushed, which makes things even worse.
-> > > >
-> > > > As previously discussed [*], we are currently also running into the
-> > > > following warning in iomap_writepages() when flushing ordered data:
-> > > >
-> > > >     /*
-> > > >      * Writeback from reclaim context should never happen except in=
- the case
-> > > >      * of a VM regression so warn about it and refuse to write the =
-data.
-> > > >      */
-> > > >     if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) =
-=3D=3D
-> > > >                     PF_MEMALLOC))
-> > > >             return -EIO;
-> > > >
-> > > > So we need to prevent prune_icache_sb() from evicting inodes that h=
-ave
-> > > > any outstanding revokes.  This patch achieves that by introducing a=
- new
-> > > > I_NOPRUNE i_state flag.  When that new flag (or any other flag) is =
-set,
-> > > > prune_icache_sb() will skip those inodes.
-> > > >
-> > > > In the filesystem code, we set and clear the I_NOPRUNE flag in sync=
- with
-> > > > the GLF_LFLUSH inode glock flag.
-> > > >
-> > > > An alternative approach might be to allow filesystems to refuse evi=
-cting
-> > > > inodes that prune_icache_sb() has already selected.  This could be
-> > > > achieved by changing the ->evict_inode super operation to return a
-> > > > lru_status code or similar.  prune_icache_sb() would then have to
-> > > > resurrect inodes that were already marked I_FREEING and put them ba=
-ck
-> > > > onto the lru list.  This approach doesn't seem obviously better tha=
-n
-> > > > introducing I_NOPRUNE, so I haven't pursued this any further.
-> > >
-> > > So for situations like this I've written a patch set to allow filesys=
-tem
-> > > to mark inode for deferred reclaim (from a workqueue) [1]. Would that=
- work
-> > > for you? It will definitely solve your problems with warnings in memo=
-ry
-> > > allocator.
-> > >
-> > > I don't want to have two different mechanisms for the same issue so i=
-f my
-> > > solution doesn't quite work for you, let's discuss how to make it bet=
-ter
-> > > :).
-> >
-> > thanks, this would solve some of my problems. In the gfs2 case, inodes
-> > are only in "deferred reclaim" state for a while (while they have
-> > outstanding revokes) before becoming directly reclaimable again. So
-> > I'd also need a way to clear the I_DEFER_RECLAIM flag again.
->
-> Well, that's kind of the case for other filesystems as well. But since
-> deferred reclaim is relatively cheap my current thinking was that if
-> somebody did something expensive to the inode like allocating blocks
-> (that's what triggers this for ext4, not sure what exactly triggers the
-> state for GFS2), then we can afford also the additional small cost of
-> offloading the reclaim to a workqueue (regardless whether it is really
-> needed at the time reclaim actually happens). We just don't want to
-> unconditionally offload because if someone is just statting millions of
-> inodes on some filesystem, he's basically bound by the speed of reclaim o=
-n
-> sufficiently fast storage and the additional delay of reclaim and the cos=
-t
-> of offloading would become visible.
+On Wed, 30 Sep 2026, Jori Koolstra wrote:
+> > Op 19-09-2026 04:06 CEST schreef NeilBrown <neilb@ownmail.net>:
+> >=20
+> > =20
+> > From: NeilBrown <neil@brown.name>
+> >=20
+> > vfs_lookup_open() must allow:
+> >   O_LARGEFILE so that large files can be opened.
+> >   O_NONBLOCK so that break_lease() can be asked to return -EWOULDBLOCK.
+> >=20
+> > Also O_NOFOLLOW as we don't/can't handle symlinks.  In fact we
+> > should enforce O_NOFOLLOW for the same reason we enforce __O_REGULAR.
+>=20
+> I don't know all the NFS background, but: you can handle intermediate symli=
+nks
+> but not trailing ones? Why is that?
 
-Fair enough, let's see if we can get away without clearing I_DEFER_RECLAIM.
+NFS performs a lookup one component at a time.  Each component might be
+a symlink and the client decides what to do it if is.
+When opening a file where the client hasn't previously performed a
+lookup of the basename, it can use the NFS OPEN request which combines
+lookup and open (and create), much like how ->atomic_open does.
+So the OPEN NFS request only needs to care about trailing symlinks as
+those are the only ones that it has any chance of seeing.
 
-> > The I_DEFER_RECLAIM flag setting and clearing code would be racy and
-> > ugly though, so I'm wondering if we can change the ->evict_inode()
-> > super operation to return a DIRECT / DEFERRED status code instead. The
-> > filesystem could then look at the filesystem-internal state and return
-> > how to proceed with the inode. For example, fs2_evict_inode() would
-> > probably request a DEFERED evict when GLF_LFLUSH is set, PF_MEMALLOC
-> > is set, and PF_KSWAPD is not set.
->
-> Right, but I really want filesystems to mess with process reclaim flags a=
-s
-> little as possible because that smells with layering violation and
-> generally tends to be fragile. In some code paths such as iput_final()
-> or evict_inodes() I really prefer to be sure that the filesystem just fre=
-es
-> the inode without having to check details of all the implementations maki=
-ng
-> sure they don't do something stupid and offload when they shouldn't.
->
-> So if we do something like this, I'd probably prefer explicit flag to
-> ->evict() telling that offloading is possible and in that case filesystem
-> can return special value meaning it requests offloading and prune_icache(=
-)
-> would handle that.
->
-> Another problem I see with this scheme is that VFS is completely obliviou=
-s
-> to the number of inodes for which reclaim will be deferred and so there's
-> no chance for throttling places that create such inodes when the reclaim =
-is
-> getting overloaded.
->
-> So overall I'd prefer we avoid all this complexity at least until we have=
- a
-> real-world case where the performance impact of unnecessary offloading is
-> visible.
+>=20
+> >=20
+> > Signed-off-by: NeilBrown <neil@brown.name>
+> > ---
+> >  fs/namei.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/fs/namei.c b/fs/namei.c
+> > index 0f69abb3743b..a08f37aca3e1 100644
+> > --- a/fs/namei.c
+> > +++ b/fs/namei.c
+> > @@ -4632,11 +4632,12 @@ struct file *vfs_lookup_open(struct path *parent,=
+ struct qstr *last,
+> >  	int error =3D 0;
+> > =20
+> >  	WARN_ONCE(mode & ~S_IALLUGO, "mode must only have permission bits");
+> > -	WARN_ONCE(open_flag & ~(O_ACCMODE|O_CREAT|O_EXCL|O_TRUNC|__O_REGULAR),
+> > +	WARN_ONCE(open_flag & ~(O_ACCMODE|O_CREAT|O_EXCL|O_TRUNC|__O_REGULAR|
+> > +				O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW),
+> >  		  "open_flag has unsupported flags");
+> > =20
+> >  	mode |=3D S_IFREG;
+> > -	open_flag |=3D __O_REGULAR;
+> > +	open_flag |=3D __O_REGULAR | O_NOFOLLOW;
+>=20
+> What does __O_REGULAR | O_NOFOLLOW do? Does __O_REGULAR only block opening
+> if the final resolved thing is not a regular file, or does is also block
+> trailing symlinks? Afaict, the former.
 
-Works for me.
+__O_REGULAR is not documented it detail, but I understand that it
+prevents the filesystem from opening anything that isn't a regular file.
+As symlinks can never be opened anyway (O_PATH is not really an "open"),
+__O_REGULAR should have no effect if a symlink is found.  But O_NOFOLLOW
+might have an effect.  (If the symlink is followed and ultimately points
+to a non-regular file, then __O_REGULAR will have an effect).
 
-Thanks,
-Andreas
+For ->atomic_open, if a symlink is found, then the dentry should be
+instantiated to that symlink and it should be provided via
+finish_no_open().
+If, however, O_NOFOLLOW is set, then if a symlink is found then it is
+perfectly acceptable to return -ELOOP instead.
+
+This makes a difference for the NFS client.  If it sends an OPEN request
+to the server and gets the error NFS4ERR_SYMLINK, then it will normally
+send a LOOKUP to the server to get the details of the symlink.  However
+if O_NOFOLLOW is set it can avoid the LOOKUP and simply return -ELOOP.
+
+
+NeilBrown
+
+>=20
+> > =20
+> >  	error =3D lookup_noperm_common(last, parent->dentry);
+> >  	if (error)
+> > --=20
+> > 2.50.0.107.gf914562f5916.dirty
+>=20
 
