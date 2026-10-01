@@ -1,124 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DFE20D4FF
-	for <gfs2@lists.linux.dev>; Thu,  1 Oct 2026 18:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD833345EB5
+	for <gfs2@lists.linux.dev>; Thu,  1 Oct 2026 23:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790880364; cv=none; b=ZMPv1tB+CpIAB6wzzz73VJncNpJHW4LRu+SmJAGhVPllXiOHuxPxJ2DAuqbpczN2R7WZtjTWxIy5AL8Rc6QhdkBgfE8LRIFIefYt7y9FbzLXfzp6i7/dwd74JQfnhrjd18EWQ9H+/wsfwZYYlo7rmqWxr3Lqx6naBR83es5mLc8=
+	t=1790895916; cv=none; b=hfly9J7y2XePE7905Y/3uB+a4Al3A2OpDLr6J5ZOiLq03zw2kohWv2wl3WqHaactHw8xTHiJujOPiG/oiIfigip2FDS0DV7Zg/fpkkrPPkJvoPxXBApiMdn6EkbhKZTVkO3FdwmM1QE2uXuuz0Yb+gjqaZoRMzOora4Sl9sJkT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790880364; c=relaxed/simple;
-	bh=KhZvNHR8S9wRTF9gNlwTsLNH8HmuAJIKnxHt9nq8CeQ=;
+	s=arc-20240116; t=1790895916; c=relaxed/simple;
+	bh=vw2nzUr45rmNtePuF5woJ4YHliw70BsRrsUc60hfEeg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PqILjF09rCRPHfYsTARLzEWg3X7pRsJG3h3EUv5saPDbvdaeKTjilcAbPggVn83kgqDQvAzidU7UuoN1q6JD3S2ekNc0FrniYXqHIyYnhq6kxQUYMwQmy+mipSwZSi173WAnS6qGqRu1O0J0ccWTfOG/z539fXcf7jSqWtbrbxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PvKXSFIn; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=t+qj/2ocPG6t1KKPyIOc1o50C18mNFQumy+wJuLmlWiNkdTBHt7lPiTOl5/r2rQ0F0TyfivE0efmzwLsdK6nhahHikKkyfBY2M0meNswBGdmGispcOcMCNA4WZqILlbjFTkFqrXiOR6T8p3sqUnIrf7Blnm1tzcH8v1M0r6eio8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YmDkH1KK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PvKXSFIn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YmDkH1KK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790880359;
+	s=mimecast20190719; t=1790895912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eQS+1BIfTiW5d02m6eavAojtJlZVnOI1LyUgaSLiRac=;
-	b=PvKXSFInHYV7347PyofpoN8ikAGFT/hYqqwFy/7JxF7jR1vAnKP8RHCidA9A/SKwY32PFT
-	3v0FN0vxb+tCpbsiL8CsVXSzygbOOkHn8sTTWSwEw95jIRp3RQ5C+ikO8vfUpXoH5Ultwq
-	57jOJFfn9XET8pTzQYg9/PXFLkPy9c4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DSOgoIY/XNyZCrjm6JfgZ+KbRhq2HncbGvnq6vOvd/Y=;
+	b=YmDkH1KK5rC3XOuZpvEkwvuUlqC6Sm0lkr2xGxfZD//M5AwfO9AcTy2hTFqPnWPYl7fHx8
+	g4qKFSIO2i/DpEna4cX4yCN1C6jpTKOjqZIdJyMD+LNJRZbOwT5ETxWvRnJPz1sIeOAUtX
+	kE5YotJfEQHs50np0DWmGFuhu9wEzj8=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-bfxaGB3DNca-6IMc29sqhw-1; Thu, 01 Oct 2026 14:45:58 -0400
-X-MC-Unique: bfxaGB3DNca-6IMc29sqhw-1
-X-Mimecast-MFC-AGG-ID: bfxaGB3DNca-6IMc29sqhw_1790880357
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a021b1b561so7583075e9.1
-        for <gfs2@lists.linux.dev>; Thu, 01 Oct 2026 11:45:58 -0700 (PDT)
+ us-mta-381-pWhFdy98NLK7witLVKqSMQ-1; Thu, 01 Oct 2026 19:05:09 -0400
+X-MC-Unique: pWhFdy98NLK7witLVKqSMQ-1
+X-Mimecast-MFC-AGG-ID: pWhFdy98NLK7witLVKqSMQ_1790895908
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a64e917254so43566431fa.2
+        for <gfs2@lists.linux.dev>; Thu, 01 Oct 2026 16:05:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790880357; x=1791485157;
+        d=1e100.net; s=20260707; t=1790895908; x=1791500708;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eQS+1BIfTiW5d02m6eavAojtJlZVnOI1LyUgaSLiRac=;
-        b=mmz9hPNueTGCVcx3DXPU0r/21xA1qhc5AAoxi0NBoZoFkMv1ka4Kry5dzSWE1ZFfsw
-         otF82CR3/RnFQHTzFux9XJYeSYTyKARoj0HGC0OlEXGyUSWXKzAlUSVImpWEGya/zsJJ
-         uQD28K5TNK22JFD2MB3PGn3wgo3Vg6TEQ0fW4ae5sJVePq6e11N2U2qv8DO02uyQF0TE
-         vF6omVm0cKEUN2H6RO9J8S7H9zlbtTyqEdCvOgLg8yauw6fkoQnmjMiciO8prFErZm5n
-         7a/dSeq1hZMbcajUQyArRhlUey9DCbztEKgdwDJb+Gz6/YJl6fhLPN97HQJGol9mO9qw
-         7ZTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxI50P9DuamKzH/xXgqaAOKD7RfWEo0tT4MNFUn+/3tHv1++0O9WNyOZn6Jxop51IwAMj/2@lists.linux.dev
-X-Gm-Message-State: AFuF++kViW5qf6lXTkSdaGFmlZ0cmQH7g40aHG54y5OhAMfYZys3Ait0
-	vWZM/3Z8CV7FhQRdKL7S2EQt+AGdeJRpMWQ6lpEzqaGpR3gBr20TlMGN8YUxHbwI4a3WMDSYP7A
-	reniShdObVd6TJA2Hp3AlXjhYKr+kW1FDjkW6B3CUoXo4BeuFIkI8m9TxiUVWGnVSbh4GuyYmNL
-	raU9/5I0HS5LL9wRS8wADqD1OO2fy+4Q==
-X-Gm-Gg: AYBFou2RCU2JDjIyd42dtVq5CItMTwb9PckPqg4RGzVRRJsCCLAZTW1Zijm3253mCKe
-	HKw8IgVEVjwS/4MIBm27YLEIph+mKvE+17GQuP4483zwY6QJhjIik4JFHE/ailLHXsvP9R9poP5
-	znGGsFbzJtWSMU29+aXb9O47Zz6HVu2+J90M/2F43H27Ei4BuN1Wi+dOI3
-X-Received: by 2002:a05:600d:640e:20b0:49f:ce78:356b with SMTP id 5b1f17b1804b1-4a0276afcf0mr6697295e9.28.1790880356952;
-        Thu, 01 Oct 2026 11:45:56 -0700 (PDT)
-X-Received: by 2002:a05:600d:640e:20b0:49f:ce78:356b with SMTP id
- 5b1f17b1804b1-4a0276afcf0mr6697035e9.28.1790880356511; Thu, 01 Oct 2026
- 11:45:56 -0700 (PDT)
+        bh=DSOgoIY/XNyZCrjm6JfgZ+KbRhq2HncbGvnq6vOvd/Y=;
+        b=DeGTWB+EcxKPG0D/usZVT5gohrd7pQzIr/jPtJh2jElfe/KdhxveKLkKMV4bJ+CgSa
+         1vclJAxy7UGUmLGLdPU7c1trKdm7Z8xvwBKwx46ITwp81YnXsVzzB9RSopHlrYSmgDLn
+         /a/rMst7msN+H7axB6IgAAuCzUsipe/yq8FpgpF7JmiIlgYb1ifFfa6N0y0ICWHpi9L7
+         +PoUdjJ5Tz1t4DESOiF5z8nT6xzg1asxA7gHtqsh2+7G7p7rEl0xs+DhTqx8TxeWEgT3
+         +e8xhbErrrQSummEdDIHaX5shrzQ10FL/jkfPhNgc6jP/oSYWLWHYtl3/fuyWiIBpNYf
+         VoPg==
+X-Forwarded-Encrypted: i=1; AKwUvBwzSgdZv14fGnf2hDrSTI8EPXQBx2ZXjnDnsSjwx4U2puaZDwL5a+A2tM1uuWb3weDu5lgA@lists.linux.dev
+X-Gm-Message-State: AFq9FYJQEubHu77mmHMo5+u6ieDwcrnex250CESfONl+kV1I5HqLMOD+
+	lFl/Eqyn8G7nCm98ZA5q8r/SFfLSIeukGgvtMLpN3ttsF0s6+1k4sbKl8Jc5DtmORvjLJ7G1ESz
+	QN1QpaqyQedxiQct8dkvafeO4YeL7h7Y3O+R3PBPq7DseakuUw87bvtWt+GKG/exw9yk2DCLNF5
+	vty36u9ZQ0cVO+npI9/ugp/eAtQQMJxw==
+X-Gm-Gg: AYBFou1GLh9s3JpWtmlb1ecVHOzW/R4DxgnOtVEMrIKuTGpq4p3pMnmaZORcjTkvDdg
+	R564XAgWfIgWhsvhIECiO9zo/F9z397MX6R11gx1esOFhV8qr2PJ9YIEIDp+RcQqzM8qzif5/AB
+	wrdXeoyy7SiMwGkKJXE1Bt9euuCIQEnSpSDn3oPvERtaCgN2hA/9RuYbAs
+X-Received: by 2002:a05:651c:19a8:b0:3a7:3ad4:943e with SMTP id 38308e7fff4ca-3a887787589mr1664711fa.12.1790895907790;
+        Thu, 01 Oct 2026 16:05:07 -0700 (PDT)
+X-Received: by 2002:a05:651c:19a8:b0:3a7:3ad4:943e with SMTP id
+ 38308e7fff4ca-3a887787589mr1664651fa.12.1790895907444; Thu, 01 Oct 2026
+ 16:05:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260917064657.3260776-1-yiyang13@huawei.com>
-In-Reply-To: <20260917064657.3260776-1-yiyang13@huawei.com>
+References: <20260907062157.8474-1-hemanth.selam@gmail.com>
+In-Reply-To: <20260907062157.8474-1-hemanth.selam@gmail.com>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 1 Oct 2026 14:45:45 -0400
-X-Gm-Features: AclHuK_7D6uTkoayAykfK_vPNPEK1XpKKIMWior1hkRrRZG49z-vx0HY0e22dFA
-Message-ID: <CAK-6q+h4GX5tR2Nmk81E+kVnHAmRN-GoEzdZo88hsw742jbw2A@mail.gmail.com>
-Subject: Re: [PATCH] fs/dlm: fix NULL pointer dereference in __queue_work()
-To: Yi Yang <yiyang13@huawei.com>
-Cc: teigland@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	lujialin4@huawei.com
+Date: Thu, 1 Oct 2026 19:04:56 -0400
+X-Gm-Features: AclHuK_0RZo4hr957aP6ijYk-eInWMEECGfCqShXUgsVoVy4JqkmiHVTPtkrqKs
+Message-ID: <CAK-6q+gdn5C1uq3Sjig7dO86T5_Ze3Fm1BsZ5XQU72XwJBNrkw@mail.gmail.com>
+Subject: Re: [PATCH] dlm: fix typos in comments
+To: Hemanth Selam <hemanth.selam@gmail.com>
+Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: keInR2kWCfdRi4VbCNrULBgB91ppgxm3tJBqxEfLFIA_1790880357
+X-Mimecast-MFC-PROC-ID: tXY7JP7GvuoiKjzjd7sg9gjXlqzEHX8IidztBt27KTI_1790895908
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Thu, Sep 17, 2026 at 3:21=E2=80=AFAM Yi Yang <yiyang13@huawei.com> wrote=
-:
+On Mon, Sep 7, 2026 at 2:22=E2=80=AFAM Hemanth Selam <hemanth.selam@gmail.c=
+om> wrote:
 >
-> The rawmsg debugfs file lives as long as its configfs comm entry and
-> is independent of the lockspace lifetime, but sending requires the
-> lowcomms io_workqueue, which only exists between the creation of the
-> first lockspace and the release of the last one (or a lowcomms start
-> failure); work_stop() then destroys the workqueues and resets their
-> pointers to NULL. Writing rawmsg while lowcomms is not running
-> therefore ends up in queue_work() with a NULL io_workqueue:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
 >
->   BUG: KASAN: null-ptr-deref in __queue_work+0x27/0xf0
->   Read of size 4 at addr 0000000000000100 by task syz.4.3355/21899
->
-> Regular sends racing with the last lockspace release have the same
-> problem, as work_stop() never waits for senders that hold
-> connections_srcu from dlm_lowcomms_new_msg() until their queue_work()
-> call.
->
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 
-if there is a dlm_lowcomms_new_msg() running when there are no
-lockspaces being around this alone is already a problem if this is
-really the case.
-
-> Track the workqueues with a workqueues_up flag that senders check
-> inside their connections_srcu read-side critical section, and make
-> work_stop() clear the flag and call synchronize_srcu() before
-> destroying the workqueues. This gates all send entry points
-> (including the socket error retransmission path), while the socket
-> callback work queueing helpers check the flag as a defence in depth;
-> the flag is published with release and read with acquire semantics.
-> The rawmsg write now fails with -ENOTCONN.
->
-
-It makes sense that rawmsg fails when lowcomms isn't running.
+Acked-by: Alexander Aring <aahringo@redhat.com>
 
 - Alex
 
