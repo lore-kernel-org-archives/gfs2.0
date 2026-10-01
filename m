@@ -1,111 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7D282F2A;
-	Wed, 30 Sep 2026 01:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F206E486B99
+	for <gfs2@lists.linux.dev>; Thu,  1 Oct 2026 06:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790733594; cv=none; b=ZkvpXrQeofqXryqhWibGLPcsO7ZLWG1pHsOLPoFQEDgBeJzLIhrFIwdWXOmJ9vTSnKPubP9QPCuG7gwhxGepJM4TpTyC3Tt1r2pRd61tfS5eMf2ZDnJ6H8Z/w2AR1qAW2rJv7yi9ogWARYxr9DsEaynuwMpeic0kP6PKAsVJFW8=
+	t=1790837103; cv=none; b=smigjPBPm6u1hBjYWyykCfDln3LaU7Bk+NhzuUrL9DtTIHsX38TyuShMGJk/fwy4QomWkgtnLu1Zi+PBBTBFnHOo4SV23+9yVdAXcwBLAyxuE4AwxsGtWmA3eAm0y4JWP9D2GDcoVaaTLxOmmEthGWxS9K7G0KKti1ajfwkftrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790733594; c=relaxed/simple;
-	bh=1XZfKocU/lN5GfPuRrDk1+Frer+DxmS5rdeBz68W3/4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M8iRlLN4SbH19AbPui6B/x7sCHntBq1/a1v6Ue8lFquWiEN4T0faOO2zjy60TpQB+avn1bnG63o3ZpUz4DnuCPq4qZWHgVa1t/39gapGq1sSlaGvC5Wc6Gwlq2qJXHmz8MHVnd1JAiYMlVN+4AgI/CbBjixYynOMz3sCizcF5G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1welR2X; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790837103; c=relaxed/simple;
+	bh=votCEGmz1dBqut4kLOHSiZQ1DnWpjQ6Ww8QiJ9avmvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=r7DXQnRwqh3MCs3+HBjsf1TnZG0wEPuqeeeLHMQPG6bN3znoq7dF6XlaYbS4mA+EUEOd8L7MMrrM/uLWDteYfXfvQGgR+4vre/WG518v09rM/XR/0ktJcH6jzWBf8vnIJmo+Teu57f7oX1IytwCkF9J4ldmS77EOWZfxrqeZuXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcYckM9c; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1welR2X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530171F000FF;
-	Wed, 30 Sep 2026 01:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790733593;
-	bh=DX9g4ivFVPNTKG/kBEx/zUz96+yiO19hM2X9UAqzp0o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O1welR2XYxDBYcQMymrp8H6LU8yzVjVEsXTqj+hE3Y6d384E20FR9whrky/Hlyvq8
-	 PJBgrnmt0uwt8QYwPmssrtdWFnj9TlvpkUOcLju5O3FJ9+ZO1qq4A3RQp9kbPSJ3JI
-	 AQvB1zRp2pyQRux8QZ6NS1/NHs7TRz8Ec101/R5TwolVHbJdIOa6AehLEpMX9RzcYp
-	 0/12MShIxqBagJhTZ5n1HD9WpixNqk7ruvokk+tWP/ZJLFstOnlRPsEKrX2BtUpdlO
-	 JsTn+twh2/J6S5QCngwhB61nx+6Ifhk+jqBTPr//Obogdmns5GmWCsQY5R9XKfbPgj
-	 PklpO8bvU1b8g==
-Message-ID: <3453cad85b6ec1d3b36398ba7565d053163a5929.camel@kernel.org>
-Subject: Re: [PATCH v3 net-next 4/9] rds: use sk_set_nospace()
-From: Allison Henderson <achender@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, edumazet@google.com,
- netdev@vger.kernel.org, Alexander Aring <aahringo@redhat.com>, David
- Teigland <teigland@redhat.com>,  gfs2@lists.linux.dev, John Fastabend
- <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, Sabrina
- Dubroca <sd@queasysnail.net>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>,  mptcp@lists.linux.dev, Wen Gu
- <guwen@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, "D. Wythe"
- <alibuda@linux.alibaba.com>, Chuck Lever <cel@kernel.org>, Jeff Layton
- <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Olga Kornievskaia
- <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
- <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
- <anna@kernel.org>, linux-nfs@vger.kernel.org,  rds-devel@oss.oracle.com,
- Philipp Reisner <philipp.reisner@linbit.com>, Lars Ellenberg
- <lars.ellenberg@linbit.com>, Christoph =?ISO-8859-1?Q?B=F6hmwalder?=
- <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>, 
- drbd-dev@lists.linux.dev, Keith Busch <kbusch@kernel.org>, Christoph
- Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni
- <kch@nvidia.com>, linux-nvme@lists.infradead.org, Ilya Dryomov
- <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, Viacheslav
- Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org
-Date: Tue, 29 Sep 2026 18:59:50 -0700
-In-Reply-To: <20260929071743.23624-5-edumazet@kernel.org>
-References: <20260929071743.23624-1-edumazet@kernel.org>
-	 <20260929071743.23624-5-edumazet@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcYckM9c"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffed768deso15430135e9.1
+        for <gfs2@lists.linux.dev>; Wed, 30 Sep 2026 23:45:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790837100; x=1791441900; darn=lists.linux.dev;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D/97GcaHqO60C3xOpYaJJL73vz2EyjukQ0UgEJCJAEY=;
+        b=KcYckM9cv3z0Qd/6pA/Ta1TPKFakGwUHGGSmjbpNpCfgg/PdYUd9ym0QkRYYz30h1u
+         NQIpiOnJnE7rPh5SyalEh2arngJBOpiGs4QfKmrBWY4PAML1k3GFjfjwFtRxZDvrMtjT
+         0LXEoPpw4oIYpDjmKWXzI7EupNHjJLpj7JoXi7OKbwewxn5dxiIoUBgL0w0ZJJr7Amgm
+         v+fhGQE1yXl5rPL9jMXlTiYw+R/iz6x3bPynKu3Ff5NhaZZJE+34kLy77QQOYuE0xLeN
+         XLNzHpFPDmfz7nE1hL6UJJS1jfbi04p9WXiFQ4Ru9Zsx0fpq4/Ab9NKQlf79v735ZJpI
+         afgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790837100; x=1791441900;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D/97GcaHqO60C3xOpYaJJL73vz2EyjukQ0UgEJCJAEY=;
+        b=XS/eKTgJzlYZ2XnKcjO8hufbmBBoK3RVsQ2/SGSpNG2teDCYMiupmJvpUAUttVzcAq
+         AYo/bjFhTSaj59coDxcakmzgJnxnAv1mTBAWWqMtvvZrEtOpv4WhhW35jDid6Egv8UXS
+         3wl6srtgOLS/mpMRbfejs+WLTCB+MMvvjT+LJYiCKMEC5SFtNjLQM4sAb2nOJ7Q4dG+1
+         RpKbntRopdyr6Erc3oQaOCuXsZ7fqcEhXRN57T2M+ZddzPzUuHza/PEwMWJjAP9vUgPz
+         TBzZkvG8Ab5XWaWUR429J4xWsYiKk09e5JPb3pUXwOKN7pAtrn8FiD+ftA2Qs6twK3h/
+         JHxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy0M4cxAeyaIZHzW7KJ7OOe1ePV2gDBM8Nf2oxVA56X5FlzwBgV5nd53CABCY2E0qGgM+ni@lists.linux.dev
+X-Gm-Message-State: AFuF++ljSpinN3Y7rk/g56Ut24/oHebMU8EMeZRwDSe9PAhFjhXTnokP
+	yErrDBeBS7ysqY4xqyQkFDnTYAd7xtiO4UY598rI6vTRDUiP6Mszx4xL
+X-Gm-Gg: AYBFou0wZAzOXani2s2PNy4yY+ZXIbyM4Fu2XPJParua2OwuhjmhAfi1L0y8GiuRHVa
+	fSll4380gixf+PdHE5GQ6cmnkJqK7ZL79mCIT9lZR5CftY2bocm0aMk+IyXVA8UtKJ7l5LmtkZZ
+	aHCT0QhuNL9ksDVUUc6w/yHr2s4Yea7X9/7gdX1wHSeDIwkAs/Y38PIVvDamD4uw/GmKYD6JcbD
+	aKAYXrFepx+7zZMQq/vDTEllp5Iiby72pr4KGSJ4uQhid9iOzV/ADAUMp1DLxDvrcLHO929TlZr
+	rTXirHLV12ftNXymxGwU+jmA9WGXrjB/jlUrTzukVIZKOzgkaQwOoaBQh4bVHvlrV3LfItZ5l9x
+	CGPyoeeZMJyYVHp9Luc1QokguSskoeg52oWb70AuHP/PvnbhZNFtpzrKMFNfGBZozmMpYkJr4Gq
+	ct0lBq2RjiGRiACOZgnBx7lmQVVK2gOhdjWckpUuNSHxlTxqqGK9ZwaENn6NMomq4LobxX
+X-Received: by 2002:a05:600d:864a:20b0:4a0:ec5:46d9 with SMTP id 5b1f17b1804b1-4a01eaafdb4mr22604095e9.0.1790837099925;
+        Wed, 30 Sep 2026 23:44:59 -0700 (PDT)
+Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f99a332sm86476875e9.12.2026.09.30.23.44.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 23:44:59 -0700 (PDT)
+Date: Thu, 1 Oct 2026 09:44:55 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] dlm: clean up a type in waiters_read()
+Message-ID: <ar4BZ26gjQEjZgIa@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On Tue, 2026-09-29 at 07:17 +0000, Eric Dumazet wrote:
-> Use the new helpers instead of open coding the SOCK_NOSPACE
-> manipulation, so that TCP can later maintain a cheaper private
-> copy of this bit.
->=20
-> No functional change intended.
->=20
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+This doesn't affect runtime but "rv" stores error codes and so
+declare it as ssize_t instead of size_t.
 
-Thank you!
-Acked-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+---
+ fs/dlm/debug_fs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> ---
->  net/rds/tcp_send.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->=20
-> diff --git a/net/rds/tcp_send.c b/net/rds/tcp_send.c
-> index 7c52acc749cf4d4003c749a2646c2b4f87f207fe..824222c475119d91e333123c5=
-afc9291005a8696 100644
-> --- a/net/rds/tcp_send.c
-> +++ b/net/rds/tcp_send.c
-> @@ -100,7 +100,7 @@ int rds_tcp_xmit(struct rds_connection *conn, struct =
-rds_message *rm,
-> =20
->  	if (hdr_off < sizeof(struct rds_header)) {
->  		/* see rds_tcp_write_space() */
-> -		set_bit(SOCK_NOSPACE, &tc->t_sock->sk->sk_socket->flags);
-> +		sk_set_nospace(tc->t_sock->sk);
-> =20
->  		ret =3D rds_tcp_sendmsg(tc->t_sock,
->  				      (void *)&rm->m_inc.i_hdr + hdr_off,
-> @@ -221,6 +221,5 @@ void rds_tcp_write_space(struct sock *sk)
->  	 */
->  	write_space(sk);
-> =20
-> -	if (sk->sk_socket)
-> -		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +	sk_set_nospace(sk);
->  }
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index 700a0cbb2f14..f52a51b1382a 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -596,7 +596,8 @@ static ssize_t waiters_read(struct file *file, char __user *userbuf,
+ {
+ 	struct dlm_ls *ls = file->private_data;
+ 	struct dlm_lkb *lkb;
+-	size_t len = DLM_DEBUG_BUF_LEN, pos = 0, ret, rv;
++	size_t len = DLM_DEBUG_BUF_LEN, pos = 0, ret;
++	ssize_t rv;
+ 
+ 	mutex_lock(&debug_buf_lock);
+ 	ret = dlm_lock_recovery_try(ls);
+-- 
+2.53.0
 
