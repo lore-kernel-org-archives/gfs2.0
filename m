@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAD944470A
-	for <gfs2@lists.linux.dev>; Fri,  2 Oct 2026 23:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38C14078E1
+	for <gfs2@lists.linux.dev>; Fri,  2 Oct 2026 23:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790983284; cv=none; b=JPOWfaEeGqpb+vGwFHAQI/jJ0LrglMY5PJCOsP7BIu/QM105njl7extc4ikSm2CfzCBTG8ZoB7cIycffGkYwGW5B7Acra7diQaFpTUE+JESfd5HBiAcISyOAXNXLd8xOrjzziD3nBByqgmXdCP/lnAX1trPpetJ+sTP8Af5MfC8=
+	t=1790983294; cv=none; b=bE5E3eqyb7kJbH1bow42ZntaFGpoa+Cgai0atrORrIJpyftPVr+2F/oQCyUXUbwFV+bA1i8G5aaeIRgD6CquTRWdTjEzvJUFdkb8C/d9t3ksN9gL/bihBPath2U+/lxkwuvvHvwZREwpzxQvTAjgNwJ/OJn7QkKESiwiB7K8hDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790983284; c=relaxed/simple;
-	bh=aN11gmz/fs9eR9mEHriugDYJndYk0Es2B85/4E72SH4=;
+	s=arc-20240116; t=1790983294; c=relaxed/simple;
+	bh=5Lb0/lDMffj/b02e1UiB7wo0x/569zQsLED8t7ItdK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GlJG/0E16wZD9J08jUVRFP8Gz8acTPxi7gtFSHWxGVq2vHl6Z4xX6e9XM/Mxt8jFY+EpCBMyTYNi+ikV1TTmzo6+YpQDkcY5pofo/2g+T8gpnqqAi/Pce9B5mPt+WX9VOJQNNiodSQ8uKfhl/eedjatlRwBEOSYbAxdCE8uDb50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CwByu03t; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=hPYXK6OZl6nAf899WBn9Ii1xssc8X0FNWxumLetrBtDGn/WorwU+U40LKhJstW4E7cu2mJwI6pxxCrKEdyKbjfEyQvtpHma3YdQZ5lJVZEUHz7xtVGXFw1U70U/+TGRwySo2hxhMsQt1/wOAVrHVKe2LqXcSZQSt9IlL566epqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NyxObxgv; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CwByu03t"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NyxObxgv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790983281;
+	s=mimecast20190719; t=1790983289;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6Gu5fXl9HPDwt6SyHcDYg+cVhoCYdqttYhbUDj76UUA=;
-	b=CwByu03tbRsLt8YVUqy1SS2lFSNgnkm1wFtrEJmrQwokhweYFZ+EoS8Dh+Zl4QqiY6oY0s
-	yzpwNNDnf52Vaf4Iz7HzEEy6qkkKF8S02X23cbqSbcQOWRaFNk6ZGljGcVgDnDgJLpxFB8
-	c3R0lyKT1QgqMsPrxhg9kXc5M93UW0o=
+	bh=/rvILOnMQZr4NgL2p44ADtnorUZw5+MPOxfGudk/CUE=;
+	b=NyxObxgvwzStb7mQFwau0zlaaWBP++NQY3OgDq4JIWLmeUSg3yWXEPA52XVJOfnFn0/DTJ
+	jxaTBVUOrGYRBrnGwUpGBUucOX+7kHj2wIWEddVAzxtFeUiNhtgyvnrg2wmEuFNSn+J+pn
+	PCzzsCy/VcNiNZo+r1nfyi5XjjTV+CM=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-sVMaZlobPVO70J9ghc1P5A-1; Fri,
- 02 Oct 2026 19:21:18 -0400
-X-MC-Unique: sVMaZlobPVO70J9ghc1P5A-1
-X-Mimecast-MFC-AGG-ID: sVMaZlobPVO70J9ghc1P5A_1790983277
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-NiIFWrTbOA63swe4ouOwdg-1; Fri,
+ 02 Oct 2026 19:21:21 -0400
+X-MC-Unique: NiIFWrTbOA63swe4ouOwdg-1
+X-Mimecast-MFC-AGG-ID: NiIFWrTbOA63swe4ouOwdg_1790983276
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42C1A1955F25;
-	Fri,  2 Oct 2026 23:21:17 +0000 (UTC)
-Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 09DDB418;
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D617B1956069;
 	Fri,  2 Oct 2026 23:21:15 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B2B1741B;
+	Fri,  2 Oct 2026 23:21:14 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: edumazet@kernel.org
 Cc: aahringo@redhat.com,
@@ -50,9 +50,9 @@ Cc: aahringo@redhat.com,
 	davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [RFC 2/2] dlm: fix socket hang on send buffer limitation with socket error
-Date: Fri,  2 Oct 2026 19:21:07 -0400
-Message-ID: <20261002232107.1578646-3-aahringo@redhat.com>
+Subject: [RFC 1/2] dlm: drop setting SOCK_NOSPACE
+Date: Fri,  2 Oct 2026 19:21:06 -0400
+Message-ID: <20261002232107.1578646-2-aahringo@redhat.com>
 In-Reply-To: <20261002232107.1578646-1-aahringo@redhat.com>
 References: <20261002232107.1578646-1-aahringo@redhat.com>
 Precedence: bulk
@@ -62,130 +62,34 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: _lHZ9zReRhfsinxJTqTJDEfTvln-r0CEsgMOV0xH2eQ_1790983277
+X-Mimecast-MFC-PROC-ID: mwN21sovUL677ViobRsATKp40a2ToUMrTTDdX18Vsn4_1790983276
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-As Sashiko AI bot mentioned [0], a socket connection can get stuck when
-the send buffer limitation is reached and a socket error simultaneously
-occurs.
-
-This issue can be reproduced with the following setup:
-1. Set sk_sndbuf to SOCK_MIN_SNDBUF.
-2. Slow down DLM connections using netem.
-3. Use tcpkill to randomly send TCP resets to DLM connections.
-
-I instrumented debug printouts to confirm that the sk_write_space()
-notifier callbacks were being executed, using step 3 to trigger random
-socket errors.
-
-With these changes, I can no longer reproduce the hang.
-
-Changes included:
-- Removed sk_write_pending counting, as this should not be modified
-  at the socket application layer (or is at least unnecessary).
-- Moved clearing the CF_SEND_PENDING bit—which allows re-queuing
-  swork (send worker for sendmsg())—to the sk_write_space() callback,
-  since this callback notifies us that the underlying socket is no longer
-  constrained by its send buffer.
-- Handled the race condition between sendmsg() and evaluating
-  SOCK_NOSPACE after sendmsg(), where sk_write_space() could be called
-  in between, using CF_APP_LIMITED:
-  - In sk_write_space(), queue swork again if CF_APP_LIMITED is set.
-  - If CF_APP_LIMITED is not set, do nothing as send_to_sock() will handle
-    it, confirming the race occurred.
-- Introduced new handling in lowcomms_error_report() when a socket error
-  occurs during send buffer limitation. If CF_APP_LIMITED is set, swork
-  will be re-queued, which will fail and trigger a reconnect.
-- Added various comments explaining the interaction with CF_APP_LIMITED.
-
-[0] https://lore.kernel.org/netdev/179090395863.434549.3668493667259120759@kernel.org/
+It makes no sense to set SOCK_NOSPACE here when we have already
+checked for it.
 
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lowcomms.c | 46 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ fs/dlm/lowcomms.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index c3a414d2e32b..29ee1b52d0df 100644
+index 6aa68a24acab..c3a414d2e32b 100644
 --- a/fs/dlm/lowcomms.c
 +++ b/fs/dlm/lowcomms.c
-@@ -521,12 +521,20 @@ static void lowcomms_write_space(struct sock *sk)
- 
- 	sk_clear_nospace(sk);
- 
--	spin_lock_bh(&con->writequeue_lock);
--	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
--		con->sock->sk->sk_write_pending--;
--
--	lowcomms_queue_swork(con);
--	spin_unlock_bh(&con->writequeue_lock);
-+	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
-+		/* signal to send again by clearing
-+		 * CF_SEND_PENDING and queue swork.
-+		 */
-+		spin_lock_bh(&con->writequeue_lock);
-+		clear_bit(CF_SEND_PENDING, &con->flags);
-+		lowcomms_queue_swork(con);
-+		spin_unlock_bh(&con->writequeue_lock);
-+	} else {
-+		/* CF_APP_LIMITED is cleared, so send_to_sock() will
-+		 * simply reschedule work without hitting the
-+		 * CF_APP_LIMITED path.
-+		 */
-+	}
- }
- 
- static void lowcomms_state_change(struct sock *sk)
-@@ -623,6 +631,23 @@ static void lowcomms_error_report(struct sock *sk)
- 		break;
- 	}
- 
-+	/* if waiting on sk_write_space() and an sk_err occurs, the callback
-+	 * won't fire. Clear CF_SEND_PENDING and if CF_APP_LIMITED was set
-+	 * so resend tasks can re-queue swork, triggering a sendmsg() failure
-+	 * to initiate reconnection.
-+	 */
-+	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
-+		spin_lock_bh(&con->writequeue_lock);
-+		clear_bit(CF_SEND_PENDING, &con->flags);
-+		/* dlm_midcomms_unack_msg_resend() does not always
-+		 * trigger lowcomms_queue_swork() as it tries to
-+		 * avoid to put pending messages into the lowcomms
-+		 * sending buffer. Force it here again.
-+		 */
-+		lowcomms_queue_swork(con);
-+		spin_unlock_bh(&con->writequeue_lock);
-+	}
-+
- 	dlm_midcomms_unack_msg_resend(con->nodeid);
- 
- 	listen_sock.sk_error_report(sk);
-@@ -1391,18 +1416,19 @@ static int send_to_sock(struct connection *con)
+@@ -1391,10 +1391,6 @@ static int send_to_sock(struct connection *con)
  		spin_lock_bh(&con->writequeue_lock);
  		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
  		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
--			con->sock->sk->sk_write_pending++;
--
--			clear_bit(CF_SEND_PENDING, &con->flags);
- 			spin_unlock_bh(&con->writequeue_lock);
- 			release_sock(con->sock->sk);
+-			/* Notify TCP that we're limited by the
+-			 * application window size.
+-			 */
+-			sk_set_nospace(con->sock->sk);
+ 			con->sock->sk->sk_write_pending++;
  
--			/* wait for write_space() event */
-+			/* wait for sk_write_space() event */
- 			return DLM_IO_END;
- 		}
- 		spin_unlock_bh(&con->writequeue_lock);
- 		release_sock(con->sock->sk);
- 
-+		/* the sk_write_space() came in between sock_sendmsg()
-+		 * and check on SOCK_NOSPACE and the socket became
-+		 * writeable again so just resched swork.
-+		 */
- 		return DLM_IO_RESCHED;
- 	} else if (ret < 0) {
- 		return ret;
+ 			clear_bit(CF_SEND_PENDING, &con->flags);
 -- 
 2.43.0
 
