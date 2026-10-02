@@ -1,130 +1,207 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7658D3BF67A
-	for <gfs2@lists.linux.dev>; Thu,  1 Oct 2026 23:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03042D0C75;
+	Fri,  2 Oct 2026 01:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790898256; cv=none; b=hCsiv3WQPTTFeVnPXYwmhMuErNrCEulofGY3nvdu0OMG83Kase5udBz1fpSrjducKKVAWaF2/iwwiuyfrsWhImLATdsYyKPr2pO9rBit0Y7EPvGps3Zv1KePV7F7Gykw9aNOOgP9lT7yl/l6Bgbu8TnHJfRU1gwmXBdMZghPBjs=
+	t=1790903963; cv=none; b=PWpAS2On1SFwywgWzlZEwCz2IHI3s312G8h1EqCY6/e0AlxbN9jVOWZayu2tqHYOATIndp87Be/MBM3xOiQeiZeY2newc3EbYIMiWSf+8NzgB9LP/5VgXp1Un3fTqtYDyD6BCWx7Zl/D23/Uf/80u9HWAIL67ueylRJ/7FAwsas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790898256; c=relaxed/simple;
-	bh=o2g104Wfo69c4modhI8ohmf9z/HmP117IrUmXcvK64w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kd33mh28TW9DOWgqHv4lFxs9XcmnVZIDoaP/QzmRs5Y80XRQyfL1J2fQhUgjyxgjbLfWTl3VTKZ7MmHkQOG5ym0z5peH7mTV34l/P7rX/QG6tF2UkWSCvJ2MFDeztmB2LJT1KQqNhis1MZcbrWIkTFShIQZqzM8IFa9weKXs/xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YJo2CXMy; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790903963; c=relaxed/simple;
+	bh=4nO8rBTyIXYBkEpdYgQA3o1XWX8YWIGlfr4w1sbeTBk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mFYcIPiTCzIE62MiQzXKXTbtmhri9kNrKiBmrrRoRzBpin206OwmpHajkS5VkmZOdBoGDUPG1kKzWZGGmBNoSM8fqcw5VZVdwli5DbXSonFRx/yZ0Cp19+SRqI6TFByTozqcxV8aUYt4s9OQZm7dBgWRDqlCpmO3BZNoaokTw/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuA5PeAB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YJo2CXMy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790898253;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7C0wO41olnFgIkFyxcI/7Fxg3q/LgyAQWGzA9515Wqo=;
-	b=YJo2CXMySVAfdUwdP+daGj7wmYg7TIoAJGpc12rzGbWnzr6XeoecRrhcYucUhP0XBUfF9M
-	tryRZGqW6YPJfRQtgQdkAvWo9HaIijGnUigUbWbeJkMIphOI4FWZpYPmoBBZfnE1MQR/CI
-	XCaExTGEJ1cQFbRR8OQNuiUzjmH2tS4=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-yimkTL7IN4a9c7X2qt940g-1; Thu, 01 Oct 2026 19:44:12 -0400
-X-MC-Unique: yimkTL7IN4a9c7X2qt940g-1
-X-Mimecast-MFC-AGG-ID: yimkTL7IN4a9c7X2qt940g_1790898251
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3a64e917254so43683751fa.2
-        for <gfs2@lists.linux.dev>; Thu, 01 Oct 2026 16:44:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790898250; x=1791503050;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7C0wO41olnFgIkFyxcI/7Fxg3q/LgyAQWGzA9515Wqo=;
-        b=rqi1pyShuhCT+YKAQaX9nAPZlbqjQn0tj0znX8LK3SQKRBqwlXlLmV8ScB23lzPoOE
-         B2ZfleIdnmhn8Ku+k5YFRLZ7ATj/Mp9sQJ6fQ26hDOvhufIBacg5qNj3WbeGQakt0AsK
-         2dNFWfSLrqCBRNMngCRsGKO2/vZcojDAdSfneXbyEn6Qi/9qrqXfGK64oGvL7+t89Tqb
-         D2CSEXjvR45pMpLaQZUNkAo2MFs9N7P3vkmuAED1biA67sDJZnb3OFMNy0aJFDl2cXFL
-         2+WCTTD5224P4p25Xd3zgqcGHEko6WwrxXzprR1KyF+Kal5TP0l5yPvqb/OXkkWzBbYx
-         +wFg==
-X-Gm-Message-State: AFq9FYKoo+3M2rSdk89EoacocuHY/fGQY5n5BGdYHJwolaiKypKI84L7
-	XbQQez5gPbkN/Guq3OjUTBQ8jFvKsy4l6+NLVSuQIbs15oTU3OXVOiMlM7wUumiPMz+D1Ce25NL
-	/Vaq8263olHSFeVaYmDyX2IVEPfmxpHaq+6Q22VwhoA/jZ035xKt7sa6P7jmGTld0FibyZRh/9h
-	Z3CzCaBS/2mT0/C0gKSDv16Bt22gb/fA==
-X-Gm-Gg: AYBFou3b/ZLZNZFZoGz6rIqC/EdgXgE2Lqxy1dzQlk8GwHqya2scGKSk66s+h+1uOhy
-	4zSR7cu3S1XK2ZqtI55rQk0JP4eeaWhZyj+4ytZeE8coNxtQlt4SPEDd/0Bo36ziFSLSHpl7AhA
-	365Y7I0di7exoLo+xM81gB9QCxBr5i+kKGNAJ0eawXXUz3dn/4GwJK28iS
-X-Received: by 2002:a2e:bc29:0:b0:3a5:d070:9fef with SMTP id 38308e7fff4ca-3a887787567mr1692561fa.10.1790898250538;
-        Thu, 01 Oct 2026 16:44:10 -0700 (PDT)
-X-Received: by 2002:a2e:bc29:0:b0:3a5:d070:9fef with SMTP id
- 38308e7fff4ca-3a887787567mr1692511fa.10.1790898250148; Thu, 01 Oct 2026
- 16:44:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuA5PeAB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEA51F00893;
+	Fri,  2 Oct 2026 01:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790903961;
+	bh=aZby0WeNlKN6rlwpn1/LnNcy7QUqDYIZv8b3LV0Liww=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KuA5PeABrGCDRWE2c+jTnoLFrU//pbGuovhvcC7WRoTMqadKhnbC4f+PcUP5YFkX1
+	 unr0lhG32+rUpcxEiGaP3SvZJBE38JOOnYtEe7NcQaP2tq2FmoSQpUxHbi57ooTLMn
+	 Q5YgrSIv45LrfpYfWhZMGqTt5gp+UCm4En3h4iy13LO2lZSEKfkCL0MyrYTLRUB+5y
+	 wOapxs1VHrcJVWsXp0OSik3Vj/iZ24MwH2rXigcYTAMf9eeki1dQ+O+Lnu4LdTypQJ
+	 NSuZnww9Aw+av26zHa/GSTIdIPAkyFnpcJk2cohH8E7Exp59yR+Z4ApDkLbGOT4r8G
+	 61OIfAEMCpdfQ==
+Subject:
+ Re: [PATCH v3 net-next 1/9] dlm: fix send buffer backpressure handling
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, edumazet@google.com,
+ netdev@vger.kernel.org, aahringo@redhat.com, teigland@redhat.com,
+ gfs2@lists.linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com,
+ sd@queasysnail.net, jiayuan.chen@linux.dev, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, mptcp@lists.linux.dev,
+ guwen@linux.alibaba.com, dust.li@linux.alibaba.com, alibuda@linux.alibaba.com,
+ cel@kernel.org, jlayton@kernel.org, neil@brown.name, okorniev@redhat.com,
+ Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
+ linux-nfs@vger.kernel.org, achender@kernel.org, rds-devel@oss.oracle.com,
+ philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
+ christoph.boehmwalder@linbit.com, axboe@kernel.dk, drbd-dev@lists.linux.dev,
+ kbusch@kernel.org, hch@lst.de, sagi@grimberg.me, kch@nvidia.com,
+ linux-nvme@lists.infradead.org, idryomov@gmail.com, amarkuze@redhat.com,
+ slava@dubeyko.com, ceph-devel@vger.kernel.org
+Date: Fri, 02 Oct 2026 01:19:18 +0000
+Message-ID: <179090395863.434549.3668493667259120759@kernel.org>
+In-Reply-To: <20260929071743.23624-2-edumazet@kernel.org>
+References: <20260929071743.23624-2-edumazet@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260911065357.3511466-1-ljp1205831794@gmail.com>
-In-Reply-To: <20260911065357.3511466-1-ljp1205831794@gmail.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Thu, 1 Oct 2026 19:43:59 -0400
-X-Gm-Features: AclHuK8B2IlGXv-cagMI52YwLUQveVZTRqqkPPRuJDKafJ4tVysX2bs9w7uZ4e4
-Message-ID: <CAK-6q+iB2jjvKN+p5WmMap3znWPUhXXT0dRsCFK5BcAXBJRRuA@mail.gmail.com>
-Subject: Re: [PATCH] dlm: fix RCOM_LOOKUP length underflow
-To: Aohan Mei <ljp1205831794@gmail.com>
-Cc: gfs2@lists.linux.dev, teigland@redhat.com, linux-kernel@vger.kernel.org, 
-	Aohan Mei <henrymei@tencent.com>, TencentOS Corvus AI <corvus@tencent.com>, stable@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZbOsJDHqxtIDXDd4fZuGRqdcObZx_Ma3PpaCgGxt-Q8_1790898251
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-On Fri, Sep 11, 2026 at 2:54=E2=80=AFAM Aohan Mei <ljp1205831794@gmail.com>=
- wrote:
->
-> From: Aohan Mei <henrymei@tencent.com>
->
-> receive_rcom_lookup() derives the resource name length from the
-> peer-supplied 16-bit h_length header field:
->
->     int len =3D le16_to_cpu(rc_in->rc_header.h_length) -
->               sizeof(struct dlm_rcom);
->
-> The 3.1 receive path only bounds h_length to the range
-> [sizeof(struct dlm_header), DLM_MAX_SOCKET_BUFSIZE] in
-> dlm_validate_incoming_buffer(), and the RCOM case in
-> dlm_midcomms_receive_buffer_3_1() performs no further length check
-> despite its "length already checked" comment.  A peer can therefore
-> send an RCOM_LOOKUP message whose h_length is smaller than
-> sizeof(struct dlm_rcom) (48).  The subtraction is evaluated in size_t
-> arithmetic and wraps, and the result is assigned to an int as a
-> negative value.
->
-> Both consumers of that length only guard the upper bound
-> (len > DLM_RESNAME_MAXLEN), which a negative len passes as a signed
-> comparison:
->
-> - with rc_id =3D=3D 0xffffffff, len reaches dlm_dump_rsb_name() ->
->   dlm_search_rsb_tree(), where memcpy() converts it to a huge size_t
->   and overflows the on-stack 64-byte key buffer;
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-This case is already covered in dlm/next. [0]
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> - otherwise len reaches dlm_master_lookup() -> _dlm_master_lookup(),
->   where jhash() converts it to a huge u32 and reads out of bounds.
->
+- [High] A TCP reset or TCP timeout while the connection is waiting for
+  send space can stall the dlm connection permanently.
+- [Low] In send_to_sock() (fs/dlm/lowcomms.c:1392-1397), the
+  set_bit(SOCK_NOSPACE, &con->sock->sk->sk_socket->flags) under the…
 
-This case is partially covered but lacks a check for negative values.
-Can you send a patch to change it to unsigned int? [1]
+--
 
-- Alex
+dlm: fix send buffer backpressure handling
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git/=
-tree/fs/dlm/lock.c?h=3Dnext#n632
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git/=
-tree/fs/dlm/lock.c?h=3Dnext#n1273
+This commit changes send_to_sock() to test SOCK_NOSPACE instead of
+SOCKWQ_ASYNC_NOSPACE in con->sock->flags. With that change the
+CF_APP_LIMITED wait path is taken again when TCP returns -EAGAIN because
+the send buffer is full. It also removes the clear_bit() of
+SOCKWQ_ASYNC_NOSPACE from lowcomms_write_space(), since that bit no
+longer lives in con->sock->flags.
 
+> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> index 2aff1c7c17de4..abe9ae4c643fa 100644
+> --- a/fs/dlm/lowcomms.c
+> +++ b/fs/dlm/lowcomms.c
+
+[ ... ]
+
+> @@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
+>  	if (ret == -EAGAIN || ret == 0) {
+>  		lock_sock(con->sock->sk);
+>  		spin_lock_bh(&con->writequeue_lock);
+> -		if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
+> +		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
+>  		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
+
+[Severity: High]
+Can a TCP reset or timeout that arrives while the connection is in this
+state leave it stuck for good?
+
+With this change, send_to_sock() sets CF_APP_LIMITED, clears
+CF_SEND_PENDING and returns DLM_IO_END. After that,
+lowcomms_queue_swork() will not queue swork:
+
+fs/dlm/lowcomms.c:lowcomms_queue_swork() {
+	if (!test_bit(CF_IO_STOP, &con->flags) &&
+	    !test_bit(CF_APP_LIMITED, &con->flags) &&
+	    !test_and_set_bit(CF_SEND_PENDING, &con->flags))
+		queue_work(io_workqueue, &con->swork);
+}
+
+>From then on, only lowcomms_write_space() or close_connection() clears
+CF_APP_LIMITED.
+
+tcp_reset() and tcp_write_err() (RTO or keepalive timeout) both go
+through tcp_done_with_error():
+
+net/ipv4/tcp_input.c:tcp_done_with_error() {
+    ...
+	tcp_write_queue_purge(sk);
+	tcp_done(sk);
+
+	if (!sock_flag(sk, SOCK_DEAD))
+		sk_error_report(sk);
+}
+
+Neither path calls sk_write_space(). tcp_done() calls sk_state_change,
+but add_sock() only installs lowcomms_state_change for SCTP.
+
+Every dlm recovery path appears to end in lowcomms_queue_swork(), which
+returns early here:
+
+lowcomms_error_report()
+  dlm_midcomms_unack_msg_resend()
+    dlm_lowcomms_resend_msg()
+      _dlm_lowcomms_commit_msg()
+        lowcomms_queue_swork()
+
+On a receive error on the main connection, process_recv_sockets() also
+only calls lowcomms_queue_swork():
+
+		if (ret < 0) {
+			if (test_bit(CF_IS_OTHERCON, &con->flags)) {
+				close_connection(con, false);
+			} else {
+				spin_lock_bh(&con->writequeue_lock);
+				lowcomms_queue_swork(con);
+				spin_unlock_bh(&con->writequeue_lock);
+			}
+
+A RST does not call sk_data_ready, so the receive worker may not run at
+all. New outgoing messages hit the same CF_APP_LIMITED check. If the peer
+reconnects, accept_from_sock() puts the new socket on othercon because
+the main connection's sock is still set.
+
+Before this patch, the send worker kept requeueing itself with
+DLM_IO_RESCHED. The next sock_sendmsg() then returned the socket error,
+and process_send_sockets() called close_connection() and reconnected.
+
+A peer RST seems realistic here. It happens when the peer's dlm closes
+its socket with unread data in the receive queue, which is likely when
+the peer is slow to drain. It also happens with ss -K or a middlebox RST.
+
+If this happens, won't traffic to that node stay queued on a dead socket
+until dlm_lowcomms_close() or lowcomms shutdown?
+
+The commit message says that for SCTP, returning DLM_IO_END "would wait
+for a callback that never comes". Doesn't the TCP error path have the
+same problem?
+
+Later patches in the series convert these bit operations to
+sk_set_nospace()/sk_clear_nospace() and add tp->tcp_nospace. None of
+them seem to change this behavior.
+
+>  			/* Notify TCP that we're limited by the
+>  			 * application window size.
+
+[Severity: Low]
+This isn't a bug, but the statement under this comment now does
+nothing:
+
+			set_bit(SOCK_NOSPACE, &con->sock->sk->sk_socket->flags);
+
+The branch is only entered when test_bit(SOCK_NOSPACE, &con->sock->flags)
+is already true. con->sock->sk->sk_socket is con->sock, so this sets a
+bit that is already set.
+
+TCP already sets it on its -EAGAIN paths (tcp_sendmsg_locked() and
+sk_stream_wait_memory()). While lock_sock() is held, TCP input that could
+run lowcomms_write_space() is deferred to the backlog, so nothing can
+clear the bit between the test and the set.
+
+Should the set_bit() and the "Notify TCP" comment be removed or
+reworded?
+
+The same applies later in the series, where this line becomes
+sk_set_nospace(con->sock->sk).
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929071743.23624-1-edumazet%40kernel.org
