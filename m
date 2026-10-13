@@ -1,167 +1,705 @@
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5D252FE2B
-	for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 15:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791905250; cv=none; b=X16DBv4R5/usrjydELqaq1MiPMw9e/0QTF3eV5ARX/89x3tIfrqWZd+ARHWOOOkiGYEtdCNJzmKs1jYdOEVK6nFhLWwIuJO9Po1GS9FR4AxbJyufZMzG+Imhy+gSXelG944juq2cRN71IlUFk1cKx2gvMexiqQH11nq9tJlrj98=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791905250; c=relaxed/simple;
-	bh=/RKufF2yTI2+zp13mICGLhL+5e108L+GMt4MQqF+f6g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i1K3SFT7vDHHzehUDQcVFJtg0Pq9OZyL7M8O9QcEPW7k+ykxKwv3AiTtLibw/28s8tUM1ngmvwlZEzs3r1OS9tXJz9Wz/KXP8YyXgfQMdQ1NiKnKxyw8CNQLcenj4osfatb9s9VgA6jxboMJvLyhoawPb3NT7+3FpwJVFm9/H/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=FcFmos47; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CEC51EE14
+	for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 16:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791907284; cv=pass; b=JVIsa5c7zRf9USLpOtUB/iLB8ig9P6Jr7AXiBR8+MkD1hVhbCvBUiYd+B3tjafrp/28OkJQCFibmu/rTMvQUaZKj248grv/SDXDrq8DSE7ikVDrhzPgSKN215Xdhr0aMV0lmRY7Xu6V+x0JHISqP7d2os6lkGeBZV2jx4Il3Xxw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791907284; c=relaxed/simple;
+	bh=X76yH4SRvkB0KYQ4ndhMh74X8GjAVXcRS9Vo55WGTo0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aP4+JWxTOjWdUSwJp3DkDP84mDdVctTWHBZAXoBzOUDIe6beXBlWfPAMgHImU2X0XVwOZSskOMzm+6a6s6dkD80CJIUFYuebXTD5NMlImU9kTMPCb8S5w+CaiHSd5r4fOLUhz6meds+0chC72CpfeTFPF2ebiUkqxCCXZpDLvDM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rYkFTCBB; arc=pass smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="FcFmos47"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1791905232; x=1792510032; i=markus.elfring@web.de;
-	bh=/RKufF2yTI2+zp13mICGLhL+5e108L+GMt4MQqF+f6g=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=FcFmos47L0w50ikWcosD7MidFxEEA5nJtvl0iL8cAkhpuN3CbXkGWD7drO4w/6Id
-	 eSor5nB5ReVmwVz1VMTE7JJ8pg3e8BXSZ3fOlbomTwM6pcaQAJ2VyM9q0s2wqn1ub
-	 XK3ThM/7aa9kJ2VCTxTQj8p3dDwbaY0OPw3gUrmM6ngN4bOa6JCZhnetcRkPXyQyi
-	 PBennXeJV0k57C53v65FhLz48pOWyVC2iM1wSj0ZRFvZY6F6IuaAp+19NrALVtMs9
-	 mnF79DOCwD7gzYV+ffalZIX847r9dsBE9n7unYhL6XER58b5dBLYGKmRAS8Rmu3pU
-	 EAkCu0MMtdrPeYHqsQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N1uAl-1wWozh1YQT-00uaXP; Tue, 13
- Oct 2026 17:27:12 +0200
-Message-ID: <c8b6843c-c87a-4330-b6f4-e556117a8026@web.de>
-Date: Tue, 13 Oct 2026 17:27:10 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rYkFTCBB"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso27376775e9.0
+        for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 09:01:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791907278; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KVwIOTE6PDtKFaWe7cDqEKqwe5F70GdNKzeEbphXUSYkoWcedBwfZCS5u0EgPdZW7f
+         DLl/Nt7UsuGeRtM47y8zk5niaQTO82yAzQu1DHVnEdg/o5AIF7CAJqcNgM8/evRAxN0G
+         Spb1BQs94qfiaRGAAFF50jazRfhNSCd5VhgLNnbw0D2qGL1539splNvQW3DCSIROpZnT
+         RYumgPAU9wb+eOFv36isPnFl9z04SKc7vA7b4wDXaUwJqVA229p7rjS0mAZMPtBMv2m9
+         XGcnECvOkb2EwwGF9FWzbxnK6K9oYPIy5mK6yxF8bceo3i5WBVowEQoByvRpTHldY1A5
+         +OQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qRuzTmy8QvIIH1aAenqhCcAXaaKxqjhhEwzLm0j86Q0=;
+        fh=brP2FOj4XPcecm0ujrGzfxeyaw0+jVXTVJiisBhzny8=;
+        b=FMKX14CFOAdBsIWkBYlcEEC2HmpX0WBk6YTIb+MvP2WLT7dWqT/3AuKKNPE5hy7iay
+         PueLFfH/zDOOI1ItaDFBWoC4ZGCbxIU1bMu2iyEtNCxYbtxPcBLuBdHMyDT2SZufHpjI
+         xns1qqE86ad8m307BNkOK2AMX95HLWskKJFBLKqgER7uxjN3kCX34Mk1n/fryOhDXvUE
+         Bsklx+Uw+O/tYUU6hf/z9B5AjkiSsALeoSvukhcUA4jP42vItHaZcDidPgWAbViwWaBl
+         CgmhnIH+2X0XPMD6b5gRp91JOR7JQi+gQ3BoTMtkxmAFXqQrt288rCi/ep8WibfjjzST
+         p/PQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791907278; x=1792512078; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qRuzTmy8QvIIH1aAenqhCcAXaaKxqjhhEwzLm0j86Q0=;
+        b=rYkFTCBBrxxabU13wVgcDYHLpYNy3qEBeVPS6FfqIrAq01ouaA2fTfLLBdpr+TwFqr
+         LxA1amxxJSSq+RKrUXOgmsFUruDymoYsM+NNDVckZHszk8olYR66BaYQqFSVL3FC0HKt
+         loKCzo42eY2JXnx4dgaLmOS13BpRgTFylCBMw8qW3n9A9dmPijC4CYCdxjh02buGw8Xy
+         cAtSN0R3rlUE5Vz3zVSvuQUuXogUkVr/I/JIeAUWeQ6wYbM7nrLRkQ/PSpvX4gKKWgQu
+         XD1YV4jjNVne/rA8u1QzaXw6s/UpPehxxAbCzOt2e/Ff6NitcPgD18beb4lIt66wkkWh
+         oKyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791907278; x=1792512078;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qRuzTmy8QvIIH1aAenqhCcAXaaKxqjhhEwzLm0j86Q0=;
+        b=rBqFJnqMEeQNO5IBa7Mo7FgI13YwrhuplqyrlaZVT0kgC7qM0lEBa5eTIhRu3GTjcg
+         MQLh2TVNdlInqpW0JgaFves76N7tBykYOxeb/uIwjlSgVCmgxTT4u7KQOMmDdPlB3Ti2
+         FHIx+lxb2eTBm5F66SEQle56WyTevX0inXG9kembm124cx43XiF4qIiOjCGEjNTlzJIA
+         F9XKVikitVxcHq7ydjE4oKGQkh914PJMomy8t2+48ky0wJQuo4SDV4NeRVb/bhaCMI7G
+         OvBl3k9Cwq+ib1xAWOizK4t61Zo6C8I8/hkDkGcdwLTo0FYorXZZ5lAH0nLJRxb+xjOc
+         viVQ==
+X-Forwarded-Encrypted: i=1; AKwUvByVfZOS81L8gCZK//ehkDzb95+3GLJNFESQHiv33UrPeXdSP6Kr4eUu4PbPJV05Af6U+DVt@lists.linux.dev
+X-Gm-Message-State: AFq9FYIAgtG9+q2LCFTxhGcDoXuvmkxgR/lh06S+4CPlwX8oYHJ0sWXx
+	qFWpQP/dhG6r80R8CtBAyuKQTQj4eLqyGcKV0pahTKH4/+ACgzAZT90BXUtugIrpEDt5I/2Mh09
+	KGsZSSEso69WLUr2zqIXi4WyCLg+ehVo=
+X-Gm-Gg: AYBFou3ceQ79XQ3EQvgl/ZKa3gTUPwVhgVyL9b9je7ciBN21cK4nBns7GGSrgpUiqlM
+	4aQfKKQOnX90/lYusww3J32J/j4itwrtjmDRlFU/W3HwWTyPU/PWrwfLdnavEPsBCAWCP4q7zIy
+	QDz83zeUW2x/JPfpvOUJX+JN6uEM2ehtwNwAqqvJMEAgS7opDxDg2VuqOhEBrESofwFJ73iqyW3
+	k5lQ5ajhqDIjYDL4Bd1ZbLxwfF0WMMk1PfB/czcOHUYXXHdxmWyxo1LynBP5f15RM/sRVptu7Fm
+	5OlymXAUe6GnMJC2A8vKZCH40GT4JMx2SIniBNAJ4TlATY5qUxqivDkp
+X-Received: by 2002:a05:600d:4443:10b0:4a1:9c71:9f17 with SMTP id
+ 5b1f17b1804b1-4a19c71a176mr106991385e9.9.1791907278067; Tue, 13 Oct 2026
+ 09:01:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: dlm: clean up a type in waiters_read()
-To: Alexander Aring <aahringo@redhat.com>, Dan Carpenter <error27@gmail.com>,
- gfs2@lists.linux.dev, kernel-janitors@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, David Teigland <teigland@redhat.com>
-References: <ar4BZ26gjQEjZgIa@stanley.mountain>
- <ffeb3e5b-d9de-4337-b250-e27667024461@web.de>
- <CAK-6q+heOWNY8CY8dgotxzEeFC_-huHnnO2pgH8kJsJSGryOtw@mail.gmail.com>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <CAK-6q+heOWNY8CY8dgotxzEeFC_-huHnnO2pgH8kJsJSGryOtw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org> <20261012-work-fs-sb_rdonly-v1-5-60743a3dc326@kernel.org>
+In-Reply-To: <20261012-work-fs-sb_rdonly-v1-5-60743a3dc326@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Wed, 14 Oct 2026 01:01:00 +0900
+X-Gm-Features: AclHuK_PPS1_NVEQIlqEOwtchFvXH7m530N3mEwmecS77mqXkEhqFxAbpQ2_6lM
+Message-ID: <CAKFNMonNC1iKjc4Z=PzE9DJJ3X+SmWofbGFXGhHpiN-o1kQGrQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 05/28] nilfs2: don't set SB_RDONLY after filesystem errors
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, ntfs@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0ianABftfhsG9rCHi3fCDgKa9fC41BS/G3w0zc4JDmco+33N2IY
- jjvEYYj2CqGCGFTelaUNxkh04zJepsPOgmJ555ik87znjvUWhrbQdK2/T4RQCwDXUOG6mUG
- kETY5IXU4sTaeBg2xL8AkQPKzzfQoqvfJltJcJhV56HdtXc6epouCgh2ZH2KhgsPAd7WrAi
- QGy2HQ7azbz5wn9eqsfMA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:kP5ZeCIJkf4=;aRUPQMETc4/TK+VHB4iI9bxzXom
- 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
- XXSy
 
->>> This doesn't affect runtime but "rv" stores error codes and so
->>> declare it as ssize_t instead of size_t.
->>
->> Can a similar adjustment matter also for the local variable =E2=80=9Cre=
-t=E2=80=9D?
->=20
-> What do you mean by 'matter'? It's declared as cleanup.
-Can the usage of a data type like =E2=80=9Cint=E2=80=9D become more desira=
-ble for =E2=80=9Cret=E2=80=9D
-according to the affected function implementation?
+On Mon, Oct 12, 2026 at 7:24=E2=80=AFPM Christian Brauner  wrote:
+>
+> __nilfs_error() sets SB_RDONLY with errors=3Dremount-ro, the nilfs2
+> default. That happens without holding sb->s_umount and from any context,
+> also while the filesystem is frozen. FIFREEZE doesn't block reads and a
+> lookup in a corrupted directory gets there:
+>
+>   NILFS error (device vda): nilfs_check_folio: bad entry in directory #11=
+: rec_len is smaller than minimal - offset=3D32, inode=3D17, rec_len=3D0, n=
+ame_len=3D16
+>   Remounting filesystem read-only
+>
+> freeze_super() and thaw_super() both look at sb_rdonly() to figure out
+> whether the s_writers rwsems need to be taken or released. So the thaw
+> after such an error skips ->unfreeze_fs() and sb_freeze_unlock() and
+> leaves all three rwsems write-locked on a superblock that is marked
+> unfrozen. Writers hang in sb_start_write() and umount warns when the
+> rwsems are freed:
+>
+>   WARNING: kernel/rcu/sync.c:177 at rcu_sync_dtor+0x143/0x190, CPU#3: kwo=
+rker/3:1/54
+>   WARNING: kernel/rcu/sync.c:180 at rcu_sync_dtor+0x14c/0x190
+>   WARNING: kernel/rcu/sync.c:188 at rcu_sync_dtor+0x13d/0x190
+>
+> nilfs2 already treats a runtime SB_RDONLY as "degraded to read-only
+> because of corruption" in a lot of places. nilfs_writepages() and
+> nilfs_mdt_write_folio() discard dirty pages, nilfs_evict_inode() skips
+> the deletion, the segment constructor returns -EROFS and a few
+> WARN_ONCE()s accept it. That can all stay as it is. Only what triggers
+> it changes. Like ext4 did in commit d3476f3dad4a ("ext4: don't set
+> SB_RDONLY after filesystem errors") record the error in a new
+> THE_NILFS_EMERGENCY_RO bit and add nilfs_sb_rdonly() which is true for
+> a read-only mount and for the emergency state. Then use that for every
+> sb_rdonly() check that guards a write.
+>
+> The VFS won't refuse anything for us anymore so nilfs2 has to do that
+> itself. nilfs_permission() returns -EROFS for MAY_WRITE in that state,
+> the same way sb_permission() does for a read-only superblock and the
+> same way nilfs2 already handles snapshots. That takes care of most
+> operations. setattr, write_iter and fileattr_set check the bit as well.
+> Symlinks didn't have a ->setattr so far and get nilfs_setattr() for
+> that. page_mkwrite fails with VM_FAULT_SIGBUS, the modifying ioctls go
+> through a new nilfs_mnt_want_write_file() and FITRIM is refused.
+> nilfs_sync_fs() writes neither a segment nor the superblock anymore.
+>
+> A remount to read-write fails with -EROFS. Note that nilfs2 explicitly
+> supported "mount -o remount,rw" after __nilfs_error() so far.
+> nilfs_attach_log_writer() reuses the existing log writer for exactly
+> that case. Now the state lasts until umount like on ext4 and the comment
+> there is updated. A remount to read-only still sets SB_RDONLY but skips
+> nilfs_cleanup_super() so the superblock isn't written.
+>
+> Like ext4 we show "emergency_ro" in the mount options. The mount stays
+> "rw". Writes through file descriptors opened before the error now fail
+> with -EROFS instead of being accepted and silently dropped by
+> nilfs_writepages(). Stores through shared mappings set up before the
+> error get SIGBUS once they fault. Stores to pages that were already
+> dirty don't fault until nilfs_writepages() discarded the page so those
+> are still dropped.
+>
+> While the current tree is mounted a second mount of the device has to
+> match the read-only state of the superblock. So a read-only mount now
+> fails with -EBUSY and a read-write mount shares the superblock. If only
+> snapshot mounts keep the superblock alive a new mount reconfigures it
+> instead. Then a read-only mount makes it read-only and a read-write
+> mount after that fails with -EROFS. And a non-forced remount to
+> read-only fails with -EBUSY while files are still open for writing.
+>
+> Reproducer (the sb_rdonly selftest at the end of this series covers it
+> as well):
+>
+>   truncate -s 512M img; mkfs.nilfs2 -q img
+>   mount -o loop img /mnt           # errors=3Dremount-ro is the default
+>   mkdir /mnt/d; touch /mnt/d/marker0123456789; sync
+>   touch /mnt/z; sync               # keep d's block out of the last log, =
+the
+>   umount /mnt                      # only one checksummed at mount
+>   off=3D$(grep -obUa marker0123456789 img | head -1 | cut -d: -f1)
+>   printf '\0\0' | dd of=3Dimg bs=3D1 seek=3D$((off - 4)) conv=3Dnotrunc  =
+ # rec_len :=3D 0
+>   mount -o loop img /mnt
+>   fsfreeze -f /mnt; ls /mnt/d; fsfreeze -u /mnt
+>   touch /mnt/x     # blocks forever in sb_start_write()
+>   # or umount instead: rcu_sync_dtor() warns three times
+>
+> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
+> Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.=
+com
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+>  fs/nilfs2/file.c      | 15 ++++++++++++++-
+>  fs/nilfs2/inode.c     | 13 +++++++++++--
+>  fs/nilfs2/ioctl.c     | 36 ++++++++++++++++++++++++++++++------
+>  fs/nilfs2/mdt.c       |  2 +-
+>  fs/nilfs2/namei.c     |  1 +
+>  fs/nilfs2/page.c      |  2 +-
+>  fs/nilfs2/segment.c   | 13 ++++++-------
+>  fs/nilfs2/sufile.h    |  2 +-
+>  fs/nilfs2/super.c     | 35 ++++++++++++++++++++++++++++-------
+>  fs/nilfs2/the_nilfs.h |  8 ++++++++
+>  10 files changed, 101 insertions(+), 26 deletions(-)
 
-Regards,
-Markus
+Hi Christian,
+
+Thank you very much for this patch.
+I've reviewed the change for nilfs2 and its rationale.
+
+I am in favor of this change, even if the emergency read-only flag
+ends up being placed in the super_block structure as a result of the
+ongoing review.  Feel free to add:
+
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+
+Thanks,
+Ryusuke Konishi
+
+>
+> diff --git a/fs/nilfs2/file.c b/fs/nilfs2/file.c
+> index f93b68c4877c..17d5e932dba5 100644
+> --- a/fs/nilfs2/file.c
+> +++ b/fs/nilfs2/file.c
+> @@ -54,6 +54,8 @@ static vm_fault_t nilfs_page_mkwrite(struct vm_fault *v=
+mf)
+>
+>         if (unlikely(nilfs_near_disk_full(inode->i_sb->s_fs_info)))
+>                 return VM_FAULT_SIGBUS; /* -ENOSPC */
+> +       if (unlikely(nilfs_emergency_ro(inode->i_sb->s_fs_info)))
+> +               return VM_FAULT_SIGBUS; /* -EROFS */
+>
+>         sb_start_pagefault(inode->i_sb);
+>         folio_lock(folio);
+> @@ -133,6 +135,17 @@ static int nilfs_file_mmap_prepare(struct vm_area_de=
+sc *desc)
+>         return 0;
+>  }
+>
+> +static ssize_t nilfs_file_write_iter(struct kiocb *iocb, struct iov_iter=
+ *from)
+> +{
+> +       struct inode *inode =3D file_inode(iocb->ki_filp);
+> +
+> +       /* refuse before file_update_time() touches the inode */
+> +       if (unlikely(nilfs_emergency_ro(inode->i_sb->s_fs_info)))
+> +               return -EROFS;
+> +
+> +       return generic_file_write_iter(iocb, from);
+> +}
+> +
+>  /*
+>   * We have mostly NULL's here: the current defaults are ok for
+>   * the nilfs filesystem.
+> @@ -140,7 +153,7 @@ static int nilfs_file_mmap_prepare(struct vm_area_des=
+c *desc)
+>  const struct file_operations nilfs_file_operations =3D {
+>         .llseek         =3D generic_file_llseek,
+>         .read_iter      =3D generic_file_read_iter,
+> -       .write_iter     =3D generic_file_write_iter,
+> +       .write_iter     =3D nilfs_file_write_iter,
+>         .unlocked_ioctl =3D nilfs_ioctl,
+>  #ifdef CONFIG_COMPAT
+>         .compat_ioctl   =3D nilfs_compat_ioctl,
+> diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
+> index 34e6096069ad..7dab8cfaad45 100644
+> --- a/fs/nilfs2/inode.c
+> +++ b/fs/nilfs2/inode.c
+> @@ -162,7 +162,7 @@ static int nilfs_writepages(struct address_space *map=
+ping,
+>         struct inode *inode =3D mapping->host;
+>         int err =3D 0;
+>
+> -       if (sb_rdonly(inode->i_sb)) {
+> +       if (nilfs_sb_rdonly(inode->i_sb)) {
+>                 nilfs_clear_dirty_pages(mapping);
+>                 return -EROFS;
+>         }
+> @@ -868,7 +868,7 @@ void nilfs_evict_inode(struct inode *inode)
+>         truncate_inode_pages_final(&inode->i_data);
+>
+>         nilfs =3D sb->s_fs_info;
+> -       if (unlikely(sb_rdonly(sb) || !nilfs->ns_writer)) {
+> +       if (unlikely(nilfs_sb_rdonly(sb) || !nilfs->ns_writer)) {
+>                 /*
+>                  * If this inode is about to be disposed after the file s=
+ystem
+>                  * has been degraded to read-only due to file system corr=
+uption
+> @@ -912,6 +912,9 @@ int nilfs_setattr(struct mnt_idmap *idmap, struct den=
+try *dentry,
+>         struct super_block *sb =3D inode->i_sb;
+>         int err;
+>
+> +       if (nilfs_emergency_ro(sb->s_fs_info))
+> +               return -EROFS;
+> +
+>         err =3D setattr_prepare(&nop_mnt_idmap, dentry, iattr);
+>         if (err)
+>                 return err;
+> @@ -952,6 +955,12 @@ int nilfs_permission(struct mnt_idmap *idmap, struct=
+ inode *inode,
+>             root->cno !=3D NILFS_CPTREE_CURRENT_CNO)
+>                 return -EROFS; /* snapshot is not writable */
+>
+> +       /* After an error made us read-only, like sb_permission() would *=
+/
+> +       if ((mask & MAY_WRITE) && nilfs_emergency_ro(inode->i_sb->s_fs_in=
+fo) &&
+> +           (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode) ||
+> +            S_ISLNK(inode->i_mode)))
+> +               return -EROFS;
+> +
+>         return generic_permission(&nop_mnt_idmap, inode, mask);
+>  }
+>
+> diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+> index 01a04080ef70..ac3e1a770162 100644
+> --- a/fs/nilfs2/ioctl.c
+> +++ b/fs/nilfs2/ioctl.c
+> @@ -143,6 +143,9 @@ int nilfs_fileattr_set(struct mnt_idmap *idmap,
+>         unsigned int flags, oldflags;
+>         int ret;
+>
+> +       if (nilfs_emergency_ro(inode->i_sb->s_fs_info))
+> +               return -EROFS;
+> +
+>         if (fileattr_has_fsx(fa))
+>                 return -EOPNOTSUPP;
+>
+> @@ -176,6 +179,23 @@ static int nilfs_ioctl_getversion(struct inode *inod=
+e, void __user *argp)
+>         return put_user(inode->i_generation, (int __user *)argp);
+>  }
+>
+> +/*
+> + * Like mnt_want_write_file(), but also refuse writers once an error mad=
+e the
+> + * filesystem read-only, the VFS doesn't know about that.
+> + */
+> +static int nilfs_mnt_want_write_file(struct file *filp)
+> +{
+> +       struct the_nilfs *nilfs =3D file_inode(filp)->i_sb->s_fs_info;
+> +       int ret;
+> +
+> +       ret =3D mnt_want_write_file(filp);
+> +       if (!ret && nilfs_emergency_ro(nilfs)) {
+> +               mnt_drop_write_file(filp);
+> +               ret =3D -EROFS;
+> +       }
+> +       return ret;
+> +}
+> +
+>  /**
+>   * nilfs_ioctl_change_cpmode - change checkpoint mode (checkpoint/snapsh=
+ot)
+>   * @inode: inode object
+> @@ -203,7 +223,7 @@ static int nilfs_ioctl_change_cpmode(struct inode *in=
+ode, struct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 return ret;
+>
+> @@ -255,7 +275,7 @@ nilfs_ioctl_delete_checkpoint(struct inode *inode, st=
+ruct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 return ret;
+>
+> @@ -866,7 +886,7 @@ static int nilfs_ioctl_clean_segments(struct inode *i=
+node, struct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 return ret;
+>
+> @@ -1014,7 +1034,7 @@ static int nilfs_ioctl_resize(struct inode *inode, =
+struct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 goto out;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 goto out;
+>
+> @@ -1050,6 +1070,10 @@ static int nilfs_ioctl_trim_fs(struct inode *inode=
+, void __user *argp)
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> +       /* Don't trust the segment usage after an error. */
+> +       if (nilfs_emergency_ro(nilfs))
+> +               return -EROFS;
+> +
+>         if (!bdev_max_discard_sectors(nilfs->ns_bdev))
+>                 return -EOPNOTSUPP;
+>
+> @@ -1202,7 +1226,7 @@ static int nilfs_ioctl_set_suinfo(struct inode *ino=
+de, struct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 return ret;
+>
+> @@ -1295,7 +1319,7 @@ static int nilfs_ioctl_set_fslabel(struct super_blo=
+ck *sb, struct file *filp,
+>         if (!capable(CAP_SYS_ADMIN))
+>                 return -EPERM;
+>
+> -       ret =3D mnt_want_write_file(filp);
+> +       ret =3D nilfs_mnt_want_write_file(filp);
+>         if (ret)
+>                 return ret;
+>
+> diff --git a/fs/nilfs2/mdt.c b/fs/nilfs2/mdt.c
+> index 2a435349fd21..7863fbc559a2 100644
+> --- a/fs/nilfs2/mdt.c
+> +++ b/fs/nilfs2/mdt.c
+> @@ -398,7 +398,7 @@ static int nilfs_mdt_write_folio(struct folio *folio,
+>         struct super_block *sb;
+>         int err =3D 0;
+>
+> -       if (inode && sb_rdonly(inode->i_sb)) {
+> +       if (inode && nilfs_sb_rdonly(inode->i_sb)) {
+>                 /*
+>                  * It means that filesystem was remounted in read-only
+>                  * mode because of error or metadata corruption. But we
+> diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
+> index e037e0c6e31a..06b928387212 100644
+> --- a/fs/nilfs2/namei.c
+> +++ b/fs/nilfs2/namei.c
+> @@ -583,6 +583,7 @@ const struct inode_operations nilfs_special_inode_ope=
+rations =3D {
+>
+>  const struct inode_operations nilfs_symlink_inode_operations =3D {
+>         .get_link       =3D page_get_link,
+> +       .setattr        =3D nilfs_setattr,
+>         .permission     =3D nilfs_permission,
+>  };
+>
+> diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+> index cf4f1c6798f5..01c80ed12138 100644
+> --- a/fs/nilfs2/page.c
+> +++ b/fs/nilfs2/page.c
+> @@ -259,7 +259,7 @@ int nilfs_copy_dirty_pages(struct address_space *dmap=
+,
+>
+>                 folio_lock(folio);
+>                 if (unlikely(!folio_test_dirty(folio))) {
+> -                       if (WARN_ONCE(!sb_rdonly(smap_inode->i_sb),
+> +                       if (WARN_ONCE(!nilfs_sb_rdonly(smap_inode->i_sb),
+>                                         "inconsistent dirty state\n"))
+>                                 goto unlock_folio;
+>
+> diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+> index 829573cb6131..eb79245de60d 100644
+> --- a/fs/nilfs2/segment.c
+> +++ b/fs/nilfs2/segment.c
+> @@ -317,7 +317,7 @@ void nilfs_relax_pressure_in_lock(struct super_block =
+*sb)
+>         struct the_nilfs *nilfs =3D sb->s_fs_info;
+>         struct nilfs_sc_info *sci =3D nilfs->ns_writer;
+>
+> -       if (sb_rdonly(sb) || unlikely(!sci) || !sci->sc_flush_request)
+> +       if (nilfs_sb_rdonly(sb) || unlikely(!sci) || !sci->sc_flush_reque=
+st)
+>                 return;
+>
+>         set_bit(NILFS_SC_PRIOR_FLUSH, &sci->sc_flags);
+> @@ -2097,7 +2097,7 @@ static int nilfs_segctor_do_construct(struct nilfs_=
+sc_info *sci, int mode)
+>         struct the_nilfs *nilfs =3D sci->sc_super->s_fs_info;
+>         int err;
+>
+> -       if (sb_rdonly(sci->sc_super))
+> +       if (nilfs_sb_rdonly(sci->sc_super))
+>                 return -EROFS;
+>
+>         nilfs_sc_cstage_set(sci, NILFS_ST_INIT);
+> @@ -2321,7 +2321,7 @@ int nilfs_construct_segment(struct super_block *sb)
+>         struct nilfs_sc_info *sci =3D nilfs->ns_writer;
+>         struct nilfs_transaction_info *ti;
+>
+> -       if (sb_rdonly(sb) || unlikely(!sci))
+> +       if (nilfs_sb_rdonly(sb) || unlikely(!sci))
+>                 return -EROFS;
+>
+>         /* A call inside transactions causes a deadlock. */
+> @@ -2354,7 +2354,7 @@ int nilfs_construct_dsync_segment(struct super_bloc=
+k *sb, struct inode *inode,
+>         struct nilfs_transaction_info ti;
+>         int err =3D 0;
+>
+> -       if (sb_rdonly(sb) || unlikely(!sci))
+> +       if (nilfs_sb_rdonly(sb) || unlikely(!sci))
+>                 return -EROFS;
+>
+>         nilfs_transaction_lock(sb, &ti, 0);
+> @@ -2868,9 +2868,8 @@ int nilfs_attach_log_writer(struct super_block *sb,=
+ struct nilfs_root *root)
+>
+>         if (nilfs->ns_writer) {
+>                 /*
+> -                * This happens if the filesystem is made read-only by
+> -                * __nilfs_error or nilfs_remount and then remounted
+> -                * read/write.  In these cases, reuse the existing
+> +                * This happens if the filesystem is remounted read-only =
+and
+> +                * then read/write again.  In this case, reuse the existi=
+ng
+>                  * writer.
+>                  */
+>                 return 0;
+> diff --git a/fs/nilfs2/sufile.h b/fs/nilfs2/sufile.h
+> index 5888ed479c8b..d5e7598e36b3 100644
+> --- a/fs/nilfs2/sufile.h
+> +++ b/fs/nilfs2/sufile.h
+> @@ -76,7 +76,7 @@ int nilfs_sufile_trim_fs(struct inode *sufile, struct f=
+strim_range *range);
+>                 int _err =3D (err);                                      =
+ \
+>                                                                         \
+>                 if (unlikely(_err))                                     \
+> -                       _err =3D WARN_ONCE(!sb_rdonly((sufile)->i_sb),   =
+ \
+> +                       _err =3D WARN_ONCE(!nilfs_sb_rdonly((sufile)->i_s=
+b), \
+>                                 "unexpected sufile error %d\n", _err) ? \
+>                                 -EIO : -EROFS;                          \
+>                 _err;                                                   \
+> diff --git a/fs/nilfs2/super.c b/fs/nilfs2/super.c
+> index 893a504cb80c..22ae5b51d4ee 100644
+> --- a/fs/nilfs2/super.c
+> +++ b/fs/nilfs2/super.c
+> @@ -137,12 +137,17 @@ void __nilfs_error(struct super_block *sb, const ch=
+ar *function,
+>
+>         va_end(args);
+>
+> -       if (!sb_rdonly(sb)) {
+> +       if (!nilfs_sb_rdonly(sb)) {
+>                 nilfs_set_error(sb);
+>
+>                 if (nilfs_test_opt(nilfs, ERRORS_RO)) {
+>                         printk(KERN_CRIT "Remounting filesystem read-only=
+\n");
+> -                       sb->s_flags |=3D SB_RDONLY;
+> +                       /*
+> +                        * Don't set SB_RDONLY, that needs sb->s_umount a=
+nd a
+> +                        * remount. Flipping it on a frozen filesystem ma=
+kes
+> +                        * thaw leave s_writers locked forever.
+> +                        */
+> +                       set_nilfs_emergency_ro(nilfs);
+>                 }
+>         }
+>
+> @@ -508,7 +513,7 @@ static void nilfs_put_super(struct super_block *sb)
+>
+>         nilfs_detach_log_writer(sb);
+>
+> -       if (!sb_rdonly(sb)) {
+> +       if (!nilfs_sb_rdonly(sb)) {
+>                 down_write(&nilfs->ns_sem);
+>                 nilfs_cleanup_super(sb);
+>                 up_write(&nilfs->ns_sem);
+> @@ -529,6 +534,10 @@ static int nilfs_sync_fs(struct super_block *sb, int=
+ wait)
+>         struct nilfs_super_block **sbp;
+>         int err =3D 0;
+>
+> +       /* Nothing may be written after an error made us read-only. */
+> +       if (nilfs_emergency_ro(nilfs))
+> +               return 0;
+> +
+>         /* This function is called when super block should be written bac=
+k */
+>         if (wait)
+>                 err =3D nilfs_construct_segment(sb);
+> @@ -588,7 +597,7 @@ static int nilfs_freeze(struct super_block *sb)
+>         struct the_nilfs *nilfs =3D sb->s_fs_info;
+>         int err;
+>
+> -       if (sb_rdonly(sb))
+> +       if (nilfs_sb_rdonly(sb))
+>                 return 0;
+>
+>         /* Mark super block clean */
+> @@ -602,7 +611,7 @@ static int nilfs_unfreeze(struct super_block *sb)
+>  {
+>         struct the_nilfs *nilfs =3D sb->s_fs_info;
+>
+> -       if (sb_rdonly(sb))
+> +       if (nilfs_sb_rdonly(sb))
+>                 return 0;
+>
+>         down_write(&nilfs->ns_sem);
+> @@ -698,6 +707,8 @@ static int nilfs_show_options(struct seq_file *seq, s=
+truct dentry *dentry)
+>                 seq_puts(seq, ",norecovery");
+>         if (nilfs_test_opt(nilfs, DISCARD))
+>                 seq_puts(seq, ",discard");
+> +       if (nilfs_emergency_ro(nilfs))
+> +               seq_puts(seq, ",emergency_ro");
+>
+>         return 0;
+>  }
+> @@ -1087,7 +1098,7 @@ nilfs_fill_super(struct super_block *sb, struct fs_=
+context *fc)
+>                 goto failed_unload;
+>         }
+>
+> -       if (!sb_rdonly(sb)) {
+> +       if (!nilfs_sb_rdonly(sb)) {
+>                 err =3D nilfs_attach_log_writer(sb, fsroot);
+>                 if (err)
+>                         goto failed_checkpoint;
+> @@ -1099,7 +1110,7 @@ nilfs_fill_super(struct super_block *sb, struct fs_=
+context *fc)
+>
+>         nilfs_put_root(fsroot);
+>
+> -       if (!sb_rdonly(sb)) {
+> +       if (!nilfs_sb_rdonly(sb)) {
+>                 down_write(&nilfs->ns_sem);
+>                 nilfs_setup_super(sb, true);
+>                 up_write(&nilfs->ns_sem);
+> @@ -1145,6 +1156,10 @@ static int nilfs_reconfigure(struct fs_context *fc=
+)
+>         if (fc->sb_flags & SB_RDONLY) {
+>                 sb->s_flags |=3D SB_RDONLY;
+>
+> +               /* After an error nothing may be written, just go read-on=
+ly. */
+> +               if (nilfs_emergency_ro(nilfs))
+> +                       goto out;
+> +
+>                 /*
+>                  * Remounting a valid RW partition RDONLY, so set
+>                  * the RDONLY flag and then mark the partition as valid a=
+gain.
+> @@ -1156,6 +1171,12 @@ static int nilfs_reconfigure(struct fs_context *fc=
+)
+>                 __u64 features;
+>                 struct nilfs_root *root;
+>
+> +               /* An error made the filesystem read-only until umount. *=
+/
+> +               if (nilfs_emergency_ro(nilfs)) {
+> +                       err =3D -EROFS;
+> +                       goto ignore_opts;
+> +               }
+> +
+>                 /*
+>                  * Mounting a RDONLY partition read-write, so reread and
+>                  * store the current valid flag.  (It may have been chang=
+ed
+> diff --git a/fs/nilfs2/the_nilfs.h b/fs/nilfs2/the_nilfs.h
+> index 4776a70f01ae..0b300d08898e 100644
+> --- a/fs/nilfs2/the_nilfs.h
+> +++ b/fs/nilfs2/the_nilfs.h
+> @@ -30,6 +30,7 @@ enum {
+>         THE_NILFS_GC_RUNNING,   /* gc process is running */
+>         THE_NILFS_SB_DIRTY,     /* super block is dirty */
+>         THE_NILFS_PURGING,      /* disposing dirty files for cleanup */
+> +       THE_NILFS_EMERGENCY_RO, /* read-only after an error */
+>  };
+>
+>  /**
+> @@ -204,6 +205,13 @@ THE_NILFS_FNS(DISCONTINUED, discontinued)
+>  THE_NILFS_FNS(GC_RUNNING, gc_running)
+>  THE_NILFS_FNS(SB_DIRTY, sb_dirty)
+>  THE_NILFS_FNS(PURGING, purging)
+> +THE_NILFS_FNS(EMERGENCY_RO, emergency_ro)
+> +
+> +/* Mounted read-only or read-only after an error: nothing may be written=
+. */
+> +static inline bool nilfs_sb_rdonly(struct super_block *sb)
+> +{
+> +       return sb_rdonly(sb) || nilfs_emergency_ro(sb->s_fs_info);
+> +}
+>
+>  /*
+>   * Mount option operations
+>
+> --
+> 2.53.0
+>
+>
