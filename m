@@ -1,203 +1,135 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EADF530DF7;
-	Wed, 14 Oct 2026 13:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3601414400;
+	Wed, 14 Oct 2026 16:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791985663; cv=none; b=rOZcUCwf0LuOStKrxgzW0pYCfgewfM/Kodm3ZyXH+m8mNws6+nTZ0dUTy0quiUnn/3x6tqplTh6+h0KSsnVbMFD6h0ZHvUnCaGnM8JdViRqS70gS1bdnZ88yHSLvnDxC2lP1YS5do0g+/pGfSiKNKqLroedZRIOSTdvE1PXPEcM=
+	t=1791995833; cv=none; b=cteATwv31FuPonr3oYuPISEx3+nyqPNXTj0ggD4XBX8LSQLnjME6P65aTJzmPIcQz8Yr4r5y5v7rUYLHsW9l3sjPlW55lMAoXIAWXyLVcc/9JyU7IFk116uROxu+mPU+TDoUmlwrWK/ZUpNyorrh/WN0KvvxDc26oVLy8MGr2hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791985663; c=relaxed/simple;
-	bh=uLec5Ms1kEItxT/9M3m+iatVoLfvlo+Ku3r+6YxXaVo=;
+	s=arc-20240116; t=1791995833; c=relaxed/simple;
+	bh=xvcQd7gINQECA0pEoMrNUQEomIL78zM5m7K4ujDNY3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phCBR6//HXrne9fXQuP5Y8SlKSN8HTEjA2q3Jc4Sajhj8+u1uUOHMyUHoTWCDTdEAzUTBJE3/IZJndBSh1RxXY2sWaD31bfg76jprO9ONdpaNf+CJguXn6+qH+rNM0OxUhvPqk7EUsm6GBMbQIaANXa0Vvd+R0yHPNISsRLC1lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KER6SV+3; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5kV45Nl3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=S0AnEx52; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gG1ABpRO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=lUoMlX6zOxnT019lxR2ZJFeu+JOU+B0nrl4diRJC1dbPejGZwX0QTP1h8I5RUFRT8AC+AbZSgofD0/lgGZxHpKyjo2kYQgblDugYRqXUxForNZCpvJB2dkCeXOreSlqn3/2gEysjC5UXQTzj6bmb2fSvYM97rjHwqDkQTTObDCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9IplbiX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KER6SV+3";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5kV45Nl3";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="S0AnEx52";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gG1ABpRO"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D252822258;
-	Wed, 14 Oct 2026 13:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791985659; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DY9RqNIokuQ1DH3X9Yc1BCOmA2bOCbyTbnsYeJcms7U=;
-	b=KER6SV+3E5T8faaU3djQpSC8B9QPNgiQOksk9btYa1oyN+g/YdhOBY6t1StzY1g3bSF0IJ
-	zd1FvSem8kaP2TbkqojJhhhFOthOVUjirK7sCmgbkHZZx82aJ9Io4OE8IvNRplBb+KGXEf
-	1xnlhspPxY1CCNo9bMSSg22YlcPY1WI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791985659;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DY9RqNIokuQ1DH3X9Yc1BCOmA2bOCbyTbnsYeJcms7U=;
-	b=5kV45Nl3phoxgImBDhEqInuMMmAek0XiQQPFlXI/cnE3ZS5Quvx+F2axMbnAyEMUB1fkx3
-	FIYEJ2frN9CQ5KBA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S0AnEx52;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gG1ABpRO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1791985657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DY9RqNIokuQ1DH3X9Yc1BCOmA2bOCbyTbnsYeJcms7U=;
-	b=S0AnEx52KGncKxtGJdhOJnkNKWblqAhU1fDfPojL39mMiKeDrabTNcq7zrzX9j4BiwbLyH
-	OakWO7MFjbmum5NnwrDWXKsOJm95K6rjrzLtmGKio9hh9a9ZDKInBQ8G3OJJr2jLduCpIm
-	cY4ShwlOEbCtlHljqjRWtydkmyqg6nY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1791985657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DY9RqNIokuQ1DH3X9Yc1BCOmA2bOCbyTbnsYeJcms7U=;
-	b=gG1ABpROq+bYTWDuUnYSBShOJ9fbmudAese1phkK/c9rHSbMI+6wnPeO8BO8ATprL8kHK6
-	exH5zVUd6CuBDKDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9348F133F1;
-	Wed, 14 Oct 2026 13:47:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ACfUG/mHz2oSUQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 14 Oct 2026 13:47:37 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 84A41A140F; Wed, 14 Oct 2026 15:47:36 +0200 (CEST)
-Date: Wed, 14 Oct 2026 15:47:36 +0200
-From: Jan Kara <jack@suse.cz>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-xfs@vger.kernel.org, stable@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: Re: [PATCH RFC 00/28] fs: don't set SB_RDONLY after filesystem errors
-Message-ID: <k7zduo2ewgvrmic2gc4wssakq4ystwqpuwo6a5llx2gzc64xzl@k2pjjijh5kye>
-References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
- <my2k7257m265fp5ad77n5hfndl23i56gsog3jwnsyocp3yxbnj@aphfqdiej2hs>
- <20261013-forsten-ammoniak-geknackt-fefec366cc97@brauner>
- <CAHc6FU5JuYU8R4=agxgWBoEKrUGyWiitzRn5MwXiV7NZYt=_ag@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9IplbiX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258481F000C4;
+	Wed, 14 Oct 2026 16:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791995832;
+	bh=D0qFplMD3JegnW7i3iVJkwgfMDmyoOPsyHFrtj+nxBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n9IplbiX+93nceH23XmnKeZ5oYecY++a3sP1FSp8/eoJQHlwosXybufpa8S8KQDs4
+	 JSOYDlE3dW0Tstqig9001fDQnyF55nygDlSOHNkJdYmGR6xIoM+nl1dQhuyjrtkVwj
+	 EuXqe73P+3VZ6BDKW7wiUBDkX32NJU8qFo902yMRcaug/7BAm5oKbDw4gxCh7LxUqC
+	 Y7NxYDYR/y/z28DqpEx8zGTH0dUYz2jKMESyevlBsADLYmloXFD5sbjroBfTPOb1YO
+	 EAaIr8VM2TPJc/hDXYqOW71XwpeyatwvwVWF6WB1T2qG0eJVVmvgIrJgOh3HFB8l/2
+	 2qpSERGwTKhRA==
+Date: Wed, 14 Oct 2026 09:37:11 -0700
+From: Kees Cook <kees@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ian Rogers <irogers@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	David Teigland <teigland@redhat.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Richard Weinberger <richard@nod.at>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	driver-core@lists.linux.dev, llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	gfs2@lists.linux.dev, xen-devel@lists.xenproject.org,
+	linux-s390@vger.kernel.org, linux-mtd@lists.infradead.org,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/11] kobject: Require explicit initialization of struct
+ kobj_type::release
+Message-ID: <202610140932.5F9CFCE5@keescook>
+References: <20261013223946.1836757-1-irogers@google.com>
+ <2026101425-why-boring-4f2d@gregkh>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU5JuYU8R4=agxgWBoEKrUGyWiitzRn5MwXiV7NZYt=_ag@mail.gmail.com>
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,suse.cz,suse.com,zeniv.linux.org.uk,vger.kernel.org,lists.sourceforge.net,lists.linux.dev,lists.infradead.org,gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Level: 
-X-Rspamd-Queue-Id: D252822258
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+In-Reply-To: <2026101425-why-boring-4f2d@gregkh>
 
-On Wed 14-10-26 12:04:08, Andreas Gruenbacher wrote:
-> On Wed, Oct 14, 2026 at 12:20 AM Christian Brauner <brauner@kernel.org> wrote:
-> > > I'm in favor of this. Just after checking couple of filesystem changes -
-> > > won't we be better off by using a generic flag in super_block for this so
-> > > that VFS can check for it? Then each filesystem won't have to implement
-> > > its own wrapper for simple_fsync(), quota operations, and whatever other
-> > > generic operations that need to bail on shutdown filesystem...
-> >
-> > Do you mean something like?:
-> >
-> > From 28c97f2142e255eb835d26deb97b00afccfb7c4a Mon Sep 17 00:00:00 2001
-> > From: Christian Brauner <brauner@kernel.org>
-> > Date: Tue, 13 Oct 2026 21:15:36 +0200
-> > Subject: [PATCH] fs: add a generic emergency read-only state
-> >
-> > The filesystems that stopped setting SB_RDONLY after an error refuse
-> > modifications themselves now. Each of them grew the same checks in
-> > ->open, ->setattr, ->fsync, ->write_inode, the directory operations, the
-> > quota operations and ->reconfigure. Jan suggested a generic flag so the
-> > VFS can do that once (cf. [1]).
-> >
-> > So add SB_STATE_EMERGENCY_RO in a new sb->s_state word. It is only ever
-> > set with set_bit() and never cleared so it can be tested anywhere
-> > without any ordering against the setter. A filesystem calls
-> > sb_set_emergency_ro() where it used to set SB_RDONLY. SB_RDONLY itself
-> > stays untouched so freeze_super() and thaw_super() keep seeing a
-> > consistent superblock.
-> >
-> > The VFS then checks it wherever sb_rdonly() gates a write:
-> >
-> > - __mnt_is_readonly() so mnt_want_write(), opening files for writing,
-> >   access(W_OK), nfsd and overlayfs see a read-only superblock
-> > - sb_permission() for vfs_create(), vfs_unlink() and friends
-> > - notify_change(), rw_verify_area(), vfs_fallocate(), vfs_fsync_range()
-> >   and do_page_mkwrite() for files that were opened before the error
-> > - reconfigure_super() refuses going read-write
-> > - sync_filesystem(), sync(2) and write_inode() don't write anymore
-> > - the dquot code doesn't write the quota files anymore and quotactl(2)
-> >   refuses to change anything
-> > - "emergency_ro" is shown in the mount options, /proc/mounts shows the
-> >   superblock as "ro" and statfs() reports ST_RDONLY like they did when
-> >   SB_RDONLY was set
-> >
-> > What reaches the filesystem without passing through the VFS it still has
-> > to refuse itself. That's its allocators, its journal, its own writeback
-> > and the deletion of unlinked inodes.
+On Wed, Oct 14, 2026 at 07:36:41AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Oct 13, 2026 at 03:39:35PM -0700, Ian Rogers wrote:
+> > Clang supports the 'require_explicit_initialization' attribute on struct
+> > fields to enforce that the field is explicitly initialized when an
+> > aggregate object is constructed, emitting -Wuninitialized-explicit-init
+> > (enabled by default) if the field is omitted.
+> > 
+> > Following discussion at the Linux Plumbers Conference [1], this series
+> > introduces __require_explicit_initialization in
+> > include/linux/compiler_attributes.h and applies it to
+> > struct kobj_type::release.
 > 
-> For shared filesystems like gfs2, the concept of an emergency
-> read-only state doesn't make sense because in that state (in gfs2
-> terms, a withdrawn filesystem), we cannot do any more cluster-wide
-> locking and so we cannot allow any more reads, either. Could we define
-> the new flag in a way that would allow filesystems to enforce stronger
-> guarantees? This would suggest a flag name other than
-> SB_STATE_EMERGENCY_RO, though.
+> Cool, sorry I missed that talk.
 
-The problem is that a lot of local filesystems really want the emergency
-read-only state (and not full fs shutdown). So if you want to fully
-shutdown the fs on error, either gfs2 has to do it on it's own or we could
-introduce another sb state for that. But I think emergency-ro state needs
-to stay...
+Yeah, I'm really liking these compile-time checks. :)
 
-								Honza
+> 
+> > As Documentation/core-api/kobject.rst notes:
+> >   "One important point cannot be overstated: every kobject must have a
+> >   release() method, and the kobject must persist (in a consistent state)
+> >   until that method is called. If these constraints are not met, the code
+> >   is flawed."
+> > 
+> > Annotating struct kobj_type::release caught 30 struct kobj_type
+> > definitions across the tree that omitted .release:
+> > - Patches 2-10 fix 10 struct kobj_type definitions where dynamically
+> >   allocated kobjects, ksets, or enclosing structures were either leaked on
+> >   kobject_put() or freed prematurely before kobject release (risking a
+> >   use-after-free when CONFIG_DEBUG_KOBJECT_RELEASE=y).
+> > - Patch 11 annotates struct kobj_type::release with
+> >   __require_explicit_initialization and explicitly sets .release = NULL
+> >   (with explanatory comments) on the remaining legacy struct kobj_type
+> >   definitions whose kobjects are static, per-CPU, or embedded in devm- or
+> >   parent-managed structures.
+> 
+> Sounds great, but let's fix up the users before adding the attribute.
+> Looks like some of these need another version so it might take a bit of
+> time to get them all merged.
+
+I'd really like to have the attribute available, and I've got at least
+one user I can apply today that don't require fix-ups (seq_file), so
+if Miguel is okay with it, I'd like to snag patch 1 and send it with
+my seq_file "first user" for this coming merge window so it's available
+starting with v7.4-rc1, and we don't end up needing to wait 10 weeks for
+other subsystems to be able to use it. And the kobj fixups can continue
+in parallel. Does that sounds okay?
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Kees Cook
