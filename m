@@ -1,398 +1,297 @@
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F26565115
-	for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 22:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3618C411A04
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791931252; cv=none; b=Zpy+R2i03IrP7UdcUsjVxFpVwIOllr+YgH/ogQCFG+GTBqMkc8ZxQ76Z2yJ77W1gUsxQhHnKfAiCRt96bhRpu88AnmS5+AARbowIZMoYiyD+j1VpnGmgOycT52PN9PXU7N5P1wrpdUes9JdBVAq2YrNFtIzPCVKkyKNyVChhJyI=
+	t=1791951894; cv=none; b=LHIhZXRBW4/cMzIvMolmPQ0GM/F97NxPwREo45bogvdJ8QzTVOA6XF2TfNhg3MJBfMqBzkDQtPTGpMsBQxv7cCIfAlUg3tJuNCDVtSmY7orntq/+USwLdEot/LsgT7O172ixhuRRYf2LwZEkgY0JEu4NchVQxmt45/8B0ckgQGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791931252; c=relaxed/simple;
-	bh=kNzY4659saQzwEUZQfm99c5GlQJNbi8H+xQ55wYkvMs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=co2PEUtNT0VCZhTwmmfHEzyD36C55YkylbHNXa9k1ofDeB1oebO7c2SnatVfnyVDlCdRJDrVSyZ1m0N1AdR9yeDgxvDfabcgR/ngd7iN7f8YwckJwLdEBQZFNbnMSJcZkT0IoV9fMCTHvob9C6L1U8+KEGFHUmJXV8Tnpb8fpXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IA8JHM8X; arc=none smtp.client-ip=74.125.82.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
+	s=arc-20240116; t=1791951894; c=relaxed/simple;
+	bh=uX2IrYZKuunh5Ay8wtG5R15VefK9qebescjFxGpBE28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hfhWf2dAjkDklbVAX7ylMAWyjWHej4bVGcqKTESqusOwmnOJHXNREVLuBXonaTym3pKAYE+0jAxrzfWOe5H3eHGfkXw2IIBwkUD8ifQ9zOxEZBoYetyhiwEQlgdIAP+8S1vJDvMOTNsOXTFn6Con4R/5vwePQXro15rD0KDaoN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mfBIXI1u; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AaeweMUN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IA8JHM8X"
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-35c5aef2a74so1455377eec.0
-        for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 15:40:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mfBIXI1u";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AaeweMUN"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69E1wDKv1592391
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=; b=mfBIXI1uLAOYHNpx
+	M+pskrgQQbpJj/+60jNFLzZFxHw2r6RDPCnEYQak0C68FqNpjyua8eynX8SGcd1Y
+	2J1k4+K/t/BHMHnNSVt94VWd+zjp21ADu/+gT5GHSxkze+TVoAJ8ZcEJUegyUcj3
+	l02tjV+K80HtT6WpkHCz8hJA1pNAkGFI0embeDgtOOxCvfUQQ4c9lcW5zqnNjbim
+	+IIDJbRdlgftjP27N4Ac7M+zpCtJs+D/UR8kPP45vYPVDrD5gR3xqxJhNmnwyIgi
+	K4kI1TWbCLNx+Vt70sIiD4gGFEtC25wsPGiQD9gMthErtmViPMA3SxZL1fMU3msx
+	O1ZOMA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9s1tjacy-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:52 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39deda201bcso6038202a91.2
+        for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 21:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791931238; x=1792536038; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=oss.qualcomm.com; s=google; t=1791951891; x=1792556691; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KZW0TlkuVx1/ay444vuidlpbLOf1N6NgoBIEapd0snM=;
-        b=IA8JHM8XQm6XwDQasr08//loQmrRnAkhxx4Es7OGmQIdD/PPQRsmhY0NDFrZeWwA+f
-         +JjGr5kiwILpxXl7pSH6XUvR+IiIZeU5csHITMgWeU4VI+jrfheBI1yFiOKzO7KO53Uo
-         3AMXqI9qrRA9ttZ8s3qjuITFsAXzfKt1UutF2N4DZKPbD3V0b0ozszmvpgEGrOt2lJ0x
-         8PpIgW0LU2yUl7WGstcsxMD2pvThevuatedrQakyHw2Hr6jjerYpHpKFht/rCvJ5sFYt
-         XUMpahG7fAm3Ti8NfTWp9ZX+GxHptaD+8wpydgzzMGYSd2Cu8hunqkgreJjQ1j6aI3dQ
-         nj1A==
+        bh=R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=;
+        b=AaeweMUNm94W/CR9InV3o0XZ4ZEacDLuPZ5YyaGBDcQzzCGXAEaP6ffIPpFWHfAmji
+         WPhePzmQey/8m8uhwDQ27zJ5CiyM5ezoA7rsPukSdlpiOFnxs0PRK1exyO6BXqWnPBDA
+         v8hiXalB8xYcFGJuX+N0OkZK3kJ6tMEdO0wOR3WhJbHOSaN7Lm8ZiYDlfhJPCpejOPVa
+         wulB0xirX5lwQHtukUR1FzZI6sYwrGF0ucbZ/pzaL8USatgyyeO2cVPLxSsVtvxo6L2e
+         ePEUNVH1HvvdMkc5WNIed8CJPJi5gUNEXdpRHA4N+s3OAJymVfOGk4RHA7AjETH1oOls
+         Hh2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791931238; x=1792536038;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791951891; x=1792556691;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KZW0TlkuVx1/ay444vuidlpbLOf1N6NgoBIEapd0snM=;
-        b=A31cvRBojhfINUXh39rBNjJO61DizGqzsvO4VxGeQj9yh1aX6mBo6AoLHrRpteEB4g
-         N1MyX/jDbdSejxc/M4yYekYgx4eM1K1myw9IIjKrfDGM5BAjcsMFNzw4DmnrVpWtovXf
-         HGJH4K8lNtu3/6C+J8UaIU0J9XVBVCWecwDkgK+KqBKnSsDjcvNMgL3N2ysMYbbtUnGe
-         3J1jrENxlnv4xJHJnxR4I/puWobk7Yjx6xbSBbxR96oLuQD1t5Git/hyWD5Hhw1tGqIk
-         VxL7xI0htSSl+WBD7k24mm4cJE85Etimt1Vsxd9z5BSCTogIjkEFOUIZG+2g/5QMAuFu
-         4cBA==
-X-Forwarded-Encrypted: i=1; AKwUvBx1tc9aC0mYKtlUvDzTYji4bIR4L165zeukyyIwKwhaoiZxBYuCweeqYXE+lk8tXSuAQT/j@lists.linux.dev
-X-Gm-Message-State: AFq9FYLYxstx9mnS+SqaXQRX5Y9Q+RiMaE9xQ5HgvbR1wyj9m0RS2WTV
-	htKZL8zy6sNRp02/WdS0EKvW+BnfkzRDQH1Q3js+aASBdNL1wmYimwBeaICgb3UCudJM6Ro8siE
-	2wIBslDMlgQ==
-X-Received: from dly17-n1.prod.google.com ([2002:a05:701b:2051:10b0:168:6cd7:1061])
- (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:b0d4:b0:141:4a06:ad6f
- with SMTP id a92af1059eb24-16a5dfd5d8cmr22211984c88.8.1791931237569; Tue, 13
- Oct 2026 15:40:37 -0700 (PDT)
-Date: Tue, 13 Oct 2026 15:39:46 -0700
-In-Reply-To: <20261013223946.1836757-1-irogers@google.com>
+        bh=R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=;
+        b=0KJ2y2QORag879FDlKDi2cRKmKiVE2KR5Sw2zQKvEA33suMidtTZCaQsLcU1s8tHtq
+         9F1ZgwaqlCtwHusVaFAktAp6pDDxyLdTnV5+IpkzsnDbCJl6K9zJo7zs3wlxpc1AmTFA
+         Jh2+qDVEdzOTbZCfvbACi4hHZQCArjZWfTD3zCd8emeMk/viKm74jeOW93XAuZXWJVc6
+         D6ZfF4CVCmPM959IdSUAenJGvJOB8bfc5JMaauYv6Qu2wD2U/5FPsWEB9kOWBFSm+ozE
+         FfuitVBxtxDQ/cCDcAfR6RYJInE7f8jsjcuHWO7rlQjtR+mM43XPMGafIRTOCR6v3RyK
+         c4oA==
+X-Forwarded-Encrypted: i=1; AKwUvByGBvLjTkc1UrCQwUjHiyHQuqpZjCizqBiupHECQvKw/LYVmsfcvgFKgYvffkSSXj3L6nBP@lists.linux.dev
+X-Gm-Message-State: AFq9FYLg8ocAgFycybEG276pmM6xFHBCWdfywR/GACNvwdFUFqvoIab/
+	bukYamiTdrRdsvLiBpaNqdmrhPaIFjh+taRE2eecuTHFYO8lQ0DGKJT90oQRs5v1jhJBX9ibu0G
+	XVPEkPKoZdqm7nU+7GkZy8xmXZwX/OMLcGjz4r7msRAd66CzXUHecvcSX
+X-Gm-Gg: AYBFou2Piwp/dW343GWiBlKoykna6fokTp45Cwn8Q4KUulUNjIQND+pZj3CFs768uP7
+	Zkz4CtvFSwHRF4eWV/xR4DzDbbgu87VRFsYNK3HnX9FmppNrMckwwoUYsgDgF93+T+axVph+V/g
+	ri4bVoyLYnyGrcvhrbJsjRcAZVvSBz8UwNm8YhcpKyn3X34Ry/k+6YOcJ8rQ+SsqIXkERhVH3On
+	oWRaO1N/8rtsu94TxEfDvXGVODIX9iDDFRU0XAc4UIy7+C4orOs6eI1kMUFILbSU7CTiyK3lPYw
+	sgccCctGWMFy7407sqBj9TqrfNxOpuQAXsDk4nu9jzuW6PQCF/Suq+TaZvCnIJ33/Vtgiiyqms7
+	4IB7N46Yk2mePArRikwkfLhJtdocRoC2VPX+bK9YhW1pFAqixQRoWYW8K/pA9d1NkA4I6dtr5
+X-Received: by 2002:a17:90b:35cc:b0:3a5:147a:3b63 with SMTP id 98e67ed59e1d1-3ab3a33db36mr12329596a91.8.1791951890944;
+        Tue, 13 Oct 2026 21:24:50 -0700 (PDT)
+X-Received: by 2002:a17:90b:35cc:b0:3a5:147a:3b63 with SMTP id 98e67ed59e1d1-3ab3a33db36mr12329579a91.8.1791951890405;
+        Tue, 13 Oct 2026 21:24:50 -0700 (PDT)
+Received: from [10.133.33.242] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac63279277sm860530a91.1.2026.10.13.21.24.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 21:24:49 -0700 (PDT)
+Message-ID: <252e86f2-9663-4ac7-a19e-6056b44e769b@oss.qualcomm.com>
+Date: Wed, 14 Oct 2026 12:24:38 +0800
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/11] cpufreq: Initialize kobj_type release callback in
+ ondemand and conservative governors
+To: Ian Rogers <irogers@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich
+ <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        David Teigland
+ <teigland@redhat.com>,
+        Alexander Aring <aahringo@redhat.com>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini
+ <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Richard Weinberger <richard@nod.at>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        driver-core@lists.linux.dev, llvm@lists.linux.dev,
+        linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        gfs2@lists.linux.dev, xen-devel@lists.xenproject.org,
+        linux-s390@vger.kernel.org, linux-mtd@lists.infradead.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, zhongqiu.han@oss.qualcomm.com
 References: <20261013223946.1836757-1-irogers@google.com>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013223946.1836757-12-irogers@google.com>
-Subject: [PATCH 11/11] kobject: Require explicit initialization of struct kobj_type::release
-From: Ian Rogers <irogers@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	David Teigland <teigland@redhat.com>, Alexander Aring <aahringo@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>, 
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, driver-core@lists.linux.dev, 
-	llvm@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-sh@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, gfs2@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-s390@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	Ian Rogers <irogers@google.com>
-Content-Type: text/plain; charset="UTF-8"
+ <20261013223946.1836757-5-irogers@google.com>
+Content-Language: en-US
+From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+In-Reply-To: <20261013223946.1836757-5-irogers@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=IpOL47/g c=1 sm=1 tr=0 ts=6acf0414 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=1XWaLZrsAAAA:8 a=Stt4M9KXtKJ5ZbChFzoA:9 a=QEXdDO2ut3YA:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDAxNyBTYWx0ZWRfX8CayclubgLdW
+ w8ASX6StwfOt9YNQaX9YRuuSz4QDxnPN5EGODYR1yOZNplwid6XXBZb8EJqyR6Ua6aIXeG2qbyM
+ sxqV0TeFpMgCsY1LIXGyI8bjb86MhDOWPIoPRE+whMeSdXvCvqlDjInDGp8eikpD5zveyqGEDAd
+ wHRQA0JRKE/AWSX4wm6ZSvw2CZvSO6kYTZUBgE7V1zeGb7gog2+eYiLJyHCmZXEB7VmLXK9+Ni9
+ aVklSrZ/6AFo4xWAeP5GfNmXRTgkm+kJXsJdvi9Gnpx6JNv7EKj7DgdIGCNHsyoNvcX38ugkJfW
+ q2wED1Kv93hA/NO8RfugmrGbX/Rkou4HzOT0RVuSR+SZ2viv0w3UHDOgN9xN5Efb75dc3aQ0y6E
+ 0qB9GL/LqPysh0RoN49OYt1uz41HbXu4VUXaBSbGA/Vw9fh3SGv1RSBk8tt3mA9PwQZR4SFSFyq
+ 3gZKZmsoLRkDggeZ8LQ==
+X-Proofpoint-ORIG-GUID: K9yFLhswXfvQ0rcVZUhzaSwNZdvC_ngZ
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDAxNyBTYWx0ZWRfXzzfZxMH5rt5H
+ 5O82WQF6krDwdsu45t8edLP7wcNFmhth+aj6d+IqityVwRrNHq3+hNWRk9ooHq0JOl9/NQGE+Zb
+ q3hFn+uUKjVWtbsIEFoQMXwk39w3nLc=
+X-Proofpoint-GUID: K9yFLhswXfvQ0rcVZUhzaSwNZdvC_ngZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 malwarescore=0 spamscore=0 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610140017
 
-Documentation/core-api/kobject.rst states:
+Hi Ian,
 
-  "One important point cannot be overstated: every kobject must have a
-  release() method, and the kobject must persist (in a consistent state)
-  until that method is called. If these constraints are not met, the code is
-  flawed. Note that the kernel will warn you if you forget to provide a
-  release() method. Do not try to get rid of this warning by providing an
-  "empty" release function."
+Thanks a lot for the patch.
 
-Annotate struct kobj_type::release with __require_explicit_initialization
-so the compiler diagnoses any struct kobj_type initializer that omits
-.release.
+On 10/14/2026 6:39 AM, Ian Rogers wrote:
+> Export cpufreq_dbs_data_release() and set .kobj_type.release in the
+> ondemand and conservative governors so their gov_attr_set kobjects have
+> a valid release callback, matching cpufreq_ governor_dbs.
 
-For the remaining legacy struct kobj_type definitions where the kobject
-is static, per-CPU, or embedded inside a devm- or parent-managed
-structure rather than freed by kobject_put(), explicitly initialize
-.release = NULL with a comment documenting why no release callback is
-provided.
+Commit a85ee6401a47 ("cpufreq: governor: Use kobject release() method to
+free dbs_data") has already addressed the missing release callback
+issue(it adds the missing cpufreq_dbs_data_release() function.), with 
+its Fixes tag pointing to c4435630361d.
 
-Link: https://lpc.events/event/20/contributions/2392/
-Assisted-by: Antigravity:gemini-3.1-pro
-Signed-off-by: Ian Rogers <irogers@google.com>
----
- arch/arm64/kernel/cpuinfo.c                          | 2 ++
- drivers/acpi/sysfs.c                                 | 2 ++
- drivers/dma/ioat/sysfs.c                             | 2 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c              | 4 ++++
- drivers/infiniband/hw/hfi1/sysfs.c                   | 2 ++
- drivers/infiniband/hw/usnic/usnic_ib_sysfs.c         | 2 ++
- drivers/parisc/pdc_stable.c                          | 2 ++
- drivers/power/supply/ab8500_fg.c                     | 2 ++
- drivers/soc/hisilicon/kunpeng_hccs.c                 | 6 ++++++
- drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 2 ++
- drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c | 2 ++
- drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c | 2 ++
- fs/erofs/sysfs.c                                     | 4 ++++
- fs/f2fs/sysfs.c                                      | 6 ++++++
- fs/ocfs2/cluster/masklog.c                           | 2 ++
- include/linux/kobject.h                              | 2 +-
- 16 files changed, 43 insertions(+), 1 deletion(-)
+Besides, "matching cpufreq_ governor_dbs." seems to be a typo?
 
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index 45c63f3d75c5..ab78efdb13f5 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -309,6 +309,8 @@ const struct seq_operations cpuinfo_op = {
- 
- 
- static const struct kobj_type cpuregs_kobj_type = {
-+	/* info->kobj is embedded in per-CPU cpu_data; cpuid_cpu_offline() only calls kobject_del(). */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- };
- 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index dd4a99f09efe..7534d3f305ba 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -972,6 +972,8 @@ static struct attribute *hotplug_profile_attrs[] = {
- ATTRIBUTE_GROUPS(hotplug_profile);
- 
- static const struct kobj_type acpi_hotplug_profile_ktype = {
-+	/* hotplug->kobj is embedded in static struct acpi_scan_hotplug objects. */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- 	.default_groups = hotplug_profile_groups,
- };
-diff --git a/drivers/dma/ioat/sysfs.c b/drivers/dma/ioat/sysfs.c
-index e796ddb5383f..7fdd0ca36b98 100644
---- a/drivers/dma/ioat/sysfs.c
-+++ b/drivers/dma/ioat/sysfs.c
-@@ -167,6 +167,8 @@ static const struct attribute *const ioat_attrs[] = {
- ATTRIBUTE_GROUPS(ioat);
- 
- const struct kobj_type ioat_ktype = {
-+	/* ioatdma_chan is allocated via devm_kzalloc() rather than freed by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &ioat_sysfs_ops,
- 	.default_groups = ioat_groups,
- };
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-index b15af318784b..0477468f12ae 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-@@ -789,6 +789,8 @@ static const struct sysfs_ops xcp_cfg_res_sysfs_ops = {
- };
- 
- static const struct kobj_type xcp_cfg_res_sysfs_ktype = {
-+	/* xcp_res is embedded in struct amdgpu_xcp_cfg rather than freed individually by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &xcp_cfg_res_sysfs_ops,
- 	.default_groups = xcp_cfg_res_sysfs_groups,
- };
-@@ -1053,6 +1055,8 @@ static const struct attribute_group amdgpu_xcp_attrs_group = {
- };
- 
- static const struct kobj_type xcp_sysfs_ktype = {
-+	/* xcp is embedded in struct amdgpu_xcp_mgr rather than freed individually by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- };
- 
-diff --git a/drivers/infiniband/hw/hfi1/sysfs.c b/drivers/infiniband/hw/hfi1/sysfs.c
-index 372cfd13dc61..33b26650069d 100644
---- a/drivers/infiniband/hw/hfi1/sysfs.c
-+++ b/drivers/infiniband/hw/hfi1/sysfs.c
-@@ -608,6 +608,8 @@ static const struct sysfs_ops sde_sysfs_ops = {
- };
- 
- static struct kobj_type sde_ktype = {
-+	/* sdma_engine is embedded in the dd->per_sdma array rather than freed by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &sde_sysfs_ops,
- };
- 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c b/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-index fdb63a8fb997..234d8d9532aa 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-@@ -245,6 +245,8 @@ static struct attribute *usnic_ib_qpn_default_attrs[] = {
- ATTRIBUTE_GROUPS(usnic_ib_qpn_default);
- 
- static struct kobj_type usnic_ib_qpn_type = {
-+	/* usnic_ib_qp_grp is embedded in RDMA core-managed struct usnic_ib_qp_grp. */
-+	.release = NULL,
- 	.sysfs_ops = &usnic_ib_qpn_sysfs_ops,
- 	.default_groups = usnic_ib_qpn_default_groups,
- };
-diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-index 16f4496bca95..6d972c965c1e 100644
---- a/drivers/parisc/pdc_stable.c
-+++ b/drivers/parisc/pdc_stable.c
-@@ -484,6 +484,8 @@ ATTRIBUTE_GROUPS(paths_subsys);
- 
- /* Specific kobject type for our PDC paths */
- static const struct kobj_type ktype_pdcspath = {
-+	/* pdcspath_entry instances are static; lifetime is not controlled by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &pdcspath_attr_ops,
- 	.default_groups = paths_subsys_groups,
- };
-diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
-index e6b5efdf5dc9..206ee2e392fb 100644
---- a/drivers/power/supply/ab8500_fg.c
-+++ b/drivers/power/supply/ab8500_fg.c
-@@ -2531,6 +2531,8 @@ static struct attribute *ab8500_fg_attrs[] = {
- ATTRIBUTE_GROUPS(ab8500_fg);
- 
- static const struct kobj_type ab8500_fg_ktype = {
-+	/* fg_kobject is embedded in devm-allocated struct ab8500_fg; ab8500_fg_sysfs_exit() only calls kobject_del(). */
-+	.release = NULL,
- 	.sysfs_ops = &ab8500_fg_sysfs_ops,
- 	.default_groups = ab8500_fg_groups,
- };
-diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
-index 0cc2953d59a5..5d083d2b72ca 100644
---- a/drivers/soc/hisilicon/kunpeng_hccs.c
-+++ b/drivers/soc/hisilicon/kunpeng_hccs.c
-@@ -1038,6 +1038,8 @@ static struct attribute *hccs_port_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_port_default);
- 
- static const struct kobj_type hccs_port_type = {
-+	/* hccs_port_info is allocated via devm_kcalloc() rather than freed by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_port_default_groups,
- };
-@@ -1110,6 +1112,8 @@ static struct attribute *hccs_die_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_die_default);
- 
- static const struct kobj_type hccs_die_type = {
-+	/* hccs_die_info is allocated via devm_kcalloc() rather than freed by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_die_default_groups,
- };
-@@ -1213,6 +1217,8 @@ static struct attribute *hccs_chip_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_chip_default);
- 
- static const struct kobj_type hccs_chip_type = {
-+	/* hccs_chip_info is allocated via devm_kcalloc() rather than freed by kobject_put(). */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_chip_default_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-index ae937854403b..3d787245f5b5 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-@@ -304,6 +304,8 @@ static const struct sysfs_ops display_sysfs_ops = {
- };
- 
- static struct kobj_type display_ktype = {
-+	/* dssdev->kobj is embedded in struct omap_dss_device and zeroed in display_uninit_sysfs(). */
-+	.release = NULL,
- 	.sysfs_ops = &display_sysfs_ops,
- 	.default_groups = display_sysfs_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-index 1b644be5fe2e..cf816e83e903 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-@@ -496,6 +496,8 @@ static const struct sysfs_ops manager_sysfs_ops = {
- };
- 
- static struct kobj_type manager_ktype = {
-+	/* mgr->kobj is embedded in static managers[] and zeroed in dss_manager_kobj_uninit(). */
-+	.release = NULL,
- 	.sysfs_ops = &manager_sysfs_ops,
- 	.default_groups = manager_sysfs_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-index 1da4fb1c77b4..9aa16b3dee5e 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-@@ -429,6 +429,8 @@ static const struct sysfs_ops overlay_sysfs_ops = {
- };
- 
- static struct kobj_type overlay_ktype = {
-+	/* ovl->kobj is embedded in static overlays[]; dss_overlay_kobj_uninit() only calls kobject_del(). */
-+	.release = NULL,
- 	.sysfs_ops = &overlay_sysfs_ops,
- 	.default_groups = overlay_sysfs_groups,
- };
-diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
-index dfcec9376cd5..588d541e1713 100644
---- a/fs/erofs/sysfs.c
-+++ b/fs/erofs/sysfs.c
-@@ -238,6 +238,8 @@ static const struct kobj_type erofs_sb_ktype = {
- static const struct kobj_type erofs_ktype = {
- 	.default_groups = erofs_groups,
- 	.sysfs_ops	= &erofs_attr_ops,
-+	/* erofs_root is a static struct kset; lifetime is not controlled by kobject_put(). */
-+	.release	= NULL,
- };
- 
- static struct kset erofs_root = {
-@@ -247,6 +249,8 @@ static struct kset erofs_root = {
- static const struct kobj_type erofs_feat_ktype = {
- 	.default_groups = erofs_feat_groups,
- 	.sysfs_ops	= &erofs_attr_ops,
-+	/* erofs_feat is a static struct kobject; lifetime is not controlled by kobject_put(). */
-+	.release	= NULL,
- };
- 
- static struct kobject erofs_feat = {
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 811e350a1430..a66cef927c62 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -1653,6 +1653,8 @@ static const struct kobj_type f2fs_sb_ktype = {
- 
- static const struct kobj_type f2fs_ktype = {
- 	.sysfs_ops	= &f2fs_attr_ops,
-+	/* f2fs_kset is a static struct kset; lifetime is not controlled by kobject_put(). */
-+	.release	= NULL,
- };
- 
- static struct kset f2fs_kset = {
-@@ -1667,6 +1669,8 @@ static const struct sysfs_ops f2fs_feat_attr_ops = {
- static const struct kobj_type f2fs_feat_ktype = {
- 	.default_groups = f2fs_feat_groups,
- 	.sysfs_ops	= &f2fs_feat_attr_ops,
-+	/* f2fs_feat is a static struct kobject; lifetime is not controlled by kobject_put(). */
-+	.release	= NULL,
- };
- 
- static struct kobject f2fs_feat = {
-@@ -1681,6 +1685,8 @@ static const struct sysfs_ops f2fs_tune_attr_ops = {
- static const struct kobj_type f2fs_tune_ktype = {
- 	.default_groups = f2fs_tune_groups,
- 	.sysfs_ops	= &f2fs_tune_attr_ops,
-+	/* f2fs_tune is a static struct kobject; lifetime is not controlled by kobject_put(). */
-+	.release	= NULL,
- };
- 
- static struct kobject f2fs_tune = {
-diff --git a/fs/ocfs2/cluster/masklog.c b/fs/ocfs2/cluster/masklog.c
-index 563881ddbf00..e476fa7ffea6 100644
---- a/fs/ocfs2/cluster/masklog.c
-+++ b/fs/ocfs2/cluster/masklog.c
-@@ -147,6 +147,8 @@ static const struct sysfs_ops mlog_attr_ops = {
- static struct kobj_type mlog_ktype = {
- 	.default_groups = mlog_default_groups,
- 	.sysfs_ops      = &mlog_attr_ops,
-+	/* mlog_kset is a static struct kset; lifetime is not controlled by kobject_put(). */
-+	.release        = NULL,
- };
- 
- static struct kset mlog_kset = {
-diff --git a/include/linux/kobject.h b/include/linux/kobject.h
-index 55e37a5d405e..e65331717e03 100644
---- a/include/linux/kobject.h
-+++ b/include/linux/kobject.h
-@@ -114,7 +114,7 @@ void kobject_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t *gid)
- char *kobject_get_path(const struct kobject *kobj, gfp_t flag);
- 
- struct kobj_type {
--	void (*release)(struct kobject *kobj);
-+	void (*release)(struct kobject *kobj) __require_explicit_initialization;
- 	const struct sysfs_ops *sysfs_ops;
- 	const struct attribute_group **default_groups;
- 	const struct kobj_ns_type_operations *(*child_ns_type)(const struct kobject *kobj);
+> 
+> This prepares for annotating struct kobj_type::release with
+> __require_explicit_initialization.
+
+It would be better to use "cpufreq: governor:" as the subject prefix.
+
+> 
+> Fixes: c4435630361d ("cpufreq: governor: New sysfs show/store callbacks for governor tunables")
+
+Since a85ee6401a47 ("cpufreq: governor: Use kobject release() method to
+free dbs_data") has already fixed the missing release callback issue,
+current cpufreq patch 4/11 seems to only move the release callback
+initialization to the static initializer in preparation for 11/11. The
+same callback is already set at runtime in cpufreq_dbs_governor_init(),
+so there is no functional change or bug fix here. Should we drop the
+Fixes tag?
+
+So, at least for cpufreq, the issue described in the cover letter
+doesn't seem to exist, right?
+
+"Patches 2-10 fix 10 struct kobj_type definitions where dynamically
+allocated kobjects, ksets, or enclosing structures were either leaked on
+kobject_put() or freed prematurely before kobject release"
+
+
+> Assisted-by: Antigravity:gemini-3.1-pro
+> Signed-off-by: Ian Rogers <irogers@google.com>
+> ---
+>   drivers/cpufreq/cpufreq_conservative.c | 5 ++++-
+>   drivers/cpufreq/cpufreq_governor.c     | 3 ++-
+>   drivers/cpufreq/cpufreq_governor.h     | 1 +
+>   drivers/cpufreq/cpufreq_ondemand.c     | 5 ++++-
+>   4 files changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/cpufreq_conservative.c b/drivers/cpufreq/cpufreq_conservative.c
+> index 0b32ae28ec85..38c3bd5bf75a 100644
+> --- a/drivers/cpufreq/cpufreq_conservative.c
+> +++ b/drivers/cpufreq/cpufreq_conservative.c
+> @@ -316,7 +316,10 @@ static void cs_limits(struct cpufreq_policy *policy)
+>   
+>   static struct dbs_governor cs_governor = {
+>   	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
+> -	.kobj_type = { .default_groups = cs_groups },
+> +	.kobj_type = {
+> +		.release = cpufreq_dbs_data_release,
+> +		.default_groups = cs_groups,
+> +	},
+
+Nit: In that case, may I know can we also remove the following runtime
+assignment from cpufreq_dbs_governor_init() as below:
+
+gov->kobj_type.release = cpufreq_dbs_data_release;
+
+
+>   	.gov_dbs_update = cs_dbs_update,
+>   	.alloc = cs_alloc,
+>   	.free = cs_free,
+> diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+> index 710d93ec89b5..97b64985927d 100644
+> --- a/drivers/cpufreq/cpufreq_governor.c
+> +++ b/drivers/cpufreq/cpufreq_governor.c
+> @@ -404,7 +404,7 @@ static void free_policy_dbs_info(struct policy_dbs_info *policy_dbs,
+>   	gov->free(policy_dbs);
+>   }
+>   
+> -static void cpufreq_dbs_data_release(struct kobject *kobj)
+> +void cpufreq_dbs_data_release(struct kobject *kobj)
+>   {
+>   	struct dbs_data *dbs_data = to_dbs_data(to_gov_attr_set(kobj));
+>   	struct dbs_governor *gov = dbs_data->gov;
+> @@ -412,6 +412,7 @@ static void cpufreq_dbs_data_release(struct kobject *kobj)
+>   	gov->exit(dbs_data);
+>   	kfree(dbs_data);
+>   }
+> +EXPORT_SYMBOL_GPL(cpufreq_dbs_data_release);
+>   
+>   int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
+>   {
+> diff --git a/drivers/cpufreq/cpufreq_governor.h b/drivers/cpufreq/cpufreq_governor.h
+> index 73b8ed7cfaae..c03d067f42eb 100644
+> --- a/drivers/cpufreq/cpufreq_governor.h
+> +++ b/drivers/cpufreq/cpufreq_governor.h
+> @@ -148,6 +148,7 @@ static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy
+>   }
+>   
+>   /* Governor callback routines */
+> +void cpufreq_dbs_data_release(struct kobject *kobj);
+>   int cpufreq_dbs_governor_init(struct cpufreq_policy *policy);
+>   void cpufreq_dbs_governor_exit(struct cpufreq_policy *policy);
+>   int cpufreq_dbs_governor_start(struct cpufreq_policy *policy);
+> diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+> index 9942dbb38dae..7386d043c665 100644
+> --- a/drivers/cpufreq/cpufreq_ondemand.c
+> +++ b/drivers/cpufreq/cpufreq_ondemand.c
+> @@ -374,7 +374,10 @@ static struct od_ops od_ops = {
+>   
+>   static struct dbs_governor od_dbs_gov = {
+>   	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("ondemand"),
+> -	.kobj_type = { .default_groups = od_groups },
+> +	.kobj_type = {
+> +		.release = cpufreq_dbs_data_release,
+> +		.default_groups = od_groups,
+> +	},
+>   	.gov_dbs_update = od_dbs_update,
+>   	.alloc = od_alloc,
+>   	.free = od_free,
+
+
 -- 
-2.56.0.385.gd3acb90ef8-goog
-
+Thx and BRs,
+Zhongqiu Han
