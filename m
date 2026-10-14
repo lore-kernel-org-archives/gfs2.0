@@ -1,297 +1,176 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3618C411A04
-	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B389E412BF6
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791951894; cv=none; b=LHIhZXRBW4/cMzIvMolmPQ0GM/F97NxPwREo45bogvdJ8QzTVOA6XF2TfNhg3MJBfMqBzkDQtPTGpMsBQxv7cCIfAlUg3tJuNCDVtSmY7orntq/+USwLdEot/LsgT7O172ixhuRRYf2LwZEkgY0JEu4NchVQxmt45/8B0ckgQGo=
+	t=1791952841; cv=none; b=Xnx8Yriax0/pmYgFM2b289+l9KnQ2yXcc+Tj5PazlR1bOaIzVEObn2J/+jvjB+xM6L/UCaUoRujCAFen4+ObmkECYTnuEnqyS7vVk0eVea74kQaBmhfOLXey8pY80DwzP476NgfO2y+r6Oh+0bxQjYSU+X/hc4tjMgmAu5liOKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791951894; c=relaxed/simple;
-	bh=uX2IrYZKuunh5Ay8wtG5R15VefK9qebescjFxGpBE28=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfhWf2dAjkDklbVAX7ylMAWyjWHej4bVGcqKTESqusOwmnOJHXNREVLuBXonaTym3pKAYE+0jAxrzfWOe5H3eHGfkXw2IIBwkUD8ifQ9zOxEZBoYetyhiwEQlgdIAP+8S1vJDvMOTNsOXTFn6Con4R/5vwePQXro15rD0KDaoN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mfBIXI1u; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AaeweMUN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1791952841; c=relaxed/simple;
+	bh=n0Hs5KVddvSkBLEzXlL+zhClUBSiGyvm5QaOrNgUFDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BrDvhTnjuwj0vfSaE9BQGJAIsNzzdcmwBaj1sbFLelRyA5e4yXrbhc+BjlDRUiufrdiz6xx+SftMjAH+G92hV/55kx45/PCtnCkhqdmU3qyrHuN0yQqZgmE25IanabmFf/ne5hJygJahK2mK4LeC225aP7u/UECkaLZ6/DxFafU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com; spf=pass smtp.mailfrom=tyhicks.com; dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b=ncQOfXsY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K0VjHOtO; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tyhicks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mfBIXI1u";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AaeweMUN"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69E1wDKv1592391
-	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=; b=mfBIXI1uLAOYHNpx
-	M+pskrgQQbpJj/+60jNFLzZFxHw2r6RDPCnEYQak0C68FqNpjyua8eynX8SGcd1Y
-	2J1k4+K/t/BHMHnNSVt94VWd+zjp21ADu/+gT5GHSxkze+TVoAJ8ZcEJUegyUcj3
-	l02tjV+K80HtT6WpkHCz8hJA1pNAkGFI0embeDgtOOxCvfUQQ4c9lcW5zqnNjbim
-	+IIDJbRdlgftjP27N4Ac7M+zpCtJs+D/UR8kPP45vYPVDrD5gR3xqxJhNmnwyIgi
-	K4kI1TWbCLNx+Vt70sIiD4gGFEtC25wsPGiQD9gMthErtmViPMA3SxZL1fMU3msx
-	O1ZOMA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9s1tjacy-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:24:52 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39deda201bcso6038202a91.2
-        for <gfs2@lists.linux.dev>; Tue, 13 Oct 2026 21:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791951891; x=1792556691; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=;
-        b=AaeweMUNm94W/CR9InV3o0XZ4ZEacDLuPZ5YyaGBDcQzzCGXAEaP6ffIPpFWHfAmji
-         WPhePzmQey/8m8uhwDQ27zJ5CiyM5ezoA7rsPukSdlpiOFnxs0PRK1exyO6BXqWnPBDA
-         v8hiXalB8xYcFGJuX+N0OkZK3kJ6tMEdO0wOR3WhJbHOSaN7Lm8ZiYDlfhJPCpejOPVa
-         wulB0xirX5lwQHtukUR1FzZI6sYwrGF0ucbZ/pzaL8USatgyyeO2cVPLxSsVtvxo6L2e
-         ePEUNVH1HvvdMkc5WNIed8CJPJi5gUNEXdpRHA4N+s3OAJymVfOGk4RHA7AjETH1oOls
-         Hh2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791951891; x=1792556691;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R/YWOWusTmnn9Tx8/iLnPWjpANYDhhlrDY+RymDC9lQ=;
-        b=0KJ2y2QORag879FDlKDi2cRKmKiVE2KR5Sw2zQKvEA33suMidtTZCaQsLcU1s8tHtq
-         9F1ZgwaqlCtwHusVaFAktAp6pDDxyLdTnV5+IpkzsnDbCJl6K9zJo7zs3wlxpc1AmTFA
-         Jh2+qDVEdzOTbZCfvbACi4hHZQCArjZWfTD3zCd8emeMk/viKm74jeOW93XAuZXWJVc6
-         D6ZfF4CVCmPM959IdSUAenJGvJOB8bfc5JMaauYv6Qu2wD2U/5FPsWEB9kOWBFSm+ozE
-         FfuitVBxtxDQ/cCDcAfR6RYJInE7f8jsjcuHWO7rlQjtR+mM43XPMGafIRTOCR6v3RyK
-         c4oA==
-X-Forwarded-Encrypted: i=1; AKwUvByGBvLjTkc1UrCQwUjHiyHQuqpZjCizqBiupHECQvKw/LYVmsfcvgFKgYvffkSSXj3L6nBP@lists.linux.dev
-X-Gm-Message-State: AFq9FYLg8ocAgFycybEG276pmM6xFHBCWdfywR/GACNvwdFUFqvoIab/
-	bukYamiTdrRdsvLiBpaNqdmrhPaIFjh+taRE2eecuTHFYO8lQ0DGKJT90oQRs5v1jhJBX9ibu0G
-	XVPEkPKoZdqm7nU+7GkZy8xmXZwX/OMLcGjz4r7msRAd66CzXUHecvcSX
-X-Gm-Gg: AYBFou2Piwp/dW343GWiBlKoykna6fokTp45Cwn8Q4KUulUNjIQND+pZj3CFs768uP7
-	Zkz4CtvFSwHRF4eWV/xR4DzDbbgu87VRFsYNK3HnX9FmppNrMckwwoUYsgDgF93+T+axVph+V/g
-	ri4bVoyLYnyGrcvhrbJsjRcAZVvSBz8UwNm8YhcpKyn3X34Ry/k+6YOcJ8rQ+SsqIXkERhVH3On
-	oWRaO1N/8rtsu94TxEfDvXGVODIX9iDDFRU0XAc4UIy7+C4orOs6eI1kMUFILbSU7CTiyK3lPYw
-	sgccCctGWMFy7407sqBj9TqrfNxOpuQAXsDk4nu9jzuW6PQCF/Suq+TaZvCnIJ33/Vtgiiyqms7
-	4IB7N46Yk2mePArRikwkfLhJtdocRoC2VPX+bK9YhW1pFAqixQRoWYW8K/pA9d1NkA4I6dtr5
-X-Received: by 2002:a17:90b:35cc:b0:3a5:147a:3b63 with SMTP id 98e67ed59e1d1-3ab3a33db36mr12329596a91.8.1791951890944;
-        Tue, 13 Oct 2026 21:24:50 -0700 (PDT)
-X-Received: by 2002:a17:90b:35cc:b0:3a5:147a:3b63 with SMTP id 98e67ed59e1d1-3ab3a33db36mr12329579a91.8.1791951890405;
-        Tue, 13 Oct 2026 21:24:50 -0700 (PDT)
-Received: from [10.133.33.242] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac63279277sm860530a91.1.2026.10.13.21.24.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 21:24:49 -0700 (PDT)
-Message-ID: <252e86f2-9663-4ac7-a19e-6056b44e769b@oss.qualcomm.com>
-Date: Wed, 14 Oct 2026 12:24:38 +0800
+	dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b="ncQOfXsY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K0VjHOtO"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3BD207A008A
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 00:40:40 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 14 Oct 2026 00:40:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tyhicks.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1791952838; x=1792039238; bh=mAFiYhtbFe
+	mwvvnCWTEeExr0pkWB7IZg7tNJUrlWDeo=; b=ncQOfXsYux6xUE5Yfpf1YgaBFT
+	cTHfw7QjzH5wusg7wxu/N7/hm73X28PpKquXZc5xiYwPW4+lAfqJxibqXR+UvLz+
+	2ZTUnxRz7HtcfNGFgS1MJkd0Tuv5h/GpjcWCaiSGJ1TZ1UdFlpedEaseFuzvowv/
+	TqQSSl8IG9OCVkOhNBJP95SN5RDQQl8GiR1aqF1Dp02uVWnRjvaljmZODDWOuAYc
+	RQbBArRhfe9jWPm3Oy560onwObhrAOQw70BBPuWWCXlWiSD0St3KNWW1JAL9kmbP
+	bNzF5pEbPDujqawxsBVKwUfbzwYVRc65jY+AqtX1732BeF90Rc9hAafKJ/NA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791952838; x=1792039238; bh=mAFiYhtbFemwvvnCWTEeExr0pkWB7IZg7tN
+	JUrlWDeo=; b=K0VjHOtOjP8x4OK/qLK5hjnzj3UEK+pOwByQK/diLCthYYtuRak
+	4w+UCUKGCK7JFq5rpq992TQ414sGpeXwoQll/jApp5jSvjv1N0AQ/vV6o8TAQSoj
+	0jIdCgbmVEwbpWc/GDIYhV7iGxhVnAVGyxOucONqfd+Qut3pa8xlZu9eupkPHb7a
+	O19RfpWHCKap1Ii2AG4C4Rgf9FKDqPAESBzjmyuI8I+/7v/rcZf87XvPdXRhxOVR
+	PHI64FJJSdJiopZc5fM/F+oblU4aUcPwF93Yc0oXuLowDYOwPy7A3lW/OBTdMI+P
+	X7xVR3mFNXlN4nZtsbMmUuaI/XZPAGqxlHA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=tyhicks.com a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791952838; d=tyhicks.com;
+	mf=PGNvZGVAdHloaWNrcy5jb20+;
+	rt=PGdmczJAbGlzdHMubGludXguZGV2Pg==;
+	s=fm1:rsa-sha256:on1xDF6MMWzF+jQTfbZKh9S9Y3aFfd5N3vr8ovIPxwPMvx1
+	Cd+7zaDtP2SMvzErOgqtTUqP9LgfrDhsdQXyCWX3VktKMyAT6FmGYqGca/mbvRMB
+	BZmFfpcMMGXgdEe+IrBk0vuRPyBPQ1+/MNecvGRGmtb/PvpOKp8mkeb+g2ev88++
+	APDyfsA1hPmmp3Grtvb1Vq6dYtqj27swTHlSJz96SvAY3aMQlseVFpiBIixunrsL
+	K4RXHBHxGtzJiCSQpEH9+F8wO8KEj/uI0Z3QZnRTvaHBcCq9r5+NDUoIPwLF3msQ
+	i1t2OmiFnydG1lKoUghYfGTcLkaW06hyLsUE6lw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:qUmERcW4JyBitZMe5zuk9ywp5LRlIgLiVnlpfK0/pBM=:n0Hs5KVddvSkBLEzXlL+zhClUBSiGyvm5QaOrNgUFDY=;
+X-ME-Sender: <xms:xgfPaiirqaGth-_QIS8OAsoYy7Sf2rYbZwFhAfjJ0MuAWKxQ7THxuQ>
+    <xme:xgfPajaE8ofnGot4Pky4vdm_HNaxz3sV7tnqENiHW1NZcFJGvD6DD5wX-ruqy_MSt
+    qzisuah0SMwdW1miO5q3pRD4Y4a5JhX9iIk39cqEEXme_YFFqwv3Rg>
+X-ME-Received: <xmr:xgfParPcjPkYn4vlK0LMTgxNr5Ysji4BSj-bUDmcojpTmB7UhXNDHw>
+X-ME-Proxy-Cause: dmFkZTFKd7b9t+rYxj8fdFEGtNMVuNQ5jOwC8SdIlUTY97d1oNKv/jurn5DUraLtoIX+2E
+    I3bIdfkpsGhUi+/tt/Szji6YvW2+vzMoDGWv9xPK+lO1Sb1zC3bVSP3NLZ3IFInykWKEaP
+    PH93NfwO6+b7/crRfH4wX5WXalVIiTPCeErxbBQz6CcsOBGB7Z36o5CAXL7bOQ0KwYB3u2
+    Tt7S2s6M3ONy1Jf6lLNDRHUve8aF4/8yXcvszXWYbXHvQvvmoncKrISq6v28AJ11qBn/sv
+    qp0QBdjQ9qmGRZKU7BnZTWgAAxoRXCyTV5hWG4Si3B29+0DMJIgEbol0t/XKYLu9NNjraX
+    0smkOXWfrc/IBFYy/pyNxGx9kfhI0WiCxuDyZdzXI9f2NIYsJkUDkDUeJG4zUPuBWtaBvE
+    Mwi2vLMuBjIiVqP446bbIM7nhubKyyD0dXHP2HMFxaXSbWZp3G1UIOBjW6FPA7HQKr1TcP
+    BPwGPZdrFFh4a5r7M1kmZLbWcfqQp/zQcXFYEYi5bg9fYkAJaxBna2FbAXCGRPGb4Oc6Gh
+    1r+gceQWpvlFBkLAjH/mFrxDSXQUT5CImV6pag4feAxFZbphAWhHyasICJGejFWDtY2NaB
+    BCVdHpJu62iJDBfhFB3EF7k3EeYcm32d9i47bHoDPeSCp+YbyXeBn+EXahFQ
+X-ME-Proxy: <xmx:xgfPanR7GBzeumdsdancLyUun9rpWy2_-9xodM1WQNRR_NGP-MwpZg>
+    <xmx:xgfPau7MdffZ0A3QPGcRatiLqM8PYL5uRriXSWH_CfIWpuOpVlPScw>
+    <xmx:xgfPaia9aS220tTKgJDOpqj2xLlBZI6Y-T6J6zgubPIDKeXL060mVQ>
+    <xmx:xgfPaqZKI-8EgzC6LYS3JQGrtcebVT9OxULUA-QFxdCybqbmiymnFA>
+    <xmx:xgfPan3Lpy4_ahjI4bwYfGxNbwKEt-4H9IVwxWRAdOc68A38BkASVj37>
+Feedback-ID: i78e14604:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Oct 2026 00:40:36 -0400 (EDT)
+Date: Tue, 13 Oct 2026 23:40:28 -0500
+From: Tyler Hicks <code@tyhicks.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>,
+	ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+	exfat@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 01/28] ecryptfs: don't leak the inode when a lookup
+ can't open the lower file
+Message-ID: <as8HvJJq-JP5-UCp@elm>
+References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
+ <20261012-work-fs-sb_rdonly-v1-1-60743a3dc326@kernel.org>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/11] cpufreq: Initialize kobj_type release callback in
- ondemand and conservative governors
-To: Ian Rogers <irogers@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich
- <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        David Teigland
- <teigland@redhat.com>,
-        Alexander Aring <aahringo@redhat.com>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini
- <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Richard Weinberger <richard@nod.at>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        driver-core@lists.linux.dev, llvm@lists.linux.dev,
-        linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        gfs2@lists.linux.dev, xen-devel@lists.xenproject.org,
-        linux-s390@vger.kernel.org, linux-mtd@lists.infradead.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, zhongqiu.han@oss.qualcomm.com
-References: <20261013223946.1836757-1-irogers@google.com>
- <20261013223946.1836757-5-irogers@google.com>
-Content-Language: en-US
-From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-In-Reply-To: <20261013223946.1836757-5-irogers@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=IpOL47/g c=1 sm=1 tr=0 ts=6acf0414 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=1XWaLZrsAAAA:8 a=Stt4M9KXtKJ5ZbChFzoA:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDAxNyBTYWx0ZWRfX8CayclubgLdW
- w8ASX6StwfOt9YNQaX9YRuuSz4QDxnPN5EGODYR1yOZNplwid6XXBZb8EJqyR6Ua6aIXeG2qbyM
- sxqV0TeFpMgCsY1LIXGyI8bjb86MhDOWPIoPRE+whMeSdXvCvqlDjInDGp8eikpD5zveyqGEDAd
- wHRQA0JRKE/AWSX4wm6ZSvw2CZvSO6kYTZUBgE7V1zeGb7gog2+eYiLJyHCmZXEB7VmLXK9+Ni9
- aVklSrZ/6AFo4xWAeP5GfNmXRTgkm+kJXsJdvi9Gnpx6JNv7EKj7DgdIGCNHsyoNvcX38ugkJfW
- q2wED1Kv93hA/NO8RfugmrGbX/Rkou4HzOT0RVuSR+SZ2viv0w3UHDOgN9xN5Efb75dc3aQ0y6E
- 0qB9GL/LqPysh0RoN49OYt1uz41HbXu4VUXaBSbGA/Vw9fh3SGv1RSBk8tt3mA9PwQZR4SFSFyq
- 3gZKZmsoLRkDggeZ8LQ==
-X-Proofpoint-ORIG-GUID: K9yFLhswXfvQ0rcVZUhzaSwNZdvC_ngZ
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDAxNyBTYWx0ZWRfXzzfZxMH5rt5H
- 5O82WQF6krDwdsu45t8edLP7wcNFmhth+aj6d+IqityVwRrNHq3+hNWRk9ooHq0JOl9/NQGE+Zb
- q3hFn+uUKjVWtbsIEFoQMXwk39w3nLc=
-X-Proofpoint-GUID: K9yFLhswXfvQ0rcVZUhzaSwNZdvC_ngZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 malwarescore=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610140017
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012-work-fs-sb_rdonly-v1-1-60743a3dc326@kernel.org>
 
-Hi Ian,
-
-Thanks a lot for the patch.
-
-On 10/14/2026 6:39 AM, Ian Rogers wrote:
-> Export cpufreq_dbs_data_release() and set .kobj_type.release in the
-> ondemand and conservative governors so their gov_attr_set kobjects have
-> a valid release callback, matching cpufreq_ governor_dbs.
-
-Commit a85ee6401a47 ("cpufreq: governor: Use kobject release() method to
-free dbs_data") has already addressed the missing release callback
-issue(it adds the missing cpufreq_dbs_data_release() function.), with 
-its Fixes tag pointing to c4435630361d.
-
-Besides, "matching cpufreq_ governor_dbs." seems to be a typo?
-
+On 2026-10-12 12:20:46, Christian Brauner wrote:
+> ecryptfs_lookup_interpose() opens the lower file of a regular file to
+> read the size from the header. If that fails it calls make_bad_inode()
+> and returns the error. A new inode is still I_NEW at that point and
+> nothing ever unlocks or puts it, so it leaks together with the reference
+> it holds on the lower inode. And an inode that was already in the cache
+> gets marked bad for all its other users instead of just losing the
+> reference this lookup took.
 > 
-> This prepares for annotating struct kobj_type::release with
-> __require_explicit_initialization.
-
-It would be better to use "cpufreq: governor:" as the subject prefix.
-
+> umount then complains:
 > 
-> Fixes: c4435630361d ("cpufreq: governor: New sysfs show/store callbacks for governor tunables")
+>   VFS: Busy inodes after unmount of ecryptfs (ecryptfs)
+> 
+> That's a WARN, or a BUG with CONFIG_BUG_ON_DATA_CORRUPTION. The lower
+> filesystem reports the same when it is unmounted. Use iget_failed() for
+> a new inode and iput() for one from the cache.
+> 
+> Reproducer, opening the lower file read-write fails on a read-only bind
+> mount:
+> 
+>   sig=$(printf x | ecryptfs-add-passphrase - | sed -n 's/.*\[\(.*\)\].*/\1/p')
+>   mount --bind -o ro /lower /lower
+>   mount -i -t ecryptfs -o ecryptfs_sig=$sig,ecryptfs_cipher=aes,ecryptfs_key_bytes=16,ecryptfs_passthrough /lower /upper
+>   cat /upper/f      # EROFS
+>   umount /upper     # VFS: Busy inodes after unmount of ecryptfs
+> 
+> Fixes: 3b06b3ebf441 ("eCryptfs: Fix new inode race condition")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Since a85ee6401a47 ("cpufreq: governor: Use kobject release() method to
-free dbs_data") has already fixed the missing release callback issue,
-current cpufreq patch 4/11 seems to only move the release callback
-initialization to the static initializer in preparation for 11/11. The
-same callback is already set at runtime in cpufreq_dbs_governor_init(),
-so there is no functional change or bug fix here. Should we drop the
-Fixes tag?
+Thanks, Christian! I ran this through the regression tests in the
+ecryptfs-utils project and everything passed. I also followed the steps
+in your reproducer, with and without this change, and verified that it
+fixes the intended issue.
 
-So, at least for cpufreq, the issue described in the cover letter
-doesn't seem to exist, right?
+  Acked-by: Tyler Hicks <code@tyhicks.com>
 
-"Patches 2-10 fix 10 struct kobj_type definitions where dynamically
-allocated kobjects, ksets, or enclosing structures were either leaked on
-kobject_put() or freed prematurely before kobject release"
+Tyler
 
-
-> Assisted-by: Antigravity:gemini-3.1-pro
-> Signed-off-by: Ian Rogers <irogers@google.com>
 > ---
->   drivers/cpufreq/cpufreq_conservative.c | 5 ++++-
->   drivers/cpufreq/cpufreq_governor.c     | 3 ++-
->   drivers/cpufreq/cpufreq_governor.h     | 1 +
->   drivers/cpufreq/cpufreq_ondemand.c     | 5 ++++-
->   4 files changed, 11 insertions(+), 3 deletions(-)
+>  fs/ecryptfs/inode.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/cpufreq/cpufreq_conservative.c b/drivers/cpufreq/cpufreq_conservative.c
-> index 0b32ae28ec85..38c3bd5bf75a 100644
-> --- a/drivers/cpufreq/cpufreq_conservative.c
-> +++ b/drivers/cpufreq/cpufreq_conservative.c
-> @@ -316,7 +316,10 @@ static void cs_limits(struct cpufreq_policy *policy)
->   
->   static struct dbs_governor cs_governor = {
->   	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
-> -	.kobj_type = { .default_groups = cs_groups },
-> +	.kobj_type = {
-> +		.release = cpufreq_dbs_data_release,
-> +		.default_groups = cs_groups,
-> +	},
-
-Nit: In that case, may I know can we also remove the following runtime
-assignment from cpufreq_dbs_governor_init() as below:
-
-gov->kobj_type.release = cpufreq_dbs_data_release;
-
-
->   	.gov_dbs_update = cs_dbs_update,
->   	.alloc = cs_alloc,
->   	.free = cs_free,
-> diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
-> index 710d93ec89b5..97b64985927d 100644
-> --- a/drivers/cpufreq/cpufreq_governor.c
-> +++ b/drivers/cpufreq/cpufreq_governor.c
-> @@ -404,7 +404,7 @@ static void free_policy_dbs_info(struct policy_dbs_info *policy_dbs,
->   	gov->free(policy_dbs);
->   }
->   
-> -static void cpufreq_dbs_data_release(struct kobject *kobj)
-> +void cpufreq_dbs_data_release(struct kobject *kobj)
->   {
->   	struct dbs_data *dbs_data = to_dbs_data(to_gov_attr_set(kobj));
->   	struct dbs_governor *gov = dbs_data->gov;
-> @@ -412,6 +412,7 @@ static void cpufreq_dbs_data_release(struct kobject *kobj)
->   	gov->exit(dbs_data);
->   	kfree(dbs_data);
->   }
-> +EXPORT_SYMBOL_GPL(cpufreq_dbs_data_release);
->   
->   int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
->   {
-> diff --git a/drivers/cpufreq/cpufreq_governor.h b/drivers/cpufreq/cpufreq_governor.h
-> index 73b8ed7cfaae..c03d067f42eb 100644
-> --- a/drivers/cpufreq/cpufreq_governor.h
-> +++ b/drivers/cpufreq/cpufreq_governor.h
-> @@ -148,6 +148,7 @@ static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy
->   }
->   
->   /* Governor callback routines */
-> +void cpufreq_dbs_data_release(struct kobject *kobj);
->   int cpufreq_dbs_governor_init(struct cpufreq_policy *policy);
->   void cpufreq_dbs_governor_exit(struct cpufreq_policy *policy);
->   int cpufreq_dbs_governor_start(struct cpufreq_policy *policy);
-> diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
-> index 9942dbb38dae..7386d043c665 100644
-> --- a/drivers/cpufreq/cpufreq_ondemand.c
-> +++ b/drivers/cpufreq/cpufreq_ondemand.c
-> @@ -374,7 +374,10 @@ static struct od_ops od_ops = {
->   
->   static struct dbs_governor od_dbs_gov = {
->   	.gov = CPUFREQ_DBS_GOVERNOR_INITIALIZER("ondemand"),
-> -	.kobj_type = { .default_groups = od_groups },
-> +	.kobj_type = {
-> +		.release = cpufreq_dbs_data_release,
-> +		.default_groups = od_groups,
-> +	},
->   	.gov_dbs_update = od_dbs_update,
->   	.alloc = od_alloc,
->   	.free = od_free,
-
-
--- 
-Thx and BRs,
-Zhongqiu Han
+> diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
+> index 525297c7ebd8..0d8452558a98 100644
+> --- a/fs/ecryptfs/inode.c
+> +++ b/fs/ecryptfs/inode.c
+> @@ -362,7 +362,10 @@ static struct dentry *ecryptfs_lookup_interpose(struct dentry *dentry,
+>  	if (S_ISREG(inode->i_mode)) {
+>  		rc = ecryptfs_i_size_read(dentry, inode);
+>  		if (rc) {
+> -			make_bad_inode(inode);
+> +			if (inode_state_read_once(inode) & I_NEW)
+> +				iget_failed(inode);
+> +			else
+> +				iput(inode);
+>  			return ERR_PTR(rc);
+>  		}
+>  	}
+> 
+> -- 
+> 2.53.0
+> 
+> 
