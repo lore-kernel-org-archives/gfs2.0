@@ -1,155 +1,137 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF04C4F96A6
-	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 11:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791977350; cv=pass; b=t2dyUjViXVXogf4cwYks4lbV/UQcawTycfWVepiH5zZtW0RF/n7nbNSzFmCzynGud0BdAjO7XxlnrxZ2/rHJDntYESoMHXiRdS09HdC54Es0/fvgaLiTBe5mUkOPeum8MxLuqPrJyNus1lljwjYwPTGbR3K/7uP+l8STCXOwCbM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791977350; c=relaxed/simple;
-	bh=Bm8IXeZCCjjHRHqufoiH0uSm7tIaA4fZ4x02DGLBDgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NNLC6ReR1O5O4XtSoKpg0aKEKDX851ovlymhTDZqSBmijfZktP6EnG2PXR+rTrHKxFUv71BMl+iaeeGdzoo5T+WP0Y0s42TXJNMCeMngINkYd8ZtNV2uBEXP+hhjRHH9zqR78uZ64L92AjpRhmZQoQfGz3iPkPvumYTDAqKSILM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SLbPmIoL; arc=pass smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F414B126A
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 11:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791978555; cv=none; b=RAuN/rys6q6hlORH6YxZ6YWxYFgy7OdpXlPybyvh6p5wqflW/XPLPOWBGBlb69vSpdUQd4HHYBFNosV/JLHpBn4DJvrdba+Al3pufBvNUys67PuSfIGcGKmjhu+x0goBW6gfA9A1XHa4j9TLkdf/dkmrfZJoGFtPrmzIh0ggduc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791978555; c=relaxed/simple;
+	bh=z8r4MRtUi0LNk7lRzCoa0ekWmE4fhmo2OSQMOtBUgZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XjwhB58yDIt5mvl8tdAw6yWDl98fWMdgUHFrCSEHgoGcj/5FCRxM+dWGsJzxV5+PvyTHCqpnNGJ/N0tYrjkC58hwdSCdEGhS5zCxq+SPra7HPkoZJLFXm3VZyg1R857ovR+Hm8G/0FgNO9kUHZz5V89xSpKBF7JkId+bVCP5AaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=N23a4QPq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SsJpoFog; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SLbPmIoL"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-35179d0747fso306968eec.1
-        for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 04:29:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791977348; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aAV/fX5Ttl58VuhmiLRWtphg87TOalofNeVT5fQqzKPe3XfKvotU8qEDVsntspeOoO
-         BNMFFw4dQs2gjmoH6Nax2rkLqVX2Wd3lV5Zm9EBnJS+YQr1zz4Bdr04ph4NDAlgC5YBL
-         4iYlDhBSwVtkJDwisTUmgQbWlEYGdOwMl1r4MDXNiTGelA7m8ZIYoFH0gnG9gfbv60ly
-         AEbJjPlLvs4JPkaFgKL2lA6mBbW4GQaym/qsT3NmoB7bc9JqH/XLeCZWwZegTuDHZylF
-         dsqLzEJNdWPr/g0mh6cPSsHgyaKkNvdJ5/j5Q2wvCs4h6+voBxCYCcV0k1njYHftY28w
-         +QqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xWJCwZOmpC49YtbA7QzlowrBvokYI4WD90uvALsrwIA=;
-        fh=U1vI/yMpIWhaWEmH1PXY5SoVvrYcMiYGBjn4yQD7Yck=;
-        b=W77Z+mtnvU7p9kbPWK6a1CSojAg2rd2nxDnyMqFTYvwvhzwhQeMVySpkovsr50o3gY
-         Oi09oeBD/mbd03Jak7i+QHrmwovyVZcUo7Fxv3/6o2XSLntxOz3WVUM+kuTIteCNjwET
-         rIh0c6DuyIHmsd0jn6RbRPyMyu6cFrwuLF0jP+x2qKsiDVwQ9oK/DWK90tv1pqCyVo1O
-         qi2pFmF2EZ6VCZ+pufVwW+mDva1Lt5RWelWdXhMPT8ioxhDmaY62nZtHq2rEbXRv7JJ4
-         eReTzv1W0Jn+dvOEZWVcExbeX4gXWcI/5y+zerg98BIlqORfElmCBr/kU0Wt8x8+/8dg
-         6B7w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791977348; x=1792582148; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xWJCwZOmpC49YtbA7QzlowrBvokYI4WD90uvALsrwIA=;
-        b=SLbPmIoLauM1g8rEXO7a+x+nNVHrDaZgKcHl6ue405vowb/MnJ5zaXEmtCizeCPpbq
-         2vMzWDo3Gg+bIVKxZQr9u+O4X9oxi7JIr3iJlGG0RH6OQDmN/zKQweSXoR2fqVgDgABO
-         CVo0sZO0YQdXbzKYy566UQXdcOL5EnU2eL6bxGJl5t9xeZ7vH2Bu40IOu9wBorkOVVnl
-         reur63f9XcBgwUABd4IS2VqgaWIig9qTPdx+AQZ3/N/rrAJn0X8PvFJrY83CYTO9xVxX
-         wY3MyJX90m4WBvId2WpRBNFCFCQ1xEC4EBxrfDoN56t170MYuo01X3TJ59B3Nw8SSH3h
-         WB4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791977348; x=1792582148;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xWJCwZOmpC49YtbA7QzlowrBvokYI4WD90uvALsrwIA=;
-        b=uoVF4w/dyYdBrtV44D0b6in1r2SjFMeZk9ho9QczmtjpEKOcP6z0hA/uZ6M5koGrtB
-         NaS5OgEzoxa9fc/UQj73P7l3lckaYj2bR6dzrc82YkT2YH1R+Q6UgXLuzdSq036o2RtH
-         VNOUinjts1jOxGWHKAS4FPgjCY4XJDBfDyHyqiinStsD4soI8bPj90C3MvmiKyo9jeIz
-         mr7CAo+0oJ7UQ+N+GlLDmoN01DXpXcL/qVPp4+hsVc3fo7VIWqfi58jBqZnu03sGHQNp
-         dJ/5rDonjrZYFk8IEawirLNoTscaLppv/3Lw9w2Q22nijURoW65/pvJz5HsnXBBDKxQ5
-         cOEA==
-X-Forwarded-Encrypted: i=1; AKwUvByohC8iAbW9rTPfK8KtMPYx9l31vPGKTJOu/oqlQiBs72c/wecPlQXxj3Cg2eGUmuBzghEt@lists.linux.dev
-X-Gm-Message-State: AFq9FYLBTTdCiX3cg1mrodAcrI+45vum3QCp10qR1wq9KyWkzMUP4Z/I
-	ghpokZhln3T/eSrcfRCf3UIsFeQ21Q47rsb3IagOIHN+CL7uPoO9wp1Sug0FplrSLDeqfqjplXV
-	aLpli0fAiM8tSJuG6glxzjlqc63fIDyU=
-X-Gm-Gg: AYBFou2GCA65ZdFzsIiH3+zWbUOY6IAiy0D7rbDswvMN+0ZfmV5nWsSKqPzmjYKs8H7
-	h65zjFnmoW94Xcf/43zr01sbFit6tiZb7ui2+bfNB2hU0h2i8ybS5TMUl2Uaqc/ao+9MQH8YRLo
-	ZH1hW7UDcBZOBhKCMSfVbM2wDrj4U7rqYUbp+GMcObhK2BCZ9PIRMd6bRzPtQ5mevdd+mzkuFF6
-	8pXZJESM8NDnqgPRA+MR/UfXbRvEMfVljzsCwORwsO3Pvx1Kji3vduOECbznDkU3uVTBMwX3F5d
-	Z+6pEsCLdw6yGXkjsAi1RqH03yeLgLYXLDRLXNBFCxfA1OYvPoRrjiSci64+CNCPIN5et9IwkfJ
-	DsIfS30RvTqkZg2AH843/IkQApGhmjtMkM51bz5l6e5T/77RKyHq1oTKh35+TpK1M/QFXVKyCFA
-	nUY1Nk5geFAX1Zsk2GvDFHirJwDjfQvcjJBZ+XOJORr6PDcU54CLM=
-X-Received: by 2002:a05:693c:6215:b0:35b:cb8a:8ce7 with SMTP id
- 5a478bee46e88-35bcb8a919dmr14326600eec.1.1791977347656; Wed, 14 Oct 2026
- 04:29:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="N23a4QPq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SsJpoFog"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id AEE5114000A9
+	for <gfs2@lists.linux.dev>; Wed, 14 Oct 2026 07:49:06 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 14 Oct 2026 07:49:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1791978546; x=1792064946; bh=ljC1EWPWgR
+	PS5tUHzsiAKUkPoihH7ZlQU23a6W9iHaM=; b=N23a4QPqTIewXlHX9ZszNsRyaq
+	KDk5THBTQPf9OLUHbQc4Wcehe6S3A5fym5r9fd00o6BowcsFoKaW73aIRdgD3P2z
+	KJ6S8KGY94vChChxK2cen2ijs2J4GzhMaGTUIEvJWd3/swgXoYJwCJjx2jSY/xAU
+	NB3RMwsDSZLm0Q/lssr9ouH0USAR9cgCZJaNREfQk9cg/ZSCtSnEg890ne2X7cNB
+	FfdPh6CTBNHc+vWXWOINYtrFDgNXyxk/ORhQ74/kzA4qgI1cdhkoMM4cLTJx08WN
+	Zvl4UIqJ9LbM4JXJIhjmia4+V9g+1Mcb9w/Ua1jsh5FAAvdIieN9t0WBqutQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791978546; x=1792064946; bh=ljC1EWPWgRPS5tUHzsiAKUkPoihH7ZlQU23
+	a6W9iHaM=; b=SsJpoFogEkA+tO5b/0cjDz3BuyNIbNkn6CUDHXdwGSYbQm4dyP/
+	MjiJ/XTLWnKJQLCh5ZE6E973SrPLUgs5GY6/CKurl49HTF8Vv2bQ6UWiRuChBdel
+	cNTHVJRdNy5TwG/A1mkLjam8u+guR4qT0N80B+8p3P3TVOEz5c8nFYw+n4YEbSwd
+	smhZ7TiNDnG7h48eWJEUoYfC4FmVVUQ+GEUj6nBzyCuBGqZflvMxX8eqEa/LL4Dh
+	cgRDBz31kxqcVLTGoW5UEl6FonwU+TZRRlLglyd+5ojgmHc4cz/wfa50v0ZYBrtC
+	in4iVNOKlctHg9efklSL2EN+EmWcgAt7dQA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=kroah.com a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791978546; d=kroah.com;
+	mf=PGdyZWdAa3JvYWguY29tPg==;
+	rt=PGdmczJAbGlzdHMubGludXguZGV2Pg==;
+	s=fm2:rsa-sha256:NOasSYsekmwgZAApbwJJBAvx6b+9pHoMmTXT+nAhPQZDXYn
+	CMkW+myAzqOCgkiv3Frwu1Nm89/23yqQPUpDi0HpFVNLjV1uDAWJBP+e5ukXTyp0
+	tIWMyRBakUtBdpio+1p0hM5h/sEERZkWdCtHaihvzivTtj68l2BR9ecsQOxTG4xA
+	E87XdT/Gw3QZoYJFHYhW0qvPcS4HAv/rTwXuPLHixLtHdhHmODDuom+cn+elEnCi
+	MnrRt/JRzoymiDasay3L4LMeoSw+T+hAf2dHytUSAm218VtutaaqRwzW4uh8LTbv
+	wWoRR1chzuSUVCcoTVE1yphy+aMTTIVfFEfepow==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:NXqvzbL0EcVKcRouoKFLpRAfiCZ+PZx2mcFB+LVfxPc=:z8r4MRtUi0LNk7lRzCoa0ekWmE4fhmo2OSQMOtBUgZ4=;
+X-ME-Sender: <xms:MmzPameWf_PJcdl_rjQhk9uJ5MSlJqRy8becgbBDPU0YnwvLad5Q4w>
+    <xme:MmzPanxj-Z1HmhJsPZQcGKoXtDYrDhH5WB0keUdbAdKzBJgMGgqeg2R3PUDEimiVQ
+    1iIaBLeroS3jov8d0yF-o7AYmeL9GEVYvJUqmrVI_Rj3q8FnRw>
+X-ME-Received: <xmr:MmzPanLOi6t4eNWWsTgrDhEO5zHSmIG_u5EUciwgD-k1UxSWBq4BMnU9UGu4wSUUrMBzLDisQ15IpB9OSa9R60Z99S6T3HzuKrut4qLLJLI>
+X-ME-Proxy-Cause: dmFkZTFVeTgRVt8VgVVuURS2y6F5bHP7SB45kgAV0kCKhyd9ylXqJwTwTvQiC9dcAZHsZi
+    Gzm+qOu5tvWIrxHx2wabEmTkbqM3P3tmYKUrsv7fKbngo2A1CSxt1+W66E2w1AOMbrw/44
+    /DuO2vurJ8PdA2BlrizzP1+17Z0exNBIjKuR9CJMOeG+yPX3kdWzUtl3bEqrCMbrbuZxy5
+    cU+BCGpxGF+D2a3Lzk1jE6/Hg13tLZBeYPZ24aKitB/vGGmHm2my/WeQPKXFqm41W9y9o/
+    kfkwBDUcCHEKKwmVv44NAqBrqms/zQWhszG1mXfU503Umoc16Scr+LVhmzcnElsrlXmNbZ
+    BN1xzR/L1QALRiRIjjHKeILJP7hk9NR8fi8urAlsL9Yd2pFIj8XJK+0NRkRVR2a2fe9OoG
+    ZF81uS6E6JhxsXj5yph4xU5G5mp19UrX327WpmCrqzx8tIaxSmSNIawn5VwQRpSHBklzz1
+    ILOMwSTlm/7HoUS1MHj53utuHYOWZyKjoYwU71JW3QwQ0LsCi4iKJ+OmZVCKEE+9MSK2Me
+    A4XL5Xv0UZIi7x59RGNs0slviFZqKmZOQ12s/noV1wu4Z9X7zmW9vnQ30EnhC2j4TVn9g/
+    1uCH5NVMk475dW0YKgrrQbLhEIZKMLYPJhc0ic7kgV06ei1s7iagcR6OyABA
+X-ME-Proxy: <xmx:MmzPaguyzIagqBPJK5lCiOS5dYZqijTcxVuZoo9GyqP4_yb7f_alQA>
+    <xmx:MmzPapQ4kw1vl1-10HVBMG9rqVy5oclyB43tFIoCmZufAEphrt4AoA>
+    <xmx:MmzPahRNemxzYHX6tOPYjDaGK6uMu4i6d4-XzAYAxNZpONHSzcoSyg>
+    <xmx:MmzPalrlvu2b7OMy9N5m2x1n8TWAro6x-B-_RoTejnfL3bzLJyXTug>
+    <xmx:MmzPankJpyqJwFusYsMiEFrgPhGGozDou4tKMQ4Z9rScsNlGDDrzGRMf>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Oct 2026 07:49:05 -0400 (EDT)
+Date: Wed, 14 Oct 2026 13:49:10 +0200
+From: Greg KH <greg@kroah.com>
+To: vienna-0FFH <viennaoffh@gmail.com>
+Cc: Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	syzbot+04dfbd15d442517e713a@syzkaller.appspotmail.com
+Subject: Re: [PATCH] dlm: don't warn when closing a node without a connection
+Message-ID: <2026101400-roman-landmass-d03e@gregkh>
+References: <20261014090237.395-1-viennaoffh@gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261013223946.1836757-1-irogers@google.com> <20261013223946.1836757-2-irogers@google.com>
-In-Reply-To: <20261013223946.1836757-2-irogers@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 14 Oct 2026 13:28:55 +0200
-X-Gm-Features: AclHuK8qVHO7HVQy6LgzcUgjYcQf3EimC6SJcN58PVqcWVdOf6T45eXZNeTLsEY
-Message-ID: <CANiq72mLUh1JB=9e=tqStuL_H3=Ormx5v-uFkCDp-0zZm7tBrQ@mail.gmail.com>
-Subject: Re: [PATCH 01/11] Compiler Attributes: Add __require_explicit_initialization
- macro
-To: Ian Rogers <irogers@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <chleroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	David Teigland <teigland@redhat.com>, Alexander Aring <aahringo@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>, 
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	driver-core@lists.linux.dev, llvm@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, gfs2@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-s390@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014090237.395-1-viennaoffh@gmail.com>
 
-On Wed, Oct 14, 2026 at 12:40=E2=80=AFAM Ian Rogers <irogers@google.com> wr=
-ote:
->
-> +/*
-> + * Optional: not supported by gcc
-> + *
-> + * clang: https://clang.llvm.org/docs/AttributeReference.html#require-ex=
-plicit-initialization
-> + */
-> +#if __has_attribute(__require_explicit_initialization__)
-> +# define __require_explicit_initialization __attribute__((__require_expl=
-icit_initialization__))
-> +#else
-> +# define __require_explicit_initialization
-> +#endif
+On Wed, Oct 14, 2026 at 05:02:37PM +0800, vienna-0FFH wrote:
+> Opening and closing a configfs comm entry without ever configuring an
+> address for it triggers the following warning:
+> 
+>   mkdir /sys/kernel/config/dlm/cluster
+>   mkdir /sys/kernel/config/dlm/cluster/comms/1
+>   rmdir /sys/kernel/config/dlm/cluster/comms/1
+> 
+>   dlm: closing connection to node 1
+>   ------------[ cut here ]------------
+>   !con
+>   WARNING: fs/dlm/lowcomms.c:1455 at dlm_lowcomms_close+0x12d/0x470, CPU#1
+> 
+> Since commit 6f0b0b5d7ae7 ("fs: dlm: remove dlm_node_addrs lookup list")
+> the lowcomms connection has the same lifetime as the configfs comm
+> entry, but a connection is only created when an address is configured
+> via the addr attribute. Removing a comm entry for which no address was
+> ever set up is valid and the resulting close call has simply nothing
+> to do, so it must not warn.
+> 
+> Reported-by: syzbot+04dfbd15d442517e713a@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=04dfbd15d442517e713a
+> Fixes: 6f0b0b5d7ae7 ("fs: dlm: remove dlm_node_addrs lookup list")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: vienna-0FFH <viennaoffh@gmail.com>
 
-The LPC slides mention Clang 14+, but from a quick test in Compiler
-Explorer and a `git log --grep` on the LLVM repository to confirm, it
-seems the attribute was introduced in Clang 20+, no?
+Real name is needed please.
 
-If that is correct, then it is not available in all LLVM versions we
-support (LLVM 17+), so we should add:
+thanks,
 
-     * Optional: only supported since clang >=3D 20.0
-
-With that:
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+greg k-h
