@@ -1,135 +1,178 @@
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64BB36DA1A
-	for <gfs2@lists.linux.dev>; Sat, 17 Oct 2026 21:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A833A453B;
+	Sun, 18 Oct 2026 15:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792272101; cv=none; b=j6Ubu/YMmQ6l3KFczcwy76+veHVgDeVqckisNowVYsQTq6fYM8ot3dcUhHGSyBjQIk+0R4NnT42HYdvUm4ufME7VyIsrmFrDYKsR5Rr8hs2hi4VppjXeo6I3XlOnFczIg3ay+KsMB+f3pQHI4YCEnA26+dndbADCtjKb0r3+uvA=
+	t=1792338522; cv=none; b=mQPBS+o84ndHvbu/QcdVOn1C4GVAz3KkMHOy+po/FHyJ1hA0VwMxGc05BP51inAKwA5NIHPzUfWko9D/iGKa3lou/NNSk+cymGWKFk0m/8bvXZvegGuC4+cljbBj3f9VF5uU83y7IV7IhFFaHC3rjBxnxchZ8u6V6AgcoytMMRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792272101; c=relaxed/simple;
-	bh=/kFfHFRoe408EgWKwNIyFW0hOifIAtJ3KHni0rDxd2A=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=PPP+35HJNseOnaWCEZcdDspkwoZtCA5oDw09F98uEqqcRtkfORqY/OeLkb51uAvE6F2NXuOQNeEBtLO2GPoy7IOvHI0J4jsA7+mF4GECRzGqSv8YSThsPzvaCbmwnDGQ0FIj51hEVDbCxByL/Rr7d7Z8P7X4voTGlX00NzgqOgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-8452af97d8aso1572545a34.3
-        for <gfs2@lists.linux.dev>; Sat, 17 Oct 2026 14:21:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792272099; x=1792876899;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wiq5SZSeAP0nUEm5Zy0xf68TR8qV63o4MNSaQsjSlFU=;
-        b=jdQ1dUyhFKc46WLefqAY+WJWVsga0y60GvZ2G+MO4XYJ/CQHL1XMpCo09ggN5C0x2Y
-         IUklFQTilb38smcALPyYDyvIrLf4p9RqWG7ozvxfAt5vDnUBnHGSMij9gTSpQKG4epOh
-         UwJhTasLCW7zJ4xfN8umQ0FwZmHRZ3teIUwfjmNQu2WMJ9kTIqZ3zlINkEAO558nl/x2
-         K8tQzG9+65O60uAoVtA1Kv3nY26mUeaSJlql+eoVetq50KJzdIB2IJEUFKDXth8Wh531
-         4VJOr+fQ532KMBb+XMFHdFEAT7tQaUPBMWmqDA7NeHbdldknjQdGhITbeoaaJgjdhPhC
-         iTlA==
-X-Forwarded-Encrypted: i=1; AKwUvBwrTDGK6XgKw8vs9P1u9F+R3lmwSJY8QG1Qg/QgtdlC5sQKz82CXGTOAsoRawC+Pp6a4M4A@lists.linux.dev
-X-Gm-Message-State: AFq9FYLnIVVThsGBneddtLk4Vm47NBf+fk0uTQrESf4D+UZpzYiHRh4T
-	04aNWwQ1YyMUG8hirtWT4qz+4fojhplFXOI2Gej6bx7rE/klQhAWQE/NyBjrl1cIPMYWMhieQYt
-	Gmwi20aVOnArLsqiDrA1FE2Mz761XJaJxa4kdLPlSQvUIBxic6pIoUODEvhI=
+	s=arc-20240116; t=1792338522; c=relaxed/simple;
+	bh=FaRcLEUs6l15qig9t/5mUVXsio7boF41UEEgpQSRb4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T55XSCI5Bv56z3Hz7iH+q3uCuqzavW/LdzfnBbLbQ+2F21ozj5E0tkJXj1ZPmVDvzuYoL1scaALTOtQ80iK+KwKQZK/ru7MWmriw/gq+yiB8Y9M/K3gqORZouwhMktbG+8pd2rix8Jejv23kJ6tLwNybtIYZvoT83l5E3tSmtZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVyI2KX3; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVyI2KX3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F62E1F000C8;
+	Sun, 18 Oct 2026 15:48:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792338520;
+	bh=qHr+ZYKSpAzCi10EtcwRrDzJJq6BBKkyzbps+RPUef0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WVyI2KX3sfSFb7oZBIkg5vyFZX7+LpvwVP7fn4Cty10Z+Y1LmZOfywyVqCXWWjkZk
+	 w0HsKNxrIpDN+fTkwgMX01zxZ9pMY6N/P1LtrU17V8ZUMVAxbiAmgrPDGg7W+Rjs6i
+	 cOUCAgudB6PnoTQaLURK0fj6/ZYFFSlnOyU9KKE/6KmvZiNJKMOPTK8W4Rny4GZZn5
+	 dnzO8E7iP9hzjx0W6bJF+lnhorAfjoibm0p1V0l9L9VW6uVghDWolJvqlzthVu28XZ
+	 /BYjpM8dC6pSBrEBdq8Xis70LV4n4Q0dBgk6Rq7VtYXCr+VagK8d6QqHe7hk60/2QA
+	 1AcOlXaFgMXKQ==
+Date: Sun, 18 Oct 2026 17:48:34 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, 
+	gfs2@lists.linux.dev, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 20/28] gfs2: wait for a pending withdraw before
+ remounting read-only
+Message-ID: <20261018-ungemacht-sodbrennen-hausordnung-42d33a4f7098@brauner>
+References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
+ <20261012-work-fs-sb_rdonly-v1-20-60743a3dc326@kernel.org>
+ <CAHc6FU5bdAjABRm=bnH68b2f66TZTDZ8sPdatLB2fS7-55U=yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2387:b0:4d6:92d4:c804 with SMTP id
- 5614622812f47-53cd20a090cmr2570349b6e.60.1792272098767; Sat, 17 Oct 2026
- 14:21:38 -0700 (PDT)
-Date: Sat, 17 Oct 2026 14:21:38 -0700
-In-Reply-To: <6a82cd06.dbb3a75c.20434b.004b.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad3e6e2.a6d1a155.34a93f.004d.GAE@google.com>
-Subject: Re: [syzbot] [gfs2?] WARNING: kobject bug in __dlm_new_lockspace
-From: syzbot <syzbot+b2b8d04ec4914f618d23@syzkaller.appspotmail.com>
-To: aahringo@redhat.com, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, teigland@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHc6FU5bdAjABRm=bnH68b2f66TZTDZ8sPdatLB2fS7-55U=yw@mail.gmail.com>
 
-syzbot has found a reproducer for the following issue on:
+On Fri, Oct 16, 2026 at 02:32:01AM +0200, Andreas Gruenbacher wrote:
+> Christian,
+> 
+> On Mon, Oct 12, 2026 at 1:27 PM Christian Brauner <brauner@kernel.org> wrote:
+> > Since commit 9c4a3de6cd5b ("gfs2: Asynchronous withdraw") most of a
+> > withdraw happens in do_withdraw() from a work item and SDF_JOURNAL_LIVE
+> > stays set until it ran. A remount to read-only in that window goes
+> > through gfs2_make_fs_ro(). Its log flushes bail out early on the
+> > withdrawn filesystem before FLUSH_SHUTDOWN can clear SDF_JOURNAL_LIVE
+> > and then gfs2_quota_cleanup() hits its BUG_ON():
+> >
+> >   kernel BUG at fs/gfs2/quota.c:1532!
+> >   RIP: 0010:gfs2_quota_cleanup+0x562/0x6b0
+> >    gfs2_make_fs_ro+0xf3/0x2e0
+> >    gfs2_reconfigure+0x42e/0xfd0
+> >    reconfigure_super+0x437/0xb20
+> >
+> > Just flushing the withdraw work before the remount isn't enough.
+> > gfs2_withdraw() sets SDF_WITHDRAWN, calls dump_stack() and only then
+> > queues the work. So a remount can see a withdrawn filesystem while
+> > there's nothing to flush yet. And a withdraw can also start in the
+> > middle of gfs2_make_fs_ro().
+> >
+> > So let do_withdraw() wake up waiters when it clears SDF_JOURNAL_LIVE and
+> > let gfs2_make_fs_ro() wait for the bit after its log flushes, right
+> > before gfs2_quota_cleanup(). On a healthy filesystem the shutdown flush
+> > already cleared it. umount doesn't need to wait. gfs2_put_super() sets
+> > SDF_NORECOVERY first and gfs2_quota_cleanup() only BUGs without it. Once
+> > the bit is clear the journal isn't live anymore and gfs2_make_fs_ro()
+> > doesn't write anything.
+> >
+> > gfs2_make_fs_rw() can leave the bit set on a withdrawn filesystem as
+> > well. It checks for a withdraw and then sets SDF_JOURNAL_LIVE. If
+> > do_withdraw() runs in between it finds the journal not live yet and
+> > returns. Nothing clears the bit then and the next remount to read-only
+> > waits for it forever. So check for the withdraw and set the bit under
+> > sd_log_flush_lock, which do_withdraw() holds while it tests the bit.
+> > Then either the remount sees the withdraw or do_withdraw() sees the live
+> > journal.
+> >
+> > Reproducer, lock_nolock: a SCHED_FIFO task writes 1 to the withdraw
+> > sysfs knob from cpu 1 and keeps cpu 1 busy (RT throttling and cpu 1's
+> > fair server disabled) so do_withdraw() can't run, then from cpu 2:
+> >
+> >   mount -o remount,ro /mnt
+> >
+> > On lock_dlm the window lasts as long as the withdraw helper runs. The
+> > window before the work is queued can be widened with a kprobe on
+> > dump_stack_lvl() that delays the task writing to the withdraw knob by a
+> > few seconds. A remount to read-only or sysrq u in that window hits the
+> > same BUG_ON().
+> >
+> > Fixes: 9c4a3de6cd5b ("gfs2: Asynchronous withdraw")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > ---
+> >  fs/gfs2/super.c | 22 ++++++++++++++++++----
+> >  fs/gfs2/util.c  |  2 +-
+> >  2 files changed, 19 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> > index 06302c29340f..1d7b39354d65 100644
+> > --- a/fs/gfs2/super.c
+> > +++ b/fs/gfs2/super.c
+> > @@ -147,12 +147,23 @@ int gfs2_make_fs_rw(struct gfs2_sbd *sdp)
+> >         }
+> >
+> >         error = gfs2_quota_init(sdp);
+> > -       if (!error && gfs2_withdrawn(sdp)) {
+> > -               gfs2_quota_cleanup(sdp);
+> > +       if (error)
+> > +               return error;
+> > +
+> > +       /*
+> > +        * do_withdraw() only takes a live journal down. Check for a withdraw
+> > +        * under the lock it holds for that so that either we see the withdraw
+> > +        * or it sees the journal live. Otherwise gfs2_make_fs_ro() waits for
+> > +        * the bit forever.
+> > +        */
+> > +       down_write(&sdp->sd_log_flush_lock);
+> > +       if (gfs2_withdrawn(sdp))
+> >                 error = -EIO;
+> > -       }
+> > -       if (!error)
+> > +       else
+> >                 set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> > +       up_write(&sdp->sd_log_flush_lock);
+> > +       if (error)
+> > +               gfs2_quota_cleanup(sdp);
+> >         return error;
+> >  }
+> >
+> > @@ -565,6 +576,9 @@ void gfs2_make_fs_ro(struct gfs2_sbd *sdp)
+> >                                    HZ * 5);
+> >                 gfs2_assert_warn(sdp, gfs2_log_is_empty(sdp));
+> >         }
+> > +       /* A withdraw that do_withdraw() didn't finish yet leaves it live. */
+> > +       if (!test_bit(SDF_NORECOVERY, &sdp->sd_flags))
+> > +               wait_on_bit(&sdp->sd_flags, SDF_JOURNAL_LIVE, TASK_UNINTERRUPTIBLE);
+> >         gfs2_quota_cleanup(sdp);
+> >  }
+> >
+> > diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+> > index 83b8bb6446e5..1535ce2b7aa8 100644
+> > --- a/fs/gfs2/util.c
+> > +++ b/fs/gfs2/util.c
+> > @@ -122,7 +122,7 @@ static void do_withdraw(struct gfs2_sbd *sdp)
+> >                 up_write(&sdp->sd_log_flush_lock);
+> >                 return;
+> >         }
+> > -       clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> > +       clear_and_wake_up_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> >         gfs2_ail_drain(sdp); /* frees all transactions */
+> >         up_write(&sdp->sd_log_flush_lock);
+> >
+> >
+> > --
+> > 2.53.0
+> >
+> 
+> this looks good all around, thank you very much. Can I add it to my gfs2 queue?
 
-HEAD commit:    58161ead29e5 Merge tag 'drm-fixes-2026-10-17' of https://g..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=121e9495580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c4b098695335c89f
-dashboard link: https://syzkaller.appspot.com/bug?extid=b2b8d04ec4914f618d23
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=138e8d99580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b2b8d04ec4914f618d23@syzkaller.appspotmail.com
-
-dlm: Using TCP for communications
-workqueue: Failed to create a rescuer kthread for wq "dlm_callback": -EINTR
-dlm: can't start dlm_callback workqueue
-dlm: ls_6035_1: can't start dlm_callback -12
-------------[ cut here ]------------
-kobject: '(null)' (ffff888027a28088): is not initialized, yet kobject_put() is being called.
-WARNING: lib/kobject.c:736 at kobject_put+0x66/0x550 lib/kobject.c:734, CPU#0: syz-executor183/6040
-Modules linked in:
-CPU: 0 UID: 0 PID: 6040 Comm: syz-executor183 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2026
-RIP: 0010:kobject_put+0x8e/0x550 lib/kobject.c:734
-Code: ae 05 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 ab 9f 59 f6 48 8b 33 4c 89 f7 48 89 da <67> 48 0f b9 3a eb 05 e8 56 c2 e8 f5 4c 8d 73 38 4c 89 f7 be 04 00
-RSP: 0018:ffffc9000307f9f0 EFLAGS: 00010246
-RAX: 1ffff11004f45011 RBX: ffff888027a28088 RCX: dffffc0000000000
-RDX: ffff888027a28088 RSI: 0000000000000000 RDI: ffffffff918d8000
-RBP: 0000000000000000 R08: ffffffff917a747f R09: 1ffffffff22f4e8f
-R10: dffffc0000000000 R11: fffffbfff22f4e90 R12: 1ffff11004f45018
-R13: ffffffff9bad9988 R14: ffffffff918d8000 R15: 00000000fffffff4
-FS:  00005555573c3400(0000) GS:ffff888123abf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6992404000 CR3: 00000000260fb000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- new_lockspace fs/dlm/lockspace.c:617 [inline]
- __dlm_new_lockspace+0x1714/0x1cd0 fs/dlm/lockspace.c:638
- device_create_lockspace+0xc7/0x350 fs/dlm/user.c:414
- device_write+0x872/0xed0 fs/dlm/user.c:606
- vfs_write+0x296/0xba0 fs/read_write.c:685
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f69924444e9
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd9a54bda8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f69924444e9
-RDX: 0000000000000080 RSI: 00007ffd9a54be80 RDI: 0000000000000003
-RBP: 00007ffd9a54be80 R08: 00000000ffffffff R09: 0000000084a559bf
-R10: 00007ffd9a54beb8 R11: 0000000000000246 R12: 0000000000000002
-R13: 00007ffd9a54bdd0 R14: 0000000000000001 R15: 00007f6992404000
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	ae                   	scas   %es:(%rdi),%al
-   1:	05 48 89 d8 48       	add    $0x48d88948,%eax
-   6:	c1 e8 03             	shr    $0x3,%eax
-   9:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
-  10:	fc ff df
-  13:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1)
-  17:	74 08                	je     0x21
-  19:	48 89 df             	mov    %rbx,%rdi
-  1c:	e8 ab 9f 59 f6       	call   0xf6599fcc
-  21:	48 8b 33             	mov    (%rbx),%rsi
-  24:	4c 89 f7             	mov    %r14,%rdi
-  27:	48 89 da             	mov    %rbx,%rdx
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	eb 05                	jmp    0x36
-  31:	e8 56 c2 e8 f5       	call   0xf5e8c28c
-  36:	4c 8d 73 38          	lea    0x38(%rbx),%r14
-  3a:	4c 89 f7             	mov    %r14,%rdi
-  3d:	be                   	.byte 0xbe
-  3e:	04 00                	add    $0x0,%al
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+I was planning to just provide a stable branch for everyone to pull post
+-rc1. Then you can just pull that in?
