@@ -1,157 +1,160 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFB8258EE9;
-	Mon, 19 Oct 2026 09:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA924FB9B3
+	for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 13:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792403553; cv=none; b=BjeHq6sz1Ef1uwLXGsbZGtGA5E/JOB3k0ozyuHI1Ya0XUNgzre/EOgRJJForfdcGFCIWVSQKFEaXBrwPJE4NGAorfrF2KmKt+JL4Dd2xBhcuEcSbZF1/nnKT3lkp2xHQjgbx+mWX+rl2ajOhY1gRhX9cE4a3/INn0W5W1hPyZfQ=
+	t=1792417311; cv=none; b=Tuni6aVmOwZn3afWT7BTOaE9jPkUo8BejKdTD9MhgVNMRvck5G7lAj+Uf51KqNj8/x7uhUluaMggAJHpnOC22RtvWayX8gV7wbT9yjEGDJfOwXbKSyTGz4DPzYc2zAybMoivHS76FJK4garj7qv+gSGpGVgTdK3dwc8I9c1bSYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792403553; c=relaxed/simple;
-	bh=WvTtg8JCOogctn7ZSS15ZrjyvEQJ4j+2UdlxuxFQnTw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iWoUT9Sb38I8PvnVmd3cqioTRFGE1By6GMVyepQshBU9AN6XNmOATfYHERsGYwJQkTJ/IGVEepzhcYZ7PfQBBdQdZefxvHeArQkEfdOFLNlRqetFFnztgqNG8XzofotAlpYeRH4T6OgCbK5RqGV+gSIBRLYXpjKwUAT1tNKhkzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DapX6O+I; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HkvNOVKW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DapX6O+I; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HkvNOVKW; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1792417311; c=relaxed/simple;
+	bh=AzLamgGVmmJPRgvKr7nXInNdlFCbe22YDx441GDcVKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=LNZQnCrIBZalTxBE4g+U0U3/l+DKrlJC9SV0ujk/QeAI27fllHnnGWnlmPK3FPkFSGDNFRrl7pcIVRhcrTRL1H+xbhY7AuQvUvyugn9AEf39u2uauoLt1DeRclNxuCZTRUIOUuYvKxD1Pl5qZFEoFILaoh4b/N3a9KzwI8TEdlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NiKJxCd4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DapX6O+I";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HkvNOVKW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DapX6O+I";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HkvNOVKW"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NiKJxCd4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792417309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uebIKduZuZflGYrsljiBjDZz5D/SVnu3Yv+vPeBb8eE=;
+	b=NiKJxCd4jFN5VwyPBiuGZuOqHkr6f27ATrZXMFwdTKQIVdeBqozxQsUc9gxWzXNkJSq9cq
+	T9ZjPz3MFA4jZrYwlW4pc1vBmB2wGEN/8fZcWGoBp+b7qJIRYXSH5RlNxKBqXIFsR6tDCX
+	a8C34BnzPVtZdQ9NhJfpKhUdz3WZ8Ws=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-Y6REqA9zNtaa-7hQwt8ISQ-1; Mon,
+ 19 Oct 2026 13:41:45 +0000
+X-MC-Unique: Y6REqA9zNtaa-7hQwt8ISQ-1
+X-Mimecast-MFC-AGG-ID: Y6REqA9zNtaa-7hQwt8ISQ_1792417305
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6896E1F44E;
-	Mon, 19 Oct 2026 09:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792403550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q/XjywU63jHK3zYfOZqk/GFYoCnttMlmfWvXQ5qlU98=;
-	b=DapX6O+Ip4pKRXdlJVwKoYbFSgZmnci+oTZVGWx9N//wk+3Co0A6Gy6VjLwyPbJnXuzAkL
-	nK/2Yk9eDEsEWraU+H6ro4FbaBRxl+xMkoYT76R16fauUCeKeP7bK2SBFwKH5znABsckFq
-	6f8cRPlmgFApKa7bh+P/Y4scW5VQEgI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792403550;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q/XjywU63jHK3zYfOZqk/GFYoCnttMlmfWvXQ5qlU98=;
-	b=HkvNOVKWZPcLczlyzJhxbC7tMzVsoibO8LGhYXd0PSctA5J8hm3Rc9LMb4abX/F22nZPqn
-	qBMliAhGPtxMP+Ag==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792403550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q/XjywU63jHK3zYfOZqk/GFYoCnttMlmfWvXQ5qlU98=;
-	b=DapX6O+Ip4pKRXdlJVwKoYbFSgZmnci+oTZVGWx9N//wk+3Co0A6Gy6VjLwyPbJnXuzAkL
-	nK/2Yk9eDEsEWraU+H6ro4FbaBRxl+xMkoYT76R16fauUCeKeP7bK2SBFwKH5znABsckFq
-	6f8cRPlmgFApKa7bh+P/Y4scW5VQEgI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792403550;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q/XjywU63jHK3zYfOZqk/GFYoCnttMlmfWvXQ5qlU98=;
-	b=HkvNOVKWZPcLczlyzJhxbC7tMzVsoibO8LGhYXd0PSctA5J8hm3Rc9LMb4abX/F22nZPqn
-	qBMliAhGPtxMP+Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F3B4134B3;
-	Mon, 19 Oct 2026 09:52:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id emzKBV7o1WpYOgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 19 Oct 2026 09:52:30 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id BB917A1413; Mon, 19 Oct 2026 11:52:25 +0200 (CEST)
-Date: Mon, 19 Oct 2026 11:52:25 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 20/28] gfs2: wait for a pending withdraw before
- remounting read-only
-Message-ID: <wauqpgtmmf2beg3pc2kqlbizrigd4ew26do4zqch5ilwdjy4cd@brolwbx25sem>
-References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
- <20261012-work-fs-sb_rdonly-v1-20-60743a3dc326@kernel.org>
- <CAHc6FU5bdAjABRm=bnH68b2f66TZTDZ8sPdatLB2fS7-55U=yw@mail.gmail.com>
- <20261018-ungemacht-sodbrennen-hausordnung-42d33a4f7098@brauner>
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9DE9F1955E7D;
+	Mon, 19 Oct 2026 13:41:44 +0000 (UTC)
+Received: from pasta.redhat.com (unknown [10.44.32.82])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1EED518004D2;
+	Mon, 19 Oct 2026 13:41:42 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] gfs2 changes for 7.4
+Date: Mon, 19 Oct 2026 15:41:37 +0200
+Message-ID: <20261019134141.194437-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261018-ungemacht-sodbrennen-hausordnung-42d33a4f7098@brauner>
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: -oKAzHHIUnPUu_Voikyypgg674qxQYfE7COC45O25Lw_1792417305
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Sun 18-10-26 17:48:34, Christian Brauner wrote:
-...
-> On Fri, Oct 16, 2026 at 02:32:01AM +0200, Andreas Gruenbacher wrote:
-> > > diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-> > > index 83b8bb6446e5..1535ce2b7aa8 100644
-> > > --- a/fs/gfs2/util.c
-> > > +++ b/fs/gfs2/util.c
-> > > @@ -122,7 +122,7 @@ static void do_withdraw(struct gfs2_sbd *sdp)
-> > >                 up_write(&sdp->sd_log_flush_lock);
-> > >                 return;
-> > >         }
-> > > -       clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
-> > > +       clear_and_wake_up_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
-> > >         gfs2_ail_drain(sdp); /* frees all transactions */
-> > >         up_write(&sdp->sd_log_flush_lock);
-> > >
-> > >
-> > > --
-> > > 2.53.0
-> > >
-> > 
-> > this looks good all around, thank you very much. Can I add it to my gfs2 queue?
-> 
-> I was planning to just provide a stable branch for everyone to pull post
-> -rc1. Then you can just pull that in?
+Hello Linus,
 
-On a related topic: I didn't find any branch with this work in vfs.git - I
-wanted to check how all the things come together after adding the generic
-emergency RO bit. So if you can push some inofficial branch for now it
-would help me... Thanks!
+please consider pulling the following gfs2 changes for 7.4.
 
-								Honza
+Thanks,
+Andreas
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+The following changes since commit 4bb187d6f379c5490e3034b153fe476127308519:
+
+  Merge tag 'gfs2-for-7.3' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2026-08-17 17:03:34 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-7.4
+
+for you to fetch changes up to 2f9efb1efe4e026e44b7693e67f54344ae022deb:
+
+  gfs2: remove unnecessary check in gfs2_freeze_lock_shared (2026-10-16 02:27:54 +0200)
+
+----------------------------------------------------------------
+gfs2 changes
+
+- Two journaled data inode fixes (fix journaled truncate range end
+  offset, fix the escaped block copy in gfs2_before_commit).
+
+- When reading a new resource group from disk, validate its boundaries.
+
+- To eliminate lock contention, get rid of the per-filesystem
+  sd_async_glock_wait queue and wait for the individual glock locking
+  events instead.
+
+- Shut up sparse RCU warnings by marking ip->i_gl as __rcu.  Accessing
+  it through gfs2_inode_glock() -> rcu_dereference_protected() where we
+  know that the pointer cannot change.
+
+- Some more minor fixes and cleanups.
+
+----------------------------------------------------------------
+Andreas Gruenbacher (12):
+      gfs2: Avoid ip->i_gl dereferences in gfs2_inode_lookup and gfs2_create_inode
+      gfs2: Get to super block from inode in tracepoints
+      gfs2: Add inode variables
+      gfs2: Introduce gfs2_inode_glock
+      gfs2: annotate i_gl with __rcu
+      gfs2: Silence sparse signedness warning
+      gfs2: Improve resource group validation and error handling
+      gfs2: No quotas for meta inodes
+      gfs2: Get rid of sd_async_glock_wait
+      gfs2: missing whitespace in error message
+      gfs2: gfs2_create_inode excl cleanup
+      gfs2: remove unnecessary check in gfs2_freeze_lock_shared
+
+Hemanth Selam (1):
+      gfs2: fix typos in comments
+
+Hongling Zeng (1):
+      gfs2: move brelse() after buffer head accesses
+
+Jan Kara (1):
+      gfs2: Fix journaled truncate range end offset
+
+Jiaming Zhang (1):
+      gfs2: reject invalid inode sizes
+
+Karl Mehltretter (1):
+      gfs2: Fix the return value in gfs2_get_link() kernel-doc
+
+Tal Zussman (1):
+      gfs2: fix the escaped block copy in gfs2_before_commit()
+
+ThangNN99 (1):
+      gfs2: fix NULL deref in gfs2_quota_lock() for meta inodes
+
+ fs/gfs2/acl.c        |  11 +++--
+ fs/gfs2/aops.c       |  17 +++----
+ fs/gfs2/bmap.c       |  93 ++++++++++++++++++++----------------
+ fs/gfs2/dentry.c     |   6 +--
+ fs/gfs2/dir.c        |  61 +++++++++++++++---------
+ fs/gfs2/export.c     |   7 +--
+ fs/gfs2/file.c       |  72 ++++++++++++++++------------
+ fs/gfs2/glock.c      |  60 +++++++++++++++--------
+ fs/gfs2/glops.c      |  13 +++--
+ fs/gfs2/incore.h     |   8 ++--
+ fs/gfs2/inode.c      | 132 ++++++++++++++++++++++++++++-----------------------
+ fs/gfs2/lock_dlm.c   |   4 +-
+ fs/gfs2/log.c        |   3 +-
+ fs/gfs2/lops.c       |  22 ++++-----
+ fs/gfs2/meta_io.c    |   7 +--
+ fs/gfs2/ops_fstype.c |  26 +++++-----
+ fs/gfs2/quota.c      |  57 ++++++++++++----------
+ fs/gfs2/recovery.c   |  19 ++++----
+ fs/gfs2/rgrp.c       | 127 ++++++++++++++++++++++++++-----------------------
+ fs/gfs2/super.c      |  98 +++++++++++++++++++++++---------------
+ fs/gfs2/trace_gfs2.h |   6 +--
+ fs/gfs2/util.c       |  10 ++--
+ fs/gfs2/xattr.c      |  69 ++++++++++++++++-----------
+ 23 files changed, 531 insertions(+), 397 deletions(-)
+
