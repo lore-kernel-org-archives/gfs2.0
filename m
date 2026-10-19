@@ -1,160 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792423021;
+	b=zIst3MDiKOfZV/8+sEYxLQR7v/W8pJMt+mKHuKDNaaBETJ5NFOCDOFKxK5luSyJ4mN3A
+	 4RorjProBzODJZXWeuT5ynhsqMDj7P+dVltVFXRAIf2o9VdoTes7wZwCvdJrmVEvozx5t
+	 w8I0Ev4yxTMKBAcQAzUl6gXt8O7ZUR0e+AXhbaKop3j9g7AeBJRkxlBne+stAOyZievul
+	 L4IlDPUxiqepu5TCHRD0BkDqJEm/ZukrP5czEfUItaWg0pfowLfsUWyFJDep5bHVNjID7
+	 L394F8hCvMOxzQb4n4aHg4YKYeIJwEDwtg4E8w3rkp+Vq3cAo91gET0NBZANv1fpWag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423021;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=lrlZ4tZZQMYR2hWboxUPUCUfGuJIMsLnJFeI+w+hy7A=;
+	b=b7WHGQaawIhEX7Zgce12ouphkrK1NTogRQd0Nj7jvLlBMA4PqYW6GU5oJsk/rAZUvRLO
+	 uqP8Ju+CW+PlQxJMJgysEVSM4cIFe3r1p9xIk571zCtj+r/n+NtvFXN38/MD1c9BQdq9F
+	 XcJABObWR1pyXrCAMLv3Q3i6GVCQpFGVFET//wiozMGQfR2E2QkMhSCGLyduxnG9gwwSM
+	 J2zzHcf6etY4RKAOrBlgwzJcH2mCpFOLcK7H4kcX0Ng2RV9LZIlZi0+W1Cq5k60we6Cdx
+	 A7q5KW0dq77tdSnCSJpD1ogmEOJLrxn4Zj3I9ewIpMKjik8r21eg6IcA4we+jfC79iA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=truenas.com;
+	spf=pass smtp.mailfrom=truenas.com;
+	dkim=pass header.d=truenas.com header.i=@truenas.com header.a=rsa-sha256 header.s=google header.b=c+WoMj1j;
+	arc=none smtp.remote-ip=209.85.128.171
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA924FB9B3
-	for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 13:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417311; cv=none; b=Tuni6aVmOwZn3afWT7BTOaE9jPkUo8BejKdTD9MhgVNMRvck5G7lAj+Uf51KqNj8/x7uhUluaMggAJHpnOC22RtvWayX8gV7wbT9yjEGDJfOwXbKSyTGz4DPzYc2zAybMoivHS76FJK4garj7qv+gSGpGVgTdK3dwc8I9c1bSYc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417311; c=relaxed/simple;
-	bh=AzLamgGVmmJPRgvKr7nXInNdlFCbe22YDx441GDcVKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=LNZQnCrIBZalTxBE4g+U0U3/l+DKrlJC9SV0ujk/QeAI27fllHnnGWnlmPK3FPkFSGDNFRrl7pcIVRhcrTRL1H+xbhY7AuQvUvyugn9AEf39u2uauoLt1DeRclNxuCZTRUIOUuYvKxD1Pl5qZFEoFILaoh4b/N3a9KzwI8TEdlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NiKJxCd4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241F660A0A88
+	for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 15:16:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 241F660A0A88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truenas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truenas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NiKJxCd4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792417309;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uebIKduZuZflGYrsljiBjDZz5D/SVnu3Yv+vPeBb8eE=;
-	b=NiKJxCd4jFN5VwyPBiuGZuOqHkr6f27ATrZXMFwdTKQIVdeBqozxQsUc9gxWzXNkJSq9cq
-	T9ZjPz3MFA4jZrYwlW4pc1vBmB2wGEN/8fZcWGoBp+b7qJIRYXSH5RlNxKBqXIFsR6tDCX
-	a8C34BnzPVtZdQ9NhJfpKhUdz3WZ8Ws=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-Y6REqA9zNtaa-7hQwt8ISQ-1; Mon,
- 19 Oct 2026 13:41:45 +0000
-X-MC-Unique: Y6REqA9zNtaa-7hQwt8ISQ-1
-X-Mimecast-MFC-AGG-ID: Y6REqA9zNtaa-7hQwt8ISQ_1792417305
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9DE9F1955E7D;
-	Mon, 19 Oct 2026 13:41:44 +0000 (UTC)
-Received: from pasta.redhat.com (unknown [10.44.32.82])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1EED518004D2;
-	Mon, 19 Oct 2026 13:41:42 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] gfs2 changes for 7.4
-Date: Mon, 19 Oct 2026 15:41:37 +0200
-Message-ID: <20261019134141.194437-1-agruenba@redhat.com>
-Precedence: bulk
+	dkim=pass (2048-bit key, unprotected) header.d=truenas.com header.i=@truenas.com header.a=rsa-sha256 header.s=google header.b=c+WoMj1j
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8b0d126f631so16886107b3.2
+        for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 08:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=truenas.com; s=google; t=1792423019; x=1793027819; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lrlZ4tZZQMYR2hWboxUPUCUfGuJIMsLnJFeI+w+hy7A=;
+        b=c+WoMj1jgu4cDYSvAeszo3rHpBAOsflPbEFJbNfgtxInGzSYoQsDgHU2aVsfUQYpmD
+         WmnkkAo6gCCuJ5OxNjIn+g8nUqHgOU6h7/ZhRzPugFybCaOzOalomJZULTAn0I7PCKda
+         LI935KINt0+4o403vli962xLJfUIDZOWC0TyLOkf/Rvf6R5Qf5c+Q+Sq5e3/EvOvWlcm
+         oqBfT+DEzaCo23vEjOy4Kbixb7OsfyWi6uXis4533J6bOi7Y+4A3KC8UL2lR3CvKrc0O
+         zZ9qEBFhhx3GTFQ34hIcsiP/kGyxgRupEdf1ZSqEF8JVj0olbmR765rzFMMm+rhpInyX
+         CHxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792423019; x=1793027819;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lrlZ4tZZQMYR2hWboxUPUCUfGuJIMsLnJFeI+w+hy7A=;
+        b=tSjvRLkgGpiNNALyk5MMn8einFpNQr/2jUcaenOwWGIjkl5jiN2nnV1j2SCwcaZozi
+         P2SPtdzMc6Gh/qwzRfrojoWfKlLPpuvZrz7Reo7Yt+dW3biNZJYvmtK62+rtuFo/H3cB
+         Q2ceIbTD4IBSiu0epvIAaKbUVVh6DcPu0LEaNSQjsvEhnM2MsuG2G9V2vbCUVBbVKqbA
+         TLfm7KBfLbQiFaIGlJHswANsRBIo1YvMGauvtBxu6VQ2ZA33uL5v6g5HKMn4UvGvLeeg
+         2vmfi4qFdhd2Vib11lMa+mcBJyOiAHjGbd4p2i1hjzFaWl1Xd4+zkv0H8zGl2wUHqFCh
+         Ka7w==
+X-Gm-Message-State: AFq9FYLqQuDSc8Qo9iPXG8BZkoL8SkPfARwUmH5nZrYJIeSyLjX4bRHj
+	A4DSVPdsZukiAoO+sJNLnEaZa6a2q5xcZ8ZgP8/ovrjq+A82b5VRk5YrSkXFstUXOQ==
+X-Gm-Gg: AYBFou3MGkOY+VecX8CuqCgcZopTjBXpsTl+ZDoJ0fcMjAXIAOgHMC0FokIG2SGA2Tj
+	oaQjuvLjM/zNfqhGM6hqBY77MW431B3P4m5GTz4x0AIL/TiOtmE+rslz4+h3maizAoc4gBdsqAA
+	Kw9ckRaN0MdHZI8mKkhU7DSFKiUTmStTrQUv7yQV5Zdciazy/vI90Kx6Nd3TsBysAhnq9w2kKd5
+	lGw7HfAdo1WbJj6CgAS9JFZD14C4nHfMtEfkskEAoZPTCqmom5//AjgNSzIYrJYJrWxTHoP1dn5
+	g/PC6La8270EGM81Rv+QOjEhK2miNRGK3km5jwVKjNIynxRQUG2v/qdcI0YWjtovGA4JO2PBuLO
+	KxuunBhInVKwRkcmMgL0u95KxR85jGKDh7JePbFq2MtbhlSqVnOeVhUTbUhzjA6D/evFjebsS1X
+	yVM2w/YWnb+1zb/N0m0A1/1dIOhpRYD1SHylBK5VFDbq63tgbCvw==
+X-Received: by 2002:a05:690c:c507:b0:8b0:ad62:19ca with SMTP id 00721157ae682-8b0f2142987mr27317097b3.15.1792423018742;
+        Mon, 19 Oct 2026 08:16:58 -0700 (PDT)
+Received: from hamza-PC ([2400:adc1:158:c700::2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b11b812a6esm1636737b3.22.2026.10.19.08.16.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 08:16:58 -0700 (PDT)
+From: Ameer Hamza <ameer.hamza@truenas.com>
+To: Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	caleb.stjohn@truenas.com,
+	ameer.hamza@truenas.com
+Subject: [PATCH] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
+Date: Mon, 19 Oct 2026 20:16:27 +0500
+Message-ID: <20261019151627.3324886-1-ameer.hamza@truenas.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
+List-Post: <mailto:gfs2@lists.linux.dev>
+List-Help: <mailto:gfs2+help@lists.linux.dev>
 List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
+List-Owner: <mailto:gfs2+owner@lists.linux.dev>
+Precedence: list
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: -oKAzHHIUnPUu_Voikyypgg674qxQYfE7COC45O25Lw_1792417305
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hello Linus,
+When a local request reuses an inactive rsb, find_rsb_dir() sets
+RSB_MASTER_UNCERTAIN if res_master_nodeid is not our nodeid. This also
+matches an rsb that never got a master (res_master_nodeid 0, res_nodeid
+-1). set_master() then trusts the "cached" master, copies res_nodeid -1
+into lkb_nodeid and skips the lookup, and _request_lock() hits the
+DLM_ASSERT(r->res_nodeid >= 0) in is_remote():
 
-please consider pulling the following gfs2 changes for 7.4.
+  rsb: nodeid -1 master 0 dir 1 flags 200 first 1 rlc 0 name pr
+  Kernel panic - not syncing: DLM:  Record message above and reboot.
+  Call Trace:
+   _request_lock.cold+0x3e/0x3e [dlm]
+   request_lock+0xcc/0x110 [dlm]
+   dlm_user_request+0x110/0x340 [dlm]
+   device_write+0x605/0x6d0 [dlm]
 
-Thanks,
-Andreas
+Such an rsb is left behind when a request is cancelled while its lookup
+is still outstanding and the lockspace then recovers, e.g. because the
+dir node died: dlm_recover_waiters_post() completes the cancelled lkb
+instead of resending it, so no master is ever set. Once the rsb is
+inactive, the next request for the name revives it and crashes as
+above. If we became the dir node in that recovery, deactivate_rsb()
+even keeps the rsb as a dir record, so it does not age out.
 
-The following changes since commit 4bb187d6f379c5490e3034b153fe476127308519:
+Before commit c04fecb4d9f7 ("dlm: use rsbtbl as resource directory")
+the flag was only set when res_nodeid was > 0. Restore that and set the
+flag only when a master is actually cached, so that set_master() does a
+normal lookup (or becomes the master itself as dir node) for an rsb
+that has none. res_first_lkid is still cleared, as the cancelled lkb
+leaves a stale id behind.
 
-  Merge tag 'gfs2-for-7.3' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2026-08-17 17:03:34 -0700)
+Fixes: c04fecb4d9f7 ("dlm: use rsbtbl as resource directory")
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Ameer Hamza <ameer.hamza@truenas.com>
+---
+Reproduced with two nodes: pause the dir node for a name, request the
+name, cancel the request once the lookup is out, remove the paused node,
+request the name again. The second request asserts without this patch
+and is granted with it, also when the dir node moves to a third live
+node.
 
-are available in the Git repository at:
+ fs/dlm/lock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-7.4
-
-for you to fetch changes up to 2f9efb1efe4e026e44b7693e67f54344ae022deb:
-
-  gfs2: remove unnecessary check in gfs2_freeze_lock_shared (2026-10-16 02:27:54 +0200)
-
-----------------------------------------------------------------
-gfs2 changes
-
-- Two journaled data inode fixes (fix journaled truncate range end
-  offset, fix the escaped block copy in gfs2_before_commit).
-
-- When reading a new resource group from disk, validate its boundaries.
-
-- To eliminate lock contention, get rid of the per-filesystem
-  sd_async_glock_wait queue and wait for the individual glock locking
-  events instead.
-
-- Shut up sparse RCU warnings by marking ip->i_gl as __rcu.  Accessing
-  it through gfs2_inode_glock() -> rcu_dereference_protected() where we
-  know that the pointer cannot change.
-
-- Some more minor fixes and cleanups.
-
-----------------------------------------------------------------
-Andreas Gruenbacher (12):
-      gfs2: Avoid ip->i_gl dereferences in gfs2_inode_lookup and gfs2_create_inode
-      gfs2: Get to super block from inode in tracepoints
-      gfs2: Add inode variables
-      gfs2: Introduce gfs2_inode_glock
-      gfs2: annotate i_gl with __rcu
-      gfs2: Silence sparse signedness warning
-      gfs2: Improve resource group validation and error handling
-      gfs2: No quotas for meta inodes
-      gfs2: Get rid of sd_async_glock_wait
-      gfs2: missing whitespace in error message
-      gfs2: gfs2_create_inode excl cleanup
-      gfs2: remove unnecessary check in gfs2_freeze_lock_shared
-
-Hemanth Selam (1):
-      gfs2: fix typos in comments
-
-Hongling Zeng (1):
-      gfs2: move brelse() after buffer head accesses
-
-Jan Kara (1):
-      gfs2: Fix journaled truncate range end offset
-
-Jiaming Zhang (1):
-      gfs2: reject invalid inode sizes
-
-Karl Mehltretter (1):
-      gfs2: Fix the return value in gfs2_get_link() kernel-doc
-
-Tal Zussman (1):
-      gfs2: fix the escaped block copy in gfs2_before_commit()
-
-ThangNN99 (1):
-      gfs2: fix NULL deref in gfs2_quota_lock() for meta inodes
-
- fs/gfs2/acl.c        |  11 +++--
- fs/gfs2/aops.c       |  17 +++----
- fs/gfs2/bmap.c       |  93 ++++++++++++++++++++----------------
- fs/gfs2/dentry.c     |   6 +--
- fs/gfs2/dir.c        |  61 +++++++++++++++---------
- fs/gfs2/export.c     |   7 +--
- fs/gfs2/file.c       |  72 ++++++++++++++++------------
- fs/gfs2/glock.c      |  60 +++++++++++++++--------
- fs/gfs2/glops.c      |  13 +++--
- fs/gfs2/incore.h     |   8 ++--
- fs/gfs2/inode.c      | 132 ++++++++++++++++++++++++++++-----------------------
- fs/gfs2/lock_dlm.c   |   4 +-
- fs/gfs2/log.c        |   3 +-
- fs/gfs2/lops.c       |  22 ++++-----
- fs/gfs2/meta_io.c    |   7 +--
- fs/gfs2/ops_fstype.c |  26 +++++-----
- fs/gfs2/quota.c      |  57 ++++++++++++----------
- fs/gfs2/recovery.c   |  19 ++++----
- fs/gfs2/rgrp.c       | 127 ++++++++++++++++++++++++++-----------------------
- fs/gfs2/super.c      |  98 +++++++++++++++++++++++---------------
- fs/gfs2/trace_gfs2.h |   6 +--
- fs/gfs2/util.c       |  10 ++--
- fs/gfs2/xattr.c      |  69 ++++++++++++++++-----------
- 23 files changed, 531 insertions(+), 397 deletions(-)
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index c715e171bab7..2323c7709aa1 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -826,8 +826,12 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
+ 
+ 	if (from_local && (r->res_master_nodeid != our_nodeid)) {
+ 		/* Because we have held no locks on this rsb,
+-		   res_master_nodeid could have become stale. */
+-		rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
++		 * res_master_nodeid could have become stale.  If no master
++		 * was ever set, there is nothing to confirm and set_master()
++		 * must resolve it as for a new rsb.
++		 */
++		if (r->res_master_nodeid)
++			rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
+ 		r->res_first_lkid = 0;
+ 	}
+ 
+-- 
+2.53.0
 
