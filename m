@@ -1,93 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792441016;
-	b=DJZR31PTkvK/KvGSoZLTd/c6b8fQSxMJO6zeoGyWQKS9glbC5PxaJ3euSeHqbzYo5oCr
-	 pJChUoaBlNoraYHH9Qh2nX7Z1aWOEQF1pPqWsgIiXAg5fWCAbmLRdJbWpZRdvWYHcomMC
-	 k6jXojUBrPzdpVYvRx2N6FymATCeMaT4hXqL2drs19IagwMu7GOZgggeJRTas88diG2SN
-	 X2SxV1eVloQvK9/gtsujdnE7JWqG3iIdWKHgaieQfyJjBOqHch/uux1Ueu4T1efZ4LMnP
-	 2b+Mc8/Fr1UQ5jlDnX3Z7w2KjWdbXdSm2WRwNJRHPjQeeXvLTDKSNb+gND7m0nOfNkg==
+	t=1792508036;
+	b=f5ZhU1Zby4A19J4+hUpXgyd73lLTBkwN8wlN1SuQEFKtxqmAb9bS5JU+ogGe4SEvzrc2
+	 Mvf7L01Iad55N1r9x5eZChZc9IkrxnedXE3xG/4sJ0BtLTXpa/8g7Xp2FRVF+J1FIIkGu
+	 Mvr+ddszbRUr+13nWVIhZrRooRwFFcfEZs8oY3lOd7RTo4UQ9iedP5zOwpuvDpMDBNg5a
+	 0Jx5uPOnYVf2tj4OpE4MxxyNbBnEX1aFER/CExmrkGNeebwiMBtFLJkIDoCkCvFysWEhT
+	 jWh6KC+0LItR3O1nuKGw+H5f8Qd8kL9AZb9gnqFSUqrx2/TstIsa5CxJrhpgtZocrmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792441016;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Type:Content-Disposition;
-	bh=T8NDS9TBcsxfGLpdye5MNhtdRD4fWL/RdION8FfvRn8=;
-	b=aw3eXFHZCldIELVVjdmbFAu64X8GO77s4lv23wKz7DbLqdZNhMnt4shPbWG8ZfLooyk9
-	 tDBHIE3Sk21JdcjqrzZfObzU1k6rJG/tmsXU+JDNx3GjUvhZhIRpGr6nl9UDX7XPMdtO6
-	 1/WwblJ51LHbPVJxH6L7l8vLo7U9954EGm2P1lBvVRSrSckOvfMkCOBFHlSM2JhO7CAB+
-	 Sog0tpIOrw+j+PwONlb/ZNAqMVke3sGDw2yEOq5xggBCPZ/G8DuQlI8MFgZ8YEMnfHltg
-	 OU1OrCSf4QGk4hQwNwCeoe4YGTQOp3/0VIRFtfiL02AjHiheA97Qg8Av2sA5F1zM8rw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792508036;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=/bwYNsuvdLOeGIvvyV7lXuTJEpgdy2xoAlb1KPVe2eU=;
+	b=kvGvn/yBRpq3pajMQq3GvJg6WTxWOpiWP+TIO49xEc2VKKZEV6ORne7hwamwk4JjIZiy
+	 /PDK7sGurlRcXU1l3fduhyn/FEdzKjDgME3CDeczbj6WzsT3xD/SEgGfWRioZPymQGw+s
+	 vi0LNy4menNgzDuRXO9O0pUAT8YQ8swM7ydHE18avHZ2g3EjBZ+X0EJgKcdLxQDQNfrKV
+	 gJXP+nAltnQiBJu7IUqC3S9sbnnGZRmI9jaaomBqLFd2NTkdnqkMAOEa/1zaQZQNgFUy5
+	 ybqtHiNo7+VZkZjwE3Vc3dvCx5Ob6XAdamaDzjR4CLNVG+r1/5ablyrTHfQySu5WilA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Fx6fEuc0;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+nClr50;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8A4606A31F
-	for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 20:16:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F8A4606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9377C606A324;
+	Tue, 20 Oct 2026 14:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Fx6fEuc0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792441015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=T8NDS9TBcsxfGLpdye5MNhtdRD4fWL/RdION8FfvRn8=;
-	b=Fx6fEuc0w7eETLAdwPkjPTV7ynfe+7iZKEWOpMD7ealI78DfXJ6FO6NOvqIxOcMm2C3TUO
-	uBP5rqRE7dXNpzcSfvzAfUxDNw9YCHZlkaNlRvuusBTNafCmEB9FWYyUjL7LVKirVYXBEY
-	6xgcc6EjblyjUIqDBFqrIMjLIy4zDm0=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-t8nLKElsNa2ZRPrO6DGNeA-1; Mon, 19 Oct 2026 20:16:51 +0000
-X-MC-Unique: t8nLKElsNa2ZRPrO6DGNeA-1
-X-Mimecast-MFC-AGG-ID: t8nLKElsNa2ZRPrO6DGNeA_1792441011
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8acc7fe346cso28870667b3.3
-        for <gfs2@lists.linux.dev>; Mon, 19 Oct 2026 13:16:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792441011; x=1793045811;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T8NDS9TBcsxfGLpdye5MNhtdRD4fWL/RdION8FfvRn8=;
-        b=Oe+H7XQ5HZqNSwN8NTeHTToWFxt87Lvro9SWHLRS8/gyUcwK3s5eMbwMamZJ0NVoUQ
-         wXozWsbwehTD6BVoHjV8gJM+YWqmqv2olMLtEgqGkxT1SZlC7S5eulw8Fcqp1bAg1M1g
-         f5qvtXCqzi3ewF/fxCO0Kb8z7ubuS367fWVqguGbW6fWO5ZTW9a7yxtExFJe+v1mIqIf
-         DUEk7Et0gYHb45IgATZPA+yT9Zgp1QsQENZjtTCWsb8vGCfx2qE2Aj9Qh6RdERKIrPG8
-         em3ZY7gzB1IwzaSQKNO1AfvIa0SjFYeAcktMy1aPnei7U8hIiaytcdpMWeA1PMDWjJOd
-         ivFg==
-X-Forwarded-Encrypted: i=1; AKwUvBzrU41oYsazl54Zd1oAIzRGDLuJJZYuKApkpqte5dipmEfR+zLKThr9mKCn1I1HvlgVmW1e@lists.linux.dev
-X-Gm-Message-State: AFq9FYJXpVsd68GQD6n2eYPycxwIC+1JPEaSpQRC1qwc53U8HXYuWu7c
-	vaEgAHlrnj/r2nLKw2Aue87kqjBMVQ1/h33SlmTWSusvVcp/xAMyBmtRR4D/RepLdXNzRwrwfzw
-	vpjH5SBdsVB0swgUdit7GcePuvdT0xp0RYyf47G9SXmOqnwZ3L1cnwcw=
-X-Gm-Gg: AYBFou1k+a8Gl5YBqGB/T2P+ts+D9jC86Nytx3eqUKQjt8YsPM1xPGeTrRUOWLMKAa/
-	YrCbzAI9MOjlJn9VktUpDTna/br9PaGk1zOaTfg94K+Mmo7MwxLON4Dw0H7WppyfOQWft4gNDfe
-	o61ZS9WAJp4T6zme0QBMu7RGvUdI60aLH6nAiiQCgb3DVidqotK6Gekhiw+7L6y17d15WYVifS+
-	YYm8d2n5DsSdbD5qBiYXG+tqyDashQUNCW8cS0j1FsfjnY07c1f9A4SSlkG9eaid9zHL2n9wM5F
-	LaqxmnSqIPX07Lp/2bwXv+hdT8LJaEH2fOA2RKS4C2s/ozE8MxiAUjMNv5d86XKZtBQ+eJxsg2O
-	zNYlhuP4dbzS+vZtB66gdkg==
-X-Received: by 2002:a05:690c:6509:b0:8ab:a473:fde8 with SMTP id 00721157ae682-8b0f21c879amr30941847b3.54.1792441010760;
-        Mon, 19 Oct 2026 13:16:50 -0700 (PDT)
-X-Received: by 2002:a05:690c:6509:b0:8ab:a473:fde8 with SMTP id 00721157ae682-8b0f21c879amr30941787b3.54.1792441010100;
-        Mon, 19 Oct 2026 13:16:50 -0700 (PDT)
-Received: from localhost ([2600:1701:430:16b0:65aa:a2f5:8fab:cae6])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b11b3f49d5sm4874647b3.0.2026.10.19.13.16.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 13:16:49 -0700 (PDT)
-Date: Mon, 19 Oct 2026 15:16:48 -0500
-From: David Teigland <teigland@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, gfs2@lists.linux.dev
-Subject: [GIT PULL] dlm updates for 7.4
-Message-ID: <atZ6sKjlr3SxThCU@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+nClr50
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC0B1F000C4;
+	Tue, 20 Oct 2026 14:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792508035;
+	bh=/bwYNsuvdLOeGIvvyV7lXuTJEpgdy2xoAlb1KPVe2eU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j+nClr509Ip2YmEn7/caQLmG/4tBtyXZnslPC9cLou/c2WF5cUyD8vV0z4nB9Tev2
+	 plhyZAe/DFKunvOqX8v/oXRElPiP3zxk2HziYyB5Fx7bPGt0t29G9UDf+1rfbuTFys
+	 26EzMGskCjKKCcH4vAuqOv+1PYrBjiQnY9DVI9Dr4fSEZ8yAk0LnKIRmk7JwU0k+tW
+	 rl99vZagqlR6jXNFfVasyDMk1PxV7oE6nRO/s1kciIZkWvnPgB1U5HfkO6NzVlXd9L
+	 pR5YKf1B76wv3ukXrumON6Rbv57+rbThp5bo1tebJ6WrsH6Sye8PXipcbNZHIwrAzz
+	 YGHmJPYOdgplw==
+Date: Tue, 20 Oct 2026 16:53:45 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>, Jan Kara <jack@suse.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 20/28] gfs2: wait for a pending withdraw before
+ remounting read-only
+Message-ID: <20261020-steinbock-sprachen-charmant-e4fd6d840395@brauner>
+References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
+ <20261012-work-fs-sb_rdonly-v1-20-60743a3dc326@kernel.org>
+ <CAHc6FU5bdAjABRm=bnH68b2f66TZTDZ8sPdatLB2fS7-55U=yw@mail.gmail.com>
+ <20261018-ungemacht-sodbrennen-hausordnung-42d33a4f7098@brauner>
+ <wauqpgtmmf2beg3pc2kqlbizrigd4ew26do4zqch5ilwdjy4cd@brolwbx25sem>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -97,67 +65,42 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OQbQIr5BcroQ1Gc53yH5C-YBEn1GrCH61XT9Ftrj0Q4_1792441011
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <wauqpgtmmf2beg3pc2kqlbizrigd4ew26do4zqch5ilwdjy4cd@brolwbx25sem>
 
-Hi Linus,
+On Mon, Oct 19, 2026 at 11:52:25AM +0200, Jan Kara wrote:
+> On Sun 18-10-26 17:48:34, Christian Brauner wrote:
+> ...
+> > On Fri, Oct 16, 2026 at 02:32:01AM +0200, Andreas Gruenbacher wrote:
+> > > > diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+> > > > index 83b8bb6446e5..1535ce2b7aa8 100644
+> > > > --- a/fs/gfs2/util.c
+> > > > +++ b/fs/gfs2/util.c
+> > > > @@ -122,7 +122,7 @@ static void do_withdraw(struct gfs2_sbd *sdp)
+> > > >                 up_write(&sdp->sd_log_flush_lock);
+> > > >                 return;
+> > > >         }
+> > > > -       clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> > > > +       clear_and_wake_up_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+> > > >         gfs2_ail_drain(sdp); /* frees all transactions */
+> > > >         up_write(&sdp->sd_log_flush_lock);
+> > > >
+> > > >
+> > > > --
+> > > > 2.53.0
+> > > >
+> > > 
+> > > this looks good all around, thank you very much. Can I add it to my gfs2 queue?
+> > 
+> > I was planning to just provide a stable branch for everyone to pull post
+> > -rc1. Then you can just pull that in?
+> 
+> On a related topic: I didn't find any branch with this work in vfs.git - I
+> wanted to check how all the things come together after adding the generic
+> emergency RO bit. So if you can push some inofficial branch for now it
+> would help me... Thanks!
 
-Please pull dlm updates from tag:
+Absolutely:
 
-git://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git dlm-7.4
-
-This set contains several fixes for bugs found by static analysis,
-fuzzing and code review. They mostly involve invalid input, e.g. from
-userspace, configfs or remote nodes, and are unlikely to be seen in
-normal usage.
-
-Thanks,
-Dave
-
-
-Alexander Aring (1):
-      dlm: fix variable key length lookup
-
-Dan Carpenter (1):
-      dlm: clean up a type in waiters_read()
-
-Danila Chernetsov (2):
-      dlm: validate lock modes in recovery messages
-      dlm: fix NULL pointer dereference in dlm_dump_rsb_name()
-
-Haofeng Li (2):
-      dlm: gate dlm_plock device on CAP_SYS_ADMIN
-      dlm: require CAP_SYS_ADMIN for dlm-monitor device
-
-Hemanth Selam (1):
-      dlm: fix typos in comments
-
-Joseph Qi (1):
-      dlm: fix buffer overflow from negative len in dlm_search_rsb_tree
-
-Qing Ming (1):
-      dlm: validate node weights before building member array
-
-Samuel Moelius (1):
-      dlm: validate userspace lock resource name length
-
-Zqiang (1):
-      dlm: wait for outstanding SRCU callbacks to complete in exit paths
-
-
- fs/dlm/ast.c          |  2 +-
- fs/dlm/config.c       | 39 ++++++++++++++++++++++++++++++++++++---
- fs/dlm/debug_fs.c     |  3 ++-
- fs/dlm/dlm_internal.h |  5 +++++
- fs/dlm/lock.c         | 20 ++++++++++++++------
- fs/dlm/lock.h         |  4 ++--
- fs/dlm/lowcomms.c     |  1 +
- fs/dlm/member.c       | 17 +++++++++++------
- fs/dlm/midcomms.c     |  1 +
- fs/dlm/plock.c        | 14 +++++++++++++-
- fs/dlm/user.c         | 23 +++++++++++++++++++++++
- 11 files changed, 109 insertions(+), 20 deletions(-)
-
+vfs-7.5.super.ro
