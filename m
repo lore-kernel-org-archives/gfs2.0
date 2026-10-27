@@ -1,75 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793140778;
-	b=DFa/JNUFTwpOEmAO5XH+aaCpags+i2wU23zCJS0mHHXq6x+XcbAI3gb68tea6s0/26f/
-	 se10OPzJPtVwv4hHXUDO3LUx5IMDL1FmXHthJTNrS6yfhlBTaNMC8RkW/KX7Kp9zzmMLg
-	 z1ov9PuhOkUoC4ieR3bpM44uj1ACQAgVQOe1NB4sqZNkIblM/K8QeAKDAalkV7sNzF/Uf
-	 gSKe82MlqcZrN3xtJY/WIa4FjmXvQdKdfi/d+AHo51f1lqJ35fbunpBYP9SehnNohybJ0
-	 R6oywgoUUriiXjzxYz0jRwzqVOpoFICpZymE39wy6i6HY/HeM+r9/55AKeXfoMhLwAw==
+	t=1793142655;
+	b=PT24S0BSuCqbCopPwMEdDTsWyx2+888djN9vk165yAfn3znclFJqKmKMOw2ZtJShazlo
+	 AOokq1zwULOyWvSnoXMV3yuhsXfyb/pgtS/Loct6PpX7kkvZNSTfe/RhKJnn1Stlb/w5H
+	 wftIARstHb7eaTNuhUHCbjsjAxsw3tZwyGZFr0wo0Xs6THGdQXl+k7k+FhwjPF5gVtj52
+	 bBk1yMLFurgd6WoeDClMpSawFhUGCGxmmWSktzV0JYZmusFth408WmOoHMbaFl62qdjpN
+	 t3Xgq3cJ6EaXdi5SKGD3e92YnpypZqQJyxTjE+jkhIjgH8vynoFvOzQ1zGagbFaPdiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793140778;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=36a0/HoL8yXBAoRB1lx62HZinWx8I5wnTQwOiZ4VBGs=;
-	b=rT6jVRr8QZdX8f+IxbGTMrcSoWXMSwcv4bXFD9oTfQOkQgTApTgym2ukz4idSECtbVVh
-	 u/aQQ1YxqgVbCr0LxvWo77BpQgLiXDycc4wcEt/G0nrL/kY+yniRPSNtf0Olo7Rp3CBHk
-	 +McAo7I8xoBUghT9xAyIoIpH4CbAMb8Zkb6qsETw96s4lJt2hTzp3HuC+CLS9yCHgHMnh
-	 8+ZugDTVYy48jjRap4McIfMAP1LF3sUvMElSCT7j62rNuosaCq8iSSqiICRzFeI3Wofv3
-	 FzQL3gC+xc8DHxIJUaW+jLvCTSizadlKR5yFB4BZZ96DjGvClU4Xqpc5UWU9qrcMZ5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793142655;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=A3E77K8iCCovhISJvCAtXH/UuMVbqTit6GWjoYdyLWE=;
+	b=YN3R4QPelDh0dYg1lmbGJB1cYHmQtxMOtpUVmbsdUZ1Xkc5pZqQhLYTZuoDDJ7b+acbd
+	 R782vRQ3fj1vjbiYL5+cTfHbTW5O4b2qprrIJgjxwCWjBh5/mme2bA9MI+Hrd0szRQXlY
+	 078vOc2XMVamLiXdaN8fo/GmJpUmwte3RhvP7t191abMTIBh0RvCwsdO/j8gcuqnAoTxB
+	 BhGvvhxaNzAUYl/ekQ/Zk+KL4w2wivt1mmikZJuhrIiVdOFUs6auowRGyFzoXVwnk4FKi
+	 BDeK/dMhaLAsqiCkI90iHxbZ4nE2LW/FJsiZetKle86svIqdXQFIlKfWDYCoxJKUTYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--irogers.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=R+csOpEI;
-	arc=none smtp.remote-ip=74.125.82.197
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.210.72
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584B260A6F77
-	for <gfs2@lists.linux.dev>; Tue, 27 Oct 2026 22:39:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 584B260A6F77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=R+csOpEI
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-35cbea41088so456661eec.1
-        for <gfs2@lists.linux.dev>; Tue, 27 Oct 2026 15:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793140777; x=1793745577; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=36a0/HoL8yXBAoRB1lx62HZinWx8I5wnTQwOiZ4VBGs=;
-        b=R+csOpEIR9aK79O7cChEVR0rw41sNuFdEPlo0xyoUfwR4hb5BD/I1VrQjzmGyIn94J
-         epq7ZMK6RMUMvoE9fWZKvWVOTOJhDJrmDiUVf4Juq5t2lJWiF04asnzFSmBVVDq5EZI8
-         kuYCCb2zVg4exhvzxaNmI7iNnPXhv0xP93DisEwugULaleuQaGQWIoaI81nTZt3RzgLo
-         SkJPzWPkBG9e/3sNLuLF1ees2UsYT++6DCxnzISCYKRN8e30W0zTx6zPl4BnSxV4rebm
-         fFwLTW2S91xqFLWL4BzpAuTjY7IrSVs8Bm+D33AIoJqZCgCOCS7VXTxSlFnAxT2N2BIj
-         ZTWg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FAF606A31E
+	for <gfs2@lists.linux.dev>; Tue, 27 Oct 2026 23:10:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7FAF606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-84586110393so483995a34.1
+        for <gfs2@lists.linux.dev>; Tue, 27 Oct 2026 16:10:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793140777; x=1793745577;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=36a0/HoL8yXBAoRB1lx62HZinWx8I5wnTQwOiZ4VBGs=;
-        b=rz+bgE1osy1zsS0UzxZHG/CeDm+C9Q9v8pmzJI0hHV8+74Uone1wsNoY37qhI5tTEV
-         plpncz68oMHossvPy4Ut5EfnYuUDrf4AtlxGGRRP+4KaPtx4IDWoACATNv9o6D/ZRhyE
-         4S/0UaLQiEjRA4aFqqke7oFylLqaA7WnAQX/3sAVNIEoeq6p6ZkmggsbX0+RV/sWCfQb
-         yerRAVlD6cu7TySZBkkAzFunb6DsAIWDyo5q3otbf+vMoAG3jw1F0qAmEgrqz2skx25F
-         ZzDDfBMVT101fjuysVuurCdW/x+vIOoljYlqzZtAv3BY5NEhS3uGN3oFQX8wV7gU9tk9
-         k3bw==
-X-Forwarded-Encrypted: i=1; AKwUvBypmRZsM/YB3l1osNENIOiASG5RjTUnjWW3VKXOL7xrvhm4XaAxpYm1mgztmUER2EsUvveg@lists.linux.dev
-X-Gm-Message-State: AFq9FYL3rPo5bRM+Wa9VhaJI3GEVAZAsVEPEvYSNqTNA3U6HFL1Kjw6l
-	RsDu3r+ecbEvbJTwuqDbfxwpwWXhY2Oyl5+QGnzdk9fO3iPlP9SLd+/KjPAIZ85JECsvjcy8JrI
-	z3PTtLFdXvg==
-X-Received: from dycna22.prod.google.com ([2002:a05:7300:ea96:b0:369:de3f:acf9])
- (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:d101:b0:369:5583:bf4c
- with SMTP id 5a478bee46e88-36a200c8c63mr1046676eec.28.1793140775931; Tue, 27
- Oct 2026 15:39:35 -0700 (PDT)
-Date: Tue, 27 Oct 2026 15:38:44 -0700
-In-Reply-To: <20261027223847.652884-1-irogers@google.com>
+        d=1e100.net; s=20260707; t=1793142653; x=1793747453;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=A3E77K8iCCovhISJvCAtXH/UuMVbqTit6GWjoYdyLWE=;
+        b=uLfUKKO3a1V281l0WLpoGiXy0I/UzNCmx0vaE1BwehU7MqktpehaR5kNlxlhJN9WYm
+         tObipS2+0pkC7RU4Apu/B9qBkoaVUdVO3LDWBppDLxJ6pI/lR4rjIUVwWWttZ2C2vXcr
+         oCqvAlYhhtJamKHXlSTX2cQOakPMyAnLd+sFfL/mlKYMCe45XHmdolgtKcRYXbFlac0f
+         Ndf5TMHUmlHGfSMzhUOL9P6LHZftSRBUzuerJBi2Fqt7KFmjS9tFx+6Fv4wI4cP1zSVo
+         A5R2iJ0E8VBaCRbHVXZGYP6PWjmeiZ9RJNKota/2Ea5mXpO2kaxSVH0JV1KzXfPh4NBS
+         NSSA==
+X-Forwarded-Encrypted: i=1; AKwUvByESVcRCNMlzOthTWZb2gZXf2RdDrXKKDecUqg1mUlUV9pONOdoJ3VHZuqgt0+SSCrjQPAq@lists.linux.dev
+X-Gm-Message-State: AFq9FYJqSCoS9vJIum4al23iFfBb7dyItDHedMGchO6QkEkxrWaOkA/8
+	qnoTBbkwhytLTj6fFVjAVlnA3MFQ0mUvsFFMwS2Z3cnZ+dqcngpOfCuaxdir+3wadV/asu36S+Q
+	SHMXVp4fDx40j0LqRWCw//hUjjRT2WU6DamUqvFNoVIlcrmrrnHbAwsmePjk=
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -78,456 +57,438 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261027223847.652884-1-irogers@google.com>
-X-Mailer: git-send-email 2.56.0.313.g2479322e68-goog
-Message-ID: <20261027223847.652884-10-irogers@google.com>
-Subject: [PATCH v2 9/9] kobject: Require explicit initialization of struct kobj_type::release
-From: Ian Rogers <irogers@google.com>
-To: Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Zhihao Cheng <chengzhihao1@huawei.com>, 
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, Sumanth Korikkar <sumanthk@linux.ibm.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, 
-	llvm@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
-	linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Ian Rogers <irogers@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Len Brown <lenb@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Frank Li <Frank.Li@kernel.org>, Alex Deucher <alexander.deucher@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Nelson Escobar <neescoba@cisco.com>, Satish Kharat <satishkh@cisco.com>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Linus Walleij <linusw@kernel.org>, Sebastian Reichel <sre@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Huisong Li <lihuisong@huawei.com>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Yue Hu <zbestahu@gmail.com>, Jingbo Xu <jefflexu@163.com>, 
-	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, 
-	Chunhai Guo <guochunhai@vivo.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Heming Zhao <heming.zhao@suse.com>, Johan Hovold <johan@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
-	ocfs2-devel@lists.linux.dev
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:c1f4:b0:55c:836:597e with SMTP id
+ 5614622812f47-56383e9013amr518556b6e.31.1793142652810; Tue, 27 Oct 2026
+ 16:10:52 -0700 (PDT)
+Date: Tue, 27 Oct 2026 16:10:52 -0700
+In-Reply-To: <20261027112702.3747009-1-dipiets@amazon.it>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae12f7c.768774f5.3237ab.002d.GAE@google.com>
+Subject: [syzbot ci] Re: mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+From: syzbot ci <syzbot+ci96d4e003e13d8147@syzkaller.appspotmail.com>
+To: abuehaze@amazon.com, agruenba@redhat.com, akpm@linux-foundation.org, 
+	alisaidi@amazon.com, almaz.alexandrovich@paragon-software.com, 
+	apopple@nvidia.com, blakgeof@amazon.com, brauner@kernel.org, byungchul@sk.com, 
+	cem@kernel.org, david@kernel.org, dipietro.salvatore@gmail.com, 
+	dipiets@amazon.it, djwong@kernel.org, dlemoal@kernel.org, 
+	exfat@lists.linux.dev, fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+	gourry@gourry.net, hyc.lee@gmail.com, jack@suse.cz, joshua.hahnjy@gmail.com, 
+	jth@kernel.org, liam@infradead.org, linkinjeon@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, ljs@kernel.org, 
+	matthew.brost@intel.com, mhocko@suse.com, miklos@szeredi.hu, 
+	naohiro.aota@wdc.com, ntfs3@lists.linux.dev, ntfs@lists.linux.dev, 
+	rakie.kim@sk.com, ritesh.list@gmail.com, rppt@kernel.org, rvvandan@amazon.com, 
+	ryan.roberts@arm.com, sj1557.seo@samsung.com, stable@vger.kernel.org, 
+	surenb@google.com, vbabka@kernel.org, viro@zeniv.linux.org.uk, 
+	willy@infradead.org, ying.huang@linux.alibaba.com, yuezhang.mo@sony.com, 
+	ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Documentation/core-api/kobject.rst states:
+syzbot ci has tested the following series
 
-  "One important point cannot be overstated: every kobject must have a
-  release() method, and the kobject must persist (in a consistent state)
-  until that method is called. If these constraints are not met, the code
-  is flawed. Note that the kernel will warn you if you forget to provide
-  a release() method. Do not try to get rid of this warning by providing
-  an \"empty\" release function."
+[v1] mm, iomap: account dirty at page granularity for per-block dirty folios
+https://lore.kernel.org/all/20261027112702.3747009-1-dipiets@amazon.it
+* [PATCH 1/2] mm: add infrastructure for per-dirty-page accounting
+* [PATCH 2/2] mm, iomap: account dirty at page granularity for per-block dirty folios
 
-Annotate struct kobj_type::release with __must_init
-so the compiler diagnoses any struct kobj_type initializer that omits
-.release.
+and found the following issues:
+* KASAN: slab-out-of-bounds Read in folio_accounted_dirty_pages
+* KASAN: slab-use-after-free Read in folio_accounted_dirty_pages
 
-For the remaining legacy struct kobj_type definitions where the kobject
-is static, per-CPU, permanent firmware structures, or embedded inside a
-devm- or parent-managed structure rather than freed by kobject_put(),
-explicitly initialize .release = NULL with a comment documenting why no
-release callback is provided.
+Full report is available here:
+https://ci.syzbot.org/series/05041e6c-d357-4fc5-9bbe-6aae1760d639
 
-Where the existing teardown is not safe with CONFIG_DEBUG_KOBJECT_RELEASE,
-because the kobject's memory can be freed or cleared while the delayed
-kobject cleanup is still pending (ioat, kunpeng_hccs and omapfb display),
-the comment says so. Fixing those is left to follow-up patches; this
-change does not alter their behavior.
+***
 
-Link: https://lpc.events/event/20/contributions/2392/
-Signed-off-by: Ian Rogers <irogers@google.com>
+KASAN: slab-out-of-bounds Read in folio_accounted_dirty_pages
+
+tree:      axboe
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/axboe/linux.git
+base:      24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/9865cf75-69fb-4fbd-b5fe-d0be9cd03802/config
+syz repro: https://ci.syzbot.org/findings/98cdf846-0b4c-4f94-8430-3b7db9efe057/syz_repro
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in instrument_atomic_read include/linux/instrumented.h:82 [inline]
+BUG: KASAN: slab-out-of-bounds in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-out-of-bounds in mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+BUG: KASAN: slab-out-of-bounds in folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+Read of size 8 at addr ffff888168669f89 by task syz.1.47/5860
+
+CPU: 0 UID: 0 PID: 5860 Comm: syz.1.47 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:82 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+ folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+ __folio_migrate_mapping+0x3d0/0x2830 mm/migrate.c:624
+ __migrate_folio mm/migrate.c:893 [inline]
+ migrate_folio+0x10a/0x1a0 mm/migrate.c:920
+ move_to_new_folio+0x1ed/0x460 mm/migrate.c:1135
+ migrate_folio_move mm/migrate.c:1401 [inline]
+ migrate_folios_move mm/migrate.c:1758 [inline]
+ migrate_pages_batch+0x30b3/0x4f50 mm/migrate.c:2014
+ migrate_pages_sync mm/migrate.c:2044 [inline]
+ migrate_pages+0x1b9f/0x2920 mm/migrate.c:2153
+ migrate_to_node mm/mempolicy.c:1322 [inline]
+ do_migrate_pages+0x656/0x8b0 mm/mempolicy.c:1421
+ kernel_migrate_pages mm/mempolicy.c:1935 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1953 [inline]
+ __se_sys_migrate_pages+0xaa2/0xc90 mm/mempolicy.c:1949
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f04fcf9f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f04fc5fe028 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007f04fd225fa0 RCX: 00007f04fcf9f559
+RDX: 0000200000000040 RSI: 0000000000000009 RDI: 0000000000000000
+RBP: 00007f04fd036b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000380 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f04fd226038 R14: 00007f04fd225fa0 R15: 00007ffc667db8b8
+ </TASK>
+
+Allocated by task 5729:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:351 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:377
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_noprof+0x2b9/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ anon_vma_fork+0x88/0x540 mm/rmap.c:395
+ dup_mmap+0x954/0x1dc0 mm/mmap.c:1781
+ dup_mm kernel/fork.c:1543 [inline]
+ copy_mm+0x115/0x480 kernel/fork.c:1595
+ copy_process+0x1e79/0x4400 kernel/fork.c:2311
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2771
+ __do_sys_clone kernel/fork.c:2913 [inline]
+ __se_sys_clone kernel/fork.c:2897 [inline]
+ __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2897
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888168669e70
+ which belongs to the cache anon_vma of size 200
+The buggy address is located 81 bytes to the right of
+ allocated 200-byte region [ffff888168669e70, ffff888168669f38)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888168669108 pfn:0x168669
+memcg:ffff88816db0e201
+flags: 0x57ff00000000200(workingset|node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000200 ffff888101687140 ffff88816040c7c8 ffffea0005b62950
+raw: ffff888168669108 00000002000f000b 00000000f5000000 ffff88816db0e201
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5535, tgid 5535 (rm), ts 43255388535
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7418
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ kmem_cache_alloc_noprof+0x399/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ __anon_vma_prepare+0x10e/0x4d0 mm/rmap.c:201
+ __vmf_anon_prepare mm/memory.c:3961 [inline]
+ vmf_anon_prepare mm/internal.h:572 [inline]
+ do_anonymous_page mm/memory.c:5478 [inline]
+ do_pte_missing+0x2f18/0x34b0 mm/memory.c:4698
+ handle_pte_fault mm/memory.c:6558 [inline]
+ __handle_mm_fault mm/memory.c:6707 [inline]
+ handle_mm_fault+0x1a53/0x3750 mm/memory.c:6876
+ do_user_addr_fault+0xa4f/0x1340 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+page last free pid 5049 tgid 5049 ts 18476194117 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ __free_frozen_pages+0xc93/0xd90 mm/page_alloc.c:2962
+ __slab_free+0x274/0x2c0 mm/slub.c:5823
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x99/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:361
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_node_noprof+0x354/0x610 mm/slub.c:5068
+ __alloc_skb+0x1db/0x7a0 net/core/skbuff.c:704
+ alloc_skb include/linux/skbuff.h:1384 [inline]
+ alloc_skb_with_frags+0xc6/0x760 net/core/skbuff.c:6803
+ sock_alloc_send_pskb+0x878/0x990 net/core/sock.c:3022
+ unix_dgram_sendmsg+0x4da/0x17b0 net/unix/af_unix.c:2144
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ sock_write_iter+0x2de/0x3e0 net/socket.c:1266
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888168669e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888168669f00: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+>ffff888168669f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                      ^
+ ffff88816866a000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88816866a080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
+==================================================================
+
+
+***
+
+KASAN: slab-use-after-free Read in folio_accounted_dirty_pages
+
+tree:      axboe
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/axboe/linux.git
+base:      24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/9865cf75-69fb-4fbd-b5fe-d0be9cd03802/config
+syz repro: https://ci.syzbot.org/findings/f9e47a91-9c37-465b-b43c-7404e404cbfd/syz_repro
+
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read include/linux/instrumented.h:82 [inline]
+BUG: KASAN: slab-use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-use-after-free in mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+BUG: KASAN: slab-use-after-free in folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+Read of size 8 at addr ffff888111a3d539 by task syz.0.17/5870
+
+CPU: 0 UID: 0 PID: 5870 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TAS
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:82 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+ folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+ __folio_migrate_mapping+0x3d0/0x2830 mm/migrate.c:624
+ __migrate_folio mm/migrate.c:893 [inline]
+ migrate_folio+0x10a/0x1a0 mm/migrate.c:920
+ move_to_new_folio+0x1ed/0x460 mm/migrate.c:1135
+ migrate_folio_move mm/migrate.c:1401 [inline]
+ migrate_folios_move mm/migrate.c:1758 [inline]
+ migrate_pages_batch+0x30b3/0x4f50 mm/migrate.c:2014
+ migrate_pages_sync mm/migrate.c:2044 [inline]
+ migrate_pages+0x1b9f/0x2920 mm/migrate.c:2153
+ migrate_to_node mm/mempolicy.c:1322 [inline]
+ do_migrate_pages+0x656/0x8b0 mm/mempolicy.c:1421
+ kernel_migrate_pages mm/mempolicy.c:1935 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1953 [inline]
+ __se_sys_migrate_pages+0xaa2/0xc90 mm/mempolicy.c:1949
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f600f39f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6010302028 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007f600f625fa0 RCX: 00007f600f39f559
+RDX: 0000200000000040 RSI: 0000000000000009 RDI: 0000000000000000
+RBP: 00007f600f436b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000380 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f600f626038 R14: 00007f600f625fa0 R15: 00007ffcbfa14028
+ </TASK>
+
+Allocated by task 5645:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:351 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:377
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_noprof+0x2b9/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ __anon_vma_prepare+0x10e/0x4d0 mm/rmap.c:201
+ __vmf_anon_prepare mm/memory.c:3961 [inline]
+ vmf_anon_prepare mm/internal.h:572 [inline]
+ do_anonymous_page mm/memory.c:5478 [inline]
+ do_pte_missing+0x2f18/0x34b0 mm/memory.c:4698
+ handle_pte_fault mm/memory.c:6558 [inline]
+ __handle_mm_fault mm/memory.c:6707 [inline]
+ handle_mm_fault+0x1a53/0x3750 mm/memory.c:6876
+ do_user_addr_fault+0xa4f/0x1340 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+
+Freed by task 5646:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:264 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:296
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2748 [inline]
+ slab_free_after_rcu_debug+0x12a/0x220 mm/slub.c:6571
+ rcu_do_batch kernel/rcu/tree.c:2650 [inline]
+ rcu_core+0x926/0x1260 kernel/rcu/tree.c:2919
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ __do_softirq kernel/softirq.c:679 [inline]
+ invoke_softirq kernel/softirq.c:519 [inline]
+ __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:758
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+
+Last potentially related work creation:
+ kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
+ kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
+ slab_free_hook mm/slub.c:2709 [inline]
+ slab_free mm/slub.c:6509 [inline]
+ kmem_cache_free+0x45e/0x650 mm/slub.c:6636
+ anon_vma_free mm/rmap.c:137 [inline]
+ __put_anon_vma+0x12b/0x2d0 mm/rmap.c:2974
+ put_anon_vma mm/internal.h:293 [inline]
+ unlink_anon_vmas+0x544/0x720 mm/rmap.c:540
+ free_pgtables+0x663/0xb70 mm/memory.c:401
+ unmap_region+0x29d/0x330 mm/vma.c:534
+ vms_clear_ptes mm/vma.c:1383 [inline]
+ vms_complete_munmap_vmas+0x427/0xbe0 mm/vma.c:1425
+ do_vmi_align_munmap+0x3b7/0x4b0 mm/vma.c:1684
+ do_vmi_munmap+0x252/0x2d0 mm/vma.c:1732
+ __vm_munmap+0x241/0x3e0 mm/vma.c:3415
+ __do_sys_munmap mm/mmap.c:1094 [inline]
+ __se_sys_munmap mm/mmap.c:1091 [inline]
+ __x64_sys_munmap+0x60/0x70 mm/mmap.c:1091
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888111a3d528
+ which belongs to the cache anon_vma of size 200
+The buggy address is located 17 bytes inside of
+ freed 200-byte region [ffff888111a3d528, ffff888111a3d5f0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888111a3d528 pfn:0x111a3d
+memcg:ffff888111a3df79
+flags: 0x17ff00000000200(workingset|node=0|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 017ff00000000200 ffff888101688140 ffff8881006957c8 ffffea00047d6bd0
+raw: ffff888111a3d528 00000002000f0009 00000000f5000000 ffff888111a3df79
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5634, tgid 5634 (syz-executor), ts 59634551582
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7418
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ kmem_cache_alloc_noprof+0x399/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ anon_vma_fork+0x88/0x540 mm/rmap.c:395
+ dup_mmap+0x954/0x1dc0 mm/mmap.c:1781
+ dup_mm kernel/fork.c:1543 [inline]
+ copy_mm+0x115/0x480 kernel/fork.c:1595
+ copy_process+0x1e79/0x4400 kernel/fork.c:2311
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2771
+ __do_sys_clone kernel/fork.c:2913 [inline]
+ __se_sys_clone kernel/fork.c:2897 [inline]
+ __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2897
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 805 tgid 805 ts 42732995302 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ __free_frozen_pages+0xc93/0xd90 mm/page_alloc.c:2962
+ __slab_free+0x274/0x2c0 mm/slub.c:5823
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x99/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:361
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ __kmalloc_cache_noprof+0x29f/0x600 mm/slub.c:5559
+ _kmalloc_noprof include/linux/slab.h:991 [inline]
+ _kzalloc_noprof include/linux/slab.h:1312 [inline]
+ drm_atomic_commit_alloc+0xa9/0x100 drivers/gpu/drm/drm_atomic.c:258
+ drm_atomic_helper_dirtyfb+0x129/0xfd0 drivers/gpu/drm/drm_damage_helper.c:128
+ drm_fbdev_shmem_helper_fb_dirty+0x160/0x310 drivers/gpu/drm/drm_fbdev_shmem.c:117
+ drm_fb_helper_fb_dirty drivers/gpu/drm/drm_fb_helper.c:339 [inline]
+ drm_fb_helper_damage_work+0x84c/0xf20 drivers/gpu/drm/drm_fb_helper.c:365
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Memory state around the buggy address:
+ ffff888111a3d400: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888111a3d480: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
+>ffff888111a3d500: fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb
+                                        ^
+ ffff888111a3d580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
+ ffff888111a3d600: fc fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- arch/arm64/kernel/cpuinfo.c                   |  5 +++++
- drivers/acpi/sysfs.c                          |  2 ++
- drivers/dma/ioat/sysfs.c                      |  7 +++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c    |  5 +++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c       | 10 +++++++++
- drivers/infiniband/hw/hfi1/sysfs.c            |  5 +++++
- drivers/infiniband/hw/usnic/usnic_ib_sysfs.c  |  2 ++
- drivers/parisc/pdc_stable.c                   |  5 +++++
- drivers/power/supply/ab8500_fg.c              |  5 +++++
- drivers/s390/char/sclp_mem.c                  |  2 ++
- drivers/soc/hisilicon/kunpeng_hccs.c          | 21 +++++++++++++++++++
- .../fbdev/omap2/omapfb/dss/display-sysfs.c    |  7 +++++++
- .../fbdev/omap2/omapfb/dss/manager-sysfs.c    |  5 +++++
- .../fbdev/omap2/omapfb/dss/overlay-sysfs.c    |  5 +++++
- fs/erofs/sysfs.c                              | 10 +++++++++
- fs/f2fs/sysfs.c                               | 15 +++++++++++++
- fs/ocfs2/cluster/masklog.c                    |  5 +++++
- include/linux/kobject.h                       |  2 +-
- 18 files changed, 117 insertions(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index 94e6cd211d70..7a4ac8dd0b86 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -295,6 +295,11 @@ const struct seq_operations cpuinfo_op = {
- 
- 
- static const struct kobj_type cpuregs_kobj_type = {
-+	/*
-+	 * Pre-existing: info->kobj is embedded in per-CPU cpu_data;
-+	 * cpuid_cpu_offline() only calls kobject_del().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- };
- 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index a99373547126..1948b80e8a4a 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -973,6 +973,8 @@ static struct attribute *hotplug_profile_attrs[] = {
- ATTRIBUTE_GROUPS(hotplug_profile);
- 
- static const struct kobj_type acpi_hotplug_profile_ktype = {
-+	/* Pre-existing: hotplug->kobj is embedded in static struct acpi_scan_hotplug objects. */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- 	.default_groups = hotplug_profile_groups,
- };
-diff --git a/drivers/dma/ioat/sysfs.c b/drivers/dma/ioat/sysfs.c
-index e796ddb5383f..5ba44876eb96 100644
---- a/drivers/dma/ioat/sysfs.c
-+++ b/drivers/dma/ioat/sysfs.c
-@@ -167,6 +167,13 @@ static const struct attribute *const ioat_attrs[] = {
- ATTRIBUTE_GROUPS(ioat);
- 
- const struct kobj_type ioat_ktype = {
-+	/*
-+	 * Pre-existing: ioatdma_chan is freed by release_ioatdma(), not
-+	 * by kobject_put(). With CONFIG_DEBUG_KOBJECT_RELEASE the delayed
-+	 * kobject cleanup queued by ioat_kobject_del() may run after
-+	 * that kfree(), a use-after-free.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &ioat_sysfs_ops,
- 	.default_groups = ioat_groups,
- };
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c
-index 17888cf54447..c2cccd924b03 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c
-@@ -885,6 +885,11 @@ static const struct attribute_group ualink_xcp_info_group = {
- };
- 
- static const struct kobj_type ualink_xcp_info_ktype = {
-+	/*
-+	 * Pre-existing: xcp->ualink.kobj is embedded in struct amdgpu_xcp_mgr
-+	 * rather than freed individually by kobject_put().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops
- };
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-index ab14079d1c42..0847134a1391 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-@@ -797,6 +797,11 @@ static const struct sysfs_ops xcp_cfg_res_sysfs_ops = {
- };
- 
- static const struct kobj_type xcp_cfg_res_sysfs_ktype = {
-+	/*
-+	 * Pre-existing: xcp_res is embedded in struct amdgpu_xcp_cfg
-+	 * rather than freed individually by kobject_put().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &xcp_cfg_res_sysfs_ops,
- 	.default_groups = xcp_cfg_res_sysfs_groups,
- };
-@@ -1061,6 +1066,11 @@ static const struct attribute_group amdgpu_xcp_attrs_group = {
- };
- 
- static const struct kobj_type xcp_sysfs_ktype = {
-+	/*
-+	 * Pre-existing: xcp is embedded in struct amdgpu_xcp_mgr
-+	 * rather than freed individually by kobject_put().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- };
- 
-diff --git a/drivers/infiniband/hw/hfi1/sysfs.c b/drivers/infiniband/hw/hfi1/sysfs.c
-index 372cfd13dc61..5a1aca06b542 100644
---- a/drivers/infiniband/hw/hfi1/sysfs.c
-+++ b/drivers/infiniband/hw/hfi1/sysfs.c
-@@ -608,6 +608,11 @@ static const struct sysfs_ops sde_sysfs_ops = {
- };
- 
- static struct kobj_type sde_ktype = {
-+	/*
-+	 * Pre-existing: sdma_engine is embedded in dd->per_sdma array
-+	 * rather than freed by kobject_put().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &sde_sysfs_ops,
- };
- 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c b/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-index fdb63a8fb997..df0e48070c2e 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_sysfs.c
-@@ -245,6 +245,8 @@ static struct attribute *usnic_ib_qpn_default_attrs[] = {
- ATTRIBUTE_GROUPS(usnic_ib_qpn_default);
- 
- static struct kobj_type usnic_ib_qpn_type = {
-+	/* Pre-existing: usnic_ib_qp_grp is embedded in RDMA core-managed struct usnic_ib_qp_grp. */
-+	.release = NULL,
- 	.sysfs_ops = &usnic_ib_qpn_sysfs_ops,
- 	.default_groups = usnic_ib_qpn_default_groups,
- };
-diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
-index 6b567a74fc2c..2f530e8c6757 100644
---- a/drivers/parisc/pdc_stable.c
-+++ b/drivers/parisc/pdc_stable.c
-@@ -484,6 +484,11 @@ ATTRIBUTE_GROUPS(paths_subsys);
- 
- /* Specific kobject type for our PDC paths */
- static const struct kobj_type ktype_pdcspath = {
-+	/*
-+	 * Pre-existing: pdcspath_entry instances are static; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &pdcspath_attr_ops,
- 	.default_groups = paths_subsys_groups,
- };
-diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
-index e6b5efdf5dc9..d62411e4f535 100644
---- a/drivers/power/supply/ab8500_fg.c
-+++ b/drivers/power/supply/ab8500_fg.c
-@@ -2531,6 +2531,11 @@ static struct attribute *ab8500_fg_attrs[] = {
- ATTRIBUTE_GROUPS(ab8500_fg);
- 
- static const struct kobj_type ab8500_fg_ktype = {
-+	/*
-+	 * Pre-existing: fg_kobject is embedded in devm-allocated struct
-+	 * ab8500_fg; ab8500_fg_sysfs_exit() only calls kobject_del().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &ab8500_fg_sysfs_ops,
- 	.default_groups = ab8500_fg_groups,
- };
-diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-index 6df1926d4c62..2fb7271dce36 100644
---- a/drivers/s390/char/sclp_mem.c
-+++ b/drivers/s390/char/sclp_mem.c
-@@ -305,6 +305,8 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
- }
- 
- static const struct kobj_type ktype = {
-+	/* Pre-existing: permanent firmware kobjects, never freed */
-+	.release = NULL,
- 	.sysfs_ops = &kobj_sysfs_ops,
- };
- 
-diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
-index 0cc2953d59a5..da7a64c95058 100644
---- a/drivers/soc/hisilicon/kunpeng_hccs.c
-+++ b/drivers/soc/hisilicon/kunpeng_hccs.c
-@@ -1038,6 +1038,13 @@ static struct attribute *hccs_port_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_port_default);
- 
- static const struct kobj_type hccs_port_type = {
-+	/*
-+	 * Pre-existing: hccs_port_info is allocated via devm_kzalloc()
-+	 * rather than freed by kobject_put(). With
-+	 * CONFIG_DEBUG_KOBJECT_RELEASE the delayed kobject cleanup may run
-+	 * after devm frees it on unbind, a use-after-free.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_port_default_groups,
- };
-@@ -1110,6 +1117,13 @@ static struct attribute *hccs_die_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_die_default);
- 
- static const struct kobj_type hccs_die_type = {
-+	/*
-+	 * Pre-existing: hccs_die_info is allocated via devm_kzalloc()
-+	 * rather than freed by kobject_put(). With
-+	 * CONFIG_DEBUG_KOBJECT_RELEASE the delayed kobject cleanup may run
-+	 * after devm frees it on unbind, a use-after-free.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_die_default_groups,
- };
-@@ -1213,6 +1227,13 @@ static struct attribute *hccs_chip_default_attrs[] = {
- ATTRIBUTE_GROUPS(hccs_chip_default);
- 
- static const struct kobj_type hccs_chip_type = {
-+	/*
-+	 * Pre-existing: hccs_chip_info is allocated via devm_kzalloc()
-+	 * rather than freed by kobject_put(). With
-+	 * CONFIG_DEBUG_KOBJECT_RELEASE the delayed kobject cleanup may run
-+	 * after devm frees it on unbind, a use-after-free.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &hccs_comm_ops,
- 	.default_groups = hccs_chip_default_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-index ae937854403b..452920a4e2a9 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-@@ -304,6 +304,13 @@ static const struct sysfs_ops display_sysfs_ops = {
- };
- 
- static struct kobj_type display_ktype = {
-+	/*
-+	 * Pre-existing: dssdev->kobj is embedded in struct omap_dss_device
-+	 * and zeroed in display_uninit_sysfs() right after kobject_put().
-+	 * With CONFIG_DEBUG_KOBJECT_RELEASE that memset() clobbers the
-+	 * pending delayed kobject cleanup.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &display_sysfs_ops,
- 	.default_groups = display_sysfs_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-index 1b644be5fe2e..40ec750f4315 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c
-@@ -496,6 +496,11 @@ static const struct sysfs_ops manager_sysfs_ops = {
- };
- 
- static struct kobj_type manager_ktype = {
-+	/*
-+	 * Pre-existing: mgr->kobj is embedded in static managers[] and
-+	 * zeroed in dss_manager_kobj_uninit().
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &manager_sysfs_ops,
- 	.default_groups = manager_sysfs_groups,
- };
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-index 1da4fb1c77b4..4d333031b18d 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c
-@@ -429,6 +429,11 @@ static const struct sysfs_ops overlay_sysfs_ops = {
- };
- 
- static struct kobj_type overlay_ktype = {
-+	/*
-+	 * Pre-existing: ovl->kobj is embedded in static overlays[];
-+	 * dss_overlay_kobj_uninit() drops the kobject ref.
-+	 */
-+	.release = NULL,
- 	.sysfs_ops = &overlay_sysfs_ops,
- 	.default_groups = overlay_sysfs_groups,
- };
-diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
-index dfcec9376cd5..2ea6773cd98f 100644
---- a/fs/erofs/sysfs.c
-+++ b/fs/erofs/sysfs.c
-@@ -238,6 +238,11 @@ static const struct kobj_type erofs_sb_ktype = {
- static const struct kobj_type erofs_ktype = {
- 	.default_groups = erofs_groups,
- 	.sysfs_ops	= &erofs_attr_ops,
-+	/*
-+	 * Pre-existing: erofs_root is a static struct kset; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release	= NULL,
- };
- 
- static struct kset erofs_root = {
-@@ -247,6 +252,11 @@ static struct kset erofs_root = {
- static const struct kobj_type erofs_feat_ktype = {
- 	.default_groups = erofs_feat_groups,
- 	.sysfs_ops	= &erofs_attr_ops,
-+	/*
-+	 * Pre-existing: erofs_feat is a static struct kobject; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release	= NULL,
- };
- 
- static struct kobject erofs_feat = {
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 430356e500af..6e15695cb75f 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -1683,6 +1683,11 @@ static const struct kobj_type f2fs_sb_ktype = {
- 
- static const struct kobj_type f2fs_ktype = {
- 	.sysfs_ops	= &f2fs_attr_ops,
-+	/*
-+	 * Pre-existing: f2fs_kset is a static struct kset; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release	= NULL,
- };
- 
- static struct kset f2fs_kset = {
-@@ -1697,6 +1702,11 @@ static const struct sysfs_ops f2fs_feat_attr_ops = {
- static const struct kobj_type f2fs_feat_ktype = {
- 	.default_groups = f2fs_feat_groups,
- 	.sysfs_ops	= &f2fs_feat_attr_ops,
-+	/*
-+	 * Pre-existing: f2fs_feat is a static struct kobject; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release	= NULL,
- };
- 
- static struct kobject f2fs_feat = {
-@@ -1711,6 +1721,11 @@ static const struct sysfs_ops f2fs_tune_attr_ops = {
- static const struct kobj_type f2fs_tune_ktype = {
- 	.default_groups = f2fs_tune_groups,
- 	.sysfs_ops	= &f2fs_tune_attr_ops,
-+	/*
-+	 * Pre-existing: f2fs_tune is a static struct kobject; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release	= NULL,
- };
- 
- static struct kobject f2fs_tune = {
-diff --git a/fs/ocfs2/cluster/masklog.c b/fs/ocfs2/cluster/masklog.c
-index 563881ddbf00..ff8a1cf51e72 100644
---- a/fs/ocfs2/cluster/masklog.c
-+++ b/fs/ocfs2/cluster/masklog.c
-@@ -147,6 +147,11 @@ static const struct sysfs_ops mlog_attr_ops = {
- static struct kobj_type mlog_ktype = {
- 	.default_groups = mlog_default_groups,
- 	.sysfs_ops      = &mlog_attr_ops,
-+	/*
-+	 * Pre-existing: mlog_kset is a static struct kset; lifetime
-+	 * is not controlled by kobject_put().
-+	 */
-+	.release        = NULL,
- };
- 
- static struct kset mlog_kset = {
-diff --git a/include/linux/kobject.h b/include/linux/kobject.h
-index 55e37a5d405e..8a1332030884 100644
---- a/include/linux/kobject.h
-+++ b/include/linux/kobject.h
-@@ -114,7 +114,7 @@ void kobject_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t *gid)
- char *kobject_get_path(const struct kobject *kobj, gfp_t flag);
- 
- struct kobj_type {
--	void (*release)(struct kobject *kobj);
-+	void (*release)(struct kobject *kobj) __must_init;
- 	const struct sysfs_ops *sysfs_ops;
- 	const struct attribute_group **default_groups;
- 	const struct kobj_ns_type_operations *(*child_ns_type)(const struct kobject *kobj);
--- 
-2.56.0.313.g2479322e68-goog
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
