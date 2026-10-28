@@ -1,55 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793201991;
-	b=eGUKRHhN/2WDyBK6CaPHx011nM/GP5osz/V7rFpX+NWyno04Hx91fBEB3FsMplMxBxBo
-	 Nz0beZW00YoNZQl6HX4qEKiIoIpUe9u4Sruppj6omj86KzkBbBxMc4mRxPXQq6E7rCgmP
-	 JaplZfzK4FDioUxQZ4M3PLVW0eAHh7Smr521QD6yFR3w07T9tmmBXqQkOQaQgwphDrG20
-	 BMlNPvBTI7+cigqqbgD7fpiTimXmKmCpdbyz13JjFtTV9mI4yX8aFxG9D2mmVujWsjEpD
-	 WFb6mAnqlECzI1bOes1Ym+qvBTUkne+7zEmsluXjPBa5BMLbAyS2S1kJW+mJwWdkfxg==
+	t=1793203355;
+	b=Sb9WQ44/eKBg3l0+vHCd7gud410GX1/LRwt4B9wKaxewaktxbUn42NSGibxPDTi6Q9PE
+	 6V+a9FWJsHRX9RGKaqB9ThDLZyT8khyo5TbqF1rUBMW4PeC0OcYf4qrb9kfWIg0Hku1s/
+	 CkoNplEUl2ZWU8PrY/e06ZPLN4WwNwxw7QTLITBKXzH2osmN8uhW0oD9I7nCzTH/RCjXr
+	 bR0IY3/3Tz0Brq042cYzmgk1KmF8dNpRERe5NA+pZ6BhJbX8Gc9G13Def1NHs01IRcMyU
+	 vDqOuMxyEK2uP2wXDZap0aISAYArLpQg+S+qs7+IUfThZ3YJJ3KcbvLs5Bma4HpkjSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793201991;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=v/GrfVBE9REqGlviMjMV9KYA8baC9D3Z4PFL9rDyJNI=;
-	b=WsNnOlFpga1xtsDSS3/mNub9DUOYV5LBZip8rXX5spHSKNFl1WnOEQOd5in665SCX9MQ
-	 xxZbf3vBJeupfLHzt/ARePHUeawzMKbrv9yUPty0cJ5abbHZbmnDCBdb++OcIga/T1Oax
-	 ANUCFPq+BUfslnja7L+Pjt5CRorzi8iS3+bahv9jWvYisa9Ifkaw5uuXogmi8yEbtHxp6
-	 Wu6l6AYUTXFhE4B3492+OcPUi/lJMXZWiFcD+Rm1wOBd74hJvbR6PlKWia69eHJUiDzoq
-	 ilnGe/+3ez5kUlrk85N3ls/VEMlc45CLN6QdPZqRqqDjfVVKGiqWdCJRi9iOyUCPGUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793203355;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:X-Developer-Signature:
+	 X-Developer-Key:Content-Transfer-Encoding;
+	bh=pqvidO18/MsoqEupSyt5zaIZm2NWShVR3YPJxgjMIMs=;
+	b=Iiy3suYzY4jmVvODBRZcYpwtddHkypL9J7xqdWWDPuZyACTkUUrwhXGu+FBljKxbFEuR
+	 fI6SrYr23HS7ISj8wlzu2w8a6nzZKUvXwZs0hmw5N2E/ohyJKx2YdQxibmFjcOWqBGOos
+	 U3t1z0u2Ri/QWqH792pNZ9cY0mvSP8A/tRiss/xAJYsND6JM9u7Ff+jNYtyDSCWvOORcN
+	 lAZvqAXcxojXTXG9NfbIH1fH8FJIH7pAx6ikNNt7aSNgRICAiuCUWE2NgqpaFGYJin73W
+	 ZjKCSRQzgQmgilC+pOoSDYTW9g9yg+eNp9cfqEDnzdm2bQq7JT0SSOKSEpPRqXYFvOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VHtM/wzi";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZG0L0aDj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E5606A327
-	for <gfs2@lists.linux.dev>; Wed, 28 Oct 2026 15:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FF0606A31D;
+	Wed, 28 Oct 2026 16:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VHtM/wzi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89E01F031E8
-	for <gfs2@lists.linux.dev>; Wed, 28 Oct 2026 15:39:50 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZG0L0aDj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46E81F01828;
+	Wed, 28 Oct 2026 16:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793201990;
-	bh=v/GrfVBE9REqGlviMjMV9KYA8baC9D3Z4PFL9rDyJNI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VHtM/wzid4Vjpi1ahtkrCTunBXdpMk588+yxAl/Zt7jPzQ9CgDIh+PYPt+lW+RHtD
-	 XBF1ITpY/oCCREN/r3GxTTiasnxkbYCm2mrSb3zmMn23c5zknBvNx/dV5SfeyYM827
-	 m45G9IzvrUp2GsXITO1BPz91FS4SrBTRct5fIYPvHF7/uja6GCRbMQHJlEDtcLZFBR
-	 bBqsTOILPojBkbqP9c5uFYFLXwvDa2XYT2SFUMxRTuB6ZQzLNkssif/6urHzHO00fk
-	 Skgn+ptvjMSTS3VMBezq8yREZJPVwbZdc9I441ADP3crdeclpWj7HnR60MZ9kaBb89
-	 e8j26jTotaK2A==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba35c0df4fso1243741e87.0
-        for <gfs2@lists.linux.dev>; Wed, 28 Oct 2026 08:39:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxn51smRtPFQan5m6M1VCyHyFS5DfN9e6gRU/xJzaxl+EqAUaNMbuvee/BuIOBvLT8KWOJp@lists.linux.dev
-X-Gm-Message-State: AFq9FYL/YDjx1LRw4sn71bDzMXmpQuu5iYOuaJ97xo2wnzF0UKSIlHdE
-	G4W7PHSWU8X24xpFIazwSyIL0M8lcF0bONvzblGK3LO7CyJktyLm/nM+dJSGyFVeNnKKRGft/YE
-	XEs7J57Ue+i04svVza3kbrIDIYFbFhp4=
-X-Received: by 2002:a05:6512:33cb:b0:5bf:ba43:f2f1 with SMTP id
- 2adb3069b0e04-5bfcad8c081mr1232361e87.34.1793201988873; Wed, 28 Oct 2026
- 08:39:48 -0700 (PDT)
+	s=k20260515; t=1793203354;
+	bh=pqvidO18/MsoqEupSyt5zaIZm2NWShVR3YPJxgjMIMs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZG0L0aDjqTsgzLztgQj3GHplRgcp3JC3WsGZx/YxNehTd57FmefkseXr4Ci+4rVVw
+	 zsXoUG77/qVXIA2DpIi2sH2fHwl0axkhR82Tjx9aQoC7Sw4R9qUujs/7L2qGiiyxQv
+	 PNpbPrkUbijZwlr47dpkhLJ1a+VXN/J5c5ub85J3WNeW3H3YLxnJ6AENufO/RZu6Ya
+	 JpHCSjA8ZNcK6EQ4M9Yem1gPVU7Mm8F8EsMtwmSU7iQFut12ngDTz77ZcX2DeEmXuM
+	 DTQlwFe9KPqXNTo3ZYRHY5f02yibn5HXVRh1DwdEbuXTEKLho1gpQlejTX87U/GRT9
+	 4dpxOZTZfBbdQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	ecryptfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net,
+	linux-nilfs@vger.kernel.org,
+	exfat@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	ntfs@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev,
+	linux-btrfs@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-efi@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RFC 21/28] gfs2: don't set SB_RDONLY on withdraw
+Date: Wed, 28 Oct 2026 17:01:49 +0100
+Message-ID: <20261028-zurschaustellen-okkupieren-inkompatibel-d11525ce88b8@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAHc6FU6z4kX5R3Og8m0dYOHsjFcw+4Btvfe87AGPxy_EWs0E7A@mail.gmail.com>
+References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org> <20261012-work-fs-sb_rdonly-v1-21-60743a3dc326@kernel.org> <CAHc6FU6z4kX5R3Og8m0dYOHsjFcw+4Btvfe87AGPxy_EWs0E7A@mail.gmail.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -59,175 +74,48 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027223847.652884-1-irogers@google.com> <20261027223847.652884-5-irogers@google.com>
- <CAJZ5v0juvZ2ZVRBkY6FxBM=NhPt9vMA3+yRugXc5u=U1jO9AXg@mail.gmail.com> <CAP-5=fWVZ=7-qDRODiEQzRzhpQqribv9Morj=OoAXW_6uaW2dA@mail.gmail.com>
-In-Reply-To: <CAP-5=fWVZ=7-qDRODiEQzRzhpQqribv9Morj=OoAXW_6uaW2dA@mail.gmail.com>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Wed, 28 Oct 2026 16:39:37 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i0YoOW+ueh_aZJdYVS0etuCqfrf_S0NTKzCE9_6oKxPQ@mail.gmail.com>
-X-Gm-Features: AclHuK-jtq7opXKWd_89haXf76RntnjsmSewB7PcsqPK44QRbhInXeBo-GT0LQw
-Message-ID: <CAJZ5v0i0YoOW+ueh_aZJdYVS0etuCqfrf_S0NTKzCE9_6oKxPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] cpufreq: governor: Initialize kobj_type release
- callback statically
-To: Ian Rogers <irogers@google.com>
-Cc: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Zhihao Cheng <chengzhihao1@huawei.com>, Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, 
-	Sumanth Korikkar <sumanthk@linux.ibm.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, llvm@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1939; i=brauner@kernel.org; h=from:subject:message-id; bh=/2bL9FoOj20KqA4rEtCDZi7CA8CHUBzAXKXFts8ojnQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9ksmL8GiJ4XnsbsM5a7aM7ZHXDo+ubXVQend6xo3Dq c6XHseWd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk10SGf8Zp6etfiUn5Kaa4 zdp+ONFrN+eR4/7Xl/x14Hr2cnIIdxQjw5rNYWumRtzN/zyzJWbl3ZUT/BYEPb13q6vr0/3MC10 NDQwA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 28, 2026 at 4:36=E2=80=AFPM Ian Rogers <irogers@google.com> wro=
-te:
+On Fri, Oct 16, 2026 at 02:01:00AM +0200, Andreas Gruenbacher wrote:
+> According to commit d564053f0746 ("GFS2: Clean up freeze code"), the
+> idea of the freeze sysfs file was to make it behave like the FIFREEZE
+> / FITHAW ioctls. This isn't what the code is doing at all.
+
+That's a pre-existing and separate from this series. freeze_store() calls
+freeze_super() and thaw_super() directly with FREEZE_HOLDER_USERSPACE and never
+goes through gfs2_freeze_super() and gfs2_thaw_super(). So it never takes the
+freeze glock. I don't think that's for this series to fix.
+
+> Not sure what should prevent us from fixing withdrawn filesystem
+> thawing and the SB_RDONLY issue in separate commits. Both need fixing
+> in the end, but that's okay.
+
+I guess.
+
+> So before this patch, 'mount -o remount,rw' of a withdrawn filesystem
+> fails with -EIO, and this patch changes it to -EROFS. What's wrong
+> with -EIO? Once do_withdraw() doesn't set SB_RDONLY anymore, the
+> filesystem will remain read-write mounted; getting an -EROFS error in
+> that state seems odd.
+
+You can keep -EIO but I tried to make it somewhat consistent.
+
+> > +       /* A withdrawn filesystem can't take the freeze glock anymore. */
+> > +       if (gfs2_withdrawn(sdp)) {
+> > +               mutex_unlock(&sdp->sd_freeze_mutex);
+> > +               return -EIO;
+> > +       }
 >
-> On Wed, Oct 28, 2026 at 4:39=E2=80=AFAM Rafael J. Wysocki (Intel)
-> <rafael@kernel.org> wrote:
-> >
-> > On Tue, Oct 27, 2026 at 11:39=E2=80=AFPM Ian Rogers <irogers@google.com=
-> wrote:
-> > >
-> > > Export cpufreq_dbs_data_release() and set .kobj_type.release statical=
-ly
-> > > in the ondemand and conservative governors so their gov_attr_set
-> > > kobjects have a valid release callback statically initialized, matchi=
-ng
-> > > cpufreq_governor_dbs. Remove the redundant runtime assignment in
-> > > cpufreq_dbs_governor_init().
-> > >
-> > > This prepares for annotating struct kobj_type::release with
-> > > __must_init.
-> > >
-> > > Signed-off-by: Ian Rogers <irogers@google.com>
-> >
-> > Do you want stuff to be picked up by maintainers, or do you want to
-> > route it yourself?
->
-> Hi Rafael,
->
-> Just a quick note: I agree with Zhongqiu's feedback and the commit
-> message needs a fix.
->
-> Regarding merging the patches, the issue with maintainers picking up
-> fixes is that the series will break the clang/llvm build without them.
-> So the maintainers need to either merge the patches (and the series be
-> rebased on top of them) or merge the series as a unit. Perhaps since
-> the patches align, merge conflicts won't happen, so maintainers
-> merging and landing the series is okay. I don't have the experience to
-> know.
+> This is racy; the filesystem can still be withdrawn after this
+> gfs2_withdrawn() check. It should make more sense to bail out of the
+> for loop in gfs2_freeze_super() on withdrawn filesystems.
 
-I'd expect the driver core to pick up the series as a whole then, so
-please feel free to add
+Right, good catch.
 
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org> # cpufreq
+> I'm not a fan of those fake mount options. It doesn't matter all that
+> much for "withdrawn" because remounting will fail anyway, but it's
+> still messy.
 
-to the next version of this patch.
-
-Thanks!
-
-> > > ---
-> > >  drivers/cpufreq/cpufreq_conservative.c | 5 ++++-
-> > >  drivers/cpufreq/cpufreq_governor.c     | 4 ++--
-> > >  drivers/cpufreq/cpufreq_governor.h     | 1 +
-> > >  drivers/cpufreq/cpufreq_ondemand.c     | 5 ++++-
-> > >  4 files changed, 11 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/cpufreq/cpufreq_conservative.c b/drivers/cpufreq=
-/cpufreq_conservative.c
-> > > index 02bfd46543e9..146a2353b1a2 100644
-> > > --- a/drivers/cpufreq/cpufreq_conservative.c
-> > > +++ b/drivers/cpufreq/cpufreq_conservative.c
-> > > @@ -318,7 +318,10 @@ static void cs_limits(struct cpufreq_policy *pol=
-icy)
-> > >
-> > >  static struct dbs_governor cs_governor =3D {
-> > >         .gov =3D CPUFREQ_DBS_GOVERNOR_INITIALIZER("conservative"),
-> > > -       .kobj_type =3D { .default_groups =3D cs_groups },
-> > > +       .kobj_type =3D {
-> > > +               .release =3D cpufreq_dbs_data_release,
-> > > +               .default_groups =3D cs_groups,
-> > > +       },
-> > >         .gov_dbs_update =3D cs_dbs_update,
-> > >         .alloc =3D cs_alloc,
-> > >         .free =3D cs_free,
-> > > diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpu=
-freq_governor.c
-> > > index f3bd3dbe7c41..f8b5aca09b6b 100644
-> > > --- a/drivers/cpufreq/cpufreq_governor.c
-> > > +++ b/drivers/cpufreq/cpufreq_governor.c
-> > > @@ -419,7 +419,7 @@ static void free_policy_dbs_info(struct policy_db=
-s_info *policy_dbs,
-> > >         gov->free(policy_dbs);
-> > >  }
-> > >
-> > > -static void cpufreq_dbs_data_release(struct kobject *kobj)
-> > > +void cpufreq_dbs_data_release(struct kobject *kobj)
-> > >  {
-> > >         struct dbs_data *dbs_data =3D to_dbs_data(to_gov_attr_set(kob=
-j));
-> > >         struct dbs_governor *gov =3D dbs_data->gov;
-> > > @@ -427,6 +427,7 @@ static void cpufreq_dbs_data_release(struct kobje=
-ct *kobj)
-> > >         gov->exit(dbs_data);
-> > >         kfree(dbs_data);
-> > >  }
-> > > +EXPORT_SYMBOL_GPL(cpufreq_dbs_data_release);
-> > >
-> > >  int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
-> > >  {
-> > > @@ -488,7 +489,6 @@ int cpufreq_dbs_governor_init(struct cpufreq_poli=
-cy *policy)
-> > >         policy->governor_data =3D policy_dbs;
-> > >
-> > >         gov->kobj_type.sysfs_ops =3D &governor_sysfs_ops;
-> > > -       gov->kobj_type.release =3D cpufreq_dbs_data_release;
-> > >         ret =3D kobject_init_and_add(&dbs_data->attr_set.kobj, &gov->=
-kobj_type,
-> > >                                    get_governor_parent_kobj(policy),
-> > >                                    "%s", gov->gov.name);
-> > > diff --git a/drivers/cpufreq/cpufreq_governor.h b/drivers/cpufreq/cpu=
-freq_governor.h
-> > > index 806d8fb4dff1..1026712bb79b 100644
-> > > --- a/drivers/cpufreq/cpufreq_governor.h
-> > > +++ b/drivers/cpufreq/cpufreq_governor.h
-> > > @@ -150,6 +150,7 @@ static inline struct dbs_governor *dbs_governor_o=
-f(struct cpufreq_policy *policy
-> > >  }
-> > >
-> > >  /* Governor callback routines */
-> > > +void cpufreq_dbs_data_release(struct kobject *kobj);
-> > >  int cpufreq_dbs_governor_init(struct cpufreq_policy *policy);
-> > >  void cpufreq_dbs_governor_exit(struct cpufreq_policy *policy);
-> > >  int cpufreq_dbs_governor_start(struct cpufreq_policy *policy);
-> > > diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpu=
-freq_ondemand.c
-> > > index 9942dbb38dae..7386d043c665 100644
-> > > --- a/drivers/cpufreq/cpufreq_ondemand.c
-> > > +++ b/drivers/cpufreq/cpufreq_ondemand.c
-> > > @@ -374,7 +374,10 @@ static struct od_ops od_ops =3D {
-> > >
-> > >  static struct dbs_governor od_dbs_gov =3D {
-> > >         .gov =3D CPUFREQ_DBS_GOVERNOR_INITIALIZER("ondemand"),
-> > > -       .kobj_type =3D { .default_groups =3D od_groups },
-> > > +       .kobj_type =3D {
-> > > +               .release =3D cpufreq_dbs_data_release,
-> > > +               .default_groups =3D od_groups,
-> > > +       },
-> > >         .gov_dbs_update =3D od_dbs_update,
-> > >         .alloc =3D od_alloc,
-> > >         .free =3D od_free,
-> > > --
-> > > 2.56.0.313.g2479322e68-goog
-> > >
-> > >
->
+Sure.
