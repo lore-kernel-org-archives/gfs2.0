@@ -1,70 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793203516;
-	b=pgT05EwDTzLWTBs1MVU39IplQlB9hFWkiIDGu8R0IQeu9+eCqPxyob7XH9enwVpLvyC+
-	 jlu4h1gZMkiPQ9xquEFCBTRpnOG/C02PEWAC21ICSLKWGaQmDoQNQCdl0tqt8Gie//n1Y
-	 T+dNs2jv6/14UnX4XBtY2FWW69lU/rv5HMmk5f9NstMEQ27rTEoV5bnVRbgnIyxzpb9e7
-	 oqbic5Vw1F17dNZVTCQh7ZzkpRzs/TyiQzJek8B9MUKaDVK+NSD6f6LTSmahQiJT/q8tX
-	 WGXGWG91lkhHzv1lR8pKmkwng+jNRUOzrE+NWiHDwX/OD2V7N/7qlGx/B1WUpk6ZEQw==
+	t=1793213769;
+	b=yUcLhdx4+LXW7m5fmI4Zfj10jBjZQpCQAXhNvYoEWladLBWn5dGqwOCHbbPvsE93aD2H
+	 0bSjoRvxr5P010fdP1ICbvcCOyBL9J0wwSiJnKkuL6P9kNvVJliUxDmXvCp1fEx+jLRyw
+	 RNO+95J76oedC88msG+GOOLxVZmcDuY++AMzJDkq4ATiz7cBcxcqkm7a9mm1deVFH7ShG
+	 P7EUn4+Er0liDkC8gS+nCZ/pfn6TJ/nxn9YTUXjM/pv2cEF3X34GbGrWe8wXUC4DWCPGR
+	 S/0EtsC/PfHi6fyneh6vxLW6vE3NHt23xHADsYUUC3jo3urDtYAFXK1+567c8IGGjJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793203516;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:X-Developer-Signature:
-	 X-Developer-Key:Content-Transfer-Encoding;
-	bh=88sfbrcRMagQo5uewTZLqJVOWmvLIZ7ZDDHfajCvQ8w=;
-	b=b3efSz0M7kC/RNoRtfrO4IoFCeCwElBH+4/+7s8r/KV2dMMNRGnjOiGAxBC7QSz8cPcr
-	 xV34w14tS50zT1NyCPhR94CH4Xr3gG3hKt4qXrFoRxLp2rUygmaN6Mwm5z2VX3wOAhkJL
-	 X1/AIoPdJWKOWvgC4tG599EfVobpPrc8wCFz/GtCfQ5KMGdIGq4g5RmVdvEByQCWYG1LE
-	 nUNoMzyD/aQVSUMl3F/g5+k+AV6nxEZo+rUE77w8XtvxaBii/WOJ4kKH2+uMikiHXDaaG
-	 wNmqqgQ4y8NmbQqvwITNxLf6IN96MwxMJTTaohpGNj5QAxeYwk1oIt/CLLTQ3AyQhRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793213769;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=df/xPPyuiQPcm1AE1rSPxuyp5dlFq4Se196rhHrJoBM=;
+	b=Xuc09XunVt1SMuqGBEIuIPxzno32wfx8JNOOfelAmCW4JPWSFQB4Pr23ZX0+4hYzbDyI
+	 fGgPzHhU9CV95cv4TJiOb93TLy/fwOYEhFHU6mzqoqcqF62Zah8fSkX3awLWjqb7jikzL
+	 wwHPe07Mm2YTQVXGM+e7hITVgeXxxEVvmjxyqntAoi0Eg81VNh0D+0u0lhd1vzWob/VtT
+	 HQDAouXDHbvzHP1sTZUcOYqmnLc2wMVlEhlpd8RmUPR/VMWV2d37JNlduZ3+d6JDRwNR/
+	 DFr2nNfSDiZgp9Qxh1IRQyzPTTOFwj4VCrQ/AtOYBS/5sbshRFfvBnBoiTGp0WnimgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEGdvb86;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+edzg6v;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8F2606AA59;
-	Wed, 28 Oct 2026 16:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5838606A31C;
+	Wed, 28 Oct 2026 18:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEGdvb86
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57CF1F01285;
-	Wed, 28 Oct 2026 16:05:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+edzg6v
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D261F01828;
+	Wed, 28 Oct 2026 18:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793203515;
-	bh=88sfbrcRMagQo5uewTZLqJVOWmvLIZ7ZDDHfajCvQ8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iEGdvb862gVq48UUgyRl/Xm6JMHFkS0Jzxlmh1uQ/FP154kv0/TjitiGESsor5WdQ
-	 C8Ve/mHow4xmhrJmq+PhbjqnTBi5ymT89KYt5rqJvqLtaHs91auSgZty38iRzuAaNY
-	 sGOGJMPqaSegYASCqriuMvHoyhSXhrWH0cznQKI8Z8TELXfHtMN7ZKOD1MT2ckz4xo
-	 lCT7U8xwgQPyPE/kc4kGz4PVC7PcOGpFDQc0DU1uHdID0r52NAIP/kj47a3WIfts6K
-	 K+2/BYbdOrzkQy31h86d4L7UB6r0C0qvkhbPm3Kgu+qXygGQYSsxvoxsYUNq3oppIg
-	 lKbUPV9aoH+oA==
-From: Christian Brauner <brauner@kernel.org>
-To: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	ecryptfs@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org,
-	exfat@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	ntfs@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev,
-	linux-btrfs@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-efi@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RFC 14/28] ntfs: don't set SB_RDONLY after filesystem errors
-Date: Wed, 28 Oct 2026 17:05:06 +0100
-Message-ID: <20261028-fixstern-halunken-skelett-fb3cd0824159@brauner>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <atW1VhJXAIvtYPfd@hyunchul-PC02>
-References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org> <20261012-work-fs-sb_rdonly-v1-14-60743a3dc326@kernel.org> <atW1VhJXAIvtYPfd@hyunchul-PC02>
+	s=k20260515; t=1793213768;
+	bh=df/xPPyuiQPcm1AE1rSPxuyp5dlFq4Se196rhHrJoBM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K+edzg6vK4sYIgPI0EHAxslJmPd/aExnxCZkYatx9SKb8ztopQpN/Brte7D1uGHDc
+	 +PWfIYIXj2TwEIjrIeT9aSjpQlU/qFISxxHuWsvH08dCGPPiD4L4rx5Tz6bxLuFRvY
+	 RhA3+DjTqfNcnhfh/7faDIzX0CmFsTI2XpkHQ8+jhA2LaeatAD4sqfFj21cmIRpM5b
+	 W2D2wH60j2ajxxUPUQIplNGc0FcQFY/hgWtTB/gjNx5LU362Hvl/ouMKfNIqzO8whL
+	 EQwWzgrE3+OvEllJ5XwE13QwOyNwuhXlhNdKAwm9IJuUZrFACWCEqjTJXX2ww3Zp+t
+	 0+IngOv7LotGw==
+Date: Wed, 28 Oct 2026 11:56:08 -0700
+From: Kees Cook <kees@kernel.org>
+To: Ian Rogers <irogers@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev,
+	llvm@lists.linux.dev, linux-hardening@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+	linux-s390@vger.kernel.org, gfs2@lists.linux.dev,
+	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v2 1/9] Compiler Attributes: Add __must_init macro
+Message-ID: <202610281155.4D2AA663@keescook>
+References: <20261027223847.652884-1-irogers@google.com>
+ <20261027223847.652884-2-irogers@google.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -74,46 +79,46 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2009; i=brauner@kernel.org; h=from:subject:message-id; bh=p94qtq7P6Iyb9ro/ig3qsXfneKNkQl3vnYSgqxFYI4M=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9kjX5zM8Xn3WMa65c5ROjC84Wi7I8Vdelxp8Uknu7e NHt2DMXO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbSfZDhvxvLvOPaJy5+bO6u aPynfMBQpNjbPaLkmuimi/UFjT7r0xgZDpy9vTtgcu3kQxtM9P637q1UPByx2Tj5+w2OmuViLbe MGQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027223847.652884-2-irogers@google.com>
 
-On Mon, Oct 19, 2026 at 03:14:46PM +0900, Hyunchul Lee wrote:
-> Before this patch, SB_RDONLY is set, so remount,rw returned -EROFS. With
-> this patch, sb_rdonly(sb) is false, so remount,rw skips the check and
-> return success even though writes are rejected with -EROFS.
+On Tue, Oct 27, 2026 at 03:38:36PM -0700, Ian Rogers wrote:
+> Clang supports the 'require_explicit_initialization' attribute on struct
+> fields to indicate that a field must be initialized explicitly by the
+> user when the object is constructed. When an aggregate initializer or
+> uninitialized variable omits an annotated field, Clang emits a
+> -Wuninitialized-explicit-init warning (enabled by default).
+> 
+> Add the __must_init macro to include/linux/compiler_attributes.h (which
+> is included by include/linux/compiler_types.h and
+> include/linux/compiler.h) so kernel structs with error-prone
+> initialization (such as mandatory callbacks or cleanup handlers) can
+> enforce explicit initialization at compile time, as discussed at the
+> Linux Plumbers Conference. The shorter __must_init spelling, rather than
+> the attribute's full name, keeps annotated struct members readable and
+> was suggested by Greg Kroah-Hartman.
+> 
+> Note that Clang does not yet diagnose file-scope objects declared
+> without any initializer (initializers at file scope that omit the field
+> are diagnosed), see https://github.com/llvm/llvm-project/issues/232483.
+> 
+> Also teach Sphinx (Documentation/conf.py), kernel-doc
+> (tools/lib/python/kdoc/xforms_lists.py), and checkpatch.pl about the new
+> attribute macro.
+> 
+> Link: https://lpc.events/event/20/contributions/2392/
+> Link: https://lore.kernel.org/lkml/2026101532-fantastic-deafness-e04c@gregkh/
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ian Rogers <irogers@google.com>
 
-Yes, that's intended. ntfs_reconfigure() only refuses the transition
-from ro to rw. After an error with errors=remount-ro
-ntfs_handle_error() sets NV_Errors and NV_EmergencyRO. A remount to
-read-only works and a remount to read-write after that fails with
--EROFS. A "mount -o remount,rw" of a volume that is still read-write
-isn't a transition. It returns 0 but doesn't change anything.
+Reviewed-by: Kees Cook <kees@kernel.org>
 
-That's how ext4 behaves since commit d3476f3dad4a ("ext4: don't set
-SB_RDONLY after filesystem errors"). __ext4_remount() only looks at
-ext4_emergency_state() if the read-only state changes. And every other
-filesystem in this series does the same.
+As part of this, can you open a Clang bug for the lack of detecting
+global initializers? It'd be nice to get that fixed.
 
-> I think that the condition should be test NVolErrors(), for example
->
->     if ((sb_rdonly(sb) || NVolErrors(vol)) &&
->         !(fc->sb_flags & SB_RDONLY)) {
-
-NV_Errors is the wrong bit for this. It's also set outside of
-ntfs_handle_error() no matter what errors= says. map_mft_record_folio()
-sets it when an mft record fails its checks and ntfs_read_locked_inode()
-when it marks an inode bad. So with errors=continue (which is the
-default?) a single corrupt mft record leaves NV_Errors set on a volume that is
-still writable.
-
-With your change every remount that keeps such a volume read-write, e.g. just
-to change another option, would fail with "Volume has errors and is read-only".
-
-If you really want ntfs to refuse remount,rw in the emergency state then
-NVolEmergencyRO() is the bit to test. But then ntfs would behave
-differently from ext4 and the rest of this series. So I'd rather keep it
-as is.
-
-Fwiw, in the next version reconfigure_super() refuses the transition to
-read-write itself. It uses the generic emergency read-only state Jan asked for.
+-- 
+Kees Cook
