@@ -1,73 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793282462;
-	b=4/BIUo2tg5NNsMxaSJO2B4r5IQKVr/KbbyHR5PKsC2aHCwVjl8/HdG+xTNN7RHyc0lH4
-	 5WCg1ZU4ht5aIE6Z661Z1/ByOr/SyeKIddfV8dfAD2iBN7G8W6GFvRJqaC8sN6mgZ6VsJ
-	 OpKj7T3T9s2YWwr0UA/S7fDQ6DWucOdDc+FMY0YwXeLZLeexoorhvx21+2OXIpW1Nby7k
-	 0Y8II/Zzl8hdT8rJzpzMMpTXdwLIehw8WxS4TISCaXIe+eETgOFFFGROqVZoWcZefh0Yz
-	 SBCqDVIfW8LnpdMgbNBwoS6dMN1Mhz37aypT98Ius9cK5Jxa9zgfthA6i4nqlRqAuDA==
+	t=1793290045;
+	b=rOiNZHOhAbjQqZa+5VPtITKoCb5bBeBewJYRhmHkNEr9C1T9ZKbQ8w+evfqRk6j8i+2l
+	 eJNkSwNCh8vZtHfHTNMc6VlMXGB0XZrzbybZLjVSIT+YzpWlTtlYZ5kfpdiht5X8nPoDz
+	 LWh2OXwzsv13MSNW9RlK9A11QgIIl3A6POHJNWmeJPQWGHjMz3OU1yppnrdukEzCicbij
+	 q7Kp9/NYQx/eaxGW8us5ltX2WS0RtD0Ch4PG24BLIw6zjSAoCj1C80raGHRPs2XTrYOXk
+	 Xveve5Rp2eX3wiOhUVVoJ3hKcDxAJH9JOk8kth/bh21bGjZeFPC+gvc4Ai19FnldFnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793282462;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:X-Scanned-By:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Transfer-Encoding:content-type;
-	bh=DObbbGL6x4KtiTSNC2FTX2q/4no4dx+wX0IlLG1jz6o=;
-	b=Ze/FC/0r9oF+buuocLd9vTvBxu4sXblmQHyYm0qWbCGBiRDtPRdDCT0J+aKwRivtENhk
-	 xC4DXg6NnJ4ikGJWTGZNMM6pboMKn5DTf7Ld8W+4pSdMx1iyu3zqFEG1dYRscfT/IEXEJ
-	 w+TgzdsomqO7yl6iCJp5sbspFuAd1VVe4m8kBGNYojJfCmoSzegO3JPz+4LpXVQX+8PzK
-	 sWnbLNHISpFi3g5iCT6SL29+SEqnK9d7HUGhf+s3UZBj1vbqKcf3eBZB5iVhbqnqo+x+8
-	 fG3VTjgop0KqsnVcYhbmZoOJZeqNZY/uL9hUjNCrsp9fOmDV0Gx7Oh1T9FcifiNSPBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793290045;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=uBzHd4puvf7PelR0/56wwfcOU7QQK1cg7vOg9biOXQ0=;
+	b=vlWwFhle4psuBeVXlvaUNOWCqyHeNI2uo74us/fRmWlt39ZuFimmJOmVIGv40W9OZ+gw
+	 cYOQcz/4Q27tw+YzF+g/TdP49vQDaovnxPQEm+/G0Od9W6VVyNa5Hrw1exqw/mJ7tBn7d
+	 G35ZsiXuW5pjRZlINDII7qyZ8dofmxdc+60P1ARK1xY/nuaUfF58sx5we4Sbhh5Zaz02u
+	 rGUSW543ZK5hrLNhGtoTH3g+vvPeOBsZuH5AfsfRt+yMJpdCeCtdPDtqnbmX59pJn++T7
+	 wv+OAaBgLPMAGB0rJ6dLlJBLamlBwmJCUsEiUTilkcuN7kmnIxrVZGfafGv+KvKKKYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dj5SEbRG;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="m9szMX/f";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE560606A326
-	for <gfs2@lists.linux.dev>; Thu, 29 Oct 2026 14:01:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE560606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519F606A32C;
+	Thu, 29 Oct 2026 16:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dj5SEbRG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793282461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=DObbbGL6x4KtiTSNC2FTX2q/4no4dx+wX0IlLG1jz6o=;
-	b=dj5SEbRGjSQE/YgMKJQoF/nITz2Kq9wVPflOeQZfU4BlQohq7Q6gwTsiTqqOuSDD5I8s8H
-	r8q6GO3hqM+/nP66+kde2w2iZOpOJazugv+Bb0QRKA3ilAjBIQ7l791gG53asY/HyCxkBu
-	5wUjb8HlwntN/np3oNprdnkAYlsQyEs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-7O-zk0yfMqePgM-Q4XwuPA-1; Thu,
- 29 Oct 2026 10:00:51 -0400
-X-MC-Unique: 7O-zk0yfMqePgM-Q4XwuPA-1
-X-Mimecast-MFC-AGG-ID: 7O-zk0yfMqePgM-Q4XwuPA_1793282450
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E0791955F6D;
-	Thu, 29 Oct 2026 14:00:50 +0000 (UTC)
-Received: from agruenba-thinkpadx1carbongen9.rmtat.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A6F8433;
-	Thu, 29 Oct 2026 14:00:48 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	Eduard Zateev <hackerowskiy@gmail.com>,
-	syzbot+ab91b239b20ae188b9cb@syzkaller.appspotmail.com
-Subject: [PATCH] gfs2: keep glocks alive while AIL entries exist
-Date: Thu, 29 Oct 2026 15:00:47 +0100
-Message-ID: <20261029140047.352689-1-agruenba@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9szMX/f
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EA01F01816;
+	Thu, 29 Oct 2026 16:07:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793290045;
+	bh=uBzHd4puvf7PelR0/56wwfcOU7QQK1cg7vOg9biOXQ0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=m9szMX/fEVXD68Fjo3EeIkbSZWBiFCaUdnZ+VIh59ux0qGOuLrE6FOEM4OJ1WZJSQ
+	 f9sjcBIGp3cmwtR0Vr1suMoxuUz16RM22QVCXpsDoj7hgG+YtZpQhzQ+8ERPTwSOx+
+	 FENqtUXhbWb6AJt7guMCyWwmoiN2tg6DAlUgnisQ768405K+ORmRZs5e5Mai6t3IC7
+	 JCG+wlnqB5yg7zzE/v6YXROVwr2DAybfz/I3VBKz/fd7tFcRlVQ9jktvnhDRhYblg5
+	 /ZXlk9pRMGfEiSj5AyGOVRF7ifG92+RvMqsktF5VXStBqOVxXjmAQApSiLmPU3bTZN
+	 rhuPH0MlQETDw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Thu, 29 Oct 2026 17:06:52 +0100
+Subject: [PATCH v2 01/34] ecryptfs: don't leak the inode when a lookup
+ can't open the lower file
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -77,87 +53,69 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3OXpt8JvKNDUH_qgWkBb626TTxgvXkjr4BArNbhyaCQ_1793282450
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-work-fs-sb_rdonly-v2-1-2f44f64f0b66@kernel.org>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+ linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, 
+ ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+ linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+ linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-xfs@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org, 
+ Farhad Alemi <farhad.alemi@berkeley.edu>, Tyler Hicks <code@tyhicks.com>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1542; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=x7sC/M8PNJXXdVBMQkSwa4kj/sguCVJ7hcSWkzP5Ueg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9ztfzU+27Xxy89YL9ydKruYr84d16Vtu6Xx3cYmlqd
+ 2qRy3v1jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlI8DIyHLp2+rNUvlLI3k6/
+ 3/ESRv/2vGuTuqrwxpzRw0Za2C/LgZHhgMcuQdFr2SV/T3svv3sy4ytP6qPJq7j+hG79yNS0x2Y
+ vMwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Before this patch, gfs2_add_revoke() took an extra glock reference for
-the first revoke of a glock, and gfs2_glock_remove_revoke() released
-that reference when the last revoke of a glock was removed.  This
-ensures that the glock stays alive while the sd_log_revokes list
-contains revokes for this glock, but it only helps if the glock is still
-alive when gfs2_add_revoke() is called.
+ecryptfs_lookup_interpose() opens the lower file of a regular file to
+read the size from the header. If that fails it marks the inode bad and
+returns, but a new inode is still I_NEW and nobody ever unlocks or puts
+it. So it leaks together with its lower inode, a concurrent lookup
+through another hard link waits for it forever and umount complains
+about busy inodes. The lower open fails e.g. with ETXTBSY while the
+lower file is executed. A cached inode is marked bad for all its other
+users instead.
 
-Commit 657e5af4fe0b ("gfs2: harden gfs2_glock_hold") has revealed that
-there are cases in which this is not the case.  In addition, commit
-864174f97647 ("gfs2: Don't cache unreferenced glocks") started freeing
-glocks more aggressively, so an actual use-after-free is now a lot more
-likely.
+Use iget_failed() for a new inode and iput() for a cached one.
 
-To fix that, take an additional glock reference when the first bufdata
-object for a glock is moved onto the AIL, and drop that reference when
-the last bufdata object of a glock is removed from the AIL.
+Fixes: 3b06b3ebf441 ("eCryptfs: Fix new inode race condition")
+Cc: stable@vger.kernel.org
+Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Closes: https://lore.kernel.org/r/CA+0ovCgYP920GT68hAJK6Trjyv1kGv2dZAuem4LEunycQ=POww@mail.gmail.com
+Acked-by: Tyler Hicks <code@tyhicks.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/ecryptfs/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-In gfs2_add_revoke(), gl_revokes is incremented before gl_ail_count is
-decremented, which this guarantees that the glock will stay referenced
-when a bufdata object is moved from the AIL onto the revokes list.
-
-In gfs2_glock_remove_revoke(), switch from 'atomic_dec_return() == 0' to
-the equivalent atomic_dec_and_test() to use the same code as in
-gfs2_remove_from_ail().
-
-Except for the patch decription, this patch is basically identical to
-the one proposed by Eduard Zateev.
-
-Suggested-by: Eduard Zateev <hackerowskiy@gmail.com>
-Fixes: 864174f97647 ("gfs2: Don't cache unreferenced glocks")
-Reported-by: syzbot+ab91b239b20ae188b9cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab91b239b20ae188b9cb
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index b55daf1e6381..7a391b50d13b 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -74,10 +74,13 @@ unsigned int gfs2_struct2blk(struct gfs2_sbd *sdp, unsigned int nstruct)
- 
- static void gfs2_remove_from_ail(struct gfs2_bufdata *bd)
- {
-+	struct gfs2_glock *gl = bd->bd_gl;
-+
- 	bd->bd_tr = NULL;
- 	list_del_init(&bd->bd_ail_st_list);
- 	list_del_init(&bd->bd_ail_gl_list);
--	atomic_dec(&bd->bd_gl->gl_ail_count);
-+	if (atomic_dec_and_test(&gl->gl_ail_count))
-+		gfs2_glock_put_async(gl);
- 	brelse(bd->bd_bh);
- }
- 
-@@ -778,7 +781,7 @@ void gfs2_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd)
- 
- void gfs2_glock_remove_revoke(struct gfs2_glock *gl)
- {
--	if (atomic_dec_return(&gl->gl_revokes) == 0) {
-+	if (atomic_dec_and_test(&gl->gl_revokes)) {
- 		clear_bit(GLF_LFLUSH, &gl->gl_flags);
- 		gfs2_glock_put_async(gl);
+diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
+index 48e520960d66..3a966348a578 100644
+--- a/fs/ecryptfs/inode.c
++++ b/fs/ecryptfs/inode.c
+@@ -362,7 +362,10 @@ static struct dentry *ecryptfs_lookup_interpose(struct dentry *dentry,
+ 	if (S_ISREG(inode->i_mode)) {
+ 		rc = ecryptfs_i_size_read(dentry, inode);
+ 		if (rc) {
+-			make_bad_inode(inode);
++			if (inode_state_read_once(inode) & I_NEW)
++				iget_failed(inode);
++			else
++				iput(inode);
+ 			return ERR_PTR(rc);
+ 		}
  	}
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 341f5bb844bb..13d8aa1dfea1 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -121,7 +121,8 @@ static void gfs2_unpin(struct gfs2_sbd *sdp, struct buffer_head *bh,
- 	} else {
- 		struct gfs2_glock *gl = bd->bd_gl;
- 		list_add(&bd->bd_ail_gl_list, &gl->gl_ail_list);
--		atomic_inc(&gl->gl_ail_count);
-+		if (atomic_inc_return(&gl->gl_ail_count) == 1)
-+			gfs2_glock_hold(gl);
- 	}
- 	bd->bd_tr = tr;
- 	list_add(&bd->bd_ail_st_list, &tr->tr_ail1_list);
+
+-- 
+2.53.0
 
