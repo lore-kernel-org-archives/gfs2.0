@@ -1,87 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793225386;
-	b=n3WHVxGmpyXXYcdHQMje/0ofG37wOt06WJZ5KvRjeIEB2HhzoI0slitJ5XG6ibnE4IHz
-	 JZH0bG6CNIOOEg/vLlyw+Iuolr7bDziT9uXW0mVGvuyWFx19SXeKrBHRvxiDTzrXFMEQo
-	 E5/8VTIA3+K/yJ7cc4rLuB157pEmZwbO/oy+SVbqg3r4RYAydlnjBZce33iK05pKavB13
-	 v36rRrnJUdqosSYEMvyMuzJgsGMWmGa5AYnDzt/0n4DMPBoOxT4yoftCYSYOMriyxGHvS
-	 fZi0KHAKgGzu7ltwMU/Kt9+h91n2yND4WdkQOMZytyoq99RLEZ9Qa89lgfuHoJaQ8uw==
+	t=1793281826;
+	b=XQG5pt5k6oQFkVeYA9JgFvyQ2l40FF3DMJwRYdfoWaKzAFBHyYaaGNFl/lynCFdR//VH
+	 ueAUiR2kbhBdrm0gkeE6NL4c4wBI9hETYeJHwKdpS4m4Co4CBmDHuWGDR5Oy2siCDwqev
+	 mFrDYtgBvSq1i8atkvngEjBUP73U+TH7Wz3hzNeyHenEMxYmSadOC8NUUdGz4pVNHKvTb
+	 bPcWddSEbPfMKzYpZtztjV6KAMNJLcxZJgpmeZvPdWI/VF6CfVjzvN3+yRNeAjIP/nqHm
+	 burWYUTOoKGfa5UcXE3wqBf7KdULJ9IbHH/xqf/kF5nIg8XZMZVDKJ6b3oV3Zx+5eUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793225386;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793281826;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=j5xHrk121VJ6jsiOiBImMpaem11Ex15L22vqkzMRx+Y=;
-	b=2QjZWWclA2NaPI1bpSs+MEFQ/VCHnd1qOordXodJu7yg61Xprze4Lk+986qd9DaW9CvO
-	 rsk9djVMQ3QMQD2kvGYfvbFcZ+wJsqWKm7sPYMClx0iok2GpbfpAwm9OJcld7CjPST2Ya
-	 3k6ZLZy3IuDxWG0K4nrTdA4qW2dYfzmz1R9Yu/fXKkHd9aZJw3XoG0xE9jJZeaquuKNSR
-	 BiPDjGvflm5O8QBbG1Z0dfTO9VEoRrbcIrMfUF6brLCre8D4cOyWLuP/y+0nRexiJMn58
-	 Mv+gdVEOjKdgqmyVSksabaCVc3EsuREZkW3bnvH5ZRblsVP9bDRicV+gsCy2r9JU1gA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=K4ilaixi7PzQ3jyW2MqZwExvQII83Z2kevqQDSBbKdo=;
+	b=v/d/PJvpMxPSulJs0VZbpcw/dd8ycoVXT8O4Sw1fTBBz6kwLjcbI846wSUYTxZ5FPDFf
+	 y+dFxhi2xRGKDgOPJGiQXVO4lmIETPSNrCqzMxmDy3MCP2HXUVQ71CmU0+LY47RvFD688
+	 321sUXOamR8pcY+SQpUP6JCamhNCaBWv3hkoXEYgplXcau9M4hWTP16e842OygJAU03Gi
+	 SMtuE3CzmoParklZyFIFfi8NsXx7ZrP5N3PBT2a5Ro+BL6cRMBcmf+9SjAQ7mZHzZXI1q
+	 QVeVsexj6Q2HVoNJES0RxsUEr3p2hO8zgzOksNvN2pckLbxttVqp/apClJIoE3IbfXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TedXizmB;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yr96gSSD;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFD6606A323
-	for <gfs2@lists.linux.dev>; Wed, 28 Oct 2026 22:09:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBFD6606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A3F606A31A
+	for <gfs2@lists.linux.dev>; Thu, 29 Oct 2026 13:50:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3A3F606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TedXizmB
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yr96gSSD
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793225385;
+	s=mimecast20190719; t=1793281824;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j5xHrk121VJ6jsiOiBImMpaem11Ex15L22vqkzMRx+Y=;
-	b=TedXizmB7pROzC9yt8Z7ACZA27xmpwy51y1aiuneppXqSiGKuR4aEsoOr5xdk5Ne2ImeGL
-	TD0uumQBds8lae5xyjeYMpYLNeI0EGFYWRwMn0ARRw517Vnw/+0vjBkglsRXZYrpE3z08j
-	IwWw0vrVGXZU3PtiX9cbWcUB9LBKFA4=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=K4ilaixi7PzQ3jyW2MqZwExvQII83Z2kevqQDSBbKdo=;
+	b=Yr96gSSDvv1yTHC7plRDLwdZovTqiFpuQoJwl/65U3ipIIQdMRxnpu+Sp+8yGGYHGXILDv
+	y9t2OQnR5Tfx+k8saKeh3xwvwZxW42RslyDKFDuL7P2lcVfn6EdKArjBd1w2OFGuE3lP6W
+	fFfVlKS4G0iGAZ/22c5OExXjr3TvygM=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15--AhNslWaPIuUweRIq29SUQ-1; Wed, 28 Oct 2026 18:09:43 -0400
-X-MC-Unique: -AhNslWaPIuUweRIq29SUQ-1
-X-Mimecast-MFC-AGG-ID: -AhNslWaPIuUweRIq29SUQ_1793225383
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-6795a39e53fso247617d50.0
-        for <gfs2@lists.linux.dev>; Wed, 28 Oct 2026 15:09:43 -0700 (PDT)
+ us-mta-196-WkoIh_IJN2qgcE_P2Gsf2Q-1; Thu, 29 Oct 2026 09:50:21 -0400
+X-MC-Unique: WkoIh_IJN2qgcE_P2Gsf2Q-1
+X-Mimecast-MFC-AGG-ID: WkoIh_IJN2qgcE_P2Gsf2Q_1793281820
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-8b18c67095dso31697527b3.2
+        for <gfs2@lists.linux.dev>; Thu, 29 Oct 2026 06:50:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793225383; x=1793830183;
+        d=1e100.net; s=20260707; t=1793281820; x=1793886620;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j5xHrk121VJ6jsiOiBImMpaem11Ex15L22vqkzMRx+Y=;
-        b=1fJTxhGc3t/+xNKhL02rXADjgOh8u/xEi6lhmVPHWyyTmRlwJM3WWI5G7FUVMH81pl
-         teqByno88CxzhncW8EyHZ+R0IJht15X6HT9y+xWJIMIhGnBtpoqyaIdVMdO/a3azDycK
-         5Pqv1BKLyT6gUG/nKV001un9OqGuWZqDzCXdZp1whdnUd1w1TUYQTwYFhUqLzO/A/VtA
-         AjPbCOwxN1v3Z23jEaQ6zsWVxS0DD5I4++JLhCoFlmjaqUYo8XlDrkNq7oLYZBGWUY/C
-         EjTv017ZAMKplgniMdPuz9LW/X03i2FyB4/LA+qQcU/DCLSNka+qIp+CYYY5hQoKRj7r
-         h4PA==
-X-Forwarded-Encrypted: i=1; AKwUvBzh2axnYovDuTdwclrLAgeLVXoLoahvzZSPlhu545D4SjQg+w6g+GLXwp8znoRfKlLvdpJt@lists.linux.dev
-X-Gm-Message-State: AFq9FYKovTyLp0e4lZpdHYi3OvVJZ7b0BiuvZQqFMzdASADFxm3cY8an
-	99970NqhbLfuMFS9BRlWptP/rb28TviVSZe7uNlbdNDD504gNcG0oX++vd994coazrqejaQI+Io
-	n5BDYsesgTWQNhiuOeg5F7O5JFxkTHdPA9xPi9f6Z6o9ULrdRpRn4sLZFEMt4BQqHYS1KI5gx8c
-	vVYwvaJhiQM0R3sgnBZab9kEB/HinvyA==
-X-Gm-Gg: AYBFou1exnyEkp/cuJ0Axs3MCvcWOrgrp3msp/46xLzZdFnHdJz0WS1blh5xKV0vzwB
-	Eo4g9HOzGJcKfyGtuAEiItTORnemsVD36pSHkiqMnvXEDGRk8d2bC01I0uSHhU0rEx/QCC+vHnh
-	C4u0VrfYDXRispPwDWsQsTWzSpJsniOlWB7JtRPcxJQh/8EOkgvSyYe3al8p3imSS6qCNuqpHsq
-	pz8XeawBTKa+UPO6KMREd6f10BmiSB56XMyReiH4hnupg==
-X-Received: by 2002:a05:690e:1918:b0:679:ad2f:3fbf with SMTP id 956f58d0204a3-67a8d0047a5mr704874d50.8.1793225382857;
-        Wed, 28 Oct 2026 15:09:42 -0700 (PDT)
-X-Received: by 2002:a05:690e:1918:b0:679:ad2f:3fbf with SMTP id
- 956f58d0204a3-67a8d0047a5mr704846d50.8.1793225382297; Wed, 28 Oct 2026
- 15:09:42 -0700 (PDT)
+        bh=K4ilaixi7PzQ3jyW2MqZwExvQII83Z2kevqQDSBbKdo=;
+        b=CSUvpM92JU9hbne4XtM1Dw+dMGoHtVNzrL4gcxttCo+mmY+EwaJ4kOYg4Lju/Xg39a
+         by6GWpY3S/rBHmQgYgg6k4HXKwunSxZR081vwKpwydy4uq1qN3fwVutNdmi7uVo225W2
+         w0BFpr1onUgoQklPf3tVPXQPU3bfr5iNMvSUJiFvCgBgWhLTo6KMeBjzkPtcoy4LI6ma
+         CqRT4ON4Ae3v5WRCPe4/iF00dqP7sYp4eoQvIZSHCN2lvP8hK8rabyuO+cZZxgWmTMJ8
+         msc68dl7lAtq+CjFwqKFdaCVJB1L5U5r1Yce+9l8i53lOR7oo2YpGKw9HfnoPkct20dH
+         r+gQ==
+X-Gm-Message-State: AFq9FYJelwRuCDYjqhNmkQi2QVJZtUd0CRFNiRBHHeDfn5a/elv+z+Vz
+	SyhK4l7wn7QiFxRYEhkFJXe54jxpGoiViTKZplNtVg6Z60Dah4AZAvH9lL0YWPs/JKrTyzSfa1p
+	zAWbXWTV2woqypBxdDINcqimrXPjyEsQ56EYAwe+31cVRixtGt9D7eWrXsOX7SC9Byd7912IIpW
+	A1ufr3+Xn3cTuxqtBimLxVj8tE2xryhA==
+X-Gm-Gg: AYBFou3wYV6HRg8SZ91WCsx1HvmSafkNxbhJ4q0vqfPu2wItpyLoXni4KQIIgoVJVHw
+	O8nCwN8YjWDj9KmO7JNc/o7KoTjKbPjO91yj06Zd/Hbzw0lY0dhw3XCG2O/NB2OtcJ0L5nY0bCa
+	c9B5SZReUxR1N+5bREBogJdH01lZPDKkUh493p05hgy+nAvZJV5g1ocrQ1YqKHMwhJmdMGZkRRD
+	/uaYTdQ1qo8e4iuP15qE9aHtT3JmhgC5WrkvmHu2IKzig==
+X-Received: by 2002:a05:690e:43c6:b0:679:943f:b192 with SMTP id 956f58d0204a3-67a7bd34f4bmr3441792d50.76.1793281819667;
+        Thu, 29 Oct 2026 06:50:19 -0700 (PDT)
+X-Received: by 2002:a05:690e:43c6:b0:679:943f:b192 with SMTP id
+ 956f58d0204a3-67a7bd34f4bmr3441771d50.76.1793281818946; Thu, 29 Oct 2026
+ 06:50:18 -0700 (PDT)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -91,46 +89,92 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261012-work-fs-sb_rdonly-v1-0-60743a3dc326@kernel.org>
- <20261012-work-fs-sb_rdonly-v1-21-60743a3dc326@kernel.org>
- <CAHc6FU6z4kX5R3Og8m0dYOHsjFcw+4Btvfe87AGPxy_EWs0E7A@mail.gmail.com> <20261028-zurschaustellen-okkupieren-inkompatibel-d11525ce88b8@brauner>
-In-Reply-To: <20261028-zurschaustellen-okkupieren-inkompatibel-d11525ce88b8@brauner>
+References: <20261023101830.139094-1-hackerowskiy@gmail.com>
+In-Reply-To: <20261023101830.139094-1-hackerowskiy@gmail.com>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Wed, 28 Oct 2026 23:09:31 +0100
-X-Gm-Features: AclHuK9MzobLdiG2EG9M5KT_ibZzYxdrTghiXff6ZlesOE7YSK8Ag_RtXekxyZI
-Message-ID: <CAHc6FU6VSAWQ4RJTO_eLnpqN5qvrShbJeT+ADwiA6ohpq8dO4Q@mail.gmail.com>
-Subject: Re: [PATCH RFC 21/28] gfs2: don't set SB_RDONLY on withdraw
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, ntfs@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
-	stable@vger.kernel.org
+Date: Thu, 29 Oct 2026 14:50:07 +0100
+X-Gm-Features: AclHuK-JLcGWRfpdOvPnvmGXH13NO45FtGdQUfg0yCXNZWHwDHDohNE_RnQ41sc
+Message-ID: <CAHc6FU6Pmu6MfJKNRZ+WhE2y9viU23HsKx9wCbumShCxU45avA@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: keep glocks alive while AIL entries exist
+To: Eduard Zateev <hackerowskiy@gmail.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzbot+ab91b239b20ae188b9cb@syzkaller.appspotmail.com
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0Y2P2BlD6wKgOs-hf4IXY-vTSqxIsoJXlEJeFAhtezU_1793225383
+X-Mimecast-MFC-PROC-ID: jSZC_w0c4h3EycbHDPsktQ0ZLcboB1EU9nkNulhN4rE_1793281820
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 5:02=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> On Fri, Oct 16, 2026 at 02:01:00AM +0200, Andreas Gruenbacher wrote:
-> > According to commit d564053f0746 ("GFS2: Clean up freeze code"), the
-> > idea of the freeze sysfs file was to make it behave like the FIFREEZE
-> > / FITHAW ioctls. This isn't what the code is doing at all.
+Eduard,
+
+On Fri, Oct 23, 2026 at 12:19=E2=80=AFPM Eduard Zateev <hackerowskiy@gmail.=
+com> wrote:
+> A buffer on a glock AIL list can outlive the glock reference held by its
+> inode. During withdrawal, gfs2_ail_drain() later removes the buffer from
+> gl_ail_list, which dereferences the freed glock.
 >
-> That's a pre-existing and separate from this series. freeze_store() calls
-> freeze_super() and thaw_super() directly with FREEZE_HOLDER_USERSPACE and=
- never
-> goes through gfs2_freeze_super() and gfs2_thaw_super(). So it never takes=
- the
-> freeze glock. I don't think that's for this series to fix.
+> Hold one glock reference while its AIL count is nonzero. Acquire the
+> reference for the first AIL entry and release it asynchronously when the
+> last entry is removed, since AIL removal runs under sd_ail_lock.
+>
+> Build-tested: x86-64 GFS2 objects with W=3D1; arm64 GFS2 objects
+> also compile.
+> The syzbot report has no usable reproducer on current HEAD, so a runtime
+> test was not possible.
 
-I mainly wanted to point out that this behavior isn't intentional.
+thank you for this patch. I agree with the solution, but I'll merge it
+with a better description.
 
-Thanks,
-Andreas
+> Fixes: 864174f97647 ("gfs2: Don't cache unreferenced glocks")
+> Reported-by: syzbot+ab91b239b20ae188b9cb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dab91b239b20ae188b9cb
+> Assisted-by: LLM
+
+Nit: Assisted-by tags are now discouraged.
+
+> Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
+> ---
+>  fs/gfs2/log.c  | 5 ++++-
+>  fs/gfs2/lops.c | 3 ++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+> index b55daf1e638..aa5f2a9a94f 100644
+> --- a/fs/gfs2/log.c
+> +++ b/fs/gfs2/log.c
+> @@ -74,10 +74,13 @@ unsigned int gfs2_struct2blk(struct gfs2_sbd *sdp, un=
+signed int nstruct)
+>
+>  static void gfs2_remove_from_ail(struct gfs2_bufdata *bd)
+>  {
+> +       struct gfs2_glock *gl =3D bd->bd_gl;
+> +
+>         bd->bd_tr =3D NULL;
+>         list_del_init(&bd->bd_ail_st_list);
+>         list_del_init(&bd->bd_ail_gl_list);
+> -       atomic_dec(&bd->bd_gl->gl_ail_count);
+> +       if (atomic_dec_and_test(&gl->gl_ail_count))
+> +               gfs2_glock_put_async(gl);
+>         brelse(bd->bd_bh);
+>  }
+>
+> diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+> index 341f5bb844b..c4e63fb375b 100644
+> --- a/fs/gfs2/lops.c
+> +++ b/fs/gfs2/lops.c
+> @@ -120,8 +120,9 @@ static void gfs2_unpin(struct gfs2_sbd *sdp, struct b=
+uffer_head *bh,
+>                 brelse(bh);
+>         } else {
+>                 struct gfs2_glock *gl =3D bd->bd_gl;
+> +               if (atomic_inc_return(&gl->gl_ail_count) =3D=3D 1)
+> +                       gfs2_glock_hold(gl);
+>                 list_add(&bd->bd_ail_gl_list, &gl->gl_ail_list);
+> -               atomic_inc(&gl->gl_ail_count);
+>         }
+>         bd->bd_tr =3D tr;
+>         list_add(&bd->bd_ail_st_list, &tr->tr_ail1_list);
+> --
+> 2.55.0
+>
 
