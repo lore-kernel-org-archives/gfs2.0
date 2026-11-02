@@ -1,93 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793653406;
-	b=pM3mBs8U0VmbGEC8hN/4yrju88DLsPFQj/FKuQDHpODWuuVubF3C4eITp9dNMi/MaCkT
-	 UVfhm3jbUKHsVFET80zzCOG01C2rRlccjJQGqbEkRf7ZZheavo3weSqMxxjDO+sKcKTPt
-	 bCEHlp0TgFTyw4bUy2cA48KWvo0fhG51sjQ/YbsQ/aZ9p1IDfbtj4v3LD+bSK7KKeGMm6
-	 1+bLPB320+mEhHc3eRSuvolaufx6QYFidccxAwOVXQZcOxLeQLvzXDfvA9esql1ba7Hna
-	 ccr6HfX8BhMJ4YTgV8EIOANCGVLmqte/tJs8XLrEUkV3fqCMLauvLJa2NrdWWobTBrw==
+	t=1793657492;
+	b=M8IaFuV0g7hz+maBxY5jc/4CgHX0ZGOL7xUs07vDJ4DNOwPU8eh9/AGn+RoO20G6Jdcl
+	 mFx4IiTx0uX9ryUpD6VQUBqU9WJfXa+/ZhuKC8zVYl9UWtDj0hzLC99AMkvDmeQCRkj6V
+	 /iatYV+ZuON6BwXBWS1okzFe/U20EvhFf1tXiegXyDgyiZQ4zf623msyjiwblZ8IDuGyf
+	 kFybxrIPVPnSNkT8yx7ErjXY1aOfON7hHg3fXbHS4D9zdYKQBVxe3cS6ewZ+YYxV7ynNu
+	 +LDcJ08o/CUUhYZZR2Eg++biwTTXwWRWT6k4qzP2XCUs90CDnjScmlvNcmO2hcBC0Yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793653406;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
-	b=OlnfGgEeTenU+s5R5nQ7CgajqDJ7drjMh8Itw17Lzi2VPxC13Gbh6VibMltvERiVgPP+
-	 9XVZndNnYOvTrOjzDRQJDY4tfDxAm13LaCqVT7yUC85/ytQlXVOF5GziC1chZQo60XrJ7
-	 xwEmiYgMTeA1435ezC76PhxwoONWygJooXhbOwBsGA5AvEola4i7jkX/6WxK2o2VrmCnp
-	 PnPl7cokup4XVZXdIGukCBnlAsilhAG/GJTrOIRq+CiY0dI61DHbDMY7tKQYZbHqxOICW
-	 6k+UbIqwH3UQ1nixudUIOukqVrIgnmsbz76M7/cLNLB9OHhTxckuUIzbXUdr8YIvK7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793657492;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:X-Scanned-By:X-Mimecast-Spam-Score:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Transfer-Encoding:content-type;
+	bh=5Es2ZmcY3dDrLm3TXSrs5K0ywF3os6aPf7OW/bcN/ck=;
+	b=zEvbiuYBy8/lLVpw9NP+bl2UPhZAOBF63dxcZTQbi1YbeEcvdU+my8Z39Y1aBhj2B9no
+	 7ZEBtDW1aP9+kesw8rXcbukXeoUFl4R1jhA5mGKGVdrPK6hcUIuLEb7G01MTlHt5ZgwjC
+	 K6tEi6xho+twZQz6ZUZHi1EVkQ5P61vAentZQGZ87LP0w7NPuAwRrARQo4QMAD/8tYeLP
+	 U9pmrohnt3VNPbUTJ5EP+OJo9rsIHOzN+OxQMsZwmunzaV40DCpDlzwyzkVxr41MKpyBp
+	 QfZdDmh9PVnvrh9J7dn1WgmrpNIlgnz9T2kPZIDdryb+fS6e8moi+wo66EPek71Vi4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=truenas.com;
-	spf=pass smtp.mailfrom=truenas.com;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuWpZboO;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28644606A326
-	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 21:03:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28644606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truenas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truenas.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48e6eb21a8fso1381185f8f.1
-        for <gfs2@lists.linux.dev>; Mon, 02 Nov 2026 13:03:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=truenas.com; s=google; t=1793653397; x=1794258197; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
-        b=cqvjpJ9Fc5kp/hcM033NCoo1QuoScFdkSQkPbe0IO2eLZMZyLLaiymX4oS01Gz1pxd
-         LTGJX8uhhNVEHSUzFzrJwlJH5aMJGN2kaaSSO98BJLkGLmzG25+uNGcytPGbcxem3F/f
-         Gqnq+ltH9BDILGffY+HMeAyes6m8RRPpIAgTPBniN7agVWZYjIB4o43dN3Tc7baLaHMU
-         6/Hr5h3kbah0n4HKuZPOyI0xp5ms80uwhwPaZtgpc5kPNdpCMOo1sW9LgWS+pUJu+O0h
-         dCD2WYbqOTBK6gYJS9MGIvEFuErqG3iv55qRWt1fxBSv9j/8tCDoT2UunPHCTly2uHZK
-         8klg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793653397; x=1794258197;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
-        b=1DKDaXCXknxrDD7jUvL564CEqCufS+NoyAwIrr6EIjQ6HWk7cjriBPXjXmLIiakuYO
-         Vh1B54kIpKSWuiQVQ2Mq3r9ZMA1DAL8tiNqlfl2+WWdsBya5uaKnzEWs9gtaodLzlQKk
-         LrLfk0rGTq6PFzcUPEb7CMAOwqjFqlM1ya41yphl0MjhZAHonGi5zRwEG1dA+8bQGe0o
-         FKP1vz4iKPg4b2711+uiwJlNSAUVZfgt3t3ECZMsLHGBFd3IWEyGWnabIZcr6RFCHaN1
-         1gllbM2ZzIKpiZJW88XBi3korLqPGyM0I56JcxpEgWbNfXsP2lkexDHUYbeOXIJOUpW+
-         rlFA==
-X-Forwarded-Encrypted: i=1; AKwUvByi+PwoqhdUZr/smnQ64dCTWQI8ea6C0qC7JCOEx3WpQJ3o+Djhj/fgdzJhLaO3+sqGUuG8@lists.linux.dev
-X-Gm-Message-State: APuU4Z/g6SrO9kdsCT+WLeka7iIS7liZ5PiZMpTsxthoJ8gjJiaYyIFv
-	X7W5L8WzVX/lvVYZQ0S7s2FleH66yreLMuhFG2J3QuGQa7VyD5yoATCwL0uS9TCpVg==
-X-Gm-Gg: AYBFou0AWJKSVtvg3BrUTEi9GsnsJBKzkS3R1I/N4S4MrJTTOwoZOM7Ijle8cjPG4Mw
-	hhWgjLAQu7gIoD+nbBs1kSxPJFUrLuuvt/GAbt6b5N+416jG5DvxiatiQVdp3QdEKBFOL9ajvAj
-	KxoE2H/LAYbc9YDChszfjBjBU4A9UESE5XtB39LlZ3HO3j3bmbLHJbnrqV+7EwZbDqMeNk1QCxh
-	//sp1hVL7vK6ppyH+SIs3E17v84uj6LNeOVHvVXzCTN4j0ILc42+qJCvMzNkR09O85xYijm5jg+
-	H8WX0xa2WrJWF/QF26w6zxdrnmTfgaleAl3Ob95Tg8YOXg33gXqWdnY0oPktBGff6SOIEBmfjnp
-	b7Natn52b7yDtiI4yjNQulqwf3vh3Z3cNX7jKKGU37vHZ87Cy1wMYpfraUrOxgztg8+gFXnpPYZ
-	eAlOVHCcFPnM8fWzXf4Zu8cODKmoniyR9pL/LYyLtw11SQPJkpfN+D/kIisq0lVXWpPAKS7ZF60
-	h3+oeLaMiX89IRmiwH16O8WWtzMoR5DNnwRU27snOJv0eCUVU49nZVBjXgLdZLZ3XsPot1rEpdl
-	65DXBAE=
-X-Received: by 2002:adf:e68b:0:b0:48d:b940:af7a with SMTP id ffacd0b85a97d-48e6e5016bamr17560067f8f.55.1793653397396;
-        Mon, 02 Nov 2026 13:03:17 -0800 (PST)
-Received: from hamza-PC ([2400:adc1:158:c700::1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8c0b6sm20919464f8f.41.2026.11.02.13.03.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 13:03:16 -0800 (PST)
-Date: Tue, 3 Nov 2026 02:03:13 +0500
-From: Ameer Hamza <ameer.hamza@truenas.com>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, caleb.stjohn@truenas.com
-Subject: Re: [PATCH] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
-Message-ID: <auj4LE0bq7w7lOF8@hamza-PC>
-References: <20261019151627.3324886-1-ameer.hamza@truenas.com>
- <CAK-6q+j64=mSzuufOaSGjsC2aSwhb0hs9MKxxaAhbwugdztHZw@mail.gmail.com>
- <aujr6x9t2gXbXfFw@hamza-PC>
- <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F942606A324
+	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 22:11:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F942606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuWpZboO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793657491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5Es2ZmcY3dDrLm3TXSrs5K0ywF3os6aPf7OW/bcN/ck=;
+	b=HuWpZboOH5pVozQIGEIeW2TdSfmj7URcD5/DlN7b4XRKxEJ18GowpgJIwt2nosX/DmAXgc
+	wRnYCtyXX8g6QoOxF57pbx5C9UdHrJMsWeiHTvjU6KmQUrEMoJptwBOfqDphl5RDccEImP
+	kq0GFeIOTtsf6zqMmzJLkCTAavItvog=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-jRQDoBv6PtOzHvtokaUjTg-1; Mon,
+ 02 Nov 2026 17:11:29 -0500
+X-MC-Unique: jRQDoBv6PtOzHvtokaUjTg-1
+X-Mimecast-MFC-AGG-ID: jRQDoBv6PtOzHvtokaUjTg_1793657489
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1A911955F34
+	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 22:11:28 +0000 (UTC)
+Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 476491956040;
+	Mon,  2 Nov 2026 22:11:28 +0000 (UTC)
+From: Alexander Aring <aahringo@redhat.com>
+To: teigland@redhat.com
+Cc: aahringo@redhat.com,
+	gfs2@lists.linux.dev
+Subject: [PATCH] dlm: fix memory leak on active leaving member
+Date: Mon,  2 Nov 2026 17:11:19 -0500
+Message-ID: <20261102221119.3209992-1-aahringo@redhat.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -97,34 +76,75 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: XBWHcjVpAvlP9Z--0Q2-nEM4NUgmWTFLeZYcPiQ2KaA_1793657489
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Mon, Nov 02, 2026 at 03:38:12PM -0500, Alexander Aring wrote:
-> Hi,
-> 
-> On Mon, Nov 2, 2026 at 3:03 PM Ameer Hamza <ameer.hamza@truenas.com> wrote:
-> >
-> > On Mon, Nov 02, 2026 at 02:49:04PM -0500, Alexander Aring wrote:
-> > > question:
-> > >
-> > > how do you "pause" anything in DLM?
-> >
-> > The nodes are VMs, so I freeze the dir node from the QEMU monitor. It
-> > stays a member but never answers the lookup, and after the cancel I
-> > evict it through configfs. That is what happens on our HA systems when
-> > the peer reboots without leaving the lockspace and a pending request
-> > gets cancelled before the peer is evicted.
-> 
-> Still, do you just randomly freeze it, or do you busy/poll wait on
-> specific struct field changes?
+When a node calls dlm_lockspace_release() locally, it does not
+subsequently run recovery. Commit de7b4869b4ec ("dlm: add new configfs
+entry release_recover for lockspace members") entry began tracking
+leaving members to perform optional post processing, such as invoking
+the slot callback. Because a locally leaving member does not execute
+recovery, it never invokes dlm_config_nodes(), leaving the allocated
+tracking entries uncleaned.
 
-I don't poll anything. The peer is frozen before the request is made,
-so the lookup to it can never complete. Then the request is cancelled,
-the peer is evicted and the name is requested again, and it asserts
-every time.
+This issue was detected by kmemleak.
 
-Best Regards,
-Ameer Hamza
+unreferenced object 0xffff88811d68bcc0 (size 32):
+  comm "dlm_controld", pid 406, jiffies 4294749992
+  hex dump (first 32 bytes):
+    03 00 00 00 00 00 00 00 08 bd 68 1d 81 88 ff ff  ..........h.....
+    88 bc 68 1d 81 88 ff ff 00 00 00 00 00 00 00 00  ..h.............
+  backtrace (crc be1c20bb):
+    kmemleak_alloc+0x85/0xa0
+    __kmalloc_cache_noprof+0x2ac/0x380
+    drop_node+0x73/0x550
+    client_drop_item+0x83/0xe0
+    configfs_rmdir+0x735/0x910
+    vfs_rmdir+0x24a/0x820
+    filename_rmdir+0x3a3/0x4a0
+    __x64_sys_rmdir+0x42/0x60
+    x64_sys_call+0x1e8d/0x1fb0
+    do_syscall_64+0x87/0x490
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+A local node executing dlm_lockspace_release() does not require additional
+recovery handling, such as invoking the slot callback. Fix this memory leak
+by freeing the resources allocated in drop_node() when the lockspace
+configfs entry is released.
+
+Fixes: de7b4869b4ec ("dlm: add new configfs entry release_recover for lockspace members")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+ fs/dlm/config.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 6ebc0fa9a2fa..5e41f795366c 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -533,9 +533,18 @@ static struct config_group *make_space(struct config_group *g, const char *name)
+ static void drop_space(struct config_group *g, struct config_item *i)
+ {
+ 	struct dlm_space *sp = config_item_to_space(i);
++	struct dlm_member_gone *mb_gone, *mb_safe;
+ 
+ 	/* assert list_empty(&sp->members) */
+ 
++	mutex_lock(&sp->members_lock);
++	list_for_each_entry_safe(mb_gone, mb_safe, &sp->members_gone, list) {
++		list_del(&mb_gone->list);
++		sp->members_gone_count--;
++		kfree(mb_gone);
++	}
++	mutex_unlock(&sp->members_lock);
++
+ 	configfs_remove_default_groups(&sp->group);
+ 	config_item_put(i);
+ }
+-- 
+2.43.0
+
