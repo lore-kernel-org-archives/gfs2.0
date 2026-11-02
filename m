@@ -1,86 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793652799;
-	b=meepMdn8KavlGEfOt3ubZjflOQDFdVBU1UGlXI2FoidkOWHjmY/iXbvFIx2t5PuVeTzk
-	 TiIso84xr2E31l5VJwk2ict9Gs/5mxFf7Gk/hoPj7q1yJDMJLMM+hBwcA/kaHuvbRJC4V
-	 yYprijwhJVR2+8w3GnpJSvn79MkNRUyP67J5TziTtJmuhv/Yef7yZDwgIKOvUM32ff3DU
-	 U1gxvwz1tOogKSKxj3fn2iUFvJPwggrC67tLOMf04IxGiC7DBToFDC8dUwNwLmFDYTwIS
-	 Z+u+loRm94hqnKqr/yRFTMtQl9dG5hTKAiSO3bNybP5mKIQWSSRIVc+oTZQ6qaGfgug==
+	t=1793653406;
+	b=pM3mBs8U0VmbGEC8hN/4yrju88DLsPFQj/FKuQDHpODWuuVubF3C4eITp9dNMi/MaCkT
+	 UVfhm3jbUKHsVFET80zzCOG01C2rRlccjJQGqbEkRf7ZZheavo3weSqMxxjDO+sKcKTPt
+	 bCEHlp0TgFTyw4bUy2cA48KWvo0fhG51sjQ/YbsQ/aZ9p1IDfbtj4v3LD+bSK7KKeGMm6
+	 1+bLPB320+mEhHc3eRSuvolaufx6QYFidccxAwOVXQZcOxLeQLvzXDfvA9esql1ba7Hna
+	 ccr6HfX8BhMJ4YTgV8EIOANCGVLmqte/tJs8XLrEUkV3fqCMLauvLJa2NrdWWobTBrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793652799;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=117yBiLwKENKL+3PiWG/U5OMCVmGd5cgD5S+cpkVimE=;
-	b=FAqZNKgGM6vsU2SexTuW0TRDV3NlYKV63romJ1cJd7Ubng+e+gVsboXR2C7+VFJmTIOh
-	 GQu8nRZBKWlsDMhipeLvIBGETDlYE6So3IpWZNMYKqg/zBjAemIXQybT/03y1HZH2DZoT
-	 x7mXwwHPGwsY+rYRiBsinQWRj9ZWobvA2SR8+lN1wJviQhfAtGiROmlS1e6giDKdHxdKB
-	 FQkWcEvcR7TEsztjWyoyITho8XK5ySlPK5ZsUo2fogdhFwuN8/qe5zZX0DcbKXJz5F4oD
-	 t93LWZ9y1AXOujeRdBPunX+qJHOGze/YwmkgNmz3/C4i7mmJkmiZzLEFR99HDPlWP6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793653406;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
+	b=OlnfGgEeTenU+s5R5nQ7CgajqDJ7drjMh8Itw17Lzi2VPxC13Gbh6VibMltvERiVgPP+
+	 9XVZndNnYOvTrOjzDRQJDY4tfDxAm13LaCqVT7yUC85/ytQlXVOF5GziC1chZQo60XrJ7
+	 xwEmiYgMTeA1435ezC76PhxwoONWygJooXhbOwBsGA5AvEola4i7jkX/6WxK2o2VrmCnp
+	 PnPl7cokup4XVZXdIGukCBnlAsilhAG/GJTrOIRq+CiY0dI61DHbDMY7tKQYZbHqxOICW
+	 6k+UbIqwH3UQ1nixudUIOukqVrIgnmsbz76M7/cLNLB9OHhTxckuUIzbXUdr8YIvK7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JrjqNRqP;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=truenas.com;
+	spf=pass smtp.mailfrom=truenas.com;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FFA606A32E
-	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 20:53:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21FFA606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JrjqNRqP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793652792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=117yBiLwKENKL+3PiWG/U5OMCVmGd5cgD5S+cpkVimE=;
-	b=JrjqNRqP10lz+xwTaT1N5hOMraQMewbNcL6ZPtYs/6qBeMDZq5lyggz1hz5TUE2wvCqKwM
-	IXQbQRbVn/7mLpXXty1C0A86MwLFP717upzSrzHF5Nt1PiF43MqFrw00/Vf94oFs2+EMGE
-	o+EsfhfOm9/h5ijPwHR98WSryq3gxtk=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-q3iazR8DO3eNbdkJMb5xoA-1; Mon, 02 Nov 2026 15:53:09 -0500
-X-MC-Unique: q3iazR8DO3eNbdkJMb5xoA-1
-X-Mimecast-MFC-AGG-ID: q3iazR8DO3eNbdkJMb5xoA_1793652788
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-3ab3fc6e459so290201fa.0
-        for <gfs2@lists.linux.dev>; Mon, 02 Nov 2026 12:53:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28644606A326
+	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 21:03:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28644606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truenas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truenas.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48e6eb21a8fso1381185f8f.1
+        for <gfs2@lists.linux.dev>; Mon, 02 Nov 2026 13:03:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=truenas.com; s=google; t=1793653397; x=1794258197; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
+        b=cqvjpJ9Fc5kp/hcM033NCoo1QuoScFdkSQkPbe0IO2eLZMZyLLaiymX4oS01Gz1pxd
+         LTGJX8uhhNVEHSUzFzrJwlJH5aMJGN2kaaSSO98BJLkGLmzG25+uNGcytPGbcxem3F/f
+         Gqnq+ltH9BDILGffY+HMeAyes6m8RRPpIAgTPBniN7agVWZYjIB4o43dN3Tc7baLaHMU
+         6/Hr5h3kbah0n4HKuZPOyI0xp5ms80uwhwPaZtgpc5kPNdpCMOo1sW9LgWS+pUJu+O0h
+         dCD2WYbqOTBK6gYJS9MGIvEFuErqG3iv55qRWt1fxBSv9j/8tCDoT2UunPHCTly2uHZK
+         8klg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793652788; x=1794257588;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=117yBiLwKENKL+3PiWG/U5OMCVmGd5cgD5S+cpkVimE=;
-        b=Fkh4t7lvXYsRb4VQioKBTfwAAiXoXtRKsRTVnuVmh9fFZLh6W7cz5gjwWxoKmtvP/h
-         iYJBTIVkBUKvgDL7itZhGDy1ktEM/vGu42zLKBuaADEl06bxgvqDpedqdqjxqWmPjo6t
-         SM4LAUYcEr0lB+LB7R0G4S0/wXrwcF3zH+PLH07zFQOBeeefXD39ubvh3BrwtM8TS7aG
-         eissAa0rtwaXKauvwHokkmgAzqLfd1m82SSkCcSiC0IJlFAw0zZj8gGbciAF3MhgNVyV
-         aVdowdKobSYw5whItx+CR293YUjJ21j9Z6QG0iaC9KI7rs0UZsPQ3CXDuccmpeJi3eaT
-         6THA==
-X-Forwarded-Encrypted: i=1; AKwUvByxyBRmZKySWNp9uzocBAgs3wGgitKViaeh9mCweQjCsjjDrHajkHEa2F5fz5KsVsw6reaq@lists.linux.dev
-X-Gm-Message-State: APuU4Z99bI25NcFzTjvDX2PaFX/ELhkpAJ/Q8evFYW/O6NHkQfv4PidW
-	ImVjDuKpXoOd0cHWTjrPjFI6fJErdVYXDhb/ff4xAI/AxLX9ItmSkYZ0SOIqsFkwtnz4wkVaS9Z
-	TDVoV/QQ0Eq0kjgTyjk6X5pOz1E0pRHDjUYTDyp3orpD+Pk9jJLS5FOWOgCLzCcMYhYkEl7IIcG
-	fEfFO6mXxRcqxGdYGFjIUlgyM+UFUnsQ==
-X-Gm-Gg: AYBFou3tF6n5q0ZT3iRaS5+Yon4httO0njCWnLIFf2KY+RyV/Ckxjeew63lcEDzgqiY
-	OWP6scVpwIm8zgQ/GKQe1iFC21ZuLJrYMudZfuMeSBSqhW6dXbR2ebvN9AMn/9wUp/w7gR3+K0q
-	hH8HL4OJNq4jzbt0ILRzVIQMRILehqBnBl8Lb6ydv2MKfSihT6a3B1TAxP
-X-Received: by 2002:a05:651c:a14e:b0:3ac:4b79:573b with SMTP id 38308e7fff4ca-3acb7aa83b1mr20499341fa.13.1793652788291;
-        Mon, 02 Nov 2026 12:53:08 -0800 (PST)
-X-Received: by 2002:a05:651c:a14e:b0:3ac:4b79:573b with SMTP id
- 38308e7fff4ca-3acb7aa83b1mr20499011fa.13.1793652787872; Mon, 02 Nov 2026
- 12:53:07 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793653397; x=1794258197;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ENsxoMePPaNpj45xMew1J4DNmbZyl2G7RIxxd5drqLY=;
+        b=1DKDaXCXknxrDD7jUvL564CEqCufS+NoyAwIrr6EIjQ6HWk7cjriBPXjXmLIiakuYO
+         Vh1B54kIpKSWuiQVQ2Mq3r9ZMA1DAL8tiNqlfl2+WWdsBya5uaKnzEWs9gtaodLzlQKk
+         LrLfk0rGTq6PFzcUPEb7CMAOwqjFqlM1ya41yphl0MjhZAHonGi5zRwEG1dA+8bQGe0o
+         FKP1vz4iKPg4b2711+uiwJlNSAUVZfgt3t3ECZMsLHGBFd3IWEyGWnabIZcr6RFCHaN1
+         1gllbM2ZzIKpiZJW88XBi3korLqPGyM0I56JcxpEgWbNfXsP2lkexDHUYbeOXIJOUpW+
+         rlFA==
+X-Forwarded-Encrypted: i=1; AKwUvByi+PwoqhdUZr/smnQ64dCTWQI8ea6C0qC7JCOEx3WpQJ3o+Djhj/fgdzJhLaO3+sqGUuG8@lists.linux.dev
+X-Gm-Message-State: APuU4Z/g6SrO9kdsCT+WLeka7iIS7liZ5PiZMpTsxthoJ8gjJiaYyIFv
+	X7W5L8WzVX/lvVYZQ0S7s2FleH66yreLMuhFG2J3QuGQa7VyD5yoATCwL0uS9TCpVg==
+X-Gm-Gg: AYBFou0AWJKSVtvg3BrUTEi9GsnsJBKzkS3R1I/N4S4MrJTTOwoZOM7Ijle8cjPG4Mw
+	hhWgjLAQu7gIoD+nbBs1kSxPJFUrLuuvt/GAbt6b5N+416jG5DvxiatiQVdp3QdEKBFOL9ajvAj
+	KxoE2H/LAYbc9YDChszfjBjBU4A9UESE5XtB39LlZ3HO3j3bmbLHJbnrqV+7EwZbDqMeNk1QCxh
+	//sp1hVL7vK6ppyH+SIs3E17v84uj6LNeOVHvVXzCTN4j0ILc42+qJCvMzNkR09O85xYijm5jg+
+	H8WX0xa2WrJWF/QF26w6zxdrnmTfgaleAl3Ob95Tg8YOXg33gXqWdnY0oPktBGff6SOIEBmfjnp
+	b7Natn52b7yDtiI4yjNQulqwf3vh3Z3cNX7jKKGU37vHZ87Cy1wMYpfraUrOxgztg8+gFXnpPYZ
+	eAlOVHCcFPnM8fWzXf4Zu8cODKmoniyR9pL/LYyLtw11SQPJkpfN+D/kIisq0lVXWpPAKS7ZF60
+	h3+oeLaMiX89IRmiwH16O8WWtzMoR5DNnwRU27snOJv0eCUVU49nZVBjXgLdZLZ3XsPot1rEpdl
+	65DXBAE=
+X-Received: by 2002:adf:e68b:0:b0:48d:b940:af7a with SMTP id ffacd0b85a97d-48e6e5016bamr17560067f8f.55.1793653397396;
+        Mon, 02 Nov 2026 13:03:17 -0800 (PST)
+Received: from hamza-PC ([2400:adc1:158:c700::1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8c0b6sm20919464f8f.41.2026.11.02.13.03.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 13:03:16 -0800 (PST)
+Date: Tue, 3 Nov 2026 02:03:13 +0500
+From: Ameer Hamza <ameer.hamza@truenas.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, caleb.stjohn@truenas.com
+Subject: Re: [PATCH] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
+Message-ID: <auj4LE0bq7w7lOF8@hamza-PC>
+References: <20261019151627.3324886-1-ameer.hamza@truenas.com>
+ <CAK-6q+j64=mSzuufOaSGjsC2aSwhb0hs9MKxxaAhbwugdztHZw@mail.gmail.com>
+ <aujr6x9t2gXbXfFw@hamza-PC>
+ <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -90,66 +97,34 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027223847.652884-1-irogers@google.com> <20261027223847.652884-6-irogers@google.com>
-In-Reply-To: <20261027223847.652884-6-irogers@google.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 2 Nov 2026 15:52:55 -0500
-X-Gm-Features: AclHuK8pGzNf4aGPekLa6NQcs521xOugw8djA3E8ZMCjZ7yn89XzG5j_wIaQNFk
-Message-ID: <CAK-6q+j-MS_5St04YFU11LG_Cjf1jOuS3q33qk_iK=7TE-iuBg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/9] dlm: Free dlm_ls in kobject release callback
-To: Ian Rogers <irogers@google.com>
-Cc: Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Zhihao Cheng <chengzhihao1@huawei.com>, Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, 
-	Sumanth Korikkar <sumanthk@linux.ibm.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, llvm@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, David Teigland <teigland@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@suse.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ohi1sTbVHF_DSwQDzGaSjz2D7suG90AXYn9PGEt4qDM_1793652788
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
 
-Hi,
+On Mon, Nov 02, 2026 at 03:38:12PM -0500, Alexander Aring wrote:
+> Hi,
+> 
+> On Mon, Nov 2, 2026 at 3:03 PM Ameer Hamza <ameer.hamza@truenas.com> wrote:
+> >
+> > On Mon, Nov 02, 2026 at 02:49:04PM -0500, Alexander Aring wrote:
+> > > question:
+> > >
+> > > how do you "pause" anything in DLM?
+> >
+> > The nodes are VMs, so I freeze the dir node from the QEMU monitor. It
+> > stays a member but never answers the lookup, and after the cancel I
+> > evict it through configfs. That is what happens on our HA systems when
+> > the peer reboots without leaving the lockspace and a pending request
+> > gets cancelled before the peer is evicted.
+> 
+> Still, do you just randomly freeze it, or do you busy/poll wait on
+> specific struct field changes?
 
-On Tue, Oct 27, 2026 at 6:39=E2=80=AFPM Ian Rogers <irogers@google.com> wro=
-te:
->
-> struct dlm_ls embeds a struct kobject (ls_kobj), but dlm_ktype lacked a
-> .release callback and dlm freed the lockspace structure directly via
-> kfree(ls). With CONFIG_DEBUG_KOBJECT_RELEASE=3Dy, freeing ls before the
-> delayed kobject release runs causes a use-after-free, and unloading the
-> module while the delayed release is pending results in an instruction
-> page fault.
->
-> Add a completion ls_kobj_done and dlm_ls_release() to complete it when
-> the last kobject reference is dropped, waiting for it in free_lockspace()
-> before kfree(ls) and in the new_lockspace() error path before module_put(=
-).
-> Also delete the kobject via kobject_del() before stopping dlm_recoverd
-> to close the window where concurrent sysfs writes could wake the stopped
-> recovery task.
->
-> Fixes: 3514faca19a6 ("kobject: remove struct kobj_type from struct kset")
-> Signed-off-by: Ian Rogers <irogers@google.com>
+I don't poll anything. The peer is frozen before the request is made,
+so the lookup to it can never complete. Then the request is cancelled,
+the peer is evicted and the name is requested again, and it asserts
+every time.
 
-A somewhat "big change" for just a debug functionality. Althrough I
-agree we shout call "kobject_del()" early to avoid additional sysfs
-changes during removal.
-
-Acked-by: Alexander Aring <aahringo@redhat.com>
-
-Thanks.
-
-- Alex
-
+Best Regards,
+Ameer Hamza
