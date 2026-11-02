@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793651908;
-	b=XAV2nTKDPRht6DsTyJB6PjND260ao9pSs1BDEoCPK5RjFtbYj+ryCcocTdbSDlW2844e
-	 Jaw/7+0SLeQAK6sKsv2p0EDrj71OIXPpt+mhw3MQXguyJYM8KSD7YjJFg4O0D5ac8GVYi
-	 YnBsCHbhEaHGacwz3wTlXXBfSevZ2triiNNpBwCubj8ef3e2uvb3Bsq8KYScgMOJ3Wnvr
-	 lQbmJf8mQgT6LR9qkFekIADBbC3pg7EOQHng9H3RaEdLsQzdwb/HqyFerXqUOw0n4hsE8
-	 eZh3D8j63M/nj4C5IZ9Mi//UvLyi90IOIg7LQ4ZmXr00KoN67qkfUaTCl170emwxPmw==
+	t=1793652104;
+	b=ercQORD1kHhD7jCj+97XpaRwZAyK9q8eHwLXBqFpFL2FEagseooSI0IMjzbBSZOlsBc9
+	 Ju0WIj3hv7sS5Eg2lyBkjQYbN/YpxXtrCGmSTa5mGs0+lRN8TnTgzak91BZcdOcHWWv0l
+	 FBG4+FjU/RToqaKr4q5A+cmVdnvhgcP0QA1Po7tdA/tKRg8EyjyigDensnRTzR9bt/7jb
+	 8v616wnVeWC2qcCTWBRLjlkjAoSpl/SRn6mMWsBhgihVQnWGv7ML2w9i2q5U6KdeNCxx1
+	 XCZVXz/L54SrITZxNhdruQp7oCAAFVEIoT6smeq2LFiQDQhuRh/vn6Va15JubUVqqfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793651908;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793652104;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
@@ -15,72 +15,72 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=DDP21sO6dH3L6F1rpSILTUYDUuHIujf8RdZUCMtfKH4=;
-	b=J0TNWzIwe+2tTcbzZcfuBfVub7J+3fI0fKApapWQTrwuO6Qq1RiwEst5WOlMlz5TlW1x
-	 N7MH7HG/Qv0yWVVV9Y8+WQitc9H+jzWDjBuQxSgSpaT971T7oN2fxxISvtjheqQTxNjXM
-	 oB08K6w/ql5CHL25vNf0jnNXcgtGe2L4m1csDDwoxswNlhkW6E5SGO38MM6DQN2MJPgD0
-	 xL9i8OXcxSgIiSXzvFUR7wO/ZyNmRgTk45J0Y/C10HAsx2g6u1Vy/ciNwZ91v7+/ecgko
-	 sNUu4q1nRagoDXHLXFdbOVMOz14pMXfPc1iJ6CDDN9ezUie7GcCyXZI1A4wDc6ZckZA==
+	bh=pPfuhXuKj4uxJtVgdwO0y4Sg1BoFJPH2OXHo0IrP7P0=;
+	b=pvT1cy9KHRsnfTR0IHgtXt/OfWkbuvhq8VrsZuOUqz2wSGtzcmiVjSrpCLg7bPmV8Evd
+	 KsdLUb938l9i2Z7rbdXBNlYOhj2lGw7L+SX/UDKzkPAG6GKFnkILWQVHspOvxEdWv82Fs
+	 gGFaFoB3uAWFT5xfkbK18HjK/5PrQLMr7rX/85he8Peq7yvSJYj1y2auIwFE61e6azBAE
+	 f1xDV1Y1Mr+RQvDwcIihPkIb9qq8Iwiw8qwuEubTNzL3gLlaTgrze+0wQVplPWBE1I34S
+	 CW4T+5On3pUXJbmgC63QuAH3/GZVTEcspKBZyF8mOqlueLHM7DdDSogyCcBjZSsyhfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Orpr6pRh;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U8O7AQDL;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA5E606A327
-	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 20:38:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCA5E606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD80F606A324
+	for <gfs2@lists.linux.dev>; Mon,  2 Nov 2026 20:41:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD80F606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Orpr6pRh
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U8O7AQDL
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793651906;
+	s=mimecast20190719; t=1793652102;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DDP21sO6dH3L6F1rpSILTUYDUuHIujf8RdZUCMtfKH4=;
-	b=Orpr6pRhK7kcku8CgLLWMo81N3po0RwlklhFgckAvLDLoVABTMUka0hfkJmHGfS/DNPgXg
-	mKU98D9+PVq2/RteVQyCnVRrK3Bo2an0F9PcheUoNWs7uxt5le3l3D36nUXo2Xe3+SEoUi
-	qva6xBhQhIu/s3lA5TbGTa76Arrqmpc=
+	bh=pPfuhXuKj4uxJtVgdwO0y4Sg1BoFJPH2OXHo0IrP7P0=;
+	b=U8O7AQDLY1PpUkWVWskOBsLg2fzmrCtvfpJb3eR8vu7Wc2nQJAvFdN3u4wJH7zLTaqvBcK
+	w5fssyXVrFLH4tzRUfQhMrJqjrjuri/3eOtGKQlV/f5eBPNnMjbIYnNe+8+emYdolRlbKB
+	1x/fuwwfoEmzGcaqky3q7T74/z+YdQo=
 Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
  [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-VnVeU8PEOFODXUiGIQIpFw-1; Mon, 02 Nov 2026 15:38:25 -0500
-X-MC-Unique: VnVeU8PEOFODXUiGIQIpFw-1
-X-Mimecast-MFC-AGG-ID: VnVeU8PEOFODXUiGIQIpFw_1793651904
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3ab2f8ce13dso164351fa.1
-        for <gfs2@lists.linux.dev>; Mon, 02 Nov 2026 12:38:25 -0800 (PST)
+ us-mta-191-f7bxYoigMN-e0rtWL2P6fw-1; Mon, 02 Nov 2026 15:41:41 -0500
+X-MC-Unique: f7bxYoigMN-e0rtWL2P6fw-1
+X-Mimecast-MFC-AGG-ID: f7bxYoigMN-e0rtWL2P6fw_1793652100
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3ab3089df39so14621961fa.0
+        for <gfs2@lists.linux.dev>; Mon, 02 Nov 2026 12:41:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793651904; x=1794256704;
+        d=1e100.net; s=20260707; t=1793652100; x=1794256900;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DDP21sO6dH3L6F1rpSILTUYDUuHIujf8RdZUCMtfKH4=;
-        b=xvb7G1ftqrkD/uDxJlgE/oLg6ajTp4hw2Y6u6XKl3GIhANhz8ANCC0clioy0h9cBTA
-         NMOJGUS/RcLTdX6QG82WKmTvcpYI/DLmbxRnhymGrBZZ8E0PBl/ONbJgTDBosZ9+RiAV
-         PeFxQKPDVdmuR667L9bvbu5p6nvRuBZL59rDgZkP+7cH/sgr2mzACzjLjQJtkuY6cNo1
-         LrB2YcxdLtYRgvW3f+ehsbb9EPSRmUMWWMPbZ1NWqjgW6QlCQCYROOtOvDFKsTn97PIC
-         0CNuJFoua9LwGUpfScTC4hW4U6hQxOHaEmZ/PMKW017GFHNVQ5ivFhNregrL1tE9y/mw
-         /eng==
-X-Forwarded-Encrypted: i=1; AKwUvBwItaAitQ3OO1ib/EfwnkZsZKCU87nHZ0nTle7/J6N5mnlI9xrVO/7uhVpwmRW01xMUYPvF@lists.linux.dev
-X-Gm-Message-State: APuU4Z+tohX8Wg8Qn8Kf8Xt65xTAJqTI4XGFxqPIUgH5zIqY7mnCmm9u
-	aIsw8yWB9yo3xkO1W+zH4YzrsjEfiBQBQ//qhvqaflkYB/uMASy3g4wXYDqiTGSH9ZHIx0+TUCZ
-	+O253+KYyxBF0xmO9kDf1/6ELjm88fY+WUL28DAtyz/659BhImERt/gGe1oYy6p/1G6WDyVClm+
-	3laZPMtwPsAlz/CYFSWsB7mztpSJa/eQ==
-X-Gm-Gg: AYBFou1HInSem1RNzPc7yur5FehR4EBO354KyqxxHYqhqu/Ut76A6BTzqwf0U0OBJxL
-	rdE1hyrAlFoIgnV7Lnj2Giyi7seW/n6Tmj1QAOcSGwxmkqsh5+RywzorOcYHa0CaFQa1UU6i4pj
-	WfIaHuWifyoqcqbl6Sm/KS+ID5ssUU8aC9KbIUojGQqtGK/Yd13NfCf3vv
-X-Received: by 2002:a05:651c:553:b0:3a6:5c8f:857 with SMTP id 38308e7fff4ca-3aca57a559cmr30300071fa.8.1793651904083;
-        Mon, 02 Nov 2026 12:38:24 -0800 (PST)
-X-Received: by 2002:a05:651c:553:b0:3a6:5c8f:857 with SMTP id
- 38308e7fff4ca-3aca57a559cmr30300041fa.8.1793651903708; Mon, 02 Nov 2026
- 12:38:23 -0800 (PST)
+        bh=pPfuhXuKj4uxJtVgdwO0y4Sg1BoFJPH2OXHo0IrP7P0=;
+        b=BNVAHQU9RB7I6PPLWUaDo3jDEdeLCzq/s2MfrrQ/oXvlvpvI/IofGSWZhxF2B6rsGB
+         oW0IVM1zPyXWXHVBw0fpF68rInyb6/qEuOGXXp3ZMSkZMxhuvLgRKN7KDHKtM8qS3RW6
+         lSUPm/m1ctvUjoLu1Laga4MgV7Ih/je0Wd1+yuta6KYYgm4A5F7kzd3mki5nDxY1vs8m
+         o6cr8rYUk+UpbW4t6Pe5KThEQ2ZZMUS5LUW0qxF2Ckc2JwNs0q6ucPhND1h5u1OZsFwz
+         vJVzpiTV+7MKgXRzVSUUYvVqT7jc6AFDYxH4RnGa494nqFKyAlYxo9aAOeBlnTSBRg4w
+         1VGg==
+X-Forwarded-Encrypted: i=1; AKwUvBwwjJw0H9JJwf5gxp+bZzdHtKnO72koteZuGaiG7a+8hNWJ9jzWhj8KQn1tZqC6VFa2BYf9@lists.linux.dev
+X-Gm-Message-State: APuU4Z9fJL9VpEeCbJ4gKBuzBLeQgbKyurFiTGR6ubbacRGD57Lel81h
+	h8pvOwU7DGX8FECqe7e4PmkyOqC5gBY7B9Su7gEPk1+avJbMl86qQPqYPxbJSBOYAlFoG4FdZrt
+	g3ZpmgXMj6ntyUVy5+pL69fSpkdLvX0lbFBOb7Mr0D0JgN/iJUKdDLjzCthBRoGljTuqk3+MS1n
+	N8ovLdfXrJSW7kmJ7RC958r39qRqQk2A==
+X-Gm-Gg: AYBFou1KWOUgOibVwHmi0HlnJAKbLOz7tGOp41YtLFqPm/cL75ffMNE009IC9PajKGT
+	tq0HBt/65+erp48WrNf8ZknqVJps8/5uD2jL5CDgb2PETf9n4td/IB1xYmiyqYitefxfl5AKQ6W
+	2BbNyraocfAradpy9snKuAHJOs09fbjWPeuo+5kb5Ukhp85y/+Y2BPbHfD
+X-Received: by 2002:a05:651c:150a:b0:3a9:8167:62a with SMTP id 38308e7fff4ca-3acb7b6498emr30604661fa.28.1793652099939;
+        Mon, 02 Nov 2026 12:41:39 -0800 (PST)
+X-Received: by 2002:a05:651c:150a:b0:3a9:8167:62a with SMTP id
+ 38308e7fff4ca-3acb7b6498emr30604611fa.28.1793652099559; Mon, 02 Nov 2026
+ 12:41:39 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -90,41 +90,76 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019151627.3324886-1-ameer.hamza@truenas.com>
- <CAK-6q+j64=mSzuufOaSGjsC2aSwhb0hs9MKxxaAhbwugdztHZw@mail.gmail.com> <aujr6x9t2gXbXfFw@hamza-PC>
-In-Reply-To: <aujr6x9t2gXbXfFw@hamza-PC>
+References: <20261019184849.24422-1-sanan.hasanou@gmail.com>
+In-Reply-To: <20261019184849.24422-1-sanan.hasanou@gmail.com>
 From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 2 Nov 2026 15:38:12 -0500
-X-Gm-Features: AclHuK8EBIgCcOEpy9zoAe7u3ZQc5iU2X8Ha2AYq5mu6ejtrrJMK1XULaVzy1LI
-Message-ID: <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
-Subject: Re: [PATCH] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
-To: Ameer Hamza <ameer.hamza@truenas.com>
+Date: Mon, 2 Nov 2026 15:41:27 -0500
+X-Gm-Features: AclHuK8WVNVvU2rcm4KZuGFkSSfZ2u0smM4kgrswPda8flMMQv9IN77de7FcSJo
+Message-ID: <CAK-6q+gvq=y+P+wmUTGWJcNRLP1Hjw_W=i_rwuvVhpS0d+h6Og@mail.gmail.com>
+Subject: Re: [PATCH] dlm: don't put an uninitialized lockspace kobject on error
+To: Sanan Hasanov <sanan.hasanou@gmail.com>
 Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	caleb.stjohn@truenas.com
+	syzbot+b2b8d04ec4914f618d23@syzkaller.appspotmail.com, 
+	Sanan Hasanov <sanan.hasanov@ucf.edu>, stable@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KiUV3dw9f48n6EDiuuuz-hDDCS8EMrO-NbMz7p2D-HY_1793651904
+X-Mimecast-MFC-PROC-ID: e3i2W4gFK-DT92M5SPcrFM_eiDjJhUZLvSoJMr8D0aM_1793652100
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Mon, Nov 2, 2026 at 3:03=E2=80=AFPM Ameer Hamza <ameer.hamza@truenas.com=
-> wrote:
+On Mon, Oct 19, 2026 at 2:49=E2=80=AFPM Sanan Hasanov <sanan.hasanou@gmail.=
+com> wrote:
 >
-> On Mon, Nov 02, 2026 at 02:49:04PM -0500, Alexander Aring wrote:
-> > question:
-> >
-> > how do you "pause" anything in DLM?
+> From: Sanan Hasanov <sanan.hasanov@ucf.edu>
 >
-> The nodes are VMs, so I freeze the dir node from the QEMU monitor. It
-> stays a member but never answers the lookup, and after the cancel I
-> evict it through configfs. That is what happens on our HA systems when
-> the peer reboots without leaving the lockspace and a pending request
-> gets cancelled before the peer is evicted.
+> Commit 8a4cf500f1dd ("dlm: drop kobject release callback handling")
+> dropped the do_unreg flag from new_lockspace() and made the out_lsfree
+> error label call kobject_put(&ls->ls_kobj) unconditionally. But ls_kobj
+> is only initialized by kobject_init_and_add() after the callback
+> workqueue and dlm_recoverd have been started, so every failure before
+> that point puts a kobject that was never initialized:
+>
+>   dlm: ls_6035_1: can't start dlm_callback -12
+>   kobject: '(null)' (ffff888027a28088): is not initialized, yet kobject_p=
+ut() is being called.
+>   WARNING: lib/kobject.c:736 at kobject_put+0x66/0x550 lib/kobject.c:734
+>   Call Trace:
+>    new_lockspace fs/dlm/lockspace.c:617 [inline]
+>    __dlm_new_lockspace+0x1714/0x1cd0 fs/dlm/lockspace.c:638
+>    device_create_lockspace+0xc7/0x350 fs/dlm/user.c:414
+>    device_write+0x872/0xed0 fs/dlm/user.c:606
+>    vfs_write+0x296/0xba0 fs/read_write.c:685
+>
+> syzbot hits this by sending SIGKILL to a task creating a lockspace
+> through /dev/dlm-control, so that alloc_ordered_workqueue() in
+> dlm_callback_start() fails to create its rescuer thread. The same
+> happens if rhashtable_init(), the ls_recover_buf allocation or
+> dlm_recoverd_start() fail.
+>
+> Bring the flag back so the kobject is only put once
+> kobject_init_and_add() has been called. Since the kobject no longer
+> frees the lockspace, kfree(ls) still runs on every error path.
+>
+> Fixes: 8a4cf500f1dd ("dlm: drop kobject release callback handling")
+> Reported-by: syzbot+b2b8d04ec4914f618d23@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Db2b8d04ec4914f618d23
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanan Hasanov <sanan.hasanov@ucf.edu>
 
-Still, do you just randomly freeze it, or do you busy/poll wait on
-specific struct field changes?
+Acked-by: Alexander Aring <aahringo@redhat.com>
+
+Thanks.
+
+This patch conflicts with another patch that is probably not going
+through the dlm tree. It will not fix this issue [0]
+
+I think it's best to wait and queue your fix until it's through, and
+then we can rebase your patch.
 
 - Alex
+
+[0] https://lore.kernel.org/gfs2/20261027223847.652884-6-irogers@google.com=
+/
 
