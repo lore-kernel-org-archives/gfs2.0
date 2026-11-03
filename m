@@ -1,98 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793697903;
-	b=Gb+3zGFNoyIPxeYdRh0mqCNTO7WsAJz3IkW+VeYb0Rmq+GsOs1PvsYllYLntciGbw0so
-	 CZmE2ezJUjtgX/eHyAgdJxGm6SfK9e5IPyAGr8sue3Vxd1zWvZnq80qKXiLW8q0ZD3l7p
-	 kK74Eg1F2fjSWacZUz0l60LTQQ+7mXxsYMzbEiNLZfDMZ6P7hweOIrnOLkuDKtzsmWYnc
-	 8glDVAIWTUZ/Wq0brJdueCA0qoC0gnQfARCBNWb3wTGrQO1TpoTDp28WyMQqFJWgRACQb
-	 j2QSoVp5JhG7niAuFbPTwlPdd+VQ4Qcd661vTLPmhCxHy/OapeWu8ETeyaxs7exW1eQ==
+	t=1793706480;
+	b=tTfnX1YXYK4Ypq1KasVKtBZNi1zCPK8995lpJy+PiauTm0lViCKd0bud4FsLX+ts4xlr
+	 DAAkzwOQ3Caj7aHQpNQBr++o/7PUjOGAJuuadMK4coeJdZLq9ENlU13UhBasTSEcvfOrz
+	 mUgLQ+B8sNQPoAKNFCB2CbtC8+GbNen83wXzaBBqUqYzO8Mvpo5N8oz1RrySXrnoX6kxv
+	 Voz+uxEx0pRrktcbhNMlluxnJPzPCXc4QEZl8j1ImwYKX2i0NS+Ncm5RLWH4qlruhkv6W
+	 v0BJaTgEAhwFWE6vTyyNM130u3Q6YQm7KnqqfyxMCDafXe8yZBbTK7sfwELbMMmEoeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697903;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=wbk0beb8505pKbqVSOAGuX9uXweKMLn5Ud0DHY7wulE=;
-	b=Ipa2VuW0kc7oqy+nLJ95AtPTT9duVEZnGmaPa8TeReGp1NRKIBSZfanWQuPFV4pJBsCB
-	 umscu8wdOpbSlPiSCITrJyLI+Ypk6gnxlM9ucQ0kfCWV7yOIlxbIHPyVvsSzGhdPWDbcN
-	 /U0YZan8HyETPD/PtjPlffAKkBKCJeHuc5TGD7vCzVlgHyV8LEW+vI61bn4b1h60EJFIT
-	 i5bN6EoPD/4aZoFwJkVaXV50hmWj7POV0Smv8ijwjiRZ0BBWgaNu58wCuR1mO6Zn1QwZA
-	 V3Z+UbZw1wCNo/pAdQ9zC4i9gqI1CJKMakZLcMszZBQKvEF2nY+bOTT5TKn+SZIOuvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706480;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:
+	 X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=T01qyvfeIQghPWEXNNoo4lvfeQlIKDGWemEv65quIQdLlhxRzoJmnZOhRzp2qux/TBvX
+	 f9dzjPmWhdtvH8EQONwB2WqywQAApgtPH8Eud/PaMkd5czSZLkBMor17PgZRYQaaGoGNE
+	 roVLexcbwJFMRiqIt6s0+hSTTDqDCYZUPVgaXOQBAlCCnPDZrN25V3EnP+DfDnizmWhgA
+	 0Lw4tgWkMiOMNKADMoSLxgt7H0/yV9UB9lqo4oTZCdFbUyBJhKrr6kBy79SFDz+Fvgkwr
+	 Wcx9ckVpkQDb3Rd/rqByXUrLmK+kXtMeyweSvVT6BxuriWYVKbOP1mSrfzymtgP7jfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=truenas.com;
-	spf=pass smtp.mailfrom=truenas.com;
-	dkim=pass header.d=truenas.com header.i=@truenas.com header.a=rsa-sha256 header.s=google header.b="jR5fye/C";
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=suse.cz;
+	spf=pass smtp.mailfrom=suse.cz;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D14606A32E
-	for <gfs2@lists.linux.dev>; Tue,  3 Nov 2026 09:25:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4D14606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truenas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truenas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC5D606D811;
+	Tue,  3 Nov 2026 11:47:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BC5D606D811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=truenas.com header.i=@truenas.com header.a=rsa-sha256 header.s=google header.b=jR5fye/C
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e47347279so2432017f8f.1
-        for <gfs2@lists.linux.dev>; Tue, 03 Nov 2026 01:25:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=truenas.com; s=google; t=1793697901; x=1794302701; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wbk0beb8505pKbqVSOAGuX9uXweKMLn5Ud0DHY7wulE=;
-        b=jR5fye/CjVpF1V5RBP3hE1LjfcoJsWAzB2/M6gBJXD7uuEvaTxaiX1pDW2IFWEGMvn
-         xhSF98+xjKnkCKdGkQYlaH8KiL0gmyuaif5kdPan/iNRodYPBdCuyycUWiX9xrXf/Njw
-         R+1YpSqUL89fhygRv2aHt6RPfSgc9GKIu6v7u5rgrts+H9jkboHPwia/CjenlCOKFvwk
-         VZF/XTxomdhmYPoprQ16GWvIDI+sYz7BgPO+RYdDcDFv1VGIeHX9K6Jo9QB4EDhgViLY
-         tdrxnTYvCZr3Zoy0zjqvqeBTqqqKeB5z0nviUGf3MbcW6donQXjtGkBWi/N5D/DOkBcT
-         MxEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793697901; x=1794302701;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wbk0beb8505pKbqVSOAGuX9uXweKMLn5Ud0DHY7wulE=;
-        b=LecZNigzygUNYXj6brCZN0GHaV9En7TcYqUq5qURliGrKqsID4xcNqFjSn3f3kHUms
-         pmgExvtrYBcolBmiHdh0hHQY2mzjOa0wfiIYFHkDUcNv+j3phwbqrP0e+odHTOnn0KLX
-         tqXx2Y+e4dNWYPlphv1DX1MiyP3peGW/Gis/kOHs4Upyvu8U+nXNtfoist3t6n7KIje0
-         ZdRiAzkzJHgNkWO0qOnCUCAflnzNY6vvsLoZLzcRyBAKZo+HFwB5rtdpD8EWTvtCFFQw
-         yGlwGP7Mwel/b7yrttD/RB5mC4g/m53GlhjeCGfgXacqgneU/NHv/2YyZi17eVIcCOHX
-         iyiA==
-X-Forwarded-Encrypted: i=1; AKwUvBxnC2YxmvAnjzF7cS/JsLP8/vG2PgGPo7P7+xByplrxl1R35vzEKyqgGzlBcPlskXYMWMuv@lists.linux.dev
-X-Gm-Message-State: APuU4Z/+PSIZdlQdgLAys2bbmF1SsAe18V+442HZwH89r1SJWtt5xi/x
-	Q5VnM3/i38UTY2IB3Ls7G4FBQDMEbKuLPwdeFFHvCCsxB5aTxdGtQ2QdXguPh0aeRQ==
-X-Gm-Gg: AYBFou0GwIgdOcoV9fnqmUNp9qUhitjlBvJj1FYWcIAdBmDDXkq8siN/1xQL6P2mHrV
-	UvPhcANexcvUjy/yOmveligoBtnhSLDLWtofDFqmQGg8wf/Ng64tum4BxmptOy14CV1WL0GzCS3
-	txW8XDSnErp3e/5Q2Bpc7nlO710ntza0g3zn352l3fPfYOb2zRbT4uGY3y8scIwPF8t1RGe52qG
-	bN89VSXtCn38LHxukgV/mf8eIEvCmDunii8OcuAVhPQtduseddteIB2Msv3ZT5eqyde1UEIyQBS
-	XWl+1567JNJftAo6/bnCwKkiQBn0qVfAaAQKJEalAfgNQYZlGm6015GjXcHD+EupGBlVGUXzSn/
-	HxJFt+Wl+sYdV2FTiRSAcmcktyfOLSLJ1TAWThm3p9b+gaDfW/2uObwmcExq4Mxq3oRJ2wrpgLs
-	pednKNK9zDnARJW61Q0S6SwNimedUXc5j2mjlpvNgdVqxC9Q9zDTCEkfadPp/zixxE3bPdRPWne
-	H5sovoN8SxsHW1wOaM/bOzq6qIvoHf50gLpd6Z4kE7F1bBMOy2OoBJKmzqadxli6pU0A0I8YENm
-	dbWfB8w5
-X-Received: by 2002:adf:e18b:0:b0:48e:2949:439 with SMTP id ffacd0b85a97d-48e6e4f5647mr29617079f8f.36.1793697900790;
-        Tue, 03 Nov 2026 01:25:00 -0800 (PST)
-Received: from hamza-PC ([2400:adc1:158:c700::1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b9a3b1sm25873954f8f.44.2026.11.03.01.24.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 01:25:00 -0800 (PST)
-Date: Tue, 3 Nov 2026 14:24:56 +0500
-From: Ameer Hamza <ameer.hamza@truenas.com>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, caleb.stjohn@truenas.com
-Subject: Re: [PATCH] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
-Message-ID: <aumi85ZXHFQ_D5ON@hamza-PC>
-References: <20261019151627.3324886-1-ameer.hamza@truenas.com>
- <CAK-6q+j64=mSzuufOaSGjsC2aSwhb0hs9MKxxaAhbwugdztHZw@mail.gmail.com>
- <aujr6x9t2gXbXfFw@hamza-PC>
- <CAK-6q+jBNKN=oSCmm+i011FdhPS+42BZc0iUfbqGiLDBc0Py5A@mail.gmail.com>
- <auj4LE0bq7w7lOF8@hamza-PC>
- <CAK-6q+gqM6O4h762H5NVJ_B==VL2zaBVTBDiwUdbf5zxGNEDsA@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CHDXryvq
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2FACE1F83B;
+	Tue,  3 Nov 2026 11:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
+	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
+	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793706478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
+	jwKpi9Hus6OsYyDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y4zBKWh3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CHDXryvq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793706478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=Y4zBKWh3jpv6KMan74hAIoPBOSLs6tZK+6I3oXqMSfIYnA8S5ywXTaZUj3pHgSrb7VT90k
+	329ZViAKBSeKUbGb8+5mzc2frx/+GV6reJ9nXvxCL4vReDMldn3E1PoxUzI1wb8UPaR2qV
+	R/wJmcymFrxhPjRxW0H5+f3xz5M+HuQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793706478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gpNnj5q4z35v5NpxDoXWpLWIxpF/EVXKHOt/hVE3ktU=;
+	b=CHDXryvqgLheeosXz5cGd2sibnFQ1eIqkqKPm0R0TjOV2ia+1m/8RKNtWnzplPS6lEGySx
+	jwKpi9Hus6OsYyDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B3A57134B8;
+	Tue,  3 Nov 2026 11:47:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LqoVIu3J6Wr7VgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Nov 2026 11:47:57 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 31B58B23A; Tue, 03 Nov 2026 12:47:57 +0100 (CET)
+Date: Tue, 3 Nov 2026 12:47:57 +0100
+From: Jan Kara <jack@suse.cz>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, ryan.roberts@arm.com, abuehaze@amazon.com, alisaidi@amazon.com, 
+	blakgeof@amazon.com, dipietro.salvatore@gmail.com, rvvandan@amazon.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, linkinjeon@kernel.org, 
+	sj1557.seo@samsung.com, yuezhang.mo@sony.com, miklos@szeredi.hu, agruenba@redhat.com, 
+	djwong@kernel.org, hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com, 
+	cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com, jth@kernel.org, 
+	willy@infradead.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, ritesh.list@gmail.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, exfat@lists.linux.dev, 
+	fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, linux-xfs@vger.kernel.org, 
+	ntfs@lists.linux.dev, ntfs3@lists.linux.dev
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+Message-ID: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
+References: <20261027112702.3747009-1-dipiets@amazon.it>
+ <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -102,51 +126,85 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+gqM6O4h762H5NVJ_B==VL2zaBVTBDiwUdbf5zxGNEDsA@mail.gmail.com>
+In-Reply-To: <auCrqvae2tm4a8PV@pedro-suse.tail5790ac.ts.net>
+X-Rspamd-Queue-Id: 2FACE1F83B
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-11.51 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[amazon.it,linux-foundation.org,kvack.org,arm.com,amazon.com,gmail.com,zeniv.linux.org.uk,kernel.org,suse.cz,samsung.com,sony.com,szeredi.hu,redhat.com,paragon-software.com,wdc.com,infradead.org,google.com,suse.com,nvidia.com,intel.com,sk.com,gourry.net,linux.alibaba.com,vger.kernel.org,lists.linux.dev];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCPT_COUNT_GT_50(0.00)[50];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLwajpstcpqr181tektcof4ecz)];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.com:email]
+X-Spam-Score: -11.51
 
-On Mon, Nov 02, 2026 at 05:22:54PM -0500, Alexander Aring wrote:
-> Hi,
+On Tue 27-10-26 13:59:59, Pedro Falcato wrote:
+> On Tue, Oct 27, 2026 at 11:27:00AM +0000, Salvatore Dipietro wrote:
+> > Since iomap gained per-block dirty tracking, a large folio can be
+> > partially dirty: struct iomap_folio_state records exactly which
+> > blocks are dirty, and writeback only writes those ranges.  The mm
+> > dirty accounting, however, still charges the whole folio even if a
+> > single block is dirty (up to 512x over-accounting for a 2 MB folio
+> > over 4 KB blocks).
+> > 
+> > balance_dirty_pages() then throttles writers against a number that
+> > is unrelated to how much data actually needs writing back.  On
+> > workloads that repeatedly dirty small ranges of large folios --
+> > e.g. PostgreSQL, which writes mostly 8/16 KB pages -- dirty_thresh
+> > is crossed and writers are throttled long before the real dirty data
+> > justifies it.  On the benchmark below, run on v7.3-rc7, the
+> > unpatched kernel charges ~159 TB of dirtied pages while writing
+> > ~6 TB to the array, a factor of 27; with this series the dirtied
+> > pages charged match the data actually written.
+> > 
+> > This series makes iomap charge and discharge the mm dirty counters
+> > per dirty page for folios that carry per-block dirty state, so a
+> > partially dirty large folio is accounted for the dirty part only:
 > 
-> On Mon, Nov 2, 2026 at 4:03 PM Ameer Hamza <ameer.hamza@truenas.com> wrote:
-> >
-> > On Mon, Nov 02, 2026 at 03:38:12PM -0500, Alexander Aring wrote:
-> > > Hi,
-> > >
-> > > On Mon, Nov 2, 2026 at 3:03 PM Ameer Hamza <ameer.hamza@truenas.com> wrote:
-> > > >
-> > > > On Mon, Nov 02, 2026 at 02:49:04PM -0500, Alexander Aring wrote:
-> > > > > question:
-> > > > >
-> > > > > how do you "pause" anything in DLM?
-> > > >
-> > > > The nodes are VMs, so I freeze the dir node from the QEMU monitor. It
-> > > > stays a member but never answers the lookup, and after the cancel I
-> > > > evict it through configfs. That is what happens on our HA systems when
-> > > > the peer reboots without leaving the lockspace and a pending request
-> > > > gets cancelled before the peer is evicted.
-> > >
-> > > Still, do you just randomly freeze it, or do you busy/poll wait on
-> > > specific struct field changes?
-> >
-> > I don't poll anything. The peer is frozen before the request is made,
-> > so the lookup to it can never complete. Then the request is cancelled,
-> > the peer is evicted and the name is requested again, and it asserts
-> > every time.
-> >
-> 
-> I see, do you use dlm_controld/corosync as cluster manager?
-> 
-> I would assume at some point they should fence the frozen peer.
+> Why? This looks wrong. Yes, you may only have dirtied e.g 4K out of a 2MB
+> folio, but the whole 2MB folio is still effectively pinned by the VM, awaiting
+> cleaning + writeback. And that's precisely what we want to measure and
+> throttle in certain cases, so that e.g the VM system never finds itself
+> short of clean pages it can reclaim, and no easy way to start writeback
+> on them.
 
-No, our HA manages the lockspace itself through the same configfs and
-sysfs interface dlm_controld uses, with its own peer monitoring. The
-peer does get evicted, but the monitoring first waits about a minute
-in case it comes back, and the lockspace keeps running until then. The
-requester cancels after 60 s, so the cancel can arrive before the
-eviction.
+Fully agree on that. We have already discussed this with Joanne about one
+year ago [1]. There are some aspects of dirty accounting that could be made
+more finer grained but overall the whole folio is difficult to reclaim due
+to dirtiness so accounting it all is the correct approach.
 
-Best Regards,
-Ameer Hamza
+								Honza
+
+[1] https://lore.kernel.org/all/20250829233942.3607248-1-joannelkoong@gmail.com
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
