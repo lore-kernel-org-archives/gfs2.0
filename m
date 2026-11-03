@@ -1,86 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793730991;
-	b=hoRpyDhPfvnI+S5t2h0Hx+l6vvtCr/Bi6td0ZD3LsoDIZ3okbRdpRRVRmAmr8ouBfm0x
-	 hvKnhT2GFTo5vWsFbESmBiKCThYCRtaUmMKZ1fwzyMu/cYhHs6Bquc9qqK/AYztOYyqnN
-	 ytc0bDTPy3afbnG8z120GeWuDrFTHAUpwrvzaExB+oQiOrMiPxhEe3pThUjpUBUnBwuX1
-	 Qn0vSGNKDZQQSQaOJTxBlqVs7JbFixP6bhN+eJwoCoO82CcCvie/KL+4YttrSvpgm27nz
-	 f6nE90kiQVNh3NIa7qcuPhbWC+wa6gsTjrGzvQBkxqJgOPhGSl3/AV4s2TlCk5U1nCA==
+	t=1793736467;
+	b=OBsl2ZflvZ7R9MOaOaHcazvBoJXFfXwXjMBA0BWhdzimOHg6jqkis/NbyNaHDH/Bwfm9
+	 2WGe52F9+D63bLi2j7oPtwXNHTYaGMpNrTLgHwPAx77Mp/gWYA7aEyrEjRJCglN1cnzEL
+	 5dmK1dyMgrSC4F+1xL5skrhnqorjdFmFtl/od4PQXGsqnKsTTwH8nvgiQZw0C0JmiYCGX
+	 bboKcqBS1Llu7F3Ph36s+2D6yesf/TX4MQRPeeze25X+eI0ie6dDKcvzsyXfuIA3HDJrS
+	 aIYGVwS6GQAuPk175odFsakR6Q7jHNdsfvAFpwtKp77KMC3NVlhfsmzQJES5cxh3R7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793730991;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=j01sPplkCpeqYoQ1XyPHZ4w2xiW/+AulZEOKO4lkg9A=;
-	b=iWNjnxB1v8pmTa2R9Y7XTYK5Bpd67NKhU0+dYgynb2c+NwGx3E5eP5ZtxhP9oYOyx9Rd
-	 NxGyPbOVM+aJEIlLufWKsyf+puOstP0FjPUQHycPObzizD64hiANHMnyvq4itQPpvE3Jf
-	 hwxC02sBOvxuFrKqnYZe9XLsoYM0opgV9suldmCaL7Rl8JWQIojR4FhsV3ttQ/831tjR8
-	 DguZqAreisCv5o93OAVdmExhKP7vYfh3uo6DBmIpyDabgCbDLGvY0c141rOm/6H27czcQ
-	 Aylb++RugAVMx67RYhASu46TInnrYRFue55JsKrYtadZHhLLq3YcoY3gq9pXPgpmasw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793736467;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=5rZwAD3Ycaihst6dgcoNSxFsehJMseduQ8wGz5Hbzvw=;
+	b=U6Y0F1dvEDqd4ByqQJ5Kp3kCsERAXVyll9ZWQpdJlvw1SO54JP9E4AfLBVDP5jLJ8ElR
+	 u0Kqe5emrWDaulbU1BoPfV88rnQj7ahJhGLZXln/dkrZsFK2VOMht1M020zgAWRmGmu2V
+	 HyEDYwuOfDKcAyYA5M8P04SZanuSLJNWrPQUgyEd4GMouq6sYMHrMFKidI1C2nt/NZ1DV
+	 hYtVPG54WV0CAXn28p+POGM8lpmZT+fR9LXROuQyHtaXBltJITeminhl4qvs+BwDDu0rt
+	 I7GbzfFiGgcqPXMWcM969M93ATgNWTkiYFyB/JzglRJD90WaUR1zVheZoCmElK6/J/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DuRrYOC1;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCC3nV3g;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FC4606A328
-	for <gfs2@lists.linux.dev>; Tue,  3 Nov 2026 18:36:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1FC4606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DCE606A31B;
+	Tue,  3 Nov 2026 20:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DuRrYOC1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793730990;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j01sPplkCpeqYoQ1XyPHZ4w2xiW/+AulZEOKO4lkg9A=;
-	b=DuRrYOC1dngAPxnW+wVbTdNu2r7WtChZ71vj8fbMlt29KuG9frdcPG++14zj0NTu5WTeTi
-	pWkX1MO++ohdy61mrElr3ezID2znh/oPZz5s422XDf85VKi1vJ3PKDpiiZdWVCFgMr+JgC
-	q/6Vqb55/fzqVXZ+CpTFzcbBE57GK3o=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-eTVCvLlzPv6nUaoM8HfUnw-1; Tue, 03 Nov 2026 13:36:28 -0500
-X-MC-Unique: eTVCvLlzPv6nUaoM8HfUnw-1
-X-Mimecast-MFC-AGG-ID: eTVCvLlzPv6nUaoM8HfUnw_1793730987
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-3ac608b6600so35032901fa.2
-        for <gfs2@lists.linux.dev>; Tue, 03 Nov 2026 10:36:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793730987; x=1794335787;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=j01sPplkCpeqYoQ1XyPHZ4w2xiW/+AulZEOKO4lkg9A=;
-        b=rqFNw0UjcNYUkhOXvlJf+AmDdDF5a2mFJ1iFJ7+lPz4O56drFiEXpnY5AkyssBiVTn
-         AqbT6EL773JFq0+BLMFeE9h4GkkO5NgMzu5hkVmBuf4b7szJb9w3hFt+TTjmXcejtcTh
-         n+n1OKuF3AU/SR1ou6ZUs+ZUE16917Cm3K78V+5K3Kl13v1qCZWwHxRolfSFPryoR0XG
-         1ET0+yZrt+ZRcUwNUGc+wrzI2855RvXD31yqCP+2WjaU7vUBgYjWMY1mw/iUtIEmOrKx
-         2oXAei33K4PIJKYpHseMtPUXk5cwjjp4PPR+VCeSRXQ6Z6Av6odud1yei/iZlSZYldR+
-         UgBQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzX+32KA7W+8nDgfsT/KH9M49KmaXJXmSjs4eXm6CkCk1RJ2uz61RWVAu3xkrUoWUVIDvLk@lists.linux.dev
-X-Gm-Message-State: APuU4Z/OPAkDhzz6iUzKLQPGOGQ6n2bYAUJhjGj7vIgseq3eFrbs6chu
-	CHZhkxWnr4tunw784vsNoI1buvidPb0e2gaLdxqgzTBNpkFrEV27vERe0KrVaEEhpzck9dNLP44
-	Wy/RGOdx8D6/11nLlwAmEQK0bX5T7f85BhqYWOfhfoJlK5EiULrXPM+LbhxqHDzRaa+BNRbHXmo
-	zJDR73W/JnvGTEzw1K6kBFHiPwT0E5Ow==
-X-Gm-Gg: AYBFou1dqR+9n+JE50bQj62bMZg9Rjff9O743MUlHny85FwCpjM5yMRk10TDbvTECWD
-	92RLco/8/tQ/fwDYEMxzkWuzrdp2rwlnxjzdltSJlGvu5KH64+Q1Xk3rmW1Byr5GDEkBeKlXAFr
-	S7M8qtsndIrc9nGOpyPIK520q+T6fkciKFyF+BOX1WQ2XmuZEvdvVqEt7S
-X-Received: by 2002:a2e:a883:0:b0:3ac:4ce6:8b7e with SMTP id 38308e7fff4ca-3acb7b4dcf4mr36387091fa.26.1793730987146;
-        Tue, 03 Nov 2026 10:36:27 -0800 (PST)
-X-Received: by 2002:a2e:a883:0:b0:3ac:4ce6:8b7e with SMTP id
- 38308e7fff4ca-3acb7b4dcf4mr36387021fa.26.1793730986742; Tue, 03 Nov 2026
- 10:36:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCC3nV3g
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777DE1F000C1;
+	Tue,  3 Nov 2026 20:07:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793736466;
+	bh=5rZwAD3Ycaihst6dgcoNSxFsehJMseduQ8wGz5Hbzvw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jCC3nV3gatYb+Op+60ZOPxNoM07PP2vmltvuWnmxmXsapTEmJjATJ7Nr6ROlU3ZeY
+	 kHis+d1l0GqsnjSrVf6k4t2mhB323KrYjYFec9GQ+u+xjyH5DmTGnk2pJguctxEjLW
+	 MAK0ac+wmy5baBVsuFkGb1c6bkO1yq/Q+OHz65KtZROwEVXqhT0y+5ZET3JAfq/QU+
+	 ycQ5Cg3scRwTpTYrY429Bk5l72MDqb8Q7x3SoGpjbcO3ZZJjlI2yDFF2s09na/pOey
+	 5aWbIQ9VtwzJ496kH61763zne4hBv9T2tfF9dK8GsjlDTbvuUfQRTmZwvWY3oUIOXr
+	 XTQF91uXjCFJw==
+Date: Wed, 4 Nov 2026 07:07:37 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Yiqing Wu <wuyiqing@cmss.chinamobile.com>
+Cc: Christian Brauner <brauner@kernel.org>, gfs2@lists.linux.dev,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzbot+5e659793378ad9e06387@syzkaller.appspotmail.com
+Subject: Re: [PATCH] iomap: allow writeback from kswapd again
+Message-ID: <auo_CehOVzTMq6kc@dread>
+References: <20261103023804.8074-1-wuyiqing@cmss.chinamobile.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -90,42 +60,121 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20260818140746.1913226-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <CAK-6q+g8ZFFWRZfhW5AsKM3_LcxBei_RdBfxgSdsa=x8=7b+jA@mail.gmail.com> <868a092d4d27c0f8999057916b1de4da@oss.cyber.gouv.fr>
-In-Reply-To: <868a092d4d27c0f8999057916b1de4da@oss.cyber.gouv.fr>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Tue, 3 Nov 2026 13:36:15 -0500
-X-Gm-Features: AclHuK9184TyvecLrVXGuMPslSGYXWlRccRhA098qg00_x4VCfICGj5GbqjeGHA
-Message-ID: <CAK-6q+jPTQ1BXP5NKdFXSwPjXVimgg11oFBzvW-T787azxWnag@mail.gmail.com>
-Subject: Re: [PATCH] dlm: reject wrapped messages with oversized inner lengths
-To: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <jeremy.jean@oss.cyber.gouv.fr>
-Cc: David Teigland <teigland@redhat.com>, gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Stable <stable@vger.kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MkVvHGXRYooeTgW9nXUUtq_okYDMAuOop6RmsVljKIE_1793730987
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103023804.8074-1-wuyiqing@cmss.chinamobile.com>
 
-Hi,
+On Tue, Nov 03, 2026 at 10:38:04AM +0800, Yiqing Wu wrote:
+> Commit ff59f71f1c95 ("iomap: simplify writepages reclaim guard") removed
+> the PF_KSWAPD exemption from the iomap_writepages() guard on the
+> assumption that kswapd can no longer reach filesystem writeback now
+> that pageout() returns PAGE_ACTIVATE for non-shmem, non-anon folios.
+> That assumption only covers the folio reclaim path.  kswapd can still
+> reach filesystem writeback through the inode shrinkers, and syzbot
+> reports exactly that on GFS2:
+> 
+>   WARNING: (current->flags & PF_MEMALLOC) in iomap_writepages
+>   kswapd -> balance_pgdat -> shrink_node -> shrink_slab
+>   -> super_cache_scan -> prune_icache_sb -> evict
+>   -> gfs2_evict_inode -> evict_linked_inode -> gfs2_log_flush
+>   -> gfs2_ordered_write -> filemap_fdatawrite -> do_writepages
+>   -> gfs2_writepages -> iomap_writepages
 
-On Tue, Nov 3, 2026 at 1:13=E2=80=AFPM J=C3=A9r=C3=A9my Jean
-<jeremy.jean@oss.cyber.gouv.fr> wrote:
-...
->
-> Hello,
->
-> Has anyone had time to check or process this further?
-> Current commit on master still has the issue.
->
+Oh, that's awful. Nothing should be calling into iomap_writepages
+from reclaim context.
 
-I don't know what happened. I will resend them on Friday and ensure
-this is applied to dlm/next [0] soon.
+i.e. Doing data writeback from the inode cache shrinker is extremely
+suboptimal for many reasons, so I'd consider this a gfs2 bug, not an
+iomap issue. It's even worse when data writeback is being driven by
+an inode cache shrinker. I'm surprised that lockdep hasn't thrown a
+hissy-fit over this (i.e. inode locks taken in writeback appearing
+both above and below reclaim.
 
-Sorry.
+This is the patch series that Jan Kara came up with to deal with
+these issues in inode eviction:
 
-- Alex
+https://lore.kernel.org/linux-fsdevel/20261009133253.20102-1-jack@suse.cz/
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/teigland/linux-dlm.git/=
-log/?h=3Dnext
+This allows filesystems to defer inode eviction that might block
+(e.g. due to transaction reservations, journal commits, metadata
+read requirements, data writeback requirements, etc) to a context
+where the work is allowed to block and isn't running under memory
+reclaim context or restrictions.
 
+That patchset is needed for ext4, XFS alreayd does this, and it
+would seem that gfs2 needs it for glock reclaim....
+
+> Under memory pressure kswapd evicts GFS2 inodes whose glock is still
+> dirty, and gfs2_evict_inode() -> gfs2_log_flush() ->
+> gfs2_ordered_write() then writes back the ordered data of every inode
+> on sd_log_ordered.  This is long-standing, intentional behaviour: in
+> the default data=ordered mode GFS2 must flush dirty data before the
+> log commit that writes the metadata.
+
+It's also long standing, known broken behaviour w.r.t. shrinkers
+running in memory reclaim contexts.
+
+So, why doesn't this warning happen through the direct reclaim path?
+i.e.  what makes only kswapd trigger this?
+
+I see nothing that prevents direct reclaim doing inode eviction
+from triggering this same path through gfs2_evict_inode(). IOWs,
+direct reclaim should also be triggering the warning in
+iomap_writepages(), hence it is not clear to me why re-adding the
+kswapd guard is anything other than a band-aid over the broken code
+in gfs2....
+
+> Writeback from kswapd has been
+> explicitly allowed since 2010, when the guard was still in XFS:
+> commit d4f7a5cbd544 ("xfs: allow writeback from kswapd"), because
+> the kswapd stack usage is low and it cannot deadlock on the
+> filesystem.
+
+No, that was a regression fix for turning off all writeback from
+reclaim in XFS as a 'what problems does stopping mm reclaim
+writeback actually cause' experiment. That was the first steps we
+took down the path to get rid of the problematic random dirty page
+writeback issues that memory reclaim had.
+
+IOWs, we didn't want to allow it, but we had to tolerate it because
+the MM behaviour was unfixable at the time. Now that the
+pageout()->.writepage() path for dirty filebacked page writeback is
+gone from the mm, we no longer have to tolerate this behaviour 
+and so the guard got removed. It only took 15 years to get to this
+point....
+
+tl;dr: Writeback through iomap in memory reclaim context is -a bug-.
+
+> Beyond the noisy warning the new guard is actively harmful: it returns
+> -EIO on every hit (WARN_ON_ONCE only limits the report), while
+> gfs2_ordered_write() ignores the filemap_fdatawrite() return value, so
+> the log commit proceeds with metadata even though the ordered data was
+> never written, breaking the data-before-metadata ordering guarantee of
+> data=ordered mode.
+
+This is definitely a gfs2 bug - writeback can fail for -many-
+reasons, so ignoring IO submission failures when data integrity is
+required is a definitely filesystem bug.
+
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index d6e2f1ded5ca..324da0f5cb29 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -2082,7 +2082,7 @@ iomap_writepages(struct iomap_writepage_ctx *wpc)
+>  	 * Writeback from reclaim context should never happen except in the case
+>  	 * of a VM regression so warn about it and refuse to write the data.
+>  	 */
+> -	if (WARN_ON_ONCE((current->flags & PF_MEMALLOC)))
+> +	if (WARN_ON_ONCE((current->flags & PF_MEMALLOC) && !current_is_kswapd()))
+>  		return -EIO;
+
+AFAICT, direct reclaim will still trigger this warning and the bad
+gfs2 behaviour, so I'm struggling to see this as anything other than
+shooting the messenger...
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
