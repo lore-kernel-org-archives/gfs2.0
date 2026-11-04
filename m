@@ -1,99 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753735;
-	b=pl+6n+r/EowVeX/dxNB5QdrWOydLAOT/Gmq0fQ6wuI4vUHNlXByHPDjKISn99b2MmgoB
-	 ZzdKQTMXbo0YdKGI/hLSvs/lemf4BYzw5f2hvtv3J5G7gPsRskt8TqDhmz6v9OmMyD5Z9
-	 Ue4XYgP42nJe+IP7DMq601z4aK29anhUapuwR2E9IzQRnnjkBDQavNPP8ooFUTjWxqY8v
-	 +d6VEHSEYlMMYbWHajwP0+J2QzVqnDGwyrDKLVvzA4j8taSC9uSiJIFsrxa0Sc309Mo6m
-	 mA9YHAowwJ2MaX4pNZlsn13iaqCuR7RoIq2eU5A1kPRx7PONKISap4PfmsvSYbfTttQ==
+	t=1793786138;
+	b=SzBZ1La2/QnKhYU7qvlg1K0KLpq8q1n6i72hwaVxFP0VkbztSaJQb41DyppWEE/Fb7Cp
+	 qc4mnXru+m6o3E4B74ArBqJQyCFQbhzt+W4P9wJzW0PfPtFDZ99CKN5kbXFxLCDDVv7YR
+	 +TANsq7AR8WlexA5v4IxkOXXhF14TwhccQwCtMhPjpdWE9C9trb0LvDwkhzxtvrYIC1/Q
+	 TCeg7PHBsWY7WUOSOHeyGb4qtDDyeMVFlxbWZK3MypU4blZuSEGbDHQYTynxPWFP2vmhA
+	 aykwC3uuM6fxeDk3cU9oVU4EJ9e0vr8NFbR7krr7d8YotvwdgV22ZNiKRe1WK5EAXPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753735;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793786138;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
-	b=BXn0dl2+516IJ894dBevE4plVt/AL0vl6HsfZhS9H4WGWXzKpUVgOCqfLj1vvcWPkZRS
-	 pFDvsJD+5nwQ8YwK1EL6zkLqDnYG7yzLylecHS96QCdJFVoYu9UD0pjeXPgrRs31w5KWC
-	 0fnICapoNp33xzaNgRrhQ/HQw6eeWtv0zyopeT+JLom9nnUDnFgBYkQDo76AdS9QoXkMD
-	 EpaASiHDxhepMkeJp7qM5xj9e1/pFzl0GJ2/jJP+flsTKOnRBkGeHDK77yiVYmbaaYGzQ
-	 ajmL2ALMMRVnZVzHUNWLJGS2NmyxFwAJUBR3D+7pOrbNepdMawVQGN7p7qgdBkmmErA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
+	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=Ci8AQvKazANwLNbOXSd+IPKnNkJbp750aHA9N2kTOY4=;
+	b=pnsaWtCyI+iqoTZFQ7TNYHv9eH0+LVdRY2z9NkraHlmu0nW21AZPf4shwjAytfsapngX
+	 qj6NLnb5tKj5tNlESg1Gy5Ft7TwU4a9O6uP7jR4Jk16jvGHMz82eUJuPKicCr1x7iNpW3
+	 GczVhUh+ees/uMpfA8M8TnZFP+WWzt5GiY9pxN2PyUj6WjjOtZZgayUu0oEwKJOVNexei
+	 SnyhPOt5vhx3n/2J2gg1W28Ejz8VH+HqOv401IyXrBfpqIpwgnDlaATlnYqWa0PZ+giif
+	 LdJ3VPSp2q5i6wXcT5HlxTsAvSmF8OVMeOHCeXxtDGx4MZ+5orMxNVWTm6kRoqI+F2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zuUpFt9J;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l6xLcWAj;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F92606A335
-	for <gfs2@lists.linux.dev>; Wed,  4 Nov 2026 00:55:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71F92606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77BA606D82F
+	for <gfs2@lists.linux.dev>; Wed,  4 Nov 2026 09:55:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D77BA606D82F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zuUpFt9J
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b07db03f41so137703a91.2
-        for <gfs2@lists.linux.dev>; Tue, 03 Nov 2026 16:55:34 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l6xLcWAj
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ed11653a91so1188485ad.2
+        for <gfs2@lists.linux.dev>; Wed, 04 Nov 2026 01:55:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793753734; x=1794358534; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
-        b=zuUpFt9J/cFubDGclKYU2ivE6da2df9R+LlsyBBxaOu0Pc9ckPYqOCKPk+od+eEdQS
-         Vj2awdXKKArotuvNTgsp+OeUygUGbBjD5gI7w0wqelC8FVy61cDF8vIBT7NlJIbO6f/P
-         fgO97Xns0J3oGOHTyzGdLIGWTZFn5JIKt56sDJZWC/Sve8OFGJDdFDaw1czs5n01rKOm
-         chE1AxMCMbCl8jYcyeYll+b1NKrYFQQU00U11kFU0+Ko172o/EkR08ii/5ctiCTKHf+E
-         XUF0+Jb+L3tr6/Ju/KRPYe1q+VvkAVEdwsbMEI4pirY/eypE9cJHCYXG2+MAawscXTIe
-         GuKQ==
+        d=gmail.com; s=20260707; t=1793786137; x=1794390937; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ci8AQvKazANwLNbOXSd+IPKnNkJbp750aHA9N2kTOY4=;
+        b=l6xLcWAjPIDy8igu17flWODuQnFe0fgmChOhXQgch7uu3BZiHe++2cxVKWH7X7y8n0
+         zMGpC2/l3d0VwOeCox2Z3hgaEqR73eveMUr+6fVEOxKiMvi10T1z2QVxOcQ3g6S73Xt+
+         ilDKSjyHIFYjnl6k+5KQWQmSmUtBPhVSocURTepmC6ulc68dD31s8NHfugJsd3jg0+c1
+         XQE8+JO6RqYb5miVk9Z3TmtcoHW4WDBkOAarYoW4yErnmPCgGfLmCLeDnLbj6LIKWsXO
+         G46G6iHZL6xqPfbcJQkuNczXlvWM4rQ3FDQ36/GyyZLqwxbxrr4cHHY3E9LixVn8XzJ9
+         abog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753734; x=1794358534;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
-        b=B7cO+q+eRKUrMdzgV5wxGjQlhs+SWwYppdFsYs+pkNn9MEKLUwIvFweawykYOujJgk
-         OPSQswrn5E4A7Ha0e4KpHCRXfie53luwggfBIZ1FVAufns6//WCkIB++owK+sFUd/oI5
-         0IBbD+kRgAVVlM0/ERcOyj6J2XG6xDXGa0bGBfFNI6QYcxC+p1O83wHO9CdTfipc8QBa
-         GqcuB7snBPeI1URPRotomLSHxINc68MiQQUNmSON200Iuq+3Y1yfEd0G0DT8OjjjVad0
-         kFLM6ut3FG3OHEKwBdxrcAQdxTinBoi1LPgOr0PZxPjF/X3IRJKOYashgHkowYez5aVJ
-         dHvg==
-X-Forwarded-Encrypted: i=1; AKwUvBwPAwS+AourgutlfwxTAU7n6qIqGUvjMVtcnqKF4G/d8Qi5B+Md1aYShVz4Ja3EtkVevFXX@lists.linux.dev
-X-Gm-Message-State: APuU4Z8ZTR7gJyz79wY6aJ+Nc7JbinBsgAb7h4c0djOmWBmHF4uB0eCt
-	p9fzZK5UPr++GvRBKMaalKfW8KyMslwewUIaW8N5VgFQ3JsQMEvR+Xnv
-X-Gm-Gg: AYBFou2rn1pZF0cSRxlzhcrTX+xPx1Qs4nuTqMvWvhnstbwMwbIwYEjZdpAmwEF5bAt
-	VnX3RBiYF+hmiJVhHVx+6dZdVlAgZg/pJATvF8HGjF7mSC0IwdFFTxMt/49KwNuif1AjYLA9InT
-	7GH30cI9bdk2chV6w17iWEUttVnF9yiE6TroOJDAZEFuguuLtv1ss1bPEPxtpkmeDVV8yi1exKn
-	Vv22/Ycg2T/5iTW/rNvPMq5bRU1ExxFKWgJH1XXl3TsezAhwUxuB5G4SvGT32FfmcWJLr1hZTBb
-	0YFhILo5mNMv0PeL2C6dgIMhNZJ8ZdPzLK13vLuFpoecov7FBdFzBHTTT6ge7zLuZRQaMNiYBui
-	L06vCOVOjKBSEZFFMwGVG6WsV4EtWo/2PDqilo+nPoXduAYJoxO6SKSbs3AmUYXBlx2qRina/go
-	BIrQz3xroVpnWJDnHFGjBeEcl0NnrojFCshd6KMb293OUDpCNT/c4kfg9eDE9MuzJm6dI/9P0nx
-	rS3fd4uaS2JRyBXda+dJ0KRCKrX6FlMBOmI2IPw4klMLpRNH/1dveRXySfF54E90QpAosdo3cwr
-	+wW5joa/wYKp3F0YBA==
-X-Received: by 2002:a17:90b:184f:b0:3ac:83c1:2c0 with SMTP id 98e67ed59e1d1-3ae897e06efmr11479861a91.64.1793753733906;
-        Tue, 03 Nov 2026 16:55:33 -0800 (PST)
-Received: from localhost ([27.122.242.71])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09445f7b3sm1222403a91.5.2026.11.03.16.55.32
+        d=1e100.net; s=20260707; t=1793786137; x=1794390937;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ci8AQvKazANwLNbOXSd+IPKnNkJbp750aHA9N2kTOY4=;
+        b=BtmJvx7JBrYq8vVrd82xSmOw5+HCDKhEfMIlb1PSFiNrVMK4nni9BKnd37QLVHSYH0
+         r1qV5kHhanfxgaChyWwyXaTRIHK2gatklxwlXHDr/d6aJIvflwbqcSacXRuzKjKUuox+
+         ATiA5whNjXjA3m13ucVKw3P6Bsk8AeHiPB8vgdqi7mczGxKxp+d/g/JaEoQcHKtvqLJV
+         kJWvlO0pfoa2QU65KXhUeKUPwTTUKhRc3ngwKt11AnfkNW4x5ikIFBnOCFyrLGk/4N0T
+         VddVgdmJQKxMgkv944+dolDgx1YM4xOZlncPBKkFv8sQDz8sdlUjoxmSzEu+ZgrnqEBQ
+         1jrA==
+X-Gm-Message-State: APuU4Z8vRVnDym0ZR+X1ksrV7dLqtQ0X7jTYKrpaRiOWop+X7DjBevKb
+	u7zmPPzp0/l5y1nYAvL4IRRtvew2abaiZJ/7mM1I6seMcYJ/P9bW/4pW
+X-Gm-Gg: AYBFou06QgCYU/l6nkw9wx5mtKbCxndUsCUOSBplrIB3XL7+fem1H5nLf16ZvuQ0jhN
+	AOnGLdhTFQyne8+BugCwdevgdUZ0pV/DfvM8hCdU/lMfTHiF0seF9hgrUOiZ1qZCpqNJ3kv5ixN
+	2fBIfkjtsJD9mlm1e9OqB6uR1C22WjwEN/SAYTrLAuNJvzMe1ddQdckVUbMsSRKuOzwN2okZLbe
+	6ZbsSGSvSKjyldwsDtN/7jXw+fa2OLOs8uj48PV9d+vB0+OS5bD7W1tevBxI7dFvxDIL2wxYY6H
+	E/YJrRkgryzqHYOkGAMyC8J3h7D5sHNUjPfmGa6Olg2h+EykJzMtGd5cCEOGulo5nEpqBABH2JQ
+	QkJsES0YGq4pyImzo45Y2S6G5mK9ARf/IUoGQf25vyAPweoWk1s63Nvgs0G7Xy4X0ZlMAvvr4ZP
+	uF+NOdLqXzMtII14mICzy3xkRIeEy0gXk8nkQuLWR5nHqszVtxTHqKg2mj4jm+dNFqvNvWW5XlY
+	FBp4Jg4h/Bbg73+HoQ8fiuTYHViFuZKPepVhg3a0Tc2D6UJpVeuQLGuhGYqxXtiQBhIW7nN8iQc
+	SzFUrlqgY1NniQq3MyU30eM66EMbsZEvfS4765ZVS0bb2rtzfA==
+X-Received: by 2002:a17:902:cec9:b0:2e8:5202:aa8c with SMTP id d9443c01a7336-2eb364f0a21mr145807865ad.48.1793786137198;
+        Wed, 04 Nov 2026 01:55:37 -0800 (PST)
+Received: from localhost.localdomain ([152.136.45.109])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe1e6asm5591535ad.22.2026.11.04.01.55.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 16:55:33 -0800 (PST)
-Date: Wed, 4 Nov 2026 09:55:30 +0900
-From: Hyunchul Lee <hyc.lee@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
-	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev,
-	linux-mm@kvack.org, ntfs@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v2 18/34] ntfs: use the generic emergency read-only state
-Message-ID: <auqCgguXEsKCq9p2@hyunchul-PC02>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-18-2f44f64f0b66@kernel.org>
+        Wed, 04 Nov 2026 01:55:36 -0800 (PST)
+From: Qing Zhang <diasyzhangqing@gmail.com>
+X-Google-Original-From: Qing Zhang <diasyzhang@tencent.com>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzbot+bad65435361712796381@syzkaller.appspotmail.com,
+	diasyzhangqing@gmail.com,
+	Qing Zhang <diasyzhang@tencent.com>
+Subject: [PATCH] gfs2: Fix refcount of quota data restored at mount
+Date: Wed,  4 Nov 2026 17:55:30 +0800
+Message-ID: <20261104095530.4178727-1-diasyzhang@tencent.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <683e2b6d.a00a0220.d8eae.005b.GAE@google.com>
+References: <683e2b6d.a00a0220.d8eae.005b.GAE@google.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -103,23 +100,60 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-18-2f44f64f0b66@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 29, 2026 at 05:07:09PM +0100, Christian Brauner wrote:
-> Set SB_STATE_EMERGENCY_RO instead of the NV_EmergencyRO volume flag when
-> an error makes the volume read-only. ntfs_emergency_state() keeps
-> telling a shutdown (EIO) and the emergency state (EROFS) apart so all of
-> its callers stay as they are. /proc/mounts shows the volume read-only
-> again.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+gfs2_quota_init() resets the lockref count to 0 despite setting
+QDF_CHANGE, which owns a reference released by do_qc().  Quota syncing
+can therefore consume a concurrent user's reference, leaving the
+count at 0 and triggering the assertion in __qd_hold().
 
-Looks good to me.
+Keep the initial reference from qd_alloc().  During cleanup, clear
+the in-memory change and slot state and drop the QDF_CHANGE reference
+for objects with no other references.  Leave the on-disk quota change
+records untouched for recovery on the next mount.
 
-Reviewed-by: Hyunchul Lee <hyc.lee@gmail.com>
+Fixes: bb73ae8ff394 ("gfs2: Fix initial quota data refcount")
+Reported-by: syzbot+bad65435361712796381@syzkaller.appspotmail.com
+Closes: https://syzbot.appspot.com/bug?extid=bad65435361712796381
+Signed-off-by: Qing Zhang <diasyzhang@tencent.com>
+---
+If QDF_CHANGE remains set at teardown, a concurrent sysfs quota_refresh
+can make cleanup skip a restored object during remount-ro or unmount.
+The last external put then leaves the QDF_CHANGE reference behind,
+whereas before this patch it could dispose of the object with the
+journal shut down.  Feedback on handling this reference safely would
+be appreciated.
 
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+
+ fs/gfs2/quota.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index b2984fb7b35c..29eb7adc4284 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1470,7 +1470,6 @@ int gfs2_quota_init(struct gfs2_sbd *sdp)
+ 			if (qd == NULL)
+ 				goto fail_brelse;
+ 
+-			qd->qd_lockref.count = 0;
+ 			set_bit(QDF_CHANGE, &qd->qd_flags);
+ 			qd->qd_change = qc_change;
+ 			qd->qd_slot = slot;
+@@ -1542,6 +1541,12 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
+ 	spin_lock(&qd_lock);
+ 	list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
+ 		spin_lock(&qd->qd_lockref.lock);
++		if (qd->qd_lockref.count == 1 &&
++		    test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
++			qd->qd_change = 0;
++			qd->qd_slot_ref = 0;
++			qd->qd_lockref.count = 0;
++		}
+ 		if (qd->qd_lockref.count != 0) {
+ 			spin_unlock(&qd->qd_lockref.lock);
+ 			continue;
 -- 
-Thanks,
-Hyunchul
+2.43.7
+
