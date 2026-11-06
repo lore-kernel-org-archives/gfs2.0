@@ -1,87 +1,116 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793909249;
-	b=PRA4Heds7DoyCJSCumTVbjhozmqcT/ylmcwzioVBz3AZKkNjTcS5B4EgWXqb6rA/mFA8
-	 THakx8FnNWK6btrEqD8dbNUPaf+mRRJSBM61EuRgc14KVFBSwfC7cMFlas+S/DM/engKF
-	 mUm6PfgsX9OgQKwLZnbO2Wp1vp3IOIpNgDoSjGtw0RyCyWFJleF1hmwXg0NIn3xDMilNS
-	 YcKWOcAKhl/M/Uj0X6m18nWydILC31zjGxD2REQaDWAIQjUSYnbLN72lfVZm7BM493yE7
-	 sgj1V7gVhhYYSA0RPFpv03MseTO8l1TdhrIGii/6SSM2859LB027SGcy/iLubQwT/QA==
+	t=1793973973;
+	b=uTDXYBijMtEH5V+SAtv0vWjcxICVciVhPdEmlN4nXQolvg/CNK5uJG3D2Za6Ncuv3Bre
+	 ZSU6pvPsKbvgzxMNU6SPWvaiaYyy4oJy6wK/iQb9e43cf1V0UkRitJU4mLkezBbLC44un
+	 6CgU7kendfmFatnNdwfIpfuxQ+wjJJcPQQAEOKAD+bYak46m7W96/NQe5UBDPscRJUssk
+	 LSaafEUdh7jDk8WVq3tVrqdBrH9UK0oAOGQBSWrsrbH9DdNAhGJHyxDUVMi6/MSYUpYRu
+	 TPFU6F1TvIgkkNx+3+7hXnPY38voXxyoHUUTNU4DzcnIwhaK/tl1CTlcrLYkWIe6xWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793909249;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=rlBVJT4GPajviox7GVvnaU/1fuJu0H3trSYA5DJJsWk=;
-	b=JNudlIJ4fOjCsodSoSyPKSO2i5VGiRHXM5x/pBY0q/2AKoT9STP77p23V6RJyTHhzxIT
-	 OXBblRDSPTZGZQ4crGtK1QUj0MwmzUl4Sb3TpDzLXJqy5w1HCe/XIsrTHMJI4yTmakLSb
-	 zl4Ot5nActFb85Ji0SJiFCUiwCqj7o9QbFiC8tIv2XSXKV27xdXMw6Q2sIjKNQOGWWsnK
-	 kuazOrlyy8y5dWlfDrcy3wy9XpW5ghiDkAywtI34V9PYtnIZIim3JMiOyqKUwwSzRyydO
-	 82ocqHZZHodOe03flNCRdJm8k2DoMeEVrUflMtXCpnUxJh3BmC8YbGTv82wisXqVMew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793973973;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=eqhBVbUtw3dy734MGt0XscJMrayl/heBjdE55TwHpBE=;
+	b=OUvSCiZErkBkAet9RD1lAl75K0EQSlSgQrPz0x5NoMsTsVKhFiS7BMFSNJsuhxjE23Z/
+	 qSCKZhYgNRwSHArXeakFpovA88XA3LWt15y7YbxuDy9foVX9ntoMzvHqGhgR+LmJ+8uhP
+	 HNb67hcmI2wckeW65u5kcmL8sU/wqcTorp6fPch6zSnTx9MzUm4Het4j4Nj+wux3Uo7Ov
+	 BvEVH4C63k4v5srUwxtPW5Fd8Jpal398jIiLC6SFgcnhDHD59df+k/uSujcDNYEUFM9Zy
+	 zaY0nI28/N14BjfYo5PIhbY5FQPRmV+uE3muNWyu4tYt1QLKhTnX1if0USf0xfP1MjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="GAfX30/p";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=cmpxchg.org;
+	spf=pass smtp.mailfrom=cmpxchg.org;
+	dkim=pass header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=oQYlrw0w;
+	arc=none smtp.remote-ip=209.85.128.169
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87E860A2630
-	for <gfs2@lists.linux.dev>; Thu,  5 Nov 2026 20:07:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A87E860A2630
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69FF606A326
+	for <gfs2@lists.linux.dev>; Fri,  6 Nov 2026 14:06:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D69FF606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GAfX30/p
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793909247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rlBVJT4GPajviox7GVvnaU/1fuJu0H3trSYA5DJJsWk=;
-	b=GAfX30/p/r6CwycZ4cN9HgiTM1XqRqFEeYwRqZEJuJdl8TlDoUEZIg03Hq59z01lbLleZi
-	ou23LG6kzJahOcQNjgXFwA6bhfEyWVud5k1QaXKfeTS+dOXtUzY53DNGcmY/XYrwUDuUwP
-	QmXzOQmjg89/P5uwGtWCI+oASz8EVhw=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-MMM4FnGbPUisftLpTWDXFA-1; Thu, 05 Nov 2026 15:07:24 -0500
-X-MC-Unique: MMM4FnGbPUisftLpTWDXFA-1
-X-Mimecast-MFC-AGG-ID: MMM4FnGbPUisftLpTWDXFA_1793909244
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-8b30ffeb2f5so35353687b3.0
-        for <gfs2@lists.linux.dev>; Thu, 05 Nov 2026 12:07:24 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=oQYlrw0w
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b309147589so5647097b3.1
+        for <gfs2@lists.linux.dev>; Fri, 06 Nov 2026 06:06:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1793973967; x=1794578767; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eqhBVbUtw3dy734MGt0XscJMrayl/heBjdE55TwHpBE=;
+        b=oQYlrw0wlWkN5PyXZYJSL1+ejrbNQUkVRajsXk61r7reY7PI5fMp8o20Z4NyMStlkv
+         OFWPg7es1gMOgSjHuGuPXQ4uBeSOhtOxGo08tPDc6ut6drGYhvsZKkAt5FRteCLg1XTj
+         h2PThMKdy4eTEPARZFJTK7Xgpv4gCKX3wFY54DwuLLCfUFvmZswDdjOfZ1Go79e65INV
+         lZnQmyDAMsclBe7l9sTgMVILtpPh3k8QghrTim9aOt70GiDFhnaj0wMLzZKhCLe+ELrM
+         4pGmOypZLVR2uDLggtdMTT/FhnmGDG7ZRZfMPSUXfw8EOvEC2I/KsE2M0wBI5qKYtt1g
+         2PKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793909243; x=1794514043;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793973967; x=1794578767;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rlBVJT4GPajviox7GVvnaU/1fuJu0H3trSYA5DJJsWk=;
-        b=Vq5bf6pCRojwUiLyMy2/9SQUIjFLR/YorDMVbMQejTN0ZR1yQsyIHhDolO0NqAPb6n
-         pOcx1b5Bn7cIdDlhOob6vwMo7CGjDtMHD+GyP3R312IoMZM8YbEFFM0my93f9UbhSPBy
-         SSurMfvizxDcAtT2PCTpZU40GHemiGZiupnE88wW/VMfzGuQiDP9/pW0DYExNfnT7qtm
-         qLKbMxDxeILU137EF+VbF5ysznN8QVhDm8NXGSkKvTSXxYdZz+pzZyMU49RQBLSFPJH9
-         kGUJPfsSX5rV1cnrDFxDJV97v6EvaxWJr8ds5SLRIrT1pMTWf0ESyeNS9+8CRPj21LZC
-         ++IA==
-X-Forwarded-Encrypted: i=1; AL+hErFjuD+NUKSTO4lki1a/EWceU6vkwULYc13Imjr3NmRf2qG+FtS9YTlv+nRSEl+Wcvxn8CKP@lists.linux.dev
-X-Gm-Message-State: APuU4Z+UyBCNVTtS5DY51GDbT1c8tb7PyqVu+inJnDM4l/75lfOOGXsH
-	1bP1io/9VWlce74eRn/YiQ1V3zch+TxDhGrak8Fx5k17IMpWWpjmdmhocKvCT36S9k9xdlKcHCF
-	8c8h1DnMPbTSJHwqVZIm0Kxppkz8aeN72HVZI94IaceL+7wIjrmCK5VTXhdn1GLb/JQJ3kgcouN
-	y6HO5YmW/z2XEsMb5ArJOq6Uc1auSsLg==
-X-Gm-Gg: AYBFou0evR8wtftRE+zzMSd4PWAtito/Ar5YtRObSU4XwqqGvkPYvzgKxzZlI+H3X3t
-	atqMMsOP7b0YR37YZsv5EDj15UZGboFNyOQkqOSUCv5zOJPYCEua/ru7wpGyCMnniPr2pYH8wtQ
-	xhMJrH9nzzL5MlcT3FbDePIDyCtMwMKYDhMttNAcABQz60nqRopxXy+Mc9WCGmvkX8tdvky8bnP
-	xkJ6j9CrBT7VWao7UukB1g8h8RGAeLb+JnL5FF2BdLIrw==
-X-Received: by 2002:a05:690c:c513:b0:8b1:368b:392f with SMTP id 00721157ae682-8b3419be4e8mr580207b3.49.1793909243364;
-        Thu, 05 Nov 2026 12:07:23 -0800 (PST)
-X-Received: by 2002:a05:690c:c513:b0:8b1:368b:392f with SMTP id
- 00721157ae682-8b3419be4e8mr579957b3.49.1793909242884; Thu, 05 Nov 2026
- 12:07:22 -0800 (PST)
+        bh=eqhBVbUtw3dy734MGt0XscJMrayl/heBjdE55TwHpBE=;
+        b=oVBxs5dfSom3qoEhCPs9SHXZgUxXHDI61E6fDKSPCQ1QgMoVTs8XZ870YC5S2Fb7J/
+         II/ksBvJRyRR5AF9fpWdENWicSV96gcOyGhOwMl74opgIEGk+1lWx8g3iWFc7kVuHOKK
+         2ZHm3GbrDjSt4mTQXRUwT2Ui+UPptNLD/Cqwgy5u5RDg/a0At29cVIDggBubqb7bzzql
+         3zOycIo9FQIWfJTWl5Um0Enk4zGCK05PsUPPwb3gEVykGXoL0qDK08A+fPtXDQm2OQ7p
+         yvDoQUHs7K0Rq8VHeUg+hOP/VYGa76MXe+LCOPyzLlpMlxg2Cmw+dPyCYbQF4g5s93QH
+         +h3w==
+X-Forwarded-Encrypted: i=1; AL+hErGXGgeTmk1ZVL8qtp2fjsor5T8X9zWEvCpqhlk5aiccY3J0Zn07LpzsfOR+FWPYf/hjxRcH@lists.linux.dev
+X-Gm-Message-State: APuU4Z8RWb3eFvvO9NMxiRJvmr7xMP2dkT9KQU9noQcgqGZ33qvuIajQ
+	JFk+Q4f7pNWreFQrmQpWzb2LaCBPTkkzwEmEaN38KeWVG0QkrZakXNitPs+uGQ1jTPo=
+X-Gm-Gg: AYBFou2jk9iG0Wx6I8/DNvf1qnYUWOUREcGdr9SRqCqMI+QqPqt2bcNUtOQcZVygwJk
+	f+tOaRZIbyPhlG6eAKm0H97MZ8UzylKNQSLFN4j4l81e2nlsqT63sFy5VaNUYSqOlzvM4cno4at
+	aWhfmEoLwgfW+lmhIX4pGtenNLx/SwVr3v5JAAUxrCyfefwHd+ouwpNFsXnLQ/ABmbF7L4cYPfY
+	upcvTvpOsfwwrrNE6rxLNl/mln8W1kbRn7FeMNTqTvf053wX8qKhy9Prk3XWPjzRV3+CRlMp2A7
+	55veBdQpJFGZigEdIo59qqSVEYJN9k2Zmh7AX3uAxIN5betuIrUPK6qMEbMHCKwXM+CM5sjdMcf
+	VMYff4zrVbrVi/h2kn9tbEkAJONiB5H+It1wA9uQdAi1qQAU5RMHyOG3muGf1tX3H/id45FKxzr
+	1s0EG52Uh3etf9/qhuZ+v0ruxB4iftdwl4isW964qNhcsa+cRWDG+ROB8DI8NHc6dF7nu4fsozY
+	FTrqyX3S+dqgQ/BRlXm8xiDUOQ3Xy5MCw1+fO6B68/0Cxkq1T7/Y4LGjk8xnS04ouKGHGZwcnSJ
+	ZS0eS/+z4DqN4gKHQ5EjPp3PYGZj
+X-Received: by 2002:a05:690c:560f:10b0:8b3:10df:54a3 with SMTP id 00721157ae682-8b341b1ebe2mr10611897b3.65.1793973966605;
+        Fri, 06 Nov 2026 06:06:06 -0800 (PST)
+Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f856f99sm19108527b3.34.2026.11.06.06.06.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 06:06:04 -0800 (PST)
+Date: Fri, 6 Nov 2026 09:06:00 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Dave Chinner <dgc@kernel.org>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>, gregkh@linuxfoundation.org,
+	arve@android.com, tkjos@android.com, brauner@kernel.org,
+	cmllamas@google.com, aliceryhl@google.com, nat@pixelcluster.dev,
+	arunpravin.paneerselvam@amd.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, viro@zeniv.linux.org.uk, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, cel@kernel.org,
+	jlayton@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
+	david@fromorbit.com, david@kernel.org, hughd@google.com,
+	yosry@kernel.org, nphamcs@gmail.com, matthew.auld@intel.com,
+	matthew.brost@intel.com, thomas.hellstrom@linux.intel.com,
+	jack@suse.cz, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, qi.zheng@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, liam@infradead.org,
+	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+	kas@kernel.org, mhocko@kernel.org, shakeel.butt@linux.dev,
+	ljs@kernel.org, kasong@tencent.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm/list_lru: Account node removals in isolation helpers
+Message-ID: <au3eyCrHiuhbJx3u@cmpxchg.org>
+References: <20261103045053.59548-1-kaitao.cheng@linux.dev>
+ <aupITfr9pBKPrU20@dread>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -91,159 +120,55 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103023804.8074-1-wuyiqing@cmss.chinamobile.com> <auo_CehOVzTMq6kc@dread>
-In-Reply-To: <auo_CehOVzTMq6kc@dread>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 5 Nov 2026 21:07:11 +0100
-X-Gm-Features: AclHuK_7bPPStvyJ7t0t9o12YGqSYrx1SyDLCxIY-DGoYpyY0de9k9HjzorVUGE
-Message-ID: <CAHc6FU6aE1hdi4zsOgu6LUGJx6CE__PMwOfTY8KMccASRzzRaw@mail.gmail.com>
-Subject: Re: [PATCH] iomap: allow writeback from kswapd again
-To: Dave Chinner <dgc@kernel.org>
-Cc: Yiqing Wu <wuyiqing@cmss.chinamobile.com>, Christian Brauner <brauner@kernel.org>, 
-	gfs2@lists.linux.dev, Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+5e659793378ad9e06387@syzkaller.appspotmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: a4Fg2PtUtKarAIw8xaHuMIYbN2qiYkZzdG-VzkxWxtQ_1793909244
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aupITfr9pBKPrU20@dread>
 
-On Tue, Nov 3, 2026 at 9:17=E2=80=AFPM Dave Chinner <dgc@kernel.org> wrote:
-> On Tue, Nov 03, 2026 at 10:38:04AM +0800, Yiqing Wu wrote:
-> > Commit ff59f71f1c95 ("iomap: simplify writepages reclaim guard") remove=
-d
-> > the PF_KSWAPD exemption from the iomap_writepages() guard on the
-> > assumption that kswapd can no longer reach filesystem writeback now
-> > that pageout() returns PAGE_ACTIVATE for non-shmem, non-anon folios.
-> > That assumption only covers the folio reclaim path.  kswapd can still
-> > reach filesystem writeback through the inode shrinkers, and syzbot
-> > reports exactly that on GFS2:
-> >
-> >   WARNING: (current->flags & PF_MEMALLOC) in iomap_writepages
-> >   kswapd -> balance_pgdat -> shrink_node -> shrink_slab
-> >   -> super_cache_scan -> prune_icache_sb -> evict
-> >   -> gfs2_evict_inode -> evict_linked_inode -> gfs2_log_flush
-> >   -> gfs2_ordered_write -> filemap_fdatawrite -> do_writepages
-> >   -> gfs2_writepages -> iomap_writepages
->
-> Oh, that's awful. Nothing should be calling into iomap_writepages
-> from reclaim context.
->
-> i.e. Doing data writeback from the inode cache shrinker is extremely
-> suboptimal for many reasons, so I'd consider this a gfs2 bug, not an
-> iomap issue. It's even worse when data writeback is being driven by
-> an inode cache shrinker. I'm surprised that lockdep hasn't thrown a
-> hissy-fit over this (i.e. inode locks taken in writeback appearing
-> both above and below reclaim.
->
-> This is the patch series that Jan Kara came up with to deal with
-> these issues in inode eviction:
->
-> https://lore.kernel.org/linux-fsdevel/20261009133253.20102-1-jack@suse.cz=
-/
->
-> This allows filesystems to defer inode eviction that might block
-> (e.g. due to transaction reservations, journal commits, metadata
-> read requirements, data writeback requirements, etc) to a context
-> where the work is allowed to block and isn't running under memory
-> reclaim context or restrictions.
->
-> That patchset is needed for ext4, XFS alreayd does this, and it
-> would seem that gfs2 needs it for glock reclaim....
+On Wed, Nov 04, 2026 at 07:47:09AM +1100, Dave Chinner wrote:
+> On Tue, Nov 03, 2026 at 12:50:53PM +0800, Kaitao Cheng wrote:
+> > From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> > 
+> > Successful writeback calls zswap_entry_free(), which removes the entry
+> > from the LRU and decrements both the sublist and node item counts.
+> > shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
+> > to decrement the node count again.
+> > 
+> > The affected call path before this change is:
+> > 
+> >   __list_lru_walk_one()
+> >     shrink_memcg_cb()
+> >       zswap_writeback_entry()
+> >         zswap_entry_free()
+> >           zswap_lru_del()
+> >             list_lru_del()
+> >               __list_lru_del()
+> >                 atomic_long_dec()  /* first node count decrement */
+> >       return LRU_REMOVED_RETRY
+> >     atomic_long_dec()              /* second node count decrement */
+> 
+> That's a bug in the zswap code. You shouldn't be calling
+> list_lru_del() from __list_lru_walk_one() context.
 
-Yes, Jan's deferred inode reclaim patch queue (plus a tiny gfs2 patch
-on top) should take care of that.
+Grr, Kaitao you dropped the wrong thing that I thought had merit in my
+proposal...
 
-I see that Jan wanted to send a v4 of this patch queue. Are there any
-remaining serious problems?
+Dave, would you mind taking a look at my patch at
+https://lore.kernel.org/all/auJkvb-Lq0M5Enkz@cmpxchg.org/?
 
-> > Under memory pressure kswapd evicts GFS2 inodes whose glock is still
-> > dirty, and gfs2_evict_inode() -> gfs2_log_flush() ->
-> > gfs2_ordered_write() then writes back the ordered data of every inode
-> > on sd_log_ordered.  This is long-standing, intentional behaviour: in
-> > the default data=3Dordered mode GFS2 must flush dirty data before the
-> > log commit that writes the metadata.
->
-> It's also long standing, known broken behaviour w.r.t. shrinkers
-> running in memory reclaim contexts.
->
-> So, why doesn't this warning happen through the direct reclaim path?
-> i.e.  what makes only kswapd trigger this?
->
-> I see nothing that prevents direct reclaim doing inode eviction
-> from triggering this same path through gfs2_evict_inode(). IOWs,
-> direct reclaim should also be triggering the warning in
-> iomap_writepages(), hence it is not clear to me why re-adding the
-> kswapd guard is anything other than a band-aid over the broken code
-> in gfs2....
+Ignore zswap for a second. I know it has problems. Most of it stems
+from the fact that we rely on the swap locking and do none of our own
+locking/lifetime on the zswap entry. As a result we work around it in
+odd ways. Sorry, you didn't ask :-) That's worth revisiting, although
+it's likely more invasive work.
 
-It's also happening under direct reclaim. Here is an attempt at a fix
-from before I was aware of Jan's patch queue that describes such a
-scenario:
+The observation that led to the patch above was a much simpler one:
+since we now have the caller-locked __list_lru_del() anyway, the only
+difference between that and the list_lru_isolate* is the
+accounting. The patch is about one thing: removing the isolate helpers
+entirely. There is then simply one tool for caller-locked list
+unlinking, __list_lru_del(). It removes an avoidable distinction,
+shrinks the API surface, makes it harder to screw up.
 
-https://lore.kernel.org/gfs2/20260921211712.1563575-1-agruenba@redhat.com/
-
-> > Writeback from kswapd has been
-> > explicitly allowed since 2010, when the guard was still in XFS:
-> > commit d4f7a5cbd544 ("xfs: allow writeback from kswapd"), because
-> > the kswapd stack usage is low and it cannot deadlock on the
-> > filesystem.
->
-> No, that was a regression fix for turning off all writeback from
-> reclaim in XFS as a 'what problems does stopping mm reclaim
-> writeback actually cause' experiment. That was the first steps we
-> took down the path to get rid of the problematic random dirty page
-> writeback issues that memory reclaim had.
->
-> IOWs, we didn't want to allow it, but we had to tolerate it because
-> the MM behaviour was unfixable at the time. Now that the
-> pageout()->.writepage() path for dirty filebacked page writeback is
-> gone from the mm, we no longer have to tolerate this behaviour
-> and so the guard got removed. It only took 15 years to get to this
-> point....
->
-> tl;dr: Writeback through iomap in memory reclaim context is -a bug-.
->
-> > Beyond the noisy warning the new guard is actively harmful: it returns
-> > -EIO on every hit (WARN_ON_ONCE only limits the report), while
-> > gfs2_ordered_write() ignores the filemap_fdatawrite() return value, so
-> > the log commit proceeds with metadata even though the ordered data was
-> > never written, breaking the data-before-metadata ordering guarantee of
-> > data=3Dordered mode.
->
-> This is definitely a gfs2 bug - writeback can fail for -many-
-> reasons, so ignoring IO submission failures when data integrity is
-> required is a definitely filesystem bug.
->
-> > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > index d6e2f1ded5ca..324da0f5cb29 100644
-> > --- a/fs/iomap/buffered-io.c
-> > +++ b/fs/iomap/buffered-io.c
-> > @@ -2082,7 +2082,7 @@ iomap_writepages(struct iomap_writepage_ctx *wpc)
-> >        * Writeback from reclaim context should never happen except in t=
-he case
-> >        * of a VM regression so warn about it and refuse to write the da=
-ta.
-> >        */
-> > -     if (WARN_ON_ONCE((current->flags & PF_MEMALLOC)))
-> > +     if (WARN_ON_ONCE((current->flags & PF_MEMALLOC) && !current_is_ks=
-wapd()))
-> >               return -EIO;
->
-> AFAICT, direct reclaim will still trigger this warning and the bad
-> gfs2 behaviour, so I'm struggling to see this as anything other than
-> shooting the messenger...
->
-> Cheers,
->
-> Dave.
-> --
-> Dave Chinner
-> dgc@kernel.org
-
-Thanks,
-Andreas
-
+The zswap weirdness made me look at list_lru. Consider it a stress
+test from idiotic code :-) But I would propose the list_lru
+simplification for its own sake, regardless of what we do with zswap.
