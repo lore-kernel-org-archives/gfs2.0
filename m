@@ -1,111 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794221012;
-	b=yH4hQv7JN70BsKsQsAgRUGIIlXj/lkz6x6GI1KicjPYFimtY3bfVW/WgwjViMND3NQxa
-	 H/YftXsU8V8X+9aS+duMdXBOGcEpZGzJziKdASAejQHrzzTHkRAp9wu+BgForexCfE27L
-	 lmFVN/gr75WERaQ7VU3JSyzrkk+Mvzd0FIlvvwsFyL94o0yfplfyjibIwZv7YPcmdxM6Y
-	 KAleha8eiZvv8XZ3OyivRKB3qBPx5y8dY9Zdnrxm72ZUQ6/QaqRb/YNkDN+FzHcXCkZ65
-	 kxxmidtWCezhrmv6NCiaTZ3vvbhuyMCpucuo5pLKnekqxmSxLLRBGyoyt73PCaehfuA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794221012;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
-	bh=UDca6BQDSujzYN3iXgd+k/sP2oPa3lW0EYEkVXMqZGI=;
-	b=Qy7EYUyZQCybdE8bv3ha0TU2WBoDoDWSaJLd4fxCQZtZAI6Sd1BR9u3/W3RWxafcs3LM
-	 vfTF6JsEmTsR53c5iRJ089ulbO9bvKD/+haAadGret25AqsN1aXSsFmG0iMcJ7nGVFRyz
-	 Lh1CkCoG6aD4BVO8wZKtLYC0u9pr7LaVcNg9ckin7zmS62nmjQ3lf209eTjByYWFSyFJp
-	 nYa+XO+m3Iv10JWGEC5wK2JVB6GRBGUFBnp38UbZHLYbllFn77tjv7zMXkbQW2cvoNsv6
-	 g16IusFGdo3bfyA7CRKucLeudqzYazIZ7RJaBkdLy/V72UxRS8Ce54II4xH9tz2vbSw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="bQZO/4ow";
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cju391Pb;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="bQZO/4ow";
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cju391Pb;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794263410;
+	b=Mft6khh7ex73fGJkVWXtlbvLCqisZPLS8gm29Z/PqiPqtEetl3KrZFefKyHk7gpSJ8PE
+	 lNxvlwfvnukRqdyECx5W9uCY1Q9FrGxn5NDdU7+Wu+RwIIyXgYReWqh6eSSVH34A6g5Rg
+	 nmBRt+aigo3nL0scmlHoypp5GlkpasAdUwCor7HoTvKhskP57F0CC5vYwGcNLUUvifrvP
+	 hw+rb4eON6IH85imN26i+Zs9RlsFXO7L5IrO8dVLki6P6PsvUoxgM52tQTBghoa7jFV1W
+	 zPgqbVkd6RO6o94cj1XXk0inpSMKySsmW3Wm6kyfnr66nVOGCyX2XNWnT0yqMaTpbUw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794263410;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=S6J9qhUwfhfejNNDnNi/t39zME3R/+tshu3QmKCryWs=;
+	b=C6kbgscWichXiUV7rK4fpOgCxUgohoJ2uG7uAPo0qUj9u8JM5hkoAIejYi9dGtxPhCHC
+	 4RyrkGnYwpd8GFJdEwTyz9oPZiOlpaIiSy0sfXAQrrSjlvjeV2y3/ipiPHoAsd19r3IFW
+	 NkcCeFzMI9PrxE8S7idcWEQSj42YpxEya4+QiKAdgSQIVNiuIjBUvxZHlGHDBfBW+F/0K
+	 mxH9bSAUc2cx2ADUM6cQvm8Qh82hAba88zhQ20rrbHBtI0MMRe3ZwI+ofmhtqHWNFeLE9
+	 S0xem0CpxxyEKTWrfejaSGHBUCQpoe65uDEPOjep5tiekk3lM3KEODdJM7ujZFrb3Aw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZP90t9oh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34753606A31C
-	for <gfs2@lists.linux.dev>; Mon,  9 Nov 2026 10:43:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34753606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA31606A336
+	for <gfs2@lists.linux.dev>; Mon,  9 Nov 2026 22:30:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AA31606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=bQZO/4ow;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cju391Pb;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=bQZO/4ow;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cju391Pb
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 68CC51F7DC;
-	Mon,  9 Nov 2026 10:43:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794221008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDca6BQDSujzYN3iXgd+k/sP2oPa3lW0EYEkVXMqZGI=;
-	b=bQZO/4ownfo2yOHaR61k0wnNVBUfekWvdGFDswdi15wmEuCR8Z1/p2ZL6dN64g69FEIkRO
-	PRKrz4vmmMvnPAsZqEGUjbVs1ChGiH4/NjYgeZ09IW9q6Jhz1ig9kodd9g/i2I5zKjXx5F
-	3FFvH4zSFyFct0dpFcx+NtASgf+YDdk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794221008;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDca6BQDSujzYN3iXgd+k/sP2oPa3lW0EYEkVXMqZGI=;
-	b=cju391PbLRfEBl3XJCGRIWAIkQf+7o/Sl/VZ1cZw2D761PRg10H9FTP02kRQSC/0Gj8nUX
-	skSOEkBupJ8pXyBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794221008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDca6BQDSujzYN3iXgd+k/sP2oPa3lW0EYEkVXMqZGI=;
-	b=bQZO/4ownfo2yOHaR61k0wnNVBUfekWvdGFDswdi15wmEuCR8Z1/p2ZL6dN64g69FEIkRO
-	PRKrz4vmmMvnPAsZqEGUjbVs1ChGiH4/NjYgeZ09IW9q6Jhz1ig9kodd9g/i2I5zKjXx5F
-	3FFvH4zSFyFct0dpFcx+NtASgf+YDdk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794221008;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDca6BQDSujzYN3iXgd+k/sP2oPa3lW0EYEkVXMqZGI=;
-	b=cju391PbLRfEBl3XJCGRIWAIkQf+7o/Sl/VZ1cZw2D761PRg10H9FTP02kRQSC/0Gj8nUX
-	skSOEkBupJ8pXyBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1B3313319;
-	Mon,  9 Nov 2026 10:43:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BRLeLsuj8WpadwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 09 Nov 2026 10:43:23 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 6B4BD21DA3; Mon, 09 Nov 2026 11:43:19 +0100 (CET)
-Date: Mon, 9 Nov 2026 11:43:19 +0100
-From: Jan Kara <jack@suse.cz>
-To: Huang Shijie <huangsj@hygon.cn>
-Cc: axboe@kernel.dk, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn, jack@suse.cz, 
-	agruenba@redhat.com, mic@digikod.net, gnoack@google.com, paul@paul-moore.com, 
-	jmorris@namei.org, serge@hallyn.com, aleksa@amutable.com, legion@kernel.org, 
-	david@kernel.org, sandeen@redhat.com, ebiggers@kernel.org, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-security-module@vger.kernel.org, sunjunchao@bytedance.com
-Subject: Re: [PATCH 1/3] vfs: add inode iteration method super_iter_inodes
-Message-ID: <symrqnxn6tkrahynz7rm5b7n3tolkifpbubmwfd3y6q4q2xnt2@vhh7plsok3kh>
-References: <20261015093854.2082600-1-huangsj@hygon.cn>
- <20261015093854.2082600-2-huangsj@hygon.cn>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZP90t9oh
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-533202fe429so33401cf.0
+        for <gfs2@lists.linux.dev>; Mon, 09 Nov 2026 14:30:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794263408; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NYknYNbN1R3EtURiwTbR2FXxA7qaaWkBKTkljHj+n4f3QK7wZct2hRMfyqtLNWJJcI
+         Ogw2eUkiZtyy5oKKe45CL6BiWzqmF1wN/iGCPJnJ+sa+WCUJDFSzHyAK9hJnDCSp2ZC/
+         /+tkDwqnHhCe9rRlvpO8r/Q4mL3stZ/EuMPOjthzEMUmrwiKfkryixWwzP3J2FbbXkXA
+         ORV7oVOniDxdk46gnHwt5Bb618wg5e0BNs2zqymBwP7ZSUR41ReG+XNA4l5kp3F5sqGb
+         eQJRBUckrj19mDPwc1BEv/RlzXl1b4oDaXiUMi+HBKZqG3oMigWn/OHVbNS0qMHt4lzA
+         M8FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S6J9qhUwfhfejNNDnNi/t39zME3R/+tshu3QmKCryWs=;
+        fh=OyBh2iBD5E+xS672ly1YlQ6nMGXekJsKbPVA/Xa/+a4=;
+        b=RWc+eQNSD5AnWdufM1Fa26eMT3pwhgy5IJR4UU0GR+Uch/hNTSlwbSSYMoRUh4ewI8
+         aVuOJS/XbWlVaQPCTN/yfmkoszTjuR4kFpMnR6ltUDj4sR++XOiFZ1+/BLJ4/9XrZtYP
+         okkDQj4czzM+QQYcFYdV3WCJVG9H83tZAQKENGpqVDAk5FU5KcRaHtoYwt1d8KbLmILH
+         t2L/TyauJJYq0rh05bdDEl5chpnNJjLTvuj9c7WDOKZRuiJSpknK19Yyx2m0m6uYl2Yd
+         jcrm5wsjYuDNGuikSjhiioqfzqCkYFNoT/gGnV0qHw9Rt1PQmu06EHrPXMBvQApXhQ9K
+         yVeQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794263408; x=1794868208; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S6J9qhUwfhfejNNDnNi/t39zME3R/+tshu3QmKCryWs=;
+        b=ZP90t9ohYibqkOp9Ohy3ox8XtEh149CAjReevbDrcEGSs7rdWPli/f26c+TCc2ar41
+         7Po2ccGGcka/LYJu71k+QmIf6Vrutw7FTWWW6EZUryewggAsDLhDDbw/HbTJUBioynma
+         weamWxMNU3YSowEX3kJlnQKFzpR8zFsHVd8fgvlEcSez5YHCYTwJ51HUIyZO0Ilh32Z6
+         HnMHgvWtg4zv7yPqxqutPGfmtCobQFKY/NbtrPbG+NXWqLRwcVqCPyToE1w8Gedy7Jkc
+         dmLUY6g06mye5MECRaC+ZFebseRoVBGZxEX8ESPvlox5eHTAQSdv/41DIFfNTEaEQTbB
+         OT6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794263408; x=1794868208;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S6J9qhUwfhfejNNDnNi/t39zME3R/+tshu3QmKCryWs=;
+        b=zl+FJG4KYBBZ5rvDRQoAnlD+AAF2ofKKxw6W5MbFtsLu8e+Viv+8lN0QtO5wVP+Bj0
+         L5qtO9RAbUZhmJUO4wJy4BeEhvwZpQgmAp4X2hClI4h6y+c2J5HBGzMylMUgXg6ChX//
+         QmvMg+Ns58+zIAX78xxDZFmUyZ2JfS99cZRFe2Ps34QqDREJ+FU7SwSlFlw6W3W/OVVC
+         HtoUPCEHA0P/vYjjAhwKqL5p3Jtv+Dgnhq73Xk4lpBU0wSVY9d7HR7y2LlYsRJXt6c3s
+         182jmNEfLqxFjTDmZen1rpwoPnprIuUtc3fDW45ItxohQiAyNbujdlUwfttDsOoUp38H
+         hZuA==
+X-Forwarded-Encrypted: i=1; AL+hErEjtpjskGUAjTjHEXgP3Vrd//ygfb7V9eikzNaQjaSNT91xfTsMIJc5+p5BnWItO/AC1s4m@lists.linux.dev
+X-Gm-Message-State: APuU4Z8lHkOL0aVo+HJm30eSWsnFOf20Uwtw1z+bThVk2rCdRmwoQO7y
+	M6bfFJ4Ax8KDH69lyfeLEsfH5pjq8cQqq1PCKyq5UT3WZI09rUy5ynqEsTn2FFuYLwai1sHk+Yx
+	yxqFYCnLWRxRt3bpaRixwfqgCZG7fxLB54/5cD3HQ
+X-Gm-Gg: AYBFou0mvOj39vEmLhAXGkczuRe8tL7Ikt9lSqxagXiYL86IQwcOld0zsOU3t9wkUb+
+	L/K+nj99fg2MbJ6w8E2BMWK7NLgGGLfqUaZQABX686QMIXFyl2D1O4HCnGz5shyJJN059J+hnao
+	zmDxMDQoPqfrTbg9/7xXhg+0sYRFH1uDQ2vs5dAWJ9iLMBOAZT7gZfalgRWfp4xclaC936lN1Nm
+	aDhGEOG+S9b95A/qcITbczS8/YRvaf5ukCaeTMdTq52c4tRuao2rtVV8cr6YjSMtZ7Ecvu2dLWE
+	ob65Hpm7BHv+NdopWMK7UyrLvKFEsprsuNiFRz65T0VW5NphnGVn1GeCza7WVDKNFHhf/9b6p/1
+	gjJtc0gg48+iN91u0oeRNB2Dps9JZ1jv5X0zNPGN7yAZPltoGG8GDtM+3RdZD4UN9MkQ=
+X-Received: by 2002:a05:622a:1b16:b0:530:e00f:7768 with SMTP id
+ d75a77b69052e-555290bb288mr6464421cf.0.1794263407457; Mon, 09 Nov 2026
+ 14:30:07 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -115,158 +104,114 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015093854.2082600-2-huangsj@hygon.cn>
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-12.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,hygon.cn:email]
-X-Spam-Score: -12.80
+References: <20261108223913.3624571-1-irogers@google.com> <20261108223913.3624571-7-irogers@google.com>
+ <b8d171de-52fe-474e-96db-d119840c6240@suse.com>
+In-Reply-To: <b8d171de-52fe-474e-96db-d119840c6240@suse.com>
+From: Ian Rogers <irogers@google.com>
+Date: Mon, 9 Nov 2026 14:29:55 -0800
+X-Gm-Features: AclHuK-dlWDp0B4FdK6V9QBR5LM_sA67_T-19O3ovPwDJ5RdBpzojQ18ICzxF_E
+Message-ID: <CAP-5=fXd640kfaR+soPdiEV2mfqCPGDANCt04KzaXBphYP4Htg@mail.gmail.com>
+Subject: Re: [PATCH v3 6/9] xen/sys-hypervisor: Add release callback to hyp_sysfs_kobj_type
+To: Juergen Gross <jgross@suse.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, 
+	Srish Srinivasan <ssrish@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, Alexander Aring <aahringo@redhat.com>, 
+	Felix Kuehling <felix.kuehling@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Zhihao Cheng <chengzhihao1@huawei.com>, Sumanth Korikkar <sumanthk@linux.ibm.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, 
+	llvm@lists.linux.dev, linux-hardening@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
+	linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu 15-10-26 17:38:52, Huang Shijie wrote:
-> This will be used to replace the explicit sb->s_inodes iteration,
-> with the caller supplying a callback function and a private data
-> pointer that is passed to the callback along with each inode that is
-> iterated.
-> 
-> A single iteration function, super_iter_inodes(), is provided, with
-> the iteration mode selected by the INO_ITER_F_UNSAFE flag. The
-> INO_ITER_F_REFERENCED flag can additionally restrict the iteration to
-> inodes that still have a reference.
-> 
-> Without INO_ITER_F_UNSAFE, the callback is called with a valid,
-> unlocked and referenced inode, so any inode operation, including
-> blocking operations, is allowed. The iterator is responsible for
-> inode lifecycle management, so the callback only needs to implement
-> the operation it wants to perform on all inodes.
-> 
-> With INO_ITER_F_UNSAFE set, the inodes are iterated without taking a
-> reference and the callback is run in an atomic context that must not
-> block. This mode is for internal VFS use only and runs under a RCU
-> read lock so that the VFS inode is not freed from under the callback.
-> It is needed for operations that require tight control over the state
-> of the inodes they operate on.
-> 
-> This mechanism allows the existing sb->s_inodes iteration models to
-> be maintained, providing a generic implementation for iterating all
-> cached inodes on the superblock.
-> 
-> Signed-off-by: Huang Shijie <huangsj@hygon.cn>
+On Sun, Nov 8, 2026 at 10:56=E2=80=AFPM Juergen Gross <jgross@suse.com> wro=
+te:
+>
+> On 08.11.26 23:39, Ian Rogers wrote:
+> > hypervisor_init() in drivers/base/hypervisor.c creates hypervisor_kobj
+> > with kobject_create_and_add() (which allocates a dynamic kobject using
+> > dynamic_kobj_ktype), and hypervisor_subsys_init() in
+> > drivers/xen/sys-hypervisor.c then overwrites hypervisor_kobj->ktype wit=
+h
+> > &hyp_sysfs_kobj_type, which had no .release callback.
+> >
+> > Add hyp_sysfs_release() calling kfree(kobj) to preserve the dynamic
+> > kobject release behavior.
+> >
+> > Fixes: cff7e81b3dd7 ("xen: add /sys/hypervisor support")
+> > Signed-off-by: Ian Rogers <irogers@google.com>
+> > ---
+> >   drivers/xen/sys-hypervisor.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> >
+> > diff --git a/drivers/xen/sys-hypervisor.c b/drivers/xen/sys-hypervisor.=
+c
+> > index 91923242a5ae..0e8a2cd69fd6 100644
+> > --- a/drivers/xen/sys-hypervisor.c
+> > +++ b/drivers/xen/sys-hypervisor.c
+> > @@ -659,7 +659,13 @@ static const struct sysfs_ops hyp_sysfs_ops =3D {
+> >       .store =3D hyp_sysfs_store,
+> >   };
+> >
+> > +static void hyp_sysfs_release(struct kobject *kobj)
+> > +{
+> > +     kfree(kobj);
+> > +}
+> > +
+> >   static const struct kobj_type hyp_sysfs_kobj_type =3D {
+> > +     .release =3D hyp_sysfs_release,
+> >       .sysfs_ops =3D &hyp_sysfs_ops,
+> >   };
+> >
+>
+> Wouldn't it make sense to have a common function for just kfree(kobj)?
+>
+> In your series there are 3 instances of .release just doing kfree(kobj).
+>
+> In case this is not wanted or with using the suggested common .release
+> helper you can add my
+>
+> Reviewed-by: Juergen Gross <jgross@suse.com>
 
-Some more comments after seeing more conversions:
+Thanks Juergen!
 
-> +static bool super_iter_iget(struct inode *inode, int flags)
-> +{
-> +	bool ret = false;
-> +
+lib/kobject.c already has a static dynamic_kobj_release() that does
+this (and there are ~15 other places in the tree open-coding a static
+kfree(kobj) release wrapper), so include/linux/kobject.h +
+lib/kobject.c would be the natural home if we exported one.
 
-Here I'd do a lockless icount_read_once(inode) check if INO_ITER_F_REFERENCED
-is set to avoid unnecessary i_lock round trip.
+I kept them as local static functions here for two reasons:
 
-> +	spin_lock(&inode->i_lock);
-> +	if (inode_state_read(inode) & (I_NEW | I_FREEING | I_WILL_FREE))
-> +		goto out_unlock;
-> +
-> +	if ((flags & INO_ITER_F_REFERENCED) && !icount_read(inode))
-> +		goto out_unlock;
-> +
-> +	__iget(inode);
-> +	ret = true;
-> +out_unlock:
-> +	spin_unlock(&inode->i_lock);
-> +	return ret;
-> +}
-> +
-> +static int generic_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-> +			       void *private_data, int flags)
-> +{
-> +	struct inode *inode, *old_inode = NULL;
-> +	int ret = INO_ITER_RET_DONE;
-> +
-> +	spin_lock(&sb->s_inode_list_lock);
-> +	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
-> +		if (!super_iter_iget(inode, flags))
-> +			continue;
-> +
-> +		spin_unlock(&sb->s_inode_list_lock);
-> +		iput(old_inode);
-> +
-> +		ret = iter_fn(inode, private_data);
-> +
-> +		old_inode = inode;
-> +		if (ret == INO_ITER_RET_ABORT) {
-> +			ret = INO_ITER_RET_DONE;
-> +			goto out_loop;
-> +		}
-> +		if (ret < 0)
-> +			goto out_loop;
-> +
-> +		cond_resched();
-> +		spin_lock(&sb->s_inode_list_lock);
-> +	}
-> +	spin_unlock(&sb->s_inode_list_lock);
-> +out_loop:
-> +	iput(old_inode);
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Unsafe iteration for internal VFS use only: @iter_fn runs in atomic
-> + * context with only an inode existence guarantee, so it must not block
-> + * and must perform its own inode state checks. Return INO_ITER_RET_ABORT
-> + * to stop the iteration early.
-> + */
-> +static int generic_iter_inodes_unsafe(struct super_block *sb, ino_iter_fn iter_fn,
-> +				      void *private_data)
-> +{
-> +	struct inode *inode;
-> +	int ret = INO_ITER_RET_DONE;
-> +
-> +	rcu_read_lock();
-> +	spin_lock(&sb->s_inode_list_lock);
-> +	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
-> +		ret = iter_fn(inode, private_data);
+1. Patches 2/9, 3/9, and 6/9 carry Fixes: tags, and keeping the small
+   local callbacks avoids a dependency on a new driver-core export for
+   backports.
+2. Since kobjects are normally embedded in a larger struct and freed via
+   container_of(), I wasn't sure whether Greg and Danilo would view an
+   exported kfree(kobj) release helper (especially alongside
+   __must_init) as an invitation for misuse on embedded kobjects.
 
-After some thought, I'd probably make this function inline in some VFS
-internal header. That way the compiler can inline everything and avoid the
-extra costs of indirect function calls, etc. These iterators tend to be
-rather lightweight so it would avoid performance regressions from the
-conversion.
+Unless Greg or Danilo would like dynamic_kobj_release() (or similar)
+exported now, I'll plan to keep the local callbacks for this series
+and can send a follow-up cleanup for the tree-wide callers if
+driver-core maintainers think a shared helper makes sense.
 
-I was considering the same for the generic iterator as well but there I
-don't have so strong opinion as the function is already relatively big and
-the callbacks are usually more heavy. Might still be worth some more
-detailed investigation and performance measurements...
+Thanks,
+Ian
 
-> +		if (ret == INO_ITER_RET_ABORT)
-> +			break;
-> +	}
-> +	spin_unlock(&sb->s_inode_list_lock);
-> +	rcu_read_unlock();
-> +
-> +	return ret;
-> +}
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>
+>
+> Juergen
