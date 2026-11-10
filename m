@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794277987;
-	b=BF0s3BlY+OSsb1sFv6H8ZtzrA9l5gm9XPBTFqLP9ZHfUhAlX3qfktlI5qwXdzIEeKU+4
-	 xlMlGLwfxKRxrEZQdb012SrTFwr+DH09TBhzVWO6t9IR/g/K+V4sjiT+xFeNIewCu8i6U
-	 +q0yjtXZSSdm6Rcrf38sqhOta6qaPDfaPBgadI57O2RmU/ytUwRXELetw44z4qGV1WGyp
-	 EZz8M2ACpzShFF3oZ12aWcZNaCSd5yYuNzZAg+jThU8mt4kpIVzXAG1fV0B6zoJgwc48u
-	 NUQLCAOMwzPsW9FsMuVrFNOzJcbOTKl+s4MK55hFAcBXwA9FzhqNn5PvawyYK1k91Kg==
+	t=1794278314;
+	b=0CT+ft5rzay9kwuj9G8FaiddEXjuE5lO7sqSWMdwgcYNfi1yeOpYBdWKAYmyZ2y6JrHa
+	 S3WgMS/9Ib/U0l9tbYwfAksZIRVnFgWQjxuvKozvWRmUzPo+3NdPI1nRjYH29a6+0wIIF
+	 X4twjxp8hDsv+YgUDhEDvsFo/IfKrwtX4ojR1ZNbZ1/O8BaOX+cl6tmzu5cJnHx6D5KCo
+	 COET93gD0WleXLTZ0vAYv2lmTvoo4N2FSF5t6+HU8SQB4x3nf1pCV1uIFZh3b+VqSk4zw
+	 /Us8ekLbRmXgqq1hERWVyvpJFvOuZDAfm/WXlYsaynP6Y/LBTUtQHh6PNgNZ8EyLahA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794277987;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794278314;
 	h=DMARC-Filter:Received:Received:Received:Received:Date:From:To:CC:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
 	 X-Originating-IP:X-ClientProxiedBy;
-	bh=9dgmceogV8A29X7A/g9/D+jZBOgcl/3xennCOoQQw9A=;
-	b=YBsXzIoaJu2HOcZYnhsIQqdozaqbaWkkwQmOrxltffDPDLtRqqYOuEhneIbRVgav6NBr
-	 C2m9haCs7uOACOxA7Stw++pGgafdhP79v9eE7xCxw9G7iGQvAJALn4PlkGoHnYq2Ta1mm
-	 7FmKGhP0BVcnvE1le+0lhNEm7stWJyFdG0QBDfogNkxnm0MheLKtIEC9CJijim8NEyouS
-	 TE7sy0NgYTnUGImC2o7ZPhutq3uQc3Kcw28iVzPcjVcykOnxmW5seMM6Ly3Kn9Bxv7cOS
-	 jYUGjtD0VlxGYOTK+rUlfFsuniHxT1hek/vCr9maUD1yozZevWWQA26J8DeDHdRAmwg==
+	bh=wAHGin8u6AIZQh7OflkkxvchjlB5l41zuY+9P+ij+ys=;
+	b=OeITWBZwjYupbDQ9fikWn6YCAzaAuYOvYi2tuVGIZCHxB+GIOEnPPBtWsVmpklosPC6y
+	 CiBMQqm1kQ+iMeidx5UR4jlUjAy1z3XM1lcVZBThKPYPewsJf79xpvNYyjVIWPH9hOpTb
+	 k1FRs53hdY0x8Gu2lwy2nzy9qwr4detsizeZEg18evGax6GTlMlGTNP+88jVLJKMMdL/R
+	 BWnLGj5PBayK3WhEz8JazwlswZDIGJGr/ITEa4hGDHukk9R1movHDuqZ+H/LVkReUPz8W
+	 1qSruSgbYRPRsiUakH932fB3MIoGs2mp0qDQ56IlmkYdtxNlcHGEmHyBQXo/4bg6LWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hygon.cn;
 	spf=pass smtp.mailfrom=hygon.cn;
 	arc=none smtp.remote-ip=101.204.27.37
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB78F606A330
-	for <gfs2@lists.linux.dev>; Tue, 10 Nov 2026 02:32:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB78F606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC7D606A326
+	for <gfs2@lists.linux.dev>; Tue, 10 Nov 2026 02:38:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FC7D606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jNrKY4YTyz9j2Jw;
-	Tue, 10 Nov 2026 10:32:49 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jNrKX11Lwz9j2Jw;
-	Tue, 10 Nov 2026 10:32:48 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jNrRv4jyTz9j97c;
+	Tue, 10 Nov 2026 10:38:19 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jNrRs51X7z9j97X;
+	Tue, 10 Nov 2026 10:38:17 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 48EDEDC08;
-	Tue, 10 Nov 2026 10:32:44 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 10FAE30A6439;
+	Tue, 10 Nov 2026 10:37:33 +0800 (CST)
 Received: from hsj-2U-Workstation (172.19.24.226) by cncheex04.Hygon.cn
  (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 10 Nov
- 2026 10:32:46 +0800
-Date: Tue, 10 Nov 2026 10:32:44 +0800
+ 2026 10:38:16 +0800
+Date: Tue, 10 Nov 2026 10:38:14 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: Jan Kara <jack@suse.cz>
 CC: <axboe@kernel.dk>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
@@ -54,10 +54,10 @@ CC: <axboe@kernel.dk>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
 	<gfs2@lists.linux.dev>, <linux-security-module@vger.kernel.org>,
 	<sunjunchao@bytedance.com>
 Subject: Re: [PATCH 1/3] vfs: add inode iteration method super_iter_inodes
-Message-ID: <avKCTDUKe3DucSY4@hsj-2U-Workstation>
+Message-ID: <avKDlkJG0Rj872Cd@hsj-2U-Workstation>
 References: <20261015093854.2082600-1-huangsj@hygon.cn>
  <20261015093854.2082600-2-huangsj@hygon.cn>
- <wepk7b6hw44k7aodwmk24mt4ied25jl5zzdyd5dfx3pjop6omq@bvld6lyzbetm>
+ <symrqnxn6tkrahynz7rm5b7n3tolkifpbubmwfd3y6q4q2xnt2@vhh7plsok3kh>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -70,39 +70,103 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <wepk7b6hw44k7aodwmk24mt4ied25jl5zzdyd5dfx3pjop6omq@bvld6lyzbetm>
+In-Reply-To: <symrqnxn6tkrahynz7rm5b7n3tolkifpbubmwfd3y6q4q2xnt2@vhh7plsok3kh>
 X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
  (172.23.18.114)
 
-在 Mon, Nov 09, 2026 at 10:58:43AM +0100，Jan Kara 写道：
-> > +int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-> > +		      void *private_data, int flags)
+在 Mon, Nov 09, 2026 at 11:43:19AM +0100，Jan Kara 写道：
+> On Thu 15-10-26 17:38:52, Huang Shijie wrote:
+> > +static bool super_iter_iget(struct inode *inode, int flags)
 > > +{
-> > +	if (flags & INO_ITER_F_UNSAFE)
-> > +		return generic_iter_inodes_unsafe(sb, iter_fn, private_data);
-> 
-> Since unsafe iteration is a separate function anyway and we advertise it as
-> an "internal VFS" function (which I agree with), I'd just have
-No problem.
-
-I will change it in next version.
-
-> super_iter_inodes() for the normal iteration and super_iter_inodes_unsafe()
-> for the unsafe iteration which won't be exported to modules (so we really
-> get the message across this should be VFS internal function). 
-> 
+> > +	bool ret = false;
 > > +
-> > +	return generic_iter_inodes(sb, iter_fn, private_data, flags);
+> 
+> Here I'd do a lockless icount_read_once(inode) check if INO_ITER_F_REFERENCED
+> is set to avoid unnecessary i_lock round trip.
+okay. I will add icount_read_once() in later version.
+
+> 
+> > +	spin_lock(&inode->i_lock);
+> > +	if (inode_state_read(inode) & (I_NEW | I_FREEING | I_WILL_FREE))
+> > +		goto out_unlock;
+> > +
+> > +	if ((flags & INO_ITER_F_REFERENCED) && !icount_read(inode))
+> > +		goto out_unlock;
+> > +
+> > +	__iget(inode);
+> > +	ret = true;
+> > +out_unlock:
+> > +	spin_unlock(&inode->i_lock);
+> > +	return ret;
 > > +}
-> > +EXPORT_SYMBOL_GPL(super_iter_inodes);
 > > +
+> > +static int generic_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
+> > +			       void *private_data, int flags)
+> > +{
+> > +	struct inode *inode, *old_inode = NULL;
+> > +	int ret = INO_ITER_RET_DONE;
+> > +
+> > +	spin_lock(&sb->s_inode_list_lock);
+> > +	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+> > +		if (!super_iter_iget(inode, flags))
+> > +			continue;
+> > +
+> > +		spin_unlock(&sb->s_inode_list_lock);
+> > +		iput(old_inode);
+> > +
+> > +		ret = iter_fn(inode, private_data);
+> > +
+> > +		old_inode = inode;
+> > +		if (ret == INO_ITER_RET_ABORT) {
+> > +			ret = INO_ITER_RET_DONE;
+> > +			goto out_loop;
+> > +		}
+> > +		if (ret < 0)
+> > +			goto out_loop;
+> > +
+> > +		cond_resched();
+> > +		spin_lock(&sb->s_inode_list_lock);
+> > +	}
+> > +	spin_unlock(&sb->s_inode_list_lock);
+> > +out_loop:
+> > +	iput(old_inode);
+> > +	return ret;
+> > +}
+> > +
+> > +/*
+> > + * Unsafe iteration for internal VFS use only: @iter_fn runs in atomic
+> > + * context with only an inode existence guarantee, so it must not block
+> > + * and must perform its own inode state checks. Return INO_ITER_RET_ABORT
+> > + * to stop the iteration early.
+> > + */
+> > +static int generic_iter_inodes_unsafe(struct super_block *sb, ino_iter_fn iter_fn,
+> > +				      void *private_data)
+> > +{
+> > +	struct inode *inode;
+> > +	int ret = INO_ITER_RET_DONE;
+> > +
+> > +	rcu_read_lock();
+> > +	spin_lock(&sb->s_inode_list_lock);
+> > +	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+> > +		ret = iter_fn(inode, private_data);
 > 
-> ...
-> > +/* Inode iteration callback return values */
-> > +#define INO_ITER_RET_DONE		0
+> After some thought, I'd probably make this function inline in some VFS
+> internal header. That way the compiler can inline everything and avoid the
+No problem. 
+I will try to convert it to inline function later.
+
+> extra costs of indirect function calls, etc. These iterators tend to be
+> rather lightweight so it would avoid performance regressions from the
+> conversion.
 > 
-> Maybe INO_ITER_RET_NEXT? DONE looks too much like the loop should finish.
-okay.
+> I was considering the same for the generic iterator as well but there I
+> don't have so strong opinion as the function is already relatively big and
+> the callbacks are usually more heavy. Might still be worth some more
+> detailed investigation and performance measurements...
+Yes.
+This function is already big enough.
+
+Let's keep it as it is.
 
 Thanks
 Huang Shijie
