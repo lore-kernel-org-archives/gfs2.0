@@ -1,98 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.230.70
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794385346;
-	b=TEx9rS/LpdvkOjiDrIDPAtssZm896rwrU8AKhUynukh3oMou4tQCDO+ttE3rhvXuxTki
-	 +0F28nvs4tifR+FoSRS4lkl+52oWrQitQ2YK5y7ZHtz7McbcTA3hL5I9i5sCyaHGKSFMg
-	 5ns2YB9vMRv8N/KWOgnBkR4OV4fjR6v46j7HV14R5YOncdHsRz7KQ+it1P/pp/PF0NSFf
-	 5/UAziZLjW2VU2G3h1eTGoiaEaZr+6CpfasG0v/hg6OJD8oLvZ9A8NGIwY8+XJq/7EkCV
-	 eVH5tiuAJ5o30W4YKJGmgNdSbNjd6X1uZhG7t4SeEqqivy7Up9L7ESMRLOr7Myq04Og==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794385346;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=AgIMfPzec9DY2ApqYmXaL9OIT8JJtsh4iQln6el8AxM=;
-	b=guClAHNpTJU1KMh4MzzBi6B39/IGeZvZf2fAJWsiJNYkdeo3Uj1v8v5BF8WawLsUxjB4
-	 feQrrV8RbsyAhtYWonwLAO6CWF6YywgpFCfc6XBBe50K5LZ2/XkfqZMy9PSlnqepNAr0T
-	 MfZHYqh2nKnBitp00i0XiF+wqYXyr8IOFpLLFN4Uwv52MIZi1wPW0Oh8LY02NEVw/7K3t
-	 dbOR+uFVPkh1877M0LcMLAtanXAgCXZxMixGTAGJDmXNx3OP0DSopqWaC9WClsvgFDpGf
-	 qZX0ZkD6o/5B1g7YDTFogI1/wJizOka3DCU4vDr4/TIfUkz5HL3mKEzIFet6bfd9gQw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DsTmr0hZ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.230.70
-Received: from mail-lr2-f6.google.com (mail-lr2-f6.google.com [74.125.230.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794396404;
+	b=rW8KurHJh7DmXzGCxRMnK4tZ3u7yXwjrtndXJPskU44GxZPv9txnudskxIamjQZmFElO
+	 gD2Wa3aDX6w7pHzvCH+ULPxGDZKJ7Nbmy4l1ad4dugj5AF6HieSrKx0P98TCwqaq+WrxV
+	 GyvytmTqC39KgXSH1MgdCk39waFtx+b9QZy798aI89G0MdVJwX4qwnHXMjsXINuuRo+J4
+	 toLLIlnSY71CW9qcHUietki893G3yXR6rW/NWqJBIA7JMeu1B+REtPO2B5tR+KiWde61T
+	 LAOT6wwM4d7psLxuKUfNEWQTycy4XL6u/40J40qqk4kci5apVMX+64Q9Jcms4OWrS8g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794396404;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:
+	 X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
+	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
+	b=l3xNz+NCAtTuSsXLB0Q2Sim5FSB2CPLzeTOUMSY7Rqh4eIqVQ0IymHDmc+TLBq4UYWPf
+	 xKG40fmfY3AlARM5QEjAKXIvRJJ53q1CxBL0VZWuBvV+udhFxvUCQwqQIbmA9HFVo9vfC
+	 dJ/yjEo3nqk58yDmOX0zuSMwXAZ5l83Ztc52oXdJULuRVuI7TUzcxjeJzn8dk3qMseysc
+	 vi7YXusrVexcxaWjprSMDGBB/a6M/WN84wv+oyDWpDrQacau9wkEhHmHD2AFkS6QgSjUn
+	 JXsmEbQRoNFDbB2NTFK6j51UcBXZfNrCWxt6Zyo4TT96BCHxAmAikwi3CZQyQHf+7Kw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=suse.cz;
+	spf=pass smtp.mailfrom=suse.cz;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=X0Xx3Ph1;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K+gARkJe;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=prrQhKF2;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KXIiKUuO;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559B460A2607
-	for <gfs2@lists.linux.dev>; Wed, 11 Nov 2026 08:22:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 559B460A2607
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110C2606A32A
+	for <gfs2@lists.linux.dev>; Wed, 11 Nov 2026 11:26:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 110C2606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DsTmr0hZ
-Received: by mail-lr2-f6.google.com with SMTP id 38308e7fff4ca-3ab1bfd1373so20816981fa.0
-        for <gfs2@lists.linux.dev>; Wed, 11 Nov 2026 00:22:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794385344; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YzVFHc40P3RdiBLQ2m3sG3yWXKBor1LABFPEvCC/SBSCVPO4p7OtBBHbIZMEr2hwXT
-         VthmCKmKJ0tRSNytt3u1edokfQIbNLsEMSz5wg2q09JPySIk3V3XEbX6CCIR+Xgo1CDV
-         JTYl0Ydv1IhXxWyemehV+kpXPgoA0ErZ37hZh4NROSpGWsvO3J2v50UDpePzF+mOvAso
-         60/yezoL4u5pDbjgRWnbYOK+wCQCmMCtAgfeVYVVU3C2cREMA/ri7SXSLXcjL7S4bfvQ
-         f/eIG3MXtygTCNMVt9ltOjRQ+sT9pyvzdNBNWIVwKrGafHcwVQs3Bp20mL740Ue7Xq0p
-         2RNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=AgIMfPzec9DY2ApqYmXaL9OIT8JJtsh4iQln6el8AxM=;
-        fh=bwAya4hPtLQJn8mlFa1wMmDyN9kVQnvlVUddOm6TRPM=;
-        b=fLl6ienyghExaoMIFSmMFMQrAVAu04EgIB+pJ6KtRBRJaxeHg2r7oyfO5Vf3Z5DrPL
-         ppcImHtkVPOavAv9AZqRxncO4w+scc4BYZZmaCDdkdob3uj25k3a0W2pfeRUQlrLJXMU
-         iKAMwfhjI2YRKB66Q2OGTbdJ03Uhbwctkc/QYDcBtrm3o8K6Sy/9P9VhCIjGTd8xKDcH
-         zxXKGPxTMHgLoQMadOvfv4DMbboXEMq4FYzJmHGv/76L6vZnFpBTpdXwpzl5gsMk9085
-         IjxLVd5w96W52OinMJQPMcloIpcjqenD5zMmbYvXUVTKao4Mv1S2La8dPPLCHp44Ah6k
-         a43A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794385344; x=1794990144; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AgIMfPzec9DY2ApqYmXaL9OIT8JJtsh4iQln6el8AxM=;
-        b=DsTmr0hZ8CcsTyjp7ngxR3oagcZX9VCmjSZQBFJ8iSBDMz6XnpJDqxUUNRcshJpkQX
-         xFTf4AL/wUueaxR/HENRF/q1dWl4+GIYOoS2UQUcX7Z0ME3LdttYuKZTXWPC9SZzB7so
-         UtyY/maFiTCgPftLNxc/Yf3oBR2uVTef787EPWGh2ie89JIwHt+5MXK64w7fFM4KpAnL
-         /yRP2WdoSW9xGn23NZXN8i0I7fJZ9d5DWtJQe+OEqti+cUYKpATVooRdmL006ymoRlCY
-         w0DCKoQbik0tXs1UgOrmPYfvYYYYp23iXnkp2/NlAAdg7nc+8//zRjMsb/XZh5e5Oncu
-         ufDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794385344; x=1794990144;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=AgIMfPzec9DY2ApqYmXaL9OIT8JJtsh4iQln6el8AxM=;
-        b=pwLxvYXAzDWCddYXOeu6V7Lt7SICnu98nBh0KFcamJmrb7v7F25sms88crIqj3Mc/Y
-         /wrPQKk1GbzTM/vtA3NOrNH1xWmpcrstEo+G+QJuNdD3l5jR87v2yHqsMTm+N5HdMJoF
-         eFiRaT7fGUS7zEoRCzCDBLYfuC50HaNM2SfU6nWJsq++DFcjsKSIBCy4pNi5Yle8bqfr
-         yW5Icig94I8/4rbZfule4xVXYBpLzsBSvCIzk9jaroyFflwjSpEpZGu+njQU7nw/weaP
-         GqzpcI3NKlfCA076iL4X46BKAGxwY0EjnY8XGUJwiW3gOxgrPaJ8EVlN687yGeKaFBYq
-         FQSQ==
-X-Gm-Message-State: APuU4Z9aPIgeBmIOApkIcHpdtvjo+iB8Uu1bcJ9O6fpkgjeC1IVZ/Bh0
-	mJ3M+oLgzYGjIssK90Zvykr8J1UC4vStnI6wIZoA3xFL82bNdHYhR5KbYiclNHS0Mx04L7HGgZg
-	icpK3denT0WX3CQQRbfK95ElTpmS4FnZOTcKzZWn3sYCY
-X-Gm-Gg: AYBFou2EONwuUw5ZK5zvv67VQzTejzZ91jjVtZGmXlQQV+xub3I/6i8HbZeMZc/4Jbq
-	26DtEXiFpL5KAg0cf97o3F5Bdp5bGSyBvir6HW2C3pu6YITp9idb5hbvLgZD7kVY6b94dWfL4HK
-	tMncbyz+brLF3coy+iH2gq0/g51DzuKa6V3SSZxWQzucu3QbFgYyRBQabanN/NzviLGmtXClyeU
-	Fyl2LOCYuYdJApiam3noRc+p2/FHEZTZhn++ov7BC3fFsoxjSuc2ZiCAViNT+uF2EAicsnHRKQF
-	8T0voDZOgl8GLBPs1Rngd79FphAjwksBkGnD75548/RXz66psgiDIuBhfihETQfD9rlDnAMoQRQ
-	aQ49C0cLK2PTKU3eNPy4EYmM0tQMddPpo8CIeae99GyktKltTJ3R8oUe49+cEB/n1BBCBLQ==
-X-Received: by 2002:a2e:bc1e:0:b0:3ab:690f:8298 with SMTP id
- 38308e7fff4ca-3ae126e0386mr2437781fa.26.1794385344031; Wed, 11 Nov 2026
- 00:22:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=X0Xx3Ph1;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K+gARkJe;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=prrQhKF2;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KXIiKUuO
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 450F121EC5;
+	Wed, 11 Nov 2026 11:26:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794396402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
+	b=X0Xx3Ph1RL7yyl0bgh0EdfJINhKDovUuXMNiX29nsK0p5xRu11jf6bb2llA6tzVx2hc6/M
+	FYQwSPnfmSpQH54eO7qysTmf39coBAtVCtD6Y6PC9LLycAyAy3ZEWkeCkK/XL3Obxovnp0
+	U8vQulyIW0AyixFiAtQ+DAedlgEEfYQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794396402;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
+	b=K+gARkJedN0/FIRhvLBihuHJNoaHg1UnjNf/8krjU/EP429f2VFsUMAzw2sqyYCElxRBzJ
+	GIiPF8IaIYOs2GDw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=prrQhKF2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KXIiKUuO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794396401; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
+	b=prrQhKF2uOCkJhuxk4eJLGyooI2S+ud/bJjnY1+5AdlLJN1kJBfQdUC8Jo6dhEZTdMgP99
+	+t8HuUnycJXzAYPWRzWxNwIH6a815OI0Emc5kAGWfAbBXGrAXnhyOSq/wihfF0CeLNRLJX
+	Pwq32YEB6Lza2XuMVPzj5eSrqxZjoNQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794396401;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
+	b=KXIiKUuO4YFM5mPzQqVcbfRcSNJwc+LCV0VgwpukObrKfqM/NKcmGPb+OpZgyr2q0msrQq
+	3kYxpJBqdwGaJZBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FCC81339F;
+	Wed, 11 Nov 2026 11:26:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id X99DMvBQ9GpEUAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 11:26:41 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 7C9FA225E2; Wed, 11 Nov 2026 12:26:40 +0100 (CET)
+Date: Wed, 11 Nov 2026 12:26:40 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
+	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
+Subject: Re: [PATCH 09/15] fs: don't keep a device frozen when its freeze is
+ already gone
+Message-ID: <ykvx5guei6k257e5vguypioskss5i33x4oetgvil2kp2uslgjn@6ur5fqi36psh>
+References: <20261011-work-super-fixes-core-v1-0-c727176c5b53@kernel.org>
+ <20261011-work-super-fixes-core-v1-9-c727176c5b53@kernel.org>
+ <yl2umpbk6fnz2soh7fi5xellmovarx6ouxrvf4ki5xxledmihx@gjldiqbxpufn>
+ <20261110-innenansicht-lohnen-rupfen-dec970baed12@brauner>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -102,122 +116,184 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-From: =?UTF-8?B?6ZOu?= <fengaojigui88@gmail.com>
-Date: Wed, 11 Nov 2026 16:22:09 +0800
-X-Gm-Features: AclHuK_hy9veouiudQcSobg5SV-wrnT6hvHxKyBw3U6wMxsahH9odZuqLSKRpQw
-Message-ID: <CAO-4RZ2nS7ToE6rJxbTJM7CXHVY84YL4zqysFZA7=UzYg3SB0g@mail.gmail.com>
-Subject: =?UTF-8?Q?=5BBUG=5D_gfs2=3A_kernel_BUG_in_gfs2=5Fglock=5Fnq_=E2=80=94_recursiv?=
-	=?UTF-8?Q?e_holder_via_statfs_slow_path_=28fs=2Fgfs2=2Fglock=2Ec=3A1476=2C_v7=2E4=2Drc?=
-	=?UTF-8?Q?2=29?=
-To: agruenba@redhat.com
-Cc: gfs2@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-innenansicht-lohnen-rupfen-dec970baed12@brauner>
+X-Rspamd-Queue-Id: 450F121EC5
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-13.01 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:email,suse.com:email];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Score: -13.01
 
-Hi Andreas,
+On Tue 10-11-26 16:43:57, Christian Brauner wrote:
+> On Thu, Oct 22, 2026 at 12:33:29PM +0200, Jan Kara wrote:
+> > I'd just note that interpretting EINVAL from ->thaw_super is a bit of
+> > an adventure but so far only gfs2 implements that and that looks safe.
+> > Using some less abused error code to mean "already thawed" would be
+> > probably more robust in the long run...
+> 
+> Something like the below?
+> 
+> From: Christian Brauner <brauner@kernel.org>
+> Date: Tue, 10 Nov 2026 16:39:31 +0100
+> Subject: [PATCH] super: return -EALREADY for a thaw that finds nothing to drop
+> 
+> thaw_super_locked() returns -EINVAL when the superblock isn't frozen and
+> also when it is frozen but not by the holder that asks to thaw it. gfs2's
+> ->thaw_super() returns -EINVAL as well when this node never initiated the
+> freeze. So when fs_super_thaw() thaws the superblocks of a block device
+> whose freeze is gone already -EINVAL from ->thaw_super() is all it has
+> to go on and it has to guess that this is what happened.
+> 
+> Use -EALREADY for a thaw that has nothing to drop. Nothing in the freeze
+> and thaw code returns it so far and it clearly communicates what
+> happened. A freeze that is held by someone else keeps returning -EINVAL.
+> 
+> FITHAW has always reported an unfrozen filesystem as -EINVAL and
+> fsfreeze and qemu-guest-agent rely on that, so ioctl_fsthaw()
+> translates. The other in-kernel callers thaw their own kernel freezes
+> and pass the error on without looking at it.
+> 
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Link: https://lore.kernel.org/r/yl2umpbk6fnz2soh7fi5xellmovarx6ouxrvf4ki5xxledmihx@gjldiqbxpufn
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-We found a reproducible GFS2 BUG_ON with syzkaller on v7.4-rc2 (also seen o=
-n
-v7.4-rc1). The glock recursive-holder detection fires from the statfs slow
-path:
+Yep. Thanks! Feel free to add:
 
-  ------------[ cut here ]------------
-  kernel BUG at fs/gfs2/glock.c:1476!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-  CPU: 1 UID: 0 PID: 27376 Comm: syz.7.24 Not tainted
-7.4.0-rc1-kernsight-kasan+ #3
-  RIP: 0010:add_to_queue fs/gfs2/glock.c:1476 [inline]
-  RIP: 0010:gfs2_glock_nq+0x6ca/0x17b0 fs/gfs2/glock.c:1518
-  Call Trace:
-   gfs2_glock_nq_init fs/gfs2/glock.h:253 [inline]
-   gfs2_statfs_slow fs/gfs2/super.c:900 [inline]
-   gfs2_statfs+0x45a/0xcd0 fs/gfs2/super.c:974
-   statfs_by_dentry+0x13d/0x220 fs/statfs.c:66
-   vfs_statfs fs/statfs.c:90 [inline]
-   user_statfs+0xc3/0x190 fs/statfs.c:106
-   __do_sys_statfs+0x79/0xf0 fs/statfs.c:194
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-The BUG is triggered in add_to_queue() while gfs2_statfs_slow() is
-acquiring glock holders for resource groups. The recursive-holder check
-detects that the same task is attempting to queue another holder for a
-glock that already has a holder owned by that task. The console dump of
-the reproduced crash shows the glock is a resource-group glock (lock type
-3, n:3/22) with both the "original" and the "new" holder owned by the same
-task (pid 17923, statfs_by_dentry); these diagnostics are included at the
-top of logs/crash-serial-excerpt.txt in the repository.
+								Honza
 
-The resource-group iteration in gfs2_statfs_slow() may revisit a resource
-group before its previous holder has been released, causing the recursive
-acquisition =E2=80=94 this is a possible explanation based on the source co=
-de;
-the exact cause in our reproduction has not yet been confirmed.
-
-Kernel/config: 7.4.0-rc2-kernsight-kasan #1 (same crash on
-7.4.0-rc1-kernsight-kasan+ #3), built from v7.4-rc2 with CONFIG_KASAN=3Dy,
-CONFIG_PROVE_LOCKING=3Dy, CONFIG_GFS2_FS=3Dy, booted with panic_on_warn=3D1=
-.
-
-The crash depends on glock-holder state accumulated by earlier operations
-on the mount, so the reproducer is an ordered syzkaller program set of 107
-programs (state reconstruction tail + a triggering statfs(), in execution
-order):
-
-  syz-execprog -procs=3D8 -threaded -repeat=3D0 -executor ./syz-executor
-repro.kernsight.prog
-
-Stable reproduction on freshly booted VMs: expected time to hit is
-roughly 3-5 minutes. In our standalone verification run the kernel BUG at
-fs/gfs2/glock.c:1476 fired at 290.6 s after guest boot, ~250 s
-(~4 min 10 s) after syz-execprog started (the guest finished booting ~40 s
-before the reproducer); the fuzzing pipeline's state-primed sessions
-reproduced the same crash repeatedly on freshly replayed VMs, typically
-within 4-10 minutes of session start. With -repeat=3D0 the program set keep=
-s
-looping until the crash fires. All fresh-VM attempts so far have hit.
-Do not reduce it to
-the minimal testcase alone =E2=80=94 it depends on the state above and does=
- not
-reproduce by itself.
-
-A full write-up, the reproducer and the verified console log are available
-at:
-
-  https://github.com/Zheng-zheng-codes/gfs2-recursive-glock-bug
-
-Repository contents:
-  - README.md                      full bug report: phenomenon, stack trace=
-,
-                                   mechanism, reproduction steps, timings
-  - reproducer/repro.kernsight.prog
-                                   reproducer (107-program ordered set: sta=
-te
-                                   tail + triggering statfs)
-  - reproducer/repro.prog          syzkaller-extracted single-call program
-                                   (bpf$PROG_LOAD; does not reproduce the
-                                   GFS2 crash independently =E2=80=94 inclu=
-ded as
-                                   original evidence)
-  - reproducer/repro.priming.prog  state-priming program set (pipeline reci=
-pe)
-  - kernel.config                  kernel configuration used
-  - environment.txt                kernel image info (sha256), QEMU command
-                                   line, syzkaller commit, reproducer comma=
-nd
-  - logs/log-*.txt, logs/report-*.txt
-                                   original syzkaller execution logs and cr=
-ash
-                                   reports from the fuzzing pipeline
-  - logs/machineInfo-*.txt, logs/title-stat.json
-                                   guest environment info and title statist=
-ics
-  - logs/crash-serial-excerpt.txt  console tail of a verified crash
-  - logs/verification-serial.log   full serial console of an independent
-                                   verification run on a fresh VM
-
-
-
-Happy to provide the raw console logs, the state recipe, kernel
-image/config or extra crash instances if useful.
-
-Best regards,
-Zheng Zheng
+> ---
+>  Documentation/filesystems/vfs.rst |  4 +++-
+>  fs/gfs2/super.c                   |  2 +-
+>  fs/ioctl.c                        | 10 ++++++++--
+>  fs/super.c                        | 11 ++++++++---
+>  4 files changed, 20 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+> index 1824462a43711..e6d332fa17be9 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+> @@ -294,7 +294,9 @@ or bottom half).
+>  
+>  ``thaw_super``
+>  	called when VFS is unlocking a filesystem and making it writable
+> -	again after ->freeze_super. Optional.
+> +	again after ->freeze_super. Optional. Return -EALREADY if there is
+> +	no freeze to drop. The VFS relies on that when it thaws the
+> +	filesystems of a block device.
+>  
+>  ``unfreeze_fs``
+>  	called when VFS is unlocking a filesystem and making it writable
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index 04bb4cf787d4d..ce0eb4d1a7031 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -806,7 +806,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who,
+>  		return -EBUSY;
+>  	if (!test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags)) {
+>  		mutex_unlock(&sdp->sd_freeze_mutex);
+> -		return -EINVAL;
+> +		return -EALREADY;
+>  	}
+>  
+>  	atomic_inc(&sb->s_active);
+> diff --git a/fs/ioctl.c b/fs/ioctl.c
+> index 1c152c2b1b67d..56acaa122ec4d 100644
+> --- a/fs/ioctl.c
+> +++ b/fs/ioctl.c
+> @@ -402,14 +402,20 @@ static int ioctl_fsfreeze(struct file *filp)
+>  static int ioctl_fsthaw(struct file *filp)
+>  {
+>  	struct super_block *sb = file_inode(filp)->i_sb;
+> +	int error;
+>  
+>  	if (!ns_capable(sb->s_user_ns, CAP_SYS_ADMIN))
+>  		return -EPERM;
+>  
+>  	/* Thaw */
+>  	if (sb->s_op->thaw_super)
+> -		return sb->s_op->thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
+> -	return thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
+> +		error = sb->s_op->thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
+> +	else
+> +		error = thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
+> +	/* FITHAW has always reported an unfrozen filesystem as -EINVAL. */
+> +	if (error == -EALREADY)
+> +		error = -EINVAL;
+> +	return error;
+>  }
+>  
+>  static int ioctl_file_dedupe_range(struct file *file,
+> diff --git a/fs/super.c b/fs/super.c
+> index cd6f57ababe08..72ffa5527dda2 100644
+> --- a/fs/super.c
+> +++ b/fs/super.c
+> @@ -1640,8 +1640,8 @@ static int fs_super_thaw(struct super_block *sb)
+>  	if (sb->s_op->thaw_super) {
+>  		error = sb->s_op->thaw_super(sb,
+>  				FREEZE_MAY_NEST | FREEZE_HOLDER_USERSPACE, NULL);
+> -		/* -EINVAL means the freeze is gone already. */
+> -		if (error == -EINVAL)
+> +		/* The freeze is gone already. */
+> +		if (error == -EALREADY)
+>  			return 0;
+>  		return error;
+>  	}
+> @@ -2587,8 +2587,11 @@ static int thaw_super_locked(struct super_block *sb, enum freeze_holder who,
+>  {
+>  	int error = -EINVAL;
+>  
+> -	if (sb->s_writers.frozen != SB_FREEZE_COMPLETE)
+> +	/* There's no freeze to drop. */
+> +	if (sb->s_writers.frozen != SB_FREEZE_COMPLETE) {
+> +		error = -EALREADY;
+>  		goto out_unlock;
+> +	}
+>  
+>  	if (!may_unfreeze(sb, who, freeze_owner))
+>  		goto out_unlock;
+> @@ -2652,6 +2655,8 @@ static int thaw_super_locked(struct super_block *sb, enum freeze_holder who,
+>   * A filesystem may hold multiple devices and thus a filesystems may
+>   * have been frozen through the block layer via multiple block devices.
+>   * The filesystem remains frozen until all block devices are unfrozen.
+> + *
+> + * Returns -EALREADY if the filesystem isn't frozen.
+>   */
+>  int thaw_super(struct super_block *sb, enum freeze_holder who,
+>  	       const void *freeze_owner)
+> -- 
+> 2.53.0
+> 
+> 
+> -- 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
