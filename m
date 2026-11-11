@@ -1,112 +1,116 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794396404;
-	b=rW8KurHJh7DmXzGCxRMnK4tZ3u7yXwjrtndXJPskU44GxZPv9txnudskxIamjQZmFElO
-	 gD2Wa3aDX6w7pHzvCH+ULPxGDZKJ7Nbmy4l1ad4dugj5AF6HieSrKx0P98TCwqaq+WrxV
-	 GyvytmTqC39KgXSH1MgdCk39waFtx+b9QZy798aI89G0MdVJwX4qwnHXMjsXINuuRo+J4
-	 toLLIlnSY71CW9qcHUietki893G3yXR6rW/NWqJBIA7JMeu1B+REtPO2B5tR+KiWde61T
-	 LAOT6wwM4d7psLxuKUfNEWQTycy4XL6u/40J40qqk4kci5apVMX+64Q9Jcms4OWrS8g==
+	t=1794406515;
+	b=m996nXMbKhBZyO7DThjabhd7iNyCGbs/44IO7Ryp6fkuTPGcBVUIIDBk/kLe8Y8aaVO2
+	 oGmEwjgv+JR+dPX5i7vGW3RqCQqYL/aD7vJsi51ZrAORFwiWAoEEncxynT4GI2a3lBCzM
+	 o5oZbdELjzX2PClo566MNmIHmo4cZWK8u+xwPs1XOJbwjdoOVNWw2jwmBZ6aqhpsyelgm
+	 UGk5ctTd9Sx4J1yaEAJ6BDjGr+PI5Xqr4AwXrCadGPLdhBW18MWNioKxrTAwW/MdFY8bV
+	 XQknvNFjO8AXl3o+d0QlyeabkmQ5o68TnhaD53+y62xxbNFRgusdwjdUPd4GDJ5rPQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794396404;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794406515;
 	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
 	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:
 	 X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
-	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
-	b=l3xNz+NCAtTuSsXLB0Q2Sim5FSB2CPLzeTOUMSY7Rqh4eIqVQ0IymHDmc+TLBq4UYWPf
-	 xKG40fmfY3AlARM5QEjAKXIvRJJ53q1CxBL0VZWuBvV+udhFxvUCQwqQIbmA9HFVo9vfC
-	 dJ/yjEo3nqk58yDmOX0zuSMwXAZ5l83Ztc52oXdJULuRVuI7TUzcxjeJzn8dk3qMseysc
-	 vi7YXusrVexcxaWjprSMDGBB/a6M/WN84wv+oyDWpDrQacau9wkEhHmHD2AFkS6QgSjUn
-	 JXsmEbQRoNFDbB2NTFK6j51UcBXZfNrCWxt6Zyo4TT96BCHxAmAikwi3CZQyQHf+7Kw==
+	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
+	b=ZiK73kegivisxJpVK2LXkC1RYLocW5xSvj3pTcjD8448vL5b+UkV8tAvKouN6RROPVxD
+	 Vtu+r6qbw5p0Vcu1htkjyxI+kgNukTzPQPhfF36101J0drA6R8Rn3REUbUOswcf4Z/Olt
+	 Ttfok9rcej1iUYxtdyfXG1fwsE/PBE3r8CfMCmhal/NkxcH9WbHCRD85bH7KlIwJHl8dP
+	 LVPsspF4VWGjFptPweyLbNG5KwnAa/itd/JjesrWlEsKpDv4yOiev8tfS1+8OuIIJ+Ed4
+	 wLpwhmVMSq1rDdgWW1wLT6ndhk3EKtdXW6XnH+UadbirKGVzI9VfKMpyQvvzARJHFQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=suse.cz;
 	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=X0Xx3Ph1;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K+gARkJe;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=prrQhKF2;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KXIiKUuO;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
 	arc=none smtp.remote-ip=195.135.223.130
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110C2606A32A
-	for <gfs2@lists.linux.dev>; Wed, 11 Nov 2026 11:26:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 110C2606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE34606A889;
+	Wed, 11 Nov 2026 14:15:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FE34606A889
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=X0Xx3Ph1;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K+gARkJe;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=prrQhKF2;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KXIiKUuO
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 450F121EC5;
-	Wed, 11 Nov 2026 11:26:41 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 09F3E22A5E;
+	Wed, 11 Nov 2026 14:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794396402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
-	b=X0Xx3Ph1RL7yyl0bgh0EdfJINhKDovUuXMNiX29nsK0p5xRu11jf6bb2llA6tzVx2hc6/M
-	FYQwSPnfmSpQH54eO7qysTmf39coBAtVCtD6Y6PC9LLycAyAy3ZEWkeCkK/XL3Obxovnp0
-	U8vQulyIW0AyixFiAtQ+DAedlgEEfYQ=
+	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
+	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
+	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
+	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794396402;
+	s=susede2_ed25519; t=1794406512;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
-	b=K+gARkJedN0/FIRhvLBihuHJNoaHg1UnjNf/8krjU/EP429f2VFsUMAzw2sqyYCElxRBzJ
-	GIiPF8IaIYOs2GDw==
+	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
+	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
+	KUe4A2NvjL7x2ZAw==
 Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=prrQhKF2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KXIiKUuO
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794396401; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
-	b=prrQhKF2uOCkJhuxk4eJLGyooI2S+ud/bJjnY1+5AdlLJN1kJBfQdUC8Jo6dhEZTdMgP99
-	+t8HuUnycJXzAYPWRzWxNwIH6a815OI0Emc5kAGWfAbBXGrAXnhyOSq/wihfF0CeLNRLJX
-	Pwq32YEB6Lza2XuMVPzj5eSrqxZjoNQ=
+	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
+	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
+	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
+	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794396401;
+	s=susede2_ed25519; t=1794406512;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lPuIhmSrl9cFTbYvAZEEYsYaxcd/tmKwtfJ+lX0zRCM=;
-	b=KXIiKUuO4YFM5mPzQqVcbfRcSNJwc+LCV0VgwpukObrKfqM/NKcmGPb+OpZgyr2q0msrQq
-	3kYxpJBqdwGaJZBQ==
+	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
+	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
+	KUe4A2NvjL7x2ZAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FCC81339F;
-	Wed, 11 Nov 2026 11:26:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD61B134E5;
+	Wed, 11 Nov 2026 14:15:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id X99DMvBQ9GpEUAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 11:26:41 +0000
+	id oMu1Jm949GpWAQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 14:15:11 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 7C9FA225E2; Wed, 11 Nov 2026 12:26:40 +0100 (CET)
-Date: Wed, 11 Nov 2026 12:26:40 +0100
+	id 475D422933; Wed, 11 Nov 2026 15:15:11 +0100 (CET)
+Date: Wed, 11 Nov 2026 15:15:11 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
-	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
-Subject: Re: [PATCH 09/15] fs: don't keep a device frozen when its freeze is
- already gone
-Message-ID: <ykvx5guei6k257e5vguypioskss5i33x4oetgvil2kp2uslgjn@6ur5fqi36psh>
-References: <20261011-work-super-fixes-core-v1-0-c727176c5b53@kernel.org>
- <20261011-work-super-fixes-core-v1-9-c727176c5b53@kernel.org>
- <yl2umpbk6fnz2soh7fi5xellmovarx6ouxrvf4ki5xxledmihx@gjldiqbxpufn>
- <20261110-innenansicht-lohnen-rupfen-dec970baed12@brauner>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>
+Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
+ <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
+ <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -118,182 +122,90 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-innenansicht-lohnen-rupfen-dec970baed12@brauner>
-X-Rspamd-Queue-Id: 450F121EC5
+In-Reply-To: <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+X-Rspamd-Queue-Id: 09F3E22A5E
 X-Spam-Level: 
 X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 X-Rspamd-Action: no action
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [-13.01 / 50.00];
+X-Spamd-Result: default: False [-11.51 / 50.00];
 	SUSE_INTERNAL_BYPASS(-9.00)[];
 	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
 	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:email,suse.com:email];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	RCVD_COUNT_THREE(0.00)[3];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Spam-Score: -13.01
+	FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,suse.com,zeniv.linux.org.uk,lists.sourceforge.net,lists.linux.dev,kvack.org,lists.infradead.org,gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim]
+X-Spam-Score: -11.51
 
-On Tue 10-11-26 16:43:57, Christian Brauner wrote:
-> On Thu, Oct 22, 2026 at 12:33:29PM +0200, Jan Kara wrote:
-> > I'd just note that interpretting EINVAL from ->thaw_super is a bit of
-> > an adventure but so far only gfs2 implements that and that looks safe.
-> > Using some less abused error code to mean "already thawed" would be
-> > probably more robust in the long run...
+On Tue 10-11-26 22:50:47, Christian Brauner wrote:
+> On Thu, Nov 05, 2026 at 10:22:07AM +0100, Jan Kara wrote:
+> > So shouldn't we just modify the sb_rdonly() check in sync_filesystem() to
+> > use also sb_emergency_ro() and don't bother with modifying individual
+> > filesystems?
 > 
-> Something like the below?
+> The VFS patch I posted in v1 thread did that. I dropped it because
+> of jfs. jfs keeps anonymous tlocks for every allocation that writeback
+> hasn't committed yet. If sync_filesystem() bails after the error nothing
+> commits them before evict_inodes() and jfs_evict_inode() hits the
+> BUG_ON() for a non-empty anon_inode_list on umount.
 > 
-> From: Christian Brauner <brauner@kernel.org>
-> Date: Tue, 10 Nov 2026 16:39:31 +0100
-> Subject: [PATCH] super: return -EALREADY for a thaw that finds nothing to drop
+> Which is what happened before the series because the error set
+> SB_RDONLY. jfs_reconfigure() relies on the same sync_filesystem() call
+> when going read-only after the error.
 > 
-> thaw_super_locked() returns -EINVAL when the superblock isn't frozen and
-> also when it is frozen but not by the holder that asks to thaw it. gfs2's
-> ->thaw_super() returns -EINVAL as well when this node never initiated the
-> freeze. So when fs_super_thaw() thaws the superblocks of a block device
-> whose freeze is gone already -EINVAL from ->thaw_super() is all it has
-> to go on and it has to guess that this is what happened.
-> 
-> Use -EALREADY for a thaw that has nothing to drop. Nothing in the freeze
-> and thaw code returns it so far and it clearly communicates what
-> happened. A freeze that is held by someone else keeps returning -EINVAL.
-> 
-> FITHAW has always reported an unfrozen filesystem as -EINVAL and
-> fsfreeze and qemu-guest-agent rely on that, so ioctl_fsthaw()
-> translates. The other in-kernel callers thaw their own kernel freezes
-> and pass the error on without looking at it.
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Link: https://lore.kernel.org/r/yl2umpbk6fnz2soh7fi5xellmovarx6ouxrvf4ki5xxledmihx@gjldiqbxpufn
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> jfs could commit them itself before evict_inodes() but that means a
+> ->kill_sb() wrapper and a txQuiesce()-like walk over the global
+> anon_list filtered by superblock. I don't think that's worth it.
 
-Yep. Thanks! Feel free to add:
+OK, so instead of BUGing in jfs_evict_inode(), shouldn't JFS just do
+something like:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+-	BUG_ON(!list_empty(&ji->anon_inode_list));
++	if (!list_empty(&ji->anon_inode_list)) {
++		WARN_ON_ONCE(!sb_emergency_ro(inode->i_sb));
++		/* This needs helper in fs/jfs/jfs_txnmgr.c */
++		TXN_LOCK();
++		list_del_init(&ji->anon_inode_list);
++		TXN_UNLOCK();
++	}
+
+So that JFS doesn't block everybody else? Because conceptually, once sb is
+marked as emergency read-only, we really want to stop writeback so letting
+sync_inodes() run seems moot.
+
+> > Is this really needed? All the xattr operations go through mnt_want_write()
+> > / mnt_want_write_file() so this should be caught in VFS...
+> 
+> Not the ones ecryptfs does on the lower filesystem...
+> Hm, maybe we should make ecryptfs get write access to the lower mount
+> instead and drop the xattr checks from the filesystems. Not sure.
+
+Argh, also NFS I assume. OK, that won't be easy to get rid of AFAICT (we
+generally don't have mount available there).
 
 								Honza
-
-> ---
->  Documentation/filesystems/vfs.rst |  4 +++-
->  fs/gfs2/super.c                   |  2 +-
->  fs/ioctl.c                        | 10 ++++++++--
->  fs/super.c                        | 11 ++++++++---
->  4 files changed, 20 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index 1824462a43711..e6d332fa17be9 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
-> @@ -294,7 +294,9 @@ or bottom half).
->  
->  ``thaw_super``
->  	called when VFS is unlocking a filesystem and making it writable
-> -	again after ->freeze_super. Optional.
-> +	again after ->freeze_super. Optional. Return -EALREADY if there is
-> +	no freeze to drop. The VFS relies on that when it thaws the
-> +	filesystems of a block device.
->  
->  ``unfreeze_fs``
->  	called when VFS is unlocking a filesystem and making it writable
-> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-> index 04bb4cf787d4d..ce0eb4d1a7031 100644
-> --- a/fs/gfs2/super.c
-> +++ b/fs/gfs2/super.c
-> @@ -806,7 +806,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who,
->  		return -EBUSY;
->  	if (!test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags)) {
->  		mutex_unlock(&sdp->sd_freeze_mutex);
-> -		return -EINVAL;
-> +		return -EALREADY;
->  	}
->  
->  	atomic_inc(&sb->s_active);
-> diff --git a/fs/ioctl.c b/fs/ioctl.c
-> index 1c152c2b1b67d..56acaa122ec4d 100644
-> --- a/fs/ioctl.c
-> +++ b/fs/ioctl.c
-> @@ -402,14 +402,20 @@ static int ioctl_fsfreeze(struct file *filp)
->  static int ioctl_fsthaw(struct file *filp)
->  {
->  	struct super_block *sb = file_inode(filp)->i_sb;
-> +	int error;
->  
->  	if (!ns_capable(sb->s_user_ns, CAP_SYS_ADMIN))
->  		return -EPERM;
->  
->  	/* Thaw */
->  	if (sb->s_op->thaw_super)
-> -		return sb->s_op->thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
-> -	return thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
-> +		error = sb->s_op->thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
-> +	else
-> +		error = thaw_super(sb, FREEZE_HOLDER_USERSPACE, NULL);
-> +	/* FITHAW has always reported an unfrozen filesystem as -EINVAL. */
-> +	if (error == -EALREADY)
-> +		error = -EINVAL;
-> +	return error;
->  }
->  
->  static int ioctl_file_dedupe_range(struct file *file,
-> diff --git a/fs/super.c b/fs/super.c
-> index cd6f57ababe08..72ffa5527dda2 100644
-> --- a/fs/super.c
-> +++ b/fs/super.c
-> @@ -1640,8 +1640,8 @@ static int fs_super_thaw(struct super_block *sb)
->  	if (sb->s_op->thaw_super) {
->  		error = sb->s_op->thaw_super(sb,
->  				FREEZE_MAY_NEST | FREEZE_HOLDER_USERSPACE, NULL);
-> -		/* -EINVAL means the freeze is gone already. */
-> -		if (error == -EINVAL)
-> +		/* The freeze is gone already. */
-> +		if (error == -EALREADY)
->  			return 0;
->  		return error;
->  	}
-> @@ -2587,8 +2587,11 @@ static int thaw_super_locked(struct super_block *sb, enum freeze_holder who,
->  {
->  	int error = -EINVAL;
->  
-> -	if (sb->s_writers.frozen != SB_FREEZE_COMPLETE)
-> +	/* There's no freeze to drop. */
-> +	if (sb->s_writers.frozen != SB_FREEZE_COMPLETE) {
-> +		error = -EALREADY;
->  		goto out_unlock;
-> +	}
->  
->  	if (!may_unfreeze(sb, who, freeze_owner))
->  		goto out_unlock;
-> @@ -2652,6 +2655,8 @@ static int thaw_super_locked(struct super_block *sb, enum freeze_holder who,
->   * A filesystem may hold multiple devices and thus a filesystems may
->   * have been frozen through the block layer via multiple block devices.
->   * The filesystem remains frozen until all block devices are unfrozen.
-> + *
-> + * Returns -EALREADY if the filesystem isn't frozen.
->   */
->  int thaw_super(struct super_block *sb, enum freeze_holder who,
->  	       const void *freeze_owner)
-> -- 
-> 2.53.0
-> 
-> 
-> -- 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
