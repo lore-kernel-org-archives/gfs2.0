@@ -1,116 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794406515;
-	b=m996nXMbKhBZyO7DThjabhd7iNyCGbs/44IO7Ryp6fkuTPGcBVUIIDBk/kLe8Y8aaVO2
-	 oGmEwjgv+JR+dPX5i7vGW3RqCQqYL/aD7vJsi51ZrAORFwiWAoEEncxynT4GI2a3lBCzM
-	 o5oZbdELjzX2PClo566MNmIHmo4cZWK8u+xwPs1XOJbwjdoOVNWw2jwmBZ6aqhpsyelgm
-	 UGk5ctTd9Sx4J1yaEAJ6BDjGr+PI5Xqr4AwXrCadGPLdhBW18MWNioKxrTAwW/MdFY8bV
-	 XQknvNFjO8AXl3o+d0QlyeabkmQ5o68TnhaD53+y62xxbNFRgusdwjdUPd4GDJ5rPQw==
+	t=1794452024;
+	b=H6Fj0jVWKsOIh8lZC0p2v/+5QiUPfP7i/tfevLVyhG03oiw+l4wTKwMOglbNGyVPm+PB
+	 XlnnZwNUAH+aIx4Flc3DcFMEmoy1IjC+VPwNINsVIBy8x7SG2GsqLUIt9SNjIdfx6ggIC
+	 gy5HZorARm5Yvnr8gNyYJAxXonUwJSAepTK0Kr71GxRcRinm+pKpYf9I8kSuvxeL3aYBK
+	 Ad320QbFHTp6LTwcDRgE0SbHlJzB3rq1F5Zyn0TBw+Odq2ETlRqyGwXOwY4z/5HZa0UiA
+	 wcYZ/I3vVRO+NDf+SdyJGl61Cm9YUETFLzbvMKSwcw8WNbOFm/B3a0C9WKFB57MoSgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794406515;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:
-	 X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=ZiK73kegivisxJpVK2LXkC1RYLocW5xSvj3pTcjD8448vL5b+UkV8tAvKouN6RROPVxD
-	 Vtu+r6qbw5p0Vcu1htkjyxI+kgNukTzPQPhfF36101J0drA6R8Rn3REUbUOswcf4Z/Olt
-	 Ttfok9rcej1iUYxtdyfXG1fwsE/PBE3r8CfMCmhal/NkxcH9WbHCRD85bH7KlIwJHl8dP
-	 LVPsspF4VWGjFptPweyLbNG5KwnAa/itd/JjesrWlEsKpDv4yOiev8tfS1+8OuIIJ+Ed4
-	 wLpwhmVMSq1rDdgWW1wLT6ndhk3EKtdXW6XnH+UadbirKGVzI9VfKMpyQvvzARJHFQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794452024;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=/cOEvzfTmLtCNzwUoH+WlzB71QyL8D0I1pIinOCRzTI=;
+	b=1o568vseaQMUG+xfnx/U7JbVQlNi9HGzXIz0TZeZKMOTXxcc7vWQIrbn1VPwxCz3vqBd
+	 ISB4ZMCpFsrg8izYPTFb1c5PYbi8pIva6QV2ctkkZSTk4Q1bdpdhr5zrE88L/ikbOvNj7
+	 UdJitRtQy4laarTPvRysEVCQqCfh0zM9K5FJjnPKig5+RUVUKNOPUSOn33R+9qmjk+7lG
+	 Y6MWPKe5paUQ9Vyg08XBu+7pKzWIidjvfbubS+Iw39Ev3emUTE9d7wjpV1Ljj46ydI33r
+	 DJ8BPVzXBxc7JuOad0yfawmpQEDL/hgrYmqtksaso0ggLudmTZteRaBdp0owLSCBXqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=GwRr4NbL;
+	arc=none smtp.remote-ip=115.124.30.111
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE34606A889;
-	Wed, 11 Nov 2026 14:15:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FE34606A889
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8650E606A327
+	for <gfs2@lists.linux.dev>; Thu, 12 Nov 2026 02:53:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8650E606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 09F3E22A5E;
-	Wed, 11 Nov 2026 14:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
-	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
-	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794406512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
-	KUe4A2NvjL7x2ZAw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
-	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
-	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794406512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
-	KUe4A2NvjL7x2ZAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD61B134E5;
-	Wed, 11 Nov 2026 14:15:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oMu1Jm949GpWAQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 14:15:11 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 475D422933; Wed, 11 Nov 2026 15:15:11 +0100 (CET)
-Date: Wed, 11 Nov 2026 15:15:11 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
- <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
- <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=GwRr4NbL
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794452015; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/cOEvzfTmLtCNzwUoH+WlzB71QyL8D0I1pIinOCRzTI=;
+	b=GwRr4NbL92PaE9dXiYqpfaEQmojlJoXCfa6qSp6fbxgp5NX9teVBnzg2EdupgfFdX/jj8Xbcz0FSRE0EUfnSfOvhd+nDcg0Qi3N+PJhFrljLap0oDnbRZu18Sf0icb9sQbHGslxknnSpCDuzDsrCQOP/3WNYmL8C492jwTifXvM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0XEaSnJV_1794452014;
+Received: from 30.221.145.78(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XEaSnJV_1794452014 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Nov 2026 10:53:34 +0800
+Message-ID: <c5d699e4-12cd-4321-9b23-7d340ea8e959@linux.alibaba.com>
+Date: Thu, 12 Nov 2026 10:53:33 +0800
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -120,92 +53,62 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
-X-Rspamd-Queue-Id: 09F3E22A5E
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-11.51 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,suse.com,zeniv.linux.org.uk,lists.sourceforge.net,lists.linux.dev,kvack.org,lists.infradead.org,gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim]
-X-Spam-Score: -11.51
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] gfs2: release the statfs glock when
+ gfs2_clear_beyond_eof() fails
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261105054609.2759418-1-joseph.qi@linux.alibaba.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261105054609.2759418-1-joseph.qi@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue 10-11-26 22:50:47, Christian Brauner wrote:
-> On Thu, Nov 05, 2026 at 10:22:07AM +0100, Jan Kara wrote:
-> > So shouldn't we just modify the sb_rdonly() check in sync_filesystem() to
-> > use also sb_emergency_ro() and don't bother with modifying individual
-> > filesystems?
+Ping...
+
+On 11/5/26 1:46 PM, Joseph Qi wrote:
+> gfs2_file_buffered_write() acquires the master statfs glock before
+> writing to the rindex and releases it once the write is done.  The only
+> error path in between used to be the failure of that acquisition, which
+> gfs2_glock_nq_init() unwinds by itself, so the cleanup code at the end of
+> the function never had to deal with a held statfs glock.
 > 
-> The VFS patch I posted in v1 thread did that. I dropped it because
-> of jfs. jfs keeps anonymous tlocks for every allocation that writeback
-> hasn't committed yet. If sync_filesystem() bails after the error nothing
-> commits them before evict_inodes() and jfs_evict_inode() hits the
-> BUG_ON() for a non-empty anon_inode_list on umount.
+> Commit 4982e58669b1 ("gfs2: page poisoning fix") added a call to
+> gfs2_clear_beyond_eof() right after the acquisition and made it jump to
+> out_unlock on failure.  That path only drops the inode glock and then
+> frees statfs_gh, so a failed write to the rindex leaves the master
+> statfs glock held exclusively and frees a holder that is still linked
+> into the glock's holder list.  The GL_NOCACHE demote is requested by
+> __gfs2_glock_dq(), which is never reached, so the glock stays locked for
+> the rest of the mount, and the glock and pid references taken by
+> __gfs2_holder_init() leak as well.  Walking the stale list entry later
+> on, for instance from do_promote() or from a demote callback, is a
+> use-after-free.
 > 
-> Which is what happened before the series because the error set
-> SB_RDONLY. jfs_reconfigure() relies on the same sync_filesystem() call
-> when going read-only after the error.
+> gfs2_clear_beyond_eof() zeroes the space beyond eof, which for the
+> rindex ends up in adjust_fs_space(), so the call cannot be moved out
+> from under the statfs glock.  Release the holder in the error path
+> instead, guarded by gfs2_holder_initialized() so that the paths which
+> never acquired it and the one which already released it are unaffected.
 > 
-> jfs could commit them itself before evict_inodes() but that means a
-> ->kill_sb() wrapper and a txQuiesce()-like walk over the global
-> anon_list filtered by superblock. I don't think that's worth it.
-
-OK, so instead of BUGing in jfs_evict_inode(), shouldn't JFS just do
-something like:
-
--	BUG_ON(!list_empty(&ji->anon_inode_list));
-+	if (!list_empty(&ji->anon_inode_list)) {
-+		WARN_ON_ONCE(!sb_emergency_ro(inode->i_sb));
-+		/* This needs helper in fs/jfs/jfs_txnmgr.c */
-+		TXN_LOCK();
-+		list_del_init(&ji->anon_inode_list);
-+		TXN_UNLOCK();
-+	}
-
-So that JFS doesn't block everybody else? Because conceptually, once sb is
-marked as emergency read-only, we really want to stop writeback so letting
-sync_inodes() run seems moot.
-
-> > Is this really needed? All the xattr operations go through mnt_want_write()
-> > / mnt_want_write_file() so this should be caught in VFS...
+> Fixes: 4982e58669b1 ("gfs2: page poisoning fix")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+> ---
+>  fs/gfs2/file.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Not the ones ecryptfs does on the lower filesystem...
-> Hm, maybe we should make ecryptfs get write access to the lower mount
-> instead and drop the xattr checks from the filesystems. Not sure.
+> diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+> index 1efd0679badd9..2452d3ecf09c7 100644
+> --- a/fs/gfs2/file.c
+> +++ b/fs/gfs2/file.c
+> @@ -1087,6 +1087,8 @@ static ssize_t gfs2_file_buffered_write(struct kiocb *iocb,
+>  		goto retry;
+>  	}
+>  out_unlock:
+> +	if (inode == sdp->sd_rindex && gfs2_holder_initialized(statfs_gh))
+> +		gfs2_glock_dq_uninit(statfs_gh);
+>  	if (gfs2_holder_queued(gh))
+>  		gfs2_glock_dq(gh);
+>  out_uninit:
 
-Argh, also NFS I assume. OK, that won't be easy to get rid of AFAICT (we
-generally don't have mount available there).
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
