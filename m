@@ -1,112 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.26.1.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794581693;
-	b=HPZdv45PWVOI/96BioamTBx5Sy/0pbofjRvHTvBVIZ/STanvZUlbPWvg+oQ2eKdb9sv5
-	 9LJGLTDmlT6deqhtNnvuaZQPUKewayl7XkS0SHV9Ja5JVy4qaGeh7UzjI9dbd72wYhXBN
-	 mQffxqG3vA4B3mYIeqsh4qTdp7Xq6uIfS4bP0dU92hhcagClCNfKpqxTlVlSCwV4UEiz+
-	 QVkBW6zGCIO4HjHNJwTdjn5UqLpVJLa08KKolc+XZONRKQrqJhqFSBRl9M4CjRgj1Q+KH
-	 0VA1yec1ftRpdQ+HebGpYWxM3ydV+nNIAwRNCKajh1Afaouc8xd9jjFFUP9hL44CPJw==
+	t=1794585067;
+	b=jYCogwid6sM4PP/EeBoh1pUIP8sOqvg+NmHb8rzS3Yw6hgjxxITli2iSoDKSDMZHARb6
+	 5DHGLgS3+BG39XtfhC2TqRnITE+aZNSVnkDhXKHbT4i79L1ZEF8nFL/CFFJUI5UZhSV8U
+	 kC+ehZ8VV9kZgSonErMvAom8Cj4nu6ydI0JmBmbF/Q9tvH9nIN8wB4FtwqWHgvp0hLt3R
+	 hcBFznL/irXGFMbX8inJGKd61QEtA75mmIYBQSQTzbPsAeBwbgYMromEUTcoeX+GuZjB5
+	 7HrexOZKeFYtAlPigVMB+B6AhNvTwEmUL2sV6Avtjw/jrQvgRK3Z8o4+8gm+17fputw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794581693;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
-	b=sQjaDKHO3rvP0lpT904oAARmYyaBGZE4Wmly8pwuvYs2NO98i+9U7U8GE+dWqTkY/efi
-	 oeCSQKhTgs4wjCHqVlsO9Co6Bv1NGqkq/lG765ck5IFjrKDEWA853LYmAipW+oO3lKCl5
-	 bMMTM9ABvvrON2jUzUIXY2CJ0nRZgnl0E15Bozmc8z5x0O2vZ16MXFWZC5+3mX+i+g1+q
-	 VOcgnW+uCGbf6/1NnPsG6byfMjDfMLhlOMNov2v6iY40cT4z7dYbhK9kbKKUosXd/Uh7f
-	 UV1bLH24wfilc9GvGGT7BvvEXiivRZj4/yOgPBrnHfn2FK8fbixMfLykNcPEjDMfqWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794585067;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:X-Originating-IP:X-ClientProxiedBy:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ttqAfDxUfq10cMBrxuj6822Y6w4QHwk60wHnUr65sec=;
+	b=ZV59/25woEGIHh2llS74XnbVB1XaaJ8fqjHWfNCXvvgSAYvMmTqqLPigyDFPXjSx0Jql
+	 N/4suIyPocQOJdlRt3ljAZeKnHr3Tm4QEyUcI3jQzf7GzAOpmh+MDoPQPkvArEUoYhkOx
+	 nBJ6oKLozX1U8qMXbOYGSbswTW6nLrPe/m9vGrYEKvOt+78myy/s8VqdIeRc46yuxdeWx
+	 lh1KpB83lGNPCQFwhsAagsW6rmkpSXQKWZaeqYB7iFonXr2vjV3RixqekJwivK1wkoGhn
+	 jdMbwHeKhZTcg6BVVfN1gerGMtpBc0ofhmVdV3awGscjzcluATDmfl4lUl65GEUVcBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.it;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=A2YWGP1F;
+	arc=none smtp.remote-ip=52.26.1.71
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64DE606A32D;
-	Fri, 13 Nov 2026 14:54:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D64DE606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA9F606A32E;
+	Fri, 13 Nov 2026 15:51:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EA9F606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0100E1F76B;
-	Fri, 13 Nov 2026 14:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794581690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
-	b=HbiPobahhoFdy1JualtlCQSG5WiHGbYkeN97T1slq4syz8ydxAAmyFBMnw9wIWMymvWQBA
-	OibY1yJc8woYnm917MtaAgfxA3/FGLQWnqOg9S4/Gje0GR/2m8TO3d0XcGyF5ZnSISlDva
-	Pm+cC9vb75/3LpW2TrEGkQOayOm27Hw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794581690;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
-	b=QBNwugyQn7fvnUpfJc61DDJ3B5ezL3Vu/dwAt7y/gE33yL9lBDupL5AB9JAf8phimNZdBs
-	djr90So7chpqQRAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794581690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
-	b=HbiPobahhoFdy1JualtlCQSG5WiHGbYkeN97T1slq4syz8ydxAAmyFBMnw9wIWMymvWQBA
-	OibY1yJc8woYnm917MtaAgfxA3/FGLQWnqOg9S4/Gje0GR/2m8TO3d0XcGyF5ZnSISlDva
-	Pm+cC9vb75/3LpW2TrEGkQOayOm27Hw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794581690;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
-	b=QBNwugyQn7fvnUpfJc61DDJ3B5ezL3Vu/dwAt7y/gE33yL9lBDupL5AB9JAf8phimNZdBs
-	djr90So7chpqQRAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BBF48134C3;
-	Fri, 13 Nov 2026 14:54:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hybEI7kk92pSFgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 13 Nov 2026 14:54:49 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 50A352396E; Fri, 13 Nov 2026 15:54:49 +0100 (CET)
-Date: Fri, 13 Nov 2026 15:54:49 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: Re: [PATCH v3 06/33] ext2: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <wsdk673ps54ncvmj7xvgzghgcf7y27uw4w7ahrgbytdy6tdxg3@ldvmi2yk3lm7>
-References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-6-0be92bb73709@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=A2YWGP1F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794585065; x=1826121065;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ttqAfDxUfq10cMBrxuj6822Y6w4QHwk60wHnUr65sec=;
+  b=A2YWGP1Fpk2ennvvIVzm+5gKtGrHfZqwO3k6Fac3QUJHHaNGlbsKOe82
+   ZZT5fkrCxezz3MVrW43yrWb+Thpo+s410hHAHtwrwQiXvwIMWaQdrhI9B
+   ud6B5Er5bzUSFGIOKZscALODbNt+OsQLk8ngsDzgwIg//uYfWcp5lxkQS
+   t4/foga8HVDruCDogUljFI93EI6AzEX3ugqCqmXbZCPv5LDIfCGi1xMD0
+   Jp6EUnskndoCjsiyMUi45J+zod9wAL4o653QwfVWt5HvBj+pBjyG3qBsR
+   6bnGlnGZoHjLk1m2hj3Z7BXb74iDvQ1p3vdKDPYSlgNgEILjNZc5ogMwo
+   A==;
+X-CSE-ConnectionGUID: mEzGvvEbQ/eZvW+yJkWFSA==
+X-CSE-MsgGUID: 726PIJdYTv201+SXclxh0w==
+X-IronPort-AV: E=Sophos;i="6.27,211,1787011200"; 
+   d="scan'208";a="33924868"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 15:50:57 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:27372]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.61:2525] with esmtp (Farcaster)
+ id 06ade6d6-3062-4e83-9e5f-28bb5c92f1e7; Fri, 13 Nov 2026 15:50:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 06ade6d6-3062-4e83-9e5f-28bb5c92f1e7
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 13 Nov 2026 15:50:55 +0000
+Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
+ (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Fri, 13 Nov 2026
+ 15:50:49 +0000
+From: Salvatore Dipietro <dipiets@amazon.com>
+To: <jack@suse.cz>
+CC: <abuehaze@amazon.com>, <agruenba@redhat.com>, <akpm@linux-foundation.org>,
+	<alisaidi@amazon.com>, <almaz.alexandrovich@paragon-software.com>,
+	<apopple@nvidia.com>, <blakgeof@amazon.com>, <brauner@kernel.org>,
+	<byungchul@sk.com>, <cem@kernel.org>, <david@kernel.org>,
+	<dipietro.salvatore@gmail.com>, <dipiets@amazon.it>, <djwong@kernel.org>,
+	<dlemoal@kernel.org>, <exfat@lists.linux.dev>, <fuse-devel@lists.linux.dev>,
+	<gfs2@lists.linux.dev>, <gourry@gourry.net>, <hyc.lee@gmail.com>,
+	<joshua.hahnjy@gmail.com>, <jth@kernel.org>, <liam@infradead.org>,
+	<linkinjeon@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-xfs@vger.kernel.org>, <ljs@kernel.org>, <matthew.brost@intel.com>,
+	<mhocko@suse.com>, <miklos@szeredi.hu>, <naohiro.aota@wdc.com>,
+	<ntfs3@lists.linux.dev>, <ntfs@lists.linux.dev>, <pfalcato@suse.de>,
+	<rakie.kim@sk.com>, <ritesh.list@gmail.com>, <rppt@kernel.org>,
+	<rvvandan@amazon.com>, <ryan.roberts@arm.com>, <sj1557.seo@samsung.com>,
+	<surenb@google.com>, <vbabka@kernel.org>, <viro@zeniv.linux.org.uk>,
+	<willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<yuezhang.mo@sony.com>, <ziy@nvidia.com>, <kirill@shutemov.name>,
+	<dgc@kernel.org>
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for per-block dirty folios
+Date: Fri, 13 Nov 2026 15:50:15 +0000
+Message-ID: <20261113155015.516481-1-dipiets@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
+References: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -116,188 +102,160 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-6-0be92bb73709@kernel.org>
-X-Spamd-Result: default: False [-11.30 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,suse.com,zeniv.linux.org.uk,lists.sourceforge.net,lists.linux.dev,kvack.org,lists.infradead.org,gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -11.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Fri 13-11-26 12:59:02, Christian Brauner wrote:
-> With errors=remount-ro ext2_error() sets SB_RDONLY from whatever context
-> hit the error and without holding s_umount. That races with everyone
-> else changing sb->s_flags and it breaks freezing. If it happens while
-> the filesystem is frozen thaw_super() sees a read-only superblock and
-> leaves the s_writers rwsems locked so every writer hangs. A lookup in a
-> corrupted directory is enough. Karl proposed teaching thaw_super() about
-> it but Jan preferred fixing the filesystems (cf. [1]) like ext4 and f2fs
-> already did.
-> 
-> So call sb_set_emergency_ro() instead and let the VFS refuse
-> modifications. ext2 still refuses allocations and ext2_xattr_set()
-> itself, ecryptfs calls the latter without write access on the lower
-> mount. Unlinked inodes are left to e2fsck. ext2_write_inode() keeps
-> working because writeback still writes data, bitmaps, indirect and
-> directory blocks after the error and they'd be lost without the inode.
-> A thaw after an error while frozen still writes the superblock but
-> EXT2_ERROR_FS stays set in it.
-> 
-> After a remount to read-only a remount to read-write fails until umount.
-> A plain remount to read-write right after the error succeeds but the
-> filesystem stays read-only. Writes through file descriptors opened
-> before the error fail with EROFS.
-> 
-> [1]: https://lore.kernel.org/r/hyhuckyohsabx2suvq3z7uy3pbgmihva6wgzxr3op7pzcrlu33@p7zzlgp2ehjf
-> 
-> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
-> Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.com
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Hi all,
 
-Looks good. Feel free to add:
+Thanks Jan, Pedro, Dave, David and Kiryl for the feedback.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Following Dave's question about how PostgreSQL gets large folios on
+files it writes 8 KiB at a time, we looked deeper and found a
+reproducer that needs only fio and a single disk.
 
-								Honza
+What happens:
 
-> ---
->  fs/ext2/balloc.c |  5 +++++
->  fs/ext2/ialloc.c |  2 ++
->  fs/ext2/inode.c  |  4 +++-
->  fs/ext2/super.c  | 13 ++++++++-----
->  fs/ext2/xattr.c  |  2 ++
->  5 files changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/ext2/balloc.c b/fs/ext2/balloc.c
-> index 80acc1e193871..77f2ed5a76a28 100644
-> --- a/fs/ext2/balloc.c
-> +++ b/fs/ext2/balloc.c
-> @@ -1236,6 +1236,11 @@ ext2_fsblk_t ext2_new_blocks(struct inode *inode, ext2_fsblk_t goal,
->  	*errp = -ENOSPC;
->  	sb = inode->i_sb;
->  
-> +	if (sb_emergency_ro(sb)) {
-> +		*errp = -EROFS;
-> +		return 0;
-> +	}
-> +
->  	/*
->  	 * Check quota for allocation of this block.
->  	 */
-> diff --git a/fs/ext2/ialloc.c b/fs/ext2/ialloc.c
-> index bf21b57cf98cd..2741ecd2b94fc 100644
-> --- a/fs/ext2/ialloc.c
-> +++ b/fs/ext2/ialloc.c
-> @@ -433,6 +433,8 @@ struct inode *ext2_new_inode(struct inode *dir, umode_t mode,
->  	int err;
->  
->  	sb = dir->i_sb;
-> +	if (sb_emergency_ro(sb))
-> +		return ERR_PTR(-EROFS);
->  	inode = new_inode(sb);
->  	if (!inode)
->  		return ERR_PTR(-ENOMEM);
-> diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-> index 12ac4cfe15003..dd28637c60737 100644
-> --- a/fs/ext2/inode.c
-> +++ b/fs/ext2/inode.c
-> @@ -71,7 +71,9 @@ void ext2_evict_inode(struct inode * inode)
->  	struct ext2_block_alloc_info *rsv;
->  	int want_delete = 0;
->  
-> -	if (!inode->i_nlink && !is_bad_inode(inode)) {
-> +	/* After an error made us read-only the inode is left to e2fsck. */
-> +	if (!inode->i_nlink && !is_bad_inode(inode) &&
-> +	    !sb_emergency_ro(inode->i_sb)) {
->  		want_delete = 1;
->  		dquot_initialize(inode);
->  	} else {
-> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
-> index fb217ef2d69f0..10d5165459749 100644
-> --- a/fs/ext2/super.c
-> +++ b/fs/ext2/super.c
-> @@ -53,7 +53,7 @@ void ext2_error(struct super_block *sb, const char *function,
->  	struct ext2_sb_info *sbi = EXT2_SB(sb);
->  	struct ext2_super_block *es = sbi->s_es;
->  
-> -	if (!sb_rdonly(sb)) {
-> +	if (!sb_rdonly_any(sb)) {
->  		spin_lock(&sbi->s_lock);
->  		sbi->s_mount_state |= EXT2_ERROR_FS;
->  		es->s_state |= cpu_to_le16(EXT2_ERROR_FS);
-> @@ -73,11 +73,11 @@ void ext2_error(struct super_block *sb, const char *function,
->  
->  	if (test_opt(sb, ERRORS_PANIC))
->  		panic("EXT2-fs: panic from previous error\n");
-> -	if (!sb_rdonly(sb) && test_opt(sb, ERRORS_RO)) {
-> +	/* SB_RDONLY needs s_umount, see sb_set_emergency_ro(). */
-> +	if (!sb_rdonly(sb) && test_opt(sb, ERRORS_RO) &&
-> +	    sb_set_emergency_ro(sb))
->  		ext2_msg(sb, KERN_CRIT,
->  			     "error: remounting filesystem read-only");
-> -		sb->s_flags |= SB_RDONLY;
-> -	}
->  }
->  
->  static void ext2_msg_fc(struct fs_context *fc, const char *prefix,
-> @@ -179,7 +179,7 @@ static void ext2_put_super (struct super_block * sb)
->  	ext2_xattr_destroy_cache(sbi->s_ea_block_cache);
->  	sbi->s_ea_block_cache = NULL;
->  
-> -	if (!sb_rdonly(sb)) {
-> +	if (!sb_rdonly_any(sb)) {
->  		struct ext2_super_block *es = sbi->s_es;
->  
->  		spin_lock(&sbi->s_lock);
-> @@ -1360,6 +1360,9 @@ static int ext2_reconfigure(struct fs_context *fc)
->  	if ((bool)(flags & SB_RDONLY) == sb_rdonly(sb))
->  		goto out_set;
->  	if (flags & SB_RDONLY) {
-> +		/* After an error nothing may be written, just go read-only. */
-> +		if (sb_emergency_ro(sb))
-> +			goto out_set;
->  		if (le16_to_cpu(es->s_state) & EXT2_VALID_FS ||
->  		    !(sbi->s_mount_state & EXT2_VALID_FS))
->  			goto out_set;
-> diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
-> index 8f608930a48c6..12dfffff189cb 100644
-> --- a/fs/ext2/xattr.c
-> +++ b/fs/ext2/xattr.c
-> @@ -429,6 +429,8 @@ ext2_xattr_set(struct inode *inode, int name_index, const char *name,
->  	ea_idebug(inode, "name=%d.%s, value=%p, value_len=%ld",
->  		  name_index, name, value, (long)value_len);
->  
-> +	if (sb_emergency_ro(sb))
-> +		return -EROFS;
->  	if (value == NULL)
->  		value_len = 0;
->  	if (name == NULL)
-> 
-> -- 
-> 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+  1. A buffered sequential read (VACUUM, a backup, a scan) builds large
+     folios through readahead.  They stay large in the page cache until
+     they are evicted.
+  2. The first small write into one of these clean folios charges the
+     whole folio as dirty: a 4 KiB write into a 256 KiB folio charges
+     256 KiB, while writeback only writes the dirty 4 KiB.
+  3. With random writes, most writes land in a different clean folio,
+     so the dirty count reaches the limits with little real data.
+     balance_dirty_pages() then throttles the writers, and they end up
+     paced by how many folios writeback can clean per second rather
+     than by the bytes to write.
+
+Reproducer: XFS on one EBS gp3 volume (3000 IOPS), m8g.8xlarge
+(32 CPUs, 128 GiB), default read_ahead_kb=128. fio's 1 MiB reads grow
+the readahead window up to the device's max_sectors_kb (256 KiB), so
+the read builds 256 KiB folios.
+
+  ; create.fio: 16 x 3 GiB files, direct I/O so nothing is cached
+  [global]
+  directory=/mnt/xfs/fio
+  filename_format=f.$jobnum
+  size=3072m
+  numjobs=16
+  group_reporting=1
+  [create]
+  rw=write
+  bs=1m
+  direct=1
+  ioengine=libaio
+  iodepth=16
+
+  ; load.fio: buffered sequential read; builds the large folios
+  [global]
+  directory=/mnt/xfs/fio
+  filename_format=f.$jobnum
+  size=3072m
+  numjobs=16
+  group_reporting=1
+  [load]
+  rw=read
+  bs=1m
+  direct=0
+  ioengine=psync
+
+  ; randwrite.fio: random 4 KiB buffered writes, 32 x 312 = ~10k IOPS
+  ; invalidate=0 keeps the cached folios when fio opens the files
+  [randwrite]
+  directory=/mnt/xfs/fio
+  filename=f.0:f.1:f.2:f.3:f.4:f.5:f.6:f.7:f.8:f.9:f.10:f.11:f.12:f.13:f.14:f.15
+  rw=randwrite
+  bs=4k
+  direct=0
+  ioengine=psync
+  invalidate=0
+  numjobs=32
+  rate_iops=312
+  time_based=1
+  runtime=120
+  group_reporting=1
+
+To reproduce it, run (as root):
+
+  fio create.fio
+  sync; echo 3 > /proc/sys/vm/drop_caches
+  fio load.fio          # skip this step for the control run
+  fio randwrite.fio
+
+fio asks for ~10k write IOPS, more than the volume's 3000, so dirty
+data builds up in both runs.  In the control run (no load step) each
+4 KiB write creates a 4 KiB folio: after 120 s only 3.3G is dirty,
+below the 12.2G background threshold, and nothing is throttled.  After
+the load step the same writes land in 256 KiB folios, and each write
+into a clean folio is charged 256 KiB: the dirty count passes the
+background threshold after 6 s and writers are throttled from 13 s.
+
+Results on v7.4-rc2, one run per kernel, each on a fresh instance.
+Writer sleep is the total balance_dirty_pages() pause time over the
+32 writers during the 120 s write phase:
+
+                         write   p99 / max   writer   max    folio
+                          IOPS     lat ms    sleep s  dirty  size
+  baseline, control      9,984  0.01 / 0.30      0    3.3G    -
+  baseline               4,061    60 / 160     179   23.5G   256K
+  v1 (this series)       9,984  0.01 / 0.67      0    3.6G   256K
+  max order cap 64K      7,071    50 / 280      73   22.3G    64K
+  max order cap 16K      9,984  0.02 / 0.05      0   11.9G    16K
+  split on write         9,984  0.02 / 0.17      0    3.6G   256K
+  evict on write         9,984  0.03 / 0.19      0    3.3G   256K
+  POSIX_FADV_RANDOM      9,984  0.02 / 0.05      0    3.3G     4K
+
+The control run gave 9,984 IOPS and max latency up to 0.30 ms on every
+kernel.
+
+  - max order cap: the global cap in mapping_max_folio_order() that Jan
+    suggested trying.  At 64 KiB a 4 KiB write still charges 16x and is
+    throttled.  At 16 KiB this run is not throttled, but dirty reached
+    11.9G, just below the 12.2G background threshold.  The cap that
+    avoids throttling depends on the write size, and it removes large
+    folios for every file, including ones that never see small writes.
+  - split on write: when a buffered write (iomap opts in, not for
+    zeroing or unshare) finds a clean, uptodate, unmapped folio at least
+    4x the write size, folio_split() it down to the write's order before
+    dirtying it.  The rest of the folio stays cached in large folios.
+    On the concerns Jan raised about splitting [1]: split on write only
+    splits clean, uptodate, unmapped folios, so it needs no new
+    filesystem state beyond an opt-in flag in iomap, and if
+    folio_split() fails the write simply proceeds as today; evict on
+    write avoids splitting altogether.
+  - evict on write: same trigger, but mapping_evict_folio() the folio
+    instead of splitting it (~40 lines).  This discards the folio's
+    other cached data; nothing reads it back in this test, so the read
+    cost does not show here.
+  - POSIX_FADV_RANDOM (Dave's question): fio's fadvise_hint=random on
+    the load job.  It avoids the problem without a kernel change, but
+    only where the application opts in: the hint is per open file, so
+    every process that reads a file must issue it, and a reader that
+    doesn't (a backup or copy tool, for example) still builds large
+    folios.  Every application that reads files sequentially and then
+    rewrites them in place would have to adopt it, and keeps the
+    regression until it does.  It also turns readahead off for those
+    files, so their sequential reads lose readahead.
+
+Split and evict on write keep whole-folio accounting and act at write
+time, so they also cover large folios already in the page cache,
+whoever built them, without each application having to opt in.  Both
+only touch clean, uptodate, unmapped folios at least 4x the write
+size, and only on iomap buffered writes.  Split keeps the rest of the
+folio cached at the cost of the split; evict is simpler but drops it.
+I'd appreciate your opinion on these options, or any other direction
+you think is more appropriate.
+
+Thanks,
+Salvatore
+
+[1] https://lore.kernel.org/all/oocwnxqgd4klrem6hkya3sddqoxkosml4ysz23if4j7wj2qdwi@5skgc4ftu7io/
+
+
+
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+
+
+
