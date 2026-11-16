@@ -1,73 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794622646;
-	b=IOBsxTgUizWpHZGvXU2du8sJWs6GAsaj/GeguKCKBK7zKeYtLqRine/IvAH55PbskKuS
-	 ceCPtSG5A6Np0p4N0gK/k0wWMpuBIPTrQE7yRJIYziPE2gTxWWd3RuxV0XezhwshKg4y/
-	 n75SrdFdfvJ8HnZt+IhKqCi2GzQpdGHFocEVAAZrnLiMPwcLiXoWvi/CTjVIIJ4sTuMN/
-	 murAfc23elchyXinKfFLs/9jRoB1I4AM3/FircbtZKtI9BOUZu9S7q2Nb4U+X8Q6BaPDk
-	 jVf1AJlMFNbI1PPnEuQSMJCWCR7IAon7EY1hNYrq1v9Y5pqDeE8WInlaZciqvFxxGnQ==
+	t=1794811563;
+	b=E2NnKxYx5GjcGegbzQ+rKp44SJJDN775JjunV3rgoJTvPHKj6s0vzrDz99A7zIx4Chl2
+	 FkCdvgl8JHy/bAEpW4Tzx9X/0jSfUienX0IrHj+WB2Un9q6LkiJSed/nxf+gnmh3zW/fk
+	 rmomRj7z1N54huy0osppyoUKGBwmkwxT8ZSQTU6N83vXYvh2S+R97gcYLnLa1txi+85jS
+	 bN0VA9NrxHZDpYRtfBfsLTgBjENtx1d/fdEaG1IaOjat9qQ67AwoFS5p+PUf2aflQDGci
+	 n283YyrXBWbfarY7rt2+iph6LuUOYvK1C+T5ymjZQnQa8HdLXgOxamV5Dwjl3LR+zlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794622646;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Subject:To:CC:
-	 References:From:Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=lamjSy1jct+Y32LWUG/7mqOA0l+lzlvT/xdWWaLZFKQ=;
-	b=If0YgjRpsGFxixtOYFFKJ3j25pS0Z+fTBd8NEVARqmKmHa3WszZs+gt9qN4VXtYFEU5Z
-	 AYiRF0k7dFlzcFbVM/kkXCBr1npvbDF7dU//DQqfwkNTfFi/oO8qpOM9DuFvcQvOCNFGo
-	 eXZzbk+/eSeQdPChISwIWC7DzhwJMwJAHz34nKtBeDaTyoZy5tsuNUII5G4JAo6UTaPJB
-	 MwvMHScx2JhSLUmM8Oo5IcwkfOvovRKVIhvNlqviPO0s/HFCI3C4heUhfAbbqiwXUBO4W
-	 OYR505MI8OKzGZNp7JTOQB130yJSARBEBALrdMY2rC15w25osdnWRag7WM4TimFhLZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794811563;
+	h=DMARC-Filter:Received:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 X-Originating-IP:X-ClientProxiedBy;
+	bh=Y1QRMBakR36puGC50kkOYilGUR+cqqph7fCXotl+ai4=;
+	b=qymgjWvVb9IOMBh6U8G0J+5eYbNv5sfqApL11scQ+69j4YoMKy0eF8j4hJgagKNC2qy2
+	 YUI/xncji8ejNASv0Hg9kKe6L3qkOP7cvtLWKeMeIx18nU7SI67puPtJVPzCA1OOlPNE8
+	 62a0k1dncOexglPCPkKH0tB715HafyLPHfpN0MMIB4SbB+Kncb1JhpsMbUn626+SfF9HP
+	 QAF8QgNnS8RgmF/YllyKkK1eIPz9U+oqNH8TlxHB5c8ttFoHGnzP/sHwHorTuRPOBV05o
+	 4UIgN5Of01IdEQ1ri6OmlZHzVMsAvAOZgSpksSrxLaFBU4DoXC+Ef49GeD1tdWDbwYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=dmJo6jxo;
-	arc=none smtp.remote-ip=113.46.200.225
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5F5606A32E;
-	Sat, 14 Nov 2026 02:17:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B5F5606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=dmJo6jxo
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lamjSy1jct+Y32LWUG/7mqOA0l+lzlvT/xdWWaLZFKQ=;
-	b=dmJo6jxorxqj/soF5hgiJAk0L/VbZ+b6NQ150G77AKdiKykroxkSgy9jha28sMjYHaadv7xU4
-	gX5qGcCNkavMkbqMIDp0Pr2diskt5hVLJa0+T41ntlJJoc8GUBBS7KeBABGtvyISA72TUzk8pOV
-	JKQ3g1KA+Ky1blIGX4Su+70=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jRHnX4bKrz1K98l;
-	Sat, 14 Nov 2026 10:17:04 +0800 (CST)
-Received: from whupemo200011.china.huawei.com (unknown [7.152.185.179])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8F8174048B;
-	Sat, 14 Nov 2026 10:17:15 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- whupemo200011.china.huawei.com (7.152.185.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 14 Nov 2026 10:17:13 +0800
-Subject: Re: [PATCH v3 30/33] ubifs: don't set SB_RDONLY after errors
-To: Christian Brauner <brauner@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	Jan Kara <jack@suse.com>
-CC: Al Viro <viro@zeniv.linux.org.uk>, <ecryptfs@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <jfs-discussion@lists.sourceforge.net>,
-	<linux-nilfs@vger.kernel.org>, <exfat@lists.linux.dev>, <linux-mm@kvack.org>,
-	<ntfs@lists.linux.dev>, <ocfs2-devel@lists.linux.dev>,
-	<linux-btrfs@vger.kernel.org>, <gfs2@lists.linux.dev>,
-	<linux-efi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-	<linux-xfs@vger.kernel.org>
-References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-30-0be92bb73709@kernel.org>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <17287026-cccc-f56c-15a3-029b9a2c38c9@huawei.com>
-Date: Sat, 14 Nov 2026 10:17:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	dmarc=pass header.from=hygon.cn;
+	spf=pass smtp.mailfrom=hygon.cn;
+	arc=none smtp.remote-ip=101.204.27.37
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D63606A31C
+	for <gfs2@lists.linux.dev>; Mon, 16 Nov 2026 06:45:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76D63606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jSdfh6B84zVcB6;
+	Mon, 16 Nov 2026 14:45:48 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jSdfh1YmVzVhfS;
+	Mon, 16 Nov 2026 14:45:48 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 8B3987756;
+	Mon, 16 Nov 2026 14:45:45 +0800 (CST)
+Received: from hsj-2U-Workstation (172.19.24.226) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 16 Nov
+ 2026 14:45:46 +0800
+Date: Mon, 16 Nov 2026 14:45:44 +0800
+From: Huang Shijie <huangsj@hygon.cn>
+To: Christoph Hellwig <hch@infradead.org>
+CC: <axboe@kernel.dk>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
+	<jack@suse.cz>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
+	<yingzhiwei@hygon.cn>, <agruenba@redhat.com>, <mic@digikod.net>,
+	<gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<serge@hallyn.com>, <aleksa@amutable.com>, <legion@kernel.org>,
+	<david@kernel.org>, <sandeen@redhat.com>, <ebiggers@kernel.org>,
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <gfs2@lists.linux.dev>,
+	<linux-security-module@vger.kernel.org>, <sunjunchao@bytedance.com>,
+	<shijie8@gmail.com>
+Subject: Re: [PATCH v2 1/3] vfs: add inode iteration methods
+Message-ID: <avqmmP4dbwu4ziKz@hsj-2U-Workstation>
+References: <20261113115702.586594-1-huangsj@hygon.cn>
+ <20261113115702.586594-2-huangsj@hygon.cn>
+ <avcBTMvzFWuCkwkn@infradead.org>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -77,209 +68,90 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-30-0be92bb73709@kernel.org>
-Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemo200011.china.huawei.com (7.152.185.179)
+In-Reply-To: <avcBTMvzFWuCkwkn@infradead.org>
+X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
+ (172.23.18.114)
 
-ÔÚ 2026/11/13 19:59, Christian Brauner Ð´µÀ:
-> ubifs_ro_mode() sets c->ro_error and SB_RDONLY from whatever context hit
-> the error, e.g. a failing write, and without holding s_umount. UBIFS
-> can't be frozen but that still races with everyone else changing
-> sb->s_flags. And c->ro_error alone already makes every write fail with
-> EROFS.
+åœ¨ Fri, Nov 13, 2026 at 04:23:40AM -0800ï¼ŒChristoph Hellwig å†™é“ï¼š
+> On Fri, Nov 13, 2026 at 07:57:00PM +0800, Huang Shijie wrote:
+> > +/*
+> > + * Unsafe iteration for internal VFS use only:
+> > + *   @ctx->iter_fn runs in atomic context with only
+> > + *   an inode existence guarantee, so it must not block
+> > + *   and must perform its own inode state checks.
+> > + *
+> > + * Return INO_ITER_RET_ABORT if the iteration stops early.
+> > + * Return INO_ITER_RET_DONE if the iteration runs to the end.
+> > + */
+> > +static inline int super_iter_inodes_unsafe(struct super_block *sb,
+> > +				struct inode_iter_context *ctx)
+> > +{
+> > +	struct inode *inode;
+> > +	int ret = INO_ITER_RET_NEXT;
+> > +
+> > +	rcu_read_lock();
+> > +	spin_lock(&sb->s_inode_list_lock);
+> > +	inode = list_prepare_entry(ctx->prev, &sb->s_inodes, i_sb_list);
+> > +
+> > +	list_for_each_entry_continue(inode, &sb->s_inodes, i_sb_list) {
 > 
-> So call sb_set_emergency_ro() instead. The background thread can hit
-> the error before SB_BORN but doesn't hold s_umount either. The xattr
-> setters check c->ro_error as well because ecryptfs calls them without
-> write access on the lower mount and they change the inode in memory
-> first.
-> 
-> So far a remount to read-only after an error was refused and a remount
-> to read-write went through and cleared SB_RDONLY again because
-> c->ro_mount was never set. Now going read-only works. Nothing is synced
-> for it in that state and ubifs_remount_ro() skips the write-buffer syncs
-> and the master node like ubifs_put_super() does and only cancels the
-> write-buffer timers. Going read-write after that is refused by the VFS.
-> 
-> The flusher still gets to the folios and inodes that were dirty before
-> the error, also after the remount which sets c->ro_mount and frees the
-> write reserve buffer. Every journal write fails with EROFS after an
-> error anyway. So do_writepage() and ubifs_write_inode() drop them
-> without going near the journal. Otherwise reserve_space() trips its
-> !c->ro_mount assert for every folio after the remount.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->   fs/ubifs/file.c  | 12 ++++++++++++
->   fs/ubifs/io.c    |  6 +++++-
->   fs/ubifs/super.c | 40 ++++++++++++++++++++++++++--------------
->   fs/ubifs/xattr.c |  6 ++++++
->   4 files changed, 49 insertions(+), 15 deletions(-)
+> This is a really odd way to write a list iteration.  I also don't see
+This is for the evict_inodes() which will break and then resume the iteration.
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> how the RCU lock is needed when you already hold the spinlock.
+okay. I will remove the rcu_read_lock in future.
+
 > 
-> diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
-> index 99dd52715eee9..4eae6c2ae2eea 100644
-> --- a/fs/ubifs/file.c
-> +++ b/fs/ubifs/file.c
-> @@ -898,6 +898,13 @@ static int do_writepage(struct folio *folio, size_t len)
->   
->   	folio_start_writeback(folio);
->   
-> +	/* Nothing gets written after an error, drop the folio. */
-> +	if (unlikely(c->ro_error)) {
-> +		err = -EROFS;
-> +		mapping_set_error(folio->mapping, err);
-> +		goto out;
-> +	}
-> +
->   	block = folio->index << UBIFS_BLOCKS_PER_PAGE_SHIFT;
->   	for (;;) {
->   		blen = min_t(size_t, len, UBIFS_BLOCK_SIZE);
-> @@ -918,6 +925,7 @@ static int do_writepage(struct folio *folio, size_t len)
->   		ubifs_ro_mode(c, err);
->   	}
->   
-> +out:
->   	ubifs_assert(c, folio->private != NULL);
->   	if (folio_test_checked(folio))
->   		release_new_page_budget(c);
-> @@ -997,6 +1005,10 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
->   		goto out_unlock;
->   	}
->   
-> +	/* After an error do_writepage() drops the folio. */
-> +	if (unlikely(c->ro_error))
-> +		return do_writepage(folio, len);
-> +
->   	spin_lock(&ui->ui_lock);
->   	synced_i_size = ui->synced_i_size;
->   	spin_unlock(&ui->ui_lock);
-> diff --git a/fs/ubifs/io.c b/fs/ubifs/io.c
-> index 6c6d682427793..931a88329b5f5 100644
-> --- a/fs/ubifs/io.c
-> +++ b/fs/ubifs/io.c
-> @@ -72,7 +72,11 @@ void ubifs_ro_mode(struct ubifs_info *c, int err)
->   	if (!c->ro_error) {
->   		c->ro_error = 1;
->   		c->no_chk_data_crc = 0;
-> -		c->vfs_sb->s_flags |= SB_RDONLY;
-> +		/*
-> +		 * SB_RDONLY needs s_umount, see sb_set_emergency_ro(). The
-> +		 * background thread runs before SB_BORN already.
-> +		 */
-> +		sb_set_emergency_ro(c->vfs_sb);
->   		ubifs_warn(c, "switched to read-only mode, error %d", err);
->   		dump_stack();
->   	}
-> diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-> index 38972786817e7..2d71274e89ad0 100644
-> --- a/fs/ubifs/super.c
-> +++ b/fs/ubifs/super.c
-> @@ -312,6 +312,12 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
->   		return 0;
->   	}
->   
-> +	/* Nothing gets written after an error, drop the change. */
-> +	if (unlikely(c->ro_error)) {
-> +		err = -EROFS;
-> +		goto out;
-> +	}
-> +
->   	/*
->   	 * As an optimization, do not write orphan inodes to the media just
->   	 * because this is not needed.
-> @@ -327,6 +333,7 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
->   			err = dbg_check_inode_size(c, inode, ui->ui_size);
->   	}
->   
-> +out:
->   	ui->dirty = 0;
->   	mutex_unlock(&ui->ui_mutex);
->   	ubifs_release_dirty_inode_budget(c, ui);
-> @@ -1839,19 +1846,26 @@ static void ubifs_remount_ro(struct ubifs_info *c)
->   
->   	dbg_save_space_info(c);
->   
-> -	for (i = 0; i < c->jhead_cnt; i++) {
-> -		err = ubifs_wbuf_sync(&c->jheads[i].wbuf);
-> +	/* Like ubifs_put_super(), don't write anything after an error. */
-> +	if (!c->ro_error) {
-> +		for (i = 0; i < c->jhead_cnt; i++) {
-> +			err = ubifs_wbuf_sync(&c->jheads[i].wbuf);
-> +			if (err)
-> +				ubifs_ro_mode(c, err);
-> +		}
-> +
-> +		c->mst_node->flags &= ~cpu_to_le32(UBIFS_MST_DIRTY);
-> +		c->mst_node->flags |= cpu_to_le32(UBIFS_MST_NO_ORPHS);
-> +		c->mst_node->gc_lnum = cpu_to_le32(c->gc_lnum);
-> +		err = ubifs_write_master(c);
->   		if (err)
->   			ubifs_ro_mode(c, err);
-> +	} else {
-> +		/* Syncing the write-buffers would have canceled them. */
-> +		for (i = 0; i < c->jhead_cnt; i++)
-> +			hrtimer_cancel(&c->jheads[i].wbuf.timer);
->   	}
->   
-> -	c->mst_node->flags &= ~cpu_to_le32(UBIFS_MST_DIRTY);
-> -	c->mst_node->flags |= cpu_to_le32(UBIFS_MST_NO_ORPHS);
-> -	c->mst_node->gc_lnum = cpu_to_le32(c->gc_lnum);
-> -	err = ubifs_write_master(c);
-> -	if (err)
-> -		ubifs_ro_mode(c, err);
-> -
->   	vfree(c->orph_buf);
->   	c->orph_buf = NULL;
->   	kfree(c->write_reserve_buf);
-> @@ -1977,10 +1991,7 @@ static int ubifs_reconfigure(struct fs_context *fc)
->   		if (err)
->   			return err;
->   	} else if (!c->ro_mount && (fc->sb_flags & SB_RDONLY)) {
-> -		if (c->ro_error) {
-> -			ubifs_msg(c, "cannot re-mount R/O due to prior errors");
-> -			return -EROFS;
-> -		}
-> +		/* After an error ubifs_remount_ro() can't write but still works. */
->   		ubifs_remount_ro(c);
->   	}
->   
-> @@ -1994,7 +2005,8 @@ static int ubifs_reconfigure(struct fs_context *fc)
->   		mutex_unlock(&c->bu_mutex);
->   	}
->   
-> -	if (!c->need_recovery)
-> +	/* Only valid without a media failure, see ubifs_put_super(). */
-> +	if (!c->need_recovery && !c->ro_error)
->   		ubifs_assert(c, c->lst.taken_empty_lebs > 0);
->   
->   	return 0;
-> diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
-> index 3b0e8a270f594..572f6f3e52ad3 100644
-> --- a/fs/ubifs/xattr.c
-> +++ b/fs/ubifs/xattr.c
-> @@ -260,6 +260,9 @@ int ubifs_xattr_set(struct inode *host, const char *name, const void *value,
->   	if (check_lock)
->   		ubifs_assert(c, inode_is_locked(host));
->   
-> +	if (c->ro_error)
-> +		return -EROFS;
-> +
->   	if (size > UBIFS_MAX_INO_DATA)
->   		return -ERANGE;
->   
-> @@ -564,6 +567,9 @@ static int ubifs_xattr_remove(struct inode *host, const char *name)
->   
->   	ubifs_assert(c, inode_is_locked(host));
->   
-> +	if (c->ro_error)
-> +		return -EROFS;
-> +
->   	if (fname_len(&nm) > UBIFS_MAX_NLEN)
->   		return -ENAMETOOLONG;
->   
+> I honestly don't get this "iterator.  It is trivial, the _unsafe is
+> wrong naming.  What is the point?
+What about super_iter_inodes_locked()? ore super_iter_inodes_noref()?
+
+We use this function to hide the fs systems to use the sb->s_inode_list_lock
+directly. Then we can add more code to optimize the iteration. 
+
 > 
+> > +/**
+> > + * super_iter_inodes - iterate all the cached inodes on a superblock
+> > + * @sb: superblock to iterate
+> > + * @ctx: the context which has the metadata
+> > + *
+> > + * This function iterates all cached inodes on a superblock that are not in
+> > + * the process of being initialised or torn down. It will run @ctx->iter_fn()
+> > + * with a valid, referenced inode, so it is safe for the caller to do
+> > + * anything it wants with the inode except drop the reference the iterator
+> > + * holds.
+> > + *
+> > + * Return INO_ITER_RET_DONE if the iteration runs to the end.
+> > + * Return other value if the iteration breaks.
+> > + */
+> > +int super_iter_inodes(struct super_block *sb, struct inode_iter_context *ctx)
+> 
+> This one makes a lot more sense, but the callback pattern is a bit
+> annoying as it requires to stuff all information into the context.
+> Im much of the core kernel we're slowly switching to an iterator
+> model that allows the caller to keep the state.  In this case something
+> like
+> 
+> 	struct inode_iter_contex ctx = INODE_ITER_CTX_INIT;
+> 
+> 	while ((inode = sb_inode_iter()))) {
+> 		/* do stuff */
+> 	}
+> 
+How to manage the sb->s_inode_list_lock in this code?
+
+I have no idea how to hide the sb->s_inode_list_lock in this code.
+
+
+> which should be easily possibly with this model.
+> 
+> You probably also want to split the core iterator and switching each
+> user into separate patches.
+no problem. I can split them later.
+
+Thanks
+Huang Shijie
 
