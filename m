@@ -1,64 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794811563;
-	b=E2NnKxYx5GjcGegbzQ+rKp44SJJDN775JjunV3rgoJTvPHKj6s0vzrDz99A7zIx4Chl2
-	 FkCdvgl8JHy/bAEpW4Tzx9X/0jSfUienX0IrHj+WB2Un9q6LkiJSed/nxf+gnmh3zW/fk
-	 rmomRj7z1N54huy0osppyoUKGBwmkwxT8ZSQTU6N83vXYvh2S+R97gcYLnLa1txi+85jS
-	 bN0VA9NrxHZDpYRtfBfsLTgBjENtx1d/fdEaG1IaOjat9qQ67AwoFS5p+PUf2aflQDGci
-	 n283YyrXBWbfarY7rt2+iph6LuUOYvK1C+T5ymjZQnQa8HdLXgOxamV5Dwjl3LR+zlg==
+	t=1794822662;
+	b=ZPQ+6CCZU5+C8W7QRERrUWVmAMKbMpSTjNWnxfBgQ71sTBwVLLOPihzTI8+2QHfaXSyT
+	 xbCtMzsei30NPh/wOac1UkJDleK1tZz75cdwr9S44aW01oe69Zxdr41HJckEslaTWQh9G
+	 QyyRLVSw2Oy3yTHSLT4NJt4wg3iqLJPjvyHGvRVMoA+aIufWk0gvE20+ZYEcDrk84eH+d
+	 lKju4ajpcqjL4IaHbi7r20YBIiSnmb0tZXOuUDF+jW7IWONtwXxuhjyERe6GMHTrQ76qN
+	 conCdS4FuF3bwLodk9q+k+2QGgKsgkEaL5GZGZ7dmwcOuT0NVRS7t1G6RmqBqLtof8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794811563;
-	h=DMARC-Filter:Received:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
-	 X-Originating-IP:X-ClientProxiedBy;
-	bh=Y1QRMBakR36puGC50kkOYilGUR+cqqph7fCXotl+ai4=;
-	b=qymgjWvVb9IOMBh6U8G0J+5eYbNv5sfqApL11scQ+69j4YoMKy0eF8j4hJgagKNC2qy2
-	 YUI/xncji8ejNASv0Hg9kKe6L3qkOP7cvtLWKeMeIx18nU7SI67puPtJVPzCA1OOlPNE8
-	 62a0k1dncOexglPCPkKH0tB715HafyLPHfpN0MMIB4SbB+Kncb1JhpsMbUn626+SfF9HP
-	 QAF8QgNnS8RgmF/YllyKkK1eIPz9U+oqNH8TlxHB5c8ttFoHGnzP/sHwHorTuRPOBV05o
-	 4UIgN5Of01IdEQ1ri6OmlZHzVMsAvAOZgSpksSrxLaFBU4DoXC+Ef49GeD1tdWDbwYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794822662;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=8aRGBcpvx8xM7mxQtHaidBWPdNvahzYjZNEX0jkJ1yE=;
+	b=AUrbPjzgtiJkIiQW5UyWbqc3vElwrUqFRgzM+ZY6TBSKyWfJnOHvWoPG9mIzihpnPD5W
+	 y1FSQqwPly9nPWi4MJwgN9TiEEmq0/Vq7qNvvHDpMPg3gYC01fpg4U0up3zZDTPE5v7Ei
+	 pXnFXmRXyKszyGpdnrghF9wVvKIXNcnDqP9xRgj6lIQbqDv7KVTmOQwvV/NXOpDESWa+4
+	 v6SVAasxcdHcxXKOd8Qu2ZGUx7hq0D4kC+iSOPHgOO18M2nCgkvPeC7mNJVB/31MVWtkO
+	 p4gDysvRMYSV9PEt67gatrbm7A8Oo/fujSfwBxTteo0aFyXUrSJ7fJ43qXr2MTOv/hA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hygon.cn;
-	spf=pass smtp.mailfrom=hygon.cn;
-	arc=none smtp.remote-ip=101.204.27.37
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D63606A31C
-	for <gfs2@lists.linux.dev>; Mon, 16 Nov 2026 06:45:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76D63606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jSdfh6B84zVcB6;
-	Mon, 16 Nov 2026 14:45:48 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jSdfh1YmVzVhfS;
-	Mon, 16 Nov 2026 14:45:48 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 8B3987756;
-	Mon, 16 Nov 2026 14:45:45 +0800 (CST)
-Received: from hsj-2U-Workstation (172.19.24.226) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 16 Nov
- 2026 14:45:46 +0800
-Date: Mon, 16 Nov 2026 14:45:44 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: Christoph Hellwig <hch@infradead.org>
-CC: <axboe@kernel.dk>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
-	<jack@suse.cz>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
-	<yingzhiwei@hygon.cn>, <agruenba@redhat.com>, <mic@digikod.net>,
-	<gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<serge@hallyn.com>, <aleksa@amutable.com>, <legion@kernel.org>,
-	<david@kernel.org>, <sandeen@redhat.com>, <ebiggers@kernel.org>,
-	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <gfs2@lists.linux.dev>,
-	<linux-security-module@vger.kernel.org>, <sunjunchao@bytedance.com>,
-	<shijie8@gmail.com>
-Subject: Re: [PATCH v2 1/3] vfs: add inode iteration methods
-Message-ID: <avqmmP4dbwu4ziKz@hsj-2U-Workstation>
-References: <20261113115702.586594-1-huangsj@hygon.cn>
- <20261113115702.586594-2-huangsj@hygon.cn>
- <avcBTMvzFWuCkwkn@infradead.org>
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2+7tRLz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7E5606A31C;
+	Mon, 16 Nov 2026 09:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2+7tRLz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609D61F000C4;
+	Mon, 16 Nov 2026 09:50:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794822662;
+	bh=8aRGBcpvx8xM7mxQtHaidBWPdNvahzYjZNEX0jkJ1yE=;
+	h=From:Subject:Date:To:Cc;
+	b=K2+7tRLzUA1vHpSh9Z4eYxrLSWLfx3VxiAtV+I2wsfPNb9ufsZBXDAGRXgVgW5eVT
+	 7EPd2127puPa6m8jR0gUbbLngHeCTt0SNmH9jNftFfvciTpnZOwt9ZFB8xaifyNx5I
+	 6T4/eGhfCJ4f1ugyPqE8JW8/pgNBj81vq/a0P4QMlvX9rDmpcnRbSLEfn3OZwjS09o
+	 Ffj8QthI/KmMMkRMsxQrY2bpnNRJNH0bSetX/pu6Ptvz0r4Eeu9O8UNelZBCix0Dko
+	 77WqR1fbWuPXsEef+M7YM+E7QUpfT9xgzJUFuXdxSrgNBt3AgthI6/SanCUbgR5X4y
+	 DYCuvs09giVyg==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/3] fs: pre-existing fixes for the SB_RDONLY series
+Date: Mon, 16 Nov 2026 10:28:29 +0100
+Message-Id: <20261116-work-fs-sb_rdonly-fixes-v1-0-95a25ce917ad@kernel.org>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -69,89 +54,62 @@ List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <avcBTMvzFWuCkwkn@infradead.org>
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z2M2QrCMBBFf6XMsxOaoK36KyKSZWKjksqMK6X/b
+ qLg47nLmUCIEwlsmwmYHknSmAvoRQN+sPlImEJhMK3ptNYdPkc+YxQUd+Aw5ssbY3qRYOiXfmP
+ 6uG7dCsr7yvQtynm3/7Hc3Yn8rerqwlkhdGyzH2pUxSqK+otVHcA8fwDm31WGpAAAAA==
+X-Change-ID: 20261116-work-fs-sb_rdonly-fixes-d74c927f80b5
+To: linux-fsdevel@vger.kernel.org
+Cc: Jan Kara <jack@suse.com>, ecryptfs@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+ linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, 
+ ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+ linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+ linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-xfs@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1425; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=jeCsQzF34oL0Arvs8F9B2uJQSCX+EzbT3qRU+Rbsju8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9uvi7fE9w7bmpcv5J82/1za9S4FUrcTJtdFY06i+ct
+ 14hJSyuo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCLiSxn+p61423H1yuqphyNy
+ CypNQ07uYf2rs/yuFLtD9f/+bZMLtzEyTOL9teBm7yq3mqbpzbY+BsIR898sTkj0CjXjaTy2tLW
+ IFQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-在 Fri, Nov 13, 2026 at 04:23:40AM -0800，Christoph Hellwig 写道：
-> On Fri, Nov 13, 2026 at 07:57:00PM +0800, Huang Shijie wrote:
-> > +/*
-> > + * Unsafe iteration for internal VFS use only:
-> > + *   @ctx->iter_fn runs in atomic context with only
-> > + *   an inode existence guarantee, so it must not block
-> > + *   and must perform its own inode state checks.
-> > + *
-> > + * Return INO_ITER_RET_ABORT if the iteration stops early.
-> > + * Return INO_ITER_RET_DONE if the iteration runs to the end.
-> > + */
-> > +static inline int super_iter_inodes_unsafe(struct super_block *sb,
-> > +				struct inode_iter_context *ctx)
-> > +{
-> > +	struct inode *inode;
-> > +	int ret = INO_ITER_RET_NEXT;
-> > +
-> > +	rcu_read_lock();
-> > +	spin_lock(&sb->s_inode_list_lock);
-> > +	inode = list_prepare_entry(ctx->prev, &sb->s_inodes, i_sb_list);
-> > +
-> > +	list_for_each_entry_continue(inode, &sb->s_inodes, i_sb_list) {
-> 
-> This is a really odd way to write a list iteration.  I also don't see
-This is for the evict_inodes() which will break and then resume the iteration.
+Three fixes for pre-existing bugs that came up during review of the
+SB_RDONLY series (cf. [1]). They don't depend on it and are all tagged
+for stable. I'll put them in front of the series in vfs-7.5.super.
 
-> how the RCU lock is needed when you already hold the spinlock.
-okay. I will remove the rcu_read_lock in future.
+- gfs2 hits the BUG_ON() in gfs2_quota_cleanup() on a remount to
+  read-only after a withdraw during mount. The withdraw work was never
+  queued so SDF_JOURNAL_LIVE stays set.
 
-> 
-> I honestly don't get this "iterator.  It is trivial, the _unsafe is
-> wrong naming.  What is the point?
-What about super_iter_inodes_locked()? ore super_iter_inodes_noref()?
+- exfat marks the volume clean at umount or on a remount to read-only
+  after a shutdown with EXFAT_GOING_DOWN_NOSYNC although it may be
+  inconsistent.
 
-We use this function to hide the fs systems to use the sb->s_inode_list_lock
-directly. Then we can add more code to optimize the iteration. 
+- jfs takes a negative inode size from disk as is. A symlink with one
+  is treated as a fast symlink and jfs_iget() writes out of bounds.
 
-> 
-> > +/**
-> > + * super_iter_inodes - iterate all the cached inodes on a superblock
-> > + * @sb: superblock to iterate
-> > + * @ctx: the context which has the metadata
-> > + *
-> > + * This function iterates all cached inodes on a superblock that are not in
-> > + * the process of being initialised or torn down. It will run @ctx->iter_fn()
-> > + * with a valid, referenced inode, so it is safe for the caller to do
-> > + * anything it wants with the inode except drop the reference the iterator
-> > + * holds.
-> > + *
-> > + * Return INO_ITER_RET_DONE if the iteration runs to the end.
-> > + * Return other value if the iteration breaks.
-> > + */
-> > +int super_iter_inodes(struct super_block *sb, struct inode_iter_context *ctx)
-> 
-> This one makes a lot more sense, but the callback pattern is a bit
-> annoying as it requires to stuff all information into the context.
-> Im much of the core kernel we're slowly switching to an iterator
-> model that allows the caller to keep the state.  In this case something
-> like
-> 
-> 	struct inode_iter_contex ctx = INODE_ITER_CTX_INIT;
-> 
-> 	while ((inode = sb_inode_iter()))) {
-> 		/* do stuff */
-> 	}
-> 
-How to manage the sb->s_inode_list_lock in this code?
+[1]: https://patch.msgid.link/20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org
 
-I have no idea how to hide the sb->s_inode_list_lock in this code.
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (3):
+      gfs2: don't BUG when remounting read-only after a withdraw during mount
+      exfat: keep the volume marked dirty after a shutdown
+      jfs: refuse inodes with a negative size
 
-
-> which should be easily possibly with this model.
-> 
-> You probably also want to split the core iterator and switching each
-> user into separate patches.
-no problem. I can split them later.
-
-Thanks
-Huang Shijie
+ fs/exfat/super.c     | 3 ++-
+ fs/gfs2/incore.h     | 1 +
+ fs/gfs2/ops_fstype.c | 5 +++++
+ fs/gfs2/util.c       | 9 ++++++++-
+ fs/gfs2/util.h       | 1 +
+ fs/jfs/jfs_imap.c    | 4 ++++
+ 6 files changed, 21 insertions(+), 2 deletions(-)
+---
+base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
+change-id: 20261116-work-fs-sb_rdonly-fixes-d74c927f80b5
 
