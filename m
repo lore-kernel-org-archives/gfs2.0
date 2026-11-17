@@ -1,111 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.139.74
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794901594;
-	b=wuFAYyfUceA/ViGY35XEaDKfZNylKwFWNE+HjgjWkXXwjXqImVd/cLN0vx0iMbkUDMpc
-	 /s02OZBc9jh8tLtAt9YWT2nOIlCsVuMyfXoQMWfj0eLauyH45leGAqoiNvqxfNwUBb4sk
-	 fM8XW1CUxsNVfaynJMtt+AlIDenq3wHKMHYi+9x+vuyvFcJANlIrXvdyAuaWfQIsaa3ii
-	 YngMBMeduOosODfYdApqgnHzsqbTQHB9K8h3UgnRx1BR9187CLIk41wc7AVi+F7XCjtI/
-	 G9Sb6kIUCsS9sCGK7XCp0vGB7RHcML+3y3rhWbsk9P0cMX/d7etxpXgBpEm+8Bk3MKQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794901594;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
-	 X-Received:X-Received:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=13gBg7QBW6VxUO230NS+TxRvi6Fhbsy36rbkemPFH78=;
-	b=10GOVKWDE3hpJa3CxQwfVLnoKZjSPgjYJpier/ZaBypULMfD5cSi9kLR3+uNeFlRHiXu
-	 vqWW0TaCz6/SWbR4Iq3ki2pJ2WQuxZhG8tc4lb004kPPqedurxnwpXuvTY5AZTLWoy/t1
-	 AOEcR6h7WhOreuAawYLcHP+tbTiE38XT29pmT10HSLClx9efLGjXojk/upG65jMa4KXGa
-	 /+v14tOVl0iuEWkyI/odS4MBxLqxgr8odePab3QLsw+Oy22KfKLHdWgFTAXB/cCHoKCEZ
-	 ETJerT5cUsVsTnkK4MPSfHqEXn3JUvjH+3dmboLaObEcQ0WRmoqgAeRA4Q0OCW3CwSQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=columbia.edu;
-	spf=pass smtp.mailfrom=columbia.edu;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=XjsgZo0D;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=1TptSAx4;
-	arc=none smtp.remote-ip=148.163.139.74
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=74.125.230.72
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794916564;
+	b=ZnxOO7D6+6+4MoglcxhXWDzH3aVCAfsivSSwyQXwjSYMMUb/FnDpfBloclLcwl3WjpNC
+	 7K3Qr0buhnw2pCuf5FmYoMWtsFH62ZP6+ZXA9BgP+WPsmN5sAe0uUqtOq4i3sdl3CZiiM
+	 TQEbD9MoTLhhUIt/7/Xsf3P/egP2C0jjb5Zvsn/GSncAySbr597zp/dDAVI7xJCFt+/kC
+	 itOMj1lYoMyOUNl0S7b7rTTJBFahjMWcO0M/aYbg1PgPBiiBBxzJTzsgj2Ahb7bEvJqOi
+	 KP2nIKRX4EmQBZdcKBGa8xm3+uOJxlVFH/xMzTCSbpnemSHl2FM40a9uoamDKF40Ubw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794916564;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=zPU6ceRrOQUHHV+hxPWUqGfVLvSRRuiDTUWQgjgb5i4=;
+	b=12nf5NDXxzVAJdZNN8KuT1uvDlAz+RsdzkS+EqlZ9bBYyahZvvvGzyIjHE1QjsOrNmhm
+	 p9y6Vd4ieyOfb78zhN68wcUbWJrILAcUWs2vBNAqOCZ1BGXpDkxv/6oOvuVR60vzgIfHA
+	 cyT64svcnLVlKMwvJ/NOGS4SPX2+LxfbGnUggQJSCqcx6t/1efmbBwKzBNKcaygPdnmet
+	 8pfy5XRZ3pgqetnkUFLLgG8gBSBffIlU7hnNsnXlGvmSfr11fDFN2lmep9K7joa4AUHww
+	 IlwY4cNqwTzF/uxyMcuhylNBEfgSkbugwnzEEpuZrAX/7ooH+ZY15PjvyULsUWCpSVg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AfgBa8wT;
+	arc=fail smtp.remote-ip=74.125.230.72
+Received: from mail-lr2-f8.google.com (mail-lr2-f8.google.com [74.125.230.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B42D606A882
-	for <gfs2@lists.linux.dev>; Tue, 17 Nov 2026 07:46:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B42D606A882
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=columbia.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19103606A323
+	for <gfs2@lists.linux.dev>; Tue, 17 Nov 2026 11:56:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19103606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=XjsgZo0D;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=1TptSAx4
-Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AH7YfOj1193952
-	for <gfs2@lists.linux.dev>; Tue, 17 Nov 2026 02:46:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=13gB
-	g7QBW6VxUO230NS+TxRvi6Fhbsy36rbkemPFH78=; b=XjsgZo0Dq0PXXVgHHx58
-	gK/2O+GJBHHJlhWZ/JcKiC7IqCvQWHjLsH+II5P5VSWF8XJyBxGCkvqh0ahbHwM5
-	LyMfsVILj2Foi2+LCWxnbyZ9erCdRJER+6NpuRZ9AFyCbB5tAHj3K8tgWVnSLN1W
-	t3Yqi++4waxuJbZ5v4cLXRrBaVRRPGbGhmZMbU5Jt/3lwRbbXKDanpaZs728HAzc
-	3alMVeRgXJ2iR9FGM736hItlyhfSS3xiHrbgruULfqzHNFsZyD5gkk7kV3iNSbyu
-	YjQ5EriXu9D2IbhBtF8wycjmdNtwn9lLe0FzGOg0JvLa1YLzuB6r1fif6jgtK17u
-	iw==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4j0ew0rn5q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <gfs2@lists.linux.dev>; Tue, 17 Nov 2026 02:46:32 -0500 (EST)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-55ca34548f5so791711cf.1
-        for <gfs2@lists.linux.dev>; Mon, 16 Nov 2026 23:46:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AfgBa8wT
+Received: by mail-lr2-f8.google.com with SMTP id 38308e7fff4ca-3adf2e3fd87so26770821fa.0
+        for <gfs2@lists.linux.dev>; Tue, 17 Nov 2026 03:56:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794916562; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hOuv3JwDC1QXZTcx7gRLSN8TfIPfBWE9FT20n2lVLje8t66erDPnAu33iIgwpiPWGJ
+         vykBej/yix08jSlBkxUiAYCwu7KZSBoHekt/txTKBKuMr/rR2SbCtJp5trtUC0YzOznN
+         tipDpDDlozAWxFJ6/BbdchUwgd3OLJUxgaDWxUZulird1zlV8P2nYKhn+Sawlr6Lxypk
+         2BZAThr0oQf7roQiVE/VYnDPdFlgjcCp2LlRKtPfyQiOtHUX0lpH6KWjRLXtS5DUbVVX
+         zMm8ffq6MMdEMjimiYkf/ki4/nWfMTO/RGv2ar9FGZumIzTvYxwD9aX8CMJ4qUYFPoRW
+         YyHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=zPU6ceRrOQUHHV+hxPWUqGfVLvSRRuiDTUWQgjgb5i4=;
+        fh=8WzfwL8oiIa3Mi1Yr7YWJjh9cahsbT3iUpd51POwzW0=;
+        b=j+laPWOslffnha0OCxem0waRlkgXSjmy2D3hYdc8XfE3c9H39HrzIvttRCBOlCNKrH
+         B1WBuj3+5murBJQVNMhnYyUYFb3iq+dGTYi5lfh7ElkNe0cifC/+rb9BRP8YpEwvtNF0
+         xh6taISXW7kKEtn4uq0w9JmUtTZ/HlQJBUqPXWNd++CTn+EHT4XPATIcqort/M/MefoL
+         aJBvnJB0Kng+yT1vDTM/9s2qNNmNaLYShAs5ooS8cte86SvMq4mWBcIL0z2hpIwxA8J/
+         RnZFowdbPaDeiYZ6FxVb7ujp6b64AX37MmqFk4HaY61HENu95vy4uZQN7DV2br3UAAhk
+         Zagw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794901592; x=1795506392; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=13gBg7QBW6VxUO230NS+TxRvi6Fhbsy36rbkemPFH78=;
-        b=1TptSAx4kbt1hY8ifhJlFrVq0TrV3vT+DwEoeMdytGMMoN67MnfBln+9xvEpK1Ztb9
-         gfixI20oUijL9a0sT2UAdW/axSOdMLjPrP7cY6LQj+LATQR+NLvNr3IYXuPlCeiUlmMd
-         Q4f3J6dCAx9KpCkgnlGO8zD23xpIHvz+bGh4MbuKKokhUUzZosl9CgLbwgpFn5d3LdaO
-         mlbKcL9Fulhn6HlncDsFdJ86FyxdtlzX0IAC43ovhCxiY/qrFjIjZd8Hk5ZSboYc0z1y
-         HvuVPghUGzynBLpaS0NgYb/mJzzjg1eBABjg2GpKHavhdK2Ex1s8PVMtIwfKukkhmbGa
-         h75w==
+        d=gmail.com; s=20260707; t=1794916562; x=1795521362; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zPU6ceRrOQUHHV+hxPWUqGfVLvSRRuiDTUWQgjgb5i4=;
+        b=AfgBa8wTlP+N3EGJXDc1PibN5KTd1j1dW38I8Ae7o6WJcMAmeae83Vq/SCGdQs8vLX
+         i+3wty+hjq6ee/Hgab+1Ot2pvNBzk6+VRNLqWY8JEwe09CX2WVaiNJVMzT+zD8whtwNF
+         h3RK4c1PEh76PD21moKtFhiuKv1lr6H3Smxsz9gb3Mhk1bOQOwAyif/7lKjcP7AZNHFC
+         qF3cgkUOOyPcypSXF2qYZPAaKJ/Zqkgwff483z9Biv/TYIJpmym8zmgW+bxyOeGLD5Fj
+         i7WfVf4yT4dUZfIMEd+EBANGODW+Xyv4gHCypnjyijRCpx73D1oSOsg1qrjJnmPeAJMx
+         9T2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794901592; x=1795506392;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=13gBg7QBW6VxUO230NS+TxRvi6Fhbsy36rbkemPFH78=;
-        b=DFwb+gZ1Pw2ZtlPzbi4wKW0SEGCftclD6EhychENqLXb4Lq6c8jKigqtxHNPtIr0Wu
-         C0YsncWq1gT5nTLiJBlZsM0eWtptDxKAXVzOnNCFWPn5VAUTFY3eQkAPa5OwOxoHQifT
-         S1bTz4TLluys8l3MePZhtWf2zwOrt5Iqj3yYOX1p0yJdKZeI004sNRm/fs7QcHQlZoGI
-         zru1xZEBdLm01tYnox202wEQiNcyMmiCqkkGkaRZDvoZgBpREX9ICEa4Kv8KKpeoAwm4
-         oQnJCTV9smlwHlGyrM6a2MX+Gu2ibJ6QuRTQLCwuFQO2/OSDJnrYDK/Fetmz0/6ImrW6
-         FlCg==
-X-Gm-Message-State: APuU4Z/5GlaPB12tIn5II20wfarIFv3xyr3fA0U1UCbk31VNzo5PPiuZ
-	1J2H09081tFo/dMeyM+g6Q0NGa/LDZYe0skgUMspqDKbO3Plb3mmD6qA8h0K48YrLmM5bvViccq
-	KbFQedE0/beK8+mtZ7Od4Fp/q1AVI8O+cQbl+Fk6TSnK7IWHJKOc=
-X-Gm-Gg: AYBFou0FOLAxHk0rKKHgX0AhuxoiV+MtdHtuHmwC68tuwVnWFH73AZitEKciJ7oYyTY
-	z67NvakwzROehb90/cC6hdA9iPkT2CC1t6x6qmb0C1zhTuCHt2qQpmLgwJeFSiAysR9hpGSP+Cv
-	tzqSu+MTjYSKcUQS+rOSd4aLCeFo0F3s5b+vM5+xB2s1+NpscwFUdaox2GUqFzIulEz8fEzoP2F
-	y2aZuzjcxS0yRrb5AVMzspOYbbeqIcpQsee0wD577Ab3pLhpxLNxUcclJEIEX+sYa6ZdqQEeUhV
-	vlxn/M71QUI6xsakIKna08gift/orZ3E98wssTKVgicFc8PrCj0bUIyBj/0bACwnDhfcpn9MNJ9
-	/CFRY8541Igy0Nt9riUDM/gQUAUzxeajNy+hpQgFcwx0l/D4bOZVfriCDFd0pQ32tfmA23kVMrg
-	HdapZ3/zeAI/BXtmoiXA==
-X-Received: by 2002:a05:622a:1a85:b0:55c:fa5a:b230 with SMTP id d75a77b69052e-55cfa5ab36emr143284631cf.32.1794901591756;
-        Mon, 16 Nov 2026 23:46:31 -0800 (PST)
-X-Received: by 2002:a05:622a:1a85:b0:55c:fa5a:b230 with SMTP id d75a77b69052e-55cfa5ab36emr143284341cf.32.1794901591140;
-        Mon, 16 Nov 2026 23:46:31 -0800 (PST)
-Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db0f58sm105632286d6.39.2026.11.16.23.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 23:46:30 -0800 (PST)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Tue, 17 Nov 2026 02:46:28 -0500
-Subject: [PATCH 3/3] gfs2: remove the remaining page references in the log
- code
+        d=1e100.net; s=20260707; t=1794916562; x=1795521362;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zPU6ceRrOQUHHV+hxPWUqGfVLvSRRuiDTUWQgjgb5i4=;
+        b=SZnSg8tZp3uiNE5oGTz8LKDYGpn+hIL4+Gzm0W0iIg53IAsdSCq1HxLRPfxKmUwuHY
+         Nj9p+PmhWfIqulGsgarXX7ZMuOid2MuwB0gW9aYaBZe7BPrlC+rrb7UCrtKyp88IH7Lu
+         Dl4ibzShWvtekboNEgoErNBLiuNQG4+jF9JqSXmwyj+vohSvKOHu1ebEKkPn2dGiAJYw
+         ezvDeanQvGyrcWbd6JcZCH0wv1J86iz+nAGeSybNh2SHKkMfysDLpzisMb8u6kRVynLx
+         8CWf8cPAR0to2MXs7JKbYaUgfuoZhpzvtw57bgs6JI+SMbjemnMR1ZkdMBXDxfKn+qu+
+         f53Q==
+X-Gm-Message-State: APuU4Z+n+A593GZwXRps40750Vuuh4EetjemhCrnOGxXHBK1CMCwOcgA
+	SCG3zbuCbXOZDfe+uXB/FducUcDGIDPDn5VV1hq3twarBEwvslP3Kz+1vrBWmfHkm34+TU9aFHG
+	px9afem6X8phrUFYN2IED99kAMJptS4I=
+X-Gm-Gg: AYBFou10Sc0OAr3v0Z8x6SEdkb/svnkD1Y7b5I0FXaHNCVcy/hghI3kI7vzjMan18g9
+	simnmGbafi7MaKfw0qcHxw9878+zxFvkpA3Cyntx42fPk4xzcsQhlnR7us2haEe8hXjZYUYdwOB
+	T4ABsfX8LaJS4liigAia8mOdfL0GZdPKpODPYwiJSvrt0fGqoJk3deUWkNIBGvH/qagVKfBpsQM
+	Ks88NJGWZJ+X83iZDq2+Boxe3KIJcfmWDUAXQQQtukoen2vNmsPiJipm/t4YDqiiVUTFTwBlOCK
+	7YR7vwIWZzk8IBpEvEzl9bfkyElP19C6GwsdWN56DPMaurzV95xhB7M3SbSYwQEilEvEER0vc53
+	NRtj6ehHXa9DVb3uGrxSt8KCjx2YwTEm8XLiF9/0VoON2ldCIAENsh9s0zXWAZh9bghvyBOGMvG
+	akTtow5sOTA0C7u5o=
+X-Received: by 2002:a2e:bd08:0:b0:3ae:25db:795 with SMTP id
+ 38308e7fff4ca-3ae2b55b170mr41244861fa.12.1794916561911; Tue, 17 Nov 2026
+ 03:56:01 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -115,141 +100,118 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-gfs2-log-folio-v1-3-35db3db42e35@columbia.edu>
-References: <20261117-gfs2-log-folio-v1-0-35db3db42e35@columbia.edu>
-In-Reply-To: <20261117-gfs2-log-folio-v1-0-35db3db42e35@columbia.edu>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794901587; l=3235;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=I1OoGwa46W8CbYKC4H5ofZJ0hfXIdWRBljG1BL3y/x4=;
- b=6diQgVHk6GU2bnyJ7q/nrEUp76qx4EOf+glkpY27FpjD4ExEKSGR3OZbav8MHGycP1ctbesaP
- eQdSkHne4R9C70wmLaAuPo5kz3hd/Jpxey8KxyXFzjCrTEGnphorrrO
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Authority-Analysis: v=2.4 cv=dcIVTnXe c=1 sm=1 tr=0 ts=6afc0658 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
- a=RLOwVVqb4wJnjAl-1mUA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: XXXrwLzzYYvjz_new_JvZ31OSmqaGUL5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDAyOSBTYWx0ZWRfX4RCRgG10sQ6L
- 87XT5AJyIRVoP92856s6jT5hhw9lIdtC5XdVHYXysNIj0Z7eI1n33WQrpDbIBfgKmHdbMuCFUGW
- K7mmk4oxe2Vyexqv9OEvRPTSDZMX7QxEIlDRNNOij5oX3J+HisXTjGwTockAvyKx+bv29xHKCdO
- vKi4rbGMZLJAAxuGLlJrH8yhrLf3SH7ME+30vbm4gocYeNLMBHBzwBtCKsJ0xgsXgKMhJiQFSZW
- /TVx88rKmtEBIabXlnCkjgb/OeQSaonNxfQa4xzLnJGmy72Ak7gHwSesv4tCMxyymJHVy1KnE5P
- XVQI+4AkbIQxUSXlb851px4rclFAtzcm4G7Tzj5a9Pydt8RkgczYks78T3JUWiPjU2fSdfdmymE
- ol+8b4JNPBrg/BaEdQBhPhyLr66bGOqkq/91uk97tY2QbGkhtBggr7vMZ8o9VZLWnikfsAMkETK
- EWBQ+f2ynLzydP/vraQ==
-X-Proofpoint-ORIG-GUID: XXXrwLzzYYvjz_new_JvZ31OSmqaGUL5
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE3MDAyOSBTYWx0ZWRfX+2cx5PwX9x7o
- KGFNSgPg6kA7mBrPOJ07LQr1WxcnRHJGMpF1bH9WFMTZqHOVTKkDWCe/Q4LVpi1TfolBStoJdu8
- +GqrdxAN5tnhqh0UHh1BSi2a9+/srwbxqaZ+Z3PhMRhUoAq3Xc3f
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11968
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 phishscore=0 lowpriorityscore=10
- adultscore=0 impostorscore=10 bulkscore=10 suspectscore=0 clxscore=1015
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611170029
+From: Zheng Zheng <fengaojigui88@gmail.com>
+Date: Tue, 17 Nov 2026 19:55:48 +0800
+X-Gm-Features: AclHuK97JT3tcI4OB1Pi1Tv50c508Am-TqojV31gyjYgKRKJYvztqlBkLpD9SOY
+Message-ID: <CAO-4RZ3Od6cyGSMJpW=yATKYde8NEc=Mkyv328+uA1Y56z_7Mw@mail.gmail.com>
+Subject: [BUG] INFO: task hung in gfs2_glock_nq (v7.4-rc3)
+To: agruenba@redhat.com
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-gfs2_jhead_process_page() takes a folio, and the comments around it and
-gfs2_end_log_read() still describe folios as pages. Rename it to
-gfs2_jhead_process_folio() and update the comments.
+Hi Andreas,
 
-Drop the struct page forward declaration from bmap.h as well, which has
-had no user since the unstuff path was converted.
+We found a reproducible GFS2 task hang on mainline v7.4-rc3 with
+syzkaller.
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- fs/gfs2/bmap.h |  1 -
- fs/gfs2/lops.c | 18 +++++++++---------
- 2 files changed, 9 insertions(+), 10 deletions(-)
+The hang is reported by the kernel's hung-task detector (khungtaskd), not
+by the test harness. A task sits in D state on a GFS2 glock and the kernel
+prints:
 
-diff --git a/fs/gfs2/bmap.h b/fs/gfs2/bmap.h
-index e3d6efdfd890..7b44cc9c742c 100644
---- a/fs/gfs2/bmap.h
-+++ b/fs/gfs2/bmap.h
-@@ -13,7 +13,6 @@
- 
- struct inode;
- struct gfs2_inode;
--struct page;
- 
- 
- /**
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index c86f92f2e508..805466667e8a 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -446,7 +446,7 @@ static void gfs2_log_write_block(struct gfs2_sbd *sdp, void *buf)
-  * gfs2_end_log_read - end I/O callback for reads from the log
-  * @bio: The bio
-  *
-- * Simply unlock the pages in the bio. The main thread will wait on them and
-+ * Simply unlock the folios in the bio. The main thread will wait on them and
-  * process them in order as necessary.
-  */
- static void gfs2_end_log_read(struct bio *bio)
-@@ -464,7 +464,7 @@ static void gfs2_end_log_read(struct bio *bio)
- }
- 
- /**
-- * gfs2_jhead_folio_search - Look for the journal head in a given page.
-+ * gfs2_jhead_folio_search - Look for the journal head in a given folio.
-  * @jd: The journal descriptor
-  * @head: The journal head to start from
-  * @folio: The folio to look in
-@@ -498,9 +498,9 @@ static bool gfs2_jhead_folio_search(struct gfs2_jdesc *jd,
- }
- 
- /**
-- * gfs2_jhead_process_page - Search/cleanup a page
-+ * gfs2_jhead_process_folio - Search/cleanup a folio
-  * @jd: The journal descriptor
-- * @index: Index of the page to look into
-+ * @index: Index of the folio to look into
-  * @head: The journal head to start from
-  * @done: If set, perform only cleanup, else search and set if found.
-  *
-@@ -517,9 +517,9 @@ static bool gfs2_jhead_folio_search(struct gfs2_jdesc *jd,
-  * our references to the folio.
-  */
- 
--static void gfs2_jhead_process_page(struct gfs2_jdesc *jd, unsigned long index,
--				    struct gfs2_log_header_host *head,
--				    bool *done)
-+static void gfs2_jhead_process_folio(struct gfs2_jdesc *jd, unsigned long index,
-+				     struct gfs2_log_header_host *head,
-+				     bool *done)
- {
- 	struct folio *folio;
- 
-@@ -630,7 +630,7 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- 				continue;
- 			}
- 
--			gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+			gfs2_jhead_process_folio(jd, blocks_read >> shift, head, &done);
- 			blocks_read += PAGE_SIZE >> bsize_shift;
- 			if (done)
- 				goto out;  /* found */
-@@ -641,7 +641,7 @@ int gfs2_find_jhead(struct gfs2_jdesc *jd, struct gfs2_log_header_host *head)
- 	if (bio)
- 		submit_bio(bio);
- 	while (blocks_read < block) {
--		gfs2_jhead_process_page(jd, blocks_read >> shift, head, &done);
-+		gfs2_jhead_process_folio(jd, blocks_read >> shift, head, &done);
- 		blocks_read += PAGE_SIZE >> bsize_shift;
- 	}
- 
+  [  331.476369][   T44] INFO: task syz-executor:10136 blocked for
+more than 143 seconds.
+  [  331.476395][   T44]       Tainted: G            EL
+7.4.0-rc3-kernsight-kasan #1
+  [  331.476415][   T44] task:syz-executor    state:D stack:22904
+pid:10136 tgid:10136 ppid:1
+  [  331.476466][   T44] Call Trace:
+  [  331.476472][   T44]  <TASK>
+  [  331.476489][   T44]  __schedule+0x1405/0x7510
+  [  331.478052][   T44]  bit_wait+0x1a/0x130
+  [  331.478073][   T44]  __wait_on_bit+0x6f/0x1b0
+  [  331.478127][   T44]  out_of_line_wait_on_bit+0xdf/0x110
+  [  331.478237][   T44]  gfs2_glock_wait+0xaa/0x2e0
+  [  331.478267][   T44]  gfs2_glock_nq+0xd0b/0x17b0
+  [  331.478312][   T44]  __gfs2_lookup+0x10f/0x2a0
+  [  331.478360][   T44]  __lookup_slow+0x15b/0x330
+  [  331.478509][   T44]  lookup_slow+0x59/0x80
+  [  331.478532][   T44]  path_lookupat+0x603/0xb80
+  [  331.478568][   T44]  filename_lookup+0x218/0x5f0
+  [  331.478767][   T44]  user_path_at+0x45/0x90
+  [  331.478794][   T44]  __x64_sys_umount+0x100/0x190
+  [  331.478871][   T44]  do_syscall_64+0x132/0x7c0
+  [  331.478898][   T44]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
--- 
-2.39.5
+The blocked task is unmounting a crafted GFS2 filesystem. It enters
+__gfs2_lookup(), calls gfs2_glock_nq_init()/gfs2_glock_nq(), and waits in
+gfs2_glock_wait() for a glock that does not make progress. The guest runs
+with hung_task_panic=0, so this is a hang report rather than a panic.
 
+Stable reproduction on mainline v7.4-rc3:
+
+1. Build vanilla v7.4-rc3 with:
+     CONFIG_KASAN=y
+     CONFIG_PROVE_LOCKING=y
+     CONFIG_GFS2_FS=y
+     CONFIG_DEBUG_INFO=y
+   The bzImage used here has sha256
+   0c16409f8aec508ac44a63e631c2bd352536401f3fd0856df1d839fb953a1882.
+
+2. Boot a Debian trixie x86_64 guest (6 GiB RAM, 4 vCPU, KVM) with at least:
+     root=/dev/sda console=ttyS0 oops=panic panic_on_warn=1 hung_task_panic=0
+   The full QEMU command line is in environment.txt.
+
+3. Copy syz-execprog and syz-executor built from syzkaller commit
+   853b104bb454141a5b0fc0e4218ec78e9f34ffb1, plus
+   reproducer/repro.kernsight.prog, into the guest.
+
+4. In the guest, as root, run:
+
+     syz-execprog -procs=8 -threaded -repeat=0 \
+         -executor ./syz-executor repro.kernsight.prog
+
+5. Wait for the kernel hung-task detector to print
+   "INFO: task ... blocked for more than 143 seconds" with the
+   gfs2_glock_nq / gfs2_glock_wait stack.
+
+The outer timeout is only used to stop the -repeat=0 loop; it is not the
+success criterion. We observed the kernel hung-task report 2/2 on fresh VMs:
+
+  Run 1: 331.48 s after boot (blocked > 143 s)
+  Run 2: 290.82 s after boot (blocked > 143 s)
+
+Both runs show the same gfs2_glock_wait -> gfs2_glock_nq ->
+__gfs2_lookup -> ksys_umount stack.
+
+The pipeline-provided recipe is a 183-entry state-reconstruction recipe; it
+builds the needed glock state by repeated replay.
+
+Repository contents (all v7.4-rc3):
+
+  https://github.com/Zheng-zheng-codes/gfs2-glock-nq-hang
+
+- README.md: phenomenon, kernel hung-task semantics, reproduction steps
+  and verification results.
+- environment.txt: rc3 kernel/guest image hashes, QEMU command line and
+  syzkaller revision.
+- kernel.config: v7.4-rc3 kernel configuration.
+- reproducer/repro.kernsight.prog: 183-entry state recipe.
+- reproducer/repro.priming.prog: priming portion.
+- reproducer/repro.prog: triggering testcase.
+- reproducer/repro.report, repro.stats, repro.outcomes.jsonl,
+  repro.context.json: pipeline verification evidence.
+- logs/log-0.txt, logs/report-0.txt: original rc3 syzkaller log and crash
+  report.
+- logs/machineInfo-0.txt, logs/title-stat.json: guest environment and title
+  statistics.
+- logs/external-verification/: full serial consoles and run records for
+  the two external rc3 reproductions (331.48 s and 290.82 s).
+- SHA256SUMS: checksums for the inputs and logs.
+
+Could you advise how to identify which holder is preventing the glock from
+being granted in this state, or whether this crafted-image path needs an
+additional check?
+
+Best regards,
+Zheng Zheng
