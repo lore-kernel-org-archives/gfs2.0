@@ -1,45 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795036291;
-	b=PPrJFp4PmzzVqlzajQ7JrP2q6Z5gK/tsrJWYJxIdVpgWpgBGeL6i9Qcw+Dd6bWOLMUPG
-	 q0ELpA4yx+jy+MCFN/dWkcqs6joWjaS9vwyq3Vr5t7RHmcJqfR7F8pf1nQ8D0VKE85JEE
-	 mNyICAKMCgUrrGqQ/+Ue3eW6NGx19tforoQdnJUr8JR6mc7R6MAGqN3lEGMG6QZdZnZ4V
-	 aNV7PcT/x8OniEhVETwYN/Xec1EkXyCyGx5vE1llc+ks/aPZwNOV30uzwL8ihhsTBmow+
-	 9GzQVtVUsQOfEpE6I5Y4q+z8IfYHYD0gYd8cofrz+5A2z1Qa297iHg0seO28SLyTzUw==
+	t=1795044958;
+	b=KIKSqtuyKc+dY+nOqkHz0Wfk6JtOxr8WBEiPRmw1o0ay1QToxxq6tC+QiiOh4XbSZVzK
+	 6De9S6hDLYooO1BBmxc/pQRVkSfsaNhsK2QbbRqWerUkptx2YM7CAEwJhLu7GuO8zKxZj
+	 UKYJvGnVu1FrwjYmyXs8x4eE1SxSseXFQJcEMoH7/Vx1/9FYZ6v8gXSIXLGZ1hFaYmzp4
+	 3NOMT55TCP3QgEv3bltqa2TMWh97u4SiwLTUwcWbwsb2pqAi+wVWigqKfxVN3GePrE8VF
+	 qfeGRAlPQZLo5hhLBjgdjMpSqH3GrE3G1IPh6iKRs5hQO4ELvU6n5cigcAD20NPzt7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795036291;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=fYW7C7ZSeq/hMphn21Jk8+ekBniTzrghgjy5BvzP2bc=;
-	b=oicOzF982iduLj8rp6ItNpy+uzf6Cf0C31wGonA4chp+Xc8yYoh2OcQ7tWLdCZ1taD9Y
-	 woW2dnxvKRXGXBLvvjrXYP23H4mKwQEVwRPzPG9iUlhpLBhq/9hJk58BRABpSpNJ610mp
-	 dHjXIWAEo3GbyGPgWla3bxhz5lOuhd0x/paQGdvN13DOrbfI8XvDsupJYLRpdoSmCdG3/
-	 n9FTiVUvJF1V9F9TcIxGcXdou+KfPzokhehxjGAWg12RLGbkDnhxEH8jnai/xDQwGFFOm
-	 UYd2CYvpxrN/TnFR1L+lSTuz4O3uzqBDo5FtTbbE4hlvRmFEGMV+yo+iV524PdL9rQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795044958;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
+	b=vnOcgXBLvKHK/Z8Pre15cFgQTmcgNnb2HmEGIOx3WOyMf48gqnd4jJ/xOOCvrrQO6KwN
+	 lj5AUcJ/u4j2HnYiKq2wZDbd1LqsiHMZqcrKQJ2LcQ0nK9n/EPyAhlhZ28ebuSFxMErx7
+	 lxHwV2zLtFcXVyG8JsLzyAPptl8Gw0L90QpDtSAEK833vzvr2dlPlGjEmeRZtNa+R8T+f
+	 DzbVXJpLLin4Jm7+rrXJIxdAV/t3uqCUgwEa5bMGq22qLT9KyTX2/Yjb+3ilUfRqYz52F
+	 ivTeydfc/4rcunStydjs7ffrWUR2UKr/1YXqu2FdmUY3GfmY9kSJ6fr3+rDr3V8Nn5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuXqBQo9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OeZtfPG5;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42D606A336;
-	Wed, 18 Nov 2026 21:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB72606A32F
+	for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 23:35:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDB72606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuXqBQo9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4625B1F000C4;
-	Wed, 18 Nov 2026 21:11:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795036290;
-	bh=fYW7C7ZSeq/hMphn21Jk8+ekBniTzrghgjy5BvzP2bc=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=kuXqBQo9E+h9GfS4TOHEmqgk/yUMmLyRthOV87kyoVvVOAzwMpnvqD7A1XkucwxwG
-	 +Vl7bpZlxX0JE1vzCQVuNBvbZMaKuIBAvlXTPAUK/GTa7v0LsXaOQ5W64VpbC1VuJl
-	 uqJ8OInlapAXmctcRxyW0008D6Xzwyp9lCFH5W/hdRpNqLETcSMRWepnBuLx7zwxxU
-	 Sylw1ch5ITJRoQmWb3zw4zYMMrzwKyJn/UZhs2/85dIxkfhwlxjTdBpT9dCJJryN21
-	 FmmGw4YgDxUh6xSvFjYiQgrHT7xeYbJw48awVnPj+qHidKGuRNABBugA/RDx9fw+YY
-	 xy76njp+TsmiA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OeZtfPG5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795044955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
+	b=OeZtfPG50Fjqj40s6Sj+6Did4ufEl3tVHRxceE+mdWNbGwx7fNYk44K7y6G04p78xFCD/R
+	1kv1BumxCx310EyVnA8d4SqhUasQR7TMJCm7IYNKBrDLFc8ygMd69JH4NPy4EA0UV5oaOI
+	oaiqNL+fbnuAUb7jfi3vcX/vMHMt/3w=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497-NzMtl4FwPem6MxxBd6FHSg-1; Wed, 18 Nov 2026 18:35:54 -0500
+X-MC-Unique: NzMtl4FwPem6MxxBd6FHSg-1
+X-Mimecast-MFC-AGG-ID: NzMtl4FwPem6MxxBd6FHSg_1795044954
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b4b2b422c5so16167257b3.1
+        for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 15:35:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795044954; x=1795649754;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
+        b=enTVWmaryKK1Ve5DTSZcdxzdgTarUHQgSL9AdCOERboOooaFODefCVFKTiFtA86oGv
+         cmgLzSL7CDZ6wCcrLChaibLo6oy1IMpVLnXMZ/OpB73yAg0MHycJipV0uB7E+lTHdMUi
+         92ovgGN+mnvoCPT0HDIF5YyegkdPlh44uCIHwqTLwXR+FJc8Ad/vpoxfU6AtqmUmrPWO
+         dsptMpMHReUBwWP7kmhonJWgHjTlINVu7cGKMlPaL8LITpL+PqMYHDBb3C4OjxBVuCap
+         rUAnyBD1ZPaOEDvnlJdAvUUXUvgEr5P6fNFRcBueF1OVnj0j3iWdI2DKb0Rs4o5hjX1+
+         /Ybw==
+X-Forwarded-Encrypted: i=1; AL+hErEKUGiMaNH67FJqdTwosISFM96kOW8Gp6OK0ST39Yy+DgxOkGRDZjvlY/FQ/fyf7t4m8DXn@lists.linux.dev
+X-Gm-Message-State: APuU4Z8b/BqSMjKwJG0uF66TuFoi1w0Wks4gFIgSC/8WBPrIEzeamNvh
+	VCsvcUTolJ8F3HZYalktfjZ7kkoW3eztAi47MbBJD1ehVJR+T7KTPvO7Flz1hGArlvZRwxooC9o
+	IPNRf0QzHYYkS5hT75X5jGYrWZ4J7GxKZF4J/ytgNug/pHKl398whK8m5R4P+3N8UnJ2eRJfcE9
+	Rv+9vq0Ba66I6lf8WXPsWBjar5FcFZTw==
+X-Gm-Gg: AZFdTZeWf57dxSpaLU1qwAPW5sVQWS33teGQnDpt5I8zFSwtfryrzwqVZm6ml42yv8t
+	p94YYxOLgmE5AmR+VsaMovlETPgVypVp+d6KkP48zF1sKpn48xFSCoKuPMkZyqae2QqZB3ph4+6
+	2MTVFIvFRHq9/npnbCHxFjQbHIlyIY1qU64qJ0ESugHRjocn/+PuIaNDtS9w0BPg1UHCaOKuGxu
+	vzcSSHGZ8xr5B9CJDBWIaWsbvX4w4lZS48ikhEf+LkjBg==
+X-Received: by 2002:a05:690e:128a:b0:679:2a90:d3ad with SMTP id 956f58d0204a3-67dd403bf8cmr1618042d50.102.1795044953778;
+        Wed, 18 Nov 2026 15:35:53 -0800 (PST)
+X-Received: by 2002:a05:690e:128a:b0:679:2a90:d3ad with SMTP id
+ 956f58d0204a3-67dd403bf8cmr1618023d50.102.1795044953295; Wed, 18 Nov 2026
+ 15:35:53 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -48,90 +90,88 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261116171044.6938-1-jack@suse.cz> <20261118145941.1063127-19-jack@suse.cz>
+In-Reply-To: <20261118145941.1063127-19-jack@suse.cz>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Thu, 19 Nov 2026 00:35:42 +0100
+X-Gm-Features: AclHuK9zTsUN7zuq72-DSL1ny4jnrrzy1tFjBUU4DEu6A9maK7lyiUQZqwV6vuE
+Message-ID: <CAHc6FU7NoZua98SGP9Kuga58gAcco6X__u=kOPfsUqbefAKLFQ@mail.gmail.com>
+Subject: Re: [PATCH 06/13] gfs2: Avoid racy dirtiness check in gfs2_fsync()
+To: Jan Kara <jack@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, devel@lists.orangefs.org, 
+	Dave Kleikamp <shaggy@kernel.org>, jfs-discussion@lists.sourceforge.net, 
+	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org, 
+	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	linux-afs@lists.infradead.org, Miklos Szeredi <miklos@szeredi.hu>, 
+	fuse-devel@lists.linux.dev, linux-block@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, 
+	Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cxMfVxtx6ItOkKsdbVlH93nXgQfOjklUJNkj_kra8Sw_1795044954
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Nov 2026 22:11:20 +0100
-Message-Id: <DMYN979QJFNV.LM3T6O68OHW6@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Kees Cook"
- <kees@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael
- Ellerman" <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <chleroy@kernel.org>, "Nayna Jain"
- <nayna@linux.ibm.com>, "Srish Srinivasan" <ssrish@linux.ibm.com>, "Mimi
- Zohar" <zohar@linux.ibm.com>, "Yoshinori Sato"
- <ysato@users.sourceforge.jp>, "Rich Felker" <dalias@libc.org>, "John Paul
- Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, "Juergen Gross"
- <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <ndesaulniers@google.com>, "Viresh
- Kumar" <viresh.kumar@linaro.org>, "Zhongqiu Han"
- <zhongqiu.han@oss.qualcomm.com>, "Alexander Aring" <aahringo@redhat.com>,
- "Felix Kuehling" <felix.kuehling@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Zhihao Cheng" <chengzhihao1@huawei.com>,
- "Sumanth Korikkar" <sumanthk@linux.ibm.com>, "Bill Wendling"
- <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- <driver-core@lists.linux.dev>, <llvm@lists.linux.dev>,
- <linux-hardening@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
- <gfs2@lists.linux.dev>, <xen-devel@lists.xenproject.org>,
- <linux-mtd@lists.infradead.org>, <amd-gfx@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-To: "Ian Rogers" <irogers@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 9/9] kobject: Require explicit initialization of
- struct kobj_type::release
-References: <20261108223913.3624571-1-irogers@google.com>
- <20261108223913.3624571-10-irogers@google.com>
-In-Reply-To: <20261108223913.3624571-10-irogers@google.com>
 
-On Sun Nov 8, 2026 at 11:39 PM CET, Ian Rogers wrote:
->  static const struct kobj_type cpuregs_kobj_type =3D {
-> +	/*
-> +	 * Pre-existing: info->kobj is embedded in per-CPU cpu_data;
-> +	 * cpuid_cpu_offline() only calls kobject_del().
-> +	 */
+Hi Jan,
 
-All of these comments carry a =E2=80=9CPre-existing:=E2=80=9D prefix, but t=
-hat doesn=E2=80=99t
-distinguish cases with broken lifetime management from those where the stor=
-age
-remains valid despite the API misuse.
+On Wed, Nov 18, 2026 at 4:00=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+> Check for I_DIRTY_PAGES state in gfs2_fsync() is racy because
+> __writeback_single_inode() unconditionally clears the flag and
+> reinstates it only later based on PAGECACHE_TAG_DIRTY tag. If
+> gfs2_fsync() unlocked read of i_state hits in between, it will not see
+> I_DIRTY_PAGES although there may be dirty folios in the mapping. Check
+> for PAGECACHE_TAG_DIRTY instead and use inode_is_dirty() helper for
+> inode metadata dirtiness check.
+>
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/gfs2/file.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>
+> diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+> index 1efd0679badd..f5532f72ab99 100644
+> --- a/fs/gfs2/file.c
+> +++ b/fs/gfs2/file.c
+> @@ -749,7 +749,7 @@ static int gfs2_fsync(struct file *file, loff_t start=
+, loff_t end,
+>  {
+>         struct address_space *mapping =3D file->f_mapping;
+>         struct inode *inode =3D mapping->host;
+> -       int sync_state =3D inode_state_read_once(inode) & I_DIRTY;
+> +       bool dirty_data =3D mapping_tagged(inode->i_mapping, PAGECACHE_TA=
+G_DIRTY);
+>         struct gfs2_glock *gl =3D gfs2_inode_glock(inode);
+>         struct gfs2_inode *ip =3D GFS2_I(inode);
+>         int ret =3D 0, ret1 =3D 0;
+> @@ -760,12 +760,8 @@ static int gfs2_fsync(struct file *file, loff_t star=
+t, loff_t end,
+>                         return ret1;
+>         }
+>
+> -       if (!gfs2_is_jdata(ip))
+> -               sync_state &=3D ~I_DIRTY_PAGES;
+> -       if (datasync)
+> -               sync_state &=3D ~I_DIRTY_SYNC;
+> -
+> -       if (sync_state) {
+> +       if (inode_is_dirty(inode, datasync) ||
+> +           (gfs2_is_jdata(ip) && dirty_data)) {
 
-For example:
+this adds back the I_DIRTY_TIME check explicitly removed in commit:
 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/am=
-d/amdgpu/amdgpu_xcp.c
-> index ab14079d1c42..0847134a1391 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
-> @@ -797,6 +797,11 @@ static const struct sysfs_ops xcp_cfg_res_sysfs_ops =
-=3D {
->  };
-> =20
->  static const struct kobj_type xcp_cfg_res_sysfs_ktype =3D {
-> +	/*
-> +	 * Pre-existing: xcp_res is embedded in struct amdgpu_xcp_cfg
-> +	 * rather than freed individually by kobject_put().
-> +	 */
-> +	.release =3D NULL,
+3aac630b5ce1 ("gfs2: don't worry about I_DIRTY_TIME in gfs2_fsync()")
 
-Being embedded in another structure doesn't explain what guarantees that th=
-e
-enclosing allocation outlives the kobject=E2=80=99s final cleanup.
+Could you please clarify what's going on?
 
-Could you please drop the =E2=80=9CPre-existing:=E2=80=9D prefix and make t=
-hat distinction
-explicit? For broken cases, describe the lifetime problem and mark it as ne=
-eding
-a follow-up fix. For cases where the lifetime is safe, explain what guarant=
-ees
-that safety, while acknowledging that omitting release() still violates the
-documented API contract.
-
-Also, do you plan to follow up on those cases?
+>                 ret =3D sync_inode_metadata(inode, 1);
+>                 if (ret)
+>                         return ret;
+> --
+> 2.53.0
+>
 
 Thanks,
-Danilo
+Andreas
+
