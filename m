@@ -1,133 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795014001;
-	b=ZvG6yJEd1pq/UYfg8haUy8lrQxzfoYDYM9vJa6qkrRuL0vD2+YNYJYqbYrtA/kh8jEAo
-	 s4940jXCuZDlutjTeNse1Svr5AL8XYj/5xNlpNF0lKF6Nq4n/b6uEEtXj++iv02QiXT4q
-	 MsLP/uOXnlDSSFbHx3N/WSJEj/DcS6jfBa85MwyGKT+6eo8bokq6K265jO3BNLGVBvhhF
-	 Yv7fGyyD0iHCDa0ySxmj2e1dqZIa0RaV3AgRO1AgXP8LPu5spYyBtscY8IlabM6Lumtzq
-	 Ss3NSDl+sBAu3Rlk6c4aunkqpaQNYwrQY4ua3BtMpCxLcqhosA6ij/lu9fXrtmLsqgA==
+	t=1795036291;
+	b=PPrJFp4PmzzVqlzajQ7JrP2q6Z5gK/tsrJWYJxIdVpgWpgBGeL6i9Qcw+Dd6bWOLMUPG
+	 q0ELpA4yx+jy+MCFN/dWkcqs6joWjaS9vwyq3Vr5t7RHmcJqfR7F8pf1nQ8D0VKE85JEE
+	 mNyICAKMCgUrrGqQ/+Ue3eW6NGx19tforoQdnJUr8JR6mc7R6MAGqN3lEGMG6QZdZnZ4V
+	 aNV7PcT/x8OniEhVETwYN/Xec1EkXyCyGx5vE1llc+ks/aPZwNOV30uzwL8ihhsTBmow+
+	 9GzQVtVUsQOfEpE6I5Y4q+z8IfYHYD0gYd8cofrz+5A2z1Qa297iHg0seO28SLyTzUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795014001;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding:
-	 X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
-	bh=gC+WTNqo3zddo1hQ6r2uM40CkmOnnZwNP+h9kAciQTI=;
-	b=MyQHGVMRRGjLSeCyoBIVdGY3Te14yx/W211dE8p3v3gBa1vP51vyu8QkBYGjV62Yhv0A
-	 EK32WgR/N1TLvvAQ8z4PRGXRmM3Ys7rv9kKV9/drNPzkAGomhW1KvcBhubXytuMKTAmex
-	 n0EqcYNSr6xc97AZo5/ZPWpGdBmpWDVsw3uazANotBXu4LsJbaA5UlZdAiYIaGP2Az9o3
-	 i0CWx0Wk4TVgqKyVHZv4iGoxQPdljIUMA4VTBERLrRIrUHPIQ8LAKIQSZVwo9YVOuJuX9
-	 nnTjadhrbkR9byOUwBAp2vBdifeBjoc75i/vtfZBIrWaoZNAmTgaJWny2DGFpjwxn9w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795036291;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
+	 In-Reply-To;
+	bh=fYW7C7ZSeq/hMphn21Jk8+ekBniTzrghgjy5BvzP2bc=;
+	b=oicOzF982iduLj8rp6ItNpy+uzf6Cf0C31wGonA4chp+Xc8yYoh2OcQ7tWLdCZ1taD9Y
+	 woW2dnxvKRXGXBLvvjrXYP23H4mKwQEVwRPzPG9iUlhpLBhq/9hJk58BRABpSpNJ610mp
+	 dHjXIWAEo3GbyGPgWla3bxhz5lOuhd0x/paQGdvN13DOrbfI8XvDsupJYLRpdoSmCdG3/
+	 n9FTiVUvJF1V9F9TcIxGcXdou+KfPzokhehxjGAWg12RLGbkDnhxEH8jnai/xDQwGFFOm
+	 UYd2CYvpxrN/TnFR1L+lSTuz4O3uzqBDo5FtTbbE4hlvRmFEGMV+yo+iV524PdL9rQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="K8/YCyMJ";
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lpf0EoXP;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="K8/YCyMJ";
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lpf0EoXP;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuXqBQo9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A338D606A33B;
-	Wed, 18 Nov 2026 15:00:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A338D606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42D606A336;
+	Wed, 18 Nov 2026 21:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=K8/YCyMJ;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lpf0EoXP;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=K8/YCyMJ;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lpf0EoXP
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 216DC1F88E;
-	Wed, 18 Nov 2026 14:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795013999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gC+WTNqo3zddo1hQ6r2uM40CkmOnnZwNP+h9kAciQTI=;
-	b=K8/YCyMJX+yQh819SY4TOwUofCjQcD0hb2V3kzU5TZtxUoK4M9KLRL5EzQzHbpGlLpoK6y
-	kDUL4ovynMw6BSXCx4xatCtQZurgbJQfPAJEGu2YCv1bQRCwSXJyBzx/IoIpUt74Nm831P
-	C53f8nIHUoI0EKmGrL1Cem48VPrQN4Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795013999;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gC+WTNqo3zddo1hQ6r2uM40CkmOnnZwNP+h9kAciQTI=;
-	b=lpf0EoXPpUNLJalkJMzUCh3VN8B1Gm2zv4c4XW6Tig2zH2fJsX45OmgR9JMSSvnqj+HL8s
-	x1wFSzURvVZi5ICA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795013999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gC+WTNqo3zddo1hQ6r2uM40CkmOnnZwNP+h9kAciQTI=;
-	b=K8/YCyMJX+yQh819SY4TOwUofCjQcD0hb2V3kzU5TZtxUoK4M9KLRL5EzQzHbpGlLpoK6y
-	kDUL4ovynMw6BSXCx4xatCtQZurgbJQfPAJEGu2YCv1bQRCwSXJyBzx/IoIpUt74Nm831P
-	C53f8nIHUoI0EKmGrL1Cem48VPrQN4Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795013999;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gC+WTNqo3zddo1hQ6r2uM40CkmOnnZwNP+h9kAciQTI=;
-	b=lpf0EoXPpUNLJalkJMzUCh3VN8B1Gm2zv4c4XW6Tig2zH2fJsX45OmgR9JMSSvnqj+HL8s
-	x1wFSzURvVZi5ICA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED1C613507;
-	Wed, 18 Nov 2026 14:59:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yr50MW69/WqmXwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 18 Nov 2026 14:59:58 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 0AC4F250A1; Wed, 18 Nov 2026 15:59:54 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: <linux-fsdevel@vger.kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	devel@lists.orangefs.org,
-	Dave Kleikamp <shaggy@kernel.org>,
-	jfs-discussion@lists.sourceforge.net,
-	Carlos Maiolino <cem@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	fuse-devel@lists.linux.dev,
-	<linux-block@vger.kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	linux-fscrypt@vger.kernel.org,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 10/13] afs: Use inode_or_folios_dirty() in afs_evict_inode()
-Date: Wed, 18 Nov 2026 15:59:44 +0100
-Message-ID: <20261118145941.1063127-23-jack@suse.cz>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261116171044.6938-1-jack@suse.cz>
-References: <20261116171044.6938-1-jack@suse.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuXqBQo9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4625B1F000C4;
+	Wed, 18 Nov 2026 21:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795036290;
+	bh=fYW7C7ZSeq/hMphn21Jk8+ekBniTzrghgjy5BvzP2bc=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=kuXqBQo9E+h9GfS4TOHEmqgk/yUMmLyRthOV87kyoVvVOAzwMpnvqD7A1XkucwxwG
+	 +Vl7bpZlxX0JE1vzCQVuNBvbZMaKuIBAvlXTPAUK/GTa7v0LsXaOQ5W64VpbC1VuJl
+	 uqJ8OInlapAXmctcRxyW0008D6Xzwyp9lCFH5W/hdRpNqLETcSMRWepnBuLx7zwxxU
+	 Sylw1ch5ITJRoQmWb3zw4zYMMrzwKyJn/UZhs2/85dIxkfhwlxjTdBpT9dCJJryN21
+	 FmmGw4YgDxUh6xSvFjYiQgrHT7xeYbJw48awVnPj+qHidKGuRNABBugA/RDx9fw+YY
+	 xy76njp+TsmiA==
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -136,63 +48,90 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1012; i=jack@suse.cz; h=from:subject; bh=A3fwFrLxq2sLtsoLLFywsEZVT5HTyxLWIrwzaeggONU=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBq/b1k37ZIR6z9fsTw8rPMt+C+UFIW26BkL5FQl qYWaDW7412JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCav29ZAAKCRCcnaoHP2RA 2RvcCACHKWZlGcGDdSiAJp85PlUWyBQrTnIa0GQs4OufDPtonw9LyfMaQqei/t+As60CWoIZkGS BvfoUQJghvAdPdAn8/6T1QrkMGXedEPne8wmons4U0Izs/iHqubLDSXYzzjxVsCS8QWcidma5Eg jxad8PiF8KSKYPHwkI60nWEeZr9y/6WPFae07BL+wboyJ2Ej2VjX8VbBA4EN0+LrJR7ImmZCsAW xCsm7//KlMA8VBs/zNbLny+DRHcXdP7pyC/fFtIq2OipPd3B0ikX7t1rHblWQulY1Ev2aDFNfxi 8c6giQriDc4vSIpKP8XFT+xzn+i8yjyubthZcmA/6aCE35yh
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-15.80 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.993];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLyaw51ggmke6bkcxeyajg5whq)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -15.80
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Nov 2026 22:11:20 +0100
+Message-Id: <DMYN979QJFNV.LM3T6O68OHW6@kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Kees Cook"
+ <kees@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <chleroy@kernel.org>, "Nayna Jain"
+ <nayna@linux.ibm.com>, "Srish Srinivasan" <ssrish@linux.ibm.com>, "Mimi
+ Zohar" <zohar@linux.ibm.com>, "Yoshinori Sato"
+ <ysato@users.sourceforge.jp>, "Rich Felker" <dalias@libc.org>, "John Paul
+ Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, "Juergen Gross"
+ <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nick Desaulniers" <ndesaulniers@google.com>, "Viresh
+ Kumar" <viresh.kumar@linaro.org>, "Zhongqiu Han"
+ <zhongqiu.han@oss.qualcomm.com>, "Alexander Aring" <aahringo@redhat.com>,
+ "Felix Kuehling" <felix.kuehling@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Zhihao Cheng" <chengzhihao1@huawei.com>,
+ "Sumanth Korikkar" <sumanthk@linux.ibm.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
+ <driver-core@lists.linux.dev>, <llvm@lists.linux.dev>,
+ <linux-hardening@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+ <gfs2@lists.linux.dev>, <xen-devel@lists.xenproject.org>,
+ <linux-mtd@lists.infradead.org>, <amd-gfx@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+To: "Ian Rogers" <irogers@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 9/9] kobject: Require explicit initialization of
+ struct kobj_type::release
+References: <20261108223913.3624571-1-irogers@google.com>
+ <20261108223913.3624571-10-irogers@google.com>
+In-Reply-To: <20261108223913.3624571-10-irogers@google.com>
 
-Use the helper instead of direct inode I_DIRTY check to abstract details
-of inode dirtiness handling. This also properly triggers when only
-timestamps are dirty and lazytime is enabled (although I'm not sure if
-it really matters for this particular case in AFS).
+On Sun Nov 8, 2026 at 11:39 PM CET, Ian Rogers wrote:
+>  static const struct kobj_type cpuregs_kobj_type =3D {
+> +	/*
+> +	 * Pre-existing: info->kobj is embedded in per-CPU cpu_data;
+> +	 * cpuid_cpu_offline() only calls kobject_del().
+> +	 */
 
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/afs/inode.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+All of these comments carry a =E2=80=9CPre-existing:=E2=80=9D prefix, but t=
+hat doesn=E2=80=99t
+distinguish cases with broken lifetime management from those where the stor=
+age
+remains valid despite the API misuse.
 
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 0733abff77a5..69982e7d7020 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -667,10 +667,8 @@ void afs_evict_inode(struct inode *inode)
- 
- 	ASSERTCMP(inode->i_ino, ==, vnode->fid.vnode);
- 
--	if ((S_ISDIR(inode->i_mode) ||
--	     S_ISLNK(inode->i_mode)) &&
--	    (inode_state_read_once(inode) & I_DIRTY) &&
--	    !sbi->dyn_root) {
-+	if ((S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
-+	    inode_or_folios_dirty(inode) && !sbi->dyn_root) {
- 		struct writeback_control wbc = {
- 			.sync_mode = WB_SYNC_ALL,
- 			.for_sync = true,
--- 
-2.53.0
+For example:
 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/am=
+d/amdgpu/amdgpu_xcp.c
+> index ab14079d1c42..0847134a1391 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+> @@ -797,6 +797,11 @@ static const struct sysfs_ops xcp_cfg_res_sysfs_ops =
+=3D {
+>  };
+> =20
+>  static const struct kobj_type xcp_cfg_res_sysfs_ktype =3D {
+> +	/*
+> +	 * Pre-existing: xcp_res is embedded in struct amdgpu_xcp_cfg
+> +	 * rather than freed individually by kobject_put().
+> +	 */
+> +	.release =3D NULL,
+
+Being embedded in another structure doesn't explain what guarantees that th=
+e
+enclosing allocation outlives the kobject=E2=80=99s final cleanup.
+
+Could you please drop the =E2=80=9CPre-existing:=E2=80=9D prefix and make t=
+hat distinction
+explicit? For broken cases, describe the lifetime problem and mark it as ne=
+eding
+a follow-up fix. For cases where the lifetime is safe, explain what guarant=
+ees
+that safety, while acknowledging that omitting release() still violates the
+documented API contract.
+
+Also, do you plan to follow up on those cases?
+
+Thanks,
+Danilo
