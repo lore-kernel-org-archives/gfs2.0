@@ -1,87 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795047921;
-	b=SbTqkJv5EiKhlucMCrFdcEX5jl7QKEOfwYMCYNA7O2DelybeyWNWOapkXs9PZ+JtEHB3
-	 Q07ksbGkTE2HPnd56pvfxnSB9QzBn/Ajk4WPWVub2XwfMRABYDnnySmXlK8bwgpkUXoFW
-	 OyNYjpNpcur+Mt+yybWu39RWqhhDqKA5I2xnb3Q7XaHlilVzi5OCAxNITxEeff2Z7Xp/a
-	 mZ1AL2dU8BOc/AZp+UHTJNlgVxot02URyxuHm41vgvzUMxot9pqTDjLyGoRCcqDFqleCD
-	 VXEBKJwvDda+VAsJHL/FnedHI9Izj5IhFcdq5GNQRCyGy3rLG3ANnmL46YsbxnqkWeQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795047921;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795067159;
+	b=V1ubF/1PjHcNUGlVWiQm+oQVmMzEf5Q9eIF3A3uGp/1uGYrjh3njq0D3lfJYJll2tOKU
+	 tUq8nXPWrqDgKzFGZploeQZPwkrKjxNK9mDhaBRbe00/aJaWkqjNMhzceZ4qzh0NMdcaM
+	 l4+S5JNglzYr1Zlzb1x1X7Bb5dw96YZL3BSs8x4WRApfbpOKHIqUo7bqMd0CUhXqN6lq1
+	 irBn4gD0HSz7ngdkSBkh3PxTonuFQ+lzAZav/Al4mb35Y64KhNm5C2s88I+sGyn7KNjXR
+	 8viDjcTvMnDCY1Ql25g+WWwhShE9wqkPeWUa/SkG4pOUDzjNTnmqiLPLSvfmbyUw3RA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795067159;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=M4+iI66pVBP+4vibL3T75xrw5k3lOfdLMjtLDFVvV8g=;
-	b=IyxLvxbYiTxyjJdH7BjFzD+s5ZQ4Gr7/L/2tc+HMkB/nPRXE/KiQsfKk/jRSOs6ap7qg
-	 kM913m3GXEawNvoGFZRO2S2uUvsqbfC0zz7r8Yokt0UxZ8fnGEILEj6CKY91WPfjPSMWS
-	 3MQbTjTm81CN1+knNi2vXADNO6FN2E48z6GyvTnLtwbiCGbGi3gL7x9jZwd0+HfoB/hbS
-	 F4Nigxo9p/IOs7kVKoUclbv/BATrSusAQ7BXPDA4FkoTdEimh/wPv0qz1qWavpzZSg16w
-	 hKmzStSSmq5KV0FAUfqB5RIKh8E3NqdpO84+gpARG33+AIlZGPVYTgsUgdncPXpBUWw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=figiuMqN;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=cIkoHsOVRZS7gIowPl6xkao6tH+bfcK9X/Z+HF8PGU0=;
+	b=So1WyqnL7WMZheN2PSrv3oeU+g6jxvyWOryNNOvN7xJxj31A8+sXHJ4hFY5lQJEHb7yv
+	 pWvhgF1gTwYvMv6GKXtA7Zvg4z1scyUxkAiujhIsF/AeYUNDBLqNrwIhx5Qybfjt9GDGU
+	 XWt13Ud1Qcjy5OHd6aGu4rvZX68wrIL16EubC1IgA3ifg/K7Uv5uymffbOM+g06rHFKFW
+	 SY/VXgsRCYemHAI7I3Bai5x+A9E4HU1ZbZ6jzrpK3xwVJ7bPyKiaP6Jy7FY1gQFtMmVks
+	 5c+ufah6qn4se0IYraefGfdxccQAblBhoxsnpc56wrG/CVm0zOhbDxce+maojfamDfQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JMxj3yB0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AEC60A2603
-	for <gfs2@lists.linux.dev>; Thu, 19 Nov 2026 00:25:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52AEC60A2603
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B9606A332
+	for <gfs2@lists.linux.dev>; Thu, 19 Nov 2026 05:45:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 168B9606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=figiuMqN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795047919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M4+iI66pVBP+4vibL3T75xrw5k3lOfdLMjtLDFVvV8g=;
-	b=figiuMqNPSbJSC+rppKYW73jTrxg0F5RFlFTF8isncIxQMPE1WxN7Bn1FHZTvLkpofJq4d
-	7m420J1xkEdKbn3Rcx5/MaC0RJqvUstWY08DU3pgmjHol80seQFiw6J/Lwkk9/s2t1SRbD
-	9rIFexGnSFloom9KDpPKlHqDR/WtULw=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-LmeiasZqNda3YauFlQGSEQ-1; Wed, 18 Nov 2026 19:25:18 -0500
-X-MC-Unique: LmeiasZqNda3YauFlQGSEQ-1
-X-Mimecast-MFC-AGG-ID: LmeiasZqNda3YauFlQGSEQ_1795047917
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-8b3b7d66416so21995287b3.3
-        for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 16:25:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JMxj3yB0
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so171501cf.0
+        for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 21:45:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795067158; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e2QsiTASC2Szii2USsy4r8a5zfe6OulNqXl22BFv1UFoBHtlQAvA13vX6RvqzESlPk
+         Qeu132xpC45VXv9kDmzgVMMZ2wu4VsUMD9nhHIi5pV4GQqs+eJyaprMN42F3rYwwu483
+         lVEBuVLWXBZlsuarSbbzVcrRVJiNsuXF94mHI1RMlL5eL9av3wuBucKLhlHFxUmh7doH
+         JuqDFzmAUOEPpRH4r/QRcIhLrtnSGqvKzegSo/F+syxjsr1GluhfDqEBP5OTVzc9TZGp
+         U6G/kj+IZtuysJ8gi0lFgpx7GakwX3PbXuWYrWL8Y7YvZr+swVD2lV//FAGwT23YfMdG
+         TTbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cIkoHsOVRZS7gIowPl6xkao6tH+bfcK9X/Z+HF8PGU0=;
+        fh=HhJos9OepL/yP0nSlh+Q9Wtj7piaJCYzuiop7+Mf6So=;
+        b=jav9Oz/W26OCg8jDKSf5Z6lp0Lh2P1GOAtuxu1fC+O+xXotIos2AlGieOP2FCiFic/
+         3EFgz1F0K3TM8nitC3u52Zx7FDAcWOeKdHUyY6o5G+qgPeQqm5ARBkNoZIKS9iMhBHbW
+         xfZWMRSnfM6MmslPdp51LVHq7UUW1nWzEHMkwBaBBrVqodZf6cmA8lhPrewEMTeTSWNN
+         xxpuFMah6ak67Q1eugSYRdscXCj7ff6Q083Z7M7wxqxNTKXqUk68x85jxG5t9n+DTArb
+         Qx213WqrRR/w1+vQHY1iSjqowjZzINpUuZ8AZu/mo0H/iKq2jUT+oU3dAJyiCT7TMhpL
+         ybJg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795067158; x=1795671958; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cIkoHsOVRZS7gIowPl6xkao6tH+bfcK9X/Z+HF8PGU0=;
+        b=JMxj3yB0SeAUHokTprfYVnrnmnS+Nxo3cczjmq3QQAOfFY6+gBYpfkzGSioGQ8MaaT
+         9TcLPVQlTiiyLAcy5HbYgpaobHdwB4yb0nz9em2z5oxEKeLyVSIRtRD7ghLlVQDpESVp
+         lbR5yGUGthueo8blACsDc54Ri2ML+0/lKnEgpTq7abthTw2uTpTi3VjzqOC/LMOvbPLc
+         vbAjnK8Dp4ACS3bC2jUL8Yqi9Ak/QCMLL97O8cXzJ9g0FkzKoTefmYLT07Vmdfj/nSgt
+         nTrKFZhlhf77LIKhdWcpjHZB9XGzJHjtgon1nmhQ5YDlKWjMjgcw0gIACUFXFgewRZLP
+         Kgig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795047917; x=1795652717;
+        d=1e100.net; s=20260707; t=1795067158; x=1795671958;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M4+iI66pVBP+4vibL3T75xrw5k3lOfdLMjtLDFVvV8g=;
-        b=ccMSSAovEA3FyIQ1JhBIeQexLUCxkw8j+/2Bwn9VCgiMhqb7Ujn8wSm5Kma65f/eQy
-         Q/jOlXFiAwdaODAtk8UuoMj3xVFw4+6xAzuOlek3kj7VhtE1E72qwd0UGq2k1aVowVmo
-         HUugrEOCIVLFAO1w5FUt0A/S+gon/4ZxAbKL9+Wzy6Wr5Z60zNWljtW3Hs45cfA4qrtJ
-         xrmOAvi1jILMkBCFkYYR6ePF4OKDWmgaoRp7dJfcMZtXOTp0otdY4sLOfcnziM+r5c73
-         OWLJaU/iiK0TNzd6Q4PyeBpTYEb5E6WWkE4QCcYqE1vrdLaEw/d+rSpGquuBA2Y2YxNw
-         KvwA==
-X-Forwarded-Encrypted: i=1; AL+hErH583Lvv5ewuGI35Up0okAKw4ys342gN/zK9TXy1gvNPnos4xQ0FCixupL8vjzwS7ORU7yw@lists.linux.dev
-X-Gm-Message-State: APuU4Z8eRKqvm7C4cz/B3fwLayOfwBBeD2/jLw/ZO9OEnjP1LCDf2MUc
-	PNd7UVG6ECVbSkFQF/JwIdod7ixR0kEDp2PouAjiAs/TNS5jwzdVXjceHKZRk88jsz815AeWgCP
-	KIgSM3aW8X9D3hmOTrkwwvOLHlEJdAy8YhNL6RWgC9Z8Bk0opzcu/eW14HHfA5kyAUMGdUs64ZX
-	/VbB3iDX5QoEf/Lh/+6WApoyiVEhRyYg==
-X-Gm-Gg: AZFdTZdh+ZoTcafvh+JacJqx4ulvrVQOjTm4CFt9vXKtBT/sK5Yv3XCDuEt0be7G/n6
-	d7msU+E9nU1i26cNGVzDbJdYIB5TXJ/4KReAryMRhPIRbQT25J0b8cxMX4rBenKkZ5SDb1m9pPI
-	janEa2v4wWxeUz7gOBb4R6hatS02WW+U75INXHS66e0fqldAmgL3JxgtyWKQp/oeYwweuxAaoI5
-	NfcmP/zFHg/5w/fH5Sb6zngfG0oezeIvE6n0bazCGzcqQ==
-X-Received: by 2002:a05:690e:1553:20b0:67d:b309:a247 with SMTP id 956f58d0204a3-67dd3f89d1amr1300410d50.81.1795047917522;
-        Wed, 18 Nov 2026 16:25:17 -0800 (PST)
-X-Received: by 2002:a05:690e:1553:20b0:67d:b309:a247 with SMTP id
- 956f58d0204a3-67dd3f89d1amr1300383d50.81.1795047916923; Wed, 18 Nov 2026
- 16:25:16 -0800 (PST)
+        bh=cIkoHsOVRZS7gIowPl6xkao6tH+bfcK9X/Z+HF8PGU0=;
+        b=xacR/O1HA195PKjVZZienTBSJ4pndiVePBIPMsSjmqrJqE26sjCb42N8RuhKpQi+5C
+         3JacFWw54h4gHJcYqX8wawb/iR3TNSy0JeM/z9YER4XcgkCrTx6OLaHOiv3EkoF8hjpq
+         mVzrisJ9WuxN+TOelvR+maSyQpvvtf4LE6oGYYYRtlbUnvQ7tLHej50tHfLAt6ZQBko7
+         StSx2o3nUAQYV0m5K/dJA7z32L4RJwHc5q2+RY+H0lVL/LnygddDeM49G3g3Blum5kPg
+         hvxz7ytlaHIrTvCawiPBmK5rhZqcDP6t/Ytec0Dqq8fIxk1Ty/7O1dGVztLKYrLas7Ue
+         7MyA==
+X-Forwarded-Encrypted: i=1; AL+hErGpEkasy/3bolBhnmATl5YkrzalCUjXnDSulPKHtCoAIm7IIsPBhZAyyvUeahsr3bc6dkK4@lists.linux.dev
+X-Gm-Message-State: APuU4Z/v4BeRzEByB1SL9U7ciGBiAFd/+Ym7NbyajDIDrv5XySe1cHFs
+	0zSowsA9D0nBusspS36oDF2/Ql2aV9GBUQ7LO6yT1yeJR3/M8fn+bqp24aZGClVpfy76oYQvNxM
+	6nszeX5Ipb0J/mwH/0pFVjpgR+S/jcGZarbu1z4Qy
+X-Gm-Gg: AYBFou2gqSDh73KQM6OiUMxkWRpqiUpxNuoD63EmCALtNi1qaFy/9yW650oE54mu3Zp
+	yc2tg72blMEnefhrbYPj2rgX2e+98THWq9f8QKpZbGYl3w+TOw1k9U6EF3mWgtApwYHBLdgGr8D
+	MtPO/N2bSV0eVBmWLEjRO08z8BD5EiYRGGEUwvZAtuMZayjpXqBrWQdUILrmZLnL+uKf04U5jVt
+	Hxl1ZPx1hrdis7miehMaXZU7bnP28NqxhL3nCMguHZDL7G0W6OgmxDiqcn4zDci9Seut47Qs6/N
+	q+5vmjC1Ne+Ftr8MmZ0p7O44axKem+6QpQABVtINvX/njacotIlqC6g0kkYdBNcekRp/iE01vqm
+	SavAwTlr9RISxZ69PcdDDkgX0g1YcFtIApA0R
+X-Received: by 2002:a05:622a:4808:b0:536:934f:7da2 with SMTP id
+ d75a77b69052e-55d6c7995f9mr6557911cf.2.1795067157461; Wed, 18 Nov 2026
+ 21:45:57 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -91,70 +104,109 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116171044.6938-1-jack@suse.cz> <20261118145941.1063127-21-jack@suse.cz>
-In-Reply-To: <20261118145941.1063127-21-jack@suse.cz>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 19 Nov 2026 01:25:06 +0100
-X-Gm-Features: AclHuK8SUbQZgISlLcenRaPXTNhazVJfuhMt4GCT6fjiABD73HgWRuB83sKw5Dc
-Message-ID: <CAHc6FU7qgJ1R-bz2icUyQTQFs7_mKt=tat-ut66K-cgn-uet3Q@mail.gmail.com>
-Subject: Re: [PATCH 08/13] fs: Provide inode_or_folios_dirty() helper
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, devel@lists.orangefs.org, 
-	Dave Kleikamp <shaggy@kernel.org>, jfs-discussion@lists.sourceforge.net, 
-	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	linux-afs@lists.infradead.org, Miklos Szeredi <miklos@szeredi.hu>, 
-	fuse-devel@lists.linux.dev, linux-block@vger.kernel.org, 
-	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, 
-	Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ELyyCXWk32M0rpJAU0Pm_2AqCcuS0bVnSGc8EvOX4bU_1795047917
-X-Mimecast-Originator: redhat.com
+References: <20261108223913.3624571-1-irogers@google.com> <20261108223913.3624571-10-irogers@google.com>
+ <DMYN979QJFNV.LM3T6O68OHW6@kernel.org>
+In-Reply-To: <DMYN979QJFNV.LM3T6O68OHW6@kernel.org>
+From: Ian Rogers <irogers@google.com>
+Date: Wed, 18 Nov 2026 21:45:45 -0800
+X-Gm-Features: Aa3M54p8GzPfKDPQ_HJcPbdLHGq3vwK7n9VGnVvnVB1ODjbFHeHwrlgOfVCaaEo
+Message-ID: <CAP-5=fXrMyfLFXq6CiqwWMSbtYVRNESxuDo-ddqNwDmq5Nm4SA@mail.gmail.com>
+Subject: Re: [PATCH v3 9/9] kobject: Require explicit initialization of struct kobj_type::release
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kees Cook <kees@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, 
+	Srish Srinivasan <ssrish@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, Alexander Aring <aahringo@redhat.com>, 
+	Felix Kuehling <felix.kuehling@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Zhihao Cheng <chengzhihao1@huawei.com>, Sumanth Korikkar <sumanthk@linux.ibm.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, 
+	llvm@lists.linux.dev, linux-hardening@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
+	linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 18, 2026 at 4:00=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-> Provide a helper function checking whether inode itself or some of its
-> folios are dirty. We'll use it in filesystems instead of direct i_state
-> checks. Note that this check returns true also if only timestamps are
-> dirty when lazytime is enabled.
+On Wed, Nov 18, 2026 at 1:11=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Sun Nov 8, 2026 at 11:39 PM CET, Ian Rogers wrote:
+> >  static const struct kobj_type cpuregs_kobj_type =3D {
+> > +     /*
+> > +      * Pre-existing: info->kobj is embedded in per-CPU cpu_data;
+> > +      * cpuid_cpu_offline() only calls kobject_del().
+> > +      */
+>
+> All of these comments carry a =E2=80=9CPre-existing:=E2=80=9D prefix, but=
+ that doesn=E2=80=99t
+> distinguish cases with broken lifetime management from those where the st=
+orage
+> remains valid despite the API misuse.
+>
+> For example:
+>
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c b/drivers/gpu/drm/=
+amd/amdgpu/amdgpu_xcp.c
+> > index ab14079d1c42..0847134a1391 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c
+> > @@ -797,6 +797,11 @@ static const struct sysfs_ops xcp_cfg_res_sysfs_op=
+s =3D {
+> >  };
+> >
+> >  static const struct kobj_type xcp_cfg_res_sysfs_ktype =3D {
+> > +     /*
+> > +      * Pre-existing: xcp_res is embedded in struct amdgpu_xcp_cfg
+> > +      * rather than freed individually by kobject_put().
+> > +      */
+> > +     .release =3D NULL,
+>
+> Being embedded in another structure doesn't explain what guarantees that =
+the
+> enclosing allocation outlives the kobject=E2=80=99s final cleanup.
+>
+> Could you please drop the =E2=80=9CPre-existing:=E2=80=9D prefix and make=
+ that distinction
+> explicit? For broken cases, describe the lifetime problem and mark it as =
+needing
+> a follow-up fix. For cases where the lifetime is safe, explain what guara=
+ntees
+> that safety, while acknowledging that omitting release() still violates t=
+he
+> documented API contract.
+>
+> Also, do you plan to follow up on those cases?
 
-This is confusing. Can we just say this here?
+Makes complete sense, thanks Danilo!
 
-"Also returns true when only the timestamps are dirty."
+Auditing all 17 files in patch 9 with that distinction in mind:
+- Only 3 built-in sites (arm64 cpuinfo, ACPI hotplug profiles, and
+s390 sclp_mem) have backing storage that genuinely remains valid for
+the lifetime of the kernel.
+- The other 14 files either free/zero an enclosing dynamic or devm
+allocation without waiting for final kobject cleanup, or are tristate
+modules that unregister static kobjects/ksets on module_exit and can
+unmap module memory before delayed cleanup finishes.
 
-> This is what users really want.
->
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> ---
->  include/linux/fs.h | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 025f5d890689..f602deacf953 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2228,6 +2228,13 @@ static inline bool inode_is_dirty(struct inode *in=
-ode, bool datasync)
->         return inode_state_read_once(inode) & mask;
->  }
->
-> +/* Check whether anything in the inode itself or its folios need writing=
- */
-> +static inline bool inode_or_folios_dirty(struct inode *inode)
-> +{
-> +       return inode_state_read_once(inode) & I_DIRTY_ALL ||
-> +               mapping_tagged(inode->i_mapping, PAGECACHE_TAG_DIRTY);
-> +}
-> +
->  static inline void set_inode_metadata_writeback(struct inode *inode)
->  {
->         spin_lock(&inode->i_lock);
-> --
-> 2.53.0
->
+I've dropped the "Pre-existing:" prefix, documented the specific
+guarantee or FIXME lifetime hazard at each site in v4, and yes, I plan
+to send follow-up fixes to the respective subsystems once __must_init
+is in place.
 
 Thanks,
-Andreas
+Ian
 
+> Thanks,
+> Danilo
+>
