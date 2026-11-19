@@ -1,123 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795108989;
-	b=z0oNkPrVikQbN7JEIPjZ5OjpVFertKcHNjppKfQ3O8+IJ8ymy7DCaGITYM5fFsgGoAW0
-	 Wp9cgBi7cLYk6umDIB3dXyrYVCGhWzCNEixJH7v8AGvQBtlq3AcjHjXups5lZhXmt4UMj
-	 RABkK5QFdKkq9uhKEYyuYNmnYEFqvaN8zwSiHvK3c2HoFIWHpy8MHmOM+xzQykNbLT0dr
-	 0gNP44PoVUwGB/cCxttu+6FlmMrb4cMQUhfBkSF3rCl1LwYzeJRagejhtac0Tb7k5j3QH
-	 lCAwVG00TNHWdKpzIpxdVs6IELwZZYJ0mh8q68Lq7NXyZyqlFVU1jLsHTkDW5LttQ6g==
+	t=1795116328;
+	b=qtQ6zaA2nhOXLvQxTDUcTNXY1TJHy9R1PCJp9yCI+tT3R4o2ZCRLWWgpwboGzrPF88Wm
+	 TqnBUacbPKDhgwt885GmGzazt8x0wAj9TS141MegxI2EL1lmEN3M2YnHjfJdp/Qw+efoA
+	 Cnghpe3VsPQeBOAdYTvqXIW94+yUJfGCghAmtWjE6wELLTuN1lnwU5dDMs8DMU2yFPAH+
+	 cTeZ6ErrzzvNPN3vsyBykVIREyGfPiyUzfci3PtxotRI/4VoCmmXZhs1odpnzYOTRsqOH
+	 ZgCWgM0ToG1prZ3lnQQE0G2JEIqiZs9C98brLIo/7LMZUROHz5E/Km4quJ0MNWUhDAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795108989;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=1Wm5iqQHUYdGAarP0mjCGKsz4+MXWHrAKw+70dxWMRE=;
-	b=ycRQ9Wyd+ZLAwzmvPTLMVCevaEMCc/FwZXEjkgtKQs70mQxO5GT0uT4zBE2xdri5fKr2
-	 nNd14mUIP0qiSNWoOeZGeRlbFGCvLz42E/x6WGzUebgefl/iH3HdwWLtXV6GXlFxOCmra
-	 DeM31AAh7irgnPQ5SsN5LICHnZRhg1U5EL+i7hw+WE11KZC8B1lUp4jy30v6YxOZLajlc
-	 8h85CqxHK/TW2/TsqiP4PXDm6YWNtN5SWUHEdAlCAZfXmtXMKJL8YE8+LAJiKJEEkMl4Z
-	 SoAlPSC5mYwCnueh0EObvg8Fa/JtIlooD1T+nyWJj5GCm49PtRUoxT+HEdSS0HdynZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795116328;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=74VGOpSNCwDOLASOLNhvmRdqpZTelyvflsoJESldCvo=;
+	b=ji92voeWMbXo71EoEdhiG4uicjNexA2hE3R6Q65g00IdV5a1Ddr9qWN4y1K4CBdcCX7z
+	 8PgVqsNrL118evl/OUbBdEX+sEHaOwYTWNcFkODgJp25cv6r9zNIe/w4YFbKY8ZvkVWeS
+	 yw7M9QbvHHMKlLz+QaRALFCAzlD6QqgbGN0liVw67m+oszScO18t1NgAX86acsDJyNLlh
+	 nsTMBjGcHe68j9V3elaTWYd+q9u94g9pbCVR6CnbRjJsYwYcAyEMg5pyOx1Atb4nWyCmK
+	 DrfkWitYMyZZjbpFJvKkerNhq5uSl8Q47Q7+IIL7JtonhXTuQSGZgEFq9GDic7xfLlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=PXBHlrgf;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b="yVhMt1/s";
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=PXBHlrgf;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b="yVhMt1/s";
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--irogers.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fvi4QJQ4;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BDD606A326;
-	Thu, 19 Nov 2026 17:23:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7BDD606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F7B606A334
+	for <gfs2@lists.linux.dev>; Thu, 19 Nov 2026 19:25:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40F7B606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=PXBHlrgf;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yVhMt1/s;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=PXBHlrgf;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yVhMt1/s
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8B04C1FA9C;
-	Thu, 19 Nov 2026 17:23:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795108986; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Wm5iqQHUYdGAarP0mjCGKsz4+MXWHrAKw+70dxWMRE=;
-	b=PXBHlrgfYbI+JJxF/v08s3dXWhH6f0vHnN071+GnPD2j/Z0/oc3h5Znz80fcGSsPXUHdk1
-	yHfXtlZq8byVQl28gZTXLako5YAD9Z7x3xsZILPRY9UShnsDTZwGGXaB+7Wjz+3ADf4mdr
-	SXnrYhmuei5E+law5M57gcVBPkSsUR0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795108986;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Wm5iqQHUYdGAarP0mjCGKsz4+MXWHrAKw+70dxWMRE=;
-	b=yVhMt1/srNiWd/sYvbvRDSy0zo1vsKR4MVUFPz1M/UDm8JFTw7us4wWSehEblXVxAhiSYc
-	x3F84/iSy8vH4/Aw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PXBHlrgf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="yVhMt1/s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795108986; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Wm5iqQHUYdGAarP0mjCGKsz4+MXWHrAKw+70dxWMRE=;
-	b=PXBHlrgfYbI+JJxF/v08s3dXWhH6f0vHnN071+GnPD2j/Z0/oc3h5Znz80fcGSsPXUHdk1
-	yHfXtlZq8byVQl28gZTXLako5YAD9Z7x3xsZILPRY9UShnsDTZwGGXaB+7Wjz+3ADf4mdr
-	SXnrYhmuei5E+law5M57gcVBPkSsUR0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795108986;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Wm5iqQHUYdGAarP0mjCGKsz4+MXWHrAKw+70dxWMRE=;
-	b=yVhMt1/srNiWd/sYvbvRDSy0zo1vsKR4MVUFPz1M/UDm8JFTw7us4wWSehEblXVxAhiSYc
-	x3F84/iSy8vH4/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A1A41334C;
-	Thu, 19 Nov 2026 17:23:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B6s1Dnow/2pTOQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 19 Nov 2026 17:23:06 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id D88B12529E; Thu, 19 Nov 2026 18:23:05 +0100 (CET)
-Date: Thu, 19 Nov 2026 18:23:05 +0100
-From: Jan Kara <jack@suse.cz>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, devel@lists.orangefs.org, Dave Kleikamp <shaggy@kernel.org>, 
-	jfs-discussion@lists.sourceforge.net, Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	linux-afs@lists.infradead.org, Miklos Szeredi <miklos@szeredi.hu>, fuse-devel@lists.linux.dev, 
-	linux-block@vger.kernel.org, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	linux-nfs@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org
-Subject: Re: [PATCH 06/13] gfs2: Avoid racy dirtiness check in gfs2_fsync()
-Message-ID: <ntzwnqethzdzix45gbxpmajmjiu2pwp7hpelmcmim5i5qabrqq@ahxo7kpx65qh>
-References: <20261116171044.6938-1-jack@suse.cz>
- <20261118145941.1063127-19-jack@suse.cz>
- <CAHc6FU7NoZua98SGP9Kuga58gAcco6X__u=kOPfsUqbefAKLFQ@mail.gmail.com>
- <wo5723b7wrmu35q5qffzs7zzqwnojk3ireel2jkit2kxgv6bra@yd3gbigdmmdk>
- <CAHc6FU5HY9x5ntTOz_xk36T0XTzjNc8R4jy2zzpQKo=19HNMog@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fvi4QJQ4
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3b07b06027eso191044a91.0
+        for <gfs2@lists.linux.dev>; Thu, 19 Nov 2026 11:25:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795116328; x=1795721128; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=74VGOpSNCwDOLASOLNhvmRdqpZTelyvflsoJESldCvo=;
+        b=fvi4QJQ4KpE200cv8etO+gXOkOLBxv67JOPHoMw4OzvRMzFSWr+3Yi64uczgowMe0Z
+         +qnWEaWeWrWqVshdT6klBdMcxEalUJt2F+W15tBOO73FN+w8O2KXtYW3iJEyBQxng5J9
+         3OR296Trl0leGKaQv44sOeONWj85LAwnZzQzXg8M2KQ25VhyxxLAIkeD3ngsKHdIR0x3
+         Z2m3PHaS1pmiXr49GQZITXoG7idllY9fJ/USE1HdDczxuX3vhswtXr9SQDQ6ftWckUMd
+         ScqMsucN2ZX6J0wqYM7cRU7bQB17UazODPJKIZMUKMZZ9c9G6y8bwRXgmLDVjMLRzlbX
+         UwLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795116328; x=1795721128;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=74VGOpSNCwDOLASOLNhvmRdqpZTelyvflsoJESldCvo=;
+        b=qFfmMg4g/YjKM8OFpD5aKqikzkOeUnCmsbNe6+GomxX97Bbd06lfDBv4cPzNBlAi3e
+         TSKNh958Zlx7rL4Eyj8JEi6bZrd2zZPdBSW/6ATDq0cfLOOTeIETFaa79MdWs5+djUDH
+         EEBIAOdTurlBH7EalrWUrqQkM0v3gvzYzSOEolBTll0cLDl1rscvAtE8Kig0kUVwtaao
+         zt7ROmKxYVmO0rxSojIN+c2Q8DLeZrFB5a0gUyI2MdnPlO1SR90uPu46PE1bBYQKUYqQ
+         MXHjSXxo8G20Ulc03s5p6Srv08sne9YdtkdG7YynSRRDQFqfeEhjXTHSgvzSOpqwBkx6
+         v5+Q==
+X-Forwarded-Encrypted: i=1; AL+hErEcUA5hXHWsj02HJJ9nXHX3muFxjL6BFXmNFz/mMvkaMxPpJAxI93HIFnSpbCeEqv5/nXdP@lists.linux.dev
+X-Gm-Message-State: APuU4Z9X/lWRkzsBRwrHoThD9NjhEaa1Ju+CzNA+qpLMMDbEbXb7PBMK
+	4KpDHziKY5SwwD+Qa97CnE5jd46hqq4yroGc+zwSaRM+jO2MzSDHRsBxLVU2XCCPRUEdlp+yVCe
+	7OL0wrU0QHA==
+X-Received: from pgjh5.prod.google.com ([2002:a63:df45:0:b0:cc7:d53a:a251])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e8c:b0:3b3:b373:6a6a
+ with SMTP id 98e67ed59e1d1-3b41c9e45c3mr289799a91.28.1795116327397; Thu, 19
+ Nov 2026 11:25:27 -0800 (PST)
+Date: Thu, 19 Nov 2026 11:25:11 -0800
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -126,92 +75,206 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU5HY9x5ntTOz_xk36T0XTzjNc8R4jy2zzpQKo=19HNMog@mail.gmail.com>
-X-Rspamd-Queue-Id: 8B04C1FA9C
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-13.01 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -13.01
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261119192520.1983406-1-irogers@google.com>
+Subject: [PATCH v4 0/9] Add __must_init and require explicit kobj_type::release
+From: Ian Rogers <irogers@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Srish Srinivasan <ssrish@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, 
+	Mimi Zohar <zohar@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>, Alexander Aring <aahringo@redhat.com>, 
+	Felix Kuehling <felix.kuehling@amd.com>, 
+	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Zhihao Cheng <chengzhihao1@huawei.com>, 
+	Sumanth Korikkar <sumanthk@linux.ibm.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, driver-core@lists.linux.dev, llvm@lists.linux.dev, 
+	linux-hardening@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, gfs2@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, linux-mtd@lists.infradead.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, Ian Rogers <irogers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu 19-11-26 13:17:57, Andreas Gruenbacher wrote:
-> On Thu, Nov 19, 2026 at 1:05 PM Jan Kara <jack@suse.cz> wrote:
-> > On Thu 19-11-26 00:35:42, Andreas Gruenbacher wrote:
-> > > On Wed, Nov 18, 2026 at 4:00 PM Jan Kara <jack@suse.cz> wrote:
-> > > > Check for I_DIRTY_PAGES state in gfs2_fsync() is racy because
-> > > > __writeback_single_inode() unconditionally clears the flag and
-> > > > reinstates it only later based on PAGECACHE_TAG_DIRTY tag. If
-> > > > gfs2_fsync() unlocked read of i_state hits in between, it will not see
-> > > > I_DIRTY_PAGES although there may be dirty folios in the mapping. Check
-> > > > for PAGECACHE_TAG_DIRTY instead and use inode_is_dirty() helper for
-> > > > inode metadata dirtiness check.
-> > > >
-> > > > Signed-off-by: Jan Kara <jack@suse.cz>
-> > ...
-> > > > @@ -760,12 +760,8 @@ static int gfs2_fsync(struct file *file, loff_t start, loff_t end,
-> > > >                         return ret1;
-> > > >         }
-> > > >
-> > > > -       if (!gfs2_is_jdata(ip))
-> > > > -               sync_state &= ~I_DIRTY_PAGES;
-> > > > -       if (datasync)
-> > > > -               sync_state &= ~I_DIRTY_SYNC;
-> > > > -
-> > > > -       if (sync_state) {
-> > > > +       if (inode_is_dirty(inode, datasync) ||
-> > > > +           (gfs2_is_jdata(ip) && dirty_data)) {
-> > >
-> > > this adds back the I_DIRTY_TIME check explicitly removed in commit:
-> > >
-> > > 3aac630b5ce1 ("gfs2: don't worry about I_DIRTY_TIME in gfs2_fsync()")
-> > >
-> > > Could you please clarify what's going on?
-> >
-> > I wonder how you remember this after five years :). Anyway, the truth is I
-> > forgot fsync path is calling sync_lazytime() as well before calling into
-> > ->fsync and even if I remembered that, then it would be fragile for the
-> > helper to rely on that (and there are already users of inode_is_dirty() and
-> > inode_or_mapping_dirty() which want it). So to summarize you are correct
-> > that the added I_DIRTY_TIME check is unnecessary for gfs2_fsync() as it
-> > should never trigger just for that but it is also harmless and the helper
-> > is more robust that way.
-> 
-> Alright. Could you please include that in the commit message?
-> 
-> Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Clang supports the 'require_explicit_initialization' attribute on struct
+fields to enforce that the field is explicitly initialized when an
+aggregate object is constructed, emitting -Wuninitialized-explicit-init
+(enabled by default) if the field is omitted.
 
-Sure added this to the changelog. Thanks for review!
+Following discussion at the Linux Plumbers Conference [1], patch 1 adds
+the attribute to include/linux/compiler_attributes.h as __must_init. In
+v1 it was called __require_explicit_initialization. Kees picked up that
+patch with a first seq_file user [2], and in that thread Greg suggested
+the shorter __must_init spelling, which Kees and Miguel agreed to. As
+the attribute did not land in the v7.4 merge window, Kees asked that
+this series carry the renamed attribute.
 
-								Honza
+As Documentation/core-api/kobject.rst notes:
+  "One important point cannot be overstated: every kobject must have a
+  release() method, and the kobject must persist (in a consistent state)
+  until that method is called. If these constraints are not met, the
+  code is flawed."
+
+Annotating struct kobj_type::release caught struct kobj_type definitions
+across the tree that omitted .release:
+- Patches 2-8 fix struct kobj_type definitions where dynamically
+  allocated kobjects, ksets, or enclosing structures were either leaked
+  on kobject_put(), freed prematurely before kobject release, or missing
+  proper static initializers.
+- Patch 9 annotates struct kobj_type::release with __must_init and
+  explicitly sets .release = NULL on the remaining legacy struct
+  kobj_type definitions, distinguishing built-in sites whose backing
+  storage remains valid for the lifetime of the kernel (despite
+  violating the kobject API contract) from sites with broken kobject
+  lifetime management (marked with FIXME comments for follow-up fixes).
+
+Danilo Krummrich offered to route the series as a whole through the
+driver-core tree [3], and all subsystem maintainer Acked-by/Reviewed-by
+tags for patches 1-8 have now been collected. Follow-up patches are
+planned for the broken-lifetime sites documented in patch 9.
+
+Note on tool use: An LLM coding assistant was used to help audit the
+compiler diagnostics across the tree, draft the fixes and changelog
+descriptions, and verify builds and review feedback.
+
+Changes in v4:
+- Rebased on v7.4-rc3.
+- Patch 2 (powerpc/secvar): Add Reviewed-by from Srish Srinivasan and
+  Acked-by from Madhavan Srinivasan.
+- Patch 3 (sh: sq): Add Acked-by from John Paul Adrian Glaubitz.
+- Patch 5 (dlm): Clarify subject ("Wait for kobject release before
+  freeing dlm_ls") and update Fixes tag to commit 8a4cf500f1dd ("dlm:
+  drop kobject release callback handling") (reported by Sashiko).
+- Patch 6 (xen/sys-hypervisor): Add Reviewed-by from Juergen Gross.
+- Patch 7 (ubifs): Update Fixes tag to commit 2e3cbf425804 ("ubifs:
+  Export filesystem error counters") (reported by Sashiko).
+- Patch 9 (kobject): Drop the "Pre-existing:" comment prefix and
+  explicitly distinguish built-in sites whose storage outlives kobject
+  cleanup (arm64 cpuinfo, ACPI hotplug profiles, s390 sclp_mem) from
+  drivers and tristate modules with broken kobject lifetime management,
+  documenting each lifetime hazard with a FIXME comment for follow-up
+  fixes (requested by Danilo Krummrich).
+
+Changes in v3:
+- Rebased on v7.4-rc1.
+- Note in cover letter that patches 2 (powerpc/secvar), 3 (sh: sq), and
+  6 (xen/sys-hypervisor) are still awaiting subsystem Acked-by tags for
+  merging through the driver-core tree, and CC those maintainers on the
+  cover letter.
+- Patch 1: Add Reviewed-by from Kees Cook; clarify that LLVM issue
+  #232483 affects Clang versions prior to its upstream fix (pointed out
+  by Nathan Chancellor).
+- Patch 4 (cpufreq): Drop obsolete reference to cpufreq_governor_dbs in
+  the commit message per Zhongqiu Han; add Reviewed-by from Zhongqiu Han
+  and Acked-by from Rafael J. Wysocki and Viresh Kumar.
+- Patch 5 (dlm): Add Acked-by from Alexander Aring.
+- Patch 8 (drm/amdkfd): Add Reviewed-by from Felix Kuehling.
+- Patch 9 (kobject): Fix omapfb manager-sysfs.c and overlay-sysfs.c
+  comments to describe managers[] and overlays[] as dynamically
+  allocated rather than static and note the CONFIG_DEBUG_KOBJECT_RELEASE
+  hazard, fix a struct-vs-member wording nit in usnic_ib_sysfs.c, and
+  generalize the commit message note on CONFIG_DEBUG_KOBJECT_RELEASE
+  (reported by Sashiko).
+
+Changes in v2:
+- Rebased on v7.3-16928-g83f32c773255 (v7.4 merge window).
+- Patch 1: Rename __require_explicit_initialization to __must_init per
+  Greg Kroah-Hartman; document the Clang >= 20 requirement per Miguel
+  Ojeda; note the Clang gap for file-scope objects without an
+  initializer reported by Kees Cook; add tags from v1 and from Kees's
+  posting.
+- Move LLM assistance attribution from Assisted-by tags to this cover
+  letter per commit 1e035297ffda ("docs: remove Assisted-by
+  references").
+- Patch 4 (cpufreq): Use "cpufreq: governor:" prefix, drop Fixes tag,
+  fix typo, and remove the redundant runtime assignment in
+  cpufreq_dbs_governor_init() per Zhongqiu Han.
+- Dropped v1 patch 5 (ACPI: CPPC), already fixed upstream by
+  commit 27954e29d7de ("ACPI: CPPC: Release CPC descriptors through
+  kobject").
+- Patch 5 (dlm): Call kobject_del() before dlm_recoverd_stop() in
+  release_lockspace() and the new_lockspace() error path, and wait on a
+  new ls_kobj_done completion before freeing the lockspace or dropping
+  the module reference, avoiding races with delayed kobject release.
+- Dropped v1 patch 8 (s390/sclp_mem) per Sumanth Korikkar: the
+  /sys/firmware/memory/memoryX kobjects are permanent, so sclp_mem.c is
+  folded into patch 9 with .release = NULL.
+- Patch 7 (ubifs): Add Tested-by and Reviewed-by from Zhihao Cheng.
+- Patch 8 (drm/amdkfd): Check q->kobj.state_in_sysfs before
+  kobject_del() in kfd_procfs_del_queue().
+- Patch 9 (kobject): Cover sclp_mem.c and the new amdgpu_ualink.c
+  ualink_xcp_info_ktype, fix the overlay-sysfs.c comment, and prefix
+  legacy .release = NULL comments with "Pre-existing:".
+- Patch 9 (kobject): The ioat, kunpeng_hccs and omapfb display comments
+  now say that the existing teardown can use-after-free under
+  CONFIG_DEBUG_KOBJECT_RELEASE (reported by Sashiko). Fixing those
+  drivers is left to follow-up patches.
+
+v3: https://lore.kernel.org/all/20261108223913.3624571-1-irogers@google.com/
+v2: https://lore.kernel.org/all/20261027223847.652884-1-irogers@google.com/
+v1: https://lore.kernel.org/all/20261013223946.1836757-1-irogers@google.com/
+[1] https://lpc.events/event/20/contributions/2392/
+[2] https://lore.kernel.org/lkml/20261014225811.i.852-kees@kernel.org/
+[3] https://lore.kernel.org/all/DMLWX8NY1N1N.2OMQMQCIVRR18@kernel.org/
+
+Ian Rogers (9):
+  Compiler Attributes: Add __must_init macro
+  powerpc/secvar: Add missing kobject release callback to secvar_ktype
+  sh: sq: Add missing kobject release callback to ktype_percpu_entry
+  cpufreq: governor: Initialize kobj_type release callback statically
+  dlm: Wait for kobject release before freeing dlm_ls
+  xen/sys-hypervisor: Add release callback to hyp_sysfs_kobj_type
+  ubifs: sysfs: Use kset_create_and_add() for ubifs_kset
+  drm/amdkfd: Free queue in procfs_queue_type kobject release callback
+  kobject: Require explicit initialization of struct kobj_type::release
+
+ Documentation/conf.py                         |  1 +
+ arch/arm64/kernel/cpuinfo.c                   |  7 +++++
+ arch/powerpc/kernel/secvar-sysfs.c            |  6 +++++
+ arch/sh/kernel/cpu/sh4/sq.c                   |  6 +++++
+ drivers/acpi/sysfs.c                          |  7 +++++
+ drivers/cpufreq/cpufreq_conservative.c        |  5 +++-
+ drivers/cpufreq/cpufreq_governor.c            |  4 +--
+ drivers/cpufreq/cpufreq_governor.h            |  1 +
+ drivers/cpufreq/cpufreq_ondemand.c            |  5 +++-
+ drivers/dma/ioat/sysfs.c                      |  8 ++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ualink.c    |  8 ++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.c       | 17 ++++++++++++
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c      | 12 ++++++---
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c        |  5 +++-
+ drivers/infiniband/hw/hfi1/sysfs.c            |  7 +++++
+ drivers/infiniband/hw/usnic/usnic_ib_sysfs.c  |  7 +++++
+ drivers/parisc/pdc_stable.c                   |  8 ++++++
+ drivers/power/supply/ab8500_fg.c              |  8 ++++++
+ drivers/s390/char/sclp_mem.c                  |  6 +++++
+ drivers/soc/hisilicon/kunpeng_hccs.c          | 18 +++++++++++++
+ .../fbdev/omap2/omapfb/dss/display-sysfs.c    |  7 +++++
+ .../fbdev/omap2/omapfb/dss/manager-sysfs.c    |  8 ++++++
+ .../fbdev/omap2/omapfb/dss/overlay-sysfs.c    |  7 +++++
+ drivers/xen/sys-hypervisor.c                  |  6 +++++
+ fs/dlm/dlm_internal.h                         |  1 +
+ fs/dlm/lockspace.c                            | 26 ++++++++++++++-----
+ fs/erofs/sysfs.c                              | 14 ++++++++++
+ fs/f2fs/sysfs.c                               | 21 +++++++++++++++
+ fs/ocfs2/cluster/masklog.c                    |  7 +++++
+ fs/ubifs/sysfs.c                              | 24 +++++------------
+ include/linux/compiler_attributes.h           | 12 +++++++++
+ include/linux/kobject.h                       |  2 +-
+ scripts/checkpatch.pl                         |  1 +
+ tools/lib/python/kdoc/xforms_lists.py         |  1 +
+ 34 files changed, 251 insertions(+), 32 deletions(-)
+
+
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.56.1.708.g77570a6a1d-goog
+
