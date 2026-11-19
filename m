@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795044958;
-	b=KIKSqtuyKc+dY+nOqkHz0Wfk6JtOxr8WBEiPRmw1o0ay1QToxxq6tC+QiiOh4XbSZVzK
-	 6De9S6hDLYooO1BBmxc/pQRVkSfsaNhsK2QbbRqWerUkptx2YM7CAEwJhLu7GuO8zKxZj
-	 UKYJvGnVu1FrwjYmyXs8x4eE1SxSseXFQJcEMoH7/Vx1/9FYZ6v8gXSIXLGZ1hFaYmzp4
-	 3NOMT55TCP3QgEv3bltqa2TMWh97u4SiwLTUwcWbwsb2pqAi+wVWigqKfxVN3GePrE8VF
-	 qfeGRAlPQZLo5hhLBjgdjMpSqH3GrE3G1IPh6iKRs5hQO4ELvU6n5cigcAD20NPzt7A==
+	t=1795047181;
+	b=bbzWz7x+I3WQW18QTzHlT97RXSitp3U9FjGBV+8yGnkZij2L9wmfsbgtK+V3Q10NmXJc
+	 xR1A6USO7RVM+NKdV/bWh1lATgpiXLDrao8BGTpx3Sbg5oVXYEkACZKFvFswKszSd4vPn
+	 WV7Id0rnXH/J+JUTGIHUS6V/rLDVzG/DCy1bx+RIAaZIpV8oiVyz/Yz3C1pmVqOm+fy9x
+	 40LH55Ea1Y8q4G9CPiEVk1dYc8eea4+QlKZ/WzklIBjhm3nOSCFZfhYo8ff0tNoaynEKy
+	 tWm1Czm0nFzcDW+Nb7sExBudqju8l93Pbtt3Mw8mesPv2Vc1DA8TdF03SCp5j1obguA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795044958;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795047181;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
@@ -15,73 +15,73 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
-	b=vnOcgXBLvKHK/Z8Pre15cFgQTmcgNnb2HmEGIOx3WOyMf48gqnd4jJ/xOOCvrrQO6KwN
-	 lj5AUcJ/u4j2HnYiKq2wZDbd1LqsiHMZqcrKQJ2LcQ0nK9n/EPyAhlhZ28ebuSFxMErx7
-	 lxHwV2zLtFcXVyG8JsLzyAPptl8Gw0L90QpDtSAEK833vzvr2dlPlGjEmeRZtNa+R8T+f
-	 DzbVXJpLLin4Jm7+rrXJIxdAV/t3uqCUgwEa5bMGq22qLT9KyTX2/Yjb+3ilUfRqYz52F
-	 ivTeydfc/4rcunStydjs7ffrWUR2UKr/1YXqu2FdmUY3GfmY9kSJ6fr3+rDr3V8Nn5w==
+	bh=077/TizvhH3iQcetqO0vvepvTnfIkqb5hqSDa7XFIt8=;
+	b=5T87qk2TLLha8ZA0aCU0ZgLQbz9TKXTRz0Xjhj079gHrmWFZjJiCs/bt2EIhGsaXYmg1
+	 IjnGOW0Uy4KanFIt8l4jLlcKb4/vUk+fq9r96ycZYVuEENYhxu5h5lglGU0OHYbSPGej3
+	 o+EhP6smY9289a+QrI2a9bsBMxIo+uEBKxFDe71Pl/8/Mt+2hXWC7ie8kVELUd3GMkr7t
+	 bx6w7HeuGpHvGP5QapvcFIVOkZJlYXCNBATVic7Uafb11ByQu82Va61TVG52ETS8nzaHJ
+	 4foIZ4O7NZEy5yscp2bDIuzje31LIxv/4MkAT+rvSGzAhl8ZtpGCLkM+RyHWmBrcuNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OeZtfPG5;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkK0PJGZ;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB72606A32F
-	for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 23:35:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDB72606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA12A606A330
+	for <gfs2@lists.linux.dev>; Thu, 19 Nov 2026 00:13:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA12A606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OeZtfPG5
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkK0PJGZ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795044955;
+	s=mimecast20190719; t=1795047180;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
-	b=OeZtfPG50Fjqj40s6Sj+6Did4ufEl3tVHRxceE+mdWNbGwx7fNYk44K7y6G04p78xFCD/R
-	1kv1BumxCx310EyVnA8d4SqhUasQR7TMJCm7IYNKBrDLFc8ygMd69JH4NPy4EA0UV5oaOI
-	oaiqNL+fbnuAUb7jfi3vcX/vMHMt/3w=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=077/TizvhH3iQcetqO0vvepvTnfIkqb5hqSDa7XFIt8=;
+	b=DkK0PJGZuU6xjETr8IRYKlcNarjz50cFTcBVw20h8LQ8DbaJqNlOkLygouqeiVQ6f9BAMj
+	hlYkXzCB5swKDdnXWJS9JX5e2ITrFTcvHgf++ruGyd2Z7eCOMQtCTwwievMnz3V803ec/q
+	h8sgZGiWP9NInZCCic8F2tddi1D6QTY=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-NzMtl4FwPem6MxxBd6FHSg-1; Wed, 18 Nov 2026 18:35:54 -0500
-X-MC-Unique: NzMtl4FwPem6MxxBd6FHSg-1
-X-Mimecast-MFC-AGG-ID: NzMtl4FwPem6MxxBd6FHSg_1795044954
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b4b2b422c5so16167257b3.1
-        for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 15:35:54 -0800 (PST)
+ us-mta-118-CllCRc_MMUSghXEJYUn2bQ-1; Wed, 18 Nov 2026 19:12:58 -0500
+X-MC-Unique: CllCRc_MMUSghXEJYUn2bQ-1
+X-Mimecast-MFC-AGG-ID: CllCRc_MMUSghXEJYUn2bQ_1795047178
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-67be4f2f42eso2524929d50.0
+        for <gfs2@lists.linux.dev>; Wed, 18 Nov 2026 16:12:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795044954; x=1795649754;
+        d=1e100.net; s=20260707; t=1795047178; x=1795651978;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1sqaAoxbPYdo18ldNOsiM1TbcJ03Gv+SVlc5ayXI+nY=;
-        b=enTVWmaryKK1Ve5DTSZcdxzdgTarUHQgSL9AdCOERboOooaFODefCVFKTiFtA86oGv
-         cmgLzSL7CDZ6wCcrLChaibLo6oy1IMpVLnXMZ/OpB73yAg0MHycJipV0uB7E+lTHdMUi
-         92ovgGN+mnvoCPT0HDIF5YyegkdPlh44uCIHwqTLwXR+FJc8Ad/vpoxfU6AtqmUmrPWO
-         dsptMpMHReUBwWP7kmhonJWgHjTlINVu7cGKMlPaL8LITpL+PqMYHDBb3C4OjxBVuCap
-         rUAnyBD1ZPaOEDvnlJdAvUUXUvgEr5P6fNFRcBueF1OVnj0j3iWdI2DKb0Rs4o5hjX1+
-         /Ybw==
-X-Forwarded-Encrypted: i=1; AL+hErEKUGiMaNH67FJqdTwosISFM96kOW8Gp6OK0ST39Yy+DgxOkGRDZjvlY/FQ/fyf7t4m8DXn@lists.linux.dev
-X-Gm-Message-State: APuU4Z8b/BqSMjKwJG0uF66TuFoi1w0Wks4gFIgSC/8WBPrIEzeamNvh
-	VCsvcUTolJ8F3HZYalktfjZ7kkoW3eztAi47MbBJD1ehVJR+T7KTPvO7Flz1hGArlvZRwxooC9o
-	IPNRf0QzHYYkS5hT75X5jGYrWZ4J7GxKZF4J/ytgNug/pHKl398whK8m5R4P+3N8UnJ2eRJfcE9
-	Rv+9vq0Ba66I6lf8WXPsWBjar5FcFZTw==
-X-Gm-Gg: AZFdTZeWf57dxSpaLU1qwAPW5sVQWS33teGQnDpt5I8zFSwtfryrzwqVZm6ml42yv8t
-	p94YYxOLgmE5AmR+VsaMovlETPgVypVp+d6KkP48zF1sKpn48xFSCoKuPMkZyqae2QqZB3ph4+6
-	2MTVFIvFRHq9/npnbCHxFjQbHIlyIY1qU64qJ0ESugHRjocn/+PuIaNDtS9w0BPg1UHCaOKuGxu
-	vzcSSHGZ8xr5B9CJDBWIaWsbvX4w4lZS48ikhEf+LkjBg==
-X-Received: by 2002:a05:690e:128a:b0:679:2a90:d3ad with SMTP id 956f58d0204a3-67dd403bf8cmr1618042d50.102.1795044953778;
-        Wed, 18 Nov 2026 15:35:53 -0800 (PST)
-X-Received: by 2002:a05:690e:128a:b0:679:2a90:d3ad with SMTP id
- 956f58d0204a3-67dd403bf8cmr1618023d50.102.1795044953295; Wed, 18 Nov 2026
- 15:35:53 -0800 (PST)
+        bh=077/TizvhH3iQcetqO0vvepvTnfIkqb5hqSDa7XFIt8=;
+        b=tX2C2QegsOroIlTDUqXpYDEmCXaUkjcw6wscGuCzXffur38mkLVK9TrwIDE0l4Yv1S
+         x24XBRNH7ZthiVGFykEfrRJoCJxn0rEBEWOVFcaDj/IF7nvEERukirQJEkKIb9fEZCbl
+         bLPy9UImC6CBdjAn+pIwC/kGyLKB88dClO9ty7PbT3sBgHrFkTXRQ5zq9JoFBowMw23M
+         81k9nsyNvgJelvj/0+04jpu1YdNqNngUh0YPCbmilGU0Bne7p8hCuiC7dM7UxsTpt6CN
+         zlvcTiNzMYJdWD/0h3bU3egZXb0TORSamaFet0bHY+fAO5QD+INYtgIxhmIUeJ5U51pv
+         wVJA==
+X-Forwarded-Encrypted: i=1; AL+hErFIkiuv6n0hcIUo80g/jlKf+okMHdvaZL4C/GZ5YflpKZ0Da+mupTSR8traSuunB3Ft6m18@lists.linux.dev
+X-Gm-Message-State: APuU4Z+wbv32MH7MInN+yZctORzYOqa7AVMgq0LjhZqQHT03tyn7w4Dz
+	LFLkjqE98+IcuqPw3Z0ezvyWzl5AVcY5k3pmBs+vEcevajtjGiLAv7BkerVrXR6fU7JxeidrZJw
+	xZxX9fSDivjh82ROROxwIn5h6VbQX0W/NjfcsDU+Xkm0+JCeqxy5r2jhUHcNwCS0v5Z9ocUGc3f
+	W+RaTAE/49cvvYsH9hsxwFDckQuouP6Q==
+X-Gm-Gg: AZFdTZekuLsDqlTuWu2cq73Ay4/dGpXpWIIgeO9c50jPpTt8TcbSp5zQEfq2cMiP6mU
+	INZOwL/rGKxlLsdQmgN8LO68iRA7nRYegaSpq88cvlDLkb7NwkALK/kENgWkZsZSr8av2s807zO
+	5JGd6oFI/aBIkXWK68a9/x0vC5E3F/xKqK9ubNAhV1JZcxdKsyEuiZ//7kahVPwgoJeNJ11TzwQ
+	SU0eOO2586M5zosLMUYrFKRFjJnXf1p2xjqudGMZktUQw==
+X-Received: by 2002:a05:690e:1907:b0:67d:b34c:9f19 with SMTP id 956f58d0204a3-67dd3fdcc80mr1565904d50.106.1795047177738;
+        Wed, 18 Nov 2026 16:12:57 -0800 (PST)
+X-Received: by 2002:a05:690e:1907:b0:67d:b34c:9f19 with SMTP id
+ 956f58d0204a3-67dd3fdcc80mr1565894d50.106.1795047177150; Wed, 18 Nov 2026
+ 16:12:57 -0800 (PST)
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -91,13 +91,14 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116171044.6938-1-jack@suse.cz> <20261118145941.1063127-19-jack@suse.cz>
-In-Reply-To: <20261118145941.1063127-19-jack@suse.cz>
+References: <20261116171044.6938-1-jack@suse.cz> <20261118145941.1063127-22-jack@suse.cz>
+In-Reply-To: <20261118145941.1063127-22-jack@suse.cz>
 From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Thu, 19 Nov 2026 00:35:42 +0100
-X-Gm-Features: AclHuK9zTsUN7zuq72-DSL1ny4jnrrzy1tFjBUU4DEu6A9maK7lyiUQZqwV6vuE
-Message-ID: <CAHc6FU7NoZua98SGP9Kuga58gAcco6X__u=kOPfsUqbefAKLFQ@mail.gmail.com>
-Subject: Re: [PATCH 06/13] gfs2: Avoid racy dirtiness check in gfs2_fsync()
+Date: Thu, 19 Nov 2026 01:12:45 +0100
+X-Gm-Features: AclHuK8R-2iEv0c9btS3snfH7Yzq75Yl9vf1mN1FPuSVCWTRM2Ut7aYcwFy-L9Y
+Message-ID: <CAHc6FU4+FV=A2UK1oPejHSt5XQ2Ox+CyvZfT4Q17YaceJ+NJ1w@mail.gmail.com>
+Subject: Re: [PATCH 09/13] gfs2: Fix dirtiness checks in gfs2_write_inode()
+ and evict_linked_inode()
 To: Jan Kara <jack@suse.cz>
 Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
 	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, devel@lists.orangefs.org, 
@@ -109,69 +110,61 @@ Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, gfs2@
 	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, 
 	Eric Biggers <ebiggers@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: cxMfVxtx6ItOkKsdbVlH93nXgQfOjklUJNkj_kra8Sw_1795044954
+X-Mimecast-MFC-PROC-ID: tVdb2VaW1itiNgmqeAAAZGfSIEnIWUOGTIkzhTDuAj4_1795047178
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jan,
+Ja,
+
+
+thanks for catching this.
 
 On Wed, Nov 18, 2026 at 4:00=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-> Check for I_DIRTY_PAGES state in gfs2_fsync() is racy because
-> __writeback_single_inode() unconditionally clears the flag and
-> reinstates it only later based on PAGECACHE_TAG_DIRTY tag. If
-> gfs2_fsync() unlocked read of i_state hits in between, it will not see
-> I_DIRTY_PAGES although there may be dirty folios in the mapping. Check
-> for PAGECACHE_TAG_DIRTY instead and use inode_is_dirty() helper for
-> inode metadata dirtiness check.
+> The checks are bogus because they check against inode->i_flags instead
+> of inode->i_state. Use the inode_or_folios_dirty() helper which actually
+> checks what was intended.
 >
+> Fixes: 957a7acd46e6 ("gfs2: Remove inode from ordered write list in gfs2_=
+write_inode()")
+> Fixes: bd67f17718cc ("gfs2: Fix data loss during inode evict")
 > Signed-off-by: Jan Kara <jack@suse.cz>
 > ---
->  fs/gfs2/file.c | 10 +++-------
->  1 file changed, 3 insertions(+), 7 deletions(-)
+>  fs/gfs2/super.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
-> index 1efd0679badd..f5532f72ab99 100644
-> --- a/fs/gfs2/file.c
-> +++ b/fs/gfs2/file.c
-> @@ -749,7 +749,7 @@ static int gfs2_fsync(struct file *file, loff_t start=
-, loff_t end,
->  {
->         struct address_space *mapping =3D file->f_mapping;
->         struct inode *inode =3D mapping->host;
-> -       int sync_state =3D inode_state_read_once(inode) & I_DIRTY;
-> +       bool dirty_data =3D mapping_tagged(inode->i_mapping, PAGECACHE_TA=
-G_DIRTY);
->         struct gfs2_glock *gl =3D gfs2_inode_glock(inode);
->         struct gfs2_inode *ip =3D GFS2_I(inode);
->         int ret =3D 0, ret1 =3D 0;
-> @@ -760,12 +760,8 @@ static int gfs2_fsync(struct file *file, loff_t star=
-t, loff_t end,
->                         return ret1;
+> diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+> index 04bb4cf787d4..9b723dd591a5 100644
+> --- a/fs/gfs2/super.c
+> +++ b/fs/gfs2/super.c
+> @@ -460,7 +460,7 @@ static int gfs2_write_inode(struct inode *inode, stru=
+ct writeback_control *wbc)
+>                 mark_inode_dirty_sync(inode);
+>         else {
+>                 spin_lock(&inode->i_lock);
+> -               if (!(inode->i_flags & I_DIRTY))
+> +               if (!inode_or_folios_dirty(inode))
+>                         gfs2_ordered_del_inode(ip);
+>                 spin_unlock(&inode->i_lock);
 >         }
+> @@ -1418,7 +1418,8 @@ static int evict_linked_inode(struct inode *inode, =
+struct gfs2_holder *gh)
+>         struct address_space *metamapping =3D gfs2_glock2aspace(gl);
+>         int ret;
 >
-> -       if (!gfs2_is_jdata(ip))
-> -               sync_state &=3D ~I_DIRTY_PAGES;
-> -       if (datasync)
-> -               sync_state &=3D ~I_DIRTY_SYNC;
-> -
-> -       if (sync_state) {
-> +       if (inode_is_dirty(inode, datasync) ||
-> +           (gfs2_is_jdata(ip) && dirty_data)) {
-
-this adds back the I_DIRTY_TIME check explicitly removed in commit:
-
-3aac630b5ce1 ("gfs2: don't worry about I_DIRTY_TIME in gfs2_fsync()")
-
-Could you please clarify what's going on?
-
->                 ret =3D sync_inode_metadata(inode, 1);
->                 if (ret)
->                         return ret;
+> -       if (!(test_bit(GLF_DIRTY, &gl->gl_flags) || inode->i_flags & I_DI=
+RTY))
+> +       if (!(test_bit(GLF_DIRTY, &gl->gl_flags) ||
+> +             inode_or_folios_dirty(inode)))
+>                 goto clean;
+>
+>         /* The inode glock must be held exclusively and be instantiated. =
+*/
 > --
 > 2.53.0
 >
 
-Thanks,
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+
 Andreas
 
