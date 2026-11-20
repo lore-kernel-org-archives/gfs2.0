@@ -1,64 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795144426;
-	b=A1cGzrgUmdgas/eCf6n2fTfzD11t070ohrZTzhD2g211yvJX5L8bX9ETaRNev/fbdSh6
-	 egAqCVeZMk/tFM591TUdpBh7V6M6/M/+gWTmq+uJMg1Ym6bdhtkvdyqffXpP6HRHf/Hd8
-	 6+a2hTvPeFPu8T5j9D2T3RVelvN++1Kl2AS12kiQw2qeQtv6BH9E3Q3bAlcM0OBnUQ8TR
-	 qStim5cbfyzyL/48wcDgwDDJ0+kmy4YWHAaaGNytLTdNExDZV2G4Y7kEMlWG9NRdVongv
-	 WH+Wwx3Gqv54S3aN/Uy55eXC0bbRiVCXpruY2tGrnzzBNwi6F2DAfmpowvM11tTLfbA==
+	t=1795173273;
+	b=RU40+7yS1A6iLJfjG3c+Y2tJCBZ1Fx+blSAWlCmShPQHmbJEYBF1eTiYZrEo3vx2CxfK
+	 qVnBbalSCnP+RdkEunUbWOps71IR6vpZnYLsSMckbNFA+22i/BCqe8jGzyiVzYFeFBteh
+	 NaQhxsDb2lyw/Ya9LAxvNCnSsBhUKYhrLJfnFDxNXGNQWyNm8lRvcextVPE/jdmEu4yOv
+	 OC73DcVK03rjyjP/J05LuCxvLuQPqndyZAfn4vLdXhW9pVrY50HtYsm+kjDwjlUL7XiKV
+	 PxR166S8hg23a3FAbJmOx1KY2sWAwVJwuEEWEzAWwU1Q2LZoIX+aLPo5iAKQ699GY3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795144426;
-	h=DMARC-Filter:Received:Received:Received:Received:From:To:CC:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=WAE71jRExM1HToAOokplb7JGRyz27FwuaBPVyfzmFKA=;
-	b=h81xeFInmfIyazo404zOEJjjOvG8iC5na00Cj/ZEISaZG698e2ty+JMZ1VY8HqlR3lNW
-	 Oc+H/inAM6MH7/3W92GfZbNPgoOrOtwELu7FU4bADwRV4kvwURYuGfsc9SDZ3Zf78MQEc
-	 CpjVRfHRtzNpKIYXVpTqYXwKOJfwSrIV8tXqWSDdYkot/qiIt9syeDQKYgz27lJTFoegX
-	 MmZhoYYDrodSbTT+DY17wpaMf6GtM84h2CascKYyxAmYYyFwo0sUYazW4wSR0oNNa3fWv
-	 /utH0h9gnLBh/zBJubLi2022vF/5wVyZe29KN5u//RVUl+t5pyJmbmxuKOCxIyCX1cw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795173273;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=r9krR42dCc1R/MygVNC6/W4IONRVpaDXMDjUD/jXYko=;
+	b=vNbGQ/E3EncCGDg5jWW0gUih7gddDo7ln4ZVJ55OvRPmoBbdkuNZq70jy0k9afzw/p/S
+	 qMfJHMHiCdkMxYY2m7yKg1kpcW43R3zLWiShzkgljmf5K17o+qiFF3D14qIKm2+LoSBhE
+	 l5R0PLYaPmRIaGe3cQhzRXHPgGrqgcAaQ0eVWVnS3j/VscxJ/Dg6br2uh/3vCNzBFz7dK
+	 H2V/GGf0QQso5ExeucEhu0K15dwNItJ50Hw7S8xZivybFzqey9KcaXsHnD5xBD3NTvn7s
+	 qOAhPLS0/n4zZPcH8YbX7+IbM62HwzJ+8OLWKYbXAvZ2sog+t7jDUfq6MTu1SJMknwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hygon.cn;
-	spf=pass smtp.mailfrom=hygon.cn;
-	arc=none smtp.remote-ip=101.204.27.37
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA5C60A3804
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEA5C60A3804
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m73F7wzVcBP;
-	Fri, 20 Nov 2026 11:13:43 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m56z3bzVcBK;
-	Fri, 20 Nov 2026 11:13:41 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id AA2F7C087;
-	Fri, 20 Nov 2026 11:13:32 +0800 (CST)
-Received: from hsj-2U-Workstation.hygon.cn (172.19.24.226) by
- cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 20 Nov 2026 11:13:39 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<hch@infradead.org>, <agruenba@redhat.com>, <mic@digikod.net>,
-	<axboe@kernel.dk>
-CC: <gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<serge@hallyn.com>, <legion@kernel.org>, <aleksa@amutable.com>,
-	<libaokun@linux.alibaba.com>, <ebiggers@kernel.org>, <djwong@kernel.org>,
-	<sandeen@redhat.com>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
-	<yingzhiwei@hygon.cn>, <wujianyong@hygon.cn>, <shijie8@gmail.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
-	<linux-security-module@vger.kernel.org>, Huang Shijie <huangsj@hygon.cn>
-Subject: [PATCH v3 11/11] gfs2: convert gfs2_evict_inodes() to super_iter_inodes()
-Date: Fri, 20 Nov 2026 11:13:05 +0800
-Message-ID: <20261120031305.3561045-12-huangsj@hygon.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261120031305.3561045-1-huangsj@hygon.cn>
-References: <20261120031305.3561045-1-huangsj@hygon.cn>
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMdebML7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0DF606A331;
+	Fri, 20 Nov 2026 11:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMdebML7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448741F00AE3;
+	Fri, 20 Nov 2026 11:14:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795173273;
+	bh=r9krR42dCc1R/MygVNC6/W4IONRVpaDXMDjUD/jXYko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XMdebML7wUZ/sz2xc/apBDOavf3ksv9LxUyAootCAlGpmavA+qGqUX+xacg9T4q19
+	 wwn9JuvYS9vQct9s/PiUsxliWccbmZzmFmMkZvnhxlpcjky17mlisXMePXth7F6c4t
+	 QeubADI+90ig7Irnvf5uD8GzRtBkb+tjfuV7eSPetGY8vTGaFEDM4SxLk3daOjep7h
+	 3WInP/fqpcN4wBs2Zsk8q/ANStBEHB5wRJyiEv0N9iLH8w5WiZzMkD4c4UDPCHD4T4
+	 JBIZcEBVmjhIcXFNuSH2M6LbjvNrNy4/P53VcN4wFq/9gZvLyL3jZ7n45DHlMg1TKm
+	 FlUX75wJ2oVAg==
+Date: Fri, 20 Nov 2026 12:14:24 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Huang Shijie <huangsj@hygon.cn>, Christoph Hellwig <hch@infradead.org>
+Cc: axboe@kernel.dk, viro@zeniv.linux.org.uk, jack@suse.cz, 
+	zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn, agruenba@redhat.com, 
+	mic@digikod.net, gnoack@google.com, paul@paul-moore.com, jmorris@namei.org, 
+	serge@hallyn.com, aleksa@amutable.com, legion@kernel.org, david@kernel.org, 
+	sandeen@redhat.com, ebiggers@kernel.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-security-module@vger.kernel.org, sunjunchao@bytedance.com, shijie8@gmail.com
+Subject: Re: [PATCH v2 1/3] vfs: add inode iteration methods
+Message-ID: <20261120-mitverantwortlich-drehbaren-kantholz-241300d20168@brauner>
+References: <20261113115702.586594-1-huangsj@hygon.cn>
+ <20261113115702.586594-2-huangsj@hygon.cn>
+ <avcBTMvzFWuCkwkn@infradead.org>
+ <avqmmP4dbwu4ziKz@hsj-2U-Workstation>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -68,74 +64,88 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avqmmP4dbwu4ziKz@hsj-2U-Workstation>
 
-Convert gfs2_evict_inodes to super_iter_inodes().
+On Mon, Nov 16, 2026 at 02:45:44PM +0800, Huang Shijie wrote:
+> > 	struct inode_iter_contex ctx = INODE_ITER_CTX_INIT;
+> > 
+> > 	while ((inode = sb_inode_iter()))) {
+> > 		/* do stuff */
+> > 	}
+> > 
+> How to manage the sb->s_inode_list_lock in this code?
+> 
+> I have no idea how to hide the sb->s_inode_list_lock in this code.
 
-The original code also handed out an inode which was already being
-torn down when need_resched() was set. That is not preserved: taking a
-reference on an I_FREEING inode whose count has already reached zero
-lets a second iput() run on it once the reference is dropped again.
+I think Christoph is right. The lock shouldn't be held across
+iterations. Let the iterator take it, grab a reference to the next
+inode, drop the lock again and hand the inode out. The reference keeps the
+inode on s_inodes so the next call can continue from there.
 
-Signed-off-by: Huang Shijie <huangsj@hygon.cn>
----
- fs/gfs2/ops_fstype.c | 29 +++++++----------------------
- 1 file changed, 7 insertions(+), 22 deletions(-)
+This is how drop_pagecache_sb() does it today. Sm like (UNTESTED and not
+nice-ified):
 
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 6ec47376aecf..a6f8e95a4187 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1717,6 +1717,12 @@ static int gfs2_meta_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
-+/* Nothing to do because we just want to bounce the inode through iput() */
-+static int gfs2_evict_inode_fn(struct inode *inode, void *priv)
-+{
-+	return INO_ITER_RET_NEXT;
-+}
-+
- /**
-  * gfs2_evict_inodes - evict inodes cooperatively
-  * @sb: the superblock
-@@ -1739,31 +1745,10 @@ static int gfs2_meta_init_fs_context(struct fs_context *fc)
-  */
- static void gfs2_evict_inodes(struct super_block *sb)
- {
--	struct inode *inode, *toput_inode = NULL;
- 	struct gfs2_sbd *sdp = sb->s_fs_info;
- 
- 	set_bit(SDF_EVICTING, &sdp->sd_flags);
--
--	spin_lock(&sb->s_inode_list_lock);
--	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
--		spin_lock(&inode->i_lock);
--		if ((inode_state_read(inode) & (I_FREEING | I_WILL_FREE | I_NEW)) &&
--		    !need_resched()) {
--			spin_unlock(&inode->i_lock);
--			continue;
--		}
--		__iget(inode);
--		spin_unlock(&inode->i_lock);
--		spin_unlock(&sb->s_inode_list_lock);
--
--		iput(toput_inode);
--		toput_inode = inode;
--
--		cond_resched();
--		spin_lock(&sb->s_inode_list_lock);
--	}
--	spin_unlock(&sb->s_inode_list_lock);
--	iput(toput_inode);
-+	super_iter_inodes(sb, gfs2_evict_inode_fn, NULL, NULL, 0);
- }
- 
- static void gfs2_kill_sb(struct super_block *sb)
--- 
-2.53.0
+struct sb_inode_iter {
+	struct super_block *sb;
+	struct inode *inode;
+	bool done;
+};
 
+struct inode *sb_inode_iter_next(struct sb_inode_iter *it)
+{
+	struct super_block *sb = it->sb;
+	struct inode *prev = it->inode, *inode;
 
+	if (it->done)
+		return NULL;
+
+	spin_lock(&sb->s_inode_list_lock);
+	inode = list_prepare_entry(prev, &sb->s_inodes, i_sb_list);
+	list_for_each_entry_continue(inode, &sb->s_inodes, i_sb_list) {
+		spin_lock(&inode->i_lock);
+		if (inode_state_read(inode) & (I_FREEING | I_WILL_FREE | I_NEW)) {
+			spin_unlock(&inode->i_lock);
+			continue;
+		}
+		__iget(inode);
+		spin_unlock(&inode->i_lock);
+		spin_unlock(&sb->s_inode_list_lock);
+		it->inode = inode;
+		iput(prev);
+		return inode;
+	}
+	spin_unlock(&sb->s_inode_list_lock);
+	it->inode = NULL;
+	it->done = true;
+	iput(prev);
+	return NULL;
+}
+
+void sb_inode_iter_end(struct sb_inode_iter *it)
+{
+	iput(it->inode);
+	it->inode = NULL;
+	it->done = true;
+}
+
+and then drop_pagecache_sb() becomes:
+
+	struct sb_inode_iter it = { .sb = sb };
+	struct inode *inode;
+
+	while ((inode = sb_inode_iter_next(&it))) {
+		invalidate_mapping_pages(inode->i_mapping, 0, -1);
+		cond_resched();
+	}
+
+Make it a cleanup class and a caller that breaks out early doesn't have
+to remember sb_inode_iter_end() either.
+
+This will end because new inodes are added at the head and the cursor
+stays on the list. So these assumptions should get
+VFS_WARN_ON_ONCE()-es.
+
+Walkers that can't take a reference might need different solution.
+I'm not sure if there are any?
