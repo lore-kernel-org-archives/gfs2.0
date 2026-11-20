@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795144420;
-	b=XpKO+cR1ixzAtfZKFdYpttjRELBbdlzklGxQkFRj9SqBpKunr4i8t8kkCS/+onknxx/c
-	 BF9QxXgXQV9z3gYXcRfY0qH4ydopBhUbjhvLSH4/s9i5q6LbjJIfa+jn8eV7SfbfNwxzH
-	 BHhFeLmgAV/PNpYQgmRPbCznITwpPfEJSl5fBrwR+UT2sB3s0WWi0rBno+uaSruULkJ5+
-	 iTeeqsPqCtCxoWMgiD9L1YRm4VPV1xB0wViCWnbbZ2bdrfni1tluBmZos3US/FvncqSUa
-	 eXOEXr8Sn23Nw8dfsT+Z8WEsgUFLlmzUgfeMocSDxMPlpCv5rYG9DaDDhMM3Y+O4stw==
+	t=1795144422;
+	b=dWmBOQ2u+lZGpqpToPpZoLpZzPaIXU7lroF/e/fbsQTY929y5iS30+T7gSS/cK23YQoz
+	 zowxAmcX5tmXyQqOi3yiK0ZQp4QT0YZwS7U9qDvhplUwBKq63ZxvWGbJ6Qnmrq+shyvJV
+	 49THFgLWw4/u4+3x87i5hMMeaetGObzN278brJWBcOCfdwEn5L2xHYOgiI3eH0MPehSu+
+	 j5aLZjIKYLzPUGi4JlvJVTvzbUoZwx0tRe4folKIFaxX/swNY9vzj0C4CL9TiM6kZPznj
+	 pF5zcao3lcvlBH9YuzDFWUT9Z5RTbeBxOkHf/erMyVsNLmxQ2fjxxoW0yhrkPntYtZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795144420;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795144422;
 	h=DMARC-Filter:Received:Received:Received:Received:From:To:CC:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=MXn/vipY2N1l4qLdGnwApO+16GsInZpYm0yxQZl82ao=;
-	b=1rtLXAsTtDk4k37rbcjqe86xZgDv0zdIWcvf2qy287+fWRBXe5XBEWyf1kbCDuVV6T49
-	 xiGRSTu7XXzo0VYl3nf0cmcFC9Y0SfUUy3Qga4VLucTdSFIoil+xgvUvrAwhgLyuoVvIA
-	 CSu7TT5sPd744ZYIBQOfFNU/0WTHsKk52RfKruiwj1BH3gZHvS5cLeHRkG1jDv1t5u9WO
-	 LM8L4bdM3WI3kogOUiyiHXCM31St3Ne8NMFvu/mHIbzUq8w2/OG9n6mbvprt/GylzRBhH
-	 J643Ce+Ugh3S1v+3FOydCu5Y+6vIFfzKz30TRd9vU8cmxQ9FpF036vXdRWQUuD2ACqg==
+	bh=XfUQYqhSBDtnNz/92eiuuQq9fnpmWexW1FrDv5wdiVA=;
+	b=z7hgPif8BZ148eDjrmAQXDe5a+dRaIjDL/uplAafOksjjeMYe2CkAL/IIiZaqadpNuan
+	 Qea+7OuOmikw3M1mALznty4wtHYE4GOWMFam/5wIGQ2RkUESP8SJli1y5KmabaBP9OwB+
+	 aD54mKza1wHXA8RMgf1oRDYFP2VhHA9tGqg00vvRw0IjiEmTPWwKM8bCqMwIzQk1WkVd4
+	 Yg4ZWVpyICCLVez02Z1GuSy4n+Xd6SY3CW1Qn9dRX4/vG/H6r4ay+JAYoeYabGMmhnwqj
+	 Essdsdw2RJKzVEPR4z1UUGW5cuFjXlVJK4KqMTffwepDzu2Fl0ZcQb6gSGZDA8zusww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hygon.cn;
 	spf=pass smtp.mailfrom=hygon.cn;
 	arc=none smtp.remote-ip=101.204.27.37
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887F360A2620
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 887F360A2620
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D5560A3812
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5D5560A3812
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m13Dy9zVcBC;
-	Fri, 20 Nov 2026 11:13:37 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m05NyKzVcBC;
-	Fri, 20 Nov 2026 11:13:36 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m43Dx1zVcBH;
+	Fri, 20 Nov 2026 11:13:40 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m32q2vzVcBH;
+	Fri, 20 Nov 2026 11:13:39 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 73A1FC087;
-	Fri, 20 Nov 2026 11:13:27 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 046C930CB6D6;
+	Fri, 20 Nov 2026 11:12:36 +0800 (CST)
 Received: from hsj-2U-Workstation.hygon.cn (172.19.24.226) by
  cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 20 Nov 2026 11:13:34 +0800
+ 15.2.1544.36; Fri, 20 Nov 2026 11:13:36 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<hch@infradead.org>, <agruenba@redhat.com>, <mic@digikod.net>,
@@ -53,9 +53,9 @@ CC: <gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
 	<linux-security-module@vger.kernel.org>, Huang Shijie <huangsj@hygon.cn>
-Subject: [PATCH v3 09/11] fs/quota: convert add_dquot_ref() to super_iter_inodes()
-Date: Fri, 20 Nov 2026 11:13:03 +0800
-Message-ID: <20261120031305.3561045-10-huangsj@hygon.cn>
+Subject: [PATCH v3 10/11] landlock: convert hook_sb_delete() to super_iter_inodes()
+Date: Fri, 20 Nov 2026 11:13:04 +0800
+Message-ID: <20261120031305.3561045-11-huangsj@hygon.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261120031305.3561045-1-huangsj@hygon.cn>
 References: <20261120031305.3561045-1-huangsj@hygon.cn>
@@ -73,104 +73,176 @@ Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
 
-Convert add_dquot_ref() to super_iter_inodes()
-
+Convert hook_sb_delete() to super_iter_inodes().
 No functional change.
 
 Signed-off-by: Huang Shijie <huangsj@hygon.cn>
 ---
- fs/quota/dquot.c | 71 +++++++++++++++++++-----------------------------
- 1 file changed, 28 insertions(+), 43 deletions(-)
+ security/landlock/fs.c | 138 ++++++++++++++++-------------------------
+ 1 file changed, 52 insertions(+), 86 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 9aaf2cfa9e1b..6453949c8af6 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -1066,56 +1066,41 @@ static int dqinit_needed(struct inode *inode, int type)
- 	return 0;
- }
- 
--/* This routine is guarded by s_umount semaphore */
--static int add_dquot_ref(struct super_block *sb, int type)
-+static bool add_dquot_ref_eligible(struct inode *inode, void *priv)
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index 2ab67bcad198..dae606892d96 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -1380,105 +1380,71 @@ static void hook_inode_free_security_rcu(void *inode_security)
+  *
+  * Cf. fsnotify_unmount_inodes() and evict_inodes()
+  */
+-static void hook_sb_delete(struct super_block *const sb)
++static bool release_inode_eligible(struct inode *inode, void *priv)
  {
--	struct inode *inode, *old_inode = NULL;
--#ifdef CONFIG_QUOTA_DEBUG
--	int reserved = 0;
--#endif
--	int err = 0;
-+	struct dquot_ref_data *ref = priv;
+-	struct inode *inode, *prev_inode = NULL;
++	bool ret;
+ 
+-	if (!landlock_initialized)
+-		return;
++	rcu_read_lock();
++	ret = !!rcu_dereference(landlock_inode(inode)->object);
++	rcu_read_unlock();
  
 -	spin_lock(&sb->s_inode_list_lock);
 -	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+-		struct landlock_object *object;
++	return ret;
++}
++
++static int release_inode_fn(struct inode *inode, void *priv)
++{
++	struct landlock_object *object;
++
++	rcu_read_lock();
++	object = rcu_dereference(landlock_inode(inode)->object);
++	if (!object) {
++		rcu_read_unlock();
++		return INO_ITER_RET_NEXT;
++	}
+ 
+-		/* Only handles referenced inodes. */
+-		if (!icount_read_once(inode))
+-			continue;
++	/*
++	 * If there is no concurrent release_inode() ongoing, then we
++	 * are in charge of calling iput() on this inode, otherwise we
++	 * will just wait for it to finish.
++	 */
++	spin_lock(&object->lock);
++	if (object->underobj == inode) {
++		object->underobj = NULL;
++		spin_unlock(&object->lock);
++		rcu_read_unlock();
+ 
+ 		/*
+-		 * Protects against concurrent modification of inode (e.g.
+-		 * from get_inode_object()).
++		 * Because object->underobj was not NULL,
++		 * release_inode() and get_inode_object() guarantee
++		 * that it is safe to reset
++		 * landlock_inode(inode)->object while it is not NULL.
++		 * It is therefore not necessary to lock inode->i_lock.
+ 		 */
 -		spin_lock(&inode->i_lock);
--		if ((inode_state_read(inode) & (I_FREEING | I_WILL_FREE | I_NEW)) ||
--		    !atomic_read(&inode->i_writecount) ||
--		    !dqinit_needed(inode, type)) {
++		rcu_assign_pointer(landlock_inode(inode)->object, NULL);
+ 		/*
+-		 * Checks I_FREEING and I_WILL_FREE  to protect against a race
+-		 * condition when release_inode() just called iput(), which
+-		 * could lead to a NULL dereference of inode->security or a
+-		 * second call to iput() for the same Landlock object.  Also
+-		 * checks I_NEW because such inode cannot be tied to an object.
++		 * At this point, we own the ihold() reference that was
++		 * originally set up by get_inode_object() and the
++		 * __iget() reference that we just set in this loop
++		 * walk.  Therefore there are at least two references
++		 * on the inode.
+ 		 */
+-		if (inode_state_read(inode) &
+-		    (I_FREEING | I_WILL_FREE | I_NEW)) {
 -			spin_unlock(&inode->i_lock);
 -			continue;
 -		}
+-
+-		rcu_read_lock();
+-		object = rcu_dereference(landlock_inode(inode)->object);
+-		if (!object) {
+-			rcu_read_unlock();
+-			spin_unlock(&inode->i_lock);
+-			continue;
+-		}
+-		/* Keeps a reference to this inode until the next loop walk. */
 -		__iget(inode);
 -		spin_unlock(&inode->i_lock);
--		spin_unlock(&sb->s_inode_list_lock);
-+	return atomic_read(&inode->i_writecount) &&
-+	       dqinit_needed(inode, ref->type);
-+}
-+
-+static int add_dquot_ref_fn(struct inode *inode, void *priv)
-+{
-+	struct dquot_ref_data *ref = priv;
-+	int ret;
++		iput_not_last(inode);
++	} else {
++		spin_unlock(&object->lock);
++		rcu_read_unlock();
++	}
  
- #ifdef CONFIG_QUOTA_DEBUG
--		if (unlikely(inode_get_rsv_space(inode) > 0))
--			reserved = 1;
-+	if (unlikely(inode_get_rsv_space(inode) > 0))
-+		ref->reserved++;
- #endif
--		iput(old_inode);
--		err = __dquot_initialize(inode, type);
--		if (err) {
--			iput(inode);
--			goto out;
--		}
-+	ret = __dquot_initialize(inode, ref->type);
-+	if (ret)
-+		return ret;
+-		/*
+-		 * If there is no concurrent release_inode() ongoing, then we
+-		 * are in charge of calling iput() on this inode, otherwise we
+-		 * will just wait for it to finish.
+-		 */
+-		spin_lock(&object->lock);
+-		if (object->underobj == inode) {
+-			object->underobj = NULL;
+-			spin_unlock(&object->lock);
+-			rcu_read_unlock();
 +	return INO_ITER_RET_NEXT;
 +}
  
--		/*
--		 * We hold a reference to 'inode' so it couldn't have been
--		 * removed from s_inodes list while we dropped the
--		 * s_inode_list_lock. We cannot iput the inode now as we can be
--		 * holding the last reference and we cannot iput it under
--		 * s_inode_list_lock. So we keep the reference and iput it
--		 * later.
--		 */
--		old_inode = inode;
--		cond_resched();
--		spin_lock(&sb->s_inode_list_lock);
+-			/*
+-			 * Because object->underobj was not NULL,
+-			 * release_inode() and get_inode_object() guarantee
+-			 * that it is safe to reset
+-			 * landlock_inode(inode)->object while it is not NULL.
+-			 * It is therefore not necessary to lock inode->i_lock.
+-			 */
+-			rcu_assign_pointer(landlock_inode(inode)->object, NULL);
+-			/*
+-			 * At this point, we own the ihold() reference that was
+-			 * originally set up by get_inode_object() and the
+-			 * __iget() reference that we just set in this loop
+-			 * walk.  Therefore there are at least two references
+-			 * on the inode.
+-			 */
+-			iput_not_last(inode);
+-		} else {
+-			spin_unlock(&object->lock);
+-			rcu_read_unlock();
+-		}
++static void hook_sb_delete(struct super_block *const sb)
++{
++	if (!landlock_initialized)
++		return;
+ 
+-		if (prev_inode) {
+-			/*
+-			 * At this point, we still own the __iget() reference
+-			 * that we just set in this loop walk.  Therefore we
+-			 * can drop the list lock and know that the inode won't
+-			 * disappear from under us until the next loop walk.
+-			 */
+-			spin_unlock(&sb->s_inode_list_lock);
+-			/*
+-			 * We can now actually put the inode reference from the
+-			 * previous loop walk, which is not needed anymore.
+-			 */
+-			iput(prev_inode);
+-			cond_resched();
+-			spin_lock(&sb->s_inode_list_lock);
+-		}
+-		prev_inode = inode;
 -	}
 -	spin_unlock(&sb->s_inode_list_lock);
--	iput(old_inode);
--out:
-+/* This routine is guarded by s_umount semaphore */
-+static int add_dquot_ref(struct super_block *sb, int type)
-+{
-+	struct dquot_ref_data ref = {
-+		.type = type,
-+	};
-+	int err;
-+
-+	err = super_iter_inodes(sb, add_dquot_ref_fn,
-+				add_dquot_ref_eligible, &ref, 0);
- #ifdef CONFIG_QUOTA_DEBUG
--	if (reserved) {
-+	if (ref.reserved) {
- 		quota_error(sb, "Writes happened before quota was turned on "
- 			"thus quota information is probably inconsistent. "
- 			"Please run quotacheck(8)");
++	super_iter_inodes(sb, release_inode_fn, release_inode_eligible,
++			  NULL, INO_ITER_F_REFERENCED);
+ 
+-	/* Puts the inode reference from the last loop walk, if any. */
+-	if (prev_inode)
+-		iput(prev_inode);
+ 	/* Waits for pending iput() in release_inode(). */
+ 	wait_var_event(&landlock_superblock(sb)->inode_refs,
+ 		       !atomic_long_read(&landlock_superblock(sb)->inode_refs));
 -- 
 2.53.0
 
