@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795144422;
-	b=dWmBOQ2u+lZGpqpToPpZoLpZzPaIXU7lroF/e/fbsQTY929y5iS30+T7gSS/cK23YQoz
-	 zowxAmcX5tmXyQqOi3yiK0ZQp4QT0YZwS7U9qDvhplUwBKq63ZxvWGbJ6Qnmrq+shyvJV
-	 49THFgLWw4/u4+3x87i5hMMeaetGObzN278brJWBcOCfdwEn5L2xHYOgiI3eH0MPehSu+
-	 j5aLZjIKYLzPUGi4JlvJVTvzbUoZwx0tRe4folKIFaxX/swNY9vzj0C4CL9TiM6kZPznj
-	 pF5zcao3lcvlBH9YuzDFWUT9Z5RTbeBxOkHf/erMyVsNLmxQ2fjxxoW0yhrkPntYtZw==
+	t=1795144426;
+	b=A1cGzrgUmdgas/eCf6n2fTfzD11t070ohrZTzhD2g211yvJX5L8bX9ETaRNev/fbdSh6
+	 egAqCVeZMk/tFM591TUdpBh7V6M6/M/+gWTmq+uJMg1Ym6bdhtkvdyqffXpP6HRHf/Hd8
+	 6+a2hTvPeFPu8T5j9D2T3RVelvN++1Kl2AS12kiQw2qeQtv6BH9E3Q3bAlcM0OBnUQ8TR
+	 qStim5cbfyzyL/48wcDgwDDJ0+kmy4YWHAaaGNytLTdNExDZV2G4Y7kEMlWG9NRdVongv
+	 WH+Wwx3Gqv54S3aN/Uy55eXC0bbRiVCXpruY2tGrnzzBNwi6F2DAfmpowvM11tTLfbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795144422;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795144426;
 	h=DMARC-Filter:Received:Received:Received:Received:From:To:CC:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=XfUQYqhSBDtnNz/92eiuuQq9fnpmWexW1FrDv5wdiVA=;
-	b=z7hgPif8BZ148eDjrmAQXDe5a+dRaIjDL/uplAafOksjjeMYe2CkAL/IIiZaqadpNuan
-	 Qea+7OuOmikw3M1mALznty4wtHYE4GOWMFam/5wIGQ2RkUESP8SJli1y5KmabaBP9OwB+
-	 aD54mKza1wHXA8RMgf1oRDYFP2VhHA9tGqg00vvRw0IjiEmTPWwKM8bCqMwIzQk1WkVd4
-	 Yg4ZWVpyICCLVez02Z1GuSy4n+Xd6SY3CW1Qn9dRX4/vG/H6r4ay+JAYoeYabGMmhnwqj
-	 Essdsdw2RJKzVEPR4z1UUGW5cuFjXlVJK4KqMTffwepDzu2Fl0ZcQb6gSGZDA8zusww==
+	bh=WAE71jRExM1HToAOokplb7JGRyz27FwuaBPVyfzmFKA=;
+	b=h81xeFInmfIyazo404zOEJjjOvG8iC5na00Cj/ZEISaZG698e2ty+JMZ1VY8HqlR3lNW
+	 Oc+H/inAM6MH7/3W92GfZbNPgoOrOtwELu7FU4bADwRV4kvwURYuGfsc9SDZ3Zf78MQEc
+	 CpjVRfHRtzNpKIYXVpTqYXwKOJfwSrIV8tXqWSDdYkot/qiIt9syeDQKYgz27lJTFoegX
+	 MmZhoYYDrodSbTT+DY17wpaMf6GtM84h2CascKYyxAmYYyFwo0sUYazW4wSR0oNNa3fWv
+	 /utH0h9gnLBh/zBJubLi2022vF/5wVyZe29KN5u//RVUl+t5pyJmbmxuKOCxIyCX1cw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hygon.cn;
 	spf=pass smtp.mailfrom=hygon.cn;
 	arc=none smtp.remote-ip=101.204.27.37
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D5560A3812
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5D5560A3812
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA5C60A3804
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEA5C60A3804
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m43Dx1zVcBH;
-	Fri, 20 Nov 2026 11:13:40 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m32q2vzVcBH;
-	Fri, 20 Nov 2026 11:13:39 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m73F7wzVcBP;
+	Fri, 20 Nov 2026 11:13:43 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0m56z3bzVcBK;
+	Fri, 20 Nov 2026 11:13:41 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 046C930CB6D6;
-	Fri, 20 Nov 2026 11:12:36 +0800 (CST)
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id AA2F7C087;
+	Fri, 20 Nov 2026 11:13:32 +0800 (CST)
 Received: from hsj-2U-Workstation.hygon.cn (172.19.24.226) by
  cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 20 Nov 2026 11:13:36 +0800
+ 15.2.1544.36; Fri, 20 Nov 2026 11:13:39 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<hch@infradead.org>, <agruenba@redhat.com>, <mic@digikod.net>,
@@ -53,9 +53,9 @@ CC: <gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
 	<linux-security-module@vger.kernel.org>, Huang Shijie <huangsj@hygon.cn>
-Subject: [PATCH v3 10/11] landlock: convert hook_sb_delete() to super_iter_inodes()
-Date: Fri, 20 Nov 2026 11:13:04 +0800
-Message-ID: <20261120031305.3561045-11-huangsj@hygon.cn>
+Subject: [PATCH v3 11/11] gfs2: convert gfs2_evict_inodes() to super_iter_inodes()
+Date: Fri, 20 Nov 2026 11:13:05 +0800
+Message-ID: <20261120031305.3561045-12-huangsj@hygon.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261120031305.3561045-1-huangsj@hygon.cn>
 References: <20261120031305.3561045-1-huangsj@hygon.cn>
@@ -73,176 +73,68 @@ Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
 
-Convert hook_sb_delete() to super_iter_inodes().
-No functional change.
+Convert gfs2_evict_inodes to super_iter_inodes().
+
+The original code also handed out an inode which was already being
+torn down when need_resched() was set. That is not preserved: taking a
+reference on an I_FREEING inode whose count has already reached zero
+lets a second iput() run on it once the reference is dropped again.
 
 Signed-off-by: Huang Shijie <huangsj@hygon.cn>
 ---
- security/landlock/fs.c | 138 ++++++++++++++++-------------------------
- 1 file changed, 52 insertions(+), 86 deletions(-)
+ fs/gfs2/ops_fstype.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index 2ab67bcad198..dae606892d96 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -1380,105 +1380,71 @@ static void hook_inode_free_security_rcu(void *inode_security)
-  *
-  * Cf. fsnotify_unmount_inodes() and evict_inodes()
-  */
--static void hook_sb_delete(struct super_block *const sb)
-+static bool release_inode_eligible(struct inode *inode, void *priv)
- {
--	struct inode *inode, *prev_inode = NULL;
-+	bool ret;
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index 6ec47376aecf..a6f8e95a4187 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1717,6 +1717,12 @@ static int gfs2_meta_init_fs_context(struct fs_context *fc)
+ 	return 0;
+ }
  
--	if (!landlock_initialized)
--		return;
-+	rcu_read_lock();
-+	ret = !!rcu_dereference(landlock_inode(inode)->object);
-+	rcu_read_unlock();
- 
--	spin_lock(&sb->s_inode_list_lock);
--	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
--		struct landlock_object *object;
-+	return ret;
-+}
-+
-+static int release_inode_fn(struct inode *inode, void *priv)
++/* Nothing to do because we just want to bounce the inode through iput() */
++static int gfs2_evict_inode_fn(struct inode *inode, void *priv)
 +{
-+	struct landlock_object *object;
-+
-+	rcu_read_lock();
-+	object = rcu_dereference(landlock_inode(inode)->object);
-+	if (!object) {
-+		rcu_read_unlock();
-+		return INO_ITER_RET_NEXT;
-+	}
- 
--		/* Only handles referenced inodes. */
--		if (!icount_read_once(inode))
--			continue;
-+	/*
-+	 * If there is no concurrent release_inode() ongoing, then we
-+	 * are in charge of calling iput() on this inode, otherwise we
-+	 * will just wait for it to finish.
-+	 */
-+	spin_lock(&object->lock);
-+	if (object->underobj == inode) {
-+		object->underobj = NULL;
-+		spin_unlock(&object->lock);
-+		rcu_read_unlock();
- 
- 		/*
--		 * Protects against concurrent modification of inode (e.g.
--		 * from get_inode_object()).
-+		 * Because object->underobj was not NULL,
-+		 * release_inode() and get_inode_object() guarantee
-+		 * that it is safe to reset
-+		 * landlock_inode(inode)->object while it is not NULL.
-+		 * It is therefore not necessary to lock inode->i_lock.
- 		 */
--		spin_lock(&inode->i_lock);
-+		rcu_assign_pointer(landlock_inode(inode)->object, NULL);
- 		/*
--		 * Checks I_FREEING and I_WILL_FREE  to protect against a race
--		 * condition when release_inode() just called iput(), which
--		 * could lead to a NULL dereference of inode->security or a
--		 * second call to iput() for the same Landlock object.  Also
--		 * checks I_NEW because such inode cannot be tied to an object.
-+		 * At this point, we own the ihold() reference that was
-+		 * originally set up by get_inode_object() and the
-+		 * __iget() reference that we just set in this loop
-+		 * walk.  Therefore there are at least two references
-+		 * on the inode.
- 		 */
--		if (inode_state_read(inode) &
--		    (I_FREEING | I_WILL_FREE | I_NEW)) {
--			spin_unlock(&inode->i_lock);
--			continue;
--		}
--
--		rcu_read_lock();
--		object = rcu_dereference(landlock_inode(inode)->object);
--		if (!object) {
--			rcu_read_unlock();
--			spin_unlock(&inode->i_lock);
--			continue;
--		}
--		/* Keeps a reference to this inode until the next loop walk. */
--		__iget(inode);
--		spin_unlock(&inode->i_lock);
-+		iput_not_last(inode);
-+	} else {
-+		spin_unlock(&object->lock);
-+		rcu_read_unlock();
-+	}
- 
--		/*
--		 * If there is no concurrent release_inode() ongoing, then we
--		 * are in charge of calling iput() on this inode, otherwise we
--		 * will just wait for it to finish.
--		 */
--		spin_lock(&object->lock);
--		if (object->underobj == inode) {
--			object->underobj = NULL;
--			spin_unlock(&object->lock);
--			rcu_read_unlock();
 +	return INO_ITER_RET_NEXT;
 +}
++
+ /**
+  * gfs2_evict_inodes - evict inodes cooperatively
+  * @sb: the superblock
+@@ -1739,31 +1745,10 @@ static int gfs2_meta_init_fs_context(struct fs_context *fc)
+  */
+ static void gfs2_evict_inodes(struct super_block *sb)
+ {
+-	struct inode *inode, *toput_inode = NULL;
+ 	struct gfs2_sbd *sdp = sb->s_fs_info;
  
--			/*
--			 * Because object->underobj was not NULL,
--			 * release_inode() and get_inode_object() guarantee
--			 * that it is safe to reset
--			 * landlock_inode(inode)->object while it is not NULL.
--			 * It is therefore not necessary to lock inode->i_lock.
--			 */
--			rcu_assign_pointer(landlock_inode(inode)->object, NULL);
--			/*
--			 * At this point, we own the ihold() reference that was
--			 * originally set up by get_inode_object() and the
--			 * __iget() reference that we just set in this loop
--			 * walk.  Therefore there are at least two references
--			 * on the inode.
--			 */
--			iput_not_last(inode);
--		} else {
--			spin_unlock(&object->lock);
--			rcu_read_unlock();
+ 	set_bit(SDF_EVICTING, &sdp->sd_flags);
+-
+-	spin_lock(&sb->s_inode_list_lock);
+-	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+-		spin_lock(&inode->i_lock);
+-		if ((inode_state_read(inode) & (I_FREEING | I_WILL_FREE | I_NEW)) &&
+-		    !need_resched()) {
+-			spin_unlock(&inode->i_lock);
+-			continue;
 -		}
-+static void hook_sb_delete(struct super_block *const sb)
-+{
-+	if (!landlock_initialized)
-+		return;
- 
--		if (prev_inode) {
--			/*
--			 * At this point, we still own the __iget() reference
--			 * that we just set in this loop walk.  Therefore we
--			 * can drop the list lock and know that the inode won't
--			 * disappear from under us until the next loop walk.
--			 */
--			spin_unlock(&sb->s_inode_list_lock);
--			/*
--			 * We can now actually put the inode reference from the
--			 * previous loop walk, which is not needed anymore.
--			 */
--			iput(prev_inode);
--			cond_resched();
--			spin_lock(&sb->s_inode_list_lock);
--		}
--		prev_inode = inode;
+-		__iget(inode);
+-		spin_unlock(&inode->i_lock);
+-		spin_unlock(&sb->s_inode_list_lock);
+-
+-		iput(toput_inode);
+-		toput_inode = inode;
+-
+-		cond_resched();
+-		spin_lock(&sb->s_inode_list_lock);
 -	}
 -	spin_unlock(&sb->s_inode_list_lock);
-+	super_iter_inodes(sb, release_inode_fn, release_inode_eligible,
-+			  NULL, INO_ITER_F_REFERENCED);
+-	iput(toput_inode);
++	super_iter_inodes(sb, gfs2_evict_inode_fn, NULL, NULL, 0);
+ }
  
--	/* Puts the inode reference from the last loop walk, if any. */
--	if (prev_inode)
--		iput(prev_inode);
- 	/* Waits for pending iput() in release_inode(). */
- 	wait_var_event(&landlock_superblock(sb)->inode_refs,
- 		       !atomic_long_read(&landlock_superblock(sb)->inode_refs));
+ static void gfs2_kill_sb(struct super_block *sb)
 -- 
 2.53.0
 
