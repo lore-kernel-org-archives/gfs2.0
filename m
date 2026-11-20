@@ -1,73 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795204856;
-	b=mwSb7KF2LN4UQOLbPg4WhHc8EdNWkjhoQ3A8zWCX3VDJXioTCm0dqzU39AIIeC1HTcEJ
-	 R07RroSmaT+kT4ABn/Is3YFbjupgfSS8QzrrmFgY5/ZFc5jg6qKZBjvcOgkAn44Lw824f
-	 ORPq9zFMwkYJXuT18j4MSkY53trkHmDL4goIV9aGguxErxOGjJJU9W4oIZIfqsGfFLBzX
-	 UebYnjfr+yHSS7WpO9IILbXHO2JKu0WBKOGjQKrGJBZU/HwrXNDQKoEx2HnMX29K8hRgz
-	 Swv7MIsb0qK+6sPbaalPucD62wK/66GQgRgp+jSI0aA6iRLQM+Wv6tyFEmeUgndchaA==
+	b=vbf3F7Pkzcf6U/Q1fajOG+F4PLGZPIMagBw+YAU1odeSZ3OcOfS6e2pvJyuZ4AXKGIsC
+	 GqeYGGCII4lAe2fLseXtwhrM3Intp8+NnQr/zFrcaaisFatZqSDL8Q0qKlME7JfAcNsvb
+	 6LAq4moIVaGjgRQ7ts7TKvd9wTPK94oy5YiQnn1b7+oaSjZFBXkm3PtA4KVwi5+oB/paA
+	 jYwRyBcRG1icmjzf9E8abDlaKppn3u05iCOZ16mf7aU63g8IqxTBN21wcE3oJC6ku2n31
+	 ePInucDxFTWSKs411dR+URM6O7azgT04fCEceUhcPH5+UQQXjg54ZFfwKTY7AhAYITw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795204856;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:X-Scanned-By:
 	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=kL5AX1AOhBV1RbfzHgaxI1ZcvMjfjO0D5M+aI4vHIPw=;
-	b=2BLTMrz6unT0BpCFE/ut+Q9vQORPZSYr8P7EdF3NSLR5CKt8QsOpNqf/lrk9m4ZdT8F5
-	 mm8vJhr8H+aHzWKspSHSBkHwFzh6XMuQhzXpDtcy/o/hNoDGVUh0PQqN/Gy8OV/zVqFQJ
-	 BITVyMQcaQ0SrNQopZ9fZYhEqWcSj+PpoDVNuCLIY/J/4dvsA6podYCL+gJ1YkHJXHSX5
-	 jdpWDpRS+OdpP0fJHsV6pVhXLJx8knjMVI3P8bJmMKT8O/XBybBl2z9IKTQav6saQ/Fnw
-	 LSp7zlZYEdsAtk7ThWtGU7bt+qEOVZDE42RrdL7LyjGsjK0ew+fMFeEeLiPwOzZuKRQ==
+	 Content-Transfer-Encoding:content-type;
+	bh=5Es2ZmcY3dDrLm3TXSrs5K0ywF3os6aPf7OW/bcN/ck=;
+	b=AOpAwVNEdhaJ/N0F7rCRuawWPPmVfONGMD6oW4bBFoeAwQcNen8kqUGUQ7vWtbY2QPWY
+	 EYHd3s4KMNUUYJ6QOV1AAYYY93WFqtNbEG/h6HbBYZ5OITfBLZLjcQBtf2E54KHQMK3yP
+	 L02b4pRxRKsYJlXJ/K+hn6UZvKfHJaCakmmrCw5nf0i15wV1JZN/J26/iNGjDVwCyL2Zw
+	 NrcQ13UImznXKdj6dD0N5lfSCnS74/3KdchPwhZ8VOTnG98WxiwoQpAdkRJ09PNNpCowx
+	 YhZUoqzc2rL/x7klzODPax3PGNf2edzGlA6DnTGnn+udAojeh2DK4Dzi9uhs5nFJoLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ss8X2V5T;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bbkzf2ei;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4E9606A6DE
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A4E9606A6DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC1B606A6C3
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AC1B606A6C3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ss8X2V5T
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bbkzf2ei
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795204849;
+	s=mimecast20190719; t=1795204852;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kL5AX1AOhBV1RbfzHgaxI1ZcvMjfjO0D5M+aI4vHIPw=;
-	b=Ss8X2V5TQzdkk+Z9ibvsZ17p4hYoo+hyEptogQb7krEi7IElJt/YsAPtjCT2N7YlhyT0vI
-	l4TRzKIeQ5Et4RxlQSxOcbXnq6ARFuntlYbgqVNwoX3LUoetAuQGg9VE6hBvoV04NHumxX
-	5v+Ua9d8tLnm4sNJVpub7JSbRLKDFSE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=5Es2ZmcY3dDrLm3TXSrs5K0ywF3os6aPf7OW/bcN/ck=;
+	b=Bbkzf2eiiu/wm0aRi7WPhAI7DSS88Orj0nhoSpuLMqOf6avJl91In+DZfSUZhczBraBkkk
+	QO5acUaK7Ys7tapEP9y0q/gJ6oobRBBa9cYebR9oYf1wxDwyBF3S5lFzLb/6EAE1eUckN7
+	O6LOg31jY/PVS0Xtw3FGnLDOXubLIb8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-baCQte95OwKDp7-Aua4oOA-1; Fri,
- 20 Nov 2026 20:00:45 +0000
-X-MC-Unique: baCQte95OwKDp7-Aua4oOA-1
-X-Mimecast-MFC-AGG-ID: baCQte95OwKDp7-Aua4oOA_1795204843
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-1mbAGobgMfu0TXjg4FkXOA-1; Fri,
+ 20 Nov 2026 20:00:50 +0000
+X-MC-Unique: 1mbAGobgMfu0TXjg4FkXOA-1
+X-Mimecast-MFC-AGG-ID: 1mbAGobgMfu0TXjg4FkXOA_1795204846
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A6DA71801338
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:43 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73BD819541A8
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:46 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1814E428;
-	Fri, 20 Nov 2026 20:00:43 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DE812428;
+	Fri, 20 Nov 2026 20:00:45 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: aahringo@redhat.com,
 	gfs2@lists.linux.dev
-Subject: [PATCHv2 RESEND v7.4-rc3 1/5] dlm: fix socket hang on send buffer limitation with socket error
-Date: Fri, 20 Nov 2026 15:00:36 -0500
-Message-ID: <20261120200040.257152-2-aahringo@redhat.com>
+Subject: [PATCHv2 RESEND v7.4-rc3 5/5] dlm: fix memory leak on active leaving member
+Date: Fri, 20 Nov 2026 15:00:40 -0500
+Message-ID: <20261120200040.257152-6-aahringo@redhat.com>
 In-Reply-To: <20261120200040.257152-1-aahringo@redhat.com>
 References: <20261120200040.257152-1-aahringo@redhat.com>
 X-Mailing-List: gfs2@lists.linux.dev
@@ -81,131 +81,73 @@ Precedence: list
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: RFEPxbiGcyqIX3U_FW7LYBgu-ocL5_ycT0g_i0FEmbo_1795204843
+X-Mimecast-MFC-PROC-ID: K7FweMhbdDhF9-IK8DvK3OHaL5hEUrC1tYBUJHl9TZo_1795204846
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-As Sashiko AI bot mentioned [0], a socket connection can get stuck when
-the send buffer limitation is reached and a socket error simultaneously
-occurs.
+When a node calls dlm_lockspace_release() locally, it does not
+subsequently run recovery. Commit de7b4869b4ec ("dlm: add new configfs
+entry release_recover for lockspace members") entry began tracking
+leaving members to perform optional post processing, such as invoking
+the slot callback. Because a locally leaving member does not execute
+recovery, it never invokes dlm_config_nodes(), leaving the allocated
+tracking entries uncleaned.
 
-This issue can be reproduced with the following setup:
-1. Set sk_sndbuf to SOCK_MIN_SNDBUF.
-2. Slow down DLM connections using netem.
-3. Use tcpkill to randomly send TCP resets to DLM connections.
+This issue was detected by kmemleak.
 
-I instrumented debug printouts to confirm that the sk_write_space()
-notifier callbacks were being executed, using step 3 to trigger random
-socket errors.
+unreferenced object 0xffff88811d68bcc0 (size 32):
+  comm "dlm_controld", pid 406, jiffies 4294749992
+  hex dump (first 32 bytes):
+    03 00 00 00 00 00 00 00 08 bd 68 1d 81 88 ff ff  ..........h.....
+    88 bc 68 1d 81 88 ff ff 00 00 00 00 00 00 00 00  ..h.............
+  backtrace (crc be1c20bb):
+    kmemleak_alloc+0x85/0xa0
+    __kmalloc_cache_noprof+0x2ac/0x380
+    drop_node+0x73/0x550
+    client_drop_item+0x83/0xe0
+    configfs_rmdir+0x735/0x910
+    vfs_rmdir+0x24a/0x820
+    filename_rmdir+0x3a3/0x4a0
+    __x64_sys_rmdir+0x42/0x60
+    x64_sys_call+0x1e8d/0x1fb0
+    do_syscall_64+0x87/0x490
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-With these changes, I can no longer reproduce the hang.
+A local node executing dlm_lockspace_release() does not require additional
+recovery handling, such as invoking the slot callback. Fix this memory leak
+by freeing the resources allocated in drop_node() when the lockspace
+configfs entry is released.
 
-Changes included:
-- Removed sk_write_pending counting, as this should not be modified
-  at the socket application layer (or is at least unnecessary).
-- Moved clearing the CF_SEND_PENDING bit—which allows re-queuing
-  swork (send worker for sendmsg())—to the sk_write_space() callback,
-  since this callback notifies us that the underlying socket is no longer
-  constrained by its send buffer.
-- Handled the race condition between sendmsg() and evaluating
-  SOCK_NOSPACE after sendmsg(), where sk_write_space() could be called
-  in between, using CF_APP_LIMITED:
-  - In sk_write_space(), queue swork again if CF_APP_LIMITED is set.
-  - If CF_APP_LIMITED is not set, do nothing as send_to_sock() will handle
-    it, confirming the race occurred.
-- Introduced new handling in lowcomms_error_report() when a socket error
-  occurs during send buffer limitation. If CF_APP_LIMITED is set, swork
-  will be re-queued, which will fail and trigger a reconnect.
-- Added various comments explaining the interaction with CF_APP_LIMITED.
-
-[0] https://lore.kernel.org/netdev/179090395863.434549.3668493667259120759@kernel.org/
-
+Fixes: de7b4869b4ec ("dlm: add new configfs entry release_recover for lockspace members")
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lowcomms.c | 47 +++++++++++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 14 deletions(-)
+ fs/dlm/config.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 3929b164dc0d..6c972f1b412c 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -521,12 +521,20 @@ static void lowcomms_write_space(struct sock *sk)
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 6ebc0fa9a2fa..5e41f795366c 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -533,9 +533,18 @@ static struct config_group *make_space(struct config_group *g, const char *name)
+ static void drop_space(struct config_group *g, struct config_item *i)
+ {
+ 	struct dlm_space *sp = config_item_to_space(i);
++	struct dlm_member_gone *mb_gone, *mb_safe;
  
- 	sk_clear_nospace(sk);
+ 	/* assert list_empty(&sp->members) */
  
--	spin_lock_bh(&con->writequeue_lock);
--	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
--		con->sock->sk->sk_write_pending--;
--
--	lowcomms_queue_swork(con);
--	spin_unlock_bh(&con->writequeue_lock);
-+	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
-+		/* signal to send again by clearing
-+		 * CF_SEND_PENDING and queue swork.
-+		 */
-+		spin_lock_bh(&con->writequeue_lock);
-+		clear_bit(CF_SEND_PENDING, &con->flags);
-+		lowcomms_queue_swork(con);
-+		spin_unlock_bh(&con->writequeue_lock);
-+	} else {
-+		/* CF_APP_LIMITED is cleared, so send_to_sock() will
-+		 * simply reschedule work without hitting the
-+		 * CF_APP_LIMITED path.
-+		 */
++	mutex_lock(&sp->members_lock);
++	list_for_each_entry_safe(mb_gone, mb_safe, &sp->members_gone, list) {
++		list_del(&mb_gone->list);
++		sp->members_gone_count--;
++		kfree(mb_gone);
 +	}
- }
- 
- static void lowcomms_state_change(struct sock *sk)
-@@ -623,6 +631,20 @@ static void lowcomms_error_report(struct sock *sk)
- 		break;
- 	}
- 
-+	/* if waiting on sk_write_space() and an sk_err occurs, the callback
-+	 * won't fire. Clear CF_SEND_PENDING so resend tasks can re-queue
-+	 * swork, triggering a sendmsg() failure to initiate reconnection.
-+	 */
-+	spin_lock_bh(&con->writequeue_lock);
-+	clear_bit(CF_SEND_PENDING, &con->flags);
-+	/* dlm_midcomms_unack_msg_resend() does not always
-+	 * trigger lowcomms_queue_swork() as it tries to
-+	 * avoid to put pending messages into the lowcomms
-+	 * sending buffer. Force it here again.
-+	 */
-+	lowcomms_queue_swork(con);
-+	spin_unlock_bh(&con->writequeue_lock);
++	mutex_unlock(&sp->members_lock);
 +
- 	dlm_midcomms_unack_msg_resend(con->nodeid);
- 
- 	listen_sock.sk_error_report(sk);
-@@ -1391,22 +1413,19 @@ static int send_to_sock(struct connection *con)
- 		spin_lock_bh(&con->writequeue_lock);
- 		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
- 		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
--			/* Notify TCP that we're limited by the
--			 * application window size.
--			 */
--			sk_set_nospace(con->sock->sk);
--			con->sock->sk->sk_write_pending++;
--
--			clear_bit(CF_SEND_PENDING, &con->flags);
- 			spin_unlock_bh(&con->writequeue_lock);
- 			release_sock(con->sock->sk);
- 
--			/* wait for write_space() event */
-+			/* wait for sk_write_space() event */
- 			return DLM_IO_END;
- 		}
- 		spin_unlock_bh(&con->writequeue_lock);
- 		release_sock(con->sock->sk);
- 
-+		/* the sk_write_space() came in between sock_sendmsg()
-+		 * and check on SOCK_NOSPACE and the socket became
-+		 * writeable again so just resched swork.
-+		 */
- 		return DLM_IO_RESCHED;
- 	} else if (ret < 0) {
- 		return ret;
+ 	configfs_remove_default_groups(&sp->group);
+ 	config_item_put(i);
+ }
 -- 
 2.43.0
 
