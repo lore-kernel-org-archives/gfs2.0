@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795144409;
-	b=T4pkxkE5c08243APxkBYmUqi8/bkvDyuB6vAFoWIgPgYT6pYfy3RwlZfGYKOzlwGvNKa
-	 tKWqNPwKMmb1zKdVyoh9EcwQKWP4Bq9Pf17dKDd9BqU/ZqvDdIAmMdCsnFEFnxSEJG8Rr
-	 rwlCpXhgYcclRQyfTITLFYr8XjS8Ql2A5ryjothVb//lm7+aA6hAi4Gkm+H2UGOchW3VO
-	 Q2ld1OuUnTDlbN5kYT0BARYPm9VEAvK4TjpHXZLD8POi6QatbBjWEwkMgfsfRHIvzvLLQ
-	 2yOrEnr+qYBaHUjDyIAN/2yIeHQGTbzsB7v6BcsgnOQK550JfZZKk/5e2TXxmZolFWQ==
+	t=1795144413;
+	b=a6B196EM2EfiLb0NIjqn3+a8n1Wjqr6B8gpoja7ktzPySVPRjSsJv/U8d3tHEG7fV3k8
+	 LhfjVMxfxLPcCjOrep3zeGV6ucSfCAjtAKGW/ZSN20MvvhBVEQeD7imfkF/Xni0Clir2o
+	 T3GIW2+4xo+KjWCD9a/lfiMICNn4DoLEhIxOeEXmleODUixQlsGecdAWrCIezfDtrVFdJ
+	 ZToPVE4mjrunk48dDDadXh7YKNl4ExdTan9kbM45kdVXwVDLsJe5yyD9Icp1csXhpMZ6l
+	 0eci8Nkg91kj7ukCTSWdpi6y8lZNLZafYh8/GgtSnGRjkuAC+7em72gWuKq3k8seNpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795144409;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795144413;
 	h=DMARC-Filter:Received:Received:Received:Received:From:To:CC:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=uIEansB0MuhQ4c3Aqig7WqzSZmGjWpCxBCheQKcMU/8=;
-	b=BK24e0qqL1Sh1JJLH2SEHAzeDmvjcELwK5QEkOR/9OvPVUDE7b+Og9dszcVJg+I1Pw4r
-	 pWzDMcZ6dsndw2uNxV4jUAYnFVc+y0Nqogg8g7Liw7NYP7m9ZlCIfopKLElP3cbOzZyrN
-	 BletiwPoZf/k9FXUK/Y902DaKjrGtFzVvUJi008ilrgbpR35N1+5EOrmMTuSNcfMb/W3t
-	 BxzKmEMzWwMJxDfZTfHAR2ojhiADAFvq4JW7UDJV4nXtunWq9KM9UKX6kBCWfjezxZnFL
-	 zm4Bjfn2WarApRbHtjXulu3JisTUUI9j9iJi/ztgqh/DyvJdVwKQV4A8xzNP0+eC0GQ==
+	bh=t7e1N9j3FtfUfXYB6xNEtndSV5CwfLVjVvURR0QAmGs=;
+	b=gP0KDAmp1GY4O40PsDqbyGfb8AQjPWwke1xP588V1e5Uk/SkDn7+kd/dIIekoa/I7JpR
+	 S5eGDDMos4KK0/kqRoLh0mq1nJ8mkJNTyLJOTbcjrhIWzEeMJiL0dV6DLK9/Vsw5qO6Fe
+	 CHpG3Etm453wdD7DJDj0CoqlRQw5RbDJ1shXeh7PUhf+ZPjwguuvwgNWxc/laXmlu5C63
+	 fzv4PBRd4fQYrURMljaMrsUaxEGaM4adCIv9YOb2JUJpPH/p9DqKdf5tgAbNnYriy8/dl
+	 Ip+znUVQaPTmkquRYh7L4dGN3EfCsAEXXIx21CXsb5cht/dOSL+oU2fzurml9g/mQTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hygon.cn;
 	spf=pass smtp.mailfrom=hygon.cn;
 	arc=none smtp.remote-ip=101.204.27.37
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72B2606A333
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D72B2606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E99860A2607
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E99860A2607
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
 Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0ln3Df0zVcB6;
-	Fri, 20 Nov 2026 11:13:25 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lv3DgRzVcBB;
+	Fri, 20 Nov 2026 11:13:31 +0800 (CST)
 Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lm1s1QzVcB6;
-	Fri, 20 Nov 2026 11:13:24 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0ls24TczVcBB;
+	Fri, 20 Nov 2026 11:13:29 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id D859330CB6D6;
-	Fri, 20 Nov 2026 11:12:20 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id DFE6B30CB6D6;
+	Fri, 20 Nov 2026 11:12:25 +0800 (CST)
 Received: from hsj-2U-Workstation.hygon.cn (172.19.24.226) by
  cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 20 Nov 2026 11:13:21 +0800
+ 15.2.1544.36; Fri, 20 Nov 2026 11:13:26 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<hch@infradead.org>, <agruenba@redhat.com>, <mic@digikod.net>,
@@ -53,9 +53,9 @@ CC: <gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
 	<linux-security-module@vger.kernel.org>, Huang Shijie <huangsj@hygon.cn>
-Subject: [PATCH v3 04/11] block: convert nr_blockdev_pages() to super_iter_inodes_locked()
-Date: Fri, 20 Nov 2026 11:12:58 +0800
-Message-ID: <20261120031305.3561045-5-huangsj@hygon.cn>
+Subject: [PATCH v3 06/11] fs/inode: convert evict_inodes() to super_iter_inodes()
+Date: Fri, 20 Nov 2026 11:13:00 +0800
+Message-ID: <20261120031305.3561045-7-huangsj@hygon.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261120031305.3561045-1-huangsj@hygon.cn>
 References: <20261120031305.3561045-1-huangsj@hygon.cn>
@@ -73,44 +73,95 @@ Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
 
-Convert nr_blockdev_pages() to super_iter_inodes_locked()
-No functional change.
+Use super_iter_inodes() with INO_ITER_F_NOREF | INO_ITER_F_NOIGET,
+which hands out only zero-count inodes and takes no reference on them.
 
 Signed-off-by: Huang Shijie <huangsj@hygon.cn>
 ---
- block/bdev.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/inode.c | 61 +++++++++++++++++++++++-------------------------------
+ 1 file changed, 26 insertions(+), 35 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index f20f91b3176e..3c1d38475607 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -558,16 +558,19 @@ void bdev_drop(struct block_device *bdev)
- 	iput(BD_INODE(bdev));
+diff --git a/fs/inode.c b/fs/inode.c
+index f63535ee3629..be21d1f10007 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -865,6 +865,30 @@ static void dispose_list(struct list_head *head)
+ 	}
  }
  
-+static int bdev_pages_count(struct inode *inode, void *priv)
++static int evict_inode_fn(struct inode *inode, void *data)
 +{
-+	long *pages = priv;
++	struct list_head *list = data;
 +
-+	*pages += inode->i_mapping->nrpages;
++	/*
++	 * Only drain what previous rounds collected: @inode is the inode the
++	 * walk is using as its cursor, and evict() would unlink it from
++	 * s_inodes underneath the walk.
++	 */
++	if (need_resched()) {
++		cond_resched();
++		dispose_list(list);
++	}
++	list_add(&inode->i_lru, list);
 +	return INO_ITER_RET_NEXT;
 +}
 +
- long nr_blockdev_pages(void)
++static bool evict_inode_eligible(struct inode *inode, void *data)
++{
++	inode_state_set(inode, I_FREEING);
++	inode_lru_list_del(inode);
++	return true;
++}
++
+ /**
+  * evict_inodes	- evict all evictable inodes for a superblock
+  * @sb:		superblock to operate on
+@@ -876,43 +900,10 @@ static void dispose_list(struct list_head *head)
+  */
+ void evict_inodes(struct super_block *sb)
  {
 -	struct inode *inode;
- 	long ret = 0;
+ 	LIST_HEAD(dispose);
  
--	spin_lock(&blockdev_superblock->s_inode_list_lock);
--	list_for_each_entry(inode, &blockdev_superblock->s_inodes, i_sb_list)
--		ret += inode->i_mapping->nrpages;
--	spin_unlock(&blockdev_superblock->s_inode_list_lock);
+-	spin_lock(&sb->s_inode_list_lock);
+-	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+-		if (icount_read_once(inode))
+-			continue;
 -
-+	super_iter_inodes_locked(blockdev_superblock, bdev_pages_count, &ret);
- 	return ret;
+-		spin_lock(&inode->i_lock);
+-		if (icount_read(inode)) {
+-			spin_unlock(&inode->i_lock);
+-			continue;
+-		}
+-		if (inode_state_read(inode) & (I_NEW | I_FREEING | I_WILL_FREE)) {
+-			spin_unlock(&inode->i_lock);
+-			continue;
+-		}
+-
+-		inode_state_set(inode, I_FREEING);
+-		inode_lru_list_del(inode);
+-		spin_unlock(&inode->i_lock);
+-
+-		/*
+-		 * Keep this inode out of dispose so it stays on s_inodes while
+-		 * the list lock is dropped. I_FREEING prevents new references
+-		 * and leaves eviction to us, so we can resume the walk from it.
+-		 */
+-		if (need_resched()) {
+-			spin_unlock(&sb->s_inode_list_lock);
+-			cond_resched();
+-			dispose_list(&dispose);
+-			spin_lock(&sb->s_inode_list_lock);
+-		}
+-		list_add(&inode->i_lru, &dispose);
+-	}
+-	spin_unlock(&sb->s_inode_list_lock);
+-
++	super_iter_inodes(sb, evict_inode_fn, evict_inode_eligible, &dispose,
++			  INO_ITER_F_NOREF | INO_ITER_F_NOIGET);
+ 	dispose_list(&dispose);
  }
- 
+ EXPORT_SYMBOL_GPL(evict_inodes);
 -- 
 2.53.0
 
