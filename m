@@ -1,73 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795204852;
-	b=DgFAYCcBVu3sCUe40vFugN6rJHnzgKyPkkPrJuDqONhelCkF5AxRC+Q7ZQkksKXR+rZl
-	 pVEXllI+Ba+LmC0lR2imBac6I3m9enqxBEPo0THUuQOgMIgs/JblqfiFiA0Iw2f5bJqh0
-	 vzIieA6tkDdQkNJHnuXjlxUGKGvsXKw99BYPLbvSgRDq/wqpnEX6tE6fM3niyCTaW9fZM
-	 /RAjkMn4SwsFIhIFdNvwLevi7ut/gx8+UgrWzDxGHVig1JywE3yc5TC/hHBqNkBkkpEgE
-	 S7ysuttg/qUNxvCtIw5FCjGlQzw8fdgUX5uqlNStOoPZqkMlb7f22N/n19/AzT8gqqA==
+	t=1795204853;
+	b=M3NHQIsmjdLXawP+B3Fpwn+0KJj4ZLWQSTlxqUquQNsBqw+4hkHL9oMuRxz9Gb1zTlaj
+	 k72/ESC+gC1xuLdCKVxvJnwNiiiXMfJJCT63+7br/Vjzd6V+qQg1pdImsAcT0pVB6OsCv
+	 F1nyc3xtXM3Lk7D1MMCK5h64pqAw7zx86QDWPL7ZAqTRRV7+1Xi1kJHr7b8u92QkAXoEJ
+	 Pngy3wuz+K0NPSejtyNnP0BDAuUB+iPdjKoNawIOAmKNQmgg04BoSSE6GcW9M8O1Z9UWb
+	 ZFxLCc+aphy9TjuMddlIUoHfO/GLjhHLLgm6LPruimHkynuj6noYO0Tdq76B/buPIdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795204852;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795204853;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:X-Scanned-By:
 	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Transfer-Encoding:content-type;
-	bh=qM6zlI9TEaceksJ0P7sMvJE5dDOybXqkwnjPRgjlUuM=;
-	b=sZdfWT/qIdl8uyhIZp91PdKt3Ypv2sjVvYHg4zVHOEYQHW1soUra6UwYwnC/Qtfkd6mY
-	 /v5hCTRRGY0viAcAhI6ggsB14wN9A+Y4Q79VlD1d41gfN6zOQXEWRsSXjOTKUmu4gmkOF
-	 5G/V0wdmtBj33CuGCXaBLAa0vE8Qm4AULABMZcZs7a+4yvUXVg4be6h2TzDRHSbUA3+rb
-	 ZtErSlgru5oTrzp20jyR776+72b8jx4Yo0KLUsK6AJsQmAli2p2q9urpfpLEweHzvTboP
-	 6ByixXl4wIyWv2yNMDvPm93OtLhbHnEKVU7bKTs51cpI+nNybRAoNzkNzUg4Pn4AL1w==
+	 Content-Type:Content-Transfer-Encoding;
+	bh=/m7QX0MMTGSxU0bG0QEp/4omiyEwy7oV0W7FuQX52lg=;
+	b=Aj4b1/1G0OViRoupBTA1j1rHNnjQaScAZzuTskQ5uJm3yaHzcksvxQDRbl2LqHHhn3E/
+	 ASanbo44yfh6yNMf0Xmthsdmw9dBZYitiNX87IPUb1OWcJf8un2LbZSfXMI5hMAUJJTDq
+	 TqjL7pcjnScSMyumyXLsa4qm2rf5JvF1dsQQ7LXkFDqbT5g+4GBt5Djy0oQ31fG0AHHZj
+	 xWlz36hMMHYBgCBgOHOtZy3KMY9OZfrCzXApZgjmALt3BuvS5Uite8Kw/HJEz1MtoZ8Y3
+	 BnQbbeF1q3D0pO3az7cP3QGozYzWplEfyl+ZO4P02CMELe9LAcFutGlmNn4OcOEIBRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YetG7N5K;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdLnPdHQ;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCCF606A33C
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DCCF606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0040606A334
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0040606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YetG7N5K
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VdLnPdHQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795204849;
+	s=mimecast20190719; t=1795204850;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qM6zlI9TEaceksJ0P7sMvJE5dDOybXqkwnjPRgjlUuM=;
-	b=YetG7N5KZ9xjnkW4j9rEd3e15gn/VjGAqdqFi4W6v1XouduiRh022uHg33uXKqaEPwZJUT
-	4SKUU+22SyQpHuiC1TdV1fG+0ZkDxPx78JsRytxcGZt7StGUDkIAmxYdNUHfkDdYY7e9+s
-	RwQIr58x4g5ovJJlJwFABpZetK7Xl+0=
+	bh=/m7QX0MMTGSxU0bG0QEp/4omiyEwy7oV0W7FuQX52lg=;
+	b=VdLnPdHQXA6YBHc8nzH5xfNlVP+9Yp+NqRHs+kt/tw5pB35fxcV+fuo6mLTNBHwjgF+bee
+	SEPKrWmkydYBzNRFMbh4DX+3wgHtOZQKfK8kxX1dRp3JKwha/G8nvNkHjIG+vQSAvZrb7/
+	nCtt8Cr1/fHag4ksIzJ5M6rCJnIA0g0=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-Mzv69-uBMKKTd6XWvUsmdg-1; Fri,
- 20 Nov 2026 20:00:47 +0000
-X-MC-Unique: Mzv69-uBMKKTd6XWvUsmdg-1
-X-Mimecast-MFC-AGG-ID: Mzv69-uBMKKTd6XWvUsmdg_1795204845
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-JFemEfqgMSaMmg7sHaWV4A-1; Fri,
+ 20 Nov 2026 20:00:45 +0000
+X-MC-Unique: JFemEfqgMSaMmg7sHaWV4A-1
+X-Mimecast-MFC-AGG-ID: JFemEfqgMSaMmg7sHaWV4A_1795204844
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B66951800587
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:45 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 799EE1801201
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:00:44 +0000 (UTC)
 Received: from fs-i40c-03.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 45C3B41F;
-	Fri, 20 Nov 2026 20:00:45 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD3295B1;
+	Fri, 20 Nov 2026 20:00:43 +0000 (UTC)
 From: Alexander Aring <aahringo@redhat.com>
 To: teigland@redhat.com
 Cc: aahringo@redhat.com,
 	gfs2@lists.linux.dev
-Subject: [PATCHv2 RESEND v7.4-rc3 4/5] dlm: don't set RSB_MASTER_UNCERTAIN on rsb with no master
-Date: Fri, 20 Nov 2026 15:00:39 -0500
-Message-ID: <20261120200040.257152-5-aahringo@redhat.com>
+Subject: [PATCHv2 RESEND v7.4-rc3 2/5] dlm: reject wrapped messages with oversized inner lengths
+Date: Fri, 20 Nov 2026 15:00:37 -0500
+Message-ID: <20261120200040.257152-3-aahringo@redhat.com>
 In-Reply-To: <20261120200040.257152-1-aahringo@redhat.com>
 References: <20261120200040.257152-1-aahringo@redhat.com>
 X-Mailing-List: gfs2@lists.linux.dev
@@ -81,69 +81,43 @@ Precedence: list
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Z5SFEty4zXqzR4LR4N41TaypgBHsDqmaJufgk2tGjAA_1795204845
+X-Mimecast-MFC-PROC-ID: ZZWm4yxCn-JV5alP069Pi4bnWYa-CmI3G8U0C9j8U8M_1795204844
 X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Ameer Hamza <ameer.hamza@truenas.com>
+From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 
-When a local request reuses an inactive rsb, find_rsb_dir() sets
-RSB_MASTER_UNCERTAIN if res_master_nodeid is not our nodeid. This also
-matches an rsb that never got a master (res_master_nodeid 0, res_nodeid
--1). set_master() then trusts the "cached" master, copies res_nodeid -1
-into lkb_nodeid and skips the lookup, and _request_lock() hits the
-DLM_ASSERT(r->res_nodeid >= 0) in is_remote():
+Reject DLM_OPTS packets whose wrapped inner message length exceeds the
+bytes remaining inside the validated outer packet. This keeps malformed
+wrapped RCOM replies from reaching downstream length-driven copies.
 
-  rsb: nodeid -1 master 0 dir 1 flags 200 first 1 rlc 0 name pr
-  Kernel panic - not syncing: DLM:  Record message above and reboot.
-  Call Trace:
-   _request_lock.cold+0x3e/0x3e [dlm]
-   request_lock+0xcc/0x110 [dlm]
-   dlm_user_request+0x110/0x340 [dlm]
-   device_write+0x605/0x6d0 [dlm]
-
-Such an rsb is left behind when a request is cancelled while its lookup
-is still outstanding and the lockspace then recovers, e.g. because the
-dir node died: dlm_recover_waiters_post() completes the cancelled lkb
-instead of resending it, so no master is ever set. Once the rsb is
-inactive, the next request for the name revives it and crashes as
-above. If we became the dir node in that recovery, deactivate_rsb()
-even keeps the rsb as a dir record, so it does not age out.
-
-Before commit c04fecb4d9f7 ("dlm: use rsbtbl as resource directory")
-the flag was only set when res_nodeid was > 0. Restore that and set the
-flag only when a master is actually cached, so that set_master() does a
-normal lookup (or becomes the master itself as dir node) for an rsb
-that has none. res_first_lkid is still cleared, as the cancelled lkb
-leaves a stale id behind.
-
-Fixes: c04fecb4d9f7 ("dlm: use rsbtbl as resource directory")
-Signed-off-by: Ameer Hamza <ameer.hamza@truenas.com>
+Fixes: 489d8e559c65 ("fs: dlm: add reliable connection if reconnect")
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 Acked-by: Alexander Aring <aahringo@redhat.com>
 Signed-off-by: Alexander Aring <aahringo@redhat.com>
 ---
- fs/dlm/lock.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/dlm/midcomms.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 3b3e15157f4c..934afc93464f 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -826,8 +826,12 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 
- 	if (from_local && (r->res_master_nodeid != our_nodeid)) {
- 		/* Because we have held no locks on this rsb,
--		   res_master_nodeid could have become stale. */
--		rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
-+		 * res_master_nodeid could have become stale.  If no master
-+		 * was ever set, there is nothing to confirm and set_master()
-+		 * must resolve it as for a new rsb.
-+		 */
-+		if (r->res_master_nodeid)
-+			rsb_set_flag(r, RSB_MASTER_UNCERTAIN);
- 		r->res_first_lkid = 0;
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index 045431524494..488a58f2c00b 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -652,6 +652,14 @@ static int dlm_opts_check_msglen(const union dlm_packet *p, uint16_t msglen,
+ 		return -1;
  	}
+ 
++	p = (const union dlm_packet *)((const unsigned char *)p->opts.o_opts +
++				       le16_to_cpu(p->opts.o_optlen));
++	if (le16_to_cpu(p->header.h_length) > len) {
++		log_print("inner msg too large: %u > %d, will skip this message from node %d",
++			  le16_to_cpu(p->header.h_length), len, nodeid);
++		return -1;
++	}
++
+ 	return 0;
+ }
  
 -- 
 2.43.0
