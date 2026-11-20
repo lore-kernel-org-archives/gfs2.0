@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795144409;
-	b=okUKRsohAccXRAuz74jJpbUFD/0naQeX5ZGVLQfYU9aPjOVf9VIqy4Bq8+F5xfJkWnjm
-	 qGrtra/RFEOKQELLdPX1EhMB6edvHvIW8Ln/cKBrwRX5hrzpPcFuE/nmU/koCKVlA56kc
-	 4ddXWliPx8RgOAbHNX29igjYaWQenKp253TR52oNH1VFzuxFUnrHko/Ru0mmAw+MHyqnI
-	 96iEzO9uU6ViVdMitVnG5WWWzeZS54o5OnTS2VGETqJKpfaqkF1CJarYn6Ca51TVcr0jR
-	 moCZ8gjo0jR5pO2tFJDxqrZggWCHPv4Hh9LvH8zGmutYIH/eKz5sGYuvh6pvVPTYkgQ==
+	b=0SY0EVT4ELY6QoocrE8NbwMnkabXUb6Y/x15riJI2/qGjdBOFtKMIZup+WG145Nje0wH
+	 2ynjJ6Kvj40wvOehlpim9BOzMdrZ7M+mDaa4L7cfFNUOS7J/LKfDAuFZ3+kTnPFGggNPy
+	 w6VLC2y03/3lj/c8HAJ5AjNRK1K7NPYHeBsojLdag56+zsGCzf04iziZI7iHQIzv5eS+S
+	 MmtBXj8RLV6CCrNCUOuZ7qZrW3RiJ16nDdXW9Q8x30TLvYZxyP8I1ipWoZXXE5+wRRtUC
+	 a2Gid9/McLw+aQBa8NPmKOLcG9Jnu8dGTq7xpyLLieQR8huNeRNIXRCNTpgtAuNf4eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795144409;
 	h=DMARC-Filter:Received:Received:Received:Received:From:To:CC:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=VzitFVl3uFCd//sxJWT9xWn8rNYxjausEpqwSdmmrtY=;
-	b=a0oi4qoWLP+2q6Ostqrt7if16XoYbvO9NS1NivrqmfhuMCzTyz5uSEK7cnMB7+KNBnYZ
-	 v5CWRRJj3xYm2EnoagakHwLI4LoyYJjCWrE6fGidcLRDTPNaY8FKl3yvGm5BmrQGyacfH
-	 dpFdgwqVrhQYrtPo5SYKvsfwkMNRKBv4nabPd22wXx6bcHl1TsaGT4P814HLdYmXCgP26
-	 CXAleUP24RmHLcxWu2afrkJxD3f88HwSa/MVVjQW1/eCFXkMs0nYcM7r5w7Av6aXHWRQJ
-	 IK3XZi9Zf2sAc4BnQL1nWz6yAaI80yLzR90rcPi2Z7PqyZ40U88UVHUxad963LXs1eQ==
+	bh=Js6rt0O1NPfO/eZ3eJEf2HOYL7oxLujLdUYutg/+J1c=;
+	b=fae+vSQ557daSg0MDktMz+48EnxEtvKn9+EYyvgVPt9B5xnnLr7YLyTFalBHIhzDYyDX
+	 XjVjEa5Cf8mV0G1O0ARKziKlyPxuC5+GNLWG4/hPK3wcxWTYLKmB8ygwHjPBTIqbK1stc
+	 DOW1907gM+UBgEm4XQ4kCl8VJmzvw3wnol0DBd8pjZ5AOoIOuNx6QfSLOBUAUmV2m8yco
+	 hp2ZVdbQ1px0tcxLxcz9WCTEmxox+1zOq2NDObZ0zolAwytaq34v7MBmkHAyjAJAAt28e
+	 6FUQEMbqb8SDpSlnmHa4KtKX1vR6Ce4QW5wKmBaHeBXkEi4y4W2CXbTliR8V+v2ybww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hygon.cn;
 	spf=pass smtp.mailfrom=hygon.cn;
 	arc=none smtp.remote-ip=101.204.27.37
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C433A606A330
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C433A606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3AF606A331
+	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 03:13:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD3AF606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
 Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lg3DN9zVcB5;
-	Fri, 20 Nov 2026 11:13:19 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lk3DVXzVcB8;
+	Fri, 20 Nov 2026 11:13:22 +0800 (CST)
 Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lc3zZvzVcB8;
-	Fri, 20 Nov 2026 11:13:16 +0800 (CST)
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jW0lj4PJhzVcB8;
+	Fri, 20 Nov 2026 11:13:21 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 4277EC087;
-	Fri, 20 Nov 2026 11:13:07 +0800 (CST)
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 505DFC087;
+	Fri, 20 Nov 2026 11:13:12 +0800 (CST)
 Received: from hsj-2U-Workstation.hygon.cn (172.19.24.226) by
  cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 20 Nov 2026 11:13:14 +0800
+ 15.2.1544.36; Fri, 20 Nov 2026 11:13:19 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<hch@infradead.org>, <agruenba@redhat.com>, <mic@digikod.net>,
@@ -53,9 +53,9 @@ CC: <gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
 	<linux-security-module@vger.kernel.org>, Huang Shijie <huangsj@hygon.cn>
-Subject: [PATCH v3 01/11] vfs: add super_iter_inodes()
-Date: Fri, 20 Nov 2026 11:12:55 +0800
-Message-ID: <20261120031305.3561045-2-huangsj@hygon.cn>
+Subject: [PATCH v3 03/11] fs/quota: convert remove_dquot_ref() to super_iter_inodes_locked()
+Date: Fri, 20 Nov 2026 11:12:57 +0800
+Message-ID: <20261120031305.3561045-4-huangsj@hygon.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261120031305.3561045-1-huangsj@hygon.cn>
 References: <20261120031305.3561045-1-huangsj@hygon.cn>
@@ -73,175 +73,114 @@ Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
 
-Iterating the cached inodes of a superblock is open coded in the
-kernel. Add super_iter_inodes() for the callers which can work without
-holding the sb->s_inode_list_lock.
-
-For super_iter_inodes():
--- By default, it runs @iter_fn with a referenced inode and with
-  sb->s_inode_list_lock dropped, so the callback is free to block and to
-  do whatever it wants with the inode except drop the reference the
-  iterator holds.
-
--- Three flags change the default behaviour.
-
-  INO_ITER_F_REFERENCED restricts the walk to inodes which still have a
-  reference.
-
-  INO_ITER_F_NOREF does the opposite: only inodes whose reference count
-  has already reached zero are handed out.
-
-  INO_ITER_F_NOIGET tells the iterator do not call __iget for the inode.
-  Used with INO_ITER_F_NOREF in evict_inodes().
-
-  The flags are not orthogonal, so super_iter_inodes() warns if an unknown
-  bit is set or if INO_ITER_F_REFERENCED is combined with either of the
-  no-reference flags.
+Convert remove_dquot_ref() to super_iter_inodes_locked().
+No functional change.
 
 Signed-off-by: Huang Shijie <huangsj@hygon.cn>
 ---
- fs/super.c                     | 87 ++++++++++++++++++++++++++++++++++
- include/linux/fs/super_types.h | 29 ++++++++++++
- 2 files changed, 116 insertions(+)
+ fs/quota/dquot.c | 68 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
-diff --git a/fs/super.c b/fs/super.c
-index c5a0658f7aaf..204c70c7f179 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -171,6 +171,93 @@ static void super_wake(struct super_block *sb, unsigned int flag)
- 	wake_up_var(&sb->s_flags);
- }
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index a3d503591871..9aaf2cfa9e1b 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -83,6 +83,8 @@
  
-+static bool super_iter_check(struct inode *inode, int flags,
-+			     ino_iter_eligible_fn eligible, void *priv)
-+{
-+	bool ret = false;
-+
-+	if ((flags & INO_ITER_F_REFERENCED) && !icount_read_once(inode))
-+		return false;
-+	if ((flags & INO_ITER_F_NOREF) && icount_read_once(inode))
-+		return false;
-+
-+	spin_lock(&inode->i_lock);
-+
-+	if ((flags & INO_ITER_F_NOREF) && icount_read(inode))
-+		goto out_unlock;
-+
-+	if (inode_state_read(inode) & (I_NEW | I_FREEING | I_WILL_FREE))
-+		goto out_unlock;
-+
-+	if (eligible && !eligible(inode, priv))
-+		goto out_unlock;
-+
-+	if (!(flags & INO_ITER_F_NOIGET))
-+		__iget(inode);
-+
-+	ret = true;
-+out_unlock:
-+	spin_unlock(&inode->i_lock);
-+	return ret;
-+}
-+
-+/**
-+ * super_iter_inodes - iterate all the cached inodes on a superblock
-+ * @sb: superblock to iterate
-+ * @iter_fn: called for each inode, with a reference held
-+ * @eligible: optional filter, called before the reference is taken
-+ * @priv: caller data, passed to @iter_fn and @eligible
-+ * @flags: INO_ITER_F_* control flags
-+ *
-+ * This function iterates all cached inodes on a superblock that are not in
-+ * the process of being initialised or torn down. By default it runs @iter_fn
-+ * with a valid, referenced inode, so it is safe for the caller to do anything
-+ * it wants with the inode except drop the reference the iterator holds.
-+ *
-+ * The flag INO_ITER_F_NOIGET changes that contract. It runs @iter_fn without
-+ * grabbing the inode with __iget().
-+ *
-+ * Return INO_ITER_RET_DONE if the iteration runs to the end.
-+ * Return other value if the iteration breaks.
-+ */
-+int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-+		      ino_iter_eligible_fn eligible, void *priv, int flags)
-+{
-+	struct inode *inode, *old_inode = NULL;
-+	int ret;
-+
-+	WARN_ON_ONCE(flags & ~INO_ITER_F_ALL);
-+	WARN_ON_ONCE((flags & INO_ITER_F_REFERENCED) &&
-+		     (flags & (INO_ITER_F_NOREF | INO_ITER_F_NOIGET)));
-+
-+	spin_lock(&sb->s_inode_list_lock);
-+	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
-+		if (!super_iter_check(inode, flags, eligible, priv))
-+			continue;
-+
-+		spin_unlock(&sb->s_inode_list_lock);
-+
-+		if (!(flags & INO_ITER_F_NOIGET))
-+			iput(old_inode);
-+
-+		ret = iter_fn(inode, priv);
-+
-+		old_inode = inode;
-+		if (ret != INO_ITER_RET_NEXT)
-+			goto out_loop;
-+
-+		cond_resched();
-+		spin_lock(&sb->s_inode_list_lock);
-+	}
-+	spin_unlock(&sb->s_inode_list_lock);
-+	ret = INO_ITER_RET_DONE;
-+out_loop:
-+	if (!(flags & INO_ITER_F_NOIGET))
-+		iput(old_inode);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(super_iter_inodes);
+ #include <linux/uaccess.h>
+ 
++#include "../internal.h"
 +
  /*
-  * One thing we have to be careful of with a per-sb shrinker is that we don't
-  * drop the last active reference to the superblock from within the shrinker.
-diff --git a/include/linux/fs/super_types.h b/include/linux/fs/super_types.h
-index 72f4288e16c5..974d3c087952 100644
---- a/include/linux/fs/super_types.h
-+++ b/include/linux/fs/super_types.h
-@@ -80,6 +80,35 @@ enum freeze_holder {
- 	FREEZE_EXCL		= (1U << 3),
- };
+  * There are five quota SMP locks:
+  * * dq_list_lock protects all lists with quotas and quota formats.
+@@ -165,6 +167,11 @@ static struct kmem_cache *dquot_cachep;
+ /* workqueue for work quota_release_work*/
+ static struct workqueue_struct *quota_unbound_wq;
  
-+/* Inode iteration callback return values */
-+#define INO_ITER_RET_DONE	0
-+#define INO_ITER_RET_ABORT	1
-+#define INO_ITER_RET_NEXT	2
++struct dquot_ref_data {
++	int type;
++	int reserved;
++};
 +
-+/* Inode iteration control flags */
-+/* Only iterate inodes that still have a reference. */
-+#define INO_ITER_F_REFERENCED	BIT(0)
-+/* Only iterate inodes whose reference count has reached zero. */
-+#define INO_ITER_F_NOREF	BIT(1)
-+/* Do not take a reference on the inodes handed to the callback. */
-+#define INO_ITER_F_NOIGET	BIT(2)
+ void register_quota_format(struct quota_format_type *fmt)
+ {
+ 	spin_lock(&dq_list_lock);
+@@ -1117,41 +1124,46 @@ static int add_dquot_ref(struct super_block *sb, int type)
+ 	return err;
+ }
+ 
+-static void remove_dquot_ref(struct super_block *sb, int type)
++static int remove_dquot_ref_fn(struct inode *inode, void *priv)
+ {
+-	struct inode *inode;
+-#ifdef CONFIG_QUOTA_DEBUG
+-	int reserved = 0;
+-#endif
++	struct dquot_ref_data *ref = priv;
+ 
+-	spin_lock(&sb->s_inode_list_lock);
+-	list_for_each_entry(inode, &sb->s_inodes, i_sb_list) {
+-		/*
+-		 *  We have to scan also I_NEW inodes because they can already
+-		 *  have quota pointer initialized. Luckily, we need to touch
+-		 *  only quota pointers and these have separate locking
+-		 *  (dq_data_lock).
+-		 */
+-		spin_lock(&dq_data_lock);
+-		if (!IS_NOQUOTA(inode)) {
+-			struct dquot __rcu **dquots = i_dquot(inode);
+-			struct dquot *dquot = srcu_dereference_check(
+-				dquots[type], &dquot_srcu,
+-				lockdep_is_held(&dq_data_lock));
++	spin_lock(&dq_data_lock);
++	if (!IS_NOQUOTA(inode)) {
++		struct dquot __rcu **dquots = i_dquot(inode);
++		struct dquot *dquot = srcu_dereference_check(
++			dquots[ref->type], &dquot_srcu,
++			lockdep_is_held(&dq_data_lock));
+ 
+ #ifdef CONFIG_QUOTA_DEBUG
+-			if (unlikely(inode_get_rsv_space(inode) > 0))
+-				reserved = 1;
++		if (unlikely(inode_get_rsv_space(inode) > 0))
++			ref->reserved++;
+ #endif
+-			rcu_assign_pointer(dquots[type], NULL);
+-			if (dquot)
+-				dqput(dquot);
+-		}
+-		spin_unlock(&dq_data_lock);
++		rcu_assign_pointer(dquots[ref->type], NULL);
++		if (dquot)
++			dqput(dquot);
+ 	}
+-	spin_unlock(&sb->s_inode_list_lock);
++	spin_unlock(&dq_data_lock);
++	return INO_ITER_RET_NEXT;
++}
 +
-+/* REFERENCED and NOREF ask for opposite things, so only one may be set. */
-+#define INO_ITER_F_ALL		(INO_ITER_F_REFERENCED | INO_ITER_F_NOREF | \
-+				 INO_ITER_F_NOIGET)
++static void remove_dquot_ref(struct super_block *sb, int type)
++{
++	struct dquot_ref_data ref = {
++		.type = type,
++	};
 +
-+typedef int (*ino_iter_fn)(struct inode *inode, void *priv);
-+
-+/*
-+ * Optional filter, called from inside the inode's i_lock and before
-+ * __iget(), so that an inode can be rejected without paying for a
-+ * reference.
-+ */
-+typedef bool (*ino_iter_eligible_fn)(struct inode *inode, void *priv);
-+
-+int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-+		      ino_iter_eligible_fn eligible, void *priv, int flags);
-+
- struct super_operations {
- 	struct inode *(*alloc_inode)(struct super_block *sb);
- 	void (*destroy_inode)(struct inode *inode);
++	/*
++	 * We have to scan I_NEW inodes because they can already
++	 * have quota pointer initialized. Luckily, we need to touch
++	 * only quota pointers and these have separate locking
++	 * (dq_data_lock) so the existence guarantee that
++	 * super_iter_inodes_locked() provides inodes passed to
++	 * remove_dquot_ref_fn() is sufficient for this operation.
++	 */
++	super_iter_inodes_locked(sb, remove_dquot_ref_fn, &ref);
+ #ifdef CONFIG_QUOTA_DEBUG
+-	if (reserved) {
++	if (ref.reserved) {
+ 		printk(KERN_WARNING "VFS (%s): Writes happened after quota"
+ 			" was disabled thus quota information is probably "
+ 			"inconsistent. Please run quotacheck(8).\n", sb->s_id);
 -- 
 2.53.0
 
