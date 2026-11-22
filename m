@@ -1,57 +1,99 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795207226;
-	b=2rKVI0wa/73JEHBrlq+vjTsdub20a2Nc00p4DmlF3PdO61urFvPynXtFHGZd36b6OdEV
-	 YpLAJq6gpVhZaHK8xH5z87HM7tfQOSubhdHVzjNhSuSlWYuGMx9XV3VyhxzFcGPs48z7K
-	 XyCuAYyGhaHP5PD35AwHwMR51tu8l4G9BTdRXgYcBzQukex9DFJMxIGhhTzg6vGrWSWRm
-	 XG8jgQoyQxR1jtgytaqLAcEHHX8ZimdBOdfucSmPAP9gaXNaQ8lUtyjjLSJP8nHYCCIIa
-	 gu1plYLqneJFZS4Cbj7yhHum/H3dCVxJ7PwFiBTe44mKQCL2pjR/0drNnasgfV/kDbw==
+	t=1795384612;
+	b=R9HX3uxqhJpqMe8WHKZnD7nDbkTvNEvkdiPuhJBRohz+hS1xKGj1U0XSbOkaSgeSykd2
+	 AXpkmfItqTUHQboV1RL0Xua8d28f7LqcnHD4WiBL6Pt5l7yx38WhE6j3+p46KvCg36uD4
+	 7F43Y59SOYmTHLhW/NpGlD6wgKIZkI2FhH5hDA+dQeLkWwJJ7M4DQNbpKngGcYnSLMgAa
+	 xHO07MXgJFif9JtntdkqsfR0/lWOi5bkA6k0F2/nWo/Ljszq2SCVazGNdSrQbuELQPY7K
+	 p42h5AEQDptj8GMHNrsnTR9WzF12GdnQp6ecxqqVkpV6tKIGoyxxmGunrBtErzSs3bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795207226;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=R7MBPe9RyZXuJGK8uwnt8tfOC8Vd2TgDOs0wKutymvs=;
-	b=Wmhk5UM+TZmeuHqQeKxwSo3S78i1qdDo0Lq2TIp6NLGnLjf1zrX+HmHiNOPJ7FZ6dRmE
-	 VNSgZWfeTKBB2wzDXdfoYVrQFCGn0IfEVC630abxiD08JcDlyjbhDLMp1OoHSVMZgUNK/
-	 cZ5ODb9gBr/HAWHJKRoV2WSL8BrlZnSIgPbDse8diI0TVrf8lBIPhzCoIuUuXxpyoGj2Q
-	 P6MFCSbtsx/B+50SKreqHmwswXONbEredKlPO4U53PLwkuSto7mwBvkYJFPbY0mUVByy/
-	 9mrOO7mettE2TwQNMwr2wmdKxfmzklubTV8ANPgBWKWN3/0q0+VCyf0Gx0Uspl25W1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795384612;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=bwqVDHaqqXUJecFoI8gfarhhx3uMgHGFcxRh37PQR30=;
+	b=DxAIP8oBsZx16Q55Gw1gBpzuv7rRLRHNkyboJpSU0lBk5rUrUYuLjMNWh9fXxecCVnCC
+	 9c7sdYUTXUDo0r1qoppIm5v0FRVFmuzKCa0+v6YhpRUTDMc5CQCXnqe8NmNvU61ZLR3Hv
+	 tRSVSH0ckeSw7VUoW4c6kW+TEibMODi2NxTO4IujMTlvm29n1T0+8YsFEE/rAvzi+2CxT
+	 sgFJkIaFLjE3qemWpGEPg8IEJMIwg1dr26SCUOahpw8cXteTtCOogZRx5HAf5n766sntq
+	 52QF1dOZrunhEui8oi4YGEiWs1MZd5xbbCaJSccnYKoKtiL7ViyJxnJW1P+C+MLuing==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PaUZnYwH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXie8At5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C2B606A6FA
-	for <gfs2@lists.linux.dev>; Fri, 20 Nov 2026 20:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C91606A334;
+	Sun, 22 Nov 2026 21:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PaUZnYwH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26C01F000C6;
-	Fri, 20 Nov 2026 20:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXie8At5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085171F000CF;
+	Sun, 22 Nov 2026 21:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795207226;
-	bh=R7MBPe9RyZXuJGK8uwnt8tfOC8Vd2TgDOs0wKutymvs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PaUZnYwHYtqwjkHyNnHEorYzfp4fjKNOyddBsFb51pBJZv+VuIeAvtwoxt1+r/AGE
-	 S3Qg3790ytSE8Ahok6hDDu+GRl6FzmWaD7+JBl70XxwJHVg7nf90GtIpDbgG1wAlrU
-	 L4ssipu4XykmMwW/zL5Lv2oGLqUYZgcXtQB/E+07nWsmNBsvN+KLgukpnfgNaIGgaG
-	 350AmfagEuH8GJyWGzOFEgMDGpP7765voXH2ZcJlqLL3T7f3uZuRttBz9jQ7VuDGFQ
-	 pP8JCLGdfXiWR3EkGtBWwyW6YUJxrVTlmId/xp7cIv5DqPdEt2lb5MziWz3j4/HOwP
-	 hCfLCVVc4i40A==
-Message-ID: <sashiko-outbox-226084@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv2 RESEND v7.4-rc3 1/5] dlm: fix socket hang on send
- buffer limitation with socket error
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Aring" <aahringo@redhat.com>, teigland@redhat.com
-Cc: gfs2@lists.linux.dev
-In-Reply-To: <20261120200040.257152-2-aahringo@redhat.com>
-References: <20261120200040.257152-1-aahringo@redhat.com>
- <20261120200040.257152-2-aahringo@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 20:40:25 +0000
+	s=k20260515; t=1795384611;
+	bh=bwqVDHaqqXUJecFoI8gfarhhx3uMgHGFcxRh37PQR30=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BXie8At5QFQ5VGJ5Wgxa+Ryfj2HbGOJ0KDHW1aolgsw2YtdZGPnu8WYcSmeFf9iTy
+	 5wiX3oWysPjoCke2hcQZDizPm34+kAe7FMjSaSZ9srwusVIqRO580db6LxZDAFaZ0+
+	 3aDEW76QVsDdxoBaJCF/eDmBo7SUv8nl1byepex6XqNbxhpJHXHoKY2hbT2kLTC95N
+	 7JnRNOt0TIdCgaQhdXGjEOlBwvV7HGnUumRRGA3StMRgzFJT0plPL8HRWUST+VQqvd
+	 X4RjTcvHCj0K1oKGcN/z3PbXWOEFtUMKW6QRQ4AjrpymszI4/3zzB9pQMRd26c47gs
+	 kxUaKiE3hZ+vA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Ian Rogers <irogers@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Srish Srinivasan <ssrish@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	driver-core@lists.linux.dev,
+	llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	xen-devel@lists.xenproject.org,
+	linux-mtd@lists.infradead.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/9] Add __must_init and require explicit kobj_type::release
+Date: Sun, 22 Nov 2026 22:56:39 +0100
+Message-ID: <20261122215639.1178566-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261119192520.1983406-1-irogers@google.com>
+References: <20261119192520.1983406-1-irogers@google.com>
+X-Patch-Reply: applied
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -60,193 +102,39 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [High] dlm: missing CF_APP_LIMITED clear in lowcomms_error_report()
-  hangs send queue
-- [High] dlm: unconditional swork queue in lowcomms_error_report()
-  breaks invariants
-- [Medium] dlm: race in send_to_sock() sets CF_APP_LIMITED after socket
-  error
-- [Low] dlm: missing Fixes trailer in commit message
---
+On Thu, 19 Nov 2026 11:25:11 -0800, Ian Rogers wrote:
+> [PATCH v4 0/9] Add __must_init and require explicit kobj_type::release
 
-commit 796bee147607d968d752eb2e6e9611c521fe108f
-Author: Alexander Aring <aahringo@redhat.com>
+Applied, thanks!
 
-> dlm: fix socket hang on send buffer limitation with socket error
->
-> As Sashiko AI bot mentioned [0], a socket connection can get stuck when
-> the send buffer limitation is reached and a socket error simultaneously
-> occurs.
->
-> This issue can be reproduced with the following setup:
-> 1. Set sk_sndbuf to SOCK_MIN_SNDBUF.
-> 2. Slow down DLM connections using netem.
-> 3. Use tcpkill to randomly send TCP resets to DLM connections.
->
-> I instrumented debug printouts to confirm that the sk_write_space()
-> notifier callbacks were being executed, using step 3 to trigger random
-> socket errors.
->
-> With these changes, I can no longer reproduce the hang.
->
-> Changes included:
-> - Removed sk_write_pending counting, as this should not be modified
->   at the socket application layer (or is at least unnecessary).
-> - Moved clearing the CF_SEND_PENDING bit=E2=80=94which allows re-queuing
->   swork (send worker for sendmsg())=E2=80=94to the sk_write_space() callb=
-ack,
->   since this callback notifies us that the underlying socket is no longer
->   constrained by its send buffer.
-> - Handled the race condition between sendmsg() and evaluating
->   SOCK_NOSPACE after sendmsg(), where sk_write_space() could be called
->   in between, using CF_APP_LIMITED:
->   - In sk_write_space(), queue swork again if CF_APP_LIMITED is set.
->   - If CF_APP_LIMITED is not set, do nothing as send_to_sock() will handle
->     it, confirming the race occurred.
-> - Introduced new handling in lowcomms_error_report() when a socket error
->   occurs during send buffer limitation. If CF_APP_LIMITED is set, swork
->   will be re-queued, which will fail and trigger a reconnect.
-> - Added various comments explaining the interaction with CF_APP_LIMITED.
->
-> [0] https://lore.kernel.org/netdev/179090395863.434549.366849366725912075=
-9@kernel.org/
->
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
-[Severity: Low]
-Should this bug fix include a Fixes: tag for the commit that gated
-lowcomms_queue_swork() on CF_APP_LIMITED?
+[1/9] Compiler Attributes: Add __must_init macro
+      commit: b8a53320a885
+[2/9] powerpc/secvar: Add missing kobject release callback to secvar_ktype
+      commit: 4d5d4dd2a2e2
+[3/9] sh: sq: Add missing kobject release callback to ktype_percpu_entry
+      commit: d19384f2f3c7
+[4/9] cpufreq: governor: Initialize kobj_type release callback statically
+      commit: 009365942c15
+[5/9] dlm: Wait for kobject release before freeing dlm_ls
+      commit: 48ae948f4285
+[6/9] xen/sys-hypervisor: Add release callback to hyp_sysfs_kobj_type
+      commit: ecaf88d385c1
+[7/9] ubifs: sysfs: Use kset_create_and_add() for ubifs_kset
+      commit: 25d952902dee
+[8/9] drm/amdkfd: Free queue in procfs_queue_type kobject release callback
+      commit: 6d4ff4a020cf
+[9/9] kobject: Require explicit initialization of struct kobj_type::release
+      commit: 45eeed1f8094
 
-  Fixes: dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling")
+The patches will appear in the next linux-next integration (typically within 24
+hours on weekdays).
 
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index 3929b164dc0d4..6c972f1b412ca 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-
-[ ... ]
-
-> @@ -623,6 +631,20 @@ static void lowcomms_error_report(struct sock *sk)
->  		break;
->  	}
-> =20
-> +	/* if waiting on sk_write_space() and an sk_err occurs, the callback
-> +	 * won't fire. Clear CF_SEND_PENDING so resend tasks can re-queue
-> +	 * swork, triggering a sendmsg() failure to initiate reconnection.
-> +	 */
-> +	spin_lock_bh(&con->writequeue_lock);
-> +	clear_bit(CF_SEND_PENDING, &con->flags);
-> +	/* dlm_midcomms_unack_msg_resend() does not always
-> +	 * trigger lowcomms_queue_swork() as it tries to
-> +	 * avoid to put pending messages into the lowcomms
-> +	 * sending buffer. Force it here again.
-> +	 */
-> +	lowcomms_queue_swork(con);
-> +	spin_unlock_bh(&con->writequeue_lock);
-> +
->  	dlm_midcomms_unack_msg_resend(con->nodeid);
-> =20
->  	listen_sock.sk_error_report(sk);
-
-[Severity: High]
-Does lowcomms_error_report() also need to clear CF_APP_LIMITED before
-calling lowcomms_queue_swork(con)?
-
-lowcomms_queue_swork() refuses to schedule con->swork while CF_APP_LIMITED
-is set:
-
-fs/dlm/lowcomms.c:lowcomms_queue_swork() {
-	if (!test_bit(CF_IO_STOP, &con->flags) &&
-	    !test_bit(CF_APP_LIMITED, &con->flags) &&
-	    !test_and_set_bit(CF_SEND_PENDING, &con->flags))
-		queue_work(io_workqueue, &con->swork);
-}
-
-When a socket error arrives while CF_APP_LIMITED is set, sk_write_space()
-will not fire, so leaving CF_APP_LIMITED set here causes every
-lowcomms_queue_swork(con) call to be a no-op and leaves the connection
-permanently hung.
-
-[Severity: High]
-Should lowcomms_error_report() only clear CF_SEND_PENDING and queue
-con->swork when test_and_clear_bit(CF_APP_LIMITED, &con->flags) succeeds,
-matching lowcomms_write_space()?
-
-Accepting a crossover connection in accept_from_sock() attaches the socket
-to othercon (which has CF_IS_OTHERCON set) via add_sock(), installing
-lowcomms_error_report() as sk_error_report.  Because othercon is
-receive-only, unconditionally queuing con->swork on a socket error
-schedules process_send_sockets() on othercon, triggering
-WARN_ON_ONCE(test_bit(CF_IS_OTHERCON, &con->flags)) and entering an
-infinite reconnect loop calling dlm_connect(othercon) once othercon->sock
-is closed.
-
-On a primary connection where CF_APP_LIMITED is not set, unconditionally
-clearing CF_SEND_PENDING also breaks swork serialization on the unbound
-io_workqueue by allowing a second con->swork to be queued while
-process_send_sockets() is already running.
-
-> @@ -1391,22 +1413,19 @@ static int send_to_sock(struct connection *con)
->  		spin_lock_bh(&con->writequeue_lock);
->  		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
->  		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
-> -			/* Notify TCP that we're limited by the
-> -			 * application window size.
-> -			 */
-> -			sk_set_nospace(con->sock->sk);
-> -			con->sock->sk->sk_write_pending++;
-> -
-> -			clear_bit(CF_SEND_PENDING, &con->flags);
->  			spin_unlock_bh(&con->writequeue_lock);
->  			release_sock(con->sock->sk);
-> =20
-> -			/* wait for write_space() event */
-> +			/* wait for sk_write_space() event */
->  			return DLM_IO_END;
->  		}
->  		spin_unlock_bh(&con->writequeue_lock);
->  		release_sock(con->sock->sk);
-> =20
-> +		/* the sk_write_space() came in between sock_sendmsg()
-> +		 * and check on SOCK_NOSPACE and the socket became
-> +		 * writeable again so just resched swork.
-> +		 */
->  		return DLM_IO_RESCHED;
->  	} else if (ret < 0) {
->  		return ret;
-
-[Severity: Medium]
-Can send_to_sock() still set CF_APP_LIMITED and hang after a socket error
-if the error arrives before lock_sock()?
-
-kworker                                <softirq>
-send_to_sock()
-  sock_sendmsg()
-    ...
-      sk_set_nospace()
-      return -EAGAIN
-                                       tcp_v4_rcv() (TCP RST)
-                                         tcp_reset()
-                                           tcp_done_with_error()
-                                             lowcomms_error_report()
-  lock_sock(sk)
-  spin_lock_bh(&con->writequeue_lock)
-  test_bit(SOCK_NOSPACE, ...)
-  !test_and_set_bit(CF_APP_LIMITED, ...)
-  return DLM_IO_END  <-- waits forever
-
-Unlike lowcomms_write_space(), neither tcp_done_with_error() nor
-lowcomms_error_report() clears SOCK_NOSPACE.  When send_to_sock() then
-checks SOCK_NOSPACE without checking sk->sk_err, it sets CF_APP_LIMITED
-after lowcomms_error_report() has already finished and returns DLM_IO_END
-on a dead socket that will never fire sk_write_space() or
-sk_error_report() again.  Checking !con->sock->sk->sk_err under lock_sock()
-(or clearing SOCK_NOSPACE in lowcomms_error_report()) would avoid entering
-CF_APP_LIMITED on an errored socket.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120200040.2571=
-52-1-aahringo@redhat.com?part=3D1
+The patches are in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
