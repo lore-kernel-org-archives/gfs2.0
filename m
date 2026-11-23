@@ -1,45 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795384942;
-	b=pBEACgA36xFSDDxXG+1RQfD522q8s3R/vqcG1WpafCscgR4wsKojkM91+EearyjAlLpN
-	 udKJMpbydgO+5NkAPmhk+pQEYepZvWd0NMdFuRBAdiHmttCwxYF1JO0NRNgQBng4BznUC
-	 SO+oFFLm98opsX+QMraPG7YcuZOfK3Vle/+Pduacu1gzoSGz5hIp3h/vyPhyD3iGcGv3o
-	 RbLOeAZinykQ+Dlf/BcHUICvuC52CXFlaOoO2xI6Ev3ElIaRmZ6waBGRnZM4SQGmHWHDe
-	 DMOuO5kvASvd5ZHFy+Z1hpP34IJFyOD7xOfv/vP2gO4/syNVJdYwnVas5cXsRK78C0g==
+	t=1795401110;
+	b=TPZdkBWN+egLMSxSbAM8oxStqvzw445yBJ+ML0t9gIC6nFbiG7HwbvFiwQ4j5qwut718
+	 yBdQuVdImPGdaAbnXZ1f2qL803IhM1lrMU97OACl/pFPT0MpipeUHty625w4YH+W6PRlS
+	 WBFfyqpvzc/S90tOyMsARVmr98Uf5BRFwNN5SNtLvlIZYk0utONtTzypjd5kJ6Eo9CGdG
+	 jkf2ioRb6DSHNYGq3kcBzfCpJ3ZAYUtqGk2ZigJO9S8qzCbxrdD8N6BKwbdevoaYQlYy+
+	 /8mN84/CSMGU2BgMwpCw8Ye28f2EN7vbjog496geHNHe0uHHDT3e+KYgIlvTKpzC3fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795384942;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=sTtlSSaGTpDBtcMHiOircAIvmiTH+Ctop/XsFzGC1x4=;
-	b=YrgCw7fc82efjOJR6aqKPcSwalSW3k8vQUHIYDJVI37d9CBiToehWm/1ktwwymQWL6Au
-	 svoB7yp+0z1su71Hd0PFrG5Nz0ensrulMD/zKBsuvTb4eZkW4szYQKpqve8SdVqOhaNC9
-	 rpXHgTRZ0G5Hg9lObkmlBU8Tx36zXCsAu90qa2oSdJ1RpKVfZn2VTpdKMJellxju98pBd
-	 lQ7x4g3dBPSLJkeB4pX7VQTWEnhJIBU8fqJl3690tWQtBED2+6yS5r5cH/ivr2aZa7umF
-	 oaG5QKUfA4/qFx5fhDpAyRJVmhYyRytxOTiVWaI8Cmn0IGGlcCD4X9b3p1tq8Kfh2TA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795401110;
+	h=DMARC-Filter:Received:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 X-Originating-IP:X-ClientProxiedBy;
+	bh=DubBYw11u39hDCHP507B0e3hI2K38GChIQfRTnxdD6k=;
+	b=jdu02WwmfgYgbLlLGXMuWxMFoC9PJwbbLKkLI2WmjXpY6Lemr949zsaqeFDceEsUUthy
+	 IsVgUOv4zA+eiCXH2rjroS1sQEL3ScS9fLnlUlX1VctjJg1eHb7Nq2invoo+zt4Rd8KII
+	 TjT5TFNkXZvQq/eotYb/H9mwoUDe2mCs3UVFcTF8IdTxgle1O4KECOadPBK8BB5XB9cPY
+	 9lnlKLMhqMHijTzYU4/902kCz9PqLl7NrlZ5crHfTUbrrKh920e4MxwM3VOFYx+1gcSxm
+	 yEIjZV3fMplKHcJnq7lfkpAsjA1Tngb96LBs8ivFMuxI3XNyjj6ACStUo8FZPXCgdhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2Hc6xFR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C7D606A31A;
-	Sun, 22 Nov 2026 22:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2Hc6xFR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DB11F000C6;
-	Sun, 22 Nov 2026 22:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795384942;
-	bh=sTtlSSaGTpDBtcMHiOircAIvmiTH+Ctop/XsFzGC1x4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=k2Hc6xFRtkicPKFvuKT7zGdEMFSb//oYzAC6yGi4WET4vMctzGLV95ptNtrt42XPr
-	 WQXnncoUOn8vCWB5V+5BOCSO1YRgvEGvWFlC6kSpFwx64JgBjdDeDjN8t0GAWjAHIl
-	 OTUhOZXnH51x9+wu6dE5+5xRqac3uNPyE7pzVVKvZEWUvPhn37jeV+RfXXnvGy2n+o
-	 5fpjybhz8GWsaKNEldr/b1vfp4LchA2oilYAZk48pyxh0hZg4h3t2J1QwAu6uVH9h7
-	 a22sYJ2GBWGWAOsKWbURM4twq7Z2FvgS7RP2m5XNLf/srWoFugU+HT+1vi7WOYs8uY
-	 PaUfPtPCWI/6w==
+	dmarc=pass header.from=hygon.cn;
+	spf=pass smtp.mailfrom=hygon.cn;
+	arc=none smtp.remote-ip=101.204.27.37
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875C6606A31E
+	for <gfs2@lists.linux.dev>; Mon, 23 Nov 2026 02:31:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 875C6606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jXqh34zJCzVcB5;
+	Mon, 23 Nov 2026 10:31:31 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jXqh073qvzVcB9;
+	Mon, 23 Nov 2026 10:31:28 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 95C6216DB;
+	Mon, 23 Nov 2026 10:31:26 +0800 (CST)
+Received: from hsj-2U-Workstation (172.19.24.226) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 23 Nov
+ 2026 10:31:26 +0800
+Date: Mon, 23 Nov 2026 10:31:24 +0800
+From: Huang Shijie <huangsj@hygon.cn>
+To: Andreas Gruenbacher <agruenba@redhat.com>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<hch@infradead.org>, <mic@digikod.net>, <axboe@kernel.dk>,
+	<gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<serge@hallyn.com>, <legion@kernel.org>, <aleksa@amutable.com>,
+	<libaokun@linux.alibaba.com>, <ebiggers@kernel.org>, <djwong@kernel.org>,
+	<sandeen@redhat.com>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
+	<yingzhiwei@hygon.cn>, <wujianyong@hygon.cn>, <shijie8@gmail.com>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
+	<linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v3 0/11] vfs: add inode iteration methods
+Message-ID: <awOlfBGNgQoassIt@hsj-2U-Workstation>
+References: <20261120031305.3561045-1-huangsj@hygon.cn>
+ <CAHc6FU7URHetBU9XgP0DSEGjWQfq0tX+ohK8xRVZLEYzgJBeEw@mail.gmail.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -48,104 +66,89 @@ List-Subscribe: <mailto:gfs2+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Nov 2026 23:02:06 +0100
-Message-Id: <DN22U90WCTGB.1REAOP1PQUMIQ@kernel.org>
-Subject: Re: [PATCH v4 0/9] Add __must_init and require explicit
- kobj_type::release
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Kees Cook"
- <kees@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Srish
- Srinivasan" <ssrish@linux.ibm.com>, "Michael Ellerman"
- <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Christophe
- Leroy" <chleroy@kernel.org>, "Nayna Jain" <nayna@linux.ibm.com>, "Mimi
- Zohar" <zohar@linux.ibm.com>, "Yoshinori Sato"
- <ysato@users.sourceforge.jp>, "Rich Felker" <dalias@libc.org>, "John Paul
- Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, "Juergen Gross"
- <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>,
- "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <ndesaulniers@google.com>, "Viresh
- Kumar" <viresh.kumar@linaro.org>, "Zhongqiu Han"
- <zhongqiu.han@oss.qualcomm.com>, "Alexander Aring" <aahringo@redhat.com>,
- "Felix Kuehling" <felix.kuehling@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Zhihao Cheng" <chengzhihao1@huawei.com>,
- "Sumanth Korikkar" <sumanthk@linux.ibm.com>, "Bill Wendling"
- <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- <driver-core@lists.linux.dev>, <llvm@lists.linux.dev>,
- <linux-hardening@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
- <gfs2@lists.linux.dev>, <xen-devel@lists.xenproject.org>,
- <linux-mtd@lists.infradead.org>, <amd-gfx@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <agordeev@linux.ibm.com>, <airlied@gmail.com>, <alexander.deucher@amd.com>,
- <catalin.marinas@arm.com>, <chao@kernel.org>, <deller@gmx.de>,
- <dennis.dalessandro@cornelisnetworks.com>, <dmaengine@vger.kernel.org>,
- <gor@linux.ibm.com>, <hca@linux.ibm.com>, <jaegeuk@kernel.org>,
- <James.Bottomley@HansenPartnership.com>, <jgg@ziepe.ca>,
- <jlbec@evilplan.org>, <johan@kernel.org>, <joseph.qi@linux.alibaba.com>,
- <leon@kernel.org>, <lihuisong@huawei.com>, <linusw@kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-erofs@lists.ozlabs.org>,
- <linux-f2fs-devel@lists.sourceforge.net>, <linux-fbdev@vger.kernel.org>,
- <linux-omap@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, <mark@fasheh.com>, <neescoba@cisco.com>,
- <ocfs2-devel@lists.linux.dev>, <satishkh@cisco.com>, <simona@ffwll.ch>,
- <sre@kernel.org>, <vkoul@kernel.org>, <will@kernel.org>, <xiang@kernel.org>
-To: "Ian Rogers" <irogers@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261119192520.1983406-1-irogers@google.com>
- <20261122215639.1178566-1-dakr@kernel.org>
-In-Reply-To: <20261122215639.1178566-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHc6FU7URHetBU9XgP0DSEGjWQfq0tX+ohK8xRVZLEYzgJBeEw@mail.gmail.com>
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
 
-(Cc: more people previously Cc'd on v2)
+在 Fri, Nov 20, 2026 at 03:59:10PM +0100，Andreas Gruenbacher 写道：
+> On Fri, Nov 20, 2026 at 4:13 AM Huang Shijie <huangsj@hygon.cn> wrote:
+> > This series adds two superblock inode iteration helpers,
+> > super_iter_inodes() and super_iter_inodes_locked(), and converts the
+> > open-coded sb->s_inodes walks in the VFS to them.  The design is based on
+> > Dave Chinner's patch set:
+> >   "vfs: improving inode cache iteration scalability"
+> >   https://lore.kernel.org/all/20241002014017.3801899-1-david@fromorbit.com/
+> >
+> > About the two helpers:
+> >
+> >   int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
+> >                         ino_iter_eligible_fn eligible, void *priv,
+> >                         int flags);
+> >
+> >   static inline int super_iter_inodes_locked(struct super_block *sb,
+> >                                              ino_iter_fn iter_fn,
+> >                                              void *priv);
+> >
+> >   - super_iter_inodes() runs @iter_fn with a referenced inode and with
+> >     sb->s_inode_list_lock __dropped__, so the callback is free to block and
+> >     to do whatever it wants with the inode except drop the reference the
+> >     iterator holds.  The iterator releases that one reference per inode
+> >     itself, so the callback cannot leave a dangling inode behind.
+> >     It is exported because GFS2 can be built as a module.
+> >
+> >   - super_iter_inodes_locked() keeps sb->s_inode_list_lock held for the
+> >     whole walk and takes no inode references at all.  Its callback
+> >     therefore only has an existence guarantee: it must not block and
+> >     must do its own inode state checks and its own reference handling.
+> >     It is internal to the VFS, being declared in fs/internal.h.
+> >
+> >   - The callback is separate from the caller's data, so a caller keeps
+> >     its state in its own structure instead of filling in a shared
+> >     context:
+> >
+> >       typedef int (*ino_iter_fn)(struct inode *inode, void *priv);
+> >
+> >   - %INO_ITER_F_REFERENCED restricts the safe iterator to inodes that
+> >     still have a reference.  It preserves the "only handle referenced
+> >     inodes" rule of landlock's sb-delete walk.
+> >
+> >   - %INO_ITER_F_NOREF does the opposite: only inodes whose reference
+> >     count has already reached zero are handed out.  %INO_ITER_F_NOIGET
+> >     suppresses the reference.  Neither keeps the inode alive, so the
+> >     caller must make it unclaimable itself.
+> >
+> >    Patch 1 adds super_iter_inodes().
+> >    Patch 2 adds super_iter_inodes_locked().
+> >    Patch 3-5 convert the callers which cannot use referenced inodes
+> >            (dquot removal, nr_blockdev_pages() and the
+> >            generic_shutdown_super() poisoning loop).
+> >    Patch 6-11 convert the remaining callers (inode eviction, sync_bdevs,
+> >            drop_pagecache_sb, add_dquot_ref, landlock's hook_sb_delete
+> >            and gfs2_evict_inodes()).
+> >
+> >
+> > BTW:
+> >   This patch set depends a small patch:
+> >   "fs/drop_caches: skip filesystems without fs writeback"
+> >   https://lkml.org/lkml/2026/9/23/675
+> 
+> That link doesn't work for me. When referring to other postings, can
+> you please use lore links?
+Okay. No problem.
 
-On Sun Nov 22, 2026 at 10:56 PM CET, Danilo Krummrich wrote:
-> On Thu, 19 Nov 2026 11:25:11 -0800, Ian Rogers wrote:
->> [PATCH v4 0/9] Add __must_init and require explicit kobj_type::release
->
-> Applied, thanks!
->
->   Branch: driver-core-testing
->   Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/drive=
-r-core.git
->
-> [1/9] Compiler Attributes: Add __must_init macro
->       commit: b8a53320a885
-> [2/9] powerpc/secvar: Add missing kobject release callback to secvar_ktyp=
-e
->       commit: 4d5d4dd2a2e2
-> [3/9] sh: sq: Add missing kobject release callback to ktype_percpu_entry
->       commit: d19384f2f3c7
-> [4/9] cpufreq: governor: Initialize kobj_type release callback statically
->       commit: 009365942c15
-> [5/9] dlm: Wait for kobject release before freeing dlm_ls
->       commit: 48ae948f4285
-> [6/9] xen/sys-hypervisor: Add release callback to hyp_sysfs_kobj_type
->       commit: ecaf88d385c1
-> [7/9] ubifs: sysfs: Use kset_create_and_add() for ubifs_kset
->       commit: 25d952902dee
-> [8/9] drm/amdkfd: Free queue in procfs_queue_type kobject release callbac=
-k
->       commit: 6d4ff4a020cf
-> [9/9] kobject: Require explicit initialization of struct kobj_type::relea=
-se
->       commit: 45eeed1f8094
->
-> The patches will appear in the next linux-next integration (typically wit=
-hin 24
-> hours on weekdays).
->
-> The patches are in the driver-core-testing branch and will be promoted to
-> driver-core-next after validation.
+> 
+> There also is no posting of a patch with that title from that day on
+> https://lore.kernel.org/linux-fsdevel/. You may be referring to
+> https://lore.kernel.org/linux-fsdevel/20260920072811.2064247-2-huangsj@hygon.cn/,
+> but that patch queue no longer applies. So please post patch queues in
+> a state that applies and optionally, make a git branch available.
+> 
+I will add the kernel version in next version.
 
-I've now picked this up; I will keep this series in driver-core-testing for=
- a
-few more days before moving it to driver-core-next. Please let me know if t=
-here
-are any concerns with the series, particularly the comments in patch 9.
+Thanks
+Huang Shijie
 
-Thanks,
-Danilo
