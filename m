@@ -1,63 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.204.27.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.92.39.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795401110;
-	b=TPZdkBWN+egLMSxSbAM8oxStqvzw445yBJ+ML0t9gIC6nFbiG7HwbvFiwQ4j5qwut718
-	 yBdQuVdImPGdaAbnXZ1f2qL803IhM1lrMU97OACl/pFPT0MpipeUHty625w4YH+W6PRlS
-	 WBFfyqpvzc/S90tOyMsARVmr98Uf5BRFwNN5SNtLvlIZYk0utONtTzypjd5kJ6Eo9CGdG
-	 jkf2ioRb6DSHNYGq3kcBzfCpJ3ZAYUtqGk2ZigJO9S8qzCbxrdD8N6BKwbdevoaYQlYy+
-	 /8mN84/CSMGU2BgMwpCw8Ye28f2EN7vbjog496geHNHe0uHHDT3e+KYgIlvTKpzC3fg==
+	t=1795422239;
+	b=MjJvHUnty7GXZqllE9BFtF5K2K2DqR07FaQcw7mOC80gtt0z/iQyZ+68GSpHReBruS49
+	 i3i+y7bjUpc3WqdJd8R6pmVVR53o27y+Ev1qLjZQvWnWF7KttQT7PB9dq9oyQVbgJTwsM
+	 8x7fwOjYpxlxRX6vw1e5BWT4czNwLAqk8sOxPNlWynv8x18SbwgnwmwmuM2IJjCca1r3i
+	 B7U9C8+X3hu88P8zNbOFPa78aNxVZQkEE/Wawkvxy+kGhbaewVAdwTh3r9pLXTLqOZz5m
+	 MUwEr9BVpp39qc18LUJJQtei5lpefAgAx1JwQAJ64TWaF4/Z52wW9uHXhNL6bRzIeLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795401110;
-	h=DMARC-Filter:Received:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
-	 X-Originating-IP:X-ClientProxiedBy;
-	bh=DubBYw11u39hDCHP507B0e3hI2K38GChIQfRTnxdD6k=;
-	b=jdu02WwmfgYgbLlLGXMuWxMFoC9PJwbbLKkLI2WmjXpY6Lemr949zsaqeFDceEsUUthy
-	 IsVgUOv4zA+eiCXH2rjroS1sQEL3ScS9fLnlUlX1VctjJg1eHb7Nq2invoo+zt4Rd8KII
-	 TjT5TFNkXZvQq/eotYb/H9mwoUDe2mCs3UVFcTF8IdTxgle1O4KECOadPBK8BB5XB9cPY
-	 9lnlKLMhqMHijTzYU4/902kCz9PqLl7NrlZ5crHfTUbrrKh920e4MxwM3VOFYx+1gcSxm
-	 yEIjZV3fMplKHcJnq7lfkpAsjA1Tngb96LBs8ivFMuxI3XNyjj6ACStUo8FZPXCgdhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795422239;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=E/F9aPQoKXfrKQaypE4bbnWX3DetVkwn7UCBCBTDXjQ=;
+	b=IOfqIa+/StCapyA5bGUX+9SJcgSYdH18Z/qg4Y40/Q0H0wbmqsj5xzRLvDgHzA+U7+Ue
+	 yj1uZ1owee+DJwd4LK0SojlXQLezOKY+9r/xUxLdoFUmFFm/0OImeNqqUGU368ToTcRTJ
+	 ahMLn+mSCSgTGg0lhdxHVoces2XQVjayR8bPnPgWrFr83kfuINiqPJc0bgaziTlkKP0Bo
+	 b4GyZv5I21acYR0kUSUMMJjLkzmE5i/WQ5YNikx4IdWPKaQj0WQUIcgLLFTx+dAndgyuA
+	 E61mIdjadFMc3rumeirx4dSTqGX0cDPot+0GYiqpR/Vfmta7aDAlphWWU+IhWBsyVgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hygon.cn;
-	spf=pass smtp.mailfrom=hygon.cn;
-	arc=none smtp.remote-ip=101.204.27.37
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875C6606A31E
-	for <gfs2@lists.linux.dev>; Mon, 23 Nov 2026 02:31:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 875C6606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jXqh34zJCzVcB5;
-	Mon, 23 Nov 2026 10:31:31 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jXqh073qvzVcB9;
-	Mon, 23 Nov 2026 10:31:28 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 95C6216DB;
-	Mon, 23 Nov 2026 10:31:26 +0800 (CST)
-Received: from hsj-2U-Workstation (172.19.24.226) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 23 Nov
- 2026 10:31:26 +0800
-Date: Mon, 23 Nov 2026 10:31:24 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<hch@infradead.org>, <mic@digikod.net>, <axboe@kernel.dk>,
-	<gnoack@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<serge@hallyn.com>, <legion@kernel.org>, <aleksa@amutable.com>,
-	<libaokun@linux.alibaba.com>, <ebiggers@kernel.org>, <djwong@kernel.org>,
-	<sandeen@redhat.com>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
-	<yingzhiwei@hygon.cn>, <wujianyong@hygon.cn>, <shijie8@gmail.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-block@vger.kernel.org>, <gfs2@lists.linux.dev>,
-	<linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3 0/11] vfs: add inode iteration methods
-Message-ID: <awOlfBGNgQoassIt@hsj-2U-Workstation>
-References: <20261120031305.3561045-1-huangsj@hygon.cn>
- <CAHc6FU7URHetBU9XgP0DSEGjWQfq0tX+ohK8xRVZLEYzgJBeEw@mail.gmail.com>
+	dmarc=pass header.from=uniontech.com;
+	spf=pass smtp.mailfrom=uniontech.com;
+	dkim=pass header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=NUMV67UW;
+	arc=none smtp.remote-ip=54.92.39.34
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C270F606A31A
+	for <gfs2@lists.linux.dev>; Mon, 23 Nov 2026 08:23:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C270F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=NUMV67UW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1795422226;
+	bh=E/F9aPQoKXfrKQaypE4bbnWX3DetVkwn7UCBCBTDXjQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=NUMV67UWs9t18N1OIM4ZtUr1G4KUUyxlxQY4jj2StUUgrdfoqQDTi+/hY079+OY0J
+	 OnVGI96JbaGtvfDqiSeE6UMz2sKFebG+gKu+BCHNHj23ZL7vOoQPmmEqMWNRGdnm7O
+	 SxeosppPti5L8UZgKbXLnhj1omBx5TnVbELEq3yg=
+X-QQ-mid: zesmtpgz7t1795422219t18ea3391
+X-QQ-Originating-IP: PVyhqQzatqIPjVoEXm47QT9VjeoAIolcwI+N8CJf7k4=
+Received: from PECI2040 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 23 Nov 2026 16:23:37 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16570581694892023629
+From: wangyu <wangyu6@uniontech.com>
+To: syzbot+cff8e1b82d7911dd051c@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [gfs2?] general protection fault in gfs2_remove_from_journal (2)
+Date: Mon, 23 Nov 2026 16:23:37 +0800
+Message-ID: <47E6766CB31C3F0F+20261123082337.77430-1-wangyu6@uniontech.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <6978bb60.050a0220.c9109.001c.GAE@google.com>
+References: <6978bb60.050a0220.c9109.001c.GAE@google.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -67,88 +70,26 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU7URHetBU9XgP0DSEGjWQfq0tX+ohK8xRVZLEYzgJBeEw@mail.gmail.com>
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-0
+X-QQ-XMAILINFO: NZcrde3zhHkVVrVS4xNBkTmMJlAdrg9SQkt0SNLUzZqn0V2siwX7de1z
+	L4PLAmNOmKAR7ZEB1DgHw9TbkqBaSg+V7/2a473dCT+XZ5ff62FA6Jzox+p69HbiSUGsm6h
+	AH7gloGSQxhQbTHlSHvJQfi6+ghvoHwvOE0hdGOMYmZq4L9lU7As82NbC8o+HfJNUnFzfPB
+	37lcGN3MmKHz7moro5nCsTHMydaFu/cZg3q3z8vJFvTvkVRqBbQgaKuwIBkYj19Vm23IJVw
+	p2vLXKJOEg0Rq6skTRwNlWXcnpJcLlBfC3Ah7929Mq2hdqOkfExNa1pwXtgG7TqOIj76XL9
+	vLrFT8ul6tqHb6kkSlSe6Q+fViqgvBxVqJMPyiHxZpyu5cR4D2KAy+HhzYj/BZsHT7zp2zC
+	7vKskmGKs3mhF18V7oEhOul44eXD/zbThsf5DcRifP6rlocZQo2X1aNiyfapL3Fk/FM/pBb
+	/c+TXDYxfMjbWQF2RMUv9fBG9ejDS64zCS5NcaDhLE92LrWLqm429n8mMuzrxbXwpag05Ik
+	F7f5L8DzQkYoRFeDONoaI1Az/LZRNhK8Fvj4EVxuRFj3SsO89yG+vtoHXIbH8ukruinoV1A
+	5HQr0uqoXhLf2dM1ddLxJh3ZlB6JpecJcFH3Ffm9ZSyNXNNNTuuRIOZtzOZrIvlANZNQbVD
+	IcrSTeKewHJYJKOmsyLW1h1L9Q+P5APVjVpcrVFjLDUW8uYsG238KCLhs58+s+G5VfP9o93
+	FNFVM6HTy+J85rqosKa8MDuljfBpYJ0I9hTLur52J8U4ZeZF1k/ABtD+WROGS+6tz5sS4b8
+	g3yxj/8KHdo6YW0SJ02dV2yTvkMT2tcY0Z02QqS65VHcyKfnpHQ5xAGfYLBp4imw3nOnnyF
+	PLD4HpPG7gBp5s65lpLdgMNMgibjptyW72SuTCm9zgVXGyl1PcW6ZTzFxbhrTVtwh2l3FYH
+	PvpwqsiZCBnHJs1Lr0JyblMIW6RqHqMzpHtLs9UOxGWN7DssuwvSyYqOnVj95tMoMXuD4x1
+	f8eQre88bEEaDULD+YMHn4XMVfkVE=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-在 Fri, Nov 20, 2026 at 03:59:10PM +0100，Andreas Gruenbacher 写道：
-> On Fri, Nov 20, 2026 at 4:13 AM Huang Shijie <huangsj@hygon.cn> wrote:
-> > This series adds two superblock inode iteration helpers,
-> > super_iter_inodes() and super_iter_inodes_locked(), and converts the
-> > open-coded sb->s_inodes walks in the VFS to them.  The design is based on
-> > Dave Chinner's patch set:
-> >   "vfs: improving inode cache iteration scalability"
-> >   https://lore.kernel.org/all/20241002014017.3801899-1-david@fromorbit.com/
-> >
-> > About the two helpers:
-> >
-> >   int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-> >                         ino_iter_eligible_fn eligible, void *priv,
-> >                         int flags);
-> >
-> >   static inline int super_iter_inodes_locked(struct super_block *sb,
-> >                                              ino_iter_fn iter_fn,
-> >                                              void *priv);
-> >
-> >   - super_iter_inodes() runs @iter_fn with a referenced inode and with
-> >     sb->s_inode_list_lock __dropped__, so the callback is free to block and
-> >     to do whatever it wants with the inode except drop the reference the
-> >     iterator holds.  The iterator releases that one reference per inode
-> >     itself, so the callback cannot leave a dangling inode behind.
-> >     It is exported because GFS2 can be built as a module.
-> >
-> >   - super_iter_inodes_locked() keeps sb->s_inode_list_lock held for the
-> >     whole walk and takes no inode references at all.  Its callback
-> >     therefore only has an existence guarantee: it must not block and
-> >     must do its own inode state checks and its own reference handling.
-> >     It is internal to the VFS, being declared in fs/internal.h.
-> >
-> >   - The callback is separate from the caller's data, so a caller keeps
-> >     its state in its own structure instead of filling in a shared
-> >     context:
-> >
-> >       typedef int (*ino_iter_fn)(struct inode *inode, void *priv);
-> >
-> >   - %INO_ITER_F_REFERENCED restricts the safe iterator to inodes that
-> >     still have a reference.  It preserves the "only handle referenced
-> >     inodes" rule of landlock's sb-delete walk.
-> >
-> >   - %INO_ITER_F_NOREF does the opposite: only inodes whose reference
-> >     count has already reached zero are handed out.  %INO_ITER_F_NOIGET
-> >     suppresses the reference.  Neither keeps the inode alive, so the
-> >     caller must make it unclaimable itself.
-> >
-> >    Patch 1 adds super_iter_inodes().
-> >    Patch 2 adds super_iter_inodes_locked().
-> >    Patch 3-5 convert the callers which cannot use referenced inodes
-> >            (dquot removal, nr_blockdev_pages() and the
-> >            generic_shutdown_super() poisoning loop).
-> >    Patch 6-11 convert the remaining callers (inode eviction, sync_bdevs,
-> >            drop_pagecache_sb, add_dquot_ref, landlock's hook_sb_delete
-> >            and gfs2_evict_inodes()).
-> >
-> >
-> > BTW:
-> >   This patch set depends a small patch:
-> >   "fs/drop_caches: skip filesystems without fs writeback"
-> >   https://lkml.org/lkml/2026/9/23/675
-> 
-> That link doesn't work for me. When referring to other postings, can
-> you please use lore links?
-Okay. No problem.
-
-> 
-> There also is no posting of a patch with that title from that day on
-> https://lore.kernel.org/linux-fsdevel/. You may be referring to
-> https://lore.kernel.org/linux-fsdevel/20260920072811.2064247-2-huangsj@hygon.cn/,
-> but that patch queue no longer applies. So please post patch queues in
-> a state that applies and optionally, make a git branch available.
-> 
-I will add the kernel version in next version.
-
-Thanks
-Huang Shijie
-
+#syz fix: gfs2: fix address space truncation during withdraw
