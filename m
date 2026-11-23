@@ -1,58 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795424460;
-	b=Sw4r6c+XfwfJkEcFdKj8dO1K3DOy5wJ8xq56vqLbSzNs70+mdSp2FZOR9Tp94cgeJLT6
-	 exgJ1+71QkNCrneiVE1yvp/DKOqu+q6l18laM1gbrdCXQEj7hID76JLPLzlHKlKiaeA+b
-	 EnPXdWIap6whND/wejCBOlteAMy794mSRsfvvWpw+NQIMHKFKJU5g8vuHr9Lx3Li8fePV
-	 SQo12fInPadkxjmkRKD0F3y3K01dLe6YFdqu/P7jL28i806/DO22jM86ilHqNDdOd8OPq
-	 gP7oTKGGivlGCd8EQBMSbo4pSkkRmU2zJMl5OK64h/I0fU0dvAUhHHbaf71p/ZTEBvA==
+	t=1795424461;
+	b=bVzNpU15fUo09zJd0s0cC4DNDM13vZDVptvw9ETJ2kCvMA7bYzSV6587AQebOeXBZnC4
+	 wN7ylZ2mx+dIdjYJvzKS/PFcwovWpwp1jUa2pUUJHkmFwIZ8nTUJfGMIj0DBE3yb7Zcyn
+	 qwS/qbW4lwFL0zRN3TnybcJsdE2m+191z/hO30l5hA+ABeIkGJPdWEtTzytnErHCVGql8
+	 JdzDADQSCnG5lxh086gEbPWltXiLbDOuftNCKQjoloRXI6WI3437d0lsZio2bSJE4m8as
+	 Bg30wico89ISRCGvbNzwjimq0ilPMcLYwa5/nnYm5gIU9R447uOoBZb0IMcVxtjBjtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795424460;
-	h=DMARC-Filter:Received:Received:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795424461;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding:
-	 X-Rspamd-Pre-Result:X-Rspamd-Server:X-Spamd-Result:X-Spam-Flag:
-	 X-Spam-Score:X-Spam-Level:X-Rspamd-Queue-Id:X-Rspamd-Pre-Result:
-	 X-Rspamd-Action;
-	bh=+lM7rrM1R/XvKFJcc9D+ndKl/G6mdrWcbu/Y3hUJBMs=;
-	b=F+8UuozfNEh7+W4AfRfnQBFnIF+5PJ9+uKPp13RNtGmeGvJD/4NA1Qs/kXI/hVdB1Mne
-	 YfLeQZzfo69Fspb9BtcJYcdZAXAQPQgLHES4RRQobqLgDGa1NX0XzqjjmLzBJcx5e6DvQ
-	 MZBm56l/LcqkZWbbQPKVICscfuKi1+8Fmakxo1uZ5PSo7jmsgdBxSGaYm/oSIsgLUMnke
-	 gDjh5tQHeYqgQ5rLLd6vcySkPKQtvVs88J5bMVaGxA7ZuaNwsnsr7fG0F9klvLokqmhDO
-	 LmpcfxIXPf/DLZLKMestJs30DuApbkDO6fniZ8arFgR61/Q+8yZlEPnlk+l+BmYCc1g==
+	 X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
+	bh=O39JXi5k3K9AYzQlilyWAQFtMH7+2Ip6YVrc8OdVAfg=;
+	b=1QLDVLOHvmQC/J8rx95U3uSgsReBlQwdbQ9CmHSYIjKKE46tKdu1WZIFi8xuFaJscbjP
+	 NaJCMezkFjJbK/20qFd4pRQEo1slwBFejOPE568e/I566CrO/18WYLacJkNc51zBrK352
+	 FNpyYLKdlnqDdtJZjgWG3F75Y1foNmcY5fl3FQjuQoRtPMbVNltPy8LoZpVdcuKGCOsox
+	 MSnQ9iwO/ZiL7QIAmKF0RoyQjo1bUX8b/GL+RgisKr4HbZw1E8hPRALN+L10l10bsucfE
+	 LteCywMxLZ1ol+AR2VdO15THsMtJWtQf/nLGPubw39ZEwXKTK1CGMVQ2tT6v+QKNzsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=suse.cz;
 	spf=pass smtp.mailfrom=suse.cz;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=XEMiW9FS;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=slK3PK2c;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=IWUpd4tx;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YsY3q8bN;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A946606A33F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE606606A6A7;
 	Mon, 23 Nov 2026 09:01:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A946606A33F
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE606606A6A7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=XEMiW9FS;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=slK3PK2c;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=IWUpd4tx;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YsY3q8bN
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7F3051F80D;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 23F2A220AD;
 	Mon, 23 Nov 2026 09:00:58 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795424459; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O39JXi5k3K9AYzQlilyWAQFtMH7+2Ip6YVrc8OdVAfg=;
+	b=XEMiW9FSKeNVZfxK1TmadmRcl1KCimjz8Rcdb6ZTC4hUROyOf63hBhgF/jyO/FwNgwsV5G
+	//SrpXcUz8u1+zUWOOLjEZUpRoZFEPOMlp3WiQusIbA4UfotUfJ2IFJyAZPZ9DnGnuKKuF
+	0KlRSlyN3vxNEB9EU/cGi6DD+5Hf8bM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795424459;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O39JXi5k3K9AYzQlilyWAQFtMH7+2Ip6YVrc8OdVAfg=;
+	b=slK3PK2cIGWK/xqnT7jckTIAJC7+KNrE0xIo++VP0rQ21J/h3ZPHliFLIN+PtNGhyQgvoY
+	OBxtzMhZ1P+K0GDQ==
+Authentication-Results: smtp-out1.suse.de;
 	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795424458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O39JXi5k3K9AYzQlilyWAQFtMH7+2Ip6YVrc8OdVAfg=;
+	b=IWUpd4txpYWd49MwNZa/MQtoXhvFXvoruKKCz64+P7Ty9OY7ibTCspTjV9scHFPzZjO4YA
+	tOWUEBJfcyNpaR40sV9AoeUyhgvu/2SoGMyQGguogo8hZVWP8nejT8Nk5EjFkhXjIi747f
+	qVQMvKnm3UUsi5HcUm0r9aBvKXvfi74=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795424458;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O39JXi5k3K9AYzQlilyWAQFtMH7+2Ip6YVrc8OdVAfg=;
+	b=YsY3q8bNru1BdNgw1uFBt5zeI7uSIlQttOOa5VA0qtGsFHdtk2qYGgpU/nls0ZKL5peaZJ
+	5MBaqgfccSKDfNAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33706136D5;
-	Mon, 23 Nov 2026 09:00:58 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7619136CB;
+	Mon, 23 Nov 2026 09:00:57 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DbG/AsoABGvsBgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 23 Nov 2026 09:00:58 +0000
+	id pnI+MskABGviBgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 23 Nov 2026 09:00:57 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 6AE3927602; Mon, 23 Nov 2026 10:00:57 +0100 (CET)
+	id 5AAD8275FC; Mon, 23 Nov 2026 10:00:57 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: <linux-fsdevel@vger.kernel.org>,
@@ -77,10 +121,12 @@ Cc: <linux-fsdevel@vger.kernel.org>,
 	Eric Biggers <ebiggers@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	linux-fscrypt@vger.kernel.org,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH v3 05/13] jfs: Use inode_is_dirty() in jfs_fsync()
-Date: Mon, 23 Nov 2026 10:00:40 +0100
-Message-ID: <20261123090040.19006-18-jack@suse.cz>
+	Jan Kara <jack@suse.cz>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	"Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+Subject: [PATCH v3 02/13] xfs: Drop pointless I_DIRTY_PAGES check in xfs_can_free_cowblocks()
+Date: Mon, 23 Nov 2026 10:00:37 +0100
+Message-ID: <20261123090040.19006-15-jack@suse.cz>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261123085601.21199-1-jack@suse.cz>
 References: <20261123085601.21199-1-jack@suse.cz>
@@ -93,49 +139,61 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1029; i=jack@suse.cz; h=from:subject; bh=G2KZ3si9+GMJBvBvY3QFhsaBCqg7CNyaNYSowoLqcTk=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGLJZGPbY3e3aaHPOY01SwYaDqltn7v94c+Wx81YPPjavT F8mFiE1o5PRmIWBkYNBVkyRZXXkRe1r84y6toZqyMAMYmUCmcLAxSkAEwkDqm5smxK2947Nm03L NTwfFHG8i1Vn43GdkKssYda/vfxvx5xOxt9SWSeC7PrnzFZTC7Nf9eK8yfUMy5vRJ6MvWMtueZo rljX70MZEMWMpva2r09QO9vzKO2TSIZr+YINv6JMSgS03mKtP3i/vmS4VezRC+7mCRkwyc6baiY ua754rL+usOhVWaK0h55BkXDhhCffsnxfswq8Fe7Qbx4m6n+H+ypPIzC2ffvMjxxGfPSfC4wJCj f836kRFO6R+aNd6pt84nZfLYcsz9kvBggd9GJX99v2eJdF0Lv9mgNhJ/vbeZ+XTGQVbuqYuV1x+ Lryi5N3B6x9nBs+Q47kkZdj8/tv3izqx60xkTVa7PU0HAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1092; i=jack@suse.cz; h=from:subject; bh=KdSnsq8+pRAtowYvxbQqVA1eXIauc0HVVLDRR762jnM=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBrBAC5b8UfOwIZulW/Ge4yyUOL4JaBbZEbc1vlE Iz5aemnp0GJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCawQAuQAKCRCcnaoHP2RA 2fRPB/9QaYJNragl2Am9tYlLX9nPa/y2kyTMS3VZNIIAHZ98YN3VZykmYDXt5XsS72dAsWovwxU yJjKF2een8Mtg8djtKfH0Qs7Z7cuAb213Rqetd2qrucybQd39OxF1fsKLttfW9tOd8hrM1uxaj8 ZuDnwmb9wUQ1ICHlDFIBM162jwOi0HTB0dpWEv/IH29GvUhKc8JmJiFCRNZJibNYKZB5VF8CPi4 xJ1ofbFRxOrMU8T4e8ixALhoasP2lk/oay4MuQCRv+uBRKo1QOMFFpJOESQJdCDtnkqQy0new9G iLtyJzgfp8q9/cTgvH2Xh42bBCmPseKmitZCbCwL9gGimfTn
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
+X-Spamd-Result: default: False [-15.80 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.985];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLyaw51ggmke6bkcxeyajg5whq)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,imap1.dmz-prg2.suse.org:helo,suse.cz:email]
+X-Spam-Score: -15.80
 X-Spam-Level: 
-X-Rspamd-Queue-Id: 7F3051F80D
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
+X-Spam-Flag: NO
 
-Use inode_is_dirty() helper in jfs_fsync() instead of explicit i_state
-check. This slightly changes behavior in that we no longer trigger inode
-commit if the inode is clean except it still has I_DIRTY_PAGES set after
-data writeout but that is actually a desirable behavior because commit
-is pointless if only folios are dirty.
+PAGECACHE_TAG_DIRTY is the authoritative source of information about any
+folio being dirty in the mapping. I_DIRTY_PAGES is just an approximation
+used by writeback code that can get stale under certain situations. So
+just rely on the authoritative check.
 
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Pankaj Raghav (Samsung) <pankaj.raghav@linux.dev>
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/jfs/file.c | 3 +--
+ fs/xfs/xfs_reflink.h | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 2f5bb79c0591..90001d3d90fc 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -27,8 +27,7 @@ int jfs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
- 		return rc;
+diff --git a/fs/xfs/xfs_reflink.h b/fs/xfs/xfs_reflink.h
+index 683c1841e640..1310cc9fe829 100644
+--- a/fs/xfs/xfs_reflink.h
++++ b/fs/xfs/xfs_reflink.h
+@@ -17,8 +17,7 @@ xfs_can_free_cowblocks(struct xfs_inode *ip)
+ {
+ 	struct inode *inode = VFS_I(ip);
  
- 	inode_lock(inode);
--	if (!(inode_state_read_once(inode) & I_DIRTY_ALL) ||
--	    (datasync && !(inode_state_read_once(inode) & I_DIRTY_DATASYNC))) {
-+	if (!inode_is_dirty(inode, datasync)) {
- 		/* Make sure committed changes hit the disk */
- 		jfs_flush_journal(JFS_SBI(inode->i_sb)->log, 1);
- 		inode_unlock(inode);
+-	if ((inode_state_read_once(inode) & I_DIRTY_PAGES) ||
+-	    mapping_tagged(inode->i_mapping, PAGECACHE_TAG_DIRTY) ||
++	if (mapping_tagged(inode->i_mapping, PAGECACHE_TAG_DIRTY) ||
+ 	    mapping_tagged(inode->i_mapping, PAGECACHE_TAG_WRITEBACK) ||
+ 	    atomic_read(&inode->i_dio_count))
+ 		return false;
 -- 
 2.53.0
 
