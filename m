@@ -1,87 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795435022;
-	b=Mlai84megQIFQiBCz2mu+t1md+ShoFgeyJuy+SF37SOHOQMQR7jSBiq5TUxdJKNejVWu
-	 ZBv6zzINa7RTiJpXE/PLri/425hbXBoGkfX8eSIihsbIfvDzwcmj2OJlGUUTQ4v6fMM+X
-	 f4yE9zotyCilVYpanyX5wSSzjBtfSz0yj/sHWQ1yfz/RnaFnaHz7KnB4F8L5GOq0hyQp7
-	 +GuuRX2Ji700YXgYivfPnfVM2DUuP0ww1g3goL+4aL5i1FUB8X5URiy6HErD+5maE730e
-	 Kd7QWF+U012wdOrNSIL5XjVCiSAb/NoDWRbAKFMWa4M6UNFqof3MRSdXWqkJXG2s/CA==
+	t=1795453853;
+	b=dnJpMIQG/yiFcV1okLiuf7E0LvTAv3bVW//QTbnpmNX8m86Oxes4I5fOlPf/qIPSMsP0
+	 Y6bNzX24Jl7uBiWcj+XFC/b6IDcr4TGifkDmtfHpCHucQJvl67hSAJpjSUL0b/kRqCIzu
+	 TZO9xQzss3s6CgAExrofrAc7VP1fVLWK5z2rk3euHBMFZRic0jMl4ulfuXZl1+WvCNF2o
+	 tdzWlOhqPpQXAnx/MGTTjWeTPJP9u+ALgwG0VOBj99oFhd06fYq6659YQXsL9hidxfXIa
+	 wzAOYJh9rmfTXLKZ9QU4o6FPC5iRmFzLXFeAi2XyyTwZF3QImJ2Awlnc4D+GQ6E8T0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795435022;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=oqxTqGc37dwDnLjYZnqU54myhb23sMonqleeRzhUP+A=;
-	b=ntGjtKFVxmKDX2AYZ89UTZ30QrP1Ety2Aa24NG8auVWeKpuzI1pAXZ6zIR3tKKzDgDwh
-	 AKAo+G243wRfZHvIwYT2Bn7POBLgVcFqsLRQGdR2meUiWknP3/Fp/tbLT/aaxkfHKd1jv
-	 RvHGaWoCnOP76cPinTRIHve5BHeLIGdGEDuwIBZBII7t0YZEUA3BAhTzK5ELQIkkf4cn6
-	 hNCbg1QKMNLhb2bLhxfbwGcrtVO/0rXQikA4WYcedy/QFuFXuyeefOFL3KAyzODjzsJ2W
-	 uRal6cwKye49GO25Y4m+/ouCPO+9OvLUmVFpbUPt5g1T1PL9RpYPg5zCJIhEgCkDr6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795453853;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Rspamd-Queue-Id:X-Spam-Level:X-Rspamd-Server:
+	 X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:X-Spam-Score;
+	bh=/kG84OV1svRUYxEC9cAvJgk73HRiyZOTxHBca81Xqek=;
+	b=Zt9CSAVZhNYEGxHo44EA8yB03DM9a9U7C63FJrr4+WOdHenWVb3MXCORBEHW9rTvDYou
+	 R9t4duN+oGKJeHTJiZCFYy2vVgJbhOeXcOorq0Rt/orp5itmhSTbN3VRL8DVn6KWvhW5R
+	 x0Jj+dzXVcTNCWHg7WSCWhgndHXhUvmFmPR3FtYV3USgG8DjMC6fLCyCgxGPl/BEUMpNg
+	 AfXmY05KpS8oClzswJrtZ26sdN5YwYh/up29+HNWf+8eIuwfBfjpNI3OpwprYZvb+FmY8
+	 dam/uW42wJ546R/AX9V4ex39o5+jZCJp9tNtkM+MvhK2HtGDUa0BMqtI5kxAUH9AQzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=E+gRbUMk;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=none header.from=suse.cz;
+	spf=pass smtp.mailfrom=suse.cz;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=w6AcXesO;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uk+7dI8H;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b="k/9dx0+8";
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VNtsusfa;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387B4606A31A
-	for <gfs2@lists.linux.dev>; Mon, 23 Nov 2026 11:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 387B4606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB5B606A339;
+	Mon, 23 Nov 2026 17:10:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CB5B606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=E+gRbUMk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795435021;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=w6AcXesO;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uk+7dI8H;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=k/9dx0+8;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VNtsusfa
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0A18E220FE;
+	Mon, 23 Nov 2026 17:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795453851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oqxTqGc37dwDnLjYZnqU54myhb23sMonqleeRzhUP+A=;
-	b=E+gRbUMkXzr0ftgnphVyzjzHx4e5SigwzrZsgeRJCNybCOx25/aMeDa/5uK8JDEq0XaT8T
-	/GotI0hz8XNeEaCJySIHX7w0tJVAPDeoB3onXSvfuP5VncwyfmwP7YIzUrYUIH/3A0FxwR
-	7vcuuTbyVgva45tbdLQt4k2HsLFCp7w=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-5QQyLO7JPa-AMtFEm7hSqw-1; Mon, 23 Nov 2026 11:56:59 +0000
-X-MC-Unique: 5QQyLO7JPa-AMtFEm7hSqw-1
-X-Mimecast-MFC-AGG-ID: 5QQyLO7JPa-AMtFEm7hSqw_1795435019
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-677c2db10b1so4706388d50.1
-        for <gfs2@lists.linux.dev>; Mon, 23 Nov 2026 03:56:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795435019; x=1796039819;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oqxTqGc37dwDnLjYZnqU54myhb23sMonqleeRzhUP+A=;
-        b=Lziqg1rU/VEf3PhLlRLbADFL9TUMWsDRdZgn+8HcAWWZHVrcZ5HI/JQS1fYJao3bwo
-         ssrAkhq+4nuYKSdlJ9LciiLoClFEX17ETk30CCt+1Z++HaQYRE1zndWQKpBOsgl9fOi0
-         LLf8HX6dpPMQgvEEDWZU0D4jUKuT2/ZBCAY5Ztx6EXuxKLkwvm2pRUL7E/ot502Gkq3i
-         isiw+UdQ/D/jovBV9fcc2sH171Hj710g3zOgX6SftK4c/s5NioREtqEnJ3Dv3Fw2Pt3Z
-         q02+DsvC22fZihRsTlvoPtlJ6WNFO5tCncrkz3VuCEjHncApTQslGytpW8kTipZQz+Rg
-         efdQ==
-X-Forwarded-Encrypted: i=1; AL+hErEwmCqWR/c/V1hr3HP+/jYwCbv2HEca1IyGs25uzSGgUZlSdpT1VoQsv8BuUMgImrq3h6EP@lists.linux.dev
-X-Gm-Message-State: APuU4Z+RvovpJL1qzR1kyQfvEeWzeAQqSRA1H0525HIOEC1nkNUkkOh0
-	byrqjY9zth61N7242X69ey0sM6h1sDra+zFJU8pOwTe8Xl1nWWLtafBw1Hl9u+fJfnu1a2Hp2Wn
-	XAOjebGFrf7mLya4qat7pzW0+OeK2XQCrit64H+aOg2VeXHaPe5JRSFfi0rK8peMQNmgXJlYNM4
-	HP+XpCT5k5YHcs5g8UoXmaS5m4TWf4pA==
-X-Gm-Gg: AZFdTZdoQSKBxjGaqtCF0wszhKI4x2zBw/7872MowRLUeHV2m4GvFbqPBTjRdtH1UO1
-	nl5ykxhcTHNQTKhT+5myWCLbegdo/0KNUgQvX3E66VkB8rggAmDqYIdFrhzKOo0lADCTrMWbwKm
-	RIXXU0oU206ENAeMurP/QeIVqgD8/OLqFpooA/VRtSZvPzBf2Tm3wqihPwkNRP5GkVrV0hWnISx
-	buTHB+bZasErMoPSTtQWltTa3oW2yBeqEuwuuouG6A6MQ==
-X-Received: by 2002:a05:690c:6b05:b0:8b3:ba8d:2f55 with SMTP id 00721157ae682-8b52043567emr39667297b3.33.1795435018868;
-        Mon, 23 Nov 2026 03:56:58 -0800 (PST)
-X-Received: by 2002:a05:690c:6b05:b0:8b3:ba8d:2f55 with SMTP id
- 00721157ae682-8b52043567emr39667047b3.33.1795435018370; Mon, 23 Nov 2026
- 03:56:58 -0800 (PST)
+	bh=/kG84OV1svRUYxEC9cAvJgk73HRiyZOTxHBca81Xqek=;
+	b=w6AcXesOZ5YH48nwr4/Zbb2OvihyNPpA2GaS8A7O9z2oG9GBWmJ/46kSzJKa3VCgso4cw2
+	JZ4Hnb8sCgjDmnuMc+nIKSwP7dJLbQYA5qcgFiKSaOq9rPRJG87wC5i6XEzABIsGUQJrjL
+	mGPiW62u6voVv5zLFWZVR2/IFAMZr5A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795453851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/kG84OV1svRUYxEC9cAvJgk73HRiyZOTxHBca81Xqek=;
+	b=uk+7dI8Hik0pNcS54lE0y3ylpW9rFqPZ/mPScz0rW6mN1wlfQSe8bME/EGxR9Ab6udLZqR
+	1XWUwDEX3tW9VtCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="k/9dx0+8";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VNtsusfa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1795453850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/kG84OV1svRUYxEC9cAvJgk73HRiyZOTxHBca81Xqek=;
+	b=k/9dx0+842+5FtGIhxu7+7wPqr47yYCQpQ+WNd8f8xnShoAIDvn9O0jk9JRHRvvnY8kN//
+	jiEInyq0HEZOr+uduUd4dgB4Az4HSaYE7DOWdIo/rJumfwtP4xGnueR8ctNQpcSf2n58Jt
+	XVCWDpRbwlVe9lEYdHPr6fUoiyS5SHs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1795453850;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/kG84OV1svRUYxEC9cAvJgk73HRiyZOTxHBca81Xqek=;
+	b=VNtsusfa+lQYA7pWPGu0Ny1HCtp7roepllJpMCXv8C23shYPD3duAhMPyEnc0n1KJWbwqK
+	s8LYDkt36KmCbxCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6C1913510;
+	Mon, 23 Nov 2026 17:10:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MyN8IJlzBGvvAwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 23 Nov 2026 17:10:49 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id E2AEA27683; Mon, 23 Nov 2026 18:10:38 +0100 (CET)
+Date: Mon, 23 Nov 2026 18:10:38 +0100
+From: Jan Kara <jack@suse.cz>
+To: sashiko-reviews@lists.linux.dev
+Cc: Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, devel@lists.orangefs.org, Dave Kleikamp <shaggy@kernel.org>, 
+	Carlos Maiolino <cem@kernel.org>, David Howells <dhowells@redhat.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Miklos Szeredi <miklos@szeredi.hu>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, Eric Biggers <ebiggers@kernel.org>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org, Anna Schumaker <anna@kernel.org>
+Subject: Re: [PATCH v3 13/13] fs: Use inode_or_folios_dirty() in
+ __inode_lru_list_add()
+Message-ID: <mlnoenfbwzynuicu56rrmw7go5ijomamaidrsarjbmplsqrcjr@bdpui3vcohcg>
+References: <20261123085601.21199-1-jack@suse.cz>
+ <20261123090040.19006-26-jack@suse.cz>
+ <sashiko-outbox-228978@kernel.org>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -91,53 +119,88 @@ List-Unsubscribe: <mailto:gfs2+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261120031305.3561045-1-huangsj@hygon.cn> <20261120031305.3561045-2-huangsj@hygon.cn>
- <CAHc6FU7VUBLg=gX-xspFfp4jPffdH7Pc4oVx5nRDo7A3aiVWug@mail.gmail.com> <awP5q_CmS3uIqfCw@hsj-2U-Workstation>
-In-Reply-To: <awP5q_CmS3uIqfCw@hsj-2U-Workstation>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Mon, 23 Nov 2026 12:56:47 +0100
-X-Gm-Features: Aa3M54pdTCvZmmXjws9eztEBY-s6WsNxLh4ieFxp9T0N0Za24a02lla1XE5V3KA
-Message-ID: <CAHc6FU7rAr4Mbf3KssQdsxhdk7D+2SzxSydkyw7cgykGGJOi=A@mail.gmail.com>
-Subject: Re: [PATCH v3 01/11] vfs: add super_iter_inodes()
-To: Huang Shijie <huangsj@hygon.cn>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	hch@infradead.org, mic@digikod.net, axboe@kernel.dk, gnoack@google.com, 
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, legion@kernel.org, 
-	aleksa@amutable.com, libaokun@linux.alibaba.com, ebiggers@kernel.org, 
-	djwong@kernel.org, sandeen@redhat.com, zhongyuan@hygon.cn, 
-	fangbaoshun@hygon.cn, yingzhiwei@hygon.cn, wujianyong@hygon.cn, 
-	shijie8@gmail.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	gfs2@lists.linux.dev, linux-security-module@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _EeMa3D5g7doL-MG2iOrpIRM4wGM8B2bfjhIKS3WEd8_1795435019
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-228978@kernel.org>
+X-Rspamd-Queue-Id: 0A18E220FE
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-13.01 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	ARC_NA(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -13.01
 
-On Mon, Nov 23, 2026 at 9:31=E2=80=AFAM Huang Shijie <huangsj@hygon.cn> wro=
-te:
-> =E5=9C=A8 Fri, Nov 20, 2026 at 03:56:23PM +0100=EF=BC=8CAndreas Gruenbach=
-er =E5=86=99=E9=81=93=EF=BC=9A
-> > > +
-> > > +int super_iter_inodes(struct super_block *sb, ino_iter_fn iter_fn,
-> > > +                     ino_iter_eligible_fn eligible, void *priv, int =
-flags);
-> > > +
-> > >  struct super_operations {
-> > >         struct inode *(*alloc_inode)(struct super_block *sb);
-> > >         void (*destroy_inode)(struct inode *inode);
-> > > --
-> > > 2.53.0
-> >
-> > Sorry to say, but this has gone quite a bit off course. Can you try a
-> > construct like iomap_iter() instead?
->
-> Christian had suggested to use the following methed:
->   https://lore.kernel.org/all/20261120-mitverantwortlich-drehbaren-kantho=
-lz-241300d20168@brauner/
+On Mon 23-11-26 09:30:54, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] fs: UAF of inode->i_mapping in __inode_lru_list_add() after
+>   dev_dax teardown
+> --
+> 
+> commit dba191eb05adecdae3b365e1982438c7882c5c1d
+> Author: Jan Kara <jack@suse.cz>
+> 
+> fs: Use inode_or_folios_dirty() in __inode_lru_list_add()
+> 
+> This commit replaces the I_DIRTY_ALL check in __inode_lru_list_add() with a
+> call to inode_or_folios_dirty().
+> 
+> > diff --git a/fs/inode.c b/fs/inode.c
+> > index de207f2f95a98..fb759033aa965 100644
+> > --- a/fs/inode.c
+> > +++ b/fs/inode.c
+> > @@ -552,7 +552,9 @@ static void __inode_lru_list_add(struct inode *inode, bool rotate)
+> >  {
+> >  	lockdep_assert_held(&inode->i_lock);
+> >  
+> > -	if (inode_state_read(inode) & (I_DIRTY_ALL | I_SYNC | I_FREEING | I_WILL_FREE))
+> > +	if (inode_state_read(inode) & (I_SYNC | I_FREEING | I_WILL_FREE))
+> > +		return;
+> > +	if (inode_or_folios_dirty(inode))
+> >  		return;
+> 
+> [Severity: High]
+> Can inode_or_folios_dirty() cause a use-after-free on inode->i_mapping
+> when a device-dax character special file inode is added to the LRU after
+> dev_dax teardown?
+> 
+> Unlike mapping_shrinkable(&inode->i_data) below and the other LRU and
+> eviction paths in fs/inode.c, inode_or_folios_dirty() dereferences
+> inode->i_mapping via mapping_tagged(inode->i_mapping, PAGECACHE_TAG_DIRTY)
+> whenever I_DIRTY_ALL is clear.
 
-Yes, that's what I meant.
+Hrm, this is right. We'd need to check inode->i_data and not
+inode->i_mapping. Christian, please just drop this patch. The code is
+correct as is (we hold i_lock) and the helper would do more harm than good
+here.
 
-Thanks,
-Andreas
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
