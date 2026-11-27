@@ -1,48 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795770346;
-	b=i+S//RDnSMFevUmU276HtHaBljspL9FYXGQvyc4z0V+uigNTEPIcjjnm9+yo+IPUWTm9
-	 lzATOfujdF60/zv/sn6kXcQh33jWTljm7XgLxwlxeS1yIWpw95xFp+evMwHOrQAYXlDln
-	 I/axOX5C+zKWG+y/166r4MS2L7nKg4CSH9qxc3Xi+Oh+NYOEsKPMnWB27fmOjfIIq0wWt
-	 x4oM5ICwG5iM30PfaJO0yXXJK/yWRBXLCRNhFoB/m1Jdk83Renprg/VGUDR0QuBX5EaH3
-	 OZAY4cv0MgzHxa705bykD5SSJ6W3LvAk3ynER1v5QkcoBB8+L2sstP8YrNJz5h22wvQ==
+	t=1795772684;
+	b=e5PuC09n52ef7RisA0GhO8+n5/Zt1AwIq50sx/WVy05/BtrKvFbdJndVrLgPdVHvwmLq
+	 AGzystkQSewc29HmvhZREu2ULCPtZ3tavV89MOjadQHbMgADUZH4O4Xd8mupzyjKCtxEi
+	 m0XTzM+k1agZBNOU/3i/qtktIdI1zxHvj6M/s28YuSiC6/qwb8G2HdiaRS+Q5aX8OlSR6
+	 hAtSdFVwaRmE58hAutxNMLURUJw5eErQ7BTu7U7f5bRpDsTpy0J5fAdX1UCMfAC6Vp4Kv
+	 VGE2s4B1B5wr+IGyQ7Aw943do2vdpYPtMkGNi54qJJF6gadUk589k+acdw1afOEUsAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795770346;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=xTFTy5wSUzYE6jj+9jBvqGj4csiaNGqAOGzqnLd4EFs=;
-	b=MPcgr6Y/5yqBTP+K6Y6dQh7oRp54yibIqQ9h/57XMsZ0zcvFh5Z1JA2S7UJcRme6g8KA
-	 POpcZ4VJUtgKrTxpISunwnWYZdNctzIni9A4Z1U0s5Sh7JWempmcrzkDTOYsl/a9Jo1X9
-	 yf2aL7HUcq24X2pjcweZlhgUcIFWOoe0uB/WsiQDbpcxC9YIsI6tUXQFBXYuPrJrWXZ+e
-	 L99w9PRTRCRth3P5/tVUxH25JDMzDg1VIZ01p9s5wx/1TjfUWKxm56pBWmI+dulQPmIwY
-	 XW4DB8xiAdf5J1hltSHNGNM5fTZJG2lEv55dEqBVqmBHXPiJYIqfDPh8EeAzFxUmezA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795772684;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=2AXdsYqzJ/4Ge1n4R0RB4I2MudVnosImi/2iRiqd2Lc=;
+	b=nQwIsE9Y5/uBJoIj6sOAmxI4j3WuO0WzoJIRmTs90QtKHsXg6wfP2OMXdObLTonkzWLP
+	 oi/rzhXRb5+BiCeACVpjAjGr3KEqv9Qe4vm92xrmnWpcp0vCx84BbUGzi65yxCcDMMvSL
+	 vUatrMdKJiWt4to9PjY3VyKkWvr+fPxIH3JCPuO+KlcROx4O/TdJKN/h2gzOotBIO0v4C
+	 nFTv0kRncXz5B4SvjSHxGU2Z7FmRrgL7WbfyDPUwyplKtKsnVH7FlbWtbZheQcTXq2sFa
+	 rhFKQ84C5qRG9Nce2teZYLQW63UL5k3jmZnfJAW7lsnHOaC+kNlB1ekeZak71Myos/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mails.ucas.ac.cn;
-	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=cs.unc.edu;
+	spf=pass smtp.mailfrom=cs.unc.edu;
+	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=GGfAq59v;
+	arc=none smtp.remote-ip=209.85.160.174
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49B5606A31C
-	for <gfs2@lists.linux.dev>; Fri, 27 Nov 2026 09:05:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A49B5606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
-Received: from localhost.localdomain (unknown [159.226.43.6])
-	by APP-03 (Coremail) with SMTP id rQCowADXqZrURwlrfPLsAQ--.62564S2;
-	Fri, 27 Nov 2026 17:05:24 +0800 (CST)
-From: Xinyuan Zhao <zhaoxinyuan24@mails.ucas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B48606A321
+	for <gfs2@lists.linux.dev>; Fri, 27 Nov 2026 09:44:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32B48606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=GGfAq59v
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53634b8328eso74295361cf.0
+        for <gfs2@lists.linux.dev>; Fri, 27 Nov 2026 01:44:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cs.unc.edu; s=google; t=1795772683; x=1796377483; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2AXdsYqzJ/4Ge1n4R0RB4I2MudVnosImi/2iRiqd2Lc=;
+        b=GGfAq59v/GaMKadQPUxNB5QEpQ/ybetrxZBbgiieo6byPzhQWxO00BYZvmFoKID8kX
+         fcwTxqVL4i5TuxBysCl3PsT2g8tF44NwfANEeO2UOxQVaEGQoqOBRxWyuVAWwfU+inQm
+         v61q5yz+4FHvsmisAIrGG8mmUziw31ns9eKsHbATjnKUi6Oh/l0ZlQyv/PoJOGE6y9YA
+         7NMBfzAdZ68lufzGjqEdqRGQhiYK5br4H1LsiNh+2kvroDlN7LUnL5B8EPeAyK3QKiAY
+         gr/3bNM1azSi0zRsob0uFKK0N5x34UTKuesQw7bZ2Bu8nGv3m8S5S4W7z6AbKLiYprA6
+         ptVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795772683; x=1796377483;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2AXdsYqzJ/4Ge1n4R0RB4I2MudVnosImi/2iRiqd2Lc=;
+        b=I8klSdbz/jBOiPt8SWyH9tKzhs58gOy9tAVyhDKS4dAlrwFfAJo1fy2CySxwvguzQY
+         O0hfNNz/GyXYR9xE1pJdO7Hi4O2f2Xn0uRuRRvYE4qm6ZaWEHhI9APxY7lUnhji+5mVX
+         f9+Onk154BzzVzSfeOODLUDj0K8t7LisFFV9SsK3mJjB8upBzCzkl/EOV5/DDsm+2uH8
+         2q/x5J6mqXtlv/LO5O2k3sUuOZHytc27JLPTqmIX62GvcNJbnmTrsrif8plkWLgIyFPH
+         lwnGC0Ee2QwU2XxR50Q8dIS92F7omx1OsHa8RFW9PSh41x1U89sKYoXARvnSRuaipNJP
+         B7Ww==
+X-Gm-Message-State: APuU4Z9kJdVzq9okpVx+D5c5K8def9lRLKwuJfVCHyvg9wvCIlU2jWGY
+	qsrEvVYdjSF/b1zsCOFEns1P4vd8V8omLSJcCAhu0ekVd8SJmgayp+Jm4INW67YU2w==
+X-Gm-Gg: AZFdTZc1ITGuBv7DpZG6OVgx4QAXx8+6uXA8ta1AViV9ug8PII1m0emaRIja0ffKdxR
+	0jU6ox7yaG3qOsXqXY8IICTdhnNckicCrxyq/iPuc+GS1VZ6XocwX38YfDMb/4zLYCIIkPHwOmt
+	sw0Lmlq/fvVHdG/Szrby5NgioZG4pD9K6aDV+PIA3WOKXo561vLJclzva06EgqN9AajfUhfmVs3
+	bgppT/GDIdBHPEtxdSfwhpcr7vlhwmlDkhqKUu0mspl7ZsfAC76mOJWOP9K3sBxiVGM3fMwHnA/
+	bqR0bOZkioXhVBsCsq9hqvwIPJfe+2jqQxHQvJ9xu6ktKXBuHUVl46j4Lc8eP+HeVDdo8itts0/
+	VIjlnfIh2sCgbIxTzyky+h6SUSu084sVjm+VboBW5vV26IsLHeg+iSOtDwo27xK0aeQc33ByU4H
+	9IpA02A39eWg7AyPhGe/iw5RcLZS6fOx7bLZ8L74ZA0HUnNec9Sc6/g6k3dGr7JZE/t+wCsm7Um
+	VHla+jxV7hux1HhmUHztl0o5e+6XnVBCgDH42IHdm5woBYX5uZggs6yDk1/Fb5tUFwL904KqKJN
+	syIKA7KIK+EPQRolTEKjoo5YsCcI4WqOis4YM1x94/WigSCsDwY=
+X-Received: by 2002:a05:622a:120c:b0:535:a5f9:752e with SMTP id d75a77b69052e-55d76aed568mr440022791cf.77.1795772683004;
+        Fri, 27 Nov 2026 01:44:43 -0800 (PST)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7889f8absm200058121cf.27.2026.11.27.01.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 01:44:42 -0800 (PST)
+From: Hengyu Liang <hengyul@cs.unc.edu>
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Xinyuan Zhao <zhaoxinyuan24@mails.ucas.ac.cn>
-Subject: [BUG] gfs2: slab-use-after-free in gfs2_release_folio due to premature free_sbd() in gfs2_fill_super()
-Date: Fri, 27 Nov 2026 17:05:18 +0800
-Message-ID: <20261127090518.29089-1-zhaoxinyuan24@mails.ucas.ac.cn>
-X-Mailer: git-send-email 2.54.0
+	stable@vger.kernel.org
+Subject: [PATCH v2] gfs2: make the glock wait in rename killable
+Date: Fri, 27 Nov 2026 04:44:27 -0500
+Message-ID: <20261127094427.1370216-1-hengyul@cs.unc.edu>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261125185332.2549812-1-agruenba@redhat.com>
+References: <20261125185332.2549812-1-agruenba@redhat.com>
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
 List-Post: <mailto:gfs2@lists.linux.dev>
@@ -53,208 +98,98 @@ List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADXqZrURwlrfPLsAQ--.62564S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3WFW8tF1rXr1DCF4xCw43trb_yoWfWF1DpF
-	9ak3s7Xr4kW34UWr4xGF4rtFy8Xa9IyF17Gr1fWr13AF13Ww17Ga9F9rsrXa1UCF1kC34x
-	Z3WUJrW7Wr1UJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JU1byNUUUUU=
-X-CM-SenderInfo: p2kd055lq13trqsuqzpdlo2hpxfd2hldfou0/
 
-Hi Andreas and GFS2 maintainers,
+Commit 11d763f0b0af ("gfs2: Retries missing in gfs2_{rename,exchange}")
+made gfs2_glock_async_wait() interruptible. It returns -EINTR when a
+signal is pending.
 
-While fuzzing Linux 7.4.0-rc3 (upstream commit 4405c18) on x86_64 with
-syzkaller, we encountered a KASAN slab-use-after-free in
-gfs2_release_folio() triggered by kswapd0 racing with a failing
-gfs2_fill_super() mount path. We verified both the latest torvalds/linux
-master (7.4.0-rc4) and linux-next branches, and the error cleanup path in
-gfs2_fill_super() (fs/gfs2/ops_fstype.c:1286-1316) remains unchanged.
+However, -EINTR goes back to user space as it is, and the system call
+is not restarted. As of now, rename() and renameat2() on gfs2 fail
+with EINTR when a signal arrives while they wait for a glock, also
+when the signal only stops and continues the process.
 
-Summary / Root Cause Analysis
-=============================
+The issue can be reproduced with:
 
-During a failing mount, gfs2_fill_super() frees struct gfs2_sbd (sdp)
-before VFS tears down the superblock and evicts cached inodes/folios:
+    mkfs.gfs2 -O -p lock_nolock -j 1 /dev/vda
+    mount /dev/vda /mnt
+    mkdir /mnt/a /mnt/b
+    for i in $(seq 12000); do echo > /mnt/a/$i; done
+    umount /mnt; mount /dev/vda /mnt
+    mv /mnt/a/* /mnt/b/ &
+    while kill -STOP $!; do kill -CONT $!; sleep 0.005; done
 
-1. gfs2_fill_super() allocates sdp via init_sbd() (fs/gfs2/ops_fstype.c:79,
-   1121) and sets sb->s_fs_info = sdp. During mount initialization, GFS2
-   reads metadata/system inodes and populates folios with buffer_heads
-   backed by gfs2_release_folio() onto the LRU lists.
+Before commit 11d763f0b0af ("gfs2: Retries missing in
+gfs2_{rename,exchange}"), mv moves all 12000 files.
 
-2. If mount fails later in gfs2_fill_super() (in this case, during
-   gfs2_jdesc_check() with "my journal (0) is bad: -5"), execution falls
-   through fail_per_node..fail_free (fs/gfs2/ops_fstype.c:1286-1316) and
-   calls free_sbd(sdp) at line 1315:
+After that commit, the result for 783 of the files is:
 
-     void free_sbd(struct gfs2_sbd *sdp)
-     {
-         struct super_block *sb = sdp->sd_vfs;
+    mv: cannot move '/mnt/a/10' to '/mnt/b/10': Interrupted system call
 
-         free_percpu(sdp->sd_lkstats);
-         sb->s_fs_info = NULL;
-         kfree(sdp);
-     }
+Make the wait killable instead, so that only a fatal signal ends it.
 
-   At this point, gfs2_fill_super() has not yet returned to VFS, so
-   deactivate_locked_super() -> gfs2_kill_sb() -> kill_block_super() ->
-   generic_shutdown_super() -> evict_inodes() has not yet run to evict
-   remaining cached inodes and truncate their page cache folios (unlike
-   normal unmount in gfs2_kill_sb(), which calls shrink_dcache_sb(),
-   gfs2_evict_inodes(), and kill_block_super() before freeing sdp).
+With this change, mv moves all 12000 files again.
 
-3. Concurrently, kswapd0 reclaims a folio belonging to this superblock via
-   shrink_folio_list() -> filemap_release_folio() -> gfs2_release_folio()
-   (fs/gfs2/aops.c:649-671):
+Fixes: 11d763f0b0af ("gfs2: Retries missing in gfs2_{rename,exchange}")
+Cc: stable@vger.kernel.org
+Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
+---
+I found this while comparing the behavior of different kernel versions.
+I used an LLM to analyze the problem and to draft the patch and this
+message, and I analyzed the result myself.
 
-     struct gfs2_sbd *sdp = gfs2_mapping2sbd(mapping);
-     ...
-     spin_lock(&sdp->sd_log_lock);
+v2: make the wait killable, as Andreas suggested, instead of returning
+-ERESTARTSYS.
+v1: https://lore.kernel.org/all/20261125175007.3659558-1-hengyul@cs.unc.edu/
 
-   If kswapd0 reads sdp before free_sbd() clears sb->s_fs_info and frees
-   sdp, spin_lock(&sdp->sd_log_lock) at fs/gfs2/aops.c:671 triggers a
-   slab-use-after-free (offset 3168 inside the freed 8192-byte struct
-   gfs2_sbd). Conversely, if kswapd0 reads sb->s_fs_info after
-   free_sbd() sets it to NULL, it would hit a NULL pointer dereference.
+Tested on gfs2 for-next with KASAN and lockdep: no rename fails under
+signal handlers or stop / continue, SIGKILL still ends a waiting
+rename, and fsck.gfs2 is clean.
 
-Possible Fix
-============
+ fs/gfs2/glock.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-Ensure all cached dentries, inodes, and their page cache folios are
-evicted/truncated before freeing sdp on the gfs2_fill_super() failure
-path (for example, by calling shrink_dcache_sb(sb) and
-gfs2_evict_inodes(sb) before free_sbd(sdp), or deferring free_sbd(sdp)
-until after generic_shutdown_super() has evicted all inodes).
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 21b71fe286b7..5068b680606c 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1298,8 +1298,8 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
+ 		max_shift = BITS_PER_LONG - 2 - __fls(GL_GLOCK_HOLD_INCR);
+ 		incr = min(GL_GLOCK_HOLD_INCR << min(retries - 1, max_shift),
+ 			   10 * HZ - GL_GLOCK_MIN_HOLD);
+-		schedule_timeout_interruptible(get_random_long() % (incr / 3));
+-		if (signal_pending(current))
++		schedule_timeout_killable(get_random_long() % (incr / 3));
++		if (fatal_signal_pending(current))
+ 			goto interrupted;
+ 		timeout += (incr / 3) + get_random_long() % (incr / 3);
+ 	}
+@@ -1311,10 +1311,10 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
+ 	}
+ 	for (;;) {
+ 		for (i = 0; i < num_gh; i++)
+-			prepare_to_wait(waitq[i], wait + i, TASK_INTERRUPTIBLE);
++			prepare_to_wait(waitq[i], wait + i, TASK_KILLABLE);
+ 		if (!glocks_pending(num_gh, ghs))
+ 			break;
+-		if (signal_pending(current)) {
++		if (fatal_signal_pending(current)) {
+ 			ret = -EINTR;
+ 			break;
+ 		}
+@@ -1325,10 +1325,6 @@ int gfs2_glock_async_wait(unsigned int num_gh, struct gfs2_holder *ghs,
+ 			ret = -ESTALE; /* request timed out. */
+ 			break;
+ 		}
+-		if (signal_pending(current)) {
+-			ret = -EINTR;
+-			break;
+-		}
+ 	}
+ 	for (i = 0; i < num_gh; i++)
+ 		finish_wait(waitq[i], wait + i);
 
-Reproducer
-==========
-
-The crash was triggered by mounting a corrupted GFS2 image (failing in
-gfs2_jdesc_check()) concurrently with memory reclaim pressure (kswapd0).
-The extracted syzkaller program and C reproducer (with proactive compaction
-disabled and a concurrent memory.reclaim / drop_caches worker) are available
-at:
-
-  https://gist.github.com/ilidanZtormrage/75671cc20d086f632e5c047fb166e32b
-
-Note: on the same gfs2_fill_super() failure cleanup path, leftover folios on
-the LRU can trigger two distinct UAFs during kswapd0 reclaim in evict_folios():
-first on a freed struct gfs2_glock in isolate_folios() -> folio_evictable(),
-and then on the freed struct gfs2_sbd (sdp) in shrink_folio_list() ->
-gfs2_release_folio(). With panic_on_warn=1, kswapd0 may panic on
-folio_evictable() first (~10s); running with panic_on_warn=0 allows
-gfs2_release_folio() on the freed sdp to surface as well.
-
-Crash Report
-============
-
-gfs2: fsid=..0: fatal: filesystem consistency error - inode = 1 19, function = gfs2_jdesc_check, file = fs/gfs2/super.c, line = 119
-gfs2: fsid=..0: my journal (0) is bad: -5
-==================================================================
-BUG: KASAN: slab-use-after-free in __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
-BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
-Read of size 1 at addr ffff8880297ccc60 by task kswapd0/99
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xf4/0x600 mm/kasan/report.c:482
- kasan_report+0xe0/0x110 mm/kasan/report.c:595
- __kasan_check_byte+0x36/0x50 mm/kasan/common.c:588
- kasan_check_byte include/linux/kasan.h:406 [inline]
- lock_acquire kernel/locking/lockdep.c:5916 [inline]
- lock_acquire+0x126/0x370 kernel/locking/lockdep.c:5899
- __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
- _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
- spin_lock include/linux/spinlock.h:347 [inline]
- gfs2_release_folio+0x140/0x720 fs/gfs2/aops.c:671
- filemap_release_folio+0x22d/0x390 mm/filemap.c:4587
- shrink_folio_list+0x177c/0x45b0 mm/vmscan.c:1569
- evict_folios+0x352/0x13d0 mm/vmscan.c:5097
- try_to_shrink_lruvec+0x301/0x7e0 mm/vmscan.c:5271
- shrink_one+0x33e/0x710 mm/vmscan.c:5318
- shrink_many mm/vmscan.c:5381 [inline]
- lru_gen_shrink_node mm/vmscan.c:5459 [inline]
- shrink_node+0x2906/0x4230 mm/vmscan.c:6465
- kswapd_shrink_node mm/vmscan.c:7258 [inline]
- balance_pgdat+0xa6b/0x1da0 mm/vmscan.c:7429
- kswapd+0x590/0xbd0 mm/vmscan.c:7705
- kthread+0x385/0x490 kernel/kthread.c:436
- ret_from_fork+0xb2a/0xdd0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 38319:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:57
- kasan_save_track+0x14/0x40 mm/kasan/common.c:79
- poison_kmalloc_redzone mm/kasan/common.c:412 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:429
- kasan_kmalloc include/linux/kasan.h:267 [inline]
- __kmalloc_cache_noprof+0x2e4/0x710 mm/slub.c:5680
- _kmalloc_noprof include/linux/slab.h:991 [inline]
- _kzalloc_noprof include/linux/slab.h:1312 [inline]
- init_sbd fs/gfs2/ops_fstype.c:79 [inline]
- gfs2_fill_super+0x148/0x2f80 fs/gfs2/ops_fstype.c:1121
- get_tree_bdev_flags+0x392/0x630 fs/super.c:1821
- gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1331
- vfs_get_tree+0x8e/0x330 fs/super.c:1881
- fc_mount fs/namespace.c:1282 [inline]
- do_new_mount_fc fs/namespace.c:3910 [inline]
- do_new_mount fs/namespace.c:3986 [inline]
- path_mount+0x7bf/0x25c0 fs/namespace.c:4337
- do_mount fs/namespace.c:4350 [inline]
- __do_sys_mount fs/namespace.c:4563 [inline]
- __se_sys_mount fs/namespace.c:4540 [inline]
- __x64_sys_mount+0x293/0x310 fs/namespace.c:4540
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x12e/0x800 arch/x86/entry/syscall_64.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 38319:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:57
- kasan_save_track+0x14/0x40 mm/kasan/common.c:79
- kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:599
- poison_slab_object mm/kasan/common.c:267 [inline]
- __kasan_slab_free+0x73/0x90 mm/kasan/common.c:299
- kasan_slab_free include/linux/kasan.h:239 [inline]
- slab_free_hook mm/slub.c:2780 [inline]
- slab_free mm/slub.c:6637 [inline]
- kfree+0x160/0x720 mm/slub.c:6930
- free_sbd fs/gfs2/ops_fstype.c:72 [inline]
- gfs2_fill_super+0x15a9/0x2f80 fs/gfs2/ops_fstype.c:1315
- get_tree_bdev_flags+0x392/0x630 fs/super.c:1821
- gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1331
- vfs_get_tree+0x8e/0x330 fs/super.c:1881
- fc_mount fs/namespace.c:1282 [inline]
- do_new_mount_fc fs/namespace.c:3910 [inline]
- do_new_mount fs/namespace.c:3986 [inline]
- path_mount+0x7bf/0x25c0 fs/namespace.c:4337
- do_mount fs/namespace.c:4350 [inline]
- __do_sys_mount fs/namespace.c:4563 [inline]
- __se_sys_mount fs/namespace.c:4540 [inline]
- __x64_sys_mount+0x293/0x310 fs/namespace.c:4540
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x12e/0x800 arch/x86/entry/syscall_64.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The buggy address belongs to the object at ffff8880297cc000
- which belongs to the cache kmalloc-8k of size 8192
-The buggy address is located 3168 bytes inside of
- freed 8192-byte region [ffff8880297cc000, ffff8880297ce000)
-
-Best regards,
-Xinyuan Zhao
+base-commit: a009501c151f7d19519312ccfa2070d30d62b249
+-- 
+2.53.0
 
