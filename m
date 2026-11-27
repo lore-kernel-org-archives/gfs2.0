@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795764473;
-	b=T0w6WC58Qiths5XeFTDY6WNu5gCP3S7VVoRbHvyDM5YtXFvfsMRsURgPH8Cv8drVQ0Or
-	 a3WHSIvw5ZKYGfp4IyS5vOJJOd5MLRXworqf/GBT7EIQfmhltf3P7aSAXwDT21Jonpe5J
-	 ssaqtlSwLpMUJ3f7HwiQR/BCGjsHBu/MukDXxP8FCcferNtOMhvfadOaC557khqEQviVC
-	 SGhTJYywYS2q5nN+sT+Ha0VRn5UxQyVdBDI+Wi2b/71GlJwimcSn+OL5mCTFrdVRLFVFL
-	 Cta6n7X1ADpDWMuwsczDbutUaC5W2DIuk6ExkwOvv7O8tUknBr2VmDvYTO76Pz6tbVg==
+	t=1795770346;
+	b=i+S//RDnSMFevUmU276HtHaBljspL9FYXGQvyc4z0V+uigNTEPIcjjnm9+yo+IPUWTm9
+	 lzATOfujdF60/zv/sn6kXcQh33jWTljm7XgLxwlxeS1yIWpw95xFp+evMwHOrQAYXlDln
+	 I/axOX5C+zKWG+y/166r4MS2L7nKg4CSH9qxc3Xi+Oh+NYOEsKPMnWB27fmOjfIIq0wWt
+	 x4oM5ICwG5iM30PfaJO0yXXJK/yWRBXLCRNhFoB/m1Jdk83Renprg/VGUDR0QuBX5EaH3
+	 OZAY4cv0MgzHxa705bykD5SSJ6W3LvAk3ynER1v5QkcoBB8+L2sstP8YrNJz5h22wvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795764473;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795770346;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=3mfDHnWE/ppy5wNx9fT4XmkuC/X6iruw/VTvXe3oRI0=;
-	b=gft5WTHOdZyLz9dNvTtZR6Rt7wTRHy77b3W2+E/M11SWDfi6GY3CsvhCqRM7DH88bUbn
-	 ZgzrBQY1jDdsFLhNNdMT9JRij/BogXduyvwgP7wRFK21/t83vaSn60LzK6xtkJXyOuVUW
-	 OLDLPiTfQHvXLC7mZIenqHEDtpwxSmVk9BNtc77YHAtzPDQQFb6j5WW3ySLAuV3uPTXpx
-	 LuaOZdxzJan47qn3/dRMSzo9vPzdE8f02O6lKEPC6VnkxnjIGB96WxF1dVsB1NMsIXvgW
-	 OcgwkxZLphda3mULtO+a2vae2KPPRKSyaSofe0E2lLWjEiTJH1OdL5Y3ufOTDewEKwg==
+	bh=xTFTy5wSUzYE6jj+9jBvqGj4csiaNGqAOGzqnLd4EFs=;
+	b=MPcgr6Y/5yqBTP+K6Y6dQh7oRp54yibIqQ9h/57XMsZ0zcvFh5Z1JA2S7UJcRme6g8KA
+	 POpcZ4VJUtgKrTxpISunwnWYZdNctzIni9A4Z1U0s5Sh7JWempmcrzkDTOYsl/a9Jo1X9
+	 yf2aL7HUcq24X2pjcweZlhgUcIFWOoe0uB/WsiQDbpcxC9YIsI6tUXQFBXYuPrJrWXZ+e
+	 L99w9PRTRCRth3P5/tVUxH25JDMzDg1VIZ01p9s5wx/1TjfUWKxm56pBWmI+dulQPmIwY
+	 XW4DB8xiAdf5J1hltSHNGNM5fTZJG2lEv55dEqBVqmBHXPiJYIqfDPh8EeAzFxUmezA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mails.ucas.ac.cn;
 	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
@@ -25,23 +25,23 @@ Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD8F606A323
-	for <gfs2@lists.linux.dev>; Fri, 27 Nov 2026 07:27:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFD8F606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49B5606A31C
+	for <gfs2@lists.linux.dev>; Fri, 27 Nov 2026 09:05:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A49B5606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
 Received: from localhost.localdomain (unknown [159.226.43.6])
-	by APP-03 (Coremail) with SMTP id rQCowAC3wZLoMAlrQsjrAQ--.1927S2;
-	Fri, 27 Nov 2026 15:27:36 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowADXqZrURwlrfPLsAQ--.62564S2;
+	Fri, 27 Nov 2026 17:05:24 +0800 (CST)
 From: Xinyuan Zhao <zhaoxinyuan24@mails.ucas.ac.cn>
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: gfs2@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] gfs2: spinlock bad magic in ifs_clear_range_dirty due to non-jdata quota inode
-Date: Fri, 27 Nov 2026 15:27:16 +0800
-Message-ID: <20261127072716.28360-1-zhaoxinyuan24@mails.ucas.ac.cn>
+	linux-kernel@vger.kernel.org,
+	Xinyuan Zhao <zhaoxinyuan24@mails.ucas.ac.cn>
+Subject: [BUG] gfs2: slab-use-after-free in gfs2_release_folio due to premature free_sbd() in gfs2_fill_super()
+Date: Fri, 27 Nov 2026 17:05:18 +0800
+Message-ID: <20261127090518.29089-1-zhaoxinyuan24@mails.ucas.ac.cn>
 X-Mailer: git-send-email 2.54.0
 X-Mailing-List: gfs2@lists.linux.dev
 List-Id: <gfs2.lists.linux.dev>
@@ -53,143 +53,207 @@ List-Owner: <mailto:gfs2+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3wZLoMAlrQsjrAQ--.1927S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxKFyrtrW7Jr1UZFW7GF45KFg_yoWxJFyrpF
-	95KryfGr4kXFyUuFW0kFyFqryvga9xXr43Gr1xWrnxZF4jyr1xW3WIganrXr4UKrsrurW5
-	Zr4jqrZ2gFyDGF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Ib7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x2
-	0xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18Mc
-	Ij6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l
-	c7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026x
-	CaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_
-	JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
-	1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_
-	Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8Jb
-	IYCTnIWIevJa73UjIFyTuYvjxUkU3vDUUUU
+X-CM-TRANSID:rQCowADXqZrURwlrfPLsAQ--.62564S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3WFW8tF1rXr1DCF4xCw43trb_yoWfWF1DpF
+	9ak3s7Xr4kW34UWr4xGF4rtFy8Xa9IyF17Gr1fWr13AF13Ww17Ga9F9rsrXa1UCF1kC34x
+	Z3WUJrW7Wr1UJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
+	1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JU1byNUUUUU=
 X-CM-SenderInfo: p2kd055lq13trqsuqzpdlo2hpxfd2hldfou0/
 
 Hi Andreas and GFS2 maintainers,
 
 While fuzzing Linux 7.4.0-rc3 (upstream commit 4405c18) on x86_64 with
-syzkaller, we encountered a "BUG: spinlock bad magic" in
-ifs_clear_range_dirty() triggered during unmount of a crafted GFS2 image.
-The issue is reproducible on an untainted 7.4.0-rc3 kernel. We also
-checked the latest mainline (v7.4-rc4), and the relevant paths in
-init_inodes(), gfs2_adjust_quota(), and gfs2_write_buf_to_page() remain
-unchanged.
+syzkaller, we encountered a KASAN slab-use-after-free in
+gfs2_release_folio() triggered by kswapd0 racing with a failing
+gfs2_fill_super() mount path. We verified both the latest torvalds/linux
+master (7.4.0-rc4) and linux-next branches, and the error cleanup path in
+gfs2_fill_super() (fs/gfs2/ops_fstype.c:1286-1316) remains unchanged.
 
 Summary / Root Cause Analysis
 =============================
 
-It appears to be a folio->private type confusion between struct buffer_head
-and struct iomap_folio_state on the hidden quota system inode:
+During a failing mount, gfs2_fill_super() frees struct gfs2_sbd (sdp)
+before VFS tears down the superblock and evicts cached inodes/folios:
 
-1. In init_inodes() (fs/gfs2/ops_fstype.c:859), sdp->sd_quota_inode is
-   loaded via gfs2_lookup_meta(master, "quota"), without checking whether
-   GFS2_DIF_JDATA is set in di_flags.
+1. gfs2_fill_super() allocates sdp via init_sbd() (fs/gfs2/ops_fstype.c:79,
+   1121) and sets sb->s_fs_info = sdp. During mount initialization, GFS2
+   reads metadata/system inodes and populates folios with buffer_heads
+   backed by gfs2_release_folio() onto the LRU lists.
 
-2. If the on-disk quota inode in a corrupted/crafted GFS2 image is a
-   stuffed regular file without GFS2_DIF_JDATA, gfs2_dinode_in()
-   (fs/gfs2/glops.c:475-476) calls gfs2_set_aops(inode), which assigns
-   gfs2_aops (iomap-based) instead of gfs2_jdata_aops (buffer_head-based).
+2. If mount fails later in gfs2_fill_super() (in this case, during
+   gfs2_jdesc_check() with "my journal (0) is bad: -5"), execution falls
+   through fail_per_node..fail_free (fs/gfs2/ops_fstype.c:1286-1316) and
+   calls free_sbd(sdp) at line 1315:
 
-3. During quota sync (e.g., on unmount via gfs2_sync_fs() ->
-   gfs2_quota_sync() -> do_sync() -> gfs2_adjust_quota()):
-   - gfs2_adjust_quota() (fs/gfs2/quota.c:863-864) calls
-     gfs2_unstuff_dinode(ip). Because !gfs2_is_jdata(ip),
-     gfs2_unstuff_dinode() (fs/gfs2/bmap.c:84-85) marks the folio dirty
-     and adds the quota inode to sdp->sd_log_ordered via
-     gfs2_ordered_add_inode(ip).
-   - gfs2_adjust_quota() then calls gfs2_write_disk_quota() ->
-     gfs2_write_buf_to_page() (fs/gfs2/quota.c:760-762), which
-     unconditionally calls create_empty_buffers(folio, bsize, 0),
-     attaching a struct buffer_head to folio->private.
-   - Next, do_sync() (fs/gfs2/quota.c:1000) calls gfs2_log_flush() ->
-     __gfs2_log_flush() -> gfs2_ordered_write() (fs/gfs2/log.c:730) ->
-     filemap_fdatawrite() -> gfs2_writepages() (fs/gfs2/aops.c:175) ->
-     iomap_writepages() -> iomap_writeback_folio()
-     (fs/iomap/buffered-io.c:2045) -> iomap_clear_range_dirty() ->
-     ifs_clear_range_dirty() (fs/iomap/buffered-io.c:203).
-   - iomap_clear_range_dirty() interprets folio->private (actually a
-     struct buffer_head *) as a struct iomap_folio_state * and calls
-     spin_lock_irqsave(&ifs->state_lock, flags), triggering
-     "BUG: spinlock bad magic".
+     void free_sbd(struct gfs2_sbd *sdp)
+     {
+         struct super_block *sb = sdp->sd_vfs;
+
+         free_percpu(sdp->sd_lkstats);
+         sb->s_fs_info = NULL;
+         kfree(sdp);
+     }
+
+   At this point, gfs2_fill_super() has not yet returned to VFS, so
+   deactivate_locked_super() -> gfs2_kill_sb() -> kill_block_super() ->
+   generic_shutdown_super() -> evict_inodes() has not yet run to evict
+   remaining cached inodes and truncate their page cache folios (unlike
+   normal unmount in gfs2_kill_sb(), which calls shrink_dcache_sb(),
+   gfs2_evict_inodes(), and kill_block_super() before freeing sdp).
+
+3. Concurrently, kswapd0 reclaims a folio belonging to this superblock via
+   shrink_folio_list() -> filemap_release_folio() -> gfs2_release_folio()
+   (fs/gfs2/aops.c:649-671):
+
+     struct gfs2_sbd *sdp = gfs2_mapping2sbd(mapping);
+     ...
+     spin_lock(&sdp->sd_log_lock);
+
+   If kswapd0 reads sdp before free_sbd() clears sb->s_fs_info and frees
+   sdp, spin_lock(&sdp->sd_log_lock) at fs/gfs2/aops.c:671 triggers a
+   slab-use-after-free (offset 3168 inside the freed 8192-byte struct
+   gfs2_sbd). Conversely, if kswapd0 reads sb->s_fs_info after
+   free_sbd() sets it to NULL, it would hit a NULL pointer dereference.
 
 Possible Fix
 ============
 
-Since gfs2_write_buf_to_page() always operates on buffer_heads and
-journals quota data via gfs2_trans_add_data(), validating in init_inodes()
-that sdp->sd_quota_inode is a regular file with GFS2_DIF_JDATA set (and
-rejecting the mount with an error such as -EFSCORRUPTED/-EIO otherwise)
-should prevent this mismatch.
+Ensure all cached dentries, inodes, and their page cache folios are
+evicted/truncated before freeing sdp on the gfs2_fill_super() failure
+path (for example, by calling shrink_dcache_sb(sb) and
+gfs2_evict_inodes(sb) before free_sbd(sdp), or deferring free_sbd(sdp)
+until after generic_shutdown_super() has evicted all inodes).
+
+Reproducer
+==========
+
+The crash was triggered by mounting a corrupted GFS2 image (failing in
+gfs2_jdesc_check()) concurrently with memory reclaim pressure (kswapd0).
+The extracted syzkaller program and C reproducer (with proactive compaction
+disabled and a concurrent memory.reclaim / drop_caches worker) are available
+at:
+
+  https://gist.github.com/ilidanZtormrage/75671cc20d086f632e5c047fb166e32b
+
+Note: on the same gfs2_fill_super() failure cleanup path, leftover folios on
+the LRU can trigger two distinct UAFs during kswapd0 reclaim in evict_folios():
+first on a freed struct gfs2_glock in isolate_folios() -> folio_evictable(),
+and then on the freed struct gfs2_sbd (sdp) in shrink_folio_list() ->
+gfs2_release_folio(). With panic_on_warn=1, kswapd0 may panic on
+folio_evictable() first (~10s); running with panic_on_warn=0 allows
+gfs2_release_folio() on the freed sdp to surface as well.
 
 Crash Report
 ============
 
-BUG: spinlock bad magic on CPU#1, syz-executor/30690
- lock: 0xffff88804ff7b0e0, .magic: 00000000, .owner: /0, .owner_cpu: 1341632736
-CPU: 1 UID: 0 PID: 30690 Comm: syz-executor Tainted: G             L      7.4.0-rc3 #1 PREEMPT(full)
+gfs2: fsid=..0: fatal: filesystem consistency error - inode = 1 19, function = gfs2_jdesc_check, file = fs/gfs2/super.c, line = 119
+gfs2: fsid=..0: my journal (0) is bad: -5
+==================================================================
+BUG: KASAN: slab-use-after-free in __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
+BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
+Read of size 1 at addr ffff8880297ccc60 by task kswapd0/99
 Tainted: [L]=SOFTLOCKUP
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
 Call Trace:
  <TASK>
  __dump_stack lib/dump_stack.c:94 [inline]
  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
- do_raw_spin_lock+0x1f7/0x270 kernel/locking/spinlock_debug.c:115
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:156 [inline]
- _raw_spin_lock_irqsave+0x42/0x60 kernel/locking/spinlock.c:181
- ifs_clear_range_dirty+0x1d7/0x250 fs/iomap/buffered-io.c:203
- iomap_clear_range_dirty fs/iomap/buffered-io.c:214 [inline]
- iomap_writeback_folio+0xd93/0x1de0 fs/iomap/buffered-io.c:2045
- iomap_writepages+0x138/0x2a0 fs/iomap/buffered-io.c:2089
- gfs2_writepages+0x165/0x2a0 fs/gfs2/aops.c:175
- do_writepages+0x27a/0x600 mm/page-writeback.c:2562
- filemap_writeback+0x225/0x2d0 mm/filemap.c:386
- gfs2_ordered_write fs/gfs2/log.c:730 [inline]
- __gfs2_log_flush+0x4cf/0x21f0 fs/gfs2/log.c:1135
- gfs2_log_flush+0x35/0x50 fs/gfs2/log.c:1217
- do_sync+0x55f/0xd30 fs/gfs2/quota.c:1000
- gfs2_quota_sync+0x322/0x570 fs/gfs2/quota.c:1378
- gfs2_sync_fs+0x44/0xb0 fs/gfs2/super.c:664
- sync_filesystem fs/sync.c:56 [inline]
- sync_filesystem+0x117/0x290 fs/sync.c:30
- generic_shutdown_super+0x82/0x3a0 fs/super.c:702
- kill_block_super+0x43/0x130 fs/super.c:1852
- gfs2_kill_sb+0x4a6/0x580 fs/gfs2/ops_fstype.c:1796
- deactivate_locked_super+0xbd/0x130 fs/super.c:558
- deactivate_super fs/super.c:586 [inline]
- deactivate_super+0xe1/0x110 fs/super.c:582
- cleanup_mnt+0xb7/0x160 fs/namespace.c:1396
- task_work_run+0x150/0x240 kernel/task_work.c:233
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- __exit_to_user_mode_loop kernel/entry/common.c:70 [inline]
- exit_to_user_mode_loop+0x24c/0x810 kernel/entry/common.c:101
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:343 [inline]
- do_syscall_64+0x677/0x800 arch/x86/entry/syscall_64.c:107
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xf4/0x600 mm/kasan/report.c:482
+ kasan_report+0xe0/0x110 mm/kasan/report.c:595
+ __kasan_check_byte+0x36/0x50 mm/kasan/common.c:588
+ kasan_check_byte include/linux/kasan.h:406 [inline]
+ lock_acquire kernel/locking/lockdep.c:5916 [inline]
+ lock_acquire+0x126/0x370 kernel/locking/lockdep.c:5899
+ __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
+ spin_lock include/linux/spinlock.h:347 [inline]
+ gfs2_release_folio+0x140/0x720 fs/gfs2/aops.c:671
+ filemap_release_folio+0x22d/0x390 mm/filemap.c:4587
+ shrink_folio_list+0x177c/0x45b0 mm/vmscan.c:1569
+ evict_folios+0x352/0x13d0 mm/vmscan.c:5097
+ try_to_shrink_lruvec+0x301/0x7e0 mm/vmscan.c:5271
+ shrink_one+0x33e/0x710 mm/vmscan.c:5318
+ shrink_many mm/vmscan.c:5381 [inline]
+ lru_gen_shrink_node mm/vmscan.c:5459 [inline]
+ shrink_node+0x2906/0x4230 mm/vmscan.c:6465
+ kswapd_shrink_node mm/vmscan.c:7258 [inline]
+ balance_pgdat+0xa6b/0x1da0 mm/vmscan.c:7429
+ kswapd+0x590/0xbd0 mm/vmscan.c:7705
+ kthread+0x385/0x490 kernel/kthread.c:436
+ ret_from_fork+0xb2a/0xdd0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
  </TASK>
 
-We also verified the same crash on an untainted 7.4.0-rc3 kernel with the
-standalone C reproducer:
+Allocated by task 38319:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:57
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:79
+ poison_kmalloc_redzone mm/kasan/common.c:412 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:429
+ kasan_kmalloc include/linux/kasan.h:267 [inline]
+ __kmalloc_cache_noprof+0x2e4/0x710 mm/slub.c:5680
+ _kmalloc_noprof include/linux/slab.h:991 [inline]
+ _kzalloc_noprof include/linux/slab.h:1312 [inline]
+ init_sbd fs/gfs2/ops_fstype.c:79 [inline]
+ gfs2_fill_super+0x148/0x2f80 fs/gfs2/ops_fstype.c:1121
+ get_tree_bdev_flags+0x392/0x630 fs/super.c:1821
+ gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1331
+ vfs_get_tree+0x8e/0x330 fs/super.c:1881
+ fc_mount fs/namespace.c:1282 [inline]
+ do_new_mount_fc fs/namespace.c:3910 [inline]
+ do_new_mount fs/namespace.c:3986 [inline]
+ path_mount+0x7bf/0x25c0 fs/namespace.c:4337
+ do_mount fs/namespace.c:4350 [inline]
+ __do_sys_mount fs/namespace.c:4563 [inline]
+ __se_sys_mount fs/namespace.c:4540 [inline]
+ __x64_sys_mount+0x293/0x310 fs/namespace.c:4540
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x12e/0x800 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-  BUG: spinlock bad magic on CPU#1, gfs2_1591/26353
-   lock: 0xffff8880631c7620, .magic: 00000000, .owner: /0, .owner_cpu: 1662809632
-  CPU: 1 UID: 0 PID: 26353 Comm: gfs2_1591 Not tainted 7.4.0-rc3 #1 PREEMPT(full)
+Freed by task 38319:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:57
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:79
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:599
+ poison_slab_object mm/kasan/common.c:267 [inline]
+ __kasan_slab_free+0x73/0x90 mm/kasan/common.c:299
+ kasan_slab_free include/linux/kasan.h:239 [inline]
+ slab_free_hook mm/slub.c:2780 [inline]
+ slab_free mm/slub.c:6637 [inline]
+ kfree+0x160/0x720 mm/slub.c:6930
+ free_sbd fs/gfs2/ops_fstype.c:72 [inline]
+ gfs2_fill_super+0x15a9/0x2f80 fs/gfs2/ops_fstype.c:1315
+ get_tree_bdev_flags+0x392/0x630 fs/super.c:1821
+ gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1331
+ vfs_get_tree+0x8e/0x330 fs/super.c:1881
+ fc_mount fs/namespace.c:1282 [inline]
+ do_new_mount_fc fs/namespace.c:3910 [inline]
+ do_new_mount fs/namespace.c:3986 [inline]
+ path_mount+0x7bf/0x25c0 fs/namespace.c:4337
+ do_mount fs/namespace.c:4350 [inline]
+ __do_sys_mount fs/namespace.c:4563 [inline]
+ __se_sys_mount fs/namespace.c:4540 [inline]
+ __x64_sys_mount+0x293/0x310 fs/namespace.c:4540
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x12e/0x800 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Reproducer & Config
-===================
-
-The C reproducer (gfs2_1591.c), syzkaller program (gfs2_1591.prog), and
-kernel .config are available at:
-  https://gist.github.com/ilidanZtormrage/beffb7a9573d7d0873f06a99dc2cde64
+The buggy address belongs to the object at ffff8880297cc000
+ which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 3168 bytes inside of
+ freed 8192-byte region [ffff8880297cc000, ffff8880297ce000)
 
 Best regards,
 Xinyuan Zhao
